@@ -17,6 +17,8 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import java.util.UUID;
+
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
@@ -114,8 +116,7 @@ public final class ModelUtilities {
 	 * @param aClass
 	 * @return
 	 */
-	public static String createSystemIdFor(Class aClass) {
-		return aClass.getName() + "_" + System.currentTimeMillis() + "_"
-				+ (int) (Math.random() * 10000000);
+	public static String createSystemIdFor(Object aObject) {
+		return UUID.randomUUID().toString();
 	}
 }
