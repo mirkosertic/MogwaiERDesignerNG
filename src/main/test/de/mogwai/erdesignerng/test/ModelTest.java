@@ -17,10 +17,13 @@
  */
 package de.mogwai.erdesignerng.test;
 
+import java.io.FileOutputStream;
+
 import junit.framework.TestCase;
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
+import de.mogwai.erdesignerng.io.ModelIOUtilities;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.EmptyModelHistory;
@@ -311,6 +314,68 @@ public class ModelTest extends TestCase {
 			theAttribute.delete();
 		} catch (CannotDeleteException e) {
 			fail("Cannot delete unused attribute!");
+		}
+
+		theRelation.renameTo("REL1222");
+		try {
+			theRelation.delete();
+		} catch (CannotDeleteException e) {
+			fail("Cannot delete unused relation");
+		}
+	}
+
+	public void testUseCase3() throws ElementAlreadyExistsException,
+			ElementInvalidNameException {
+
+		Model theModel = new Model();
+		theModel.setModelHistory(new EmptyModelHistory());
+		theModel.setModelProperties(new OracleDialect());
+
+		Domain theDomain = new Domain();
+		theDomain.setName("DOMAIN1");
+		theModel.addDomain(theDomain);
+
+		Table theTable1 = new Table();
+		theTable1.setName("TABLE1");
+
+		for (int i = 0; i < 5; i++) {
+			Attribute theAttribute = new Attribute();
+			theAttribute.setName("a1_" + i);
+			theAttribute.setDefinition(theDomain, true);
+
+			theTable1.addAttribute(theAttribute);
+		}
+
+		theModel.addTable(theTable1);
+
+		Table theTable2 = new Table();
+		theTable2.setName("TABLE2");
+
+		for (int i = 0; i < 5; i++) {
+			Attribute theAttribute = new Attribute();
+			theAttribute.setName("a2_" + i);
+			theAttribute.setDefinition(theDomain, true);
+
+			theTable2.addAttribute(theAttribute);
+		}
+
+		theModel.addTable(theTable2);
+
+		Relation theRelation = new Relation();
+		theRelation.setName("REL1");
+		theRelation.setStart(theTable1);
+		theRelation.setEnd(theTable2);
+		theRelation.getMapping().put(theTable1.getAttributes().get(0),
+				theTable2.getAttributes().get(0));
+
+		theModel.addRelation(theRelation);
+
+		try {
+			FileOutputStream theStream=new FileOutputStream("c:\\temp\\model.xml");
+			ModelIOUtilities.getInstance().serializeModelToXML(theModel, theStream);
+			theStream.close();
+		} catch (Exception e) {
+			fail("Cannot save model");
 		}
 	}
 

@@ -29,9 +29,11 @@ public interface ModelHistory {
 	void createRenameAttributeCommand(Table aTable, String aOldName,
 			String aNewName);
 
+	void createRenameRelationCommand(Relation aRelation, String aOldName, String aNewName);
+	
 	void createAttributeChangedCommand(Table aTable, String aAttributeName,
 			Domain aDomain, boolean aNullable);
-
+	
 	void createDeleteCommand(Attribute aAttribute);
 
 	void createDeleteCommand(Table aTable);

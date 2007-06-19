@@ -108,4 +108,8 @@ public class Table extends OwnedModelItem<Model> implements
 	public AttributeList getAttributes() {
 		return attributes;
 	}
+
+	public boolean isForeignKey(Attribute aAttribute) {
+		return owner.isUsedByRelations(aAttribute);
+	}
 }

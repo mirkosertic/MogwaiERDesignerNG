@@ -99,4 +99,12 @@ public class Attribute extends OwnedModelItem<Table> {
 		}
 	}
 
+	/**
+	 * Test if this attribute is part of a foreign key.
+	 * 
+	 * @return true if yes, else false
+	 */
+	public boolean isForeignKey() {
+		return owner.isForeignKey(this);
+	}
 }

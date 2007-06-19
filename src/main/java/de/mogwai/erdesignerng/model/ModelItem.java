@@ -17,6 +17,8 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import java.util.HashMap;
+
 /**
  * Base class for all model elements.
  * 
@@ -24,9 +26,11 @@ package de.mogwai.erdesignerng.model;
  */
 public abstract class ModelItem {
 
-	protected String systemId = ModelUtilities.createSystemIdFor(getClass());
+	protected String systemId = ModelUtilities.createSystemIdFor(this);
 
 	protected String name;
+	
+	protected HashMap<String,String> properties = new HashMap<String, String>();
 
 	/**
 	 * Get the name.
@@ -60,5 +64,13 @@ public abstract class ModelItem {
 	 */
 	public void setSystemId(String systemId) {
 		this.systemId = systemId;
+	}
+
+	public HashMap<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(HashMap<String, String> properties) {
+		this.properties = properties;
 	}
 }
