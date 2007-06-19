@@ -17,6 +17,8 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import java.util.Map;
+
 /**
  * A list of relations.
  * 
@@ -25,5 +27,45 @@ package de.mogwai.erdesignerng.model;
 public class RelationList extends ModelItemVector<Relation> {
 
 	private static final long serialVersionUID = 330168987165235683L;
+
+	/**
+	 * Check if a table is used by any of the defined relations.
+	 * 
+	 * @param aTable
+	 *            the table
+	 * @return true it its used, else false
+	 */
+	public boolean isTableInUse(Table aTable) {
+		for (Relation theRelation : this) {
+			if (theRelation.getStart().equals(aTable)) {
+				return true;
+			}
+			if (theRelation.getEnd().equals(aTable)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	/**
+	 * Check if an attribute is used by any of the defined
+	 * relations.
+	 * 
+	 * @param aAttribute the attribute
+	 * @return
+	 */
+	public boolean isAttributeInUse(Attribute aAttribute) {
+		for (Relation theRelation : this) {
+			Map theMap = theRelation.getMapping();
+			if (theMap.containsKey(aAttribute)) {
+				return true;
+			}
+			if (theMap.containsValue(aAttribute)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

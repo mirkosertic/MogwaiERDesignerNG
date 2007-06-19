@@ -36,6 +36,12 @@ public class EmptyModelHistory implements ModelHistory {
 				+ aOldName + " An " + aNewName);
 	}
 
+	public void createRenameRelationCommand(Relation aRelation, String aOldName,
+			String aNewName) {
+		System.out.println("Rename relation R " + aRelation.getName() + " Ao "
+				+ aOldName + " An " + aNewName);
+	}
+	
 	public void createRenameTableCommand(Table aTable, String aOldName,
 			String aNewName) {
 		System.out.println("Rename table To " + aOldName + " Tn " + aNewName);

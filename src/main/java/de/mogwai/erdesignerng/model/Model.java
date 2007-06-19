@@ -17,8 +17,6 @@
  */
 package de.mogwai.erdesignerng.model;
 
-import java.util.Map;
-
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
@@ -39,7 +37,7 @@ public class Model implements OwnedModelItemVerifier {
 
 	private ModelHistory history;
 
-	private Dialect modelProperties;
+	private Dialect dialect;
 
 	/**
 	 * Add a table to the database model.
@@ -52,10 +50,10 @@ public class Model implements OwnedModelItemVerifier {
 	public void addTable(Table aTable) throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 
-		ModelUtilities.checkNameAndExistance(tables, aTable, modelProperties);
+		ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
 
 		for (Attribute theAttribute : aTable.getAttributes()) {
-			theAttribute.setName(modelProperties.checkName(theAttribute
+			theAttribute.setName(dialect.checkName(theAttribute
 					.getName()));
 		}
 
@@ -74,7 +72,7 @@ public class Model implements OwnedModelItemVerifier {
 	public void addDomain(Domain aDomain) throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 
-		ModelUtilities.checkNameAndExistance(domains, aDomain, modelProperties);
+		ModelUtilities.checkNameAndExistance(domains, aDomain, dialect);
 
 		aDomain.setOwner(this);
 		domains.add(aDomain);
@@ -92,7 +90,7 @@ public class Model implements OwnedModelItemVerifier {
 			throws ElementAlreadyExistsException, ElementInvalidNameException {
 
 		ModelUtilities.checkNameAndExistance(relations, aRelation,
-				modelProperties);
+				dialect);
 
 		aRelation.setOwner(this);
 		relations.add(aRelation);
@@ -101,10 +99,10 @@ public class Model implements OwnedModelItemVerifier {
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
 		if (aSender instanceof Table) {
-			ModelUtilities.checkExistance(tables, aName, modelProperties);
+			ModelUtilities.checkExistance(tables, aName, dialect);
 		}
 		if (aSender instanceof Domain) {
-			ModelUtilities.checkExistance(domains, aName, modelProperties);
+			ModelUtilities.checkExistance(domains, aName, dialect);
 		}
 	}
 
@@ -117,36 +115,15 @@ public class Model implements OwnedModelItemVerifier {
 	}
 
 	public Dialect getModelProperties() {
-		return modelProperties;
+		return dialect;
 	}
 
 	public void setModelProperties(Dialect modelProperties) {
-		this.modelProperties = modelProperties;
+		this.dialect = modelProperties;
 	}
 
 	public boolean isUsedByRelations(Attribute aAttribute) {
-		for (Relation theRelation : relations) {
-			Map theMap = theRelation.getMapping();
-			if (theMap.containsKey(aAttribute)) {
-				return true;
-			}
-			if (theMap.containsValue(aAttribute)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isUsedByRelations(Table aTable) {
-		for (Relation theRelation : relations) {
-			if (theRelation.getStart().equals(aTable)) {
-				return true;
-			}
-			if (theRelation.getEnd().equals(aTable)) {
-				return true;
-			}
-		}
-		return false;
+		return relations.isAttributeInUse(aAttribute);
 	}
 
 	public void delete(ModelItem aSender) throws CannotDeleteException {
@@ -154,7 +131,7 @@ public class Model implements OwnedModelItemVerifier {
 
 			Table theTable = (Table) aSender;
 
-			if (isUsedByRelations(theTable)) {
+			if (relations.isTableInUse(theTable)) {
 				throw new CannotDeleteException("Table is used by relations!");
 			}
 
@@ -170,11 +147,44 @@ public class Model implements OwnedModelItemVerifier {
 
 			return;
 		}
+		
+		if (aSender instanceof Relation) {
+			
+			Relation theRelation = (Relation) aSender;
+			
+			relations.remove(theRelation);
+			
+			return;
+		}
 
 		throw new UnsupportedOperationException("Unknown element " + aSender);
 	}
 
 	public String checkName(String aName) throws ElementInvalidNameException {
-		return modelProperties.checkName(aName);
+		return dialect.checkName(aName);
+	}
+
+	public DomainList getDomains() {
+		return domains;
+	}
+
+	public void setDomains(DomainList domains) {
+		this.domains = domains;
+	}
+
+	public RelationList getRelations() {
+		return relations;
+	}
+
+	public void setRelations(RelationList relations) {
+		this.relations = relations;
+	}
+
+	public TableList getTables() {
+		return tables;
+	}
+
+	public void setTables(TableList tables) {
+		this.tables = tables;
 	}
 }
