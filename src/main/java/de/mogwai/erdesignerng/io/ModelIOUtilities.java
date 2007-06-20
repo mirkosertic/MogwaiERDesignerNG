@@ -17,6 +17,8 @@
  */
 package de.mogwai.erdesignerng.io;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,6 +33,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import de.mogwai.erdesignerng.model.CascadeType;
 import de.mogwai.erdesignerng.model.Model;
@@ -41,7 +45,63 @@ import de.mogwai.erdesignerng.model.Relation;
 
 import de.mogwai.erdesignerng.model.ModelItem;
 
-public class ModelIOUtilities {
+public final class ModelIOUtilities {
+
+	protected static final String ID = "id";
+
+	protected static final String NAME = "name";
+
+	protected static final String VALUE = "value";
+
+	protected static final String PROPERTY = "Property";
+
+	protected static final String TRUE = "true";
+
+	protected static final String FALSE = "false";
+
+	protected static final String CASCADE = "cascade";
+
+	protected static final String SET_NULL = "setnull";
+
+	protected static final String NOTHING = "nothing";
+
+	protected static final String DOMAIN = "Domain";
+
+	protected static final String DOMAINS = "Domains";
+
+	protected static final String TABLE = "Table";
+
+	protected static final String TABLES = "Tables";
+
+	protected static final String ATTRIBUTE = "Attribute";
+
+	protected static final String RELATION = "Relation";
+
+	protected static final String RELATIONS = "Relations";
+
+	protected static final String MAPPING = "Mapping";
+
+	protected static final String MODEL = "Model";
+
+	protected static final String DOMAINREFID = "domainrefid";
+
+	protected static final String ONDELETE = "ondelete";
+
+	protected static final String ONUPDATE = "onupdate";
+
+	protected static final String STARTTABLEREFID = "starttablerefid";
+
+	protected static final String ENDTABLEREFID = "endtablerefid";
+
+	protected static final String STARTATTRIBUTEREFID = "startattributerefid";
+
+	protected static final String ENDATTRIBUTEREFID = "startattributerefid";
+
+	protected static final String NULLABLE = "nullable";
+
+	protected static final String PRIMARYKEY = "primarykey";
+
+	protected static final String VERSION = "version";
 
 	private static ModelIOUtilities me;
 
@@ -76,71 +136,219 @@ public class ModelIOUtilities {
 	protected void serializeProperties(Document aDocument, Element aNode,
 			ModelItem aItem) {
 
-		aNode.setAttribute("id", aItem.getSystemId());
-		aNode.setAttribute("name", aItem.getName());
+		aNode.setAttribute(ID, aItem.getSystemId());
+		aNode.setAttribute(NAME, aItem.getName());
 
 		for (String theKey : aItem.getProperties().keySet()) {
 			String theValue = aItem.getProperties().get(theKey);
 			if (theValue != null) {
-				Element theProperty = addElement(aDocument, aNode, "Property");
-				theProperty.setAttribute("name", theKey);
-				theProperty.setAttribute("value", theValue);
+				Element theProperty = addElement(aDocument, aNode, PROPERTY);
+				theProperty.setAttribute(NAME, theKey);
+				theProperty.setAttribute(VALUE, theValue);
 			}
 		}
 	}
-	
-	protected void setBooleanAttribute(Element aElement,String aAttributeName,boolean aValue) {
-		aElement.setAttribute(aAttributeName, aValue?"true":"false");
+
+	protected void deserializeProperties(Element aElement, ModelItem aModelItem) {
+
+		aModelItem.setSystemId(aElement.getAttribute(ID));
+		aModelItem.setName(aElement.getAttribute(NAME));
+
+		NodeList theProperties = aElement.getElementsByTagName(PROPERTY);
+		for (int i = 0; i < theProperties.getLength(); i++) {
+			Element theElement = (Element) theProperties.item(i);
+
+			aModelItem.setProperty(theElement.getAttribute(NAME), theElement
+					.getAttribute(VALUE));
+		}
 	}
 
-	protected void setCascadeTypeAttribute(Element aElement,String aAttributeName,CascadeType aValue) {
+	protected void setBooleanAttribute(Element aElement, String aAttributeName,
+			boolean aValue) {
+		aElement.setAttribute(aAttributeName, aValue ? TRUE : FALSE);
+	}
+
+	protected void setCascadeTypeAttribute(Element aElement,
+			String aAttributeName, CascadeType aValue) {
 		String theValue = "";
 		if (aValue.equals(CascadeType.CASCADE)) {
-			theValue="cascade";
+			theValue = CASCADE;
 		}
 		if (aValue.equals(CascadeType.SET_NULL)) {
-			theValue="setnull";
+			theValue = SET_NULL;
 		}
 		if (aValue.equals(CascadeType.NOTHING)) {
-			theValue="nothing";
+			theValue = NOTHING;
 		}
 		aElement.setAttribute(aAttributeName, theValue);
 	}
-	
+
+	protected CascadeType getCascadeType(Element aElement, String aAttributeName) {
+		String theValue = aElement.getAttribute(aAttributeName);
+		if (theValue.equals(CASCADE)) {
+			return CascadeType.CASCADE;
+		}
+		if (theValue.equals(SET_NULL)) {
+			return CascadeType.SET_NULL;
+		}
+		if (theValue.equals(NOTHING)) {
+			return CascadeType.NOTHING;
+		}
+
+		throw new IllegalArgumentException("Unknown cascade type " + theValue);
+	}
+
+	public Model deserializeModelFromXML(InputStream aInputStream)
+			throws SAXException, IOException {
+		Document theDocument = documentBuilder.parse(aInputStream);
+		Model theModel = new Model();
+
+		// First of all, parse the domains
+		NodeList theElements = theDocument.getElementsByTagName(DOMAIN);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
+
+			Domain theDomain = new Domain();
+			deserializeProperties(theElement, theDomain);
+
+			theModel.getDomains().add(theDomain);
+		}
+
+		// Now, parse tables
+		theElements = theDocument.getElementsByTagName(TABLE);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
+
+			Table theTable = new Table();
+			deserializeProperties(theElement, theTable);
+
+			// Parse the Attributes
+			NodeList theAttributes = theElement.getElementsByTagName(ATTRIBUTE);
+			for (int j = 0; j < theAttributes.getLength(); j++) {
+				Element theAttributeElement = (Element) theAttributes.item(j);
+
+				Attribute theAttribute = new Attribute();
+				deserializeProperties(theAttributeElement, theAttribute);
+
+				String theDomainId = theAttributeElement
+						.getAttribute(DOMAINREFID);
+				Domain theDomain = theModel.getDomains().findBySystemId(
+						theDomainId);
+
+				if (theDomain == null) {
+					throw new IllegalArgumentException(
+							"Cannot find domain with id " + theDomainId);
+				}
+
+				theAttribute.setDefinition(theDomain, TRUE
+						.equals(theAttributeElement.getAttribute(NULLABLE)));
+				theAttribute.setPrimaryKey(TRUE.equals(theAttributeElement
+						.getAttribute(PRIMARYKEY)));
+
+				theTable.getAttributes().add(theAttribute);
+			}
+
+			theModel.getTables().add(theTable);
+		}
+
+		// And finally, parse the relations
+		theElements = theDocument.getElementsByTagName(RELATION);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
+
+			Relation theRelation = new Relation();
+			deserializeProperties(theElement, theRelation);
+
+			theRelation.setOnDelete(getCascadeType(theElement, ONDELETE));
+			theRelation.setOnUpdate(getCascadeType(theElement, ONUPDATE));
+
+			String theStartTableID = theElement.getAttribute(STARTTABLEREFID);
+			String theEndTableID = theElement.getAttribute(ENDTABLEREFID);
+
+			Table theTempTable = theModel.getTables().findTableBySystemId(
+					theStartTableID);
+			if (theTempTable == null) {
+				throw new IllegalArgumentException("Cannot find table with id "
+						+ theStartTableID);
+			}
+			theRelation.setStart(theTempTable);
+			theTempTable = theModel.getTables().findTableBySystemId(
+					theEndTableID);
+			if (theTempTable == null) {
+				throw new IllegalArgumentException("Cannot find table with id "
+						+ theEndTableID);
+			}
+
+			theRelation.setEnd(theTempTable);
+
+			// Parse the mapping
+			NodeList theMappings = theElement.getElementsByTagName(MAPPING);
+			for (int j = 0; j < theMappings.getLength(); j++) {
+				Element theAttributeElement = (Element) theMappings.item(j);
+
+				String theStartId = theAttributeElement
+						.getAttribute(STARTATTRIBUTEREFID);
+				String theEndId = theAttributeElement
+						.getAttribute(ENDATTRIBUTEREFID);
+
+				Attribute theStartAttribute = theModel.getTables()
+						.findAttributeBySystemId(theStartId);
+				if (theStartAttribute == null) {
+					throw new IllegalArgumentException(
+							"Cannot find attribute with id " + theStartId);
+				}
+
+				Attribute theEndAttribute = theModel.getTables()
+						.findAttributeBySystemId(theEndId);
+				if (theEndAttribute == null) {
+					throw new IllegalArgumentException(
+							"Cannot find attribute with id " + theEndId);
+				}
+
+				theRelation.getMapping()
+						.put(theStartAttribute, theEndAttribute);
+			}
+
+			theModel.getRelations().add(theRelation);
+		}
+
+		return theModel;
+	}
+
 	public void serializeModelToXML(Model aModel, OutputStream aStream)
 			throws TransformerException {
 		Document theDocument = documentBuilder.newDocument();
 
-		Element theRootElement = addElement(theDocument, theDocument, "Model");
-		theRootElement.setAttribute("version", "1.0");
+		Element theRootElement = addElement(theDocument, theDocument, MODEL);
+		theRootElement.setAttribute(VERSION, "1.0");
 
 		// Domains serialisieren
 		Element theDomainsElement = addElement(theDocument, theRootElement,
-				"Domains");
-		for (Domain aDomain : aModel.getDomains()) {
+				DOMAINS);
+		for (Domain theDomain : aModel.getDomains()) {
 			Element theDomainElement = addElement(theDocument,
-					theDomainsElement, "Domain");
+					theDomainsElement, DOMAIN);
 
 			// Basisdaten des Modelelementes speichern
-			serializeProperties(theDocument, theDomainElement, aDomain);
-			
+			serializeProperties(theDocument, theDomainElement, theDomain);
+
 			// Zusatzdaten
 		}
 
 		Element theTablesElement = addElement(theDocument, theRootElement,
-				"Tables");
-		for (Table aTable : aModel.getTables()) {
+				TABLES);
+		for (Table theTable : aModel.getTables()) {
 			Element theTableElement = addElement(theDocument, theTablesElement,
-					"Table");
+					TABLE);
 
 			// Basisdaten des Modelelementes speichern
-			serializeProperties(theDocument, theTableElement, aTable);
+			serializeProperties(theDocument, theTableElement, theTable);
 
 			// Attribute serialisieren
-			for (Attribute theAttribute : aTable.getAttributes()) {
+			for (Attribute theAttribute : theTable.getAttributes()) {
 
 				Element theAttributeElement = addElement(theDocument,
-						theTableElement, "Attribute");
+						theTableElement, ATTRIBUTE);
 
 				// Basisdaten des Modelelementes speichern
 				serializeProperties(theDocument, theAttributeElement,
@@ -148,29 +356,47 @@ public class ModelIOUtilities {
 
 				// Domain usw
 				Domain theDomain = theAttribute.getDomain();
-				theAttributeElement.setAttribute("domainrefid", theDomain
+				theAttributeElement.setAttribute(DOMAINREFID, theDomain
 						.getSystemId());
-				
-				setBooleanAttribute(theAttributeElement, "nullable", theAttribute.isNullable());
-				setBooleanAttribute(theAttributeElement, "primarykey", theAttribute.isPrimaryKey());				
+
+				setBooleanAttribute(theAttributeElement, NULLABLE, theAttribute
+						.isNullable());
+				setBooleanAttribute(theAttributeElement, PRIMARYKEY,
+						theAttribute.isPrimaryKey());
 			}
 		}
 
 		Element theRelationsElement = addElement(theDocument, theRootElement,
-				"Relations");
-		for (Relation aRelation : aModel.getRelations()) {
+				RELATIONS);
+		for (Relation theRelation : aModel.getRelations()) {
 			Element theRelationElement = addElement(theDocument,
-					theRelationsElement, "Relation");
+					theRelationsElement, RELATION);
 
 			// Basisdaten des Modelelementes speichern
-			serializeProperties(theDocument, theRelationElement, aRelation);
-			
+			serializeProperties(theDocument, theRelationElement, theRelation);
+
 			// Zusatzdaten
-			theRelationElement.setAttribute("starttablerefid",aRelation.getStart().getSystemId());
-			theRelationElement.setAttribute("endtableredid",aRelation.getStart().getSystemId());
-			
-			setCascadeTypeAttribute(theRelationElement, "ondelete", aRelation.getOnDelete());
-			setCascadeTypeAttribute(theRelationElement, "onupdate", aRelation.getOnDelete());			
+			theRelationElement.setAttribute(STARTTABLEREFID, theRelation
+					.getStart().getSystemId());
+			theRelationElement.setAttribute(ENDTABLEREFID, theRelation
+					.getStart().getSystemId());
+
+			setCascadeTypeAttribute(theRelationElement, ONDELETE, theRelation
+					.getOnDelete());
+			setCascadeTypeAttribute(theRelationElement, ONUPDATE, theRelation
+					.getOnDelete());
+
+			// Mapping
+			for (Attribute theKey : theRelation.getMapping().keySet()) {
+				Attribute theValue = theRelation.getMapping().get(theKey);
+
+				Element theMapping = addElement(theDocument,
+						theRelationElement, MAPPING);
+				theMapping.setAttribute(STARTATTRIBUTEREFID, theKey
+						.getSystemId());
+				theMapping.setAttribute(ENDATTRIBUTEREFID, theValue
+						.getSystemId());
+			}
 		}
 
 		Transformer theTransformer = transformerFactory.newTransformer();
