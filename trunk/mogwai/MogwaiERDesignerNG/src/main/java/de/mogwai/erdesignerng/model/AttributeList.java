@@ -26,4 +26,19 @@ public class AttributeList extends ModelItemVector<Attribute> {
 
 	private static final long serialVersionUID = 890361971577085178L;
 
+	/**
+	 * Find a attribute by a given system id.
+	 * 
+	 * @param aSystemId the system id
+	 * @return the found element
+	 */
+	public Attribute findBySystemId(String aSystemId) {
+		for (Attribute theAttribute : this) {
+			if (aSystemId.equals(theAttribute.getSystemId())) {
+				return theAttribute;
+			}
+		}
+		return null;
+	}
+
 }

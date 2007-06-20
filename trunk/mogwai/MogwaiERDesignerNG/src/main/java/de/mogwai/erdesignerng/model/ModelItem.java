@@ -73,4 +73,8 @@ public abstract class ModelItem {
 	public void setProperties(HashMap<String, String> properties) {
 		this.properties = properties;
 	}
+	
+	public void setProperty(String aName,String aValue) {
+		properties.put(aName,aValue);
+	}
 }

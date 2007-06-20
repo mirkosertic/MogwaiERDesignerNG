@@ -17,7 +17,10 @@
  */
 package de.mogwai.erdesignerng.test;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import junit.framework.TestCase;
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
@@ -325,7 +328,7 @@ public class ModelTest extends TestCase {
 	}
 
 	public void testUseCase3() throws ElementAlreadyExistsException,
-			ElementInvalidNameException {
+			ElementInvalidNameException, IOException {
 
 		Model theModel = new Model();
 		theModel.setModelHistory(new EmptyModelHistory());
@@ -370,13 +373,29 @@ public class ModelTest extends TestCase {
 
 		theModel.addRelation(theRelation);
 
+		File theTempFile = File.createTempFile("TEST", ".xml");
+		
 		try {
-			FileOutputStream theStream=new FileOutputStream("c:\\temp\\model.xml");
+			FileOutputStream theStream=new FileOutputStream(theTempFile);
 			ModelIOUtilities.getInstance().serializeModelToXML(theModel, theStream);
 			theStream.close();
 		} catch (Exception e) {
 			fail("Cannot save model");
 		}
+		
+		try {
+			FileInputStream theStream=new FileInputStream(theTempFile);
+			Model theLoadedModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
+			theStream.close();
+			
+			// Very rude check
+			assertEquals(theModel.getDomains().size(), theLoadedModel.getDomains().size());
+			assertEquals(theModel.getTables().size(), theLoadedModel.getTables().size());
+			assertEquals(theModel.getRelations().size(), theLoadedModel.getRelations().size());
+		} catch (Exception e) {
+			fail("Cannot load model");
+		}
+		
 	}
 
 }
