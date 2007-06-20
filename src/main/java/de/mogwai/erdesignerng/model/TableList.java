@@ -26,4 +26,35 @@ public class TableList extends ModelItemVector<Table> {
 
 	private static final long serialVersionUID = 7291908371933857720L;
 
+	/**
+	 * Find a table by a given system id.
+	 *  
+	 * @param aSystemId
+	 * @return
+	 */
+	public Table findTableBySystemId(String aSystemId) {
+		for (Table theTable : this) {
+			if (aSystemId.equals(theTable.getSystemId())) {
+				return theTable;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Find an attribute by a given system id.
+	 *  
+	 * @param aSystemId
+	 * @return
+	 */
+	public Attribute findAttributeBySystemId(String aSystemId) {
+		for (Table theTable : this) {
+			Attribute theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
+			if (theAttribute != null) {
+				return theAttribute;
+			}
+		}
+		return null;
+	}
+	
 }
