@@ -25,6 +25,9 @@ import java.util.HashMap;
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
 public abstract class ModelItem {
+	
+	public static final String PROPERTY_XLOCATION = "XLOCATION";
+	public static final String PROPERTY_YLOCATION = "YLOCATION";
 
 	protected String systemId = ModelUtilities.createSystemIdFor(this);
 
@@ -76,5 +79,17 @@ public abstract class ModelItem {
 	
 	public void setProperty(String aName,String aValue) {
 		properties.put(aName,aValue);
+	}
+	
+	public String getProperty(String aName) {
+		return properties.get(aName);
+	}
+	
+	public int getIntProperty(String aName,int aDefault) {
+		if (!properties.containsKey(aName)) {
+			return aDefault;
+		}
+		
+		return Integer.parseInt(properties.get(aName));
 	}
 }
