@@ -25,15 +25,16 @@ import java.util.HashMap;
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
 public abstract class ModelItem {
-	
+
 	public static final String PROPERTY_XLOCATION = "XLOCATION";
+
 	public static final String PROPERTY_YLOCATION = "YLOCATION";
 
 	protected String systemId = ModelUtilities.createSystemIdFor(this);
 
 	protected String name;
-	
-	protected HashMap<String,String> properties = new HashMap<String, String>();
+
+	protected HashMap<String, String> properties = new HashMap<String, String>();
 
 	/**
 	 * Get the name.
@@ -76,20 +77,24 @@ public abstract class ModelItem {
 	public void setProperties(HashMap<String, String> properties) {
 		this.properties = properties;
 	}
-	
-	public void setProperty(String aName,String aValue) {
-		properties.put(aName,aValue);
+
+	public void setProperty(String aName, String aValue) {
+		properties.put(aName, aValue);
 	}
-	
+
 	public String getProperty(String aName) {
 		return properties.get(aName);
 	}
-	
-	public int getIntProperty(String aName,int aDefault) {
+
+	public int getIntProperty(String aName, int aDefault) {
 		if (!properties.containsKey(aName)) {
 			return aDefault;
 		}
-		
+
 		return Integer.parseInt(properties.get(aName));
+	}
+
+	public void setIntProperty(String aName, int aValue) {
+		properties.put(aName, "" + aValue);
 	}
 }
