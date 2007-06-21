@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="C:/eclipse/plugins/org.junit_3.8.1/junit.jar"/>
 	<classpathentry kind="lib" path="C:/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.2.2.v3236.jar"/>
 	<classpathentry kind="lib" path="C:/eclipse/plugins/org.eclipse.draw2d_3.2.2.v20070208.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/plugins/com.ibm.icu_3.4.5.20061213.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

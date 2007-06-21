@@ -1,11 +1,5 @@
 package de.mogwai.erdesignerng.view;
 
-import java.util.HashMap;
-
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -19,57 +13,29 @@ import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.oracle.OracleDialect;
+import de.mogwai.erdesignerng.view.editpart.EditPartViewer;
+import de.mogwai.erdesignerng.view.editpart.TableEditPart;
 
-public class SchemaEditor extends LightweightSystem {
-	
-	protected Model model;
-	protected Figure rootFigure = new Figure();
-	protected HashMap<String, TableFigure> tableFigureMap = new HashMap<String, TableFigure>();
+public class SchemaEditor extends EditPartViewer<Model> {
 	
 	public SchemaEditor(Canvas aCanvas) {
 		super(aCanvas);
-		
-		rootFigure.setLayoutManager(new XYLayout());
-		setContents(rootFigure);
-	}
-	
-	protected void updateChildren() {
-		
-		// Add every table not added to the model
-		for(Table theTable : model.getTables()) {
-			if (!tableFigureMap.containsKey(theTable.getSystemId())) {
-				TableFigure theFigure = new TableFigure();
-				
-				tableFigureMap.put(theTable.getSystemId(), theFigure);
-				theFigure.setModel(theTable);
-				
-				rootFigure.add(theFigure);
-				
-				int x=theTable.getIntProperty(Table.PROPERTY_XLOCATION, 100);
-				int y=theTable.getIntProperty(Table.PROPERTY_YLOCATION, 100);
-				
-				rootFigure.setConstraint(theFigure, new Rectangle(x,y,-1,-1));
-				
-			} else {
-				TableFigure theTableFigure = tableFigureMap.get(theTable.getSystemId());
-				theTableFigure.updateChildren();
-			}
-		}
-		
-		// Remove tables not in the model but there as figure
-		for (String theKey : tableFigureMap.keySet()) {
-			if (model.getTables().findTableBySystemId(theKey)==null) {
-				rootFigure.remove(tableFigureMap.get(theKey));
-			}
-		}
 	}
 	
 	public void setModel(Model aModel) {
-		model = aModel;
 		
-		updateChildren();
+		super.setModel(aModel);
+		
+		// Add every table not added to the model
+		for(Table theTable : aModel.getTables()) {
+			
+			TableEditPart theEditPart = new TableEditPart();
+			theEditPart.setModel(theTable);
+			
+			addEditPart(theEditPart);
+		}
 	}
-
+	
 	public static void main(String args[]) throws ElementAlreadyExistsException, ElementInvalidNameException {
 		Display d = new Display();
 		final Shell shell = new Shell(d);
