@@ -36,14 +36,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.mogwai.erdesignerng.model.CascadeType;
-import de.mogwai.erdesignerng.model.Model;
-import de.mogwai.erdesignerng.model.Domain;
-import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.model.Attribute;
-import de.mogwai.erdesignerng.model.Relation;
-
+import de.mogwai.erdesignerng.model.CascadeType;
+import de.mogwai.erdesignerng.model.Domain;
+import de.mogwai.erdesignerng.model.Index;
+import de.mogwai.erdesignerng.model.IndexType;
+import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.ModelItem;
+import de.mogwai.erdesignerng.model.Relation;
+import de.mogwai.erdesignerng.model.Table;
 
 public final class ModelIOUtilities {
 
@@ -74,6 +75,10 @@ public final class ModelIOUtilities {
 	protected static final String TABLES = "Tables";
 
 	protected static final String ATTRIBUTE = "Attribute";
+	
+	protected static final String INDEXATTRIBUTE = "Indexattribute";	
+
+	protected static final String ATTRIBUTEREFID = "attributerefid";
 
 	protected static final String RELATION = "Relation";
 
@@ -102,6 +107,10 @@ public final class ModelIOUtilities {
 	protected static final String PRIMARYKEY = "primarykey";
 
 	protected static final String VERSION = "version";
+
+	protected static final String INDEX = "Index";
+
+	protected static final String INDEXTYPE = "indextype";
 
 	private static ModelIOUtilities me;
 
@@ -168,36 +177,6 @@ public final class ModelIOUtilities {
 		aElement.setAttribute(aAttributeName, aValue ? TRUE : FALSE);
 	}
 
-	protected void setCascadeTypeAttribute(Element aElement,
-			String aAttributeName, CascadeType aValue) {
-		String theValue = "";
-		if (aValue.equals(CascadeType.CASCADE)) {
-			theValue = CASCADE;
-		}
-		if (aValue.equals(CascadeType.SET_NULL)) {
-			theValue = SET_NULL;
-		}
-		if (aValue.equals(CascadeType.NOTHING)) {
-			theValue = NOTHING;
-		}
-		aElement.setAttribute(aAttributeName, theValue);
-	}
-
-	protected CascadeType getCascadeType(Element aElement, String aAttributeName) {
-		String theValue = aElement.getAttribute(aAttributeName);
-		if (theValue.equals(CASCADE)) {
-			return CascadeType.CASCADE;
-		}
-		if (theValue.equals(SET_NULL)) {
-			return CascadeType.SET_NULL;
-		}
-		if (theValue.equals(NOTHING)) {
-			return CascadeType.NOTHING;
-		}
-
-		throw new IllegalArgumentException("Unknown cascade type " + theValue);
-	}
-
 	public Model deserializeModelFromXML(InputStream aInputStream)
 			throws SAXException, IOException {
 		Document theDocument = documentBuilder.parse(aInputStream);
@@ -232,6 +211,7 @@ public final class ModelIOUtilities {
 
 				String theDomainId = theAttributeElement
 						.getAttribute(DOMAINREFID);
+				
 				Domain theDomain = theModel.getDomains().findBySystemId(
 						theDomainId);
 
@@ -242,10 +222,36 @@ public final class ModelIOUtilities {
 
 				theAttribute.setDefinition(theDomain, TRUE
 						.equals(theAttributeElement.getAttribute(NULLABLE)));
-				theAttribute.setPrimaryKey(TRUE.equals(theAttributeElement
-						.getAttribute(PRIMARYKEY)));
 
 				theTable.getAttributes().add(theAttribute);
+			}
+
+			// Parse the indexes
+			NodeList theIndexes = theElement.getElementsByTagName(INDEX);
+			for (int j = 0; j < theIndexes.getLength(); j++) {
+
+				Element theIndexElement = (Element) theIndexes.item(j);
+				Index theIndex = new Index();
+
+				deserializeProperties(theIndexElement, theIndex);
+				
+				theIndex.setIndexType(IndexType.fromType(theIndexElement.getAttribute(INDEXTYPE)));
+
+				theAttributes = theIndexElement.getElementsByTagName(INDEXATTRIBUTE);
+				for (int k = 0; k < theAttributes.getLength(); k++) {
+
+					Element theAttributeElement = (Element) theAttributes
+							.item(k);
+
+					String theAttributeRefId = theAttributeElement
+							.getAttribute(ATTRIBUTEREFID);
+					theIndex.getAttributes().add(
+							theTable.getAttributes().findBySystemId(
+									theAttributeRefId));
+				}
+
+				theTable.getIndexes().add(theIndex);
+
 			}
 
 			theModel.getTables().add(theTable);
@@ -259,8 +265,8 @@ public final class ModelIOUtilities {
 			Relation theRelation = new Relation();
 			deserializeProperties(theElement, theRelation);
 
-			theRelation.setOnDelete(getCascadeType(theElement, ONDELETE));
-			theRelation.setOnUpdate(getCascadeType(theElement, ONUPDATE));
+			theRelation.setOnDelete(CascadeType.fromType(theElement.getAttribute(ONDELETE)));
+			theRelation.setOnUpdate(CascadeType.fromType(theElement.getAttribute(ONUPDATE)));
 
 			String theStartTableID = theElement.getAttribute(STARTTABLEREFID);
 			String theEndTableID = theElement.getAttribute(ENDTABLEREFID);
@@ -361,8 +367,27 @@ public final class ModelIOUtilities {
 
 				setBooleanAttribute(theAttributeElement, NULLABLE, theAttribute
 						.isNullable());
-				setBooleanAttribute(theAttributeElement, PRIMARYKEY,
-						theAttribute.isPrimaryKey());
+			}
+
+			// Indexes serialisieren
+			for (Index theIndex : theTable.getIndexes()) {
+
+				Element theIndexElement = addElement(theDocument,
+						theTableElement, INDEX);
+
+				theIndexElement.setAttribute(INDEXTYPE, theIndex.getIndexType()
+						.getType());
+
+				serializeProperties(theDocument, theIndexElement, theIndex);
+
+				// Attribute
+				for (Attribute theAttribute : theIndex.getAttributes()) {
+					Element theAttributeElement = addElement(theDocument,
+							theIndexElement, INDEXATTRIBUTE);
+					theAttributeElement.setAttribute(ATTRIBUTEREFID,
+							theAttribute.getSystemId());
+				}
+
 			}
 		}
 
@@ -381,10 +406,10 @@ public final class ModelIOUtilities {
 			theRelationElement.setAttribute(ENDTABLEREFID, theRelation
 					.getStart().getSystemId());
 
-			setCascadeTypeAttribute(theRelationElement, ONDELETE, theRelation
-					.getOnDelete());
-			setCascadeTypeAttribute(theRelationElement, ONUPDATE, theRelation
-					.getOnDelete());
+			theRelationElement.setAttribute(ONDELETE, theRelation
+					.getOnDelete().getType());
+			theRelationElement.setAttribute(ONUPDATE, theRelation
+					.getOnDelete().getType());
 
 			// Mapping
 			for (Attribute theKey : theRelation.getMapping().keySet()) {

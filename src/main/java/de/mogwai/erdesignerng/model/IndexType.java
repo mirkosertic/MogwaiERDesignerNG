@@ -18,29 +18,33 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * The history of a database model.
+ * The indextype.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public interface ModelHistory {
+public enum IndexType {
+	PRIMARYKEY("PK"), UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");
 
-	void createRenameTableCommand(Table aTable,String aNewName);
+	private String type;
 
-	void createRenameAttributeCommand(Table aTable, Attribute aAttribute,
-			String aNewName);
+	private IndexType(String aType) {
+		type = aType;
+	}
 
-	void createRenameIndexCommand(Table aTable, Index aIndex, String aNewName);
-	
-	void createRenameRelationCommand(Relation aRelation, String aNewName);
+	public String getType() {
+		return type;
+	}
 
-	void createAttributeChangedCommand(Table aTable, String aAttributeName,
-			Domain aDomain, boolean aNullable);
-
-	void createDeleteCommand(Attribute aAttribute);
-
-	void createDeleteCommand(Table aTable);
-
-	void createDeleteCommand(Relation aRelation);
-
-	void createDeleteCommand(Index aIndex);
+	public static IndexType fromType(String aType) {
+		if (PRIMARYKEY.getType().equals(aType)) {
+			return PRIMARYKEY;
+		}
+		if (UNIQUE.getType().equals(aType)) {
+			return UNIQUE;
+		}
+		if (NONUNIQUE.getType().equals(aType)) {
+			return NONUNIQUE;
+		}
+		throw new IllegalArgumentException("Invalid type " + aType);
+	}
 }

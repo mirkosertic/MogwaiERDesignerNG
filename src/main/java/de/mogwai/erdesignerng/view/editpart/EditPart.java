@@ -21,36 +21,36 @@ import org.eclipse.draw2d.Figure;
 
 public abstract class EditPart<M, F extends Figure> {
 
-	private F figure;
+    private F figure;
 
-	private M model;
+    private M model;
 
-	public EditPart() {
-		figure = createFigure();
-		EditPartMouseAdapter theAdapter = new EditPartMouseAdapter(this);
-		figure.addMouseListener(theAdapter);
-		figure.addMouseMotionListener(theAdapter);
-	}
+    public EditPart() {
+	figure = createFigure();
+	EditPartMouseAdapter theAdapter = new EditPartMouseAdapter(this);
+	figure.addMouseListener(theAdapter);
+	figure.addMouseMotionListener(theAdapter);
+    }
 
-	protected abstract F createFigure();
+    protected abstract F createFigure();
 
-	public F getFigure() {
-		return figure;
-	}
+    public F getFigure() {
+	return figure;
+    }
 
-	public M getModel() {
-		return model;
-	}
+    public M getModel() {
+	return model;
+    }
 
-	public void setModel(M model) {
-		this.model = model;
-	}
+    public void setModel(M model) {
+	this.model = model;
+    }
 
-	protected abstract void updateView();
+    protected abstract void updateView();
 
-	protected abstract void updateModel();
+    protected abstract void updateModel();
 
-	public String getId() {
-		return "" + hashCode();
-	}
+    public String getId() {
+	return "" + hashCode();
+    }
 }

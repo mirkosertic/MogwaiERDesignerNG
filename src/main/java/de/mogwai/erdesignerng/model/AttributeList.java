@@ -29,7 +29,8 @@ public class AttributeList extends ModelItemVector<Attribute> {
 	/**
 	 * Find a attribute by a given system id.
 	 * 
-	 * @param aSystemId the system id
+	 * @param aSystemId
+	 *            the system id
 	 * @return the found element
 	 */
 	public Attribute findBySystemId(String aSystemId) {

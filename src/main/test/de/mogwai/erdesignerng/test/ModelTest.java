@@ -30,6 +30,8 @@ import de.mogwai.erdesignerng.io.ModelIOUtilities;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.EmptyModelHistory;
+import de.mogwai.erdesignerng.model.Index;
+import de.mogwai.erdesignerng.model.IndexType;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
@@ -230,9 +232,6 @@ public class ModelTest extends TestCase {
 		assertEquals("TABLE3", theTable.getName());
 
 		theAttribute.setDefinition(theDomain, true);
-		theAttribute.setPrimaryKey(true);
-
-		assertEquals(theAttribute.isNullable(), false);
 
 	}
 
@@ -353,14 +352,21 @@ public class ModelTest extends TestCase {
 
 		Table theTable2 = new Table();
 		theTable2.setName("TABLE2");
-
+		
+		Index theIndex = new Index();
+		theIndex.setIndexType(IndexType.PRIMARYKEY);
+		
 		for (int i = 0; i < 5; i++) {
 			Attribute theAttribute = new Attribute();
 			theAttribute.setName("a2_" + i);
 			theAttribute.setDefinition(theDomain, true);
 
 			theTable2.addAttribute(theAttribute);
+			
+			theIndex.getAttributes().add(theAttribute);
 		}
+		
+		theTable2.getIndexes().add(theIndex);
 
 		theModel.addTable(theTable2);
 
@@ -373,7 +379,8 @@ public class ModelTest extends TestCase {
 
 		theModel.addRelation(theRelation);
 
-		File theTempFile = File.createTempFile("TEST", ".xml");
+		//File theTempFile = File.createTempFile("TEST", ".xml");
+		File theTempFile = new File("c:\\temp\\test.xml");
 		
 		try {
 			FileOutputStream theStream=new FileOutputStream(theTempFile);
@@ -392,7 +399,11 @@ public class ModelTest extends TestCase {
 			assertEquals(theModel.getDomains().size(), theLoadedModel.getDomains().size());
 			assertEquals(theModel.getTables().size(), theLoadedModel.getTables().size());
 			assertEquals(theModel.getRelations().size(), theLoadedModel.getRelations().size());
+			assertEquals(theModel.getTables().get(1).getIndexes().size(), theModel.getTables().get(1).getIndexes().size());
+			assertEquals(theModel.getTables().get(1).getIndexes().get(0).getAttributes().size(), theModel.getTables().get(1).getIndexes().get(0).getAttributes().size());
+			
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Cannot load model");
 		}
 		

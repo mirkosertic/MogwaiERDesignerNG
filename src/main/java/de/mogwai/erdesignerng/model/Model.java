@@ -53,8 +53,7 @@ public class Model implements OwnedModelItemVerifier {
 		ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
 
 		for (Attribute theAttribute : aTable.getAttributes()) {
-			theAttribute.setName(dialect.checkName(theAttribute
-					.getName()));
+			theAttribute.setName(dialect.checkName(theAttribute.getName()));
 		}
 
 		aTable.setOwner(this);
@@ -89,8 +88,7 @@ public class Model implements OwnedModelItemVerifier {
 	public void addRelation(Relation aRelation)
 			throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		ModelUtilities.checkNameAndExistance(relations, aRelation,
-				dialect);
+		ModelUtilities.checkNameAndExistance(relations, aRelation, dialect);
 
 		aRelation.setOwner(this);
 		relations.add(aRelation);
@@ -147,13 +145,13 @@ public class Model implements OwnedModelItemVerifier {
 
 			return;
 		}
-		
+
 		if (aSender instanceof Relation) {
-			
+
 			Relation theRelation = (Relation) aSender;
-			
+
 			relations.remove(theRelation);
-			
+
 			return;
 		}
 

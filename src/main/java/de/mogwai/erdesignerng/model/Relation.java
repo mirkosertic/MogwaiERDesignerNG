@@ -70,7 +70,7 @@ public class Relation extends OwnedModelItem<Model> {
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
 		if (owner != null) {
-			owner.getModelHistory().createRenameRelationCommand(this, getName(), aNewName);
+			owner.getModelHistory().createRenameRelationCommand(this,aNewName);
 		}
 	}
 

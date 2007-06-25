@@ -17,31 +17,32 @@ import de.mogwai.erdesignerng.view.editpart.EditPartViewer;
 import de.mogwai.erdesignerng.view.editpart.TableEditPart;
 
 public class SchemaEditor extends EditPartViewer<Model> {
-	
+
 	public SchemaEditor(Canvas aCanvas) {
 		super(aCanvas);
 	}
-	
+
 	public void setModel(Model aModel) {
-		
+
 		super.setModel(aModel);
-		
+
 		// Add every table not added to the model
-		for(Table theTable : aModel.getTables()) {
-			
+		for (Table theTable : aModel.getTables()) {
+
 			TableEditPart theEditPart = new TableEditPart();
 			theEditPart.setModel(theTable);
-			
+
 			addEditPart(theEditPart);
 		}
 	}
-	
-	public static void main(String args[]) throws ElementAlreadyExistsException, ElementInvalidNameException {
+
+	public static void main(String[] args)
+			throws ElementAlreadyExistsException, ElementInvalidNameException {
 		Display d = new Display();
 		final Shell shell = new Shell(d);
 		shell.setSize(400, 400);
 		shell.setText("UMLClassFigure Test");
-		
+
 		Model theModel = new Model();
 		theModel.setModelHistory(new EmptyModelHistory());
 		theModel.setModelProperties(new OracleDialect());
@@ -84,13 +85,13 @@ public class SchemaEditor extends EditPartViewer<Model> {
 				theTable2.getAttributes().get(0));
 
 		theModel.addRelation(theRelation);
-		
+
 		SchemaEditor theEditor = new SchemaEditor(shell);
 		theEditor.setModel(theModel);
 		shell.open();
 		while (!shell.isDisposed()) {
 			while (!d.readAndDispatch())
 				d.sleep();
-	 	}		
+		}
 	}
 }
