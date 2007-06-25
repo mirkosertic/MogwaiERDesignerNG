@@ -20,7 +20,7 @@ package de.mogwai.erdesignerng.exception;
 public class ElementAlreadyExistsException extends ModelException {
 
 	private static final long serialVersionUID = 3016742498176605316L;
-	
+
 	private String elementName;
 
 	public ElementAlreadyExistsException(String aElementName) {

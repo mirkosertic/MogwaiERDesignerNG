@@ -18,52 +18,30 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * A database attribute.
+ * An index.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public class Attribute extends OwnedModelItem<Table> {
+public class Index extends OwnedModelItem<Table> {
 
-	private Domain domain;
+	private IndexType indexType = IndexType.PRIMARYKEY;
 
-	private boolean nullable;
+	private AttributeList attributes = new AttributeList();
 
-	public void setDefinition(Domain aDomain, boolean aNullable) {
-		if (owner != null) {
-			if (!aDomain.equals(domain) || (nullable != aNullable)) {
-				nullable = aNullable;
-				domain = aDomain;
-
-				owner.getOwner().getModelHistory()
-						.createAttributeChangedCommand(owner, getName(),
-								aDomain, aNullable);
-			}
-		} else {
-			domain = aDomain;
-			nullable = aNullable;
-		}
+	public AttributeList getAttributes() {
+		return attributes;
 	}
 
-	/**
-	 * @return the domain
-	 */
-	public Domain getDomain() {
-		return domain;
+	public void setAttributes(AttributeList attributes) {
+		this.attributes = attributes;
 	}
 
-	/**
-	 * @return the nullable
-	 */
-	public boolean isNullable() {
-		return nullable;
+	public IndexType getIndexType() {
+		return indexType;
 	}
 
-	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-		if (owner != null) {
-			owner.getOwner().getModelHistory().createRenameAttributeCommand(
-					owner, this, aNewName);
-		}
+	public void setIndexType(IndexType indexType) {
+		this.indexType = indexType;
 	}
 
 	@Override
@@ -73,12 +51,12 @@ public class Attribute extends OwnedModelItem<Table> {
 		}
 	}
 
-	/**
-	 * Test if this attribute is part of a foreign key.
-	 * 
-	 * @return true if yes, else false
-	 */
-	public boolean isForeignKey() {
-		return owner.isForeignKey(this);
+	@Override
+	protected void generateRenameHistoryCommand(String aNewName) {
+		if (owner != null) {
+			owner.getOwner().getModelHistory().createRenameIndexCommand(
+					owner, this, aNewName);
+		}
 	}
+
 }

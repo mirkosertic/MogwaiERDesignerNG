@@ -49,10 +49,10 @@ public class RelationList extends ModelItemVector<Relation> {
 	}
 
 	/**
-	 * Check if an attribute is used by any of the defined
-	 * relations.
+	 * Check if an attribute is used by any of the defined relations.
 	 * 
-	 * @param aAttribute the attribute
+	 * @param aAttribute
+	 *            the attribute
 	 * @return
 	 */
 	public boolean isAttributeInUse(Attribute aAttribute) {

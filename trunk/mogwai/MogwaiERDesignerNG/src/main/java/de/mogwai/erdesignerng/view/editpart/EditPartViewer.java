@@ -53,7 +53,7 @@ public class EditPartViewer<M> extends LightweightSystem {
 			editpartMap.put(theId, aEditPart);
 
 			rootFigure.add(aEditPart.getFigure());
-			aEditPart.updateView();			
+			aEditPart.updateView();
 		}
 	}
 }

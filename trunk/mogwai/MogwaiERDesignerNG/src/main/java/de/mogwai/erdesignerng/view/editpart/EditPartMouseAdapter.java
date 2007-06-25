@@ -24,12 +24,12 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-
-public class EditPartMouseAdapter implements MouseMotionListener , MouseListener {
+public class EditPartMouseAdapter implements MouseMotionListener, MouseListener {
 
 	private int dx, dy;
+
 	private EditPart editPart;
-	
+
 	public EditPartMouseAdapter(EditPart aEditPart) {
 		editPart = aEditPart;
 	}
@@ -40,7 +40,7 @@ public class EditPartMouseAdapter implements MouseMotionListener , MouseListener
 
 		theFigure.getParent().setConstraint(theFigure,
 				new Rectangle(aEvent.x - dx, aEvent.y - dy, -1, -1));
-		
+
 		editPart.updateModel();
 	}
 
@@ -62,11 +62,11 @@ public class EditPartMouseAdapter implements MouseMotionListener , MouseListener
 	public void mousePressed(MouseEvent aEvent) {
 		Figure theFigure = (Figure) aEvent.getSource();
 		Point theLocation = theFigure.getLocation();
-		
+
 		dx = aEvent.x - theLocation.x;
 		dy = aEvent.y - theLocation.y;
-		
-		System.out.println(dx+" "+dy);
+
+		System.out.println(dx + " " + dy);
 	}
 
 	public void mouseReleased(MouseEvent aEvent) {
