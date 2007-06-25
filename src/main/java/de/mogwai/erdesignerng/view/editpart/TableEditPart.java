@@ -43,15 +43,16 @@ public class TableEditPart extends EditPart<Table, TableFigure> {
 
 	@Override
 	protected void updateView() {
-		
+
 		TableFigure theFigure = getFigure();
 		Table theModel = getModel();
-		
+
 		theFigure.setText(theModel.getName());
-		
+
 		int x = theModel.getIntProperty(Table.PROPERTY_XLOCATION, 0);
 		int y = theModel.getIntProperty(Table.PROPERTY_YLOCATION, 0);
-		
-		theFigure.getParent().setConstraint(theFigure, new Rectangle(x,y,-1,-1));
+
+		theFigure.getParent().setConstraint(theFigure,
+				new Rectangle(x, y, -1, -1));
 	}
 }

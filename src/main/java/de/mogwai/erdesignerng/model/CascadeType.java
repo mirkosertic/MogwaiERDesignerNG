@@ -23,5 +23,29 @@ package de.mogwai.erdesignerng.model;
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
 public enum CascadeType {
-	NOTHING(), CASCADE(), SET_NULL();
+	NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull");
+	
+	private String type;
+
+	private CascadeType(String aType) {
+		type = aType;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public static CascadeType fromType(String aType) {
+		if (NOTHING.getType().equals(aType)) {
+			return NOTHING;
+		}
+		if (CASCADE.getType().equals(aType)) {
+			return CASCADE;
+		}
+		if (SET_NULL.getType().equals(aType)) {
+			return SET_NULL;
+		}
+		throw new IllegalArgumentException("Invalid type " + aType);
+	}
+	
 }

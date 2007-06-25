@@ -30,21 +30,19 @@ public class EmptyModelHistory implements ModelHistory {
 				+ aAttributeName + " D " + aDomain + " N " + aNullable);
 	}
 
-	public void createRenameAttributeCommand(Table aTable, String aOldName,
+	public void createRenameAttributeCommand(Table aTable, Attribute aAttribute,
 			String aNewName) {
 		System.out.println("Rename attribute T " + aTable.getName() + " Ao "
-				+ aOldName + " An " + aNewName);
+				+ aAttribute.getName() + " An " + aNewName);
 	}
 
-	public void createRenameRelationCommand(Relation aRelation, String aOldName,
+	public void createRenameRelationCommand(Relation aRelation,
 			String aNewName) {
-		System.out.println("Rename relation R " + aRelation.getName() + " Ao "
-				+ aOldName + " An " + aNewName);
+		System.out.println("Rename relation R " + aRelation.getName() + " An " + aNewName);
 	}
-	
-	public void createRenameTableCommand(Table aTable, String aOldName,
-			String aNewName) {
-		System.out.println("Rename table To " + aOldName + " Tn " + aNewName);
+
+	public void createRenameTableCommand(Table aTable, String aNewName) {
+		System.out.println("Rename table To " + aTable.getName() + " Tn " + aNewName);
 	}
 
 	public void createDeleteCommand(Attribute aAttribute) {
@@ -59,4 +57,9 @@ public class EmptyModelHistory implements ModelHistory {
 		System.out.println("Delete relation " + aRelation.getName());
 	}
 
+	public void createDeleteCommand(Index aIndex) {
+	}
+
+	public void createRenameIndexCommand(Table aTable, Index aIndex, String aNewName) {
+	}
 }

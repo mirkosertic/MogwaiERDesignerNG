@@ -28,7 +28,7 @@ public class TableList extends ModelItemVector<Table> {
 
 	/**
 	 * Find a table by a given system id.
-	 *  
+	 * 
 	 * @param aSystemId
 	 * @return
 	 */
@@ -43,18 +43,19 @@ public class TableList extends ModelItemVector<Table> {
 
 	/**
 	 * Find an attribute by a given system id.
-	 *  
+	 * 
 	 * @param aSystemId
 	 * @return
 	 */
 	public Attribute findAttributeBySystemId(String aSystemId) {
 		for (Table theTable : this) {
-			Attribute theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
+			Attribute theAttribute = theTable.getAttributes().findBySystemId(
+					aSystemId);
 			if (theAttribute != null) {
 				return theAttribute;
 			}
 		}
 		return null;
 	}
-	
+
 }

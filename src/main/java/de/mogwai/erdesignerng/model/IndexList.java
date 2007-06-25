@@ -18,29 +18,27 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * The history of a database model.
+ * A list of attributes.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public interface ModelHistory {
+public class IndexList extends ModelItemVector<Index> {
 
-	void createRenameTableCommand(Table aTable,String aNewName);
+	private static final long serialVersionUID = 890361971577085178L;
 
-	void createRenameAttributeCommand(Table aTable, Attribute aAttribute,
-			String aNewName);
+	/**
+	 * Find an index by a given system id.
+	 * 
+	 * @param aSystemId the system id
+	 * @return the found element
+	 */
+	public Index findBySystemId(String aSystemId) {
+		for (Index theIndex : this) {
+			if (aSystemId.equals(theIndex.getSystemId())) {
+				return theIndex;
+			}
+		}
+		return null;
+	}
 
-	void createRenameIndexCommand(Table aTable, Index aIndex, String aNewName);
-	
-	void createRenameRelationCommand(Relation aRelation, String aNewName);
-
-	void createAttributeChangedCommand(Table aTable, String aAttributeName,
-			Domain aDomain, boolean aNullable);
-
-	void createDeleteCommand(Attribute aAttribute);
-
-	void createDeleteCommand(Table aTable);
-
-	void createDeleteCommand(Relation aRelation);
-
-	void createDeleteCommand(Index aIndex);
 }

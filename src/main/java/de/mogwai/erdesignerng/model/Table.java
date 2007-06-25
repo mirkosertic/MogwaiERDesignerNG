@@ -31,6 +31,8 @@ public class Table extends OwnedModelItem<Model> implements
 
 	private AttributeList attributes = new AttributeList();
 
+	private IndexList indexes = new IndexList();
+
 	/**
 	 * Add an attribute to the table.
 	 * 
@@ -51,12 +53,37 @@ public class Table extends OwnedModelItem<Model> implements
 		attributes.add(aAttribute);
 	}
 
+	/**
+	 * Add an index to the table.
+	 * 
+	 * @param aIndex
+	 *            the table
+	 * @throws ElementAlreadyExistsException
+	 * @throws ElementInvalidNameException
+	 */
+	public void addIndex(Index aIndex)
+			throws ElementAlreadyExistsException, ElementInvalidNameException {
+
+		if (owner != null) {
+			ModelUtilities.checkNameAndExistance(indexes, aIndex, owner
+					.getModelProperties());
+		}
+
+		aIndex.setOwner(this);
+		indexes.add(aIndex);
+	}
+	
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
 		if (aSender instanceof Attribute) {
 			ModelUtilities.checkExistance(attributes, aName, owner
 					.getModelProperties());
 		}
+		if (aSender instanceof Index) {
+			ModelUtilities.checkExistance(indexes, aName, owner
+					.getModelProperties());
+		}
+		
 	}
 
 	public void delete(ModelItem aSender) throws CannotDeleteException {
@@ -85,7 +112,7 @@ public class Table extends OwnedModelItem<Model> implements
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
 		if (owner != null) {
-			owner.getModelHistory().createRenameTableCommand(this, getName(),
+			owner.getModelHistory().createRenameTableCommand(this, 
 					aNewName);
 		}
 	}
@@ -111,5 +138,17 @@ public class Table extends OwnedModelItem<Model> implements
 
 	public boolean isForeignKey(Attribute aAttribute) {
 		return owner.isUsedByRelations(aAttribute);
+	}
+
+	public IndexList getIndexes() {
+		return indexes;
+	}
+
+	public void setIndexes(IndexList indexes) {
+		this.indexes = indexes;
+	}
+
+	public void setAttributes(AttributeList attributes) {
+		this.attributes = attributes;
 	}
 }
