@@ -29,7 +29,8 @@ public class IndexList extends ModelItemVector<Index> {
 	/**
 	 * Find an index by a given system id.
 	 * 
-	 * @param aSystemId the system id
+	 * @param aSystemId
+	 *            the system id
 	 * @return the found element
 	 */
 	public Index findBySystemId(String aSystemId) {

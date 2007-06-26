@@ -24,7 +24,7 @@ package de.mogwai.erdesignerng.model;
  */
 public enum CascadeType {
 	NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull");
-	
+
 	private String type;
 
 	private CascadeType(String aType) {
@@ -47,5 +47,5 @@ public enum CascadeType {
 		}
 		throw new IllegalArgumentException("Invalid type " + aType);
 	}
-	
+
 }

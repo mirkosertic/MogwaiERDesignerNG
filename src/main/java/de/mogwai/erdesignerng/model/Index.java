@@ -54,8 +54,8 @@ public class Index extends OwnedModelItem<Table> {
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
 		if (owner != null) {
-			owner.getOwner().getModelHistory().createRenameIndexCommand(
-					owner, this, aNewName);
+			owner.getOwner().getModelHistory().createRenameIndexCommand(owner,
+					this, aNewName);
 		}
 	}
 

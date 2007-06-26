@@ -37,10 +37,10 @@ public class RelationList extends ModelItemVector<Relation> {
 	 */
 	public boolean isTableInUse(Table aTable) {
 		for (Relation theRelation : this) {
-			if (theRelation.getStart().equals(aTable)) {
+			if (theRelation.getImportingTable().equals(aTable)) {
 				return true;
 			}
-			if (theRelation.getEnd().equals(aTable)) {
+			if (theRelation.getExportingTable().equals(aTable)) {
 				return true;
 			}
 		}

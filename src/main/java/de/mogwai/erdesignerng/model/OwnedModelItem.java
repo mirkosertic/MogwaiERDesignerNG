@@ -27,63 +27,63 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
 public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
-	ModelItem {
+		ModelItem {
 
-    protected T owner;
+	protected T owner;
 
-    /**
-         * @return the owner
-         */
-    public T getOwner() {
-	return owner;
-    }
-
-    /**
-         * @param owner
-         *                the owner to set
-         */
-    public void setOwner(T owner) {
-	this.owner = owner;
-    }
-
-    /**
-         * Rename this element.
-         * 
-         * @param aName
-         *                the new name.
-         * @throws ElementAlreadyExistsException
-         * @throws ElementInvalidNameException
-         */
-    public void renameTo(String aName) throws ElementAlreadyExistsException,
-	    ElementInvalidNameException {
-
-	if (owner != null) {
-	    aName = owner.checkName(aName);
+	/**
+	 * @return the owner
+	 */
+	public T getOwner() {
+		return owner;
 	}
 
-	if (!aName.equals(name)) {
-
-	    owner.checkNameAlreadyExists(this, aName);
-
-	    generateRenameHistoryCommand(aName);
-
-	    name = aName;
+	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	public void setOwner(T owner) {
+		this.owner = owner;
 	}
 
-    }
+	/**
+	 * Rename this element.
+	 * 
+	 * @param aName
+	 *            the new name.
+	 * @throws ElementAlreadyExistsException
+	 * @throws ElementInvalidNameException
+	 */
+	public void renameTo(String aName) throws ElementAlreadyExistsException,
+			ElementInvalidNameException {
 
-    protected abstract void generateRenameHistoryCommand(String aNewName);
+		if (owner != null) {
+			aName = owner.checkName(aName);
+		}
 
-    protected abstract void generateDeleteCommand();
+		if (!aName.equals(name)) {
 
-    /**
-         * Delete this element.
-         * 
-         * @throws CannotDeleteException
-         */
-    public void delete() throws CannotDeleteException {
-	owner.delete(this);
+			owner.checkNameAlreadyExists(this, aName);
 
-	generateDeleteCommand();
-    }
+			generateRenameHistoryCommand(aName);
+
+			name = aName;
+		}
+
+	}
+
+	protected abstract void generateRenameHistoryCommand(String aNewName);
+
+	protected abstract void generateDeleteCommand();
+
+	/**
+	 * Delete this element.
+	 * 
+	 * @throws CannotDeleteException
+	 */
+	public void delete() throws CannotDeleteException {
+		owner.delete(this);
+
+		generateDeleteCommand();
+	}
 }

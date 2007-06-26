@@ -15,36 +15,30 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.model;
+package de.mogwai.erdesignerng.util.dialect.mssql;
+
+import de.mogwai.erdesignerng.model.NameCastType;
+import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
 
 /**
- * The history of a database model.
+ * Model properties for Oracle databases.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public interface ModelHistory {
+public class MSSQLDialect extends SQL92Dialect {
 
-	void createRenameTableCommand(Table aTable, String aNewName);
+	public MSSQLDialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(false);
+		setMaxObjectNameLength(28);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.UPPERCASE);
+	}
 
-	void createRenameAttributeCommand(Table aTable, Attribute aAttribute,
-			String aNewName);
+	@Override
+	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new MSSQLReverseEngineeringStrategy(this);
+	}
 
-	void createRenameIndexCommand(Table aTable, Index aIndex, String aNewName);
-
-	void createRenameRelationCommand(Relation aRelation, String aNewName);
-
-	void createAttributeChangedCommand(Table aTable, String aAttributeName,
-			Domain aDomain, boolean aNullable, String aDefaultValue);
-
-	void createDeleteCommand(Attribute aAttribute);
-
-	void createDeleteCommand(Table aTable);
-
-	void createDeleteCommand(Relation aRelation);
-
-	void createDeleteCommand(Index aIndex);
-
-	void createAddTableCommand(Table aTable);
-
-	void createAddRelationCommand(Relation aRelation);
 }

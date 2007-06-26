@@ -18,14 +18,15 @@
 package de.mogwai.erdesignerng.util.dialect.oracle;
 
 import de.mogwai.erdesignerng.model.NameCastType;
-import de.mogwai.erdesignerng.util.dialect.Dialect;
+import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
 
 /**
  * Model properties for Oracle databases.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public class OracleDialect extends Dialect {
+public class OracleDialect extends SQL92Dialect {
 
 	public OracleDialect() {
 		setSpacesAllowedInObjectNames(false);
@@ -33,6 +34,11 @@ public class OracleDialect extends Dialect {
 		setMaxObjectNameLength(28);
 		setNullablePrimaryKeyAllowed(false);
 		setCastType(NameCastType.UPPERCASE);
+	}
+
+	@Override
+	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new OracleReverseEngineeringStrategy(this);
 	}
 
 }
