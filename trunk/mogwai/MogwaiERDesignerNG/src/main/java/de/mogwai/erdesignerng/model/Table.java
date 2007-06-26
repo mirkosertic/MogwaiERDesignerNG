@@ -46,7 +46,7 @@ public class Table extends OwnedModelItem<Model> implements
 
 		if (owner != null) {
 			ModelUtilities.checkNameAndExistance(attributes, aAttribute, owner
-					.getModelProperties());
+					.getDialect());
 		}
 
 		aAttribute.setOwner(this);
@@ -61,29 +61,29 @@ public class Table extends OwnedModelItem<Model> implements
 	 * @throws ElementAlreadyExistsException
 	 * @throws ElementInvalidNameException
 	 */
-	public void addIndex(Index aIndex)
-			throws ElementAlreadyExistsException, ElementInvalidNameException {
+	public void addIndex(Index aIndex) throws ElementAlreadyExistsException,
+			ElementInvalidNameException {
 
 		if (owner != null) {
 			ModelUtilities.checkNameAndExistance(indexes, aIndex, owner
-					.getModelProperties());
+					.getDialect());
 		}
 
 		aIndex.setOwner(this);
 		indexes.add(aIndex);
 	}
-	
+
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
 		if (aSender instanceof Attribute) {
 			ModelUtilities.checkExistance(attributes, aName, owner
-					.getModelProperties());
+					.getDialect());
 		}
 		if (aSender instanceof Index) {
 			ModelUtilities.checkExistance(indexes, aName, owner
-					.getModelProperties());
+					.getDialect());
 		}
-		
+
 	}
 
 	public void delete(ModelItem aSender) throws CannotDeleteException {
@@ -105,6 +105,15 @@ public class Table extends OwnedModelItem<Model> implements
 			return;
 		}
 
+		if (aSender instanceof Index) {
+
+			Index theIndex = (Index) aSender;
+
+			indexes.remove(theIndex);
+
+			return;
+		}
+
 		throw new UnsupportedOperationException("Unknown element " + aSender);
 
 	}
@@ -112,8 +121,7 @@ public class Table extends OwnedModelItem<Model> implements
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
 		if (owner != null) {
-			owner.getModelHistory().createRenameTableCommand(this, 
-					aNewName);
+			owner.getModelHistory().createRenameTableCommand(this, aNewName);
 		}
 	}
 

@@ -15,42 +15,30 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.view.editpart;
+package de.mogwai.erdesignerng.util.dialect.mysql;
 
-import org.eclipse.draw2d.Figure;
+import de.mogwai.erdesignerng.model.NameCastType;
+import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
 
-public abstract class EditPart<M, F extends Figure> {
+/**
+ * Model properties for Oracle databases.
+ * 
+ * @author Mirko Sertic <mail@mirkosertic.de>
+ */
+public class MySQLDialect extends SQL92Dialect {
 
-    private F figure;
+	public MySQLDialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(true);
+		setMaxObjectNameLength(28);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.NOTHING);
+	}
 
-    private M model;
+	@Override
+	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new MySQLReverseEngineeringStrategy(this);
+	}
 
-    public EditPart() {
-	figure = createFigure();
-	EditPartMouseAdapter theAdapter = new EditPartMouseAdapter(this);
-	figure.addMouseListener(theAdapter);
-	figure.addMouseMotionListener(theAdapter);
-    }
-
-    protected abstract F createFigure();
-
-    public F getFigure() {
-	return figure;
-    }
-
-    public M getModel() {
-	return model;
-    }
-
-    public void setModel(M model) {
-	this.model = model;
-    }
-
-    protected abstract void updateView();
-
-    protected abstract void updateModel();
-
-    public String getId() {
-	return "" + hashCode();
-    }
 }

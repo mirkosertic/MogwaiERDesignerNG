@@ -27,9 +27,9 @@ import java.util.Map;
  */
 public class Relation extends OwnedModelItem<Model> {
 
-	private Table start;
+	private Table importingTable;
 
-	private Table end;
+	private Table exportingTable;
 
 	private Map<Attribute, Attribute> mapping = new HashMap<Attribute, Attribute>();
 
@@ -40,37 +40,37 @@ public class Relation extends OwnedModelItem<Model> {
 	/**
 	 * @return the end
 	 */
-	public Table getEnd() {
-		return end;
+	public Table getExportingTable() {
+		return exportingTable;
 	}
 
 	/**
 	 * @param end
 	 *            the end to set
 	 */
-	public void setEnd(Table end) {
-		this.end = end;
+	public void setExportingTable(Table end) {
+		this.exportingTable = end;
 	}
 
 	/**
 	 * @return the start
 	 */
-	public Table getStart() {
-		return start;
+	public Table getImportingTable() {
+		return importingTable;
 	}
 
 	/**
 	 * @param start
 	 *            the start to set
 	 */
-	public void setStart(Table start) {
-		this.start = start;
+	public void setImportingTable(Table start) {
+		this.importingTable = start;
 	}
 
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
 		if (owner != null) {
-			owner.getModelHistory().createRenameRelationCommand(this,aNewName);
+			owner.getModelHistory().createRenameRelationCommand(this, aNewName);
 		}
 	}
 

@@ -79,7 +79,7 @@ public final class ModelUtilities {
 
 		Object theOwner = aItem.getOwner();
 		if (theOwner instanceof Model) {
-			return ((Model) theOwner).getModelProperties();
+			return ((Model) theOwner).getDialect();
 		}
 
 		if (theOwner instanceof OwnedModelItem) {

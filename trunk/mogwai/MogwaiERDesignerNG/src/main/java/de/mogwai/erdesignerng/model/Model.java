@@ -55,6 +55,8 @@ public class Model implements OwnedModelItemVerifier {
 		for (Attribute theAttribute : aTable.getAttributes()) {
 			theAttribute.setName(dialect.checkName(theAttribute.getName()));
 		}
+		
+		history.createAddTableCommand(aTable);
 
 		aTable.setOwner(this);
 		tables.add(aTable);
@@ -90,6 +92,8 @@ public class Model implements OwnedModelItemVerifier {
 
 		ModelUtilities.checkNameAndExistance(relations, aRelation, dialect);
 
+		history.createAddRelationCommand(aRelation);
+		
 		aRelation.setOwner(this);
 		relations.add(aRelation);
 	}
@@ -112,11 +116,11 @@ public class Model implements OwnedModelItemVerifier {
 		history = aModelHistory;
 	}
 
-	public Dialect getModelProperties() {
+	public Dialect getDialect() {
 		return dialect;
 	}
 
-	public void setModelProperties(Dialect modelProperties) {
+	public void setDialect(Dialect modelProperties) {
 		this.dialect = modelProperties;
 	}
 
@@ -154,7 +158,7 @@ public class Model implements OwnedModelItemVerifier {
 
 			return;
 		}
-
+		
 		throw new UnsupportedOperationException("Unknown element " + aSender);
 	}
 
