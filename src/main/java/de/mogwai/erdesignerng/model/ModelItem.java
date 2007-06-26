@@ -30,6 +30,8 @@ public abstract class ModelItem {
 
 	public static final String PROPERTY_YLOCATION = "YLOCATION";
 
+	public static final String PROPERTY_REMARKS = "REMARKS";
+
 	protected String systemId = ModelUtilities.createSystemIdFor(this);
 
 	protected String name;

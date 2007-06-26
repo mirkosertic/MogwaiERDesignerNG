@@ -28,15 +28,19 @@ public class Attribute extends OwnedModelItem<Table> {
 
 	private boolean nullable;
 
-	public void setDefinition(Domain aDomain, boolean aNullable) {
+	private String defaultValue;
+
+	public void setDefinition(Domain aDomain, boolean aNullable,
+			String aDefaultValue) {
 		if (owner != null) {
 			if (!aDomain.equals(domain) || (nullable != aNullable)) {
 				nullable = aNullable;
 				domain = aDomain;
+				defaultValue = aDefaultValue;
 
 				owner.getOwner().getModelHistory()
 						.createAttributeChangedCommand(owner, getName(),
-								aDomain, aNullable);
+								aDomain, aNullable, aDefaultValue);
 			}
 		} else {
 			domain = aDomain;
@@ -80,5 +84,14 @@ public class Attribute extends OwnedModelItem<Table> {
 	 */
 	public boolean isForeignKey() {
 		return owner.isForeignKey(this);
+	}
+
+	/**
+	 * Gibt den Wert des Attributs <code>defaultValue</code> zurück.
+	 * 
+	 * @return Wert des Attributs defaultValue.
+	 */
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 }

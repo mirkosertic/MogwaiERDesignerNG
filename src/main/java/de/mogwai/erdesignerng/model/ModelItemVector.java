@@ -53,4 +53,21 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 
 		return false;
 	}
+
+	/**
+	 * Find a attribute by a given name.
+	 * 
+	 * @param aName
+	 *            the name
+	 * @return the found element
+	 */
+	public T findByName(String aName) {
+		for (T theElement : this) {
+			if (aName.equals(theElement.getName())) {
+				return theElement;
+			}
+		}
+		return null;
+	}
+
 }

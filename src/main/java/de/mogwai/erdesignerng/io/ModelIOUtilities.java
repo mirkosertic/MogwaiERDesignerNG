@@ -75,8 +75,8 @@ public final class ModelIOUtilities {
 	protected static final String TABLES = "Tables";
 
 	protected static final String ATTRIBUTE = "Attribute";
-	
-	protected static final String INDEXATTRIBUTE = "Indexattribute";	
+
+	protected static final String INDEXATTRIBUTE = "Indexattribute";
 
 	protected static final String ATTRIBUTEREFID = "attributerefid";
 
@@ -94,13 +94,13 @@ public final class ModelIOUtilities {
 
 	protected static final String ONUPDATE = "onupdate";
 
-	protected static final String STARTTABLEREFID = "starttablerefid";
+	protected static final String IMPORTINGTABLEREFID = "importingtablerefid";
 
-	protected static final String ENDTABLEREFID = "endtablerefid";
+	protected static final String EXPORTINGTABLEREFID = "exportingtablerefid";
 
-	protected static final String STARTATTRIBUTEREFID = "startattributerefid";
+	protected static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
 
-	protected static final String ENDATTRIBUTEREFID = "startattributerefid";
+	protected static final String EXPORTINGATTRIBUTEREFID = "exportingattributerefid";
 
 	protected static final String NULLABLE = "nullable";
 
@@ -111,6 +111,10 @@ public final class ModelIOUtilities {
 	protected static final String INDEX = "Index";
 
 	protected static final String INDEXTYPE = "indextype";
+
+	protected static final String DEFAULT = "default";
+
+	protected static final String DATATYPE = "datatype";
 
 	private static ModelIOUtilities me;
 
@@ -211,7 +215,7 @@ public final class ModelIOUtilities {
 
 				String theDomainId = theAttributeElement
 						.getAttribute(DOMAINREFID);
-				
+
 				Domain theDomain = theModel.getDomains().findBySystemId(
 						theDomainId);
 
@@ -221,7 +225,8 @@ public final class ModelIOUtilities {
 				}
 
 				theAttribute.setDefinition(theDomain, TRUE
-						.equals(theAttributeElement.getAttribute(NULLABLE)));
+						.equals(theAttributeElement.getAttribute(NULLABLE)),
+						theAttributeElement.getAttribute(DEFAULT));
 
 				theTable.getAttributes().add(theAttribute);
 			}
@@ -234,10 +239,12 @@ public final class ModelIOUtilities {
 				Index theIndex = new Index();
 
 				deserializeProperties(theIndexElement, theIndex);
-				
-				theIndex.setIndexType(IndexType.fromType(theIndexElement.getAttribute(INDEXTYPE)));
 
-				theAttributes = theIndexElement.getElementsByTagName(INDEXATTRIBUTE);
+				theIndex.setIndexType(IndexType.fromType(theIndexElement
+						.getAttribute(INDEXTYPE)));
+
+				theAttributes = theIndexElement
+						.getElementsByTagName(INDEXATTRIBUTE);
 				for (int k = 0; k < theAttributes.getLength(); k++) {
 
 					Element theAttributeElement = (Element) theAttributes
@@ -265,11 +272,14 @@ public final class ModelIOUtilities {
 			Relation theRelation = new Relation();
 			deserializeProperties(theElement, theRelation);
 
-			theRelation.setOnDelete(CascadeType.fromType(theElement.getAttribute(ONDELETE)));
-			theRelation.setOnUpdate(CascadeType.fromType(theElement.getAttribute(ONUPDATE)));
+			theRelation.setOnDelete(CascadeType.fromType(theElement
+					.getAttribute(ONDELETE)));
+			theRelation.setOnUpdate(CascadeType.fromType(theElement
+					.getAttribute(ONUPDATE)));
 
-			String theStartTableID = theElement.getAttribute(STARTTABLEREFID);
-			String theEndTableID = theElement.getAttribute(ENDTABLEREFID);
+			String theStartTableID = theElement
+					.getAttribute(IMPORTINGTABLEREFID);
+			String theEndTableID = theElement.getAttribute(EXPORTINGTABLEREFID);
 
 			Table theTempTable = theModel.getTables().findTableBySystemId(
 					theStartTableID);
@@ -277,7 +287,7 @@ public final class ModelIOUtilities {
 				throw new IllegalArgumentException("Cannot find table with id "
 						+ theStartTableID);
 			}
-			theRelation.setStart(theTempTable);
+			theRelation.setImportingTable(theTempTable);
 			theTempTable = theModel.getTables().findTableBySystemId(
 					theEndTableID);
 			if (theTempTable == null) {
@@ -285,7 +295,7 @@ public final class ModelIOUtilities {
 						+ theEndTableID);
 			}
 
-			theRelation.setEnd(theTempTable);
+			theRelation.setExportingTable(theTempTable);
 
 			// Parse the mapping
 			NodeList theMappings = theElement.getElementsByTagName(MAPPING);
@@ -293,9 +303,9 @@ public final class ModelIOUtilities {
 				Element theAttributeElement = (Element) theMappings.item(j);
 
 				String theStartId = theAttributeElement
-						.getAttribute(STARTATTRIBUTEREFID);
+						.getAttribute(IMPORTINGATTRIBUTEREFID);
 				String theEndId = theAttributeElement
-						.getAttribute(ENDATTRIBUTEREFID);
+						.getAttribute(EXPORTINGATTRIBUTEREFID);
 
 				Attribute theStartAttribute = theModel.getTables()
 						.findAttributeBySystemId(theStartId);
@@ -339,6 +349,7 @@ public final class ModelIOUtilities {
 			serializeProperties(theDocument, theDomainElement, theDomain);
 
 			// Zusatzdaten
+			theDomainElement.setAttribute(DATATYPE, theDomain.getDatatype());
 		}
 
 		Element theTablesElement = addElement(theDocument, theRootElement,
@@ -367,6 +378,11 @@ public final class ModelIOUtilities {
 
 				setBooleanAttribute(theAttributeElement, NULLABLE, theAttribute
 						.isNullable());
+
+				if (theAttribute.getDefaultValue() != null) {
+					theAttributeElement.setAttribute(DEFAULT, theAttribute
+							.getDefaultValue());
+				}
 			}
 
 			// Indexes serialisieren
@@ -401,15 +417,15 @@ public final class ModelIOUtilities {
 			serializeProperties(theDocument, theRelationElement, theRelation);
 
 			// Zusatzdaten
-			theRelationElement.setAttribute(STARTTABLEREFID, theRelation
-					.getStart().getSystemId());
-			theRelationElement.setAttribute(ENDTABLEREFID, theRelation
-					.getStart().getSystemId());
+			theRelationElement.setAttribute(IMPORTINGTABLEREFID, theRelation
+					.getImportingTable().getSystemId());
+			theRelationElement.setAttribute(EXPORTINGTABLEREFID, theRelation
+					.getExportingTable().getSystemId());
 
-			theRelationElement.setAttribute(ONDELETE, theRelation
-					.getOnDelete().getType());
-			theRelationElement.setAttribute(ONUPDATE, theRelation
-					.getOnDelete().getType());
+			theRelationElement.setAttribute(ONDELETE, theRelation.getOnDelete()
+					.getType());
+			theRelationElement.setAttribute(ONUPDATE, theRelation.getOnDelete()
+					.getType());
 
 			// Mapping
 			for (Attribute theKey : theRelation.getMapping().keySet()) {
@@ -417,9 +433,9 @@ public final class ModelIOUtilities {
 
 				Element theMapping = addElement(theDocument,
 						theRelationElement, MAPPING);
-				theMapping.setAttribute(STARTATTRIBUTEREFID, theKey
+				theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theKey
 						.getSystemId());
-				theMapping.setAttribute(ENDATTRIBUTEREFID, theValue
+				theMapping.setAttribute(EXPORTINGATTRIBUTEREFID, theValue
 						.getSystemId());
 			}
 		}

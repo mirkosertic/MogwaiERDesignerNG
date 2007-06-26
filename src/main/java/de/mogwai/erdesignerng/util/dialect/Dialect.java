@@ -19,6 +19,7 @@ package de.mogwai.erdesignerng.util.dialect;
 
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.NameCastType;
+import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
 
 /**
  * Base class for model properties.
@@ -138,4 +139,11 @@ public abstract class Dialect {
 	public void setCastType(NameCastType castType) {
 		this.castType = castType;
 	}
+
+	/**
+	 * Get the reverse engineering strategy.
+	 * 
+	 * @return
+	 */
+	public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
 }

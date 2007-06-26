@@ -25,24 +25,26 @@ package de.mogwai.erdesignerng.model;
 public class EmptyModelHistory implements ModelHistory {
 
 	public void createAttributeChangedCommand(Table aTable,
-			String aAttributeName, Domain aDomain, boolean aNullable) {
+			String aAttributeName, Domain aDomain, boolean aNullable,
+			String aDefaultValue) {
 		System.out.println("Change attribute T " + aTable.getName() + " A "
 				+ aAttributeName + " D " + aDomain + " N " + aNullable);
 	}
 
-	public void createRenameAttributeCommand(Table aTable, Attribute aAttribute,
-			String aNewName) {
+	public void createRenameAttributeCommand(Table aTable,
+			Attribute aAttribute, String aNewName) {
 		System.out.println("Rename attribute T " + aTable.getName() + " Ao "
 				+ aAttribute.getName() + " An " + aNewName);
 	}
 
-	public void createRenameRelationCommand(Relation aRelation,
-			String aNewName) {
-		System.out.println("Rename relation R " + aRelation.getName() + " An " + aNewName);
+	public void createRenameRelationCommand(Relation aRelation, String aNewName) {
+		System.out.println("Rename relation R " + aRelation.getName() + " An "
+				+ aNewName);
 	}
 
 	public void createRenameTableCommand(Table aTable, String aNewName) {
-		System.out.println("Rename table To " + aTable.getName() + " Tn " + aNewName);
+		System.out.println("Rename table To " + aTable.getName() + " Tn "
+				+ aNewName);
 	}
 
 	public void createDeleteCommand(Attribute aAttribute) {
@@ -60,6 +62,13 @@ public class EmptyModelHistory implements ModelHistory {
 	public void createDeleteCommand(Index aIndex) {
 	}
 
-	public void createRenameIndexCommand(Table aTable, Index aIndex, String aNewName) {
+	public void createRenameIndexCommand(Table aTable, Index aIndex,
+			String aNewName) {
+	}
+
+	public void createAddRelationCommand(Relation aRelation) {
+	}
+
+	public void createAddTableCommand(Table aTable) {
 	}
 }

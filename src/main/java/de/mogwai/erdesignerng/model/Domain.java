@@ -24,6 +24,27 @@ package de.mogwai.erdesignerng.model;
  */
 public class Domain extends OwnedModelItem<Model> {
 
+	private String datatype;
+
+	/**
+	 * Gibt den Wert des Attributs <code>datatype</code> zurück.
+	 * 
+	 * @return Wert des Attributs datatype.
+	 */
+	public String getDatatype() {
+		return datatype;
+	}
+
+	/**
+	 * Setzt den Wert des Attributs <code>datatype</code>.
+	 * 
+	 * @param datatype
+	 *            Wert für das Attribut datatype.
+	 */
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
+	}
+
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
 	}
