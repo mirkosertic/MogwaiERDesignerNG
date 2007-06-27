@@ -35,7 +35,7 @@ public class Model implements OwnedModelItemVerifier {
 
 	private RelationList relations = new RelationList();
 
-	private ModelHistory history;
+	private ModelHistory history = new ModelHistory(this);
 
 	private Dialect dialect;
 

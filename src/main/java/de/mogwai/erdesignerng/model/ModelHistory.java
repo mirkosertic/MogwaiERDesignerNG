@@ -18,33 +18,97 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * The history of a database model.
+ * An empty model history.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public interface ModelHistory {
+public class ModelHistory {
 
-	void createRenameTableCommand(Table aTable, String aNewName);
+	private Model model;
 
-	void createRenameAttributeCommand(Table aTable, Attribute aAttribute,
-			String aNewName);
+	public ModelHistory(Model aModel) {
+		model = aModel;
+	}
 
-	void createRenameIndexCommand(Table aTable, Index aIndex, String aNewName);
+	protected void addSQLToHistory(String aSQL) {
+		System.out.println(aSQL);
+	}
 
-	void createRenameRelationCommand(Relation aRelation, String aNewName);
+	public void createAttributeChangedCommand(Table aTable,
+			String aAttributeName, Domain aDomain, boolean aNullable,
 
-	void createAttributeChangedCommand(Table aTable, String aAttributeName,
-			Domain aDomain, boolean aNullable, String aDefaultValue);
+			String aDefaultValue) {
 
-	void createDeleteCommand(Attribute aAttribute);
+		String theSQL = model.getDialect().createAlterAttributeSQL(aTable,
+				aAttributeName, aDomain, aNullable);
+		addSQLToHistory(theSQL);
+	}
 
-	void createDeleteCommand(Table aTable);
+	public void createRenameAttributeCommand(Table aTable,
+			Attribute aAttribute, String aNewName) {
 
-	void createDeleteCommand(Relation aRelation);
+		String theSQL = model.getDialect().createRenameAttributeSQL(aTable,
+				aAttribute, aNewName);
+		addSQLToHistory(theSQL);
+	}
 
-	void createDeleteCommand(Index aIndex);
+	public void createRenameRelationCommand(Relation aRelation, String aNewName) {
+		String theSQL = model.getDialect().createRenameRelationSQL(aRelation,
+				aNewName);
+		addSQLToHistory(theSQL);
+	}
 
-	void createAddTableCommand(Table aTable);
+	public void createRenameTableCommand(Table aTable, String aNewName) {
+		String theSQL = model.getDialect().createRenameTableSQL(aTable,
+				aNewName);
+		addSQLToHistory(theSQL);
+	}
 
-	void createAddRelationCommand(Relation aRelation);
+	public void createDeleteCommand(Attribute aAttribute) {
+		String theSQL = model.getDialect().createDropAttributeSQL(aAttribute);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createDeleteCommand(Table aTable) {
+		String theSQL = model.getDialect().createDropTableSQL(aTable);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createDeleteCommand(Relation aRelation) {
+		String theSQL = model.getDialect().createDropRelationSQL(aRelation);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createDeleteCommand(Index aIndex) {
+		String theSQL = model.getDialect().createDropIndexSQL(aIndex);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createRenameIndexCommand(Table aTable, Index aIndex,
+			String aNewName) {
+		String theSQL = model.getDialect().createRenameIndexSQL(aTable, aIndex,
+				aNewName);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createAddRelationCommand(Relation aRelation) {
+		String theSQL = model.getDialect().createAddRelationSQL(aRelation);
+		addSQLToHistory(theSQL);
+
+	}
+
+	public void createAddTableCommand(Table aTable) {
+		String theSQL = model.getDialect().createAddTableSQL(aTable);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createAddAttributeCommand(Attribute aAttribute) {
+		String theSQL = model.getDialect().createAddAttributeSQL(aAttribute);
+		addSQLToHistory(theSQL);
+	}
+
+	public void createAddIndexCommand(Index aIndex) {
+		String theSQL = model.getDialect().createAddIndexSQL(aIndex);
+		addSQLToHistory(theSQL);
+	}
 }

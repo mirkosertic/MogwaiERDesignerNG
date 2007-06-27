@@ -78,10 +78,14 @@ public class Table extends OwnedModelItem<Model> implements
 		if (aSender instanceof Attribute) {
 			ModelUtilities.checkExistance(attributes, aName, owner
 					.getDialect());
+			
+			owner.getModelHistory().createAddAttributeCommand((Attribute)aSender);
 		}
 		if (aSender instanceof Index) {
 			ModelUtilities.checkExistance(indexes, aName, owner
 					.getDialect());
+			owner.getModelHistory().createAddIndexCommand((Index)aSender);
+			
 		}
 
 	}
