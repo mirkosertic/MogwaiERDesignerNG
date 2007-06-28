@@ -21,15 +21,10 @@ import org.jgraph.graph.GraphModel;
 public class Test {
 	public static void main(String[] args) {
 		GraphModel model = new DefaultGraphModel();
-		model.addGraphModelListener(new GraphModelListener() {
-
-			public void graphChanged(GraphModelEvent arg0) {
-				System.out.println(arg0.getChange().getAttributes()+" "+arg0.getChange().getSource().getClass());
-			}
-			
-		});
 		GraphLayoutCache view = new GraphLayoutCache(model,
 				new DefaultCellViewFactory());
+		view.setFactory(new CellViewFactory());
+		
 		JGraph graph = new JGraph(model, view);
 		DefaultGraphCell[] cells = new DefaultGraphCell[3];
 		
