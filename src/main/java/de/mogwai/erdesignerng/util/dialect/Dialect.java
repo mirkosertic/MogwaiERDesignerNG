@@ -17,6 +17,8 @@
  */
 package de.mogwai.erdesignerng.util.dialect;
 
+import java.util.List;
+
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
@@ -152,31 +154,29 @@ public abstract class Dialect {
 	 */
 	public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
 
-	public abstract String createAlterAttributeSQL(Table aTable, String attributeName, Domain aDomain, boolean aNullable);
+	public abstract List<String> createAlterAttributeSQL(Table aTable, String attributeName, Domain aDomain, boolean aNullable);
 	
-	public abstract String createRenameAttributeSQL(Table aTable, Attribute aAttribute, String aNewName);
+	public abstract List<String> createRenameAttributeSQL(Table aTable, Attribute aAttribute, String aNewName);
 
-	public abstract String createRenameRelationSQL(Relation aRelation, String aNewName);
+	public abstract List<String> createRenameRelationSQL(Relation aRelation, String aNewName);
 
-	public abstract String createRenameTableSQL(Table aTable, String aNewName);
+	public abstract List<String> createRenameTableSQL(Table aTable, String aNewName);
 
-	public abstract String createRenameIndexSQL(Table aTable, Index index, String aNewName);
+	public abstract List<String> createRenameIndexSQL(Table aTable, Index index, String aNewName);
 	
-	public abstract String createDropAttributeSQL(Attribute aAttribute);
+	public abstract List<String> createDropAttributeSQL(Attribute aAttribute);
 
-	public abstract String createDropRelationSQL(Relation aRelation);
+	public abstract List<String> createDropRelationSQL(Relation aRelation);
 
-	public abstract String createDropIndexSQL(Index aIndex);
+	public abstract List<String> createDropIndexSQL(Index aIndex);
 
-	public abstract String createDropAttributeSQL(Table aTable);
+	public abstract List<String> createDropTableSQL(Table aTable);
 
-	public abstract String createDropTableSQL(Table aTable);
-
-	public abstract String createAddTableSQL(Table aTable);
+	public abstract List<String> createAddTableSQL(Table aTable);
 	
-	public abstract String createAddAttributeSQL(Attribute aAttribute);
+	public abstract List<String> createAddAttributeSQL(Attribute aAttribute);
 
-	public abstract String createAddIndexSQL(Index aAttribute);
+	public abstract List<String> createAddIndexSQL(Index aAttribute);
 	
-	public abstract String createAddRelationSQL(Relation aRelation);	
+	public abstract List<String> createAddRelationSQL(Relation aRelation);	
 }
