@@ -1,20 +1,12 @@
 package de.mogwai.erdesignerng.visual;
 
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
-import org.jgraph.event.GraphModelEvent;
-import org.jgraph.event.GraphModelListener;
 import org.jgraph.graph.DefaultCellViewFactory;
-import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
@@ -44,7 +36,7 @@ public class Test {
 			theAttribute.setName("a1_" + i);
 			theAttribute.setDefinition(theDomain, true, null);
 
-			theTable1.addAttribute(theAttribute);
+			theTable1.addAttribute(theModel, theAttribute);
 		}
 
 		theModel.addTable(theTable1);
