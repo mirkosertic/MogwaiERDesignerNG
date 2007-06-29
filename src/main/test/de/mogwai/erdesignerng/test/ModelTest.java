@@ -156,7 +156,7 @@ public class ModelTest extends TestCase {
 
 		Attribute theAttribute = new Attribute();
 		try {
-			theTable.addAttribute(theAttribute);
+			theTable.addAttribute(theModel, theAttribute);
 
 			fail("Cannot add attribute without a name");
 		} catch (ElementAlreadyExistsException e) {
@@ -166,7 +166,7 @@ public class ModelTest extends TestCase {
 
 		theAttribute.setName("at1");
 		try {
-			theTable.addAttribute(theAttribute);
+			theTable.addAttribute(theModel, theAttribute);
 
 			assertEquals(theAttribute.getOwner(), theTable);
 		} catch (ElementAlreadyExistsException e) {
@@ -181,7 +181,7 @@ public class ModelTest extends TestCase {
 		theAttribute.setName("AT1");
 
 		try {
-			theTable.addAttribute(theAttribute);
+			theTable.addAttribute(theModel, theAttribute);
 
 			fail("Cannot add attribute with same name");
 		} catch (ElementAlreadyExistsException e) {
@@ -191,7 +191,7 @@ public class ModelTest extends TestCase {
 
 		theAttribute.setName("at2");
 		try {
-			theTable.addAttribute(theAttribute);
+			theTable.addAttribute(theModel, theAttribute);
 		} catch (ElementAlreadyExistsException e) {
 			fail("Wrong exception here");
 		} catch (ElementInvalidNameException e) {
@@ -248,7 +248,7 @@ public class ModelTest extends TestCase {
 			theAttribute.setName("a1_" + i);
 			theAttribute.setDefinition(theDomain, true, null);
 
-			theTable1.addAttribute(theAttribute);
+			theTable1.addAttribute(theModel, theAttribute);
 		}
 
 		theModel.addTable(theTable1);
@@ -261,7 +261,7 @@ public class ModelTest extends TestCase {
 			theAttribute.setName("a2_" + i);
 			theAttribute.setDefinition(theDomain, true, null);
 
-			theTable2.addAttribute(theAttribute);
+			theTable2.addAttribute(theModel, theAttribute);
 		}
 
 		theModel.addTable(theTable2);
@@ -338,7 +338,7 @@ public class ModelTest extends TestCase {
 			theAttribute.setName("a1_" + i);
 			theAttribute.setDefinition(theDomain, true, null);
 
-			theTable1.addAttribute(theAttribute);
+			theTable1.addAttribute(theModel, theAttribute);
 		}
 
 		theModel.addTable(theTable1);
@@ -354,7 +354,7 @@ public class ModelTest extends TestCase {
 			theAttribute.setName("a2_" + i);
 			theAttribute.setDefinition(theDomain, true, null);
 
-			theTable2.addAttribute(theAttribute);
+			theTable2.addAttribute(theModel, theAttribute);
 
 			theIndex.getAttributes().add(theAttribute);
 		}
