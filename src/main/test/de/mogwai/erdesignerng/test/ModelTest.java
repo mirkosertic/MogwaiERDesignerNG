@@ -34,7 +34,7 @@ import de.mogwai.erdesignerng.model.IndexType;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.util.dialect.oracle.OracleDialect;
+import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
 /**
  * Test for the database model.
@@ -45,7 +45,7 @@ public class ModelTest extends TestCase {
 
 	public void testTableWithoutName() {
 		Model theModel = new Model();
-		theModel.setDialect(new OracleDialect());
+		theModel.setDialect(new MySQLDialect());
 		Table theTable = new Table();
 		try {
 			theModel.addTable(theTable);
@@ -62,7 +62,7 @@ public class ModelTest extends TestCase {
 
 	public void testTableAdd() {
 		Model theModel = new Model();
-		theModel.setDialect(new OracleDialect());
+		theModel.setDialect(new MySQLDialect());
 		Table theTable = new Table();
 		theTable.setName("TABLE1");
 		try {
@@ -82,7 +82,7 @@ public class ModelTest extends TestCase {
 
 	public void testTableDuplicateAdd() {
 		Model theModel = new Model();
-		theModel.setDialect(new OracleDialect());
+		theModel.setDialect(new MySQLDialect());
 		Table theTable = new Table();
 		theTable.setName("TABLE1");
 		try {
@@ -117,7 +117,7 @@ public class ModelTest extends TestCase {
 
 	public void testUseCase1() {
 		Model theModel = new Model();
-		theModel.setDialect(new OracleDialect());
+		theModel.setDialect(new MySQLDialect());
 
 		Domain theDomain = new Domain();
 		try {
@@ -234,7 +234,7 @@ public class ModelTest extends TestCase {
 			ElementInvalidNameException {
 
 		Model theModel = new Model();
-		theModel.setDialect(new OracleDialect());
+		theModel.setDialect(new MySQLDialect());
 
 		Domain theDomain = new Domain();
 		theDomain.setName("DOMAIN1");
@@ -324,7 +324,7 @@ public class ModelTest extends TestCase {
 			ElementInvalidNameException, IOException {
 
 		Model theModel = new Model();
-		theModel.setDialect(new OracleDialect());
+		theModel.setDialect(new MySQLDialect());
 
 		Domain theDomain = new Domain();
 		theDomain.setName("DOMAIN1");

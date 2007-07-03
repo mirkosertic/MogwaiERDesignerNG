@@ -15,9 +15,7 @@ import de.mogwai.erdesignerng.exception.ReverseEngineeringException;
 import de.mogwai.erdesignerng.io.ModelIOUtilities;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
-import de.mogwai.erdesignerng.util.dialect.mssql.MSSQLDialect;
 import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
-import de.mogwai.erdesignerng.util.dialect.oracle.OracleDialect;
 
 public class ReverseEngineeringTest extends TestCase {
 
@@ -36,7 +34,7 @@ public class ReverseEngineeringTest extends TestCase {
 				"jdbc:oracle:thin:@sassalta.ad.bedag.ch:1521:a6xt", "amis",
 				"amis");
 
-		OracleDialect theDialect = new OracleDialect();
+		MySQLDialect theDialect = new MySQLDialect();
 
 		JDBCReverseEngineeringStrategy theRe = theDialect
 				.getReverseEngineeringStrategy();
@@ -62,7 +60,7 @@ public class ReverseEngineeringTest extends TestCase {
 						"jdbc:microsoft:sqlserver://geltenhorn:1433;DatabaseName=lospo_et",
 						"lospo", "lospo!");
 
-		MSSQLDialect theDialect = new MSSQLDialect();
+		MySQLDialect theDialect = new MySQLDialect();
 		JDBCReverseEngineeringStrategy theRe = theDialect
 				.getReverseEngineeringStrategy();
 
