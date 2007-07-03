@@ -1,3 +1,20 @@
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 package de.mogwai.erdesignerng.visual;
 
 import java.awt.Color;
@@ -6,22 +23,26 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.mogwai.erdesignerng.model.Attribute;
-import de.mogwai.erdesignerng.model.AttributeList;
+import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Table;
 
 public class TableCellView extends VertexView {
-	
+
 	protected static MyRenderer renderer = new MyRenderer();
-	
+
 	public TableCellView(TableCell aCell) {
 		super(aCell);
 	}
@@ -30,115 +51,183 @@ public class TableCellView extends VertexView {
 		return renderer;
 	}
 
-	public static class MyRenderer extends JPanel implements CellViewRenderer,
+	public static class MyRenderer extends VertexRenderer implements CellViewRenderer,
 			Serializable {
-		
-		private String name;
-		private AttributeList attributeList;
+
+		private Table table;
+
 		private boolean roundedRect = false;
+
 		private boolean selected;
 		
+		private static ImageIcon key = new ImageIcon(MyRenderer.class.getClassLoader()
+				.getResource("de/mogwai/erdesigner/icons/key.gif"));
+
 		public MyRenderer() {
 			setBackground(Color.white);
 		}
-		
-		private void fillRect(Graphics g, int x1, int y1, int width, int height) {
+
+		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
+				int aHeight) {
 			if (this.roundedRect)
-				g.fillRoundRect(x1, y1, width, height, 10, 10);
+				aGraphics.fillRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
 			else
-				g.fillRect(x1, y1, width, height);
+				aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
 		}
 
-		private void drawRect(Graphics g, int x1, int y1, int width, int height) {
+		private void drawRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
+				int aHeight) {
 			if (this.roundedRect)
-				g.drawRoundRect(x1, y1, width, height, 10, 10);
+				aGraphics.drawRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
 			else
-				g.drawRect(x1, y1, width, height);
+				aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
 		}
-		
-		public void paint(Graphics g) {
-			
-			Dimension size = getSize();
-			int width = size.width;
-			int height = size.height;
-			
-			g.setColor(this.getBackground());
-			g.fillRect(0, 0, width, height);
 
-			FontMetrics fm = g.getFontMetrics();
+		public void paint(Graphics aGraphics) {
 
-			g.setColor(Color.black);
-			g.drawString(name, 0, fm.getAscent());
+			Dimension theSize = getSize();
+			int theWidth = theSize.width;
+			int theHeight = theSize.height;
 
-			int starty = fm.getHeight();
+			aGraphics.setColor(getBackground());
+			aGraphics.fillRect(0, 0, theWidth, theHeight);
 
-			fillRect(g, 5, starty + 5, width - 5, height - starty - 5);
+			FontMetrics theMetrics = aGraphics.getFontMetrics();
 
-			g.setColor(Color.white);
+			aGraphics.setColor(Color.black);
+			aGraphics.drawString(table.getName(), 0, theMetrics.getAscent());
 
-			fillRect(g, 0, starty, width - 5, height - starty - 6);
+			int theYOffset = theMetrics.getHeight();
 
-			g.setColor(this.selected ? Color.blue : Color.black);
+			aGraphics.setColor(selected ? Color.blue : Color.black);
 
-			this.drawRect(g, 0, starty, width - 5, height - starty - 6);
+			fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight
+					- theYOffset - 5);
 
-			int textx = 15;
-			int pkcount = 0;
+			aGraphics.setColor(Color.white);
 
-			for (Attribute theAttribute : attributeList) {
+			fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight
+					- theYOffset - 6);
 
-				g.setColor(Color.red);
+			aGraphics.setColor(selected ? Color.blue : Color.black);
 
-				g.drawString(theAttribute.getName(), textx, starty + fm.getAscent());
-				starty += fm.getHeight();
-				pkcount++;
+			drawRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight
+					- theYOffset - 6);
+
+			int theTextXOffset = 15;
+
+			List<Attribute> theAllAttributes = new Vector<Attribute>();
+			theAllAttributes.addAll(table.getAttributes());
+
+			boolean hasPrimaryKey = false;
+			Index thePrimaryKey = table.findPrimaryKey();
+			if (thePrimaryKey != null) {
+
+				hasPrimaryKey = true;
+
+				for (Attribute theAttribute : thePrimaryKey.getAttributes()) {
+
+					theAllAttributes.remove(theAttribute);
+
+					aGraphics.setColor(Color.red);
+
+					String theText = theAttribute.getName();
+
+					aGraphics.drawString(theText, theTextXOffset, theYOffset
+							+ theMetrics.getAscent());
+					key.paintIcon(this, aGraphics, 5, theYOffset + 4);
+					theYOffset += theMetrics.getHeight();
+				}
 			}
 
-			// if (pkcount==0)
-			// starty+=8;
-			
-			boolean first = true;
-
 			// Only do the following if there are any not primary key attributes
-			if (attributeList.size() > 0) {
+			if (theAllAttributes.size() > 0) {
 
 				// This line is only neccesary in case that there are PK
 				// attributes
-				if (first) {
+				if (hasPrimaryKey) {
 
-					first = false;
-					
 					// Draw the border line
-					g.setColor(Color.black);
-					g.drawLine(0, starty, width - 5, starty);
+					aGraphics.setColor(Color.black);
+					aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
 				}
 
 				// Draw the attributes
-				for (Attribute theAttribute : attributeList) {
+				for (Attribute theAttribute : theAllAttributes) {
 
-					g.setColor(Color.black);
+					String theText = theAttribute.getName();
+					aGraphics.setColor(true ? Color.red : Color.black);
 
-					g.drawString(theAttribute.getName(), textx, starty + fm.getAscent());
-					starty += fm.getHeight();
+					aGraphics.drawString(theText, theTextXOffset, theYOffset
+							+ theMetrics.getAscent());
+					theYOffset += theMetrics.getHeight();
 				}
 			}
-			
-		}
-		
-		@Override
-		public Dimension getPreferredSize() {
-			return new Dimension(150,150);
+
 		}
 
-		public Component getRendererComponent(JGraph graph, CellView view,
-				boolean sel, boolean focus, boolean preview) {
-			
-			TableCellView theView = (TableCellView) view;
-			Table theTable = (Table) ((TableCell)theView.getCell()).getUserObject();
-			
-			name = theTable.getName();
-			attributeList = theTable.getAttributes();
-			
+		@Override
+		public Dimension getPreferredSize() {
+			int theMaxX = 150;
+			int theMaxY = 8;
+
+			FontMetrics theMetrics = this.getFontMetrics(this.getFont());
+
+			int theYOffset = theMetrics.getHeight();
+			int theXTextOffset = 30;
+
+			int theLength = theMetrics.stringWidth(table.getName());
+			if (theLength > theMaxX)
+				theMaxX = theLength + 5;
+
+			List<Attribute> theAllAttributes = new Vector<Attribute>();
+			theAllAttributes.addAll(table.getAttributes());
+
+			Index thePrimaryKey = table.findPrimaryKey();
+			if (thePrimaryKey != null) {
+
+				for (Attribute theAttribute : thePrimaryKey.getAttributes()) {
+
+					theAllAttributes.remove(theAttribute);
+
+					String theText = theAttribute.getName();
+
+					theLength = theMetrics.stringWidth(theText);
+					if (theLength + theXTextOffset > theMaxX)
+						theMaxX = theLength + theXTextOffset;
+
+					theYOffset += theMetrics.getHeight();
+				}
+			}
+
+			for (Attribute theAttribute : theAllAttributes) {
+
+				String theText = theAttribute.getName();
+
+				theLength = theMetrics.stringWidth(theText);
+				if (theLength + theXTextOffset > theMaxX)
+					theMaxX = theLength + theXTextOffset;
+
+				theYOffset += theMetrics.getHeight();
+			}
+
+			theYOffset += 8;
+			theMaxX += 8;
+
+			if (theYOffset > theMaxY)
+				theMaxY = theYOffset;
+
+			return new Dimension(theMaxX, theMaxY);
+
+		}
+
+		public Component getRendererComponent(JGraph aGraph, CellView aView,
+				boolean aSelected, boolean aHasFocus, boolean aPreview) {
+
+			TableCellView theView = (TableCellView) aView;
+			table = (Table) ((TableCell) theView.getCell()).getUserObject();
+			selected = aSelected;
+
 			return this;
 		}
 	}
