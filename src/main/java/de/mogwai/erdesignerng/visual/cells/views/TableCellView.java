@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual;
+package de.mogwai.erdesignerng.visual.cells.views;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -27,17 +27,19 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Table;
+import de.mogwai.erdesignerng.visual.cells.TableCell;
+import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 
 public class TableCellView extends VertexView {
 
@@ -51,17 +53,18 @@ public class TableCellView extends VertexView {
 		return renderer;
 	}
 
-	public static class MyRenderer extends VertexRenderer implements CellViewRenderer,
-			Serializable {
+	public static class MyRenderer extends VertexRenderer implements
+			CellViewRenderer, Serializable {
 
 		private Table table;
 
 		private boolean roundedRect = false;
 
 		private boolean selected;
-		
-		private static ImageIcon key = new ImageIcon(MyRenderer.class.getClassLoader()
-				.getResource("de/mogwai/erdesigner/icons/key.gif"));
+
+		private static ImageIcon key = new ImageIcon(MyRenderer.class
+				.getClassLoader().getResource(
+						"de/mogwai/erdesigner/icons/key.gif"));
 
 		public MyRenderer() {
 			setBackground(Color.white);
@@ -104,7 +107,7 @@ public class TableCellView extends VertexView {
 			fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight
 					- theYOffset - 5);
 
-			aGraphics.setColor(Color.white);
+			aGraphics.setColor(new Color(255, 255, 212));
 
 			fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight
 					- theYOffset - 6);
@@ -231,4 +234,14 @@ public class TableCellView extends VertexView {
 			return this;
 		}
 	}
+
+	@Override
+	public GraphCellEditor getEditor() {
+
+		TableCell theCell = (TableCell) getCell();
+		TableEditor theEditor = new TableEditor(null);
+
+		return theEditor;
+	}
+
 }

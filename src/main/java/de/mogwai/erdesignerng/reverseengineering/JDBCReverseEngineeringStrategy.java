@@ -243,21 +243,21 @@ public abstract class JDBCReverseEngineeringStrategy {
 						int theType = Integer
 								.parseInt(theUpdateRule.toString());
 						switch (theType) {
-						case DatabaseMetaData.importedKeyNoAction: {
-							theRelation.setOnUpdate(CascadeType.NOTHING);
-							break;
-						}
-						case DatabaseMetaData.importedKeySetNull: {
-							theRelation.setOnUpdate(CascadeType.SET_NULL);
-							break;
-						}
-						case DatabaseMetaData.importedKeyCascade: {
-							theRelation.setOnUpdate(CascadeType.CASCADE);
-							break;
-						}
-						default: {
-							theRelation.setOnUpdate(CascadeType.CASCADE);
-						}
+							case DatabaseMetaData.importedKeyNoAction: {
+								theRelation.setOnUpdate(CascadeType.NOTHING);
+								break;
+							}
+							case DatabaseMetaData.importedKeySetNull: {
+								theRelation.setOnUpdate(CascadeType.SET_NULL);
+								break;
+							}
+							case DatabaseMetaData.importedKeyCascade: {
+								theRelation.setOnUpdate(CascadeType.CASCADE);
+								break;
+							}
+							default: {
+								theRelation.setOnUpdate(CascadeType.CASCADE);
+							}
 						}
 					} else {
 						theRelation.setOnUpdate(CascadeType.NOTHING);
@@ -267,21 +267,21 @@ public abstract class JDBCReverseEngineeringStrategy {
 						int theType = Integer
 								.parseInt(theDeleteRule.toString());
 						switch (theType) {
-						case DatabaseMetaData.importedKeyNoAction: {
-							theRelation.setOnDelete(CascadeType.NOTHING);
-							break;
-						}
-						case DatabaseMetaData.importedKeySetNull: {
-							theRelation.setOnDelete(CascadeType.SET_NULL);
-							break;
-						}
-						case DatabaseMetaData.importedKeyCascade: {
-							theRelation.setOnDelete(CascadeType.CASCADE);
-							break;
-						}
-						default: {
-							theRelation.setOnDelete(CascadeType.CASCADE);
-						}
+							case DatabaseMetaData.importedKeyNoAction: {
+								theRelation.setOnDelete(CascadeType.NOTHING);
+								break;
+							}
+							case DatabaseMetaData.importedKeySetNull: {
+								theRelation.setOnDelete(CascadeType.SET_NULL);
+								break;
+							}
+							case DatabaseMetaData.importedKeyCascade: {
+								theRelation.setOnDelete(CascadeType.CASCADE);
+								break;
+							}
+							default: {
+								theRelation.setOnDelete(CascadeType.CASCADE);
+							}
 						}
 					} else {
 						theRelation.setOnDelete(CascadeType.NOTHING);

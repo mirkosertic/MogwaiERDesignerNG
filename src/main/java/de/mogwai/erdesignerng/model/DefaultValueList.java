@@ -15,22 +15,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual;
+package de.mogwai.erdesignerng.model;
 
-import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.GraphConstants;
+/**
+ * A List of default values.
+ * 
+ * @author Mirko Sertic <mail@mirkosertic.de>
+ */
+public class DefaultValueList extends ModelItemVector<DefaultValue> {
 
-public class RelationCell extends DefaultEdge {
-	
-	public RelationCell(TableCell aImporting,TableCell aExporting) {
-		GraphConstants.setLineStyle(getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
-		GraphConstants.setConnectable(getAttributes(), false);
-		GraphConstants.setDisconnectable(getAttributes(), false);
-		GraphConstants.setLineBegin(getAttributes(), GraphConstants.ARROW_DIAMOND);
-		GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
-
-		setSource(aImporting.getChildAt(0));		
-		setTarget(aExporting.getChildAt(0));
-	}
+	private static final long serialVersionUID = 7547407545913894968L;
 
 }

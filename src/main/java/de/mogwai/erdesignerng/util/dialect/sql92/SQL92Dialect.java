@@ -15,7 +15,7 @@ import de.mogwai.erdesignerng.util.dialect.Dialect;
  * Dialect for SQL92.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-06-29 16:59:20 $
+ * @version $Date: 2007-07-06 20:35:16 $
  */
 public abstract class SQL92Dialect extends Dialect {
 
@@ -73,7 +73,7 @@ public abstract class SQL92Dialect extends Dialect {
 
 			StringBuffer theStrResult = new StringBuffer("ALTER TABLE ");
 			theStrResult.append(aIndex.getOwner().getName());
-			
+
 			theStrResult.append(" ADD CONSTRAINT");
 			if (aIndex.getIndexType().equals(IndexType.UNIQUE)) {
 				theStrResult.append(" UNIQUE");
@@ -105,7 +105,7 @@ public abstract class SQL92Dialect extends Dialect {
 	@Override
 	public List<String> createAlterAttributeSQL(Table aTable,
 			String attributeName, Domain aDomain, boolean aNullable) {
-		//TODO [mse] implement functionality here
+		// TODO [mse] implement functionality here
 		return null;
 	}
 
@@ -148,7 +148,7 @@ public abstract class SQL92Dialect extends Dialect {
 
 	@Override
 	public List<String> createDropRelationSQL(Relation aRelation) {
-		//TODO [mse] implement functionality here
+		// TODO [mse] implement functionality here
 		return null;
 	}
 
@@ -165,28 +165,28 @@ public abstract class SQL92Dialect extends Dialect {
 
 	@Override
 	public List<String> createAddRelationSQL(Relation aRelation) {
-		//TODO [mse] implement functionality here
+		// TODO [mse] implement functionality here
 		return null;
 	}
 
 	@Override
 	public List<String> createRenameAttributeSQL(Table aTable,
 			Attribute aAttribute, String aNewName) {
-		//TODO [mse] implement functionality here
+		// TODO [mse] implement functionality here
 		return null;
 	}
 
 	@Override
 	public List<String> createRenameIndexSQL(Table aTable, Index index,
 			String aNewName) {
-		//TODO [mse] implement functionality here
+		// TODO [mse] implement functionality here
 		return null;
 	}
 
 	@Override
 	public List<String> createRenameRelationSQL(Relation aRelation,
 			String aNewName) {
-		//TODO [mse] implement functionality here
+		// TODO [mse] implement functionality here
 		return null;
 	}
 

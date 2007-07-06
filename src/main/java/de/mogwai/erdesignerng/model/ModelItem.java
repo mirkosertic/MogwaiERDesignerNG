@@ -26,9 +26,7 @@ import java.util.HashMap;
  */
 public abstract class ModelItem {
 
-	public static final String PROPERTY_XLOCATION = "XLOCATION";
-
-	public static final String PROPERTY_YLOCATION = "YLOCATION";
+	public static final String PROPERTY_LOCATION = "LOCATION";
 
 	public static final String PROPERTY_REMARKS = "REMARKS";
 

@@ -27,22 +27,6 @@ public class DomainList extends ModelItemVector<Domain> {
 	private static final long serialVersionUID = 7547407545913894968L;
 
 	/**
-	 * Find a domain by a given system id.
-	 * 
-	 * @param aSystemId
-	 *            the system id
-	 * @return the found element
-	 */
-	public Domain findBySystemId(String aSystemId) {
-		for (Domain theDomain : this) {
-			if (aSystemId.equals(theDomain.getSystemId())) {
-				return theDomain;
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Find a domain by a given datatype.
 	 * 
 	 * @param aDataType

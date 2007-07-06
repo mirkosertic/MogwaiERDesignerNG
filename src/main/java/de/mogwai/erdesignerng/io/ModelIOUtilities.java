@@ -184,6 +184,7 @@ public final class ModelIOUtilities {
 	public Model deserializeModelFromXML(InputStream aInputStream)
 			throws SAXException, IOException {
 		Document theDocument = documentBuilder.parse(aInputStream);
+		aInputStream.close();
 		Model theModel = new Model();
 
 		// First of all, parse the domains
@@ -332,7 +333,7 @@ public final class ModelIOUtilities {
 	}
 
 	public void serializeModelToXML(Model aModel, OutputStream aStream)
-			throws TransformerException {
+			throws TransformerException, IOException {
 		Document theDocument = documentBuilder.newDocument();
 
 		Element theRootElement = addElement(theDocument, theDocument, MODEL);
@@ -443,5 +444,7 @@ public final class ModelIOUtilities {
 		Transformer theTransformer = transformerFactory.newTransformer();
 		theTransformer.transform(new DOMSource(theDocument), new StreamResult(
 				aStream));
+
+		aStream.close();
 	}
 }

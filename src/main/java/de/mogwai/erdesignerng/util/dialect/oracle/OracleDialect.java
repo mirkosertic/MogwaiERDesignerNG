@@ -15,29 +15,30 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual;
+package de.mogwai.erdesignerng.util.dialect.oracle;
 
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+import de.mogwai.erdesignerng.model.NameCastType;
+import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
 
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphConstants;
+/**
+ * Model properties for Oracle databases.
+ * 
+ * @author Mirko Sertic <mail@mirkosertic.de>
+ */
+public class OracleDialect extends SQL92Dialect {
 
-import de.mogwai.erdesignerng.model.Table;
-
-public class TableCell extends DefaultGraphCell {
-	
-	public TableCell(Table aTable) {
-		super(aTable);
-		
-		GraphConstants.setBounds(getAttributes(),
-				new Rectangle2D.Double(20, 20, 40, 20));
-		GraphConstants.setGradientColor(getAttributes(), Color.orange);
-		GraphConstants.setOpaque(getAttributes(), true);
-		GraphConstants.setAutoSize(getAttributes(), true);
-		GraphConstants.setEditable(getAttributes(), false);
-		DefaultPort port0 = new DefaultPort();
-		add(port0);
+	public OracleDialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(false);
+		setMaxObjectNameLength(28);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.UPPERCASE);
 	}
+
+	@Override
+	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new OracleReverseEngineeringStrategy(this);
+	}
+
 }
