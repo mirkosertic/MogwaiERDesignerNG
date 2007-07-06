@@ -26,20 +26,4 @@ public class IndexList extends ModelItemVector<Index> {
 
 	private static final long serialVersionUID = 890361971577085178L;
 
-	/**
-	 * Find an index by a given system id.
-	 * 
-	 * @param aSystemId
-	 *            the system id
-	 * @return the found element
-	 */
-	public Index findBySystemId(String aSystemId) {
-		for (Index theIndex : this) {
-			if (aSystemId.equals(theIndex.getSystemId())) {
-				return theIndex;
-			}
-		}
-		return null;
-	}
-
 }

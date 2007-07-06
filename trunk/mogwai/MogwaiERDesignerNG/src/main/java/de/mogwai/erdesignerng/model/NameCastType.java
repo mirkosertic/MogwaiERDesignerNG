@@ -33,12 +33,12 @@ public enum NameCastType {
 
 	public String cast(String aValue) {
 		switch (mode) {
-		case 1:
-			return aValue;
-		case 2:
-			return aValue.toUpperCase();
-		case 3:
-			return aValue.toLowerCase();
+			case 1:
+				return aValue;
+			case 2:
+				return aValue.toUpperCase();
+			case 3:
+				return aValue.toLowerCase();
 		}
 
 		throw new IllegalStateException();

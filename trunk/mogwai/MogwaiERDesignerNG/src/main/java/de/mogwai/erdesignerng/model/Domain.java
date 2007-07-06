@@ -26,6 +26,10 @@ public class Domain extends OwnedModelItem<Model> {
 
 	private String datatype;
 
+	private boolean sequenced;
+
+	private String javaClassName;
+
 	/**
 	 * Gibt den Wert des Attributs <code>datatype</code> zurück.
 	 * 
@@ -43,6 +47,44 @@ public class Domain extends OwnedModelItem<Model> {
 	 */
 	public void setDatatype(String datatype) {
 		this.datatype = datatype;
+	}
+
+	/**
+	 * Gibt den Wert des Attributs <code>sequenced</code> zurück.
+	 * 
+	 * @return Wert des Attributs sequenced.
+	 */
+	public boolean isSequenced() {
+		return sequenced;
+	}
+
+	/**
+	 * Setzt den Wert des Attributs <code>sequenced</code>.
+	 * 
+	 * @param sequenced
+	 *            Wert für das Attribut sequenced.
+	 */
+	public void setSequenced(boolean sequenced) {
+		this.sequenced = sequenced;
+	}
+
+	/**
+	 * Gibt den Wert des Attributs <code>javaClassName</code> zurück.
+	 * 
+	 * @return Wert des Attributs javaClassName.
+	 */
+	public String getJavaClassName() {
+		return javaClassName;
+	}
+
+	/**
+	 * Setzt den Wert des Attributs <code>javaClassName</code>.
+	 * 
+	 * @param javaClassName
+	 *            Wert für das Attribut javaClassName.
+	 */
+	public void setJavaClassName(String javaClassName) {
+		this.javaClassName = javaClassName;
 	}
 
 	@Override

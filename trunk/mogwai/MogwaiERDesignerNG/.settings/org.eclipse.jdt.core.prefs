@@ -1,5 +1,13 @@
-#Mon Jun 25 22:49:00 CEST 2007
+#Fri Jul 06 20:15:21 CEST 2007
 eclipse.preferences.version=1
+org.eclipse.jdt.core.codeComplete.argumentPrefixes=
+org.eclipse.jdt.core.codeComplete.argumentSuffixes=
+org.eclipse.jdt.core.codeComplete.fieldPrefixes=
+org.eclipse.jdt.core.codeComplete.fieldSuffixes=
+org.eclipse.jdt.core.codeComplete.localPrefixes=
+org.eclipse.jdt.core.codeComplete.localSuffixes=
+org.eclipse.jdt.core.codeComplete.staticFieldPrefixes=
+org.eclipse.jdt.core.codeComplete.staticFieldSuffixes=
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant=16
@@ -24,7 +32,7 @@ org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration
 org.eclipse.jdt.core.formatter.blank_lines_after_imports=1
 org.eclipse.jdt.core.formatter.blank_lines_after_package=1
 org.eclipse.jdt.core.formatter.blank_lines_before_field=1
-org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration=0
+org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration=1
 org.eclipse.jdt.core.formatter.blank_lines_before_imports=1
 org.eclipse.jdt.core.formatter.blank_lines_before_member_type=1
 org.eclipse.jdt.core.formatter.blank_lines_before_method=1
@@ -44,7 +52,7 @@ org.eclipse.jdt.core.formatter.brace_position_for_switch=end_of_line
 org.eclipse.jdt.core.formatter.brace_position_for_type_declaration=end_of_line
 org.eclipse.jdt.core.formatter.comment.clear_blank_lines=false
 org.eclipse.jdt.core.formatter.comment.format_comments=true
-org.eclipse.jdt.core.formatter.comment.format_header=false
+org.eclipse.jdt.core.formatter.comment.format_header=true
 org.eclipse.jdt.core.formatter.comment.format_html=true
 org.eclipse.jdt.core.formatter.comment.format_source_code=true
 org.eclipse.jdt.core.formatter.comment.indent_parameter_description=true
@@ -65,8 +73,8 @@ org.eclipse.jdt.core.formatter.indent_empty_lines=false
 org.eclipse.jdt.core.formatter.indent_statements_compare_to_block=true
 org.eclipse.jdt.core.formatter.indent_statements_compare_to_body=true
 org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_cases=true
-org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch=false
-org.eclipse.jdt.core.formatter.indentation.size=4
+org.eclipse.jdt.core.formatter.indent_switchstatements_compare_to_switch=true
+org.eclipse.jdt.core.formatter.indentation.size=8
 org.eclipse.jdt.core.formatter.insert_new_line_after_annotation=insert
 org.eclipse.jdt.core.formatter.insert_new_line_after_opening_brace_in_array_initializer=do not insert
 org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing=do not insert

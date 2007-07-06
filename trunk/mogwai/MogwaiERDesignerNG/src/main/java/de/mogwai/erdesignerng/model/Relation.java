@@ -27,6 +27,10 @@ import java.util.Map;
  */
 public class Relation extends OwnedModelItem<Model> {
 
+	public static final String PROPERTY_POINTS = "points";
+
+	public static final String PROPERTY_TEXT_OFFSET = "textoffset";
+
 	private Table importingTable;
 
 	private Table exportingTable;
