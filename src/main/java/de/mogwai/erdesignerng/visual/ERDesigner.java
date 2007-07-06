@@ -18,15 +18,8 @@
 package de.mogwai.erdesignerng.visual;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.DefaultCellViewFactory;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultGraphModel;
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.GraphLayoutCache;
-import org.jgraph.graph.GraphModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
@@ -35,12 +28,17 @@ import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.IndexType;
 import de.mogwai.erdesignerng.model.Model;
+import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
-public class Test {
-	public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException {
-		
+public class ERDesigner {
+
+	public static void main(String[] args)
+			throws ElementAlreadyExistsException, ElementInvalidNameException,
+			ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
+
 		Model theModel = new Model();
 		theModel.setDialect(new MySQLDialect());
 
@@ -50,7 +48,7 @@ public class Test {
 
 		Table theTable1 = new Table();
 		theTable1.setName("TABLE1");
-		
+
 		Index thePK = new Index();
 		thePK.setName("TABLE2_P1");
 		thePK.setIndexType(IndexType.PRIMARYKEY);
@@ -61,12 +59,12 @@ public class Test {
 			theAttribute.setDefinition(theDomain, true, null);
 
 			theTable1.addAttribute(theModel, theAttribute);
-			
-			if (i<2) {
+
+			if (i < 2) {
 				thePK.getAttributes().add(theAttribute);
 			}
 		}
-		
+
 		theTable1.addIndex(theModel, thePK);
 
 		theModel.addTable(theTable1);
@@ -83,29 +81,20 @@ public class Test {
 		}
 
 		theModel.addTable(theTable2);
-		
-		
-		GraphModel theGraphModel = new DefaultGraphModel();
-		GraphLayoutCache theView = new GraphLayoutCache(theGraphModel,
-				new DefaultCellViewFactory());
-		theView.setFactory(new CellViewFactory());
-		
-		JGraph theGraph = new JGraph(theGraphModel, theView);
-		DefaultGraphCell[] theCells = new DefaultGraphCell[3];
-		
-		theCells[0] = new TableCell(theTable1);
-		
-		theCells[1] = new TableCell(theTable2);
 
-		theCells[2] = new RelationCell((TableCell)theCells[0],(TableCell)theCells[1]);
-		
-		theGraph.getGraphLayoutCache().insert(theCells[0]);
-		theGraph.getGraphLayoutCache().insert(theCells[1]);
-		theGraph.getGraphLayoutCache().insert(theCells[2]);		
-		
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(new JScrollPane(theGraph));
-		frame.pack();
+		Relation theRelation = new Relation();
+		theRelation.setName("REL_1");
+		theRelation.setExportingTable(theTable1);
+		theRelation.setImportingTable(theTable2);
+
+		theModel.addRelation(theRelation);
+
+		UIManager
+				.setLookAndFeel("com.incors.plaf.kunststoff.KunststoffLookAndFeel");
+
+		ERDesignerMainFrame frame = new ERDesignerMainFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setModel(theModel);
 		frame.setVisible(true);
 	}
 }

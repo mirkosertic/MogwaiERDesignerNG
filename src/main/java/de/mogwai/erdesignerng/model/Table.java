@@ -36,20 +36,22 @@ public class Table extends OwnedModelItem<Model> implements
 	/**
 	 * Add an attribute to the table.
 	 * 
-	 * @param aModel the model
+	 * @param aModel
+	 *            the model
 	 * @param aAttribute
 	 *            the table
 	 * @throws ElementAlreadyExistsException
 	 * @throws ElementInvalidNameException
 	 */
-	public void addAttribute(Model aModel,Attribute aAttribute)
+	public void addAttribute(Model aModel, Attribute aAttribute)
 			throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		ModelUtilities.checkNameAndExistance(attributes, aAttribute, aModel.getDialect());
+		ModelUtilities.checkNameAndExistance(attributes, aAttribute, aModel
+				.getDialect());
 
 		aAttribute.setOwner(this);
 		attributes.add(aAttribute);
-		
+
 		if (getOwner() != null) {
 			getOwner().getModelHistory().createAddAttributeCommand(aAttribute);
 		}
@@ -58,14 +60,15 @@ public class Table extends OwnedModelItem<Model> implements
 	/**
 	 * Add an index to the table.
 	 * 
-	 * @param Model aModel
+	 * @param Model
+	 *            aModel
 	 * @param aIndex
 	 *            the table
 	 * @throws ElementAlreadyExistsException
 	 * @throws ElementInvalidNameException
 	 */
-	public void addIndex(Model aModel,Index aIndex) throws ElementAlreadyExistsException,
-			ElementInvalidNameException {
+	public void addIndex(Model aModel, Index aIndex)
+			throws ElementAlreadyExistsException, ElementInvalidNameException {
 
 		if (owner != null) {
 			ModelUtilities.checkNameAndExistance(indexes, aIndex, owner
@@ -74,7 +77,7 @@ public class Table extends OwnedModelItem<Model> implements
 
 		aIndex.setOwner(this);
 		indexes.add(aIndex);
-		
+
 		if (owner != null) {
 			getOwner().getModelHistory().createAddIndexCommand(aIndex);
 		}
@@ -83,12 +86,11 @@ public class Table extends OwnedModelItem<Model> implements
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
 		if (aSender instanceof Attribute) {
-			ModelUtilities.checkExistance(attributes, aName, owner
-					.getDialect());
+			ModelUtilities
+					.checkExistance(attributes, aName, owner.getDialect());
 		}
 		if (aSender instanceof Index) {
-			ModelUtilities.checkExistance(indexes, aName, owner
-					.getDialect());
+			ModelUtilities.checkExistance(indexes, aName, owner.getDialect());
 		}
 
 	}
@@ -166,15 +168,15 @@ public class Table extends OwnedModelItem<Model> implements
 	public void setAttributes(AttributeList attributes) {
 		this.attributes = attributes;
 	}
-	
+
 	public Index findPrimaryKey() {
-		
+
 		for (Index theIndex : indexes) {
 			if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
 				return theIndex;
 			}
 		}
-		
+
 		return null;
 	}
 }

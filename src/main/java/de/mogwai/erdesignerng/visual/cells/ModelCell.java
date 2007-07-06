@@ -15,20 +15,32 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual;
+package de.mogwai.erdesignerng.visual.cells;
 
-import org.jgraph.graph.DefaultCellViewFactory;
-import org.jgraph.graph.VertexView;
+import java.util.Map;
 
-public class CellViewFactory extends DefaultCellViewFactory {
+/**
+ * Interface for all model cells.
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-06 20:35:06 $
+ */
+public interface ModelCell<T> {
 
-	@Override
-	protected VertexView createVertexView(Object aVertex) {
-		if (aVertex instanceof TableCell) {
-			return new TableCellView((TableCell) aVertex);
-		}
+	/**
+	 * Transfer the cell attributes to the model properties.
+	 * 
+	 * @param aAttributes
+	 *            the cell attributes.
+	 */
+	void transferAttributesToProperties(Map aAttributes);
 
-		return super.createVertexView(aVertex);
-	}
+	/**
+	 * Transfer the model properties to the cell attributes.
+	 * 
+	 * @param aObject
+	 *            the model
+	 */
+	void transferPropertiesToAttributes(T aObject);
 
 }

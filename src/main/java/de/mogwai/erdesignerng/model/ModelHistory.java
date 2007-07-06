@@ -34,8 +34,8 @@ public class ModelHistory {
 
 	protected void addSQLToHistory(List<String> aSQL) {
 		if (aSQL != null) {
-			for(String aString : aSQL) {
-				System.out.println(aString+";");
+			for (String aString : aSQL) {
+				System.out.println(aString + ";");
 			}
 		}
 	}

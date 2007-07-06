@@ -29,6 +29,22 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 	private static final long serialVersionUID = 5030067810497396582L;
 
 	/**
+	 * Find an entry by a given system id.
+	 * 
+	 * @param aSystemId
+	 *            the system id
+	 * @return the found element
+	 */
+	public T findBySystemId(String aSystemId) {
+		for (T theItem : this) {
+			if (aSystemId.equals(theItem.getSystemId())) {
+				return theItem;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Check if a named element already exists in this list.
 	 * 
 	 * @param aName

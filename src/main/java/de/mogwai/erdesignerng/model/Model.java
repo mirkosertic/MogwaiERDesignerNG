@@ -33,6 +33,8 @@ public class Model implements OwnedModelItemVerifier {
 
 	private DomainList domains = new DomainList();
 
+	private DefaultValueList defaultValues = new DefaultValueList();
+
 	private RelationList relations = new RelationList();
 
 	private ModelHistory history = new ModelHistory(this);
@@ -55,7 +57,7 @@ public class Model implements OwnedModelItemVerifier {
 		for (Attribute theAttribute : aTable.getAttributes()) {
 			theAttribute.setName(dialect.checkName(theAttribute.getName()));
 		}
-		
+
 		history.createAddTableCommand(aTable);
 
 		aTable.setOwner(this);
@@ -93,7 +95,7 @@ public class Model implements OwnedModelItemVerifier {
 		ModelUtilities.checkNameAndExistance(relations, aRelation, dialect);
 
 		history.createAddRelationCommand(aRelation);
-		
+
 		aRelation.setOwner(this);
 		relations.add(aRelation);
 	}
@@ -158,7 +160,7 @@ public class Model implements OwnedModelItemVerifier {
 
 			return;
 		}
-		
+
 		throw new UnsupportedOperationException("Unknown element " + aSender);
 	}
 
@@ -188,5 +190,13 @@ public class Model implements OwnedModelItemVerifier {
 
 	public void setTables(TableList tables) {
 		this.tables = tables;
+	}
+
+	public DefaultValueList getDefaultValues() {
+		return defaultValues;
+	}
+
+	public void setDefaultValues(DefaultValueList defaultValues) {
+		this.defaultValues = defaultValues;
 	}
 }
