@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -59,6 +60,28 @@ import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
 import de.mogwai.erdesignerng.visual.paf.basic.ERDesignerGraphUI;
 
 public class ERDesignerMainFrame extends JFrame {
+	
+	private class ZoomInfo {
+		
+		private String description;
+		private double value;
+		
+		public ZoomInfo(String aDescription,double aValue) {
+			description = aDescription;
+			value = aValue;
+		}
+		
+		public double getValue() {
+			return value;
+		}
+		
+		@Override
+		public String toString() {
+			return description;
+		}
+	}
+	
+	private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%",1);
 
 	private GraphModel graphModel;
 
@@ -129,7 +152,11 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private Action viewAction = new GenericAction("View");
 
-	private Action zoomAction = new GenericAction("Zoom");
+	private Action zoomAction = new GenericAction("Zoom",new ActionListener() {
+		public void actionPerformed(ActionEvent aEvent) {
+			commandSetZoom((ZoomInfo) ((JComboBox)aEvent.getSource()).getSelectedItem());
+		}
+	});
 
 	public ERDesignerMainFrame() {
 		initialize();
@@ -155,21 +182,18 @@ public class ERDesignerMainFrame extends JFrame {
 		theDBMenu.add(new JMenuItem(domainsAction));
 		theDBMenu.add(new JMenuItem(defaultValuesAction));
 
-		JMenu theViewMenu = new JMenu(viewAction);
-		JMenu theZoomMenu = new JMenu(zoomAction);
-		for (int i = 10; i > 0; i--) {
-			Action theZoomAction = new GenericAction("" + i * 10 + " %");
-			theZoomMenu.add(new JMenuItem(theZoomAction));
-		}
-
-		theViewMenu.add(theZoomMenu);
-
 		mainMenu.add(theFileMenu);
 		mainMenu.add(theDBMenu);
-		mainMenu.add(theViewMenu);
 
+		DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
+		theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
+		for (int i=9;i>0;i--) {
+			theZoomModel.addElement(new ZoomInfo(i*10+" %",((double)i)/(double)10));
+		}
 		zoomBox.setPreferredSize(new Dimension(100, 21));
 		zoomBox.setMaximumSize(new Dimension(100, 21));
+		zoomBox.setAction(zoomAction);
+		zoomBox.setModel(theZoomModel);
 
 		toolBar.add(newAction);
 		toolBar.addSeparator();
@@ -226,6 +250,8 @@ public class ERDesignerMainFrame extends JFrame {
 
 			layoutCache.insert(theCell);
 		}
+		
+		commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
 	}
 
 	protected void commandShowDomainEditor() {
@@ -282,6 +308,11 @@ public class ERDesignerMainFrame extends JFrame {
 			}
 
 		}
+	}
+	
+	protected void commandSetZoom(ZoomInfo aZoomInfo) {
+		graph.setScale(aZoomInfo.getValue());
+		zoomBox.setSelectedItem(aZoomInfo);
 	}
 
 	/**
