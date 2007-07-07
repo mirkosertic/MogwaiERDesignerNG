@@ -39,6 +39,7 @@ import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
+import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 
 public class TableCellView extends VertexView {
@@ -237,11 +238,7 @@ public class TableCellView extends VertexView {
 
 	@Override
 	public GraphCellEditor getEditor() {
-
-		TableCell theCell = (TableCell) getCell();
-		TableEditor theEditor = new TableEditor(null);
-
-		return theEditor;
+		return new CellEditorFactory();
 	}
 
 }

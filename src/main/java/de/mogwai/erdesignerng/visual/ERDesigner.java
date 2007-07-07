@@ -95,6 +95,7 @@ public class ERDesigner {
 		ERDesignerMainFrame frame = new ERDesignerMainFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setModel(theModel);
+		frame.setExtendedState(ERDesignerMainFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 	}
 }
