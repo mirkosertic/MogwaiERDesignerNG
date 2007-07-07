@@ -32,7 +32,7 @@ import javax.swing.event.CellEditorListener;
  * 
  * @author Mirko Sertic
  */
-public class BaseEditor extends JDialog implements DialogConstants {
+public abstract class BaseEditor extends JDialog implements DialogConstants {
 
 	private int modalResult;
 
@@ -116,4 +116,6 @@ public class BaseEditor extends JDialog implements DialogConstants {
 		JOptionPane.showMessageDialog(this, aMessage, "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public abstract void applyValues() throws Exception;
 }

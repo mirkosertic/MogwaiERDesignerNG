@@ -128,7 +128,7 @@ public class TableCellView extends VertexView {
 			boolean hasPrimaryKey = false;
 
 			// Draw the attributes
-			for (Attribute theAttribute : theAllAttributes) {
+			for (Attribute theAttribute : table.getAttributes()) {
 				if (theAttribute.isPrimaryKey()) {
 
 					hasPrimaryKey = true;
@@ -190,7 +190,7 @@ public class TableCellView extends VertexView {
 			List<Attribute> theAllAttributes = new Vector<Attribute>();
 			theAllAttributes.addAll(table.getAttributes());
 
-			for (Attribute theAttribute : theAllAttributes) {
+			for (Attribute theAttribute : table.getAttributes()) {
 				if (theAttribute.isPrimaryKey()) {
 
 					theAllAttributes.remove(theAttribute);

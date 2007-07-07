@@ -22,6 +22,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,6 +44,7 @@ import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
@@ -57,6 +60,7 @@ import de.mogwai.erdesignerng.visual.components.StatusBar;
 import de.mogwai.erdesignerng.visual.components.ToolBar;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
+import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 import de.mogwai.erdesignerng.visual.paf.basic.ERDesignerGraphUI;
 
 public class ERDesignerMainFrame extends JFrame {
@@ -224,7 +228,19 @@ public class ERDesignerMainFrame extends JFrame {
 
 		graphModel.addGraphModelListener(graphModelListener);
 
-		graph = new ERDesignerGraph(graphModel, layoutCache);
+		graph = new ERDesignerGraph(graphModel, layoutCache) {
+
+			@Override
+			protected void commandDelete(Object aCell) {
+				ERDesignerMainFrame.this.commandDelete(aCell);
+			}
+
+			@Override
+			protected void commandNewTable(Point2D aLocation) {
+				ERDesignerMainFrame.this.commandAddTable(aLocation);
+			}
+			
+		};
 		graph.setUI(new ERDesignerGraphUI());
 
 		scrollPane.getViewport().removeAll();
@@ -262,7 +278,7 @@ public class ERDesignerMainFrame extends JFrame {
 		DomainEditor theEditor = new DomainEditor(model, this);
 		if (theEditor.showModal() == DomainEditor.MODAL_RESULT_OK) {
 			try {
-				theEditor.applyValues(model);
+				theEditor.applyValues();
 			} catch (Exception e) {
 				logException(e);
 			}
@@ -273,7 +289,7 @@ public class ERDesignerMainFrame extends JFrame {
 		DefaultValueEditor theEditor = new DefaultValueEditor(model, this);
 		if (theEditor.showModal() == DomainEditor.MODAL_RESULT_OK) {
 			try {
-				theEditor.applyValues(model);
+				theEditor.applyValues();
 			} catch (Exception e) {
 				logException(e);
 			}
@@ -336,6 +352,34 @@ public class ERDesignerMainFrame extends JFrame {
 	 */
 	protected void logException(Exception aException) {
 		aException.printStackTrace();
+	}
+	
+	protected void commandAddTable(Point2D aPoint) {
+		Table theTable = new Table();
+		TableEditor theEditor = new TableEditor(model,this);
+		theEditor.initializeFor(theTable);
+		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+				
+				TableCell theCell = new TableCell(theTable);
+				theCell.transferPropertiesToAttributes(theTable);
+				
+				GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(
+						aPoint.getX(), aPoint.getY(), -1, -1));
+				
+				layoutCache.insert(theCell);
+				
+				theCell.transferAttributesToProperties(theCell.getAttributes());
+				
+			} catch (Exception e) {
+				logException(e);
+			}
+		}
+	}
+	
+	protected void commandDelete(Object aCell) {
+		
 	}
 
 	private static GraphModelListener graphModelListener = new GraphModelListener() {

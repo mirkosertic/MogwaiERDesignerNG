@@ -74,7 +74,10 @@ public class RelationEditor extends BaseEditor {
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
 	}
 
-	public void applyChanges(Relation aRelation) {
+	@Override
+	public void applyValues() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

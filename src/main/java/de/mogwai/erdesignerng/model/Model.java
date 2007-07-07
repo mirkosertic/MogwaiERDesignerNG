@@ -58,8 +58,6 @@ public class Model implements OwnedModelItemVerifier {
 			theAttribute.setName(dialect.checkName(theAttribute.getName()));
 		}
 
-		history.createAddTableCommand(aTable);
-
 		aTable.setOwner(this);
 		tables.add(aTable);
 	}
