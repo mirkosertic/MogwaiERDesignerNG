@@ -27,13 +27,14 @@ import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 
 import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
+import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.DefaultValue;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
-import de.mogwai.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author Mirko Sertic
@@ -96,7 +97,7 @@ public class TableEditor extends BaseEditor {
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
-						setModalResult(DialogConstants.MODAL_RESULT_OK);
+						commandOk();
 					}
 				});
 		editingView.getCancelButton().addActionListener(
@@ -239,6 +240,12 @@ public class TableEditor extends BaseEditor {
 
 		updateEditFields();
 	}
+	
+	private void commandOk() {
+		if (tableBindingInfo.validate().size() == 0) {
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
 	private void commandTabStateChange(ChangeEvent e) {
 	}
@@ -346,5 +353,31 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandStartDomainEditor(ActionEvent e) {
+	}
+	
+	public void applyValues() throws ElementAlreadyExistsException,
+	ElementInvalidNameException {
+		
+		Table theTable = tableBindingInfo.getDefaultModel();
+		tableBindingInfo.view2model();
+		
+		if (!model.getTables().contains(theTable)) {
+			model.addTable(theTable);
+		}
+		
+		for(String theKey : knownValues.keySet()) {
+			Attribute theAttribute = knownValues.get(theKey);
+			
+			Attribute theExistantAttribute = theTable.getAttributes().findByName(theKey);
+			if (theExistantAttribute == null) {
+				theTable.addAttribute(model, theAttribute);
+			} else {
+				theExistantAttribute.setName(theAttribute.getName());
+				theExistantAttribute.setDefaultValue(theAttribute.getDefaultValue());
+				theExistantAttribute.setPrimaryKey(theAttribute.isPrimaryKey());
+				theExistantAttribute.setNullable(theAttribute.isNullable());
+			}
+		}
+		
 	}
 }

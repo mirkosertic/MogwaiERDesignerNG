@@ -223,10 +223,10 @@ public class DefaultValueEditor extends BaseEditor {
 	private void handleDelete() {
 	}
 
-	public void applyValues(Model aModel) throws ElementAlreadyExistsException,
+	public void applyValues() throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 
-		DefaultValueList theList = aModel.getDefaultValues();
+		DefaultValueList theList = model.getDefaultValues();
 
 		for (String theKey : knownValues.keySet()) {
 			DefaultValue theValue = knownValues.get(theKey);
@@ -235,7 +235,7 @@ public class DefaultValueEditor extends BaseEditor {
 			if (theInModel != null) {
 				theInModel.restoreFrom(theValue);
 			} else {
-				aModel.addDefaultValue(theValue);
+				model.addDefaultValue(theValue);
 			}
 		}
 	}
