@@ -57,6 +57,7 @@ import de.mogwai.erdesignerng.visual.components.StatusBar;
 import de.mogwai.erdesignerng.visual.components.ToolBar;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
+import de.mogwai.erdesignerng.visual.paf.basic.ERDesignerGraphUI;
 
 public class ERDesignerMainFrame extends JFrame {
 
@@ -197,6 +198,7 @@ public class ERDesignerMainFrame extends JFrame {
 		graphModel.addGraphModelListener(graphModelListener);
 
 		graph = new JGraph(graphModel, layoutCache);
+		graph.setUI(new ERDesignerGraphUI());
 
 		scrollPane.getViewport().removeAll();
 		scrollPane.getViewport().add(graph);
