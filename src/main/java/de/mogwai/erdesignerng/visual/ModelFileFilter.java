@@ -23,7 +23,7 @@ import javax.swing.filechooser.FileFilter;
 
 public class ModelFileFilter extends FileFilter {
 
-	private final static String EXTENSION = ".mxm";
+	private static final String EXTENSION = ".mxm";
 
 	public boolean accept(File aFileName) {
 		if (aFileName.isDirectory()) {

@@ -37,7 +37,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
-import org.jgraph.JGraph;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
@@ -65,7 +64,7 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private GraphLayoutCache layoutCache;
 
-	private JGraph graph;
+	private ERDesignerGraph graph;
 
 	private Model model;
 
@@ -197,7 +196,7 @@ public class ERDesignerMainFrame extends JFrame {
 
 		graphModel.addGraphModelListener(graphModelListener);
 
-		graph = new JGraph(graphModel, layoutCache);
+		graph = new ERDesignerGraph(graphModel, layoutCache);
 		graph.setUI(new ERDesignerGraphUI());
 
 		scrollPane.getViewport().removeAll();

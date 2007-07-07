@@ -112,9 +112,7 @@ public class DomainEditor extends BaseEditor {
 	}
 
 	/**
-	 * This method initializes this
-	 * 
-	 * @return void
+	 * This method initializes this.
 	 */
 	private void initialize() {
 

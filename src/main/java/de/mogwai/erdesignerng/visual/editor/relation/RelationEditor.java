@@ -45,9 +45,7 @@ public class RelationEditor extends BaseEditor {
 	}
 
 	/**
-	 * This method initializes this
-	 * 
-	 * @return void
+	 * This method initializes this.
 	 */
 	private void initialize() {
 

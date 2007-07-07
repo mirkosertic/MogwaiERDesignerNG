@@ -32,8 +32,11 @@ import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
-public class ERDesigner {
+public final class ERDesigner {
 
+	private ERDesigner() {
+	}
+	
 	public static void main(String[] args)
 			throws ElementAlreadyExistsException, ElementInvalidNameException,
 			ClassNotFoundException, InstantiationException,

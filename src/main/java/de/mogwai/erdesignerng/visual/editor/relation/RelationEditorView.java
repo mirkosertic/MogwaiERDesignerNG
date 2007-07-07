@@ -357,12 +357,15 @@ public class RelationEditorView extends JPanel {
 	 */
 	public String getGroup1Value() {
 
-		if (getComponent_11().isSelected())
+		if (getComponent_11().isSelected()) {
 			return "DEFAULT";
-		if (getComponent_12().isSelected())
+		}
+		if (getComponent_12().isSelected()) {
 			return "CASCADE";
-		if (getComponent_13().isSelected())
+		}
+		if (getComponent_13().isSelected()) {
 			return "SETNULL";
+		}
 		return null;
 	}
 

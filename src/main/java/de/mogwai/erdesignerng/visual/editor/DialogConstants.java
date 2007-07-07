@@ -27,12 +27,12 @@ public interface DialogConstants {
 	/**
 	 * Result code for a correct closed modal dialog.
 	 */
-	final static int MODAL_RESULT_OK = 1;
+	int MODAL_RESULT_OK = 1;
 
 	/**
 	 * Result code for a canceled modal dialog.
 	 */
-	final static int MODAL_RESULT_CANCEL = 2;
+	int MODAL_RESULT_CANCEL = 2;
 
 	/**
 	 * Show the dialog and return it's result code.

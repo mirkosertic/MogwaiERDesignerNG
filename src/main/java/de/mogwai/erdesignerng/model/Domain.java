@@ -42,11 +42,11 @@ public class Domain extends OwnedModelItem<Model> {
 	/**
 	 * Setzt den Wert des Attributs <code>datatype</code>.
 	 * 
-	 * @param datatype
+	 * @param aDatatype
 	 *            Wert für das Attribut datatype.
 	 */
-	public void setDatatype(String datatype) {
-		this.datatype = datatype;
+	public void setDatatype(String aDatatype) {
+		datatype = aDatatype;
 	}
 
 	/**
@@ -61,11 +61,11 @@ public class Domain extends OwnedModelItem<Model> {
 	/**
 	 * Setzt den Wert des Attributs <code>sequenced</code>.
 	 * 
-	 * @param sequenced
+	 * @param aSequenced
 	 *            Wert für das Attribut sequenced.
 	 */
-	public void setSequenced(boolean sequenced) {
-		this.sequenced = sequenced;
+	public void setSequenced(boolean aSequenced) {
+		sequenced = aSequenced;
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class Domain extends OwnedModelItem<Model> {
 	/**
 	 * Setzt den Wert des Attributs <code>javaClassName</code>.
 	 * 
-	 * @param javaClassName
+	 * @param aJavaClassName
 	 *            Wert für das Attribut javaClassName.
 	 */
-	public void setJavaClassName(String javaClassName) {
-		this.javaClassName = javaClassName;
+	public void setJavaClassName(String aJavaClassName) {
+		javaClassName = aJavaClassName;
 	}
 
 	@Override

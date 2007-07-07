@@ -29,7 +29,7 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
 		ModelItem {
 
-	protected T owner;
+	private T owner;
 
 	/**
 	 * @return the owner
@@ -42,8 +42,8 @@ public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
 	 * @param owner
 	 *            the owner to set
 	 */
-	public void setOwner(T owner) {
-		this.owner = owner;
+	public void setOwner(T aOwner) {
+		owner = aOwner;
 	}
 
 	/**
@@ -61,13 +61,13 @@ public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
 			aName = owner.checkName(aName);
 		}
 
-		if (!aName.equals(name)) {
+		if (!aName.equals(getName())) {
 
 			owner.checkNameAlreadyExists(this, aName);
 
 			generateRenameHistoryCommand(aName);
 
-			name = aName;
+			setName(aName);
 		}
 
 	}

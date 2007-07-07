@@ -53,11 +53,11 @@ public abstract class Dialect {
 	}
 
 	/**
-	 * @param caseSensitive
+	 * @param aCaseSensitive
 	 *            the caseSensitive to set
 	 */
-	public void setCaseSensitive(boolean caseSensitive) {
-		this.caseSensitive = caseSensitive;
+	public void setCaseSensitive(boolean aCaseSensitive) {
+		caseSensitive = aCaseSensitive;
 	}
 
 	/**
@@ -68,11 +68,11 @@ public abstract class Dialect {
 	}
 
 	/**
-	 * @param maxObjectNameLength
+	 * @param aMaxObjectNameLength
 	 *            the maxObjectNameLength to set
 	 */
-	public void setMaxObjectNameLength(int maxObjectNameLength) {
-		this.maxObjectNameLength = maxObjectNameLength;
+	public void setMaxObjectNameLength(int aMaxObjectNameLength) {
+		maxObjectNameLength = aMaxObjectNameLength;
 	}
 
 	/**
@@ -83,11 +83,11 @@ public abstract class Dialect {
 	}
 
 	/**
-	 * @param spacesAllowedInObjectNames
+	 * @param aSpacesAllowedInObjectNames
 	 *            the spacesAllowedInObjectNames to set
 	 */
-	public void setSpacesAllowedInObjectNames(boolean spacesAllowedInObjectNames) {
-		this.spacesAllowedInObjectNames = spacesAllowedInObjectNames;
+	public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
+		spacesAllowedInObjectNames = aSpacesAllowedInObjectNames;
 	}
 
 	/**
@@ -125,11 +125,11 @@ public abstract class Dialect {
 	}
 
 	/**
-	 * @param nullablePrimaryKeyAllowed
+	 * @param aNullablePrimaryKeyAllowed
 	 *            the nullablePrimaryKeyAllowed to set
 	 */
-	public void setNullablePrimaryKeyAllowed(boolean nullablePrimaryKeyAllowed) {
-		this.nullablePrimaryKeyAllowed = nullablePrimaryKeyAllowed;
+	public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
+		nullablePrimaryKeyAllowed = aNullablePrimaryKeyAllowed;
 	}
 
 	/**
@@ -140,11 +140,11 @@ public abstract class Dialect {
 	}
 
 	/**
-	 * @param castType
+	 * @param aCastType
 	 *            the castType to set
 	 */
-	public void setCastType(NameCastType castType) {
-		this.castType = castType;
+	public void setCastType(NameCastType aCastType) {
+		castType = aCastType;
 	}
 
 	/**

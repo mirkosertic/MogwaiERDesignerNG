@@ -331,21 +331,4 @@ public class DefaultValueEditorView extends JPanel {
 
 		return this.m_cancelbutton;
 	}
-
-	/**
-	 * Test main method.
-	 */
-	public static void main(String args[]) {
-
-		JFrame test = new JFrame("Test for DefaultValueEditorView");
-		test.setContentPane(new DefaultValueEditorView());
-		test.addWindowListener(new WindowAdapter() {
-
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-		test.pack();
-		test.show();
-	}
 }

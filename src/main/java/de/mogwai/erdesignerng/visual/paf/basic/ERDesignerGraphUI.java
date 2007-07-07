@@ -105,8 +105,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 				graph.repaint();
 				
 				return false;
-			} else
+			} else {
 				editingComponent = null;
+			}
 		}
 		return false;
 	}

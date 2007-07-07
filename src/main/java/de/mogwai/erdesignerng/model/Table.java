@@ -70,32 +70,40 @@ public class Table extends OwnedModelItem<Model> implements
 	public void addIndex(Model aModel, Index aIndex)
 			throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		if (owner != null) {
-			ModelUtilities.checkNameAndExistance(indexes, aIndex, owner
+		Model theOwner = getOwner();
+		if (theOwner != null) {
+			ModelUtilities.checkNameAndExistance(indexes, aIndex, theOwner
 					.getDialect());
 		}
 
 		aIndex.setOwner(this);
+
 		indexes.add(aIndex);
 
-		if (owner != null) {
-			getOwner().getModelHistory().createAddIndexCommand(aIndex);
+		if (theOwner != null) {
+			theOwner.getModelHistory().createAddIndexCommand(aIndex);
 		}
 	}
 
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
+		
+		Model theOwner = getOwner();
+		
 		if (aSender instanceof Attribute) {
 			ModelUtilities
-					.checkExistance(attributes, aName, owner.getDialect());
+					.checkExistance(attributes, aName, theOwner.getDialect());
 		}
 		if (aSender instanceof Index) {
-			ModelUtilities.checkExistance(indexes, aName, owner.getDialect());
+			ModelUtilities.checkExistance(indexes, aName, theOwner.getDialect());
 		}
 
 	}
 
 	public void delete(ModelItem aSender) throws CannotDeleteException {
+
+		Model theOwner = getOwner();
+		
 		if (aSender instanceof Attribute) {
 			if (attributes.size() == 1) {
 				throw new CannotDeleteException(
@@ -104,7 +112,7 @@ public class Table extends OwnedModelItem<Model> implements
 
 			Attribute theAttribute = (Attribute) aSender;
 
-			if (owner.isUsedByRelations(theAttribute)) {
+			if (theOwner.isUsedByRelations(theAttribute)) {
 				throw new CannotDeleteException(
 						"Attribute in use by relations!");
 			}
@@ -129,14 +137,16 @@ public class Table extends OwnedModelItem<Model> implements
 
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
-		if (owner != null) {
-			owner.getModelHistory().createRenameTableCommand(this, aNewName);
+		Model theOwner = getOwner();		
+		if (theOwner != null) {
+			theOwner.getModelHistory().createRenameTableCommand(this, aNewName);
 		}
 	}
 
 	public String checkName(String aName) throws ElementInvalidNameException {
-		if (owner != null) {
-			return owner.checkName(aName);
+		Model theOwner = getOwner();		
+		if (theOwner != null) {
+			return theOwner.checkName(aName);
 		}
 
 		return aName;
@@ -144,8 +154,9 @@ public class Table extends OwnedModelItem<Model> implements
 
 	@Override
 	protected void generateDeleteCommand() {
-		if (owner != null) {
-			owner.getModelHistory().createDeleteCommand(this);
+		Model theOwner = getOwner();		
+		if (theOwner != null) {
+			theOwner.getModelHistory().createDeleteCommand(this);
 		}
 	}
 
@@ -154,19 +165,19 @@ public class Table extends OwnedModelItem<Model> implements
 	}
 
 	public boolean isForeignKey(Attribute aAttribute) {
-		return owner.isUsedByRelations(aAttribute);
+		return getOwner().isUsedByRelations(aAttribute);
 	}
 
 	public IndexList getIndexes() {
 		return indexes;
 	}
 
-	public void setIndexes(IndexList indexes) {
-		this.indexes = indexes;
+	public void setIndexes(IndexList aIndexes) {
+		indexes = aIndexes;
 	}
 
-	public void setAttributes(AttributeList attributes) {
-		this.attributes = attributes;
+	public void setAttributes(AttributeList aAttributes) {
+		attributes = aAttributes;
 	}
 
 	public Index findPrimaryKey() {
