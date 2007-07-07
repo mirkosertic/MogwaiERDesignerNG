@@ -73,15 +73,17 @@ public class Relation extends OwnedModelItem<Model> {
 
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
-		if (owner != null) {
-			owner.getModelHistory().createRenameRelationCommand(this, aNewName);
+		Model theOwner = getOwner();
+		if (theOwner != null) {
+			theOwner.getModelHistory().createRenameRelationCommand(this, aNewName);
 		}
 	}
 
 	@Override
 	protected void generateDeleteCommand() {
-		if (owner != null) {
-			owner.getModelHistory().createDeleteCommand(this);
+		Model theOwner = getOwner();		
+		if (theOwner != null) {
+			theOwner.getModelHistory().createDeleteCommand(this);
 		}
 	}
 
@@ -96,16 +98,16 @@ public class Relation extends OwnedModelItem<Model> {
 		return onDelete;
 	}
 
-	public void setOnDelete(CascadeType onDelete) {
-		this.onDelete = onDelete;
+	public void setOnDelete(CascadeType aOnDelete) {
+		onDelete = aOnDelete;
 	}
 
 	public CascadeType getOnUpdate() {
 		return onUpdate;
 	}
 
-	public void setOnUpdate(CascadeType onUpdate) {
-		this.onUpdate = onUpdate;
+	public void setOnUpdate(CascadeType aOnUpdate) {
+		onUpdate = aOnUpdate;
 	}
 
 }

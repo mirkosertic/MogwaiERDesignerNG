@@ -41,8 +41,8 @@ public class DefaultValue extends OwnedModelItem<Model> {
 	 * @param datatype
 	 *            Wert für das Attribut datatype.
 	 */
-	public void setDatatype(String datatype) {
-		this.datatype = datatype;
+	public void setDatatype(String aDatatype) {
+		datatype = aDatatype;
 	}
 
 	@Override

@@ -18,7 +18,7 @@ import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 public abstract class JDBCReverseEngineeringStrategy {
 
-	protected Dialect dialect;
+	private Dialect dialect;
 
 	protected JDBCReverseEngineeringStrategy(Dialect aDialect) {
 		dialect = aDialect;

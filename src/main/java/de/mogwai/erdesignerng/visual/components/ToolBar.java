@@ -23,17 +23,19 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 public class ToolBar extends JToolBar {
-	
+
+	@Override
 	public JButton add(Action aAction) {
 		Icon theIcon = (Icon) aAction.getValue(Action.SMALL_ICON);
 		if (theIcon != null) {
 			JButton theButton = new JButton(theIcon);
-			theButton.setToolTipText((String)aAction.getValue(Action.SHORT_DESCRIPTION));
+			theButton.setToolTipText((String) aAction
+					.getValue(Action.SHORT_DESCRIPTION));
 			add(theButton);
-			
+
 			return theButton;
 		}
-		
+
 		return super.add(aAction);
 	}
 

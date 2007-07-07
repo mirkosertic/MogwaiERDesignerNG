@@ -30,11 +30,11 @@ public abstract class ModelItem {
 
 	public static final String PROPERTY_REMARKS = "REMARKS";
 
-	protected String systemId = ModelUtilities.createSystemIdFor(this);
+	private String systemId = ModelUtilities.createSystemIdFor(this);
 
-	protected String name;
+	private String name;
 
-	protected HashMap<String, String> properties = new HashMap<String, String>();
+	private HashMap<String, String> properties = new HashMap<String, String>();
 
 	/**
 	 * Get the name.
@@ -51,8 +51,8 @@ public abstract class ModelItem {
 	 * @param name
 	 *            the name to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String aName) {
+		name = aName;
 	}
 
 	/**
@@ -66,16 +66,16 @@ public abstract class ModelItem {
 	 * @param systemId
 	 *            the systemId to set
 	 */
-	public void setSystemId(String systemId) {
-		this.systemId = systemId;
+	public void setSystemId(String aSystemId) {
+		systemId = aSystemId;
 	}
 
 	public HashMap<String, String> getProperties() {
 		return properties;
 	}
 
-	public void setProperties(HashMap<String, String> properties) {
-		this.properties = properties;
+	public void setProperties(HashMap<String, String> aProperties) {
+		properties = aProperties;
 	}
 
 	public void setProperty(String aName, String aValue) {

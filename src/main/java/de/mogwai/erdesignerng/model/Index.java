@@ -32,29 +32,31 @@ public class Index extends OwnedModelItem<Table> {
 		return attributes;
 	}
 
-	public void setAttributes(AttributeList attributes) {
-		this.attributes = attributes;
+	public void setAttributes(AttributeList aAttributes) {
+		attributes = aAttributes;
 	}
 
 	public IndexType getIndexType() {
 		return indexType;
 	}
 
-	public void setIndexType(IndexType indexType) {
-		this.indexType = indexType;
+	public void setIndexType(IndexType aIndexType) {
+		indexType = aIndexType;
 	}
 
 	@Override
 	protected void generateDeleteCommand() {
-		if (owner != null) {
-			owner.getOwner().getModelHistory().createDeleteCommand(this);
+		Table theOwner = getOwner();
+		if (theOwner != null) {
+			theOwner.getOwner().getModelHistory().createDeleteCommand(this);
 		}
 	}
 
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
-		if (owner != null) {
-			owner.getOwner().getModelHistory().createRenameIndexCommand(owner,
+		Table theOwner = getOwner();
+		if (theOwner != null) {
+			theOwner.getOwner().getModelHistory().createRenameIndexCommand(theOwner,
 					this, aNewName);
 		}
 	}
