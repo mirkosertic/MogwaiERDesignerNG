@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="src/main/libs/forms-1.0.5.jar"/>
 	<classpathentry kind="lib" path="src/main/libs/jgraph.jar" sourcepath="C:/jgraph/src"/>
 	<classpathentry kind="lib" path="src/main/libs/kunststoff.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MogwaiDataBinding"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

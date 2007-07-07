@@ -25,7 +25,8 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClonable<DefaultValue> {
+public class DefaultValue extends OwnedModelItem<Model> implements
+		ModelItemClonable<DefaultValue> {
 
 	private String datatype;
 
@@ -49,23 +50,16 @@ public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClon
 	}
 
 	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-	}
-
-	@Override
-	protected void generateDeleteCommand() {
-	}
-	
-	@Override
 	public DefaultValue clone() {
 		DefaultValue theValue = new DefaultValue();
 		theValue.setName(getName());
 		theValue.setDatatype(getDatatype());
 		return theValue;
 	}
-	
-	public void restoreFrom(DefaultValue aValue) throws ElementAlreadyExistsException, ElementInvalidNameException {
-		renameTo(aValue.getName());
+
+	public void restoreFrom(DefaultValue aValue)
+			throws ElementAlreadyExistsException, ElementInvalidNameException {
+		setName(aValue.getName());
 		setDatatype(aValue.getDatatype());
 	}
 }

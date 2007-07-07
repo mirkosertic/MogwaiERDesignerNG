@@ -28,6 +28,8 @@ import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import de.mogwai.erdesignerng.visual.cells.TableCell;
+
 public class ERDesignerGraph extends JGraph {
 
 	public class MyMarqueeHandler extends BasicMarqueeHandler {
@@ -59,6 +61,7 @@ public class ERDesignerGraph extends JGraph {
 
 	protected JPopupMenu createPopupMenu(Point aPoint, Object aCell) {
 
+		if (aCell instanceof TableCell)
 		if (aCell != null) {
 			System.out.println(aCell.getClass());
 		} else {

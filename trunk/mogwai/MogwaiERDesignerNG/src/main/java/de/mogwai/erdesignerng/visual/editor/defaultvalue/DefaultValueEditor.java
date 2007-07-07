@@ -45,10 +45,10 @@ public class DefaultValueEditor extends BaseEditor {
 	private BindingInfo<DefaultValue> bindingInfo = new BindingInfo<DefaultValue>();
 
 	private DefaultValueEditorView editingView;
-	
+
 	private Model model;
-	
-	private Map<String,DefaultValue> knownValues = new HashMap<String,DefaultValue>();
+
+	private Map<String, DefaultValue> knownValues = new HashMap<String, DefaultValue>();
 
 	/**
 	 * @param parent
@@ -57,14 +57,14 @@ public class DefaultValueEditor extends BaseEditor {
 		super(aParent);
 
 		model = aModel;
-		
+
 		initialize();
 
 		defaultValuesListModel = new DefaultListModel();
 		for (DefaultValue theValue : aModel.getDefaultValues()) {
-			
+
 			DefaultValue theClone = theValue.clone();
-			
+
 			knownValues.put(theClone.getName(), theClone);
 			defaultValuesListModel.addElement(theValue);
 		}
@@ -169,9 +169,10 @@ public class DefaultValueEditor extends BaseEditor {
 		}
 
 		bindingInfo.model2view();
-		
+
 		editingView.getDefaultValueList().invalidate();
-		editingView.getDefaultValueList().setSelectedValue(bindingInfo.getDefaultModel(), true);
+		editingView.getDefaultValueList().setSelectedValue(
+				bindingInfo.getDefaultModel(), true);
 	}
 
 	private void handleClose() {
@@ -195,16 +196,16 @@ public class DefaultValueEditor extends BaseEditor {
 		bindingInfo.setDefaultModel(new DefaultValue());
 		updateEditFields();
 	}
-	
+
 	private void handleUpdate() {
 
 		DefaultValue theModel = bindingInfo.getDefaultModel();
 		if (bindingInfo.validate().size() == 0) {
 			bindingInfo.view2model();
-			
+
 			if (!defaultValuesListModel.contains(theModel)) {
-				
-				if (model.getDefaultValues().findByName(theModel.getName())!= null) {
+
+				if (model.getDefaultValues().findByName(theModel.getName()) != null) {
 					displayErrorMessage("Name already in use!");
 					return;
 				}
@@ -215,20 +216,21 @@ public class DefaultValueEditor extends BaseEditor {
 			updateEditFields();
 		}
 	}
-	
+
 	private void handleRename() {
 	}
 
 	private void handleDelete() {
 	}
-	
-	public void applyValues(Model aModel) throws ElementAlreadyExistsException, ElementInvalidNameException {
-		
+
+	public void applyValues(Model aModel) throws ElementAlreadyExistsException,
+			ElementInvalidNameException {
+
 		DefaultValueList theList = aModel.getDefaultValues();
-		
-		for(String theKey : knownValues.keySet()) {
+
+		for (String theKey : knownValues.keySet()) {
 			DefaultValue theValue = knownValues.get(theKey);
-			
+
 			DefaultValue theInModel = theList.findByName(theKey);
 			if (theInModel != null) {
 				theInModel.restoreFrom(theValue);

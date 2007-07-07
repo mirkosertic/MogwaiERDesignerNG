@@ -51,10 +51,6 @@ public class Table extends OwnedModelItem<Model> implements
 
 		aAttribute.setOwner(this);
 		attributes.add(aAttribute);
-
-		if (getOwner() != null) {
-			getOwner().getModelHistory().createAddAttributeCommand(aAttribute);
-		}
 	}
 
 	/**
@@ -79,10 +75,6 @@ public class Table extends OwnedModelItem<Model> implements
 		aIndex.setOwner(this);
 
 		indexes.add(aIndex);
-
-		if (theOwner != null) {
-			theOwner.getModelHistory().createAddIndexCommand(aIndex);
-		}
 	}
 
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
@@ -136,14 +128,6 @@ public class Table extends OwnedModelItem<Model> implements
 
 	}
 
-	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getModelHistory().createRenameTableCommand(this, aNewName);
-		}
-	}
-
 	public String checkName(String aName) throws ElementInvalidNameException {
 		Model theOwner = getOwner();
 		if (theOwner != null) {
@@ -151,14 +135,6 @@ public class Table extends OwnedModelItem<Model> implements
 		}
 
 		return aName;
-	}
-
-	@Override
-	protected void generateDeleteCommand() {
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getModelHistory().createDeleteCommand(this);
-		}
 	}
 
 	public AttributeList getAttributes() {
@@ -179,16 +155,5 @@ public class Table extends OwnedModelItem<Model> implements
 
 	public void setAttributes(AttributeList aAttributes) {
 		attributes = aAttributes;
-	}
-
-	public Index findPrimaryKey() {
-
-		for (Index theIndex : indexes) {
-			if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
-				return theIndex;
-			}
-		}
-
-		return null;
 	}
 }

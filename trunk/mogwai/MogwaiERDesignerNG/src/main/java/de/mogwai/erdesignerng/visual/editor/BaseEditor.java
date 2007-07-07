@@ -111,8 +111,9 @@ public class BaseEditor extends JDialog implements DialogConstants {
 
 		super.setVisible(true);
 	}
-	
+
 	protected void displayErrorMessage(String aMessage) {
-		JOptionPane.showMessageDialog(this, aMessage,"Error",JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, aMessage, "Error",
+				JOptionPane.ERROR_MESSAGE);
 	}
 }
