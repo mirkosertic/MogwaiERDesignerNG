@@ -172,31 +172,31 @@ public class Model implements OwnedModelItemVerifier {
 		return domains;
 	}
 
-	public void setDomains(DomainList domains) {
-		this.domains = domains;
+	public void setDomains(DomainList aDomains) {
+		domains = aDomains;
 	}
 
 	public RelationList getRelations() {
 		return relations;
 	}
 
-	public void setRelations(RelationList relations) {
-		this.relations = relations;
+	public void setRelations(RelationList aRelations) {
+		relations = aRelations;
 	}
 
 	public TableList getTables() {
 		return tables;
 	}
 
-	public void setTables(TableList tables) {
-		this.tables = tables;
+	public void setTables(TableList aTables) {
+		tables = aTables;
 	}
 
 	public DefaultValueList getDefaultValues() {
 		return defaultValues;
 	}
 
-	public void setDefaultValues(DefaultValueList defaultValues) {
-		this.defaultValues = defaultValues;
+	public void setDefaultValues(DefaultValueList aDefaultValues) {
+		defaultValues = aDefaultValues;
 	}
 }

@@ -44,7 +44,7 @@ import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 
 public class TableCellView extends VertexView {
 
-	protected static MyRenderer renderer = new MyRenderer();
+	private static MyRenderer renderer = new MyRenderer();
 
 	public TableCellView(TableCell aCell) {
 		super(aCell);
@@ -73,18 +73,22 @@ public class TableCellView extends VertexView {
 
 		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
 				int aHeight) {
-			if (this.roundedRect)
+			if (this.roundedRect) {
 				aGraphics.fillRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
-			else
-				aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
+				return;
+			}
+			
+			aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
 		}
 
 		private void drawRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
 				int aHeight) {
-			if (this.roundedRect)
+			if (this.roundedRect) {
 				aGraphics.drawRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
-			else
-				aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
+				return;
+			}
+
+			aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
 		}
 
 		public void paint(Graphics aGraphics) {
@@ -181,8 +185,9 @@ public class TableCellView extends VertexView {
 			int theXTextOffset = 30;
 
 			int theLength = theMetrics.stringWidth(table.getName());
-			if (theLength > theMaxX)
+			if (theLength > theMaxX) {
 				theMaxX = theLength + 5;
+			}
 
 			List<Attribute> theAllAttributes = new Vector<Attribute>();
 			theAllAttributes.addAll(table.getAttributes());
@@ -197,8 +202,9 @@ public class TableCellView extends VertexView {
 					String theText = theAttribute.getName();
 
 					theLength = theMetrics.stringWidth(theText);
-					if (theLength + theXTextOffset > theMaxX)
+					if (theLength + theXTextOffset > theMaxX) {
 						theMaxX = theLength + theXTextOffset;
+					}
 
 					theYOffset += theMetrics.getHeight();
 				}
@@ -209,8 +215,9 @@ public class TableCellView extends VertexView {
 				String theText = theAttribute.getName();
 
 				theLength = theMetrics.stringWidth(theText);
-				if (theLength + theXTextOffset > theMaxX)
+				if (theLength + theXTextOffset > theMaxX) {
 					theMaxX = theLength + theXTextOffset;
+				}
 
 				theYOffset += theMetrics.getHeight();
 			}
@@ -218,8 +225,9 @@ public class TableCellView extends VertexView {
 			theYOffset += 8;
 			theMaxX += 8;
 
-			if (theYOffset > theMaxY)
+			if (theYOffset > theMaxY) {
 				theMaxY = theYOffset;
+			}
 
 			return new Dimension(theMaxX, theMaxY);
 
@@ -240,5 +248,4 @@ public class TableCellView extends VertexView {
 	public GraphCellEditor getEditor() {
 		return new CellEditorFactory();
 	}
-
 }

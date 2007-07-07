@@ -32,14 +32,14 @@ public class Attribute extends OwnedModelItem<Table> {
 
 	public void setDefinition(Domain aDomain, boolean aNullable,
 			String aDefaultValue) {
-		if (owner != null) {
+		if (getOwner() != null) {
 			if (!aDomain.equals(domain) || (nullable != aNullable)) {
 				nullable = aNullable;
 				domain = aDomain;
 				defaultValue = aDefaultValue;
 
-				owner.getOwner().getModelHistory()
-						.createAttributeChangedCommand(owner, getName(),
+				getOwner().getOwner().getModelHistory()
+						.createAttributeChangedCommand(getOwner(), getName(),
 								aDomain, aNullable, aDefaultValue);
 			}
 		} else {
@@ -64,16 +64,18 @@ public class Attribute extends OwnedModelItem<Table> {
 
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
-		if (owner != null) {
-			owner.getOwner().getModelHistory().createRenameAttributeCommand(
-					owner, this, aNewName);
+		Table theOwner = getOwner();
+		if (theOwner != null) {
+			theOwner.getOwner().getModelHistory().createRenameAttributeCommand(
+					theOwner, this, aNewName);
 		}
 	}
 
 	@Override
 	protected void generateDeleteCommand() {
-		if (owner != null) {
-			owner.getOwner().getModelHistory().createDeleteCommand(this);
+		Table theOwner = getOwner();
+		if (theOwner != null) {
+			theOwner.getOwner().getModelHistory().createDeleteCommand(this);
 		}
 	}
 
@@ -83,7 +85,7 @@ public class Attribute extends OwnedModelItem<Table> {
 	 * @return true if yes, else false
 	 */
 	public boolean isForeignKey() {
-		return owner.isForeignKey(this);
+		return getOwner().isForeignKey(this);
 	}
 
 	/**

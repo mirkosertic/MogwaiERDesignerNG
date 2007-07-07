@@ -37,7 +37,7 @@ public class BaseEditor extends JDialog implements DialogConstants {
 
 	private javax.swing.JPanel jContentPane = null;
 
-	protected JFrame parent;
+	private JFrame parent;
 
 	private List<CellEditorListener> listener = new Vector<CellEditorListener>();
 
@@ -47,16 +47,14 @@ public class BaseEditor extends JDialog implements DialogConstants {
 	 * @param parent
 	 *            the parent Frame
 	 */
-	public BaseEditor(JFrame parent) {
-		super(parent, true);
+	public BaseEditor(JFrame aParent) {
+		super(aParent, true);
 		initialize();
-		parent = parent;
+		parent = aParent;
 	}
 
 	/**
-	 * This method initializes this
-	 * 
-	 * @return void
+	 * This method initializes this.
 	 */
 	private void initialize() {
 		setSize(300, 200);
@@ -66,7 +64,7 @@ public class BaseEditor extends JDialog implements DialogConstants {
 	}
 
 	/**
-	 * This method initializes jContentPane
+	 * This method initializes jContentPane.
 	 * 
 	 * @return javax.swing.JPanel
 	 */

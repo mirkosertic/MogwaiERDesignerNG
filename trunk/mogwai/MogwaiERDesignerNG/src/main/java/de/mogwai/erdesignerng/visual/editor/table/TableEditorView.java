@@ -1000,10 +1000,12 @@ public class TableEditorView extends JPanel {
 	 */
 	public String getGroup1Value() {
 
-		if (this.getUniqueIndex().isSelected())
+		if (this.getUniqueIndex().isSelected()) {
 			return "U";
-		if (this.getNotUniqueIndex().isSelected())
+		}
+		if (this.getNotUniqueIndex().isSelected()) {
 			return "NU";
+		}
 		return null;
 	}
 
