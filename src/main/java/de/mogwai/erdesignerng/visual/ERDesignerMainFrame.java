@@ -60,28 +60,29 @@ import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
 import de.mogwai.erdesignerng.visual.paf.basic.ERDesignerGraphUI;
 
 public class ERDesignerMainFrame extends JFrame {
-	
+
 	private class ZoomInfo {
-		
+
 		private String description;
+
 		private double value;
-		
-		public ZoomInfo(String aDescription,double aValue) {
+
+		public ZoomInfo(String aDescription, double aValue) {
 			description = aDescription;
 			value = aValue;
 		}
-		
+
 		public double getValue() {
 			return value;
 		}
-		
+
 		@Override
 		public String toString() {
 			return description;
 		}
 	}
-	
-	private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%",1);
+
+	private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
 	private GraphModel graphModel;
 
@@ -152,9 +153,11 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private Action viewAction = new GenericAction("View");
 
-	private Action zoomAction = new GenericAction("Zoom",new ActionListener() {
+	private Action zoomAction = new GenericAction("Zoom", new ActionListener() {
+
 		public void actionPerformed(ActionEvent aEvent) {
-			commandSetZoom((ZoomInfo) ((JComboBox)aEvent.getSource()).getSelectedItem());
+			commandSetZoom((ZoomInfo) ((JComboBox) aEvent.getSource())
+					.getSelectedItem());
 		}
 	});
 
@@ -187,8 +190,9 @@ public class ERDesignerMainFrame extends JFrame {
 
 		DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
 		theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
-		for (int i=9;i>0;i--) {
-			theZoomModel.addElement(new ZoomInfo(i*10+" %",((double)i)/(double)10));
+		for (int i = 9; i > 0; i--) {
+			theZoomModel.addElement(new ZoomInfo(i * 10 + " %", ((double) i)
+					/ (double) 10));
 		}
 		zoomBox.setPreferredSize(new Dimension(100, 21));
 		zoomBox.setMaximumSize(new Dimension(100, 21));
@@ -250,19 +254,29 @@ public class ERDesignerMainFrame extends JFrame {
 
 			layoutCache.insert(theCell);
 		}
-		
+
 		commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
 	}
 
 	protected void commandShowDomainEditor() {
 		DomainEditor theEditor = new DomainEditor(model, this);
 		if (theEditor.showModal() == DomainEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues(model);
+			} catch (Exception e) {
+				logException(e);
+			}
 		}
 	}
 
 	protected void commandShowDefaultValuesEditor() {
 		DefaultValueEditor theEditor = new DefaultValueEditor(model, this);
 		if (theEditor.showModal() == DomainEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues(model);
+			} catch (Exception e) {
+				logException(e);
+			}
 		}
 	}
 
@@ -309,7 +323,7 @@ public class ERDesignerMainFrame extends JFrame {
 
 		}
 	}
-	
+
 	protected void commandSetZoom(ZoomInfo aZoomInfo) {
 		graph.setScale(aZoomInfo.getValue());
 		zoomBox.setSelectedItem(aZoomInfo);

@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.CellEditorListener;
 
 /**
@@ -85,9 +86,6 @@ public class BaseEditor extends JDialog implements DialogConstants {
 	public void setModalResult(int aModalResult) {
 		modalResult = aModalResult;
 		super.setVisible(false);
-
-		System.out.println("Return");
-
 	}
 
 	public int showModal() {
@@ -112,5 +110,9 @@ public class BaseEditor extends JDialog implements DialogConstants {
 		}
 
 		super.setVisible(true);
+	}
+	
+	protected void displayErrorMessage(String aMessage) {
+		JOptionPane.showMessageDialog(this, aMessage,"Error",JOptionPane.ERROR_MESSAGE);
 	}
 }

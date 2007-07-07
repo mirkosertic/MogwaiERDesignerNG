@@ -28,44 +28,43 @@ import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
-
 public class ERDesignerGraph extends JGraph {
-	
+
 	public class MyMarqueeHandler extends BasicMarqueeHandler {
 
 		@Override
-		public boolean isForceMarqueeEvent(MouseEvent e) { 
-		       if (SwingUtilities.isRightMouseButton(e)) { 
-		             return true; 
-		       }
-		       return super.isForceMarqueeEvent(e); 
-		 } 
-		
+		public boolean isForceMarqueeEvent(MouseEvent e) {
+			if (SwingUtilities.isRightMouseButton(e)) {
+				return true;
+			}
+			return super.isForceMarqueeEvent(e);
+		}
+
 		@Override
-		 public void mousePressed(final MouseEvent e) { 
-		       if (SwingUtilities.isRightMouseButton(e)) { 
-		             Object cell = getFirstCellForLocation(e.getX(), e.getY()); 
-		             JPopupMenu menu = createPopupMenu(e.getPoint(), cell); 
-		             menu.show(ERDesignerGraph.this, e.getX(), e.getY()); 
-		       } else { 
-		             super.mousePressed(e); 
-		       } 
-		 }		
+		public void mousePressed(final MouseEvent e) {
+			if (SwingUtilities.isRightMouseButton(e)) {
+				Object cell = getFirstCellForLocation(e.getX(), e.getY());
+				JPopupMenu menu = createPopupMenu(e.getPoint(), cell);
+				menu.show(ERDesignerGraph.this, e.getX(), e.getY());
+			} else {
+				super.mousePressed(e);
+			}
+		}
 	}
 
 	public ERDesignerGraph(GraphModel aModel, GraphLayoutCache aLayoutCache) {
 		super(aModel, aLayoutCache);
 		setMarqueeHandler(new MyMarqueeHandler());
 	}
-	
-	protected JPopupMenu createPopupMenu(Point aPoint,Object aCell) {
-		
-		if (aCell !=null) {
+
+	protected JPopupMenu createPopupMenu(Point aPoint, Object aCell) {
+
+		if (aCell != null) {
 			System.out.println(aCell.getClass());
 		} else {
 			System.out.println("No cell");
 		}
-		
+
 		JPopupMenu theMenu = new JPopupMenu();
 		theMenu.add("Lala");
 		return theMenu;

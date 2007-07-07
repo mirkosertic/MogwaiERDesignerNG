@@ -1,10 +1,6 @@
 package de.mogwai.erdesignerng.visual.editor.defaultvalue;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 

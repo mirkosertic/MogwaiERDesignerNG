@@ -15,23 +15,11 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual.cells.views;
+package de.mogwai.erdesignerng.model;
 
-import org.jgraph.graph.EdgeView;
-import org.jgraph.graph.GraphCellEditor;
+public interface ModelItemClonable<T> extends Cloneable {
 
-import de.mogwai.erdesignerng.visual.cells.RelationCell;
-import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
-
-public class RelationCellView extends EdgeView {
-
-	public RelationCellView(RelationCell aRelation) {
-		super(aRelation);
-	}
-
-	@Override
-	public GraphCellEditor getEditor() {
-		return new CellEditorFactory();
-	}
-
+	T clone();
+	
+	void restoreFrom(T aValue) throws Exception;
 }

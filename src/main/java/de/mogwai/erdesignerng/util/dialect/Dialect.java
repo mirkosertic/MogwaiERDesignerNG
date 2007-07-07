@@ -86,7 +86,8 @@ public abstract class Dialect {
 	 * @param aSpacesAllowedInObjectNames
 	 *            the spacesAllowedInObjectNames to set
 	 */
-	public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
+	public void setSpacesAllowedInObjectNames(
+			boolean aSpacesAllowedInObjectNames) {
 		spacesAllowedInObjectNames = aSpacesAllowedInObjectNames;
 	}
 

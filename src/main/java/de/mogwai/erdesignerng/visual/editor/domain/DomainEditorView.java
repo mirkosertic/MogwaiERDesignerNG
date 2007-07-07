@@ -38,8 +38,6 @@ public class DomainEditorView extends JPanel {
 
 	private javax.swing.JTextField m_declaration;
 
-	private javax.swing.JComboBox m_sql92type;
-
 	private javax.swing.JComboBox m_javatype;
 
 	private javax.swing.JCheckBox m_sequenced;
@@ -198,11 +196,9 @@ public class DomainEditorView extends JPanel {
 
 			m_component_6.add(getComponent_9(), cons.xywh(2, 2, 1, 1));
 			m_component_6.add(getComponent_10(), cons.xywh(2, 4, 1, 1));
-			m_component_6.add(getComponent_11(), cons.xywh(2, 6, 1, 1));
 			m_component_6.add(getComponent_12(), cons.xywh(2, 8, 1, 1));
 			m_component_6.add(getDomainName(), cons.xywh(4, 2, 1, 1));
 			m_component_6.add(getDeclaration(), cons.xywh(4, 4, 1, 1));
-			m_component_6.add(getSql92type(), cons.xywh(4, 6, 1, 1));
 			m_component_6.add(getJavatype(), cons.xywh(4, 8, 1, 1));
 			m_component_6.add(getSequenced(), cons.xywh(4, 10, 1, 1));
 			m_component_6.add(getUpdateButton(), cons.xywh(4, 12, 1, 1));
@@ -242,22 +238,6 @@ public class DomainEditorView extends JPanel {
 		}
 
 		return m_component_10;
-	}
-
-	/**
-	 * Getter method for component Component_11.
-	 * 
-	 * @return the initialized component
-	 */
-	public javax.swing.JLabel getComponent_11() {
-
-		if (m_component_11 == null) {
-			m_component_11 = new javax.swing.JLabel();
-			m_component_11.setName("Component_11");
-			m_component_11.setText("SQL92 - Type :");
-		}
-
-		return m_component_11;
 	}
 
 	/**
@@ -304,21 +284,6 @@ public class DomainEditorView extends JPanel {
 		}
 
 		return m_declaration;
-	}
-
-	/**
-	 * Getter method for component Sql92type.
-	 * 
-	 * @return the initialized component
-	 */
-	public javax.swing.JComboBox getSql92type() {
-
-		if (m_sql92type == null) {
-			m_sql92type = new javax.swing.JComboBox();
-			m_sql92type.setName("Sql92type");
-		}
-
-		return m_sql92type;
 	}
 
 	/**
