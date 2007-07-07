@@ -15,33 +15,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual;
+package de.mogwai.erdesignerng.visual.tools;
 
-import java.awt.geom.Point2D;
+import org.jgraph.graph.BasicMarqueeHandler;
 
-import org.jgraph.JGraph;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphLayoutCache;
-import org.jgraph.graph.GraphModel;
+import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
-import de.mogwai.erdesignerng.visual.tools.BaseTool;
+public abstract class BaseTool extends BasicMarqueeHandler {
 
-public class ERDesignerGraph extends JGraph {
-
-	private BaseTool tool;
-
-	public ERDesignerGraph(GraphModel aModel, GraphLayoutCache aLayoutCache) {
-		super(aModel, aLayoutCache);
-	}
-
-	public void setTool(BaseTool aTool) {
-		setMarqueeHandler(aTool);
-		tool = aTool;
-	}
-
-	public void commandDeleteCell(GraphCell aCell) {
-	}
+	protected ERDesignerGraph graph;
 	
-	public void commandNewTable(Point2D aPoint) {
+	public BaseTool(ERDesignerGraph aGraph) {
+		graph = aGraph;
 	}
 }

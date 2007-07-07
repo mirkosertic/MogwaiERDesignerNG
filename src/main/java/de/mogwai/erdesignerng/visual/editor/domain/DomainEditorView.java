@@ -1,11 +1,12 @@
 package de.mogwai.erdesignerng.visual.editor.domain;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+
+import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * Visual class DomainEditorView.
@@ -111,8 +112,7 @@ public class DomainEditorView extends JPanel {
 		if (m_newbutton == null) {
 			m_newbutton = new javax.swing.JButton();
 			m_newbutton.setActionCommand("New");
-			m_newbutton.setIcon(new ImageIcon(ClassLoader
-					.getSystemResource("de/mogwai/erdesigner/icons/new.png")));
+			m_newbutton.setIcon(IconFactory.getNewIcon());
 			m_newbutton.setName("NewButton");
 			m_newbutton.setText("New");
 		}
@@ -148,9 +148,7 @@ public class DomainEditorView extends JPanel {
 			m_deletebutton = new javax.swing.JButton();
 			m_deletebutton.setActionCommand("Delete");
 			m_deletebutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/delete.png")));
+					.setIcon(IconFactory.getDeleteIcon());
 			m_deletebutton.setName("DeleteButton");
 			m_deletebutton.setText("Delete");
 		}
@@ -329,9 +327,7 @@ public class DomainEditorView extends JPanel {
 			m_updatebutton = new javax.swing.JButton();
 			m_updatebutton.setActionCommand("Update");
 			m_updatebutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/arrow_refresh_small.png")));
+					.setIcon(IconFactory.getUpdateIcon());
 			m_updatebutton.setName("UpdateButton");
 			m_updatebutton.setText("Update");
 		}
@@ -350,9 +346,7 @@ public class DomainEditorView extends JPanel {
 			m_okbutton = new javax.swing.JButton();
 			m_okbutton.setActionCommand("Ok");
 			m_okbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/script_save.png")));
+					.setIcon(IconFactory.getSaveIcon());
 			m_okbutton.setName("OkButton");
 			m_okbutton.setText("Ok");
 		}
@@ -371,9 +365,7 @@ public class DomainEditorView extends JPanel {
 			m_cancelbutton = new javax.swing.JButton();
 			m_cancelbutton.setActionCommand("Cancel");
 			m_cancelbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/cancel.png")));
+					.setIcon(IconFactory.getCancelIcon());
 			m_cancelbutton.setName("CancelButton");
 			m_cancelbutton.setText("Cancel");
 		}

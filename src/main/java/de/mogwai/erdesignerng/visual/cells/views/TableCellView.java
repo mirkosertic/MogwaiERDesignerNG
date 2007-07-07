@@ -37,6 +37,7 @@ import org.jgraph.graph.VertexView;
 
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Table;
+import de.mogwai.erdesignerng.visual.IconFactory;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 
@@ -61,9 +62,7 @@ public class TableCellView extends VertexView {
 
 		private boolean selected;
 
-		private static ImageIcon key = new ImageIcon(MyRenderer.class
-				.getClassLoader().getResource(
-						"de/mogwai/erdesigner/icons/key.gif"));
+		private static ImageIcon key = IconFactory.getKeyIcon();
 
 		public MyRenderer() {
 			setBackground(Color.white);
@@ -132,7 +131,7 @@ public class TableCellView extends VertexView {
 				if (theAttribute.isPrimaryKey()) {
 
 					hasPrimaryKey = true;
-					
+
 					theAllAttributes.remove(theAttribute);
 
 					aGraphics.setColor(Color.red);
