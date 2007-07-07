@@ -20,6 +20,6 @@ package de.mogwai.erdesignerng.model;
 public interface ModelItemClonable<T> extends Cloneable {
 
 	T clone();
-	
+
 	void restoreFrom(T aValue) throws Exception;
 }

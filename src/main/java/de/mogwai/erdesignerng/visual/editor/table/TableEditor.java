@@ -18,10 +18,18 @@
 package de.mogwai.erdesignerng.visual.editor.table;
 
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 
+import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.model.Attribute;
+import de.mogwai.erdesignerng.model.DefaultValue;
+import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
@@ -34,27 +42,48 @@ public class TableEditor extends BaseEditor {
 
 	private Model model;
 
-	private Table currentEditingTable;
+	private TableEditorView editingView;
+	
+	private BindingInfo<Table> tableBindingInfo = new BindingInfo<Table>();
 
-	private TableEditorView view = new TableEditorView();
+	private BindingInfo<Attribute> attributeBindingInfo = new BindingInfo<Attribute>();
+
+	private DefaultListModel attributeListModel = new DefaultListModel();
+
+	private DefaultListModel domainListModel = new DefaultListModel();
+
+	private DefaultComboBoxModel defaultValuesListModel = new DefaultComboBoxModel();
+
+	private Map<String, Attribute> knownValues = new HashMap<String, Attribute>();
 
 	/**
 	 * @param parent
 	 */
-	public TableEditor(JFrame aParent) {
+	public TableEditor(Model aModel, JFrame aParent) {
 		super(aParent);
 		initialize();
-	}
 
-	/**
-	 * Update the domain list.
-	 * 
-	 * The displayed model for domains is updated from the current domain list.
-	 */
-	private void updateDomains() {
-	}
+		model = aModel;
 
-	public void applyChanges(Table aTable) {
+		for (Domain theDomain : aModel.getDomains()) {
+			domainListModel.addElement(theDomain);
+		}
+		editingView.getDomainList().setModel(domainListModel);
+
+		for (DefaultValue theValue : aModel.getDefaultValues()) {
+			defaultValuesListModel.addElement(theValue);
+		}
+		editingView.getDefault().setModel(defaultValuesListModel);
+		
+		tableBindingInfo.addBinding("name", editingView.getEntity_name(),true);
+		tableBindingInfo.configure();
+
+		attributeBindingInfo.addBinding("name", editingView.getAttributeName(),true);
+		attributeBindingInfo.addBinding("domain", editingView.getDomainList(),true);
+		attributeBindingInfo.addBinding("nullable", editingView.getNullable());
+		attributeBindingInfo.addBinding("primaryKey", editingView.getPrimaryKey());
+		attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
+		attributeBindingInfo.configure();
 	}
 
 	/**
@@ -62,29 +91,29 @@ public class TableEditor extends BaseEditor {
 	 */
 	private void initialize() {
 
-		view = new TableEditorView();
-		view.getOkButton().addActionListener(
+		editingView = new TableEditorView();
+		editingView.getOkButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						setModalResult(DialogConstants.MODAL_RESULT_OK);
 					}
 				});
-		view.getCancelButton().addActionListener(
+		editingView.getCancelButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						setModalResult(MODAL_RESULT_CANCEL);
 					}
 				});
-		view.getMainTabbedPane().addChangeListener(
+		editingView.getMainTabbedPane().addChangeListener(
 				new javax.swing.event.ChangeListener() {
 
 					public void stateChanged(javax.swing.event.ChangeEvent e) {
 						commandTabStateChange(e);
 					}
 				});
-		view.getAttributeList().addListSelectionListener(
+		editingView.getAttributeList().addListSelectionListener(
 				new javax.swing.event.ListSelectionListener() {
 
 					public void valueChanged(
@@ -92,83 +121,83 @@ public class TableEditor extends BaseEditor {
 						commandAttributeListValueChanged(e);
 					}
 				});
-		view.getUpButton().addActionListener(
+		editingView.getUpButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandMoveAttributeUp(e);
 					}
 				});
-		view.getDownButton().addActionListener(
+		editingView.getDownButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandMoveAttributeDown(e);
 					}
 				});
-		view.getNewButton().addActionListener(
+		editingView.getNewButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandNewAttribute(e);
 					}
 				});
-		view.getRenameButton().addActionListener(
+		editingView.getRenameButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandRenameAttribute(e);
 					}
 				});
-		view.getDeleteButton().addActionListener(
+		editingView.getDeleteButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandDeleteAttribute(e);
 					}
 				});
-		view.getUpdateAttributeButton().addActionListener(
+		editingView.getUpdateAttributeButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandUpdateAttribute(e);
 					}
 				});
-		view.getPrimaryKey().addItemListener(new java.awt.event.ItemListener() {
+		editingView.getPrimaryKey().addItemListener(new java.awt.event.ItemListener() {
 
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				commandPrimaryKeyItemStateChanged(e);
 			}
 		});
-		view.getUpdateIndexButton().addActionListener(
+		editingView.getUpdateIndexButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandUpdateIndex();
 					}
 				});
-		view.getNewIndexButton().addActionListener(
+		editingView.getNewIndexButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandNewIndex();
 					}
 				});
-		view.getRenameIndexButton().addActionListener(
+		editingView.getRenameIndexButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandRenameIndex();
 					}
 				});
-		view.getDeleteIndexButton().addActionListener(
+		editingView.getDeleteIndexButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandDeleteIndex();
 					}
 				});
-		view.getIndexList().addListSelectionListener(
+		editingView.getIndexList().addListSelectionListener(
 				new javax.swing.event.ListSelectionListener() {
 
 					public void valueChanged(
@@ -176,7 +205,7 @@ public class TableEditor extends BaseEditor {
 						updateEditFields();
 					}
 				});
-		view.getDomainDictionary().addActionListener(
+		editingView.getDomainDictionary().addActionListener(
 				new java.awt.event.ActionListener() {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -184,38 +213,98 @@ public class TableEditor extends BaseEditor {
 					}
 				});
 
-		setContentPane(view);
+		setContentPane(editingView);
 
 		setTitle("Entity editor");
 		pack();
 
-		view.getUpdateIndexButton().setEnabled(false);
+		editingView.getUpdateIndexButton().setEnabled(false);
 
+	}
+
+	public void initializeFor(Table aTable) {
+
+		tableBindingInfo.setDefaultModel(aTable);
+		tableBindingInfo.model2view();
+		
+		editingView.getEntity_name().setName(aTable.getName());
+		for (Attribute theAttribute : aTable.getAttributes()) {
+			
+			Attribute theClone = theAttribute.clone();
+			
+			attributeListModel.addElement(theClone);
+			knownValues.put(theClone.getName(), theClone);
+		}
+		editingView.getAttributeList().setModel(attributeListModel);
+
+		updateEditFields();
 	}
 
 	private void commandTabStateChange(ChangeEvent e) {
 	}
 
 	private void commandUpdateAttribute(java.awt.event.ActionEvent evt) {
-	}
+		Attribute theModel = attributeBindingInfo.getDefaultModel();
+		if (attributeBindingInfo.validate().size() == 0) {
+			attributeBindingInfo.view2model();
 
-	/**
-	 * Select a domain in the domain list by it's name.
-	 * 
-	 * @param name
-	 *            the domain name to be selected
-	 */
-	private void selectDomainByName(String name) {
-	}
+			if (!attributeListModel.contains(theModel)) {
 
-	private void selectDefaultValueByName(String name) {
+				attributeListModel.addElement(theModel);
+				knownValues.put(theModel.getName(), theModel);
+			}
+
+			updateEditFields();
+		}
 	}
 
 	private void updateEditFields() {
+
+		Attribute theValue = attributeBindingInfo.getDefaultModel();
+
+		if (theValue != null) {
+
+			boolean isNew = !attributeListModel.contains(theValue);
+
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(!isNew);
+			editingView.getRenameButton().setEnabled(!isNew);
+			editingView.getDomainList().setEnabled(true);
+			editingView.getAttributeName().setEnabled(isNew);
+			editingView.getNullable().setEnabled(true);
+			editingView.getDefault().setEnabled(true);
+			editingView.getPrimaryKey().setEnabled(true);
+
+		} else {
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(false);
+			editingView.getRenameButton().setEnabled(false);
+			editingView.getDomainList().setEnabled(false);
+			editingView.getAttributeName().setEnabled(false);
+			editingView.getNullable().setEnabled(false);
+			editingView.getDefault().setEnabled(false);
+			editingView.getPrimaryKey().setEnabled(false);
+		}
+
+		attributeBindingInfo.model2view();
+
+		editingView.getAttributeList().invalidate();
+		editingView.getAttributeList().setSelectedValue(
+				attributeBindingInfo.getDefaultModel(), true);
+
 	}
 
 	private void commandAttributeListValueChanged(
-			javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_m_AttributeListValueChanged
+			javax.swing.event.ListSelectionEvent evt) {
+		
+		int index = editingView.getAttributeList().getSelectedIndex();
+		if (index >= 0) {
+			attributeBindingInfo.setDefaultModel((Attribute) attributeListModel
+					.get(index));
+		}
+
+		updateEditFields();
+
 	}
 
 	private void commandRenameAttribute(java.awt.event.ActionEvent evt) {
@@ -225,12 +314,14 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandNewAttribute(java.awt.event.ActionEvent evt) {
+		attributeBindingInfo.setDefaultModel(new Attribute());
+		updateEditFields();
 	}
 
 	private void commandPrimaryKeyActionPerformed(java.awt.event.ActionEvent evt) {
 	}
 
-	private void commandRequiredActionPerformed(java.awt.event.ActionEvent evt) {
+	private void commandNullableActionPerformed(java.awt.event.ActionEvent evt) {
 	}
 
 	private void commandMoveAttributeDown(java.awt.event.ActionEvent evt) {
@@ -254,12 +345,6 @@ public class TableEditor extends BaseEditor {
 	private void commandUpdateIndex() {
 	}
 
-	/**
-	 * Start the domain editing.
-	 * 
-	 * @param e
-	 *            the event that causes the editing
-	 */
 	private void commandStartDomainEditor(ActionEvent e) {
 	}
 }

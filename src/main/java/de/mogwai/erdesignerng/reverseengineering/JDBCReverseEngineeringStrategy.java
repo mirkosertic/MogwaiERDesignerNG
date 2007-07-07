@@ -9,8 +9,6 @@ import de.mogwai.erdesignerng.exception.ReverseEngineeringException;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.CascadeType;
 import de.mogwai.erdesignerng.model.Domain;
-import de.mogwai.erdesignerng.model.Index;
-import de.mogwai.erdesignerng.model.IndexType;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
@@ -160,16 +158,8 @@ public abstract class JDBCReverseEngineeringStrategy {
 			// Reverse engineer primary keys
 			ResultSet thePrimaryKeyResultSet = theMetaData.getPrimaryKeys(null,
 					aSchemaName, aTableName);
-			Index thePrimaryKeyIndex = null;
 			while (thePrimaryKeyResultSet.next()) {
-				if (thePrimaryKeyIndex == null) {
-					thePrimaryKeyIndex = new Index();
-					thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
-					thePrimaryKeyIndex.setName(dialect.getCastType().cast(
-							thePrimaryKeyResultSet.getString("PK_NAME")));
 
-					theTable.getIndexes().add(thePrimaryKeyIndex);
-				}
 				String theColumnName = thePrimaryKeyResultSet
 						.getString("COLUMN_NAME");
 
@@ -181,7 +171,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 									+ " in table " + theTable.getName());
 				}
 
-				thePrimaryKeyIndex.getAttributes().add(theIndexAttribute);
+				theIndexAttribute.setPrimaryKey(true);
 
 			}
 			thePrimaryKeyResultSet.close();

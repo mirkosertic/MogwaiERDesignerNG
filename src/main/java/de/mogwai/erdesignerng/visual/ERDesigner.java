@@ -25,8 +25,6 @@ import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
-import de.mogwai.erdesignerng.model.Index;
-import de.mogwai.erdesignerng.model.IndexType;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
@@ -52,23 +50,13 @@ public final class ERDesigner {
 		Table theTable1 = new Table();
 		theTable1.setName("TABLE1");
 
-		Index thePK = new Index();
-		thePK.setName("TABLE2_P1");
-		thePK.setIndexType(IndexType.PRIMARYKEY);
-
 		for (int i = 0; i < 5; i++) {
 			Attribute theAttribute = new Attribute();
 			theAttribute.setName("a1_" + i);
 			theAttribute.setDefinition(theDomain, true, null);
 
 			theTable1.addAttribute(theModel, theAttribute);
-
-			if (i < 2) {
-				thePK.getAttributes().add(theAttribute);
-			}
 		}
-
-		theTable1.addIndex(theModel, thePK);
 
 		theModel.addTable(theTable1);
 

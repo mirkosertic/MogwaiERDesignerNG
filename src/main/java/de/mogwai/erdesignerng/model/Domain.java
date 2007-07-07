@@ -92,14 +92,6 @@ public class Domain extends OwnedModelItem<Model> implements
 	}
 
 	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-	}
-
-	@Override
-	protected void generateDeleteCommand() {
-	}
-
-	@Override
 	public Domain clone() {
 		Domain theValue = new Domain();
 		theValue.setName(getName());
@@ -111,7 +103,7 @@ public class Domain extends OwnedModelItem<Model> implements
 
 	public void restoreFrom(Domain aValue)
 			throws ElementAlreadyExistsException, ElementInvalidNameException {
-		renameTo(aValue.getName());
+		setName(aValue.getName());
 		setDatatype(aValue.getDatatype());
 		setSequenced(aValue.isSequenced());
 		setJavaClassName(aValue.getJavaClassName());

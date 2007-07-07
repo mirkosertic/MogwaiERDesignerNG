@@ -111,7 +111,8 @@ public class Model implements OwnedModelItemVerifier {
 	public void addDefaultValue(DefaultValue aDefaultValue)
 			throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		ModelUtilities.checkNameAndExistance(defaultValues, aDefaultValue, dialect);
+		ModelUtilities.checkNameAndExistance(defaultValues, aDefaultValue,
+				dialect);
 
 		aDefaultValue.setOwner(this);
 		defaultValues.add(aDefaultValue);

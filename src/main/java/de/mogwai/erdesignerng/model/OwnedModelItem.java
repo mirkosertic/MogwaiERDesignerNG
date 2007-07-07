@@ -18,8 +18,6 @@
 package de.mogwai.erdesignerng.model;
 
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
-import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
-import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * A model item which is owned by another item.
@@ -47,43 +45,11 @@ public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
 	}
 
 	/**
-	 * Rename this element.
-	 * 
-	 * @param aName
-	 *            the new name.
-	 * @throws ElementAlreadyExistsException
-	 * @throws ElementInvalidNameException
-	 */
-	public void renameTo(String aName) throws ElementAlreadyExistsException,
-			ElementInvalidNameException {
-
-		if (owner != null) {
-			aName = owner.checkName(aName);
-		}
-
-		if (!aName.equals(getName())) {
-
-			owner.checkNameAlreadyExists(this, aName);
-
-			generateRenameHistoryCommand(aName);
-
-			setName(aName);
-		}
-
-	}
-
-	protected abstract void generateRenameHistoryCommand(String aNewName);
-
-	protected abstract void generateDeleteCommand();
-
-	/**
 	 * Delete this element.
 	 * 
 	 * @throws CannotDeleteException
 	 */
 	public void delete() throws CannotDeleteException {
 		owner.delete(this);
-
-		generateDeleteCommand();
 	}
 }

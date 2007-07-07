@@ -6,7 +6,6 @@ import java.util.Vector;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Index;
-import de.mogwai.erdesignerng.model.IndexType;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
@@ -15,7 +14,7 @@ import de.mogwai.erdesignerng.util.dialect.Dialect;
  * Dialect for SQL92.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-06 20:35:16 $
+ * @version $Date: 2007-07-07 17:04:45 $
  */
 public abstract class SQL92Dialect extends Dialect {
 
@@ -46,59 +45,6 @@ public abstract class SQL92Dialect extends Dialect {
 	public List<String> createAddIndexSQL(Index aIndex) {
 		List<String> theResult = new Vector<String>();
 
-		if (aIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
-
-			StringBuffer theStrResult = new StringBuffer("ALTER TABLE ");
-			theStrResult.append(aIndex.getOwner().getName());
-			theStrResult.append(" ADD CONSTRAINT ");
-			theStrResult.append(aIndex.getName());
-			theStrResult.append(" PRIMARY KEY (");
-
-			boolean first = true;
-			for (Attribute theAttribute : aIndex.getAttributes()) {
-				if (!first) {
-					theStrResult.append(",");
-				}
-
-				theStrResult.append(theAttribute.getName());
-
-				first = false;
-			}
-
-			theStrResult.append(")");
-
-			theResult.add(theStrResult.toString());
-
-		} else {
-
-			StringBuffer theStrResult = new StringBuffer("ALTER TABLE ");
-			theStrResult.append(aIndex.getOwner().getName());
-
-			theStrResult.append(" ADD CONSTRAINT");
-			if (aIndex.getIndexType().equals(IndexType.UNIQUE)) {
-				theStrResult.append(" UNIQUE");
-			}
-			theStrResult.append(" INDEX ");
-			theStrResult.append(aIndex.getName());
-			theStrResult.append(" (");
-
-			boolean first = true;
-			for (Attribute theAttribute : aIndex.getAttributes()) {
-				if (!first) {
-					theStrResult.append(",");
-				}
-
-				theStrResult.append(theAttribute.getName());
-
-				first = false;
-			}
-
-			theStrResult.append(")");
-
-			theResult.add(theStrResult.toString());
-
-		}
-
 		return theResult;
 	}
 
@@ -127,19 +73,6 @@ public abstract class SQL92Dialect extends Dialect {
 		List<String> theResult = new Vector<String>();
 
 		StringBuffer theStrResult = null;
-
-		if (aIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
-
-			theStrResult = new StringBuffer("ALTER TABLE ");
-			theStrResult.append(aIndex.getOwner().getName());
-			theStrResult.append(" DROP PRIMARY KEY");
-		} else {
-
-			theStrResult = new StringBuffer("ALTER TABLE ");
-			theStrResult.append(aIndex.getOwner().getName());
-			theStrResult.append(" DROP INDEX ");
-			theStrResult.append(aIndex.getName());
-		}
 
 		theResult.add(theStrResult.toString());
 

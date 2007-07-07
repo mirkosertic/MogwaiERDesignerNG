@@ -47,7 +47,7 @@ public class TableEditorView extends JPanel {
 
 	private javax.swing.JCheckBox m_primarykey;
 
-	private javax.swing.JCheckBox m_required;
+	private javax.swing.JCheckBox m_nullable;
 
 	private javax.swing.JButton m_domaindictionary;
 
@@ -389,7 +389,7 @@ public class TableEditorView extends JPanel {
 					.getDomainList()), cons.xywh(2, 4, 3, 3));
 			this.m_attributesgeneraltab.add(this.getPrimaryKey(), cons.xywh(4,
 					8, 1, 1));
-			this.m_attributesgeneraltab.add(this.getRequired(), cons.xywh(4,
+			this.m_attributesgeneraltab.add(this.getNullable(), cons.xywh(4,
 					10, 1, 1));
 			this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
 					.xywh(4, 12, 1, 1));
@@ -467,16 +467,16 @@ public class TableEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JCheckBox getRequired() {
+	public javax.swing.JCheckBox getNullable() {
 
-		if (this.m_required == null) {
-			this.m_required = new javax.swing.JCheckBox();
-			this.m_required.setActionCommand("Is required (NOT NULL)");
-			this.m_required.setName("Required");
-			this.m_required.setText("Is required (NOT NULL)");
+		if (this.m_nullable == null) {
+			this.m_nullable = new javax.swing.JCheckBox();
+			this.m_nullable.setActionCommand("Is required (NOT NULL)");
+			this.m_nullable.setName("Required");
+			this.m_nullable.setText("Is Nullable");
 		}
 
-		return this.m_required;
+		return this.m_nullable;
 	}
 
 	/**
