@@ -23,7 +23,7 @@ package de.mogwai.erdesignerng.model;
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
 public enum IndexType {
-	PRIMARYKEY("PK"), UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");
+	UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");
 
 	private String type;
 
@@ -36,9 +36,6 @@ public enum IndexType {
 	}
 
 	public static IndexType fromType(String aType) {
-		if (PRIMARYKEY.getType().equals(aType)) {
-			return PRIMARYKEY;
-		}
 		if (UNIQUE.getType().equals(aType)) {
 			return UNIQUE;
 		}

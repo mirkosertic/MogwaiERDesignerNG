@@ -28,32 +28,34 @@ import javax.swing.SwingUtilities;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCellEditor;
 
+import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.cells.RelationCell;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
 import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 
-
 public class CellEditorFactory extends DefaultGraphCellEditor {
-	
+
 	private Object editingValue;
-	
-	protected BaseEditor createEditDialogForValue(JFrame aParent,Object aValue) {
-		
+
+	protected BaseEditor createEditDialogForValue(JFrame aParent, Object aValue) {
+
 		if (aValue instanceof TableCell) {
-			TableCell theCell = (TableCell)aValue;
-			
-			TableEditor theEditor = new TableEditor(aParent);
+			TableCell theCell = (TableCell) aValue;
+
+			Table theTable = (Table) theCell.getUserObject();
+			TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
+			theEditor.initializeFor(theTable);
 			return theEditor;
 		}
 
 		if (aValue instanceof RelationCell) {
-			RelationCell theCell = (RelationCell)aValue;
-			
+			RelationCell theCell = (RelationCell) aValue;
+
 			RelationEditor theEditor = new RelationEditor(aParent);
 			return theEditor;
 		}
-		
+
 		throw new IllegalArgumentException();
 	}
 
@@ -61,19 +63,19 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 			boolean arg2) {
 
 		editingValue = aValue;
-		
+
 		JFrame theParent = (JFrame) SwingUtilities.getRoot(aGraph);
 
-		BaseEditor theEditor = createEditDialogForValue(theParent,aValue);
-		
+		BaseEditor theEditor = createEditDialogForValue(theParent, aValue);
+
 		theEditor.validate();
 
 		Dimension w2 = theEditor.getSize();
 		Dimension w1 = theParent.getSize();
 
 		Point thePoint = theParent.getLocation();
-		theEditor.setLocation(thePoint.x + w1.width / 2 - w2.width / 2, thePoint.y
-				+ w1.height / 2 - w2.height / 2);
+		theEditor.setLocation(thePoint.x + w1.width / 2 - w2.width / 2,
+				thePoint.y + w1.height / 2 - w2.height / 2);
 
 		editingValue = aValue;
 		return theEditor;

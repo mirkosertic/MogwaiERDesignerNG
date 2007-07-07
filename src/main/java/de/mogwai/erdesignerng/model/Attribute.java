@@ -22,7 +22,8 @@ package de.mogwai.erdesignerng.model;
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public class Attribute extends OwnedModelItem<Table> {
+public class Attribute extends OwnedModelItem<Table> implements
+		ModelItemClonable<Attribute> {
 
 	private Domain domain;
 
@@ -30,22 +31,14 @@ public class Attribute extends OwnedModelItem<Table> {
 
 	private String defaultValue;
 
+	private boolean primaryKey;
+
 	public void setDefinition(Domain aDomain, boolean aNullable,
 			String aDefaultValue) {
-		if (getOwner() != null) {
-			if (!aDomain.equals(domain) || (nullable != aNullable)) {
-				nullable = aNullable;
-				domain = aDomain;
-				defaultValue = aDefaultValue;
 
-				getOwner().getOwner().getModelHistory()
-						.createAttributeChangedCommand(getOwner(), getName(),
-								aDomain, aNullable, aDefaultValue);
-			}
-		} else {
-			domain = aDomain;
-			nullable = aNullable;
-		}
+		nullable = aNullable;
+		domain = aDomain;
+		defaultValue = aDefaultValue;
 	}
 
 	/**
@@ -60,23 +53,6 @@ public class Attribute extends OwnedModelItem<Table> {
 	 */
 	public boolean isNullable() {
 		return nullable;
-	}
-
-	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getOwner().getModelHistory().createRenameAttributeCommand(
-					theOwner, this, aNewName);
-		}
-	}
-
-	@Override
-	protected void generateDeleteCommand() {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getOwner().getModelHistory().createDeleteCommand(this);
-		}
 	}
 
 	/**
@@ -96,4 +72,37 @@ public class Attribute extends OwnedModelItem<Table> {
 	public String getDefaultValue() {
 		return defaultValue;
 	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public void setDomain(Domain domain) {
+		this.domain = domain;
+	}
+
+	public void setNullable(boolean nullable) {
+		this.nullable = nullable;
+	}
+
+	public boolean isPrimaryKey() {
+		return primaryKey;
+	}
+
+	public void setPrimaryKey(boolean primaryKey) {
+		this.primaryKey = primaryKey;
+	}
+
+	public Attribute clone() {
+		Attribute theAttribute = new Attribute();
+		theAttribute.setName(getName());
+		theAttribute.setDomain(getDomain());
+		theAttribute.setNullable(isNullable());
+		theAttribute.setDefaultValue(getDefaultValue());
+		return theAttribute;
+	}
+
+	public void restoreFrom(Attribute aValue) throws Exception {
+	}
+
 }

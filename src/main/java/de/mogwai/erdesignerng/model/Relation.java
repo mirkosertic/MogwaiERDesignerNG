@@ -71,23 +71,6 @@ public class Relation extends OwnedModelItem<Model> {
 		this.importingTable = start;
 	}
 
-	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getModelHistory().createRenameRelationCommand(this,
-					aNewName);
-		}
-	}
-
-	@Override
-	protected void generateDeleteCommand() {
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getModelHistory().createDeleteCommand(this);
-		}
-	}
-
 	/**
 	 * @return the mapping
 	 */

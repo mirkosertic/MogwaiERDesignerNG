@@ -24,7 +24,7 @@ package de.mogwai.erdesignerng.model;
  */
 public class Index extends OwnedModelItem<Table> {
 
-	private IndexType indexType = IndexType.PRIMARYKEY;
+	private IndexType indexType = IndexType.UNIQUE;
 
 	private AttributeList attributes = new AttributeList();
 
@@ -43,22 +43,4 @@ public class Index extends OwnedModelItem<Table> {
 	public void setIndexType(IndexType aIndexType) {
 		indexType = aIndexType;
 	}
-
-	@Override
-	protected void generateDeleteCommand() {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getOwner().getModelHistory().createDeleteCommand(this);
-		}
-	}
-
-	@Override
-	protected void generateRenameHistoryCommand(String aNewName) {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			theOwner.getOwner().getModelHistory().createRenameIndexCommand(
-					theOwner, this, aNewName);
-		}
-	}
-
 }

@@ -36,7 +36,6 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.mogwai.erdesignerng.model.Attribute;
-import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
@@ -76,7 +75,7 @@ public class TableCellView extends VertexView {
 				aGraphics.fillRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
 				return;
 			}
-			
+
 			aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
 		}
 
@@ -127,13 +126,13 @@ public class TableCellView extends VertexView {
 			theAllAttributes.addAll(table.getAttributes());
 
 			boolean hasPrimaryKey = false;
-			Index thePrimaryKey = table.findPrimaryKey();
-			if (thePrimaryKey != null) {
 
-				hasPrimaryKey = true;
+			// Draw the attributes
+			for (Attribute theAttribute : theAllAttributes) {
+				if (theAttribute.isPrimaryKey()) {
 
-				for (Attribute theAttribute : thePrimaryKey.getAttributes()) {
-
+					hasPrimaryKey = true;
+					
 					theAllAttributes.remove(theAttribute);
 
 					aGraphics.setColor(Color.red);
@@ -191,10 +190,8 @@ public class TableCellView extends VertexView {
 			List<Attribute> theAllAttributes = new Vector<Attribute>();
 			theAllAttributes.addAll(table.getAttributes());
 
-			Index thePrimaryKey = table.findPrimaryKey();
-			if (thePrimaryKey != null) {
-
-				for (Attribute theAttribute : thePrimaryKey.getAttributes()) {
+			for (Attribute theAttribute : theAllAttributes) {
+				if (theAttribute.isPrimaryKey()) {
 
 					theAllAttributes.remove(theAttribute);
 

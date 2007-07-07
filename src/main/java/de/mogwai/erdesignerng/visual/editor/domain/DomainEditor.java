@@ -65,9 +65,12 @@ public class DomainEditor extends BaseEditor {
 
 		domainListModel = new DefaultListModel();
 		for (Domain theDomain : aModel.getDomains()) {
-			domainListModel.addElement(theDomain);
+			
+			Domain theClone = theDomain.clone();
+			
+			domainListModel.addElement(theClone);
 
-			knownValues.put(theDomain.getName(), theDomain.clone());
+			knownValues.put(theClone.getName(), theClone);
 		}
 
 		editingView.getDomainList().setModel(domainListModel);
