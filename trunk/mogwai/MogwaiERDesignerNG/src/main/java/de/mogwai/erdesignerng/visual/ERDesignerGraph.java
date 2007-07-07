@@ -18,8 +18,12 @@
 package de.mogwai.erdesignerng.visual;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
@@ -28,10 +32,25 @@ import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
-import de.mogwai.erdesignerng.visual.cells.TableCell;
-
 public class ERDesignerGraph extends JGraph {
 
+	private Action deleteAction = new GenericAction("Delete", new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			commandDelete(clickedCell);
+		}
+		
+	});
+	private Action newTableAction = new GenericAction("New Table",new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			commandNewTable(clickedPoint);
+		}
+	});
+	
+	private Object clickedCell;
+	private Point2D clickedPoint;
+	
 	public class MyMarqueeHandler extends BasicMarqueeHandler {
 
 		@Override
@@ -45,8 +64,10 @@ public class ERDesignerGraph extends JGraph {
 		@Override
 		public void mousePressed(final MouseEvent e) {
 			if (SwingUtilities.isRightMouseButton(e)) {
-				Object cell = getFirstCellForLocation(e.getX(), e.getY());
-				JPopupMenu menu = createPopupMenu(e.getPoint(), cell);
+				
+				clickedPoint = new Point2D.Double(e.getX(),e.getY());
+				clickedCell = getFirstCellForLocation(e.getX(), e.getY());
+				JPopupMenu menu = createPopupMenu(e.getPoint(), clickedCell);
 				menu.show(ERDesignerGraph.this, e.getX(), e.getY());
 			} else {
 				super.mousePressed(e);
@@ -61,15 +82,22 @@ public class ERDesignerGraph extends JGraph {
 
 	protected JPopupMenu createPopupMenu(Point aPoint, Object aCell) {
 
-		if (aCell instanceof TableCell)
-		if (aCell != null) {
-			System.out.println(aCell.getClass());
-		} else {
-			System.out.println("No cell");
-		}
-
 		JPopupMenu theMenu = new JPopupMenu();
-		theMenu.add("Lala");
+		
+		if (aCell != null) {
+			theMenu.add(deleteAction);
+			theMenu.addSeparator();
+		} 
+			
+		theMenu.add(newTableAction);
+
 		return theMenu;
+	}
+	
+	protected void commandNewTable(Point2D aLocation) {
+		
+	}
+	
+	protected void commandDelete(Object aCell) {
 	}
 }

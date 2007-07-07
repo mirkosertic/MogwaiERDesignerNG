@@ -99,7 +99,13 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 				}
 
 				BaseEditor theDialog = (BaseEditor) editingComponent;
-				theDialog.showModal();
+				if (theDialog.showModal() == BaseEditor.MODAL_RESULT_OK) {
+					try {
+						theDialog.applyValues();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 
 				editingComponent = null;
 

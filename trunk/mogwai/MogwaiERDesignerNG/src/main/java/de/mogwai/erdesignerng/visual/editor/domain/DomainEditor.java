@@ -245,10 +245,10 @@ public class DomainEditor extends BaseEditor {
 	private void commandDelete() {
 	}
 
-	public void applyValues(Model aModel) throws ElementAlreadyExistsException,
+	public void applyValues() throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 
-		DomainList theList = aModel.getDomains();
+		DomainList theList = model.getDomains();
 
 		for (String theKey : knownValues.keySet()) {
 			Domain theValue = knownValues.get(theKey);
@@ -257,7 +257,7 @@ public class DomainEditor extends BaseEditor {
 			if (theInModel != null) {
 				theInModel.restoreFrom(theValue);
 			} else {
-				aModel.addDomain(theValue);
+				model.addDomain(theValue);
 			}
 		}
 	}
