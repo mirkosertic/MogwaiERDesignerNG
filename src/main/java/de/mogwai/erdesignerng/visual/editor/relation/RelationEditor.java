@@ -77,7 +77,7 @@ public class RelationEditor extends BaseEditor {
 	@Override
 	public void applyValues() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

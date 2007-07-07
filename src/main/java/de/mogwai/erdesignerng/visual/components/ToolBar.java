@@ -17,6 +17,10 @@
  */
 package de.mogwai.erdesignerng.visual.components;
 
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -25,12 +29,24 @@ import javax.swing.JToolBar;
 public class ToolBar extends JToolBar {
 
 	@Override
-	public JButton add(Action aAction) {
+	public JButton add(final Action aAction) {
 		Icon theIcon = (Icon) aAction.getValue(Action.SMALL_ICON);
 		if (theIcon != null) {
 			JButton theButton = new JButton(theIcon);
 			theButton.setToolTipText((String) aAction
 					.getValue(Action.SHORT_DESCRIPTION));
+			Dimension theSize = new Dimension(32,32);
+			theButton.setPreferredSize(theSize);
+			theButton.setSize(theSize);
+			theButton.setMinimumSize(theSize);
+			theButton.setMaximumSize(theSize);
+			theButton.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					aAction.actionPerformed(e);
+				}
+				
+			});
 			add(theButton);
 
 			return theButton;

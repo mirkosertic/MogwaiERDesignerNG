@@ -44,7 +44,7 @@ public class TableEditor extends BaseEditor {
 	private Model model;
 
 	private TableEditorView editingView;
-	
+
 	private BindingInfo<Table> tableBindingInfo = new BindingInfo<Table>();
 
 	private BindingInfo<Attribute> attributeBindingInfo = new BindingInfo<Attribute>();
@@ -75,15 +75,19 @@ public class TableEditor extends BaseEditor {
 			defaultValuesListModel.addElement(theValue);
 		}
 		editingView.getDefault().setModel(defaultValuesListModel);
-		
-		tableBindingInfo.addBinding("name", editingView.getEntity_name(),true);
+
+		tableBindingInfo.addBinding("name", editingView.getEntity_name(), true);
 		tableBindingInfo.configure();
 
-		attributeBindingInfo.addBinding("name", editingView.getAttributeName(),true);
-		attributeBindingInfo.addBinding("domain", editingView.getDomainList(),true);
+		attributeBindingInfo.addBinding("name", editingView.getAttributeName(),
+				true);
+		attributeBindingInfo.addBinding("domain", editingView.getDomainList(),
+				true);
 		attributeBindingInfo.addBinding("nullable", editingView.getNullable());
-		attributeBindingInfo.addBinding("primaryKey", editingView.getPrimaryKey());
-		attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
+		attributeBindingInfo.addBinding("primaryKey", editingView
+				.getPrimaryKey());
+		attributeBindingInfo.addBinding("defaultValue", editingView
+				.getDefault());
 		attributeBindingInfo.configure();
 	}
 
@@ -164,12 +168,13 @@ public class TableEditor extends BaseEditor {
 						commandUpdateAttribute(e);
 					}
 				});
-		editingView.getPrimaryKey().addItemListener(new java.awt.event.ItemListener() {
+		editingView.getPrimaryKey().addItemListener(
+				new java.awt.event.ItemListener() {
 
-			public void itemStateChanged(java.awt.event.ItemEvent e) {
-				commandPrimaryKeyItemStateChanged(e);
-			}
-		});
+					public void itemStateChanged(java.awt.event.ItemEvent e) {
+						commandPrimaryKeyItemStateChanged(e);
+					}
+				});
 		editingView.getUpdateIndexButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
@@ -227,12 +232,12 @@ public class TableEditor extends BaseEditor {
 
 		tableBindingInfo.setDefaultModel(aTable);
 		tableBindingInfo.model2view();
-		
+
 		editingView.getEntity_name().setName(aTable.getName());
 		for (Attribute theAttribute : aTable.getAttributes()) {
-			
+
 			Attribute theClone = theAttribute.clone();
-			
+
 			attributeListModel.addElement(theClone);
 			knownValues.put(theClone.getName(), theClone);
 		}
@@ -240,7 +245,7 @@ public class TableEditor extends BaseEditor {
 
 		updateEditFields();
 	}
-	
+
 	private void commandOk() {
 		if (tableBindingInfo.validate().size() == 0) {
 			setModalResult(MODAL_RESULT_OK);
@@ -303,7 +308,7 @@ public class TableEditor extends BaseEditor {
 
 	private void commandAttributeListValueChanged(
 			javax.swing.event.ListSelectionEvent evt) {
-		
+
 		int index = editingView.getAttributeList().getSelectedIndex();
 		if (index >= 0) {
 			attributeBindingInfo.setDefaultModel((Attribute) attributeListModel
@@ -354,30 +359,32 @@ public class TableEditor extends BaseEditor {
 
 	private void commandStartDomainEditor(ActionEvent e) {
 	}
-	
+
 	public void applyValues() throws ElementAlreadyExistsException,
-	ElementInvalidNameException {
-		
+			ElementInvalidNameException {
+
 		Table theTable = tableBindingInfo.getDefaultModel();
 		tableBindingInfo.view2model();
-		
+
 		if (!model.getTables().contains(theTable)) {
 			model.addTable(theTable);
 		}
-		
-		for(String theKey : knownValues.keySet()) {
+
+		for (String theKey : knownValues.keySet()) {
 			Attribute theAttribute = knownValues.get(theKey);
-			
-			Attribute theExistantAttribute = theTable.getAttributes().findByName(theKey);
+
+			Attribute theExistantAttribute = theTable.getAttributes()
+					.findByName(theKey);
 			if (theExistantAttribute == null) {
 				theTable.addAttribute(model, theAttribute);
 			} else {
 				theExistantAttribute.setName(theAttribute.getName());
-				theExistantAttribute.setDefaultValue(theAttribute.getDefaultValue());
+				theExistantAttribute.setDefaultValue(theAttribute
+						.getDefaultValue());
 				theExistantAttribute.setPrimaryKey(theAttribute.isPrimaryKey());
 				theExistantAttribute.setNullable(theAttribute.isNullable());
 			}
 		}
-		
+
 	}
 }

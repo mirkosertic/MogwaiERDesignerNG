@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual.paf.basic;
+package de.mogwai.erdesignerng.visual.plaf.basic;
 
 import java.awt.Component;
 import java.awt.Point;

@@ -44,7 +44,8 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 			TableCell theCell = (TableCell) aValue;
 
 			Table theTable = (Table) theCell.getUserObject();
-			TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
+			TableEditor theEditor = new TableEditor(theTable.getOwner(),
+					aParent);
 			theEditor.initializeFor(theTable);
 			return theEditor;
 		}
