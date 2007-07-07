@@ -1,11 +1,12 @@
 package de.mogwai.erdesignerng.visual.editor.defaultvalue;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+
+import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * Visual class DefaultValueEditorView.
@@ -104,8 +105,7 @@ public class DefaultValueEditorView extends JPanel {
 		if (this.m_newbutton == null) {
 			this.m_newbutton = new javax.swing.JButton();
 			this.m_newbutton.setActionCommand("New");
-			this.m_newbutton.setIcon(new ImageIcon(ClassLoader
-					.getSystemResource("de/mogwai/erdesigner/icons/new.png")));
+			this.m_newbutton.setIcon(IconFactory.getNewIcon());
 			this.m_newbutton.setName("NewButton");
 			this.m_newbutton.setText("New");
 		}
@@ -140,10 +140,7 @@ public class DefaultValueEditorView extends JPanel {
 		if (this.m_deletebutton == null) {
 			this.m_deletebutton = new javax.swing.JButton();
 			this.m_deletebutton.setActionCommand("Delete");
-			this.m_deletebutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/delete.png")));
+			this.m_deletebutton.setIcon(IconFactory.getDeleteIcon());
 			this.m_deletebutton.setName("DeleteButton");
 			this.m_deletebutton.setText("Delete");
 		}
@@ -275,10 +272,7 @@ public class DefaultValueEditorView extends JPanel {
 		if (this.m_updatebutton == null) {
 			this.m_updatebutton = new javax.swing.JButton();
 			this.m_updatebutton.setActionCommand("Update");
-			this.m_updatebutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/arrow_refresh_small.png")));
+			this.m_updatebutton.setIcon(IconFactory.getUpdateIcon());
 			this.m_updatebutton.setName("UpdateButton");
 			this.m_updatebutton.setText("Update");
 		}
@@ -296,10 +290,7 @@ public class DefaultValueEditorView extends JPanel {
 		if (this.m_okbutton == null) {
 			this.m_okbutton = new javax.swing.JButton();
 			this.m_okbutton.setActionCommand("Ok");
-			this.m_okbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/script_save.png")));
+			this.m_okbutton.setIcon(IconFactory.getSaveIcon());
 			this.m_okbutton.setName("OkButton");
 			this.m_okbutton.setText("Ok");
 		}
@@ -317,10 +308,7 @@ public class DefaultValueEditorView extends JPanel {
 		if (this.m_cancelbutton == null) {
 			this.m_cancelbutton = new javax.swing.JButton();
 			this.m_cancelbutton.setActionCommand("Cancel");
-			this.m_cancelbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/cancel.png")));
+			this.m_cancelbutton.setIcon(IconFactory.getCancelIcon());
 			this.m_cancelbutton.setName("CancelButton");
 			this.m_cancelbutton.setText("Cancel");
 		}

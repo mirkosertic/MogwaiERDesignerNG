@@ -116,6 +116,6 @@ public abstract class BaseEditor extends JDialog implements DialogConstants {
 		JOptionPane.showMessageDialog(this, aMessage, "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	public abstract void applyValues() throws Exception;
 }

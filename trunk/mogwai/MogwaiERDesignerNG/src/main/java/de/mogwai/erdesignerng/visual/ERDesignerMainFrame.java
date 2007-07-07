@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -39,6 +40,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
@@ -61,7 +63,11 @@ import de.mogwai.erdesignerng.visual.components.ToolBar;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
 import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
-import de.mogwai.erdesignerng.visual.paf.basic.ERDesignerGraphUI;
+import de.mogwai.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
+import de.mogwai.erdesignerng.visual.tools.EntityTool;
+import de.mogwai.erdesignerng.visual.tools.HandTool;
+import de.mogwai.erdesignerng.visual.tools.RelationTool;
+import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 
 public class ERDesignerMainFrame extends JFrame {
 
@@ -108,25 +114,26 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private Action fileAction = new GenericAction("File");
 
-	private Action newAction = new GenericAction("New model");
+	private Action newAction = new GenericAction("New model", IconFactory
+			.getNewIcon(), null);
 
-	private Action saveAction = new GenericAction("Save model...",
-			new ActionListener() {
+	private Action saveAction = new GenericAction("Save model...", IconFactory
+			.getSaveIcon(), new ActionListener() {
 
-				public void actionPerformed(ActionEvent aEvent) {
-					commandSaveFile();
-				}
+		public void actionPerformed(ActionEvent aEvent) {
+			commandSaveFile();
+		}
 
-			});
+	});
 
-	private Action loadAction = new GenericAction("Load model...",
-			new ActionListener() {
+	private Action loadAction = new GenericAction("Load model...", IconFactory
+			.getFolderIcon(), new ActionListener() {
 
-				public void actionPerformed(ActionEvent aEvent) {
-					commandOpenFile();
-				}
+		public void actionPerformed(ActionEvent aEvent) {
+			commandOpenFile();
+		}
 
-			});
+	});
 
 	private Action exitAction = new GenericAction("Exit");
 
@@ -164,6 +171,57 @@ public class ERDesignerMainFrame extends JFrame {
 					.getSelectedItem());
 		}
 	});
+
+	private Action zoomInAction = new GenericAction(
+			IconFactory.getZoomInIcon(), new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					commandZoomIn();
+				}
+
+			});
+
+	private Action zoomOutAction = new GenericAction(IconFactory
+			.getZoomOutIcon(), new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			commandZoomOut();
+		}
+
+	});
+
+	private Action handAction = new GenericAction(IconFactory.getHandIcon(),
+			new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					commandSetTool(ToolEnum.HAND);
+				}
+
+			});
+
+	private Action entityAction = new GenericAction(
+			IconFactory.getEntityIcon(), new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					commandSetTool(ToolEnum.ENTITY);
+				}
+
+			});
+
+	private Action relationAction = new GenericAction(IconFactory
+			.getRelationIcon(), new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			commandSetTool(ToolEnum.RELATION);
+		}
+
+	});
+
+	private JToggleButton handButton;
+
+	private JToggleButton relationButton;
+
+	private JToggleButton entityButton;
 
 	public ERDesignerMainFrame() {
 		initialize();
@@ -210,6 +268,22 @@ public class ERDesignerMainFrame extends JFrame {
 		toolBar.addSeparator();
 		toolBar.add(zoomBox);
 		toolBar.addSeparator();
+		toolBar.add(zoomInAction);
+		toolBar.add(zoomOutAction);
+		toolBar.addSeparator();
+
+		handButton = new JToggleButton(handAction);
+		relationButton = new JToggleButton(relationAction);
+		entityButton = new JToggleButton(entityAction);
+
+		ButtonGroup theGroup = new ButtonGroup();
+		theGroup.add(handButton);
+		theGroup.add(relationButton);
+		theGroup.add(entityButton);
+
+		toolBar.add(handButton);
+		toolBar.add(entityButton);
+		toolBar.add(relationButton);
 
 		Container theContentPane = getContentPane();
 		theContentPane.setLayout(new BorderLayout());
@@ -231,15 +305,10 @@ public class ERDesignerMainFrame extends JFrame {
 		graph = new ERDesignerGraph(graphModel, layoutCache) {
 
 			@Override
-			protected void commandDelete(Object aCell) {
-				ERDesignerMainFrame.this.commandDelete(aCell);
-			}
-
-			@Override
-			protected void commandNewTable(Point2D aLocation) {
+			public void commandNewTable(Point2D aLocation) {
 				ERDesignerMainFrame.this.commandAddTable(aLocation);
 			}
-			
+
 		};
 		graph.setUI(new ERDesignerGraphUI());
 
@@ -272,6 +341,7 @@ public class ERDesignerMainFrame extends JFrame {
 		}
 
 		commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
+		commandSetTool(ToolEnum.HAND);
 	}
 
 	protected void commandShowDomainEditor() {
@@ -353,33 +423,79 @@ public class ERDesignerMainFrame extends JFrame {
 	protected void logException(Exception aException) {
 		aException.printStackTrace();
 	}
-	
+
 	protected void commandAddTable(Point2D aPoint) {
 		Table theTable = new Table();
-		TableEditor theEditor = new TableEditor(model,this);
+		TableEditor theEditor = new TableEditor(model, this);
 		theEditor.initializeFor(theTable);
 		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
-				
+
 				TableCell theCell = new TableCell(theTable);
 				theCell.transferPropertiesToAttributes(theTable);
-				
-				GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(
-						aPoint.getX(), aPoint.getY(), -1, -1));
-				
+
+				GraphConstants.setBounds(theCell.getAttributes(),
+						new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
+								-1, -1));
+
 				layoutCache.insert(theCell);
-				
+
 				theCell.transferAttributesToProperties(theCell.getAttributes());
-				
+
 			} catch (Exception e) {
 				logException(e);
 			}
 		}
 	}
-	
+
 	protected void commandDelete(Object aCell) {
-		
+
+	}
+
+	protected void commandSetTool(ToolEnum aTool) {
+		if (aTool.equals(ToolEnum.HAND)) {
+
+			if (!handButton.isSelected()) {
+				handButton.setSelected(true);
+			}
+
+			graph.setTool(new HandTool(graph));
+		}
+		if (aTool.equals(ToolEnum.ENTITY)) {
+
+			if (!entityButton.isSelected()) {
+				entityButton.setSelected(true);
+			}
+
+			graph.setTool(new EntityTool(graph));
+		}
+		if (aTool.equals(ToolEnum.RELATION)) {
+
+			if (!relationButton.isSelected()) {
+				relationButton.setSelected(true);
+			}
+
+			graph.setTool(new RelationTool(graph));
+		}
+	}
+
+	protected void commandZoomIn() {
+		int theIndex = zoomBox.getSelectedIndex();
+		if (theIndex < zoomBox.getItemCount() - 1) {
+			theIndex++;
+			zoomBox.setSelectedIndex(theIndex);
+			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+		}
+	}
+
+	protected void commandZoomOut() {
+		int theIndex = zoomBox.getSelectedIndex();
+		if (theIndex > 0) {
+			theIndex--;
+			zoomBox.setSelectedIndex(theIndex);
+			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+		}
 	}
 
 	private static GraphModelListener graphModelListener = new GraphModelListener() {

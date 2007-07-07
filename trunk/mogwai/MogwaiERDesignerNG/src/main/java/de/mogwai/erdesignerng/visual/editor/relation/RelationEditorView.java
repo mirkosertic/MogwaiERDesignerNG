@@ -4,13 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+
+import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * Visual class RelationEditorView.
@@ -281,9 +282,7 @@ public class RelationEditorView extends JPanel {
 			m_okbutton = new javax.swing.JButton();
 			m_okbutton.setActionCommand("Ok");
 			m_okbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/database_save.png")));
+					.setIcon(IconFactory.getSaveIcon());
 			m_okbutton.setName("OKButton");
 			m_okbutton.setText("Ok");
 			m_okbutton.addActionListener(new ActionListener() {
@@ -315,9 +314,7 @@ public class RelationEditorView extends JPanel {
 			m_cancelbutton = new javax.swing.JButton();
 			m_cancelbutton.setActionCommand("Cancel");
 			m_cancelbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/cancel.png")));
+					.setIcon(IconFactory.getCancelIcon());
 			m_cancelbutton.setName("CancelButton");
 			m_cancelbutton.setText("Cancel");
 			m_cancelbutton.addActionListener(new ActionListener() {

@@ -1,12 +1,13 @@
 package de.mogwai.erdesignerng.visual.editor.table;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+
+import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * Visual class EntityEditorView.
@@ -232,9 +233,7 @@ public class TableEditorView extends JPanel {
 			this.m_upbutton = new javax.swing.JButton();
 			this.m_upbutton.setFocusPainted(false);
 			this.m_upbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/arrow_up.png")));
+					.setIcon(IconFactory.getArrowUpIcon());
 			this.m_upbutton.setName("UpButton");
 		}
 
@@ -251,9 +250,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_downbutton == null) {
 			this.m_downbutton = new javax.swing.JButton();
 			this.m_downbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/arrow_down.png")));
+					.setIcon(IconFactory.getArrowDownIcon());
 			this.m_downbutton.setName("DownButton");
 		}
 
@@ -285,8 +282,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_newbutton == null) {
 			this.m_newbutton = new javax.swing.JButton();
 			this.m_newbutton.setActionCommand("New");
-			this.m_newbutton.setIcon(new ImageIcon(ClassLoader
-					.getSystemResource("de/mogwai/erdesigner/icons/new.png")));
+			this.m_newbutton.setIcon(IconFactory.getNewIcon());
 			this.m_newbutton.setName("NewButton");
 			this.m_newbutton.setText("New");
 		}
@@ -322,9 +318,7 @@ public class TableEditorView extends JPanel {
 			this.m_deletebutton = new javax.swing.JButton();
 			this.m_deletebutton.setActionCommand("Delete");
 			this.m_deletebutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/delete.png")));
+					.setIcon(IconFactory.getDeleteIcon());
 			this.m_deletebutton.setName("DeleteButton");
 			this.m_deletebutton.setText("Delete");
 		}
@@ -608,9 +602,7 @@ public class TableEditorView extends JPanel {
 			this.m_updateattributebutton = new javax.swing.JButton();
 			this.m_updateattributebutton.setActionCommand("Update");
 			this.m_updateattributebutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/arrow_refresh_small.png")));
+					.setIcon(IconFactory.getUpdateIcon());
 			this.m_updateattributebutton.setName("UpdateAttributeButton");
 			this.m_updateattributebutton.setText("Update");
 		}
@@ -680,8 +672,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_newindexbutton == null) {
 			this.m_newindexbutton = new javax.swing.JButton();
 			this.m_newindexbutton.setActionCommand("New");
-			this.m_newindexbutton.setIcon(new ImageIcon(ClassLoader
-					.getSystemResource("de/mogwai/erdesigner/icons/new.png")));
+			this.m_newindexbutton.setIcon(IconFactory.getNewIcon());
 			this.m_newindexbutton.setName("NewIndexButton");
 			this.m_newindexbutton.setText("New");
 		}
@@ -717,9 +708,7 @@ public class TableEditorView extends JPanel {
 			this.m_deleteindexbutton = new javax.swing.JButton();
 			this.m_deleteindexbutton.setActionCommand("Delete");
 			this.m_deleteindexbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/delete.png")));
+					.setIcon(IconFactory.getDeleteIcon());
 			this.m_deleteindexbutton.setName("DeleteIndexButton");
 			this.m_deleteindexbutton.setText("Delete");
 		}
@@ -887,9 +876,7 @@ public class TableEditorView extends JPanel {
 			this.m_updateindexbutton = new javax.swing.JButton();
 			this.m_updateindexbutton.setActionCommand("Update");
 			this.m_updateindexbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/arrow_refresh_small.png")));
+					.setIcon(IconFactory.getUpdateIcon());
 			this.m_updateindexbutton.setName("UpdateIndexButton");
 			this.m_updateindexbutton.setText("Update");
 		}
@@ -950,9 +937,7 @@ public class TableEditorView extends JPanel {
 			this.m_okbutton = new javax.swing.JButton();
 			this.m_okbutton.setActionCommand("Ok");
 			this.m_okbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/database_save.png")));
+					.setIcon(IconFactory.getSaveIcon());
 			this.m_okbutton.setName("OkButton");
 			this.m_okbutton.setText("Ok");
 		}
@@ -971,9 +956,7 @@ public class TableEditorView extends JPanel {
 			this.m_cancelbutton = new javax.swing.JButton();
 			this.m_cancelbutton.setActionCommand("Cancel");
 			this.m_cancelbutton
-					.setIcon(new ImageIcon(
-							ClassLoader
-									.getSystemResource("de/mogwai/erdesigner/icons/cancel.png")));
+					.setIcon(IconFactory.getCancelIcon());
 			this.m_cancelbutton.setName("CancelButton");
 			this.m_cancelbutton.setText("Cancel");
 		}
