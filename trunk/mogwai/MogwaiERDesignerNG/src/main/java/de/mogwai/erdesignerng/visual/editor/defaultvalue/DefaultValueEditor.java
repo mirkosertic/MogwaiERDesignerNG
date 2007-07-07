@@ -17,12 +17,18 @@
  */
 package de.mogwai.erdesignerng.visual.editor.defaultvalue;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 
+import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
+import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.DefaultValue;
+import de.mogwai.erdesignerng.model.DefaultValueList;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
@@ -36,47 +42,41 @@ public class DefaultValueEditor extends BaseEditor {
 
 	private DefaultListModel defaultValuesListModel;
 
-	private DefaultValue currentEditingDefaultValue;
+	private BindingInfo<DefaultValue> bindingInfo = new BindingInfo<DefaultValue>();
 
 	private DefaultValueEditorView editingView;
+	
+	private Model model;
+	
+	private Map<String,DefaultValue> knownValues = new HashMap<String,DefaultValue>();
 
 	/**
 	 * @param parent
 	 */
 	public DefaultValueEditor(Model aModel, JFrame aParent) {
 		super(aParent);
+
+		model = aModel;
+		
 		initialize();
 
 		defaultValuesListModel = new DefaultListModel();
 		for (DefaultValue theValue : aModel.getDefaultValues()) {
+			
+			DefaultValue theClone = theValue.clone();
+			
+			knownValues.put(theClone.getName(), theClone);
 			defaultValuesListModel.addElement(theValue);
 		}
 
 		editingView.getDefaultValueList().setModel(defaultValuesListModel);
 
+		bindingInfo.addBinding("name", editingView.getDefaultValueName(), true);
+		bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
+		bindingInfo.configure();
+
 		updateEditFields();
-
-		editingView.getDeleteButton().setEnabled(false);
-		editingView.getRenameButton().setEnabled(false);
-	}
-
-	private void updateEditFields() {
-
-		if (currentEditingDefaultValue != null) {
-			editingView.getDefaultValueName().setText(
-					currentEditingDefaultValue.getName());
-			editingView.getDeclaration().setEnabled(true);
-			editingView.getDeclaration().setText(
-					currentEditingDefaultValue.getDatatype());
-			editingView.getUpdateButton().setEnabled(true);
-		} else {
-			editingView.getDefaultValueName().setText(null);
-			editingView.getDeclaration().setText(null);
-			editingView.getUpdateButton().setEnabled(false);
-			editingView.getDefaultValueName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(false);
-		}
-
+		setResizable(false);
 	}
 
 	/**
@@ -138,10 +138,40 @@ public class DefaultValueEditor extends BaseEditor {
 				});
 
 		setContentPane(editingView);
-		setTitle("Default value dictionary");
+		setTitle("Default values dictionary");
 		setResizable(false);
 		pack();
 
+	}
+
+	private void updateEditFields() {
+
+		DefaultValue theValue = bindingInfo.getDefaultModel();
+
+		if (theValue != null) {
+
+			boolean isNew = !defaultValuesListModel.contains(theValue);
+
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(!isNew);
+			editingView.getRenameButton().setEnabled(!isNew);
+			editingView.getDefaultValueName().setEnabled(isNew);
+			editingView.getDeclaration().setEnabled(true);
+			editingView.getUpdateButton().setEnabled(true);
+
+		} else {
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(false);
+			editingView.getRenameButton().setEnabled(false);
+			editingView.getDefaultValueName().setEnabled(false);
+			editingView.getDeclaration().setEnabled(false);
+			editingView.getUpdateButton().setEnabled(false);
+		}
+
+		bindingInfo.model2view();
+		
+		editingView.getDefaultValueList().invalidate();
+		editingView.getDefaultValueList().setSelectedValue(bindingInfo.getDefaultModel(), true);
 	}
 
 	private void handleClose() {
@@ -150,86 +180,61 @@ public class DefaultValueEditor extends BaseEditor {
 	}
 
 	private void handleItemChanged(ListSelectionEvent e) {
+
 		int index = editingView.getDefaultValueList().getSelectedIndex();
 		if (index >= 0) {
-			currentEditingDefaultValue = (DefaultValue) defaultValuesListModel
-					.get(index);
-			updateEditFields();
-
-			editingView.getDefaultValueName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(true);
-
-			editingView.getRenameButton().setEnabled(true);
-			editingView.getDeleteButton().setEnabled(true);
-
-		} else {
-			editingView.getDefaultValueName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(false);
-
-			editingView.getRenameButton().setEnabled(false);
-			editingView.getDeleteButton().setEnabled(false);
-
-			currentEditingDefaultValue = null;
-			updateEditFields();
+			bindingInfo.setDefaultModel((DefaultValue) defaultValuesListModel
+					.get(index));
 		}
 
+		updateEditFields();
 	}
 
 	private void handleNew() {
-		currentEditingDefaultValue = new DefaultValue();
+
+		bindingInfo.setDefaultModel(new DefaultValue());
 		updateEditFields();
-
-		editingView.getDefaultValueName().setEnabled(true);
-		editingView.getDeclaration().setEnabled(true);
-		editingView.getRenameButton().setEnabled(false);
-		editingView.getDeleteButton().setEnabled(false);
-		editingView.getUpdateButton().setEnabled(true);
 	}
-
+	
 	private void handleUpdate() {
-		String name = editingView.getDefaultValueName().getText();
-		String definition = editingView.getDeclaration().getText();
 
-		if (name.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this,
-					"Please enter a default value name", "Invalid name",
-					JOptionPane.ERROR_MESSAGE);
-			return;
+		DefaultValue theModel = bindingInfo.getDefaultModel();
+		if (bindingInfo.validate().size() == 0) {
+			bindingInfo.view2model();
+			
+			if (!defaultValuesListModel.contains(theModel)) {
+				
+				if (model.getDefaultValues().findByName(theModel.getName())!= null) {
+					displayErrorMessage("Name already in use!");
+					return;
+				}
+				defaultValuesListModel.addElement(theModel);
+				knownValues.put(theModel.getName(), theModel);
+			}
+
+			updateEditFields();
 		}
-
-		if (name.indexOf(' ') >= 0) {
-			JOptionPane.showMessageDialog(this,
-					"Please enter a default value name without blanks",
-					"Invalid default value name", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		if (definition.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "Please enter a definition",
-					"Invalid definition", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		// Commented due to BUG 784958
-		// if (definition.indexOf(' ')>=0) {
-		// JOptionPane.showMessageDialog(this,"Please enter a definition without
-		// blanks","Invalid definition",JOptionPane.ERROR_MESSAGE);
-		// return;
-		// }
-
-		currentEditingDefaultValue.setName(name);
-		currentEditingDefaultValue.setDatatype(definition);
-
-		if (!defaultValuesListModel.contains(currentEditingDefaultValue)) {
-			defaultValuesListModel.addElement(currentEditingDefaultValue);
-			editingView.getDefaultValueName().setEnabled(false);
-		}
-
 	}
-
+	
 	private void handleRename() {
 	}
 
 	private void handleDelete() {
+	}
+	
+	public void applyValues(Model aModel) throws ElementAlreadyExistsException, ElementInvalidNameException {
+		
+		DefaultValueList theList = aModel.getDefaultValues();
+		
+		for(String theKey : knownValues.keySet()) {
+			DefaultValue theValue = knownValues.get(theKey);
+			
+			DefaultValue theInModel = theList.findByName(theKey);
+			if (theInModel != null) {
+				theInModel.restoreFrom(theValue);
+			} else {
+				aModel.addDefaultValue(theValue);
+			}
+		}
 	}
 }

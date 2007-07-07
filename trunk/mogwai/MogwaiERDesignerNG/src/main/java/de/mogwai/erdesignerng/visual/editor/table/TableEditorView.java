@@ -865,8 +865,7 @@ public class TableEditorView extends JPanel {
 				 * AttributeSelectListCellEditor editor = new
 				 * AttributeSelectListCellEditor( item);
 				 * 
-				 * return editor;
-				 *  }
+				 * return editor; }
 				 */
 			};
 			this.m_indexfieldlist.setName("IndexFieldList");

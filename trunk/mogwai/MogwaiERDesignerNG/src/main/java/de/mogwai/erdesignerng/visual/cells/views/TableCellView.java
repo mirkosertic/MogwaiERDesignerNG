@@ -40,7 +40,6 @@ import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
-import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 
 public class TableCellView extends VertexView {
 

@@ -31,21 +31,23 @@ import org.jgraph.plaf.basic.BasicGraphUI;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 
 public class ERDesignerGraphUI extends BasicGraphUI {
-	
+
 	public class MyMouseHandler extends MouseHandler {
+
 		@Override
 		public void mouseClicked(MouseEvent aEvent) {
 			if (aEvent.isPopupTrigger()) {
-				System.out.println(aEvent.getX()+" "+aEvent.getY()+" for "+cell);
+				System.out.println(aEvent.getX() + " " + aEvent.getY()
+						+ " for " + cell);
 			}
 		}
 	};
-	
+
 	@Override
 	protected MouseListener createMouseListener() {
 		return new MyMouseHandler();
 	}
-	
+
 	@Override
 	protected boolean startEditing(Object cell, MouseEvent event) {
 		completeEditing();
@@ -55,7 +57,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 			editingComponent = cellEditor.getGraphCellEditorComponent(graph,
 					cell, graph.isCellSelected(cell));
 			if (cellEditor.isCellEditable(event)) {
-	
+
 				editingCell = cell;
 
 				editingCell = cell;
@@ -95,15 +97,15 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 						new MouseInputHandler(graph, activeComponent, event);
 					}
 				}
-				
-				BaseEditor theDialog = (BaseEditor)editingComponent;
+
+				BaseEditor theDialog = (BaseEditor) editingComponent;
 				theDialog.showModal();
-				
+
 				editingComponent = null;
-				
+
 				graph.invalidate();
 				graph.repaint();
-				
+
 				return false;
 			} else {
 				editingComponent = null;

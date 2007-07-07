@@ -18,15 +18,20 @@
 package de.mogwai.erdesignerng.visual.editor.domain;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 
+import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
+import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Domain;
+import de.mogwai.erdesignerng.model.DomainList;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
@@ -40,9 +45,13 @@ public class DomainEditor extends BaseEditor {
 
 	private DefaultListModel domainListModel;
 
-	private Domain currentEditingDomain;
+	private BindingInfo<Domain> bindingInfo = new BindingInfo<Domain>();
 
 	private DomainEditorView editingView = new DomainEditorView();
+
+	private Model model;
+
+	private Map<String, Domain> knownValues = new HashMap<String, Domain>();
 
 	/**
 	 * @param aParent
@@ -50,11 +59,15 @@ public class DomainEditor extends BaseEditor {
 	public DomainEditor(Model aModel, JFrame aParent) {
 		super(aParent);
 
+		model = aModel;
+
 		initialize();
 
 		domainListModel = new DefaultListModel();
 		for (Domain theDomain : aModel.getDomains()) {
 			domainListModel.addElement(theDomain);
+
+			knownValues.put(theDomain.getName(), theDomain.clone());
 		}
 
 		editingView.getDomainList().setModel(domainListModel);
@@ -74,41 +87,15 @@ public class DomainEditor extends BaseEditor {
 
 		editingView.getJavatype().setModel(new DefaultComboBoxModel(javaTypes));
 
+		bindingInfo.addBinding("name", editingView.getDomainName(), true);
+		bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
+		bindingInfo.addBinding("sequenced", editingView.getSequenced());
+		bindingInfo
+				.addBinding("javaClassName", editingView.getJavatype(), true);
+		bindingInfo.configure();
+
 		updateEditFields();
-		editingView.getDeleteButton().setEnabled(false);
-		editingView.getRenameButton().setEnabled(false);
-
 		setResizable(false);
-	}
-
-	private void updateEditFields() {
-
-		if (currentEditingDomain != null) {
-			editingView.getDomainName().setText(currentEditingDomain.getName());
-			editingView.getDeclaration().setEnabled(true);
-			editingView.getDeclaration().setText(
-					currentEditingDomain.getDatatype());
-			editingView.getUpdateButton().setEnabled(true);
-			editingView.getSequenced().setSelected(
-					currentEditingDomain.isSequenced());
-			editingView.getSequenced().setEnabled(true);
-			editingView.getJavatype().setEnabled(true);
-			editingView.getSql92type().setEnabled(true);
-			editingView.getJavatype().setSelectedItem(
-					currentEditingDomain.getJavaClassName());
-		} else {
-			editingView.getDomainName().setText(null);
-			editingView.getDeclaration().setText(null);
-			editingView.getUpdateButton().setEnabled(false);
-			editingView.getDomainName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(false);
-			editingView.getSequenced().setEnabled(false);
-			editingView.getJavatype().setSelectedItem(null);
-			editingView.getJavatype().setEnabled(false);
-			editingView.getSql92type().setEnabled(false);
-			editingView.getSql92type().setSelectedItem(null);
-		}
-
 	}
 
 	/**
@@ -167,18 +154,45 @@ public class DomainEditor extends BaseEditor {
 					}
 				});
 
-		editingView.getSql92type().addItemListener(
-				new java.awt.event.ItemListener() {
-
-					public void itemStateChanged(java.awt.event.ItemEvent evt) {
-						commandSQL92DatatypesItemStateChanged(evt);
-					}
-				});
-
 		setContentPane(editingView);
 		setTitle("Domain dictionary");
 		pack();
 
+	}
+
+	private void updateEditFields() {
+
+		Domain theValue = bindingInfo.getDefaultModel();
+
+		if (theValue != null) {
+
+			boolean isNew = !domainListModel.contains(theValue);
+
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(!isNew);
+			editingView.getRenameButton().setEnabled(!isNew);
+			editingView.getDomainName().setEnabled(isNew);
+			editingView.getDeclaration().setEnabled(true);
+			editingView.getUpdateButton().setEnabled(true);
+			editingView.getSequenced().setEnabled(true);
+			editingView.getJavatype().setEnabled(true);
+
+		} else {
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(false);
+			editingView.getRenameButton().setEnabled(false);
+			editingView.getDomainName().setEnabled(false);
+			editingView.getDeclaration().setEnabled(false);
+			editingView.getUpdateButton().setEnabled(false);
+			editingView.getSequenced().setEnabled(false);
+			editingView.getJavatype().setEnabled(false);
+		}
+
+		bindingInfo.model2view();
+
+		editingView.getDomainList().invalidate();
+		editingView.getDomainList().setSelectedValue(
+				bindingInfo.getDefaultModel(), true);
 	}
 
 	private void commandClose() {
@@ -190,89 +204,34 @@ public class DomainEditor extends BaseEditor {
 
 		int index = editingView.getDomainList().getSelectedIndex();
 		if (index >= 0) {
-			currentEditingDomain = (Domain) domainListModel.get(index);
-			updateEditFields();
-
-			editingView.getDomainName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(true);
-			editingView.getSql92type().setEnabled(true);
-			editingView.getJavatype().setEnabled(true);
-
-			editingView.getRenameButton().setEnabled(true);
-			editingView.getDeleteButton().setEnabled(true);
-
-		} else {
-			editingView.getDomainName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(false);
-
-			editingView.getRenameButton().setEnabled(false);
-			editingView.getDeleteButton().setEnabled(false);
-			editingView.getSql92type().setEnabled(false);
-
-			currentEditingDomain = null;
-			updateEditFields();
+			bindingInfo.setDefaultModel((Domain) domainListModel.get(index));
 		}
 
+		updateEditFields();
 	}
 
 	private void commandNew() {
-		currentEditingDomain = new Domain();
+		bindingInfo.setDefaultModel(new Domain());
 		updateEditFields();
-
-		editingView.getDomainName().setEnabled(true);
-		editingView.getDeclaration().setEnabled(true);
-		editingView.getSql92type().setEnabled(true);
-		editingView.getJavatype().setEnabled(true);
-		editingView.getRenameButton().setEnabled(false);
-		editingView.getDeleteButton().setEnabled(false);
-
-		editingView.getUpdateButton().setEnabled(true);
 	}
 
 	private void commandUpdate() {
-		String name = editingView.getDomainName().getText();
-		String definition = editingView.getDeclaration().getText();
 
-		if (name.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "Please enter a domain name",
-					"Invalid domain name", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+		Domain theModel = bindingInfo.getDefaultModel();
+		if (bindingInfo.validate().size() == 0) {
+			bindingInfo.view2model();
 
-		if (name.indexOf(' ') >= 0) {
-			JOptionPane.showMessageDialog(this,
-					"Please enter a domain name without blanks",
-					"Invalid domain name", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+			if (!domainListModel.contains(theModel)) {
 
-		if (definition.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "Please enter a definition",
-					"Invalid definition", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+				if (model.getDefaultValues().findByName(theModel.getName()) != null) {
+					displayErrorMessage("Name already in use!");
+					return;
+				}
+				domainListModel.addElement(theModel);
+				knownValues.put(theModel.getName(), theModel);
+			}
 
-		// Commented due to BUG 784958
-		// if (definition.indexOf(' ')>=0) {
-		// JOptionPane.showMessageDialog(this,"Please enter a definition without
-		// blanks","Invalid definition",JOptionPane.ERROR_MESSAGE);
-		// return;
-		// }
-
-		if (!definition.equals(currentEditingDomain.getDatatype())) {
-
-		}
-
-		currentEditingDomain.setName(name);
-		currentEditingDomain.setDatatype(definition);
-		currentEditingDomain.setSequenced(editingView.getSequenced()
-				.isSelected());
-		currentEditingDomain.setJavaClassName(editingView.getJavatype()
-				.getSelectedItem().toString());
-
-		if (!domainListModel.contains(currentEditingDomain)) {
-			domainListModel.addElement(currentEditingDomain);
-			editingView.getDomainName().setEnabled(false);
+			updateEditFields();
 		}
 
 	}
@@ -283,14 +242,20 @@ public class DomainEditor extends BaseEditor {
 	private void commandDelete() {
 	}
 
-	/*
-	 * DRH Pull down of what is (hopefully) generic SQL92 datatypes understood
-	 * by ERDesigner supported DBs.
-	 */
-	private void commandSQL92DatatypesItemStateChanged(
-			java.awt.event.ItemEvent evt) {
-		String SQL92type = (String) editingView.getSql92type()
-				.getSelectedItem();
-		editingView.getDeclaration().setText(SQL92type);
+	public void applyValues(Model aModel) throws ElementAlreadyExistsException,
+			ElementInvalidNameException {
+
+		DomainList theList = aModel.getDomains();
+
+		for (String theKey : knownValues.keySet()) {
+			Domain theValue = knownValues.get(theKey);
+
+			Domain theInModel = theList.findByName(theKey);
+			if (theInModel != null) {
+				theInModel.restoreFrom(theValue);
+			} else {
+				aModel.addDomain(theValue);
+			}
+		}
 	}
 }

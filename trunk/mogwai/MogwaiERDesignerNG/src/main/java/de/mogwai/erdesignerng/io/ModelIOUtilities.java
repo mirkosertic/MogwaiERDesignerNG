@@ -116,9 +116,9 @@ public final class ModelIOUtilities {
 
 	protected static final String DATATYPE = "datatype";
 	
-	protected final static String SEQUENCED = "sequenced";
+	protected static final String SEQUENCED = "sequenced";
 
-	protected final static String JAVA_CLASS_NAME = "javaclassname";
+	protected static final String JAVA_CLASS_NAME = "javaclassname";
 
 	private static ModelIOUtilities me;
 

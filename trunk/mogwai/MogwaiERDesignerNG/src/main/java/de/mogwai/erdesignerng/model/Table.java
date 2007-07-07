@@ -87,15 +87,16 @@ public class Table extends OwnedModelItem<Model> implements
 
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
-		
+
 		Model theOwner = getOwner();
-		
+
 		if (aSender instanceof Attribute) {
-			ModelUtilities
-					.checkExistance(attributes, aName, theOwner.getDialect());
+			ModelUtilities.checkExistance(attributes, aName, theOwner
+					.getDialect());
 		}
 		if (aSender instanceof Index) {
-			ModelUtilities.checkExistance(indexes, aName, theOwner.getDialect());
+			ModelUtilities
+					.checkExistance(indexes, aName, theOwner.getDialect());
 		}
 
 	}
@@ -103,7 +104,7 @@ public class Table extends OwnedModelItem<Model> implements
 	public void delete(ModelItem aSender) throws CannotDeleteException {
 
 		Model theOwner = getOwner();
-		
+
 		if (aSender instanceof Attribute) {
 			if (attributes.size() == 1) {
 				throw new CannotDeleteException(
@@ -137,14 +138,14 @@ public class Table extends OwnedModelItem<Model> implements
 
 	@Override
 	protected void generateRenameHistoryCommand(String aNewName) {
-		Model theOwner = getOwner();		
+		Model theOwner = getOwner();
 		if (theOwner != null) {
 			theOwner.getModelHistory().createRenameTableCommand(this, aNewName);
 		}
 	}
 
 	public String checkName(String aName) throws ElementInvalidNameException {
-		Model theOwner = getOwner();		
+		Model theOwner = getOwner();
 		if (theOwner != null) {
 			return theOwner.checkName(aName);
 		}
@@ -154,7 +155,7 @@ public class Table extends OwnedModelItem<Model> implements
 
 	@Override
 	protected void generateDeleteCommand() {
-		Model theOwner = getOwner();		
+		Model theOwner = getOwner();
 		if (theOwner != null) {
 			theOwner.getModelHistory().createDeleteCommand(this);
 		}

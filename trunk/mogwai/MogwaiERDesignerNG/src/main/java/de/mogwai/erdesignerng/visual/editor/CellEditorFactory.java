@@ -61,7 +61,6 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 			boolean arg2) {
 
 		editingValue = aValue;
-		System.out.println(aValue.getClass());
 		
 		JFrame theParent = (JFrame) SwingUtilities.getRoot(aGraph);
 
@@ -75,8 +74,6 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 		Point thePoint = theParent.getLocation();
 		theEditor.setLocation(thePoint.x + w1.width / 2 - w2.width / 2, thePoint.y
 				+ w1.height / 2 - w2.height / 2);
-
-		System.out.println("Editing value " + aValue);
 
 		editingValue = aValue;
 		return theEditor;

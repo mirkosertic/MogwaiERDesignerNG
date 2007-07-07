@@ -17,12 +17,16 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
+import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
+
 /**
  * A domain.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public class Domain extends OwnedModelItem<Model> {
+public class Domain extends OwnedModelItem<Model> implements
+		ModelItemClonable<Domain> {
 
 	private String datatype;
 
@@ -94,4 +98,23 @@ public class Domain extends OwnedModelItem<Model> {
 	@Override
 	protected void generateDeleteCommand() {
 	}
+
+	@Override
+	public Domain clone() {
+		Domain theValue = new Domain();
+		theValue.setName(getName());
+		theValue.setDatatype(getDatatype());
+		theValue.setSequenced(isSequenced());
+		theValue.setJavaClassName(getJavaClassName());
+		return theValue;
+	}
+
+	public void restoreFrom(Domain aValue)
+			throws ElementAlreadyExistsException, ElementInvalidNameException {
+		renameTo(aValue.getName());
+		setDatatype(aValue.getDatatype());
+		setSequenced(aValue.isSequenced());
+		setJavaClassName(aValue.getJavaClassName());
+	}
+
 }
