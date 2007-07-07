@@ -115,6 +115,10 @@ public final class ModelIOUtilities {
 	protected static final String DEFAULT = "default";
 
 	protected static final String DATATYPE = "datatype";
+	
+	protected final static String SEQUENCED = "sequenced";
+
+	protected final static String JAVA_CLASS_NAME = "javaclassname";
 
 	private static ModelIOUtilities me;
 
@@ -195,6 +199,10 @@ public final class ModelIOUtilities {
 			Domain theDomain = new Domain();
 			deserializeProperties(theElement, theDomain);
 
+			theDomain.setDatatype(theElement.getAttribute(DATATYPE));
+			theDomain.setJavaClassName(theElement.getAttribute(JAVA_CLASS_NAME));
+			theDomain.setSequenced(TRUE.equals(theElement.getAttribute(SEQUENCED)));
+			
 			theModel.getDomains().add(theDomain);
 		}
 
@@ -331,7 +339,7 @@ public final class ModelIOUtilities {
 
 		return theModel;
 	}
-
+	
 	public void serializeModelToXML(Model aModel, OutputStream aStream)
 			throws TransformerException, IOException {
 		Document theDocument = documentBuilder.newDocument();
@@ -351,6 +359,8 @@ public final class ModelIOUtilities {
 
 			// Zusatzdaten
 			theDomainElement.setAttribute(DATATYPE, theDomain.getDatatype());
+			theDomainElement.setAttribute(JAVA_CLASS_NAME, theDomain.getJavaClassName());
+			setBooleanAttribute(theDomainElement, SEQUENCED, theDomain.isSequenced());
 		}
 
 		Element theTablesElement = addElement(theDocument, theRootElement,
