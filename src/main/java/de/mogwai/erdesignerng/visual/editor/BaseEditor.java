@@ -17,29 +17,21 @@
  */
 package de.mogwai.erdesignerng.visual.editor;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.EventObject;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.CellEditorListener;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.GraphCellEditor;
 
 /**
  * The base class for all editing dialogs.
  * 
  * @author Mirko Sertic
  */
-public class BaseEditor extends JDialog implements DialogConstants,
-		GraphCellEditor {
+public class BaseEditor extends JDialog implements DialogConstants {
 
 	private int modalResult;
 
@@ -48,12 +40,6 @@ public class BaseEditor extends JDialog implements DialogConstants,
 	protected JFrame parent;
 
 	private List<CellEditorListener> listener = new Vector<CellEditorListener>();
-
-	private Object currentValue;
-
-	public BaseEditor() {
-		this(null);
-	}
 
 	/**
 	 * Initialize.
@@ -64,7 +50,7 @@ public class BaseEditor extends JDialog implements DialogConstants,
 	public BaseEditor(JFrame parent) {
 		super(parent, true);
 		initialize();
-		this.parent = parent;
+		parent = parent;
 	}
 
 	/**
@@ -73,10 +59,10 @@ public class BaseEditor extends JDialog implements DialogConstants,
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(300, 200);
-		this.setContentPane(getJContentPane());
-		this.setResizable(false);
-		this.setModal(true);
+		setSize(300, 200);
+		setContentPane(getJContentPane());
+		setResizable(false);
+		setModal(true);
 	}
 
 	/**
@@ -95,23 +81,26 @@ public class BaseEditor extends JDialog implements DialogConstants,
 	/**
 	 * Set the dialogs modal result and hide it.
 	 * 
-	 * @param modalResult
+	 * @param aModalResult
 	 *            the modal result.
 	 */
-	public void setModalResult(int modalResult) {
-		this.modalResult = modalResult;
-		this.hide();
+	public void setModalResult(int aModalResult) {
+		modalResult = aModalResult;
+		super.setVisible(false);
+
+		System.out.println("Return");
+
 	}
 
 	public int showModal() {
-		this.modalResult = DialogConstants.MODAL_RESULT_CANCEL;
+		modalResult = DialogConstants.MODAL_RESULT_CANCEL;
 		setVisible(true);
-		return this.modalResult;
+		return modalResult;
 	}
 
 	public void setVisible(boolean aStatus) {
 
-		if (this.parent != null) {
+		if (parent != null) {
 
 			validate();
 
@@ -125,56 +114,5 @@ public class BaseEditor extends JDialog implements DialogConstants,
 		}
 
 		super.setVisible(true);
-	}
-
-	public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue,
-			boolean arg2) {
-
-		JFrame theParent = (JFrame) SwingUtilities.getRoot(aGraph);
-
-		validate();
-
-		Dimension w2 = getSize();
-		Dimension w1 = theParent.getSize();
-
-		Point thePoint = theParent.getLocation();
-		setLocation(thePoint.x + w1.width / 2 - w2.width / 2, thePoint.y
-				+ w1.height / 2 - w2.height / 2);
-
-		System.out.println("Editing value " + aValue);
-
-		currentValue = aValue;
-		setVisible(true);
-
-		return new JLabel();
-	}
-
-	public void addCellEditorListener(CellEditorListener aListener) {
-		listener.add(aListener);
-	}
-
-	public void removeCellEditorListener(CellEditorListener aListener) {
-		listener.remove(aListener);
-	}
-
-	public void cancelCellEditing() {
-		setVisible(false);
-	}
-
-	public Object getCellEditorValue() {
-		System.out.println("Returning value");
-		return currentValue;
-	}
-
-	public boolean isCellEditable(EventObject anEvent) {
-		return true;
-	}
-
-	public boolean shouldSelectCell(EventObject anEvent) {
-		return true;
-	}
-
-	public boolean stopCellEditing() {
-		return false;
 	}
 }

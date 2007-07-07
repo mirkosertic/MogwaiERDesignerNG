@@ -21,20 +21,17 @@ import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphCellEditor;
 
 import de.mogwai.erdesignerng.visual.cells.RelationCell;
-import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
+import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 
 public class RelationCellView extends EdgeView {
-
+	
 	public RelationCellView(RelationCell aRelation) {
 		super(aRelation);
 	}
 
 	@Override
 	public GraphCellEditor getEditor() {
-		RelationCell theCell = (RelationCell) getCell();
-		RelationEditor theEditor = new RelationEditor(null);
-
-		return theEditor;
+		return new CellEditorFactory();
 	}
 
 }
