@@ -36,7 +36,7 @@ public final class ERDesigner {
 
 	private ERDesigner() {
 	}
-	
+
 	public static void main(String[] args)
 			throws ElementAlreadyExistsException, ElementInvalidNameException,
 			ClassNotFoundException, InstantiationException,

@@ -97,4 +97,9 @@ public abstract class ModelItem {
 	public void setIntProperty(String aName, int aValue) {
 		properties.put(aName, "" + aValue);
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

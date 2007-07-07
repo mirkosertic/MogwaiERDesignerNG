@@ -75,13 +75,14 @@ public class Relation extends OwnedModelItem<Model> {
 	protected void generateRenameHistoryCommand(String aNewName) {
 		Model theOwner = getOwner();
 		if (theOwner != null) {
-			theOwner.getModelHistory().createRenameRelationCommand(this, aNewName);
+			theOwner.getModelHistory().createRenameRelationCommand(this,
+					aNewName);
 		}
 	}
 
 	@Override
 	protected void generateDeleteCommand() {
-		Model theOwner = getOwner();		
+		Model theOwner = getOwner();
 		if (theOwner != null) {
 			theOwner.getModelHistory().createDeleteCommand(this);
 		}

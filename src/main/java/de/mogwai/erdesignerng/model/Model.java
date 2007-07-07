@@ -100,6 +100,23 @@ public class Model implements OwnedModelItemVerifier {
 		relations.add(aRelation);
 	}
 
+	/**
+	 * Add a default value to the database model.
+	 * 
+	 * @param aDefaultValue
+	 *            the table
+	 * @throws ElementAlreadyExistsException
+	 * @throws ElementInvalidNameException
+	 */
+	public void addDefaultValue(DefaultValue aDefaultValue)
+			throws ElementAlreadyExistsException, ElementInvalidNameException {
+
+		ModelUtilities.checkNameAndExistance(defaultValues, aDefaultValue, dialect);
+
+		aDefaultValue.setOwner(this);
+		defaultValues.add(aDefaultValue);
+	}
+
 	public void checkNameAlreadyExists(ModelItem aSender, String aName)
 			throws ElementAlreadyExistsException {
 		if (aSender instanceof Table) {

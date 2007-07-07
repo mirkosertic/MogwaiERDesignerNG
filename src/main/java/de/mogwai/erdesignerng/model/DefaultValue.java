@@ -17,12 +17,15 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
+import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
+
 /**
  * A default value.
  * 
  * @author Mirko Sertic <mail@mirkosertic.de>
  */
-public class DefaultValue extends OwnedModelItem<Model> {
+public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClonable<DefaultValue> {
 
 	private String datatype;
 
@@ -51,5 +54,18 @@ public class DefaultValue extends OwnedModelItem<Model> {
 
 	@Override
 	protected void generateDeleteCommand() {
+	}
+	
+	@Override
+	public DefaultValue clone() {
+		DefaultValue theValue = new DefaultValue();
+		theValue.setName(getName());
+		theValue.setDatatype(getDatatype());
+		return theValue;
+	}
+	
+	public void restoreFrom(DefaultValue aValue) throws ElementAlreadyExistsException, ElementInvalidNameException {
+		renameTo(aValue.getName());
+		setDatatype(aValue.getDatatype());
 	}
 }
