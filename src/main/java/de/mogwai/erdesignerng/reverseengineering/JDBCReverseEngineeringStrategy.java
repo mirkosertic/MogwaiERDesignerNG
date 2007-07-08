@@ -14,6 +14,10 @@ import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:41 $
+ */
 public abstract class JDBCReverseEngineeringStrategy {
 
 	private Dialect dialect;

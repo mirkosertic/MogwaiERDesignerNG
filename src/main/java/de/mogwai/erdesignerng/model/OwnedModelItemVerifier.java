@@ -22,9 +22,8 @@ import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 
 /**
- * Interface to verify owned items.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:31 $
  */
 public interface OwnedModelItemVerifier {
 

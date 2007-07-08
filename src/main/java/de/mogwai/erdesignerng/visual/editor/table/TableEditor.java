@@ -37,7 +37,9 @@ import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 
 /**
- * @author Mirko Sertic
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:40 $
  */
 public class TableEditor extends BaseEditor {
 

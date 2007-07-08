@@ -19,29 +19,35 @@ package de.mogwai.erdesignerng.visual.editor.relation;
 
 import javax.swing.JFrame;
 
+import de.mogwai.binding.BindingInfo;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
-import de.mogwai.erdesignerng.visual.editor.DialogConstants;
 
 /**
- * @author Mirko Sertic
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:40 $
  */
 public class RelationEditor extends BaseEditor {
 
-	private Model m_model;
+	private Model model;
 
-	private Relation m_relation;
+	private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
 
-	private RelationEditorView m_view;
+	private RelationEditorView editingView;
 
 	/**
 	 * @param parent
 	 */
-	public RelationEditor(JFrame aParent) {
+	public RelationEditor(Model aModel, JFrame aParent) {
 		super(aParent);
 
 		initialize();
+		
+		model = aModel;
+		
+		bindingInfo.addBinding("name", editingView.getRelationname(),true);
+		bindingInfo.configure();
 	}
 
 	/**
@@ -49,10 +55,10 @@ public class RelationEditor extends BaseEditor {
 	 */
 	private void initialize() {
 
-		m_view = new RelationEditorView() {
+		editingView = new RelationEditorView() {
 
 			public void handleOKButtonActionPerformed(String actionCommand) {
-				handleClose();
+				commandOk();
 			}
 
 			public void handleCancelButtonActionPerformed(String actionCommand) {
@@ -61,23 +67,33 @@ public class RelationEditor extends BaseEditor {
 
 		};
 
-		setContentPane(m_view);
+		setContentPane(editingView);
 
 		setTitle("Relation editor");
 		setResizable(false);
 		pack();
 
 	}
+	
+	public void initializeFor(Relation aRelation) {
+		bindingInfo.setDefaultModel(aRelation);
+		bindingInfo.model2view();
+	}
 
-	private void handleClose() {
-
-		setModalResult(DialogConstants.MODAL_RESULT_OK);
+	private void commandOk() {
+		if (bindingInfo.validate().size() == 0) {
+			setModalResult(MODAL_RESULT_OK);
+		}
 	}
 
 	@Override
 	public void applyValues() throws Exception {
-		// TODO Auto-generated method stub
+		Relation theRelation = bindingInfo.getDefaultModel();
+		bindingInfo.view2model();
 
+		if (!model.getRelations().contains(theRelation)) {
+			model.addRelation(theRelation);
+		}
+		
 	}
-
 }

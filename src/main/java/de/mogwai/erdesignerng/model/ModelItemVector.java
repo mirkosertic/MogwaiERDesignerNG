@@ -20,9 +20,8 @@ package de.mogwai.erdesignerng.model;
 import java.util.Vector;
 
 /**
- * A List of ModelItems.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:36 $
  */
 public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 

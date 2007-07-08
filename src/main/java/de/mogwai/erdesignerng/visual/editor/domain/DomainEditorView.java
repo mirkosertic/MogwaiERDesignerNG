@@ -9,9 +9,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
- * Visual class DomainEditorView.
- * 
- * Created with Mogwai FormMaker 0.5.
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:46 $
  */
 public class DomainEditorView extends JPanel {
 

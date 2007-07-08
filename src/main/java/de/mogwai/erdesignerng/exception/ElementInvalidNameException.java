@@ -18,9 +18,8 @@
 package de.mogwai.erdesignerng.exception;
 
 /**
- * Exception for a required element name.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:37 $
  */
 public class ElementInvalidNameException extends ModelException {
 

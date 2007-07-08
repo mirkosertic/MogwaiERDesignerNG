@@ -18,9 +18,9 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * The indextype.
  * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:28 $
  */
 public enum IndexType {
 	UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");

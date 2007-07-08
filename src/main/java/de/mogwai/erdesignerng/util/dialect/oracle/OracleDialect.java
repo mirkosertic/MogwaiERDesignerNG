@@ -17,14 +17,13 @@
  */
 package de.mogwai.erdesignerng.util.dialect.oracle;
 
-import de.mogwai.erdesignerng.model.NameCastType;
 import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.util.dialect.NameCastType;
 import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
 
 /**
- * Model properties for Oracle databases.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:48 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -39,6 +38,11 @@ public class OracleDialect extends SQL92Dialect {
 	@Override
 	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
 		return new OracleReverseEngineeringStrategy(this);
+	}
+
+	@Override
+	public String getUniqueName() {
+		return "OracleDialect";
 	}
 
 }

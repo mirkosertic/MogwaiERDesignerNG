@@ -28,9 +28,9 @@ import javax.swing.JOptionPane;
 import javax.swing.event.CellEditorListener;
 
 /**
- * The base class for all editing dialogs.
  * 
- * @author Mirko Sertic
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:46 $
  */
 public abstract class BaseEditor extends JDialog implements DialogConstants {
 

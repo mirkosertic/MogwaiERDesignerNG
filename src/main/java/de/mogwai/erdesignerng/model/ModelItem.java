@@ -20,9 +20,8 @@ package de.mogwai.erdesignerng.model;
 import java.util.HashMap;
 
 /**
- * Base class for all model elements.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:30 $
  */
 public abstract class ModelItem {
 

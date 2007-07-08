@@ -4,10 +4,8 @@ import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 /**
- * Oracle reverse engineering.
- * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-06 20:35:18 $
+ * @version $Date: 2007-07-08 10:06:47 $
  */
 public class MSSQLReverseEngineeringStrategy extends
 		JDBCReverseEngineeringStrategy {

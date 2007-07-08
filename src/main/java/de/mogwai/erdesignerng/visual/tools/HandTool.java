@@ -30,6 +30,10 @@ import org.jgraph.graph.GraphCell;
 
 import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
 public class HandTool extends BaseTool {
 	
 	public HandTool(ERDesignerGraph aGraph) {

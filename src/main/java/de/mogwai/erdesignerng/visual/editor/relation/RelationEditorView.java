@@ -14,9 +14,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
- * Visual class RelationEditorView.
- * 
- * Created with Mogwai FormMaker 0.6.
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:40 $
  */
 public class RelationEditorView extends JPanel {
 

@@ -20,9 +20,9 @@ package de.mogwai.erdesignerng.model;
 import java.util.Map;
 
 /**
- * A list of relations.
  * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:29 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 

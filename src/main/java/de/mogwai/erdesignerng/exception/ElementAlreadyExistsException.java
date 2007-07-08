@@ -17,6 +17,10 @@
  */
 package de.mogwai.erdesignerng.exception;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:37 $
+ */
 public class ElementAlreadyExistsException extends ModelException {
 
 	private static final long serialVersionUID = 3016742498176605316L;

@@ -45,7 +45,12 @@ import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.ModelItem;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
+import de.mogwai.erdesignerng.util.dialect.DialectFactory;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:48 $
+ */
 public final class ModelIOUtilities {
 
 	protected static final String ID = "id";
@@ -120,6 +125,10 @@ public final class ModelIOUtilities {
 
 	protected static final String JAVA_CLASS_NAME = "javaclassname";
 
+	protected static final String CONFIGURATION = "Configuration";
+	
+	protected static final String DIALECT = "dialect";
+
 	private static ModelIOUtilities me;
 
 	private DocumentBuilderFactory documentBuilderFactory;
@@ -190,13 +199,31 @@ public final class ModelIOUtilities {
 		Document theDocument = documentBuilder.parse(aInputStream);
 		aInputStream.close();
 		Model theModel = new Model();
+		
+		NodeList theElements = theDocument.getElementsByTagName(CONFIGURATION);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
+			
+			NodeList theProperties = theElement.getElementsByTagName(PROPERTY);
+			for (int j = 0;j<theProperties.getLength();j++) {
+				Element theProperty = (Element)theProperties.item(j);
+				
+				String theName = theProperty.getAttribute(NAME);
+				String theValue = theProperty.getAttribute(VALUE);
+				
+				if (DIALECT.equals(theName)) {
+					theModel.setDialect(DialectFactory.getInstance().getDialect(theValue));
+				}
+			}
+		}
 
 		// First of all, parse the domains
-		NodeList theElements = theDocument.getElementsByTagName(DOMAIN);
+		theElements = theDocument.getElementsByTagName(DOMAIN);
 		for (int i = 0; i < theElements.getLength(); i++) {
 			Element theElement = (Element) theElements.item(i);
 
 			Domain theDomain = new Domain();
+			theDomain.setOwner(theModel);
 			deserializeProperties(theElement, theDomain);
 
 			theDomain.setDatatype(theElement.getAttribute(DATATYPE));
@@ -214,6 +241,7 @@ public final class ModelIOUtilities {
 			Element theElement = (Element) theElements.item(i);
 
 			Table theTable = new Table();
+			theTable.setOwner(theModel);
 			deserializeProperties(theElement, theTable);
 
 			// Parse the Attributes
@@ -222,6 +250,7 @@ public final class ModelIOUtilities {
 				Element theAttributeElement = (Element) theAttributes.item(j);
 
 				Attribute theAttribute = new Attribute();
+				theAttribute.setOwner(theTable);
 				deserializeProperties(theAttributeElement, theAttribute);
 
 				String theDomainId = theAttributeElement
@@ -248,7 +277,7 @@ public final class ModelIOUtilities {
 
 				Element theIndexElement = (Element) theIndexes.item(j);
 				Index theIndex = new Index();
-
+				theIndex.setOwner(theTable);
 				deserializeProperties(theIndexElement, theIndex);
 
 				theIndex.setIndexType(IndexType.fromType(theIndexElement
@@ -281,6 +310,7 @@ public final class ModelIOUtilities {
 			Element theElement = (Element) theElements.item(i);
 
 			Relation theRelation = new Relation();
+			theRelation.setOwner(theModel);
 			deserializeProperties(theElement, theRelation);
 
 			theRelation.setOnDelete(CascadeType.fromType(theElement
@@ -341,13 +371,20 @@ public final class ModelIOUtilities {
 
 		return theModel;
 	}
-
+	
 	public void serializeModelToXML(Model aModel, OutputStream aStream)
 			throws TransformerException, IOException {
 		Document theDocument = documentBuilder.newDocument();
 
 		Element theRootElement = addElement(theDocument, theDocument, MODEL);
 		theRootElement.setAttribute(VERSION, "1.0");
+		
+		Element theConfigurationElement = addElement(theDocument, theRootElement,
+				CONFIGURATION);
+		Element theDialectElement = addElement(theDocument, theConfigurationElement, PROPERTY);
+		theDialectElement.setAttribute(NAME, DIALECT);
+		theDialectElement.setAttribute(VALUE, aModel.getDialect().getUniqueName());
+		
 
 		// Domains serialisieren
 		Element theDomainsElement = addElement(theDocument, theRootElement,
