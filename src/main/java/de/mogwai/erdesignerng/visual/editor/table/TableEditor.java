@@ -40,7 +40,7 @@ import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 13:05:28 $
+ * @version $Date: 2007-07-08 17:55:43 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -68,6 +68,8 @@ public class TableEditor extends BaseEditor {
 		initialize();
 
 		model = aModel;
+		editingView.getAttributeList().setCellRenderer(
+				new AttributeListCellRenderer());
 
 		for (Domain theDomain : aModel.getDomains()) {
 			domainListModel.addElement(theDomain);
@@ -80,12 +82,13 @@ public class TableEditor extends BaseEditor {
 		editingView.getDefault().setModel(defaultValuesListModel);
 
 		tableBindingInfo.addBinding("name", editingView.getEntity_name(), true);
-		tableBindingInfo.addBinding("comment", editingView.getEntityComment());		
+		tableBindingInfo.addBinding("comment", editingView.getEntityComment());
 		tableBindingInfo.configure();
 
 		attributeBindingInfo.addBinding("name", editingView.getAttributeName(),
 				true);
-		attributeBindingInfo.addBinding("comment", editingView.getAttributeComment());
+		attributeBindingInfo.addBinding("comment", editingView
+				.getAttributeComment());
 		attributeBindingInfo.addBinding("domain", editingView.getDomainList(),
 				true);
 		attributeBindingInfo.addBinding("nullable", editingView.getNullable());

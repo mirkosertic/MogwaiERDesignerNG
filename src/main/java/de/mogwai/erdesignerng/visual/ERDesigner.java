@@ -21,18 +21,13 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
-import de.mogwai.erdesignerng.model.Attribute;
-import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
-import de.mogwai.erdesignerng.model.Relation;
-import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:47 $
+ * @version $Date: 2007-07-08 17:55:45 $
  */
 public final class ERDesigner {
 
@@ -44,52 +39,12 @@ public final class ERDesigner {
 			ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 
-		Model theModel = new Model();
-		theModel.setDialect(new MySQLDialect());
-
-		Domain theDomain = new Domain();
-		theDomain.setName("DOMAIN1");
-		theModel.addDomain(theDomain);
-
-		Table theTable1 = new Table();
-		theTable1.setName("TABLE1");
-
-		for (int i = 0; i < 5; i++) {
-			Attribute theAttribute = new Attribute();
-			theAttribute.setName("a1_" + i);
-			theAttribute.setDefinition(theDomain, true, null);
-
-			theTable1.addAttribute(theModel, theAttribute);
-		}
-
-		theModel.addTable(theTable1);
-
-		Table theTable2 = new Table();
-		theTable2.setName("TABLE2");
-
-		for (int i = 0; i < 5; i++) {
-			Attribute theAttribute = new Attribute();
-			theAttribute.setName("a1_" + i);
-			theAttribute.setDefinition(theDomain, true, null);
-
-			theTable2.addAttribute(theModel, theAttribute);
-		}
-
-		theModel.addTable(theTable2);
-
-		Relation theRelation = new Relation();
-		theRelation.setName("REL_1");
-		theRelation.setExportingTable(theTable1);
-		theRelation.setImportingTable(theTable2);
-
-		theModel.addRelation(theRelation);
-
 		UIManager
 				.setLookAndFeel("com.incors.plaf.kunststoff.KunststoffLookAndFeel");
 
 		ERDesignerMainFrame frame = new ERDesignerMainFrame();
+		frame.setModel(new Model());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setModel(theModel);
 		frame.setExtendedState(ERDesignerMainFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 	}

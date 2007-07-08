@@ -42,17 +42,18 @@ import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:06 $
+ * @version $Date: 2007-07-08 17:55:42 $
  */
 public class RelationTool extends BaseTool {
 
 	protected Point2D start, current;
+
 	protected PortView port, firstPort;
-	
+
 	public RelationTool(ERDesignerGraph aGraph) {
 		super(aGraph);
 	}
-	
+
 	public boolean isForceMarqueeEvent(MouseEvent e) {
 		if (e.isShiftDown())
 			return false;
@@ -111,8 +112,7 @@ public class RelationTool extends BaseTool {
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if (e != null && port != null && firstPort != null
-				) {
+		if (e != null && port != null && firstPort != null) {
 			connect((Port) firstPort.getCell(), (Port) port.getCell());
 			e.consume();
 		} else
@@ -135,8 +135,8 @@ public class RelationTool extends BaseTool {
 		g.setXORMode(bg);
 		paintPort(graph.getGraphics());
 		if (firstPort != null && start != null && current != null)
-			g.drawLine((int) start.getX(), (int) start.getY(),
-					(int) current.getX(), (int) current.getY());
+			g.drawLine((int) start.getX(), (int) start.getY(), (int) current
+					.getX(), (int) current.getY());
 	}
 
 	protected void paintPort(Graphics g) {

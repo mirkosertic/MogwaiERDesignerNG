@@ -38,7 +38,7 @@ import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:46 $
+ * @version $Date: 2007-07-08 17:55:45 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
@@ -59,11 +59,12 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 		if (aValue instanceof RelationEdge) {
 			RelationEdge theCell = (RelationEdge) aValue;
 
-			Relation theRelation = (Relation)theCell.getUserObject();
-			
-			RelationEditor theEditor = new RelationEditor(theRelation.getOwner(),aParent);
+			Relation theRelation = (Relation) theCell.getUserObject();
+
+			RelationEditor theEditor = new RelationEditor(theRelation
+					.getOwner(), aParent);
 			theEditor.initializeFor(theRelation);
-			
+
 			return theEditor;
 		}
 

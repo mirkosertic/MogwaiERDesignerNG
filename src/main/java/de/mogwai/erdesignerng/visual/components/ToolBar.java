@@ -29,7 +29,7 @@ import javax.swing.JToolBar;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:41 $
+ * @version $Date: 2007-07-08 17:55:44 $
  */
 public class ToolBar extends JToolBar {
 
@@ -40,7 +40,7 @@ public class ToolBar extends JToolBar {
 			JButton theButton = new JButton(theIcon);
 			theButton.setToolTipText((String) aAction
 					.getValue(Action.SHORT_DESCRIPTION));
-			Dimension theSize = new Dimension(32,32);
+			Dimension theSize = new Dimension(32, 32);
 			theButton.setPreferredSize(theSize);
 			theButton.setSize(theSize);
 			theButton.setMinimumSize(theSize);
@@ -50,7 +50,7 @@ public class ToolBar extends JToolBar {
 				public void actionPerformed(ActionEvent e) {
 					aAction.actionPerformed(e);
 				}
-				
+
 			});
 			add(theButton);
 

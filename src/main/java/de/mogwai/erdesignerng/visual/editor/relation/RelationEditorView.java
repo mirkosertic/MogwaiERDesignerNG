@@ -15,7 +15,7 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:40 $
+ * @version $Date: 2007-07-08 17:55:44 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -25,13 +25,21 @@ public class RelationEditorView extends JPanel {
 
 	private javax.swing.JTable m_component_5;
 
-	private JPanel m_component_7;
+	private JPanel onDeleteContainer;
 
-	private javax.swing.JRadioButton m_component_11;
+	private javax.swing.JRadioButton onDeleteNothing;
 
-	private javax.swing.JRadioButton m_component_12;
+	private javax.swing.JRadioButton onDeleteCascade;
 
-	private javax.swing.JRadioButton m_component_13;
+	private javax.swing.JRadioButton onDeleteSetNull;
+
+	private JPanel onUpdateContainer;
+
+	private javax.swing.JRadioButton onUpdateNothing;
+
+	private javax.swing.JRadioButton onUpdateCascade;
+
+	private javax.swing.JRadioButton onUpdateSetNull;
 
 	private JPanel m_component_8;
 
@@ -51,7 +59,7 @@ public class RelationEditorView extends JPanel {
 	 */
 	private void initialize() {
 
-		String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,8dlu,p,20dlu,p,2dlu";
+		String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
 		String colDef = "2dlu,60dlu,2dlu,150dlu,2dlu";
 
 		FormLayout layout = new FormLayout(colDef, rowDef);
@@ -67,9 +75,13 @@ public class RelationEditorView extends JPanel {
 				"Attribute mapping"), cons.xywh(2, 6, 3, 1));
 		add(new JScrollPane(getComponent_5()), cons.xywh(2, 8, 3, 1));
 		add(DefaultComponentFactory.getInstance().createSeparator(
-				"Delete / Cascade handling"), cons.xywh(2, 10, 3, 1));
-		add(getComponent_7(), cons.xywh(2, 12, 3, 1));
-		add(getComponent_8(), cons.xywh(2, 14, 3, 1));
+				"On Delete handling"), cons.xywh(2, 10, 3, 1));
+		add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
+		add(DefaultComponentFactory.getInstance().createSeparator(
+				"On Update handling"), cons.xywh(2, 14, 3, 1));
+		add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
+
+		add(getComponent_8(), cons.xywh(2, 20, 3, 1));
 
 		buildGroups();
 	}
@@ -131,26 +143,50 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public JPanel getComponent_7() {
+	public JPanel getOnDeleteContainer() {
 
-		if (m_component_7 == null) {
-			m_component_7 = new JPanel();
+		if (onDeleteContainer == null) {
+			onDeleteContainer = new JPanel();
 
 			String rowDef = "p,2dlu,p,2dlu,p";
 			String colDef = "50dlu:grow";
 
 			FormLayout layout = new FormLayout(colDef, rowDef);
-			m_component_7.setLayout(layout);
+			onDeleteContainer.setLayout(layout);
 
 			CellConstraints cons = new CellConstraints();
 
-			m_component_7.add(getComponent_11(), cons.xywh(1, 1, 1, 1));
-			m_component_7.add(getComponent_12(), cons.xywh(1, 3, 1, 1));
-			m_component_7.add(getComponent_13(), cons.xywh(1, 5, 1, 1));
-			m_component_7.setName("Component_7");
+			onDeleteContainer.add(getOnDeleteCascadeNothing(), cons.xywh(1, 1,
+					1, 1));
+			onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(1, 3, 1, 1));
+			onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(1, 5, 1, 1));
+			onDeleteContainer.setName("Component_7");
 		}
 
-		return m_component_7;
+		return onDeleteContainer;
+	}
+
+	public JPanel getOnUpdateContainer() {
+
+		if (onUpdateContainer == null) {
+			onUpdateContainer = new JPanel();
+
+			String rowDef = "p,2dlu,p,2dlu,p";
+			String colDef = "50dlu:grow";
+
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			onUpdateContainer.setLayout(layout);
+
+			CellConstraints cons = new CellConstraints();
+
+			onUpdateContainer.add(getOnUpdateCascadeNothing(), cons.xywh(1, 1,
+					1, 1));
+			onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(1, 3, 1, 1));
+			onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(1, 5, 1, 1));
+			onUpdateContainer.setName("Component_7");
+		}
+
+		return onUpdateContainer;
 	}
 
 	/**
@@ -158,20 +194,20 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JRadioButton getComponent_11() {
+	public javax.swing.JRadioButton getOnDeleteCascadeNothing() {
 
-		if (m_component_11 == null) {
-			m_component_11 = new javax.swing.JRadioButton();
-			m_component_11.setActionCommand("Database default");
-			m_component_11.setName("Component_11#Group1!DEFAULT");
-			m_component_11.setText("Database default");
-			m_component_11.addActionListener(new ActionListener() {
+		if (onDeleteNothing == null) {
+			onDeleteNothing = new javax.swing.JRadioButton();
+			onDeleteNothing.setActionCommand("Database default");
+			onDeleteNothing.setName("Component_11#Group1!DEFAULT");
+			onDeleteNothing.setText("Nothing");
+			onDeleteNothing.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
 					handleComponent_11ActionPerformed(e.getActionCommand());
 				}
 			});
-			m_component_11
+			onDeleteNothing
 					.addChangeListener(new javax.swing.event.ChangeListener() {
 
 						public void stateChanged(javax.swing.event.ChangeEvent e) {
@@ -180,7 +216,7 @@ public class RelationEditorView extends JPanel {
 					});
 		}
 
-		return m_component_11;
+		return onDeleteNothing;
 	}
 
 	/**
@@ -188,21 +224,21 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JRadioButton getComponent_12() {
+	public javax.swing.JRadioButton getOnDeleteCascade() {
 
-		if (m_component_12 == null) {
-			m_component_12 = new javax.swing.JRadioButton();
-			m_component_12.setActionCommand("ON DELETE CASCADE");
-			m_component_12.setName("Component_12#Group1!CASCADE");
-			m_component_12.setSelected(true);
-			m_component_12.setText("ON DELETE CASCADE");
-			m_component_12.addActionListener(new ActionListener() {
+		if (onDeleteCascade == null) {
+			onDeleteCascade = new javax.swing.JRadioButton();
+			onDeleteCascade.setActionCommand("ON DELETE CASCADE");
+			onDeleteCascade.setName("Component_12#Group1!CASCADE");
+			onDeleteCascade.setSelected(true);
+			onDeleteCascade.setText("CASCADE");
+			onDeleteCascade.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
 					handleComponent_12ActionPerformed(e.getActionCommand());
 				}
 			});
-			m_component_12
+			onDeleteCascade
 					.addChangeListener(new javax.swing.event.ChangeListener() {
 
 						public void stateChanged(javax.swing.event.ChangeEvent e) {
@@ -211,7 +247,7 @@ public class RelationEditorView extends JPanel {
 					});
 		}
 
-		return m_component_12;
+		return onDeleteCascade;
 	}
 
 	/**
@@ -219,20 +255,20 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JRadioButton getComponent_13() {
+	public javax.swing.JRadioButton getOnDeleteSetNull() {
 
-		if (m_component_13 == null) {
-			m_component_13 = new javax.swing.JRadioButton();
-			m_component_13.setActionCommand("ON DELETE SET NULL");
-			m_component_13.setName("Component_13#Group1!SETNULL");
-			m_component_13.setText("ON DELETE SET NULL");
-			m_component_13.addActionListener(new ActionListener() {
+		if (onDeleteSetNull == null) {
+			onDeleteSetNull = new javax.swing.JRadioButton();
+			onDeleteSetNull.setActionCommand("SET NULL");
+			onDeleteSetNull.setName("Component_13#Group1!SETNULL");
+			onDeleteSetNull.setText("SET NULL");
+			onDeleteSetNull.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
 					handleComponent_13ActionPerformed(e.getActionCommand());
 				}
 			});
-			m_component_13
+			onDeleteSetNull
 					.addChangeListener(new javax.swing.event.ChangeListener() {
 
 						public void stateChanged(javax.swing.event.ChangeEvent e) {
@@ -241,7 +277,59 @@ public class RelationEditorView extends JPanel {
 					});
 		}
 
-		return m_component_13;
+		return onDeleteSetNull;
+	}
+
+	/**
+	 * Getter method for component Component_11.
+	 * 
+	 * @return the initialized component
+	 */
+	public javax.swing.JRadioButton getOnUpdateCascadeNothing() {
+
+		if (onUpdateNothing == null) {
+			onUpdateNothing = new javax.swing.JRadioButton();
+			onUpdateNothing.setActionCommand("Database default");
+			onUpdateNothing.setName("Component_11#Group1!DEFAULT");
+			onUpdateNothing.setText("Nothing");
+		}
+
+		return onUpdateNothing;
+	}
+
+	/**
+	 * Getter method for component Component_12.
+	 * 
+	 * @return the initialized component
+	 */
+	public javax.swing.JRadioButton getOnUpdateCascade() {
+
+		if (onUpdateCascade == null) {
+			onUpdateCascade = new javax.swing.JRadioButton();
+			onUpdateCascade.setActionCommand("ON DELETE CASCADE");
+			onUpdateCascade.setName("Component_12#Group1!CASCADE");
+			onUpdateCascade.setSelected(true);
+			onUpdateCascade.setText("CASCADE");
+		}
+
+		return onUpdateCascade;
+	}
+
+	/**
+	 * Getter method for component Component_13.
+	 * 
+	 * @return the initialized component
+	 */
+	public javax.swing.JRadioButton getOnUpdateSetNull() {
+
+		if (onUpdateSetNull == null) {
+			onUpdateSetNull = new javax.swing.JRadioButton();
+			onUpdateSetNull.setActionCommand("SET NULL");
+			onUpdateSetNull.setName("Component_13#Group1!SETNULL");
+			onUpdateSetNull.setText("SET NULL");
+		}
+
+		return onUpdateSetNull;
 	}
 
 	/**
@@ -280,8 +368,7 @@ public class RelationEditorView extends JPanel {
 		if (m_okbutton == null) {
 			m_okbutton = new javax.swing.JButton();
 			m_okbutton.setActionCommand("Ok");
-			m_okbutton
-					.setIcon(IconFactory.getSaveIcon());
+			m_okbutton.setIcon(IconFactory.getSaveIcon());
 			m_okbutton.setName("OKButton");
 			m_okbutton.setText("Ok");
 			m_okbutton.addActionListener(new ActionListener() {
@@ -312,8 +399,7 @@ public class RelationEditorView extends JPanel {
 		if (m_cancelbutton == null) {
 			m_cancelbutton = new javax.swing.JButton();
 			m_cancelbutton.setActionCommand("Cancel");
-			m_cancelbutton
-					.setIcon(IconFactory.getCancelIcon());
+			m_cancelbutton.setIcon(IconFactory.getCancelIcon());
 			m_cancelbutton.setName("CancelButton");
 			m_cancelbutton.setText("Cancel");
 			m_cancelbutton.addActionListener(new ActionListener() {
@@ -340,9 +426,15 @@ public class RelationEditorView extends JPanel {
 	private void buildGroups() {
 
 		ButtonGroup Group1 = new ButtonGroup();
-		Group1.add(getComponent_11());
-		Group1.add(getComponent_12());
-		Group1.add(getComponent_13());
+		Group1.add(getOnDeleteCascadeNothing());
+		Group1.add(getOnDeleteCascade());
+		Group1.add(getOnDeleteSetNull());
+
+		ButtonGroup Group2 = new ButtonGroup();
+		Group2.add(getOnUpdateCascadeNothing());
+		Group2.add(getOnUpdateCascade());
+		Group2.add(getOnUpdateSetNull());
+
 	}
 
 	/**
@@ -353,13 +445,13 @@ public class RelationEditorView extends JPanel {
 	 */
 	public String getGroup1Value() {
 
-		if (getComponent_11().isSelected()) {
+		if (getOnDeleteCascadeNothing().isSelected()) {
 			return "DEFAULT";
 		}
-		if (getComponent_12().isSelected()) {
+		if (getOnDeleteCascade().isSelected()) {
 			return "CASCADE";
 		}
-		if (getComponent_13().isSelected()) {
+		if (getOnDeleteSetNull().isSelected()) {
 			return "SETNULL";
 		}
 		return null;
@@ -374,9 +466,9 @@ public class RelationEditorView extends JPanel {
 	 */
 	public void setGroup1Value(String value) {
 
-		getComponent_11().setSelected("DEFAULT".equals(value));
-		getComponent_12().setSelected("CASCADE".equals(value));
-		getComponent_13().setSelected("SETNULL".equals(value));
+		getOnDeleteCascadeNothing().setSelected("DEFAULT".equals(value));
+		getOnDeleteCascade().setSelected("CASCADE".equals(value));
+		getOnDeleteSetNull().setSelected("SETNULL".equals(value));
 	}
 
 	/**

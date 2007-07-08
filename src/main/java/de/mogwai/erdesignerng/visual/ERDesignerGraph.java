@@ -29,7 +29,7 @@ import de.mogwai.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:43 $
+ * @version $Date: 2007-07-08 17:55:45 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -37,7 +37,7 @@ public class ERDesignerGraph extends JGraph {
 
 	public ERDesignerGraph(GraphModel aModel, GraphLayoutCache aLayoutCache) {
 		super(aModel, aLayoutCache);
-		//setPortsVisible(true);
+		// setPortsVisible(true);
 	}
 
 	public void setTool(BaseTool aTool) {
@@ -47,7 +47,7 @@ public class ERDesignerGraph extends JGraph {
 
 	public void commandDeleteCell(GraphCell aCell) {
 	}
-	
+
 	public void commandNewTable(Point2D aPoint) {
 	}
 }
