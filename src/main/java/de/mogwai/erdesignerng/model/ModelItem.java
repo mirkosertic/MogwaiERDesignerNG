@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:30 $
+ * @version $Date: 2007-07-08 10:29:41 $
  */
 public abstract class ModelItem {
 
@@ -32,6 +32,8 @@ public abstract class ModelItem {
 	private String systemId = ModelUtilities.createSystemIdFor(this);
 
 	private String name;
+
+	private String comment;
 
 	private HashMap<String, String> properties = new HashMap<String, String>();
 
@@ -100,5 +102,13 @@ public abstract class ModelItem {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }
