@@ -15,18 +15,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.util.dialect;
+package de.mogwai.erdesignerng.dialect;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import de.mogwai.erdesignerng.util.dialect.mssql.MSSQLDialect;
-import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
-import de.mogwai.erdesignerng.util.dialect.oracle.OracleDialect;
+import de.mogwai.erdesignerng.dialect.mssql.MSSQLDialect;
+import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
+import de.mogwai.erdesignerng.dialect.oracle.OracleDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:39 $
+ * @version $Date: 2007-07-08 10:28:17 $
  */
 public class DialectFactory { 
 

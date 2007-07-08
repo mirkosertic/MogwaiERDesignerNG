@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.util.dialect;
+package de.mogwai.erdesignerng.dialect;
 
 import java.util.List;
 
@@ -25,11 +25,10 @@ import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:39 $
+ * @version $Date: 2007-07-08 10:28:18 $
  */
 public abstract class Dialect {
 

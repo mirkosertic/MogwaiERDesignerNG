@@ -15,34 +15,31 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.util.dialect.oracle;
-
-import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
-import de.mogwai.erdesignerng.util.dialect.NameCastType;
-import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
+package de.mogwai.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:48 $
+ * @version $Date: 2007-07-08 10:28:15 $
  */
-public class OracleDialect extends SQL92Dialect {
+public enum NameCastType {
+	NOTHING(1), UPPERCASE(2), LOWERCASE(3);
 
-	public OracleDialect() {
-		setSpacesAllowedInObjectNames(false);
-		setCaseSensitive(false);
-		setMaxObjectNameLength(28);
-		setNullablePrimaryKeyAllowed(false);
-		setCastType(NameCastType.UPPERCASE);
+	private int mode;
+
+	private NameCastType(int aMode) {
+		mode = aMode;
 	}
 
-	@Override
-	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return new OracleReverseEngineeringStrategy(this);
-	}
+	public String cast(String aValue) {
+		switch (mode) {
+			case 1:
+				return aValue;
+			case 2:
+				return aValue.toUpperCase();
+			case 3:
+				return aValue.toLowerCase();
+		}
 
-	@Override
-	public String getUniqueName() {
-		return "OracleDialect";
+		throw new IllegalStateException();
 	}
-
 }

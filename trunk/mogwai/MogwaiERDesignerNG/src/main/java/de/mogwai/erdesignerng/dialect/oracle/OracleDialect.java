@@ -15,20 +15,19 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.util.dialect.mssql;
+package de.mogwai.erdesignerng.dialect.oracle;
 
-import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
-import de.mogwai.erdesignerng.util.dialect.NameCastType;
-import de.mogwai.erdesignerng.util.dialect.sql92.SQL92Dialect;
+import de.mogwai.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.dialect.NameCastType;
+import de.mogwai.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
- * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:47 $
+ * @version $Date: 2007-07-08 10:28:22 $
  */
-public class MSSQLDialect extends SQL92Dialect {
+public class OracleDialect extends SQL92Dialect {
 
-	public MSSQLDialect() {
+	public OracleDialect() {
 		setSpacesAllowedInObjectNames(false);
 		setCaseSensitive(false);
 		setMaxObjectNameLength(28);
@@ -38,12 +37,12 @@ public class MSSQLDialect extends SQL92Dialect {
 
 	@Override
 	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return new MSSQLReverseEngineeringStrategy(this);
+		return new OracleReverseEngineeringStrategy(this);
 	}
 
 	@Override
 	public String getUniqueName() {
-		return "MSSQLDialect";
+		return "OracleDialect";
 	}
 
 }

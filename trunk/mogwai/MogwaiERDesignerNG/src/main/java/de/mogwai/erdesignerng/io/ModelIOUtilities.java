@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import de.mogwai.erdesignerng.dialect.DialectFactory;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.CascadeType;
 import de.mogwai.erdesignerng.model.Domain;
@@ -45,11 +46,10 @@ import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.ModelItem;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.util.dialect.DialectFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:48 $
+ * @version $Date: 2007-07-08 10:29:46 $
  */
 public final class ModelIOUtilities {
 

@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
@@ -28,11 +29,10 @@ import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:43 $
+ * @version $Date: 2007-07-08 10:29:47 $
  */
 public final class ERDesigner {
 

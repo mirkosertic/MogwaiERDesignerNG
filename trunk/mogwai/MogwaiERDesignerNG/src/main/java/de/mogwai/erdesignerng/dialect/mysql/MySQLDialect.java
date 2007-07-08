@@ -15,31 +15,34 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.util.dialect;
+package de.mogwai.erdesignerng.dialect.mysql;
+
+import de.mogwai.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.mogwai.erdesignerng.dialect.NameCastType;
+import de.mogwai.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:39 $
+ * @version $Date: 2007-07-08 10:29:37 $
  */
-public enum NameCastType {
-	NOTHING(1), UPPERCASE(2), LOWERCASE(3);
+public class MySQLDialect extends SQL92Dialect {
 
-	private int mode;
-
-	private NameCastType(int aMode) {
-		mode = aMode;
+	public MySQLDialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(true);
+		setMaxObjectNameLength(28);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.NOTHING);
 	}
 
-	public String cast(String aValue) {
-		switch (mode) {
-			case 1:
-				return aValue;
-			case 2:
-				return aValue.toUpperCase();
-			case 3:
-				return aValue.toLowerCase();
-		}
-
-		throw new IllegalStateException();
+	@Override
+	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new MySQLReverseEngineeringStrategy(this);
 	}
+
+	@Override
+	public String getUniqueName() {
+		return "MySQLDialect";
+	}
+
 }

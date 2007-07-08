@@ -1,4 +1,4 @@
-package de.mogwai.erdesignerng.reverseengineering;
+package de.mogwai.erdesignerng.dialect;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -12,11 +12,10 @@ import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:41 $
+ * @version $Date: 2007-07-08 10:28:14 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
