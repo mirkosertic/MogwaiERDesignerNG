@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual;
+package de.mogwai.erdesignerng.io;
 
 import java.io.File;
 
@@ -24,27 +24,33 @@ import javax.swing.filechooser.FileFilter;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:44 $
+ * @version $Date: 2007-07-08 18:49:41 $
  */
-public class ModelFileFilter extends FileFilter {
+public class GenericFileFilter extends FileFilter {
 
-	private static final String EXTENSION = ".mxm";
-
+	private String extension;
+	private String description;
+	
+	public GenericFileFilter(String aExtension,String aDescription) {
+		extension = aExtension;
+		description = aDescription;
+	}
+	
 	public boolean accept(File aFileName) {
 		if (aFileName.isDirectory()) {
 			return true;
 		}
-		return aFileName.getName().toLowerCase().endsWith(EXTENSION);
+		return aFileName.getName().toLowerCase().endsWith(extension);
 	}
 
 	@Override
 	public String getDescription() {
-		return "Mogwai model";
+		return description;
 	}
 
 	public File getCompletedFile(File aFile) {
-		if (!aFile.getName().toLowerCase().endsWith(EXTENSION)) {
-			return new File(aFile.toString() + EXTENSION);
+		if (!aFile.getName().toLowerCase().endsWith(extension)) {
+			return new File(aFile.toString() + extension);
 		}
 		return aFile;
 	}

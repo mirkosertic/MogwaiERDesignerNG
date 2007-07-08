@@ -22,10 +22,13 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:45 $
+ * @version $Date: 2007-07-08 18:49:39 $
  */
-public class IconFactory {
+public final class IconFactory {
 
+	private IconFactory() {
+	}
+	
 	public static ImageIcon getKeyIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/key.gif"));

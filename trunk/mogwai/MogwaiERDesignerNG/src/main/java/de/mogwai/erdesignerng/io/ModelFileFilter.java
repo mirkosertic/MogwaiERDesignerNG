@@ -15,25 +15,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual.export;
+package de.mogwai.erdesignerng.io;
 
-import java.awt.Component;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
+ * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:39 $
+ * @version $Date: 2007-07-08 18:49:41 $
  */
-public interface Exporter {
+public class ModelFileFilter extends GenericFileFilter {
 
-	String getFileExtension();
-
-	void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream)
-			throws IOException;
-	
-	void exportToStream(Component aComponent, OutputStream aStream)
-	throws IOException;
+	public ModelFileFilter() {
+		super(".mxm","Mogwai model");
+	}
 }

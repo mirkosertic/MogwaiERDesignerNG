@@ -35,7 +35,7 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:43 $
+ * @version $Date: 2007-07-08 18:49:42 $
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 

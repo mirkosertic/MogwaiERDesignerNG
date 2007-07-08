@@ -17,6 +17,8 @@
  */
 package de.mogwai.erdesignerng.visual.export;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,7 +36,7 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:40 $
+ * @version $Date: 2007-07-08 18:49:39 $
  */
 public class SVGExporter implements Exporter {
 
@@ -63,5 +65,27 @@ public class SVGExporter implements Exporter {
 
 	public String getFileExtension() {
 		return ".svg";
+	}
+
+	public void exportToStream(Component aComponent, OutputStream aStream)
+			throws IOException {
+		DOMImplementation theDomImpl = GenericDOMImplementation
+				.getDOMImplementation();
+		Document theDocument = theDomImpl.createDocument(null, "svg", null);
+		SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
+		RepaintManager theRepaintManager = RepaintManager
+				.currentManager(aComponent);
+		theRepaintManager.setDoubleBufferingEnabled(false);
+
+		Dimension theSize = aComponent.getPreferredSize();
+		aComponent.setSize(theSize);
+		
+		aComponent.paint(theSvgGenerator);
+		Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
+		theSvgGenerator.stream(theWriter, false);
+		theRepaintManager.setDoubleBufferingEnabled(true);
+
+		theWriter.flush();
+		theWriter.close();
 	}
 }
