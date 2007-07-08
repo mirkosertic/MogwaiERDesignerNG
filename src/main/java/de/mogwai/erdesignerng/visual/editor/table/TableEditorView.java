@@ -11,7 +11,7 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:40 $
+ * @version $Date: 2007-07-08 13:05:27 $
  */
 public class TableEditorView extends JPanel {
 
@@ -167,13 +167,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_maintabbedpane == null) {
 			this.m_maintabbedpane = new javax.swing.JTabbedPane();
 			this.m_maintabbedpane.addTab("Attributes", this.getAttributesTab());
-			this.m_maintabbedpane.addTab("Indexes", this.getIndexesTab());
-			this.m_maintabbedpane.addTab("Comments", this.getMainCommensTab());
-			this.m_maintabbedpane.addTab("Attributes", this.getAttributesTab());
-			this.m_maintabbedpane.addTab("Indexes", this.getIndexesTab());
-			this.m_maintabbedpane.addTab("Comments", this.getMainCommensTab());
-			this.m_maintabbedpane.addTab("Attributes", this.getAttributesTab());
-			this.m_maintabbedpane.addTab("Indexes", this.getIndexesTab());
+			//this.m_maintabbedpane.addTab("Indexes", this.getIndexesTab());
 			this.m_maintabbedpane.addTab("Comments", this.getMainCommensTab());
 			this.m_maintabbedpane.setName("MainTabbedPane");
 			this.m_maintabbedpane.setSelectedIndex(0);
@@ -200,9 +194,9 @@ public class TableEditorView extends JPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1, 1));
-			this.m_attributestab.add(this.getDownButton(), cons
-					.xywh(9, 2, 1, 1));
+			//this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1, 1));
+			//this.m_attributestab.add(this.getDownButton(), cons
+			//		.xywh(9, 2, 1, 1));
 			this.m_attributestab.add(new JScrollPane(this.getAttributeList()),
 					cons.xywh(2, 4, 8, 3));
 			this.m_attributestab
@@ -384,8 +378,8 @@ public class TableEditorView extends JPanel {
 					8, 1, 1));
 			this.m_attributesgeneraltab.add(this.getNullable(), cons.xywh(4,
 					10, 1, 1));
-			this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
-					.xywh(4, 12, 1, 1));
+			//this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
+			//		.xywh(4, 12, 1, 1));
 			this.m_attributesgeneraltab.setName("AttributesGeneralTab");
 		}
 

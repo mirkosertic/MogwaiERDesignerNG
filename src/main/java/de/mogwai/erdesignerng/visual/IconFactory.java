@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:45 $
+ * @version $Date: 2007-07-08 13:05:25 $
  */
 public class IconFactory {
 
@@ -30,6 +30,12 @@ public class IconFactory {
 		return new ImageIcon(IconFactory.class
 				.getClassLoader().getResource(
 						"de/mogwai/erdesignerng/icons/key.gif"));		
+	}
+
+	public static ImageIcon getExitIcon() {
+		return new ImageIcon(IconFactory.class
+				.getClassLoader().getResource(
+						"de/mogwai/erdesignerng/icons/door_in.png"));		
 	}
 
 	public static ImageIcon getNewIcon() {
