@@ -19,10 +19,10 @@ package de.mogwai.erdesignerng.model;
 
 import java.util.List;
 
+
 /**
- * An empty model history.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:34 $
  */
 public class ModelHistory {
 

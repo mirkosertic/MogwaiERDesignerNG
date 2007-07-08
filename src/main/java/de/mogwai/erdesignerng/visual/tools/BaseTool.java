@@ -21,6 +21,10 @@ import org.jgraph.graph.BasicMarqueeHandler;
 
 import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
 public abstract class BaseTool extends BasicMarqueeHandler {
 
 	protected ERDesignerGraph graph;

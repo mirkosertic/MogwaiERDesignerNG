@@ -10,9 +10,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
- * Visual class EntityEditorView.
- * 
- * Created with Mogwai FormMaker 0.5.
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:40 $
  */
 public class TableEditorView extends JPanel {
 

@@ -15,37 +15,33 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.model;
+package de.mogwai.erdesignerng.visual.cells.views;
+
+import java.awt.geom.Rectangle2D;
+
+import org.jgraph.JGraph;
+import org.jgraph.graph.GraphCell;
+import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.PortView;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:35 $
+ * @version $Date: 2007-07-08 10:06:41 $
  */
-public enum CascadeType {
-	NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull");
+public class DefaultPortView extends PortView {
 
-	private String type;
-
-	private CascadeType(String aType) {
-		type = aType;
+	public DefaultPortView(Object aObject) {
+		super(aObject);
 	}
 
-	public String getType() {
-		return type;
+	@Override
+	public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
+		GraphCell theCell = (GraphCell) getParentView().getCell();
+		Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+		
+		return theBounds.contains(aRect.getX(), aRect.getY());
 	}
-
-	public static CascadeType fromType(String aType) {
-		if (NOTHING.getType().equals(aType)) {
-			return NOTHING;
-		}
-		if (CASCADE.getType().equals(aType)) {
-			return CASCADE;
-		}
-		if (SET_NULL.getType().equals(aType)) {
-			return SET_NULL;
-		}
-		throw new IllegalArgumentException("Invalid type " + aType);
-	}
-
+	
+	
 }

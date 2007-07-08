@@ -18,9 +18,9 @@
 package de.mogwai.erdesignerng.visual.editor;
 
 /**
- * Common interface for dialogs.
  * 
- * @author Mirko Sertic
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:46 $
  */
 public interface DialogConstants {
 

@@ -19,6 +19,11 @@ package de.mogwai.erdesignerng.visual.cells;
 
 import java.awt.geom.Point2D;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
 public final class TransferHelper {
 
 	private TransferHelper() {

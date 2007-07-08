@@ -24,9 +24,8 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 /**
- * Helper functions for the model.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:37 $
  */
 public final class ModelUtilities {
 

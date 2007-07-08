@@ -30,6 +30,10 @@ import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:43 $
+ */
 public final class ERDesigner {
 
 	private ERDesigner() {

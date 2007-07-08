@@ -37,9 +37,8 @@ import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
 
 /**
- * Editor for domain declarations.
- * 
- * @author Mirko Sertic
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:46 $
  */
 public class DomainEditor extends BaseEditor {
 

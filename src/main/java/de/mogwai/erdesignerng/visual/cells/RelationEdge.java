@@ -28,9 +28,14 @@ import org.jgraph.graph.GraphConstants;
 
 import de.mogwai.erdesignerng.model.Relation;
 
-public class RelationCell extends DefaultEdge implements ModelCell<Relation> {
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
+public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
-	public RelationCell(Relation aRelation, TableCell aImporting,
+	public RelationEdge(Relation aRelation, TableCell aImporting,
 			TableCell aExporting) {
 
 		super(aRelation);

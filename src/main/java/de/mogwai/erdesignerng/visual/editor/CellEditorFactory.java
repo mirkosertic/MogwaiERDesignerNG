@@ -28,12 +28,18 @@ import javax.swing.SwingUtilities;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCellEditor;
 
+import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.visual.cells.RelationCell;
+import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
 import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:46 $
+ */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
 	private Object editingValue;
@@ -50,10 +56,14 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 			return theEditor;
 		}
 
-		if (aValue instanceof RelationCell) {
-			RelationCell theCell = (RelationCell) aValue;
+		if (aValue instanceof RelationEdge) {
+			RelationEdge theCell = (RelationEdge) aValue;
 
-			RelationEditor theEditor = new RelationEditor(aParent);
+			Relation theRelation = (Relation)theCell.getUserObject();
+			
+			RelationEditor theEditor = new RelationEditor(theRelation.getOwner(),aParent);
+			theEditor.initializeFor(theRelation);
+			
 			return theEditor;
 		}
 

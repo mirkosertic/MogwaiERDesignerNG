@@ -19,7 +19,11 @@ package de.mogwai.erdesignerng.visual;
 
 import javax.swing.ImageIcon;
 
-
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:45 $
+ */
 public class IconFactory {
 
 	public static ImageIcon getKeyIcon() {

@@ -20,9 +20,8 @@ package de.mogwai.erdesignerng.model;
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
 
 /**
- * A model item which is owned by another item.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:34 $
  */
 public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
 		ModelItem {

@@ -18,9 +18,8 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * A list of tables.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:27 $
  */
 public class TableList extends ModelItemVector<Table> {
 

@@ -11,10 +11,8 @@ import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 /**
- * Dialect for SQL92.
- * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-07 17:04:45 $
+ * @version $Date: 2007-07-08 10:06:48 $
  */
 public abstract class SQL92Dialect extends Dialect {
 

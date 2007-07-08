@@ -21,9 +21,8 @@ import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 
 /**
- * A default value.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:34 $
  */
 public class DefaultValue extends OwnedModelItem<Model> implements
 		ModelItemClonable<DefaultValue> {

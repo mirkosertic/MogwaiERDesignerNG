@@ -55,7 +55,7 @@ import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.cells.ModelCell;
-import de.mogwai.erdesignerng.visual.cells.RelationCell;
+import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.cells.views.CellViewFactory;
 import de.mogwai.erdesignerng.visual.components.StatusBar;
@@ -69,6 +69,11 @@ import de.mogwai.erdesignerng.visual.tools.HandTool;
 import de.mogwai.erdesignerng.visual.tools.RelationTool;
 import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:43 $
+ */
 public class ERDesignerMainFrame extends JFrame {
 
 	private class ZoomInfo {
@@ -333,7 +338,7 @@ public class ERDesignerMainFrame extends JFrame {
 			TableCell theExportingCell = theCells.get(theRelation
 					.getExportingTable());
 
-			RelationCell theCell = new RelationCell(theRelation,
+			RelationEdge theCell = new RelationEdge(theRelation,
 					theImportingCell, theExportingCell);
 			theCell.transferPropertiesToAttributes(theRelation);
 

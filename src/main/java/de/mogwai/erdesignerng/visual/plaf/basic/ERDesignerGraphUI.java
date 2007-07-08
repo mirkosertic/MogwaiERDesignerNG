@@ -30,6 +30,10 @@ import org.jgraph.plaf.basic.BasicGraphUI;
 
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:45 $
+ */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
 	public class MyMouseHandler extends MouseHandler {

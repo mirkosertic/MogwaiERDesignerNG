@@ -22,9 +22,8 @@ import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 
 /**
- * A database table.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:36 $
  */
 public class Table extends OwnedModelItem<Model> implements
 		OwnedModelItemVerifier {

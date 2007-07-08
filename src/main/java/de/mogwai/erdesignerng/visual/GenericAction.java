@@ -23,6 +23,11 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:44 $
+ */
 public class GenericAction extends AbstractAction {
 
 	private ActionListener actionListener;

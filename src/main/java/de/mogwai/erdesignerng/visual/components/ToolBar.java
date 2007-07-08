@@ -26,6 +26,11 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:41 $
+ */
 public class ToolBar extends JToolBar {
 
 	@Override
