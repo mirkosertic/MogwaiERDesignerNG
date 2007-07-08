@@ -23,15 +23,13 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Index;
-import de.mogwai.erdesignerng.model.NameCastType;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.reverseengineering.JDBCReverseEngineeringStrategy;
 
 /**
- * Base class for model properties.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:39 $
  */
 public abstract class Dialect {
 
@@ -185,4 +183,6 @@ public abstract class Dialect {
 	public abstract List<String> createAddIndexSQL(Index aAttribute);
 
 	public abstract List<String> createAddRelationSQL(Relation aRelation);
+	
+	public abstract String getUniqueName();
 }

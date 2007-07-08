@@ -17,7 +17,10 @@
  */
 package de.mogwai.erdesignerng.visual.tools;
 
-
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
 public enum ToolEnum {
 	HAND(),ENTITY(),RELATION();
 

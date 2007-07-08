@@ -17,6 +17,10 @@
  */
 package de.mogwai.erdesignerng.model;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:31 $
+ */
 public interface ModelItemClonable<T> extends Cloneable {
 
 	T clone();

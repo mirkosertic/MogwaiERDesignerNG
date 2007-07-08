@@ -20,12 +20,17 @@ package de.mogwai.erdesignerng.visual.cells.views;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphCellEditor;
 
-import de.mogwai.erdesignerng.visual.cells.RelationCell;
+import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 
-public class RelationCellView extends EdgeView {
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:43 $
+ */
+public class RelationEdgeView extends EdgeView {
 
-	public RelationCellView(RelationCell aRelation) {
+	public RelationEdgeView(RelationEdge aRelation) {
 		super(aRelation);
 	}
 
@@ -33,5 +38,4 @@ public class RelationCellView extends EdgeView {
 	public GraphCellEditor getEditor() {
 		return new CellEditorFactory();
 	}
-
 }

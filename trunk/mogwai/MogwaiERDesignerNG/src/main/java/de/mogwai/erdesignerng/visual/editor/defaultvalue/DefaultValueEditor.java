@@ -34,9 +34,8 @@ import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
 
 /**
- * Editor for default value declarations.
- * 
- * @author Mirko Sertic
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:12 $
  */
 public class DefaultValueEditor extends BaseEditor {
 

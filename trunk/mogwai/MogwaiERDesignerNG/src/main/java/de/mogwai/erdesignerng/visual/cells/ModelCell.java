@@ -20,10 +20,9 @@ package de.mogwai.erdesignerng.visual.cells;
 import java.util.Map;
 
 /**
- * Interface for all model cells.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-06 20:35:06 $
+ * @version $Date: 2007-07-08 10:06:38 $
  */
 public interface ModelCell<T> {
 

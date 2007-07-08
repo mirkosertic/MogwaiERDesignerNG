@@ -21,11 +21,12 @@ import de.mogwai.erdesignerng.exception.CannotDeleteException;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.util.dialect.Dialect;
+import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
 /**
- * A database model.
  * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:28 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -39,7 +40,7 @@ public class Model implements OwnedModelItemVerifier {
 
 	private ModelHistory history = new ModelHistory(this);
 
-	private Dialect dialect;
+	private Dialect dialect = new MySQLDialect();
 
 	/**
 	 * Add a table to the database model.

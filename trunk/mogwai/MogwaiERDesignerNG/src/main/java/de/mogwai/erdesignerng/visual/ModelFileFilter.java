@@ -21,6 +21,11 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:44 $
+ */
 public class ModelFileFilter extends FileFilter {
 
 	private static final String EXTENSION = ".mxm";

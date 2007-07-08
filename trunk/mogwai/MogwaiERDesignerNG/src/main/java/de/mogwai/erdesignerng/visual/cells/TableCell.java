@@ -23,11 +23,15 @@ import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 
 import de.mogwai.erdesignerng.model.Table;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
 	public TableCell(Table aTable) {
@@ -39,8 +43,7 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 		GraphConstants.setOpaque(getAttributes(), true);
 		GraphConstants.setAutoSize(getAttributes(), true);
 		GraphConstants.setEditable(getAttributes(), true);
-		DefaultPort thePort = new DefaultPort();
-		add(thePort);
+		addPort();
 	}
 
 	public void transferAttributesToProperties(Map aAttributes) {

@@ -22,6 +22,10 @@ import java.awt.geom.Point2D;
 
 import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:38 $
+ */
 public class EntityTool extends BaseTool {
 
 	public EntityTool(ERDesignerGraph aGraph) {

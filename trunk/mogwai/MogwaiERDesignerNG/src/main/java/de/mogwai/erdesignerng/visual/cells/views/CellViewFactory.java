@@ -18,12 +18,19 @@
 package de.mogwai.erdesignerng.visual.cells.views;
 
 import org.jgraph.graph.DefaultCellViewFactory;
+import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.EdgeView;
+import org.jgraph.graph.PortView;
 import org.jgraph.graph.VertexView;
 
-import de.mogwai.erdesignerng.visual.cells.RelationCell;
+import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:41 $
+ */
 public class CellViewFactory extends DefaultCellViewFactory {
 
 	@Override
@@ -36,10 +43,17 @@ public class CellViewFactory extends DefaultCellViewFactory {
 
 	@Override
 	protected EdgeView createEdgeView(Object aObject) {
-		if (aObject instanceof RelationCell) {
-			return new RelationCellView((RelationCell) aObject);
+		if (aObject instanceof RelationEdge) {
+			return new RelationEdgeView((RelationEdge) aObject);
 		}
 		return super.createEdgeView(aObject);
 	}
 
+	@Override
+	protected PortView createPortView(Object cell) {
+		if (cell instanceof DefaultPort) {
+			return new DefaultPortView(cell);
+		}
+		return super.createPortView(cell);
+	}
 }

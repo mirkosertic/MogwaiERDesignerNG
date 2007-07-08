@@ -18,9 +18,9 @@
 package de.mogwai.erdesignerng.model;
 
 /**
- * An index.
  * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:29 $
  */
 public class Index extends OwnedModelItem<Table> {
 

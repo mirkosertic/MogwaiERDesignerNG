@@ -41,6 +41,11 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:41 $
+ */
 public class TableCellView extends VertexView {
 
 	private static MyRenderer renderer = new MyRenderer();

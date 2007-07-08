@@ -15,12 +15,11 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.model;
+package de.mogwai.erdesignerng.util.dialect;
 
 /**
- * The casttype.
- * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:39 $
  */
 public enum NameCastType {
 	NOTHING(1), UPPERCASE(2), LOWERCASE(3);

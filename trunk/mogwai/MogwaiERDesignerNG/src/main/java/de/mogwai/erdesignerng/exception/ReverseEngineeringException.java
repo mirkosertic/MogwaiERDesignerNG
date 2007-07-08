@@ -1,10 +1,8 @@
 package de.mogwai.erdesignerng.exception;
 
 /**
- * Exception may occour during reverse engineering.
- * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-06-26 19:16:53 $
+ * @version $Date: 2007-07-08 10:06:37 $
  */
 public class ReverseEngineeringException extends Exception {
 

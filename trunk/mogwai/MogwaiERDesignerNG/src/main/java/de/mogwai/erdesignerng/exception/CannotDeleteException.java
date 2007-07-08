@@ -20,7 +20,8 @@ package de.mogwai.erdesignerng.exception;
 /**
  * Exception to handle unallowed deletion.
  * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:37 $
  */
 public class CannotDeleteException extends ModelException {
 

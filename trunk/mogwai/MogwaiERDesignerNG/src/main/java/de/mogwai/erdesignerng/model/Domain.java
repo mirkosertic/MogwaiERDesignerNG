@@ -21,9 +21,9 @@ import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 
 /**
- * A domain.
  * 
- * @author Mirko Sertic <mail@mirkosertic.de>
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:28 $
  */
 public class Domain extends OwnedModelItem<Model> implements
 		ModelItemClonable<Domain> {

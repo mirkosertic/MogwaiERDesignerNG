@@ -26,12 +26,18 @@ import org.jgraph.graph.GraphModel;
 
 import de.mogwai.erdesignerng.visual.tools.BaseTool;
 
+/**
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2007-07-08 10:06:43 $
+ */
 public class ERDesignerGraph extends JGraph {
 
 	private BaseTool tool;
 
 	public ERDesignerGraph(GraphModel aModel, GraphLayoutCache aLayoutCache) {
 		super(aModel, aLayoutCache);
+		//setPortsVisible(true);
 	}
 
 	public void setTool(BaseTool aTool) {
