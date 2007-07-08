@@ -44,7 +44,7 @@ import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:41 $
+ * @version $Date: 2007-07-08 17:55:44 $
  */
 public class TableCellView extends VertexView {
 
@@ -142,6 +142,9 @@ public class TableCellView extends VertexView {
 					aGraphics.setColor(Color.red);
 
 					String theText = theAttribute.getName();
+					if (theAttribute.isForeignKey()) {
+						theText += " (FK)";
+					}
 
 					aGraphics.drawString(theText, theTextXOffset, theYOffset
 							+ theMetrics.getAscent());
@@ -165,8 +168,14 @@ public class TableCellView extends VertexView {
 				// Draw the attributes
 				for (Attribute theAttribute : theAllAttributes) {
 
+					boolean isFK = theAttribute.isForeignKey();
+
 					String theText = theAttribute.getName();
-					aGraphics.setColor(true ? Color.red : Color.black);
+					if (isFK) {
+						theText += " (FK)";
+					}
+
+					aGraphics.setColor(isFK ? Color.red : Color.black);
 
 					aGraphics.drawString(theText, theTextXOffset, theYOffset
 							+ theMetrics.getAscent());
@@ -200,6 +209,9 @@ public class TableCellView extends VertexView {
 					theAllAttributes.remove(theAttribute);
 
 					String theText = theAttribute.getName();
+					if (theAttribute.isForeignKey()) {
+						theText += " (FK)";
+					}
 
 					theLength = theMetrics.stringWidth(theText);
 					if (theLength + theXTextOffset > theMaxX) {
@@ -213,6 +225,9 @@ public class TableCellView extends VertexView {
 			for (Attribute theAttribute : theAllAttributes) {
 
 				String theText = theAttribute.getName();
+				if (theAttribute.isForeignKey()) {
+					theText += " (FK)";
+				}
 
 				theLength = theMetrics.stringWidth(theText);
 				if (theLength + theXTextOffset > theMaxX) {

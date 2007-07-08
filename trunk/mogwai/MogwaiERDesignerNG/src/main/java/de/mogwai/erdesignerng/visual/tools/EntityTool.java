@@ -24,7 +24,7 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:38 $
+ * @version $Date: 2007-07-08 17:55:42 $
  */
 public class EntityTool extends BaseTool {
 
@@ -34,6 +34,6 @@ public class EntityTool extends BaseTool {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		graph.commandNewTable(new Point2D.Double(e.getX(),e.getY()));
+		graph.commandNewTable(new Point2D.Double(e.getX(), e.getY()));
 	}
 }

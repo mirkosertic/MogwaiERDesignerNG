@@ -10,7 +10,7 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:46 $
+ * @version $Date: 2007-07-08 17:55:46 $
  */
 public class DomainEditorView extends JPanel {
 
@@ -146,8 +146,7 @@ public class DomainEditorView extends JPanel {
 		if (m_deletebutton == null) {
 			m_deletebutton = new javax.swing.JButton();
 			m_deletebutton.setActionCommand("Delete");
-			m_deletebutton
-					.setIcon(IconFactory.getDeleteIcon());
+			m_deletebutton.setIcon(IconFactory.getDeleteIcon());
 			m_deletebutton.setName("DeleteButton");
 			m_deletebutton.setText("Delete");
 		}
@@ -325,8 +324,7 @@ public class DomainEditorView extends JPanel {
 		if (m_updatebutton == null) {
 			m_updatebutton = new javax.swing.JButton();
 			m_updatebutton.setActionCommand("Update");
-			m_updatebutton
-					.setIcon(IconFactory.getUpdateIcon());
+			m_updatebutton.setIcon(IconFactory.getUpdateIcon());
 			m_updatebutton.setName("UpdateButton");
 			m_updatebutton.setText("Update");
 		}
@@ -344,8 +342,7 @@ public class DomainEditorView extends JPanel {
 		if (m_okbutton == null) {
 			m_okbutton = new javax.swing.JButton();
 			m_okbutton.setActionCommand("Ok");
-			m_okbutton
-					.setIcon(IconFactory.getSaveIcon());
+			m_okbutton.setIcon(IconFactory.getSaveIcon());
 			m_okbutton.setName("OkButton");
 			m_okbutton.setText("Ok");
 		}
@@ -363,8 +360,7 @@ public class DomainEditorView extends JPanel {
 		if (m_cancelbutton == null) {
 			m_cancelbutton = new javax.swing.JButton();
 			m_cancelbutton.setActionCommand("Cancel");
-			m_cancelbutton
-					.setIcon(IconFactory.getCancelIcon());
+			m_cancelbutton.setIcon(IconFactory.getCancelIcon());
 			m_cancelbutton.setName("CancelButton");
 			m_cancelbutton.setText("Cancel");
 		}

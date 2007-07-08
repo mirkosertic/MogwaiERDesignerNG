@@ -11,7 +11,7 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 13:05:27 $
+ * @version $Date: 2007-07-08 17:55:43 $
  */
 public class TableEditorView extends JPanel {
 
@@ -167,7 +167,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_maintabbedpane == null) {
 			this.m_maintabbedpane = new javax.swing.JTabbedPane();
 			this.m_maintabbedpane.addTab("Attributes", this.getAttributesTab());
-			//this.m_maintabbedpane.addTab("Indexes", this.getIndexesTab());
+			// this.m_maintabbedpane.addTab("Indexes", this.getIndexesTab());
 			this.m_maintabbedpane.addTab("Comments", this.getMainCommensTab());
 			this.m_maintabbedpane.setName("MainTabbedPane");
 			this.m_maintabbedpane.setSelectedIndex(0);
@@ -194,9 +194,10 @@ public class TableEditorView extends JPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			//this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1, 1));
-			//this.m_attributestab.add(this.getDownButton(), cons
-			//		.xywh(9, 2, 1, 1));
+			// this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
+			// 1));
+			// this.m_attributestab.add(this.getDownButton(), cons
+			// .xywh(9, 2, 1, 1));
 			this.m_attributestab.add(new JScrollPane(this.getAttributeList()),
 					cons.xywh(2, 4, 8, 3));
 			this.m_attributestab
@@ -225,8 +226,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_upbutton == null) {
 			this.m_upbutton = new javax.swing.JButton();
 			this.m_upbutton.setFocusPainted(false);
-			this.m_upbutton
-					.setIcon(IconFactory.getArrowUpIcon());
+			this.m_upbutton.setIcon(IconFactory.getArrowUpIcon());
 			this.m_upbutton.setName("UpButton");
 		}
 
@@ -242,8 +242,7 @@ public class TableEditorView extends JPanel {
 
 		if (this.m_downbutton == null) {
 			this.m_downbutton = new javax.swing.JButton();
-			this.m_downbutton
-					.setIcon(IconFactory.getArrowDownIcon());
+			this.m_downbutton.setIcon(IconFactory.getArrowDownIcon());
 			this.m_downbutton.setName("DownButton");
 		}
 
@@ -310,8 +309,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_deletebutton == null) {
 			this.m_deletebutton = new javax.swing.JButton();
 			this.m_deletebutton.setActionCommand("Delete");
-			this.m_deletebutton
-					.setIcon(IconFactory.getDeleteIcon());
+			this.m_deletebutton.setIcon(IconFactory.getDeleteIcon());
 			this.m_deletebutton.setName("DeleteButton");
 			this.m_deletebutton.setText("Delete");
 		}
@@ -378,8 +376,8 @@ public class TableEditorView extends JPanel {
 					8, 1, 1));
 			this.m_attributesgeneraltab.add(this.getNullable(), cons.xywh(4,
 					10, 1, 1));
-			//this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
-			//		.xywh(4, 12, 1, 1));
+			// this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
+			// .xywh(4, 12, 1, 1));
 			this.m_attributesgeneraltab.setName("AttributesGeneralTab");
 		}
 
@@ -594,8 +592,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_updateattributebutton == null) {
 			this.m_updateattributebutton = new javax.swing.JButton();
 			this.m_updateattributebutton.setActionCommand("Update");
-			this.m_updateattributebutton
-					.setIcon(IconFactory.getUpdateIcon());
+			this.m_updateattributebutton.setIcon(IconFactory.getUpdateIcon());
 			this.m_updateattributebutton.setName("UpdateAttributeButton");
 			this.m_updateattributebutton.setText("Update");
 		}
@@ -700,8 +697,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_deleteindexbutton == null) {
 			this.m_deleteindexbutton = new javax.swing.JButton();
 			this.m_deleteindexbutton.setActionCommand("Delete");
-			this.m_deleteindexbutton
-					.setIcon(IconFactory.getDeleteIcon());
+			this.m_deleteindexbutton.setIcon(IconFactory.getDeleteIcon());
 			this.m_deleteindexbutton.setName("DeleteIndexButton");
 			this.m_deleteindexbutton.setText("Delete");
 		}
@@ -868,8 +864,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_updateindexbutton == null) {
 			this.m_updateindexbutton = new javax.swing.JButton();
 			this.m_updateindexbutton.setActionCommand("Update");
-			this.m_updateindexbutton
-					.setIcon(IconFactory.getUpdateIcon());
+			this.m_updateindexbutton.setIcon(IconFactory.getUpdateIcon());
 			this.m_updateindexbutton.setName("UpdateIndexButton");
 			this.m_updateindexbutton.setText("Update");
 		}
@@ -929,8 +924,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_okbutton == null) {
 			this.m_okbutton = new javax.swing.JButton();
 			this.m_okbutton.setActionCommand("Ok");
-			this.m_okbutton
-					.setIcon(IconFactory.getSaveIcon());
+			this.m_okbutton.setIcon(IconFactory.getSaveIcon());
 			this.m_okbutton.setName("OkButton");
 			this.m_okbutton.setText("Ok");
 		}
@@ -948,8 +942,7 @@ public class TableEditorView extends JPanel {
 		if (this.m_cancelbutton == null) {
 			this.m_cancelbutton = new javax.swing.JButton();
 			this.m_cancelbutton.setActionCommand("Cancel");
-			this.m_cancelbutton
-					.setIcon(IconFactory.getCancelIcon());
+			this.m_cancelbutton.setIcon(IconFactory.getCancelIcon());
 			this.m_cancelbutton.setName("CancelButton");
 			this.m_cancelbutton.setText("Cancel");
 		}

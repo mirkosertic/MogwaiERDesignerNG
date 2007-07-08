@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:29 $
+ * @version $Date: 2007-07-08 17:55:41 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
@@ -61,6 +61,16 @@ public class RelationList extends ModelItemVector<Relation> {
 			if (theMap.containsKey(aAttribute)) {
 				return true;
 			}
+			if (theMap.containsValue(aAttribute)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isForeignKeyAttribute(Attribute aAttribute) {
+		for (Relation theRelation : this) {
+			Map theMap = theRelation.getMapping();
 			if (theMap.containsValue(aAttribute)) {
 				return true;
 			}
