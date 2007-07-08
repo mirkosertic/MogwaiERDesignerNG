@@ -18,6 +18,9 @@
 package de.mogwai.erdesignerng.visual.export;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,7 +33,7 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:41 $
+ * @version $Date: 2007-07-08 18:49:39 $
  */
 public class ImageExporter implements Exporter {
 
@@ -61,5 +64,21 @@ public class ImageExporter implements Exporter {
 
 	public String getFileExtension() {
 		return "." + ext.toLowerCase();
+	}
+
+	public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
+		Dimension theSize = aComponent.getPreferredSize();
+		aComponent.setSize(theSize);
+	    BufferedImage theImage = new BufferedImage(theSize.width+10, theSize.height+10, BufferedImage.TYPE_INT_RGB);
+	    Graphics theGraphics = theImage.getGraphics();
+	    theGraphics.setColor(Color.white);
+	    theGraphics.fillRect(0,0,theSize.width+10,theSize.height+10);
+	    theGraphics.translate(5, 5);
+	    theGraphics.setColor(Color.black);
+	    aComponent.paint(theGraphics);
+	    theGraphics.dispose();
+		ImageIO.write(theImage, ext, aStream);
+		aStream.flush();
+		aStream.close();
 	}
 }
