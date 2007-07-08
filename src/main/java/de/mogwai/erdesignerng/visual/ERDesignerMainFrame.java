@@ -46,11 +46,14 @@ import javax.swing.JToggleButton;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
+import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import de.mogwai.erdesignerng.io.GenericFileFilter;
+import de.mogwai.erdesignerng.io.ModelFileFilter;
 import de.mogwai.erdesignerng.io.ModelIOUtilities;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
@@ -59,6 +62,7 @@ import de.mogwai.erdesignerng.visual.cells.ModelCell;
 import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.cells.views.CellViewFactory;
+import de.mogwai.erdesignerng.visual.cells.views.TableCellView;
 import de.mogwai.erdesignerng.visual.components.StatusBar;
 import de.mogwai.erdesignerng.visual.components.ToolBar;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
@@ -76,7 +80,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:44 $
+ * @version $Date: 2007-07-08 18:49:40 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -611,20 +615,50 @@ public class ERDesignerMainFrame extends JFrame {
 
 		if (aExportType.equals(ExportType.ONE_PER_FILE)) {
 
-			for (int i = 0; i < graphModel.getChildCount(graphModel); i++) {
-				Object theChild = graphModel.getChild(graphModel, i);
-				System.out.println(theChild.getClass());
+			JFileChooser theChooser = new JFileChooser();
+			theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+				File theBaseDirectory = theChooser.getSelectedFile();
+
+				CellView[] theViews = layoutCache.getAllViews();
+				for (CellView theView : theViews) {
+					if (theView instanceof TableCellView) {
+						TableCellView theTableCellView = (TableCellView) theView;
+						TableCell theTableCell = (TableCell) theTableCellView
+								.getCell();
+						Table theTable = (Table) theTableCell.getUserObject();
+
+						File theOutputFile = new File(theBaseDirectory,
+								theTable.getName()
+										+ aExporter.getFileExtension());
+						try {
+							aExporter.exportToStream(theTableCellView
+									.getRendererComponent(graph, false, false,
+											false), new FileOutputStream(
+									theOutputFile));
+						} catch (Exception e) {
+							logException(e);
+						}
+					}
+				}
 			}
 
 		} else {
 
-			File theFile = new File("c:\\temp\\export"
-					+ aExporter.getFileExtension());
-			try {
-				aExporter.fullExportToStream(graph, new FileOutputStream(
-						theFile));
-			} catch (Exception e) {
-				logException(e);
+			JFileChooser theChooser = new JFileChooser();
+			GenericFileFilter theFilter = new GenericFileFilter(aExporter
+					.getFileExtension(), aExporter.getFileExtension() + " File");
+			theChooser.setFileFilter(theFilter);
+			if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+
+				File theFile = theFilter.getCompletedFile(theChooser
+						.getSelectedFile());
+				try {
+					aExporter.fullExportToStream(graph, new FileOutputStream(
+							theFile));
+				} catch (Exception e) {
+					logException(e);
+				}
 			}
 
 		}

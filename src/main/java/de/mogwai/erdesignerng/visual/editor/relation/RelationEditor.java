@@ -33,7 +33,7 @@ import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:43 $
+ * @version $Date: 2007-07-08 18:49:40 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -110,7 +110,7 @@ public class RelationEditor extends BaseEditor {
 		List<Attribute> thePrimaryKey = aRelation.getExportingTable()
 				.getPrimaryKey();
 
-		Attribute theAssigned[] = new Attribute[thePrimaryKey.size()];
+		Attribute[] theAssigned = new Attribute[thePrimaryKey.size()];
 		for (int count = 0; count < thePrimaryKey.size(); count++) {
 			theAssigned[count] = aRelation.getMapping().get(
 					thePrimaryKey.get(count));
