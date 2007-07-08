@@ -1,18 +1,18 @@
-package de.mogwai.erdesignerng.util.dialect.sql92;
+package de.mogwai.erdesignerng.dialect.sql92;
 
 import java.util.List;
 import java.util.Vector;
 
+import de.mogwai.erdesignerng.dialect.Dialect;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
-import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:48 $
+ * @version $Date: 2007-07-08 10:29:44 $
  */
 public abstract class SQL92Dialect extends Dialect {
 

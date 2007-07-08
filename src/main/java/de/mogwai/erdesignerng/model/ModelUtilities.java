@@ -19,13 +19,13 @@ package de.mogwai.erdesignerng.model;
 
 import java.util.UUID;
 
+import de.mogwai.erdesignerng.dialect.Dialect;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
-import de.mogwai.erdesignerng.util.dialect.Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:37 $
+ * @version $Date: 2007-07-08 10:29:42 $
  */
 public final class ModelUtilities {
 

@@ -17,16 +17,16 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import de.mogwai.erdesignerng.dialect.Dialect;
+import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
-import de.mogwai.erdesignerng.util.dialect.Dialect;
-import de.mogwai.erdesignerng.util.dialect.mysql.MySQLDialect;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:28 $
+ * @version $Date: 2007-07-08 10:29:41 $
  */
 public class Model implements OwnedModelItemVerifier {
 

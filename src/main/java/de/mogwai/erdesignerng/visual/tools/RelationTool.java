@@ -42,7 +42,7 @@ import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:38 $
+ * @version $Date: 2007-07-08 10:29:06 $
  */
 public class RelationTool extends BaseTool {
 
@@ -112,7 +112,7 @@ public class RelationTool extends BaseTool {
 
 	public void mouseReleased(MouseEvent e) {
 		if (e != null && port != null && firstPort != null
-				&& firstPort != port) {
+				) {
 			connect((Port) firstPort.getCell(), (Port) port.getCell());
 			e.consume();
 		} else
@@ -151,17 +151,17 @@ public class RelationTool extends BaseTool {
 		}
 	}
 
-	public void connect(Port source, Port target) {
+	public void connect(Port aSource, Port aTarget) {
 		// Construct Edge with no label
-		GraphCell theSourceCell = (GraphCell) ((DefaultPort) source)
+		GraphCell theSourceCell = (GraphCell) ((DefaultPort) aSource)
 				.getParent();
-		GraphCell theTargetCell = (GraphCell) ((DefaultPort) source)
+		GraphCell theTargetCell = (GraphCell) ((DefaultPort) aTarget)
 				.getParent();
 		if ((theSourceCell instanceof TableCell)
 				&& (theTargetCell instanceof TableCell)) {
 			Table theSourceTable = (Table) ((TableCell) theSourceCell)
 					.getUserObject();
-			Table theTargetTable = (Table) ((TableCell) theSourceCell)
+			Table theTargetTable = (Table) ((TableCell) theTargetCell)
 					.getUserObject();
 
 			Relation theRelation = new Relation();
@@ -178,7 +178,6 @@ public class RelationTool extends BaseTool {
 
 				try {
 					theEditor.applyValues();
-					theSourceTable.getOwner().addRelation(theRelation);
 					graph.getGraphLayoutCache().insert(theEdge);
 				} catch (Exception e) {
 					e.printStackTrace();
