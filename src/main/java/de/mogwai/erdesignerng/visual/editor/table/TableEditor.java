@@ -20,6 +20,7 @@ package de.mogwai.erdesignerng.visual.editor.table;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -39,7 +40,7 @@ import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:40 $
+ * @version $Date: 2007-07-08 13:05:28 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -79,10 +80,12 @@ public class TableEditor extends BaseEditor {
 		editingView.getDefault().setModel(defaultValuesListModel);
 
 		tableBindingInfo.addBinding("name", editingView.getEntity_name(), true);
+		tableBindingInfo.addBinding("comment", editingView.getEntityComment());		
 		tableBindingInfo.configure();
 
 		attributeBindingInfo.addBinding("name", editingView.getAttributeName(),
 				true);
+		attributeBindingInfo.addBinding("comment", editingView.getAttributeComment());
 		attributeBindingInfo.addBinding("domain", editingView.getDomainList(),
 				true);
 		attributeBindingInfo.addBinding("nullable", editingView.getNullable());
@@ -259,7 +262,8 @@ public class TableEditor extends BaseEditor {
 
 	private void commandUpdateAttribute(java.awt.event.ActionEvent evt) {
 		Attribute theModel = attributeBindingInfo.getDefaultModel();
-		if (attributeBindingInfo.validate().size() == 0) {
+		Vector theValidationResult = attributeBindingInfo.validate();
+		if (theValidationResult.size() == 0) {
 			attributeBindingInfo.view2model();
 
 			if (!attributeListModel.contains(theModel)) {
@@ -380,11 +384,11 @@ public class TableEditor extends BaseEditor {
 			if (theExistantAttribute == null) {
 				theTable.addAttribute(model, theAttribute);
 			} else {
-				theExistantAttribute.setName(theAttribute.getName());
-				theExistantAttribute.setDefaultValue(theAttribute
-						.getDefaultValue());
-				theExistantAttribute.setPrimaryKey(theAttribute.isPrimaryKey());
-				theExistantAttribute.setNullable(theAttribute.isNullable());
+				try {
+					theExistantAttribute.restoreFrom(theAttribute);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import de.mogwai.erdesignerng.exception.ReverseEngineeringException;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.CascadeType;
+import de.mogwai.erdesignerng.model.DefaultValue;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
@@ -15,7 +16,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:28:14 $
+ * @version $Date: 2007-07-08 13:05:26 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -151,8 +152,10 @@ public abstract class JDBCReverseEngineeringStrategy {
 				Domain theDomain = createDomainFor(aModel, theColumnName,
 						theTypeName, theSize, theDecimalDigits);
 
+				DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
+				
 				theAttribute.setDefinition(theDomain, "1".equals(theNullable),
-						theDefaultValue);
+						theDefault);
 
 				theTable.getAttributes().add(theAttribute);
 			}
@@ -184,6 +187,10 @@ public abstract class JDBCReverseEngineeringStrategy {
 
 		}
 		theTablesResultSet.close();
+	}
+
+	protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
+		return null;
 	}
 
 	/**

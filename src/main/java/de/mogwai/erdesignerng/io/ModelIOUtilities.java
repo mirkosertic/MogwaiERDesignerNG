@@ -39,6 +39,7 @@ import org.xml.sax.SAXException;
 import de.mogwai.erdesignerng.dialect.DialectFactory;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.CascadeType;
+import de.mogwai.erdesignerng.model.DefaultValue;
 import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Index;
 import de.mogwai.erdesignerng.model.IndexType;
@@ -49,7 +50,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:46 $
+ * @version $Date: 2007-07-08 13:05:28 $
  */
 public final class ModelIOUtilities {
 
@@ -129,6 +130,14 @@ public final class ModelIOUtilities {
 	
 	protected static final String DIALECT = "dialect";
 
+	protected static final String DEFAULTVALUES = "Defaultvalues";
+	
+	protected static final String DEFAULTVALUE = "Defaultvalues";
+	
+	protected static final String DEFAULTVALUEREFID = "defaultvaluerefid";
+	
+	protected static final String COMMENT = "Comment";
+	
 	private static ModelIOUtilities me;
 
 	private DocumentBuilderFactory documentBuilderFactory;
@@ -152,14 +161,14 @@ public final class ModelIOUtilities {
 		return me;
 	}
 
-	protected Element addElement(Document aDocument, Node aNode,
+	private Element addElement(Document aDocument, Node aNode,
 			String aElementName) {
 		Element theElement = aDocument.createElement(aElementName);
 		aNode.appendChild(theElement);
 		return theElement;
 	}
 
-	protected void serializeProperties(Document aDocument, Element aNode,
+	private void serializeProperties(Document aDocument, Element aNode,
 			ModelItem aItem) {
 
 		aNode.setAttribute(ID, aItem.getSystemId());
@@ -175,7 +184,7 @@ public final class ModelIOUtilities {
 		}
 	}
 
-	protected void deserializeProperties(Element aElement, ModelItem aModelItem) {
+	private void deserializeProperties(Element aElement, ModelItem aModelItem) {
 
 		aModelItem.setSystemId(aElement.getAttribute(ID));
 		aModelItem.setName(aElement.getAttribute(NAME));
@@ -189,7 +198,7 @@ public final class ModelIOUtilities {
 		}
 	}
 
-	protected void setBooleanAttribute(Element aElement, String aAttributeName,
+	private void setBooleanAttribute(Element aElement, String aAttributeName,
 			boolean aValue) {
 		aElement.setAttribute(aAttributeName, aValue ? TRUE : FALSE);
 	}
@@ -215,6 +224,20 @@ public final class ModelIOUtilities {
 					theModel.setDialect(DialectFactory.getInstance().getDialect(theValue));
 				}
 			}
+		}
+		
+		// Default values
+		theElements = theDocument.getElementsByTagName(DEFAULTVALUE);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
+
+			DefaultValue theDefaultValue = new DefaultValue();
+			theDefaultValue.setOwner(theModel);
+			deserializeProperties(theElement, theDefaultValue);
+
+			theDefaultValue.setDatatype(theElement.getAttribute(DATATYPE));
+
+			theModel.getDefaultValues().add(theDefaultValue);
 		}
 
 		// First of all, parse the domains
@@ -244,6 +267,8 @@ public final class ModelIOUtilities {
 			theTable.setOwner(theModel);
 			deserializeProperties(theElement, theTable);
 
+			deserializeCommentElement(theElement, theTable);
+			
 			// Parse the Attributes
 			NodeList theAttributes = theElement.getElementsByTagName(ATTRIBUTE);
 			for (int j = 0; j < theAttributes.getLength(); j++) {
@@ -253,6 +278,9 @@ public final class ModelIOUtilities {
 				theAttribute.setOwner(theTable);
 				deserializeProperties(theAttributeElement, theAttribute);
 
+				deserializeCommentElement(theAttributeElement, theAttribute);
+				
+				
 				String theDomainId = theAttributeElement
 						.getAttribute(DOMAINREFID);
 
@@ -263,11 +291,23 @@ public final class ModelIOUtilities {
 					throw new IllegalArgumentException(
 							"Cannot find domain with id " + theDomainId);
 				}
+				
+				DefaultValue theDefault = null;
+				String theDefaultRefId = theAttributeElement.getAttribute(DEFAULTVALUEREFID);
+				if ((theDefaultRefId!=null) && (!"".equals(theDefaultRefId))) {
+					theDefault = theModel.getDefaultValues().findBySystemId(theDefaultRefId);
+					if (theDefault == null) {
+						throw new IllegalArgumentException(
+								"Cannot find default value with id " + theDefaultRefId);
+					}
+				}
 
 				theAttribute.setDefinition(theDomain, TRUE
 						.equals(theAttributeElement.getAttribute(NULLABLE)),
-						theAttributeElement.getAttribute(DEFAULT));
+						theDefault);
 
+				theAttribute.setPrimaryKey(TRUE.equals(theAttributeElement.getAttribute(PRIMARYKEY)));
+				
 				theTable.getAttributes().add(theAttribute);
 			}
 
@@ -372,6 +412,28 @@ public final class ModelIOUtilities {
 		return theModel;
 	}
 	
+	private void serializeCommentElement(Document aDocument,Element aElement,ModelItem aItem) {
+		Element theCommentElement = aDocument.createElement(COMMENT);
+		if (aItem.getComment()!=null) {
+			theCommentElement.appendChild(aDocument.createTextNode(aItem.getComment()));
+		}
+		aElement.appendChild(theCommentElement);
+	}
+	
+	private void deserializeCommentElement(Element aElement,ModelItem aItem) {
+		NodeList theChilds = aElement.getChildNodes();
+		for (int i=0;i<theChilds.getLength();i++) {
+			Node theChild = theChilds.item(i);
+			if (COMMENT.equals(theChild.getNodeName())) {
+				Element theElement = (Element)theChild;
+				if (theElement.getChildNodes().getLength()>0) {
+					aItem.setComment(theElement.getChildNodes().item(0).getNodeValue());
+				}
+			}
+		}
+	}
+	
+	
 	public void serializeModelToXML(Model aModel, OutputStream aStream)
 			throws TransformerException, IOException {
 		Document theDocument = documentBuilder.newDocument();
@@ -385,6 +447,19 @@ public final class ModelIOUtilities {
 		theDialectElement.setAttribute(NAME, DIALECT);
 		theDialectElement.setAttribute(VALUE, aModel.getDialect().getUniqueName());
 		
+		// Default values
+		Element theDefaultValuesElement = addElement(theDocument, theRootElement,
+				DEFAULTVALUES);
+		for (DefaultValue theDomain : aModel.getDefaultValues()) {
+			Element theDefaultValueElement = addElement(theDocument,
+					theDefaultValuesElement, DEFAULTVALUE);
+
+			// Basisdaten des Modelelementes speichern
+			serializeProperties(theDocument, theDefaultValueElement, theDomain);
+
+			// Zusatzdaten
+			theDefaultValueElement.setAttribute(DATATYPE, theDomain.getDatatype());
+		}
 
 		// Domains serialisieren
 		Element theDomainsElement = addElement(theDocument, theRootElement,
@@ -413,6 +488,8 @@ public final class ModelIOUtilities {
 			// Basisdaten des Modelelementes speichern
 			serializeProperties(theDocument, theTableElement, theTable);
 
+			serializeCommentElement(theDocument, theTableElement, theTable);
+			
 			// Attribute serialisieren
 			for (Attribute theAttribute : theTable.getAttributes()) {
 
@@ -431,10 +508,15 @@ public final class ModelIOUtilities {
 				setBooleanAttribute(theAttributeElement, NULLABLE, theAttribute
 						.isNullable());
 
+				setBooleanAttribute(theAttributeElement, PRIMARYKEY, theAttribute
+						.isPrimaryKey());
+				
 				if (theAttribute.getDefaultValue() != null) {
-					theAttributeElement.setAttribute(DEFAULT, theAttribute
-							.getDefaultValue());
+					theAttributeElement.setAttribute(DEFAULTVALUEREFID, theAttribute
+							.getDefaultValue().getSystemId());
 				}
+
+				serializeCommentElement(theDocument, theAttributeElement, theAttribute);
 			}
 
 			// Indexes serialisieren
@@ -479,6 +561,8 @@ public final class ModelIOUtilities {
 			theRelationElement.setAttribute(ONUPDATE, theRelation.getOnDelete()
 					.getType());
 
+			serializeCommentElement(theDocument, theRelationElement, theRelation);
+			
 			// Mapping
 			for (Attribute theKey : theRelation.getMapping().keySet()) {
 				Attribute theValue = theRelation.getMapping().get(theKey);
