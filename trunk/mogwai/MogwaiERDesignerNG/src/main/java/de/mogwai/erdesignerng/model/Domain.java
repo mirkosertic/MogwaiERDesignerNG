@@ -23,7 +23,7 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:28 $
+ * @version $Date: 2007-07-08 13:05:26 $
  */
 public class Domain extends OwnedModelItem<Model> implements
 		ModelItemClonable<Domain> {
@@ -98,6 +98,7 @@ public class Domain extends OwnedModelItem<Model> implements
 		theValue.setDatatype(getDatatype());
 		theValue.setSequenced(isSequenced());
 		theValue.setJavaClassName(getJavaClassName());
+		theValue.setComment(getComment());
 		return theValue;
 	}
 
@@ -107,6 +108,7 @@ public class Domain extends OwnedModelItem<Model> implements
 		setDatatype(aValue.getDatatype());
 		setSequenced(aValue.isSequenced());
 		setJavaClassName(aValue.getJavaClassName());
+		setComment(aValue.getComment());
 	}
 
 }

@@ -72,7 +72,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:43 $
+ * @version $Date: 2007-07-08 13:05:25 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -140,7 +140,13 @@ public class ERDesignerMainFrame extends JFrame {
 
 	});
 
-	private Action exitAction = new GenericAction("Exit");
+	private Action exitAction = new GenericAction("Exit",IconFactory.getExitIcon(),new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			commandExit();
+		}
+		
+	});
 
 	private Action databaseAction = new GenericAction("Database");
 
@@ -501,6 +507,10 @@ public class ERDesignerMainFrame extends JFrame {
 			zoomBox.setSelectedIndex(theIndex);
 			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
 		}
+	}
+	
+	protected void commandExit() {
+		System.exit(0);
 	}
 
 	private static GraphModelListener graphModelListener = new GraphModelListener() {

@@ -17,9 +17,11 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import sun.awt.windows.ThemeReader;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:36 $
+ * @version $Date: 2007-07-08 13:05:27 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {
@@ -28,12 +30,12 @@ public class Attribute extends OwnedModelItem<Table> implements
 
 	private boolean nullable;
 
-	private String defaultValue;
+	private DefaultValue defaultValue;
 
 	private boolean primaryKey;
 
 	public void setDefinition(Domain aDomain, boolean aNullable,
-			String aDefaultValue) {
+			DefaultValue aDefaultValue) {
 
 		nullable = aNullable;
 		domain = aDomain;
@@ -63,16 +65,11 @@ public class Attribute extends OwnedModelItem<Table> implements
 		return getOwner().isForeignKey(this);
 	}
 
-	/**
-	 * Gibt den Wert des Attributs <code>defaultValue</code> zurück.
-	 * 
-	 * @return Wert des Attributs defaultValue.
-	 */
-	public String getDefaultValue() {
+	public DefaultValue getDefaultValue() {
 		return defaultValue;
 	}
 
-	public void setDefaultValue(String defaultValue) {
+	public void setDefaultValue(DefaultValue defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
@@ -98,10 +95,18 @@ public class Attribute extends OwnedModelItem<Table> implements
 		theAttribute.setDomain(getDomain());
 		theAttribute.setNullable(isNullable());
 		theAttribute.setDefaultValue(getDefaultValue());
+		theAttribute.setComment(getComment());
+		theAttribute.setPrimaryKey(isPrimaryKey());
 		return theAttribute;
 	}
 
 	public void restoreFrom(Attribute aValue) throws Exception {
+		setName(aValue.getName());
+		setDomain(aValue.getDomain());
+		setNullable(aValue.isNullable());
+		setDefaultValue(aValue.getDefaultValue());
+		setComment(aValue.getComment());
+		setPrimaryKey(aValue.isPrimaryKey());
 	}
 
 }
