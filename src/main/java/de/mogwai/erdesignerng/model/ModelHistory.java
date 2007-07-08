@@ -19,10 +19,9 @@ package de.mogwai.erdesignerng.model;
 
 import java.util.List;
 
-
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:34 $
+ * @version $Date: 2007-07-08 17:55:41 $
  */
 public class ModelHistory {
 

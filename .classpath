@@ -8,5 +8,25 @@
 	<classpathentry kind="lib" path="src/main/libs/jgraph.jar" sourcepath="C:/jgraph/src"/>
 	<classpathentry kind="lib" path="src/main/libs/kunststoff.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MogwaiDataBinding"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-anim.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-bridge.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-codec.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-css.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-dom.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-ext.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-extension.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-gui-util.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-gvt.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-parser.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-script.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-svg-dom.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-util.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/batik-xml.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/xalan-2.6.0.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/xerces_2_5_0.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/xml-apis.jar"/>
+	<classpathentry kind="lib" path="src/main/libs/xml-apis-ext.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

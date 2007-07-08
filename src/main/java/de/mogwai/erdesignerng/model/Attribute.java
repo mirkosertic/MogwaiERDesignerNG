@@ -17,11 +17,10 @@
  */
 package de.mogwai.erdesignerng.model;
 
-import sun.awt.windows.ThemeReader;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 13:05:27 $
+ * @version $Date: 2007-07-08 17:55:41 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {
@@ -62,7 +61,12 @@ public class Attribute extends OwnedModelItem<Table> implements
 	 * @return true if yes, else false
 	 */
 	public boolean isForeignKey() {
-		return getOwner().isForeignKey(this);
+		Table theOwner = getOwner();
+		if (theOwner != null) {
+			return theOwner.isForeignKey(this);
+		}
+
+		return false;
 	}
 
 	public DefaultValue getDefaultValue() {

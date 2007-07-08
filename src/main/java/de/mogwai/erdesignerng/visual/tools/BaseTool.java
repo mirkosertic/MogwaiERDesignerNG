@@ -23,12 +23,12 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:38 $
+ * @version $Date: 2007-07-08 17:55:42 $
  */
 public abstract class BaseTool extends BasicMarqueeHandler {
 
 	protected ERDesignerGraph graph;
-	
+
 	public BaseTool(ERDesignerGraph aGraph) {
 		graph = aGraph;
 	}

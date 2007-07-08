@@ -17,13 +17,16 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import java.util.List;
+import java.util.Vector;
+
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:36 $
+ * @version $Date: 2007-07-08 17:55:41 $
  */
 public class Table extends OwnedModelItem<Model> implements
 		OwnedModelItemVerifier {
@@ -103,12 +106,6 @@ public class Table extends OwnedModelItem<Model> implements
 			}
 
 			Attribute theAttribute = (Attribute) aSender;
-
-			if (theOwner.isUsedByRelations(theAttribute)) {
-				throw new CannotDeleteException(
-						"Attribute in use by relations!");
-			}
-
 			attributes.remove(theAttribute);
 
 			return;
@@ -141,7 +138,11 @@ public class Table extends OwnedModelItem<Model> implements
 	}
 
 	public boolean isForeignKey(Attribute aAttribute) {
-		return getOwner().isUsedByRelations(aAttribute);
+		Model theOwner = getOwner();
+		if (theOwner != null) {
+			return getOwner().getRelations().isForeignKeyAttribute(aAttribute);
+		}
+		return false;
 	}
 
 	public IndexList getIndexes() {
@@ -154,5 +155,17 @@ public class Table extends OwnedModelItem<Model> implements
 
 	public void setAttributes(AttributeList aAttributes) {
 		attributes = aAttributes;
+	}
+
+	public List<Attribute> getPrimaryKey() {
+		Vector<Attribute> thePK = new Vector<Attribute>();
+
+		for (Attribute theAttribute : attributes) {
+			if (theAttribute.isPrimaryKey()) {
+				thePK.add(theAttribute);
+			}
+		}
+
+		return thePK;
 	}
 }

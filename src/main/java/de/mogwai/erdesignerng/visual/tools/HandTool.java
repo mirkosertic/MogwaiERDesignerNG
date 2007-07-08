@@ -32,10 +32,10 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:38 $
+ * @version $Date: 2007-07-08 17:55:43 $
  */
 public class HandTool extends BaseTool {
-	
+
 	public HandTool(ERDesignerGraph aGraph) {
 		super(aGraph);
 	}
@@ -52,8 +52,8 @@ public class HandTool extends BaseTool {
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isRightMouseButton(e)) {
 
-			GraphCell theClickedCell = (GraphCell) graph.getFirstCellForLocation(e.getX(), e
-					.getY());
+			GraphCell theClickedCell = (GraphCell) graph
+					.getFirstCellForLocation(e.getX(), e.getY());
 
 			if (theClickedCell != null) {
 				JPopupMenu menu = createPopupMenu(e.getPoint(), theClickedCell);
@@ -63,8 +63,8 @@ public class HandTool extends BaseTool {
 			super.mousePressed(e);
 		}
 	}
-	
-	public JPopupMenu createPopupMenu(Point aPoint,final GraphCell aCell) {
+
+	public JPopupMenu createPopupMenu(Point aPoint, final GraphCell aCell) {
 
 		JPopupMenu theMenu = new JPopupMenu();
 

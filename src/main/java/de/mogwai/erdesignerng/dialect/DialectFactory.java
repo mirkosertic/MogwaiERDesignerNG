@@ -26,13 +26,13 @@ import de.mogwai.erdesignerng.dialect.oracle.OracleDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:28:17 $
+ * @version $Date: 2007-07-08 17:55:42 $
  */
-public class DialectFactory { 
+public class DialectFactory {
 
 	private static DialectFactory me;
-	
-	private Map<String,Dialect> knownDialects = new HashMap<String, Dialect>(); 
+
+	private Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
 
 	private DialectFactory() {
 		registerDialect(new MSSQLDialect());
@@ -46,9 +46,9 @@ public class DialectFactory {
 		}
 		return me;
 	}
-	
+
 	protected void registerDialect(Dialect aDialect) {
-		knownDialects.put(aDialect.getUniqueName(),aDialect);
+		knownDialects.put(aDialect.getUniqueName(), aDialect);
 	}
 
 	public Dialect getDialect(String aUniqueName) {

@@ -26,7 +26,7 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:41 $
+ * @version $Date: 2007-07-08 17:55:41 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -141,10 +141,6 @@ public class Model implements OwnedModelItemVerifier {
 
 	public void setDialect(Dialect modelProperties) {
 		this.dialect = modelProperties;
-	}
-
-	public boolean isUsedByRelations(Attribute aAttribute) {
-		return relations.isAttributeInUse(aAttribute);
 	}
 
 	public void delete(ModelItem aSender) throws CannotDeleteException {

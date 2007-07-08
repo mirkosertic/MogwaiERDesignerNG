@@ -17,16 +17,23 @@
  */
 package de.mogwai.erdesignerng.visual.editor.relation;
 
+import java.util.List;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import de.mogwai.binding.BindingInfo;
+import de.mogwai.binding.adapter.RadioButtonAdapter;
+import de.mogwai.erdesignerng.model.Attribute;
+import de.mogwai.erdesignerng.model.CascadeType;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:40 $
+ * @version $Date: 2007-07-08 17:55:43 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -43,10 +50,29 @@ public class RelationEditor extends BaseEditor {
 		super(aParent);
 
 		initialize();
-		
+
 		model = aModel;
-		
-		bindingInfo.addBinding("name", editingView.getRelationname(),true);
+
+		bindingInfo.addBinding("name", editingView.getRelationname(), true);
+
+		RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
+		theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView
+				.getOnDeleteCascadeNothing());
+		theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView
+				.getOnDeleteCascade());
+		theOnDeleteAdapter.addMapping(CascadeType.SET_NULL, editingView
+				.getOnDeleteSetNull());
+		bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
+
+		RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
+		theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView
+				.getOnUpdateCascadeNothing());
+		theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView
+				.getOnUpdateCascade());
+		theOnUpdateAdapter.addMapping(CascadeType.SET_NULL, editingView
+				.getOnUpdateSetNull());
+		bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
+
 		bindingInfo.configure();
 	}
 
@@ -74,10 +100,33 @@ public class RelationEditor extends BaseEditor {
 		pack();
 
 	}
-	
+
+	private de.mogwai.erdesignerng.visual.editor.relation.AttributeTableModel tableModel;
+
 	public void initializeFor(Relation aRelation) {
 		bindingInfo.setDefaultModel(aRelation);
 		bindingInfo.model2view();
+
+		List<Attribute> thePrimaryKey = aRelation.getExportingTable()
+				.getPrimaryKey();
+
+		Attribute theAssigned[] = new Attribute[thePrimaryKey.size()];
+		for (int count = 0; count < thePrimaryKey.size(); count++) {
+			theAssigned[count] = aRelation.getMapping().get(
+					thePrimaryKey.get(count));
+		}
+		tableModel = new AttributeTableModel(aRelation.getExportingTable()
+				.getName(), aRelation.getImportingTable().getName(),
+				thePrimaryKey, theAssigned);
+
+		editingView.getComponent_5().setModel(tableModel);
+		editingView.getComponent_5().getTableHeader().setReorderingAllowed(
+				false);
+
+		JComboBox theAttributes = new JComboBox(aRelation.getImportingTable()
+				.getAttributes());
+		editingView.getComponent_5().getColumnModel().getColumn(1)
+				.setCellEditor(new DefaultCellEditor(theAttributes));
 	}
 
 	private void commandOk() {
@@ -93,7 +142,15 @@ public class RelationEditor extends BaseEditor {
 
 		if (!model.getRelations().contains(theRelation)) {
 			model.addRelation(theRelation);
+
 		}
-		
+
+		for (int i = 0; i < tableModel.getRowCount(); i++) {
+			Attribute thePKAttribute = (Attribute) tableModel.getValueAt(i, 0);
+			Attribute theAssignedAttribute = (Attribute) tableModel.getValueAt(
+					i, 1);
+
+			theRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
+		}
 	}
 }

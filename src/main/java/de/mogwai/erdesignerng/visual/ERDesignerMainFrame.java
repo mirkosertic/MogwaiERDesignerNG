@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -63,6 +64,9 @@ import de.mogwai.erdesignerng.visual.components.ToolBar;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
 import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
+import de.mogwai.erdesignerng.visual.export.Exporter;
+import de.mogwai.erdesignerng.visual.export.ImageExporter;
+import de.mogwai.erdesignerng.visual.export.SVGExporter;
 import de.mogwai.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
 import de.mogwai.erdesignerng.visual.tools.EntityTool;
 import de.mogwai.erdesignerng.visual.tools.HandTool;
@@ -72,7 +76,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 13:05:25 $
+ * @version $Date: 2007-07-08 17:55:44 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -120,7 +124,12 @@ public class ERDesignerMainFrame extends JFrame {
 	private Action fileAction = new GenericAction("File");
 
 	private Action newAction = new GenericAction("New model", IconFactory
-			.getNewIcon(), null);
+			.getNewIcon(), new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			commandNew();
+		}
+	});
 
 	private Action saveAction = new GenericAction("Save model...", IconFactory
 			.getSaveIcon(), new ActionListener() {
@@ -140,13 +149,19 @@ public class ERDesignerMainFrame extends JFrame {
 
 	});
 
-	private Action exitAction = new GenericAction("Exit",IconFactory.getExitIcon(),new ActionListener() {
+	private Action exitAction = new GenericAction("Exit", IconFactory
+			.getExitIcon(), new ActionListener() {
 
 		public void actionPerformed(ActionEvent e) {
 			commandExit();
 		}
-		
+
 	});
+
+	private Action exportAction = new GenericAction("Export", IconFactory
+			.getPageAddIcon(), null);
+
+	private Action exportSVGAction = new GenericAction("As SVG");
 
 	private Action databaseAction = new GenericAction("Database");
 
@@ -234,8 +249,28 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private JToggleButton entityButton;
 
+	private File currentEditingFile;
+
 	public ERDesignerMainFrame() {
 		initialize();
+	}
+
+	protected void addExportEntries(JMenu aMenu, final Exporter aExporter) {
+		JMenuItem theAllInOneItem = aMenu.add("All in one");
+		theAllInOneItem.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				commandExport(aExporter, ExportType.ALL_IN_ONE);
+			}
+		});
+
+		JMenuItem theOnePerTable = aMenu.add("One file per table");
+		theOnePerTable.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				commandExport(aExporter, ExportType.ONE_PER_FILE);
+			}
+		});
 	}
 
 	protected void initialize() {
@@ -247,6 +282,37 @@ public class ERDesignerMainFrame extends JFrame {
 		theFileMenu.addSeparator();
 		theFileMenu.add(new JMenuItem(saveAction));
 		theFileMenu.add(new JMenuItem(loadAction));
+		theFileMenu.addSeparator();
+
+		JMenu theExportMenu = new JMenu(exportAction);
+
+		List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
+		if (theSupportedFormats.contains("IMAGE/PNG")) {
+			JMenu theSingleExportMenu = new JMenu("As PNG");
+			theExportMenu.add(theSingleExportMenu);
+
+			addExportEntries(theSingleExportMenu, new ImageExporter("png"));
+		}
+		if (theSupportedFormats.contains("IMAGE/JPEG")) {
+			JMenu theSingleExportMenu = new JMenu("As JPEG");
+			theExportMenu.add(theSingleExportMenu);
+
+			addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
+		}
+		if (theSupportedFormats.contains("IMAGE/BMP")) {
+			JMenu theSingleExportMenu = new JMenu("As BMP");
+			theExportMenu.add(theSingleExportMenu);
+
+			addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
+		}
+
+		JMenu theSVGExportMenu = new JMenu(exportSVGAction);
+
+		theExportMenu.add(theSVGExportMenu);
+		addExportEntries(theSVGExportMenu, new SVGExporter());
+
+		theFileMenu.add(theExportMenu);
+
 		theFileMenu.addSeparator();
 		theFileMenu.add(new JMenuItem(exitAction));
 
@@ -303,6 +369,18 @@ public class ERDesignerMainFrame extends JFrame {
 		theContentPane.add(statusBar, BorderLayout.SOUTH);
 
 		setSize(800, 600);
+
+		initTitle();
+	}
+
+	private void initTitle() {
+
+		StringBuffer theTitle = new StringBuffer("Mogwai ERDesignerNG");
+		if (currentEditingFile != null) {
+			theTitle.append(" - ").append(currentEditingFile.toString());
+		}
+
+		setTitle(theTitle.toString());
 	}
 
 	public void setModel(Model aModel) {
@@ -392,6 +470,10 @@ public class ERDesignerMainFrame extends JFrame {
 				Model theModel = ModelIOUtilities.getInstance()
 						.deserializeModelFromXML(new FileInputStream(theFile));
 				setModel(theModel);
+
+				currentEditingFile = theFile;
+				initTitle();
+
 			} catch (Exception e) {
 				logException(e);
 			}
@@ -405,6 +487,7 @@ public class ERDesignerMainFrame extends JFrame {
 		JFileChooser theChooser = new JFileChooser();
 		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		theChooser.setFileFilter(theFiler);
+		theChooser.setSelectedFile(currentEditingFile);
 		if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 
 			File theFile = theFiler.getCompletedFile(theChooser
@@ -414,11 +497,22 @@ public class ERDesignerMainFrame extends JFrame {
 				ModelIOUtilities.getInstance().serializeModelToXML(model,
 						new FileOutputStream(theFile));
 
+				currentEditingFile = theFile;
+				initTitle();
 			} catch (Exception e) {
 				logException(e);
 			}
 
 		}
+	}
+
+	protected void commandNew() {
+		currentEditingFile = null;
+
+		Model theModel = new Model();
+		setModel(theModel);
+
+		initTitle();
 	}
 
 	protected void commandSetZoom(ZoomInfo aZoomInfo) {
@@ -508,9 +602,32 @@ public class ERDesignerMainFrame extends JFrame {
 			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
 		}
 	}
-	
+
 	protected void commandExit() {
 		System.exit(0);
+	}
+
+	protected void commandExport(Exporter aExporter, ExportType aExportType) {
+
+		if (aExportType.equals(ExportType.ONE_PER_FILE)) {
+
+			for (int i = 0; i < graphModel.getChildCount(graphModel); i++) {
+				Object theChild = graphModel.getChild(graphModel, i);
+				System.out.println(theChild.getClass());
+			}
+
+		} else {
+
+			File theFile = new File("c:\\temp\\export"
+					+ aExporter.getFileExtension());
+			try {
+				aExporter.fullExportToStream(graph, new FileOutputStream(
+						theFile));
+			} catch (Exception e) {
+				logException(e);
+			}
+
+		}
 	}
 
 	private static GraphModelListener graphModelListener = new GraphModelListener() {

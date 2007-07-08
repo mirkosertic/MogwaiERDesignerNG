@@ -16,7 +16,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 13:05:26 $
+ * @version $Date: 2007-07-08 17:55:41 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -152,8 +152,9 @@ public abstract class JDBCReverseEngineeringStrategy {
 				Domain theDomain = createDomainFor(aModel, theColumnName,
 						theTypeName, theSize, theDecimalDigits);
 
-				DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
-				
+				DefaultValue theDefault = createDefaultValueFor(aModel,
+						theColumnName, theDefaultValue);
+
 				theAttribute.setDefinition(theDomain, "1".equals(theNullable),
 						theDefault);
 
@@ -189,7 +190,8 @@ public abstract class JDBCReverseEngineeringStrategy {
 		theTablesResultSet.close();
 	}
 
-	protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
+	protected DefaultValue createDefaultValueFor(Model aModel,
+			String aColumnName, String aDefaultValue) {
 		return null;
 	}
 

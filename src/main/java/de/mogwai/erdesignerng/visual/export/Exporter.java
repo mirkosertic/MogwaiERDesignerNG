@@ -15,13 +15,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual.tools;
+package de.mogwai.erdesignerng.visual.export;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:42 $
+ * @version $Date: 2007-07-08 17:55:40 $
  */
-public enum ToolEnum {
-	HAND(), ENTITY(), RELATION();
+public interface Exporter {
 
+	String getFileExtension();
+
+	void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream)
+			throws IOException;
 }

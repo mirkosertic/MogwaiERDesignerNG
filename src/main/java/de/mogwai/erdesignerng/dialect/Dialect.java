@@ -28,7 +28,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:28:18 $
+ * @version $Date: 2007-07-08 17:55:42 $
  */
 public abstract class Dialect {
 
@@ -182,6 +182,6 @@ public abstract class Dialect {
 	public abstract List<String> createAddIndexSQL(Index aAttribute);
 
 	public abstract List<String> createAddRelationSQL(Relation aRelation);
-	
+
 	public abstract String getUniqueName();
 }

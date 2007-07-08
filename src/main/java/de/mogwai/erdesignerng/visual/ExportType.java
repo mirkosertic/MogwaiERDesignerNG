@@ -15,13 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.mogwai.erdesignerng.visual.tools;
+package de.mogwai.erdesignerng.visual;
 
 /**
+ * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:42 $
+ * @version $Date: 2007-07-08 17:55:44 $
  */
-public enum ToolEnum {
-	HAND(), ENTITY(), RELATION();
-
+public enum ExportType {
+	ONE_PER_FILE(), ALL_IN_ONE();
 }

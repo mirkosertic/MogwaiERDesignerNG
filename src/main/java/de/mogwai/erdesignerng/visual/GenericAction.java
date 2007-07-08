@@ -26,7 +26,7 @@ import javax.swing.Icon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:44 $
+ * @version $Date: 2007-07-08 17:55:45 $
  */
 public class GenericAction extends AbstractAction {
 
@@ -35,12 +35,12 @@ public class GenericAction extends AbstractAction {
 	public GenericAction(String aKey) {
 		this(aKey, (ActionListener) null);
 	}
-	
-	public GenericAction(Icon aIcon,ActionListener aListener) {
+
+	public GenericAction(Icon aIcon, ActionListener aListener) {
 		putValue(SMALL_ICON, aIcon);
 		actionListener = aListener;
 	}
-	
+
 	public GenericAction(Icon aIcon) {
 		this(aIcon, null);
 	}
