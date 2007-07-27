@@ -19,18 +19,15 @@ package de.mogwai.erdesignerng.visual.editor;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.CellEditorListener;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:46 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public abstract class BaseEditor extends JDialog implements DialogConstants {
 
@@ -39,8 +36,6 @@ public abstract class BaseEditor extends JDialog implements DialogConstants {
 	private javax.swing.JPanel jContentPane = null;
 
 	private JFrame parent;
-
-	private List<CellEditorListener> listener = new Vector<CellEditorListener>();
 
 	/**
 	 * Initialize.
