@@ -18,7 +18,9 @@
 package de.mogwai.erdesignerng.dialect;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import de.mogwai.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
@@ -26,7 +28,7 @@ import de.mogwai.erdesignerng.dialect.oracle.OracleDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:42 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public class DialectFactory {
 
@@ -53,5 +55,11 @@ public class DialectFactory {
 
 	public Dialect getDialect(String aUniqueName) {
 		return knownDialects.get(aUniqueName);
+	}
+
+	public List<String> getSupportedDialects() {
+		Vector<String> theDialects = new Vector<String>();
+		theDialects.addAll(knownDialects.keySet());
+		return theDialects;
 	}
 }

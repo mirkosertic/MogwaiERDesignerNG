@@ -22,13 +22,13 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:39 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public final class IconFactory {
 
 	private IconFactory() {
 	}
-	
+
 	public static ImageIcon getKeyIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/key.gif"));
@@ -109,4 +109,8 @@ public final class IconFactory {
 				"de/mogwai/erdesignerng/icons/page_add.png"));
 	}
 
+	public static ImageIcon getDBIcon() {
+		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
+				"de/mogwai/erdesignerng/icons/database_connect.png"));
+	}
 }

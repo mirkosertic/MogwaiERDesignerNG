@@ -36,7 +36,7 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:39 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public class SVGExporter implements Exporter {
 
@@ -79,7 +79,7 @@ public class SVGExporter implements Exporter {
 
 		Dimension theSize = aComponent.getPreferredSize();
 		aComponent.setSize(theSize);
-		
+
 		aComponent.paint(theSvgGenerator);
 		Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
 		theSvgGenerator.stream(theWriter, false);

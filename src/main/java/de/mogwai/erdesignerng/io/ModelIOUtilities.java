@@ -50,7 +50,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:46 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public final class ModelIOUtilities {
 
@@ -174,8 +174,8 @@ public final class ModelIOUtilities {
 		aNode.setAttribute(ID, aItem.getSystemId());
 		aNode.setAttribute(NAME, aItem.getName());
 
-		for (String theKey : aItem.getProperties().keySet()) {
-			String theValue = aItem.getProperties().get(theKey);
+		for (String theKey : aItem.getProperties().getProperties().keySet()) {
+			String theValue = aItem.getProperties().getProperties().get(theKey);
 			if (theValue != null) {
 				Element theProperty = addElement(aDocument, aNode, PROPERTY);
 				theProperty.setAttribute(NAME, theKey);
@@ -193,8 +193,9 @@ public final class ModelIOUtilities {
 		for (int i = 0; i < theProperties.getLength(); i++) {
 			Element theElement = (Element) theProperties.item(i);
 
-			aModelItem.setProperty(theElement.getAttribute(NAME), theElement
-					.getAttribute(VALUE));
+			aModelItem.getProperties().setProperty(
+					theElement.getAttribute(NAME),
+					theElement.getAttribute(VALUE));
 		}
 	}
 

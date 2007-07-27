@@ -30,7 +30,7 @@ import de.mogwai.erdesignerng.model.Table;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:38 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
@@ -52,13 +52,14 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 		Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
 		String theLocation = ((int) theBounds.getX()) + ":"
 				+ ((int) theBounds.getY());
-		theTable.setProperty(Table.PROPERTY_LOCATION, theLocation);
+		theTable.getProperties().setProperty(Table.PROPERTY_LOCATION,
+				theLocation);
 	}
 
 	public void transferPropertiesToAttributes(Table aObject) {
 
 		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
-				.getProperty(aObject.PROPERTY_LOCATION));
+				.getProperties().getProperty(aObject.PROPERTY_LOCATION));
 		if (thePoint != null) {
 			GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
 					thePoint.getX(), thePoint.getY(), -1, -1));
