@@ -17,10 +17,9 @@
  */
 package de.mogwai.erdesignerng.model;
 
-
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:41 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {

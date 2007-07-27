@@ -24,18 +24,19 @@ import javax.swing.filechooser.FileFilter;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:41 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public class GenericFileFilter extends FileFilter {
 
 	private String extension;
+
 	private String description;
-	
-	public GenericFileFilter(String aExtension,String aDescription) {
+
+	public GenericFileFilter(String aExtension, String aDescription) {
 		extension = aExtension;
 		description = aDescription;
 	}
-	
+
 	public boolean accept(File aFileName) {
 		if (aFileName.isDirectory()) {
 			return true;

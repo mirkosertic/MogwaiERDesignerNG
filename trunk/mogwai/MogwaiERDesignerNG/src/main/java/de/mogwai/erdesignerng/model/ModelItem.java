@@ -17,11 +17,9 @@
  */
 package de.mogwai.erdesignerng.model;
 
-import java.util.HashMap;
-
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:41 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public abstract class ModelItem {
 
@@ -35,7 +33,7 @@ public abstract class ModelItem {
 
 	private String comment;
 
-	private HashMap<String, String> properties = new HashMap<String, String>();
+	private ModelProperties properties = new ModelProperties();
 
 	/**
 	 * Get the name.
@@ -71,32 +69,12 @@ public abstract class ModelItem {
 		systemId = aSystemId;
 	}
 
-	public HashMap<String, String> getProperties() {
+	public ModelProperties getProperties() {
 		return properties;
 	}
 
-	public void setProperties(HashMap<String, String> aProperties) {
-		properties = aProperties;
-	}
-
-	public void setProperty(String aName, String aValue) {
-		properties.put(aName, aValue);
-	}
-
-	public String getProperty(String aName) {
-		return properties.get(aName);
-	}
-
-	public int getIntProperty(String aName, int aDefault) {
-		if (!properties.containsKey(aName)) {
-			return aDefault;
-		}
-
-		return Integer.parseInt(properties.get(aName));
-	}
-
-	public void setIntProperty(String aName, int aValue) {
-		properties.put(aName, "" + aValue);
+	public void setProperties(ModelProperties properties) {
+		this.properties = properties;
 	}
 
 	@Override

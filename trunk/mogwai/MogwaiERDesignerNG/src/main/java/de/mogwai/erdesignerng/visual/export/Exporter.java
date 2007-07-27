@@ -25,7 +25,7 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:39 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public interface Exporter {
 
@@ -33,7 +33,7 @@ public interface Exporter {
 
 	void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream)
 			throws IOException;
-	
+
 	void exportToStream(Component aComponent, OutputStream aStream)
-	throws IOException;
+			throws IOException;
 }

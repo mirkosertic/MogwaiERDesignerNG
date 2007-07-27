@@ -26,9 +26,17 @@ import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:41 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public class Model implements OwnedModelItemVerifier {
+
+	public static final String PROPERTY_DRIVER = "DRIVER";
+
+	public static final String PROPERTY_URL = "URL";
+
+	public static final String PROPERTY_USER = "USER";
+
+	public static final String PROPERTY_PASSWORD = "PASSWORD";
 
 	private TableList tables = new TableList();
 
@@ -41,6 +49,8 @@ public class Model implements OwnedModelItemVerifier {
 	private ModelHistory history = new ModelHistory(this);
 
 	private Dialect dialect = new MySQLDialect();
+
+	private ModelProperties properties = new ModelProperties();
 
 	/**
 	 * Add a table to the database model.
@@ -211,5 +221,13 @@ public class Model implements OwnedModelItemVerifier {
 
 	public void setDefaultValues(DefaultValueList aDefaultValues) {
 		defaultValues = aDefaultValues;
+	}
+
+	public ModelProperties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(ModelProperties properties) {
+		this.properties = properties;
 	}
 }

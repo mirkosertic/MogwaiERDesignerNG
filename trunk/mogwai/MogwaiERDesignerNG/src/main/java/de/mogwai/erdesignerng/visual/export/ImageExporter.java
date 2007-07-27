@@ -33,7 +33,7 @@ import de.mogwai.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:39 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public class ImageExporter implements Exporter {
 
@@ -66,17 +66,19 @@ public class ImageExporter implements Exporter {
 		return "." + ext.toLowerCase();
 	}
 
-	public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
+	public void exportToStream(Component aComponent, OutputStream aStream)
+			throws IOException {
 		Dimension theSize = aComponent.getPreferredSize();
 		aComponent.setSize(theSize);
-	    BufferedImage theImage = new BufferedImage(theSize.width+10, theSize.height+10, BufferedImage.TYPE_INT_RGB);
-	    Graphics theGraphics = theImage.getGraphics();
-	    theGraphics.setColor(Color.white);
-	    theGraphics.fillRect(0,0,theSize.width+10,theSize.height+10);
-	    theGraphics.translate(5, 5);
-	    theGraphics.setColor(Color.black);
-	    aComponent.paint(theGraphics);
-	    theGraphics.dispose();
+		BufferedImage theImage = new BufferedImage(theSize.width + 10,
+				theSize.height + 10, BufferedImage.TYPE_INT_RGB);
+		Graphics theGraphics = theImage.getGraphics();
+		theGraphics.setColor(Color.white);
+		theGraphics.fillRect(0, 0, theSize.width + 10, theSize.height + 10);
+		theGraphics.translate(5, 5);
+		theGraphics.setColor(Color.black);
+		aComponent.paint(theGraphics);
+		theGraphics.dispose();
 		ImageIO.write(theImage, ext, aStream);
 		aStream.flush();
 		aStream.close();

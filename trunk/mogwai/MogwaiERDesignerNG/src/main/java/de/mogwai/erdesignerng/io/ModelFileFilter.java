@@ -17,15 +17,14 @@
  */
 package de.mogwai.erdesignerng.io;
 
-
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:41 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public class ModelFileFilter extends GenericFileFilter {
 
 	public ModelFileFilter() {
-		super(".mxm","Mogwai model");
+		super(".mxm", "Mogwai model");
 	}
 }

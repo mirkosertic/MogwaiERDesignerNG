@@ -31,7 +31,7 @@ import de.mogwai.erdesignerng.model.Relation;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:38 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
@@ -62,8 +62,8 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 			String theLocation = ((int) theOffset.getX()) + ":"
 					+ ((int) theOffset.getY());
 
-			theRelation.setProperty(theRelation.PROPERTY_TEXT_OFFSET,
-					theLocation);
+			theRelation.getProperties().setProperty(
+					theRelation.PROPERTY_TEXT_OFFSET, theLocation);
 
 		}
 
@@ -83,8 +83,8 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 			}
 
 			String thePointBuffer = theBuffer.toString();
-			theRelation
-					.setProperty(theRelation.PROPERTY_POINTS, thePointBuffer);
+			theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS,
+					thePointBuffer);
 		}
 
 	}
@@ -92,12 +92,13 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 	public void transferPropertiesToAttributes(Relation aObject) {
 
 		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
-				.getProperty(aObject.PROPERTY_TEXT_OFFSET));
+				.getProperties().getProperty(Relation.PROPERTY_TEXT_OFFSET));
 		if (thePoint != null) {
 			GraphConstants.setOffset(getAttributes(), thePoint);
 		}
 
-		String thePoints = aObject.getProperty(aObject.PROPERTY_POINTS);
+		String thePoints = aObject.getProperties().getProperty(
+				aObject.PROPERTY_POINTS);
 		if (thePoints != null) {
 			List<Point2D> thePointList = new Vector<Point2D>();
 

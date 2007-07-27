@@ -16,7 +16,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:41 $
+ * @version $Date: 2007-07-27 18:23:36 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -121,7 +121,8 @@ public abstract class JDBCReverseEngineeringStrategy {
 			theTable.setName(dialect.getCastType().cast(aTableName));
 
 			if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
-				theTable.setProperty(Table.PROPERTY_REMARKS, theTableRemarks);
+				theTable.getProperties().setProperty(Table.PROPERTY_REMARKS,
+						theTableRemarks);
 			}
 
 			// Reverse engineer attributes
@@ -145,8 +146,8 @@ public abstract class JDBCReverseEngineeringStrategy {
 				theAttribute.setName(dialect.getCastType().cast(theColumnName));
 				if ((theColumnRemarks != null)
 						&& (!"".equals(theColumnRemarks))) {
-					theAttribute.setProperty(Attribute.PROPERTY_REMARKS,
-							theColumnRemarks);
+					theAttribute.getProperties().setProperty(
+							Attribute.PROPERTY_REMARKS, theColumnRemarks);
 				}
 
 				Domain theDomain = createDomainFor(aModel, theColumnName,

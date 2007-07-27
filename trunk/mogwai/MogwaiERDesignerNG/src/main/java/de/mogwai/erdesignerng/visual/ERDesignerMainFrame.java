@@ -65,6 +65,7 @@ import de.mogwai.erdesignerng.visual.cells.views.CellViewFactory;
 import de.mogwai.erdesignerng.visual.cells.views.TableCellView;
 import de.mogwai.erdesignerng.visual.components.StatusBar;
 import de.mogwai.erdesignerng.visual.components.ToolBar;
+import de.mogwai.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
 import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
@@ -80,7 +81,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:40 $
+ * @version $Date: 2007-07-27 18:23:37 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -169,7 +170,14 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private Action databaseAction = new GenericAction("Database");
 
-	private Action dbConnectionAction = new GenericAction("DB Connection...");
+	private Action dbConnectionAction = new GenericAction("DB Connection...",
+			IconFactory.getDBIcon(), new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					commandDBConnection();
+				}
+
+			});
 
 	private Action reverseEngineerAction = new GenericAction(
 			"Reverse engineer...");
@@ -609,6 +617,18 @@ public class ERDesignerMainFrame extends JFrame {
 
 	protected void commandExit() {
 		System.exit(0);
+	}
+
+	protected void commandDBConnection() {
+		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(this,
+				model);
+		if (theEditor.showModal() == DatabaseConnectionEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+			} catch (Exception e) {
+				logException(e);
+			}
+		}
 	}
 
 	protected void commandExport(Exporter aExporter, ExportType aExportType) {
