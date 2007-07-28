@@ -1,14 +1,16 @@
 package de.mogwai.erdesignerng.visual.editor.connection;
 
+import de.mogwai.erdesignerng.dialect.Dialect;
+
 /**
  * Descriptor for a database dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2007-07-28 11:08:10 $
  */
 public class ConnectionDescriptor {
 
-	private String dialect;
+	private Dialect dialect;
 
 	private String driver;
 
@@ -18,11 +20,11 @@ public class ConnectionDescriptor {
 
 	private String password;
 
-	public String getDialect() {
+	public Dialect getDialect() {
 		return dialect;
 	}
 
-	public void setDialect(String connection) {
+	public void setDialect(Dialect connection) {
 		this.dialect = connection;
 	}
 

@@ -4,6 +4,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 
 import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.dialect.Dialect;
 import de.mogwai.erdesignerng.dialect.DialectFactory;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
@@ -13,7 +14,7 @@ import de.mogwai.erdesignerng.visual.editor.DialogConstants;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2007-07-28 11:08:10 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -29,6 +30,10 @@ public class DatabaseConnectionEditor extends BaseEditor {
 			commandClose();
 		}
 
+		@Override
+		public void handleDialectChange(Dialect aDialect) {
+			commandChangeDialect(aDialect);
+		}
 	};
 
 	private Model model;
@@ -47,7 +52,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 						.getSupportedDialects().toArray()));
 
 		ConnectionDescriptor theDescriptor = new ConnectionDescriptor();
-		theDescriptor.setDialect(model.getDialect().getUniqueName());
+		theDescriptor.setDialect(model.getDialect());
 		theDescriptor.setDriver(model.getProperties().getProperty(
 				Model.PROPERTY_DRIVER));
 		theDescriptor.setUrl(model.getProperties().getProperty(
@@ -82,8 +87,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 		ConnectionDescriptor theDescriptor = bindingInfo.getDefaultModel();
 
-		model.setDialect(DialectFactory.getInstance().getDialect(
-				theDescriptor.getDialect()));
+		model.setDialect(theDescriptor.getDialect());
 		model.getProperties().setProperty(Model.PROPERTY_DRIVER,
 				theDescriptor.getDriver());
 		model.getProperties().setProperty(Model.PROPERTY_URL,
@@ -107,5 +111,14 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	private void commandCancel() {
 
 		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
+	}
+	
+	private void commandChangeDialect(Dialect aDialect) {
+		
+		ConnectionDescriptor theDescriptor = bindingInfo.getDefaultModel();
+		theDescriptor.setDriver(aDialect.getDriverClassName());
+		theDescriptor.setUrl(aDialect.getDriverURLTemplate());
+		
+		bindingInfo.model2view();
 	}
 }

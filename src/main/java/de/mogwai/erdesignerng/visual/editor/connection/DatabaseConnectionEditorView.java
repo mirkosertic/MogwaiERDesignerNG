@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import de.mogwai.erdesignerng.dialect.Dialect;
 import de.mogwai.erdesignerng.visual.IconFactory;
 
 public class DatabaseConnectionEditorView extends JPanel {
@@ -84,6 +85,14 @@ public class DatabaseConnectionEditorView extends JPanel {
 				handleCancel();
 			}
 		});
+		
+		dialect.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				handleDialectChange((Dialect)dialect.getSelectedItem());
+			}
+			
+		});
 
 		add(thePanel, cons.xyw(2, 12, 3));
 	}
@@ -134,5 +143,8 @@ public class DatabaseConnectionEditorView extends JPanel {
 
 	public void setUser(JTextField user) {
 		this.user = user;
+	}
+	
+	public void handleDialectChange(Dialect aDialect) {
 	}
 }

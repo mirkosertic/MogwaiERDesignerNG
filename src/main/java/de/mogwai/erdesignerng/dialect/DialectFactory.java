@@ -25,10 +25,11 @@ import java.util.Vector;
 import de.mogwai.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
 import de.mogwai.erdesignerng.dialect.oracle.OracleDialect;
+import de.mogwai.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:36 $
+ * @version $Date: 2007-07-28 11:08:10 $
  */
 public class DialectFactory {
 
@@ -40,6 +41,7 @@ public class DialectFactory {
 		registerDialect(new MSSQLDialect());
 		registerDialect(new MySQLDialect());
 		registerDialect(new OracleDialect());
+		registerDialect(new PostgresDialect());
 	}
 
 	public static DialectFactory getInstance() {
@@ -57,9 +59,9 @@ public class DialectFactory {
 		return knownDialects.get(aUniqueName);
 	}
 
-	public List<String> getSupportedDialects() {
-		Vector<String> theDialects = new Vector<String>();
-		theDialects.addAll(knownDialects.keySet());
+	public List<Dialect> getSupportedDialects() {
+		Vector<Dialect> theDialects = new Vector<Dialect>();
+		theDialects.addAll(knownDialects.values());
 		return theDialects;
 	}
 }
