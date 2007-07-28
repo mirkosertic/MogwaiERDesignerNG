@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.BackingStoreException;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -58,6 +59,7 @@ import de.mogwai.erdesignerng.io.ModelIOUtilities;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.model.Table;
+import de.mogwai.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.erdesignerng.visual.cells.ModelCell;
 import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
@@ -81,7 +83,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2007-07-28 14:35:50 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -117,7 +119,7 @@ public class ERDesignerMainFrame extends JFrame {
 	private Model model;
 
 	private JMenuBar mainMenu = new JMenuBar();
-
+	
 	private ToolBar toolBar = new ToolBar();
 
 	private StatusBar statusBar = new StatusBar();
@@ -125,9 +127,15 @@ public class ERDesignerMainFrame extends JFrame {
 	private JScrollPane scrollPane = new JScrollPane();
 
 	private JComboBox zoomBox = new JComboBox();
+	
+	private ApplicationPreferences preferences;
 
 	private Action fileAction = new GenericAction("File");
 
+	private Action lruAction = new GenericAction("Last used files");
+
+	private JMenu lruMenu = new JMenu(lruAction);
+	
 	private Action newAction = new GenericAction("New model", IconFactory
 			.getNewIcon(), new ActionListener() {
 
@@ -326,6 +334,8 @@ public class ERDesignerMainFrame extends JFrame {
 		theFileMenu.add(theExportMenu);
 
 		theFileMenu.addSeparator();
+		theFileMenu.add(lruMenu);
+		theFileMenu.addSeparator();
 		theFileMenu.add(new JMenuItem(exitAction));
 
 		JMenu theDBMenu = new JMenu(databaseAction);
@@ -383,6 +393,35 @@ public class ERDesignerMainFrame extends JFrame {
 		setSize(800, 600);
 
 		initTitle();
+		
+		try {
+			preferences = new ApplicationPreferences(this, 10);
+		} catch (BackingStoreException e) {
+			logException(e);
+		}
+		
+		initLRUMenu();
+	}
+	
+	private void initLRUMenu() {
+		
+		lruMenu.removeAll();
+		if (preferences != null) {
+			
+			List<File> theFiles = preferences.getFiles();
+			for (final File theFile : theFiles) {
+				JMenuItem theItem = new JMenuItem(theFile.toString());
+				theItem.addActionListener(new ActionListener() {
+
+					public void actionPerformed(ActionEvent e) {
+						commandOpenFile(theFile);
+					}
+					
+				});
+				
+				lruMenu.add(theItem);
+			}
+		}
 	}
 
 	private void initTitle() {
@@ -467,6 +506,25 @@ public class ERDesignerMainFrame extends JFrame {
 		}
 	}
 
+	protected void commandOpenFile(File aFile) {
+
+		try {
+			Model theModel = ModelIOUtilities.getInstance()
+					.deserializeModelFromXML(new FileInputStream(aFile));
+			setModel(theModel);
+
+			currentEditingFile = aFile;
+			initTitle();
+
+			preferences.addFile(aFile);
+			
+			initLRUMenu();
+			
+		} catch (Exception e) {
+			logException(e);
+		}
+	}
+
 	protected void commandOpenFile() {
 
 		ModelFileFilter theFiler = new ModelFileFilter();
@@ -478,17 +536,8 @@ public class ERDesignerMainFrame extends JFrame {
 
 			File theFile = theFiler.getCompletedFile(theChooser
 					.getSelectedFile());
-			try {
-				Model theModel = ModelIOUtilities.getInstance()
-						.deserializeModelFromXML(new FileInputStream(theFile));
-				setModel(theModel);
-
-				currentEditingFile = theFile;
-				initTitle();
-
-			} catch (Exception e) {
-				logException(e);
-			}
+			
+			commandOpenFile(theFile);
 		}
 	}
 
@@ -511,6 +560,11 @@ public class ERDesignerMainFrame extends JFrame {
 
 				currentEditingFile = theFile;
 				initTitle();
+				
+				preferences.addFile(theFile);
+				
+				initLRUMenu();
+				
 			} catch (Exception e) {
 				logException(e);
 			}
@@ -597,7 +651,7 @@ public class ERDesignerMainFrame extends JFrame {
 		}
 	}
 
-	protected void commandZoomIn() {
+	protected void commandZoomOut() {
 		int theIndex = zoomBox.getSelectedIndex();
 		if (theIndex < zoomBox.getItemCount() - 1) {
 			theIndex++;
@@ -606,7 +660,7 @@ public class ERDesignerMainFrame extends JFrame {
 		}
 	}
 
-	protected void commandZoomOut() {
+	protected void commandZoomIn() {
 		int theIndex = zoomBox.getSelectedIndex();
 		if (theIndex > 0) {
 			theIndex--;
@@ -616,6 +670,12 @@ public class ERDesignerMainFrame extends JFrame {
 	}
 
 	protected void commandExit() {
+		try {
+			preferences.store();
+		} catch (BackingStoreException e) {
+			logException(e);
+		}
+		
 		System.exit(0);
 	}
 
