@@ -23,7 +23,7 @@ import de.mogwai.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:28:22 $
+ * @version $Date: 2007-07-28 11:08:15 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -43,6 +43,16 @@ public class OracleDialect extends SQL92Dialect {
 	@Override
 	public String getUniqueName() {
 		return "OracleDialect";
+	}
+
+	@Override
+	public String getDriverClassName() {
+		return null;
+	}
+
+	@Override
+	public String getDriverURLTemplate() {
+		return null;
 	}
 
 }

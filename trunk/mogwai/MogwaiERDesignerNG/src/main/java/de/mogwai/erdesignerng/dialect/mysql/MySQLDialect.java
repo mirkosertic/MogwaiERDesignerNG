@@ -23,7 +23,7 @@ import de.mogwai.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:37 $
+ * @version $Date: 2007-07-28 11:08:15 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
@@ -45,4 +45,13 @@ public class MySQLDialect extends SQL92Dialect {
 		return "MySQLDialect";
 	}
 
+	@Override
+	public String getDriverClassName() {
+		return null;
+	}
+
+	@Override
+	public String getDriverURLTemplate() {
+		return null;
+	}
 }
