@@ -7,18 +7,22 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 /**
- * Class for handling application preferences, lru files and so on.
+ * Class for handling application preferences, lru LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-28 14:35:50 $
+ * @version $Date: 2007-07-30 15:44:49 $
  */
 public class ApplicationPreferences {
 
-	private final static String PREFIX = "file_";
+	private final static String LRUPREFIX = "file_";
+	
+	private final static String CLASSPATHPREFIX = "classpath_";
 
 	private int size;
 
-	private List<File> files = new Vector<File>();
+	private List<File> LRUfiles = new Vector<File>();
+	
+	private List<File> classpathfiles = new Vector<File>();	
 
 	private Preferences preferences;
 
@@ -28,12 +32,19 @@ public class ApplicationPreferences {
 		preferences = Preferences.userNodeForPackage(aOwner.getClass());
 		String[] theNames = preferences.keys();
 		for (String theName : theNames) {
-			if (theName.startsWith(PREFIX)) {
+			if (theName.startsWith(LRUPREFIX)) {
 				File theFile = new File(preferences.get(theName, ""));
 				if (theFile.exists()) {
-					files.add(theFile);
+					LRUfiles.add(theFile);
 				}
 			}
+			if (theName.startsWith(CLASSPATHPREFIX)) {
+				File theFile = new File(preferences.get(theName, ""));
+				if (theFile.exists()) {
+					classpathfiles.add(theFile);
+				}
+			}
+			
 		}
 
 		size = aSize;
@@ -41,25 +52,29 @@ public class ApplicationPreferences {
 	}
 
 	/**
-	 * Add a file to the recently used files list.
+	 * Add a file to the recently used LRUfiles list.
 	 * 
 	 * @param aFile the file to add
 	 */
-	public void addFile(File aFile) {
+	public void addLRUFile(File aFile) {
 
-		if (!files.contains(aFile)) {
-			files.add(aFile);
-			if (files.size() > size) {
-				files.remove(0);
+		if (!LRUfiles.contains(aFile)) {
+			LRUfiles.add(aFile);
+			if (LRUfiles.size() > size) {
+				LRUfiles.remove(0);
 			}
 		} else {
-			files.remove(aFile);
-			files.add(0, aFile);
+			LRUfiles.remove(aFile);
+			LRUfiles.add(0, aFile);
 		}
 	}
 
-	public List<File> getFiles() {
-		return files;
+	public List<File> getLRUfiles() {
+		return LRUfiles;
+	}
+	
+	public List<File> getClasspathFiles() {
+		return classpathfiles;
 	}
 
 	/**
@@ -71,13 +86,20 @@ public class ApplicationPreferences {
 
 		String[] theNames = preferences.childrenNames();
 		for (String theName : theNames) {
-			if (theName.startsWith(PREFIX)) {
+			if (theName.startsWith(LRUPREFIX)) {
+				preferences.remove(theName);
+			}
+			if (theName.startsWith(CLASSPATHPREFIX)) {
 				preferences.remove(theName);
 			}
 		}
 
-		for (int i = 0; i < files.size(); i++) {
-			preferences.put(PREFIX + i, files.get(i).toString());
+		for (int i = 0; i < LRUfiles.size(); i++) {
+			preferences.put(LRUPREFIX + i, LRUfiles.get(i).toString());
+		}
+
+		for (int i = 0; i < classpathfiles.size(); i++) {
+			preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i).toString());
 		}
 
 		preferences.flush();

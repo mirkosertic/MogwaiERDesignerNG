@@ -84,7 +84,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-30 15:21:26 $
+ * @version $Date: 2007-07-30 15:44:49 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -420,7 +420,7 @@ public class ERDesignerMainFrame extends JFrame {
 		lruMenu.removeAll();
 		if (preferences != null) {
 			
-			List<File> theFiles = preferences.getFiles();
+			List<File> theFiles = preferences.getLRUfiles();
 			for (final File theFile : theFiles) {
 				JMenuItem theItem = new JMenuItem(theFile.toString());
 				theItem.addActionListener(new ActionListener() {
@@ -528,7 +528,7 @@ public class ERDesignerMainFrame extends JFrame {
 			currentEditingFile = aFile;
 			initTitle();
 
-			preferences.addFile(aFile);
+			preferences.addLRUFile(aFile);
 			
 			initLRUMenu();
 			
@@ -573,7 +573,7 @@ public class ERDesignerMainFrame extends JFrame {
 				currentEditingFile = theFile;
 				initTitle();
 				
-				preferences.addFile(theFile);
+				preferences.addLRUFile(theFile);
 				
 				initLRUMenu();
 				
@@ -705,7 +705,7 @@ public class ERDesignerMainFrame extends JFrame {
 	
 	protected void commandClasspath() {
 		ClasspathEditor theEditor = new ClasspathEditor(this,
-				model);
+				preferences);
 		if (theEditor.showModal() == ClasspathEditor.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();

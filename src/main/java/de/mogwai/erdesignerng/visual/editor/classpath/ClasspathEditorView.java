@@ -2,19 +2,26 @@ package de.mogwai.erdesignerng.visual.editor.classpath;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import de.mogwai.erdesignerng.io.GenericFileFilter;
 import de.mogwai.erdesignerng.visual.IconFactory;
 
 public class ClasspathEditorView extends JPanel {
 
+	private File lastDir;
+	
 	private JList classpath = new JList();
 
 	private JButton addButton = new JButton(IconFactory.getFolderAddIcon());
@@ -88,6 +95,7 @@ public class ClasspathEditorView extends JPanel {
 
 		});
 
+		classpath.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
 	protected void handleOk() {
@@ -99,11 +107,36 @@ public class ClasspathEditorView extends JPanel {
 	}
 
 	protected void folderAdd() {
+		
+		DefaultListModel theListModel = (DefaultListModel) classpath.getModel();
 
+		JFileChooser theChooser = new JFileChooser();
+		if (lastDir != null) {
+			theChooser.setCurrentDirectory(lastDir);
+		}
+		theChooser.setMultiSelectionEnabled(true);
+		theChooser.setFileFilter(new GenericFileFilter(".jar","Java archive"));
+		if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File[] theFiles = theChooser.getSelectedFiles();
+
+			for (File theFile : theFiles) {
+				if (!theListModel.contains(theFile)) {
+					theListModel.addElement(theFile);
+				}
+			}
+			
+			lastDir = theChooser.getCurrentDirectory();
+		}
 	}
 
 	protected void folderRemove() {
 
+		DefaultListModel theListModel = (DefaultListModel) classpath.getModel();
+		
+		Object[] theValues = classpath.getSelectedValues();
+		for (Object theValue : theValues) {
+			theListModel.removeElement(theValue);
+		}
 	}
 
 	public JButton getAddButton() {

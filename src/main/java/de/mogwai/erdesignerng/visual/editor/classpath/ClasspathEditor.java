@@ -1,8 +1,14 @@
 package de.mogwai.erdesignerng.visual.editor.classpath;
 
+import java.io.File;
+import java.util.List;
+import java.util.prefs.Preferences;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import de.mogwai.erdesignerng.model.Model;
+import de.mogwai.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
 
@@ -10,7 +16,7 @@ import de.mogwai.erdesignerng.visual.editor.DialogConstants;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-30 15:21:28 $
+ * @version $Date: 2007-07-30 15:44:49 $
  */
 public class ClasspathEditor extends BaseEditor {
 
@@ -27,15 +33,23 @@ public class ClasspathEditor extends BaseEditor {
 		}
 	};
 
-	private Model model;
+	private DefaultListModel list = new DefaultListModel();
 
-	public ClasspathEditor(JFrame aParent, Model aModel) {
+	private ApplicationPreferences preferences;
+
+	public ClasspathEditor(JFrame aParent, ApplicationPreferences aPreferences) {
 		super(aParent);
-
-		model = aModel;
 
 		initialize();
 
+		view.getClasspath().setModel(list);
+
+		List<File> theFiles = aPreferences.getClasspathFiles();
+		for (File theFile : theFiles) {
+			list.addElement(theFile);
+		}
+
+		preferences = aPreferences;
 	}
 
 	private void initialize() {
@@ -49,6 +63,12 @@ public class ClasspathEditor extends BaseEditor {
 	@Override
 	public void applyValues() throws Exception {
 
+		List<File> theFiles = preferences.getClasspathFiles();
+		theFiles.clear();
+
+		for (int i = 0; i < list.getSize(); i++) {
+			theFiles.add((File) list.get(i));
+		}
 	}
 
 	private void commandClose() {
