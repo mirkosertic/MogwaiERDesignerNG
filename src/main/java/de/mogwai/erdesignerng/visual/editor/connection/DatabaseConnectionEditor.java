@@ -14,7 +14,7 @@ import de.mogwai.erdesignerng.visual.editor.DialogConstants;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-28 11:08:10 $
+ * @version $Date: 2007-07-30 15:21:27 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -38,7 +38,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 	private Model model;
 
-	private BindingInfo<ConnectionDescriptor> bindingInfo = new BindingInfo<ConnectionDescriptor>();
+	private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
 	public DatabaseConnectionEditor(JFrame aParent, Model aModel) {
 		super(aParent);
@@ -51,7 +51,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 				new DefaultComboBoxModel(DialectFactory.getInstance()
 						.getSupportedDialects().toArray()));
 
-		ConnectionDescriptor theDescriptor = new ConnectionDescriptor();
+		DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
 		theDescriptor.setDialect(model.getDialect());
 		theDescriptor.setDriver(model.getProperties().getProperty(
 				Model.PROPERTY_DRIVER));
@@ -85,7 +85,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	@Override
 	public void applyValues() throws Exception {
 
-		ConnectionDescriptor theDescriptor = bindingInfo.getDefaultModel();
+		DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
 
 		model.setDialect(theDescriptor.getDialect());
 		model.getProperties().setProperty(Model.PROPERTY_DRIVER,
@@ -115,7 +115,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	
 	private void commandChangeDialect(Dialect aDialect) {
 		
-		ConnectionDescriptor theDescriptor = bindingInfo.getDefaultModel();
+		DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
 		theDescriptor.setDriver(aDialect.getDriverClassName());
 		theDescriptor.setUrl(aDialect.getDriverURLTemplate());
 		

@@ -67,6 +67,7 @@ import de.mogwai.erdesignerng.visual.cells.views.CellViewFactory;
 import de.mogwai.erdesignerng.visual.cells.views.TableCellView;
 import de.mogwai.erdesignerng.visual.components.StatusBar;
 import de.mogwai.erdesignerng.visual.components.ToolBar;
+import de.mogwai.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.mogwai.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.mogwai.erdesignerng.visual.editor.domain.DomainEditor;
@@ -83,7 +84,7 @@ import de.mogwai.erdesignerng.visual.tools.ToolEnum;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-28 14:35:50 $
+ * @version $Date: 2007-07-30 15:21:26 $
  */
 public class ERDesignerMainFrame extends JFrame {
 
@@ -178,6 +179,16 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private Action databaseAction = new GenericAction("Database");
 
+	private Action classpathAction = new GenericAction("Classpath...",
+			IconFactory.getTableIcon(), new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					commandClasspath();
+				}
+
+			});
+	
+	
 	private Action dbConnectionAction = new GenericAction("DB Connection...",
 			IconFactory.getDBIcon(), new ActionListener() {
 
@@ -339,6 +350,7 @@ public class ERDesignerMainFrame extends JFrame {
 		theFileMenu.add(new JMenuItem(exitAction));
 
 		JMenu theDBMenu = new JMenu(databaseAction);
+		theDBMenu.add(new JMenuItem(classpathAction));
 		theDBMenu.add(new JMenuItem(dbConnectionAction));
 		theDBMenu.addSeparator();
 		theDBMenu.add(new JMenuItem(reverseEngineerAction));
@@ -689,6 +701,19 @@ public class ERDesignerMainFrame extends JFrame {
 				logException(e);
 			}
 		}
+	}
+	
+	protected void commandClasspath() {
+		ClasspathEditor theEditor = new ClasspathEditor(this,
+				model);
+		if (theEditor.showModal() == ClasspathEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+			} catch (Exception e) {
+				logException(e);
+			}
+		}
+		
 	}
 
 	protected void commandExport(Exporter aExporter, ExportType aExportType) {
