@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2007-07-30 15:21:26 $
  */
 public final class IconFactory {
 
@@ -113,4 +113,20 @@ public final class IconFactory {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/database_connect.png"));
 	}
+	
+	public static ImageIcon getFolderAddIcon() {
+		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
+				"de/mogwai/erdesignerng/icons/folder_add.png"));
+	}
+
+	public static ImageIcon getFolderRemoveIcon() {
+		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
+				"de/mogwai/erdesignerng/icons/folder_delete.png"));
+	}
+
+	public static ImageIcon getTableIcon() {
+		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
+				"de/mogwai/erdesignerng/icons/table.png"));
+	}
+	
 }

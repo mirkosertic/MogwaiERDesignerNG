@@ -6,9 +6,9 @@ import de.mogwai.erdesignerng.dialect.Dialect;
  * Descriptor for a database dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-28 11:08:10 $
+ * @version $Date: 2007-07-30 15:21:27 $
  */
-public class ConnectionDescriptor {
+public class DatabaseConnectionDatamodel {
 
 	private Dialect dialect;
 
