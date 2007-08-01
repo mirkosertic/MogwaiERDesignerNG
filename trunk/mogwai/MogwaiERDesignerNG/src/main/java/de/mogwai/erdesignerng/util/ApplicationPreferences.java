@@ -1,16 +1,19 @@
 package de.mogwai.erdesignerng.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Vector;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 /**
- * Class for handling application preferences, lru LRUfiles and so on.
+ * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-30 15:44:49 $
+ * @version $Date: 2007-08-01 18:27:54 $
  */
 public class ApplicationPreferences {
 
@@ -103,5 +106,19 @@ public class ApplicationPreferences {
 		}
 
 		preferences.flush();
+	}
+	
+	public ClassLoader createDriverClassLoader() {
+		
+		URL[] theUrls = new URL[classpathfiles.size()];
+		for (int i=0;i<classpathfiles.size();i++) {
+			try {
+				theUrls[i] = classpathfiles.get(i).toURL();
+			} catch (MalformedURLException e) {
+				// This will never happen
+			}
+		}
+		
+		return new URLClassLoader(theUrls);
 	}
 }
