@@ -17,6 +17,10 @@
  */
 package de.mogwai.erdesignerng.dialect;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
@@ -28,7 +32,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-28 11:08:10 $
+ * @version $Date: 2007-08-01 18:27:54 $
  */
 public abstract class Dialect {
 
@@ -193,4 +197,25 @@ public abstract class Dialect {
 	public abstract String getDriverClassName();
 	
 	public abstract String getDriverURLTemplate();
+	
+	/**
+	 * Create a connection to a database.
+	 * 
+	 * @param aClassLoader
+	 * @param aDriver
+	 * @param aUrl
+	 * @param aUser
+	 * @param aPassword
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws SQLException
+	 */
+	public Connection createConnection(ClassLoader aClassLoader,String aDriver,String aUrl,String aUser,String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+		Class theDriverClass = aClassLoader.loadClass(aDriver);
+		Driver theDriver = (Driver)theDriverClass.newInstance();
+		
+		return DriverManager.getConnection(aUrl, aUser, aPassword);
+	}
 }
