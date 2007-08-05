@@ -17,14 +17,15 @@
  */
 package de.mogwai.erdesignerng.visual.editor.defaultvalue;
 
+import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 
 import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.ERDesignerBundle;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.DefaultValue;
@@ -32,10 +33,11 @@ import de.mogwai.erdesignerng.model.DefaultValueList;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
+import de.mogwai.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:12 $
+ * @version $Date: 2007-08-05 18:15:01 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -52,8 +54,8 @@ public class DefaultValueEditor extends BaseEditor {
 	/**
 	 * @param parent
 	 */
-	public DefaultValueEditor(Model aModel, JFrame aParent) {
-		super(aParent);
+	public DefaultValueEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.DEFAULTVALUES);
 
 		model = aModel;
 
@@ -137,10 +139,10 @@ public class DefaultValueEditor extends BaseEditor {
 				});
 
 		setContentPane(editingView);
-		setTitle("Default values dictionary");
 		setResizable(false);
 		pack();
 
+		UIInitializer.getInstance().initialize(this);		
 	}
 
 	private void updateEditFields() {

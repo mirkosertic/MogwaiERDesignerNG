@@ -35,7 +35,7 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 13:38:50 $
+ * @version $Date: 2007-08-05 18:15:03 $
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 
@@ -80,7 +80,7 @@ public class AttributeListCellRenderer implements ListCellRenderer {
 		label.setText(theAttribute.getName());
 
 		label.setForeground(Color.black);
-		
+
 		if (theAttribute.isPrimaryKey() || theAttribute.isForeignKey()) {
 			label.setForeground(Color.red);
 		}
@@ -89,8 +89,8 @@ public class AttributeListCellRenderer implements ListCellRenderer {
 
 		labelPanel.setOpaque(isSelected);
 		if (isSelected)
-			labelPanel.setBorder(BorderFactory
-					.createLineBorder(new Color(160, 160, 180)));
+			labelPanel.setBorder(BorderFactory.createLineBorder(new Color(160,
+					160, 180)));
 		else
 			labelPanel.setBorder(null);
 

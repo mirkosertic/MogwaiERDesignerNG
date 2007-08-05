@@ -1,22 +1,22 @@
 package de.mogwai.erdesignerng.visual.editor.classpath;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 
-import de.mogwai.erdesignerng.model.Model;
+import de.mogwai.erdesignerng.ERDesignerBundle;
 import de.mogwai.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
+import de.mogwai.looks.UIInitializer;
 
 /**
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-30 15:44:49 $
+ * @version $Date: 2007-08-05 18:15:04 $
  */
 public class ClasspathEditor extends BaseEditor {
 
@@ -37,8 +37,8 @@ public class ClasspathEditor extends BaseEditor {
 
 	private ApplicationPreferences preferences;
 
-	public ClasspathEditor(JFrame aParent, ApplicationPreferences aPreferences) {
-		super(aParent);
+	public ClasspathEditor(Component aParent, ApplicationPreferences aPreferences) {
+		super(aParent , ERDesignerBundle.CLASSPATHCONFIGURATION);
 
 		initialize();
 
@@ -55,9 +55,10 @@ public class ClasspathEditor extends BaseEditor {
 	private void initialize() {
 
 		setContentPane(view);
-		setTitle("Classpath");
 		setResizable(false);
 		pack();
+		
+		UIInitializer.getInstance().initialize(this);
 	}
 
 	@Override

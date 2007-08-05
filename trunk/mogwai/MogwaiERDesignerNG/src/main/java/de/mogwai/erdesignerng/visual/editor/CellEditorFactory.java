@@ -18,12 +18,9 @@
 package de.mogwai.erdesignerng.visual.editor;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.EventObject;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.JComponent;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCellEditor;
@@ -38,13 +35,13 @@ import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:45 $
+ * @version $Date: 2007-08-05 18:15:05 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
 	private Object editingValue;
 
-	protected BaseEditor createEditDialogForValue(JFrame aParent, Object aValue) {
+	protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
 
 		if (aValue instanceof TableCell) {
 			TableCell theCell = (TableCell) aValue;
@@ -76,19 +73,17 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 
 		editingValue = aValue;
 
-		JFrame theParent = (JFrame) SwingUtilities.getRoot(aGraph);
-
-		BaseEditor theEditor = createEditDialogForValue(theParent, aValue);
+		BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
 
 		theEditor.validate();
 
-		Dimension w2 = theEditor.getSize();
+/*		Dimension w2 = theEditor.getSize();
 		Dimension w1 = theParent.getSize();
 
 		Point thePoint = theParent.getLocation();
 		theEditor.setLocation(thePoint.x + w1.width / 2 - w2.width / 2,
 				thePoint.y + w1.height / 2 - w2.height / 2);
-
+*/
 		editingValue = aValue;
 		return theEditor;
 	}

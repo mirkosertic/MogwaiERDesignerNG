@@ -12,16 +12,17 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:44 $
+ * @version $Date: 2007-08-05 18:15:04 $
  */
 public class RelationEditorView extends JPanel {
 
 	private javax.swing.JLabel m_component_1;
 
-	private javax.swing.JTextField m_relationname;
+	private DefaultTextField m_relationname;
 
 	private javax.swing.JTable m_component_5;
 
@@ -107,10 +108,10 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getRelationname() {
+	public DefaultTextField getRelationname() {
 
 		if (m_relationname == null) {
-			m_relationname = new javax.swing.JTextField();
+			m_relationname = new DefaultTextField();
 			m_relationname.setName("Relationname");
 			m_relationname.addActionListener(new ActionListener() {
 

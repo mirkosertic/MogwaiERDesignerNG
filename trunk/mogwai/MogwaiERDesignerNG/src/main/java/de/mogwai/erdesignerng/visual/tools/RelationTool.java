@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.graph.DefaultPort;
@@ -42,7 +41,7 @@ import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:42 $
+ * @version $Date: 2007-08-05 18:15:02 $
  */
 public class RelationTool extends BaseTool {
 
@@ -169,7 +168,7 @@ public class RelationTool extends BaseTool {
 			theRelation.setExportingTable(theTargetTable);
 
 			RelationEditor theEditor = new RelationEditor(theSourceTable
-					.getOwner(), (JFrame) SwingUtilities.getRoot(graph));
+					.getOwner(), graph);
 			theEditor.initializeFor(theRelation);
 			if (theEditor.showModal() == RelationEditor.MODAL_RESULT_OK) {
 

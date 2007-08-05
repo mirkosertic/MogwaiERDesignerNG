@@ -17,6 +17,7 @@
  */
 package de.mogwai.erdesignerng.visual.editor.domain;
 
+import java.awt.Component;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +25,10 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 
 import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.ERDesignerBundle;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Domain;
@@ -35,10 +36,11 @@ import de.mogwai.erdesignerng.model.DomainList;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
+import de.mogwai.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:46 $
+ * @version $Date: 2007-08-05 18:15:06 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -55,8 +57,8 @@ public class DomainEditor extends BaseEditor {
 	/**
 	 * @param aParent
 	 */
-	public DomainEditor(Model aModel, JFrame aParent) {
-		super(aParent);
+	public DomainEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.DOMAINS);
 
 		model = aModel;
 
@@ -157,9 +159,9 @@ public class DomainEditor extends BaseEditor {
 				});
 
 		setContentPane(editingView);
-		setTitle("Domain dictionary");
 		pack();
 
+		UIInitializer.getInstance().initialize(this);		
 	}
 
 	private void updateEditFields() {

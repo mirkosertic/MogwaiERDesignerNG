@@ -13,19 +13,19 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-01 18:27:54 $
+ * @version $Date: 2007-08-05 18:15:03 $
  */
 public class ApplicationPreferences {
 
 	private final static String LRUPREFIX = "file_";
-	
+
 	private final static String CLASSPATHPREFIX = "classpath_";
 
 	private int size;
 
 	private List<File> LRUfiles = new Vector<File>();
-	
-	private List<File> classpathfiles = new Vector<File>();	
+
+	private List<File> classpathfiles = new Vector<File>();
 
 	private Preferences preferences;
 
@@ -47,7 +47,7 @@ public class ApplicationPreferences {
 					classpathfiles.add(theFile);
 				}
 			}
-			
+
 		}
 
 		size = aSize;
@@ -57,7 +57,8 @@ public class ApplicationPreferences {
 	/**
 	 * Add a file to the recently used LRUfiles list.
 	 * 
-	 * @param aFile the file to add
+	 * @param aFile
+	 *            the file to add
 	 */
 	public void addLRUFile(File aFile) {
 
@@ -75,7 +76,7 @@ public class ApplicationPreferences {
 	public List<File> getLRUfiles() {
 		return LRUfiles;
 	}
-	
+
 	public List<File> getClasspathFiles() {
 		return classpathfiles;
 	}
@@ -102,23 +103,24 @@ public class ApplicationPreferences {
 		}
 
 		for (int i = 0; i < classpathfiles.size(); i++) {
-			preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i).toString());
+			preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i)
+					.toString());
 		}
 
 		preferences.flush();
 	}
-	
+
 	public ClassLoader createDriverClassLoader() {
-		
+
 		URL[] theUrls = new URL[classpathfiles.size()];
-		for (int i=0;i<classpathfiles.size();i++) {
+		for (int i = 0; i < classpathfiles.size(); i++) {
 			try {
 				theUrls[i] = classpathfiles.get(i).toURL();
 			} catch (MalformedURLException e) {
 				// This will never happen
 			}
 		}
-		
+
 		return new URLClassLoader(theUrls);
 	}
 }

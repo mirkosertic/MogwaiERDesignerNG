@@ -17,23 +17,25 @@
  */
 package de.mogwai.erdesignerng.visual.editor.relation;
 
+import java.awt.Component;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 
 import de.mogwai.binding.BindingInfo;
 import de.mogwai.binding.adapter.RadioButtonAdapter;
+import de.mogwai.erdesignerng.ERDesignerBundle;
 import de.mogwai.erdesignerng.model.Attribute;
 import de.mogwai.erdesignerng.model.CascadeType;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Relation;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
+import de.mogwai.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:40 $
+ * @version $Date: 2007-08-05 18:15:03 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -46,8 +48,8 @@ public class RelationEditor extends BaseEditor {
 	/**
 	 * @param parent
 	 */
-	public RelationEditor(Model aModel, JFrame aParent) {
-		super(aParent);
+	public RelationEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.RELATIONEDITOR);
 
 		initialize();
 
@@ -94,11 +96,10 @@ public class RelationEditor extends BaseEditor {
 		};
 
 		setContentPane(editingView);
-
-		setTitle("Relation editor");
 		setResizable(false);
 		pack();
 
+		UIInitializer.getInstance().initialize(this);		
 	}
 
 	private de.mogwai.erdesignerng.visual.editor.relation.AttributeTableModel tableModel;

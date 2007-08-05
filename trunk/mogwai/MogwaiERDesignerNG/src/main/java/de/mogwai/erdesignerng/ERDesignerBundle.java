@@ -57,4 +57,12 @@ public interface ERDesignerBundle {
   String RELATION = "RELATION";
   /** Vergrösserung */
   String ZOOM = "ZOOM";
+  /** Konfiguration Treiber-Klassenpfad */
+  String CLASSPATHCONFIGURATION = "CLASSPATHCONFIGURATION";
+  /** Konfiguration Datenbankverbindung */
+  String CONNECTIONCONFIGURATION = "CONNECTIONCONFIGURATION";
+  /** Entität editieren */
+  String ENTITYEDITOR = "ENTITYEDITOR";
+  /** Relation editieren */
+  String RELATIONEDITOR = "RELATIONEDITOR";
 }
