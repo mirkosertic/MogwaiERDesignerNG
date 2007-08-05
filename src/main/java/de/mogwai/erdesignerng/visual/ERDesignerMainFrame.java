@@ -18,7 +18,6 @@
 package de.mogwai.erdesignerng.visual;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,16 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.BackingStoreException;
 
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
 import org.jgraph.event.GraphModelEvent;
@@ -53,6 +47,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import de.mogwai.erdesignerng.ERDesignerBundle;
 import de.mogwai.erdesignerng.io.GenericFileFilter;
 import de.mogwai.erdesignerng.io.ModelFileFilter;
 import de.mogwai.erdesignerng.io.ModelIOUtilities;
@@ -65,8 +60,6 @@ import de.mogwai.erdesignerng.visual.cells.RelationEdge;
 import de.mogwai.erdesignerng.visual.cells.TableCell;
 import de.mogwai.erdesignerng.visual.cells.views.CellViewFactory;
 import de.mogwai.erdesignerng.visual.cells.views.TableCellView;
-import de.mogwai.erdesignerng.visual.components.StatusBar;
-import de.mogwai.erdesignerng.visual.components.ToolBar;
 import de.mogwai.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.mogwai.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.mogwai.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
@@ -80,13 +73,24 @@ import de.mogwai.erdesignerng.visual.tools.EntityTool;
 import de.mogwai.erdesignerng.visual.tools.HandTool;
 import de.mogwai.erdesignerng.visual.tools.RelationTool;
 import de.mogwai.erdesignerng.visual.tools.ToolEnum;
+import de.mogwai.i18n.ResourceHelper;
+import de.mogwai.looks.UIInitializer;
+import de.mogwai.looks.components.DefaultComboBox;
+import de.mogwai.looks.components.DefaultFrame;
+import de.mogwai.looks.components.DefaultScrollPane;
+import de.mogwai.looks.components.DefaultToggleButton;
+import de.mogwai.looks.components.DefaultToolbar;
+import de.mogwai.looks.components.action.ActionEventProcessor;
+import de.mogwai.looks.components.action.DefaultAction;
+import de.mogwai.looks.components.menu.DefaultMenu;
+import de.mogwai.looks.components.menu.DefaultMenuItem;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-30 15:44:49 $
+ * @version $Date: 2007-08-05 13:38:49 $
  */
-public class ERDesignerMainFrame extends JFrame {
+public class ERDesignerMainFrame extends DefaultFrame {
 
 	private class ZoomInfo {
 
@@ -119,160 +123,159 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private Model model;
 
-	private JMenuBar mainMenu = new JMenuBar();
-	
-	private ToolBar toolBar = new ToolBar();
+	private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
-	private StatusBar statusBar = new StatusBar();
+	private DefaultComboBox zoomBox = new DefaultComboBox();
 
-	private JScrollPane scrollPane = new JScrollPane();
-
-	private JComboBox zoomBox = new JComboBox();
-	
 	private ApplicationPreferences preferences;
 
-	private Action fileAction = new GenericAction("File");
+	private DefaultAction fileAction = new DefaultAction(this,
+			ERDesignerBundle.FILE);
 
-	private Action lruAction = new GenericAction("Last used files");
+	private DefaultAction lruAction = new DefaultAction(this,
+			ERDesignerBundle.RECENTLYUSEDFILES);
 
-	private JMenu lruMenu = new JMenu(lruAction);
-	
-	private Action newAction = new GenericAction("New model", IconFactory
-			.getNewIcon(), new ActionListener() {
+	private DefaultMenu lruMenu = new DefaultMenu(lruAction);
 
-		public void actionPerformed(ActionEvent e) {
-			commandNew();
-		}
-	});
+	private DefaultAction newAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-	private Action saveAction = new GenericAction("Save model...", IconFactory
-			.getSaveIcon(), new ActionListener() {
+				public void processActionEvent(ActionEvent e) {
+					commandNew();
+				}
+			}, this, ERDesignerBundle.NEWMODEL);
 
-		public void actionPerformed(ActionEvent aEvent) {
-			commandSaveFile();
-		}
+	private DefaultAction saveAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-	});
+				public void processActionEvent(ActionEvent aEvent) {
+					commandSaveFile();
+				}
 
-	private Action loadAction = new GenericAction("Load model...", IconFactory
-			.getFolderIcon(), new ActionListener() {
+			}, this, ERDesignerBundle.SAVEMODEL);
 
-		public void actionPerformed(ActionEvent aEvent) {
-			commandOpenFile();
-		}
+	private DefaultAction loadAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-	});
+				public void processActionEvent(ActionEvent aEvent) {
+					commandOpenFile();
+				}
 
-	private Action exitAction = new GenericAction("Exit", IconFactory
-			.getExitIcon(), new ActionListener() {
+			}, this, ERDesignerBundle.LOADMODEL);
 
-		public void actionPerformed(ActionEvent e) {
-			commandExit();
-		}
+	private DefaultAction exitAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-	});
+				public void processActionEvent(ActionEvent e) {
+					commandExit();
+				}
 
-	private Action exportAction = new GenericAction("Export", IconFactory
-			.getPageAddIcon(), null);
+			}, this, ERDesignerBundle.EXITPROGRAM);
 
-	private Action exportSVGAction = new GenericAction("As SVG");
+	private DefaultAction exportAction = new DefaultAction(this,
+			ERDesignerBundle.EXPORT);
 
-	private Action databaseAction = new GenericAction("Database");
+	private DefaultAction exportSVGAction = new DefaultAction(this,
+			ERDesignerBundle.ASSVG);
 
-	private Action classpathAction = new GenericAction("Classpath...",
-			IconFactory.getTableIcon(), new ActionListener() {
+	private DefaultAction databaseAction = new DefaultAction(this,
+			ERDesignerBundle.DATABASE);
 
-				public void actionPerformed(ActionEvent e) {
+	private DefaultAction classpathAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
 					commandClasspath();
 				}
 
-			});
-	
-	
-	private Action dbConnectionAction = new GenericAction("DB Connection...",
-			IconFactory.getDBIcon(), new ActionListener() {
+			}, this, ERDesignerBundle.CLASSPATH);
 
-				public void actionPerformed(ActionEvent e) {
+	private DefaultAction dbConnectionAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
 					commandDBConnection();
 				}
 
-			});
+			}, this, ERDesignerBundle.DBCONNECTION);
 
-	private Action reverseEngineerAction = new GenericAction(
-			"Reverse engineer...");
+	private DefaultAction reverseEngineerAction = new DefaultAction(this,
+			ERDesignerBundle.REVERSEENGINEER);
 
-	private Action domainsAction = new GenericAction("Domains...",
-			new ActionListener() {
+	private DefaultAction domainsAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-				public void actionPerformed(ActionEvent aEvent) {
+				public void processActionEvent(ActionEvent aEvent) {
 					commandShowDomainEditor();
 				}
 
-			});
+			}, this, ERDesignerBundle.DOMAINS);
 
-	private Action defaultValuesAction = new GenericAction("Default values...",
-			new ActionListener() {
+	private DefaultAction defaultValuesAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-				public void actionPerformed(ActionEvent aEvent) {
+				public void processActionEvent(ActionEvent aEvent) {
 					commandShowDefaultValuesEditor();
 				}
 
-			});
+			}, this, ERDesignerBundle.DEFAULTVALUES);
 
-	private Action viewAction = new GenericAction("View");
+	private DefaultAction viewAction = new DefaultAction(this,
+			ERDesignerBundle.VIEW);
 
-	private Action zoomAction = new GenericAction("Zoom", new ActionListener() {
+	private DefaultAction zoomAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void actionPerformed(ActionEvent aEvent) {
-			commandSetZoom((ZoomInfo) ((JComboBox) aEvent.getSource())
-					.getSelectedItem());
-		}
-	});
+				public void processActionEvent(ActionEvent aEvent) {
+					commandSetZoom((ZoomInfo) ((JComboBox) aEvent.getSource())
+							.getSelectedItem());
+				}
+			}, this, ERDesignerBundle.ZOOM);
 
-	private Action zoomInAction = new GenericAction(
-			IconFactory.getZoomInIcon(), new ActionListener() {
+	private DefaultAction zoomInAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-				public void actionPerformed(ActionEvent e) {
+				public void processActionEvent(ActionEvent e) {
 					commandZoomIn();
 				}
 
-			});
+			}, this, ERDesignerBundle.ZOOMIN);
 
-	private Action zoomOutAction = new GenericAction(IconFactory
-			.getZoomOutIcon(), new ActionListener() {
+	private DefaultAction zoomOutAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void actionPerformed(ActionEvent e) {
-			commandZoomOut();
-		}
+				public void processActionEvent(ActionEvent e) {
+					commandZoomOut();
+				}
 
-	});
+			}, this, ERDesignerBundle.ZOOMOUT);
 
-	private Action handAction = new GenericAction(IconFactory.getHandIcon(),
-			new ActionListener() {
+	private DefaultAction handAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-				public void actionPerformed(ActionEvent e) {
+				public void processActionEvent(ActionEvent e) {
 					commandSetTool(ToolEnum.HAND);
 				}
 
-			});
+			}, this, ERDesignerBundle.HAND);
 
-	private Action entityAction = new GenericAction(
-			IconFactory.getEntityIcon(), new ActionListener() {
+	private DefaultAction entityAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-				public void actionPerformed(ActionEvent e) {
+				public void processActionEvent(ActionEvent e) {
 					commandSetTool(ToolEnum.ENTITY);
 				}
 
-			});
+			}, this, ERDesignerBundle.ENTITY);
 
-	private Action relationAction = new GenericAction(IconFactory
-			.getRelationIcon(), new ActionListener() {
+	private DefaultAction relationAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void actionPerformed(ActionEvent e) {
-			commandSetTool(ToolEnum.RELATION);
-		}
+				public void processActionEvent(ActionEvent e) {
+					commandSetTool(ToolEnum.RELATION);
+				}
 
-	});
+			}, this, ERDesignerBundle.RELATION);
 
 	private JToggleButton handButton;
 
@@ -283,10 +286,16 @@ public class ERDesignerMainFrame extends JFrame {
 	private File currentEditingFile;
 
 	public ERDesignerMainFrame() {
+		super(ERDesignerBundle.TITLE);
 		initialize();
 	}
 
-	protected void addExportEntries(JMenu aMenu, final Exporter aExporter) {
+	@Override
+	public ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
+
+	protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
 		JMenuItem theAllInOneItem = aMenu.add("All in one");
 		theAllInOneItem.addActionListener(new ActionListener() {
 
@@ -304,62 +313,63 @@ public class ERDesignerMainFrame extends JFrame {
 		});
 	}
 
-	protected void initialize() {
+	private void initialize() {
 
-		setJMenuBar(mainMenu);
-
-		JMenu theFileMenu = new JMenu(fileAction);
-		theFileMenu.add(new JMenuItem(newAction));
+		DefaultMenu theFileMenu = new DefaultMenu(fileAction);
+		JMenuItem theItem = theFileMenu.add(newAction);
 		theFileMenu.addSeparator();
-		theFileMenu.add(new JMenuItem(saveAction));
-		theFileMenu.add(new JMenuItem(loadAction));
+		theFileMenu.add(saveAction);
+		theFileMenu.add(loadAction);
 		theFileMenu.addSeparator();
 
-		JMenu theExportMenu = new JMenu(exportAction);
+		DefaultMenu theExportMenu = new DefaultMenu(exportAction);
 
 		List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
 		if (theSupportedFormats.contains("IMAGE/PNG")) {
-			JMenu theSingleExportMenu = new JMenu("As PNG");
+			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
+					ERDesignerBundle.ASPNG);
 			theExportMenu.add(theSingleExportMenu);
 
 			addExportEntries(theSingleExportMenu, new ImageExporter("png"));
 		}
 		if (theSupportedFormats.contains("IMAGE/JPEG")) {
-			JMenu theSingleExportMenu = new JMenu("As JPEG");
+			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
+					ERDesignerBundle.ASJPEG);
 			theExportMenu.add(theSingleExportMenu);
 
 			addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
 		}
 		if (theSupportedFormats.contains("IMAGE/BMP")) {
-			JMenu theSingleExportMenu = new JMenu("As BMP");
+			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
+					ERDesignerBundle.ASBMP);
 			theExportMenu.add(theSingleExportMenu);
 
 			addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
 		}
 
-		JMenu theSVGExportMenu = new JMenu(exportSVGAction);
+		DefaultMenu theSVGExportMenu = new DefaultMenu(exportSVGAction);
 
 		theExportMenu.add(theSVGExportMenu);
 		addExportEntries(theSVGExportMenu, new SVGExporter());
 
-		theFileMenu.add(theExportMenu);
+		theFileMenu.add(theExportMenu).getClass();
 
 		theFileMenu.addSeparator();
 		theFileMenu.add(lruMenu);
 		theFileMenu.addSeparator();
-		theFileMenu.add(new JMenuItem(exitAction));
+		theFileMenu.add(new DefaultMenuItem(exitAction));
 
-		JMenu theDBMenu = new JMenu(databaseAction);
-		theDBMenu.add(new JMenuItem(classpathAction));
-		theDBMenu.add(new JMenuItem(dbConnectionAction));
+		DefaultMenu theDBMenu = new DefaultMenu(databaseAction);
+		theDBMenu.add(new DefaultMenuItem(classpathAction));
+		theDBMenu.add(new DefaultMenuItem(dbConnectionAction));
 		theDBMenu.addSeparator();
-		theDBMenu.add(new JMenuItem(reverseEngineerAction));
+		theDBMenu.add(new DefaultMenuItem(reverseEngineerAction));
 		theDBMenu.addSeparator();
-		theDBMenu.add(new JMenuItem(domainsAction));
-		theDBMenu.add(new JMenuItem(defaultValuesAction));
+		theDBMenu.add(new DefaultMenuItem(domainsAction));
+		theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
 
-		mainMenu.add(theFileMenu);
-		mainMenu.add(theDBMenu);
+		menuBar.add(theFileMenu);
+		menuBar.add(theDBMenu);
 
 		DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
 		theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
@@ -372,54 +382,54 @@ public class ERDesignerMainFrame extends JFrame {
 		zoomBox.setAction(zoomAction);
 		zoomBox.setModel(theZoomModel);
 
-		toolBar.add(newAction);
-		toolBar.addSeparator();
-		toolBar.add(loadAction);
-		toolBar.add(saveAction);
-		toolBar.addSeparator();
-		toolBar.add(zoomBox);
-		toolBar.addSeparator();
-		toolBar.add(zoomInAction);
-		toolBar.add(zoomOutAction);
-		toolBar.addSeparator();
+		DefaultToolbar theToolBar = getDefaultFrameContent().getToolbar();
 
-		handButton = new JToggleButton(handAction);
-		relationButton = new JToggleButton(relationAction);
-		entityButton = new JToggleButton(entityAction);
+		theToolBar.add(newAction);
+		theToolBar.addSeparator();
+		theToolBar.add(loadAction);
+		theToolBar.add(saveAction);
+		theToolBar.addSeparator();
+		theToolBar.add(zoomBox);
+		theToolBar.addSeparator();
+		theToolBar.add(zoomInAction);
+		theToolBar.add(zoomOutAction);
+		theToolBar.addSeparator();
+
+		handButton = new DefaultToggleButton(handAction);
+		relationButton = new DefaultToggleButton(relationAction);
+		entityButton = new DefaultToggleButton(entityAction);
 
 		ButtonGroup theGroup = new ButtonGroup();
 		theGroup.add(handButton);
 		theGroup.add(relationButton);
 		theGroup.add(entityButton);
 
-		toolBar.add(handButton);
-		toolBar.add(entityButton);
-		toolBar.add(relationButton);
+		theToolBar.add(handButton);
+		theToolBar.add(entityButton);
+		theToolBar.add(relationButton);
 
-		Container theContentPane = getContentPane();
-		theContentPane.setLayout(new BorderLayout());
-		theContentPane.add(toolBar, BorderLayout.NORTH);
-		theContentPane.add(scrollPane, BorderLayout.CENTER);
-		theContentPane.add(statusBar, BorderLayout.SOUTH);
+		frameContent.add(scrollPane, BorderLayout.CENTER);
 
 		setSize(800, 600);
 
 		initTitle();
-		
+
 		try {
 			preferences = new ApplicationPreferences(this, 10);
 		} catch (BackingStoreException e) {
 			logException(e);
 		}
-		
+
 		initLRUMenu();
+
+		UIInitializer.getInstance().initialize(this);
 	}
-	
+
 	private void initLRUMenu() {
-		
+
 		lruMenu.removeAll();
 		if (preferences != null) {
-			
+
 			List<File> theFiles = preferences.getLRUfiles();
 			for (final File theFile : theFiles) {
 				JMenuItem theItem = new JMenuItem(theFile.toString());
@@ -428,9 +438,11 @@ public class ERDesignerMainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						commandOpenFile(theFile);
 					}
-					
+
 				});
-				
+
+				UIInitializer.getInstance().initializeFontAndColors(theItem);
+
 				lruMenu.add(theItem);
 			}
 		}
@@ -438,12 +450,12 @@ public class ERDesignerMainFrame extends JFrame {
 
 	private void initTitle() {
 
-		StringBuffer theTitle = new StringBuffer("Mogwai ERDesignerNG");
+		StringBuffer theTitle = new StringBuffer();
 		if (currentEditingFile != null) {
 			theTitle.append(" - ").append(currentEditingFile.toString());
 		}
 
-		setTitle(theTitle.toString());
+		setTitle(getResourceHelper().getText(getResourceBundleID()) + theTitle);
 	}
 
 	public void setModel(Model aModel) {
@@ -529,9 +541,9 @@ public class ERDesignerMainFrame extends JFrame {
 			initTitle();
 
 			preferences.addLRUFile(aFile);
-			
+
 			initLRUMenu();
-			
+
 		} catch (Exception e) {
 			logException(e);
 		}
@@ -548,7 +560,7 @@ public class ERDesignerMainFrame extends JFrame {
 
 			File theFile = theFiler.getCompletedFile(theChooser
 					.getSelectedFile());
-			
+
 			commandOpenFile(theFile);
 		}
 	}
@@ -572,11 +584,11 @@ public class ERDesignerMainFrame extends JFrame {
 
 				currentEditingFile = theFile;
 				initTitle();
-				
+
 				preferences.addLRUFile(theFile);
-				
+
 				initLRUMenu();
-				
+
 			} catch (Exception e) {
 				logException(e);
 			}
@@ -687,7 +699,7 @@ public class ERDesignerMainFrame extends JFrame {
 		} catch (BackingStoreException e) {
 			logException(e);
 		}
-		
+
 		System.exit(0);
 	}
 
@@ -702,10 +714,9 @@ public class ERDesignerMainFrame extends JFrame {
 			}
 		}
 	}
-	
+
 	protected void commandClasspath() {
-		ClasspathEditor theEditor = new ClasspathEditor(this,
-				preferences);
+		ClasspathEditor theEditor = new ClasspathEditor(this, preferences);
 		if (theEditor.showModal() == ClasspathEditor.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
@@ -713,7 +724,7 @@ public class ERDesignerMainFrame extends JFrame {
 				logException(e);
 			}
 		}
-		
+
 	}
 
 	protected void commandExport(Exporter aExporter, ExportType aExportType) {
