@@ -19,9 +19,9 @@ package de.mogwai.erdesignerng.dialect;
 
 import java.sql.Connection;
 import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
@@ -32,7 +32,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-01 18:27:54 $
+ * @version $Date: 2007-08-05 18:15:01 $
  */
 public abstract class Dialect {
 
@@ -216,6 +216,9 @@ public abstract class Dialect {
 		Class theDriverClass = aClassLoader.loadClass(aDriver);
 		Driver theDriver = (Driver)theDriverClass.newInstance();
 		
-		return DriverManager.getConnection(aUrl, aUser, aPassword);
+		Properties theProperties = new Properties();
+		theProperties.put("user", aUser);
+		theProperties.put("password", aPassword);
+		return theDriver.connect(aUrl, theProperties);
 	}
 }

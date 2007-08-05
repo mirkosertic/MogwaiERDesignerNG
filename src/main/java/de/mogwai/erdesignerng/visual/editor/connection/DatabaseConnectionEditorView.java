@@ -4,29 +4,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.erdesignerng.dialect.Dialect;
 import de.mogwai.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultComboBox;
+import de.mogwai.looks.components.DefaultTextField;
 
 public class DatabaseConnectionEditorView extends JPanel {
 
-	private JComboBox dialect = new JComboBox();
+	private DefaultComboBox dialect = new DefaultComboBox();
 
-	private JTextField driver = new JTextField();
+	private DefaultTextField driver = new DefaultTextField();
 
-	private JTextField url = new JTextField();
+	private DefaultTextField url = new DefaultTextField();
 
-	private JTextField user = new JTextField();
+	private DefaultTextField user = new DefaultTextField();
 
-	private JTextField password = new JTextField();
+	private DefaultTextField password = new DefaultTextField();
 
+	private JButton testButton = new JButton(IconFactory.getCancelIcon());
+	
 	private JButton okButton = new JButton(IconFactory.getSaveIcon());
 
 	private JButton cancelButton = new JButton(IconFactory.getCancelIcon());
@@ -62,13 +64,24 @@ public class DatabaseConnectionEditorView extends JPanel {
 
 		JPanel thePanel = new JPanel();
 
-		theColDef = "fill:2dlu:grow,50dlu,2dlu,50dlu,2dlu";
+		theColDef = "50dlu,2dlu:grow,50dlu,2dlu,50dlu,2dlu";
 		theRowDef = "p";
 
 		theLayout = new FormLayout(theColDef, theRowDef);
 		thePanel.setLayout(theLayout);
 
-		thePanel.add(okButton, cons.xy(2, 1));
+		thePanel.add(testButton, cons.xy(1, 1));
+		testButton.setText("Test");
+		testButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				handleTest();
+			}
+
+		});
+		
+		
+		thePanel.add(okButton, cons.xy(3, 1));
 		okButton.setText("Ok");
 		okButton.addActionListener(new ActionListener() {
 
@@ -77,7 +90,7 @@ public class DatabaseConnectionEditorView extends JPanel {
 			}
 
 		});
-		thePanel.add(cancelButton, cons.xy(4, 1));
+		thePanel.add(cancelButton, cons.xy(5, 1));
 		cancelButton.setText("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 
@@ -97,6 +110,10 @@ public class DatabaseConnectionEditorView extends JPanel {
 		add(thePanel, cons.xyw(2, 12, 3));
 	}
 
+	protected void handleTest() {
+
+	}
+	
 	protected void handleOk() {
 
 	}
@@ -105,43 +122,43 @@ public class DatabaseConnectionEditorView extends JPanel {
 
 	}
 
-	public JComboBox getDialect() {
+	public DefaultComboBox getDialect() {
 		return dialect;
 	}
 
-	public void setDialect(JComboBox databaseType) {
+	public void setDialect(DefaultComboBox databaseType) {
 		this.dialect = databaseType;
 	}
 
-	public JTextField getDriver() {
+	public DefaultTextField getDriver() {
 		return driver;
 	}
 
-	public void setDriver(JTextField driver) {
+	public void setDriver(DefaultTextField driver) {
 		this.driver = driver;
 	}
 
-	public JTextField getPassword() {
+	public DefaultTextField getPassword() {
 		return password;
 	}
 
-	public void setPassword(JTextField password) {
+	public void setPassword(DefaultTextField password) {
 		this.password = password;
 	}
 
-	public JTextField getUrl() {
+	public DefaultTextField getUrl() {
 		return url;
 	}
 
-	public void setUrl(JTextField url) {
+	public void setUrl(DefaultTextField url) {
 		this.url = url;
 	}
 
-	public JTextField getUser() {
+	public DefaultTextField getUser() {
 		return user;
 	}
 
-	public void setUser(JTextField user) {
+	public void setUser(DefaultTextField user) {
 		this.user = user;
 	}
 	

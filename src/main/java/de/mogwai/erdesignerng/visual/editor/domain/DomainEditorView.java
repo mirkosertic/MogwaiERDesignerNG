@@ -7,10 +7,11 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:46 $
+ * @version $Date: 2007-08-05 18:15:05 $
  */
 public class DomainEditorView extends JPanel {
 
@@ -34,9 +35,9 @@ public class DomainEditorView extends JPanel {
 
 	private javax.swing.JLabel m_component_12;
 
-	private javax.swing.JTextField m_domainname;
+	private DefaultTextField m_domainname;
 
-	private javax.swing.JTextField m_declaration;
+	private DefaultTextField m_declaration;
 
 	private javax.swing.JComboBox m_javatype;
 
@@ -257,10 +258,10 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getDomainName() {
+	public DefaultTextField getDomainName() {
 
 		if (m_domainname == null) {
-			m_domainname = new javax.swing.JTextField();
+			m_domainname = new DefaultTextField();
 			m_domainname.setName("DomainName");
 		}
 
@@ -272,10 +273,10 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getDeclaration() {
+	public DefaultTextField getDeclaration() {
 
 		if (m_declaration == null) {
-			m_declaration = new javax.swing.JTextField();
+			m_declaration = new DefaultTextField();
 			m_declaration.setName("Declaration");
 		}
 
