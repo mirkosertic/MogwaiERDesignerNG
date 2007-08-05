@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import de.mogwai.erdesignerng.dialect.db2.DB2Dialect;
 import de.mogwai.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
 import de.mogwai.erdesignerng.dialect.oracle.OracleDialect;
@@ -29,7 +30,7 @@ import de.mogwai.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-28 11:08:10 $
+ * @version $Date: 2007-08-05 18:28:06 $
  */
 public class DialectFactory {
 
@@ -42,6 +43,7 @@ public class DialectFactory {
 		registerDialect(new MySQLDialect());
 		registerDialect(new OracleDialect());
 		registerDialect(new PostgresDialect());
+		registerDialect(new DB2Dialect());		
 	}
 
 	public static DialectFactory getInstance() {
