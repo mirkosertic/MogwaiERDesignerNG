@@ -17,25 +17,25 @@
  */
 package de.mogwai.erdesignerng.visual.editor;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.Component;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import de.mogwai.erdesignerng.ERDesignerBundle;
+import de.mogwai.looks.components.DefaultDialog;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2007-08-05 18:15:05 $
  */
-public abstract class BaseEditor extends JDialog implements DialogConstants {
+public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
 	private int modalResult;
 
 	private javax.swing.JPanel jContentPane = null;
 
-	private JFrame parent;
+	private Component parent;
 
 	/**
 	 * Initialize.
@@ -43,8 +43,8 @@ public abstract class BaseEditor extends JDialog implements DialogConstants {
 	 * @param parent
 	 *            the parent Frame
 	 */
-	public BaseEditor(JFrame aParent) {
-		super(aParent, true);
+	public BaseEditor(Component aParent,String aTitle) {
+		super(aParent, ERDesignerBundle.BUNDLE_NAME,aTitle);
 		initialize();
 		parent = aParent;
 	}
@@ -89,27 +89,14 @@ public abstract class BaseEditor extends JDialog implements DialogConstants {
 		return modalResult;
 	}
 
-	public void setVisible(boolean aStatus) {
-
-		if (parent != null) {
-
-			validate();
-
-			Dimension w2 = getSize();
-			Dimension w1 = parent.getSize();
-
-			Point thePoint = parent.getLocation();
-			setLocation(thePoint.x + w1.width / 2 - w2.width / 2, thePoint.y
-					+ w1.height / 2 - w2.height / 2);
-
-		}
-
-		super.setVisible(true);
-	}
-
 	protected void displayErrorMessage(String aMessage) {
 		JOptionPane.showMessageDialog(this, aMessage, "Error",
 				JOptionPane.ERROR_MESSAGE);
+	}
+
+	protected void displayInfoMessage(String aMessage) {
+		JOptionPane.showMessageDialog(this, aMessage, "Info",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public abstract void applyValues() throws Exception;

@@ -8,16 +8,17 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:43 $
+ * @version $Date: 2007-08-05 18:15:03 $
  */
 public class TableEditorView extends JPanel {
 
 	private javax.swing.JLabel m_component_1;
 
-	private javax.swing.JTextField m_entity_name;
+	private DefaultTextField m_entity_name;
 
 	private javax.swing.JTabbedPane m_maintabbedpane;
 
@@ -41,7 +42,7 @@ public class TableEditorView extends JPanel {
 
 	private javax.swing.JLabel m_component_20;
 
-	private javax.swing.JTextField m_attributename;
+	private DefaultTextField m_attributename;
 
 	private javax.swing.JList m_domainlist;
 
@@ -79,7 +80,7 @@ public class TableEditorView extends JPanel {
 
 	private javax.swing.JLabel m_label1;
 
-	private javax.swing.JTextField m_indexname;
+	private DefaultTextField m_indexname;
 
 	private javax.swing.JRadioButton m_uniqueindex;
 
@@ -147,10 +148,10 @@ public class TableEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getEntity_name() {
+	public DefaultTextField getEntity_name() {
 
 		if (this.m_entity_name == null) {
-			this.m_entity_name = new javax.swing.JTextField();
+			this.m_entity_name = new DefaultTextField();
 			this.m_entity_name.setName("Entity_name");
 		}
 
@@ -405,10 +406,10 @@ public class TableEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getAttributeName() {
+	public DefaultTextField getAttributeName() {
 
 		if (this.m_attributename == null) {
-			this.m_attributename = new javax.swing.JTextField();
+			this.m_attributename = new DefaultTextField();
 			this.m_attributename.setName("AttributeName");
 		}
 
@@ -777,10 +778,10 @@ public class TableEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getIndexName() {
+	public DefaultTextField getIndexName() {
 
 		if (this.m_indexname == null) {
-			this.m_indexname = new javax.swing.JTextField();
+			this.m_indexname = new DefaultTextField();
 			this.m_indexname.setName("IndexName");
 		}
 

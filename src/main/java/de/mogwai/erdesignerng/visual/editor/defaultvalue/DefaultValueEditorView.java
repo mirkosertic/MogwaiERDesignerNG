@@ -7,10 +7,11 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:06:26 $
+ * @version $Date: 2007-08-05 18:15:01 $
  */
 public class DefaultValueEditorView extends JPanel {
 
@@ -30,9 +31,9 @@ public class DefaultValueEditorView extends JPanel {
 
 	private javax.swing.JLabel m_component_10;
 
-	private javax.swing.JTextField m_defaultvaluename;
+	private DefaultTextField m_defaultvaluename;
 
-	private javax.swing.JTextField m_declaration;
+	private DefaultTextField m_declaration;
 
 	private javax.swing.JButton m_updatebutton;
 
@@ -236,10 +237,10 @@ public class DefaultValueEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getDefaultValueName() {
+	public DefaultTextField getDefaultValueName() {
 
 		if (this.m_defaultvaluename == null) {
-			this.m_defaultvaluename = new javax.swing.JTextField();
+			this.m_defaultvaluename = new DefaultTextField();
 			this.m_defaultvaluename.setName("DefaultValueName");
 		}
 
@@ -251,10 +252,10 @@ public class DefaultValueEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JTextField getDeclaration() {
+	public DefaultTextField getDeclaration() {
 
 		if (this.m_declaration == null) {
-			this.m_declaration = new javax.swing.JTextField();
+			this.m_declaration = new DefaultTextField();
 			this.m_declaration.setName("Declaration");
 		}
 

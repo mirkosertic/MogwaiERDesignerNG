@@ -104,5 +104,21 @@
 			<Text lang="de">Vergrösserung</Text>		
 			<Text lang="en">Zoom</Text>					
 		</Entry>
+		<Entry id="CLASSPATHCONFIGURATION">
+			<Text lang="de">Konfiguration Treiber-Klassenpfad</Text>		
+			<Text lang="en">Driver classpath configuration</Text>					
+		</Entry>
+		<Entry id="CONNECTIONCONFIGURATION">
+			<Text lang="de">Konfiguration Datenbankverbindung</Text>		
+			<Text lang="en">Database connection configuration</Text>					
+		</Entry>
+		<Entry id="ENTITYEDITOR">
+			<Text lang="de">Entität editieren</Text>		
+			<Text lang="en">Edit entity</Text>					
+		</Entry>
+		<Entry id="RELATIONEDITOR">
+			<Text lang="de">Relation editieren</Text>		
+			<Text lang="en">Edit relation</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

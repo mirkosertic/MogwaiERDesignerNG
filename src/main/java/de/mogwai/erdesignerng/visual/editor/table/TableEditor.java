@@ -17,6 +17,7 @@
  */
 package de.mogwai.erdesignerng.visual.editor.table;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +25,10 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 
 import de.mogwai.binding.BindingInfo;
+import de.mogwai.erdesignerng.ERDesignerBundle;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.erdesignerng.model.Attribute;
@@ -36,11 +37,12 @@ import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.model.Table;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
+import de.mogwai.looks.UIInitializer;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:43 $
+ * @version $Date: 2007-08-05 18:15:03 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -63,8 +65,8 @@ public class TableEditor extends BaseEditor {
 	/**
 	 * @param parent
 	 */
-	public TableEditor(Model aModel, JFrame aParent) {
-		super(aParent);
+	public TableEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.ENTITYEDITOR);
 		initialize();
 
 		model = aModel;
@@ -97,6 +99,8 @@ public class TableEditor extends BaseEditor {
 		attributeBindingInfo.addBinding("defaultValue", editingView
 				.getDefault());
 		attributeBindingInfo.configure();
+		
+		UIInitializer.getInstance().initialize(this);		
 	}
 
 	/**
@@ -228,12 +232,9 @@ public class TableEditor extends BaseEditor {
 				});
 
 		setContentPane(editingView);
-
-		setTitle("Entity editor");
 		pack();
 
 		editingView.getUpdateIndexButton().setEnabled(false);
-
 	}
 
 	public void initializeFor(Table aTable) {

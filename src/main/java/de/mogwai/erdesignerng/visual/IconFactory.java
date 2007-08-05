@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 13:38:49 $
+ * @version $Date: 2007-08-05 18:15:04 $
  */
 public final class IconFactory {
 
@@ -93,5 +93,5 @@ public final class IconFactory {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/table.png"));
 	}
-	
+
 }

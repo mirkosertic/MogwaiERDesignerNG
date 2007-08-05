@@ -17,11 +17,10 @@
  */
 package de.mogwai.erdesignerng.model;
 
-import sun.awt.windows.ThemeReader;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 13:38:50 $
+ * @version $Date: 2007-08-05 18:15:01 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {

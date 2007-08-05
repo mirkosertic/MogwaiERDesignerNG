@@ -88,7 +88,7 @@ import de.mogwai.looks.components.menu.DefaultMenuItem;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 13:38:49 $
+ * @version $Date: 2007-08-05 18:15:04 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -705,7 +705,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 	protected void commandDBConnection() {
 		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(this,
-				model);
+				model, preferences);
 		if (theEditor.showModal() == DatabaseConnectionEditor.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
