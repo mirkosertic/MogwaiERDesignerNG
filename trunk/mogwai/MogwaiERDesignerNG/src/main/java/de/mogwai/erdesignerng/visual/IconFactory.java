@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-30 15:21:26 $
+ * @version $Date: 2007-08-05 13:38:49 $
  */
 public final class IconFactory {
 
@@ -32,11 +32,6 @@ public final class IconFactory {
 	public static ImageIcon getKeyIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/key.gif"));
-	}
-
-	public static ImageIcon getExitIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/door_in.png"));
 	}
 
 	public static ImageIcon getNewIcon() {
@@ -74,31 +69,6 @@ public final class IconFactory {
 				"de/mogwai/erdesignerng/icons/arrow_down.png"));
 	}
 
-	public static ImageIcon getZoomInIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/magnifier_zoom_in.png"));
-	}
-
-	public static ImageIcon getZoomOutIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/magnifier_zoom_out.png"));
-	}
-
-	public static ImageIcon getHandIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/hand.gif"));
-	}
-
-	public static ImageIcon getEntityIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/entity.gif"));
-	}
-
-	public static ImageIcon getRelationIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/relation1.gif"));
-	}
-
 	public static ImageIcon getFolderIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/folder.png"));
@@ -109,11 +79,6 @@ public final class IconFactory {
 				"de/mogwai/erdesignerng/icons/page_add.png"));
 	}
 
-	public static ImageIcon getDBIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/database_connect.png"));
-	}
-	
 	public static ImageIcon getFolderAddIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
 				"de/mogwai/erdesignerng/icons/folder_add.png"));

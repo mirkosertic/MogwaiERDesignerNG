@@ -46,7 +46,7 @@
 				</configuration>
 			</plugin>
 
-<!-- 			<plugin>
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
@@ -76,11 +76,11 @@
 					<dependency>
 						<groupId>net.sourceforge.mogwai</groupId>
 						<artifactId>mogwaii18n</artifactId>
-						<version>2.1</version>
+						<version>2.6</version>
 					</dependency>
 				</dependencies>
 
-			</plugin> -->
+			</plugin>
 
 		</plugins>
 	</build>
@@ -94,7 +94,13 @@
 		<dependency>
 			<groupId>net.sourceforge.mogwai</groupId>
 			<artifactId>mogwaii18n</artifactId>
-			<version>2.1</version>
+			<version>2.6</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.mogwai</groupId>
+			<artifactId>mogwailooks</artifactId>
+			<version>1.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -109,20 +115,14 @@
 			<version>5.10.0.1</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>incors</groupId>
-			<artifactId>kunststoff</artifactId>
-			<version>1.0</version>
+			<artifactId>batik-svggen</artifactId>
+			<groupId>batik</groupId>
+			<version>1.6-1</version>
 			<scope>compile</scope>
 		</dependency>
-		
-   <dependency>
-      <artifactId>batik-svggen</artifactId>
-      <groupId>batik</groupId>
-      <version>1.6-1</version>
-      <scope>compile</scope>
-    </dependency>		
-    
+
 	</dependencies>
 	<reporting>
 		<plugins>

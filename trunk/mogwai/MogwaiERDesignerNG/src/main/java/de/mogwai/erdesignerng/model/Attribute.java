@@ -17,9 +17,11 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import sun.awt.windows.ThemeReader;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:36 $
+ * @version $Date: 2007-08-05 13:38:50 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {
@@ -94,6 +96,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 
 	public Attribute clone() {
 		Attribute theAttribute = new Attribute();
+		theAttribute.setOwner(getOwner());
 		theAttribute.setName(getName());
 		theAttribute.setDomain(getDomain());
 		theAttribute.setNullable(isNullable());
@@ -110,6 +113,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 		setDefaultValue(aValue.getDefaultValue());
 		setComment(aValue.getComment());
 		setPrimaryKey(aValue.isPrimaryKey());
+		setOwner(aValue.getOwner());
 	}
 
 }

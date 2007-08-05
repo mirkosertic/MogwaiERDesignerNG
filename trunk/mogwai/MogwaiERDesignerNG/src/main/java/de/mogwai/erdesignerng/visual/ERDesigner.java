@@ -18,7 +18,6 @@
 package de.mogwai.erdesignerng.visual;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
@@ -27,7 +26,7 @@ import de.mogwai.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:45 $
+ * @version $Date: 2007-08-05 13:38:49 $
  */
 public final class ERDesigner {
 
@@ -38,9 +37,6 @@ public final class ERDesigner {
 			throws ElementAlreadyExistsException, ElementInvalidNameException,
 			ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
-
-		UIManager
-				.setLookAndFeel("com.incors.plaf.kunststoff.KunststoffLookAndFeel");
 
 		ERDesignerMainFrame frame = new ERDesignerMainFrame();
 		frame.setModel(new Model());
