@@ -35,65 +35,66 @@ import de.mogwai.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 18:49:42 $
+ * @version $Date: 2007-08-05 13:38:50 $
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 
-	private JPanel m_panel;
+	private JPanel panel;
 
-	private JPanel m_labelpanel;
+	private JPanel labelPanel;
 
-	private JLabel m_label;
+	private JLabel label;
 
-	private JLabel m_key;
+	private JLabel keyLabel;
 
-	private static ImageIcon key = IconFactory.getKeyIcon();
+	private static ImageIcon keyIcon = IconFactory.getKeyIcon();
 
 	public AttributeListCellRenderer() {
-		this.m_panel = new JPanel(new BorderLayout());
-		this.m_labelpanel = new JPanel(new BorderLayout());
+		panel = new JPanel(new BorderLayout());
+		labelPanel = new JPanel(new BorderLayout());
 
-		this.m_label = new JLabel();
-		this.m_label.setFont(this.m_label.getFont().deriveFont(Font.PLAIN));
-		this.m_labelpanel.add(this.m_label);
+		label = new JLabel();
+		label.setFont(label.getFont().deriveFont(Font.PLAIN));
+		labelPanel.add(label);
 
-		this.m_panel.add(this.m_labelpanel);
-		this.m_panel.setOpaque(false);
-		this.m_labelpanel.setOpaque(false);
+		panel.add(labelPanel);
+		panel.setOpaque(false);
+		labelPanel.setOpaque(false);
 
-		JPanel left = new JPanel(new BorderLayout());
-		this.m_key = new JLabel(key);
-		left.add(this.m_key);
-		left.setSize(20, 10);
-		left.setPreferredSize(new Dimension(10, 10));
-		left.setOpaque(false);
+		JPanel theLeft = new JPanel(new BorderLayout());
+		keyLabel = new JLabel(keyIcon);
+		theLeft.add(keyLabel);
+		theLeft.setSize(20, 10);
+		theLeft.setPreferredSize(new Dimension(10, 10));
+		theLeft.setOpaque(false);
 
-		this.m_panel.add(left, BorderLayout.WEST);
+		panel.add(theLeft, BorderLayout.WEST);
 
-		this.m_labelpanel.setBackground(new Color(221, 221, 233));
+		labelPanel.setBackground(new Color(221, 221, 233));
 	}
 
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
 
-		Attribute attr = (Attribute) value;
-		this.m_label.setText(attr.getName());
+		Attribute theAttribute = (Attribute) value;
+		label.setText(theAttribute.getName());
 
-		if (attr.isPrimaryKey())
-			this.m_label.setForeground(Color.red);
-		else
-			this.m_label.setForeground(Color.black);
+		label.setForeground(Color.black);
+		
+		if (theAttribute.isPrimaryKey() || theAttribute.isForeignKey()) {
+			label.setForeground(Color.red);
+		}
 
-		this.m_key.setVisible(attr.isPrimaryKey());
+		keyLabel.setVisible(theAttribute.isPrimaryKey());
 
-		this.m_labelpanel.setOpaque(isSelected);
+		labelPanel.setOpaque(isSelected);
 		if (isSelected)
-			this.m_labelpanel.setBorder(BorderFactory
+			labelPanel.setBorder(BorderFactory
 					.createLineBorder(new Color(160, 160, 180)));
 		else
-			this.m_labelpanel.setBorder(null);
+			labelPanel.setBorder(null);
 
-		return this.m_panel;
+		return panel;
 	}
 
 };
