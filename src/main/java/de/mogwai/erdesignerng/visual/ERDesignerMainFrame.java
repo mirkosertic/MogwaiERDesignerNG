@@ -68,6 +68,8 @@ import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 import de.mogwai.erdesignerng.visual.export.Exporter;
 import de.mogwai.erdesignerng.visual.export.ImageExporter;
 import de.mogwai.erdesignerng.visual.export.SVGExporter;
+import de.mogwai.erdesignerng.visual.layout.Layouter;
+import de.mogwai.erdesignerng.visual.layout.LayouterFactory;
 import de.mogwai.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
 import de.mogwai.erdesignerng.visual.tools.EntityTool;
 import de.mogwai.erdesignerng.visual.tools.HandTool;
@@ -88,7 +90,7 @@ import de.mogwai.looks.components.menu.DefaultMenuItem;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:04 $
+ * @version $Date: 2007-08-07 18:53:54 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -250,6 +252,19 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 			}, this, ERDesignerBundle.ZOOMOUT);
 
+	private DefaultAction layoutAction = new DefaultAction(this,
+			ERDesignerBundle.LAYOUT);
+	
+	private DefaultAction layoutgraphvizAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandLayoutGraphviz();
+				}
+
+			}, this, ERDesignerBundle.LAYOUTBYGRAPHVIZ);
+	
+	
 	private DefaultAction handAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -368,8 +383,19 @@ public class ERDesignerMainFrame extends DefaultFrame {
 		theDBMenu.add(new DefaultMenuItem(domainsAction));
 		theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
 
+		DefaultMenu theViewMenu = new DefaultMenu(viewAction);
+		
+		DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
+		theLayoutMenu.add(new DefaultMenuItem(layoutgraphvizAction));
+		
+		theViewMenu.add(theLayoutMenu);
+		theViewMenu.addSeparator();
+		theViewMenu.add(new DefaultMenuItem(zoomInAction));
+		theViewMenu.add(new DefaultMenuItem(zoomOutAction));
+		
 		menuBar.add(theFileMenu);
 		menuBar.add(theDBMenu);
+		menuBar.add(theViewMenu);
 
 		DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
 		theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
@@ -777,6 +803,15 @@ public class ERDesignerMainFrame extends DefaultFrame {
 				}
 			}
 
+		}
+	}
+	
+	protected void commandLayoutGraphviz() {
+		try {
+			Layouter theLayout = LayouterFactory.getInstance().createGraphvizLayouter();
+			theLayout.applyLayout(graph, graph.getRoots());
+		} catch (Exception e) {
+			logException(e);
 		}
 	}
 

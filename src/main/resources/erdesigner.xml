@@ -120,5 +120,13 @@
 			<Text lang="de">Relation editieren</Text>		
 			<Text lang="en">Edit relation</Text>					
 		</Entry>
+		<Entry id="LAYOUT">
+			<Text lang="de">Layout</Text>		
+			<Text lang="en">Layout</Text>					
+		</Entry>
+		<Entry id="LAYOUTBYGRAPHVIZ">
+			<Text lang="de">Layout durch GraphViz</Text>		
+			<Text lang="en">Layout by Graphviz</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
