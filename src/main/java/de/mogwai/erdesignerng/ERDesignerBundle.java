@@ -65,4 +65,8 @@ public interface ERDesignerBundle {
   String ENTITYEDITOR = "ENTITYEDITOR";
   /** Relation editieren */
   String RELATIONEDITOR = "RELATIONEDITOR";
+  /** Layout */
+  String LAYOUT = "LAYOUT";
+  /** Layout durch GraphViz */
+  String LAYOUTBYGRAPHVIZ = "LAYOUTBYGRAPHVIZ";
 }
