@@ -21,7 +21,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:08 $
+ * @version $Date: 2008-01-03 20:21:15 $
  */
 public class ClasspathEditor extends BaseEditor {
 
@@ -59,8 +59,6 @@ public class ClasspathEditor extends BaseEditor {
 
 	private ClasspathEditorView view = new ClasspathEditorView();
 
-	private DefaultListModel list = new DefaultListModel();
-
 	private ApplicationPreferences preferences;
 	
 	private File lastDir;
@@ -70,11 +68,12 @@ public class ClasspathEditor extends BaseEditor {
 
 		initialize();
 
-		view.getClasspath().setModel(list);
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
+		view.getClasspath().setModel(theModel);
 
 		List<File> theFiles = aPreferences.getClasspathFiles();
 		for (File theFile : theFiles) {
-			list.add(theFile);
+			theModel.add(theFile);
 		}
 
 		preferences = aPreferences;
@@ -97,11 +96,13 @@ public class ClasspathEditor extends BaseEditor {
 	@Override
 	public void applyValues() throws Exception {
 
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
+		
 		List<File> theFiles = preferences.getClasspathFiles();
 		theFiles.clear();
 
-		for (int i = 0; i < list.getSize(); i++) {
-			theFiles.add((File) list.get(i));
+		for (int i = 0; i < theModel.getSize(); i++) {
+			theFiles.add((File) theModel.get(i));
 		}
 	}
 
@@ -112,8 +113,8 @@ public class ClasspathEditor extends BaseEditor {
 	
 	protected void commandFolderAdd() {
 
-		DefaultListModel theListModel = (DefaultListModel) view.getClasspath().getModel();
-
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
+		
 		JFileChooser theChooser = new JFileChooser();
 		if (lastDir != null) {
 			theChooser.setCurrentDirectory(lastDir);
@@ -124,8 +125,8 @@ public class ClasspathEditor extends BaseEditor {
 			File[] theFiles = theChooser.getSelectedFiles();
 
 			for (File theFile : theFiles) {
-				if (!theListModel.contains(theFile)) {
-					theListModel.add(theFile);
+				if (!theModel.contains(theFile)) {
+					theModel.add(theFile);
 				}
 			}
 
@@ -135,11 +136,11 @@ public class ClasspathEditor extends BaseEditor {
 
 	protected void commandFolderRemove() {
 
-		DefaultListModel theListModel = (DefaultListModel) view.getClasspath().getModel();
-
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
+		
 		Object[] theValues = view.getClasspath().getSelectedValues();
 		for (Object theValue : theValues) {
-			theListModel.remove(theValue);
+			theModel.remove(theValue);
 		}
 	}
 	
