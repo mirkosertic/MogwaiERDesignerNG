@@ -30,7 +30,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:10 $
+ * @version $Date: 2008-01-03 15:11:35 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -240,5 +240,10 @@ public class Model implements OwnedModelItemVerifier {
 				aPreferences.createDriverClassLoader(), properties.getProperty(Model.PROPERTY_DRIVER), 
 				properties.getProperty(Model.PROPERTY_URL), properties.getProperty(Model.PROPERTY_USER), properties.getProperty(Model.PROPERTY_PASSWORD));
 		return theConnection;
+	}
+
+	public boolean checkIfUsedAsForeignKey(Table aTable, Attribute aAttribute) {
+		Attribute theRealAttribute = aTable.getAttributes().findBySystemId(aAttribute.getSystemId());
+		return getRelations().isForeignKeyAttribute(theRealAttribute);
 	}
 }

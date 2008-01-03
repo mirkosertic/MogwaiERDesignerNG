@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:49 $
+ * @version $Date: 2008-01-03 15:11:36 $
  */
 public final class IconFactory {
 
@@ -31,67 +31,67 @@ public final class IconFactory {
 
 	public static ImageIcon getKeyIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/key.gif"));
+				"de/erdesignerng/icons/key.gif"));
 	}
 
 	public static ImageIcon getNewIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/new.png"));
+				"de/erdesignerng/icons/new.png"));
 	}
 
 	public static ImageIcon getDeleteIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/delete.png"));
+				"de/erdesignerng/icons/delete.png"));
 	}
 
 	public static ImageIcon getUpdateIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/arrow_refresh_small.png"));
+				"de/erdesignerng/icons/arrow_refresh_small.png"));
 	}
 
 	public static ImageIcon getSaveIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/script_save.png"));
+				"de/erdesignerng/icons/script_save.png"));
 	}
 
 	public static ImageIcon getCancelIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/cancel.png"));
+				"de/erdesignerng/icons/cancel.png"));
 	}
 
 	public static ImageIcon getArrowUpIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/arrow_up.png"));
+				"de/erdesignerng/icons/arrow_up.png"));
 	}
 
 	public static ImageIcon getArrowDownIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/arrow_down.png"));
+				"de/erdesignerng/icons/arrow_down.png"));
 	}
 
 	public static ImageIcon getFolderIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/folder.png"));
+				"de/erdesignerng/icons/folder.png"));
 	}
 
 	public static ImageIcon getPageAddIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/page_add.png"));
+				"de/erdesignerng/icons/page_add.png"));
 	}
 
 	public static ImageIcon getFolderAddIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/folder_add.png"));
+				"de/erdesignerng/icons/folder_add.png"));
 	}
 
 	public static ImageIcon getFolderRemoveIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/folder_delete.png"));
+				"de/erdesignerng/icons/folder_delete.png"));
 	}
 
 	public static ImageIcon getTableIcon() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/mogwai/erdesignerng/icons/table.png"));
+				"de/erdesignerng/icons/table.png"));
 	}
 
 }

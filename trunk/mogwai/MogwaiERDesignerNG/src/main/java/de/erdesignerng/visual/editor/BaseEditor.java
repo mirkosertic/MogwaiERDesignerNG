@@ -27,7 +27,7 @@ import de.mogwai.looks.components.DefaultDialog;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-03 15:11:36 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -90,13 +90,24 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 	}
 
 	protected void displayErrorMessage(String aMessage) {
-		JOptionPane.showMessageDialog(this, aMessage, "Error",
+		
+		String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
+		JOptionPane.showMessageDialog(this, aMessage, theErrorText,
 				JOptionPane.ERROR_MESSAGE);
 	}
 
 	protected void displayInfoMessage(String aMessage) {
-		JOptionPane.showMessageDialog(this, aMessage, "Info",
+		
+		String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
+		JOptionPane.showMessageDialog(this, aMessage, theInfoText,
 				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	protected boolean displayQuestionMessage(String aMessageKey) {
+		String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
+		String theMessage = getResourceHelper().getText(aMessageKey);
+		return JOptionPane.showConfirmDialog(this, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+		
 	}
 
 	public abstract void applyValues() throws Exception;
