@@ -20,7 +20,7 @@ package de.mogwai.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:01 $
+ * @version $Date: 2008-01-03 11:40:38 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {
@@ -93,6 +93,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 		this.primaryKey = primaryKey;
 	}
 
+	@Override
 	public Attribute clone() {
 		Attribute theAttribute = new Attribute();
 		theAttribute.setOwner(getOwner());

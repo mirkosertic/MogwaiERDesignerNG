@@ -1,53 +1,58 @@
 package de.mogwai.erdesignerng.visual.editor.domain;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import de.mogwai.erdesignerng.ERDesignerBundle;
+import de.mogwai.erdesignerng.model.Domain;
 import de.mogwai.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultCheckBox;
+import de.mogwai.looks.components.DefaultComboBox;
+import de.mogwai.looks.components.DefaultLabel;
+import de.mogwai.looks.components.DefaultList;
+import de.mogwai.looks.components.DefaultPanel;
+import de.mogwai.looks.components.DefaultScrollPane;
+import de.mogwai.looks.components.DefaultTabbedPane;
+import de.mogwai.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:05 $
+ * @version $Date: 2008-01-03 11:40:27 $
  */
-public class DomainEditorView extends JPanel {
+public class DomainEditorView extends DefaultPanel {
 
-	private javax.swing.JList m_domainlist;
+	private DefaultList<Domain> domainList = new DefaultList<Domain>();
 
-	private javax.swing.JButton m_newbutton;
+	private javax.swing.JButton newButton;
 
-	private javax.swing.JButton m_renamebutton;
+	private javax.swing.JButton renameButton;
 
-	private javax.swing.JButton m_deletebutton;
+	private javax.swing.JButton deleteButton;
 
-	private javax.swing.JTabbedPane m_detailtabbedpane;
+	private DefaultTabbedPane detailTabbedPane;
 
-	private javax.swing.JPanel m_component_6;
+	private DefaultTabbedPaneTab domainPropertiesTab;
 
-	private javax.swing.JLabel m_component_9;
+	private DefaultLabel nameLabel = new DefaultLabel(ERDesignerBundle.NAME);
 
-	private javax.swing.JLabel m_component_10;
+	private DefaultLabel declarationLabel = new DefaultLabel(ERDesignerBundle.DECLRATATION);
 
-	private javax.swing.JLabel m_component_11;
+	private DefaultLabel javaTypeLabel = new DefaultLabel(ERDesignerBundle.JAVATYPE);
 
-	private javax.swing.JLabel m_component_12;
+	private DefaultTextField domainname = new DefaultTextField();
 
-	private DefaultTextField m_domainname;
+	private DefaultTextField declaration = new DefaultTextField();
 
-	private DefaultTextField m_declaration;
+	private DefaultComboBox javatype = new DefaultComboBox();
 
-	private javax.swing.JComboBox m_javatype;
+	private DefaultCheckBox sequenced = new DefaultCheckBox(ERDesignerBundle.SEQUENCED);
 
-	private javax.swing.JCheckBox m_sequenced;
+	private javax.swing.JButton updatebutton;
 
-	private javax.swing.JButton m_updatebutton;
+	private javax.swing.JButton okbutton;
 
-	private javax.swing.JButton m_okbutton;
-
-	private javax.swing.JButton m_cancelbutton;
+	private javax.swing.JButton cancelbutton;
 
 	/**
 	 * Constructor.
@@ -69,7 +74,7 @@ public class DomainEditorView extends JPanel {
 
 		CellConstraints cons = new CellConstraints();
 
-		add(new JScrollPane(getDomainList()), cons.xywh(2, 2, 5, 2));
+		add(new DefaultScrollPane(getDomainList()), cons.xywh(2, 2, 5, 2));
 		add(getNewButton(), cons.xywh(2, 5, 1, 1));
 		add(getRenameButton(), cons.xywh(4, 5, 1, 1));
 		add(getDeleteButton(), cons.xywh(6, 5, 1, 1));
@@ -92,14 +97,9 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JList getDomainList() {
+	public DefaultList<Domain> getDomainList() {
 
-		if (m_domainlist == null) {
-			m_domainlist = new javax.swing.JList();
-			m_domainlist.setName("DomainList");
-		}
-
-		return m_domainlist;
+		return domainList;
 	}
 
 	/**
@@ -109,15 +109,13 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getNewButton() {
 
-		if (m_newbutton == null) {
-			m_newbutton = new javax.swing.JButton();
-			m_newbutton.setActionCommand("New");
-			m_newbutton.setIcon(IconFactory.getNewIcon());
-			m_newbutton.setName("NewButton");
-			m_newbutton.setText("New");
+		if (newButton == null) {
+			newButton = new javax.swing.JButton();
+			newButton.setIcon(IconFactory.getNewIcon());
+			newButton.setText("New");
 		}
 
-		return m_newbutton;
+		return newButton;
 	}
 
 	/**
@@ -127,14 +125,12 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getRenameButton() {
 
-		if (m_renamebutton == null) {
-			m_renamebutton = new javax.swing.JButton();
-			m_renamebutton.setActionCommand("Rename");
-			m_renamebutton.setName("RenameButton");
-			m_renamebutton.setText("Rename");
+		if (renameButton == null) {
+			renameButton = new javax.swing.JButton();
+			renameButton.setText("Rename");
 		}
 
-		return m_renamebutton;
+		return renameButton;
 	}
 
 	/**
@@ -144,15 +140,13 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getDeleteButton() {
 
-		if (m_deletebutton == null) {
-			m_deletebutton = new javax.swing.JButton();
-			m_deletebutton.setActionCommand("Delete");
-			m_deletebutton.setIcon(IconFactory.getDeleteIcon());
-			m_deletebutton.setName("DeleteButton");
-			m_deletebutton.setText("Delete");
+		if (deleteButton == null) {
+			deleteButton = new javax.swing.JButton();
+			deleteButton.setIcon(IconFactory.getDeleteIcon());
+			deleteButton.setText("Delete");
 		}
 
-		return m_deletebutton;
+		return deleteButton;
 	}
 
 	/**
@@ -162,15 +156,14 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JTabbedPane getDetailTabbedPane() {
 
-		if (m_detailtabbedpane == null) {
-			m_detailtabbedpane = new javax.swing.JTabbedPane();
-			m_detailtabbedpane.addTab("Domain properties", this
-					.getComponent_6());
-			m_detailtabbedpane.setName("DetailTabbedPane");
-			m_detailtabbedpane.setSelectedIndex(0);
+		if (detailTabbedPane == null) {
+			detailTabbedPane = new DefaultTabbedPane();
+			detailTabbedPane.addTab(null, this
+					.getDomainPropertiesTab());
+			detailTabbedPane.setSelectedIndex(0);
 		}
 
-		return m_detailtabbedpane;
+		return detailTabbedPane;
 	}
 
 	/**
@@ -178,31 +171,30 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public JPanel getComponent_6() {
+	public DefaultTabbedPaneTab getDomainPropertiesTab() {
 
-		if (m_component_6 == null) {
-			m_component_6 = new JPanel();
+		if (domainPropertiesTab == null) {
+			domainPropertiesTab = new DefaultTabbedPaneTab(detailTabbedPane,ERDesignerBundle.DOMAINPROPERTIES);
 
 			String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,8dlu,p,2dlu";
 			String colDef = "2dlu,left:60dlu,2dlu,60dlu:grow,2dlu";
 
 			FormLayout layout = new FormLayout(colDef, rowDef);
-			m_component_6.setLayout(layout);
+			domainPropertiesTab.setLayout(layout);
 
 			CellConstraints cons = new CellConstraints();
 
-			m_component_6.add(getComponent_9(), cons.xywh(2, 2, 1, 1));
-			m_component_6.add(getComponent_10(), cons.xywh(2, 4, 1, 1));
-			m_component_6.add(getComponent_12(), cons.xywh(2, 8, 1, 1));
-			m_component_6.add(getDomainName(), cons.xywh(4, 2, 1, 1));
-			m_component_6.add(getDeclaration(), cons.xywh(4, 4, 1, 1));
-			m_component_6.add(getJavatype(), cons.xywh(4, 8, 1, 1));
-			m_component_6.add(getSequenced(), cons.xywh(4, 10, 1, 1));
-			m_component_6.add(getUpdateButton(), cons.xywh(4, 12, 1, 1));
-			m_component_6.setName("Component_6");
+			domainPropertiesTab.add(getNameLabel(), cons.xywh(2, 2, 1, 1));
+			domainPropertiesTab.add(getDeclarationLabel(), cons.xywh(2, 4, 1, 1));
+			domainPropertiesTab.add(getJavaTypeLabel(), cons.xywh(2, 8, 1, 1));
+			domainPropertiesTab.add(getDomainName(), cons.xywh(4, 2, 1, 1));
+			domainPropertiesTab.add(getDeclaration(), cons.xywh(4, 4, 1, 1));
+			domainPropertiesTab.add(getJavatype(), cons.xywh(4, 8, 1, 1));
+			domainPropertiesTab.add(getSequenced(), cons.xywh(4, 10, 1, 1));
+			domainPropertiesTab.add(getUpdateButton(), cons.xywh(4, 12, 1, 1));
 		}
 
-		return m_component_6;
+		return domainPropertiesTab;
 	}
 
 	/**
@@ -210,15 +202,9 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JLabel getComponent_9() {
+	public DefaultLabel getNameLabel() {
 
-		if (m_component_9 == null) {
-			m_component_9 = new javax.swing.JLabel();
-			m_component_9.setName("Component_9");
-			m_component_9.setText("Name :");
-		}
-
-		return m_component_9;
+		return nameLabel;
 	}
 
 	/**
@@ -226,15 +212,9 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JLabel getComponent_10() {
+	public DefaultLabel getDeclarationLabel() {
 
-		if (m_component_10 == null) {
-			m_component_10 = new javax.swing.JLabel();
-			m_component_10.setName("Component_10");
-			m_component_10.setText("Declaration :");
-		}
-
-		return m_component_10;
+		return declarationLabel;
 	}
 
 	/**
@@ -242,15 +222,9 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JLabel getComponent_12() {
+	public DefaultLabel getJavaTypeLabel() {
 
-		if (m_component_12 == null) {
-			m_component_12 = new javax.swing.JLabel();
-			m_component_12.setName("Component_12");
-			m_component_12.setText("Java - Type :");
-		}
-
-		return m_component_12;
+		return javaTypeLabel;
 	}
 
 	/**
@@ -260,12 +234,7 @@ public class DomainEditorView extends JPanel {
 	 */
 	public DefaultTextField getDomainName() {
 
-		if (m_domainname == null) {
-			m_domainname = new DefaultTextField();
-			m_domainname.setName("DomainName");
-		}
-
-		return m_domainname;
+		return domainname;
 	}
 
 	/**
@@ -275,12 +244,7 @@ public class DomainEditorView extends JPanel {
 	 */
 	public DefaultTextField getDeclaration() {
 
-		if (m_declaration == null) {
-			m_declaration = new DefaultTextField();
-			m_declaration.setName("Declaration");
-		}
-
-		return m_declaration;
+		return declaration;
 	}
 
 	/**
@@ -290,12 +254,7 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JComboBox getJavatype() {
 
-		if (m_javatype == null) {
-			m_javatype = new javax.swing.JComboBox();
-			m_javatype.setName("Javatype");
-		}
-
-		return m_javatype;
+		return javatype;
 	}
 
 	/**
@@ -303,16 +262,9 @@ public class DomainEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JCheckBox getSequenced() {
+	public DefaultCheckBox getSequenced() {
 
-		if (m_sequenced == null) {
-			m_sequenced = new javax.swing.JCheckBox();
-			m_sequenced.setActionCommand("Sequenced");
-			m_sequenced.setName("Sequenced");
-			m_sequenced.setText("Sequenced");
-		}
-
-		return m_sequenced;
+		return sequenced;
 	}
 
 	/**
@@ -322,15 +274,13 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getUpdateButton() {
 
-		if (m_updatebutton == null) {
-			m_updatebutton = new javax.swing.JButton();
-			m_updatebutton.setActionCommand("Update");
-			m_updatebutton.setIcon(IconFactory.getUpdateIcon());
-			m_updatebutton.setName("UpdateButton");
-			m_updatebutton.setText("Update");
+		if (updatebutton == null) {
+			updatebutton = new javax.swing.JButton();
+			updatebutton.setIcon(IconFactory.getUpdateIcon());
+			updatebutton.setText("Update");
 		}
 
-		return m_updatebutton;
+		return updatebutton;
 	}
 
 	/**
@@ -340,15 +290,13 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getOkButton() {
 
-		if (m_okbutton == null) {
-			m_okbutton = new javax.swing.JButton();
-			m_okbutton.setActionCommand("Ok");
-			m_okbutton.setIcon(IconFactory.getSaveIcon());
-			m_okbutton.setName("OkButton");
-			m_okbutton.setText("Ok");
+		if (okbutton == null) {
+			okbutton = new javax.swing.JButton();
+			okbutton.setIcon(IconFactory.getSaveIcon());
+			okbutton.setText("Ok");
 		}
 
-		return m_okbutton;
+		return okbutton;
 	}
 
 	/**
@@ -358,14 +306,12 @@ public class DomainEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getCancelButton() {
 
-		if (m_cancelbutton == null) {
-			m_cancelbutton = new javax.swing.JButton();
-			m_cancelbutton.setActionCommand("Cancel");
-			m_cancelbutton.setIcon(IconFactory.getCancelIcon());
-			m_cancelbutton.setName("CancelButton");
-			m_cancelbutton.setText("Cancel");
+		if (cancelbutton == null) {
+			cancelbutton = new javax.swing.JButton();
+			cancelbutton.setIcon(IconFactory.getCancelIcon());
+			cancelbutton.setText("Cancel");
 		}
 
-		return m_cancelbutton;
+		return cancelbutton;
 	}
 }

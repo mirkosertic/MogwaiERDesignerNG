@@ -36,7 +36,7 @@ import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-07 18:53:55 $
+ * @version $Date: 2008-01-03 11:40:35 $
  */
 public class RelationEdgeView extends EdgeView {
 	
@@ -60,6 +60,7 @@ public class RelationEdgeView extends EdgeView {
 		
 		public static final int STYLE_GRAPHVIZ_BEZIER = 14; 
 		
+		@Override
 		protected Shape createShape() {
 			int n = view.getPointCount();
 			if (n > 1) {

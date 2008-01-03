@@ -41,7 +41,7 @@ import de.mogwai.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:02 $
+ * @version $Date: 2008-01-03 11:40:26 $
  */
 public class RelationTool extends BaseTool {
 
@@ -53,6 +53,7 @@ public class RelationTool extends BaseTool {
 		super(aGraph);
 	}
 
+	@Override
 	public boolean isForceMarqueeEvent(MouseEvent e) {
 		if (e.isShiftDown())
 			return false;
@@ -67,6 +68,7 @@ public class RelationTool extends BaseTool {
 		return super.isForceMarqueeEvent(e);
 	}
 
+	@Override
 	public void mousePressed(final MouseEvent e) {
 
 		if (SwingUtilities.isRightMouseButton(e)) {
@@ -78,6 +80,7 @@ public class RelationTool extends BaseTool {
 		}
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (start != null) {
 			Graphics g = graph.getGraphics();
@@ -110,6 +113,7 @@ public class RelationTool extends BaseTool {
 		return graph.getPortViewAt(point.getX(), point.getY());
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e != null && port != null && firstPort != null) {
 			connect((Port) firstPort.getCell(), (Port) port.getCell());
@@ -121,6 +125,7 @@ public class RelationTool extends BaseTool {
 		super.mouseReleased(e);
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (e != null && getSourcePortAt(e.getPoint()) != null) {
 			graph.setCursor(new Cursor(Cursor.HAND_CURSOR));

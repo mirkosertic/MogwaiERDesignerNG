@@ -10,7 +10,7 @@ import de.mogwai.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 10:29:38 $
+ * @version $Date: 2008-01-03 11:40:21 $
  */
 public class MySQLReverseEngineeringStrategy extends
 		JDBCReverseEngineeringStrategy {
@@ -27,6 +27,7 @@ public class MySQLReverseEngineeringStrategy extends
 	 * @throws SQLException
 	 * @throws ReverseEngineeringException
 	 */
+	@Override
 	protected void reverseEngineerSchemas(Model aModel, String aSchemaName,
 			Connection aConnection) throws SQLException,
 			ReverseEngineeringException {

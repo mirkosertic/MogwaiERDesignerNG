@@ -42,7 +42,7 @@ import de.mogwai.looks.UIInitializer;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:03 $
+ * @version $Date: 2008-01-03 11:40:37 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -370,6 +370,7 @@ public class TableEditor extends BaseEditor {
 	private void commandStartDomainEditor(ActionEvent e) {
 	}
 
+	@Override
 	public void applyValues() throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 

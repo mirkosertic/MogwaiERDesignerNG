@@ -69,4 +69,14 @@ public interface ERDesignerBundle {
   String LAYOUT = "LAYOUT";
   /** Layout durch GraphViz */
   String LAYOUTBYGRAPHVIZ = "LAYOUTBYGRAPHVIZ";
+  /** Name */
+  String NAME = "NAME";
+  /** Deklaration */
+  String DECLRATATION = "DECLRATATION";
+  /** Java Typ */
+  String JAVATYPE = "JAVATYPE";
+  /** Sequenziert */
+  String SEQUENCED = "SEQUENCED";
+  /** Eigenschaften der Domäne */
+  String DOMAINPROPERTIES = "DOMAINPROPERTIES";
 }

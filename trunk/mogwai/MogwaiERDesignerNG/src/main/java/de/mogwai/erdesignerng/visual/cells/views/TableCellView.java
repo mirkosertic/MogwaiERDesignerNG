@@ -44,7 +44,7 @@ import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-08 17:55:44 $
+ * @version $Date: 2008-01-03 11:40:29 $
  */
 public class TableCellView extends VertexView {
 
@@ -54,6 +54,7 @@ public class TableCellView extends VertexView {
 		super(aCell);
 	}
 
+	@Override
 	public CellViewRenderer getRenderer() {
 		return renderer;
 	}
@@ -93,6 +94,7 @@ public class TableCellView extends VertexView {
 			aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
 		}
 
+		@Override
 		public void paint(Graphics aGraphics) {
 
 			Dimension theSize = getSize();
@@ -248,6 +250,7 @@ public class TableCellView extends VertexView {
 
 		}
 
+		@Override
 		public Component getRendererComponent(JGraph aGraph, CellView aView,
 				boolean aSelected, boolean aHasFocus, boolean aPreview) {
 
