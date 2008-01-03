@@ -148,5 +148,29 @@
 			<Text lang="de">Eigenschaften der Domäne</Text>		
 			<Text lang="en">Domain properties</Text>					
 		</Entry>
+		<Entry id="ATTRIBUTEISUSEDINFOREIGNKEYS">
+			<Text lang="de">Das Attribut ist Teil eines Fremdschlüssels</Text>		
+			<Text lang="en">The attribute is part of a foreign key relation</Text>					
+		</Entry>
+		<Entry id="INFORMATION">
+			<Text lang="de">Information</Text>		
+			<Text lang="en">Information</Text>					
+		</Entry>
+		<Entry id="ERROR">
+			<Text lang="de">Fehler</Text>		
+			<Text lang="en">Error</Text>					
+		</Entry>
+		<Entry id="QUESTION">
+			<Text lang="de">Frage</Text>		
+			<Text lang="en">Question</Text>					
+		</Entry>
+		<Entry id="DOYOUREALLYWANTTODELETE">
+			<Text lang="de">Wollen Sie das Element wirklich löschen?</Text>		
+			<Text lang="en">Do you really want to delete this element?</Text>					
+		</Entry>
+		<Entry id="CONNECTIONSEEMSTOBEOK">
+			<Text lang="de">Die Verbindung scheint zu funktionieren</Text>		
+			<Text lang="en">The connection seems to be ok</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

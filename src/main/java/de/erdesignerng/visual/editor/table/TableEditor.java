@@ -19,7 +19,9 @@ package de.erdesignerng.visual.editor.table;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -42,7 +44,7 @@ import de.mogwai.looks.UIInitializer;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:25 $
+ * @version $Date: 2008-01-03 15:11:34 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -61,6 +63,8 @@ public class TableEditor extends BaseEditor {
 	private DefaultComboBoxModel defaultValuesListModel = new DefaultComboBoxModel();
 
 	private Map<String, Attribute> knownValues = new HashMap<String, Attribute>();
+	
+	private List<Attribute> removedAttributes = new ArrayList<Attribute>();
 
 	/**
 	 * @param parent
@@ -241,7 +245,7 @@ public class TableEditor extends BaseEditor {
 			Attribute theClone = theAttribute.clone();
 
 			attributeListModel.addElement(theClone);
-			knownValues.put(theClone.getName(), theClone);
+			knownValues.put(theClone.getSystemId(), theClone);
 		}
 		editingView.getAttributeList().setModel(attributeListModel);
 
@@ -266,7 +270,7 @@ public class TableEditor extends BaseEditor {
 			if (!attributeListModel.contains(theModel)) {
 
 				attributeListModel.addElement(theModel);
-				knownValues.put(theModel.getName(), theModel);
+				knownValues.put(theModel.getSystemId(), theModel);
 			}
 
 			updateEditFields();
@@ -324,8 +328,21 @@ public class TableEditor extends BaseEditor {
 		//TODO: Implement functionality here
 	}
 
-	private void commandDeleteAttribute(java.awt.event.ActionEvent evt) {
-		//TODO: Implement functionality here
+	private void commandDeleteAttribute(java.awt.event.ActionEvent aEvent) {
+
+		Attribute theAttribute = attributeBindingInfo.getDefaultModel();
+		
+		if (!model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
+
+			if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+				knownValues.remove(theAttribute.getSystemId());
+				attributeListModel.removeElement(theAttribute);
+				
+				removedAttributes.add(theAttribute);
+			}
+		} else {
+			displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ATTRIBUTEISUSEDINFOREIGNKEYS));
+		}
 	}
 
 	private void commandNewAttribute(java.awt.event.ActionEvent evt) {
@@ -382,13 +399,17 @@ public class TableEditor extends BaseEditor {
 
 		if (!model.getTables().contains(theTable)) {
 			model.addTable(theTable);
+		} else {
+			for(Attribute theAttribute : removedAttributes) {
+				theTable.getAttributes().removeById(theAttribute.getSystemId());
+			}
 		}
 
 		for (String theKey : knownValues.keySet()) {
 			Attribute theAttribute = knownValues.get(theKey);
 
 			Attribute theExistantAttribute = theTable.getAttributes()
-					.findByName(theKey);
+					.findBySystemId(theKey);
 			if (theExistantAttribute == null) {
 				theTable.addAttribute(model, theAttribute);
 			} else {

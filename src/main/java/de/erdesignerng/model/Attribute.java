@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:08 $
+ * @version $Date: 2008-01-03 15:11:34 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {
@@ -96,6 +96,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 	@Override
 	public Attribute clone() {
 		Attribute theAttribute = new Attribute();
+		theAttribute.setSystemId(getSystemId());
 		theAttribute.setOwner(getOwner());
 		theAttribute.setName(getName());
 		theAttribute.setDomain(getDomain());
@@ -115,5 +116,5 @@ public class Attribute extends OwnedModelItem<Table> implements
 		setPrimaryKey(aValue.isPrimaryKey());
 		setOwner(aValue.getOwner());
 	}
-
+	
 }
