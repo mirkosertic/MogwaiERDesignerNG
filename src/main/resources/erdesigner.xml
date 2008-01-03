@@ -187,10 +187,36 @@
 		<Entry id="OK">
 			<Text lang="de">Ok</Text>		
 			<Text lang="en">Ok</Text>					
+			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="CANCEL">
 			<Text lang="de">Abbrechen</Text>		
-			<Text lang="en">Cancel</Text>					
+			<Text lang="en">Cancel</Text>			
+			<Icon>/de/erdesignerng/icons/cancel.png</Icon>
+		</Entry>
+		<Entry id="TEST">
+			<Text lang="de">Test</Text>		
+			<Text lang="en">Test</Text>					
+		</Entry>
+		<Entry id="DIALECT">
+			<Text lang="de">Dialekt</Text>		
+			<Text lang="en">Dialect</Text>					
+		</Entry>
+		<Entry id="JDBCDRIVER">
+			<Text lang="de">JDBC-Treiber</Text>		
+			<Text lang="en">JDBC-Driver</Text>					
+		</Entry>
+		<Entry id="JDBCURL">
+			<Text lang="de">JDBC-URL</Text>		
+			<Text lang="en">JDBC-URL</Text>					
+		</Entry>
+		<Entry id="USER">
+			<Text lang="de">Benutzer</Text>		
+			<Text lang="en">User</Text>					
+		</Entry>
+		<Entry id="PASSWORD">
+			<Text lang="de">Kennwort</Text>		
+			<Text lang="en">Password</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

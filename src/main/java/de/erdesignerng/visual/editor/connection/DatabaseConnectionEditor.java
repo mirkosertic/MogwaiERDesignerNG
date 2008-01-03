@@ -1,6 +1,7 @@
 package de.erdesignerng.visual.editor.connection;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.List;
 
@@ -15,31 +16,43 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.binding.BindingInfo;
 import de.mogwai.looks.UIInitializer;
+import de.mogwai.looks.components.action.ActionEventProcessor;
+import de.mogwai.looks.components.action.DefaultAction;
 
 /**
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:27 $
+ * @version $Date: 2008-01-03 17:05:01 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
+	private DefaultAction testAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandTest();
+				}
+			}, this, ERDesignerBundle.TEST);
+
+	private DefaultAction okAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandClose();
+				}
+			}, this, ERDesignerBundle.OK);
+
+	private DefaultAction cancelAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandCancel();
+				}
+			}, this, ERDesignerBundle.CANCEL);
+
+	
 	private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
-
-		@Override
-		protected void handleTest() {
-			commandTest();
-		}
-
-		@Override
-		protected void handleCancel() {
-			commandCancel();
-		}
-
-		@Override
-		protected void handleOk() {
-			commandClose();
-		}
 
 		@Override
 		public void handleDialectChange(Dialect aDialect) {
@@ -98,6 +111,10 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 	private void initialize() {
 
+		view.getOkButton().setAction(okAction);
+		view.getCancelButton().setAction(cancelAction);
+		view.getTestButton().setAction(testAction);
+		
 		setContentPane(view);
 		setResizable(false);
 		pack();
