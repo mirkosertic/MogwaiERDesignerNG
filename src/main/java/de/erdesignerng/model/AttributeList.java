@@ -20,10 +20,9 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:08 $
+ * @version $Date: 2008-01-03 15:11:35 $
  */
 public class AttributeList extends ModelItemVector<Attribute> {
 
 	private static final long serialVersionUID = 890361971577085178L;
-
 }

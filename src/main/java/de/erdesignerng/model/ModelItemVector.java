@@ -21,7 +21,7 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:10 $
+ * @version $Date: 2008-01-03 15:11:35 $
  */
 public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 
@@ -70,7 +70,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 	}
 
 	/**
-	 * Find a attribute by a given name.
+	 * Find an attribute by a given name.
 	 * 
 	 * @param aName
 	 *            the name
@@ -85,4 +85,21 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 		return null;
 	}
 
+	/**
+	 * Delete an attribute by a given name.
+	 * 
+	 * @param aName the name
+	 */
+	public void removeByName(String aName) {
+		remove(findByName(aName));
+	}
+
+	/**
+	 * Delete an attribute by a given id.
+	 * 
+	 * @param aSystemId the id
+	 */
+	public void removeById(String aSystemId) {
+		remove(findBySystemId(aSystemId));
+	}
 }

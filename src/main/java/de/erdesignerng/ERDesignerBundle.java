@@ -79,4 +79,14 @@ public interface ERDesignerBundle {
   String SEQUENCED = "SEQUENCED";
   /** Eigenschaften der Domäne */
   String DOMAINPROPERTIES = "DOMAINPROPERTIES";
+  /** Das Attribut ist Teil eines Fremdschlüssels */
+  String ATTRIBUTEISUSEDINFOREIGNKEYS = "ATTRIBUTEISUSEDINFOREIGNKEYS";
+  /** Information */
+  String INFORMATION = "INFORMATION";
+  /** Fehler */
+  String ERROR = "ERROR";
+  /** Frage */
+  String QUESTION = "QUESTION";
+  /** Wollen Sie das Element wirklich löschen? */
+  String DOYOUREALLYWANTTODELETE = "DOYOUREALLYWANTTODELETE";
 }
