@@ -1,22 +1,23 @@
 package de.mogwai.erdesignerng.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Properties.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:36 $
+ * @version $Date: 2008-01-03 12:42:47 $
  */
 public class ModelProperties {
 
-	private HashMap<String, String> properties = new HashMap<String, String>();
+	private Map<String, String> properties = new HashMap<String, String>();
 
-	public HashMap<String, String> getProperties() {
+	public Map<String, String> getProperties() {
 		return properties;
 	}
 
-	public void setProperties(HashMap<String, String> aProperties) {
+	public void setProperties(Map<String, String> aProperties) {
 		properties = aProperties;
 	}
 

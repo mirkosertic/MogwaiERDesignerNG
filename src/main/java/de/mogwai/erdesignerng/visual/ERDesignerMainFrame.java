@@ -26,6 +26,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ import de.mogwai.looks.components.menu.DefaultMenuItem;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-07 18:53:54 $
+ * @version $Date: 2008-01-03 12:42:47 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -201,9 +202,15 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 			}, this, ERDesignerBundle.DBCONNECTION);
 
-	private DefaultAction reverseEngineerAction = new DefaultAction(this,
-			ERDesignerBundle.REVERSEENGINEER);
+	private DefaultAction reverseEngineerAction = new DefaultAction(
+			new ActionEventProcessor() {
 
+				public void processActionEvent(ActionEvent aEvent) {
+					commandReverseEngineer();
+				}
+
+			}, this, ERDesignerBundle.REVERSEENGINEER);
+		
 	private DefaultAction domainsAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -812,6 +819,19 @@ public class ERDesignerMainFrame extends DefaultFrame {
 			theLayout.applyLayout(graph, graph.getRoots());
 		} catch (Exception e) {
 			logException(e);
+		}
+	}
+	
+	protected void commandReverseEngineer() {
+	
+		try {
+			Connection theConnection = model.createConnection(preferences);
+			
+			setModel(model.getDialect().getReverseEngineeringStrategy().createModelFromConnection(theConnection, "powerstaff"));
+			
+			theConnection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
