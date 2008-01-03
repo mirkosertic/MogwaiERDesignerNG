@@ -42,7 +42,7 @@ import de.mogwai.looks.UIInitializer;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 11:40:37 $
+ * @version $Date: 2008-01-03 13:01:57 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -157,13 +157,6 @@ public class TableEditor extends BaseEditor {
 
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						commandNewAttribute(e);
-					}
-				});
-		editingView.getRenameButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandRenameAttribute(e);
 					}
 				});
 		editingView.getDeleteButton().addActionListener(
@@ -290,9 +283,8 @@ public class TableEditor extends BaseEditor {
 
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(!isNew);
-			editingView.getRenameButton().setEnabled(!isNew);
 			editingView.getDomainList().setEnabled(true);
-			editingView.getAttributeName().setEnabled(isNew);
+			editingView.getAttributeName().setEnabled(true);
 			editingView.getNullable().setEnabled(true);
 			editingView.getDefault().setEnabled(true);
 			editingView.getPrimaryKey().setEnabled(true);
@@ -300,7 +292,6 @@ public class TableEditor extends BaseEditor {
 		} else {
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(false);
-			editingView.getRenameButton().setEnabled(false);
 			editingView.getDomainList().setEnabled(false);
 			editingView.getAttributeName().setEnabled(false);
 			editingView.getNullable().setEnabled(false);
@@ -330,9 +321,11 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandRenameAttribute(java.awt.event.ActionEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandDeleteAttribute(java.awt.event.ActionEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandNewAttribute(java.awt.event.ActionEvent evt) {
@@ -341,33 +334,43 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandPrimaryKeyActionPerformed(java.awt.event.ActionEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandNullableActionPerformed(java.awt.event.ActionEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandMoveAttributeDown(java.awt.event.ActionEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandMoveAttributeUp(java.awt.event.ActionEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandPrimaryKeyItemStateChanged(java.awt.event.ItemEvent evt) {
+		//TODO: Implement functionality here
 	}
 
 	private void commandDeleteIndex() {
+		//TODO: Implement functionality here
 	}
 
 	private void commandRenameIndex() {
+		//TODO: Implement functionality here
 	}
 
 	private void commandNewIndex() {
+		//TODO: Implement functionality here
 	}
 
 	private void commandUpdateIndex() {
+		//TODO: Implement functionality here
 	}
 
 	private void commandStartDomainEditor(ActionEvent e) {
+		//TODO: Implement functionality here
 	}
 
 	@Override
