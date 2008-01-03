@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
 
 import de.mogwai.binding.BindingInfo;
@@ -37,10 +36,11 @@ import de.mogwai.erdesignerng.model.Model;
 import de.mogwai.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.looks.UIInitializer;
+import de.mogwai.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:06 $
+ * @version $Date: 2008-01-03 11:40:27 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -64,12 +64,12 @@ public class DomainEditor extends BaseEditor {
 
 		initialize();
 
-		domainListModel = new DefaultListModel();
+		domainListModel = editingView.getDomainList().getModel();
 		for (Domain theDomain : aModel.getDomains()) {
 
 			Domain theClone = theDomain.clone();
 
-			domainListModel.addElement(theClone);
+			domainListModel.add(theClone);
 
 			knownValues.put(theClone.getName(), theClone);
 		}
@@ -231,7 +231,7 @@ public class DomainEditor extends BaseEditor {
 					displayErrorMessage("Name already in use!");
 					return;
 				}
-				domainListModel.addElement(theModel);
+				domainListModel.add(theModel);
 				knownValues.put(theModel.getName(), theModel);
 			}
 
@@ -246,6 +246,7 @@ public class DomainEditor extends BaseEditor {
 	private void commandDelete() {
 	}
 
+	@Override
 	public void applyValues() throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 

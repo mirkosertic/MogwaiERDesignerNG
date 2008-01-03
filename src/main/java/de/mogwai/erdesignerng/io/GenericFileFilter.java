@@ -24,7 +24,7 @@ import javax.swing.filechooser.FileFilter;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2008-01-03 11:40:37 $
  */
 public class GenericFileFilter extends FileFilter {
 
@@ -37,6 +37,7 @@ public class GenericFileFilter extends FileFilter {
 		description = aDescription;
 	}
 
+	@Override
 	public boolean accept(File aFileName) {
 		if (aFileName.isDirectory()) {
 			return true;

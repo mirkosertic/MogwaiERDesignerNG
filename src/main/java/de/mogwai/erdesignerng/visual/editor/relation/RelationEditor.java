@@ -35,7 +35,7 @@ import de.mogwai.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:03 $
+ * @version $Date: 2008-01-03 11:40:35 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -85,10 +85,12 @@ public class RelationEditor extends BaseEditor {
 
 		editingView = new RelationEditorView() {
 
+			@Override
 			public void handleOKButtonActionPerformed(String actionCommand) {
 				commandOk();
 			}
 
+			@Override
 			public void handleCancelButtonActionPerformed(String actionCommand) {
 				setModalResult(MODAL_RESULT_CANCEL);
 			}

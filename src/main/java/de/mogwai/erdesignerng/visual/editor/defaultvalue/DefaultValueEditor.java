@@ -37,7 +37,7 @@ import de.mogwai.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:01 $
+ * @version $Date: 2008-01-03 11:40:19 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -224,6 +224,7 @@ public class DefaultValueEditor extends BaseEditor {
 	private void handleDelete() {
 	}
 
+	@Override
 	public void applyValues() throws ElementAlreadyExistsException,
 			ElementInvalidNameException {
 
