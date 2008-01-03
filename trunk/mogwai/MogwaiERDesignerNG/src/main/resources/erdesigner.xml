@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Resource>
-	<Bundle interface="de.mogwai.erdesignerng.ERDesignerBundle">
+	<Bundle interface="de.erdesignerng.ERDesignerBundle">
 		<Entry id="TITLE">
 			<Text>ER-Designer NG</Text>		
 		</Entry>
@@ -15,22 +15,22 @@
 		<Entry id="NEWMODEL">
 			<Text lang="de">Neues Modell</Text>		
 			<Text lang="en">New model</Text>
-			<Icon>/de/mogwai/erdesignerng/icons/new.png</Icon>
+			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODEL">
 			<Text lang="de">Modell speichern</Text>		
 			<Text lang="en">Save model</Text>					
-			<Icon>/de/mogwai/erdesignerng/icons/script_save.png</Icon>
+			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="LOADMODEL">
 			<Text lang="de">Modell laden</Text>		
 			<Text lang="en">Load model</Text>					
-			<Icon>/de/mogwai/erdesignerng/icons/folder.png</Icon>
+			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="EXITPROGRAM">
 			<Text lang="de">Programm beenden</Text>		
 			<Text lang="en">Exit</Text>					
-			<Icon>/de/mogwai/erdesignerng/icons/door_in.png</Icon>
+			<Icon>/de/erdesignerng/icons/door_in.png</Icon>
 		</Entry>
 		<Entry id="EXPORT">
 			<Text lang="de">Export</Text>		
@@ -63,7 +63,7 @@
 		<Entry id="DBCONNECTION">
 			<Text lang="de">Datenbankverbindung</Text>		
 			<Text lang="en">DB - Connection</Text>					
-			<Icon>/de/mogwai/erdesignerng/icons/database_connect.png</Icon>
+			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
 		</Entry>
 		<Entry id="REVERSEENGINEER">
 			<Text lang="de">Reverse engineer</Text>		
@@ -84,21 +84,21 @@
 		<Entry id="ZOOMIN">
 			<Text lang="de">Vergrössern</Text>		
 			<Text lang="en">Zoom in</Text>					
-			<Icon>/de/mogwai/erdesignerng/icons/magnifier_zoom_in.png</Icon>
+			<Icon>/de/erdesignerng/icons/magnifier_zoom_in.png</Icon>
 		</Entry>
 		<Entry id="ZOOMOUT">
 			<Text lang="de">Verkleinern</Text>		
 			<Text lang="en">Zoom out</Text>					
-			<Icon>/de/mogwai/erdesignerng/icons/magnifier_zoom_out.png</Icon>
+			<Icon>/de/erdesignerng/icons/magnifier_zoom_out.png</Icon>
 		</Entry>
 		<Entry id="HAND">
-			<Icon>/de/mogwai/erdesignerng/icons/hand.gif</Icon>
+			<Icon>/de/erdesignerng/icons/hand.gif</Icon>
 		</Entry>
 		<Entry id="ENTITY">
-			<Icon>/de/mogwai/erdesignerng/icons/entity.gif</Icon>
+			<Icon>/de/erdesignerng/icons/entity.gif</Icon>
 		</Entry>
 		<Entry id="RELATION">
-			<Icon>/de/mogwai/erdesignerng/icons/relation1.gif</Icon>
+			<Icon>/de/erdesignerng/icons/relation1.gif</Icon>
 		</Entry>
 		<Entry id="ZOOM">
 			<Text lang="de">Vergrösserung</Text>		
