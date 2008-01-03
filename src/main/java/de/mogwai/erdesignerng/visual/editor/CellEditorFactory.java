@@ -35,7 +35,7 @@ import de.mogwai.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:05 $
+ * @version $Date: 2008-01-03 11:40:37 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
@@ -68,6 +68,7 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 		throw new IllegalArgumentException();
 	}
 
+	@Override
 	public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue,
 			boolean arg2) {
 
@@ -77,13 +78,6 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 
 		theEditor.validate();
 
-/*		Dimension w2 = theEditor.getSize();
-		Dimension w1 = theParent.getSize();
-
-		Point thePoint = theParent.getLocation();
-		theEditor.setLocation(thePoint.x + w1.width / 2 - w2.width / 2,
-				thePoint.y + w1.height / 2 - w2.height / 2);
-*/
 		editingValue = aValue;
 		return theEditor;
 	}

@@ -128,5 +128,25 @@
 			<Text lang="de">Layout durch GraphViz</Text>		
 			<Text lang="en">Layout by Graphviz</Text>					
 		</Entry>
+		<Entry id="NAME">
+			<Text lang="de">Name</Text>		
+			<Text lang="en">Name</Text>					
+		</Entry>
+		<Entry id="DECLRATATION">
+			<Text lang="de">Deklaration</Text>		
+			<Text lang="en">Declaration</Text>					
+		</Entry>
+		<Entry id="JAVATYPE">
+			<Text lang="de">Java Typ</Text>		
+			<Text lang="en">Java type</Text>					
+		</Entry>
+		<Entry id="SEQUENCED">
+			<Text lang="de">Sequenziert</Text>		
+			<Text lang="en">Sequenzed</Text>					
+		</Entry>
+		<Entry id="DOMAINPROPERTIES">
+			<Text lang="de">Eigenschaften der Domäne</Text>		
+			<Text lang="en">Domain properties</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
