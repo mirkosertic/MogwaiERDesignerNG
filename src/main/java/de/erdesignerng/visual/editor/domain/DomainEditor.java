@@ -43,7 +43,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:09 $
+ * @version $Date: 2008-01-03 20:21:15 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -182,7 +182,7 @@ public class DomainEditor extends BaseEditor {
 
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(!isNew);
-			editingView.getDomainName().setEnabled(isNew);
+			editingView.getDomainName().setEnabled(true);
 			editingView.getDeclaration().setEnabled(true);
 			editingView.getUpdateButton().setEnabled(true);
 			editingView.getSequenced().setEnabled(true);
