@@ -175,14 +175,17 @@
 		<Entry id="NEW">
 			<Text lang="de">Neu</Text>		
 			<Text lang="en">New</Text>					
+			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="DELETE">
 			<Text lang="de">Löschen</Text>		
-			<Text lang="en">Delete</Text>					
+			<Text lang="en">Delete</Text>
+			<Icon>/de/erdesignerng/icons/delete.png</Icon>
 		</Entry>
 		<Entry id="UPDATE">
 			<Text lang="de">Aktualisieren</Text>		
 			<Text lang="en">Update</Text>					
+			<Icon>/de/erdesignerng/icons/arrow_refresh_small.png</Icon>
 		</Entry>
 		<Entry id="OK">
 			<Text lang="de">Ok</Text>		
