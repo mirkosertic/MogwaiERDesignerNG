@@ -172,5 +172,25 @@
 			<Text lang="de">Die Verbindung scheint zu funktionieren</Text>		
 			<Text lang="en">The connection seems to be ok</Text>					
 		</Entry>
+		<Entry id="NEW">
+			<Text lang="de">Neu</Text>		
+			<Text lang="en">New</Text>					
+		</Entry>
+		<Entry id="DELETE">
+			<Text lang="de">Löschen</Text>		
+			<Text lang="en">Delete</Text>					
+		</Entry>
+		<Entry id="UPDATE">
+			<Text lang="de">Aktualisieren</Text>		
+			<Text lang="en">Update</Text>					
+		</Entry>
+		<Entry id="OK">
+			<Text lang="de">Ok</Text>		
+			<Text lang="en">Ok</Text>					
+		</Entry>
+		<Entry id="CANCEL">
+			<Text lang="de">Abbrechen</Text>		
+			<Text lang="en">Cancel</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

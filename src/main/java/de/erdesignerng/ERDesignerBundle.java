@@ -89,4 +89,16 @@ public interface ERDesignerBundle {
   String QUESTION = "QUESTION";
   /** Wollen Sie das Element wirklich löschen? */
   String DOYOUREALLYWANTTODELETE = "DOYOUREALLYWANTTODELETE";
+  /** Die Verbindung scheint zu funktionieren */
+  String CONNECTIONSEEMSTOBEOK = "CONNECTIONSEEMSTOBEOK";
+  /** Neu */
+  String NEW = "NEW";
+  /** Löschen */
+  String DELETE = "DELETE";
+  /** Aktualisieren */
+  String UPDATE = "UPDATE";
+  /** Ok */
+  String OK = "OK";
+  /** Abbrechen */
+  String CANCEL = "CANCEL";
 }

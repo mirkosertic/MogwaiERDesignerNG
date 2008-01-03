@@ -40,7 +40,7 @@ import de.mogwai.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:17 $
+ * @version $Date: 2008-01-03 16:39:56 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -143,13 +143,6 @@ public class DomainEditor extends BaseEditor {
 						commandNew();
 					}
 				});
-		editingView.getRenameButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandRename();
-					}
-				});
 		editingView.getDeleteButton().addActionListener(
 				new java.awt.event.ActionListener() {
 
@@ -174,7 +167,6 @@ public class DomainEditor extends BaseEditor {
 
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(!isNew);
-			editingView.getRenameButton().setEnabled(!isNew);
 			editingView.getDomainName().setEnabled(isNew);
 			editingView.getDeclaration().setEnabled(true);
 			editingView.getUpdateButton().setEnabled(true);
@@ -184,7 +176,6 @@ public class DomainEditor extends BaseEditor {
 		} else {
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(false);
-			editingView.getRenameButton().setEnabled(false);
 			editingView.getDomainName().setEnabled(false);
 			editingView.getDeclaration().setEnabled(false);
 			editingView.getUpdateButton().setEnabled(false);
@@ -238,9 +229,6 @@ public class DomainEditor extends BaseEditor {
 			updateEditFields();
 		}
 
-	}
-
-	private void commandRename() {
 	}
 
 	private void commandDelete() {
