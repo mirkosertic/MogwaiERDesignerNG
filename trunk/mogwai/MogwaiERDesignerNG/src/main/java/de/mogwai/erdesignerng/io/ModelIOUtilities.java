@@ -20,6 +20,7 @@ package de.mogwai.erdesignerng.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,7 +51,7 @@ import de.mogwai.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:37 $
+ * @version $Date: 2008-01-03 12:42:48 $
  */
 public final class ModelIOUtilities {
 
@@ -132,7 +133,7 @@ public final class ModelIOUtilities {
 
 	protected static final String DEFAULTVALUES = "Defaultvalues";
 
-	protected static final String DEFAULTVALUE = "Defaultvalues";
+	protected static final String DEFAULTVALUE = "Defaultvalue";
 
 	protected static final String DEFAULTVALUEREFID = "defaultvaluerefid";
 
@@ -224,6 +225,8 @@ public final class ModelIOUtilities {
 				if (DIALECT.equals(theName)) {
 					theModel.setDialect(DialectFactory.getInstance()
 							.getDialect(theValue));
+				} else {
+					theModel.getProperties().setProperty(theName, theValue);
 				}
 			}
 		}
@@ -450,24 +453,36 @@ public final class ModelIOUtilities {
 
 		Element theConfigurationElement = addElement(theDocument,
 				theRootElement, CONFIGURATION);
+
+		
 		Element theDialectElement = addElement(theDocument,
 				theConfigurationElement, PROPERTY);
 		theDialectElement.setAttribute(NAME, DIALECT);
 		theDialectElement.setAttribute(VALUE, aModel.getDialect()
 				.getUniqueName());
 
+		Map<String,String> theProperties = aModel.getProperties().getProperties();
+		for(String theKey : theProperties.keySet()) {
+			String theValue = theProperties.get(theKey);
+			
+			Element thePropertyElement = addElement(theDocument,
+					theConfigurationElement, PROPERTY);
+			thePropertyElement.setAttribute(NAME, theKey);
+			thePropertyElement.setAttribute(VALUE, theValue);
+		}
+
 		// Default values
 		Element theDefaultValuesElement = addElement(theDocument,
 				theRootElement, DEFAULTVALUES);
-		for (DefaultValue theDomain : aModel.getDefaultValues()) {
+		for (DefaultValue theDefaultValue : aModel.getDefaultValues()) {
 			Element theDefaultValueElement = addElement(theDocument,
 					theDefaultValuesElement, DEFAULTVALUE);
 
 			// Basisdaten des Modelelementes speichern
-			serializeProperties(theDocument, theDefaultValueElement, theDomain);
+			serializeProperties(theDocument, theDefaultValueElement, theDefaultValue);
 
 			// Zusatzdaten
-			theDefaultValueElement.setAttribute(DATATYPE, theDomain
+			theDefaultValueElement.setAttribute(DATATYPE, theDefaultValue
 					.getDatatype());
 		}
 

@@ -30,13 +30,12 @@ import org.jgraph.util.Bezier;
 import org.jgraph.util.Spline2D;
 
 import de.mogwai.erdesignerng.visual.cells.RelationEdge;
-import de.mogwai.erdesignerng.visual.cells.views.TableCellView.MyRenderer;
 import de.mogwai.erdesignerng.visual.editor.CellEditorFactory;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 11:40:35 $
+ * @version $Date: 2008-01-03 12:42:48 $
  */
 public class RelationEdgeView extends EdgeView {
 	
