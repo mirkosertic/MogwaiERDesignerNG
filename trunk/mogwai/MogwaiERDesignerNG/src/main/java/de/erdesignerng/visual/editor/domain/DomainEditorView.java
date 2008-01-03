@@ -6,6 +6,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultButton;
 import de.mogwai.looks.components.DefaultCheckBox;
 import de.mogwai.looks.components.DefaultComboBox;
 import de.mogwai.looks.components.DefaultLabel;
@@ -18,17 +19,15 @@ import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:17 $
+ * @version $Date: 2008-01-03 16:39:56 $
  */
 public class DomainEditorView extends DefaultPanel {
 
 	private DefaultList<Domain> domainList = new DefaultList<Domain>();
 
-	private javax.swing.JButton newButton;
+	private DefaultButton newButton;
 
-	private javax.swing.JButton renameButton;
-
-	private javax.swing.JButton deleteButton;
+	private DefaultButton deleteButton;
 
 	private DefaultTabbedPane detailTabbedPane;
 
@@ -48,11 +47,11 @@ public class DomainEditorView extends DefaultPanel {
 
 	private DefaultCheckBox sequenced = new DefaultCheckBox(ERDesignerBundle.SEQUENCED);
 
-	private javax.swing.JButton updatebutton;
+	private DefaultButton updatebutton;
 
-	private javax.swing.JButton okbutton;
+	private DefaultButton okbutton;
 
-	private javax.swing.JButton cancelbutton;
+	private DefaultButton cancelbutton;
 
 	/**
 	 * Constructor.
@@ -76,7 +75,6 @@ public class DomainEditorView extends DefaultPanel {
 
 		add(new DefaultScrollPane(getDomainList()), cons.xywh(2, 2, 5, 2));
 		add(getNewButton(), cons.xywh(2, 5, 1, 1));
-		add(getRenameButton(), cons.xywh(4, 5, 1, 1));
 		add(getDeleteButton(), cons.xywh(6, 5, 1, 1));
 		add(getDetailTabbedPane(), cons.xywh(8, 2, 3, 4));
 		add(getOkButton(), cons.xywh(8, 7, 1, 1));
@@ -110,27 +108,11 @@ public class DomainEditorView extends DefaultPanel {
 	public javax.swing.JButton getNewButton() {
 
 		if (newButton == null) {
-			newButton = new javax.swing.JButton();
+			newButton = new DefaultButton(ERDesignerBundle.NEW);
 			newButton.setIcon(IconFactory.getNewIcon());
-			newButton.setText("New");
 		}
 
 		return newButton;
-	}
-
-	/**
-	 * Getter method for component RenameButton.
-	 * 
-	 * @return the initialized component
-	 */
-	public javax.swing.JButton getRenameButton() {
-
-		if (renameButton == null) {
-			renameButton = new javax.swing.JButton();
-			renameButton.setText("Rename");
-		}
-
-		return renameButton;
 	}
 
 	/**
@@ -141,9 +123,8 @@ public class DomainEditorView extends DefaultPanel {
 	public javax.swing.JButton getDeleteButton() {
 
 		if (deleteButton == null) {
-			deleteButton = new javax.swing.JButton();
+			deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
 			deleteButton.setIcon(IconFactory.getDeleteIcon());
-			deleteButton.setText("Delete");
 		}
 
 		return deleteButton;
@@ -275,9 +256,8 @@ public class DomainEditorView extends DefaultPanel {
 	public javax.swing.JButton getUpdateButton() {
 
 		if (updatebutton == null) {
-			updatebutton = new javax.swing.JButton();
+			updatebutton = new DefaultButton(ERDesignerBundle.UPDATE);
 			updatebutton.setIcon(IconFactory.getUpdateIcon());
-			updatebutton.setText("Update");
 		}
 
 		return updatebutton;
@@ -291,9 +271,8 @@ public class DomainEditorView extends DefaultPanel {
 	public javax.swing.JButton getOkButton() {
 
 		if (okbutton == null) {
-			okbutton = new javax.swing.JButton();
+			okbutton = new DefaultButton(ERDesignerBundle.OK);
 			okbutton.setIcon(IconFactory.getSaveIcon());
-			okbutton.setText("Ok");
 		}
 
 		return okbutton;
@@ -307,9 +286,8 @@ public class DomainEditorView extends DefaultPanel {
 	public javax.swing.JButton getCancelButton() {
 
 		if (cancelbutton == null) {
-			cancelbutton = new javax.swing.JButton();
+			cancelbutton = new DefaultButton(ERDesignerBundle.CANCEL);
 			cancelbutton.setIcon(IconFactory.getCancelIcon());
-			cancelbutton.setText("Cancel");
 		}
 
 		return cancelbutton;
