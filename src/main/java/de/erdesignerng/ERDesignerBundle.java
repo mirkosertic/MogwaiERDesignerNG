@@ -101,4 +101,16 @@ public interface ERDesignerBundle {
   String OK = "OK";
   /** Abbrechen */
   String CANCEL = "CANCEL";
+  /** Test */
+  String TEST = "TEST";
+  /** Dialekt */
+  String DIALECT = "DIALECT";
+  /** JDBC-Treiber */
+  String JDBCDRIVER = "JDBCDRIVER";
+  /** JDBC-URL */
+  String JDBCURL = "JDBCURL";
+  /** Benutzer */
+  String USER = "USER";
+  /** Kennwort */
+  String PASSWORD = "PASSWORD";
 }

@@ -3,19 +3,20 @@ package de.erdesignerng.visual.editor.connection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.visual.IconFactory;
+import de.mogwai.looks.components.DefaultButton;
 import de.mogwai.looks.components.DefaultComboBox;
+import de.mogwai.looks.components.DefaultLabel;
+import de.mogwai.looks.components.DefaultPanel;
 import de.mogwai.looks.components.DefaultTextField;
 
-public class DatabaseConnectionEditorView extends JPanel {
+public class DatabaseConnectionEditorView extends DefaultPanel {
 
 	private DefaultComboBox dialect = new DefaultComboBox();
 
@@ -26,12 +27,12 @@ public class DatabaseConnectionEditorView extends JPanel {
 	private DefaultTextField user = new DefaultTextField();
 
 	private DefaultTextField password = new DefaultTextField();
-
-	private JButton testButton = new JButton(IconFactory.getCancelIcon());
 	
-	private JButton okButton = new JButton(IconFactory.getSaveIcon());
+	private DefaultButton testButton = new DefaultButton();
+	
+	private DefaultButton okButton = new DefaultButton();
 
-	private JButton cancelButton = new JButton(IconFactory.getCancelIcon());
+	private DefaultButton cancelButton = new DefaultButton();
 
 	public DatabaseConnectionEditorView() {
 		initialize();
@@ -47,19 +48,19 @@ public class DatabaseConnectionEditorView extends JPanel {
 
 		CellConstraints cons = new CellConstraints();
 
-		add(new JLabel("Dialect:"), cons.xy(2, 2));
+		add(new DefaultLabel(ERDesignerBundle.DIALECT), cons.xy(2, 2));
 		add(dialect, cons.xy(4, 2));
 
-		add(new JLabel("JDBC - Driver:"), cons.xy(2, 4));
+		add(new DefaultLabel(ERDesignerBundle.JDBCDRIVER), cons.xy(2, 4));
 		add(driver, cons.xy(4, 4));
 
-		add(new JLabel("JDBC - URL:"), cons.xy(2, 6));
+		add(new DefaultLabel(ERDesignerBundle.JDBCURL), cons.xy(2, 6));
 		add(url, cons.xy(4, 6));
 
-		add(new JLabel("User:"), cons.xy(2, 8));
+		add(new DefaultLabel(ERDesignerBundle.USER), cons.xy(2, 8));
 		add(user, cons.xy(4, 8));
 
-		add(new JLabel("Password:"), cons.xy(2, 10));
+		add(new DefaultLabel(ERDesignerBundle.PASSWORD), cons.xy(2, 10));
 		add(password, cons.xy(4, 10));
 
 		JPanel thePanel = new JPanel();
@@ -72,32 +73,12 @@ public class DatabaseConnectionEditorView extends JPanel {
 
 		thePanel.add(testButton, cons.xy(1, 1));
 		testButton.setText("Test");
-		testButton.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				handleTest();
-			}
-
-		});
-		
 		
 		thePanel.add(okButton, cons.xy(3, 1));
 		okButton.setText("Ok");
-		okButton.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent e) {
-				handleOk();
-			}
-
-		});
 		thePanel.add(cancelButton, cons.xy(5, 1));
 		cancelButton.setText("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				handleCancel();
-			}
-		});
 		
 		dialect.addActionListener(new ActionListener() {
 
@@ -110,58 +91,47 @@ public class DatabaseConnectionEditorView extends JPanel {
 		add(thePanel, cons.xyw(2, 12, 3));
 	}
 
-	protected void handleTest() {
-
-	}
-	
-	protected void handleOk() {
-
-	}
-
-	protected void handleCancel() {
-
-	}
-
 	public DefaultComboBox getDialect() {
 		return dialect;
-	}
-
-	public void setDialect(DefaultComboBox databaseType) {
-		this.dialect = databaseType;
 	}
 
 	public DefaultTextField getDriver() {
 		return driver;
 	}
 
-	public void setDriver(DefaultTextField driver) {
-		this.driver = driver;
-	}
-
 	public DefaultTextField getPassword() {
 		return password;
-	}
-
-	public void setPassword(DefaultTextField password) {
-		this.password = password;
 	}
 
 	public DefaultTextField getUrl() {
 		return url;
 	}
 
-	public void setUrl(DefaultTextField url) {
-		this.url = url;
-	}
-
 	public DefaultTextField getUser() {
 		return user;
 	}
 
-	public void setUser(DefaultTextField user) {
-		this.user = user;
-	}
-	
 	public void handleDialectChange(Dialect aDialect) {
+	}
+
+	/**
+	 * @return the cancelButton
+	 */
+	public DefaultButton getCancelButton() {
+		return cancelButton;
+	}
+
+	/**
+	 * @return the okButton
+	 */
+	public DefaultButton getOkButton() {
+		return okButton;
+	}
+
+	/**
+	 * @return the testButton
+	 */
+	public DefaultButton getTestButton() {
+		return testButton;
 	}
 }
