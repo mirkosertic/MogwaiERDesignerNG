@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.defaultvalue;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,11 +34,13 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.binding.BindingInfo;
-import de.mogwai.looks.UIInitializer;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:27 $
+ * @version $Date: 2008-01-03 18:28:10 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -50,6 +53,47 @@ public class DefaultValueEditor extends BaseEditor {
 	private Model model;
 
 	private Map<String, DefaultValue> knownValues = new HashMap<String, DefaultValue>();
+	
+	private DefaultAction updateAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandUpdate();
+				}
+			}, this, ERDesignerBundle.UPDATE);
+
+	private DefaultAction closeAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandClose();
+				}
+			}, this, ERDesignerBundle.OK);
+
+	private DefaultAction cancelAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandCancel();
+				}
+			}, this, ERDesignerBundle.CANCEL);
+
+	private DefaultAction newAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandNew();
+				}
+			}, this, ERDesignerBundle.NEW);
+
+	private DefaultAction deleteAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandDelete();
+				}
+			}, this, ERDesignerBundle.DELETE);
+	
 
 	/**
 	 * @param parent
@@ -87,27 +131,9 @@ public class DefaultValueEditor extends BaseEditor {
 
 		editingView = new DefaultValueEditorView();
 
-		editingView.getUpdateButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						handleUpdate();
-					}
-				});
-		editingView.getOkButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						handleClose();
-					}
-				});
-		editingView.getCancelButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						setModalResult(MODAL_RESULT_CANCEL);
-					}
-				});
+		editingView.getUpdateButton().setAction(updateAction);
+		editingView.getOkButton().setAction(closeAction);
+		editingView.getCancelButton().setAction(cancelAction);
 		editingView.getDefaultValueList().addListSelectionListener(
 				new javax.swing.event.ListSelectionListener() {
 
@@ -116,27 +142,8 @@ public class DefaultValueEditor extends BaseEditor {
 						handleItemChanged(e);
 					}
 				});
-		editingView.getNewButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						handleNew();
-					}
-				});
-		editingView.getRenameButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						handleRename();
-					}
-				});
-		editingView.getDeleteButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						handleDelete();
-					}
-				});
+		editingView.getNewButton().setAction(newAction);
+		editingView.getDeleteButton().setAction(deleteAction);
 
 		setContentPane(editingView);
 		setResizable(false);
@@ -155,15 +162,13 @@ public class DefaultValueEditor extends BaseEditor {
 
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(!isNew);
-			editingView.getRenameButton().setEnabled(!isNew);
-			editingView.getDefaultValueName().setEnabled(isNew);
+			editingView.getDefaultValueName().setEnabled(true);
 			editingView.getDeclaration().setEnabled(true);
 			editingView.getUpdateButton().setEnabled(true);
 
 		} else {
 			editingView.getNewButton().setEnabled(true);
 			editingView.getDeleteButton().setEnabled(false);
-			editingView.getRenameButton().setEnabled(false);
 			editingView.getDefaultValueName().setEnabled(false);
 			editingView.getDeclaration().setEnabled(false);
 			editingView.getUpdateButton().setEnabled(false);
@@ -176,7 +181,7 @@ public class DefaultValueEditor extends BaseEditor {
 				bindingInfo.getDefaultModel(), true);
 	}
 
-	private void handleClose() {
+	private void commandClose() {
 
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
 	}
@@ -192,13 +197,13 @@ public class DefaultValueEditor extends BaseEditor {
 		updateEditFields();
 	}
 
-	private void handleNew() {
+	private void commandNew() {
 
 		bindingInfo.setDefaultModel(new DefaultValue());
 		updateEditFields();
 	}
 
-	private void handleUpdate() {
+	private void commandUpdate() {
 
 		DefaultValue theModel = bindingInfo.getDefaultModel();
 		if (bindingInfo.validate().size() == 0) {
@@ -218,10 +223,7 @@ public class DefaultValueEditor extends BaseEditor {
 		}
 	}
 
-	private void handleRename() {
-	}
-
-	private void handleDelete() {
+	private void commandDelete() {
 	}
 
 	@Override

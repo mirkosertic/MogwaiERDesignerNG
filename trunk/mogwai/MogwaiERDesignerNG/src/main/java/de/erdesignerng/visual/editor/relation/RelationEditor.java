@@ -31,11 +31,11 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.binding.BindingInfo;
 import de.mogwai.binding.adapter.RadioButtonAdapter;
-import de.mogwai.looks.UIInitializer;
+import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:52 $
+ * @version $Date: 2008-01-03 18:28:04 $
  */
 public class RelationEditor extends BaseEditor {
 

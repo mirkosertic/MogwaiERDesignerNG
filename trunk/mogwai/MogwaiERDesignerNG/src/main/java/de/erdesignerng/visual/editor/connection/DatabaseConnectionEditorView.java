@@ -10,11 +10,11 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
-import de.mogwai.looks.components.DefaultButton;
-import de.mogwai.looks.components.DefaultComboBox;
-import de.mogwai.looks.components.DefaultLabel;
-import de.mogwai.looks.components.DefaultPanel;
-import de.mogwai.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 public class DatabaseConnectionEditorView extends DefaultPanel {
 

@@ -76,22 +76,22 @@ import de.erdesignerng.visual.tools.EntityTool;
 import de.erdesignerng.visual.tools.HandTool;
 import de.erdesignerng.visual.tools.RelationTool;
 import de.erdesignerng.visual.tools.ToolEnum;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultFrame;
+import de.mogwai.common.client.looks.components.DefaultScrollPane;
+import de.mogwai.common.client.looks.components.DefaultToggleButton;
+import de.mogwai.common.client.looks.components.DefaultToolbar;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.menu.DefaultMenu;
+import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.i18n.ResourceHelper;
-import de.mogwai.looks.UIInitializer;
-import de.mogwai.looks.components.DefaultComboBox;
-import de.mogwai.looks.components.DefaultFrame;
-import de.mogwai.looks.components.DefaultScrollPane;
-import de.mogwai.looks.components.DefaultToggleButton;
-import de.mogwai.looks.components.DefaultToolbar;
-import de.mogwai.looks.components.action.ActionEventProcessor;
-import de.mogwai.looks.components.action.DefaultAction;
-import de.mogwai.looks.components.menu.DefaultMenu;
-import de.mogwai.looks.components.menu.DefaultMenuItem;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:48 $
+ * @version $Date: 2008-01-03 18:28:12 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 

@@ -22,12 +22,12 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.mogwai.looks.components.DefaultDialog;
+import de.mogwai.common.client.looks.components.DefaultDialog;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 15:11:36 $
+ * @version $Date: 2008-01-03 18:28:12 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -111,4 +111,10 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 	}
 
 	public abstract void applyValues() throws Exception;
+	
+	protected void commandCancel() {
+
+		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
+	}
+	
 }
