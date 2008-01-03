@@ -17,16 +17,20 @@
  */
 package de.mogwai.erdesignerng.model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import de.mogwai.erdesignerng.dialect.Dialect;
 import de.mogwai.erdesignerng.dialect.mysql.MySQLDialect;
 import de.mogwai.erdesignerng.exception.CannotDeleteException;
 import de.mogwai.erdesignerng.exception.ElementAlreadyExistsException;
 import de.mogwai.erdesignerng.exception.ElementInvalidNameException;
+import de.mogwai.erdesignerng.util.ApplicationPreferences;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2007-07-27 18:23:36 $
+ * @version $Date: 2008-01-03 12:42:48 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -229,5 +233,12 @@ public class Model implements OwnedModelItemVerifier {
 
 	public void setProperties(ModelProperties properties) {
 		this.properties = properties;
+	}
+	
+	public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+		Connection theConnection = getDialect().createConnection(
+				aPreferences.createDriverClassLoader(), properties.getProperty(Model.PROPERTY_DRIVER), 
+				properties.getProperty(Model.PROPERTY_URL), properties.getProperty(Model.PROPERTY_USER), properties.getProperty(Model.PROPERTY_PASSWORD));
+		return theConnection;
 	}
 }
