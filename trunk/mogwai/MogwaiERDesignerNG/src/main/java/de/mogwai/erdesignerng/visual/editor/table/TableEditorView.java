@@ -12,7 +12,7 @@ import de.mogwai.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2007-08-05 18:15:03 $
+ * @version $Date: 2008-01-03 13:01:57 $
  */
 public class TableEditorView extends JPanel {
 
@@ -31,8 +31,6 @@ public class TableEditorView extends JPanel {
 	private javax.swing.JList m_attributelist;
 
 	private javax.swing.JButton m_newbutton;
-
-	private javax.swing.JButton m_renamebutton;
 
 	private javax.swing.JButton m_deletebutton;
 
@@ -203,8 +201,6 @@ public class TableEditorView extends JPanel {
 					cons.xywh(2, 4, 8, 3));
 			this.m_attributestab
 					.add(this.getNewButton(), cons.xywh(2, 8, 1, 1));
-			this.m_attributestab.add(this.getRenameButton(), cons.xywh(4, 8, 1,
-					1));
 			this.m_attributestab.add(this.getDeleteButton(), cons.xywh(6, 8, 4,
 					1));
 			this.m_attributestab.add(this.getComponent_15(), cons.xywh(11, 2,
@@ -281,23 +277,6 @@ public class TableEditorView extends JPanel {
 		}
 
 		return this.m_newbutton;
-	}
-
-	/**
-	 * Getter method for component RenameButton.
-	 * 
-	 * @return the initialized component
-	 */
-	public javax.swing.JButton getRenameButton() {
-
-		if (this.m_renamebutton == null) {
-			this.m_renamebutton = new javax.swing.JButton();
-			this.m_renamebutton.setActionCommand("Rename");
-			this.m_renamebutton.setName("RenameButton");
-			this.m_renamebutton.setText("Rename");
-		}
-
-		return this.m_renamebutton;
 	}
 
 	/**
