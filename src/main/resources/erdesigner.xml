@@ -206,8 +206,8 @@
 			<Text lang="en">Dialect</Text>					
 		</Entry>
 		<Entry id="JDBCDRIVER">
-			<Text lang="de">JDBC-Treiber</Text>		
-			<Text lang="en">JDBC-Driver</Text>					
+			<Text lang="de">Treiber</Text>		
+			<Text lang="en">Driver</Text>					
 		</Entry>
 		<Entry id="JDBCURL">
 			<Text lang="de">JDBC-URL</Text>		
@@ -220,6 +220,16 @@
 		<Entry id="PASSWORD">
 			<Text lang="de">Kennwort</Text>		
 			<Text lang="en">Password</Text>					
+		</Entry>
+		<Entry id="DEFAULTVALUEPROPERTIES">
+			<Text lang="de">Eigenschaften des Defaultwertes</Text>		
+			<Text lang="en">Default value properties</Text>					
+		</Entry>
+		<Entry id="ADDFOLDER">
+			<Icon>/de/erdesignerng/icons/folder_add.png</Icon>
+		</Entry>
+		<Entry id="REMOVEFOLDER">
+			<Icon>/de/erdesignerng/icons/folder_delete.png</Icon>
 		</Entry>
 	</Bundle>
 </Resource>

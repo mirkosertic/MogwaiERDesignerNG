@@ -12,11 +12,11 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.visual.IconFactory;
-import de.mogwai.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:52 $
+ * @version $Date: 2008-01-03 18:28:04 $
  */
 public class RelationEditorView extends JPanel {
 

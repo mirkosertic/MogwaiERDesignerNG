@@ -9,12 +9,12 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.IconFactory;
-import de.mogwai.looks.components.DefaultButton;
-import de.mogwai.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 17:05:02 $
+ * @version $Date: 2008-01-03 18:28:05 $
  */
 public class TableEditorView extends JPanel {
 

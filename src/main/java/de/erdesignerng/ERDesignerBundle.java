@@ -105,7 +105,7 @@ public interface ERDesignerBundle {
   String TEST = "TEST";
   /** Dialekt */
   String DIALECT = "DIALECT";
-  /** JDBC-Treiber */
+  /** Treiber */
   String JDBCDRIVER = "JDBCDRIVER";
   /** JDBC-URL */
   String JDBCURL = "JDBCURL";
@@ -113,4 +113,10 @@ public interface ERDesignerBundle {
   String USER = "USER";
   /** Kennwort */
   String PASSWORD = "PASSWORD";
+  /** Eigenschaften des Defaultwertes */
+  String DEFAULTVALUEPROPERTIES = "DEFAULTVALUEPROPERTIES";
+  /**  */
+  String ADDFOLDER = "ADDFOLDER";
+  /**  */
+  String REMOVEFOLDER = "REMOVEFOLDER";
 }

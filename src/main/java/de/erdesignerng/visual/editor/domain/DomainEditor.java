@@ -36,14 +36,14 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.binding.BindingInfo;
-import de.mogwai.looks.UIInitializer;
-import de.mogwai.looks.components.action.ActionEventProcessor;
-import de.mogwai.looks.components.action.DefaultAction;
-import de.mogwai.looks.components.list.DefaultListModel;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 17:14:11 $
+ * @version $Date: 2008-01-03 18:28:09 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -210,11 +210,6 @@ public class DomainEditor extends BaseEditor {
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
 	}
 
-	private void commandCancel() {
-
-		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
-	}
-	
 	private void commandItemChanged(ListSelectionEvent e) {
 
 		int index = editingView.getDomainList().getSelectedIndex();
