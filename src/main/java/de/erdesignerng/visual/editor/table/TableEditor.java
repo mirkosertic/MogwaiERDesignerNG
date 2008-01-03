@@ -39,12 +39,12 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.binding.BindingInfo;
-import de.mogwai.looks.UIInitializer;
+import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 15:11:34 $
+ * @version $Date: 2008-01-03 18:28:05 $
  */
 public class TableEditor extends BaseEditor {
 

@@ -6,20 +6,20 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.visual.IconFactory;
-import de.mogwai.looks.components.DefaultButton;
-import de.mogwai.looks.components.DefaultCheckBox;
-import de.mogwai.looks.components.DefaultComboBox;
-import de.mogwai.looks.components.DefaultLabel;
-import de.mogwai.looks.components.DefaultList;
-import de.mogwai.looks.components.DefaultPanel;
-import de.mogwai.looks.components.DefaultScrollPane;
-import de.mogwai.looks.components.DefaultTabbedPane;
-import de.mogwai.looks.components.DefaultTabbedPaneTab;
-import de.mogwai.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultCheckBox;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultList;
+import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultScrollPane;
+import de.mogwai.common.client.looks.components.DefaultTabbedPane;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 17:14:12 $
+ * @version $Date: 2008-01-03 18:28:09 $
  */
 public class DomainEditorView extends DefaultPanel {
 

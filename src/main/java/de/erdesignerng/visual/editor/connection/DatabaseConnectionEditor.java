@@ -15,15 +15,15 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.binding.BindingInfo;
-import de.mogwai.looks.UIInitializer;
-import de.mogwai.looks.components.action.ActionEventProcessor;
-import de.mogwai.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 17:05:01 $
+ * @version $Date: 2008-01-03 18:28:04 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -175,11 +175,6 @@ public class DatabaseConnectionEditor extends BaseEditor {
 				displayErrorMessage(e.getMessage());
 			}
 		}
-	}
-
-	private void commandCancel() {
-
-		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
 	}
 
 	private void commandChangeDialect(Dialect aDialect) {
