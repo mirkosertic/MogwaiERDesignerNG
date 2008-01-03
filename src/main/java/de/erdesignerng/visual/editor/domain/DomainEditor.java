@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.domain;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,11 +37,13 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.binding.BindingInfo;
 import de.mogwai.looks.UIInitializer;
+import de.mogwai.looks.components.action.ActionEventProcessor;
+import de.mogwai.looks.components.action.DefaultAction;
 import de.mogwai.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 16:39:56 $
+ * @version $Date: 2008-01-03 17:14:11 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -53,7 +56,47 @@ public class DomainEditor extends BaseEditor {
 	private Model model;
 
 	private Map<String, Domain> knownValues = new HashMap<String, Domain>();
+	
+	private DefaultAction updateAction = new DefaultAction(
+			new ActionEventProcessor() {
 
+				public void processActionEvent(ActionEvent e) {
+					commandUpdate();
+				}
+			}, this, ERDesignerBundle.UPDATE);
+
+	private DefaultAction closeAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandClose();
+				}
+			}, this, ERDesignerBundle.OK);
+
+	private DefaultAction cancelAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandCancel();
+				}
+			}, this, ERDesignerBundle.CANCEL);
+
+	private DefaultAction newAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandNew();
+				}
+			}, this, ERDesignerBundle.NEW);
+
+	private DefaultAction deleteAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandDelete();
+				}
+			}, this, ERDesignerBundle.DELETE);
+	
 	/**
 	 * @param aParent
 	 */
@@ -101,33 +144,16 @@ public class DomainEditor extends BaseEditor {
 		updateEditFields();
 		setResizable(false);
 	}
-
+	
 	/**
 	 * This method initializes this.
 	 */
 	private void initialize() {
 
-		editingView.getUpdateButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandUpdate();
-					}
-				});
-		editingView.getOkButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandClose();
-					}
-				});
-		editingView.getCancelButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						setModalResult(MODAL_RESULT_CANCEL);
-					}
-				});
+		editingView.getUpdateButton().setAction(updateAction);
+		editingView.getOkButton().setAction(closeAction);
+		editingView.getCancelButton().setAction(cancelAction);
+		
 		editingView.getDomainList().addListSelectionListener(
 				new javax.swing.event.ListSelectionListener() {
 
@@ -136,20 +162,9 @@ public class DomainEditor extends BaseEditor {
 						commandItemChanged(e);
 					}
 				});
-		editingView.getNewButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandNew();
-					}
-				});
-		editingView.getDeleteButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandDelete();
-					}
-				});
+		
+		editingView.getNewButton().setAction(newAction);
+		editingView.getDeleteButton().setAction(deleteAction);
 
 		setContentPane(editingView);
 		pack();
@@ -195,6 +210,11 @@ public class DomainEditor extends BaseEditor {
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
 	}
 
+	private void commandCancel() {
+
+		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
+	}
+	
 	private void commandItemChanged(ListSelectionEvent e) {
 
 		int index = editingView.getDomainList().getSelectedIndex();
