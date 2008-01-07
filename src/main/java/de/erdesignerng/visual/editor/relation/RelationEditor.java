@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.relation;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
@@ -32,10 +33,12 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.binding.BindingInfo;
 import de.mogwai.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:04 $
+ * @version $Date: 2008-01-07 21:42:20 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -44,6 +47,22 @@ public class RelationEditor extends BaseEditor {
 	private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
 
 	private RelationEditorView editingView;
+	
+	private DefaultAction okAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandOk();
+				}
+			}, this, ERDesignerBundle.OK);
+
+	private DefaultAction cancelAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandCancel();
+				}
+			}, this, ERDesignerBundle.CANCEL);
 
 	/**
 	 * @param parent
@@ -83,19 +102,9 @@ public class RelationEditor extends BaseEditor {
 	 */
 	private void initialize() {
 
-		editingView = new RelationEditorView() {
-
-			@Override
-			public void handleOKButtonActionPerformed(String actionCommand) {
-				commandOk();
-			}
-
-			@Override
-			public void handleCancelButtonActionPerformed(String actionCommand) {
-				setModalResult(MODAL_RESULT_CANCEL);
-			}
-
-		};
+		editingView = new RelationEditorView();
+		editingView.getOKButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 
 		setContentPane(editingView);
 		setResizable(false);

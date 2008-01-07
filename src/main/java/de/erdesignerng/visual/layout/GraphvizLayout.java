@@ -101,7 +101,7 @@ public class GraphvizLayout implements Layouter {
 			} else if (theModel.isEdge(cell))
 				theEdges.add((EdgeView) theLayoutCache.getMapping(cell, true));
 			else
-				theNodes.add((CellView) theLayoutCache.getMapping(cell, true));
+				theNodes.add(theLayoutCache.getMapping(cell, true));
 		}
 
 		Process theDotProcess = processBuilder.start();
@@ -153,9 +153,9 @@ public class GraphvizLayout implements Layouter {
 					.getCell());
 			Object theTarget = DefaultGraphModel.getTargetVertex(theModel, edge
 					.getCell());
-			CellView theSourceView = (CellView) theLayoutCache.getMapping(theSource,
+			CellView theSourceView = theLayoutCache.getMapping(theSource,
 					true);
-			CellView theTargetView = (CellView) theLayoutCache.getMapping(theTarget,
+			CellView theTargetView = theLayoutCache.getMapping(theTarget,
 					true);
 
 			String s = theNodes2strings.get(theSourceView) + " -> "
@@ -300,7 +300,7 @@ public class GraphvizLayout implements Layouter {
 			Map editAttributes = new HashMap();
 
 			EdgeView edge = (EdgeView) key;
-			Point2D p = getRelativeLabelPosition(edge, (Point) aPositions.get(edge));
+			Point2D p = getRelativeLabelPosition(edge, aPositions.get(edge));
 
 			GraphConstants.setLabelPosition(editAttributes, p);
 			nestedAttributes.put(edge.getCell(), editAttributes);

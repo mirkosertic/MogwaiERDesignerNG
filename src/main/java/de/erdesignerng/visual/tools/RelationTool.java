@@ -37,11 +37,12 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class RelationTool extends BaseTool {
 
@@ -175,7 +176,7 @@ public class RelationTool extends BaseTool {
 			RelationEditor theEditor = new RelationEditor(theSourceTable
 					.getOwner(), graph);
 			theEditor.initializeFor(theRelation);
-			if (theEditor.showModal() == RelationEditor.MODAL_RESULT_OK) {
+			if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
 				RelationEdge theEdge = new RelationEdge(theRelation,
 						(TableCell) theSourceCell, (TableCell) theTargetCell);

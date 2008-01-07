@@ -11,12 +11,13 @@ import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:06 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -121,7 +122,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 			theTable.setName(dialect.getCastType().cast(aTableName));
 
 			if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
-				theTable.getProperties().setProperty(Table.PROPERTY_REMARKS,
+				theTable.getProperties().setProperty(ModelItem.PROPERTY_REMARKS,
 						theTableRemarks);
 			}
 
@@ -147,7 +148,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 				if ((theColumnRemarks != null)
 						&& (!"".equals(theColumnRemarks))) {
 					theAttribute.getProperties().setProperty(
-							Attribute.PROPERTY_REMARKS, theColumnRemarks);
+							ModelItem.PROPERTY_REMARKS, theColumnRemarks);
 				}
 
 				Domain theDomain = createDomainFor(aModel, theColumnName,

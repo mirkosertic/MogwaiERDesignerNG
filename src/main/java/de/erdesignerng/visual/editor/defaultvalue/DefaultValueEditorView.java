@@ -7,7 +7,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.visual.IconFactory;
+import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultTabbedPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
@@ -15,15 +15,15 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 19:09:38 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class DefaultValueEditorView extends JPanel {
 
 	private javax.swing.JList m_defaultvaluelist;
 
-	private javax.swing.JButton m_newbutton;
+	private DefaultButton m_newbutton;
 
-	private javax.swing.JButton m_deletebutton;
+	private DefaultButton m_deletebutton;
 
 	private DefaultTabbedPane m_detailtabbedpane;
 
@@ -101,14 +101,10 @@ public class DefaultValueEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getNewButton() {
+	public DefaultButton getNewButton() {
 
 		if (m_newbutton == null) {
-			m_newbutton = new javax.swing.JButton();
-			m_newbutton.setActionCommand("New");
-			m_newbutton.setIcon(IconFactory.getNewIcon());
-			m_newbutton.setName("NewButton");
-			m_newbutton.setText("New");
+			m_newbutton = new DefaultButton(ERDesignerBundle.NEW);
 		}
 
 		return m_newbutton;
@@ -119,14 +115,10 @@ public class DefaultValueEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getDeleteButton() {
+	public DefaultButton getDeleteButton() {
 
 		if (m_deletebutton == null) {
-			m_deletebutton = new javax.swing.JButton();
-			m_deletebutton.setActionCommand("Delete");
-			m_deletebutton.setIcon(IconFactory.getDeleteIcon());
-			m_deletebutton.setName("DeleteButton");
-			m_deletebutton.setText("Delete");
+			m_deletebutton = new DefaultButton(ERDesignerBundle.DELETE);
 		}
 
 		return m_deletebutton;
