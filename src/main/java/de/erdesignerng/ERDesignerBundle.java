@@ -33,15 +33,15 @@ public interface ERDesignerBundle {
   String ASBMP = "ASBMP";
   /** Datenbank */
   String DATABASE = "DATABASE";
-  /** Klassenpfad */
+  /** Klassenpfad... */
   String CLASSPATH = "CLASSPATH";
-  /** Datenbankverbindung */
+  /** Datenbankverbindung... */
   String DBCONNECTION = "DBCONNECTION";
-  /** Reverse engineer */
+  /** Reverse engineer... */
   String REVERSEENGINEER = "REVERSEENGINEER";
-  /** Domänen */
+  /** Domänen... */
   String DOMAINS = "DOMAINS";
-  /** Defaultwerte */
+  /** Defaultwerte... */
   String DEFAULTVALUES = "DEFAULTVALUES";
   /** Ansicht */
   String VIEW = "VIEW";
@@ -119,4 +119,26 @@ public interface ERDesignerBundle {
   String ADDFOLDER = "ADDFOLDER";
   /**  */
   String REMOVEFOLDER = "REMOVEFOLDER";
+  /**  */
+  String UP = "UP";
+  /**  */
+  String DOWN = "DOWN";
+  /** Name der Entität */
+  String ENTITYNAME = "ENTITYNAME";
+  /** Default */
+  String DEFAULT = "DEFAULT";
+  /** Ist Pflichtfeld ( nicht NULL ) */
+  String REQUIRED = "REQUIRED";
+  /** Ist Primärschlüssel */
+  String PRIMARYKEY = "PRIMARYKEY";
+  /** Allgemeines */
+  String GENERAL = "GENERAL";
+  /** Optionen */
+  String OPTIONS = "OPTIONS";
+  /** Kommentare */
+  String COMMENTS = "COMMENTS";
+  /** Attribute */
+  String ATTRIBUTES = "ATTRIBUTES";
+  /** Indizes */
+  String INDEXES = "INDEXES";
 }
