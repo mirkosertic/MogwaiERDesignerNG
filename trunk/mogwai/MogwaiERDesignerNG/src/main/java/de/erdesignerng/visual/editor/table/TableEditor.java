@@ -40,11 +40,13 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:05 $
+ * @version $Date: 2008-01-07 19:09:37 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -66,6 +68,70 @@ public class TableEditor extends BaseEditor {
 	
 	private List<Attribute> removedAttributes = new ArrayList<Attribute>();
 
+	private DefaultAction okAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandOk();
+				}
+			}, this, ERDesignerBundle.OK);
+
+	private DefaultAction cancelAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandCancel();
+				}
+			}, this, ERDesignerBundle.CANCEL);
+
+	private DefaultAction newAttributeAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandNewAttribute(e);
+				}
+			}, this, ERDesignerBundle.NEW);
+
+	private DefaultAction deleteAttributeAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandDeleteAttribute(e);
+				}
+			}, this, ERDesignerBundle.DELETE);
+
+	private DefaultAction updateAttribute = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandUpdateAttribute(e);
+				}
+			}, this, ERDesignerBundle.UPDATE);
+
+	private DefaultAction newIndexAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandNewIndex();
+				}
+			}, this, ERDesignerBundle.NEW);
+
+	private DefaultAction deleteIndexAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandDeleteIndex();
+				}
+			}, this, ERDesignerBundle.DELETE);
+
+	private DefaultAction updateIndex = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandUpdateIndex();
+				}
+			}, this, ERDesignerBundle.UPDATE);
+	
 	/**
 	 * @param parent
 	 */
@@ -106,27 +172,15 @@ public class TableEditor extends BaseEditor {
 		
 		UIInitializer.getInstance().initialize(this);		
 	}
-
+	
 	/**
 	 * This method initializes this.
 	 */
 	private void initialize() {
 
 		editingView = new TableEditorView();
-		editingView.getOkButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandOk();
-					}
-				});
-		editingView.getCancelButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						setModalResult(MODAL_RESULT_CANCEL);
-					}
-				});
+		editingView.getOkButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 		editingView.getMainTabbedPane().addChangeListener(
 				new javax.swing.event.ChangeListener() {
 
@@ -142,41 +196,9 @@ public class TableEditor extends BaseEditor {
 						commandAttributeListValueChanged(e);
 					}
 				});
-		editingView.getUpButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandMoveAttributeUp(e);
-					}
-				});
-		editingView.getDownButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandMoveAttributeDown(e);
-					}
-				});
-		editingView.getNewButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandNewAttribute(e);
-					}
-				});
-		editingView.getDeleteButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandDeleteAttribute(e);
-					}
-				});
-		editingView.getUpdateAttributeButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandUpdateAttribute(e);
-					}
-				});
+		editingView.getNewButton().setAction(newAttributeAction);
+		editingView.getDeleteButton().setAction(deleteAttributeAction);
+		editingView.getUpdateAttributeButton().setAction(updateAttribute);
 		editingView.getPrimaryKey().addItemListener(
 				new java.awt.event.ItemListener() {
 
@@ -184,34 +206,9 @@ public class TableEditor extends BaseEditor {
 						commandPrimaryKeyItemStateChanged(e);
 					}
 				});
-		editingView.getUpdateIndexButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandUpdateIndex();
-					}
-				});
-		editingView.getNewIndexButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandNewIndex();
-					}
-				});
-		editingView.getRenameIndexButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandRenameIndex();
-					}
-				});
-		editingView.getDeleteIndexButton().addActionListener(
-				new java.awt.event.ActionListener() {
-
-					public void actionPerformed(java.awt.event.ActionEvent e) {
-						commandDeleteIndex();
-					}
-				});
+		editingView.getUpdateIndexButton().setAction(updateIndex);
+		editingView.getNewIndexButton().setAction(newIndexAction);
+		editingView.getDeleteIndexButton().setAction(deleteIndexAction);
 		editingView.getIndexList().addListSelectionListener(
 				new javax.swing.event.ListSelectionListener() {
 
