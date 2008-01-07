@@ -57,25 +57,25 @@
 			<Text lang="en">Database</Text>					
 		</Entry>
 		<Entry id="CLASSPATH">
-			<Text lang="de">Klassenpfad</Text>		
-			<Text lang="en">Classpath</Text>					
+			<Text lang="de">Klassenpfad...</Text>		
+			<Text lang="en">Classpath...</Text>					
 		</Entry>
 		<Entry id="DBCONNECTION">
-			<Text lang="de">Datenbankverbindung</Text>		
-			<Text lang="en">DB - Connection</Text>					
+			<Text lang="de">Datenbankverbindung...</Text>		
+			<Text lang="en">DB - Connection...</Text>					
 			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
 		</Entry>
 		<Entry id="REVERSEENGINEER">
-			<Text lang="de">Reverse engineer</Text>		
-			<Text lang="en">Reverse engineer</Text>					
+			<Text lang="de">Reverse engineer...</Text>		
+			<Text lang="en">Reverse engineer...</Text>					
 		</Entry>
 		<Entry id="DOMAINS">
-			<Text lang="de">Domänen</Text>		
-			<Text lang="en">Domains</Text>					
+			<Text lang="de">Domänen...</Text>		
+			<Text lang="en">Domains...</Text>					
 		</Entry>
 		<Entry id="DEFAULTVALUES">
-			<Text lang="de">Defaultwerte</Text>		
-			<Text lang="en">Default values</Text>					
+			<Text lang="de">Defaultwerte...</Text>		
+			<Text lang="en">Default values...</Text>					
 		</Entry>
 		<Entry id="VIEW">
 			<Text lang="de">Ansicht</Text>		
@@ -230,6 +230,48 @@
 		</Entry>
 		<Entry id="REMOVEFOLDER">
 			<Icon>/de/erdesignerng/icons/folder_delete.png</Icon>
+		</Entry>
+		<Entry id="UP">
+			<Icon>/de/erdesignerng/icons/arrow_up.png</Icon>
+		</Entry>
+		<Entry id="DOWN">
+			<Icon>/de/erdesignerng/icons/arrow_down.png</Icon>
+		</Entry>
+		<Entry id="ENTITYNAME">
+			<Text lang="de">Name der Entität</Text>		
+			<Text lang="en">Entity name</Text>					
+		</Entry>
+		<Entry id="DEFAULT">
+			<Text lang="de">Default</Text>		
+			<Text lang="en">Default</Text>					
+		</Entry>
+		<Entry id="REQUIRED">
+			<Text lang="de">Ist Pflichtfeld ( nicht NULL )</Text>		
+			<Text lang="en">Is required ( not NULL )</Text>					
+		</Entry>
+		<Entry id="PRIMARYKEY">
+			<Text lang="de">Ist Primärschlüssel</Text>		
+			<Text lang="en">Is primary key</Text>					
+		</Entry>
+		<Entry id="GENERAL">
+			<Text lang="de">Allgemeines</Text>		
+			<Text lang="en">General</Text>					
+		</Entry>
+		<Entry id="OPTIONS">
+			<Text lang="de">Optionen</Text>		
+			<Text lang="en">Options</Text>					
+		</Entry>
+		<Entry id="COMMENTS">
+			<Text lang="de">Kommentare</Text>		
+			<Text lang="en">Comments</Text>					
+		</Entry>
+		<Entry id="ATTRIBUTES">
+			<Text lang="de">Attribute</Text>		
+			<Text lang="en">Attributes</Text>					
+		</Entry>
+		<Entry id="INDEXES">
+			<Text lang="de">Indizes</Text>		
+			<Text lang="en">Indexes</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

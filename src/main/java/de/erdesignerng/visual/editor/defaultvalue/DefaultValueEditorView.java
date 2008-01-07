@@ -15,7 +15,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:10 $
+ * @version $Date: 2008-01-07 19:09:38 $
  */
 public class DefaultValueEditorView extends JPanel {
 
@@ -88,12 +88,12 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JList getDefaultValueList() {
 
-		if (this.m_defaultvaluelist == null) {
-			this.m_defaultvaluelist = new javax.swing.JList();
-			this.m_defaultvaluelist.setName("DefaultValueList");
+		if (m_defaultvaluelist == null) {
+			m_defaultvaluelist = new javax.swing.JList();
+			m_defaultvaluelist.setName("DefaultValueList");
 		}
 
-		return this.m_defaultvaluelist;
+		return m_defaultvaluelist;
 	}
 
 	/**
@@ -103,15 +103,15 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getNewButton() {
 
-		if (this.m_newbutton == null) {
-			this.m_newbutton = new javax.swing.JButton();
-			this.m_newbutton.setActionCommand("New");
-			this.m_newbutton.setIcon(IconFactory.getNewIcon());
-			this.m_newbutton.setName("NewButton");
-			this.m_newbutton.setText("New");
+		if (m_newbutton == null) {
+			m_newbutton = new javax.swing.JButton();
+			m_newbutton.setActionCommand("New");
+			m_newbutton.setIcon(IconFactory.getNewIcon());
+			m_newbutton.setName("NewButton");
+			m_newbutton.setText("New");
 		}
 
-		return this.m_newbutton;
+		return m_newbutton;
 	}
 
 	/**
@@ -121,15 +121,15 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getDeleteButton() {
 
-		if (this.m_deletebutton == null) {
-			this.m_deletebutton = new javax.swing.JButton();
-			this.m_deletebutton.setActionCommand("Delete");
-			this.m_deletebutton.setIcon(IconFactory.getDeleteIcon());
-			this.m_deletebutton.setName("DeleteButton");
-			this.m_deletebutton.setText("Delete");
+		if (m_deletebutton == null) {
+			m_deletebutton = new javax.swing.JButton();
+			m_deletebutton.setActionCommand("Delete");
+			m_deletebutton.setIcon(IconFactory.getDeleteIcon());
+			m_deletebutton.setName("DeleteButton");
+			m_deletebutton.setText("Delete");
 		}
 
-		return this.m_deletebutton;
+		return m_deletebutton;
 	}
 
 	/**
@@ -139,14 +139,14 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JTabbedPane getDetailTabbedPane() {
 
-		if (this.m_detailtabbedpane == null) {
-			this.m_detailtabbedpane = new DefaultTabbedPane();
-			this.m_detailtabbedpane.addTab(null, this
+		if (m_detailtabbedpane == null) {
+			m_detailtabbedpane = new DefaultTabbedPane();
+			m_detailtabbedpane.addTab(null, this
 					.getDetailTab());
-			this.m_detailtabbedpane.setSelectedIndex(0);
+			m_detailtabbedpane.setSelectedIndex(0);
 		}
 
-		return this.m_detailtabbedpane;
+		return m_detailtabbedpane;
 	}
 
 	/**
@@ -156,31 +156,31 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public JPanel getDetailTab() {
 
-		if (this.m_component_6 == null) {
-			this.m_component_6 = new DefaultTabbedPaneTab(getDetailTabbedPane(),ERDesignerBundle.DEFAULTVALUEPROPERTIES);
+		if (m_component_6 == null) {
+			m_component_6 = new DefaultTabbedPaneTab(getDetailTabbedPane(),ERDesignerBundle.DEFAULTVALUEPROPERTIES);
 
 			String rowDef = "2dlu,p,2dlu,p,20dlu,p,2dlu";
 			String colDef = "2dlu,left:60dlu,2dlu,60dlu:grow,2dlu";
 
 			FormLayout layout = new FormLayout(colDef, rowDef);
-			this.m_component_6.setLayout(layout);
+			m_component_6.setLayout(layout);
 
 			CellConstraints cons = new CellConstraints();
 
-			this.m_component_6
+			m_component_6
 					.add(this.getComponent_9(), cons.xywh(2, 2, 1, 1));
-			this.m_component_6.add(this.getComponent_10(), cons
+			m_component_6.add(this.getComponent_10(), cons
 					.xywh(2, 4, 1, 1));
-			this.m_component_6.add(this.getDefaultValueName(), cons.xywh(4, 2,
+			m_component_6.add(this.getDefaultValueName(), cons.xywh(4, 2,
 					1, 1));
-			this.m_component_6
+			m_component_6
 					.add(this.getDeclaration(), cons.xywh(4, 4, 1, 1));
-			this.m_component_6.add(this.getUpdateButton(), cons
+			m_component_6.add(this.getUpdateButton(), cons
 					.xywh(4, 6, 1, 1));
-			this.m_component_6.setName("Component_6");
+			m_component_6.setName("Component_6");
 		}
 
-		return this.m_component_6;
+		return m_component_6;
 	}
 
 	/**
@@ -190,11 +190,11 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JLabel getComponent_9() {
 
-		if (this.m_component_9 == null) {
-			this.m_component_9 = new DefaultLabel(ERDesignerBundle.NAME);
+		if (m_component_9 == null) {
+			m_component_9 = new DefaultLabel(ERDesignerBundle.NAME);
 		}
 
-		return this.m_component_9;
+		return m_component_9;
 	}
 
 	/**
@@ -204,11 +204,11 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JLabel getComponent_10() {
 
-		if (this.m_component_10 == null) {
-			this.m_component_10 = new DefaultLabel(ERDesignerBundle.DECLRATATION);
+		if (m_component_10 == null) {
+			m_component_10 = new DefaultLabel(ERDesignerBundle.DECLRATATION);
 		}
 
-		return this.m_component_10;
+		return m_component_10;
 	}
 
 	/**
@@ -218,12 +218,12 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public DefaultTextField getDefaultValueName() {
 
-		if (this.m_defaultvaluename == null) {
-			this.m_defaultvaluename = new DefaultTextField();
-			this.m_defaultvaluename.setName("DefaultValueName");
+		if (m_defaultvaluename == null) {
+			m_defaultvaluename = new DefaultTextField();
+			m_defaultvaluename.setName("DefaultValueName");
 		}
 
-		return this.m_defaultvaluename;
+		return m_defaultvaluename;
 	}
 
 	/**
@@ -233,12 +233,12 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public DefaultTextField getDeclaration() {
 
-		if (this.m_declaration == null) {
-			this.m_declaration = new DefaultTextField();
-			this.m_declaration.setName("Declaration");
+		if (m_declaration == null) {
+			m_declaration = new DefaultTextField();
+			m_declaration.setName("Declaration");
 		}
 
-		return this.m_declaration;
+		return m_declaration;
 	}
 
 	/**
@@ -248,11 +248,11 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getUpdateButton() {
 
-		if (this.m_updatebutton == null) {
-			this.m_updatebutton = new javax.swing.JButton();
+		if (m_updatebutton == null) {
+			m_updatebutton = new javax.swing.JButton();
 		}
 
-		return this.m_updatebutton;
+		return m_updatebutton;
 	}
 
 	/**
@@ -262,11 +262,11 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getOkButton() {
 
-		if (this.m_okbutton == null) {
-			this.m_okbutton = new javax.swing.JButton();
+		if (m_okbutton == null) {
+			m_okbutton = new javax.swing.JButton();
 		}
 
-		return this.m_okbutton;
+		return m_okbutton;
 	}
 
 	/**
@@ -276,10 +276,10 @@ public class DefaultValueEditorView extends JPanel {
 	 */
 	public javax.swing.JButton getCancelButton() {
 
-		if (this.m_cancelbutton == null) {
-			this.m_cancelbutton = new javax.swing.JButton();
+		if (m_cancelbutton == null) {
+			m_cancelbutton = new javax.swing.JButton();
 		}
 
-		return this.m_cancelbutton;
+		return m_cancelbutton;
 	}
 }
