@@ -5,7 +5,6 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Domain;
-import de.erdesignerng.visual.IconFactory;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
@@ -19,7 +18,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:09 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class DomainEditorView extends DefaultPanel {
 
@@ -109,7 +108,6 @@ public class DomainEditorView extends DefaultPanel {
 
 		if (newButton == null) {
 			newButton = new DefaultButton(ERDesignerBundle.NEW);
-			newButton.setIcon(IconFactory.getNewIcon());
 		}
 
 		return newButton;
@@ -124,7 +122,6 @@ public class DomainEditorView extends DefaultPanel {
 
 		if (deleteButton == null) {
 			deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
-			deleteButton.setIcon(IconFactory.getDeleteIcon());
 		}
 
 		return deleteButton;
@@ -257,7 +254,6 @@ public class DomainEditorView extends DefaultPanel {
 
 		if (updatebutton == null) {
 			updatebutton = new DefaultButton(ERDesignerBundle.UPDATE);
-			updatebutton.setIcon(IconFactory.getUpdateIcon());
 		}
 
 		return updatebutton;
@@ -272,7 +268,6 @@ public class DomainEditorView extends DefaultPanel {
 
 		if (okbutton == null) {
 			okbutton = new DefaultButton(ERDesignerBundle.OK);
-			okbutton.setIcon(IconFactory.getSaveIcon());
 		}
 
 		return okbutton;
@@ -287,7 +282,6 @@ public class DomainEditorView extends DefaultPanel {
 
 		if (cancelbutton == null) {
 			cancelbutton = new DefaultButton(ERDesignerBundle.CANCEL);
-			cancelbutton.setIcon(IconFactory.getCancelIcon());
 		}
 
 		return cancelbutton;

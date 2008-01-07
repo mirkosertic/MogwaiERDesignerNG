@@ -30,7 +30,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 15:11:35 $
+ * @version $Date: 2008-01-07 21:42:20 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -154,7 +154,7 @@ public class Model implements OwnedModelItemVerifier {
 	}
 
 	public void setDialect(Dialect modelProperties) {
-		this.dialect = modelProperties;
+		dialect = modelProperties;
 	}
 
 	public void delete(ModelItem aSender) throws CannotDeleteException {

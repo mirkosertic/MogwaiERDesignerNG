@@ -61,6 +61,7 @@ import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
+import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
@@ -91,7 +92,7 @@ import de.mogwai.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:12 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -543,7 +544,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 	protected void commandShowDomainEditor() {
 		DomainEditor theEditor = new DomainEditor(model, this);
-		if (theEditor.showModal() == DomainEditor.MODAL_RESULT_OK) {
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
 			} catch (Exception e) {
@@ -554,7 +555,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 	protected void commandShowDefaultValuesEditor() {
 		DefaultValueEditor theEditor = new DefaultValueEditor(model, this);
-		if (theEditor.showModal() == DomainEditor.MODAL_RESULT_OK) {
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
 			} catch (Exception e) {
@@ -656,7 +657,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 		Table theTable = new Table();
 		TableEditor theEditor = new TableEditor(model, this);
 		theEditor.initializeFor(theTable);
-		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
 
@@ -739,7 +740,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 	protected void commandDBConnection() {
 		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(this,
 				model, preferences);
-		if (theEditor.showModal() == DatabaseConnectionEditor.MODAL_RESULT_OK) {
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
 			} catch (Exception e) {
@@ -750,7 +751,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 	protected void commandClasspath() {
 		ClasspathEditor theEditor = new ClasspathEditor(this, preferences);
-		if (theEditor.showModal() == ClasspathEditor.MODAL_RESULT_OK) {
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();
 			} catch (Exception e) {

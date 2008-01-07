@@ -1,8 +1,5 @@
 package de.erdesignerng.visual.editor.relation;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,16 +8,19 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import de.erdesignerng.visual.IconFactory;
+import de.erdesignerng.ERDesignerBundle;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultRadioButton;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:04 $
+ * @version $Date: 2008-01-07 21:42:20 $
  */
 public class RelationEditorView extends JPanel {
 
-	private javax.swing.JLabel m_component_1;
+	private DefaultLabel m_component_1;
 
 	private DefaultTextField m_relationname;
 
@@ -28,25 +28,25 @@ public class RelationEditorView extends JPanel {
 
 	private JPanel onDeleteContainer;
 
-	private javax.swing.JRadioButton onDeleteNothing;
+	private DefaultRadioButton onDeleteNothing;
 
-	private javax.swing.JRadioButton onDeleteCascade;
+	private DefaultRadioButton onDeleteCascade;
 
-	private javax.swing.JRadioButton onDeleteSetNull;
+	private DefaultRadioButton onDeleteSetNull;
 
 	private JPanel onUpdateContainer;
 
-	private javax.swing.JRadioButton onUpdateNothing;
+	private DefaultRadioButton onUpdateNothing;
 
-	private javax.swing.JRadioButton onUpdateCascade;
+	private DefaultRadioButton onUpdateCascade;
 
-	private javax.swing.JRadioButton onUpdateSetNull;
+	private DefaultRadioButton onUpdateSetNull;
 
 	private JPanel m_component_8;
 
-	private javax.swing.JButton m_okbutton;
+	private DefaultButton m_okbutton;
 
-	private javax.swing.JButton m_cancelbutton;
+	private DefaultButton m_cancelbutton;
 
 	/**
 	 * Constructor.
@@ -95,9 +95,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JLabel getComponent_1() {
 
 		if (m_component_1 == null) {
-			m_component_1 = new javax.swing.JLabel();
-			m_component_1.setName("Component_1");
-			m_component_1.setText("Relation name :");
+			m_component_1 = new DefaultLabel(ERDesignerBundle.RELATIONNAME);
 		}
 
 		return m_component_1;
@@ -112,13 +110,6 @@ public class RelationEditorView extends JPanel {
 
 		if (m_relationname == null) {
 			m_relationname = new DefaultTextField();
-			m_relationname.setName("Relationname");
-			m_relationname.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					handleRelationnameActionPerformed(e.getActionCommand());
-				}
-			});
 		}
 
 		return m_relationname;
@@ -198,23 +189,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnDeleteCascadeNothing() {
 
 		if (onDeleteNothing == null) {
-			onDeleteNothing = new javax.swing.JRadioButton();
-			onDeleteNothing.setActionCommand("Database default");
-			onDeleteNothing.setName("Component_11#Group1!DEFAULT");
-			onDeleteNothing.setText("Nothing");
-			onDeleteNothing.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					handleComponent_11ActionPerformed(e.getActionCommand());
-				}
-			});
-			onDeleteNothing
-					.addChangeListener(new javax.swing.event.ChangeListener() {
-
-						public void stateChanged(javax.swing.event.ChangeEvent e) {
-							handleComponent_11StateChanged();
-						}
-					});
+			onDeleteNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
 		}
 
 		return onDeleteNothing;
@@ -228,24 +203,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnDeleteCascade() {
 
 		if (onDeleteCascade == null) {
-			onDeleteCascade = new javax.swing.JRadioButton();
-			onDeleteCascade.setActionCommand("ON DELETE CASCADE");
-			onDeleteCascade.setName("Component_12#Group1!CASCADE");
-			onDeleteCascade.setSelected(true);
-			onDeleteCascade.setText("CASCADE");
-			onDeleteCascade.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					handleComponent_12ActionPerformed(e.getActionCommand());
-				}
-			});
-			onDeleteCascade
-					.addChangeListener(new javax.swing.event.ChangeListener() {
-
-						public void stateChanged(javax.swing.event.ChangeEvent e) {
-							handleComponent_12StateChanged();
-						}
-					});
+			onDeleteCascade = new DefaultRadioButton(ERDesignerBundle.CASCADE);
 		}
 
 		return onDeleteCascade;
@@ -259,23 +217,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnDeleteSetNull() {
 
 		if (onDeleteSetNull == null) {
-			onDeleteSetNull = new javax.swing.JRadioButton();
-			onDeleteSetNull.setActionCommand("SET NULL");
-			onDeleteSetNull.setName("Component_13#Group1!SETNULL");
-			onDeleteSetNull.setText("SET NULL");
-			onDeleteSetNull.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					handleComponent_13ActionPerformed(e.getActionCommand());
-				}
-			});
-			onDeleteSetNull
-					.addChangeListener(new javax.swing.event.ChangeListener() {
-
-						public void stateChanged(javax.swing.event.ChangeEvent e) {
-							handleComponent_13StateChanged();
-						}
-					});
+			onDeleteSetNull = new DefaultRadioButton(ERDesignerBundle.SETNULL);
 		}
 
 		return onDeleteSetNull;
@@ -289,10 +231,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnUpdateCascadeNothing() {
 
 		if (onUpdateNothing == null) {
-			onUpdateNothing = new javax.swing.JRadioButton();
-			onUpdateNothing.setActionCommand("Database default");
-			onUpdateNothing.setName("Component_11#Group1!DEFAULT");
-			onUpdateNothing.setText("Nothing");
+			onUpdateNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
 		}
 
 		return onUpdateNothing;
@@ -306,11 +245,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnUpdateCascade() {
 
 		if (onUpdateCascade == null) {
-			onUpdateCascade = new javax.swing.JRadioButton();
-			onUpdateCascade.setActionCommand("ON DELETE CASCADE");
-			onUpdateCascade.setName("Component_12#Group1!CASCADE");
-			onUpdateCascade.setSelected(true);
-			onUpdateCascade.setText("CASCADE");
+			onUpdateCascade = new DefaultRadioButton(ERDesignerBundle.CASCADE);
 		}
 
 		return onUpdateCascade;
@@ -324,10 +259,7 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnUpdateSetNull() {
 
 		if (onUpdateSetNull == null) {
-			onUpdateSetNull = new javax.swing.JRadioButton();
-			onUpdateSetNull.setActionCommand("SET NULL");
-			onUpdateSetNull.setName("Component_13#Group1!SETNULL");
-			onUpdateSetNull.setText("SET NULL");
+			onUpdateSetNull = new DefaultRadioButton(ERDesignerBundle.SETNULL);
 		}
 
 		return onUpdateSetNull;
@@ -364,27 +296,10 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getOKButton() {
+	public DefaultButton getOKButton() {
 
 		if (m_okbutton == null) {
-			m_okbutton = new javax.swing.JButton();
-			m_okbutton.setActionCommand("Ok");
-			m_okbutton.setIcon(IconFactory.getSaveIcon());
-			m_okbutton.setName("OKButton");
-			m_okbutton.setText("Ok");
-			m_okbutton.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					handleOKButtonActionPerformed(e.getActionCommand());
-				}
-			});
-			m_okbutton
-					.addChangeListener(new javax.swing.event.ChangeListener() {
-
-						public void stateChanged(javax.swing.event.ChangeEvent e) {
-							handleOKButtonStateChanged();
-						}
-					});
+			m_okbutton = new DefaultButton(ERDesignerBundle.OK);
 		}
 
 		return m_okbutton;
@@ -395,27 +310,10 @@ public class RelationEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getCancelButton() {
+	public DefaultButton getCancelButton() {
 
 		if (m_cancelbutton == null) {
-			m_cancelbutton = new javax.swing.JButton();
-			m_cancelbutton.setActionCommand("Cancel");
-			m_cancelbutton.setIcon(IconFactory.getCancelIcon());
-			m_cancelbutton.setName("CancelButton");
-			m_cancelbutton.setText("Cancel");
-			m_cancelbutton.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					handleCancelButtonActionPerformed(e.getActionCommand());
-				}
-			});
-			m_cancelbutton
-					.addChangeListener(new javax.swing.event.ChangeListener() {
-
-						public void stateChanged(javax.swing.event.ChangeEvent e) {
-							handleCancelButtonStateChanged();
-						}
-					});
+			m_cancelbutton = new DefaultButton(ERDesignerBundle.CANCEL);
 		}
 
 		return m_cancelbutton;
@@ -470,104 +368,5 @@ public class RelationEditorView extends JPanel {
 		getOnDeleteCascadeNothing().setSelected("DEFAULT".equals(value));
 		getOnDeleteCascade().setSelected("CASCADE".equals(value));
 		getOnDeleteSetNull().setSelected("SETNULL".equals(value));
-	}
-
-	/**
-	 * Action listener implementation for Relationname.
-	 * 
-	 * @param actionCommand
-	 *            the spanned action command
-	 */
-	public void handleRelationnameActionPerformed(String actionCommand) {
-	}
-
-	/**
-	 * Action listener implementation for Component_11.
-	 * 
-	 * @param actionCommand
-	 *            the spanned action command
-	 */
-	public void handleComponent_11ActionPerformed(String actionCommand) {
-	}
-
-	/**
-	 * Change listener implementation for Component_11.
-	 * 
-	 * @param item
-	 *            the selected item
-	 */
-	public void handleComponent_11StateChanged() {
-	}
-
-	/**
-	 * Action listener implementation for Component_12.
-	 * 
-	 * @param actionCommand
-	 *            the spanned action command
-	 */
-	public void handleComponent_12ActionPerformed(String actionCommand) {
-	}
-
-	/**
-	 * Change listener implementation for Component_12.
-	 * 
-	 * @param item
-	 *            the selected item
-	 */
-	public void handleComponent_12StateChanged() {
-	}
-
-	/**
-	 * Action listener implementation for Component_13.
-	 * 
-	 * @param actionCommand
-	 *            the spanned action command
-	 */
-	public void handleComponent_13ActionPerformed(String actionCommand) {
-	}
-
-	/**
-	 * Change listener implementation for Component_13.
-	 * 
-	 * @param item
-	 *            the selected item
-	 */
-	public void handleComponent_13StateChanged() {
-	}
-
-	/**
-	 * Action listener implementation for OKButton.
-	 * 
-	 * @param actionCommand
-	 *            the spanned action command
-	 */
-	public void handleOKButtonActionPerformed(String actionCommand) {
-	}
-
-	/**
-	 * Change listener implementation for OKButton.
-	 * 
-	 * @param item
-	 *            the selected item
-	 */
-	public void handleOKButtonStateChanged() {
-	}
-
-	/**
-	 * Action listener implementation for CancelButton.
-	 * 
-	 * @param actionCommand
-	 *            the spanned action command
-	 */
-	public void handleCancelButtonActionPerformed(String actionCommand) {
-	}
-
-	/**
-	 * Change listener implementation for CancelButton.
-	 * 
-	 * @param item
-	 *            the selected item
-	 */
-	public void handleCancelButtonStateChanged() {
 	}
 }

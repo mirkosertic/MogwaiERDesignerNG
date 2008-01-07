@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.visual;
 
+import java.awt.Frame;
+
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -26,7 +28,7 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:49 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public final class ERDesigner {
 
@@ -41,7 +43,7 @@ public final class ERDesigner {
 		ERDesignerMainFrame frame = new ERDesignerMainFrame();
 		frame.setModel(new Model());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setExtendedState(ERDesignerMainFrame.MAXIMIZED_BOTH);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 	}
 }

@@ -44,7 +44,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:21 $
+ * @version $Date: 2008-01-07 21:42:20 $
  */
 public class TableCellView extends VertexView {
 
@@ -76,7 +76,7 @@ public class TableCellView extends VertexView {
 
 		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
 				int aHeight) {
-			if (this.roundedRect) {
+			if (roundedRect) {
 				aGraphics.fillRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
 				return;
 			}
@@ -86,7 +86,7 @@ public class TableCellView extends VertexView {
 
 		private void drawRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
 				int aHeight) {
-			if (this.roundedRect) {
+			if (roundedRect) {
 				aGraphics.drawRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
 				return;
 			}
