@@ -6,7 +6,6 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.visual.IconFactory;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
@@ -19,7 +18,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 19:09:37 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -69,9 +68,9 @@ public class TableEditorView extends DefaultPanel {
 
 	private javax.swing.JList m_indexlist;
 
-	private javax.swing.JButton m_newindexbutton;
+	private DefaultButton m_newindexbutton;
 
-	private javax.swing.JButton m_deleteindexbutton;
+	private DefaultButton m_deleteindexbutton;
 
 	private DefaultTabbedPane m_indextabbedpane;
 
@@ -87,7 +86,7 @@ public class TableEditorView extends DefaultPanel {
 
 	private javax.swing.JTable m_indexfieldlist;
 
-	private javax.swing.JButton m_updateindexbutton;
+	private DefaultButton m_updateindexbutton;
 
 	private DefaultTabbedPaneTab m_maincommenstab;
 
@@ -236,8 +235,6 @@ public class TableEditorView extends DefaultPanel {
 
 		if (m_newbutton == null) {
 			m_newbutton = new DefaultButton(ERDesignerBundle.NEW);
-			m_newbutton.setActionCommand("New");
-			m_newbutton.setIcon(IconFactory.getNewIcon());
 		}
 
 		return m_newbutton;
@@ -252,8 +249,6 @@ public class TableEditorView extends DefaultPanel {
 
 		if (m_deletebutton == null) {
 			m_deletebutton = new DefaultButton(ERDesignerBundle.DELETE);
-			m_deletebutton.setActionCommand("Delete");
-			m_deletebutton.setIcon(IconFactory.getDeleteIcon());
 		}
 
 		return m_deletebutton;
@@ -511,8 +506,6 @@ public class TableEditorView extends DefaultPanel {
 
 		if (m_updateattributebutton == null) {
 			m_updateattributebutton = new DefaultButton(ERDesignerBundle.UPDATE);
-			m_updateattributebutton.setActionCommand("Update");
-			m_updateattributebutton.setIcon(IconFactory.getUpdateIcon());
 		}
 
 		return m_updateattributebutton;
@@ -576,11 +569,7 @@ public class TableEditorView extends DefaultPanel {
 	public javax.swing.JButton getNewIndexButton() {
 
 		if (m_newindexbutton == null) {
-			m_newindexbutton = new javax.swing.JButton();
-			m_newindexbutton.setActionCommand("New");
-			m_newindexbutton.setIcon(IconFactory.getNewIcon());
-			m_newindexbutton.setName("NewIndexButton");
-			m_newindexbutton.setText("New");
+			m_newindexbutton = new DefaultButton(ERDesignerBundle.NEW);
 		}
 
 		return m_newindexbutton;
@@ -594,11 +583,7 @@ public class TableEditorView extends DefaultPanel {
 	public javax.swing.JButton getDeleteIndexButton() {
 
 		if (m_deleteindexbutton == null) {
-			m_deleteindexbutton = new javax.swing.JButton();
-			m_deleteindexbutton.setActionCommand("Delete");
-			m_deleteindexbutton.setIcon(IconFactory.getDeleteIcon());
-			m_deleteindexbutton.setName("DeleteIndexButton");
-			m_deleteindexbutton.setText("Delete");
+			m_deleteindexbutton = new DefaultButton(ERDesignerBundle.DELETE);
 		}
 
 		return m_deleteindexbutton;
@@ -756,14 +741,10 @@ public class TableEditorView extends DefaultPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getUpdateIndexButton() {
+	public DefaultButton getUpdateIndexButton() {
 
 		if (m_updateindexbutton == null) {
-			m_updateindexbutton = new javax.swing.JButton();
-			m_updateindexbutton.setActionCommand("Update");
-			m_updateindexbutton.setIcon(IconFactory.getUpdateIcon());
-			m_updateindexbutton.setName("UpdateIndexButton");
-			m_updateindexbutton.setText("Update");
+			m_updateindexbutton = new DefaultButton(ERDesignerBundle.UPDATE);
 		}
 
 		return m_updateindexbutton;
@@ -820,8 +801,6 @@ public class TableEditorView extends DefaultPanel {
 
 		if (m_okbutton == null) {
 			m_okbutton = new DefaultButton(ERDesignerBundle.OK);
-			m_okbutton.setActionCommand("Ok");
-			m_okbutton.setIcon(IconFactory.getSaveIcon());
 		}
 
 		return m_okbutton;
@@ -836,8 +815,6 @@ public class TableEditorView extends DefaultPanel {
 
 		if (m_cancelbutton == null) {
 			m_cancelbutton = new DefaultButton(ERDesignerBundle.CANCEL);
-			m_cancelbutton.setActionCommand("Cancel");
-			m_cancelbutton.setIcon(IconFactory.getCancelIcon());
 		}
 
 		return m_cancelbutton;

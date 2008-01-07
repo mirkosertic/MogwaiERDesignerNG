@@ -29,10 +29,11 @@ import org.jgraph.graph.CellView;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
 import de.erdesignerng.visual.editor.BaseEditor;
+import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:31 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -103,7 +104,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 				}
 
 				BaseEditor theDialog = (BaseEditor) editingComponent;
-				if (theDialog.showModal() == BaseEditor.MODAL_RESULT_OK) {
+				if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
 					try {
 						theDialog.applyValues();
 					} catch (Exception e) {

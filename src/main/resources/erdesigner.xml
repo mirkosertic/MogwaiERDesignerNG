@@ -273,5 +273,21 @@
 			<Text lang="de">Indizes</Text>		
 			<Text lang="en">Indexes</Text>					
 		</Entry>
+		<Entry id="DATABASEDEFAULT">
+			<Text lang="de">Nichts</Text>		
+			<Text lang="en">Nothing</Text>					
+		</Entry>
+		<Entry id="CASCADE">
+			<Text lang="de">CASCADE</Text>		
+			<Text lang="en">CASCADE</Text>					
+		</Entry>
+		<Entry id="SETNULL">
+			<Text lang="de">SET NULL</Text>		
+			<Text lang="en">SET NULL</Text>					
+		</Entry>
+		<Entry id="RELATIONNAME">
+			<Text lang="de">Name der Relation</Text>		
+			<Text lang="en">Relation name</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

@@ -26,7 +26,7 @@ import de.erdesignerng.model.Attribute;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:52 $
+ * @version $Date: 2008-01-07 21:42:20 $
  */
 public class AttributeTableModel implements TableModel {
 
@@ -41,10 +41,10 @@ public class AttributeTableModel implements TableModel {
 	public AttributeTableModel(String aPrimaryEntityName,
 			String aSecondaryEntityName, List<Attribute> aPrimaryKey,
 			Attribute[] aSecondaryKey) {
-		this.primaryKey = aPrimaryKey;
-		this.assignedAttributes = aSecondaryKey;
-		this.primaryKeyTableName = aPrimaryEntityName;
-		this.assignedTableName = aSecondaryEntityName;
+		primaryKey = aPrimaryKey;
+		assignedAttributes = aSecondaryKey;
+		primaryKeyTableName = aPrimaryEntityName;
+		assignedTableName = aSecondaryEntityName;
 	}
 
 	public Class getColumnClass(int aColumn) {
@@ -57,20 +57,20 @@ public class AttributeTableModel implements TableModel {
 
 	public String getColumnName(int aColumn) {
 		if (aColumn == 0)
-			return this.primaryKeyTableName;
+			return primaryKeyTableName;
 		else
-			return this.assignedTableName;
+			return assignedTableName;
 	}
 
 	public int getRowCount() {
-		return this.primaryKey.size();
+		return primaryKey.size();
 	}
 
 	public Object getValueAt(int aRow, int aColumn) {
 		if (aColumn == 1)
-			return this.assignedAttributes[aRow];
+			return assignedAttributes[aRow];
 		else
-			return this.primaryKey.get(aRow);
+			return primaryKey.get(aRow);
 	}
 
 	public boolean isCellEditable(int aRow, int aColumn) {
@@ -78,7 +78,7 @@ public class AttributeTableModel implements TableModel {
 	}
 
 	public void setValueAt(Object aValue, int aRow, int aColumn) {
-		this.assignedAttributes[aRow] = (Attribute) aValue;
+		assignedAttributes[aRow] = (Attribute) aValue;
 	}
 
 	public void addTableModelListener(TableModelListener l) {

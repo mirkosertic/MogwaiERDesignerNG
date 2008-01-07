@@ -25,12 +25,13 @@ import java.util.Map;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:18 $
+ * @version $Date: 2008-01-07 21:42:21 $
  */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
@@ -52,14 +53,14 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 		Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
 		String theLocation = ((int) theBounds.getX()) + ":"
 				+ ((int) theBounds.getY());
-		theTable.getProperties().setProperty(Table.PROPERTY_LOCATION,
+		theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION,
 				theLocation);
 	}
 
 	public void transferPropertiesToAttributes(Table aObject) {
 
 		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
-				.getProperties().getProperty(aObject.PROPERTY_LOCATION));
+				.getProperties().getProperty(ModelItem.PROPERTY_LOCATION));
 		if (thePoint != null) {
 			GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
 					thePoint.getX(), thePoint.getY(), -1, -1));

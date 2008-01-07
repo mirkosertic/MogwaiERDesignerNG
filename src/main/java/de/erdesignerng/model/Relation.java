@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:14 $
+ * @version $Date: 2008-01-07 21:42:20 $
  */
 public class Relation extends OwnedModelItem<Model> {
 
@@ -53,7 +53,7 @@ public class Relation extends OwnedModelItem<Model> {
 	 *            the end to set
 	 */
 	public void setExportingTable(Table end) {
-		this.exportingTable = end;
+		exportingTable = end;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Relation extends OwnedModelItem<Model> {
 	 *            the start to set
 	 */
 	public void setImportingTable(Table start) {
-		this.importingTable = start;
+		importingTable = start;
 	}
 
 	/**

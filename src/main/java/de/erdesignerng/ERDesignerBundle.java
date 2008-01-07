@@ -141,4 +141,12 @@ public interface ERDesignerBundle {
   String ATTRIBUTES = "ATTRIBUTES";
   /** Indizes */
   String INDEXES = "INDEXES";
+  /** Nichts */
+  String DATABASEDEFAULT = "DATABASEDEFAULT";
+  /** CASCADE */
+  String CASCADE = "CASCADE";
+  /** SET NULL */
+  String SETNULL = "SETNULL";
+  /** Name der Relation */
+  String RELATIONNAME = "RELATIONNAME";
 }
