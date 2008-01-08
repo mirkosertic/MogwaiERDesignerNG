@@ -22,17 +22,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.graph.GraphCell;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
+import de.mogwai.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-08 19:40:26 $
  */
 public class HandTool extends BaseTool {
 
@@ -66,15 +71,19 @@ public class HandTool extends BaseTool {
 
 	public JPopupMenu createPopupMenu(Point aPoint, final GraphCell aCell) {
 
-		JPopupMenu theMenu = new JPopupMenu();
+		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-		JMenuItem theItem = theMenu.add("Delete");
-		theItem.addActionListener(new ActionListener() {
+		DefaultAction theAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
+		DefaultMenuItem theItem = new DefaultMenuItem(theAction);
+		theAction.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				graph.commandDeleteCell(aCell);
 			}
 		});
+		
+		theMenu.add(theItem);
+		UIInitializer.getInstance().initialize(theMenu);
 
 		return theMenu;
 	}
