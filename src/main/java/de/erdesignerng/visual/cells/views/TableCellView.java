@@ -37,6 +37,7 @@ import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
@@ -44,7 +45,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:20 $
+ * @version $Date: 2008-01-08 22:13:39 $
  */
 public class TableCellView extends VertexView {
 
@@ -53,7 +54,7 @@ public class TableCellView extends VertexView {
 	public TableCellView(TableCell aCell) {
 		super(aCell);
 	}
-
+	
 	@Override
 	public CellViewRenderer getRenderer() {
 		return renderer;
@@ -68,6 +69,8 @@ public class TableCellView extends VertexView {
 
 		private boolean selected;
 
+		private boolean domainDisplayMode;
+		
 		private static ImageIcon key = IconFactory.getKeyIcon();
 
 		public MyRenderer() {
@@ -132,7 +135,7 @@ public class TableCellView extends VertexView {
 			theAllAttributes.addAll(table.getAttributes());
 
 			boolean hasPrimaryKey = false;
-
+			
 			// Draw the attributes
 			for (Attribute theAttribute : table.getAttributes()) {
 				if (theAttribute.isPrimaryKey()) {
@@ -144,6 +147,13 @@ public class TableCellView extends VertexView {
 					aGraphics.setColor(Color.red);
 
 					String theText = theAttribute.getName();
+					theText+=" : ";
+					if (domainDisplayMode) {
+						theText+=theAttribute.getDomain().getName();
+					} else {
+						theText+=theAttribute.getDomain().getDatatype();
+					}
+					
 					if (theAttribute.isForeignKey()) {
 						theText += " (FK)";
 					}
@@ -173,6 +183,13 @@ public class TableCellView extends VertexView {
 					boolean isFK = theAttribute.isForeignKey();
 
 					String theText = theAttribute.getName();
+					theText+=" : ";
+					if (domainDisplayMode) {
+						theText+=theAttribute.getDomain().getName();
+					} else {
+						theText+=theAttribute.getDomain().getDatatype();
+					}
+					
 					if (isFK) {
 						theText += " (FK)";
 					}
@@ -211,6 +228,13 @@ public class TableCellView extends VertexView {
 					theAllAttributes.remove(theAttribute);
 
 					String theText = theAttribute.getName();
+					theText+=" : ";
+					if (domainDisplayMode) {
+						theText+=theAttribute.getDomain().getName();
+					} else {
+						theText+=theAttribute.getDomain().getDatatype();
+					}
+
 					if (theAttribute.isForeignKey()) {
 						theText += " (FK)";
 					}
@@ -227,6 +251,13 @@ public class TableCellView extends VertexView {
 			for (Attribute theAttribute : theAllAttributes) {
 
 				String theText = theAttribute.getName();
+				theText+=" : ";
+				if (domainDisplayMode) {
+					theText+=theAttribute.getDomain().getName();
+				} else {
+					theText+=theAttribute.getDomain().getDatatype();
+				}
+				
 				if (theAttribute.isForeignKey()) {
 					theText += " (FK)";
 				}
@@ -257,6 +288,7 @@ public class TableCellView extends VertexView {
 			TableCellView theView = (TableCellView) aView;
 			table = (Table) ((TableCell) theView.getCell()).getUserObject();
 			selected = aSelected;
+			domainDisplayMode = ((ERDesignerGraph)aGraph).isDomainDisplayMode();
 
 			return this;
 		}
