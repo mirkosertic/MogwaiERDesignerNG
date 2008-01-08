@@ -17,12 +17,14 @@
  */
 package de.erdesignerng.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:14 $
+ * @version $Date: 2008-01-08 19:40:25 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
@@ -76,6 +78,25 @@ public class RelationList extends ModelItemVector<Relation> {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Remove all relations that are connected to a given table.
+	 * 
+	 * @param aTable the table
+	 */
+	public void removeByTable(Table aTable) {
+		List<Relation> theRelationsToRemove = new ArrayList<Relation>();
+		for(Relation theRelation : this) {
+			if (theRelation.getImportingTable().equals(aTable)) {
+				theRelationsToRemove.add(theRelation);
+			} else {
+				if (theRelation.getExportingTable().equals(aTable)) {
+					theRelationsToRemove.add(theRelation);
+				}
+			}
+		}
+		removeAll(theRelationsToRemove);
 	}
 
 }

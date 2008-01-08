@@ -289,5 +289,13 @@
 			<Text lang="de">Name der Relation</Text>		
 			<Text lang="en">Relation name</Text>					
 		</Entry>
+		<Entry id="ALLINONEFILE">
+			<Text lang="de">Alles in eine Datei...</Text>		
+			<Text lang="en">All in one file...</Text>					
+		</Entry>
+		<Entry id="ONEFILEPERTABLE">
+			<Text lang="de">Eine Datei pro Tabelle...</Text>		
+			<Text lang="en">One file per table...</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

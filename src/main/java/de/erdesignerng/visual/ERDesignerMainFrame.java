@@ -92,7 +92,7 @@ import de.mogwai.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-08 19:40:26 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -319,21 +319,26 @@ public class ERDesignerMainFrame extends DefaultFrame {
 	}
 
 	protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
-		JMenuItem theAllInOneItem = aMenu.add("All in one");
-		theAllInOneItem.addActionListener(new ActionListener() {
+		
+		DefaultAction theAllInOneAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
+		DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
+		theAllInOneAction.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				commandExport(aExporter, ExportType.ALL_IN_ONE);
 			}
 		});
+		aMenu.add(theAllInOneItem);
 
-		JMenuItem theOnePerTable = aMenu.add("One file per table");
-		theOnePerTable.addActionListener(new ActionListener() {
+		DefaultAction theOnePerTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
+		DefaultMenuItem theOnePerTable = new DefaultMenuItem(theOnePerTableAction);
+		theOnePerTableAction.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				commandExport(aExporter, ExportType.ONE_PER_FILE);
 			}
 		});
+		aMenu.add(theOnePerTable);
 	}
 
 	private void initialize() {
@@ -500,7 +505,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 		graphModel.addGraphModelListener(graphModelListener);
 
-		graph = new ERDesignerGraph(graphModel, layoutCache) {
+		graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
 			@Override
 			public void commandNewTable(Point2D aLocation) {
@@ -843,14 +848,16 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 			Object[] theChangedObjects = theChange.getChanged();
 			Map theChangedAttributes = theChange.getPreviousAttributes();
-			for (Object theChangedObject : theChangedObjects) {
-				Map theAttributes = (Map) theChangedAttributes
-						.get(theChangedObject);
+			if (theChangedAttributes != null) {
+				for (Object theChangedObject : theChangedObjects) {
+					Map theAttributes = (Map) theChangedAttributes
+							.get(theChangedObject);
 
-				if (theChangedObject instanceof ModelCell) {
+					if (theChangedObject instanceof ModelCell) {
 
-					ModelCell theCell = (ModelCell) theChangedObject;
-					theCell.transferAttributesToProperties(theAttributes);
+						ModelCell theCell = (ModelCell) theChangedObject;
+						theCell.transferAttributesToProperties(theAttributes);
+					}
 				}
 			}
 
