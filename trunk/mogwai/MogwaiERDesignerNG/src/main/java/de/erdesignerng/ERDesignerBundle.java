@@ -149,4 +149,8 @@ public interface ERDesignerBundle {
   String SETNULL = "SETNULL";
   /** Name der Relation */
   String RELATIONNAME = "RELATIONNAME";
+  /** Alles in eine Datei... */
+  String ALLINONEFILE = "ALLINONEFILE";
+  /** Eine Datei pro Tabelle... */
+  String ONEFILEPERTABLE = "ONEFILEPERTABLE";
 }
