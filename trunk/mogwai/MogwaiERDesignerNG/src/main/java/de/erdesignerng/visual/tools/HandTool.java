@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.graph.GraphCell;
@@ -37,7 +36,7 @@ import de.mogwai.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 19:40:26 $
+ * @version $Date: 2008-01-08 22:13:39 $
  */
 public class HandTool extends BaseTool {
 
@@ -61,7 +60,7 @@ public class HandTool extends BaseTool {
 					.getFirstCellForLocation(e.getX(), e.getY());
 
 			if (theClickedCell != null) {
-				JPopupMenu menu = createPopupMenu(e.getPoint(), theClickedCell);
+				DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theClickedCell);
 				menu.show(graph, e.getX(), e.getY());
 			}
 		} else {
@@ -69,7 +68,7 @@ public class HandTool extends BaseTool {
 		}
 	}
 
-	public JPopupMenu createPopupMenu(Point aPoint, final GraphCell aCell) {
+	public DefaultPopupMenu createPopupMenu(Point aPoint, final GraphCell aCell) {
 
 		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
