@@ -39,13 +39,13 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 19:40:26 $
+ * @version $Date: 2008-01-08 22:13:39 $
  */
 public class ERDesignerGraph extends JGraph {
 
 	private Model model;
 	
-	private BaseTool tool;
+	private boolean domainDisplayMode;
 
 	public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
 		super(aModel, aLayoutCache);
@@ -62,7 +62,6 @@ public class ERDesignerGraph extends JGraph {
 
 	public void setTool(BaseTool aTool) {
 		setMarqueeHandler(aTool);
-		tool = aTool;
 	}
 
 	public void commandDeleteCell(GraphCell aCell) {
@@ -112,5 +111,19 @@ public class ERDesignerGraph extends JGraph {
 	}
 
 	public void commandNewTable(Point2D aPoint) {
+	}
+
+	/**
+	 * @return the domainDisplayMode
+	 */
+	public boolean isDomainDisplayMode() {
+		return domainDisplayMode;
+	}
+
+	/**
+	 * @param domainDisplayMode the domainDisplayMode to set
+	 */
+	public void setDomainDisplayMode(boolean domainDisplayMode) {
+		this.domainDisplayMode = domainDisplayMode;
 	}
 }

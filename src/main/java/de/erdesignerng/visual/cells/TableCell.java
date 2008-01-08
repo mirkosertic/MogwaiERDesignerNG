@@ -31,7 +31,7 @@ import de.erdesignerng.model.Table;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-08 22:13:39 $
  */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
@@ -46,7 +46,7 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 		GraphConstants.setEditable(getAttributes(), true);
 		addPort();
 	}
-
+	
 	public void transferAttributesToProperties(Map aAttributes) {
 
 		Table theTable = (Table) getUserObject();
