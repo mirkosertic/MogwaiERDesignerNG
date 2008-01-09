@@ -159,4 +159,14 @@ public interface ERDesignerBundle {
   String LOGICALVIEW = "LOGICALVIEW";
   /** Physische Ansicht(Deklarationen) */
   String PHYSICALVIEW = "PHYSICALVIEW";
+  /** Tablengenerierung */
+  String TABLEGENERATION = "TABLEGENERATION";
+  /** Domänengenerierung */
+  String DOMAINGENERATION = "DOMAINGENERATION";
+  /** Defaultgenerierung */
+  String DEFAULTVALUEENERATION = "DEFAULTVALUEENERATION";
+  /** Sie müssen mindestens ein Schema auswählen */
+  String CHOOSEONESCHEMA = "CHOOSEONESCHEMA";
+  /** Standard */
+  String STANDART = "STANDART";
 }
