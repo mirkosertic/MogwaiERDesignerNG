@@ -87,12 +87,13 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
+import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.i18n.ResourceHelper;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 19:40:26 $
+ * @version $Date: 2008-01-09 18:37:26 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -300,6 +301,24 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 			}, this, ERDesignerBundle.RELATION);
 
+	private DefaultAction logicalAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandLogicalView();
+				}
+
+			}, this, ERDesignerBundle.LOGICALVIEW);
+
+	private DefaultAction physicalAction = new DefaultAction(
+			new ActionEventProcessor() {
+
+				public void processActionEvent(ActionEvent e) {
+					commandPhysicalView();
+				}
+
+			}, this, ERDesignerBundle.PHYSICALVIEW);
+
 	private JToggleButton handButton;
 
 	private JToggleButton relationButton;
@@ -307,6 +326,8 @@ public class ERDesignerMainFrame extends DefaultFrame {
 	private JToggleButton entityButton;
 
 	private File currentEditingFile;
+	
+	private DefaultRadioButtonMenuItem logicalView = new DefaultRadioButtonMenuItem(logicalAction);	
 
 	public ERDesignerMainFrame() {
 		super(ERDesignerBundle.TITLE);
@@ -405,6 +426,17 @@ public class ERDesignerMainFrame extends DefaultFrame {
 		theViewMenu.addSeparator();
 		theViewMenu.add(new DefaultMenuItem(zoomInAction));
 		theViewMenu.add(new DefaultMenuItem(zoomOutAction));
+		theViewMenu.addSeparator();
+		
+		DefaultRadioButtonMenuItem thePhysicalView = new DefaultRadioButtonMenuItem(physicalAction);		
+		ButtonGroup theViewTypeButtonGroup = new ButtonGroup();
+		theViewTypeButtonGroup.add(logicalView);
+		theViewTypeButtonGroup.add(thePhysicalView);
+		
+		logicalView.setSelected(true);
+		
+		theViewMenu.add(logicalView);
+		theViewMenu.add(thePhysicalView);
 		
 		menuBar.add(theFileMenu);
 		menuBar.add(theDBMenu);
@@ -545,6 +577,8 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 		commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
 		commandSetTool(ToolEnum.HAND);
+		
+		logicalView.setSelected(graph.isDomainDisplayMode());
 	}
 
 	protected void commandShowDomainEditor() {
@@ -712,6 +746,18 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 			graph.setTool(new RelationTool(graph));
 		}
+	}
+	
+	protected void commandLogicalView() {
+		graph.setDomainDisplayMode(true);
+		graph.invalidate();
+		graph.repaint();
+	}
+	
+	protected void commandPhysicalView() {
+		graph.setDomainDisplayMode(false);
+		graph.invalidate();
+		graph.repaint();
 	}
 
 	protected void commandZoomOut() {

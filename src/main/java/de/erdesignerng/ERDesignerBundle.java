@@ -153,4 +153,10 @@ public interface ERDesignerBundle {
   String ALLINONEFILE = "ALLINONEFILE";
   /** Eine Datei pro Tabelle... */
   String ONEFILEPERTABLE = "ONEFILEPERTABLE";
+  /** Das Element wird benutzt und kann daher nicht gelöscht werden */
+  String ELEMENTINUSE = "ELEMENTINUSE";
+  /** Logische Ansicht(Domänen) */
+  String LOGICALVIEW = "LOGICALVIEW";
+  /** Physische Ansicht(Deklarationen) */
+  String PHYSICALVIEW = "PHYSICALVIEW";
 }

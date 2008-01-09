@@ -297,5 +297,17 @@
 			<Text lang="de">Eine Datei pro Tabelle...</Text>		
 			<Text lang="en">One file per table...</Text>					
 		</Entry>
+		<Entry id="ELEMENTINUSE">
+			<Text lang="de">Das Element wird benutzt und kann daher nicht gelöscht werden</Text>		
+			<Text lang="en">The element is in use and cannot be deleted</Text>					
+		</Entry>
+		<Entry id="LOGICALVIEW">
+			<Text lang="de">Logische Ansicht(Domänen)</Text>		
+			<Text lang="en">Logical view(domains)</Text>					
+		</Entry>
+		<Entry id="PHYSICALVIEW">
+			<Text lang="de">Physische Ansicht(Deklarationen)</Text>		
+			<Text lang="en">Physical view(declarations)</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
