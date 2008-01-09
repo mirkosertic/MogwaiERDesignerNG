@@ -25,12 +25,13 @@ import java.util.Vector;
 import de.erdesignerng.dialect.db2.DB2Dialect;
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLDialect;
+import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
 import de.erdesignerng.dialect.oracle.OracleDialect;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:06 $
+ * @version $Date: 2008-01-09 20:42:20 $
  */
 public class DialectFactory {
 
@@ -41,6 +42,7 @@ public class DialectFactory {
 	private DialectFactory() {
 		registerDialect(new MSSQLDialect());
 		registerDialect(new MySQLDialect());
+		registerDialect(new MySQLInnoDBDialect());		
 		registerDialect(new OracleDialect());
 		registerDialect(new PostgresDialect());
 		registerDialect(new DB2Dialect());		
