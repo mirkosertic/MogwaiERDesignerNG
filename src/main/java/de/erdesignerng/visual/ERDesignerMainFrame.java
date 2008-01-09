@@ -61,11 +61,13 @@ import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
+import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
+import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
@@ -93,7 +95,7 @@ import de.mogwai.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-09 18:37:26 $
+ * @version $Date: 2008-01-09 20:38:21 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -212,7 +214,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 				}
 
 			}, this, ERDesignerBundle.REVERSEENGINEER);
-		
+
 	private DefaultAction domainsAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -263,7 +265,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 	private DefaultAction layoutAction = new DefaultAction(this,
 			ERDesignerBundle.LAYOUT);
-	
+
 	private DefaultAction layoutgraphvizAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -272,8 +274,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 				}
 
 			}, this, ERDesignerBundle.LAYOUTBYGRAPHVIZ);
-	
-	
+
 	private DefaultAction handAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -326,8 +327,9 @@ public class ERDesignerMainFrame extends DefaultFrame {
 	private JToggleButton entityButton;
 
 	private File currentEditingFile;
-	
-	private DefaultRadioButtonMenuItem logicalView = new DefaultRadioButtonMenuItem(logicalAction);	
+
+	private DefaultRadioButtonMenuItem logicalView = new DefaultRadioButtonMenuItem(
+			logicalAction);
 
 	public ERDesignerMainFrame() {
 		super(ERDesignerBundle.TITLE);
@@ -340,8 +342,9 @@ public class ERDesignerMainFrame extends DefaultFrame {
 	}
 
 	protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
-		
-		DefaultAction theAllInOneAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
+
+		DefaultAction theAllInOneAction = new DefaultAction(
+				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
 		DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
 		theAllInOneAction.addActionListener(new ActionListener() {
 
@@ -351,8 +354,10 @@ public class ERDesignerMainFrame extends DefaultFrame {
 		});
 		aMenu.add(theAllInOneItem);
 
-		DefaultAction theOnePerTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
-		DefaultMenuItem theOnePerTable = new DefaultMenuItem(theOnePerTableAction);
+		DefaultAction theOnePerTableAction = new DefaultAction(
+				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
+		DefaultMenuItem theOnePerTable = new DefaultMenuItem(
+				theOnePerTableAction);
 		theOnePerTableAction.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -418,26 +423,27 @@ public class ERDesignerMainFrame extends DefaultFrame {
 		theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
 
 		DefaultMenu theViewMenu = new DefaultMenu(viewAction);
-		
+
 		DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
 		theLayoutMenu.add(new DefaultMenuItem(layoutgraphvizAction));
-		
+
 		theViewMenu.add(theLayoutMenu);
 		theViewMenu.addSeparator();
 		theViewMenu.add(new DefaultMenuItem(zoomInAction));
 		theViewMenu.add(new DefaultMenuItem(zoomOutAction));
 		theViewMenu.addSeparator();
-		
-		DefaultRadioButtonMenuItem thePhysicalView = new DefaultRadioButtonMenuItem(physicalAction);		
+
+		DefaultRadioButtonMenuItem thePhysicalView = new DefaultRadioButtonMenuItem(
+				physicalAction);
 		ButtonGroup theViewTypeButtonGroup = new ButtonGroup();
 		theViewTypeButtonGroup.add(logicalView);
 		theViewTypeButtonGroup.add(thePhysicalView);
-		
+
 		logicalView.setSelected(true);
-		
+
 		theViewMenu.add(logicalView);
 		theViewMenu.add(thePhysicalView);
-		
+
 		menuBar.add(theFileMenu);
 		menuBar.add(theDBMenu);
 		menuBar.add(theViewMenu);
@@ -577,7 +583,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 		commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
 		commandSetTool(ToolEnum.HAND);
-		
+
 		logicalView.setSelected(graph.isDomainDisplayMode());
 	}
 
@@ -747,13 +753,13 @@ public class ERDesignerMainFrame extends DefaultFrame {
 			graph.setTool(new RelationTool(graph));
 		}
 	}
-	
+
 	protected void commandLogicalView() {
 		graph.setDomainDisplayMode(true);
 		graph.invalidate();
 		graph.repaint();
 	}
-	
+
 	protected void commandPhysicalView() {
 		graph.setDomainDisplayMode(false);
 		graph.invalidate();
@@ -864,26 +870,23 @@ public class ERDesignerMainFrame extends DefaultFrame {
 
 		}
 	}
-	
+
 	protected void commandLayoutGraphviz() {
 		try {
-			Layouter theLayout = LayouterFactory.getInstance().createGraphvizLayouter();
+			Layouter theLayout = LayouterFactory.getInstance()
+					.createGraphvizLayouter();
 			theLayout.applyLayout(graph, graph.getRoots());
 		} catch (Exception e) {
 			logException(e);
 		}
 	}
-	
+
 	protected void commandReverseEngineer() {
-	
-		try {
-			Connection theConnection = model.createConnection(preferences);
-			
-			setModel(model.getDialect().getReverseEngineeringStrategy().createModelFromConnection(theConnection, "powerstaff"));
-			
-			theConnection.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model,
+				this, preferences);
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+
 		}
 	}
 
