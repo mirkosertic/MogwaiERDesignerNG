@@ -19,8 +19,10 @@ package de.erdesignerng.visual.editor.domain;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -43,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 20:21:15 $
+ * @version $Date: 2008-01-09 18:37:26 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -54,6 +56,8 @@ public class DomainEditor extends BaseEditor {
 	private DomainEditorView editingView = new DomainEditorView();
 
 	private Model model;
+	
+	private List<Domain> removedDomains = new ArrayList<Domain>();
 
 	private Map<String, Domain> knownValues = new HashMap<String, Domain>();
 	
@@ -247,6 +251,20 @@ public class DomainEditor extends BaseEditor {
 	}
 
 	private void commandDelete() {
+
+		Domain theDomain = bindingInfo.getDefaultModel();
+
+		if (!model.getTables().isDomainUsed(theDomain)) {
+			if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+
+				removedDomains.add(theDomain);
+				domainListModel.remove(theDomain);
+
+				commandNew();
+			}
+		} else {
+			displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+		}
 	}
 
 	@Override
@@ -265,5 +283,7 @@ public class DomainEditor extends BaseEditor {
 				model.addDomain(theValue);
 			}
 		}
+		
+		model.getDomains().removeAll(removedDomains);
 	}
 }

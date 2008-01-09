@@ -39,13 +39,13 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 22:13:39 $
+ * @version $Date: 2008-01-09 18:37:26 $
  */
 public class ERDesignerGraph extends JGraph {
 
 	private Model model;
 	
-	private boolean domainDisplayMode;
+	private boolean domainDisplayMode = true;
 
 	public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
 		super(aModel, aLayoutCache);

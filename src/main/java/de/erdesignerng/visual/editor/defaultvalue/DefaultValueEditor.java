@@ -19,10 +19,11 @@ package de.erdesignerng.visual.editor.defaultvalue;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
 
 import de.erdesignerng.ERDesignerBundle;
@@ -30,6 +31,7 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.DefaultValueList;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -37,10 +39,11 @@ import de.mogwai.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:10 $
+ * @version $Date: 2008-01-09 18:37:26 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -51,6 +54,8 @@ public class DefaultValueEditor extends BaseEditor {
 	private DefaultValueEditorView editingView;
 
 	private Model model;
+	
+	private List<DefaultValue> removedDefaultValues = new ArrayList<DefaultValue>();
 
 	private Map<String, DefaultValue> knownValues = new HashMap<String, DefaultValue>();
 	
@@ -111,7 +116,7 @@ public class DefaultValueEditor extends BaseEditor {
 			DefaultValue theClone = theValue.clone();
 
 			knownValues.put(theClone.getName(), theClone);
-			defaultValuesListModel.addElement(theValue);
+			defaultValuesListModel.add(theValue);
 		}
 
 		editingView.getDefaultValueList().setModel(defaultValuesListModel);
@@ -215,7 +220,7 @@ public class DefaultValueEditor extends BaseEditor {
 					displayErrorMessage("Name already in use!");
 					return;
 				}
-				defaultValuesListModel.addElement(theModel);
+				defaultValuesListModel.add(theModel);
 				knownValues.put(theModel.getName(), theModel);
 			}
 
@@ -224,6 +229,20 @@ public class DefaultValueEditor extends BaseEditor {
 	}
 
 	private void commandDelete() {
+		
+		DefaultValue theDomain = bindingInfo.getDefaultModel();
+
+		if (!model.getTables().isDefaultValueUsed(theDomain)) {
+			if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+
+				removedDefaultValues.add(theDomain);
+				defaultValuesListModel.remove(theDomain);
+
+				commandNew();
+			}
+		} else {
+			displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+		}		
 	}
 
 	@Override
@@ -242,5 +261,7 @@ public class DefaultValueEditor extends BaseEditor {
 				model.addDefaultValue(theValue);
 			}
 		}
+		
+		model.getDefaultValues().removeAll(removedDefaultValues);
 	}
 }
