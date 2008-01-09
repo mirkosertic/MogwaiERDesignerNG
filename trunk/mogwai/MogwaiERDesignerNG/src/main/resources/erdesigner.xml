@@ -309,5 +309,25 @@
 			<Text lang="de">Physische Ansicht(Deklarationen)</Text>		
 			<Text lang="en">Physical view(declarations)</Text>					
 		</Entry>
+		<Entry id="TABLEGENERATION">
+			<Text lang="de">Tablengenerierung</Text>		
+			<Text lang="en">Table generation</Text>					
+		</Entry>
+		<Entry id="DOMAINGENERATION">
+			<Text lang="de">Domänengenerierung</Text>		
+			<Text lang="en">Domain generation</Text>					
+		</Entry>
+		<Entry id="DEFAULTVALUEENERATION">
+			<Text lang="de">Defaultgenerierung</Text>		
+			<Text lang="en">Default generation</Text>					
+		</Entry>
+		<Entry id="CHOOSEONESCHEMA">
+			<Text lang="de">Sie müssen mindestens ein Schema auswählen</Text>		
+			<Text lang="en">You have to select at least one schema</Text>					
+		</Entry>
+		<Entry id="STANDART">
+			<Text lang="de">Standard</Text>		
+			<Text lang="en">Standard</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
