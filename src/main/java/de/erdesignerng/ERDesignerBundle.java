@@ -177,4 +177,16 @@ public interface ERDesignerBundle {
   String ENGINEERINGRELATION = "ENGINEERINGRELATION";
   /** Reverseengineering beendet */
   String ENGINEERINGFINISHED = "ENGINEERINGFINISHED";
+  /** Eigenschaften der Relation */
+  String RELATIONPROPERTIES = "RELATIONPROPERTIES";
+  /** Mapping der Eigenschaften */
+  String ATTRIBUTEMAPPING = "ATTRIBUTEMAPPING";
+  /** Behandlung von ON DELETE */
+  String ONDELETEHANDLING = "ONDELETEHANDLING";
+  /** Behandlung von ON UPDATE */
+  String ONUPDATEHANDLING = "ONUPDATEHANDLING";
+  /** Schema Optionen */
+  String SCHEMAOPTIONS = "SCHEMAOPTIONS";
+  /** Engineering Optionen */
+  String ENGINEERINGOPTIONS = "ENGINEERINGOPTIONS";
 }

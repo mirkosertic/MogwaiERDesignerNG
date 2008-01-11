@@ -4,7 +4,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -12,11 +11,12 @@ import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultRadioButton;
+import de.mogwai.common.client.looks.components.DefaultSeparator;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:20 $
+ * @version $Date: 2008-01-11 21:24:34 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -69,17 +69,13 @@ public class RelationEditorView extends JPanel {
 		CellConstraints cons = new CellConstraints();
 
 		add(getComponent_1(), cons.xywh(2, 4, 1, 1));
-		add(DefaultComponentFactory.getInstance().createSeparator(
-				"Relation properties"), cons.xywh(2, 2, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
 		add(getRelationname(), cons.xywh(4, 4, 1, 1));
-		add(DefaultComponentFactory.getInstance().createSeparator(
-				"Attribute mapping"), cons.xywh(2, 6, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(2, 6, 3, 1));
 		add(new JScrollPane(getComponent_5()), cons.xywh(2, 8, 3, 1));
-		add(DefaultComponentFactory.getInstance().createSeparator(
-				"On Delete handling"), cons.xywh(2, 10, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(2, 10, 3, 1));
 		add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
-		add(DefaultComponentFactory.getInstance().createSeparator(
-				"On Update handling"), cons.xywh(2, 14, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
 		add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
 
 		add(getComponent_8(), cons.xywh(2, 20, 3, 1));
