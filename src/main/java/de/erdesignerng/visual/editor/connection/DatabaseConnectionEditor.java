@@ -14,7 +14,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
-import de.mogwai.binding.BindingInfo;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -23,7 +23,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:04 $
+ * @version $Date: 2008-01-11 18:40:39 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -168,7 +168,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 								.getUser(), theModel.getPassword());
 				theConnection.close();
 
-				displayInfoMessage("Connection seems to be ok");
+				displayInfoMessage(getResourceHelper().getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
 
 			} catch (Exception e) {
 

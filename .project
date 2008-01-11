@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ERDesignerNG</name>
-	<comment></comment>
+	<name>MogwaiERDesignerNG</name>
+	<comment>Mogwai ER-Designer is an entity relationship design tool.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

@@ -38,7 +38,7 @@ import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.mogwai.binding.BindingInfo;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -46,7 +46,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 19:09:37 $
+ * @version $Date: 2008-01-11 18:40:40 $
  */
 public class TableEditor extends BaseEditor {
 
