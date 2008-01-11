@@ -345,5 +345,30 @@
 			<Text lang="de">Reverseengineering beendet</Text>		
 			<Text lang="en">Reverse engineering finished</Text>					
 		</Entry>
+		<Entry id="RELATIONPROPERTIES">
+			<Text lang="de">Eigenschaften der Relation</Text>		
+			<Text lang="en">Relation properties</Text>					
+		</Entry>
+		<Entry id="ATTRIBUTEMAPPING">
+			<Text lang="de">Mapping der Eigenschaften</Text>		
+			<Text lang="en">Attribute mapping</Text>					
+		</Entry>
+		<Entry id="ONDELETEHANDLING">
+			<Text lang="de">Behandlung von ON DELETE</Text>		
+			<Text lang="en">Handling of ON DELETE</Text>					
+		</Entry>
+		<Entry id="ONUPDATEHANDLING">
+			<Text lang="de">Behandlung von ON UPDATE</Text>		
+			<Text lang="en">Handling of ON UPDATE</Text>					
+		</Entry>
+		<Entry id="SCHEMAOPTIONS">
+			<Text lang="de">Schema Optionen</Text>		
+			<Text lang="en">Schema options</Text>					
+		</Entry>
+		<Entry id="ENGINEERINGOPTIONS">
+			<Text lang="de">Engineering Optionen</Text>		
+			<Text lang="en">Engineering options</Text>					
+		</Entry>
+		
 	</Bundle>
 </Resource>

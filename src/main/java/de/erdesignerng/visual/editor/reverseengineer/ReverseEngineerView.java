@@ -20,7 +20,6 @@ package de.erdesignerng.visual.editor.reverseengineer;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -29,10 +28,11 @@ import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
+import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-09 20:38:20 $
+ * @version $Date: 2008-01-11 21:24:34 $
  */
 public class ReverseEngineerView extends JPanel {
 
@@ -80,11 +80,9 @@ public class ReverseEngineerView extends JPanel {
 
 		CellConstraints cons = new CellConstraints();
 
-		this.add(DefaultComponentFactory.getInstance().createSeparator(
-				"Schema options"), cons.xywh(2, 2, 3, 1));
+		this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
 		this.add(this.getschemagrid(), cons.xywh(2, 4, 3, 1));
-		this.add(DefaultComponentFactory.getInstance().createSeparator(
-				"Engineering options"), cons.xywh(2, 6, 3, 1));
+		this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
 		this.add(this.getstartbutton(), cons.xywh(2, 10, 1, 1));
 		this.add(this.getcancelbutton(), cons.xywh(4, 10, 1, 1));
 		this.add(this.getengineeringoptions(), cons.xywh(2, 8, 3, 1));
