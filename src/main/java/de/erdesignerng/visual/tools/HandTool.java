@@ -32,11 +32,11 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
-import de.mogwai.i18n.ResourceHelper;
+import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 22:13:39 $
+ * @version $Date: 2008-01-11 18:40:37 $
  */
 public class HandTool extends BaseTool {
 

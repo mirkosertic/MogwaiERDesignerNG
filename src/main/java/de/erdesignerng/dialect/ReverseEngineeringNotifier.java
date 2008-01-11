@@ -15,20 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mysql;
-
+package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:39 $
+ * @version $Date: 2008-01-11 18:40:38 $
  */
-public class MySQLInnoDBDialect extends MySQLDialect {
-
-	public MySQLInnoDBDialect() {
-	}
-
-	@Override
-	public String getUniqueName() {
-		return "MySQLInnoDBDialect";
-	}
+public interface ReverseEngineeringNotifier {
+	
+	void notifyMessage(String aResourceKey, String...aValues);
 }

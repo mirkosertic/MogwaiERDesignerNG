@@ -30,15 +30,15 @@ import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.mogwai.binding.BindingInfo;
-import de.mogwai.binding.adapter.RadioButtonAdapter;
+import de.mogwai.common.client.binding.BindingInfo;
+import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:20 $
+ * @version $Date: 2008-01-11 18:40:39 $
  */
 public class RelationEditor extends BaseEditor {
 

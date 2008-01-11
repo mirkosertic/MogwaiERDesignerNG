@@ -15,9 +15,9 @@ public interface ERDesignerBundle {
   String RECENTLYUSEDFILES = "RECENTLYUSEDFILES";
   /** Neues Modell */
   String NEWMODEL = "NEWMODEL";
-  /** Modell speichern */
+  /** Modell speichern... */
   String SAVEMODEL = "SAVEMODEL";
-  /** Modell laden */
+  /** Modell laden... */
   String LOADMODEL = "LOADMODEL";
   /** Programm beenden */
   String EXITPROGRAM = "EXITPROGRAM";
@@ -169,4 +169,12 @@ public interface ERDesignerBundle {
   String CHOOSEONESCHEMA = "CHOOSEONESCHEMA";
   /** Standard */
   String STANDART = "STANDART";
+  /** Reverseengineering von Schema {0} */
+  String ENGINEERINGSCHEMA = "ENGINEERINGSCHEMA";
+  /** Reverseengineering von Tabelle {0} */
+  String ENGINEERINGTABLE = "ENGINEERINGTABLE";
+  /** Reverseengineering von Relationen für Tabelle {0} */
+  String ENGINEERINGRELATION = "ENGINEERINGRELATION";
+  /** Reverseengineering beendet */
+  String ENGINEERINGFINISHED = "ENGINEERINGFINISHED";
 }
