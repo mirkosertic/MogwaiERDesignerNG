@@ -37,7 +37,7 @@ import de.erdesignerng.model.DomainList;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
-import de.mogwai.binding.BindingInfo;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-09 18:37:26 $
+ * @version $Date: 2008-01-11 18:40:39 $
  */
 public class DomainEditor extends BaseEditor {
 

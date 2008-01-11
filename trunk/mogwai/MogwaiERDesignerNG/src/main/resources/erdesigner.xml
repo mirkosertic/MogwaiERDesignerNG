@@ -18,13 +18,13 @@
 			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODEL">
-			<Text lang="de">Modell speichern</Text>		
-			<Text lang="en">Save model</Text>					
+			<Text lang="de">Modell speichern...</Text>		
+			<Text lang="en">Save model...</Text>					
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="LOADMODEL">
-			<Text lang="de">Modell laden</Text>		
-			<Text lang="en">Load model</Text>					
+			<Text lang="de">Modell laden...</Text>		
+			<Text lang="en">Load model...</Text>					
 			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="EXITPROGRAM">
@@ -328,6 +328,22 @@
 		<Entry id="STANDART">
 			<Text lang="de">Standard</Text>		
 			<Text lang="en">Standard</Text>					
+		</Entry>
+		<Entry id="ENGINEERINGSCHEMA">
+			<Text lang="de">Reverseengineering von Schema {0}</Text>		
+			<Text lang="en">Reverse engineering of schema {0}</Text>					
+		</Entry>
+		<Entry id="ENGINEERINGTABLE">
+			<Text lang="de">Reverseengineering von Tabelle {0}</Text>		
+			<Text lang="en">Reverse engineering of table {0}</Text>					
+		</Entry>
+		<Entry id="ENGINEERINGRELATION">
+			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>		
+			<Text lang="en">Reverse engineering of relations for table {0}</Text>					
+		</Entry>
+		<Entry id="ENGINEERINGFINISHED">
+			<Text lang="de">Reverseengineering beendet</Text>		
+			<Text lang="en">Reverse engineering finished</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

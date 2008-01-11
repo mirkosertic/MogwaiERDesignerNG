@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.Connection;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
@@ -49,6 +51,9 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.ReverseEngineeringNotifier;
+import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.io.ModelIOUtilities;
@@ -61,7 +66,6 @@ import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
-import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
@@ -87,15 +91,16 @@ import de.mogwai.common.client.looks.components.DefaultToggleButton;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.action.SwingWorker3;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
-import de.mogwai.i18n.ResourceHelper;
+import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-09 20:38:21 $
+ * @version $Date: 2008-01-11 18:40:40 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -887,6 +892,49 @@ public class ERDesignerMainFrame extends DefaultFrame {
 				this, preferences);
 		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
+			try {
+				
+				final Connection theConnection = model.createConnection(preferences);
+				final JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+				final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+				final ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
+
+					public void notifyMessage(String aResourceKey, String... aValues) {
+						final String theMessage = MessageFormat.format(getResourceHelper().getText(aResourceKey),aValues);
+						
+						getDefaultFrameContent().getStatusBar().setText(theMessage);
+					}
+					
+				};
+				
+				SwingWorker3 theWorker = new SwingWorker3() {
+
+					@Override
+					public Object construct() {
+						try {
+							return theStrategy.createModelFromConnection(theConnection, theOptions, theNotifier);
+						} catch (Exception e) {
+							logException(e);
+						}
+						return null;
+					}
+					
+					@Override
+					public void finished() {
+						Model theModel = (Model)get();
+						if (theModel!=null) {
+							setModel(theModel);
+						}
+					}
+					
+				};
+				theWorker.start();
+				
+			} catch (Exception e) {
+				logException(e);
+			}
+
+			
 		}
 	}
 

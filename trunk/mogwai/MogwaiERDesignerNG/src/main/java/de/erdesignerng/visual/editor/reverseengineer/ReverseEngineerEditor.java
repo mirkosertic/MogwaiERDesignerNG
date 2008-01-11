@@ -28,12 +28,13 @@ import javax.swing.ListSelectionModel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DefaultValueNamingEnum;
 import de.erdesignerng.dialect.DomainNamingEnum;
+import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.mogwai.binding.BindingInfo;
-import de.mogwai.binding.adapter.ComboboxModelAdapter;
+import de.mogwai.common.client.binding.BindingInfo;
+import de.mogwai.common.client.binding.adapter.ComboboxModelAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -41,7 +42,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-09 20:38:20 $
+ * @version $Date: 2008-01-11 18:40:39 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -186,8 +187,22 @@ public class ReverseEngineerEditor extends BaseEditor {
 			}
 		}
 	}
+	
+	public ReverseEngineeringOptions createREOptions() {
+		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
+		bindingInfo.view2model();
+
+		ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+		theOptions.setDefaultValueNaming((DefaultValueNamingEnum) theModel.getDefaultValueGenerator().getValue());
+		theOptions.setDomainNaming((DomainNamingEnum) theModel.getDomainGenerator().getValue());
+		theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
+		theOptions.setSchemaList(editingView.getschemaList().getSelectedValues());
+
+		return theOptions;
+	}
 
 	@Override
 	public void applyValues() throws Exception {
 	}
+	
 }

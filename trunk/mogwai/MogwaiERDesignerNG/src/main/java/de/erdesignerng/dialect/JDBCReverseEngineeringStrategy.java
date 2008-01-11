@@ -1,3 +1,20 @@
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 package de.erdesignerng.dialect;
 
 import java.sql.Connection;
@@ -5,6 +22,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
@@ -17,7 +35,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-11 18:40:38 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -38,7 +56,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 	 * @return
 	 */
 	protected Domain createDomainFor(Model aModel, String aColumnName,
-			String aTypeName, String aSize, String aDecimalDigits) {
+			String aTypeName, String aSize, String aDecimalDigits, ReverseEngineeringOptions aOptions) {
 
 		StringBuffer theTypeDefinition = new StringBuffer(aTypeName);
 		if (((aSize != null)) && (aTypeName.indexOf(")") < 0)) {
@@ -106,10 +124,12 @@ public abstract class JDBCReverseEngineeringStrategy {
 	 * @throws SQLException
 	 * @throws ReverseEngineeringException
 	 */
-	protected void reverseEngineerTable(Model aModel, String aSchemaName,
+	protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, String aSchemaName,
 			String aTableName, Connection aConnection) throws SQLException,
 			ReverseEngineeringException {
 
+		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableName);
+		
 		DatabaseMetaData theMetaData = aConnection.getMetaData();
 
 		ResultSet theTablesResultSet = theMetaData.getTables(null, aSchemaName,
@@ -152,7 +172,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 				}
 
 				Domain theDomain = createDomainFor(aModel, theColumnName,
-						theTypeName, theSize, theDecimalDigits);
+						theTypeName, theSize, theDecimalDigits, aOptions);
 
 				DefaultValue theDefault = createDefaultValueFor(aModel,
 						theColumnName, theDefaultValue);
@@ -206,7 +226,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 	 * @throws SQLException
 	 * @throws ReverseEngineeringException
 	 */
-	protected void reverseEngineerRelations(Model aModel, String aSchemaName,
+	protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, String aSchemaName,
 			Connection aConnection) throws SQLException,
 			ReverseEngineeringException {
 
@@ -214,6 +234,8 @@ public abstract class JDBCReverseEngineeringStrategy {
 
 		for (Table theTable : aModel.getTables()) {
 
+			aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theTable.getName());
+			
 			// Foreign keys
 			Relation theRelation = null;
 			ResultSet theForeignKeys = theMetaData.getImportedKeys(null,
@@ -337,10 +359,12 @@ public abstract class JDBCReverseEngineeringStrategy {
 	 * @throws SQLException
 	 * @throws ReverseEngineeringException
 	 */
-	protected void reverseEnginnerTables(Model aModel, String aSchemaName,
+	protected void reverseEnginnerTables(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, String aSchemaName,
 			Connection aConnection) throws SQLException,
 			ReverseEngineeringException {
 
+		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGSCHEMA, aSchemaName);
+		
 		DatabaseMetaData theMetaData = aConnection.getMetaData();
 
 		// Reverse engineer tables
@@ -356,62 +380,30 @@ public abstract class JDBCReverseEngineeringStrategy {
 			// Make sure that tables are not reverse engineered twice!
 			if (!aModel.getTables().elementExists(theTableName,
 					dialect.isCaseSensitive())) {
-				reverseEngineerTable(aModel, theSchema, theTableName,
+				reverseEngineerTable(aModel, aOptions, aNotifier, theSchema, theTableName,
 						aConnection);
 			}
 		}
 		theTablesResultSet.close();
 
 		// Reverse engineer also relations
-		reverseEngineerRelations(aModel, aSchemaName, aConnection);
+		reverseEngineerRelations(aModel, aOptions, aNotifier, aSchemaName, aConnection);
 	}
 
-	/**
-	 * Reverse engineer the existing schemas.
-	 * 
-	 * @param aModel
-	 * @param aConnection
-	 * @throws SQLException
-	 * @throws ReverseEngineeringException
-	 */
-	protected void reverseEngineerSchemas(Model aModel, String aSchemaName,
-			Connection aConnection) throws SQLException,
-			ReverseEngineeringException {
-
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
-		ResultSet theSchemaResultSet = theMetaData.getSchemas();
-
-		while (theSchemaResultSet.next()) {
-
-			String theSchemaName = theSchemaResultSet.getString("TABLE_SCHEM");
-
-			if (aSchemaName.equals(theSchemaName)) {
-				reverseEnginnerTables(aModel, theSchemaName, aConnection);
-			}
-		}
-		theSchemaResultSet.close();
-
-	}
-
-	/**
-	 * Create a database model from a jdbc connection.
-	 * 
-	 * @param aConnection
-	 *            the connection
-	 * @param aSchemaName
-	 * @return the new database model
-	 * @throws SQLException
-	 * @throws ReverseEngineeringException
-	 */
 	public Model createModelFromConnection(Connection aConnection,
-			String aSchemaName) throws SQLException,
+			ReverseEngineeringOptions aOptions,
+			ReverseEngineeringNotifier aNotifier) throws SQLException,
 			ReverseEngineeringException {
 
 		Model theNewModel = new Model();
 		theNewModel.setDialect(dialect);
+		
+		for(Object theSchema : aOptions.getSchemaList()) {
+			reverseEnginnerTables(theNewModel, aOptions, aNotifier, (String)theSchema, aConnection);			
+		}
 
-		reverseEngineerSchemas(theNewModel, aSchemaName, aConnection);
-
+		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
+		
 		return theNewModel;
 	}
 }
