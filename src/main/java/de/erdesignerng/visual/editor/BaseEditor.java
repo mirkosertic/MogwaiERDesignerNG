@@ -27,9 +27,10 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 18:28:12 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
-public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
+public abstract class BaseEditor extends DefaultDialog implements
+		DialogConstants {
 
 	private int modalResult;
 
@@ -43,8 +44,8 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 	 * @param parent
 	 *            the parent Frame
 	 */
-	public BaseEditor(Component aParent,String aTitle) {
-		super(aParent, ERDesignerBundle.BUNDLE_NAME,aTitle);
+	public BaseEditor(Component aParent, String aTitle) {
+		super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
 		initialize();
 		parent = aParent;
 	}
@@ -90,31 +91,35 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 	}
 
 	protected void displayErrorMessage(String aMessage) {
-		
-		String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
+
+		String theErrorText = getResourceHelper().getText(
+				ERDesignerBundle.ERROR);
 		JOptionPane.showMessageDialog(this, aMessage, theErrorText,
 				JOptionPane.ERROR_MESSAGE);
 	}
 
 	protected void displayInfoMessage(String aMessage) {
-		
-		String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
+
+		String theInfoText = getResourceHelper().getText(
+				ERDesignerBundle.INFORMATION);
 		JOptionPane.showMessageDialog(this, aMessage, theInfoText,
 				JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	protected boolean displayQuestionMessage(String aMessageKey) {
-		String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
+		String theQuestionText = getResourceHelper().getText(
+				ERDesignerBundle.QUESTION);
 		String theMessage = getResourceHelper().getText(aMessageKey);
-		return JOptionPane.showConfirmDialog(this, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-		
+		return JOptionPane.showConfirmDialog(this, theMessage, theQuestionText,
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+
 	}
 
 	public abstract void applyValues() throws Exception;
-	
+
 	protected void commandCancel() {
 
 		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
 	}
-	
+
 }

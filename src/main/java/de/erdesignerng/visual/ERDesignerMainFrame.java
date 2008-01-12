@@ -39,8 +39,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
 
+import org.jdesktop.swingworker.SwingWorker;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
@@ -91,7 +91,6 @@ import de.mogwai.common.client.looks.components.DefaultToggleButton;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
-import de.mogwai.common.client.looks.components.action.SwingWorker3;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
@@ -100,7 +99,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:40 $
+ * @version $Date: 2008-01-12 17:10:03 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -897,21 +896,27 @@ public class ERDesignerMainFrame extends DefaultFrame {
 				final Connection theConnection = model.createConnection(preferences);
 				final JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
 				final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
-				final ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
-
-					public void notifyMessage(String aResourceKey, String... aValues) {
-						final String theMessage = MessageFormat.format(getResourceHelper().getText(aResourceKey),aValues);
-						
-						getDefaultFrameContent().getStatusBar().setText(theMessage);
-					}
-					
-				};
 				
-				SwingWorker3 theWorker = new SwingWorker3() {
+				SwingWorker<Model, String> theWorker=new SwingWorker<Model, String>() {
 
 					@Override
-					public Object construct() {
+					protected void process(List<String> aString) {
+						for(String theMessage : aString) {
+							getDefaultFrameContent().getStatusBar().setText(theMessage);
+						}
+					}
+
+					@Override
+					protected Model doInBackground() throws Exception {
 						try {
+							ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
+
+								public void notifyMessage(String aResourceKey, String... aValues) {
+									String theMessage = MessageFormat.format(getResourceHelper().getText(aResourceKey),aValues);
+									publish(new String[] {theMessage});
+								}
+								
+							};
 							return theStrategy.createModelFromConnection(theConnection, theOptions, theNotifier);
 						} catch (Exception e) {
 							logException(e);
@@ -919,16 +924,13 @@ public class ERDesignerMainFrame extends DefaultFrame {
 						return null;
 					}
 					
-					@Override
-					public void finished() {
-						Model theModel = (Model)get();
-						if (theModel!=null) {
-							setModel(theModel);
-						}
-					}
-					
 				};
-				theWorker.start();
+				theWorker.execute();
+				
+				Model theModel = theWorker.get();
+				if (theModel != null) {
+					setModel(theModel);
+				}
 				
 			} catch (Exception e) {
 				logException(e);

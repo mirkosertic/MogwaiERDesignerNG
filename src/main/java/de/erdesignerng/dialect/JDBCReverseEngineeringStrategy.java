@@ -23,6 +23,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
@@ -35,7 +37,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:38 $
+ * @version $Date: 2008-01-12 17:10:00 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -180,7 +182,11 @@ public abstract class JDBCReverseEngineeringStrategy {
 				theAttribute.setDefinition(theDomain, "1".equals(theNullable),
 						theDefault);
 
-				theTable.getAttributes().add(theAttribute);
+				try {
+					theTable.addAttribute(aModel, theAttribute);
+				} catch (Exception e) {
+					throw new ReverseEngineeringException(e.getMessage());
+				}
 			}
 			theColumnsResultSet.close();
 
@@ -206,7 +212,11 @@ public abstract class JDBCReverseEngineeringStrategy {
 			thePrimaryKeyResultSet.close();
 
 			// We are done here
-			aModel.getTables().add(theTable);
+			try {
+				aModel.addTable(theTable);
+			} catch (Exception e) {
+				throw new ReverseEngineeringException(e.getMessage());
+			}
 
 		}
 		theTablesResultSet.close();
@@ -313,7 +323,11 @@ public abstract class JDBCReverseEngineeringStrategy {
 						theRelation.setOnDelete(CascadeType.NOTHING);
 					}
 
-					aModel.getRelations().add(theRelation);
+					try {
+						aModel.addRelation(theRelation);
+					} catch (Exception e) {
+						throw new ReverseEngineeringException(e.getMessage());
+					}
 				}
 
 				String thePKColumnName = theForeignKeys
@@ -339,8 +353,8 @@ public abstract class JDBCReverseEngineeringStrategy {
 							+ theRelation.getImportingTable().getName());
 				}
 
-				theRelation.getMapping().put(theImportingAttribute,
-						theExportingAttribute);
+				theRelation.getMapping().put(theExportingAttribute,
+						theImportingAttribute);
 			}
 			theForeignKeys.close();
 		}

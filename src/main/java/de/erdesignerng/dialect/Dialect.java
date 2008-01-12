@@ -32,7 +32,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:06 $
+ * @version $Date: 2008-01-12 17:10:00 $
  */
 public abstract class Dialect {
 
@@ -188,16 +188,16 @@ public abstract class Dialect {
 	public abstract List<String> createAddRelationSQL(Relation aRelation);
 
 	public abstract String getUniqueName();
-	
+
 	@Override
 	public String toString() {
 		return getUniqueName();
 	}
-	
+
 	public abstract String getDriverClassName();
-	
+
 	public abstract String getDriverURLTemplate();
-	
+
 	/**
 	 * Create a connection to a database.
 	 * 
@@ -212,10 +212,13 @@ public abstract class Dialect {
 	 * @throws IllegalAccessException
 	 * @throws SQLException
 	 */
-	public Connection createConnection(ClassLoader aClassLoader,String aDriver,String aUrl,String aUser,String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+	public Connection createConnection(ClassLoader aClassLoader,
+			String aDriver, String aUrl, String aUser, String aPassword)
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, SQLException {
 		Class theDriverClass = aClassLoader.loadClass(aDriver);
-		Driver theDriver = (Driver)theDriverClass.newInstance();
-		
+		Driver theDriver = (Driver) theDriverClass.newInstance();
+
 		Properties theProperties = new Properties();
 		theProperties.put("user", aUser);
 		theProperties.put("password", aPassword);

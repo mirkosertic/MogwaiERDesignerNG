@@ -21,7 +21,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 20:21:15 $
+ * @version $Date: 2008-01-12 17:10:02 $
  */
 public class ClasspathEditor extends BaseEditor {
 
@@ -60,15 +60,17 @@ public class ClasspathEditor extends BaseEditor {
 	private ClasspathEditorView view = new ClasspathEditorView();
 
 	private ApplicationPreferences preferences;
-	
+
 	private File lastDir;
 
-	public ClasspathEditor(Component aParent, ApplicationPreferences aPreferences) {
-		super(aParent , ERDesignerBundle.CLASSPATHCONFIGURATION);
+	public ClasspathEditor(Component aParent,
+			ApplicationPreferences aPreferences) {
+		super(aParent, ERDesignerBundle.CLASSPATHCONFIGURATION);
 
 		initialize();
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+				.getModel();
 		view.getClasspath().setModel(theModel);
 
 		List<File> theFiles = aPreferences.getClasspathFiles();
@@ -85,19 +87,20 @@ public class ClasspathEditor extends BaseEditor {
 		view.getCancelButton().setAction(cancelAction);
 		view.getAddButton().setAction(addAction);
 		view.getRemoveButton().setAction(removeAction);
-		
+
 		setContentPane(view);
 		setResizable(false);
 		pack();
-		
+
 		UIInitializer.getInstance().initialize(this);
 	}
 
 	@Override
 	public void applyValues() throws Exception {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
-		
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+				.getModel();
+
 		List<File> theFiles = preferences.getClasspathFiles();
 		theFiles.clear();
 
@@ -110,11 +113,12 @@ public class ClasspathEditor extends BaseEditor {
 
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
 	}
-	
+
 	protected void commandFolderAdd() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
-		
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+				.getModel();
+
 		JFileChooser theChooser = new JFileChooser();
 		if (lastDir != null) {
 			theChooser.setCurrentDirectory(lastDir);
@@ -136,12 +140,13 @@ public class ClasspathEditor extends BaseEditor {
 
 	protected void commandFolderRemove() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
-		
+		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
+				.getModel();
+
 		Object[] theValues = view.getClasspath().getSelectedValues();
 		for (Object theValue : theValues) {
 			theModel.remove(theValue);
 		}
 	}
-	
+
 }

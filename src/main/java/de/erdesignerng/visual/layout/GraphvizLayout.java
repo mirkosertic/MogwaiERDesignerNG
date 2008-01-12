@@ -57,31 +57,34 @@ public class GraphvizLayout implements Layouter {
 	private String lastLog;
 
 	private Pattern nodePattern = Pattern
-	.compile("^\\s*(n\\d+)\\s*\\[.*pos=\"?(\\d+),(\\d+)");
+			.compile("^\\s*(n\\d+)\\s*\\[.*pos=\"?(\\d+),(\\d+)");
 
 	private Pattern edgePattern = Pattern
-	.compile("^\\s*(n\\d+)\\s*->\\s*(n\\d+)\\s*"
-			+ "\\[.*pos=\"e,(\\d+),(\\d+) (\\d+,\\d+(?:(?: \\d+,\\d+){3})+)\""
-			+ ".*lp=\"?(\\d+),(\\d+)");
+			.compile("^\\s*(n\\d+)\\s*->\\s*(n\\d+)\\s*"
+					+ "\\[.*pos=\"e,(\\d+),(\\d+) (\\d+,\\d+(?:(?: \\d+,\\d+){3})+)\""
+					+ ".*lp=\"?(\\d+),(\\d+)");
 
 	private Pattern splitPattern = Pattern.compile("[ ,]");
 
 	private JGraph graph;
 
-	public void applyLayout(JGraph aGraph, Object[] aCells) throws LayoutException {
+	public void applyLayout(JGraph aGraph, Object[] aCells)
+			throws LayoutException {
 		processBuilder = new ProcessBuilder(dotCommand, "-y -Tdot");
 		processBuilder.redirectErrorStream(true);
 
 		graph = aGraph;
 		try {
 			if (!callDot(aCells)) {
-				throw new LayoutException("Error while trying to layout the graph using Graphviz.\n\n"
-								+ "See the output of the process call below:\n\n"+lastLog);
+				throw new LayoutException(
+						"Error while trying to layout the graph using Graphviz.\n\n"
+								+ "See the output of the process call below:\n\n"
+								+ lastLog);
 			}
 		} catch (LayoutException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new LayoutException("Error during layouting",e);
+			throw new LayoutException("Error during layouting", e);
 		}
 	}
 
@@ -92,8 +95,8 @@ public class GraphvizLayout implements Layouter {
 		Collection<CellView> theNodes = new HashSet<CellView>();
 		Collection<EdgeView> theEdges = new HashSet<EdgeView>();
 
-		GraphModel theModel = graph.getModel();		
-		
+		GraphModel theModel = graph.getModel();
+
 		for (Object cell : aCells) {
 
 			if (theModel.isPort(cell)) {
@@ -106,8 +109,8 @@ public class GraphvizLayout implements Layouter {
 
 		Process theDotProcess = processBuilder.start();
 
-		Writer theProcessWriter = new BufferedWriter(new OutputStreamWriter(theDotProcess
-				.getOutputStream(), "UTF-8"));
+		Writer theProcessWriter = new BufferedWriter(new OutputStreamWriter(
+				theDotProcess.getOutputStream(), "UTF-8"));
 		StringBuilder theInput = new StringBuilder();
 
 		// building the input for graphviz
@@ -118,17 +121,17 @@ public class GraphvizLayout implements Layouter {
 				.getAttributes());
 		String theFontName = theEdgesFont.getFontName(Locale.getDefault());
 		String theFontSize = String.valueOf(theEdgesFont.getSize2D());
-		theInput
-				.append(", fontname=\"" + theFontName.replace("\"", "\\\"") + "\"");
-		theInput
-				.append(", fontsize=\"" + theFontSize.replace("\"", "\\\"") + "\"");
+		theInput.append(", fontname=\"" + theFontName.replace("\"", "\\\"")
+				+ "\"");
+		theInput.append(", fontsize=\"" + theFontSize.replace("\"", "\\\"")
+				+ "\"");
 
 		theInput.append("];\n");
 		theInput.append("node [shape=box, fixedsize=true");
 		theInput.append("];\n");
 
-		Map<CellView,String> theNodes2strings = new HashMap<CellView,String>();
-		Map<String,CellView> theStrings2nodes = new HashMap<String,CellView>();
+		Map<CellView, String> theNodes2strings = new HashMap<CellView, String>();
+		Map<String, CellView> theStrings2nodes = new HashMap<String, CellView>();
 		int theId = 0;
 
 		for (CellView theNode : theNodes) {
@@ -146,17 +149,15 @@ public class GraphvizLayout implements Layouter {
 			theInput.append(", fixedsize=true];\n");
 		}
 
-		Map<String,EdgeView> theStrings2edges = new HashMap<String,EdgeView>();
+		Map<String, EdgeView> theStrings2edges = new HashMap<String, EdgeView>();
 		for (EdgeView edge : theEdges) {
 
 			Object theSource = DefaultGraphModel.getSourceVertex(theModel, edge
 					.getCell());
 			Object theTarget = DefaultGraphModel.getTargetVertex(theModel, edge
 					.getCell());
-			CellView theSourceView = theLayoutCache.getMapping(theSource,
-					true);
-			CellView theTargetView = theLayoutCache.getMapping(theTarget,
-					true);
+			CellView theSourceView = theLayoutCache.getMapping(theSource, true);
+			CellView theTargetView = theLayoutCache.getMapping(theTarget, true);
 
 			String s = theNodes2strings.get(theSourceView) + " -> "
 					+ theNodes2strings.get(theTargetView);
@@ -175,14 +176,15 @@ public class GraphvizLayout implements Layouter {
 		// System.out.println("\nDot input:\n" + dotInput.toString());
 
 		// parsing the output of graphviz
-		Map<EdgeView,Point> labelsAbsolutePositions = new HashMap<EdgeView,Point>();
-		Map<Object,Map> nestedAttributes = new HashMap<Object,Map>();
+		Map<EdgeView, Point> labelsAbsolutePositions = new HashMap<EdgeView, Point>();
+		Map<Object, Map> nestedAttributes = new HashMap<Object, Map>();
 
-		BufferedReader theDotResultReader = new BufferedReader(new InputStreamReader(theDotProcess
-				.getInputStream(), "UTF-8"));
+		BufferedReader theDotResultReader = new BufferedReader(
+				new InputStreamReader(theDotProcess.getInputStream(), "UTF-8"));
 		StringBuilder buf = new StringBuilder();
 		StringBuilder longLine = null;
-		for (String line = theDotResultReader.readLine(); line != null; line = theDotResultReader.readLine()) {
+		for (String line = theDotResultReader.readLine(); line != null; line = theDotResultReader
+				.readLine()) {
 			buf.append(line).append("\n");
 			if (line.endsWith("\\")) {
 				if (longLine == null)
@@ -255,7 +257,8 @@ public class GraphvizLayout implements Layouter {
 
 				Map editAttributes = new HashMap();
 				GraphConstants.setPoints(editAttributes, points);
-	            GraphConstants.setLineStyle(editAttributes, RelationEdgeView.MyRenderer.STYLE_GRAPHVIZ_BEZIER); 				
+				GraphConstants.setLineStyle(editAttributes,
+						RelationEdgeView.MyRenderer.STYLE_GRAPHVIZ_BEZIER);
 
 				nestedAttributes.put(edge.getCell(), editAttributes);
 
@@ -276,8 +279,8 @@ public class GraphvizLayout implements Layouter {
 		if (theDotProcess.exitValue() == 0)
 			return true;
 		else {
-			buf.append("\n!!! exit value of graphviz: " + theDotProcess.exitValue()
-					+ " !!!\n");
+			buf.append("\n!!! exit value of graphviz: "
+					+ theDotProcess.exitValue() + " !!!\n");
 			lastLog = buf.toString();
 			return false;
 		}
@@ -292,8 +295,8 @@ public class GraphvizLayout implements Layouter {
 	 *            A map which maps edges and thus their labels to absolute
 	 *            positions
 	 */
-	private void setLabelPositions(Map<EdgeView,Point> aPositions) {
-		Map<Object,Map> nestedAttributes = new HashMap<Object,Map>();
+	private void setLabelPositions(Map<EdgeView, Point> aPositions) {
+		Map<Object, Map> nestedAttributes = new HashMap<Object, Map>();
 
 		Collection keys = aPositions.keySet();
 		for (Object key : keys) {

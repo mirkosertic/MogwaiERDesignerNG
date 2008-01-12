@@ -51,7 +51,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:50 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public final class ModelIOUtilities {
 
@@ -454,17 +454,17 @@ public final class ModelIOUtilities {
 		Element theConfigurationElement = addElement(theDocument,
 				theRootElement, CONFIGURATION);
 
-		
 		Element theDialectElement = addElement(theDocument,
 				theConfigurationElement, PROPERTY);
 		theDialectElement.setAttribute(NAME, DIALECT);
 		theDialectElement.setAttribute(VALUE, aModel.getDialect()
 				.getUniqueName());
 
-		Map<String,String> theProperties = aModel.getProperties().getProperties();
-		for(String theKey : theProperties.keySet()) {
+		Map<String, String> theProperties = aModel.getProperties()
+				.getProperties();
+		for (String theKey : theProperties.keySet()) {
 			String theValue = theProperties.get(theKey);
-			
+
 			Element thePropertyElement = addElement(theDocument,
 					theConfigurationElement, PROPERTY);
 			thePropertyElement.setAttribute(NAME, theKey);
@@ -479,7 +479,8 @@ public final class ModelIOUtilities {
 					theDefaultValuesElement, DEFAULTVALUE);
 
 			// Basisdaten des Modelelementes speichern
-			serializeProperties(theDocument, theDefaultValueElement, theDefaultValue);
+			serializeProperties(theDocument, theDefaultValueElement,
+					theDefaultValue);
 
 			// Zusatzdaten
 			theDefaultValueElement.setAttribute(DATATYPE, theDefaultValue

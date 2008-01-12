@@ -35,13 +35,14 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
 	private Object editingValue;
 
-	protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
+	protected BaseEditor createEditDialogForValue(JComponent aParent,
+			Object aValue) {
 
 		if (aValue instanceof TableCell) {
 			TableCell theCell = (TableCell) aValue;

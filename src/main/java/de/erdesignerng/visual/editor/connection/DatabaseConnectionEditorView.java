@@ -27,9 +27,9 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 	private DefaultTextField user = new DefaultTextField();
 
 	private DefaultTextField password = new DefaultTextField();
-	
+
 	private DefaultButton testButton = new DefaultButton();
-	
+
 	private DefaultButton okButton = new DefaultButton();
 
 	private DefaultButton cancelButton = new DefaultButton();
@@ -73,19 +73,19 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
 		thePanel.add(testButton, cons.xy(1, 1));
 		testButton.setText("Test");
-		
+
 		thePanel.add(okButton, cons.xy(3, 1));
 		okButton.setText("Ok");
 
 		thePanel.add(cancelButton, cons.xy(5, 1));
 		cancelButton.setText("Cancel");
-		
+
 		dialect.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				handleDialectChange((Dialect)dialect.getSelectedItem());
+				handleDialectChange((Dialect) dialect.getSelectedItem());
 			}
-			
+
 		});
 
 		add(thePanel, cons.xyw(2, 12, 3));
