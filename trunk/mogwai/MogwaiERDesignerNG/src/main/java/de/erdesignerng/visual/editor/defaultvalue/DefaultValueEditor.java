@@ -43,7 +43,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:40 $
+ * @version $Date: 2008-01-12 17:10:03 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -54,11 +54,11 @@ public class DefaultValueEditor extends BaseEditor {
 	private DefaultValueEditorView editingView;
 
 	private Model model;
-	
+
 	private List<DefaultValue> removedDefaultValues = new ArrayList<DefaultValue>();
 
 	private Map<String, DefaultValue> knownValues = new HashMap<String, DefaultValue>();
-	
+
 	private DefaultAction updateAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -98,7 +98,6 @@ public class DefaultValueEditor extends BaseEditor {
 					commandDelete();
 				}
 			}, this, ERDesignerBundle.DELETE);
-	
 
 	/**
 	 * @param parent
@@ -154,7 +153,7 @@ public class DefaultValueEditor extends BaseEditor {
 		setResizable(false);
 		pack();
 
-		UIInitializer.getInstance().initialize(this);		
+		UIInitializer.getInstance().initialize(this);
 	}
 
 	private void updateEditFields() {
@@ -229,7 +228,7 @@ public class DefaultValueEditor extends BaseEditor {
 	}
 
 	private void commandDelete() {
-		
+
 		DefaultValue theDomain = bindingInfo.getDefaultModel();
 
 		if (!model.getTables().isDefaultValueUsed(theDomain)) {
@@ -241,8 +240,9 @@ public class DefaultValueEditor extends BaseEditor {
 				commandNew();
 			}
 		} else {
-			displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
-		}		
+			displayErrorMessage(getResourceHelper().getText(
+					ERDesignerBundle.ELEMENTINUSE));
+		}
 	}
 
 	@Override
@@ -261,7 +261,7 @@ public class DefaultValueEditor extends BaseEditor {
 				model.addDefaultValue(theValue);
 			}
 		}
-		
+
 		model.getDefaultValues().removeAll(removedDefaultValues);
 	}
 }

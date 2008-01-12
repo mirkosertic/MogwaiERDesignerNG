@@ -18,7 +18,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class DomainEditorView extends DefaultPanel {
 
@@ -34,9 +34,11 @@ public class DomainEditorView extends DefaultPanel {
 
 	private DefaultLabel nameLabel = new DefaultLabel(ERDesignerBundle.NAME);
 
-	private DefaultLabel declarationLabel = new DefaultLabel(ERDesignerBundle.DECLRATATION);
+	private DefaultLabel declarationLabel = new DefaultLabel(
+			ERDesignerBundle.DECLRATATION);
 
-	private DefaultLabel javaTypeLabel = new DefaultLabel(ERDesignerBundle.JAVATYPE);
+	private DefaultLabel javaTypeLabel = new DefaultLabel(
+			ERDesignerBundle.JAVATYPE);
 
 	private DefaultTextField domainname = new DefaultTextField();
 
@@ -44,7 +46,8 @@ public class DomainEditorView extends DefaultPanel {
 
 	private DefaultComboBox javatype = new DefaultComboBox();
 
-	private DefaultCheckBox sequenced = new DefaultCheckBox(ERDesignerBundle.SEQUENCED);
+	private DefaultCheckBox sequenced = new DefaultCheckBox(
+			ERDesignerBundle.SEQUENCED);
 
 	private DefaultButton updatebutton;
 
@@ -65,7 +68,7 @@ public class DomainEditorView extends DefaultPanel {
 	private void initialize() {
 
 		String rowDef = "2dlu,p,140dlu,2dlu,p,20dlu,p,2dlu";
-		String colDef= "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
+		String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
 
 		FormLayout layout = new FormLayout(colDef, rowDef);
 		setLayout(layout);
@@ -136,8 +139,7 @@ public class DomainEditorView extends DefaultPanel {
 
 		if (detailTabbedPane == null) {
 			detailTabbedPane = new DefaultTabbedPane();
-			detailTabbedPane.addTab(null, this
-					.getDomainPropertiesTab());
+			detailTabbedPane.addTab(null, this.getDomainPropertiesTab());
 			detailTabbedPane.setSelectedIndex(0);
 		}
 
@@ -152,7 +154,8 @@ public class DomainEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getDomainPropertiesTab() {
 
 		if (domainPropertiesTab == null) {
-			domainPropertiesTab = new DefaultTabbedPaneTab(detailTabbedPane,ERDesignerBundle.DOMAINPROPERTIES);
+			domainPropertiesTab = new DefaultTabbedPaneTab(detailTabbedPane,
+					ERDesignerBundle.DOMAINPROPERTIES);
 
 			String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,8dlu,p,2dlu";
 			String colDef = "2dlu,left:60dlu,2dlu,60dlu:grow,2dlu";
@@ -163,7 +166,8 @@ public class DomainEditorView extends DefaultPanel {
 			CellConstraints cons = new CellConstraints();
 
 			domainPropertiesTab.add(getNameLabel(), cons.xywh(2, 2, 1, 1));
-			domainPropertiesTab.add(getDeclarationLabel(), cons.xywh(2, 4, 1, 1));
+			domainPropertiesTab.add(getDeclarationLabel(), cons
+					.xywh(2, 4, 1, 1));
 			domainPropertiesTab.add(getJavaTypeLabel(), cons.xywh(2, 8, 1, 1));
 			domainPropertiesTab.add(getDomainName(), cons.xywh(4, 2, 1, 1));
 			domainPropertiesTab.add(getDeclaration(), cons.xywh(4, 4, 1, 1));

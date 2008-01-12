@@ -17,10 +17,9 @@
  */
 package de.erdesignerng.model;
 
-
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 15:11:34 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class Attribute extends OwnedModelItem<Table> implements
 		ModelItemClonable<Attribute> {
@@ -116,5 +115,5 @@ public class Attribute extends OwnedModelItem<Table> implements
 		setPrimaryKey(aValue.isPrimaryKey());
 		setOwner(aValue.getOwner());
 	}
-	
+
 }

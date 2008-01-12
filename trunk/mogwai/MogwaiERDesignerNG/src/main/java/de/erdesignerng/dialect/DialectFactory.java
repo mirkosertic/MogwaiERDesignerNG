@@ -31,7 +31,7 @@ import de.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-09 20:42:20 $
+ * @version $Date: 2008-01-12 17:10:00 $
  */
 public class DialectFactory {
 
@@ -42,10 +42,10 @@ public class DialectFactory {
 	private DialectFactory() {
 		registerDialect(new MSSQLDialect());
 		registerDialect(new MySQLDialect());
-		registerDialect(new MySQLInnoDBDialect());		
+		registerDialect(new MySQLInnoDBDialect());
 		registerDialect(new OracleDialect());
 		registerDialect(new PostgresDialect());
-		registerDialect(new DB2Dialect());		
+		registerDialect(new DB2Dialect());
 	}
 
 	public static DialectFactory getInstance() {

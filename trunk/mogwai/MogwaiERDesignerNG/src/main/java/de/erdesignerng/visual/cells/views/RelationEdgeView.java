@@ -35,12 +35,12 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:21 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class RelationEdgeView extends EdgeView {
-	
+
 	private static MyRenderer renderer = new MyRenderer();
-	
+
 	public RelationEdgeView(RelationEdge aRelation) {
 		super(aRelation);
 	}
@@ -54,16 +54,17 @@ public class RelationEdgeView extends EdgeView {
 	public CellViewRenderer getRenderer() {
 		return renderer;
 	}
-	
+
 	public static class MyRenderer extends EdgeRenderer {
-		
-		public static final int STYLE_GRAPHVIZ_BEZIER = 14; 
-		
+
+		public static final int STYLE_GRAPHVIZ_BEZIER = 14;
+
 		@Override
 		protected Shape createShape() {
 			int n = view.getPointCount();
 			if (n > 1) {
-				// Following block may modify static vars as side effect (Flyweight
+				// Following block may modify static vars as side effect
+				// (Flyweight
 				// Design)
 				EdgeView tmp = view;
 				Point2D[] p = null;
@@ -83,7 +84,8 @@ public class RelationEdgeView extends EdgeView {
 				}
 				// End of Undo
 				if (view.sharedPath == null) {
-					view.sharedPath = new GeneralPath(GeneralPath.WIND_NON_ZERO, n);
+					view.sharedPath = new GeneralPath(
+							GeneralPath.WIND_NON_ZERO, n);
 				} else {
 					view.sharedPath.reset();
 				}
@@ -99,15 +101,18 @@ public class RelationEdgeView extends EdgeView {
 				} else if (lineStyle == GraphConstants.STYLE_SPLINE && n > 2) {
 					spline = new Spline2D(p);
 					double[] point = spline.getPoint(0.9875);
-					// Extrapolate p2 away from the end point, pe, to avoid integer
-					// rounding errors becoming too large when creating the line end
+					// Extrapolate p2 away from the end point, pe, to avoid
+					// integer
+					// rounding errors becoming too large when creating the line
+					// end
 					double scaledX = pe.getX() - ((pe.getX() - point[0]) * 128);
 					double scaledY = pe.getY() - ((pe.getY() - point[1]) * 128);
 					p2.setLocation(scaledX, scaledY);
 				}
 
 				if (beginDeco != GraphConstants.ARROW_NONE) {
-					view.beginShape = createLineEnd(beginSize, beginDeco, p1, p0);
+					view.beginShape = createLineEnd(beginSize, beginDeco, p1,
+							p0);
 				}
 				if (endDeco != GraphConstants.ARROW_NONE) {
 					view.endShape = createLineEnd(endSize, endDeco, p2, pe);
@@ -116,9 +121,8 @@ public class RelationEdgeView extends EdgeView {
 				/* THIS CODE WAS ADDED BY MARTIN KRUEGER 10/20/2003 */
 				if (lineStyle == GraphConstants.STYLE_BEZIER && n > 2) {
 					Point2D[] b = bezier.getPoints();
-					view.sharedPath.quadTo((float) b[0].getX(),
-							(float) b[0].getY(), (float) p1.getX(), (float) p1
-									.getY());
+					view.sharedPath.quadTo((float) b[0].getX(), (float) b[0]
+							.getY(), (float) p1.getX(), (float) p1.getY());
 					for (int i = 2; i < n - 1; i++) {
 						Point2D b0 = b[2 * i - 3];
 						Point2D b1 = b[2 * i - 2];
@@ -127,28 +131,32 @@ public class RelationEdgeView extends EdgeView {
 								(float) p[i].getX(), (float) p[i].getY());
 					}
 					view.sharedPath.quadTo((float) b[b.length - 1].getX(),
-							(float) b[b.length - 1].getY(),
-							(float) p[n - 1].getX(), (float) p[n - 1].getY());
+							(float) b[b.length - 1].getY(), (float) p[n - 1]
+									.getX(), (float) p[n - 1].getY());
 				} else if (lineStyle == GraphConstants.STYLE_SPLINE && n > 2) {
 					for (double t = 0; t <= 1; t += 0.0125) {
 						double[] xy = spline.getPoint(t);
 						view.sharedPath.lineTo((float) xy[0], (float) xy[1]);
 					}
-				} else if(lineStyle == 
-		            MyRenderer.STYLE_GRAPHVIZ_BEZIER && n > 2){ 
-		            for(int i = 3; i < p.length; i += 3) 
-		               view.sharedPath.curveTo((float)p[i-2].getX(), (float)p[i-2].getY(), (float)p[i-1].getX(), 
-		                     (float)p[i-1].getY(), (float)p[i].getX(), (float)p[i].getY()); 
-		             
-		            view.sharedPath.lineTo((float)p[n-1].getX(), (float)p[n-1].getY()); 
-		         } 
+				} else if (lineStyle == MyRenderer.STYLE_GRAPHVIZ_BEZIER
+						&& n > 2) {
+					for (int i = 3; i < p.length; i += 3)
+						view.sharedPath.curveTo((float) p[i - 2].getX(),
+								(float) p[i - 2].getY(), (float) p[i - 1]
+										.getX(), (float) p[i - 1].getY(),
+								(float) p[i].getX(), (float) p[i].getY());
+
+					view.sharedPath.lineTo((float) p[n - 1].getX(),
+							(float) p[n - 1].getY());
+				}
 
 				/* END */
 				else {
 					for (int i = 1; i < n - 1; i++)
-						view.sharedPath.lineTo((float) p[i].getX(), (float) p[i]
-								.getY());
-					view.sharedPath.lineTo((float) pe.getX(), (float) pe.getY());
+						view.sharedPath.lineTo((float) p[i].getX(),
+								(float) p[i].getY());
+					view.sharedPath
+							.lineTo((float) pe.getX(), (float) pe.getY());
 				}
 				view.sharedPath.moveTo((float) pe.getX(), (float) pe.getY());
 				if (view.endShape == null && view.beginShape == null) {

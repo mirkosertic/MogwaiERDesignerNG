@@ -15,7 +15,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-12 17:10:03 $
  */
 public class DefaultValueEditorView extends JPanel {
 
@@ -133,8 +133,7 @@ public class DefaultValueEditorView extends JPanel {
 
 		if (m_detailtabbedpane == null) {
 			m_detailtabbedpane = new DefaultTabbedPane();
-			m_detailtabbedpane.addTab(null, this
-					.getDetailTab());
+			m_detailtabbedpane.addTab(null, this.getDetailTab());
 			m_detailtabbedpane.setSelectedIndex(0);
 		}
 
@@ -149,7 +148,8 @@ public class DefaultValueEditorView extends JPanel {
 	public JPanel getDetailTab() {
 
 		if (m_component_6 == null) {
-			m_component_6 = new DefaultTabbedPaneTab(getDetailTabbedPane(),ERDesignerBundle.DEFAULTVALUEPROPERTIES);
+			m_component_6 = new DefaultTabbedPaneTab(getDetailTabbedPane(),
+					ERDesignerBundle.DEFAULTVALUEPROPERTIES);
 
 			String rowDef = "2dlu,p,2dlu,p,20dlu,p,2dlu";
 			String colDef = "2dlu,left:60dlu,2dlu,60dlu:grow,2dlu";
@@ -159,16 +159,12 @@ public class DefaultValueEditorView extends JPanel {
 
 			CellConstraints cons = new CellConstraints();
 
+			m_component_6.add(this.getComponent_9(), cons.xywh(2, 2, 1, 1));
+			m_component_6.add(this.getComponent_10(), cons.xywh(2, 4, 1, 1));
 			m_component_6
-					.add(this.getComponent_9(), cons.xywh(2, 2, 1, 1));
-			m_component_6.add(this.getComponent_10(), cons
-					.xywh(2, 4, 1, 1));
-			m_component_6.add(this.getDefaultValueName(), cons.xywh(4, 2,
-					1, 1));
-			m_component_6
-					.add(this.getDeclaration(), cons.xywh(4, 4, 1, 1));
-			m_component_6.add(this.getUpdateButton(), cons
-					.xywh(4, 6, 1, 1));
+					.add(this.getDefaultValueName(), cons.xywh(4, 2, 1, 1));
+			m_component_6.add(this.getDeclaration(), cons.xywh(4, 4, 1, 1));
+			m_component_6.add(this.getUpdateButton(), cons.xywh(4, 6, 1, 1));
 			m_component_6.setName("Component_6");
 		}
 

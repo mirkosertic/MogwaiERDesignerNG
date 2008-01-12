@@ -38,9 +38,11 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:39 $
+ * @version $Date: 2008-01-12 17:10:03 $
  */
 public class RelationEditor extends BaseEditor {
+
+	private AttributeTableModel tableModel;
 
 	private Model model;
 
@@ -112,8 +114,6 @@ public class RelationEditor extends BaseEditor {
 
 		UIInitializer.getInstance().initialize(this);		
 	}
-
-	private de.erdesignerng.visual.editor.relation.AttributeTableModel tableModel;
 
 	public void initializeFor(Relation aRelation) {
 		bindingInfo.setDefaultModel(aRelation);

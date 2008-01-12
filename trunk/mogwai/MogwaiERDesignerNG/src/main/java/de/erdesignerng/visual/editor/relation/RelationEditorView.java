@@ -16,7 +16,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 21:24:34 $
+ * @version $Date: 2008-01-12 17:10:03 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -69,13 +69,17 @@ public class RelationEditorView extends JPanel {
 		CellConstraints cons = new CellConstraints();
 
 		add(getComponent_1(), cons.xywh(2, 4, 1, 1));
-		add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons
+				.xywh(2, 2, 3, 1));
 		add(getRelationname(), cons.xywh(4, 4, 1, 1));
-		add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(2, 6, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(
+				2, 6, 3, 1));
 		add(new JScrollPane(getComponent_5()), cons.xywh(2, 8, 3, 1));
-		add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(2, 10, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(
+				2, 10, 3, 1));
 		add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
-		add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
+		add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(
+				2, 14, 3, 1));
 		add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
 
 		add(getComponent_8(), cons.xywh(2, 20, 3, 1));
@@ -185,7 +189,8 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnDeleteCascadeNothing() {
 
 		if (onDeleteNothing == null) {
-			onDeleteNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
+			onDeleteNothing = new DefaultRadioButton(
+					ERDesignerBundle.DATABASEDEFAULT);
 		}
 
 		return onDeleteNothing;
@@ -227,7 +232,8 @@ public class RelationEditorView extends JPanel {
 	public javax.swing.JRadioButton getOnUpdateCascadeNothing() {
 
 		if (onUpdateNothing == null) {
-			onUpdateNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
+			onUpdateNothing = new DefaultRadioButton(
+					ERDesignerBundle.DATABASEDEFAULT);
 		}
 
 		return onUpdateNothing;

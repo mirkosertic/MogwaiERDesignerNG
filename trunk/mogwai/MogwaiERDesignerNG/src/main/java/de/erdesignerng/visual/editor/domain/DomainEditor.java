@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:39 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -56,11 +56,11 @@ public class DomainEditor extends BaseEditor {
 	private DomainEditorView editingView = new DomainEditorView();
 
 	private Model model;
-	
+
 	private List<Domain> removedDomains = new ArrayList<Domain>();
 
 	private Map<String, Domain> knownValues = new HashMap<String, Domain>();
-	
+
 	private DefaultAction updateAction = new DefaultAction(
 			new ActionEventProcessor() {
 
@@ -100,7 +100,7 @@ public class DomainEditor extends BaseEditor {
 					commandDelete();
 				}
 			}, this, ERDesignerBundle.DELETE);
-	
+
 	/**
 	 * @param aParent
 	 */
@@ -148,7 +148,7 @@ public class DomainEditor extends BaseEditor {
 		updateEditFields();
 		setResizable(false);
 	}
-	
+
 	/**
 	 * This method initializes this.
 	 */
@@ -157,7 +157,7 @@ public class DomainEditor extends BaseEditor {
 		editingView.getUpdateButton().setAction(updateAction);
 		editingView.getOkButton().setAction(closeAction);
 		editingView.getCancelButton().setAction(cancelAction);
-		
+
 		editingView.getDomainList().addListSelectionListener(
 				new javax.swing.event.ListSelectionListener() {
 
@@ -166,14 +166,14 @@ public class DomainEditor extends BaseEditor {
 						commandItemChanged(e);
 					}
 				});
-		
+
 		editingView.getNewButton().setAction(newAction);
 		editingView.getDeleteButton().setAction(deleteAction);
 
 		setContentPane(editingView);
 		pack();
 
-		UIInitializer.getInstance().initialize(this);		
+		UIInitializer.getInstance().initialize(this);
 	}
 
 	private void updateEditFields() {
@@ -263,7 +263,8 @@ public class DomainEditor extends BaseEditor {
 				commandNew();
 			}
 		} else {
-			displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+			displayErrorMessage(getResourceHelper().getText(
+					ERDesignerBundle.ELEMENTINUSE));
 		}
 	}
 
@@ -283,7 +284,7 @@ public class DomainEditor extends BaseEditor {
 				model.addDomain(theValue);
 			}
 		}
-		
+
 		model.getDomains().removeAll(removedDomains);
 	}
 }

@@ -36,7 +36,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:37 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class HandTool extends BaseTool {
 
@@ -60,7 +60,8 @@ public class HandTool extends BaseTool {
 					.getFirstCellForLocation(e.getX(), e.getY());
 
 			if (theClickedCell != null) {
-				DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theClickedCell);
+				DefaultPopupMenu menu = createPopupMenu(e.getPoint(),
+						theClickedCell);
 				menu.show(graph, e.getX(), e.getY());
 			}
 		} else {
@@ -70,9 +71,11 @@ public class HandTool extends BaseTool {
 
 	public DefaultPopupMenu createPopupMenu(Point aPoint, final GraphCell aCell) {
 
-		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+				.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-		DefaultAction theAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
+		DefaultAction theAction = new DefaultAction(
+				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
 		DefaultMenuItem theItem = new DefaultMenuItem(theAction);
 		theAction.addActionListener(new ActionListener() {
 
@@ -80,7 +83,7 @@ public class HandTool extends BaseTool {
 				graph.commandDeleteCell(aCell);
 			}
 		});
-		
+
 		theMenu.add(theItem);
 		UIInitializer.getInstance().initialize(theMenu);
 

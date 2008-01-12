@@ -18,7 +18,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-12 17:10:02 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -164,7 +164,7 @@ public class TableEditorView extends DefaultPanel {
 		if (m_maintabbedpane == null) {
 			m_maintabbedpane = new DefaultTabbedPane();
 			m_maintabbedpane.addTab(null, this.getAttributesTab());
-			//m_maintabbedpane.addTab(null, this.getIndexesTab());
+			// m_maintabbedpane.addTab(null, this.getIndexesTab());
 			m_maintabbedpane.addTab(null, this.getMainCommensTab());
 			m_maintabbedpane.setName("MainTabbedPane");
 			m_maintabbedpane.setSelectedIndex(0);
@@ -181,7 +181,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getAttributesTab() {
 
 		if (m_attributestab == null) {
-			m_attributestab = new DefaultTabbedPaneTab(m_maintabbedpane, ERDesignerBundle.ATTRIBUTES);
+			m_attributestab = new DefaultTabbedPaneTab(m_maintabbedpane,
+					ERDesignerBundle.ATTRIBUTES);
 
 			String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
 			String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
@@ -197,14 +198,11 @@ public class TableEditorView extends DefaultPanel {
 			// .xywh(9, 2, 1, 1));
 			m_attributestab.add(new DefaultScrollPane(this.getAttributeList()),
 					cons.xywh(2, 4, 8, 3));
-			m_attributestab
-					.add(this.getNewButton(), cons.xywh(2, 8, 1, 1));
-			m_attributestab.add(this.getDeleteButton(), cons.xywh(6, 8, 4,
-					1));
-			m_attributestab.add(this.getComponent_15(), cons.xywh(11, 2,
-					3, 5));
-			m_attributestab.add(this.getUpdateAttributeButton(), cons
-					.xywh(13, 8, 1, 1));
+			m_attributestab.add(this.getNewButton(), cons.xywh(2, 8, 1, 1));
+			m_attributestab.add(this.getDeleteButton(), cons.xywh(6, 8, 4, 1));
+			m_attributestab.add(this.getComponent_15(), cons.xywh(11, 2, 3, 5));
+			m_attributestab.add(this.getUpdateAttributeButton(), cons.xywh(13,
+					8, 1, 1));
 			m_attributestab.setName("AttributesTab");
 		}
 
@@ -281,7 +279,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getAttributesGeneralTab() {
 
 		if (m_attributesgeneraltab == null) {
-			m_attributesgeneraltab = new DefaultTabbedPaneTab(m_component_15,ERDesignerBundle.GENERAL);
+			m_attributesgeneraltab = new DefaultTabbedPaneTab(m_component_15,
+					ERDesignerBundle.GENERAL);
 
 			String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu,p";
 			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
@@ -291,16 +290,16 @@ public class TableEditorView extends DefaultPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			m_attributesgeneraltab.add(this.getComponent_20(), cons.xywh(
-					2, 2, 1, 1));
-			m_attributesgeneraltab.add(this.getAttributeName(), cons.xywh(
-					4, 2, 1, 1));
+			m_attributesgeneraltab.add(this.getComponent_20(), cons.xywh(2, 2,
+					1, 1));
+			m_attributesgeneraltab.add(this.getAttributeName(), cons.xywh(4, 2,
+					1, 1));
 			m_attributesgeneraltab.add(new DefaultScrollPane(this
 					.getDomainList()), cons.xywh(2, 4, 3, 3));
-			m_attributesgeneraltab.add(this.getPrimaryKey(), cons.xywh(4,
-					8, 1, 1));
-			m_attributesgeneraltab.add(this.getNullable(), cons.xywh(4,
-					10, 1, 1));
+			m_attributesgeneraltab.add(this.getPrimaryKey(), cons.xywh(4, 8, 1,
+					1));
+			m_attributesgeneraltab.add(this.getNullable(), cons.xywh(4, 10, 1,
+					1));
 			// this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
 			// .xywh(4, 12, 1, 1));
 			m_attributesgeneraltab.setName("AttributesGeneralTab");
@@ -406,7 +405,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getOptionsTab() {
 
 		if (m_optionstab == null) {
-			m_optionstab = new DefaultTabbedPaneTab(m_component_15,ERDesignerBundle.OPTIONS);
+			m_optionstab = new DefaultTabbedPaneTab(m_component_15,
+					ERDesignerBundle.OPTIONS);
 
 			String rowDef = "2dlu,p,2dlu";
 			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
@@ -416,8 +416,7 @@ public class TableEditorView extends DefaultPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			m_optionstab
-					.add(this.getComponent_42(), cons.xywh(2, 2, 1, 1));
+			m_optionstab.add(this.getComponent_42(), cons.xywh(2, 2, 1, 1));
 			m_optionstab.add(this.getDefault(), cons.xywh(4, 2, 1, 1));
 			m_optionstab.setName("OptionsTab");
 			m_optionstab.setVisible(false);
@@ -463,7 +462,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getAttributeCommentTab() {
 
 		if (m_attributecommenttab == null) {
-			m_attributecommenttab = new DefaultTabbedPaneTab(m_component_15, ERDesignerBundle.COMMENTS);
+			m_attributecommenttab = new DefaultTabbedPaneTab(m_component_15,
+					ERDesignerBundle.COMMENTS);
 
 			String rowDef = "2dlu,p,160dlu:grow,p,2dlu";
 			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
@@ -519,7 +519,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getIndexesTab() {
 
 		if (m_indexestab == null) {
-			m_indexestab = new DefaultTabbedPaneTab(m_maintabbedpane, ERDesignerBundle.INDEXES);
+			m_indexestab = new DefaultTabbedPaneTab(m_maintabbedpane,
+					ERDesignerBundle.INDEXES);
 
 			String rowDef = "2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
 			String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
@@ -531,14 +532,12 @@ public class TableEditorView extends DefaultPanel {
 
 			m_indexestab.add(new DefaultScrollPane(this.getIndexList()), cons
 					.xywh(2, 2, 8, 3));
-			m_indexestab.add(this.getNewIndexButton(), cons.xywh(2, 6, 1,
-					1));
-			m_indexestab.add(this.getDeleteIndexButton(), cons.xywh(6, 6,
-					4, 1));
-			m_indexestab.add(this.getIndexTabbedPane(), cons.xywh(11, 2,
-					3, 3));
-			m_indexestab.add(this.getUpdateIndexButton(), cons.xywh(13, 6,
-					1, 1));
+			m_indexestab.add(this.getNewIndexButton(), cons.xywh(2, 6, 1, 1));
+			m_indexestab
+					.add(this.getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
+			m_indexestab.add(this.getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
+			m_indexestab.add(this.getUpdateIndexButton(), cons
+					.xywh(13, 6, 1, 1));
 			m_indexestab.setName("IndexesTab");
 			m_indexestab.setVisible(false);
 		}
@@ -614,7 +613,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getIndexGeneralTab() {
 
 		if (m_indexgeneraltab == null) {
-			m_indexgeneraltab = new DefaultTabbedPaneTab(m_indextabbedpane, ERDesignerBundle.GENERAL);
+			m_indexgeneraltab = new DefaultTabbedPaneTab(m_indextabbedpane,
+					ERDesignerBundle.GENERAL);
 
 			String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu";
 			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
@@ -625,15 +625,12 @@ public class TableEditorView extends DefaultPanel {
 			CellConstraints cons = new CellConstraints();
 
 			m_indexgeneraltab.add(this.getLabel1(), cons.xywh(2, 2, 1, 1));
-			m_indexgeneraltab.add(this.getIndexName(), cons.xywh(4, 2, 1,
+			m_indexgeneraltab.add(this.getIndexName(), cons.xywh(4, 2, 1, 1));
+			m_indexgeneraltab.add(this.getUniqueIndex(), cons.xywh(4, 8, 1, 1));
+			m_indexgeneraltab.add(this.getNotUniqueIndex(), cons.xywh(4, 10, 1,
 					1));
-			m_indexgeneraltab.add(this.getUniqueIndex(), cons.xywh(4, 8,
-					1, 1));
-			m_indexgeneraltab.add(this.getNotUniqueIndex(), cons.xywh(4,
-					10, 1, 1));
-			m_indexgeneraltab.add(
-					new DefaultScrollPane(this.getIndexFieldList()), cons.xywh(2, 4,
-							3, 3));
+			m_indexgeneraltab.add(new DefaultScrollPane(this
+					.getIndexFieldList()), cons.xywh(2, 4, 3, 3));
 			m_indexgeneraltab.setName("IndexGeneralTab");
 		}
 
@@ -758,7 +755,8 @@ public class TableEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getMainCommensTab() {
 
 		if (m_maincommenstab == null) {
-			m_maincommenstab = new DefaultTabbedPaneTab(m_maintabbedpane, ERDesignerBundle.COMMENTS);
+			m_maincommenstab = new DefaultTabbedPaneTab(m_maintabbedpane,
+					ERDesignerBundle.COMMENTS);
 
 			String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
 			String colDef = "2dlu,40dlu:grow,2dlu";
@@ -768,8 +766,9 @@ public class TableEditorView extends DefaultPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			m_maincommenstab.add(new DefaultScrollPane(this.getEntityComment()),
-					cons.xywh(2, 2, 1, 3));
+			m_maincommenstab.add(
+					new DefaultScrollPane(this.getEntityComment()), cons.xywh(
+							2, 2, 1, 3));
 			m_maincommenstab.setName("MainCommensTab");
 			m_maincommenstab.setVisible(false);
 		}
