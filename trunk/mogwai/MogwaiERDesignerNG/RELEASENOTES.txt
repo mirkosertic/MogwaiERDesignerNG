@@ -1,0 +1,11 @@
+ 
+     Release Notes for MogwaiERDesignerNG
+     
+
+Release 1.0
+
+* First support for editing domains, defaultvalues, tables and relations
+* First support for reverse engineering of different JDBC datasources
+* JDBC dialects available for MySQL, MySQL(InnoDB), MSSQL, Oracle , Postgres 
+  and DB2
+     

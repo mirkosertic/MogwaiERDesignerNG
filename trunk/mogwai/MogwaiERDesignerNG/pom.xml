@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sourceforge.mogwai</groupId>
-	<artifactId>mogwaier-designerng</artifactId>
+	<artifactId>mogwai-erdesignerng</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0</version>
 	<name>MogwaiERDesignerNG</name>
@@ -59,7 +59,8 @@
 								</taskdef>
 
 								<XMLResourceBundle
-									src="src/main/java">
+									src="src/main/java"
+									dest="src/main/resources">
 									<fileset dir="src/main/resources">
 										<include name="*.xml" />
 									</fileset>
@@ -76,10 +77,19 @@
 					<dependency>
 						<groupId>net.sourceforge.mogwai</groupId>
 						<artifactId>mogwai-i18n</artifactId>
-						<version>2.8</version>
+						<version>2.9</version>
 					</dependency>
 				</dependencies>
 
+			</plugin>
+			
+			<plugin>
+		        <artifactId>maven-assembly-plugin</artifactId>
+        		<configuration>
+		          <descriptors>
+        			    <descriptor>assembly.xml</descriptor>
+		          </descriptors>
+   		        </configuration>			
 			</plugin>
 
 		</plugins>
@@ -94,7 +104,7 @@
 		<dependency>
 			<groupId>net.sourceforge.mogwai</groupId>
 			<artifactId>mogwai-i18n</artifactId>
-			<version>2.8</version>
+			<version>2.9</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -103,6 +113,12 @@
 			<version>1.2</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.mogwai</groupId>
+			<artifactId>mogwai-smartstart</artifactId>
+			<version>1.0</version>
+			<scope>compile</scope>
+		</dependency>		
 		<dependency>
 			<groupId>jgoodies</groupId>
 			<artifactId>forms</artifactId>
