@@ -123,6 +123,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<artifactId>swing-worker</artifactId>
+			<groupId>net.java.dev</groupId>
+			<version>1.1</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 	<reporting>
 		<plugins>

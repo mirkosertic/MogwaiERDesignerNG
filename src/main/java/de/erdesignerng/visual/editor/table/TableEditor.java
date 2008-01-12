@@ -46,7 +46,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:40 $
+ * @version $Date: 2008-01-12 17:10:02 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -65,7 +65,7 @@ public class TableEditor extends BaseEditor {
 	private DefaultComboBoxModel defaultValuesListModel = new DefaultComboBoxModel();
 
 	private Map<String, Attribute> knownValues = new HashMap<String, Attribute>();
-	
+
 	private List<Attribute> removedAttributes = new ArrayList<Attribute>();
 
 	private DefaultAction okAction = new DefaultAction(
@@ -131,7 +131,7 @@ public class TableEditor extends BaseEditor {
 					commandUpdateIndex();
 				}
 			}, this, ERDesignerBundle.UPDATE);
-	
+
 	/**
 	 * @param parent
 	 */
@@ -169,10 +169,10 @@ public class TableEditor extends BaseEditor {
 		attributeBindingInfo.addBinding("defaultValue", editingView
 				.getDefault());
 		attributeBindingInfo.configure();
-		
-		UIInitializer.getInstance().initialize(this);		
+
+		UIInitializer.getInstance().initialize(this);
 	}
-	
+
 	/**
 	 * This method initializes this.
 	 */
@@ -322,23 +322,25 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandRenameAttribute(java.awt.event.ActionEvent evt) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandDeleteAttribute(java.awt.event.ActionEvent aEvent) {
 
 		Attribute theAttribute = attributeBindingInfo.getDefaultModel();
-		
-		if (!model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
+
+		if (!model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(),
+				theAttribute)) {
 
 			if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 				knownValues.remove(theAttribute.getSystemId());
 				attributeListModel.removeElement(theAttribute);
-				
+
 				removedAttributes.add(theAttribute);
 			}
 		} else {
-			displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ATTRIBUTEISUSEDINFOREIGNKEYS));
+			displayErrorMessage(getResourceHelper().getText(
+					ERDesignerBundle.ATTRIBUTEISUSEDINFOREIGNKEYS));
 		}
 	}
 
@@ -348,43 +350,43 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandPrimaryKeyActionPerformed(java.awt.event.ActionEvent evt) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandNullableActionPerformed(java.awt.event.ActionEvent evt) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandMoveAttributeDown(java.awt.event.ActionEvent evt) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandMoveAttributeUp(java.awt.event.ActionEvent evt) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandPrimaryKeyItemStateChanged(java.awt.event.ItemEvent evt) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandDeleteIndex() {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandRenameIndex() {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandNewIndex() {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandUpdateIndex() {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	private void commandStartDomainEditor(ActionEvent e) {
-		//TODO: Implement functionality here
+		// TODO: Implement functionality here
 	}
 
 	@Override
@@ -397,7 +399,7 @@ public class TableEditor extends BaseEditor {
 		if (!model.getTables().contains(theTable)) {
 			model.addTable(theTable);
 		} else {
-			for(Attribute theAttribute : removedAttributes) {
+			for (Attribute theAttribute : removedAttributes) {
 				theTable.getAttributes().removeById(theAttribute.getSystemId());
 			}
 		}

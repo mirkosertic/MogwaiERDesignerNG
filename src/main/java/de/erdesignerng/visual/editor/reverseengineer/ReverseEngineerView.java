@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 21:24:34 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class ReverseEngineerView extends JPanel {
 
@@ -80,9 +80,11 @@ public class ReverseEngineerView extends JPanel {
 
 		CellConstraints cons = new CellConstraints();
 
-		this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
+		this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons
+				.xywh(2, 2, 3, 1));
 		this.add(this.getschemagrid(), cons.xywh(2, 4, 3, 1));
-		this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
+		this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS),
+				cons.xywh(2, 6, 3, 1));
 		this.add(this.getstartbutton(), cons.xywh(2, 10, 1, 1));
 		this.add(this.getcancelbutton(), cons.xywh(4, 10, 1, 1));
 		this.add(this.getengineeringoptions(), cons.xywh(2, 8, 3, 1));

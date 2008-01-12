@@ -42,7 +42,7 @@ import de.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class RelationTool extends BaseTool {
 
@@ -56,15 +56,18 @@ public class RelationTool extends BaseTool {
 
 	@Override
 	public boolean isForceMarqueeEvent(MouseEvent e) {
-		if (e.isShiftDown())
+		if (e.isShiftDown()) {
 			return false;
+		}
 
-		if (SwingUtilities.isRightMouseButton(e))
+		if (SwingUtilities.isRightMouseButton(e)) {
 			return true;
+		}
 
 		port = getSourcePortAt(e.getPoint());
-		if (port != null)
+		if (port != null) {
 			return true;
+		}
 
 		return super.isForceMarqueeEvent(e);
 	}
@@ -89,10 +92,12 @@ public class RelationTool extends BaseTool {
 			if (newPort == null || newPort != port) {
 				paintConnector(Color.black, graph.getBackground(), g);
 				port = newPort;
-				if (port != null)
+				if (port != null) {
 					current = graph.toScreen(port.getLocation());
-				else
+				}
+				else {
 					current = graph.snap(e.getPoint());
+				}
 				paintConnector(graph.getBackground(), Color.black, g);
 			}
 		}
@@ -119,8 +124,9 @@ public class RelationTool extends BaseTool {
 		if (e != null && port != null && firstPort != null) {
 			connect((Port) firstPort.getCell(), (Port) port.getCell());
 			e.consume();
-		} else
+		} else {
 			graph.repaint();
+		}
 		firstPort = port = null;
 		start = current = null;
 		super.mouseReleased(e);
@@ -131,17 +137,19 @@ public class RelationTool extends BaseTool {
 		if (e != null && getSourcePortAt(e.getPoint()) != null) {
 			graph.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			e.consume();
-		} else
+		} else {
 			super.mouseMoved(e);
+		}
 	}
 
 	protected void paintConnector(Color fg, Color bg, Graphics g) {
 		g.setColor(fg);
 		g.setXORMode(bg);
 		paintPort(graph.getGraphics());
-		if (firstPort != null && start != null && current != null)
+		if (firstPort != null && start != null && current != null) {
 			g.drawLine((int) start.getX(), (int) start.getY(), (int) current
 					.getX(), (int) current.getY());
+		}
 	}
 
 	protected void paintPort(Graphics g) {

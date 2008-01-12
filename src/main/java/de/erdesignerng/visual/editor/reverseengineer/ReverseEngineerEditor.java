@@ -42,7 +42,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:39 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -187,16 +187,20 @@ public class ReverseEngineerEditor extends BaseEditor {
 			}
 		}
 	}
-	
+
 	public ReverseEngineeringOptions createREOptions() {
 		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
 		bindingInfo.view2model();
 
 		ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-		theOptions.setDefaultValueNaming((DefaultValueNamingEnum) theModel.getDefaultValueGenerator().getValue());
-		theOptions.setDomainNaming((DomainNamingEnum) theModel.getDomainGenerator().getValue());
-		theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
-		theOptions.setSchemaList(editingView.getschemaList().getSelectedValues());
+		theOptions.setDefaultValueNaming((DefaultValueNamingEnum) theModel
+				.getDefaultValueGenerator().getValue());
+		theOptions.setDomainNaming((DomainNamingEnum) theModel
+				.getDomainGenerator().getValue());
+		theOptions.setTableNaming((TableNamingEnum) theModel
+				.getTableGenerator().getValue());
+		theOptions.setSchemaList(editingView.getschemaList()
+				.getSelectedValues());
 
 		return theOptions;
 	}
@@ -204,5 +208,5 @@ public class ReverseEngineerEditor extends BaseEditor {
 	@Override
 	public void applyValues() throws Exception {
 	}
-	
+
 }

@@ -23,7 +23,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:39 $
+ * @version $Date: 2008-01-12 17:10:03 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -51,7 +51,6 @@ public class DatabaseConnectionEditor extends BaseEditor {
 				}
 			}, this, ERDesignerBundle.CANCEL);
 
-	
 	private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
 
 		@Override
@@ -114,7 +113,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 		view.getOkButton().setAction(okAction);
 		view.getCancelButton().setAction(cancelAction);
 		view.getTestButton().setAction(testAction);
-		
+
 		setContentPane(view);
 		setResizable(false);
 		pack();
@@ -168,7 +167,8 @@ public class DatabaseConnectionEditor extends BaseEditor {
 								.getUser(), theModel.getPassword());
 				theConnection.close();
 
-				displayInfoMessage(getResourceHelper().getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
+				displayInfoMessage(getResourceHelper().getText(
+						ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
 
 			} catch (Exception e) {
 

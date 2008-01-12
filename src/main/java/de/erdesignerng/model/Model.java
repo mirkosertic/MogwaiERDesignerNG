@@ -30,7 +30,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 19:40:25 $
+ * @version $Date: 2008-01-12 17:10:01 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -234,16 +234,22 @@ public class Model implements OwnedModelItemVerifier {
 	public void setProperties(ModelProperties properties) {
 		this.properties = properties;
 	}
-	
-	public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+
+	public Connection createConnection(ApplicationPreferences aPreferences)
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, SQLException {
 		Connection theConnection = getDialect().createConnection(
-				aPreferences.createDriverClassLoader(), properties.getProperty(Model.PROPERTY_DRIVER), 
-				properties.getProperty(Model.PROPERTY_URL), properties.getProperty(Model.PROPERTY_USER), properties.getProperty(Model.PROPERTY_PASSWORD));
+				aPreferences.createDriverClassLoader(),
+				properties.getProperty(Model.PROPERTY_DRIVER),
+				properties.getProperty(Model.PROPERTY_URL),
+				properties.getProperty(Model.PROPERTY_USER),
+				properties.getProperty(Model.PROPERTY_PASSWORD));
 		return theConnection;
 	}
 
 	public boolean checkIfUsedAsForeignKey(Table aTable, Attribute aAttribute) {
-		Attribute theRealAttribute = aTable.getAttributes().findBySystemId(aAttribute.getSystemId());
+		Attribute theRealAttribute = aTable.getAttributes().findBySystemId(
+				aAttribute.getSystemId());
 		return getRelations().isForeignKeyAttribute(theRealAttribute);
 	}
 

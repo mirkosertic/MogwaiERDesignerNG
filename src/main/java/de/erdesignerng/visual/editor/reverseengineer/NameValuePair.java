@@ -20,19 +20,19 @@ package de.erdesignerng.visual.editor.reverseengineer;
 public class NameValuePair {
 
 	private Object value;
-	
+
 	private String displayName;
-	
-	public NameValuePair(Object aValue,String aDisplayName) {
+
+	public NameValuePair(Object aValue, String aDisplayName) {
 		value = aValue;
 		displayName = aDisplayName;
 	}
-	
+
 	@Override
 	public String toString() {
 		return displayName;
 	}
-	
+
 	public Object getValue() {
 		return value;
 	}
