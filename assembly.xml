@@ -25,6 +25,10 @@
         <include>*.jar</include>
       </includes>
     </fileSet>    
+	<fileSet>
+      <directory>target/site/apidocs</directory>
+      <outputDirectory>javadoc</outputDirectory>
+    </fileSet>    
   </fileSets>
   <dependencySets>
     <dependencySet>
