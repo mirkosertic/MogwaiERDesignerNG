@@ -19,101 +19,99 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:08 $
  */
-public class Attribute extends OwnedModelItem<Table> implements
-		ModelItemClonable<Attribute> {
+public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
-	private Domain domain;
+    private Domain domain;
 
-	private boolean nullable;
+    private boolean nullable;
 
-	private DefaultValue defaultValue;
+    private DefaultValue defaultValue;
 
-	private boolean primaryKey;
+    private boolean primaryKey;
 
-	public void setDefinition(Domain aDomain, boolean aNullable,
-			DefaultValue aDefaultValue) {
+    public void setDefinition(Domain aDomain, boolean aNullable, DefaultValue aDefaultValue) {
 
-		nullable = aNullable;
-		domain = aDomain;
-		defaultValue = aDefaultValue;
-	}
+        nullable = aNullable;
+        domain = aDomain;
+        defaultValue = aDefaultValue;
+    }
 
-	/**
-	 * @return the domain
-	 */
-	public Domain getDomain() {
-		return domain;
-	}
+    /**
+     * @return the domain
+     */
+    public Domain getDomain() {
+        return domain;
+    }
 
-	/**
-	 * @return the nullable
-	 */
-	public boolean isNullable() {
-		return nullable;
-	}
+    /**
+     * @return the nullable
+     */
+    public boolean isNullable() {
+        return nullable;
+    }
 
-	/**
-	 * Test if this attribute is part of a foreign key.
-	 * 
-	 * @return true if yes, else false
-	 */
-	public boolean isForeignKey() {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			return theOwner.isForeignKey(this);
-		}
+    /**
+     * Test if this attribute is part of a foreign key.
+     * 
+     * @return true if yes, else false
+     */
+    public boolean isForeignKey() {
+        Table theOwner = getOwner();
+        if (theOwner != null) {
+            return theOwner.isForeignKey(this);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public DefaultValue getDefaultValue() {
-		return defaultValue;
-	}
+    public DefaultValue getDefaultValue() {
+        return defaultValue;
+    }
 
-	public void setDefaultValue(DefaultValue defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    public void setDefaultValue(DefaultValue defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-	public void setDomain(Domain domain) {
-		this.domain = domain;
-	}
+    public void setDomain(Domain domain) {
+        this.domain = domain;
+    }
 
-	public void setNullable(boolean nullable) {
-		this.nullable = nullable;
-	}
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
+    }
 
-	public boolean isPrimaryKey() {
-		return primaryKey;
-	}
+    public boolean isPrimaryKey() {
+        return primaryKey;
+    }
 
-	public void setPrimaryKey(boolean primaryKey) {
-		this.primaryKey = primaryKey;
-	}
+    public void setPrimaryKey(boolean primaryKey) {
+        this.primaryKey = primaryKey;
+    }
 
-	@Override
-	public Attribute clone() {
-		Attribute theAttribute = new Attribute();
-		theAttribute.setSystemId(getSystemId());
-		theAttribute.setOwner(getOwner());
-		theAttribute.setName(getName());
-		theAttribute.setDomain(getDomain());
-		theAttribute.setNullable(isNullable());
-		theAttribute.setDefaultValue(getDefaultValue());
-		theAttribute.setComment(getComment());
-		theAttribute.setPrimaryKey(isPrimaryKey());
-		return theAttribute;
-	}
+    @Override
+    public Attribute clone() {
+        Attribute theAttribute = new Attribute();
+        theAttribute.setSystemId(getSystemId());
+        theAttribute.setOwner(getOwner());
+        theAttribute.setName(getName());
+        theAttribute.setDomain(getDomain());
+        theAttribute.setNullable(isNullable());
+        theAttribute.setDefaultValue(getDefaultValue());
+        theAttribute.setComment(getComment());
+        theAttribute.setPrimaryKey(isPrimaryKey());
+        return theAttribute;
+    }
 
-	public void restoreFrom(Attribute aValue) throws Exception {
-		setName(aValue.getName());
-		setDomain(aValue.getDomain());
-		setNullable(aValue.isNullable());
-		setDefaultValue(aValue.getDefaultValue());
-		setComment(aValue.getComment());
-		setPrimaryKey(aValue.isPrimaryKey());
-		setOwner(aValue.getOwner());
-	}
+    public void restoreFrom(Attribute aValue) throws Exception {
+        setName(aValue.getName());
+        setDomain(aValue.getDomain());
+        setNullable(aValue.isNullable());
+        setDefaultValue(aValue.getDefaultValue());
+        setComment(aValue.getComment());
+        setPrimaryKey(aValue.isPrimaryKey());
+        setOwner(aValue.getOwner());
+    }
 
 }

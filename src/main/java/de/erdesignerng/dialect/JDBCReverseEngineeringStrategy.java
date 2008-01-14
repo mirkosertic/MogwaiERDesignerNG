@@ -23,8 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.exception.ElementAlreadyExistsException;
-import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
@@ -37,387 +35,350 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:00 $
+ * @version $Date: 2008-01-14 20:01:05 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
-	private Dialect dialect;
+    private Dialect dialect;
 
-	protected JDBCReverseEngineeringStrategy(Dialect aDialect) {
-		dialect = aDialect;
-	}
+    protected JDBCReverseEngineeringStrategy(Dialect aDialect) {
+        dialect = aDialect;
+    }
 
-	/**
-	 * Reverse engineer a domain from a column definition.
-	 * 
-	 * @param aModel
-	 * @param aColumnName
-	 * @param aTypeName
-	 * @param aSize
-	 * @param aDecimalDigits
-	 * @return
-	 */
-	protected Domain createDomainFor(Model aModel, String aColumnName,
-			String aTypeName, String aSize, String aDecimalDigits, ReverseEngineeringOptions aOptions) {
+    /**
+     * Reverse engineer a domain from a column definition.
+     * 
+     * @param aModel
+     * @param aColumnName
+     * @param aTypeName
+     * @param aSize
+     * @param aDecimalDigits
+     * @return
+     */
+    protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, String aSize,
+            String aDecimalDigits, ReverseEngineeringOptions aOptions) {
 
-		StringBuffer theTypeDefinition = new StringBuffer(aTypeName);
-		if (((aSize != null)) && (aTypeName.indexOf(")") < 0)) {
-			theTypeDefinition.append("(");
-			theTypeDefinition.append(aSize);
-			if (aDecimalDigits != null) {
-				theTypeDefinition.append(",");
-				theTypeDefinition.append(aDecimalDigits);
-			}
-			theTypeDefinition.append(")");
-		}
+        StringBuffer theTypeDefinition = new StringBuffer(aTypeName);
+        if (((aSize != null)) && (aTypeName.indexOf(")") < 0)) {
+            theTypeDefinition.append("(");
+            theTypeDefinition.append(aSize);
+            if (aDecimalDigits != null) {
+                theTypeDefinition.append(",");
+                theTypeDefinition.append(aDecimalDigits);
+            }
+            theTypeDefinition.append(")");
+        }
 
-		String theDataType = theTypeDefinition.toString();
-		Domain theDomain = aModel.getDomains().findByDataType(theDataType);
-		if (theDomain != null) {
+        String theDataType = theTypeDefinition.toString();
+        Domain theDomain = aModel.getDomains().findByDataType(theDataType);
+        if (theDomain != null) {
 
-			if (theDomain.getName().equals(aColumnName)) {
-				return theDomain;
-			}
+            if (theDomain.getName().equals(aColumnName)) {
+                return theDomain;
+            }
 
-			for (int i = 0; i < 10000; i++) {
-				String theName = aColumnName;
-				if (i > 0) {
-					theName = theName + "_" + i;
-				}
+            for (int i = 0; i < 10000; i++) {
+                String theName = aColumnName;
+                if (i > 0) {
+                    theName = theName + "_" + i;
+                }
 
-				theDomain = aModel.getDomains().findByName(theName);
-				if (theDomain != null) {
-					if (theDomain.getName().equals(aColumnName)) {
-						return theDomain;
-					}
-				}
+                theDomain = aModel.getDomains().findByName(theName);
+                if (theDomain != null) {
+                    if (theDomain.getName().equals(aColumnName)) {
+                        return theDomain;
+                    }
+                }
 
-				if (!aModel.getDomains().elementExists(theName,
-						dialect.isCaseSensitive())) {
+                if (!aModel.getDomains().elementExists(theName, dialect.isCaseSensitive())) {
 
-					theDomain = new Domain();
-					theDomain.setName(theName);
-					theDomain.setDatatype(theDataType);
+                    theDomain = new Domain();
+                    theDomain.setName(theName);
+                    theDomain.setDatatype(theDataType);
 
-					aModel.getDomains().add(theDomain);
+                    aModel.getDomains().add(theDomain);
 
-					return theDomain;
-				}
-			}
+                    return theDomain;
+                }
+            }
 
-		} else {
-			theDomain = new Domain();
-			theDomain.setName(aColumnName);
-			theDomain.setDatatype(theDataType);
+        } else {
+            theDomain = new Domain();
+            theDomain.setName(aColumnName);
+            theDomain.setDatatype(theDataType);
 
-			aModel.getDomains().add(theDomain);
-		}
+            aModel.getDomains().add(theDomain);
+        }
 
-		return theDomain;
-	}
+        return theDomain;
+    }
 
-	/**
-	 * Reverse engineer an existing table.
-	 * 
-	 * @param aModel
-	 * @param aSchemaName
-	 * @param aTableName
-	 * @param aConnection
-	 * @throws SQLException
-	 * @throws ReverseEngineeringException
-	 */
-	protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, String aSchemaName,
-			String aTableName, Connection aConnection) throws SQLException,
-			ReverseEngineeringException {
+    /**
+     * Reverse engineer an existing table.
+     * 
+     * @param aModel
+     * @param aSchemaName
+     * @param aTableName
+     * @param aConnection
+     * @throws SQLException
+     * @throws ReverseEngineeringException
+     */
+    protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, String aSchemaName, String aTableName, Connection aConnection)
+            throws SQLException, ReverseEngineeringException {
 
-		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableName);
-		
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableName);
 
-		ResultSet theTablesResultSet = theMetaData.getTables(null, aSchemaName,
-				aTableName, new String[] { "TABLE" });
-		while (theTablesResultSet.next()) {
+        DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-			String theTableRemarks = theTablesResultSet.getString("REMARKS");
+        ResultSet theTablesResultSet = theMetaData.getTables(null, aSchemaName, aTableName, new String[] { "TABLE" });
+        while (theTablesResultSet.next()) {
 
-			Table theTable = new Table();
-			theTable.setName(dialect.getCastType().cast(aTableName));
+            String theTableRemarks = theTablesResultSet.getString("REMARKS");
 
-			if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
-				theTable.getProperties().setProperty(ModelItem.PROPERTY_REMARKS,
-						theTableRemarks);
-			}
+            Table theTable = new Table();
+            theTable.setName(dialect.getCastType().cast(aTableName));
 
-			// Reverse engineer attributes
-			ResultSet theColumnsResultSet = theMetaData.getColumns(null,
-					aSchemaName, aTableName, null);
-			while (theColumnsResultSet.next()) {
+            if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
+                theTable.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theTableRemarks);
+            }
 
-				String theColumnName = theColumnsResultSet
-						.getString("COLUMN_NAME");
-				String theTypeName = theColumnsResultSet.getString("TYPE_NAME");
-				String theSize = theColumnsResultSet.getString("COLUMN_SIZE");
-				String theDecimalDigits = theColumnsResultSet
-						.getString("DECIMAL_DIGITS");
-				String theNullable = theColumnsResultSet.getString("NULLABLE");
-				String theDefaultValue = theColumnsResultSet
-						.getString("COLUMN_DEF");
-				String theColumnRemarks = theColumnsResultSet
-						.getString("REMARKS");
+            // Reverse engineer attributes
+            ResultSet theColumnsResultSet = theMetaData.getColumns(null, aSchemaName, aTableName, null);
+            while (theColumnsResultSet.next()) {
 
-				Attribute theAttribute = new Attribute();
-				theAttribute.setName(dialect.getCastType().cast(theColumnName));
-				if ((theColumnRemarks != null)
-						&& (!"".equals(theColumnRemarks))) {
-					theAttribute.getProperties().setProperty(
-							ModelItem.PROPERTY_REMARKS, theColumnRemarks);
-				}
+                String theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
+                String theTypeName = theColumnsResultSet.getString("TYPE_NAME");
+                String theSize = theColumnsResultSet.getString("COLUMN_SIZE");
+                String theDecimalDigits = theColumnsResultSet.getString("DECIMAL_DIGITS");
+                String theNullable = theColumnsResultSet.getString("NULLABLE");
+                String theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
+                String theColumnRemarks = theColumnsResultSet.getString("REMARKS");
 
-				Domain theDomain = createDomainFor(aModel, theColumnName,
-						theTypeName, theSize, theDecimalDigits, aOptions);
+                Attribute theAttribute = new Attribute();
+                theAttribute.setName(dialect.getCastType().cast(theColumnName));
+                if ((theColumnRemarks != null) && (!"".equals(theColumnRemarks))) {
+                    theAttribute.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theColumnRemarks);
+                }
 
-				DefaultValue theDefault = createDefaultValueFor(aModel,
-						theColumnName, theDefaultValue);
+                Domain theDomain = createDomainFor(aModel, theColumnName, theTypeName, theSize, theDecimalDigits,
+                        aOptions);
 
-				theAttribute.setDefinition(theDomain, "1".equals(theNullable),
-						theDefault);
+                DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
 
-				try {
-					theTable.addAttribute(aModel, theAttribute);
-				} catch (Exception e) {
-					throw new ReverseEngineeringException(e.getMessage());
-				}
-			}
-			theColumnsResultSet.close();
+                theAttribute.setDefinition(theDomain, "1".equals(theNullable), theDefault);
 
-			// Reverse engineer primary keys
-			ResultSet thePrimaryKeyResultSet = theMetaData.getPrimaryKeys(null,
-					aSchemaName, aTableName);
-			while (thePrimaryKeyResultSet.next()) {
+                try {
+                    theTable.addAttribute(aModel, theAttribute);
+                } catch (Exception e) {
+                    throw new ReverseEngineeringException(e.getMessage());
+                }
+            }
+            theColumnsResultSet.close();
 
-				String theColumnName = thePrimaryKeyResultSet
-						.getString("COLUMN_NAME");
+            // Reverse engineer primary keys
+            ResultSet thePrimaryKeyResultSet = theMetaData.getPrimaryKeys(null, aSchemaName, aTableName);
+            while (thePrimaryKeyResultSet.next()) {
 
-				Attribute theIndexAttribute = theTable.getAttributes()
-						.findByName(dialect.getCastType().cast(theColumnName));
-				if (theIndexAttribute == null) {
-					throw new ReverseEngineeringException(
-							"Cannot find attribute " + theColumnName
-									+ " in table " + theTable.getName());
-				}
+                String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
 
-				theIndexAttribute.setPrimaryKey(true);
+                Attribute theIndexAttribute = theTable.getAttributes().findByName(
+                        dialect.getCastType().cast(theColumnName));
+                if (theIndexAttribute == null) {
+                    throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
+                            + theTable.getName());
+                }
 
-			}
-			thePrimaryKeyResultSet.close();
+                theIndexAttribute.setPrimaryKey(true);
 
-			// We are done here
-			try {
-				aModel.addTable(theTable);
-			} catch (Exception e) {
-				throw new ReverseEngineeringException(e.getMessage());
-			}
+            }
+            thePrimaryKeyResultSet.close();
 
-		}
-		theTablesResultSet.close();
-	}
+            // We are done here
+            try {
+                aModel.addTable(theTable);
+            } catch (Exception e) {
+                throw new ReverseEngineeringException(e.getMessage());
+            }
 
-	protected DefaultValue createDefaultValueFor(Model aModel,
-			String aColumnName, String aDefaultValue) {
-		return null;
-	}
+        }
+        theTablesResultSet.close();
+    }
 
-	/**
-	 * Reverse engineer relations.
-	 * 
-	 * @param aModel
-	 * @param aSchemaName
-	 * @param aConnection
-	 * @throws SQLException
-	 * @throws ReverseEngineeringException
-	 */
-	protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, String aSchemaName,
-			Connection aConnection) throws SQLException,
-			ReverseEngineeringException {
+    protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
+        return null;
+    }
 
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+    /**
+     * Reverse engineer relations.
+     * 
+     * @param aModel
+     * @param aSchemaName
+     * @param aConnection
+     * @throws SQLException
+     * @throws ReverseEngineeringException
+     */
+    protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, String aSchemaName, Connection aConnection) throws SQLException,
+            ReverseEngineeringException {
 
-		for (Table theTable : aModel.getTables()) {
+        DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-			aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theTable.getName());
-			
-			// Foreign keys
-			Relation theRelation = null;
-			ResultSet theForeignKeys = theMetaData.getImportedKeys(null,
-					aSchemaName, theTable.getName());
-			while (theForeignKeys.next()) {
-				String theFKName = theForeignKeys.getString("FK_NAME");
-				if ((theRelation == null)
-						|| (!theFKName.equals(theRelation.getName()))) {
+        for (Table theTable : aModel.getTables()) {
 
-					String thePKTableName = theForeignKeys
-							.getString("PKTABLE_NAME");
-					String theUpdateRule = theForeignKeys
-							.getString("UPDATE_RULE");
-					String theDeleteRule = theForeignKeys
-							.getString("DELETE_RULE");
+            aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theTable.getName());
 
-					Table theExportingTable = aModel.getTables().findByName(
-							dialect.getCastType().cast(thePKTableName));
-					if (theExportingTable == null) {
-						throw new ReverseEngineeringException(
-								"Cannot find table " + thePKTableName
-										+ " in model");
-					}
+            // Foreign keys
+            Relation theRelation = null;
+            ResultSet theForeignKeys = theMetaData.getImportedKeys(null, aSchemaName, theTable.getName());
+            while (theForeignKeys.next()) {
+                String theFKName = theForeignKeys.getString("FK_NAME");
+                if ((theRelation == null) || (!theFKName.equals(theRelation.getName()))) {
 
-					theRelation = new Relation();
-					theRelation.setName(dialect.getCastType().cast(theFKName));
-					theRelation.setExportingTable(theExportingTable);
-					theRelation.setImportingTable(theTable);
+                    String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
+                    String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
+                    String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
 
-					if (theUpdateRule != null) {
-						int theType = Integer
-								.parseInt(theUpdateRule.toString());
-						switch (theType) {
-							case DatabaseMetaData.importedKeyNoAction: {
-								theRelation.setOnUpdate(CascadeType.NOTHING);
-								break;
-							}
-							case DatabaseMetaData.importedKeySetNull: {
-								theRelation.setOnUpdate(CascadeType.SET_NULL);
-								break;
-							}
-							case DatabaseMetaData.importedKeyCascade: {
-								theRelation.setOnUpdate(CascadeType.CASCADE);
-								break;
-							}
-							default: {
-								theRelation.setOnUpdate(CascadeType.CASCADE);
-							}
-						}
-					} else {
-						theRelation.setOnUpdate(CascadeType.NOTHING);
-					}
+                    Table theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
+                    if (theExportingTable == null) {
+                        throw new ReverseEngineeringException("Cannot find table " + thePKTableName + " in model");
+                    }
 
-					if (theDeleteRule != null) {
-						int theType = Integer
-								.parseInt(theDeleteRule.toString());
-						switch (theType) {
-							case DatabaseMetaData.importedKeyNoAction: {
-								theRelation.setOnDelete(CascadeType.NOTHING);
-								break;
-							}
-							case DatabaseMetaData.importedKeySetNull: {
-								theRelation.setOnDelete(CascadeType.SET_NULL);
-								break;
-							}
-							case DatabaseMetaData.importedKeyCascade: {
-								theRelation.setOnDelete(CascadeType.CASCADE);
-								break;
-							}
-							default: {
-								theRelation.setOnDelete(CascadeType.CASCADE);
-							}
-						}
-					} else {
-						theRelation.setOnDelete(CascadeType.NOTHING);
-					}
+                    theRelation = new Relation();
+                    theRelation.setName(dialect.getCastType().cast(theFKName));
+                    theRelation.setExportingTable(theExportingTable);
+                    theRelation.setImportingTable(theTable);
 
-					try {
-						aModel.addRelation(theRelation);
-					} catch (Exception e) {
-						throw new ReverseEngineeringException(e.getMessage());
-					}
-				}
+                    if (theUpdateRule != null) {
+                        int theType = Integer.parseInt(theUpdateRule.toString());
+                        switch (theType) {
+                        case DatabaseMetaData.importedKeyNoAction: {
+                            theRelation.setOnUpdate(CascadeType.NOTHING);
+                            break;
+                        }
+                        case DatabaseMetaData.importedKeySetNull: {
+                            theRelation.setOnUpdate(CascadeType.SET_NULL);
+                            break;
+                        }
+                        case DatabaseMetaData.importedKeyCascade: {
+                            theRelation.setOnUpdate(CascadeType.CASCADE);
+                            break;
+                        }
+                        default: {
+                            theRelation.setOnUpdate(CascadeType.CASCADE);
+                        }
+                        }
+                    } else {
+                        theRelation.setOnUpdate(CascadeType.NOTHING);
+                    }
 
-				String thePKColumnName = theForeignKeys
-						.getString("PKCOLUMN_NAME");
-				String theFKColumnName = theForeignKeys
-						.getString("FKCOLUMN_NAME");
+                    if (theDeleteRule != null) {
+                        int theType = Integer.parseInt(theDeleteRule.toString());
+                        switch (theType) {
+                        case DatabaseMetaData.importedKeyNoAction: {
+                            theRelation.setOnDelete(CascadeType.NOTHING);
+                            break;
+                        }
+                        case DatabaseMetaData.importedKeySetNull: {
+                            theRelation.setOnDelete(CascadeType.SET_NULL);
+                            break;
+                        }
+                        case DatabaseMetaData.importedKeyCascade: {
+                            theRelation.setOnDelete(CascadeType.CASCADE);
+                            break;
+                        }
+                        default: {
+                            theRelation.setOnDelete(CascadeType.CASCADE);
+                        }
+                        }
+                    } else {
+                        theRelation.setOnDelete(CascadeType.NOTHING);
+                    }
 
-				Attribute theExportingAttribute = theRelation
-						.getExportingTable().getAttributes().findByName(
-								dialect.getCastType().cast(thePKColumnName));
-				if (theExportingAttribute == null) {
-					throw new ReverseEngineeringException("Cannot find column "
-							+ thePKColumnName + " in table "
-							+ theRelation.getExportingTable().getName());
-				}
+                    try {
+                        aModel.addRelation(theRelation);
+                    } catch (Exception e) {
+                        throw new ReverseEngineeringException(e.getMessage());
+                    }
+                }
 
-				Attribute theImportingAttribute = theRelation
-						.getImportingTable().getAttributes().findByName(
-								dialect.getCastType().cast(theFKColumnName));
-				if (theImportingAttribute == null) {
-					throw new ReverseEngineeringException("Cannot find column "
-							+ theFKColumnName + " in table "
-							+ theRelation.getImportingTable().getName());
-				}
+                String thePKColumnName = theForeignKeys.getString("PKCOLUMN_NAME");
+                String theFKColumnName = theForeignKeys.getString("FKCOLUMN_NAME");
 
-				theRelation.getMapping().put(theExportingAttribute,
-						theImportingAttribute);
-			}
-			theForeignKeys.close();
-		}
-	}
+                Attribute theExportingAttribute = theRelation.getExportingTable().getAttributes().findByName(
+                        dialect.getCastType().cast(thePKColumnName));
+                if (theExportingAttribute == null) {
+                    throw new ReverseEngineeringException("Cannot find column " + thePKColumnName + " in table "
+                            + theRelation.getExportingTable().getName());
+                }
 
-	protected String[] getReverseEngineeringTableTypes() {
-		return new String[] { "TABLE" };
-	}
+                Attribute theImportingAttribute = theRelation.getImportingTable().getAttributes().findByName(
+                        dialect.getCastType().cast(theFKColumnName));
+                if (theImportingAttribute == null) {
+                    throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table "
+                            + theRelation.getImportingTable().getName());
+                }
 
-	/**
-	 * Reverse engineer the existing tables in a schema.
-	 * 
-	 * @param aModel
-	 * @param aSchemaName
-	 * @param aConnection
-	 * @throws SQLException
-	 * @throws ReverseEngineeringException
-	 */
-	protected void reverseEnginnerTables(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, String aSchemaName,
-			Connection aConnection) throws SQLException,
-			ReverseEngineeringException {
+                theRelation.getMapping().put(theExportingAttribute, theImportingAttribute);
+            }
+            theForeignKeys.close();
+        }
+    }
 
-		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGSCHEMA, aSchemaName);
-		
-		DatabaseMetaData theMetaData = aConnection.getMetaData();
+    protected String[] getReverseEngineeringTableTypes() {
+        return new String[] { "TABLE" };
+    }
 
-		// Reverse engineer tables
-		ResultSet theTablesResultSet = theMetaData.getTables(null, aSchemaName,
-				null, getReverseEngineeringTableTypes());
-		while (theTablesResultSet.next()) {
+    /**
+     * Reverse engineer the existing tables in a schema.
+     * 
+     * @param aModel
+     * @param aSchemaName
+     * @param aConnection
+     * @throws SQLException
+     * @throws ReverseEngineeringException
+     */
+    protected void reverseEnginnerTables(Model aModel, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, String aSchemaName, Connection aConnection) throws SQLException,
+            ReverseEngineeringException {
 
-			String theTableType = theTablesResultSet.getString("TABLE_TYPE");
-			String theSchema = theTablesResultSet.getString("TABLE_SCHEM");
+        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGSCHEMA, aSchemaName);
 
-			String theTableName = theTablesResultSet.getString("TABLE_NAME");
+        DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-			// Make sure that tables are not reverse engineered twice!
-			if (!aModel.getTables().elementExists(theTableName,
-					dialect.isCaseSensitive())) {
-				reverseEngineerTable(aModel, aOptions, aNotifier, theSchema, theTableName,
-						aConnection);
-			}
-		}
-		theTablesResultSet.close();
+        // Reverse engineer tables
+        ResultSet theTablesResultSet = theMetaData
+                .getTables(null, aSchemaName, null, getReverseEngineeringTableTypes());
+        while (theTablesResultSet.next()) {
 
-		// Reverse engineer also relations
-		reverseEngineerRelations(aModel, aOptions, aNotifier, aSchemaName, aConnection);
-	}
+            String theTableType = theTablesResultSet.getString("TABLE_TYPE");
+            String theSchema = theTablesResultSet.getString("TABLE_SCHEM");
 
-	public Model createModelFromConnection(Connection aConnection,
-			ReverseEngineeringOptions aOptions,
-			ReverseEngineeringNotifier aNotifier) throws SQLException,
-			ReverseEngineeringException {
+            String theTableName = theTablesResultSet.getString("TABLE_NAME");
 
-		Model theNewModel = new Model();
-		theNewModel.setDialect(dialect);
-		
-		for(Object theSchema : aOptions.getSchemaList()) {
-			reverseEnginnerTables(theNewModel, aOptions, aNotifier, (String)theSchema, aConnection);			
-		}
+            // Make sure that tables are not reverse engineered twice!
+            if (!aModel.getTables().elementExists(theTableName, dialect.isCaseSensitive())) {
+                reverseEngineerTable(aModel, aOptions, aNotifier, theSchema, theTableName, aConnection);
+            }
+        }
+        theTablesResultSet.close();
 
-		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
-		
-		return theNewModel;
-	}
+        // Reverse engineer also relations
+        reverseEngineerRelations(aModel, aOptions, aNotifier, aSchemaName, aConnection);
+    }
+
+    public Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
+
+        Model theNewModel = new Model();
+        theNewModel.setDialect(dialect);
+
+        for (Object theSchema : aOptions.getSchemaList()) {
+            reverseEnginnerTables(theNewModel, aOptions, aNotifier, (String) theSchema, aConnection);
+        }
+
+        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
+
+        return theNewModel;
+    }
 }

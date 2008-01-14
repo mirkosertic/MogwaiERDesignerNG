@@ -20,27 +20,27 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:09 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class Index extends OwnedModelItem<Table> {
 
-	private IndexType indexType = IndexType.UNIQUE;
+    private IndexType indexType = IndexType.UNIQUE;
 
-	private AttributeList attributes = new AttributeList();
+    private AttributeList attributes = new AttributeList();
 
-	public AttributeList getAttributes() {
-		return attributes;
-	}
+    public AttributeList getAttributes() {
+        return attributes;
+    }
 
-	public void setAttributes(AttributeList aAttributes) {
-		attributes = aAttributes;
-	}
+    public void setAttributes(AttributeList aAttributes) {
+        attributes = aAttributes;
+    }
 
-	public IndexType getIndexType() {
-		return indexType;
-	}
+    public IndexType getIndexType() {
+        return indexType;
+    }
 
-	public void setIndexType(IndexType aIndexType) {
-		indexType = aIndexType;
-	}
+    public void setIndexType(IndexType aIndexType) {
+        indexType = aIndexType;
+    }
 }

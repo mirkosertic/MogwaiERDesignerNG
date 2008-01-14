@@ -23,13 +23,13 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-14 20:01:11 $
  */
 public abstract class BaseTool extends BasicMarqueeHandler {
 
-	protected ERDesignerGraph graph;
+    protected ERDesignerGraph graph;
 
-	public BaseTool(ERDesignerGraph aGraph) {
-		graph = aGraph;
-	}
+    public BaseTool(ERDesignerGraph aGraph) {
+        graph = aGraph;
+    }
 }

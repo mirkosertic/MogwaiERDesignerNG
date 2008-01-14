@@ -23,34 +23,33 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:11 $
+ * @version $Date: 2008-01-14 20:01:07 $
  */
 public interface OwnedModelItemVerifier {
 
-	/**
-	 * Check if a name is already existant.
-	 * 
-	 * @param aSender
-	 * @param aName
-	 */
-	void checkNameAlreadyExists(ModelItem aSender, String aName)
-			throws ElementAlreadyExistsException;
+    /**
+     * Check if a name is already existant.
+     * 
+     * @param aSender
+     * @param aName
+     */
+    void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException;
 
-	/**
-	 * Delete an element.
-	 * 
-	 * @param aSender
-	 *            the element to delete
-	 * @throws CannotDeleteException
-	 */
-	void delete(ModelItem aSender) throws CannotDeleteException;
+    /**
+     * Delete an element.
+     * 
+     * @param aSender
+     *            the element to delete
+     * @throws CannotDeleteException
+     */
+    void delete(ModelItem aSender) throws CannotDeleteException;
 
-	/**
-	 * Check the name.
-	 * 
-	 * @param aName
-	 * @return
-	 * @throws ElementInvalidNameException
-	 */
-	String checkName(String aName) throws ElementInvalidNameException;
+    /**
+     * Check the name.
+     * 
+     * @param aName
+     * @return the name
+     * @throws ElementInvalidNameException
+     */
+    String checkName(String aName) throws ElementInvalidNameException;
 }

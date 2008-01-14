@@ -20,24 +20,24 @@ package de.erdesignerng.visual.editor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-14 20:01:12 $
  */
 public interface DialogConstants {
 
-	/**
-	 * Result code for a correct closed modal dialog.
-	 */
-	int MODAL_RESULT_OK = 1;
+    /**
+     * Result code for a correct closed modal dialog.
+     */
+    int MODAL_RESULT_OK = 1;
 
-	/**
-	 * Result code for a canceled modal dialog.
-	 */
-	int MODAL_RESULT_CANCEL = 2;
+    /**
+     * Result code for a canceled modal dialog.
+     */
+    int MODAL_RESULT_CANCEL = 2;
 
-	/**
-	 * Show the dialog and return it's result code.
-	 * 
-	 * @return The model result state
-	 */
-	int showModal();
+    /**
+     * Show the dialog and return it's result code.
+     * 
+     * @return The model result state
+     */
+    int showModal();
 }

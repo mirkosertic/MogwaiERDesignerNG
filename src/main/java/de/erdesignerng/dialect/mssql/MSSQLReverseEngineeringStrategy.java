@@ -5,12 +5,11 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:07 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
-public class MSSQLReverseEngineeringStrategy extends
-		JDBCReverseEngineeringStrategy {
+public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy {
 
-	public MSSQLReverseEngineeringStrategy(Dialect aDialect) {
-		super(aDialect);
-	}
+    public MSSQLReverseEngineeringStrategy(Dialect aDialect) {
+        super(aDialect);
+    }
 }

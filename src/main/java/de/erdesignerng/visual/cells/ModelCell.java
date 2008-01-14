@@ -22,24 +22,25 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:18 $
+ * @version $Date: 2008-01-14 20:01:09 $
+ * @param <T> the type 
  */
 public interface ModelCell<T> {
 
-	/**
-	 * Transfer the cell attributes to the model properties.
-	 * 
-	 * @param aAttributes
-	 *            the cell attributes.
-	 */
-	void transferAttributesToProperties(Map aAttributes);
+    /**
+     * Transfer the cell attributes to the model properties.
+     * 
+     * @param aAttributes
+     *            the cell attributes.
+     */
+    void transferAttributesToProperties(Map aAttributes);
 
-	/**
-	 * Transfer the model properties to the cell attributes.
-	 * 
-	 * @param aObject
-	 *            the model
-	 */
-	void transferPropertiesToAttributes(T aObject);
+    /**
+     * Transfer the model properties to the cell attributes.
+     * 
+     * @param aObject
+     *            the model
+     */
+    void transferPropertiesToAttributes(T aObject);
 
 }

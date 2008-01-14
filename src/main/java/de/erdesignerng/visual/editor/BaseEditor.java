@@ -27,99 +27,94 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:11 $
  */
-public abstract class BaseEditor extends DefaultDialog implements
-		DialogConstants {
+public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
-	private int modalResult;
+    private int modalResult;
 
-	private javax.swing.JPanel jContentPane = null;
+    private javax.swing.JPanel jContentPane = null;
 
-	private Component parent;
+    private Component parent;
 
-	/**
-	 * Initialize.
-	 * 
-	 * @param parent
-	 *            the parent Frame
-	 */
-	public BaseEditor(Component aParent, String aTitle) {
-		super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
-		initialize();
-		parent = aParent;
-	}
+    /**
+     * Initialize.
+     * 
+     * @param aParent
+     *            the parent Frame
+     * @param aTitle
+     *            the title
+     */
+    public BaseEditor(Component aParent, String aTitle) {
+        super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
+        initialize();
+        parent = aParent;
+    }
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
-		setSize(300, 200);
-		setContentPane(getJContentPane());
-		setResizable(false);
-		setModal(true);
-	}
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
+        setSize(300, 200);
+        setContentPane(getJContentPane());
+        setResizable(false);
+        setModal(true);
+    }
 
-	/**
-	 * This method initializes jContentPane.
-	 * 
-	 * @return javax.swing.JPanel
-	 */
-	private javax.swing.JPanel getJContentPane() {
-		if (jContentPane == null) {
-			jContentPane = new javax.swing.JPanel();
-			jContentPane.setLayout(new java.awt.BorderLayout());
-		}
-		return jContentPane;
-	}
+    /**
+     * This method initializes jContentPane.
+     * 
+     * @return javax.swing.JPanel
+     */
+    private javax.swing.JPanel getJContentPane() {
+        if (jContentPane == null) {
+            jContentPane = new javax.swing.JPanel();
+            jContentPane.setLayout(new java.awt.BorderLayout());
+        }
+        return jContentPane;
+    }
 
-	/**
-	 * Set the dialogs modal result and hide it.
-	 * 
-	 * @param aModalResult
-	 *            the modal result.
-	 */
-	public void setModalResult(int aModalResult) {
-		modalResult = aModalResult;
-		super.setVisible(false);
-	}
+    /**
+     * Set the dialogs modal result and hide it.
+     * 
+     * @param aModalResult
+     *            the modal result.
+     */
+    public void setModalResult(int aModalResult) {
+        modalResult = aModalResult;
+        super.setVisible(false);
+    }
 
-	public int showModal() {
-		modalResult = DialogConstants.MODAL_RESULT_CANCEL;
-		setVisible(true);
-		return modalResult;
-	}
+    public int showModal() {
+        modalResult = DialogConstants.MODAL_RESULT_CANCEL;
+        setVisible(true);
+        return modalResult;
+    }
 
-	protected void displayErrorMessage(String aMessage) {
+    protected void displayErrorMessage(String aMessage) {
 
-		String theErrorText = getResourceHelper().getText(
-				ERDesignerBundle.ERROR);
-		JOptionPane.showMessageDialog(this, aMessage, theErrorText,
-				JOptionPane.ERROR_MESSAGE);
-	}
+        String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
+        JOptionPane.showMessageDialog(this, aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
+    }
 
-	protected void displayInfoMessage(String aMessage) {
+    protected void displayInfoMessage(String aMessage) {
 
-		String theInfoText = getResourceHelper().getText(
-				ERDesignerBundle.INFORMATION);
-		JOptionPane.showMessageDialog(this, aMessage, theInfoText,
-				JOptionPane.INFORMATION_MESSAGE);
-	}
+        String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
+        JOptionPane.showMessageDialog(this, aMessage, theInfoText, JOptionPane.INFORMATION_MESSAGE);
+    }
 
-	protected boolean displayQuestionMessage(String aMessageKey) {
-		String theQuestionText = getResourceHelper().getText(
-				ERDesignerBundle.QUESTION);
-		String theMessage = getResourceHelper().getText(aMessageKey);
-		return JOptionPane.showConfirmDialog(this, theMessage, theQuestionText,
-				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    protected boolean displayQuestionMessage(String aMessageKey) {
+        String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
+        String theMessage = getResourceHelper().getText(aMessageKey);
+        return JOptionPane.showConfirmDialog(this, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
-	}
+    }
 
-	public abstract void applyValues() throws Exception;
+    public abstract void applyValues() throws Exception;
 
-	protected void commandCancel() {
+    protected void commandCancel() {
 
-		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
-	}
+        setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
+    }
 
 }

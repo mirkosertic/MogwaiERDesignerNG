@@ -5,12 +5,11 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:31 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
-public class PostgresReverseEngineeringStrategy extends
-		JDBCReverseEngineeringStrategy {
+public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy {
 
-	public PostgresReverseEngineeringStrategy(Dialect aDialect) {
-		super(aDialect);
-	}
+    public PostgresReverseEngineeringStrategy(Dialect aDialect) {
+        super(aDialect);
+    }
 }

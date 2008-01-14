@@ -33,54 +33,51 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:59 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
 public class ImageExporter implements Exporter {
 
-	private String ext;
+    private String ext;
 
-	public static List<String> getSupportedFormats() {
+    public static List<String> getSupportedFormats() {
 
-		Vector<String> theKnown = new Vector<String>();
-		String[] theList = ImageIO.getWriterMIMETypes();
-		for (String theEntry : theList) {
-			theKnown.add(theEntry.toUpperCase());
-		}
-		return theKnown;
-	}
+        Vector<String> theKnown = new Vector<String>();
+        String[] theList = ImageIO.getWriterMIMETypes();
+        for (String theEntry : theList) {
+            theKnown.add(theEntry.toUpperCase());
+        }
+        return theKnown;
+    }
 
-	public ImageExporter(String aExt) {
-		ext = aExt;
-	}
+    public ImageExporter(String aExt) {
+        ext = aExt;
+    }
 
-	public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream)
-			throws IOException {
-		Color theBackgroundColor = aGraph.getBackground();
-		BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
-		ImageIO.write(theImage, ext, aStream);
-		aStream.flush();
-		aStream.close();
-	}
+    public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
+        Color theBackgroundColor = aGraph.getBackground();
+        BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
+        ImageIO.write(theImage, ext, aStream);
+        aStream.flush();
+        aStream.close();
+    }
 
-	public String getFileExtension() {
-		return "." + ext.toLowerCase();
-	}
+    public String getFileExtension() {
+        return "." + ext.toLowerCase();
+    }
 
-	public void exportToStream(Component aComponent, OutputStream aStream)
-			throws IOException {
-		Dimension theSize = aComponent.getPreferredSize();
-		aComponent.setSize(theSize);
-		BufferedImage theImage = new BufferedImage(theSize.width + 10,
-				theSize.height + 10, BufferedImage.TYPE_INT_RGB);
-		Graphics theGraphics = theImage.getGraphics();
-		theGraphics.setColor(Color.white);
-		theGraphics.fillRect(0, 0, theSize.width + 10, theSize.height + 10);
-		theGraphics.translate(5, 5);
-		theGraphics.setColor(Color.black);
-		aComponent.paint(theGraphics);
-		theGraphics.dispose();
-		ImageIO.write(theImage, ext, aStream);
-		aStream.flush();
-		aStream.close();
-	}
+    public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
+        Dimension theSize = aComponent.getPreferredSize();
+        aComponent.setSize(theSize);
+        BufferedImage theImage = new BufferedImage(theSize.width + 10, theSize.height + 10, BufferedImage.TYPE_INT_RGB);
+        Graphics theGraphics = theImage.getGraphics();
+        theGraphics.setColor(Color.white);
+        theGraphics.fillRect(0, 0, theSize.width + 10, theSize.height + 10);
+        theGraphics.translate(5, 5);
+        theGraphics.setColor(Color.black);
+        aComponent.paint(theGraphics);
+        theGraphics.dispose();
+        ImageIO.write(theImage, ext, aStream);
+        aStream.flush();
+        aStream.close();
+    }
 }

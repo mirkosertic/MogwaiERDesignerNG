@@ -33,100 +33,95 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-14 20:01:16 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
-	public class MyMouseHandler extends MouseHandler {
+    public class MyMouseHandler extends MouseHandler {
 
-		@Override
-		public void mouseClicked(MouseEvent aEvent) {
-			if (aEvent.isPopupTrigger()) {
-				System.out.println(aEvent.getX() + " " + aEvent.getY()
-						+ " for " + cell);
-			}
-		}
-	};
+        @Override
+        public void mouseClicked(MouseEvent aEvent) {
+            if (aEvent.isPopupTrigger()) {
+                System.out.println(aEvent.getX() + " " + aEvent.getY() + " for " + cell);
+            }
+        }
+    };
 
-	@Override
-	protected MouseListener createMouseListener() {
-		return new MyMouseHandler();
-	}
+    @Override
+    protected MouseListener createMouseListener() {
+        return new MyMouseHandler();
+    }
 
-	@Override
-	protected boolean startEditing(Object cell, MouseEvent event) {
-		completeEditing();
-		if (graph.isCellEditable(cell)) {
-			CellView tmp = graphLayoutCache.getMapping(cell, false);
-			cellEditor = tmp.getEditor();
-			editingComponent = cellEditor.getGraphCellEditorComponent(graph,
-					cell, graph.isCellSelected(cell));
-			if (cellEditor.isCellEditable(event)) {
+    @Override
+    protected boolean startEditing(Object cell, MouseEvent event) {
+        completeEditing();
+        if (graph.isCellEditable(cell)) {
+            CellView tmp = graphLayoutCache.getMapping(cell, false);
+            cellEditor = tmp.getEditor();
+            editingComponent = cellEditor.getGraphCellEditorComponent(graph, cell, graph.isCellSelected(cell));
+            if (cellEditor.isCellEditable(event)) {
 
-				editingCell = cell;
+                editingCell = cell;
 
-				editingCell = cell;
-				editingComponent.validate();
+                editingCell = cell;
+                editingComponent.validate();
 
-				if (cellEditor.shouldSelectCell(event)
-						&& graph.isSelectionEnabled()) {
-					stopEditingInCompleteEditing = false;
-					try {
-						graph.setSelectionCell(cell);
-					} catch (Exception e) {
-						System.err.println("Editing exception: " + e);
-					}
-					stopEditingInCompleteEditing = true;
-				}
+                if (cellEditor.shouldSelectCell(event) && graph.isSelectionEnabled()) {
+                    stopEditingInCompleteEditing = false;
+                    try {
+                        graph.setSelectionCell(cell);
+                    } catch (Exception e) {
+                        System.err.println("Editing exception: " + e);
+                    }
+                    stopEditingInCompleteEditing = true;
+                }
 
-				if (event instanceof MouseEvent) {
-					/*
-					 * Find the component that will get forwarded all the mouse
-					 * events until mouseReleased.
-					 */
-					Point componentPoint = SwingUtilities.convertPoint(graph,
-							new Point(event.getX(), event.getY()),
-							editingComponent);
+                if (event instanceof MouseEvent) {
+                    /*
+                     * Find the component that will get forwarded all the mouse
+                     * events until mouseReleased.
+                     */
+                    Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
+                            editingComponent);
 
-					/*
-					 * Create an instance of BasicTreeMouseListener to handle
-					 * passing the mouse/motion events to the necessary
-					 * component.
-					 */
-					// We really want similiar behavior to getMouseEventTarget,
-					// but it is package private.
-					Component activeComponent = SwingUtilities
-							.getDeepestComponentAt(editingComponent,
-									componentPoint.x, componentPoint.y);
-					if (activeComponent != null) {
-						new MouseInputHandler(graph, activeComponent, event);
-					}
-				}
+                    /*
+                     * Create an instance of BasicTreeMouseListener to handle
+                     * passing the mouse/motion events to the necessary
+                     * component.
+                     */
+                    // We really want similiar behavior to getMouseEventTarget,
+                    // but it is package private.
+                    Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent,
+                            componentPoint.x, componentPoint.y);
+                    if (activeComponent != null) {
+                        new MouseInputHandler(graph, activeComponent, event);
+                    }
+                }
 
-				BaseEditor theDialog = (BaseEditor) editingComponent;
-				if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
-					try {
-						theDialog.applyValues();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+                BaseEditor theDialog = (BaseEditor) editingComponent;
+                if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                    try {
+                        theDialog.applyValues();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
-				editingComponent = null;
+                editingComponent = null;
 
-				graph.invalidate();
-				graph.repaint();
+                graph.invalidate();
+                graph.repaint();
 
-				return false;
-			} else {
-				editingComponent = null;
-			}
-		}
-		return false;
-	}
+                return false;
+            } else {
+                editingComponent = null;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public boolean isEditing(JGraph graph) {
-		return false;
-	}
+    @Override
+    public boolean isEditing(JGraph graph) {
+        return false;
+    }
 }

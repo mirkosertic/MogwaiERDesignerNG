@@ -38,131 +38,116 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:03 $
+ * @version $Date: 2008-01-14 20:01:16 $
  */
 public class RelationEditor extends BaseEditor {
 
-	private AttributeTableModel tableModel;
+    private AttributeTableModel tableModel;
 
-	private Model model;
+    private Model model;
 
-	private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
+    private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
 
-	private RelationEditorView editingView;
-	
-	private DefaultAction okAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private RelationEditorView editingView;
 
-				public void processActionEvent(ActionEvent e) {
-					commandOk();
-				}
-			}, this, ERDesignerBundle.OK);
+    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
-	private DefaultAction cancelAction = new DefaultAction(
-			new ActionEventProcessor() {
+        public void processActionEvent(ActionEvent e) {
+            commandOk();
+        }
+    }, this, ERDesignerBundle.OK);
 
-				public void processActionEvent(ActionEvent e) {
-					commandCancel();
-				}
-			}, this, ERDesignerBundle.CANCEL);
+    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
-	/**
-	 * @param parent
-	 */
-	public RelationEditor(Model aModel, Component aParent) {
-		super(aParent, ERDesignerBundle.RELATIONEDITOR);
+        public void processActionEvent(ActionEvent e) {
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.CANCEL);
 
-		initialize();
+    /**
+     * @param parent
+     */
+    public RelationEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.RELATIONEDITOR);
 
-		model = aModel;
+        initialize();
 
-		bindingInfo.addBinding("name", editingView.getRelationname(), true);
+        model = aModel;
 
-		RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
-		theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView
-				.getOnDeleteCascadeNothing());
-		theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView
-				.getOnDeleteCascade());
-		theOnDeleteAdapter.addMapping(CascadeType.SET_NULL, editingView
-				.getOnDeleteSetNull());
-		bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
+        bindingInfo.addBinding("name", editingView.getRelationname(), true);
 
-		RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
-		theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView
-				.getOnUpdateCascadeNothing());
-		theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView
-				.getOnUpdateCascade());
-		theOnUpdateAdapter.addMapping(CascadeType.SET_NULL, editingView
-				.getOnUpdateSetNull());
-		bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
+        RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
+        theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
+        theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView.getOnDeleteCascade());
+        theOnDeleteAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnDeleteSetNull());
+        bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
 
-		bindingInfo.configure();
-	}
+        RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
+        theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView.getOnUpdateCascadeNothing());
+        theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView.getOnUpdateCascade());
+        theOnUpdateAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnUpdateSetNull());
+        bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
+        bindingInfo.configure();
+    }
 
-		editingView = new RelationEditorView();
-		editingView.getOKButton().setAction(okAction);
-		editingView.getCancelButton().setAction(cancelAction);
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
 
-		setContentPane(editingView);
-		setResizable(false);
-		pack();
+        editingView = new RelationEditorView();
+        editingView.getOKButton().setAction(okAction);
+        editingView.getCancelButton().setAction(cancelAction);
 
-		UIInitializer.getInstance().initialize(this);		
-	}
+        setContentPane(editingView);
+        setResizable(false);
+        pack();
 
-	public void initializeFor(Relation aRelation) {
-		bindingInfo.setDefaultModel(aRelation);
-		bindingInfo.model2view();
+        UIInitializer.getInstance().initialize(this);
+    }
 
-		List<Attribute> thePrimaryKey = aRelation.getExportingTable()
-				.getPrimaryKey();
+    public void initializeFor(Relation aRelation) {
+        bindingInfo.setDefaultModel(aRelation);
+        bindingInfo.model2view();
 
-		Attribute[] theAssigned = new Attribute[thePrimaryKey.size()];
-		for (int count = 0; count < thePrimaryKey.size(); count++) {
-			theAssigned[count] = aRelation.getMapping().get(
-					thePrimaryKey.get(count));
-		}
-		tableModel = new AttributeTableModel(aRelation.getExportingTable()
-				.getName(), aRelation.getImportingTable().getName(),
-				thePrimaryKey, theAssigned);
+        List<Attribute> thePrimaryKey = aRelation.getExportingTable().getPrimaryKey();
 
-		editingView.getComponent_5().setModel(tableModel);
-		editingView.getComponent_5().getTableHeader().setReorderingAllowed(
-				false);
+        Attribute[] theAssigned = new Attribute[thePrimaryKey.size()];
+        for (int count = 0; count < thePrimaryKey.size(); count++) {
+            theAssigned[count] = aRelation.getMapping().get(thePrimaryKey.get(count));
+        }
+        tableModel = new AttributeTableModel(aRelation.getExportingTable().getName(), aRelation.getImportingTable()
+                .getName(), thePrimaryKey, theAssigned);
 
-		JComboBox theAttributes = new JComboBox(aRelation.getImportingTable()
-				.getAttributes());
-		editingView.getComponent_5().getColumnModel().getColumn(1)
-				.setCellEditor(new DefaultCellEditor(theAttributes));
-	}
+        editingView.getComponent_5().setModel(tableModel);
+        editingView.getComponent_5().getTableHeader().setReorderingAllowed(false);
 
-	private void commandOk() {
-		if (bindingInfo.validate().size() == 0) {
-			setModalResult(MODAL_RESULT_OK);
-		}
-	}
+        JComboBox theAttributes = new JComboBox(aRelation.getImportingTable().getAttributes());
+        editingView.getComponent_5().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
+    }
 
-	@Override
-	public void applyValues() throws Exception {
-		Relation theRelation = bindingInfo.getDefaultModel();
-		bindingInfo.view2model();
+    private void commandOk() {
+        if (bindingInfo.validate().size() == 0) {
+            setModalResult(MODAL_RESULT_OK);
+        }
+    }
 
-		if (!model.getRelations().contains(theRelation)) {
-			model.addRelation(theRelation);
+    @Override
+    public void applyValues() throws Exception {
+        Relation theRelation = bindingInfo.getDefaultModel();
+        bindingInfo.view2model();
 
-		}
+        if (!model.getRelations().contains(theRelation)) {
+            model.addRelation(theRelation);
 
-		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			Attribute thePKAttribute = (Attribute) tableModel.getValueAt(i, 0);
-			Attribute theAssignedAttribute = (Attribute) tableModel.getValueAt(
-					i, 1);
+        }
 
-			theRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
-		}
-	}
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            Attribute thePKAttribute = (Attribute) tableModel.getValueAt(i, 0);
+            Attribute theAssignedAttribute = (Attribute) tableModel.getValueAt(i, 1);
+
+            theRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
+        }
+    }
 }

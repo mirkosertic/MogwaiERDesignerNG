@@ -19,15 +19,15 @@ package de.erdesignerng.dialect.mysql;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:03 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public class MySQLInnoDBDialect extends MySQLDialect {
 
-	public MySQLInnoDBDialect() {
-	}
+    public MySQLInnoDBDialect() {
+    }
 
-	@Override
-	public String getUniqueName() {
-		return "MySQLInnoDBDialect";
-	}
+    @Override
+    public String getUniqueName() {
+        return "MySQLInnoDBDialect";
+    }
 }

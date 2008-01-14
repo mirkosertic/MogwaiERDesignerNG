@@ -21,34 +21,34 @@ import de.erdesignerng.exception.CannotDeleteException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:14 $
+ * @version $Date: 2008-01-14 20:01:06 $
+ * @param <T> the Owner
  */
-public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends
-		ModelItem {
+public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends ModelItem {
 
-	private T owner;
+    private T owner;
 
-	/**
-	 * @return the owner
-	 */
-	public T getOwner() {
-		return owner;
-	}
+    /**
+     * @return the owner
+     */
+    public T getOwner() {
+        return owner;
+    }
 
-	/**
-	 * @param owner
-	 *            the owner to set
-	 */
-	public void setOwner(T aOwner) {
-		owner = aOwner;
-	}
+    /**
+     * @param aOwner
+     *            the owner to set
+     */
+    public void setOwner(T aOwner) {
+        owner = aOwner;
+    }
 
-	/**
-	 * Delete this element.
-	 * 
-	 * @throws CannotDeleteException
-	 */
-	public void delete() throws CannotDeleteException {
-		owner.delete(this);
-	}
+    /**
+     * Delete this element.
+     * 
+     * @throws CannotDeleteException
+     */
+    public void delete() throws CannotDeleteException {
+        owner.delete(this);
+    }
 }

@@ -23,35 +23,35 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:29 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
-	public MySQLDialect() {
-		setSpacesAllowedInObjectNames(false);
-		setCaseSensitive(true);
-		setMaxObjectNameLength(28);
-		setNullablePrimaryKeyAllowed(false);
-		setCastType(NameCastType.NOTHING);
-	}
+    public MySQLDialect() {
+        setSpacesAllowedInObjectNames(false);
+        setCaseSensitive(true);
+        setMaxObjectNameLength(28);
+        setNullablePrimaryKeyAllowed(false);
+        setCastType(NameCastType.NOTHING);
+    }
 
-	@Override
-	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return new MySQLReverseEngineeringStrategy(this);
-	}
+    @Override
+    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+        return new MySQLReverseEngineeringStrategy(this);
+    }
 
-	@Override
-	public String getUniqueName() {
-		return "MySQLDialect";
-	}
+    @Override
+    public String getUniqueName() {
+        return "MySQLDialect";
+    }
 
-	@Override
-	public String getDriverClassName() {
-		return "com.mysql.jdbc.Driver";
-	}
+    @Override
+    public String getDriverClassName() {
+        return "com.mysql.jdbc.Driver";
+    }
 
-	@Override
-	public String getDriverURLTemplate() {
-		return "jdbc:mysql://<host>/<db>";
-	}
+    @Override
+    public String getDriverURLTemplate() {
+        return "jdbc:mysql://<host>/<db>";
+    }
 }

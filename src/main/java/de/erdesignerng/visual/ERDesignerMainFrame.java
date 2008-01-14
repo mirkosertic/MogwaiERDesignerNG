@@ -41,9 +41,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 
 import org.jdesktop.swingworker.SwingWorker;
-import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
-import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
@@ -61,7 +59,6 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
@@ -99,867 +96,808 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:03 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
-	private class ZoomInfo {
+    private final class ReverseEngineerSwingWorker extends SwingWorker<Model, String> {
+        private final ReverseEngineeringOptions options;
 
-		private String description;
+        private final JDBCReverseEngineeringStrategy strategy;
 
-		private double value;
+        private final Connection connection;
 
-		public ZoomInfo(String aDescription, double aValue) {
-			description = aDescription;
-			value = aValue;
-		}
+        private ReverseEngineerSwingWorker(ReverseEngineeringOptions options, JDBCReverseEngineeringStrategy strategy, Connection connection) {
+            this.options = options;
+            this.strategy = strategy;
+            this.connection = connection;
+        }
 
-		public double getValue() {
-			return value;
-		}
+        @Override
+        protected void process(List<String> aString) {
+            for (String theMessage : aString) {
+                getDefaultFrameContent().getStatusBar().setText(theMessage);
+            }
+        }
 
-		@Override
-		public String toString() {
-			return description;
-		}
-	}
+        @Override
+        protected Model doInBackground() throws Exception {
+            try {
+                ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
+        
+                    public void notifyMessage(String aResourceKey, String... aValues) {
+                        String theMessage = MessageFormat.format(getResourceHelper().getText(aResourceKey),
+                                aValues);
+                        publish(new String[] { theMessage });
+                    }
+        
+                };
+                return strategy.createModelFromConnection(connection, options, theNotifier);
+            } catch (Exception e) {
+                logException(e);
+            }
+            return null;
+        }
+    }
 
-	private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
+    private class ZoomInfo {
 
-	private GraphModel graphModel;
+        private String description;
 
-	private GraphLayoutCache layoutCache;
+        private double value;
 
-	private ERDesignerGraph graph;
+        public ZoomInfo(String aDescription, double aValue) {
+            description = aDescription;
+            value = aValue;
+        }
 
-	private Model model;
+        public double getValue() {
+            return value;
+        }
 
-	private DefaultScrollPane scrollPane = new DefaultScrollPane();
+        @Override
+        public String toString() {
+            return description;
+        }
+    }
 
-	private DefaultComboBox zoomBox = new DefaultComboBox();
+    private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
-	private ApplicationPreferences preferences;
+    private GraphModel graphModel;
 
-	private DefaultAction fileAction = new DefaultAction(this,
-			ERDesignerBundle.FILE);
+    private GraphLayoutCache layoutCache;
 
-	private DefaultAction lruAction = new DefaultAction(this,
-			ERDesignerBundle.RECENTLYUSEDFILES);
+    private ERDesignerGraph graph;
 
-	private DefaultMenu lruMenu = new DefaultMenu(lruAction);
+    private Model model;
 
-	private DefaultAction newAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
-				public void processActionEvent(ActionEvent e) {
-					commandNew();
-				}
-			}, this, ERDesignerBundle.NEWMODEL);
+    private DefaultComboBox zoomBox = new DefaultComboBox();
 
-	private DefaultAction saveAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private ApplicationPreferences preferences;
 
-				public void processActionEvent(ActionEvent aEvent) {
-					commandSaveFile();
-				}
+    private DefaultAction fileAction = new DefaultAction(this, ERDesignerBundle.FILE);
 
-			}, this, ERDesignerBundle.SAVEMODEL);
+    private DefaultAction lruAction = new DefaultAction(this, ERDesignerBundle.RECENTLYUSEDFILES);
 
-	private DefaultAction loadAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultMenu lruMenu = new DefaultMenu(lruAction);
 
-				public void processActionEvent(ActionEvent aEvent) {
-					commandOpenFile();
-				}
+    private DefaultAction newAction = new DefaultAction(new ActionEventProcessor() {
 
-			}, this, ERDesignerBundle.LOADMODEL);
+        public void processActionEvent(ActionEvent e) {
+            commandNew();
+        }
+    }, this, ERDesignerBundle.NEWMODEL);
 
-	private DefaultAction exitAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction saveAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandExit();
-				}
+        public void processActionEvent(ActionEvent aEvent) {
+            commandSaveFile();
+        }
 
-			}, this, ERDesignerBundle.EXITPROGRAM);
+    }, this, ERDesignerBundle.SAVEMODEL);
 
-	private DefaultAction exportAction = new DefaultAction(this,
-			ERDesignerBundle.EXPORT);
+    private DefaultAction loadAction = new DefaultAction(new ActionEventProcessor() {
 
-	private DefaultAction exportSVGAction = new DefaultAction(this,
-			ERDesignerBundle.ASSVG);
+        public void processActionEvent(ActionEvent aEvent) {
+            commandOpenFile();
+        }
 
-	private DefaultAction databaseAction = new DefaultAction(this,
-			ERDesignerBundle.DATABASE);
+    }, this, ERDesignerBundle.LOADMODEL);
 
-	private DefaultAction classpathAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction exitAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandClasspath();
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandExit();
+        }
 
-			}, this, ERDesignerBundle.CLASSPATH);
+    }, this, ERDesignerBundle.EXITPROGRAM);
 
-	private DefaultAction dbConnectionAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction exportAction = new DefaultAction(this, ERDesignerBundle.EXPORT);
 
-				public void processActionEvent(ActionEvent e) {
-					commandDBConnection();
-				}
+    private DefaultAction exportSVGAction = new DefaultAction(this, ERDesignerBundle.ASSVG);
 
-			}, this, ERDesignerBundle.DBCONNECTION);
+    private DefaultAction databaseAction = new DefaultAction(this, ERDesignerBundle.DATABASE);
 
-	private DefaultAction reverseEngineerAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction classpathAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent aEvent) {
-					commandReverseEngineer();
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandClasspath();
+        }
 
-			}, this, ERDesignerBundle.REVERSEENGINEER);
+    }, this, ERDesignerBundle.CLASSPATH);
 
-	private DefaultAction domainsAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction dbConnectionAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent aEvent) {
-					commandShowDomainEditor();
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandDBConnection();
+        }
 
-			}, this, ERDesignerBundle.DOMAINS);
+    }, this, ERDesignerBundle.DBCONNECTION);
 
-	private DefaultAction defaultValuesAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction reverseEngineerAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent aEvent) {
-					commandShowDefaultValuesEditor();
-				}
+        public void processActionEvent(ActionEvent aEvent) {
+            commandReverseEngineer();
+        }
 
-			}, this, ERDesignerBundle.DEFAULTVALUES);
+    }, this, ERDesignerBundle.REVERSEENGINEER);
 
-	private DefaultAction viewAction = new DefaultAction(this,
-			ERDesignerBundle.VIEW);
+    private DefaultAction domainsAction = new DefaultAction(new ActionEventProcessor() {
 
-	private DefaultAction zoomAction = new DefaultAction(
-			new ActionEventProcessor() {
+        public void processActionEvent(ActionEvent aEvent) {
+            commandShowDomainEditor();
+        }
 
-				public void processActionEvent(ActionEvent aEvent) {
-					commandSetZoom((ZoomInfo) ((JComboBox) aEvent.getSource())
-							.getSelectedItem());
-				}
-			}, this, ERDesignerBundle.ZOOM);
+    }, this, ERDesignerBundle.DOMAINS);
 
-	private DefaultAction zoomInAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction defaultValuesAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandZoomIn();
-				}
+        public void processActionEvent(ActionEvent aEvent) {
+            commandShowDefaultValuesEditor();
+        }
 
-			}, this, ERDesignerBundle.ZOOMIN);
+    }, this, ERDesignerBundle.DEFAULTVALUES);
 
-	private DefaultAction zoomOutAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction viewAction = new DefaultAction(this, ERDesignerBundle.VIEW);
 
-				public void processActionEvent(ActionEvent e) {
-					commandZoomOut();
-				}
+    private DefaultAction zoomAction = new DefaultAction(new ActionEventProcessor() {
 
-			}, this, ERDesignerBundle.ZOOMOUT);
+        public void processActionEvent(ActionEvent aEvent) {
+            commandSetZoom((ZoomInfo) ((JComboBox) aEvent.getSource()).getSelectedItem());
+        }
+    }, this, ERDesignerBundle.ZOOM);
 
-	private DefaultAction layoutAction = new DefaultAction(this,
-			ERDesignerBundle.LAYOUT);
+    private DefaultAction zoomInAction = new DefaultAction(new ActionEventProcessor() {
 
-	private DefaultAction layoutgraphvizAction = new DefaultAction(
-			new ActionEventProcessor() {
+        public void processActionEvent(ActionEvent e) {
+            commandZoomIn();
+        }
 
-				public void processActionEvent(ActionEvent e) {
-					commandLayoutGraphviz();
-				}
+    }, this, ERDesignerBundle.ZOOMIN);
 
-			}, this, ERDesignerBundle.LAYOUTBYGRAPHVIZ);
+    private DefaultAction zoomOutAction = new DefaultAction(new ActionEventProcessor() {
 
-	private DefaultAction handAction = new DefaultAction(
-			new ActionEventProcessor() {
+        public void processActionEvent(ActionEvent e) {
+            commandZoomOut();
+        }
 
-				public void processActionEvent(ActionEvent e) {
-					commandSetTool(ToolEnum.HAND);
-				}
+    }, this, ERDesignerBundle.ZOOMOUT);
 
-			}, this, ERDesignerBundle.HAND);
+    private DefaultAction layoutAction = new DefaultAction(this, ERDesignerBundle.LAYOUT);
 
-	private DefaultAction entityAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction layoutgraphvizAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandSetTool(ToolEnum.ENTITY);
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandLayoutGraphviz();
+        }
 
-			}, this, ERDesignerBundle.ENTITY);
+    }, this, ERDesignerBundle.LAYOUTBYGRAPHVIZ);
 
-	private DefaultAction relationAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction handAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandSetTool(ToolEnum.RELATION);
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandSetTool(ToolEnum.HAND);
+        }
 
-			}, this, ERDesignerBundle.RELATION);
+    }, this, ERDesignerBundle.HAND);
 
-	private DefaultAction logicalAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction entityAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandLogicalView();
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandSetTool(ToolEnum.ENTITY);
+        }
 
-			}, this, ERDesignerBundle.LOGICALVIEW);
+    }, this, ERDesignerBundle.ENTITY);
 
-	private DefaultAction physicalAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction relationAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandPhysicalView();
-				}
+        public void processActionEvent(ActionEvent e) {
+            commandSetTool(ToolEnum.RELATION);
+        }
 
-			}, this, ERDesignerBundle.PHYSICALVIEW);
+    }, this, ERDesignerBundle.RELATION);
 
-	private JToggleButton handButton;
+    private DefaultAction logicalAction = new DefaultAction(new ActionEventProcessor() {
 
-	private JToggleButton relationButton;
+        public void processActionEvent(ActionEvent e) {
+            commandLogicalView();
+        }
 
-	private JToggleButton entityButton;
+    }, this, ERDesignerBundle.LOGICALVIEW);
 
-	private File currentEditingFile;
+    private DefaultAction physicalAction = new DefaultAction(new ActionEventProcessor() {
 
-	private DefaultRadioButtonMenuItem logicalView = new DefaultRadioButtonMenuItem(
-			logicalAction);
+        public void processActionEvent(ActionEvent e) {
+            commandPhysicalView();
+        }
 
-	public ERDesignerMainFrame() {
-		super(ERDesignerBundle.TITLE);
-		initialize();
-	}
+    }, this, ERDesignerBundle.PHYSICALVIEW);
 
-	@Override
-	public ResourceHelper getResourceHelper() {
-		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-	}
+    private JToggleButton handButton;
 
-	protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
+    private JToggleButton relationButton;
 
-		DefaultAction theAllInOneAction = new DefaultAction(
-				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
-		DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
-		theAllInOneAction.addActionListener(new ActionListener() {
+    private JToggleButton entityButton;
 
-			public void actionPerformed(ActionEvent e) {
-				commandExport(aExporter, ExportType.ALL_IN_ONE);
-			}
-		});
-		aMenu.add(theAllInOneItem);
+    private File currentEditingFile;
 
-		DefaultAction theOnePerTableAction = new DefaultAction(
-				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
-		DefaultMenuItem theOnePerTable = new DefaultMenuItem(
-				theOnePerTableAction);
-		theOnePerTableAction.addActionListener(new ActionListener() {
+    private DefaultRadioButtonMenuItem logicalView = new DefaultRadioButtonMenuItem(logicalAction);
 
-			public void actionPerformed(ActionEvent e) {
-				commandExport(aExporter, ExportType.ONE_PER_FILE);
-			}
-		});
-		aMenu.add(theOnePerTable);
-	}
+    public ERDesignerMainFrame() {
+        super(ERDesignerBundle.TITLE);
+        initialize();
+    }
 
-	private void initialize() {
+    @Override
+    public ResourceHelper getResourceHelper() {
+        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    }
 
-		DefaultMenu theFileMenu = new DefaultMenu(fileAction);
-		JMenuItem theItem = theFileMenu.add(newAction);
-		theFileMenu.addSeparator();
-		theFileMenu.add(saveAction);
-		theFileMenu.add(loadAction);
-		theFileMenu.addSeparator();
+    protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
 
-		DefaultMenu theExportMenu = new DefaultMenu(exportAction);
+        DefaultAction theAllInOneAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
+        DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
+        theAllInOneAction.addActionListener(new ActionListener() {
 
-		List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
-		if (theSupportedFormats.contains("IMAGE/PNG")) {
-			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-					ERDesignerBundle.ASPNG);
-			theExportMenu.add(theSingleExportMenu);
+            public void actionPerformed(ActionEvent e) {
+                commandExport(aExporter, ExportType.ALL_IN_ONE);
+            }
+        });
+        aMenu.add(theAllInOneItem);
 
-			addExportEntries(theSingleExportMenu, new ImageExporter("png"));
-		}
-		if (theSupportedFormats.contains("IMAGE/JPEG")) {
-			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-					ERDesignerBundle.ASJPEG);
-			theExportMenu.add(theSingleExportMenu);
+        DefaultAction theOnePerTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+                ERDesignerBundle.ONEFILEPERTABLE);
+        DefaultMenuItem theOnePerTable = new DefaultMenuItem(theOnePerTableAction);
+        theOnePerTableAction.addActionListener(new ActionListener() {
 
-			addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
-		}
-		if (theSupportedFormats.contains("IMAGE/BMP")) {
-			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-					ERDesignerBundle.ASBMP);
-			theExportMenu.add(theSingleExportMenu);
+            public void actionPerformed(ActionEvent e) {
+                commandExport(aExporter, ExportType.ONE_PER_FILE);
+            }
+        });
+        aMenu.add(theOnePerTable);
+    }
 
-			addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
-		}
+    private void initialize() {
 
-		DefaultMenu theSVGExportMenu = new DefaultMenu(exportSVGAction);
+        DefaultMenu theFileMenu = new DefaultMenu(fileAction);
+        JMenuItem theItem = theFileMenu.add(newAction);
+        theFileMenu.addSeparator();
+        theFileMenu.add(saveAction);
+        theFileMenu.add(loadAction);
+        theFileMenu.addSeparator();
 
-		theExportMenu.add(theSVGExportMenu);
-		addExportEntries(theSVGExportMenu, new SVGExporter());
+        DefaultMenu theExportMenu = new DefaultMenu(exportAction);
 
-		theFileMenu.add(theExportMenu).getClass();
+        List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
+        if (theSupportedFormats.contains("IMAGE/PNG")) {
+            DefaultMenu theSingleExportMenu = new DefaultMenu(this, ERDesignerBundle.ASPNG);
+            theExportMenu.add(theSingleExportMenu);
 
-		theFileMenu.addSeparator();
-		theFileMenu.add(lruMenu);
-		theFileMenu.addSeparator();
-		theFileMenu.add(new DefaultMenuItem(exitAction));
+            addExportEntries(theSingleExportMenu, new ImageExporter("png"));
+        }
+        if (theSupportedFormats.contains("IMAGE/JPEG")) {
+            DefaultMenu theSingleExportMenu = new DefaultMenu(this, ERDesignerBundle.ASJPEG);
+            theExportMenu.add(theSingleExportMenu);
 
-		DefaultMenu theDBMenu = new DefaultMenu(databaseAction);
-		theDBMenu.add(new DefaultMenuItem(classpathAction));
-		theDBMenu.add(new DefaultMenuItem(dbConnectionAction));
-		theDBMenu.addSeparator();
-		theDBMenu.add(new DefaultMenuItem(reverseEngineerAction));
-		theDBMenu.addSeparator();
-		theDBMenu.add(new DefaultMenuItem(domainsAction));
-		theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
+            addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
+        }
+        if (theSupportedFormats.contains("IMAGE/BMP")) {
+            DefaultMenu theSingleExportMenu = new DefaultMenu(this, ERDesignerBundle.ASBMP);
+            theExportMenu.add(theSingleExportMenu);
 
-		DefaultMenu theViewMenu = new DefaultMenu(viewAction);
+            addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
+        }
 
-		DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
-		theLayoutMenu.add(new DefaultMenuItem(layoutgraphvizAction));
+        DefaultMenu theSVGExportMenu = new DefaultMenu(exportSVGAction);
 
-		theViewMenu.add(theLayoutMenu);
-		theViewMenu.addSeparator();
-		theViewMenu.add(new DefaultMenuItem(zoomInAction));
-		theViewMenu.add(new DefaultMenuItem(zoomOutAction));
-		theViewMenu.addSeparator();
+        theExportMenu.add(theSVGExportMenu);
+        addExportEntries(theSVGExportMenu, new SVGExporter());
 
-		DefaultRadioButtonMenuItem thePhysicalView = new DefaultRadioButtonMenuItem(
-				physicalAction);
-		ButtonGroup theViewTypeButtonGroup = new ButtonGroup();
-		theViewTypeButtonGroup.add(logicalView);
-		theViewTypeButtonGroup.add(thePhysicalView);
+        theFileMenu.add(theExportMenu).getClass();
 
-		logicalView.setSelected(true);
+        theFileMenu.addSeparator();
+        theFileMenu.add(lruMenu);
+        theFileMenu.addSeparator();
+        theFileMenu.add(new DefaultMenuItem(exitAction));
 
-		theViewMenu.add(logicalView);
-		theViewMenu.add(thePhysicalView);
+        DefaultMenu theDBMenu = new DefaultMenu(databaseAction);
+        theDBMenu.add(new DefaultMenuItem(classpathAction));
+        theDBMenu.add(new DefaultMenuItem(dbConnectionAction));
+        theDBMenu.addSeparator();
+        theDBMenu.add(new DefaultMenuItem(reverseEngineerAction));
+        theDBMenu.addSeparator();
+        theDBMenu.add(new DefaultMenuItem(domainsAction));
+        theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
 
-		menuBar.add(theFileMenu);
-		menuBar.add(theDBMenu);
-		menuBar.add(theViewMenu);
+        DefaultMenu theViewMenu = new DefaultMenu(viewAction);
 
-		DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
-		theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
-		for (int i = 9; i > 0; i--) {
-			theZoomModel.addElement(new ZoomInfo(i * 10 + " %", ((double) i)
-					/ (double) 10));
-		}
-		zoomBox.setPreferredSize(new Dimension(100, 21));
-		zoomBox.setMaximumSize(new Dimension(100, 21));
-		zoomBox.setAction(zoomAction);
-		zoomBox.setModel(theZoomModel);
+        DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
+        theLayoutMenu.add(new DefaultMenuItem(layoutgraphvizAction));
 
-		DefaultToolbar theToolBar = getDefaultFrameContent().getToolbar();
+        theViewMenu.add(theLayoutMenu);
+        theViewMenu.addSeparator();
+        theViewMenu.add(new DefaultMenuItem(zoomInAction));
+        theViewMenu.add(new DefaultMenuItem(zoomOutAction));
+        theViewMenu.addSeparator();
 
-		theToolBar.add(newAction);
-		theToolBar.addSeparator();
-		theToolBar.add(loadAction);
-		theToolBar.add(saveAction);
-		theToolBar.addSeparator();
-		theToolBar.add(zoomBox);
-		theToolBar.addSeparator();
-		theToolBar.add(zoomInAction);
-		theToolBar.add(zoomOutAction);
-		theToolBar.addSeparator();
+        DefaultRadioButtonMenuItem thePhysicalView = new DefaultRadioButtonMenuItem(physicalAction);
+        ButtonGroup theViewTypeButtonGroup = new ButtonGroup();
+        theViewTypeButtonGroup.add(logicalView);
+        theViewTypeButtonGroup.add(thePhysicalView);
 
-		handButton = new DefaultToggleButton(handAction);
-		relationButton = new DefaultToggleButton(relationAction);
-		entityButton = new DefaultToggleButton(entityAction);
+        logicalView.setSelected(true);
 
-		ButtonGroup theGroup = new ButtonGroup();
-		theGroup.add(handButton);
-		theGroup.add(relationButton);
-		theGroup.add(entityButton);
+        theViewMenu.add(logicalView);
+        theViewMenu.add(thePhysicalView);
 
-		theToolBar.add(handButton);
-		theToolBar.add(entityButton);
-		theToolBar.add(relationButton);
+        menuBar.add(theFileMenu);
+        menuBar.add(theDBMenu);
+        menuBar.add(theViewMenu);
 
-		frameContent.add(scrollPane, BorderLayout.CENTER);
+        DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
+        theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
+        for (int i = 9; i > 0; i--) {
+            theZoomModel.addElement(new ZoomInfo(i * 10 + " %", ((double) i) / (double) 10));
+        }
+        zoomBox.setPreferredSize(new Dimension(100, 21));
+        zoomBox.setMaximumSize(new Dimension(100, 21));
+        zoomBox.setAction(zoomAction);
+        zoomBox.setModel(theZoomModel);
 
-		setSize(800, 600);
+        DefaultToolbar theToolBar = getDefaultFrameContent().getToolbar();
 
-		initTitle();
+        theToolBar.add(newAction);
+        theToolBar.addSeparator();
+        theToolBar.add(loadAction);
+        theToolBar.add(saveAction);
+        theToolBar.addSeparator();
+        theToolBar.add(zoomBox);
+        theToolBar.addSeparator();
+        theToolBar.add(zoomInAction);
+        theToolBar.add(zoomOutAction);
+        theToolBar.addSeparator();
 
-		try {
-			preferences = new ApplicationPreferences(this, 10);
-		} catch (BackingStoreException e) {
-			logException(e);
-		}
+        handButton = new DefaultToggleButton(handAction);
+        relationButton = new DefaultToggleButton(relationAction);
+        entityButton = new DefaultToggleButton(entityAction);
 
-		initLRUMenu();
+        ButtonGroup theGroup = new ButtonGroup();
+        theGroup.add(handButton);
+        theGroup.add(relationButton);
+        theGroup.add(entityButton);
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        theToolBar.add(handButton);
+        theToolBar.add(entityButton);
+        theToolBar.add(relationButton);
 
-	private void initLRUMenu() {
+        frameContent.add(scrollPane, BorderLayout.CENTER);
 
-		lruMenu.removeAll();
-		if (preferences != null) {
+        setSize(800, 600);
 
-			List<File> theFiles = preferences.getLRUfiles();
-			for (final File theFile : theFiles) {
-				JMenuItem theItem = new JMenuItem(theFile.toString());
-				theItem.addActionListener(new ActionListener() {
+        initTitle();
 
-					public void actionPerformed(ActionEvent e) {
-						commandOpenFile(theFile);
-					}
+        try {
+            preferences = new ApplicationPreferences(this, 10);
+        } catch (BackingStoreException e) {
+            logException(e);
+        }
 
-				});
+        initLRUMenu();
 
-				UIInitializer.getInstance().initializeFontAndColors(theItem);
+        UIInitializer.getInstance().initialize(this);
+    }
 
-				lruMenu.add(theItem);
-			}
-		}
-	}
+    private void initLRUMenu() {
 
-	private void initTitle() {
+        lruMenu.removeAll();
+        if (preferences != null) {
 
-		StringBuffer theTitle = new StringBuffer();
-		if (currentEditingFile != null) {
-			theTitle.append(" - ").append(currentEditingFile.toString());
-		}
+            List<File> theFiles = preferences.getLRUfiles();
+            for (final File theFile : theFiles) {
+                JMenuItem theItem = new JMenuItem(theFile.toString());
+                theItem.addActionListener(new ActionListener() {
 
-		setTitle(getResourceHelper().getText(getResourceBundleID()) + theTitle);
-	}
+                    public void actionPerformed(ActionEvent e) {
+                        commandOpenFile(theFile);
+                    }
 
-	public void setModel(Model aModel) {
-		model = aModel;
+                });
 
-		graphModel = new DefaultGraphModel();
-		layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory());
+                UIInitializer.getInstance().initializeFontAndColors(theItem);
 
-		graphModel.addGraphModelListener(graphModelListener);
+                lruMenu.add(theItem);
+            }
+        }
+    }
 
-		graph = new ERDesignerGraph(model, graphModel, layoutCache) {
+    private void initTitle() {
 
-			@Override
-			public void commandNewTable(Point2D aLocation) {
-				ERDesignerMainFrame.this.commandAddTable(aLocation);
-			}
+        StringBuffer theTitle = new StringBuffer();
+        if (currentEditingFile != null) {
+            theTitle.append(" - ").append(currentEditingFile.toString());
+        }
 
-		};
-		graph.setUI(new ERDesignerGraphUI());
+        setTitle(getResourceHelper().getText(getResourceBundleID()) + theTitle);
+    }
 
-		scrollPane.getViewport().removeAll();
-		scrollPane.getViewport().add(graph);
+    public void setModel(Model aModel) {
+        model = aModel;
 
-		Map<Table, TableCell> theCells = new HashMap<Table, TableCell>();
+        graphModel = new DefaultGraphModel();
+        layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory());
 
-		for (Table theTable : model.getTables()) {
-			TableCell theCell = new TableCell(theTable);
-			theCell.transferPropertiesToAttributes(theTable);
+        graphModel.addGraphModelListener(graphModelListener);
 
-			layoutCache.insert(theCell);
+        graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
-			theCells.put(theTable, theCell);
-		}
+            @Override
+            public void commandNewTable(Point2D aLocation) {
+                ERDesignerMainFrame.this.commandAddTable(aLocation);
+            }
 
-		for (Relation theRelation : model.getRelations()) {
+        };
+        graph.setUI(new ERDesignerGraphUI());
 
-			TableCell theImportingCell = theCells.get(theRelation
-					.getImportingTable());
-			TableCell theExportingCell = theCells.get(theRelation
-					.getExportingTable());
+        scrollPane.getViewport().removeAll();
+        scrollPane.getViewport().add(graph);
 
-			RelationEdge theCell = new RelationEdge(theRelation,
-					theImportingCell, theExportingCell);
-			theCell.transferPropertiesToAttributes(theRelation);
+        Map<Table, TableCell> theCells = new HashMap<Table, TableCell>();
 
-			layoutCache.insert(theCell);
-		}
+        for (Table theTable : model.getTables()) {
+            TableCell theCell = new TableCell(theTable);
+            theCell.transferPropertiesToAttributes(theTable);
 
-		commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
-		commandSetTool(ToolEnum.HAND);
+            layoutCache.insert(theCell);
 
-		logicalView.setSelected(graph.isDomainDisplayMode());
-	}
+            theCells.put(theTable, theCell);
+        }
 
-	protected void commandShowDomainEditor() {
-		DomainEditor theEditor = new DomainEditor(model, this);
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
-			} catch (Exception e) {
-				logException(e);
-			}
-		}
-	}
+        for (Relation theRelation : model.getRelations()) {
 
-	protected void commandShowDefaultValuesEditor() {
-		DefaultValueEditor theEditor = new DefaultValueEditor(model, this);
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
-			} catch (Exception e) {
-				logException(e);
-			}
-		}
-	}
+            TableCell theImportingCell = theCells.get(theRelation.getImportingTable());
+            TableCell theExportingCell = theCells.get(theRelation.getExportingTable());
 
-	protected void commandOpenFile(File aFile) {
+            RelationEdge theCell = new RelationEdge(theRelation, theImportingCell, theExportingCell);
+            theCell.transferPropertiesToAttributes(theRelation);
 
-		try {
-			Model theModel = ModelIOUtilities.getInstance()
-					.deserializeModelFromXML(new FileInputStream(aFile));
-			setModel(theModel);
+            layoutCache.insert(theCell);
+        }
 
-			currentEditingFile = aFile;
-			initTitle();
+        commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
+        commandSetTool(ToolEnum.HAND);
 
-			preferences.addLRUFile(aFile);
+        logicalView.setSelected(graph.isDomainDisplayMode());
+    }
 
-			initLRUMenu();
+    protected void commandShowDomainEditor() {
+        DomainEditor theEditor = new DomainEditor(model, this);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                logException(e);
+            }
+        }
+    }
 
-		} catch (Exception e) {
-			logException(e);
-		}
-	}
+    protected void commandShowDefaultValuesEditor() {
+        DefaultValueEditor theEditor = new DefaultValueEditor(model, this);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                logException(e);
+            }
+        }
+    }
 
-	protected void commandOpenFile() {
+    protected void commandOpenFile(File aFile) {
 
-		ModelFileFilter theFiler = new ModelFileFilter();
+        try {
+            Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFile));
+            setModel(theModel);
 
-		JFileChooser theChooser = new JFileChooser();
-		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		theChooser.setFileFilter(theFiler);
-		if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            currentEditingFile = aFile;
+            initTitle();
 
-			File theFile = theFiler.getCompletedFile(theChooser
-					.getSelectedFile());
+            preferences.addLRUFile(aFile);
 
-			commandOpenFile(theFile);
-		}
-	}
+            initLRUMenu();
 
-	protected void commandSaveFile() {
+        } catch (Exception e) {
+            logException(e);
+        }
+    }
 
-		ModelFileFilter theFiler = new ModelFileFilter();
+    protected void commandOpenFile() {
 
-		JFileChooser theChooser = new JFileChooser();
-		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		theChooser.setFileFilter(theFiler);
-		theChooser.setSelectedFile(currentEditingFile);
-		if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+        ModelFileFilter theFiler = new ModelFileFilter();
 
-			File theFile = theFiler.getCompletedFile(theChooser
-					.getSelectedFile());
-			try {
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        theChooser.setFileFilter(theFiler);
+        if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 
-				ModelIOUtilities.getInstance().serializeModelToXML(model,
-						new FileOutputStream(theFile));
+            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
 
-				currentEditingFile = theFile;
-				initTitle();
+            commandOpenFile(theFile);
+        }
+    }
 
-				preferences.addLRUFile(theFile);
+    protected void commandSaveFile() {
 
-				initLRUMenu();
+        ModelFileFilter theFiler = new ModelFileFilter();
 
-			} catch (Exception e) {
-				logException(e);
-			}
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        theChooser.setFileFilter(theFiler);
+        theChooser.setSelectedFile(currentEditingFile);
+        if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 
-		}
-	}
+            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+            try {
 
-	protected void commandNew() {
-		currentEditingFile = null;
+                ModelIOUtilities.getInstance().serializeModelToXML(model, new FileOutputStream(theFile));
 
-		Model theModel = new Model();
-		setModel(theModel);
+                currentEditingFile = theFile;
+                initTitle();
 
-		initTitle();
-	}
+                preferences.addLRUFile(theFile);
 
-	protected void commandSetZoom(ZoomInfo aZoomInfo) {
-		graph.setScale(aZoomInfo.getValue());
-		zoomBox.setSelectedItem(aZoomInfo);
-	}
+                initLRUMenu();
 
-	/**
-	 * Log an exception.
-	 * 
-	 * @param aException
-	 */
-	protected void logException(Exception aException) {
-		aException.printStackTrace();
-	}
+            } catch (Exception e) {
+                logException(e);
+            }
 
-	protected void commandAddTable(Point2D aPoint) {
-		Table theTable = new Table();
-		TableEditor theEditor = new TableEditor(model, this);
-		theEditor.initializeFor(theTable);
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
+        }
+    }
 
-				TableCell theCell = new TableCell(theTable);
-				theCell.transferPropertiesToAttributes(theTable);
+    protected void commandNew() {
+        currentEditingFile = null;
 
-				GraphConstants.setBounds(theCell.getAttributes(),
-						new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
-								-1, -1));
+        Model theModel = new Model();
+        setModel(theModel);
 
-				layoutCache.insert(theCell);
+        initTitle();
+    }
 
-				theCell.transferAttributesToProperties(theCell.getAttributes());
+    protected void commandSetZoom(ZoomInfo aZoomInfo) {
+        graph.setScale(aZoomInfo.getValue());
+        zoomBox.setSelectedItem(aZoomInfo);
+    }
 
-			} catch (Exception e) {
-				logException(e);
-			}
-		}
-	}
+    /**
+     * Log an exception.
+     * 
+     * @param aException
+     */
+    protected void logException(Exception aException) {
+        aException.printStackTrace();
+    }
 
-	protected void commandDelete(Object aCell) {
+    protected void commandAddTable(Point2D aPoint) {
+        Table theTable = new Table();
+        TableEditor theEditor = new TableEditor(model, this);
+        theEditor.initializeFor(theTable);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
 
-	}
+                TableCell theCell = new TableCell(theTable);
+                theCell.transferPropertiesToAttributes(theTable);
 
-	protected void commandSetTool(ToolEnum aTool) {
-		if (aTool.equals(ToolEnum.HAND)) {
+                GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
+                        -1, -1));
 
-			if (!handButton.isSelected()) {
-				handButton.setSelected(true);
-			}
+                layoutCache.insert(theCell);
 
-			graph.setTool(new HandTool(graph));
-		}
-		if (aTool.equals(ToolEnum.ENTITY)) {
+                theCell.transferAttributesToProperties(theCell.getAttributes());
 
-			if (!entityButton.isSelected()) {
-				entityButton.setSelected(true);
-			}
+            } catch (Exception e) {
+                logException(e);
+            }
+        }
+    }
 
-			graph.setTool(new EntityTool(graph));
-		}
-		if (aTool.equals(ToolEnum.RELATION)) {
+    protected void commandDelete(Object aCell) {
 
-			if (!relationButton.isSelected()) {
-				relationButton.setSelected(true);
-			}
+    }
 
-			graph.setTool(new RelationTool(graph));
-		}
-	}
+    protected void commandSetTool(ToolEnum aTool) {
+        if (aTool.equals(ToolEnum.HAND)) {
 
-	protected void commandLogicalView() {
-		graph.setDomainDisplayMode(true);
-		graph.invalidate();
-		graph.repaint();
-	}
+            if (!handButton.isSelected()) {
+                handButton.setSelected(true);
+            }
 
-	protected void commandPhysicalView() {
-		graph.setDomainDisplayMode(false);
-		graph.invalidate();
-		graph.repaint();
-	}
+            graph.setTool(new HandTool(graph));
+        }
+        if (aTool.equals(ToolEnum.ENTITY)) {
 
-	protected void commandZoomOut() {
-		int theIndex = zoomBox.getSelectedIndex();
-		if (theIndex < zoomBox.getItemCount() - 1) {
-			theIndex++;
-			zoomBox.setSelectedIndex(theIndex);
-			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
-		}
-	}
+            if (!entityButton.isSelected()) {
+                entityButton.setSelected(true);
+            }
 
-	protected void commandZoomIn() {
-		int theIndex = zoomBox.getSelectedIndex();
-		if (theIndex > 0) {
-			theIndex--;
-			zoomBox.setSelectedIndex(theIndex);
-			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
-		}
-	}
+            graph.setTool(new EntityTool(graph));
+        }
+        if (aTool.equals(ToolEnum.RELATION)) {
 
-	protected void commandExit() {
-		try {
-			preferences.store();
-		} catch (BackingStoreException e) {
-			logException(e);
-		}
+            if (!relationButton.isSelected()) {
+                relationButton.setSelected(true);
+            }
 
-		System.exit(0);
-	}
+            graph.setTool(new RelationTool(graph));
+        }
+    }
 
-	protected void commandDBConnection() {
-		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(this,
-				model, preferences);
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
-			} catch (Exception e) {
-				logException(e);
-			}
-		}
-	}
-
-	protected void commandClasspath() {
-		ClasspathEditor theEditor = new ClasspathEditor(this, preferences);
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
-			} catch (Exception e) {
-				logException(e);
-			}
-		}
-
-	}
-
-	protected void commandExport(Exporter aExporter, ExportType aExportType) {
-
-		if (aExportType.equals(ExportType.ONE_PER_FILE)) {
-
-			JFileChooser theChooser = new JFileChooser();
-			theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				File theBaseDirectory = theChooser.getSelectedFile();
-
-				CellView[] theViews = layoutCache.getAllViews();
-				for (CellView theView : theViews) {
-					if (theView instanceof TableCellView) {
-						TableCellView theTableCellView = (TableCellView) theView;
-						TableCell theTableCell = (TableCell) theTableCellView
-								.getCell();
-						Table theTable = (Table) theTableCell.getUserObject();
-
-						File theOutputFile = new File(theBaseDirectory,
-								theTable.getName()
-										+ aExporter.getFileExtension());
-						try {
-							aExporter.exportToStream(theTableCellView
-									.getRendererComponent(graph, false, false,
-											false), new FileOutputStream(
-									theOutputFile));
-						} catch (Exception e) {
-							logException(e);
-						}
-					}
-				}
-			}
-
-		} else {
-
-			JFileChooser theChooser = new JFileChooser();
-			GenericFileFilter theFilter = new GenericFileFilter(aExporter
-					.getFileExtension(), aExporter.getFileExtension() + " File");
-			theChooser.setFileFilter(theFilter);
-			if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-
-				File theFile = theFilter.getCompletedFile(theChooser
-						.getSelectedFile());
-				try {
-					aExporter.fullExportToStream(graph, new FileOutputStream(
-							theFile));
-				} catch (Exception e) {
-					logException(e);
-				}
-			}
-
-		}
-	}
-
-	protected void commandLayoutGraphviz() {
-		try {
-			Layouter theLayout = LayouterFactory.getInstance()
-					.createGraphvizLayouter();
-			theLayout.applyLayout(graph, graph.getRoots());
-		} catch (Exception e) {
-			logException(e);
-		}
-	}
-
-	protected void commandReverseEngineer() {
-
-		ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model,
-				this, preferences);
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-			try {
-				
-				final Connection theConnection = model.createConnection(preferences);
-				final JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
-				final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
-				
-				SwingWorker<Model, String> theWorker=new SwingWorker<Model, String>() {
-
-					@Override
-					protected void process(List<String> aString) {
-						for(String theMessage : aString) {
-							getDefaultFrameContent().getStatusBar().setText(theMessage);
-						}
-					}
-
-					@Override
-					protected Model doInBackground() throws Exception {
-						try {
-							ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
-
-								public void notifyMessage(String aResourceKey, String... aValues) {
-									String theMessage = MessageFormat.format(getResourceHelper().getText(aResourceKey),aValues);
-									publish(new String[] {theMessage});
-								}
-								
-							};
-							return theStrategy.createModelFromConnection(theConnection, theOptions, theNotifier);
-						} catch (Exception e) {
-							logException(e);
-						}
-						return null;
-					}
-					
-				};
-				theWorker.execute();
-				
-				Model theModel = theWorker.get();
-				if (theModel != null) {
-					setModel(theModel);
-				}
-				
-			} catch (Exception e) {
-				logException(e);
-			}
-
-			
-		}
-	}
-
-	private static GraphModelListener graphModelListener = new GraphModelListener() {
-
-		public void graphChanged(GraphModelEvent aEvent) {
-			GraphLayoutCacheChange theChange = aEvent.getChange();
-
-			Object[] theChangedObjects = theChange.getChanged();
-			Map theChangedAttributes = theChange.getPreviousAttributes();
-			if (theChangedAttributes != null) {
-				for (Object theChangedObject : theChangedObjects) {
-					Map theAttributes = (Map) theChangedAttributes
-							.get(theChangedObject);
-
-					if (theChangedObject instanceof ModelCell) {
-
-						ModelCell theCell = (ModelCell) theChangedObject;
-						theCell.transferAttributesToProperties(theAttributes);
-					}
-				}
-			}
-
-		}
-	};
+    protected void commandLogicalView() {
+        graph.setDomainDisplayMode(true);
+        graph.invalidate();
+        graph.repaint();
+    }
+
+    protected void commandPhysicalView() {
+        graph.setDomainDisplayMode(false);
+        graph.invalidate();
+        graph.repaint();
+    }
+
+    protected void commandZoomOut() {
+        int theIndex = zoomBox.getSelectedIndex();
+        if (theIndex < zoomBox.getItemCount() - 1) {
+            theIndex++;
+            zoomBox.setSelectedIndex(theIndex);
+            commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+        }
+    }
+
+    protected void commandZoomIn() {
+        int theIndex = zoomBox.getSelectedIndex();
+        if (theIndex > 0) {
+            theIndex--;
+            zoomBox.setSelectedIndex(theIndex);
+            commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+        }
+    }
+
+    protected void commandExit() {
+        try {
+            preferences.store();
+        } catch (BackingStoreException e) {
+            logException(e);
+        }
+
+        System.exit(0);
+    }
+
+    protected void commandDBConnection() {
+        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(this, model, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                logException(e);
+            }
+        }
+    }
+
+    protected void commandClasspath() {
+        ClasspathEditor theEditor = new ClasspathEditor(this, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                logException(e);
+            }
+        }
+
+    }
+
+    protected void commandExport(Exporter aExporter, ExportType aExportType) {
+
+        if (aExportType.equals(ExportType.ONE_PER_FILE)) {
+
+            JFileChooser theChooser = new JFileChooser();
+            theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File theBaseDirectory = theChooser.getSelectedFile();
+
+                CellView[] theViews = layoutCache.getAllViews();
+                for (CellView theView : theViews) {
+                    if (theView instanceof TableCellView) {
+                        TableCellView theTableCellView = (TableCellView) theView;
+                        TableCell theTableCell = (TableCell) theTableCellView.getCell();
+                        Table theTable = (Table) theTableCell.getUserObject();
+
+                        File theOutputFile = new File(theBaseDirectory, theTable.getName()
+                                + aExporter.getFileExtension());
+                        try {
+                            aExporter.exportToStream(theTableCellView.getRendererComponent(graph, false, false, false),
+                                    new FileOutputStream(theOutputFile));
+                        } catch (Exception e) {
+                            logException(e);
+                        }
+                    }
+                }
+            }
+
+        } else {
+
+            JFileChooser theChooser = new JFileChooser();
+            GenericFileFilter theFilter = new GenericFileFilter(aExporter.getFileExtension(), aExporter
+                    .getFileExtension()
+                    + " File");
+            theChooser.setFileFilter(theFilter);
+            if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+
+                File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
+                try {
+                    aExporter.fullExportToStream(graph, new FileOutputStream(theFile));
+                } catch (Exception e) {
+                    logException(e);
+                }
+            }
+
+        }
+    }
+
+    protected void commandLayoutGraphviz() {
+        try {
+            Layouter theLayout = LayouterFactory.getInstance().createGraphvizLayouter();
+            theLayout.applyLayout(graph, graph.getRoots());
+        } catch (Exception e) {
+            logException(e);
+        }
+    }
+
+    protected void commandReverseEngineer() {
+
+        ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, this, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+
+            try {
+
+                final Connection theConnection = model.createConnection(preferences);
+                final JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+                final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+
+                SwingWorker<Model, String> theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy, theConnection);
+                theWorker.execute();
+
+                Model theModel = theWorker.get();
+                if (theModel != null) {
+                    setModel(theModel);
+                }
+
+            } catch (Exception e) {
+                logException(e);
+            }
+
+        }
+    }
+
+    private static GraphModelListener graphModelListener = new ERDesignerGraphModelListener();
 }

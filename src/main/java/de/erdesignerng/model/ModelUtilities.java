@@ -25,97 +25,96 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:16 $
+ * @version $Date: 2008-01-14 20:01:07 $
  */
 public final class ModelUtilities {
 
-	private ModelUtilities() {
-	}
+    private ModelUtilities() {
+    }
 
-	/**
-	 * Check existance in a list.
-	 * 
-	 * @param aVector
-	 * @param aName
-	 * @param aProperties
-	 * @throws ElementAlreadyExistsException
-	 */
-	public static void checkExistance(ModelItemVector aVector, String aName,
-			Dialect aProperties) throws ElementAlreadyExistsException {
+    /**
+     * Check existance in a list.
+     * 
+     * @param aVector
+     * @param aName
+     * @param aProperties
+     * @throws ElementAlreadyExistsException
+     */
+    public static void checkExistance(ModelItemVector aVector, String aName, Dialect aProperties)
+            throws ElementAlreadyExistsException {
 
-		if (aVector.elementExists(aName, aProperties.isCaseSensitive())) {
-			throw new ElementAlreadyExistsException(aName);
-		}
+        if (aVector.elementExists(aName, aProperties.isCaseSensitive())) {
+            throw new ElementAlreadyExistsException(aName);
+        }
 
-	}
+    }
 
-	/**
-	 * Check the name of an item and its existance in a list.
-	 * 
-	 * @param aVector
-	 * @param aItem
-	 * @param aProperties
-	 * @throws ElementInvalidNameException
-	 * @throws ElementAlreadyExistsException
-	 */
-	public static void checkNameAndExistance(ModelItemVector aVector,
-			OwnedModelItem aItem, Dialect aProperties)
-			throws ElementInvalidNameException, ElementAlreadyExistsException {
+    /**
+     * Check the name of an item and its existance in a list.
+     * 
+     * @param aVector
+     * @param aItem
+     * @param aProperties
+     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException
+     */
+    public static void checkNameAndExistance(ModelItemVector aVector, OwnedModelItem aItem, Dialect aProperties)
+            throws ElementInvalidNameException, ElementAlreadyExistsException {
 
-		aItem.setName(aProperties.checkName(aItem.getName()));
+        aItem.setName(aProperties.checkName(aItem.getName()));
 
-		checkExistance(aVector, aItem.getName(), aProperties);
-	}
+        checkExistance(aVector, aItem.getName(), aProperties);
+    }
 
-	/**
-	 * Find the model properties.
-	 * 
-	 * @param aItem
-	 *            the item to start searching at
-	 * @return the found model history.
-	 */
-	public static Dialect getModelProperties(OwnedModelItem aItem) {
+    /**
+     * Find the model properties.
+     * 
+     * @param aItem
+     *            the item to start searching at
+     * @return the found model history.
+     */
+    public static Dialect getModelProperties(OwnedModelItem aItem) {
 
-		Object theOwner = aItem.getOwner();
-		if (theOwner instanceof Model) {
-			return ((Model) theOwner).getDialect();
-		}
+        Object theOwner = aItem.getOwner();
+        if (theOwner instanceof Model) {
+            return ((Model) theOwner).getDialect();
+        }
 
-		if (theOwner instanceof OwnedModelItem) {
-			return getModelProperties((OwnedModelItem) theOwner);
-		}
+        if (theOwner instanceof OwnedModelItem) {
+            return getModelProperties((OwnedModelItem) theOwner);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Find the model history.
-	 * 
-	 * @param aItem
-	 *            the item to start searching at
-	 * @return the found model history.
-	 */
-	public static ModelHistory getModelHistory(OwnedModelItem aItem) {
+    /**
+     * Find the model history.
+     * 
+     * @param aItem
+     *            the item to start searching at
+     * @return the found model history.
+     */
+    public static ModelHistory getModelHistory(OwnedModelItem aItem) {
 
-		Object theOwner = aItem.getOwner();
-		if (theOwner instanceof Model) {
-			return ((Model) theOwner).getModelHistory();
-		}
+        Object theOwner = aItem.getOwner();
+        if (theOwner instanceof Model) {
+            return ((Model) theOwner).getModelHistory();
+        }
 
-		if (theOwner instanceof OwnedModelItem) {
-			return getModelHistory((OwnedModelItem) theOwner);
-		}
+        if (theOwner instanceof OwnedModelItem) {
+            return getModelHistory((OwnedModelItem) theOwner);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Create a unique system id.
-	 * 
-	 * @param aClass
-	 * @return
-	 */
-	public static String createSystemIdFor(Object aObject) {
-		return UUID.randomUUID().toString();
-	}
+    /**
+     * Create a unique system id.
+     * 
+     * @param aClass
+     * @return the system id
+     */
+    public static String createSystemIdFor(Object aObject) {
+        return UUID.randomUUID().toString();
+    }
 }

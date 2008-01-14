@@ -19,27 +19,27 @@ package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:07 $
+ * @version $Date: 2008-01-14 20:01:05 $
  */
 public enum NameCastType {
-	NOTHING(1), UPPERCASE(2), LOWERCASE(3);
+    NOTHING(1), UPPERCASE(2), LOWERCASE(3);
 
-	private int mode;
+    private int mode;
 
-	private NameCastType(int aMode) {
-		mode = aMode;
-	}
+    private NameCastType(int aMode) {
+        mode = aMode;
+    }
 
-	public String cast(String aValue) {
-		switch (mode) {
-			case 1:
-				return aValue;
-			case 2:
-				return aValue.toUpperCase();
-			case 3:
-				return aValue.toLowerCase();
-		}
-
-		throw new IllegalStateException();
-	}
+    public String cast(String aValue) {
+        switch (mode) {
+        case 1:
+            return aValue;
+        case 2:
+            return aValue.toUpperCase();
+        case 3:
+            return aValue.toLowerCase();
+        default:
+            throw new IllegalStateException();
+        }
+    }
 }

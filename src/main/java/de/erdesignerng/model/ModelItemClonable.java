@@ -19,11 +19,12 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:11 $
+ * @version $Date: 2008-01-14 20:01:08 $
+ * @param <T> the type 
  */
 public interface ModelItemClonable<T> extends Cloneable {
 
-	T clone();
+    T clone();
 
-	void restoreFrom(T aValue) throws Exception;
+    void restoreFrom(T aValue) throws Exception;
 }

@@ -5,12 +5,11 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:39 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
-public class MySQLReverseEngineeringStrategy extends
-		JDBCReverseEngineeringStrategy {
+public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy {
 
-	public MySQLReverseEngineeringStrategy(Dialect aDialect) {
-		super(aDialect);
-	}
+    public MySQLReverseEngineeringStrategy(Dialect aDialect) {
+        super(aDialect);
+    }
 }

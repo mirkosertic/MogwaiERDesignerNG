@@ -21,13 +21,13 @@ package de.erdesignerng.exception;
  * Exception to handle unallowed deletion.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:26 $
+ * @version $Date: 2008-01-14 20:01:03 $
  */
 public class CannotDeleteException extends ModelException {
 
-	private static final long serialVersionUID = -2956557116750066458L;
+    private static final long serialVersionUID = -2956557116750066458L;
 
-	public CannotDeleteException(String aMessage) {
-		super(aMessage);
-	}
+    public CannotDeleteException(String aMessage) {
+        super(aMessage);
+    }
 }

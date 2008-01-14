@@ -31,41 +31,41 @@ import de.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:00 $
+ * @version $Date: 2008-01-14 20:01:05 $
  */
-public class DialectFactory {
+public final class DialectFactory {
 
-	private static DialectFactory me;
+    private static DialectFactory me;
 
-	private Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
+    private Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
 
-	private DialectFactory() {
-		registerDialect(new MSSQLDialect());
-		registerDialect(new MySQLDialect());
-		registerDialect(new MySQLInnoDBDialect());
-		registerDialect(new OracleDialect());
-		registerDialect(new PostgresDialect());
-		registerDialect(new DB2Dialect());
-	}
+    private DialectFactory() {
+        registerDialect(new MSSQLDialect());
+        registerDialect(new MySQLDialect());
+        registerDialect(new MySQLInnoDBDialect());
+        registerDialect(new OracleDialect());
+        registerDialect(new PostgresDialect());
+        registerDialect(new DB2Dialect());
+    }
 
-	public static DialectFactory getInstance() {
-		if (me == null) {
-			me = new DialectFactory();
-		}
-		return me;
-	}
+    public static DialectFactory getInstance() {
+        if (me == null) {
+            me = new DialectFactory();
+        }
+        return me;
+    }
 
-	protected void registerDialect(Dialect aDialect) {
-		knownDialects.put(aDialect.getUniqueName(), aDialect);
-	}
+    protected void registerDialect(Dialect aDialect) {
+        knownDialects.put(aDialect.getUniqueName(), aDialect);
+    }
 
-	public Dialect getDialect(String aUniqueName) {
-		return knownDialects.get(aUniqueName);
-	}
+    public Dialect getDialect(String aUniqueName) {
+        return knownDialects.get(aUniqueName);
+    }
 
-	public List<Dialect> getSupportedDialects() {
-		Vector<Dialect> theDialects = new Vector<Dialect>();
-		theDialects.addAll(knownDialects.values());
-		return theDialects;
-	}
+    public List<Dialect> getSupportedDialects() {
+        Vector<Dialect> theDialects = new Vector<Dialect>();
+        theDialects.addAll(knownDialects.values());
+        return theDialects;
+    }
 }

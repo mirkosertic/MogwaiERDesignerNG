@@ -24,36 +24,36 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:07 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
-	public MSSQLDialect() {
-		setSpacesAllowedInObjectNames(false);
-		setCaseSensitive(false);
-		setMaxObjectNameLength(28);
-		setNullablePrimaryKeyAllowed(false);
-		setCastType(NameCastType.UPPERCASE);
-	}
+    public MSSQLDialect() {
+        setSpacesAllowedInObjectNames(false);
+        setCaseSensitive(false);
+        setMaxObjectNameLength(28);
+        setNullablePrimaryKeyAllowed(false);
+        setCastType(NameCastType.UPPERCASE);
+    }
 
-	@Override
-	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return new MSSQLReverseEngineeringStrategy(this);
-	}
+    @Override
+    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+        return new MSSQLReverseEngineeringStrategy(this);
+    }
 
-	@Override
-	public String getUniqueName() {
-		return "MSSQLDialect";
-	}
+    @Override
+    public String getUniqueName() {
+        return "MSSQLDialect";
+    }
 
-	@Override
-	public String getDriverClassName() {
-		return "net.sourceforge.jtds.jdbc.Driver";
-	}
+    @Override
+    public String getDriverClassName() {
+        return "net.sourceforge.jtds.jdbc.Driver";
+    }
 
-	@Override
-	public String getDriverURLTemplate() {
-		return "jdbc:jtds:sqlserver://<host>/<db>";
-	}
+    @Override
+    public String getDriverURLTemplate() {
+        return "jdbc:jtds:sqlserver://<host>/<db>";
+    }
 
 }

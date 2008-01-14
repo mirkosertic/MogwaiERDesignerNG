@@ -19,20 +19,20 @@ package de.erdesignerng.exception;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:26 $
+ * @version $Date: 2008-01-14 20:01:03 $
  */
 public class ElementAlreadyExistsException extends ModelException {
 
-	private static final long serialVersionUID = 3016742498176605316L;
+    private static final long serialVersionUID = 3016742498176605316L;
 
-	private String elementName;
+    private String elementName;
 
-	public ElementAlreadyExistsException(String aElementName) {
-		elementName = aElementName;
-	}
+    public ElementAlreadyExistsException(String aElementName) {
+        elementName = aElementName;
+    }
 
-	public String getElementName() {
-		return elementName;
-	}
+    public String getElementName() {
+        return elementName;
+    }
 
 }

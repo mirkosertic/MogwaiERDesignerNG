@@ -24,36 +24,36 @@ import javax.swing.filechooser.FileFilter;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:50 $
+ * @version $Date: 2008-01-14 20:01:12 $
  */
 public class GenericFileFilter extends FileFilter {
 
-	private String extension;
+    private String extension;
 
-	private String description;
+    private String description;
 
-	public GenericFileFilter(String aExtension, String aDescription) {
-		extension = aExtension;
-		description = aDescription;
-	}
+    public GenericFileFilter(String aExtension, String aDescription) {
+        extension = aExtension;
+        description = aDescription;
+    }
 
-	@Override
-	public boolean accept(File aFileName) {
-		if (aFileName.isDirectory()) {
-			return true;
-		}
-		return aFileName.getName().toLowerCase().endsWith(extension);
-	}
+    @Override
+    public boolean accept(File aFileName) {
+        if (aFileName.isDirectory()) {
+            return true;
+        }
+        return aFileName.getName().toLowerCase().endsWith(extension);
+    }
 
-	@Override
-	public String getDescription() {
-		return description;
-	}
+    @Override
+    public String getDescription() {
+        return description;
+    }
 
-	public File getCompletedFile(File aFile) {
-		if (!aFile.getName().toLowerCase().endsWith(extension)) {
-			return new File(aFile.toString() + extension);
-		}
-		return aFile;
-	}
+    public File getCompletedFile(File aFile) {
+        if (!aFile.getName().toLowerCase().endsWith(extension)) {
+            return new File(aFile.toString() + extension);
+        }
+        return aFile;
+    }
 }

@@ -39,98 +39,92 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:03 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public class ERDesignerGraph extends JGraph {
 
-	private Model model;
+    private Model model;
 
-	private boolean domainDisplayMode = true;
+    private boolean domainDisplayMode = true;
 
-	public ERDesignerGraph(Model aDBModel, GraphModel aModel,
-			GraphLayoutCache aLayoutCache) {
-		super(aModel, aLayoutCache);
-		// setPortsVisible(true);
-		model = aDBModel;
-	}
+    public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
+        super(aModel, aLayoutCache);
+        // setPortsVisible(true);
+        model = aDBModel;
+    }
 
-	/**
-	 * @return the model
-	 */
-	public Model getDBModel() {
-		return model;
-	}
+    /**
+     * @return the model
+     */
+    public Model getDBModel() {
+        return model;
+    }
 
-	public void setTool(BaseTool aTool) {
-		setMarqueeHandler(aTool);
-	}
+    public void setTool(BaseTool aTool) {
+        setMarqueeHandler(aTool);
+    }
 
-	public void commandDeleteCell(GraphCell aCell) {
+    public void commandDeleteCell(GraphCell aCell) {
 
-		GraphModel theModel = getModel();
+        GraphModel theModel = getModel();
 
-		if (aCell instanceof RelationEdge) {
-			RelationEdge theEdge = (RelationEdge) aCell;
+        if (aCell instanceof RelationEdge) {
+            RelationEdge theEdge = (RelationEdge) aCell;
 
-			theModel.remove(new Object[] { theEdge });
+            theModel.remove(new Object[] { theEdge });
 
-			getDBModel().removeRelation((Relation) theEdge.getUserObject());
+            getDBModel().removeRelation((Relation) theEdge.getUserObject());
 
-		}
-		if (aCell instanceof TableCell) {
-			TableCell theCell = (TableCell) aCell;
-			Table theTable = (Table) theCell.getUserObject();
+        }
+        if (aCell instanceof TableCell) {
+            TableCell theCell = (TableCell) aCell;
+            Table theTable = (Table) theCell.getUserObject();
 
-			List theObjectsToRemove = new ArrayList();
-			theObjectsToRemove.add(theCell);
+            List theObjectsToRemove = new ArrayList();
+            theObjectsToRemove.add(theCell);
 
-			getDBModel().removeTable(theTable);
+            getDBModel().removeTable(theTable);
 
-			CellView[] theViews = getGraphLayoutCache().getAllViews();
-			for (CellView theView : theViews) {
-				if (theView instanceof RelationEdgeView) {
-					RelationEdgeView theRelationView = (RelationEdgeView) theView;
-					RelationEdge theEdge = (RelationEdge) theRelationView
-							.getCell();
-					TableCell theSource = (TableCell) ((DefaultPort) theEdge
-							.getSource()).getParent();
-					TableCell theDestination = (TableCell) ((DefaultPort) theEdge
-							.getTarget()).getParent();
+            CellView[] theViews = getGraphLayoutCache().getAllViews();
+            for (CellView theView : theViews) {
+                if (theView instanceof RelationEdgeView) {
+                    RelationEdgeView theRelationView = (RelationEdgeView) theView;
+                    RelationEdge theEdge = (RelationEdge) theRelationView.getCell();
+                    TableCell theSource = (TableCell) ((DefaultPort) theEdge.getSource()).getParent();
+                    TableCell theDestination = (TableCell) ((DefaultPort) theEdge.getTarget()).getParent();
 
-					if (theTable.equals(theSource.getUserObject())) {
-						getDBModel().removeRelation(
-								(Relation) theEdge.getUserObject());
-						theObjectsToRemove.add(theEdge);
-					} else {
-						if (theTable.equals(theDestination.getUserObject())) {
-							getDBModel().removeRelation(
-									(Relation) theEdge.getUserObject());
-							theObjectsToRemove.add(theEdge);
-						}
-					}
-				}
-			}
+                    if (theTable.equals(theSource.getUserObject())) {
+                        getDBModel().removeRelation((Relation) theEdge.getUserObject());
+                        theObjectsToRemove.add(theEdge);
+                    } else {
+                        if (theTable.equals(theDestination.getUserObject())) {
+                            getDBModel().removeRelation((Relation) theEdge.getUserObject());
+                            theObjectsToRemove.add(theEdge);
+                        }
+                    }
+                }
+            }
 
-			theModel.remove(theObjectsToRemove.toArray());
-		}
+            theModel.remove(theObjectsToRemove.toArray());
+        }
 
-	}
+    }
 
-	public void commandNewTable(Point2D aPoint) {
-	}
+    public void commandNewTable(Point2D aPoint) {
+    }
 
-	/**
-	 * @return the domainDisplayMode
-	 */
-	public boolean isDomainDisplayMode() {
-		return domainDisplayMode;
-	}
+    /**
+     * @return the domainDisplayMode
+     */
+    public boolean isDomainDisplayMode() {
+        return domainDisplayMode;
+    }
 
-	/**
-	 * @param domainDisplayMode
-	 *            the domainDisplayMode to set
-	 */
-	public void setDomainDisplayMode(boolean domainDisplayMode) {
-		this.domainDisplayMode = domainDisplayMode;
-	}
+    /**
+     * @param domainDisplayMode
+     *            the domainDisplayMode to set
+     */
+    public void setDomainDisplayMode(boolean domainDisplayMode) {
+        this.domainDisplayMode = domainDisplayMode;
+    }
 }

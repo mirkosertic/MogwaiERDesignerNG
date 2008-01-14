@@ -45,258 +45,249 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class TableCellView extends VertexView {
 
-	private static MyRenderer renderer = new MyRenderer();
+    private static MyRenderer renderer = new MyRenderer();
 
-	public TableCellView(TableCell aCell) {
-		super(aCell);
-	}
+    public TableCellView(TableCell aCell) {
+        super(aCell);
+    }
 
-	@Override
-	public CellViewRenderer getRenderer() {
-		return renderer;
-	}
+    @Override
+    public CellViewRenderer getRenderer() {
+        return renderer;
+    }
 
-	public static class MyRenderer extends VertexRenderer implements
-			CellViewRenderer, Serializable {
+    public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
-		private Table table;
+        private Table table;
 
-		private boolean roundedRect = false;
+        private boolean roundedRect = false;
 
-		private boolean selected;
+        private boolean selected;
 
-		private boolean domainDisplayMode;
+        private boolean domainDisplayMode;
 
-		private static ImageIcon key = IconFactory.getKeyIcon();
+        private static ImageIcon key = IconFactory.getKeyIcon();
 
-		public MyRenderer() {
-			setBackground(Color.white);
-		}
+        public MyRenderer() {
+            setBackground(Color.white);
+        }
 
-		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
-				int aHeight) {
-			if (roundedRect) {
-				aGraphics.fillRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
-				return;
-			}
+        private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
+            if (roundedRect) {
+                aGraphics.fillRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
+                return;
+            }
 
-			aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
-		}
+            aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
+        }
 
-		private void drawRect(Graphics aGraphics, int aX1, int aY1, int aWidth,
-				int aHeight) {
-			if (roundedRect) {
-				aGraphics.drawRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
-				return;
-			}
+        private void drawRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
+            if (roundedRect) {
+                aGraphics.drawRoundRect(aX1, aY1, aWidth, aHeight, 10, 10);
+                return;
+            }
 
-			aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
-		}
+            aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
+        }
 
-		@Override
-		public void paint(Graphics aGraphics) {
+        @Override
+        public void paint(Graphics aGraphics) {
 
-			Dimension theSize = getSize();
-			int theWidth = theSize.width;
-			int theHeight = theSize.height;
+            Dimension theSize = getSize();
+            int theWidth = theSize.width;
+            int theHeight = theSize.height;
 
-			aGraphics.setColor(getBackground());
-			aGraphics.fillRect(0, 0, theWidth, theHeight);
+            aGraphics.setColor(getBackground());
+            aGraphics.fillRect(0, 0, theWidth, theHeight);
 
-			FontMetrics theMetrics = aGraphics.getFontMetrics();
+            FontMetrics theMetrics = aGraphics.getFontMetrics();
 
-			aGraphics.setColor(Color.black);
-			aGraphics.drawString(table.getName(), 0, theMetrics.getAscent());
+            aGraphics.setColor(Color.black);
+            aGraphics.drawString(table.getName(), 0, theMetrics.getAscent());
 
-			int theYOffset = theMetrics.getHeight();
+            int theYOffset = theMetrics.getHeight();
 
-			aGraphics.setColor(selected ? Color.blue : Color.black);
+            aGraphics.setColor(selected ? Color.blue : Color.black);
 
-			fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight
-					- theYOffset - 5);
+            fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight - theYOffset - 5);
 
-			aGraphics.setColor(new Color(255, 255, 212));
+            aGraphics.setColor(new Color(255, 255, 212));
 
-			fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight
-					- theYOffset - 6);
+            fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
-			aGraphics.setColor(selected ? Color.blue : Color.black);
+            aGraphics.setColor(selected ? Color.blue : Color.black);
 
-			drawRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight
-					- theYOffset - 6);
+            drawRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
-			int theTextXOffset = 15;
+            int theTextXOffset = 15;
 
-			List<Attribute> theAllAttributes = new Vector<Attribute>();
-			theAllAttributes.addAll(table.getAttributes());
+            List<Attribute> theAllAttributes = new Vector<Attribute>();
+            theAllAttributes.addAll(table.getAttributes());
 
-			boolean hasPrimaryKey = false;
+            boolean hasPrimaryKey = false;
 
-			// Draw the attributes
-			for (Attribute theAttribute : table.getAttributes()) {
-				if (theAttribute.isPrimaryKey()) {
+            // Draw the attributes
+            for (Attribute theAttribute : table.getAttributes()) {
+                if (theAttribute.isPrimaryKey()) {
 
-					hasPrimaryKey = true;
+                    hasPrimaryKey = true;
 
-					theAllAttributes.remove(theAttribute);
+                    theAllAttributes.remove(theAttribute);
 
-					aGraphics.setColor(Color.red);
+                    aGraphics.setColor(Color.red);
 
-					String theText = theAttribute.getName();
-					theText += " : ";
-					if (domainDisplayMode) {
-						theText += theAttribute.getDomain().getName();
-					} else {
-						theText += theAttribute.getDomain().getDatatype();
-					}
-
-					if (theAttribute.isForeignKey()) {
-						theText += " (FK)";
-					}
-
-					aGraphics.drawString(theText, theTextXOffset, theYOffset
-							+ theMetrics.getAscent());
-					key.paintIcon(this, aGraphics, 5, theYOffset + 4);
-					theYOffset += theMetrics.getHeight();
-				}
-			}
-
-			// Only do the following if there are any not primary key attributes
-			if (theAllAttributes.size() > 0) {
-
-				// This line is only neccesary in case that there are PK
-				// attributes
-				if (hasPrimaryKey) {
-
-					// Draw the border line
-					aGraphics.setColor(Color.black);
-					aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
-				}
-
-				// Draw the attributes
-				for (Attribute theAttribute : theAllAttributes) {
-
-					boolean isFK = theAttribute.isForeignKey();
+                    String theText = theAttribute.getName();
+                    theText += " : ";
+                    if (domainDisplayMode) {
+                        theText += theAttribute.getDomain().getName();
+                    } else {
+                        theText += theAttribute.getDomain().getDatatype();
+                    }
 
-					String theText = theAttribute.getName();
-					theText += " : ";
-					if (domainDisplayMode) {
-						theText += theAttribute.getDomain().getName();
-					} else {
-						theText += theAttribute.getDomain().getDatatype();
-					}
-
-					if (isFK) {
-						theText += " (FK)";
-					}
-
-					aGraphics.setColor(isFK ? Color.red : Color.black);
-
-					aGraphics.drawString(theText, theTextXOffset, theYOffset
-							+ theMetrics.getAscent());
-					theYOffset += theMetrics.getHeight();
-				}
-			}
-
-		}
-
-		@Override
-		public Dimension getPreferredSize() {
-			int theMaxX = 150;
-			int theMaxY = 8;
-
-			FontMetrics theMetrics = this.getFontMetrics(this.getFont());
-
-			int theYOffset = theMetrics.getHeight();
-			int theXTextOffset = 30;
-
-			int theLength = theMetrics.stringWidth(table.getName());
-			if (theLength > theMaxX) {
-				theMaxX = theLength + 5;
-			}
-
-			List<Attribute> theAllAttributes = new Vector<Attribute>();
-			theAllAttributes.addAll(table.getAttributes());
-
-			for (Attribute theAttribute : table.getAttributes()) {
-				if (theAttribute.isPrimaryKey()) {
-
-					theAllAttributes.remove(theAttribute);
-
-					String theText = theAttribute.getName();
-					theText += " : ";
-					if (domainDisplayMode) {
-						theText += theAttribute.getDomain().getName();
-					} else {
-						theText += theAttribute.getDomain().getDatatype();
-					}
-
-					if (theAttribute.isForeignKey()) {
-						theText += " (FK)";
-					}
-
-					theLength = theMetrics.stringWidth(theText);
-					if (theLength + theXTextOffset > theMaxX) {
-						theMaxX = theLength + theXTextOffset;
-					}
-
-					theYOffset += theMetrics.getHeight();
-				}
-			}
-
-			for (Attribute theAttribute : theAllAttributes) {
-
-				String theText = theAttribute.getName();
-				theText += " : ";
-				if (domainDisplayMode) {
-					theText += theAttribute.getDomain().getName();
-				} else {
-					theText += theAttribute.getDomain().getDatatype();
-				}
-
-				if (theAttribute.isForeignKey()) {
-					theText += " (FK)";
-				}
-
-				theLength = theMetrics.stringWidth(theText);
-				if (theLength + theXTextOffset > theMaxX) {
-					theMaxX = theLength + theXTextOffset;
-				}
-
-				theYOffset += theMetrics.getHeight();
-			}
-
-			theYOffset += 8;
-			theMaxX += 8;
-
-			if (theYOffset > theMaxY) {
-				theMaxY = theYOffset;
-			}
-
-			return new Dimension(theMaxX, theMaxY);
-
-		}
-
-		@Override
-		public Component getRendererComponent(JGraph aGraph, CellView aView,
-				boolean aSelected, boolean aHasFocus, boolean aPreview) {
-
-			TableCellView theView = (TableCellView) aView;
-			table = (Table) ((TableCell) theView.getCell()).getUserObject();
-			selected = aSelected;
-			domainDisplayMode = ((ERDesignerGraph) aGraph)
-					.isDomainDisplayMode();
-
-			return this;
-		}
-	}
-
-	@Override
-	public GraphCellEditor getEditor() {
-		return new CellEditorFactory();
-	}
+                    if (theAttribute.isForeignKey()) {
+                        theText += " (FK)";
+                    }
+
+                    aGraphics.drawString(theText, theTextXOffset, theYOffset + theMetrics.getAscent());
+                    key.paintIcon(this, aGraphics, 5, theYOffset + 4);
+                    theYOffset += theMetrics.getHeight();
+                }
+            }
+
+            // Only do the following if there are any not primary key attributes
+            if (theAllAttributes.size() > 0) {
+
+                // This line is only neccesary in case that there are PK
+                // attributes
+                if (hasPrimaryKey) {
+
+                    // Draw the border line
+                    aGraphics.setColor(Color.black);
+                    aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
+                }
+
+                // Draw the attributes
+                for (Attribute theAttribute : theAllAttributes) {
+
+                    boolean isFK = theAttribute.isForeignKey();
+
+                    String theText = theAttribute.getName();
+                    theText += " : ";
+                    if (domainDisplayMode) {
+                        theText += theAttribute.getDomain().getName();
+                    } else {
+                        theText += theAttribute.getDomain().getDatatype();
+                    }
+
+                    if (isFK) {
+                        theText += " (FK)";
+                    }
+
+                    aGraphics.setColor(isFK ? Color.red : Color.black);
+
+                    aGraphics.drawString(theText, theTextXOffset, theYOffset + theMetrics.getAscent());
+                    theYOffset += theMetrics.getHeight();
+                }
+            }
+
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            int theMaxX = 150;
+            int theMaxY = 8;
+
+            FontMetrics theMetrics = this.getFontMetrics(this.getFont());
+
+            int theYOffset = theMetrics.getHeight();
+            int theXTextOffset = 30;
+
+            int theLength = theMetrics.stringWidth(table.getName());
+            if (theLength > theMaxX) {
+                theMaxX = theLength + 5;
+            }
+
+            List<Attribute> theAllAttributes = new Vector<Attribute>();
+            theAllAttributes.addAll(table.getAttributes());
+
+            for (Attribute theAttribute : table.getAttributes()) {
+                if (theAttribute.isPrimaryKey()) {
+
+                    theAllAttributes.remove(theAttribute);
+
+                    String theText = theAttribute.getName();
+                    theText += " : ";
+                    if (domainDisplayMode) {
+                        theText += theAttribute.getDomain().getName();
+                    } else {
+                        theText += theAttribute.getDomain().getDatatype();
+                    }
+
+                    if (theAttribute.isForeignKey()) {
+                        theText += " (FK)";
+                    }
+
+                    theLength = theMetrics.stringWidth(theText);
+                    if (theLength + theXTextOffset > theMaxX) {
+                        theMaxX = theLength + theXTextOffset;
+                    }
+
+                    theYOffset += theMetrics.getHeight();
+                }
+            }
+
+            for (Attribute theAttribute : theAllAttributes) {
+
+                String theText = theAttribute.getName();
+                theText += " : ";
+                if (domainDisplayMode) {
+                    theText += theAttribute.getDomain().getName();
+                } else {
+                    theText += theAttribute.getDomain().getDatatype();
+                }
+
+                if (theAttribute.isForeignKey()) {
+                    theText += " (FK)";
+                }
+
+                theLength = theMetrics.stringWidth(theText);
+                if (theLength + theXTextOffset > theMaxX) {
+                    theMaxX = theLength + theXTextOffset;
+                }
+
+                theYOffset += theMetrics.getHeight();
+            }
+
+            theYOffset += 8;
+            theMaxX += 8;
+
+            if (theYOffset > theMaxY) {
+                theMaxY = theYOffset;
+            }
+
+            return new Dimension(theMaxX, theMaxY);
+
+        }
+
+        @Override
+        public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
+                boolean aPreview) {
+
+            TableCellView theView = (TableCellView) aView;
+            table = (Table) ((TableCell) theView.getCell()).getUserObject();
+            selected = aSelected;
+            domainDisplayMode = ((ERDesignerGraph) aGraph).isDomainDisplayMode();
+
+            return this;
+        }
+    }
+
+    @Override
+    public GraphCellEditor getEditor() {
+        return new CellEditorFactory();
+    }
 }

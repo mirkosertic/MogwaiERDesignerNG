@@ -19,76 +19,76 @@ package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-11 18:40:38 $
+ * @version $Date: 2008-01-14 20:01:05 $
  */
 public class ReverseEngineeringOptions {
 
-	private DefaultValueNamingEnum defaultValueNaming;
+    private DefaultValueNamingEnum defaultValueNaming;
 
-	private DomainNamingEnum domainNaming;
+    private DomainNamingEnum domainNaming;
 
-	private TableNamingEnum tableNaming;
+    private TableNamingEnum tableNaming;
 
-	private Object[] schemaList;
+    private Object[] schemaList;
 
-	/**
-	 * @return the defaultValueNaming
-	 */
-	public DefaultValueNamingEnum getDefaultValueNaming() {
-		return defaultValueNaming;
-	}
+    /**
+     * @return the defaultValueNaming
+     */
+    public DefaultValueNamingEnum getDefaultValueNaming() {
+        return defaultValueNaming;
+    }
 
-	/**
-	 * @param defaultValueNaming
-	 *            the defaultValueNaming to set
-	 */
-	public void setDefaultValueNaming(DefaultValueNamingEnum defaultValueNaming) {
-		this.defaultValueNaming = defaultValueNaming;
-	}
+    /**
+     * @param defaultValueNaming
+     *            the defaultValueNaming to set
+     */
+    public void setDefaultValueNaming(DefaultValueNamingEnum defaultValueNaming) {
+        this.defaultValueNaming = defaultValueNaming;
+    }
 
-	/**
-	 * @return the domainNaming
-	 */
-	public DomainNamingEnum getDomainNaming() {
-		return domainNaming;
-	}
+    /**
+     * @return the domainNaming
+     */
+    public DomainNamingEnum getDomainNaming() {
+        return domainNaming;
+    }
 
-	/**
-	 * @param domainNaming
-	 *            the domainNaming to set
-	 */
-	public void setDomainNaming(DomainNamingEnum domainNaming) {
-		this.domainNaming = domainNaming;
-	}
+    /**
+     * @param domainNaming
+     *            the domainNaming to set
+     */
+    public void setDomainNaming(DomainNamingEnum domainNaming) {
+        this.domainNaming = domainNaming;
+    }
 
-	/**
-	 * @return the schemaList
-	 */
-	public Object[] getSchemaList() {
-		return schemaList;
-	}
+    /**
+     * @return the schemaList
+     */
+    public Object[] getSchemaList() {
+        return schemaList;
+    }
 
-	/**
-	 * @param schemaList
-	 *            the schemaList to set
-	 */
-	public void setSchemaList(Object[] schemaList) {
-		this.schemaList = schemaList;
-	}
+    /**
+     * @param schemaList
+     *            the schemaList to set
+     */
+    public void setSchemaList(Object[] schemaList) {
+        this.schemaList = schemaList;
+    }
 
-	/**
-	 * @return the tableNaming
-	 */
-	public TableNamingEnum getTableNaming() {
-		return tableNaming;
-	}
+    /**
+     * @return the tableNaming
+     */
+    public TableNamingEnum getTableNaming() {
+        return tableNaming;
+    }
 
-	/**
-	 * @param tableNaming
-	 *            the tableNaming to set
-	 */
-	public void setTableNaming(TableNamingEnum tableNaming) {
-		this.tableNaming = tableNaming;
-	}
+    /**
+     * @param tableNaming
+     *            the tableNaming to set
+     */
+    public void setTableNaming(TableNamingEnum tableNaming) {
+        this.tableNaming = tableNaming;
+    }
 
 }

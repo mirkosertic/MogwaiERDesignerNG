@@ -31,87 +31,77 @@ import de.erdesignerng.model.Relation;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-14 20:01:11 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
-	public RelationEdge(Relation aRelation, TableCell aImporting,
-			TableCell aExporting) {
+    public RelationEdge(Relation aRelation, TableCell aImporting, TableCell aExporting) {
 
-		super(aRelation);
+        super(aRelation);
 
-		GraphConstants.setLineStyle(getAttributes(),
-				GraphConstants.STYLE_ORTHOGONAL);
-		GraphConstants.setConnectable(getAttributes(), false);
-		GraphConstants.setDisconnectable(getAttributes(), false);
-		GraphConstants.setLineBegin(getAttributes(),
-				GraphConstants.ARROW_DIAMOND);
-		GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
+        GraphConstants.setLineStyle(getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
+        GraphConstants.setConnectable(getAttributes(), false);
+        GraphConstants.setDisconnectable(getAttributes(), false);
+        GraphConstants.setLineBegin(getAttributes(), GraphConstants.ARROW_DIAMOND);
+        GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
 
-		setSource(aImporting.getChildAt(0));
-		setTarget(aExporting.getChildAt(0));
-	}
+        setSource(aImporting.getChildAt(0));
+        setTarget(aExporting.getChildAt(0));
+    }
 
-	public void transferAttributesToProperties(Map aAttributes) {
+    public void transferAttributesToProperties(Map aAttributes) {
 
-		Relation theRelation = (Relation) getUserObject();
+        Relation theRelation = (Relation) getUserObject();
 
-		Point2D theOffset = GraphConstants.getOffset(aAttributes);
-		if (theOffset != null) {
+        Point2D theOffset = GraphConstants.getOffset(aAttributes);
+        if (theOffset != null) {
 
-			String theLocation = ((int) theOffset.getX()) + ":"
-					+ ((int) theOffset.getY());
+            String theLocation = ((int) theOffset.getX()) + ":" + ((int) theOffset.getY());
 
-			theRelation.getProperties().setProperty(
-					Relation.PROPERTY_TEXT_OFFSET, theLocation);
+            theRelation.getProperties().setProperty(Relation.PROPERTY_TEXT_OFFSET, theLocation);
 
-		}
+        }
 
-		List thePoints = GraphConstants.getPoints(aAttributes);
+        List thePoints = GraphConstants.getPoints(aAttributes);
 
-		if (thePoints != null) {
-			StringBuffer theBuffer = new StringBuffer();
-			for (Object thePoint : thePoints) {
-				Point2D theDoublePoint = (Point2D) thePoint;
+        if (thePoints != null) {
+            StringBuffer theBuffer = new StringBuffer();
+            for (Object thePoint : thePoints) {
+                Point2D theDoublePoint = (Point2D) thePoint;
 
-				if (theBuffer.length() > 0) {
-					theBuffer.append(",");
-				}
+                if (theBuffer.length() > 0) {
+                    theBuffer.append(",");
+                }
 
-				theBuffer.append(((int) theDoublePoint.getX()) + ":"
-						+ ((int) theDoublePoint.getY()));
-			}
+                theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
+            }
 
-			String thePointBuffer = theBuffer.toString();
-			theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS,
-					thePointBuffer);
-		}
+            String thePointBuffer = theBuffer.toString();
+            theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS, thePointBuffer);
+        }
 
-	}
+    }
 
-	public void transferPropertiesToAttributes(Relation aObject) {
+    public void transferPropertiesToAttributes(Relation aObject) {
 
-		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
-				.getProperties().getProperty(Relation.PROPERTY_TEXT_OFFSET));
-		if (thePoint != null) {
-			GraphConstants.setOffset(getAttributes(), thePoint);
-		}
+        Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
+                Relation.PROPERTY_TEXT_OFFSET));
+        if (thePoint != null) {
+            GraphConstants.setOffset(getAttributes(), thePoint);
+        }
 
-		String thePoints = aObject.getProperties().getProperty(
-				Relation.PROPERTY_POINTS);
-		if (thePoints != null) {
-			List<Point2D> thePointList = new Vector<Point2D>();
+        String thePoints = aObject.getProperties().getProperty(Relation.PROPERTY_POINTS);
+        if (thePoints != null) {
+            List<Point2D> thePointList = new Vector<Point2D>();
 
-			for (StringTokenizer theSt = new StringTokenizer(thePoints, ","); theSt
-					.hasMoreTokens();) {
-				thePoint = TransferHelper.createPoint2DFromString(theSt
-						.nextToken());
-				thePointList.add(thePoint);
-			}
+            for (StringTokenizer theSt = new StringTokenizer(thePoints, ","); theSt.hasMoreTokens();) {
+                thePoint = TransferHelper.createPoint2DFromString(theSt.nextToken());
+                thePointList.add(thePoint);
+            }
 
-			GraphConstants.setPoints(getAttributes(), thePointList);
-		}
+            GraphConstants.setPoints(getAttributes(), thePointList);
+        }
 
-	}
+    }
 
 }

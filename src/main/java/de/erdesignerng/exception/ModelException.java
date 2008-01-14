@@ -19,14 +19,14 @@ package de.erdesignerng.exception;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:27 $
+ * @version $Date: 2008-01-14 20:01:03 $
  */
 public abstract class ModelException extends Exception {
 
-	public ModelException() {
-	}
+    public ModelException() {
+    }
 
-	public ModelException(String aMessage) {
-		super(aMessage);
-	}
+    public ModelException(String aMessage) {
+        super(aMessage);
+    }
 }
