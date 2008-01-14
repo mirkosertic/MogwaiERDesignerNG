@@ -23,36 +23,36 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:25 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
 public class OracleDialect extends SQL92Dialect {
 
-	public OracleDialect() {
-		setSpacesAllowedInObjectNames(false);
-		setCaseSensitive(false);
-		setMaxObjectNameLength(28);
-		setNullablePrimaryKeyAllowed(false);
-		setCastType(NameCastType.UPPERCASE);
-	}
+    public OracleDialect() {
+        setSpacesAllowedInObjectNames(false);
+        setCaseSensitive(false);
+        setMaxObjectNameLength(28);
+        setNullablePrimaryKeyAllowed(false);
+        setCastType(NameCastType.UPPERCASE);
+    }
 
-	@Override
-	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return new OracleReverseEngineeringStrategy(this);
-	}
+    @Override
+    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+        return new OracleReverseEngineeringStrategy(this);
+    }
 
-	@Override
-	public String getUniqueName() {
-		return "OracleDialect";
-	}
+    @Override
+    public String getUniqueName() {
+        return "OracleDialect";
+    }
 
-	@Override
-	public String getDriverClassName() {
-		return "oracle.jdbc.driver.OracleDriver";
-	}
+    @Override
+    public String getDriverClassName() {
+        return "oracle.jdbc.driver.OracleDriver";
+    }
 
-	@Override
-	public String getDriverURLTemplate() {
-		return "jdbc:oracle:thin:@//<host>:<port>/<db>";
-	}
+    @Override
+    public String getDriverURLTemplate() {
+        return "jdbc:oracle:thin:@//<host>:<port>/<db>";
+    }
 
 }

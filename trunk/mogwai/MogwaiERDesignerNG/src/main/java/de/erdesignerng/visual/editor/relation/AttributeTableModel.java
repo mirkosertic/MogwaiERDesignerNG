@@ -26,64 +26,65 @@ import de.erdesignerng.model.Attribute;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:20 $
+ * @version $Date: 2008-01-14 20:01:16 $
  */
 public class AttributeTableModel implements TableModel {
 
-	private List<Attribute> primaryKey;
+    private List<Attribute> primaryKey;
 
-	private Attribute[] assignedAttributes;
+    private Attribute[] assignedAttributes;
 
-	private String primaryKeyTableName;
+    private String primaryKeyTableName;
 
-	private String assignedTableName;
+    private String assignedTableName;
 
-	public AttributeTableModel(String aPrimaryEntityName,
-			String aSecondaryEntityName, List<Attribute> aPrimaryKey,
-			Attribute[] aSecondaryKey) {
-		primaryKey = aPrimaryKey;
-		assignedAttributes = aSecondaryKey;
-		primaryKeyTableName = aPrimaryEntityName;
-		assignedTableName = aSecondaryEntityName;
-	}
+    public AttributeTableModel(String aPrimaryEntityName, String aSecondaryEntityName, List<Attribute> aPrimaryKey,
+            Attribute[] aSecondaryKey) {
+        primaryKey = aPrimaryKey;
+        assignedAttributes = aSecondaryKey;
+        primaryKeyTableName = aPrimaryEntityName;
+        assignedTableName = aSecondaryEntityName;
+    }
 
-	public Class getColumnClass(int aColumn) {
-		return Object.class;
-	}
+    public Class getColumnClass(int aColumn) {
+        return Object.class;
+    }
 
-	public int getColumnCount() {
-		return 2;
-	}
+    public int getColumnCount() {
+        return 2;
+    }
 
-	public String getColumnName(int aColumn) {
-		if (aColumn == 0)
-			return primaryKeyTableName;
-		else
-			return assignedTableName;
-	}
+    public String getColumnName(int aColumn) {
+        if (aColumn == 0) {
+            return primaryKeyTableName;
+        } else {
+            return assignedTableName;
+        }
+    }
 
-	public int getRowCount() {
-		return primaryKey.size();
-	}
+    public int getRowCount() {
+        return primaryKey.size();
+    }
 
-	public Object getValueAt(int aRow, int aColumn) {
-		if (aColumn == 1)
-			return assignedAttributes[aRow];
-		else
-			return primaryKey.get(aRow);
-	}
+    public Object getValueAt(int aRow, int aColumn) {
+        if (aColumn == 1) {
+            return assignedAttributes[aRow];
+        } else {
+            return primaryKey.get(aRow);
+        }
+    }
 
-	public boolean isCellEditable(int aRow, int aColumn) {
-		return aColumn != 0;
-	}
+    public boolean isCellEditable(int aRow, int aColumn) {
+        return aColumn != 0;
+    }
 
-	public void setValueAt(Object aValue, int aRow, int aColumn) {
-		assignedAttributes[aRow] = (Attribute) aValue;
-	}
+    public void setValueAt(Object aValue, int aRow, int aColumn) {
+        assignedAttributes[aRow] = (Attribute) aValue;
+    }
 
-	public void addTableModelListener(TableModelListener l) {
-	}
+    public void addTableModelListener(TableModelListener l) {
+    }
 
-	public void removeTableModelListener(TableModelListener l) {
-	}
+    public void removeTableModelListener(TableModelListener l) {
+    }
 };

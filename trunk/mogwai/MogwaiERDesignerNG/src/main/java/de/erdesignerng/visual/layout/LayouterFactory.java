@@ -19,19 +19,19 @@ package de.erdesignerng.visual.layout;
 
 public final class LayouterFactory {
 
-	private static LayouterFactory me;
+    private static LayouterFactory me;
 
-	private LayouterFactory() {
-	}
+    private LayouterFactory() {
+    }
 
-	public static LayouterFactory getInstance() {
-		if (me == null) {
-			me = new LayouterFactory();
-		}
-		return me;
-	}
+    public static LayouterFactory getInstance() {
+        if (me == null) {
+            me = new LayouterFactory();
+        }
+        return me;
+    }
 
-	public Layouter createGraphvizLayouter() {
-		return new GraphvizLayout();
-	}
+    public Layouter createGraphvizLayouter() {
+        return new GraphvizLayout();
+    }
 }

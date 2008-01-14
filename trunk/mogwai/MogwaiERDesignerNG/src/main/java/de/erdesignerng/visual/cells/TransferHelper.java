@@ -22,22 +22,22 @@ import java.awt.geom.Point2D;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:18 $
+ * @version $Date: 2008-01-14 20:01:11 $
  */
 public final class TransferHelper {
 
-	private TransferHelper() {
-	}
+    private TransferHelper() {
+    }
 
-	public static Point2D createPoint2DFromString(String aValue) {
-		if (aValue == null) {
-			return null;
-		}
+    public static Point2D createPoint2DFromString(String aValue) {
+        if (aValue == null) {
+            return null;
+        }
 
-		int theP = aValue.indexOf(":");
-		int theX = Integer.parseInt(aValue.substring(0, theP));
-		int theY = Integer.parseInt(aValue.substring(theP + 1));
+        int theP = aValue.indexOf(":");
+        int theX = Integer.parseInt(aValue.substring(0, theP));
+        int theY = Integer.parseInt(aValue.substring(theP + 1));
 
-		return new Point2D.Double(theX, theY);
-	}
+        return new Point2D.Double(theX, theY);
+    }
 }

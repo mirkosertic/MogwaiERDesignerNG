@@ -20,8 +20,8 @@ package de.erdesignerng.visual;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:47 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public enum ExportType {
-	ONE_PER_FILE(), ALL_IN_ONE();
+    ONE_PER_FILE(), ALL_IN_ONE();
 }

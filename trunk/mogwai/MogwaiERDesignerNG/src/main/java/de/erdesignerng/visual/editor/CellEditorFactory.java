@@ -35,56 +35,52 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:12 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
-	private Object editingValue;
+    private Object editingValue;
 
-	protected BaseEditor createEditDialogForValue(JComponent aParent,
-			Object aValue) {
+    protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
 
-		if (aValue instanceof TableCell) {
-			TableCell theCell = (TableCell) aValue;
+        if (aValue instanceof TableCell) {
+            TableCell theCell = (TableCell) aValue;
 
-			Table theTable = (Table) theCell.getUserObject();
-			TableEditor theEditor = new TableEditor(theTable.getOwner(),
-					aParent);
-			theEditor.initializeFor(theTable);
-			return theEditor;
-		}
+            Table theTable = (Table) theCell.getUserObject();
+            TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
+            theEditor.initializeFor(theTable);
+            return theEditor;
+        }
 
-		if (aValue instanceof RelationEdge) {
-			RelationEdge theCell = (RelationEdge) aValue;
+        if (aValue instanceof RelationEdge) {
+            RelationEdge theCell = (RelationEdge) aValue;
 
-			Relation theRelation = (Relation) theCell.getUserObject();
+            Relation theRelation = (Relation) theCell.getUserObject();
 
-			RelationEditor theEditor = new RelationEditor(theRelation
-					.getOwner(), aParent);
-			theEditor.initializeFor(theRelation);
+            RelationEditor theEditor = new RelationEditor(theRelation.getOwner(), aParent);
+            theEditor.initializeFor(theRelation);
 
-			return theEditor;
-		}
+            return theEditor;
+        }
 
-		throw new IllegalArgumentException();
-	}
+        throw new IllegalArgumentException();
+    }
 
-	@Override
-	public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue,
-			boolean arg2) {
+    @Override
+    public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
 
-		editingValue = aValue;
+        editingValue = aValue;
 
-		BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
+        BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
 
-		theEditor.validate();
+        theEditor.validate();
 
-		editingValue = aValue;
-		return theEditor;
-	}
+        editingValue = aValue;
+        return theEditor;
+    }
 
-	@Override
-	public boolean isCellEditable(EventObject aEvent) {
-		return true;
-	}
+    @Override
+    public boolean isCellEditable(EventObject aEvent) {
+        return true;
+    }
 }

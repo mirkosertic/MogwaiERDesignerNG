@@ -22,15 +22,14 @@ import javax.swing.ImageIcon;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public final class IconFactory {
 
-	private IconFactory() {
-	}
+    private IconFactory() {
+    }
 
-	public static ImageIcon getKeyIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource(
-				"de/erdesignerng/icons/key.gif"));
-	}
+    public static ImageIcon getKeyIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/key.gif"));
+    }
 }

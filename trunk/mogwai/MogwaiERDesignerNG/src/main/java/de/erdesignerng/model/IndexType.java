@@ -20,28 +20,28 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:15 $
+ * @version $Date: 2008-01-14 20:01:09 $
  */
 public enum IndexType {
-	UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");
+    UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");
 
-	private String type;
+    private String type;
 
-	private IndexType(String aType) {
-		type = aType;
-	}
+    private IndexType(String aType) {
+        type = aType;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public static IndexType fromType(String aType) {
-		if (UNIQUE.getType().equals(aType)) {
-			return UNIQUE;
-		}
-		if (NONUNIQUE.getType().equals(aType)) {
-			return NONUNIQUE;
-		}
-		throw new IllegalArgumentException("Invalid type " + aType);
-	}
+    public static IndexType fromType(String aType) {
+        if (UNIQUE.getType().equals(aType)) {
+            return UNIQUE;
+        }
+        if (NONUNIQUE.getType().equals(aType)) {
+            return NONUNIQUE;
+        }
+        throw new IllegalArgumentException("Invalid type " + aType);
+    }
 }

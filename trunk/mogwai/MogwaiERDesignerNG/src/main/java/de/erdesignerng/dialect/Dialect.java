@@ -32,196 +32,190 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:00 $
+ * @version $Date: 2008-01-14 20:01:04 $
  */
 public abstract class Dialect {
 
-	private boolean caseSensitive;
+    private boolean caseSensitive;
 
-	private boolean spacesAllowedInObjectNames;
+    private boolean spacesAllowedInObjectNames;
 
-	private int maxObjectNameLength;
+    private int maxObjectNameLength;
 
-	private boolean nullablePrimaryKeyAllowed;
+    private boolean nullablePrimaryKeyAllowed;
 
-	private NameCastType castType;
+    private NameCastType castType;
 
-	/**
-	 * @return the caseSensitive
-	 */
-	public boolean isCaseSensitive() {
-		return caseSensitive;
-	}
+    /**
+     * @return the caseSensitive
+     */
+    public boolean isCaseSensitive() {
+        return caseSensitive;
+    }
 
-	/**
-	 * @param aCaseSensitive
-	 *            the caseSensitive to set
-	 */
-	public void setCaseSensitive(boolean aCaseSensitive) {
-		caseSensitive = aCaseSensitive;
-	}
+    /**
+     * @param aCaseSensitive
+     *            the caseSensitive to set
+     */
+    public void setCaseSensitive(boolean aCaseSensitive) {
+        caseSensitive = aCaseSensitive;
+    }
 
-	/**
-	 * @return the maxObjectNameLength
-	 */
-	public int getMaxObjectNameLength() {
-		return maxObjectNameLength;
-	}
+    /**
+     * @return the maxObjectNameLength
+     */
+    public int getMaxObjectNameLength() {
+        return maxObjectNameLength;
+    }
 
-	/**
-	 * @param aMaxObjectNameLength
-	 *            the maxObjectNameLength to set
-	 */
-	public void setMaxObjectNameLength(int aMaxObjectNameLength) {
-		maxObjectNameLength = aMaxObjectNameLength;
-	}
+    /**
+     * @param aMaxObjectNameLength
+     *            the maxObjectNameLength to set
+     */
+    public void setMaxObjectNameLength(int aMaxObjectNameLength) {
+        maxObjectNameLength = aMaxObjectNameLength;
+    }
 
-	/**
-	 * @return the spacesAllowedInObjectNames
-	 */
-	public boolean isSpacesAllowedInObjectNames() {
-		return spacesAllowedInObjectNames;
-	}
+    /**
+     * @return the spacesAllowedInObjectNames
+     */
+    public boolean isSpacesAllowedInObjectNames() {
+        return spacesAllowedInObjectNames;
+    }
 
-	/**
-	 * @param aSpacesAllowedInObjectNames
-	 *            the spacesAllowedInObjectNames to set
-	 */
-	public void setSpacesAllowedInObjectNames(
-			boolean aSpacesAllowedInObjectNames) {
-		spacesAllowedInObjectNames = aSpacesAllowedInObjectNames;
-	}
+    /**
+     * @param aSpacesAllowedInObjectNames
+     *            the spacesAllowedInObjectNames to set
+     */
+    public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
+        spacesAllowedInObjectNames = aSpacesAllowedInObjectNames;
+    }
 
-	/**
-	 * Check the name of an element and return the converted name.
-	 * 
-	 * @param aName
-	 *            the name
-	 * @return the converted name
-	 * @throws ElementInvalidNameException
-	 *             will be thrown if the name is invalid
-	 */
-	public String checkName(String aName) throws ElementInvalidNameException {
-		if ((aName == null) || ("".equals(aName))) {
-			throw new ElementInvalidNameException();
-		}
+    /**
+     * Check the name of an element and return the converted name.
+     * 
+     * @param aName
+     *            the name
+     * @return the converted name
+     * @throws ElementInvalidNameException
+     *             will be thrown if the name is invalid
+     */
+    public String checkName(String aName) throws ElementInvalidNameException {
+        if ((aName == null) || ("".equals(aName))) {
+            throw new ElementInvalidNameException();
+        }
 
-		if (!spacesAllowedInObjectNames) {
-			if (aName.indexOf(' ') > 0) {
-				throw new ElementInvalidNameException();
-			}
-		}
+        if (!spacesAllowedInObjectNames) {
+            if (aName.indexOf(' ') > 0) {
+                throw new ElementInvalidNameException();
+            }
+        }
 
-		if (aName.length() > maxObjectNameLength) {
-			throw new ElementInvalidNameException();
-		}
+        if (aName.length() > maxObjectNameLength) {
+            throw new ElementInvalidNameException();
+        }
 
-		return castType.cast(aName);
-	}
+        return castType.cast(aName);
+    }
 
-	/**
-	 * @return the nullablePrimaryKeyAllowed
-	 */
-	public boolean isNullablePrimaryKeyAllowed() {
-		return nullablePrimaryKeyAllowed;
-	}
+    /**
+     * @return the nullablePrimaryKeyAllowed
+     */
+    public boolean isNullablePrimaryKeyAllowed() {
+        return nullablePrimaryKeyAllowed;
+    }
 
-	/**
-	 * @param aNullablePrimaryKeyAllowed
-	 *            the nullablePrimaryKeyAllowed to set
-	 */
-	public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
-		nullablePrimaryKeyAllowed = aNullablePrimaryKeyAllowed;
-	}
+    /**
+     * @param aNullablePrimaryKeyAllowed
+     *            the nullablePrimaryKeyAllowed to set
+     */
+    public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
+        nullablePrimaryKeyAllowed = aNullablePrimaryKeyAllowed;
+    }
 
-	/**
-	 * @return the castType
-	 */
-	public NameCastType getCastType() {
-		return castType;
-	}
+    /**
+     * @return the castType
+     */
+    public NameCastType getCastType() {
+        return castType;
+    }
 
-	/**
-	 * @param aCastType
-	 *            the castType to set
-	 */
-	public void setCastType(NameCastType aCastType) {
-		castType = aCastType;
-	}
+    /**
+     * @param aCastType
+     *            the castType to set
+     */
+    public void setCastType(NameCastType aCastType) {
+        castType = aCastType;
+    }
 
-	/**
-	 * Get the reverse engineering strategy.
-	 * 
-	 * @return
-	 */
-	public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
+    /**
+     * Get the reverse engineering strategy.
+     * 
+     * @return
+     */
+    public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
 
-	public abstract List<String> createAlterAttributeSQL(Table aTable,
-			String attributeName, Domain aDomain, boolean aNullable);
+    public abstract List<String> createAlterAttributeSQL(Table aTable, String attributeName, Domain aDomain,
+            boolean aNullable);
 
-	public abstract List<String> createRenameAttributeSQL(Table aTable,
-			Attribute aAttribute, String aNewName);
+    public abstract List<String> createRenameAttributeSQL(Table aTable, Attribute aAttribute, String aNewName);
 
-	public abstract List<String> createRenameRelationSQL(Relation aRelation,
-			String aNewName);
+    public abstract List<String> createRenameRelationSQL(Relation aRelation, String aNewName);
 
-	public abstract List<String> createRenameTableSQL(Table aTable,
-			String aNewName);
+    public abstract List<String> createRenameTableSQL(Table aTable, String aNewName);
 
-	public abstract List<String> createRenameIndexSQL(Table aTable,
-			Index index, String aNewName);
+    public abstract List<String> createRenameIndexSQL(Table aTable, Index index, String aNewName);
 
-	public abstract List<String> createDropAttributeSQL(Attribute aAttribute);
+    public abstract List<String> createDropAttributeSQL(Attribute aAttribute);
 
-	public abstract List<String> createDropRelationSQL(Relation aRelation);
+    public abstract List<String> createDropRelationSQL(Relation aRelation);
 
-	public abstract List<String> createDropIndexSQL(Index aIndex);
+    public abstract List<String> createDropIndexSQL(Index aIndex);
 
-	public abstract List<String> createDropTableSQL(Table aTable);
+    public abstract List<String> createDropTableSQL(Table aTable);
 
-	public abstract List<String> createAddTableSQL(Table aTable);
+    public abstract List<String> createAddTableSQL(Table aTable);
 
-	public abstract List<String> createAddAttributeSQL(Attribute aAttribute);
+    public abstract List<String> createAddAttributeSQL(Attribute aAttribute);
 
-	public abstract List<String> createAddIndexSQL(Index aAttribute);
+    public abstract List<String> createAddIndexSQL(Index aAttribute);
 
-	public abstract List<String> createAddRelationSQL(Relation aRelation);
+    public abstract List<String> createAddRelationSQL(Relation aRelation);
 
-	public abstract String getUniqueName();
+    public abstract String getUniqueName();
 
-	@Override
-	public String toString() {
-		return getUniqueName();
-	}
+    @Override
+    public String toString() {
+        return getUniqueName();
+    }
 
-	public abstract String getDriverClassName();
+    public abstract String getDriverClassName();
 
-	public abstract String getDriverURLTemplate();
+    public abstract String getDriverURLTemplate();
 
-	/**
-	 * Create a connection to a database.
-	 * 
-	 * @param aClassLoader
-	 * @param aDriver
-	 * @param aUrl
-	 * @param aUser
-	 * @param aPassword
-	 * @return
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws SQLException
-	 */
-	public Connection createConnection(ClassLoader aClassLoader,
-			String aDriver, String aUrl, String aUser, String aPassword)
-			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, SQLException {
-		Class theDriverClass = aClassLoader.loadClass(aDriver);
-		Driver theDriver = (Driver) theDriverClass.newInstance();
+    /**
+     * Create a connection to a database.
+     * 
+     * @param aClassLoader
+     * @param aDriver
+     * @param aUrl
+     * @param aUser
+     * @param aPassword
+     * @return
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException
+     */
+    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
+            String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+            SQLException {
+        Class theDriverClass = aClassLoader.loadClass(aDriver);
+        Driver theDriver = (Driver) theDriverClass.newInstance();
 
-		Properties theProperties = new Properties();
-		theProperties.put("user", aUser);
-		theProperties.put("password", aPassword);
-		return theDriver.connect(aUrl, theProperties);
-	}
+        Properties theProperties = new Properties();
+        theProperties.put("user", aUser);
+        theProperties.put("password", aPassword);
+        return theDriver.connect(aUrl, theProperties);
+    }
 }

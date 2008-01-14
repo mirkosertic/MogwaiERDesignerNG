@@ -19,74 +19,74 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:14 $
+ * @version $Date: 2008-01-14 20:01:08 $
  */
 public abstract class ModelItem {
 
-	public static final String PROPERTY_LOCATION = "LOCATION";
+    public static final String PROPERTY_LOCATION = "LOCATION";
 
-	public static final String PROPERTY_REMARKS = "REMARKS";
+    public static final String PROPERTY_REMARKS = "REMARKS";
 
-	private String systemId = ModelUtilities.createSystemIdFor(this);
+    private String systemId = ModelUtilities.createSystemIdFor(this);
 
-	private String name;
+    private String name;
 
-	private String comment;
+    private String comment;
 
-	private ModelProperties properties = new ModelProperties();
+    private ModelProperties properties = new ModelProperties();
 
-	/**
-	 * Get the name.
-	 * 
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * Get the name.
+     * 
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * Set the name.
-	 * 
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String aName) {
-		name = aName;
-	}
+    /**
+     * Set the name.
+     * 
+     * @param aName
+     *            the name to set
+     */
+    public void setName(String aName) {
+        name = aName;
+    }
 
-	/**
-	 * @return the systemId
-	 */
-	public String getSystemId() {
-		return systemId;
-	}
+    /**
+     * @return the systemId
+     */
+    public String getSystemId() {
+        return systemId;
+    }
 
-	/**
-	 * @param systemId
-	 *            the systemId to set
-	 */
-	public void setSystemId(String aSystemId) {
-		systemId = aSystemId;
-	}
+    /**
+     * @param aSystemId
+     *            the systemId to set
+     */
+    public void setSystemId(String aSystemId) {
+        systemId = aSystemId;
+    }
 
-	public ModelProperties getProperties() {
-		return properties;
-	}
+    public ModelProperties getProperties() {
+        return properties;
+    }
 
-	public void setProperties(ModelProperties properties) {
-		this.properties = properties;
-	}
+    public void setProperties(ModelProperties properties) {
+        this.properties = properties;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

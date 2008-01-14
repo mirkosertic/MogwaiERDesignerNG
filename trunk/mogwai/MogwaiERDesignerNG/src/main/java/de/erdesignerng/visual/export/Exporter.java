@@ -25,15 +25,13 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:00 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
 public interface Exporter {
 
-	String getFileExtension();
+    String getFileExtension();
 
-	void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream)
-			throws IOException;
+    void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException;
 
-	void exportToStream(Component aComponent, OutputStream aStream)
-			throws IOException;
+    void exportToStream(Component aComponent, OutputStream aStream) throws IOException;
 }

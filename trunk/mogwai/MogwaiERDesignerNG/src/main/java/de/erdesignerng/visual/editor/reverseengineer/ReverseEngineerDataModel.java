@@ -22,106 +22,106 @@ import java.util.List;
 
 public class ReverseEngineerDataModel {
 
-	private NameValuePair tableGenerator;
+    private NameValuePair tableGenerator;
 
-	private NameValuePair domainGenerator;
+    private NameValuePair domainGenerator;
 
-	private NameValuePair defaultValueGenerator;
+    private NameValuePair defaultValueGenerator;
 
-	private List tableOptions = new ArrayList();
+    private List tableOptions = new ArrayList();
 
-	private List domainOptions = new ArrayList();
+    private List domainOptions = new ArrayList();
 
-	private List defaultValueOptions = new ArrayList();
+    private List defaultValueOptions = new ArrayList();
 
-	/**
-	 * @return the defaultValueGenerator
-	 */
-	public NameValuePair getDefaultValueGenerator() {
-		return defaultValueGenerator;
-	}
+    /**
+     * @return the defaultValueGenerator
+     */
+    public NameValuePair getDefaultValueGenerator() {
+        return defaultValueGenerator;
+    }
 
-	/**
-	 * @param defaultValueGenerator
-	 *            the defaultValueGenerator to set
-	 */
-	public void setDefaultValueGenerator(NameValuePair defaultValueGenerator) {
-		this.defaultValueGenerator = defaultValueGenerator;
-	}
+    /**
+     * @param defaultValueGenerator
+     *            the defaultValueGenerator to set
+     */
+    public void setDefaultValueGenerator(NameValuePair defaultValueGenerator) {
+        this.defaultValueGenerator = defaultValueGenerator;
+    }
 
-	/**
-	 * @return the domainGenerator
-	 */
-	public NameValuePair getDomainGenerator() {
-		return domainGenerator;
-	}
+    /**
+     * @return the domainGenerator
+     */
+    public NameValuePair getDomainGenerator() {
+        return domainGenerator;
+    }
 
-	/**
-	 * @param domainGenerator
-	 *            the domainGenerator to set
-	 */
-	public void setDomainGenerator(NameValuePair domainGenerator) {
-		this.domainGenerator = domainGenerator;
-	}
+    /**
+     * @param domainGenerator
+     *            the domainGenerator to set
+     */
+    public void setDomainGenerator(NameValuePair domainGenerator) {
+        this.domainGenerator = domainGenerator;
+    }
 
-	/**
-	 * @return the tableGenerator
-	 */
-	public NameValuePair getTableGenerator() {
-		return tableGenerator;
-	}
+    /**
+     * @return the tableGenerator
+     */
+    public NameValuePair getTableGenerator() {
+        return tableGenerator;
+    }
 
-	/**
-	 * @param tableGenerator
-	 *            the tableGenerator to set
-	 */
-	public void setTableGenerator(NameValuePair tableGenerator) {
-		this.tableGenerator = tableGenerator;
-	}
+    /**
+     * @param tableGenerator
+     *            the tableGenerator to set
+     */
+    public void setTableGenerator(NameValuePair tableGenerator) {
+        this.tableGenerator = tableGenerator;
+    }
 
-	/**
-	 * @return the defaultValueOptions
-	 */
-	public List getDefaultValueOptions() {
-		return defaultValueOptions;
-	}
+    /**
+     * @return the defaultValueOptions
+     */
+    public List getDefaultValueOptions() {
+        return defaultValueOptions;
+    }
 
-	/**
-	 * @param defaultValueOptions
-	 *            the defaultValueOptions to set
-	 */
-	public void setDefaultValueOptions(List defaultValueOptions) {
-		this.defaultValueOptions = defaultValueOptions;
-	}
+    /**
+     * @param defaultValueOptions
+     *            the defaultValueOptions to set
+     */
+    public void setDefaultValueOptions(List defaultValueOptions) {
+        this.defaultValueOptions = defaultValueOptions;
+    }
 
-	/**
-	 * @return the domainOptions
-	 */
-	public List getDomainOptions() {
-		return domainOptions;
-	}
+    /**
+     * @return the domainOptions
+     */
+    public List getDomainOptions() {
+        return domainOptions;
+    }
 
-	/**
-	 * @param domainOptions
-	 *            the domainOptions to set
-	 */
-	public void setDomainOptions(List domainOptions) {
-		this.domainOptions = domainOptions;
-	}
+    /**
+     * @param domainOptions
+     *            the domainOptions to set
+     */
+    public void setDomainOptions(List domainOptions) {
+        this.domainOptions = domainOptions;
+    }
 
-	/**
-	 * @return the tableOptions
-	 */
-	public List getTableOptions() {
-		return tableOptions;
-	}
+    /**
+     * @return the tableOptions
+     */
+    public List getTableOptions() {
+        return tableOptions;
+    }
 
-	/**
-	 * @param tableOptions
-	 *            the tableOptions to set
-	 */
-	public void setTableOptions(List tableOptions) {
-		this.tableOptions = tableOptions;
-	}
+    /**
+     * @param tableOptions
+     *            the tableOptions to set
+     */
+    public void setTableOptions(List tableOptions) {
+        this.tableOptions = tableOptions;
+    }
 
 }

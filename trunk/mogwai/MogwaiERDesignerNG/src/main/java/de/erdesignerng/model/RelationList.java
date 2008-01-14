@@ -24,79 +24,80 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-08 19:40:25 $
+ * @version $Date: 2008-01-14 20:01:07 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
-	private static final long serialVersionUID = 330168987165235683L;
+    private static final long serialVersionUID = 330168987165235683L;
 
-	/**
-	 * Check if a table is used by any of the defined relations.
-	 * 
-	 * @param aTable
-	 *            the table
-	 * @return true it its used, else false
-	 */
-	public boolean isTableInUse(Table aTable) {
-		for (Relation theRelation : this) {
-			if (theRelation.getImportingTable().equals(aTable)) {
-				return true;
-			}
-			if (theRelation.getExportingTable().equals(aTable)) {
-				return true;
-			}
-		}
-		return false;
+    /**
+     * Check if a table is used by any of the defined relations.
+     * 
+     * @param aTable
+     *            the table
+     * @return true it its used, else false
+     */
+    public boolean isTableInUse(Table aTable) {
+        for (Relation theRelation : this) {
+            if (theRelation.getImportingTable().equals(aTable)) {
+                return true;
+            }
+            if (theRelation.getExportingTable().equals(aTable)) {
+                return true;
+            }
+        }
+        return false;
 
-	}
+    }
 
-	/**
-	 * Check if an attribute is used by any of the defined relations.
-	 * 
-	 * @param aAttribute
-	 *            the attribute
-	 * @return
-	 */
-	public boolean isAttributeInUse(Attribute aAttribute) {
-		for (Relation theRelation : this) {
-			Map theMap = theRelation.getMapping();
-			if (theMap.containsKey(aAttribute)) {
-				return true;
-			}
-			if (theMap.containsValue(aAttribute)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Check if an attribute is used by any of the defined relations.
+     * 
+     * @param aAttribute
+     *            the attribute
+     * @return true if its in use, else false
+     */
+    public boolean isAttributeInUse(Attribute aAttribute) {
+        for (Relation theRelation : this) {
+            Map theMap = theRelation.getMapping();
+            if (theMap.containsKey(aAttribute)) {
+                return true;
+            }
+            if (theMap.containsValue(aAttribute)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public boolean isForeignKeyAttribute(Attribute aAttribute) {
-		for (Relation theRelation : this) {
-			Map theMap = theRelation.getMapping();
-			if (theMap.containsValue(aAttribute)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public boolean isForeignKeyAttribute(Attribute aAttribute) {
+        for (Relation theRelation : this) {
+            Map theMap = theRelation.getMapping();
+            if (theMap.containsValue(aAttribute)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Remove all relations that are connected to a given table.
-	 * 
-	 * @param aTable the table
-	 */
-	public void removeByTable(Table aTable) {
-		List<Relation> theRelationsToRemove = new ArrayList<Relation>();
-		for(Relation theRelation : this) {
-			if (theRelation.getImportingTable().equals(aTable)) {
-				theRelationsToRemove.add(theRelation);
-			} else {
-				if (theRelation.getExportingTable().equals(aTable)) {
-					theRelationsToRemove.add(theRelation);
-				}
-			}
-		}
-		removeAll(theRelationsToRemove);
-	}
+    /**
+     * Remove all relations that are connected to a given table.
+     * 
+     * @param aTable
+     *            the table
+     */
+    public void removeByTable(Table aTable) {
+        List<Relation> theRelationsToRemove = new ArrayList<Relation>();
+        for (Relation theRelation : this) {
+            if (theRelation.getImportingTable().equals(aTable)) {
+                theRelationsToRemove.add(theRelation);
+            } else {
+                if (theRelation.getExportingTable().equals(aTable)) {
+                    theRelationsToRemove.add(theRelation);
+                }
+            }
+        }
+        removeAll(theRelationsToRemove);
+    }
 
 }

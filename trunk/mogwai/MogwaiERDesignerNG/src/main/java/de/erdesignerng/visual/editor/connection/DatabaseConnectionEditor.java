@@ -23,172 +23,153 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:03 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
-	private DefaultAction testAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandTest();
-				}
-			}, this, ERDesignerBundle.TEST);
+        public void processActionEvent(ActionEvent e) {
+            commandTest();
+        }
+    }, this, ERDesignerBundle.TEST);
 
-	private DefaultAction okAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandClose();
-				}
-			}, this, ERDesignerBundle.OK);
+        public void processActionEvent(ActionEvent e) {
+            commandClose();
+        }
+    }, this, ERDesignerBundle.OK);
 
-	private DefaultAction cancelAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandCancel();
-				}
-			}, this, ERDesignerBundle.CANCEL);
+        public void processActionEvent(ActionEvent e) {
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.CANCEL);
 
-	private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
+    private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
 
-		@Override
-		public void handleDialectChange(Dialect aDialect) {
-			commandChangeDialect(aDialect);
-		}
-	};
+        @Override
+        public void handleDialectChange(Dialect aDialect) {
+            commandChangeDialect(aDialect);
+        }
+    };
 
-	private Model model;
+    private Model model;
 
-	private ApplicationPreferences preferences;
+    private ApplicationPreferences preferences;
 
-	private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
+    private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
-	public DatabaseConnectionEditor(Component aParent, Model aModel,
-			ApplicationPreferences aPreferences) {
-		super(aParent, ERDesignerBundle.CONNECTIONCONFIGURATION);
+    public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences) {
+        super(aParent, ERDesignerBundle.CONNECTIONCONFIGURATION);
 
-		model = aModel;
-		preferences = aPreferences;
+        model = aModel;
+        preferences = aPreferences;
 
-		initialize();
+        initialize();
 
-		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-		theModel.addElement(null);
+        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+        theModel.addElement(null);
 
-		List<Dialect> theDialects = DialectFactory.getInstance()
-				.getSupportedDialects();
-		for (Dialect theDialect : theDialects) {
-			theModel.addElement(theDialect);
-		}
+        List<Dialect> theDialects = DialectFactory.getInstance().getSupportedDialects();
+        for (Dialect theDialect : theDialects) {
+            theModel.addElement(theDialect);
+        }
 
-		view.getDialect().setModel(theModel);
+        view.getDialect().setModel(theModel);
 
-		DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
-		theDescriptor.setDialect(model.getDialect());
-		theDescriptor.setDriver(model.getProperties().getProperty(
-				Model.PROPERTY_DRIVER));
-		theDescriptor.setUrl(model.getProperties().getProperty(
-				Model.PROPERTY_URL));
-		theDescriptor.setUser(model.getProperties().getProperty(
-				Model.PROPERTY_USER));
-		theDescriptor.setPassword(model.getProperties().getProperty(
-				Model.PROPERTY_PASSWORD));
+        DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
+        theDescriptor.setDialect(model.getDialect());
+        theDescriptor.setDriver(model.getProperties().getProperty(Model.PROPERTY_DRIVER));
+        theDescriptor.setUrl(model.getProperties().getProperty(Model.PROPERTY_URL));
+        theDescriptor.setUser(model.getProperties().getProperty(Model.PROPERTY_USER));
+        theDescriptor.setPassword(model.getProperties().getProperty(Model.PROPERTY_PASSWORD));
 
-		bindingInfo.setDefaultModel(theDescriptor);
-		bindingInfo.addBinding("dialect", view.getDialect(), true);
-		bindingInfo.addBinding("driver", view.getDriver(), true);
-		bindingInfo.addBinding("url", view.getUrl(), true);
-		bindingInfo.addBinding("user", view.getUser(), true);
-		bindingInfo.addBinding("password", view.getPassword());
+        bindingInfo.setDefaultModel(theDescriptor);
+        bindingInfo.addBinding("dialect", view.getDialect(), true);
+        bindingInfo.addBinding("driver", view.getDriver(), true);
+        bindingInfo.addBinding("url", view.getUrl(), true);
+        bindingInfo.addBinding("user", view.getUser(), true);
+        bindingInfo.addBinding("password", view.getPassword());
 
-		bindingInfo.configure();
+        bindingInfo.configure();
 
-		bindingInfo.model2view();
-	}
+        bindingInfo.model2view();
+    }
 
-	private void initialize() {
+    private void initialize() {
 
-		view.getOkButton().setAction(okAction);
-		view.getCancelButton().setAction(cancelAction);
-		view.getTestButton().setAction(testAction);
+        view.getOkButton().setAction(okAction);
+        view.getCancelButton().setAction(cancelAction);
+        view.getTestButton().setAction(testAction);
 
-		setContentPane(view);
-		setResizable(false);
-		pack();
+        setContentPane(view);
+        setResizable(false);
+        pack();
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        UIInitializer.getInstance().initialize(this);
+    }
 
-	@Override
-	public void applyValues() throws Exception {
+    @Override
+    public void applyValues() throws Exception {
 
-		DatabaseConnectionDatamodel theDescriptor = bindingInfo
-				.getDefaultModel();
+        DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
 
-		model.setDialect(theDescriptor.getDialect());
-		model.getProperties().setProperty(Model.PROPERTY_DRIVER,
-				theDescriptor.getDriver());
-		model.getProperties().setProperty(Model.PROPERTY_URL,
-				theDescriptor.getUrl());
-		model.getProperties().setProperty(Model.PROPERTY_USER,
-				theDescriptor.getUser());
-		model.getProperties().setProperty(Model.PROPERTY_PASSWORD,
-				theDescriptor.getPassword());
-	}
+        model.setDialect(theDescriptor.getDialect());
+        model.getProperties().setProperty(Model.PROPERTY_DRIVER, theDescriptor.getDriver());
+        model.getProperties().setProperty(Model.PROPERTY_URL, theDescriptor.getUrl());
+        model.getProperties().setProperty(Model.PROPERTY_USER, theDescriptor.getUser());
+        model.getProperties().setProperty(Model.PROPERTY_PASSWORD, theDescriptor.getPassword());
+    }
 
-	private void commandClose() {
+    private void commandClose() {
 
-		if (bindingInfo.validate().size() == 0) {
+        if (bindingInfo.validate().size() == 0) {
 
-			bindingInfo.view2model();
+            bindingInfo.view2model();
 
-			setModalResult(DialogConstants.MODAL_RESULT_OK);
-		}
-	}
+            setModalResult(DialogConstants.MODAL_RESULT_OK);
+        }
+    }
 
-	private void commandTest() {
+    private void commandTest() {
 
-		if (bindingInfo.validate().size() == 0) {
+        if (bindingInfo.validate().size() == 0) {
 
-			bindingInfo.view2model();
+            bindingInfo.view2model();
 
-			DatabaseConnectionDatamodel theModel = bindingInfo
-					.getDefaultModel();
+            DatabaseConnectionDatamodel theModel = bindingInfo.getDefaultModel();
 
-			Dialect theDialect = theModel.getDialect();
+            Dialect theDialect = theModel.getDialect();
 
-			try {
+            try {
 
-				Connection theConnection = theDialect.createConnection(
-						preferences.createDriverClassLoader(), theModel
-								.getDriver(), theModel.getUrl(), theModel
-								.getUser(), theModel.getPassword());
-				theConnection.close();
+                Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
+                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword());
+                theConnection.close();
 
-				displayInfoMessage(getResourceHelper().getText(
-						ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
+                displayInfoMessage(getResourceHelper().getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
 
-			} catch (Exception e) {
+            } catch (Exception e) {
 
-				displayErrorMessage(e.getMessage());
-			}
-		}
-	}
+                displayErrorMessage(e.getMessage());
+            }
+        }
+    }
 
-	private void commandChangeDialect(Dialect aDialect) {
+    private void commandChangeDialect(Dialect aDialect) {
 
-		if (!bindingInfo.isBinding()) {
-			DatabaseConnectionDatamodel theDescriptor = bindingInfo
-					.getDefaultModel();
+        if (!bindingInfo.isBinding()) {
+            DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
 
-			if (aDialect != null) {
-				theDescriptor.setDriver(aDialect.getDriverClassName());
-				theDescriptor.setUrl(aDialect.getDriverURLTemplate());
-			}
+            if (aDialect != null) {
+                theDescriptor.setDriver(aDialect.getDriverClassName());
+                theDescriptor.setUrl(aDialect.getDriverURLTemplate());
+            }
 
-			bindingInfo.model2view();
-		}
-	}
+            bindingInfo.model2view();
+        }
+    }
 }

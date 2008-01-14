@@ -22,43 +22,41 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:11 $
+ * @version $Date: 2008-01-14 20:01:08 $
  */
-public class DefaultValue extends OwnedModelItem<Model> implements
-		ModelItemClonable<DefaultValue> {
+public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClonable<DefaultValue> {
 
-	private String datatype;
+    private String datatype;
 
-	/**
-	 * Gibt den Wert des Attributs <code>datatype</code> zurück.
-	 * 
-	 * @return Wert des Attributs datatype.
-	 */
-	public String getDatatype() {
-		return datatype;
-	}
+    /**
+     * Gibt den Wert des Attributs <code>datatype</code> zurück.
+     * 
+     * @return Wert des Attributs datatype.
+     */
+    public String getDatatype() {
+        return datatype;
+    }
 
-	/**
-	 * Setzt den Wert des Attributs <code>datatype</code>.
-	 * 
-	 * @param datatype
-	 *            Wert für das Attribut datatype.
-	 */
-	public void setDatatype(String aDatatype) {
-		datatype = aDatatype;
-	}
+    /**
+     * Setzt den Wert des Attributs <code>datatype</code>.
+     * 
+     * @param aDatatype
+     *            Wert für das Attribut datatype.
+     */
+    public void setDatatype(String aDatatype) {
+        datatype = aDatatype;
+    }
 
-	@Override
-	public DefaultValue clone() {
-		DefaultValue theValue = new DefaultValue();
-		theValue.setName(getName());
-		theValue.setDatatype(getDatatype());
-		return theValue;
-	}
+    @Override
+    public DefaultValue clone() {
+        DefaultValue theValue = new DefaultValue();
+        theValue.setName(getName());
+        theValue.setDatatype(getDatatype());
+        return theValue;
+    }
 
-	public void restoreFrom(DefaultValue aValue)
-			throws ElementAlreadyExistsException, ElementInvalidNameException {
-		setName(aValue.getName());
-		setDatatype(aValue.getDatatype());
-	}
+    public void restoreFrom(DefaultValue aValue) throws ElementAlreadyExistsException, ElementInvalidNameException {
+        setName(aValue.getName());
+        setDatatype(aValue.getDatatype());
+    }
 }

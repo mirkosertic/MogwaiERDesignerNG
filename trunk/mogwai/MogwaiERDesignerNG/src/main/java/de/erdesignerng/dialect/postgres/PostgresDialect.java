@@ -23,36 +23,36 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:30 $
+ * @version $Date: 2008-01-14 20:01:13 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
-	public PostgresDialect() {
-		setSpacesAllowedInObjectNames(false);
-		setCaseSensitive(false);
-		setMaxObjectNameLength(28);
-		setNullablePrimaryKeyAllowed(false);
-		setCastType(NameCastType.UPPERCASE);
-	}
+    public PostgresDialect() {
+        setSpacesAllowedInObjectNames(false);
+        setCaseSensitive(false);
+        setMaxObjectNameLength(28);
+        setNullablePrimaryKeyAllowed(false);
+        setCastType(NameCastType.UPPERCASE);
+    }
 
-	@Override
-	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return new PostgresReverseEngineeringStrategy(this);
-	}
+    @Override
+    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+        return new PostgresReverseEngineeringStrategy(this);
+    }
 
-	@Override
-	public String getUniqueName() {
-		return "PostgresDialect";
-	}
+    @Override
+    public String getUniqueName() {
+        return "PostgresDialect";
+    }
 
-	@Override
-	public String getDriverClassName() {
-		return "org.postgresql.Driver";
-	}
+    @Override
+    public String getDriverClassName() {
+        return "org.postgresql.Driver";
+    }
 
-	@Override
-	public String getDriverURLTemplate() {
-		return "jdbc:postgresql://<host>:<port>/<db>";
-	}
+    @Override
+    public String getDriverURLTemplate() {
+        return "jdbc:postgresql://<host>:<port>/<db>";
+    }
 
 }

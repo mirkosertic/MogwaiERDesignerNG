@@ -24,16 +24,16 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:19 $
+ * @version $Date: 2008-01-14 20:01:11 $
  */
 public class EntityTool extends BaseTool {
 
-	public EntityTool(ERDesignerGraph aGraph) {
-		super(aGraph);
-	}
+    public EntityTool(ERDesignerGraph aGraph) {
+        super(aGraph);
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		graph.commandNewTable(new Point2D.Double(e.getX(), e.getY()));
-	}
+    @Override
+    public void mousePressed(MouseEvent e) {
+        graph.commandNewTable(new Point2D.Double(e.getX(), e.getY()));
+    }
 }

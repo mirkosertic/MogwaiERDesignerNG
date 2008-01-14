@@ -26,146 +26,138 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:08 $
+ * @version $Date: 2008-01-14 20:01:09 $
  */
-public class Table extends OwnedModelItem<Model> implements
-		OwnedModelItemVerifier {
+public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
-	private AttributeList attributes = new AttributeList();
+    private AttributeList attributes = new AttributeList();
 
-	private IndexList indexes = new IndexList();
+    private IndexList indexes = new IndexList();
 
-	/**
-	 * Add an attribute to the table.
-	 * 
-	 * @param aModel
-	 *            the model
-	 * @param aAttribute
-	 *            the table
-	 * @throws ElementAlreadyExistsException
-	 * @throws ElementInvalidNameException
-	 */
-	public void addAttribute(Model aModel, Attribute aAttribute)
-			throws ElementAlreadyExistsException, ElementInvalidNameException {
+    /**
+     * Add an attribute to the table.
+     * 
+     * @param aModel
+     *            the model
+     * @param aAttribute
+     *            the table
+     * @throws ElementAlreadyExistsException
+     * @throws ElementInvalidNameException
+     */
+    public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
+            ElementInvalidNameException {
 
-		ModelUtilities.checkNameAndExistance(attributes, aAttribute, aModel
-				.getDialect());
+        ModelUtilities.checkNameAndExistance(attributes, aAttribute, aModel.getDialect());
 
-		aAttribute.setOwner(this);
-		attributes.add(aAttribute);
-	}
+        aAttribute.setOwner(this);
+        attributes.add(aAttribute);
+    }
 
-	/**
-	 * Add an index to the table.
-	 * 
-	 * @param Model
-	 *            aModel
-	 * @param aIndex
-	 *            the table
-	 * @throws ElementAlreadyExistsException
-	 * @throws ElementInvalidNameException
-	 */
-	public void addIndex(Model aModel, Index aIndex)
-			throws ElementAlreadyExistsException, ElementInvalidNameException {
+    /**
+     * Add an index to the table.
+     * 
+     * @param aModel
+     *            aModel
+     * @param aIndex
+     *            the table
+     * @throws ElementAlreadyExistsException
+     * @throws ElementInvalidNameException
+     */
+    public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			ModelUtilities.checkNameAndExistance(indexes, aIndex, theOwner
-					.getDialect());
-		}
+        Model theOwner = getOwner();
+        if (theOwner != null) {
+            ModelUtilities.checkNameAndExistance(indexes, aIndex, theOwner.getDialect());
+        }
 
-		aIndex.setOwner(this);
+        aIndex.setOwner(this);
 
-		indexes.add(aIndex);
-	}
+        indexes.add(aIndex);
+    }
 
-	public void checkNameAlreadyExists(ModelItem aSender, String aName)
-			throws ElementAlreadyExistsException {
+    public void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException {
 
-		Model theOwner = getOwner();
+        Model theOwner = getOwner();
 
-		if (aSender instanceof Attribute) {
-			ModelUtilities.checkExistance(attributes, aName, theOwner
-					.getDialect());
-		}
-		if (aSender instanceof Index) {
-			ModelUtilities
-					.checkExistance(indexes, aName, theOwner.getDialect());
-		}
+        if (aSender instanceof Attribute) {
+            ModelUtilities.checkExistance(attributes, aName, theOwner.getDialect());
+        }
+        if (aSender instanceof Index) {
+            ModelUtilities.checkExistance(indexes, aName, theOwner.getDialect());
+        }
 
-	}
+    }
 
-	public void delete(ModelItem aSender) throws CannotDeleteException {
+    public void delete(ModelItem aSender) throws CannotDeleteException {
 
-		Model theOwner = getOwner();
+        Model theOwner = getOwner();
 
-		if (aSender instanceof Attribute) {
-			if (attributes.size() == 1) {
-				throw new CannotDeleteException(
-						"Table must have at least one attribute!");
-			}
+        if (aSender instanceof Attribute) {
+            if (attributes.size() == 1) {
+                throw new CannotDeleteException("Table must have at least one attribute!");
+            }
 
-			Attribute theAttribute = (Attribute) aSender;
-			attributes.remove(theAttribute);
+            Attribute theAttribute = (Attribute) aSender;
+            attributes.remove(theAttribute);
 
-			return;
-		}
+            return;
+        }
 
-		if (aSender instanceof Index) {
+        if (aSender instanceof Index) {
 
-			Index theIndex = (Index) aSender;
+            Index theIndex = (Index) aSender;
 
-			indexes.remove(theIndex);
+            indexes.remove(theIndex);
 
-			return;
-		}
+            return;
+        }
 
-		throw new UnsupportedOperationException("Unknown element " + aSender);
+        throw new UnsupportedOperationException("Unknown element " + aSender);
 
-	}
+    }
 
-	public String checkName(String aName) throws ElementInvalidNameException {
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			return theOwner.checkName(aName);
-		}
+    public String checkName(String aName) throws ElementInvalidNameException {
+        Model theOwner = getOwner();
+        if (theOwner != null) {
+            return theOwner.checkName(aName);
+        }
 
-		return aName;
-	}
+        return aName;
+    }
 
-	public AttributeList getAttributes() {
-		return attributes;
-	}
+    public AttributeList getAttributes() {
+        return attributes;
+    }
 
-	public boolean isForeignKey(Attribute aAttribute) {
-		Model theOwner = getOwner();
-		if (theOwner != null) {
-			return getOwner().getRelations().isForeignKeyAttribute(aAttribute);
-		}
-		return false;
-	}
+    public boolean isForeignKey(Attribute aAttribute) {
+        Model theOwner = getOwner();
+        if (theOwner != null) {
+            return getOwner().getRelations().isForeignKeyAttribute(aAttribute);
+        }
+        return false;
+    }
 
-	public IndexList getIndexes() {
-		return indexes;
-	}
+    public IndexList getIndexes() {
+        return indexes;
+    }
 
-	public void setIndexes(IndexList aIndexes) {
-		indexes = aIndexes;
-	}
+    public void setIndexes(IndexList aIndexes) {
+        indexes = aIndexes;
+    }
 
-	public void setAttributes(AttributeList aAttributes) {
-		attributes = aAttributes;
-	}
+    public void setAttributes(AttributeList aAttributes) {
+        attributes = aAttributes;
+    }
 
-	public List<Attribute> getPrimaryKey() {
-		Vector<Attribute> thePK = new Vector<Attribute>();
+    public List<Attribute> getPrimaryKey() {
+        Vector<Attribute> thePK = new Vector<Attribute>();
 
-		for (Attribute theAttribute : attributes) {
-			if (theAttribute.isPrimaryKey()) {
-				thePK.add(theAttribute);
-			}
-		}
+        for (Attribute theAttribute : attributes) {
+            if (theAttribute.isPrimaryKey()) {
+                thePK.add(theAttribute);
+            }
+        }
 
-		return thePK;
-	}
+        return thePK;
+    }
 }
