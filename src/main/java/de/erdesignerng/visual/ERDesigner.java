@@ -28,22 +28,20 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:21 $
+ * @version $Date: 2008-01-14 20:01:15 $
  */
 public final class ERDesigner {
 
-	private ERDesigner() {
-	}
+    private ERDesigner() {
+    }
 
-	public static void main(String[] args)
-			throws ElementAlreadyExistsException, ElementInvalidNameException,
-			ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
+    public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
+            ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 
-		ERDesignerMainFrame frame = new ERDesignerMainFrame();
-		frame.setModel(new Model());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-		frame.setVisible(true);
-	}
+        ERDesignerMainFrame frame = new ERDesignerMainFrame();
+        frame.setModel(new Model());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
+    }
 }

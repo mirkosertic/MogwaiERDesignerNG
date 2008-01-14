@@ -23,92 +23,90 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:11 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
-public class Domain extends OwnedModelItem<Model> implements
-		ModelItemClonable<Domain> {
+public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain> {
 
-	private String datatype;
+    private String datatype;
 
-	private boolean sequenced;
+    private boolean sequenced;
 
-	private String javaClassName;
+    private String javaClassName;
 
-	/**
-	 * Gibt den Wert des Attributs <code>datatype</code> zurück.
-	 * 
-	 * @return Wert des Attributs datatype.
-	 */
-	public String getDatatype() {
-		return datatype;
-	}
+    /**
+     * Gibt den Wert des Attributs <code>datatype</code> zurück.
+     * 
+     * @return Wert des Attributs datatype.
+     */
+    public String getDatatype() {
+        return datatype;
+    }
 
-	/**
-	 * Setzt den Wert des Attributs <code>datatype</code>.
-	 * 
-	 * @param aDatatype
-	 *            Wert für das Attribut datatype.
-	 */
-	public void setDatatype(String aDatatype) {
-		datatype = aDatatype;
-	}
+    /**
+     * Setzt den Wert des Attributs <code>datatype</code>.
+     * 
+     * @param aDatatype
+     *            Wert für das Attribut datatype.
+     */
+    public void setDatatype(String aDatatype) {
+        datatype = aDatatype;
+    }
 
-	/**
-	 * Gibt den Wert des Attributs <code>sequenced</code> zurück.
-	 * 
-	 * @return Wert des Attributs sequenced.
-	 */
-	public boolean isSequenced() {
-		return sequenced;
-	}
+    /**
+     * Gibt den Wert des Attributs <code>sequenced</code> zurück.
+     * 
+     * @return Wert des Attributs sequenced.
+     */
+    public boolean isSequenced() {
+        return sequenced;
+    }
 
-	/**
-	 * Setzt den Wert des Attributs <code>sequenced</code>.
-	 * 
-	 * @param aSequenced
-	 *            Wert für das Attribut sequenced.
-	 */
-	public void setSequenced(boolean aSequenced) {
-		sequenced = aSequenced;
-	}
+    /**
+     * Setzt den Wert des Attributs <code>sequenced</code>.
+     * 
+     * @param aSequenced
+     *            Wert für das Attribut sequenced.
+     */
+    public void setSequenced(boolean aSequenced) {
+        sequenced = aSequenced;
+    }
 
-	/**
-	 * Gibt den Wert des Attributs <code>javaClassName</code> zurück.
-	 * 
-	 * @return Wert des Attributs javaClassName.
-	 */
-	public String getJavaClassName() {
-		return javaClassName;
-	}
+    /**
+     * Gibt den Wert des Attributs <code>javaClassName</code> zurück.
+     * 
+     * @return Wert des Attributs javaClassName.
+     */
+    public String getJavaClassName() {
+        return javaClassName;
+    }
 
-	/**
-	 * Setzt den Wert des Attributs <code>javaClassName</code>.
-	 * 
-	 * @param aJavaClassName
-	 *            Wert für das Attribut javaClassName.
-	 */
-	public void setJavaClassName(String aJavaClassName) {
-		javaClassName = aJavaClassName;
-	}
+    /**
+     * Setzt den Wert des Attributs <code>javaClassName</code>.
+     * 
+     * @param aJavaClassName
+     *            Wert für das Attribut javaClassName.
+     */
+    public void setJavaClassName(String aJavaClassName) {
+        javaClassName = aJavaClassName;
+    }
 
-	@Override
-	public Domain clone() {
-		Domain theValue = new Domain();
-		theValue.setName(getName());
-		theValue.setDatatype(getDatatype());
-		theValue.setSequenced(isSequenced());
-		theValue.setJavaClassName(getJavaClassName());
-		theValue.setComment(getComment());
-		return theValue;
-	}
+    @Override
+    public Domain clone() {
+        Domain theValue = new Domain();
+        theValue.setName(getName());
+        theValue.setDatatype(getDatatype());
+        theValue.setSequenced(isSequenced());
+        theValue.setJavaClassName(getJavaClassName());
+        theValue.setComment(getComment());
+        return theValue;
+    }
 
-	public void restoreFrom(Domain aValue)
-			throws ElementAlreadyExistsException, ElementInvalidNameException {
-		setName(aValue.getName());
-		setDatatype(aValue.getDatatype());
-		setSequenced(aValue.isSequenced());
-		setJavaClassName(aValue.getJavaClassName());
-		setComment(aValue.getComment());
-	}
+    public void restoreFrom(Domain aValue) throws ElementAlreadyExistsException, ElementInvalidNameException {
+        setName(aValue.getName());
+        setDatatype(aValue.getDatatype());
+        setSequenced(aValue.isSequenced());
+        setJavaClassName(aValue.getJavaClassName());
+        setComment(aValue.getComment());
+    }
 
 }

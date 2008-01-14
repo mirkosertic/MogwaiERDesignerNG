@@ -21,87 +21,87 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:09 $
+ * @param <T> the type 
  */
 public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 
-	private static final long serialVersionUID = 5030067810497396582L;
+    private static final long serialVersionUID = 5030067810497396582L;
 
-	/**
-	 * Find an entry by a given system id.
-	 * 
-	 * @param aSystemId
-	 *            the system id
-	 * @return the found element
-	 */
-	public T findBySystemId(String aSystemId) {
-		for (T theItem : this) {
-			if (aSystemId.equals(theItem.getSystemId())) {
-				return theItem;
-			}
-		}
-		return null;
-	}
+    /**
+     * Find an entry by a given system id.
+     * 
+     * @param aSystemId
+     *            the system id
+     * @return the found element
+     */
+    public T findBySystemId(String aSystemId) {
+        for (T theItem : this) {
+            if (aSystemId.equals(theItem.getSystemId())) {
+                return theItem;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Check if a named element already exists in this list.
-	 * 
-	 * @param aName
-	 *            the name of the element
-	 * @param aCaseSensitive
-	 * 
-	 * @return true if it exists, else false.
-	 */
-	public boolean elementExists(String aName, boolean aCaseSensitive) {
-		for (T theElement : this) {
-			if (aCaseSensitive) {
-				if (aName.equals(theElement.getName())) {
-					return true;
-				}
-			} else {
-				if (aName.toLowerCase().equals(
-						theElement.getName().toLowerCase())) {
-					return true;
-				}
-			}
-		}
+    /**
+     * Check if a named element already exists in this list.
+     * 
+     * @param aName
+     *            the name of the element
+     * @param aCaseSensitive
+     * 
+     * @return true if it exists, else false.
+     */
+    public boolean elementExists(String aName, boolean aCaseSensitive) {
+        for (T theElement : this) {
+            if (aCaseSensitive) {
+                if (aName.equals(theElement.getName())) {
+                    return true;
+                }
+            } else {
+                if (aName.toLowerCase().equals(theElement.getName().toLowerCase())) {
+                    return true;
+                }
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Find an attribute by a given name.
-	 * 
-	 * @param aName
-	 *            the name
-	 * @return the found element
-	 */
-	public T findByName(String aName) {
-		for (T theElement : this) {
-			if (aName.equals(theElement.getName())) {
-				return theElement;
-			}
-		}
-		return null;
-	}
+    /**
+     * Find an attribute by a given name.
+     * 
+     * @param aName
+     *            the name
+     * @return the found element
+     */
+    public T findByName(String aName) {
+        for (T theElement : this) {
+            if (aName.equals(theElement.getName())) {
+                return theElement;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Delete an attribute by a given name.
-	 * 
-	 * @param aName
-	 *            the name
-	 */
-	public void removeByName(String aName) {
-		remove(findByName(aName));
-	}
+    /**
+     * Delete an attribute by a given name.
+     * 
+     * @param aName
+     *            the name
+     */
+    public void removeByName(String aName) {
+        remove(findByName(aName));
+    }
 
-	/**
-	 * Delete an attribute by a given id.
-	 * 
-	 * @param aSystemId
-	 *            the id
-	 */
-	public void removeById(String aSystemId) {
-		remove(findBySystemId(aSystemId));
-	}
+    /**
+     * Delete an attribute by a given id.
+     * 
+     * @param aSystemId
+     *            the id
+     */
+    public void removeById(String aSystemId) {
+        remove(findBySystemId(aSystemId));
+    }
 }

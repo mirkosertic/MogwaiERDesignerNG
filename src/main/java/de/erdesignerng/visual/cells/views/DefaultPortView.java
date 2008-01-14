@@ -27,21 +27,20 @@ import org.jgraph.graph.PortView;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:21 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class DefaultPortView extends PortView {
 
-	public DefaultPortView(Object aObject) {
-		super(aObject);
-	}
+    public DefaultPortView(Object aObject) {
+        super(aObject);
+    }
 
-	@Override
-	public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
-		GraphCell theCell = (GraphCell) getParentView().getCell();
-		Rectangle2D theBounds = GraphConstants.getBounds(theCell
-				.getAttributes());
+    @Override
+    public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
+        GraphCell theCell = (GraphCell) getParentView().getCell();
+        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
 
-		return theBounds.contains(aRect.getX(), aRect.getY());
-	}
+        return theBounds.contains(aRect.getX(), aRect.getY());
+    }
 
 }

@@ -19,5 +19,5 @@ package de.erdesignerng.dialect;
 
 public enum DefaultValueNamingEnum {
 
-	STANDARD;
+    STANDARD;
 }

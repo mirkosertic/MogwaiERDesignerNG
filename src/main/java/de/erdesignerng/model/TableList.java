@@ -19,82 +19,64 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:08 $
  */
 public class TableList extends ModelItemVector<Table> {
 
-	private static final long serialVersionUID = 7291908371933857720L;
+    private static final long serialVersionUID = 7291908371933857720L;
 
-	/**
-	 * Find a table by a given system id.
-	 * 
-	 * @param aSystemId
-	 * @return
-	 */
-	public Table findTableBySystemId(String aSystemId) {
-		for (Table theTable : this) {
-			if (aSystemId.equals(theTable.getSystemId())) {
-				return theTable;
-			}
-		}
-		return null;
-	}
+    /**
+     * Find an attribute by a given system id.
+     * 
+     * @param aSystemId
+     * @return the attribute or null if nothing found
+     */
+    public Attribute findAttributeBySystemId(String aSystemId) {
+        for (Table theTable : this) {
+            Attribute theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
+            if (theAttribute != null) {
+                return theAttribute;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Find an attribute by a given system id.
-	 * 
-	 * @param aSystemId
-	 * @return
-	 */
-	public Attribute findAttributeBySystemId(String aSystemId) {
-		for (Table theTable : this) {
-			Attribute theAttribute = theTable.getAttributes().findBySystemId(
-					aSystemId);
-			if (theAttribute != null) {
-				return theAttribute;
-			}
-		}
-		return null;
-	}
+    /**
+     * Test if a domain is used by a table.
+     * 
+     * @param aDomain
+     *            the domain
+     * @return true if its used, else false
+     */
+    public boolean isDomainUsed(Domain aDomain) {
+        for (Table theTable : this) {
+            for (Attribute theAttribute : theTable.getAttributes()) {
+                if (theAttribute.getDomain().getName().equals(aDomain.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Test if a domain is used by a table.
-	 * 
-	 * @param aDomain
-	 *            the domain
-	 * @return true if its used, else false
-	 */
-	public boolean isDomainUsed(Domain aDomain) {
-		for (Table theTable : this) {
-			for (Attribute theAttribute : theTable.getAttributes()) {
-				if (theAttribute.getDomain().getName()
-						.equals(aDomain.getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Test if a defaultvalue is used by a table.
-	 * 
-	 * @param aDefault
-	 *            the default value
-	 * @return true if its used, else false
-	 */
-	public boolean isDefaultValueUsed(DefaultValue aDefault) {
-		for (Table theTable : this) {
-			for (Attribute theAttribute : theTable.getAttributes()) {
-				if (theAttribute.getDefaultValue() != null) {
-					if (theAttribute.getDefaultValue().getName().equals(
-							aDefault.getName())) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+    /**
+     * Test if a defaultvalue is used by a table.
+     * 
+     * @param aDefault
+     *            the default value
+     * @return true if its used, else false
+     */
+    public boolean isDefaultValueUsed(DefaultValue aDefault) {
+        for (Table theTable : this) {
+            for (Attribute theAttribute : theTable.getAttributes()) {
+                if (theAttribute.getDefaultValue() != null) {
+                    if (theAttribute.getDefaultValue().getName().equals(aDefault.getName())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 }

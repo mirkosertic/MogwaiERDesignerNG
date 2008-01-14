@@ -20,11 +20,11 @@ package de.erdesignerng.io;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:10:50 $
+ * @version $Date: 2008-01-14 20:01:12 $
  */
 public class ModelFileFilter extends GenericFileFilter {
 
-	public ModelFileFilter() {
-		super(".mxm", "Mogwai model");
-	}
+    public ModelFileFilter() {
+        super(".mxm", "Mogwai model");
+    }
 }

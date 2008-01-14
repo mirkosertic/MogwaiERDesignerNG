@@ -36,56 +36,50 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:00 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
 public class SVGExporter implements Exporter {
 
-	public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream)
-			throws IOException {
-		Object[] cells = aGraph.getRoots();
-		Rectangle2D bounds = aGraph.toScreen(aGraph.getCellBounds(cells));
-		if (bounds != null) {
-			DOMImplementation theDomImpl = GenericDOMImplementation
-					.getDOMImplementation();
-			Document theDocument = theDomImpl.createDocument(null, "svg", null);
-			SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
-			theSvgGenerator.translate(-bounds.getX() + 10, -bounds.getY() + 0);
-			RepaintManager theRepaintManager = RepaintManager
-					.currentManager(aGraph);
-			theRepaintManager.setDoubleBufferingEnabled(false);
-			aGraph.paint(theSvgGenerator);
-			Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
-			theSvgGenerator.stream(theWriter, false);
-			theRepaintManager.setDoubleBufferingEnabled(true);
+    public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
+        Object[] cells = aGraph.getRoots();
+        Rectangle2D bounds = aGraph.toScreen(aGraph.getCellBounds(cells));
+        if (bounds != null) {
+            DOMImplementation theDomImpl = GenericDOMImplementation.getDOMImplementation();
+            Document theDocument = theDomImpl.createDocument(null, "svg", null);
+            SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
+            theSvgGenerator.translate(-bounds.getX() + 10, -bounds.getY() + 0);
+            RepaintManager theRepaintManager = RepaintManager.currentManager(aGraph);
+            theRepaintManager.setDoubleBufferingEnabled(false);
+            aGraph.paint(theSvgGenerator);
+            Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
+            theSvgGenerator.stream(theWriter, false);
+            theRepaintManager.setDoubleBufferingEnabled(true);
 
-			theWriter.flush();
-			theWriter.close();
-		}
-	}
+            theWriter.flush();
+            theWriter.close();
+        }
+    }
 
-	public String getFileExtension() {
-		return ".svg";
-	}
+    public String getFileExtension() {
+        return ".svg";
+    }
 
-	public void exportToStream(Component aComponent, OutputStream aStream)
-			throws IOException {
-		DOMImplementation theDomImpl = GenericDOMImplementation
-				.getDOMImplementation();
-		Document theDocument = theDomImpl.createDocument(null, "svg", null);
-		SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
-		RepaintManager theRepaintManager = RepaintManager
-				.currentManager(aComponent);
-		theRepaintManager.setDoubleBufferingEnabled(false);
+    public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
+        DOMImplementation theDomImpl = GenericDOMImplementation.getDOMImplementation();
+        Document theDocument = theDomImpl.createDocument(null, "svg", null);
+        SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
+        RepaintManager theRepaintManager = RepaintManager.currentManager(aComponent);
+        theRepaintManager.setDoubleBufferingEnabled(false);
 
-		Dimension theSize = aComponent.getPreferredSize();
-		aComponent.setSize(theSize);
+        Dimension theSize = aComponent.getPreferredSize();
+        aComponent.setSize(theSize);
 
-		aComponent.paint(theSvgGenerator);
-		Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
-		theSvgGenerator.stream(theWriter, false);
-		theRepaintManager.setDoubleBufferingEnabled(true);
+        aComponent.paint(theSvgGenerator);
+        Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
+        theSvgGenerator.stream(theWriter, false);
+        theRepaintManager.setDoubleBufferingEnabled(true);
 
-		theWriter.flush();
-		theWriter.close();
-	}
+        theWriter.flush();
+        theWriter.close();
+    }
 }

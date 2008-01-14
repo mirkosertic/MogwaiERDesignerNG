@@ -21,132 +21,123 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:02 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
 public class ClasspathEditor extends BaseEditor {
 
-	private DefaultAction okAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandClose();
-				}
-			}, this, ERDesignerBundle.OK);
+        public void processActionEvent(ActionEvent e) {
+            commandClose();
+        }
+    }, this, ERDesignerBundle.OK);
 
-	private DefaultAction cancelAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandCancel();
-				}
-			}, this, ERDesignerBundle.CANCEL);
+        public void processActionEvent(ActionEvent e) {
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.CANCEL);
 
-	private DefaultAction addAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction addAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandFolderAdd();
-				}
-			}, this, ERDesignerBundle.ADDFOLDER);
+        public void processActionEvent(ActionEvent e) {
+            commandFolderAdd();
+        }
+    }, this, ERDesignerBundle.ADDFOLDER);
 
-	private DefaultAction removeAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction removeAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandFolderRemove();
-				}
-			}, this, ERDesignerBundle.REMOVEFOLDER);
+        public void processActionEvent(ActionEvent e) {
+            commandFolderRemove();
+        }
+    }, this, ERDesignerBundle.REMOVEFOLDER);
 
-	private ClasspathEditorView view = new ClasspathEditorView();
+    private ClasspathEditorView view = new ClasspathEditorView();
 
-	private ApplicationPreferences preferences;
+    private ApplicationPreferences preferences;
 
-	private File lastDir;
+    private File lastDir;
 
-	public ClasspathEditor(Component aParent,
-			ApplicationPreferences aPreferences) {
-		super(aParent, ERDesignerBundle.CLASSPATHCONFIGURATION);
+    public ClasspathEditor(Component aParent, ApplicationPreferences aPreferences) {
+        super(aParent, ERDesignerBundle.CLASSPATHCONFIGURATION);
 
-		initialize();
+        initialize();
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
-				.getModel();
-		view.getClasspath().setModel(theModel);
+        DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
+        view.getClasspath().setModel(theModel);
 
-		List<File> theFiles = aPreferences.getClasspathFiles();
-		for (File theFile : theFiles) {
-			theModel.add(theFile);
-		}
+        List<File> theFiles = aPreferences.getClasspathFiles();
+        for (File theFile : theFiles) {
+            theModel.add(theFile);
+        }
 
-		preferences = aPreferences;
-	}
+        preferences = aPreferences;
+    }
 
-	private void initialize() {
+    private void initialize() {
 
-		view.getOkButton().setAction(okAction);
-		view.getCancelButton().setAction(cancelAction);
-		view.getAddButton().setAction(addAction);
-		view.getRemoveButton().setAction(removeAction);
+        view.getOkButton().setAction(okAction);
+        view.getCancelButton().setAction(cancelAction);
+        view.getAddButton().setAction(addAction);
+        view.getRemoveButton().setAction(removeAction);
 
-		setContentPane(view);
-		setResizable(false);
-		pack();
+        setContentPane(view);
+        setResizable(false);
+        pack();
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        UIInitializer.getInstance().initialize(this);
+    }
 
-	@Override
-	public void applyValues() throws Exception {
+    @Override
+    public void applyValues() throws Exception {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
-				.getModel();
+        DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
 
-		List<File> theFiles = preferences.getClasspathFiles();
-		theFiles.clear();
+        List<File> theFiles = preferences.getClasspathFiles();
+        theFiles.clear();
 
-		for (int i = 0; i < theModel.getSize(); i++) {
-			theFiles.add((File) theModel.get(i));
-		}
-	}
+        for (int i = 0; i < theModel.getSize(); i++) {
+            theFiles.add((File) theModel.get(i));
+        }
+    }
 
-	private void commandClose() {
+    private void commandClose() {
 
-		setModalResult(DialogConstants.MODAL_RESULT_OK);
-	}
+        setModalResult(DialogConstants.MODAL_RESULT_OK);
+    }
 
-	protected void commandFolderAdd() {
+    protected void commandFolderAdd() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
-				.getModel();
+        DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
 
-		JFileChooser theChooser = new JFileChooser();
-		if (lastDir != null) {
-			theChooser.setCurrentDirectory(lastDir);
-		}
-		theChooser.setMultiSelectionEnabled(true);
-		theChooser.setFileFilter(new GenericFileFilter(".jar", "Java archive"));
-		if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			File[] theFiles = theChooser.getSelectedFiles();
+        JFileChooser theChooser = new JFileChooser();
+        if (lastDir != null) {
+            theChooser.setCurrentDirectory(lastDir);
+        }
+        theChooser.setMultiSelectionEnabled(true);
+        theChooser.setFileFilter(new GenericFileFilter(".jar", "Java archive"));
+        if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File[] theFiles = theChooser.getSelectedFiles();
 
-			for (File theFile : theFiles) {
-				if (!theModel.contains(theFile)) {
-					theModel.add(theFile);
-				}
-			}
+            for (File theFile : theFiles) {
+                if (!theModel.contains(theFile)) {
+                    theModel.add(theFile);
+                }
+            }
 
-			lastDir = theChooser.getCurrentDirectory();
-		}
-	}
+            lastDir = theChooser.getCurrentDirectory();
+        }
+    }
 
-	protected void commandFolderRemove() {
+    protected void commandFolderRemove() {
 
-		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
-				.getModel();
+        DefaultListModel theModel = (DefaultListModel) view.getClasspath().getModel();
 
-		Object[] theValues = view.getClasspath().getSelectedValues();
-		for (Object theValue : theValues) {
-			theModel.remove(theValue);
-		}
-	}
+        Object[] theValues = view.getClasspath().getSelectedValues();
+        for (Object theValue : theValues) {
+            theModel.remove(theValue);
+        }
+    }
 
 }

@@ -21,5 +21,5 @@ import org.jgraph.JGraph;
 
 public interface Layouter {
 
-	void applyLayout(JGraph aGraph, Object[] aCells) throws LayoutException;
+    void applyLayout(JGraph aGraph, Object[] aCells) throws LayoutException;
 }

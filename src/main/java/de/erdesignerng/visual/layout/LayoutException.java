@@ -19,12 +19,12 @@ package de.erdesignerng.visual.layout;
 
 public class LayoutException extends Exception {
 
-	public LayoutException(String aMessage, Exception aCause) {
-		super(aMessage);
-	}
+    public LayoutException(String aMessage, Exception aCause) {
+        super(aMessage);
+    }
 
-	public LayoutException(String aMessage) {
-		super(aMessage);
-	}
+    public LayoutException(String aMessage) {
+        super(aMessage);
+    }
 
 }

@@ -31,39 +31,35 @@ import de.erdesignerng.model.Table;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:09 $
  */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
-	public TableCell(Table aTable) {
-		super(aTable);
+    public TableCell(Table aTable) {
+        super(aTable);
 
-		GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20,
-				20, 40, 20));
-		GraphConstants.setGradientColor(getAttributes(), Color.orange);
-		GraphConstants.setOpaque(getAttributes(), true);
-		GraphConstants.setAutoSize(getAttributes(), true);
-		GraphConstants.setEditable(getAttributes(), true);
-		addPort();
-	}
+        GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
+        GraphConstants.setGradientColor(getAttributes(), Color.orange);
+        GraphConstants.setOpaque(getAttributes(), true);
+        GraphConstants.setAutoSize(getAttributes(), true);
+        GraphConstants.setEditable(getAttributes(), true);
+        addPort();
+    }
 
-	public void transferAttributesToProperties(Map aAttributes) {
+    public void transferAttributesToProperties(Map aAttributes) {
 
-		Table theTable = (Table) getUserObject();
-		Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
-		String theLocation = ((int) theBounds.getX()) + ":"
-				+ ((int) theBounds.getY());
-		theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION,
-				theLocation);
-	}
+        Table theTable = (Table) getUserObject();
+        Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
+        String theLocation = ((int) theBounds.getX()) + ":" + ((int) theBounds.getY());
+        theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+    }
 
-	public void transferPropertiesToAttributes(Table aObject) {
+    public void transferPropertiesToAttributes(Table aObject) {
 
-		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
-				.getProperties().getProperty(ModelItem.PROPERTY_LOCATION));
-		if (thePoint != null) {
-			GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
-					thePoint.getX(), thePoint.getY(), -1, -1));
-		}
-	}
+        Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
+                ModelItem.PROPERTY_LOCATION));
+        if (thePoint != null) {
+            GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), -1, -1));
+        }
+    }
 }

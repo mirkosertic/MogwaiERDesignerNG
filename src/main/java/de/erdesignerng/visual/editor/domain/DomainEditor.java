@@ -45,246 +45,235 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:01 $
+ * @version $Date: 2008-01-14 20:01:11 $
  */
 public class DomainEditor extends BaseEditor {
 
-	private DefaultListModel domainListModel;
+    private DefaultListModel domainListModel;
 
-	private BindingInfo<Domain> bindingInfo = new BindingInfo<Domain>();
+    private BindingInfo<Domain> bindingInfo = new BindingInfo<Domain>();
 
-	private DomainEditorView editingView = new DomainEditorView();
+    private DomainEditorView editingView = new DomainEditorView();
 
-	private Model model;
+    private Model model;
 
-	private List<Domain> removedDomains = new ArrayList<Domain>();
+    private List<Domain> removedDomains = new ArrayList<Domain>();
 
-	private Map<String, Domain> knownValues = new HashMap<String, Domain>();
+    private Map<String, Domain> knownValues = new HashMap<String, Domain>();
 
-	private DefaultAction updateAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandUpdate();
-				}
-			}, this, ERDesignerBundle.UPDATE);
+        public void processActionEvent(ActionEvent e) {
+            commandUpdate();
+        }
+    }, this, ERDesignerBundle.UPDATE);
 
-	private DefaultAction closeAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandClose();
-				}
-			}, this, ERDesignerBundle.OK);
+        public void processActionEvent(ActionEvent e) {
+            commandClose();
+        }
+    }, this, ERDesignerBundle.OK);
 
-	private DefaultAction cancelAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandCancel();
-				}
-			}, this, ERDesignerBundle.CANCEL);
+        public void processActionEvent(ActionEvent e) {
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.CANCEL);
 
-	private DefaultAction newAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction newAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandNew();
-				}
-			}, this, ERDesignerBundle.NEW);
+        public void processActionEvent(ActionEvent e) {
+            commandNew();
+        }
+    }, this, ERDesignerBundle.NEW);
 
-	private DefaultAction deleteAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction deleteAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandDelete();
-				}
-			}, this, ERDesignerBundle.DELETE);
+        public void processActionEvent(ActionEvent e) {
+            commandDelete();
+        }
+    }, this, ERDesignerBundle.DELETE);
 
-	/**
-	 * @param aParent
-	 */
-	public DomainEditor(Model aModel, Component aParent) {
-		super(aParent, ERDesignerBundle.DOMAINS);
+    /**
+     * @param aParent
+     */
+    public DomainEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.DOMAINS);
 
-		model = aModel;
+        model = aModel;
 
-		initialize();
+        initialize();
 
-		domainListModel = editingView.getDomainList().getModel();
-		for (Domain theDomain : aModel.getDomains()) {
+        domainListModel = editingView.getDomainList().getModel();
+        for (Domain theDomain : aModel.getDomains()) {
 
-			Domain theClone = theDomain.clone();
+            Domain theClone = theDomain.clone();
 
-			domainListModel.add(theClone);
+            domainListModel.add(theClone);
 
-			knownValues.put(theClone.getName(), theClone);
-		}
+            knownValues.put(theClone.getName(), theClone);
+        }
 
-		editingView.getDomainList().setModel(domainListModel);
+        editingView.getDomainList().setModel(domainListModel);
 
-		// And finally update the corresponding editor fields..
-		// Setup the java class list
-		Vector javaTypes = new Vector();
-		javaTypes.add("String");
-		javaTypes.add("Integer");
-		javaTypes.add("Double");
-		javaTypes.add("Long");
-		javaTypes.add("Float");
-		javaTypes.add("Byte");
-		javaTypes.add("Character");
-		javaTypes.add("java.util.Date");
-		Collections.sort(javaTypes);
+        // And finally update the corresponding editor fields..
+        // Setup the java class list
+        Vector javaTypes = new Vector();
+        javaTypes.add("String");
+        javaTypes.add("Integer");
+        javaTypes.add("Double");
+        javaTypes.add("Long");
+        javaTypes.add("Float");
+        javaTypes.add("Byte");
+        javaTypes.add("Character");
+        javaTypes.add("java.util.Date");
+        Collections.sort(javaTypes);
 
-		editingView.getJavatype().setModel(new DefaultComboBoxModel(javaTypes));
+        editingView.getJavatype().setModel(new DefaultComboBoxModel(javaTypes));
 
-		bindingInfo.addBinding("name", editingView.getDomainName(), true);
-		bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
-		bindingInfo.addBinding("sequenced", editingView.getSequenced());
-		bindingInfo
-				.addBinding("javaClassName", editingView.getJavatype(), true);
-		bindingInfo.configure();
+        bindingInfo.addBinding("name", editingView.getDomainName(), true);
+        bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
+        bindingInfo.addBinding("sequenced", editingView.getSequenced());
+        bindingInfo.addBinding("javaClassName", editingView.getJavatype(), true);
+        bindingInfo.configure();
 
-		updateEditFields();
-		setResizable(false);
-	}
+        updateEditFields();
+        setResizable(false);
+    }
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
 
-		editingView.getUpdateButton().setAction(updateAction);
-		editingView.getOkButton().setAction(closeAction);
-		editingView.getCancelButton().setAction(cancelAction);
+        editingView.getUpdateButton().setAction(updateAction);
+        editingView.getOkButton().setAction(closeAction);
+        editingView.getCancelButton().setAction(cancelAction);
 
-		editingView.getDomainList().addListSelectionListener(
-				new javax.swing.event.ListSelectionListener() {
+        editingView.getDomainList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 
-					public void valueChanged(
-							javax.swing.event.ListSelectionEvent e) {
-						commandItemChanged(e);
-					}
-				});
+            public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+                commandItemChanged(e);
+            }
+        });
 
-		editingView.getNewButton().setAction(newAction);
-		editingView.getDeleteButton().setAction(deleteAction);
+        editingView.getNewButton().setAction(newAction);
+        editingView.getDeleteButton().setAction(deleteAction);
 
-		setContentPane(editingView);
-		pack();
+        setContentPane(editingView);
+        pack();
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        UIInitializer.getInstance().initialize(this);
+    }
 
-	private void updateEditFields() {
+    private void updateEditFields() {
 
-		Domain theValue = bindingInfo.getDefaultModel();
+        Domain theValue = bindingInfo.getDefaultModel();
 
-		if (theValue != null) {
+        if (theValue != null) {
 
-			boolean isNew = !domainListModel.contains(theValue);
+            boolean isNew = !domainListModel.contains(theValue);
 
-			editingView.getNewButton().setEnabled(true);
-			editingView.getDeleteButton().setEnabled(!isNew);
-			editingView.getDomainName().setEnabled(true);
-			editingView.getDeclaration().setEnabled(true);
-			editingView.getUpdateButton().setEnabled(true);
-			editingView.getSequenced().setEnabled(true);
-			editingView.getJavatype().setEnabled(true);
+            editingView.getNewButton().setEnabled(true);
+            editingView.getDeleteButton().setEnabled(!isNew);
+            editingView.getDomainName().setEnabled(true);
+            editingView.getDeclaration().setEnabled(true);
+            editingView.getUpdateButton().setEnabled(true);
+            editingView.getSequenced().setEnabled(true);
+            editingView.getJavatype().setEnabled(true);
 
-		} else {
-			editingView.getNewButton().setEnabled(true);
-			editingView.getDeleteButton().setEnabled(false);
-			editingView.getDomainName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(false);
-			editingView.getUpdateButton().setEnabled(false);
-			editingView.getSequenced().setEnabled(false);
-			editingView.getJavatype().setEnabled(false);
-		}
+        } else {
+            editingView.getNewButton().setEnabled(true);
+            editingView.getDeleteButton().setEnabled(false);
+            editingView.getDomainName().setEnabled(false);
+            editingView.getDeclaration().setEnabled(false);
+            editingView.getUpdateButton().setEnabled(false);
+            editingView.getSequenced().setEnabled(false);
+            editingView.getJavatype().setEnabled(false);
+        }
 
-		bindingInfo.model2view();
+        bindingInfo.model2view();
 
-		editingView.getDomainList().invalidate();
-		editingView.getDomainList().setSelectedValue(
-				bindingInfo.getDefaultModel(), true);
-	}
+        editingView.getDomainList().invalidate();
+        editingView.getDomainList().setSelectedValue(bindingInfo.getDefaultModel(), true);
+    }
 
-	private void commandClose() {
+    private void commandClose() {
 
-		setModalResult(DialogConstants.MODAL_RESULT_OK);
-	}
+        setModalResult(DialogConstants.MODAL_RESULT_OK);
+    }
 
-	private void commandItemChanged(ListSelectionEvent e) {
+    private void commandItemChanged(ListSelectionEvent e) {
 
-		int index = editingView.getDomainList().getSelectedIndex();
-		if (index >= 0) {
-			bindingInfo.setDefaultModel((Domain) domainListModel.get(index));
-		}
+        int index = editingView.getDomainList().getSelectedIndex();
+        if (index >= 0) {
+            bindingInfo.setDefaultModel((Domain) domainListModel.get(index));
+        }
 
-		updateEditFields();
-	}
+        updateEditFields();
+    }
 
-	private void commandNew() {
-		bindingInfo.setDefaultModel(new Domain());
-		updateEditFields();
-	}
+    private void commandNew() {
+        bindingInfo.setDefaultModel(new Domain());
+        updateEditFields();
+    }
 
-	private void commandUpdate() {
+    private void commandUpdate() {
 
-		Domain theModel = bindingInfo.getDefaultModel();
-		if (bindingInfo.validate().size() == 0) {
-			bindingInfo.view2model();
+        Domain theModel = bindingInfo.getDefaultModel();
+        if (bindingInfo.validate().size() == 0) {
+            bindingInfo.view2model();
 
-			if (!domainListModel.contains(theModel)) {
+            if (!domainListModel.contains(theModel)) {
 
-				if (model.getDefaultValues().findByName(theModel.getName()) != null) {
-					displayErrorMessage("Name already in use!");
-					return;
-				}
-				domainListModel.add(theModel);
-				knownValues.put(theModel.getName(), theModel);
-			}
+                if (model.getDefaultValues().findByName(theModel.getName()) != null) {
+                    displayErrorMessage("Name already in use!");
+                    return;
+                }
+                domainListModel.add(theModel);
+                knownValues.put(theModel.getName(), theModel);
+            }
 
-			updateEditFields();
-		}
+            updateEditFields();
+        }
 
-	}
+    }
 
-	private void commandDelete() {
+    private void commandDelete() {
 
-		Domain theDomain = bindingInfo.getDefaultModel();
+        Domain theDomain = bindingInfo.getDefaultModel();
 
-		if (!model.getTables().isDomainUsed(theDomain)) {
-			if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+        if (!model.getTables().isDomainUsed(theDomain)) {
+            if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 
-				removedDomains.add(theDomain);
-				domainListModel.remove(theDomain);
+                removedDomains.add(theDomain);
+                domainListModel.remove(theDomain);
 
-				commandNew();
-			}
-		} else {
-			displayErrorMessage(getResourceHelper().getText(
-					ERDesignerBundle.ELEMENTINUSE));
-		}
-	}
+                commandNew();
+            }
+        } else {
+            displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+        }
+    }
 
-	@Override
-	public void applyValues() throws ElementAlreadyExistsException,
-			ElementInvalidNameException {
+    @Override
+    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		DomainList theList = model.getDomains();
+        DomainList theList = model.getDomains();
 
-		for (String theKey : knownValues.keySet()) {
-			Domain theValue = knownValues.get(theKey);
+        for (String theKey : knownValues.keySet()) {
+            Domain theValue = knownValues.get(theKey);
 
-			Domain theInModel = theList.findByName(theKey);
-			if (theInModel != null) {
-				theInModel.restoreFrom(theValue);
-			} else {
-				model.addDomain(theValue);
-			}
-		}
+            Domain theInModel = theList.findByName(theKey);
+            if (theInModel != null) {
+                theInModel.restoreFrom(theValue);
+            } else {
+                model.addDomain(theValue);
+            }
+        }
 
-		model.getDomains().removeAll(removedDomains);
-	}
+        model.getDomains().removeAll(removedDomains);
+    }
 }

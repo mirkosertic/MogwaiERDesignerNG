@@ -29,35 +29,34 @@ import javax.swing.JToolBar;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:18 $
+ * @version $Date: 2008-01-14 20:01:16 $
  */
 public class ToolBar extends JToolBar {
 
-	@Override
-	public JButton add(final Action aAction) {
-		Icon theIcon = (Icon) aAction.getValue(Action.SMALL_ICON);
-		if (theIcon != null) {
-			JButton theButton = new JButton(theIcon);
-			theButton.setToolTipText((String) aAction
-					.getValue(Action.SHORT_DESCRIPTION));
-			Dimension theSize = new Dimension(32, 32);
-			theButton.setPreferredSize(theSize);
-			theButton.setSize(theSize);
-			theButton.setMinimumSize(theSize);
-			theButton.setMaximumSize(theSize);
-			theButton.addActionListener(new ActionListener() {
+    @Override
+    public JButton add(final Action aAction) {
+        Icon theIcon = (Icon) aAction.getValue(Action.SMALL_ICON);
+        if (theIcon != null) {
+            JButton theButton = new JButton(theIcon);
+            theButton.setToolTipText((String) aAction.getValue(Action.SHORT_DESCRIPTION));
+            Dimension theSize = new Dimension(32, 32);
+            theButton.setPreferredSize(theSize);
+            theButton.setSize(theSize);
+            theButton.setMinimumSize(theSize);
+            theButton.setMaximumSize(theSize);
+            theButton.addActionListener(new ActionListener() {
 
-				public void actionPerformed(ActionEvent e) {
-					aAction.actionPerformed(e);
-				}
+                public void actionPerformed(ActionEvent e) {
+                    aAction.actionPerformed(e);
+                }
 
-			});
-			add(theButton);
+            });
+            add(theButton);
 
-			return theButton;
-		}
+            return theButton;
+        }
 
-		return super.add(aAction);
-	}
+        return super.add(aAction);
+    }
 
 }

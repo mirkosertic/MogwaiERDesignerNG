@@ -23,75 +23,75 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-07 21:42:20 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class Relation extends OwnedModelItem<Model> {
 
-	public static final String PROPERTY_POINTS = "points";
+    public static final String PROPERTY_POINTS = "points";
 
-	public static final String PROPERTY_TEXT_OFFSET = "textoffset";
+    public static final String PROPERTY_TEXT_OFFSET = "textoffset";
 
-	private Table importingTable;
+    private Table importingTable;
 
-	private Table exportingTable;
+    private Table exportingTable;
 
-	private Map<Attribute, Attribute> mapping = new HashMap<Attribute, Attribute>();
+    private Map<Attribute, Attribute> mapping = new HashMap<Attribute, Attribute>();
 
-	private CascadeType onDelete = CascadeType.CASCADE;
+    private CascadeType onDelete = CascadeType.CASCADE;
 
-	private CascadeType onUpdate = CascadeType.CASCADE;
+    private CascadeType onUpdate = CascadeType.CASCADE;
 
-	/**
-	 * @return the end
-	 */
-	public Table getExportingTable() {
-		return exportingTable;
-	}
+    /**
+     * @return the end
+     */
+    public Table getExportingTable() {
+        return exportingTable;
+    }
 
-	/**
-	 * @param end
-	 *            the end to set
-	 */
-	public void setExportingTable(Table end) {
-		exportingTable = end;
-	}
+    /**
+     * @param end
+     *            the end to set
+     */
+    public void setExportingTable(Table end) {
+        exportingTable = end;
+    }
 
-	/**
-	 * @return the start
-	 */
-	public Table getImportingTable() {
-		return importingTable;
-	}
+    /**
+     * @return the start
+     */
+    public Table getImportingTable() {
+        return importingTable;
+    }
 
-	/**
-	 * @param start
-	 *            the start to set
-	 */
-	public void setImportingTable(Table start) {
-		importingTable = start;
-	}
+    /**
+     * @param start
+     *            the start to set
+     */
+    public void setImportingTable(Table start) {
+        importingTable = start;
+    }
 
-	/**
-	 * @return the mapping
-	 */
-	public Map<Attribute, Attribute> getMapping() {
-		return mapping;
-	}
+    /**
+     * @return the mapping
+     */
+    public Map<Attribute, Attribute> getMapping() {
+        return mapping;
+    }
 
-	public CascadeType getOnDelete() {
-		return onDelete;
-	}
+    public CascadeType getOnDelete() {
+        return onDelete;
+    }
 
-	public void setOnDelete(CascadeType aOnDelete) {
-		onDelete = aOnDelete;
-	}
+    public void setOnDelete(CascadeType aOnDelete) {
+        onDelete = aOnDelete;
+    }
 
-	public CascadeType getOnUpdate() {
-		return onUpdate;
-	}
+    public CascadeType getOnUpdate() {
+        return onUpdate;
+    }
 
-	public void setOnUpdate(CascadeType aOnUpdate) {
-		onUpdate = aOnUpdate;
-	}
+    public void setOnUpdate(CascadeType aOnUpdate) {
+        onUpdate = aOnUpdate;
+    }
 
 }

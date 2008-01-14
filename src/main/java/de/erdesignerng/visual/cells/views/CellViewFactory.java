@@ -29,31 +29,31 @@ import de.erdesignerng.visual.cells.TableCell;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:21 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 
-	@Override
-	protected VertexView createVertexView(Object aVertex) {
-		if (aVertex instanceof TableCell) {
-			return new TableCellView((TableCell) aVertex);
-		}
-		return super.createVertexView(aVertex);
-	}
+    @Override
+    protected VertexView createVertexView(Object aVertex) {
+        if (aVertex instanceof TableCell) {
+            return new TableCellView((TableCell) aVertex);
+        }
+        return super.createVertexView(aVertex);
+    }
 
-	@Override
-	protected EdgeView createEdgeView(Object aObject) {
-		if (aObject instanceof RelationEdge) {
-			return new RelationEdgeView((RelationEdge) aObject);
-		}
-		return super.createEdgeView(aObject);
-	}
+    @Override
+    protected EdgeView createEdgeView(Object aObject) {
+        if (aObject instanceof RelationEdge) {
+            return new RelationEdgeView((RelationEdge) aObject);
+        }
+        return super.createEdgeView(aObject);
+    }
 
-	@Override
-	protected PortView createPortView(Object cell) {
-		if (cell instanceof DefaultPort) {
-			return new DefaultPortView(cell);
-		}
-		return super.createPortView(cell);
-	}
+    @Override
+    protected PortView createPortView(Object cell) {
+        if (cell instanceof DefaultPort) {
+            return new DefaultPortView(cell);
+        }
+        return super.createPortView(cell);
+    }
 }

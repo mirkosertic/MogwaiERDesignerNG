@@ -19,10 +19,10 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:15 $
+ * @version $Date: 2008-01-14 20:01:06 $
  */
 public class DefaultValueList extends ModelItemVector<DefaultValue> {
 
-	private static final long serialVersionUID = 7547407545913894968L;
+    private static final long serialVersionUID = 7547407545913894968L;
 
 }

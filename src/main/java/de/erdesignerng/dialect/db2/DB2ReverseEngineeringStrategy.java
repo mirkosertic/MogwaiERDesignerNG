@@ -5,12 +5,11 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:22 $
+ * @version $Date: 2008-01-14 20:01:16 $
  */
-public class DB2ReverseEngineeringStrategy extends
-		JDBCReverseEngineeringStrategy {
+public class DB2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy {
 
-	public DB2ReverseEngineeringStrategy(Dialect aDialect) {
-		super(aDialect);
-	}
+    public DB2ReverseEngineeringStrategy(Dialect aDialect) {
+        super(aDialect);
+    }
 }

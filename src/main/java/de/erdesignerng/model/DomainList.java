@@ -20,26 +20,26 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-03 13:11:15 $
+ * @version $Date: 2008-01-14 20:01:08 $
  */
 public class DomainList extends ModelItemVector<Domain> {
 
-	private static final long serialVersionUID = 7547407545913894968L;
+    private static final long serialVersionUID = 7547407545913894968L;
 
-	/**
-	 * Find a domain by a given datatype.
-	 * 
-	 * @param aDataType
-	 *            the system id
-	 * @return the found element
-	 */
-	public Domain findByDataType(String aDataType) {
-		for (Domain theDomain : this) {
-			if (aDataType.equals(theDomain.getDatatype())) {
-				return theDomain;
-			}
-		}
-		return null;
-	}
+    /**
+     * Find a domain by a given datatype.
+     * 
+     * @param aDataType
+     *            the system id
+     * @return the found element
+     */
+    public Domain findByDataType(String aDataType) {
+        for (Domain theDomain : this) {
+            if (aDataType.equals(theDomain.getDatatype())) {
+                return theDomain;
+            }
+        }
+        return null;
+    }
 
 }

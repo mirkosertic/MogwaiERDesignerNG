@@ -19,9 +19,9 @@ package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:00 $
+ * @version $Date: 2008-01-14 20:01:04 $
  */
 public interface ReverseEngineeringNotifier {
 
-	void notifyMessage(String aResourceKey, String... aValues);
+    void notifyMessage(String aResourceKey, String... aValues);
 }

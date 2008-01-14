@@ -31,7 +31,6 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.DefaultValueList;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -43,225 +42,214 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-12 17:10:03 $
+ * @version $Date: 2008-01-14 20:01:14 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
-	private DefaultListModel defaultValuesListModel;
+    private DefaultListModel defaultValuesListModel;
 
-	private BindingInfo<DefaultValue> bindingInfo = new BindingInfo<DefaultValue>();
+    private BindingInfo<DefaultValue> bindingInfo = new BindingInfo<DefaultValue>();
 
-	private DefaultValueEditorView editingView;
+    private DefaultValueEditorView editingView;
 
-	private Model model;
+    private Model model;
 
-	private List<DefaultValue> removedDefaultValues = new ArrayList<DefaultValue>();
+    private List<DefaultValue> removedDefaultValues = new ArrayList<DefaultValue>();
 
-	private Map<String, DefaultValue> knownValues = new HashMap<String, DefaultValue>();
+    private Map<String, DefaultValue> knownValues = new HashMap<String, DefaultValue>();
 
-	private DefaultAction updateAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandUpdate();
-				}
-			}, this, ERDesignerBundle.UPDATE);
+        public void processActionEvent(ActionEvent e) {
+            commandUpdate();
+        }
+    }, this, ERDesignerBundle.UPDATE);
 
-	private DefaultAction closeAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandClose();
-				}
-			}, this, ERDesignerBundle.OK);
+        public void processActionEvent(ActionEvent e) {
+            commandClose();
+        }
+    }, this, ERDesignerBundle.OK);
 
-	private DefaultAction cancelAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandCancel();
-				}
-			}, this, ERDesignerBundle.CANCEL);
+        public void processActionEvent(ActionEvent e) {
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.CANCEL);
 
-	private DefaultAction newAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction newAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandNew();
-				}
-			}, this, ERDesignerBundle.NEW);
+        public void processActionEvent(ActionEvent e) {
+            commandNew();
+        }
+    }, this, ERDesignerBundle.NEW);
 
-	private DefaultAction deleteAction = new DefaultAction(
-			new ActionEventProcessor() {
+    private DefaultAction deleteAction = new DefaultAction(new ActionEventProcessor() {
 
-				public void processActionEvent(ActionEvent e) {
-					commandDelete();
-				}
-			}, this, ERDesignerBundle.DELETE);
+        public void processActionEvent(ActionEvent e) {
+            commandDelete();
+        }
+    }, this, ERDesignerBundle.DELETE);
 
-	/**
-	 * @param parent
-	 */
-	public DefaultValueEditor(Model aModel, Component aParent) {
-		super(aParent, ERDesignerBundle.DEFAULTVALUES);
+    /**
+     * @param parent
+     */
+    public DefaultValueEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.DEFAULTVALUES);
 
-		model = aModel;
+        model = aModel;
 
-		initialize();
+        initialize();
 
-		defaultValuesListModel = new DefaultListModel();
-		for (DefaultValue theValue : aModel.getDefaultValues()) {
+        defaultValuesListModel = new DefaultListModel();
+        for (DefaultValue theValue : aModel.getDefaultValues()) {
 
-			DefaultValue theClone = theValue.clone();
+            DefaultValue theClone = theValue.clone();
 
-			knownValues.put(theClone.getName(), theClone);
-			defaultValuesListModel.add(theValue);
-		}
+            knownValues.put(theClone.getName(), theClone);
+            defaultValuesListModel.add(theValue);
+        }
 
-		editingView.getDefaultValueList().setModel(defaultValuesListModel);
+        editingView.getDefaultValueList().setModel(defaultValuesListModel);
 
-		bindingInfo.addBinding("name", editingView.getDefaultValueName(), true);
-		bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
-		bindingInfo.configure();
+        bindingInfo.addBinding("name", editingView.getDefaultValueName(), true);
+        bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
+        bindingInfo.configure();
 
-		updateEditFields();
-		setResizable(false);
-	}
+        updateEditFields();
+        setResizable(false);
+    }
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
 
-		editingView = new DefaultValueEditorView();
+        editingView = new DefaultValueEditorView();
 
-		editingView.getUpdateButton().setAction(updateAction);
-		editingView.getOkButton().setAction(closeAction);
-		editingView.getCancelButton().setAction(cancelAction);
-		editingView.getDefaultValueList().addListSelectionListener(
-				new javax.swing.event.ListSelectionListener() {
+        editingView.getUpdateButton().setAction(updateAction);
+        editingView.getOkButton().setAction(closeAction);
+        editingView.getCancelButton().setAction(cancelAction);
+        editingView.getDefaultValueList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 
-					public void valueChanged(
-							javax.swing.event.ListSelectionEvent e) {
-						handleItemChanged(e);
-					}
-				});
-		editingView.getNewButton().setAction(newAction);
-		editingView.getDeleteButton().setAction(deleteAction);
+            public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+                handleItemChanged(e);
+            }
+        });
+        editingView.getNewButton().setAction(newAction);
+        editingView.getDeleteButton().setAction(deleteAction);
 
-		setContentPane(editingView);
-		setResizable(false);
-		pack();
+        setContentPane(editingView);
+        setResizable(false);
+        pack();
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        UIInitializer.getInstance().initialize(this);
+    }
 
-	private void updateEditFields() {
+    private void updateEditFields() {
 
-		DefaultValue theValue = bindingInfo.getDefaultModel();
+        DefaultValue theValue = bindingInfo.getDefaultModel();
 
-		if (theValue != null) {
+        if (theValue != null) {
 
-			boolean isNew = !defaultValuesListModel.contains(theValue);
+            boolean isNew = !defaultValuesListModel.contains(theValue);
 
-			editingView.getNewButton().setEnabled(true);
-			editingView.getDeleteButton().setEnabled(!isNew);
-			editingView.getDefaultValueName().setEnabled(true);
-			editingView.getDeclaration().setEnabled(true);
-			editingView.getUpdateButton().setEnabled(true);
+            editingView.getNewButton().setEnabled(true);
+            editingView.getDeleteButton().setEnabled(!isNew);
+            editingView.getDefaultValueName().setEnabled(true);
+            editingView.getDeclaration().setEnabled(true);
+            editingView.getUpdateButton().setEnabled(true);
 
-		} else {
-			editingView.getNewButton().setEnabled(true);
-			editingView.getDeleteButton().setEnabled(false);
-			editingView.getDefaultValueName().setEnabled(false);
-			editingView.getDeclaration().setEnabled(false);
-			editingView.getUpdateButton().setEnabled(false);
-		}
+        } else {
+            editingView.getNewButton().setEnabled(true);
+            editingView.getDeleteButton().setEnabled(false);
+            editingView.getDefaultValueName().setEnabled(false);
+            editingView.getDeclaration().setEnabled(false);
+            editingView.getUpdateButton().setEnabled(false);
+        }
 
-		bindingInfo.model2view();
+        bindingInfo.model2view();
 
-		editingView.getDefaultValueList().invalidate();
-		editingView.getDefaultValueList().setSelectedValue(
-				bindingInfo.getDefaultModel(), true);
-	}
+        editingView.getDefaultValueList().invalidate();
+        editingView.getDefaultValueList().setSelectedValue(bindingInfo.getDefaultModel(), true);
+    }
 
-	private void commandClose() {
+    private void commandClose() {
 
-		setModalResult(DialogConstants.MODAL_RESULT_OK);
-	}
+        setModalResult(DialogConstants.MODAL_RESULT_OK);
+    }
 
-	private void handleItemChanged(ListSelectionEvent e) {
+    private void handleItemChanged(ListSelectionEvent e) {
 
-		int index = editingView.getDefaultValueList().getSelectedIndex();
-		if (index >= 0) {
-			bindingInfo.setDefaultModel((DefaultValue) defaultValuesListModel
-					.get(index));
-		}
+        int index = editingView.getDefaultValueList().getSelectedIndex();
+        if (index >= 0) {
+            bindingInfo.setDefaultModel((DefaultValue) defaultValuesListModel.get(index));
+        }
 
-		updateEditFields();
-	}
+        updateEditFields();
+    }
 
-	private void commandNew() {
+    private void commandNew() {
 
-		bindingInfo.setDefaultModel(new DefaultValue());
-		updateEditFields();
-	}
+        bindingInfo.setDefaultModel(new DefaultValue());
+        updateEditFields();
+    }
 
-	private void commandUpdate() {
+    private void commandUpdate() {
 
-		DefaultValue theModel = bindingInfo.getDefaultModel();
-		if (bindingInfo.validate().size() == 0) {
-			bindingInfo.view2model();
+        DefaultValue theModel = bindingInfo.getDefaultModel();
+        if (bindingInfo.validate().size() == 0) {
+            bindingInfo.view2model();
 
-			if (!defaultValuesListModel.contains(theModel)) {
+            if (!defaultValuesListModel.contains(theModel)) {
 
-				if (model.getDefaultValues().findByName(theModel.getName()) != null) {
-					displayErrorMessage("Name already in use!");
-					return;
-				}
-				defaultValuesListModel.add(theModel);
-				knownValues.put(theModel.getName(), theModel);
-			}
+                if (model.getDefaultValues().findByName(theModel.getName()) != null) {
+                    displayErrorMessage("Name already in use!");
+                    return;
+                }
+                defaultValuesListModel.add(theModel);
+                knownValues.put(theModel.getName(), theModel);
+            }
 
-			updateEditFields();
-		}
-	}
+            updateEditFields();
+        }
+    }
 
-	private void commandDelete() {
+    private void commandDelete() {
 
-		DefaultValue theDomain = bindingInfo.getDefaultModel();
+        DefaultValue theDomain = bindingInfo.getDefaultModel();
 
-		if (!model.getTables().isDefaultValueUsed(theDomain)) {
-			if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+        if (!model.getTables().isDefaultValueUsed(theDomain)) {
+            if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 
-				removedDefaultValues.add(theDomain);
-				defaultValuesListModel.remove(theDomain);
+                removedDefaultValues.add(theDomain);
+                defaultValuesListModel.remove(theDomain);
 
-				commandNew();
-			}
-		} else {
-			displayErrorMessage(getResourceHelper().getText(
-					ERDesignerBundle.ELEMENTINUSE));
-		}
-	}
+                commandNew();
+            }
+        } else {
+            displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+        }
+    }
 
-	@Override
-	public void applyValues() throws ElementAlreadyExistsException,
-			ElementInvalidNameException {
+    @Override
+    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-		DefaultValueList theList = model.getDefaultValues();
+        DefaultValueList theList = model.getDefaultValues();
 
-		for (String theKey : knownValues.keySet()) {
-			DefaultValue theValue = knownValues.get(theKey);
+        for (String theKey : knownValues.keySet()) {
+            DefaultValue theValue = knownValues.get(theKey);
 
-			DefaultValue theInModel = theList.findByName(theKey);
-			if (theInModel != null) {
-				theInModel.restoreFrom(theValue);
-			} else {
-				model.addDefaultValue(theValue);
-			}
-		}
+            DefaultValue theInModel = theList.findByName(theKey);
+            if (theInModel != null) {
+                theInModel.restoreFrom(theValue);
+            } else {
+                model.addDefaultValue(theValue);
+            }
+        }
 
-		model.getDefaultValues().removeAll(removedDefaultValues);
-	}
+        model.getDefaultValues().removeAll(removedDefaultValues);
+    }
 }
