@@ -33,7 +33,7 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:14 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class ImageExporter implements Exporter {
 

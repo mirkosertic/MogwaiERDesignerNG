@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:08 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class TableList extends ModelItemVector<Table> {
 
@@ -28,8 +28,8 @@ public class TableList extends ModelItemVector<Table> {
     /**
      * Find an attribute by a given system id.
      * 
-     * @param aSystemId
-     * @return the attribute or null if nothing found
+     * @param aSystemId the system id
+     * @return the attribute or null if nothing was found
      */
     public Attribute findAttributeBySystemId(String aSystemId) {
         for (Table theTable : this) {

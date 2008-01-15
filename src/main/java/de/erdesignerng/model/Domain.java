@@ -23,7 +23,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:06 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain> {
 

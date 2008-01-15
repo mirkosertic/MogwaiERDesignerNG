@@ -24,7 +24,7 @@ import javax.swing.filechooser.FileFilter;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:12 $
+ * @version $Date: 2008-01-15 19:22:44 $
  */
 public class GenericFileFilter extends FileFilter {
 

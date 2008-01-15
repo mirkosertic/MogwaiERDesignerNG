@@ -13,7 +13,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:16 $
+ * @version $Date: 2008-01-15 19:22:46 $
  */
 public class ApplicationPreferences {
 

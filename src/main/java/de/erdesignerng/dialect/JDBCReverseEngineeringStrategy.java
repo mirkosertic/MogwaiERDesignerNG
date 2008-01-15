@@ -21,6 +21,8 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.exception.ReverseEngineeringException;
@@ -28,6 +30,8 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
@@ -35,26 +39,16 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:05 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
-    private Dialect dialect;
+    protected Dialect dialect;
 
     protected JDBCReverseEngineeringStrategy(Dialect aDialect) {
         dialect = aDialect;
     }
 
-    /**
-     * Reverse engineer a domain from a column definition.
-     * 
-     * @param aModel
-     * @param aColumnName
-     * @param aTypeName
-     * @param aSize
-     * @param aDecimalDigits
-     * @return
-     */
     protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, String aSize,
             String aDecimalDigits, ReverseEngineeringOptions aOptions) {
 
@@ -117,6 +111,7 @@ public abstract class JDBCReverseEngineeringStrategy {
      * Reverse engineer an existing table.
      * 
      * @param aModel
+     * @param aCatalogName
      * @param aSchemaName
      * @param aTableName
      * @param aConnection
@@ -124,14 +119,22 @@ public abstract class JDBCReverseEngineeringStrategy {
      * @throws ReverseEngineeringException
      */
     protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, String aSchemaName, String aTableName, Connection aConnection)
+            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, String aTableName, Connection aConnection)
             throws SQLException, ReverseEngineeringException {
 
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableName);
 
+        String theSchemaName = null;
+        String theCatalogName = null;
+        if (aEntry != null) {
+            theSchemaName = aEntry.getSchemaName();
+            theCatalogName = aEntry.getCatalogName();
+        }
+
         DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-        ResultSet theTablesResultSet = theMetaData.getTables(null, aSchemaName, aTableName, new String[] { "TABLE" });
+        ResultSet theTablesResultSet = theMetaData.getTables(theCatalogName, theSchemaName, aTableName,
+                new String[] { "TABLE" });
         while (theTablesResultSet.next()) {
 
             String theTableRemarks = theTablesResultSet.getString("REMARKS");
@@ -144,7 +147,7 @@ public abstract class JDBCReverseEngineeringStrategy {
             }
 
             // Reverse engineer attributes
-            ResultSet theColumnsResultSet = theMetaData.getColumns(null, aSchemaName, aTableName, null);
+            ResultSet theColumnsResultSet = theMetaData.getColumns(theCatalogName, theSchemaName, aTableName, null);
             while (theColumnsResultSet.next()) {
 
                 String theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
@@ -177,22 +180,10 @@ public abstract class JDBCReverseEngineeringStrategy {
             theColumnsResultSet.close();
 
             // Reverse engineer primary keys
-            ResultSet thePrimaryKeyResultSet = theMetaData.getPrimaryKeys(null, aSchemaName, aTableName);
-            while (thePrimaryKeyResultSet.next()) {
+            reverseEngineerPrimaryKey(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable);
 
-                String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
-
-                Attribute theIndexAttribute = theTable.getAttributes().findByName(
-                        dialect.getCastType().cast(theColumnName));
-                if (theIndexAttribute == null) {
-                    throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
-                            + theTable.getName());
-                }
-
-                theIndexAttribute.setPrimaryKey(true);
-
-            }
-            thePrimaryKeyResultSet.close();
+            // Reverse engineer indexes
+            reverseEngineerIndexes(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable);
 
             // We are done here
             try {
@@ -203,6 +194,88 @@ public abstract class JDBCReverseEngineeringStrategy {
 
         }
         theTablesResultSet.close();
+    }
+
+    protected void reverseEngineerPrimaryKey(Model aModel, String aTableName, String aSchemaName, String aCatalogName,
+            DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
+
+        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aCatalogName, aSchemaName, aTableName);
+        Index thePrimaryKeyIndex = null;
+        while (thePrimaryKeyResultSet.next()) {
+
+            String thePKName = thePrimaryKeyResultSet.getString("PK_NAME");
+            String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
+
+            if (thePrimaryKeyIndex == null) {
+                thePrimaryKeyIndex = new Index();
+                thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
+                thePrimaryKeyIndex.setName(thePKName);
+
+                try {
+                    aTable.addIndex(aModel, thePrimaryKeyIndex);
+                } catch (Exception e) {
+                    throw new ReverseEngineeringException(e.getMessage());
+                }
+            }
+
+            Attribute theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName));
+            if (theIndexAttribute == null) {
+                throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
+                        + aTable.getName());
+            }
+
+            theIndexAttribute.setPrimaryKey(true);
+
+        }
+        thePrimaryKeyResultSet.close();
+    }
+
+    protected void reverseEngineerIndexes(Model aModel, String aTableName, String aSchemaName, String aCatalogName,
+            DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
+
+        ResultSet theIndexResults = aMetaData.getIndexInfo(aCatalogName, aSchemaName, aTableName, false, true);
+        Index theIndex = null;
+        while (theIndexResults.next()) {
+
+            String theIndexName = theIndexResults.getString("INDEX_NAME");
+            if ((theIndexName != null)
+                    && ((theIndex == null) || (!theIndex.getName().equals(theIndexName)))) {
+
+                if (aTable.getIndexes().findByName(theIndexName) == null) {
+                    theIndex = new Index();
+                    theIndex.setName(theIndexName);
+                    
+                    boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
+                    if (isNonUnique) {
+                        theIndex.setIndexType(IndexType.UNIQUE);
+                    } else {
+                        theIndex.setIndexType(IndexType.NONUNIQUE);
+                    }
+
+                    try {
+                        aTable.addIndex(aModel, theIndex);
+                    } catch (Exception e) {
+                        throw new ReverseEngineeringException("Cannot add index " + theIndexName + " in table "
+                                + aTable.getName() + " : " + e.getMessage());
+                    }
+                } else {
+                    theIndex = null;
+                }
+            }
+
+            if (theIndex != null) {
+                String theColumnName = theIndexResults.getString("COLUMN_NAME");
+                Attribute theIndexAttribute = aTable.getAttributes().findByName(
+                        dialect.getCastType().cast(theColumnName));
+                if (theIndexAttribute == null) {
+                    throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
+                            + aTable.getName());
+                }
+                theIndex.getAttributes().add(theIndexAttribute);
+            }
+
+        }
+        theIndexResults.close();
     }
 
     protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
@@ -219,10 +292,17 @@ public abstract class JDBCReverseEngineeringStrategy {
      * @throws ReverseEngineeringException
      */
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, String aSchemaName, Connection aConnection) throws SQLException,
+            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
+
+        String theSchemaName = null;
+        String theCatalogName = null;
+        if (aEntry != null) {
+            theSchemaName = aEntry.getSchemaName();
+            theCatalogName = aEntry.getCatalogName();
+        }
 
         for (Table theTable : aModel.getTables()) {
 
@@ -230,7 +310,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 
             // Foreign keys
             Relation theRelation = null;
-            ResultSet theForeignKeys = theMetaData.getImportedKeys(null, aSchemaName, theTable.getName());
+            ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, theTable.getName());
             while (theForeignKeys.next()) {
                 String theFKName = theForeignKeys.getString("FK_NAME");
                 if ((theRelation == null) || (!theFKName.equals(theRelation.getName()))) {
@@ -298,6 +378,7 @@ public abstract class JDBCReverseEngineeringStrategy {
                     try {
                         aModel.addRelation(theRelation);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         throw new ReverseEngineeringException(e.getMessage());
                     }
                 }
@@ -333,38 +414,43 @@ public abstract class JDBCReverseEngineeringStrategy {
      * Reverse engineer the existing tables in a schema.
      * 
      * @param aModel
-     * @param aSchemaName
+     * @param aOptions
+     * @param aNotifier
+     * @param aEntry
      * @param aConnection
      * @throws SQLException
      * @throws ReverseEngineeringException
      */
     protected void reverseEnginnerTables(Model aModel, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, String aSchemaName, Connection aConnection) throws SQLException,
+            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
 
-        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGSCHEMA, aSchemaName);
+        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGSCHEMA, aOptions.toString());
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
 
         // Reverse engineer tables
-        ResultSet theTablesResultSet = theMetaData
-                .getTables(null, aSchemaName, null, getReverseEngineeringTableTypes());
+        ResultSet theTablesResultSet = null;
+        if (aEntry != null) {
+            theTablesResultSet = theMetaData.getTables(aEntry.getCatalogName(), aEntry.getSchemaName(), null,
+                    getReverseEngineeringTableTypes());
+        } else {
+            theTablesResultSet = theMetaData.getTables(null, null, null, getReverseEngineeringTableTypes());
+        }
         while (theTablesResultSet.next()) {
 
             String theTableType = theTablesResultSet.getString("TABLE_TYPE");
-            String theSchema = theTablesResultSet.getString("TABLE_SCHEM");
-
             String theTableName = theTablesResultSet.getString("TABLE_NAME");
 
             // Make sure that tables are not reverse engineered twice!
             if (!aModel.getTables().elementExists(theTableName, dialect.isCaseSensitive())) {
-                reverseEngineerTable(aModel, aOptions, aNotifier, theSchema, theTableName, aConnection);
+                reverseEngineerTable(aModel, aOptions, aNotifier, aEntry, theTableName, aConnection);
             }
         }
         theTablesResultSet.close();
 
         // Reverse engineer also relations
-        reverseEngineerRelations(aModel, aOptions, aNotifier, aSchemaName, aConnection);
+        reverseEngineerRelations(aModel, aOptions, aNotifier, aEntry, aConnection);
     }
 
     public Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
@@ -373,12 +459,33 @@ public abstract class JDBCReverseEngineeringStrategy {
         Model theNewModel = new Model();
         theNewModel.setDialect(dialect);
 
-        for (Object theSchema : aOptions.getSchemaList()) {
-            reverseEnginnerTables(theNewModel, aOptions, aNotifier, (String) theSchema, aConnection);
+        if (dialect.supportsSchemaInformation()) {
+            for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
+                reverseEnginnerTables(theNewModel, aOptions, aNotifier, theEntry, aConnection);
+            }
+        } else {
+            reverseEnginnerTables(theNewModel, aOptions, aNotifier, null, aConnection);
         }
 
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
 
         return theNewModel;
+    }
+
+    public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
+
+        List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+
+        DatabaseMetaData theMetadata = aConnection.getMetaData();
+        ResultSet theResult = theMetadata.getSchemas();
+
+        while (theResult.next()) {
+            String theSchemaName = theResult.getString("TABLE_SCHEM");
+            String theCatalogName = theResult.getString("TABLE_CATALOG");
+
+            theList.add(new SchemaEntry(theCatalogName, theSchemaName));
+        }
+
+        return theList;
     }
 }

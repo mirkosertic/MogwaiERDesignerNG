@@ -18,6 +18,7 @@
 package de.erdesignerng.model;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import de.erdesignerng.dialect.Dialect;
@@ -30,7 +31,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:08 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -235,6 +236,9 @@ public class Model implements OwnedModelItemVerifier {
         Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
                 properties.getProperty(Model.PROPERTY_DRIVER), properties.getProperty(Model.PROPERTY_URL),
                 properties.getProperty(Model.PROPERTY_USER), properties.getProperty(Model.PROPERTY_PASSWORD));
+        DatabaseMetaData theMetaData = theConnection.getMetaData();
+        System.out.println("DB : " + theMetaData.getDatabaseProductName());
+        System.out.println("Version : " + theMetaData.getDatabaseProductVersion());
         return theConnection;
     }
 

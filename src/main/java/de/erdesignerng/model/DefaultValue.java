@@ -22,7 +22,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:08 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClonable<DefaultValue> {
 
@@ -40,7 +40,7 @@ public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClon
     /**
      * Setzt den Wert des Attributs <code>datatype</code>.
      * 
-     * @param aDatatype
+     * @param datatype
      *            Wert für das Attribut datatype.
      */
     public void setDatatype(String aDatatype) {

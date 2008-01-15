@@ -17,9 +17,12 @@
  */
 package de.erdesignerng.dialect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:05 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public class ReverseEngineeringOptions {
 
@@ -29,7 +32,7 @@ public class ReverseEngineeringOptions {
 
     private TableNamingEnum tableNaming;
 
-    private Object[] schemaList;
+    private List<SchemaEntry> schemaEntries = new ArrayList<SchemaEntry>();
 
     /**
      * @return the defaultValueNaming
@@ -62,21 +65,6 @@ public class ReverseEngineeringOptions {
     }
 
     /**
-     * @return the schemaList
-     */
-    public Object[] getSchemaList() {
-        return schemaList;
-    }
-
-    /**
-     * @param schemaList
-     *            the schemaList to set
-     */
-    public void setSchemaList(Object[] schemaList) {
-        this.schemaList = schemaList;
-    }
-
-    /**
      * @return the tableNaming
      */
     public TableNamingEnum getTableNaming() {
@@ -91,4 +79,22 @@ public class ReverseEngineeringOptions {
         this.tableNaming = tableNaming;
     }
 
+    /**
+     * Gibt den Wert des Attributs <code>schemaEntries</code> zurück.
+     * 
+     * @return Wert des Attributs schemaEntries.
+     */
+    public List<SchemaEntry> getSchemaEntries() {
+        return schemaEntries;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>schemaEntries</code>.
+     * 
+     * @param schemaEntries
+     *            Wert für das Attribut schemaEntries.
+     */
+    public void setSchemaEntries(List<SchemaEntry> schemaEntries) {
+        this.schemaEntries = schemaEntries;
+    }
 }

@@ -15,45 +15,48 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.db2;
+package de.erdesignerng.dialect.generic;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
- * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:16 $
+ * @version $Date: 2008-01-15 19:22:46 $
  */
-public class DB2Dialect extends SQL92Dialect {
+public class GenericJDBCDialect extends SQL92Dialect {
 
-    public DB2Dialect() {
+    public GenericJDBCDialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
-        setMaxObjectNameLength(28);
+        setMaxObjectNameLength(255);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
     }
 
     @Override
     public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new DB2ReverseEngineeringStrategy(this);
+        return new GenericJDBCReverseEngineeringStrategy(this);
     }
 
     @Override
     public String getUniqueName() {
-        return "MSSQLDialect";
+        return "GenericJDBC";
     }
 
     @Override
     public String getDriverClassName() {
-        return "net.sourceforge.jtds.jdbc.Driver";
+        return "<Whatever>";
     }
 
     @Override
     public String getDriverURLTemplate() {
-        return "jdbc:jtds:sqlserver://<host>/<db>";
+        return "<Whatever>";
     }
 
+    @Override
+    public boolean supportsSchemaInformation() {
+        return true;
+    }
 }

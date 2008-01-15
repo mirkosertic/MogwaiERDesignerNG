@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:12 $
+ * @version $Date: 2008-01-15 19:22:44 $
  */
 public class ReverseEngineerView extends JPanel {
 
