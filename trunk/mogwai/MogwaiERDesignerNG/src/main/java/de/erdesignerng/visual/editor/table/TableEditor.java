@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.event.ChangeEvent;
 
 import de.erdesignerng.ERDesignerBundle;
@@ -35,6 +34,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -42,11 +42,12 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-15 20:04:24 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -58,9 +59,11 @@ public class TableEditor extends BaseEditor {
 
     private BindingInfo<Attribute> attributeBindingInfo = new BindingInfo<Attribute>();
 
-    private DefaultListModel attributeListModel = new DefaultListModel();
+    private DefaultListModel attributeListModel;
 
-    private DefaultListModel domainListModel = new DefaultListModel();
+    private DefaultListModel domainListModel;
+    
+    private DefaultListModel indexListModel;
 
     private DefaultComboBoxModel defaultValuesListModel = new DefaultComboBoxModel();
 
@@ -124,18 +127,19 @@ public class TableEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.UPDATE);
 
-    /**
-     * @param parent
-     */
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
 
+        attributeListModel = editingView.getAttributeList().getModel();
+        domainListModel = editingView.getDomainList().getModel();
+        indexListModel = editingView.getIndexList().getModel();
+        
         model = aModel;
         editingView.getAttributeList().setCellRenderer(new AttributeListCellRenderer());
 
         for (Domain theDomain : aModel.getDomains()) {
-            domainListModel.addElement(theDomain);
+            domainListModel.add(theDomain);
         }
         editingView.getDomainList().setModel(domainListModel);
 
@@ -220,10 +224,16 @@ public class TableEditor extends BaseEditor {
 
             Attribute theClone = theAttribute.clone();
 
-            attributeListModel.addElement(theClone);
+            attributeListModel.add(theClone);
             knownValues.put(theClone.getSystemId(), theClone);
         }
-        editingView.getAttributeList().setModel(attributeListModel);
+        for (Index theIndex : aTable.getIndexes()) {
+
+            Index theClone = theIndex.clone();
+
+            indexListModel.add(theClone);
+        }
+        
 
         updateEditFields();
     }
@@ -245,7 +255,7 @@ public class TableEditor extends BaseEditor {
 
             if (!attributeListModel.contains(theModel)) {
 
-                attributeListModel.addElement(theModel);
+                attributeListModel.add(theModel);
                 knownValues.put(theModel.getSystemId(), theModel);
             }
 
@@ -309,7 +319,7 @@ public class TableEditor extends BaseEditor {
 
             if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
                 knownValues.remove(theAttribute.getSystemId());
-                attributeListModel.removeElement(theAttribute);
+                attributeListModel.remove(theAttribute);
 
                 removedAttributes.add(theAttribute);
             }

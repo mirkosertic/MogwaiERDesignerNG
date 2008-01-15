@@ -369,6 +369,14 @@
 			<Text lang="de">Engineering Optionen</Text>		
 			<Text lang="en">Engineering options</Text>					
 		</Entry>
+		<Entry id="INDEXISUNIQUE">
+			<Text lang="de">Index ist eindeutig</Text>		
+			<Text lang="en">Index is unique</Text>					
+		</Entry>
+		<Entry id="INDEXISNOTUNIQUE">
+			<Text lang="de">Index ist nicht eindeutig</Text>		
+			<Text lang="en">Index is not unique</Text>					
+		</Entry>
 		
 	</Bundle>
 </Resource>

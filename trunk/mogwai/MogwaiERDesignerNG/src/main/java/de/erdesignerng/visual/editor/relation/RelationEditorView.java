@@ -16,7 +16,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-15 20:04:24 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -353,14 +353,14 @@ public class RelationEditorView extends JPanel {
     /**
      * Setter for the group value for group Group1.
      * 
-     * @param the
+     * @param aValue
      *            value for the current selected item in the group or null if
      *            nothing is selected
      */
-    public void setGroup1Value(String value) {
+    public void setGroup1Value(String aValue) {
 
-        getOnDeleteCascadeNothing().setSelected("DEFAULT".equals(value));
-        getOnDeleteCascade().setSelected("CASCADE".equals(value));
-        getOnDeleteSetNull().setSelected("SETNULL".equals(value));
+        getOnDeleteCascadeNothing().setSelected("DEFAULT".equals(aValue));
+        getOnDeleteCascade().setSelected("CASCADE".equals(aValue));
+        getOnDeleteSetNull().setSelected("SETNULL".equals(aValue));
     }
 }
