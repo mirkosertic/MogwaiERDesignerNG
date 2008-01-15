@@ -39,7 +39,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:42 $
+ * @version $Date: 2008-01-15 20:04:24 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -332,21 +332,17 @@ public abstract class JDBCReverseEngineeringStrategy {
                     if (theUpdateRule != null) {
                         int theType = Integer.parseInt(theUpdateRule.toString());
                         switch (theType) {
-                        case DatabaseMetaData.importedKeyNoAction: {
+                        case DatabaseMetaData.importedKeyNoAction:
                             theRelation.setOnUpdate(CascadeType.NOTHING);
                             break;
-                        }
-                        case DatabaseMetaData.importedKeySetNull: {
+                        case DatabaseMetaData.importedKeySetNull:
                             theRelation.setOnUpdate(CascadeType.SET_NULL);
                             break;
-                        }
-                        case DatabaseMetaData.importedKeyCascade: {
+                        case DatabaseMetaData.importedKeyCascade: 
                             theRelation.setOnUpdate(CascadeType.CASCADE);
                             break;
-                        }
-                        default: {
+                        default: 
                             theRelation.setOnUpdate(CascadeType.CASCADE);
-                        }
                         }
                     } else {
                         theRelation.setOnUpdate(CascadeType.NOTHING);
@@ -355,21 +351,17 @@ public abstract class JDBCReverseEngineeringStrategy {
                     if (theDeleteRule != null) {
                         int theType = Integer.parseInt(theDeleteRule.toString());
                         switch (theType) {
-                        case DatabaseMetaData.importedKeyNoAction: {
+                        case DatabaseMetaData.importedKeyNoAction: 
                             theRelation.setOnDelete(CascadeType.NOTHING);
                             break;
-                        }
-                        case DatabaseMetaData.importedKeySetNull: {
+                        case DatabaseMetaData.importedKeySetNull: 
                             theRelation.setOnDelete(CascadeType.SET_NULL);
                             break;
-                        }
-                        case DatabaseMetaData.importedKeyCascade: {
+                        case DatabaseMetaData.importedKeyCascade: 
                             theRelation.setOnDelete(CascadeType.CASCADE);
                             break;
-                        }
-                        default: {
+                        default: 
                             theRelation.setOnDelete(CascadeType.CASCADE);
-                        }
                         }
                     } else {
                         theRelation.setOnDelete(CascadeType.NOTHING);

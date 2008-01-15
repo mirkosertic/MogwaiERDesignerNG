@@ -21,7 +21,8 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-15 20:04:24 $
+ * @param <T> the type
  */
 public class ModelItemVector<T extends ModelItem> extends Vector<T> {
 

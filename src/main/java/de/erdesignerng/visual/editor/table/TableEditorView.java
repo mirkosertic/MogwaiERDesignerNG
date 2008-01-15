@@ -12,6 +12,7 @@ import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
 import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultRadioButton;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
@@ -20,7 +21,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-15 20:04:24 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -46,7 +47,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultTextField m_attributename;
 
-    private javax.swing.JList m_domainlist;
+    private DefaultList m_domainlist;
 
     private DefaultCheckBox m_primarykey;
 
@@ -82,9 +83,9 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultTextField m_indexname;
 
-    private javax.swing.JRadioButton m_uniqueindex;
+    private DefaultRadioButton m_uniqueindex;
 
-    private javax.swing.JRadioButton m_notuniqueindex;
+    private DefaultRadioButton m_notuniqueindex;
 
     private javax.swing.JTable m_indexfieldlist;
 
@@ -102,7 +103,7 @@ public class TableEditorView extends DefaultPanel {
      * Constructor.
      */
     public TableEditorView() {
-        this.initialize();
+        initialize();
     }
 
     /**
@@ -114,17 +115,17 @@ public class TableEditorView extends DefaultPanel {
         String colDef = "2dlu,left:45dlu,2dlu,140dlu:grow,50dlu:grow,2dlu,50dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
-        this.setLayout(layout);
+        setLayout(layout);
 
         CellConstraints cons = new CellConstraints();
 
-        this.add(this.getComponent_1(), cons.xywh(2, 2, 1, 1));
-        this.add(this.getEntity_name(), cons.xywh(4, 2, 4, 1));
-        this.add(this.getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
-        this.add(this.getOkButton(), cons.xywh(5, 8, 1, 1));
-        this.add(this.getCancelButton(), cons.xywh(7, 8, 1, 1));
+        this.add(getComponent_1(), cons.xywh(2, 2, 1, 1));
+        this.add(getEntity_name(), cons.xywh(4, 2, 4, 1));
+        this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
+        this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
+        this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
-        this.buildGroups();
+        buildGroups();
     }
 
     /**
@@ -165,9 +166,9 @@ public class TableEditorView extends DefaultPanel {
 
         if (m_maintabbedpane == null) {
             m_maintabbedpane = new DefaultTabbedPane();
-            m_maintabbedpane.addTab(null, this.getAttributesTab());
-            m_maintabbedpane.addTab(null, this.getIndexesTab());
-            m_maintabbedpane.addTab(null, this.getMainCommensTab());
+            m_maintabbedpane.addTab(null, getAttributesTab());
+            m_maintabbedpane.addTab(null, getIndexesTab());
+            m_maintabbedpane.addTab(null, getMainCommensTab());
             m_maintabbedpane.setName("MainTabbedPane");
             m_maintabbedpane.setSelectedIndex(0);
         }
@@ -197,11 +198,11 @@ public class TableEditorView extends DefaultPanel {
             // 1));
             // this.m_attributestab.add(this.getDownButton(), cons
             // .xywh(9, 2, 1, 1));
-            m_attributestab.add(new DefaultScrollPane(this.getAttributeList()), cons.xywh(2, 4, 8, 3));
-            m_attributestab.add(this.getNewButton(), cons.xywh(2, 8, 1, 1));
-            m_attributestab.add(this.getDeleteButton(), cons.xywh(6, 8, 4, 1));
-            m_attributestab.add(this.getComponent_15(), cons.xywh(11, 2, 3, 5));
-            m_attributestab.add(this.getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
+            m_attributestab.add(new DefaultScrollPane(getAttributeList()), cons.xywh(2, 4, 8, 3));
+            m_attributestab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
+            m_attributestab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
+            m_attributestab.add(getComponent_15(), cons.xywh(11, 2, 3, 5));
+            m_attributestab.add(getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
             m_attributestab.setName("AttributesTab");
         }
 
@@ -213,7 +214,7 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JList getAttributeList() {
+    public DefaultList getAttributeList() {
 
         if (m_attributelist == null) {
             m_attributelist = new DefaultList();
@@ -259,9 +260,9 @@ public class TableEditorView extends DefaultPanel {
 
         if (m_component_15 == null) {
             m_component_15 = new DefaultTabbedPane();
-            m_component_15.addTab(null, this.getAttributesGeneralTab());
-            m_component_15.addTab(null, this.getOptionsTab());
-            m_component_15.addTab(null, this.getAttributeCommentTab());
+            m_component_15.addTab(null, getAttributesGeneralTab());
+            m_component_15.addTab(null, getOptionsTab());
+            m_component_15.addTab(null, getAttributeCommentTab());
             m_component_15.setName("Component_15");
             m_component_15.setSelectedIndex(0);
         }
@@ -287,11 +288,11 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            m_attributesgeneraltab.add(this.getComponent_20(), cons.xywh(2, 2, 1, 1));
-            m_attributesgeneraltab.add(this.getAttributeName(), cons.xywh(4, 2, 1, 1));
-            m_attributesgeneraltab.add(new DefaultScrollPane(this.getDomainList()), cons.xywh(2, 4, 3, 3));
-            m_attributesgeneraltab.add(this.getPrimaryKey(), cons.xywh(4, 8, 1, 1));
-            m_attributesgeneraltab.add(this.getNullable(), cons.xywh(4, 10, 1, 1));
+            m_attributesgeneraltab.add(getComponent_20(), cons.xywh(2, 2, 1, 1));
+            m_attributesgeneraltab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
+            m_attributesgeneraltab.add(new DefaultScrollPane(getDomainList()), cons.xywh(2, 4, 3, 3));
+            m_attributesgeneraltab.add(getPrimaryKey(), cons.xywh(4, 8, 1, 1));
+            m_attributesgeneraltab.add(getNullable(), cons.xywh(4, 10, 1, 1));
             // this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
             // .xywh(4, 12, 1, 1));
             m_attributesgeneraltab.setName("AttributesGeneralTab");
@@ -334,11 +335,10 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JList getDomainList() {
+    public DefaultList getDomainList() {
 
         if (m_domainlist == null) {
-            m_domainlist = new javax.swing.JList();
-            m_domainlist.setName("DomainList");
+            m_domainlist = new DefaultList();
         }
 
         return m_domainlist;
@@ -407,8 +407,8 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            m_optionstab.add(this.getComponent_42(), cons.xywh(2, 2, 1, 1));
-            m_optionstab.add(this.getDefault(), cons.xywh(4, 2, 1, 1));
+            m_optionstab.add(getComponent_42(), cons.xywh(2, 2, 1, 1));
+            m_optionstab.add(getDefault(), cons.xywh(4, 2, 1, 1));
             m_optionstab.setName("OptionsTab");
             m_optionstab.setVisible(false);
         }
@@ -462,7 +462,7 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            m_attributecommenttab.add(new DefaultScrollPane(this.getAttributeComment()), cons.xywh(2, 2, 3, 3));
+            m_attributecommenttab.add(new DefaultScrollPane(getAttributeComment()), cons.xywh(2, 2, 3, 3));
             m_attributecommenttab.setName("AttributeCommentTab");
             m_attributecommenttab.setVisible(false);
         }
@@ -516,11 +516,11 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            m_indexestab.add(new DefaultScrollPane(this.getIndexList()), cons.xywh(2, 2, 8, 3));
-            m_indexestab.add(this.getNewIndexButton(), cons.xywh(2, 6, 1, 1));
-            m_indexestab.add(this.getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
-            m_indexestab.add(this.getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
-            m_indexestab.add(this.getUpdateIndexButton(), cons.xywh(13, 6, 1, 1));
+            m_indexestab.add(new DefaultScrollPane(getIndexList()), cons.xywh(2, 2, 8, 3));
+            m_indexestab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
+            m_indexestab.add(getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
+            m_indexestab.add(getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
+            m_indexestab.add(getUpdateIndexButton(), cons.xywh(13, 6, 1, 1));
             m_indexestab.setName("IndexesTab");
             m_indexestab.setVisible(false);
         }
@@ -533,7 +533,7 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JList getIndexList() {
+    public DefaultList getIndexList() {
 
         if (m_indexlist == null) {
             m_indexlist = new DefaultList();
@@ -580,7 +580,7 @@ public class TableEditorView extends DefaultPanel {
 
         if (m_indextabbedpane == null) {
             m_indextabbedpane = new DefaultTabbedPane();
-            m_indextabbedpane.addTab(null, this.getIndexGeneralTab());
+            m_indextabbedpane.addTab(null, getIndexGeneralTab());
             m_indextabbedpane.setName("IndexTabbedPane");
             m_indextabbedpane.setSelectedIndex(0);
         }
@@ -606,11 +606,11 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            m_indexgeneraltab.add(this.getLabel1(), cons.xywh(2, 2, 1, 1));
-            m_indexgeneraltab.add(this.getIndexName(), cons.xywh(4, 2, 1, 1));
-            m_indexgeneraltab.add(this.getUniqueIndex(), cons.xywh(4, 8, 1, 1));
-            m_indexgeneraltab.add(this.getNotUniqueIndex(), cons.xywh(4, 10, 1, 1));
-            m_indexgeneraltab.add(new DefaultScrollPane(this.getIndexFieldList()), cons.xywh(2, 4, 3, 3));
+            m_indexgeneraltab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
+            m_indexgeneraltab.add(getIndexName(), cons.xywh(4, 2, 1, 1));
+            m_indexgeneraltab.add(getUniqueIndex(), cons.xywh(4, 8, 1, 1));
+            m_indexgeneraltab.add(getNotUniqueIndex(), cons.xywh(4, 10, 1, 1));
+            m_indexgeneraltab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 3));
             m_indexgeneraltab.setName("IndexGeneralTab");
         }
 
@@ -651,13 +651,10 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JRadioButton getUniqueIndex() {
+    public DefaultRadioButton getUniqueIndex() {
 
         if (m_uniqueindex == null) {
-            m_uniqueindex = new javax.swing.JRadioButton();
-            m_uniqueindex.setActionCommand("Index is unique");
-            m_uniqueindex.setName("UniqueIndex#Group1!U");
-            m_uniqueindex.setText("Index is unique");
+            m_uniqueindex = new DefaultRadioButton(ERDesignerBundle.INDEXISUNIQUE);
         }
 
         return m_uniqueindex;
@@ -668,13 +665,10 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JRadioButton getNotUniqueIndex() {
+    public DefaultRadioButton getNotUniqueIndex() {
 
         if (m_notuniqueindex == null) {
-            m_notuniqueindex = new javax.swing.JRadioButton();
-            m_notuniqueindex.setActionCommand("Index is not unique");
-            m_notuniqueindex.setName("NotUniqueIndex#Group1!NU");
-            m_notuniqueindex.setText("Index is not unique");
+            m_notuniqueindex = new DefaultRadioButton(ERDesignerBundle.INDEXISNOTUNIQUE);
         }
 
         return m_notuniqueindex;
@@ -745,7 +739,7 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            m_maincommenstab.add(new DefaultScrollPane(this.getEntityComment()), cons.xywh(2, 2, 1, 3));
+            m_maincommenstab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
             m_maincommenstab.setName("MainCommensTab");
             m_maincommenstab.setVisible(false);
         }
@@ -802,8 +796,8 @@ public class TableEditorView extends DefaultPanel {
     private void buildGroups() {
 
         ButtonGroup Group1 = new ButtonGroup();
-        Group1.add(this.getUniqueIndex());
-        Group1.add(this.getNotUniqueIndex());
+        Group1.add(getUniqueIndex());
+        Group1.add(getNotUniqueIndex());
     }
 
     /**
@@ -814,10 +808,10 @@ public class TableEditorView extends DefaultPanel {
      */
     public String getGroup1Value() {
 
-        if (this.getUniqueIndex().isSelected()) {
+        if (getUniqueIndex().isSelected()) {
             return "U";
         }
-        if (this.getNotUniqueIndex().isSelected()) {
+        if (getNotUniqueIndex().isSelected()) {
             return "NU";
         }
         return null;
@@ -826,13 +820,13 @@ public class TableEditorView extends DefaultPanel {
     /**
      * Setter for the group value for group Group1.
      * 
-     * @param the
+     * @param aValue
      *            value for the current selected item in the group or null if
      *            nothing is selected
      */
-    public void setGroup1Value(String value) {
+    public void setGroup1Value(String aValue) {
 
-        this.getUniqueIndex().setSelected("U".equals(value));
-        this.getNotUniqueIndex().setSelected("NU".equals(value));
+        getUniqueIndex().setSelected("U".equals(aValue));
+        getNotUniqueIndex().setSelected("NU".equals(aValue));
     }
 }

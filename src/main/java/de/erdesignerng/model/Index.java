@@ -20,9 +20,9 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-15 20:04:24 $
  */
-public class Index extends OwnedModelItem<Table> {
+public class Index extends OwnedModelItem<Table> implements ModelItemClonable<Index> {
 
     private IndexType indexType = IndexType.UNIQUE;
 
@@ -43,4 +43,20 @@ public class Index extends OwnedModelItem<Table> {
     public void setIndexType(IndexType aIndexType) {
         indexType = aIndexType;
     }
+    
+    @Override
+    public Index clone() {
+        Index theIndex = new Index();
+        theIndex.setSystemId(getSystemId());
+        theIndex.setOwner(getOwner());
+        theIndex.setName(getName());
+        theIndex.setIndexType(getIndexType());
+        return theIndex;
+    }
+
+    public void restoreFrom(Index aValue) throws Exception {
+        setName(aValue.getName());
+        setIndexType(aValue.getIndexType());
+        setOwner(aValue.getOwner());
+    }    
 }
