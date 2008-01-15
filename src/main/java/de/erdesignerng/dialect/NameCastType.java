@@ -19,7 +19,7 @@ package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:05 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public enum NameCastType {
     NOTHING(1), UPPERCASE(2), LOWERCASE(3);

@@ -42,7 +42,7 @@ import de.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:11 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class RelationTool extends BaseTool {
 
@@ -50,7 +50,7 @@ public class RelationTool extends BaseTool {
     
     protected Point2D current;
 
-    protected PortView port; 
+    protected PortView port;
     
     protected PortView firstPort;
 
@@ -80,7 +80,7 @@ public class RelationTool extends BaseTool {
     public void mousePressed(final MouseEvent e) {
 
         if (SwingUtilities.isRightMouseButton(e)) {
-            // Suppress
+            // Do nothing here
         } else if (port != null) {
             start = graph.toScreen(port.getLocation());
             firstPort = port;

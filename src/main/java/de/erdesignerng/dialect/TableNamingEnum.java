@@ -18,5 +18,6 @@
 package de.erdesignerng.dialect;
 
 public enum TableNamingEnum {
+
     STANDARD;
 }

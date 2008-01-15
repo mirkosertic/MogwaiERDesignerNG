@@ -23,14 +23,14 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:15 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
     public MySQLDialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(true);
-        setMaxObjectNameLength(28);
+        setMaxObjectNameLength(30);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
     }
@@ -53,5 +53,10 @@ public class MySQLDialect extends SQL92Dialect {
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:mysql://<host>/<db>";
+    }
+
+    @Override
+    public boolean supportsSchemaInformation() {
+        return false;
     }
 }

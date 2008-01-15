@@ -21,7 +21,7 @@ package de.erdesignerng.exception;
  * Exception to handle unallowed deletion.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:03 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public class CannotDeleteException extends ModelException {
 

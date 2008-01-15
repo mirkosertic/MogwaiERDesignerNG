@@ -41,7 +41,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 
 import org.jdesktop.swingworker.SwingWorker;
+import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
+import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
@@ -59,6 +61,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
@@ -96,9 +99,30 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:15 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
+
+    private static final class ERDesignerGrapgModelListener implements GraphModelListener {
+        public void graphChanged(GraphModelEvent aEvent) {
+            GraphLayoutCacheChange theChange = aEvent.getChange();
+        
+            Object[] theChangedObjects = theChange.getChanged();
+            Map theChangedAttributes = theChange.getPreviousAttributes();
+            if (theChangedAttributes != null) {
+                for (Object theChangedObject : theChangedObjects) {
+                    Map theAttributes = (Map) theChangedAttributes.get(theChangedObject);
+        
+                    if (theChangedObject instanceof ModelCell) {
+        
+                        ModelCell theCell = (ModelCell) theChangedObject;
+                        theCell.transferAttributesToProperties(theAttributes);
+                    }
+                }
+            }
+        
+        }
+    }
 
     private final class ReverseEngineerSwingWorker extends SwingWorker<Model, String> {
         private final ReverseEngineeringOptions options;
@@ -899,5 +923,5 @@ public class ERDesignerMainFrame extends DefaultFrame {
         }
     }
 
-    private static GraphModelListener graphModelListener = new ERDesignerGraphModelListener();
+    private static GraphModelListener graphModelListener = new ERDesignerGrapgModelListener();
 }

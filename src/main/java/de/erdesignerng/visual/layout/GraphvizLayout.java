@@ -50,7 +50,7 @@ import de.erdesignerng.visual.cells.views.RelationEdgeView;
 
 public class GraphvizLayout implements Layouter {
 
-    private String dotCommand = "C:\\Programme\\ATT\\Graphviz\\bin\\dot.exe";
+    private String dotCommand = "C:\\Program Files\\Graphviz2.17\\bin\\dot.exe";
 
     private ProcessBuilder processBuilder;
 

@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:07 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
@@ -55,7 +55,7 @@ public class RelationList extends ModelItemVector<Relation> {
      * 
      * @param aAttribute
      *            the attribute
-     * @return true if its in use, else false
+     * @return true if its in use by a relation, else false
      */
     public boolean isAttributeInUse(Attribute aAttribute) {
         for (Relation theRelation : this) {

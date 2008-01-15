@@ -19,10 +19,13 @@ package de.erdesignerng.exception;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:03 $
+ * @version $Date: 2008-01-15 19:22:41 $
  */
 public class ElementInvalidNameException extends ModelException {
 
     private static final long serialVersionUID = -3853933090405919607L;
 
+    public ElementInvalidNameException(String aMessage) {
+        super(aMessage);
+    }
 }

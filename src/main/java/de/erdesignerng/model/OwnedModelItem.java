@@ -21,8 +21,7 @@ import de.erdesignerng.exception.CannotDeleteException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:06 $
- * @param <T> the Owner
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends ModelItem {
 
@@ -36,7 +35,7 @@ public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends M
     }
 
     /**
-     * @param aOwner
+     * @param owner
      *            the owner to set
      */
     public void setOwner(T aOwner) {

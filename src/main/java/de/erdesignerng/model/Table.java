@@ -26,7 +26,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:09 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -56,7 +56,7 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     /**
      * Add an index to the table.
      * 
-     * @param aModel
+     * @param Model
      *            aModel
      * @param aIndex
      *            the table

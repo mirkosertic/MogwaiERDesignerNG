@@ -20,10 +20,10 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:09 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public enum IndexType {
-    UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE");
+    UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE"), PRIMARYKEY("PRIMARYKEY");
 
     private String type;
 
@@ -41,6 +41,9 @@ public enum IndexType {
         }
         if (NONUNIQUE.getType().equals(aType)) {
             return NONUNIQUE;
+        }
+        if (PRIMARYKEY.getType().equals(aType)) {
+            return PRIMARYKEY;
         }
         throw new IllegalArgumentException("Invalid type " + aType);
     }

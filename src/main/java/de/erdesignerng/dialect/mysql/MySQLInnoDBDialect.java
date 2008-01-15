@@ -19,7 +19,7 @@ package de.erdesignerng.dialect.mysql;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:15 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class MySQLInnoDBDialect extends MySQLDialect {
 

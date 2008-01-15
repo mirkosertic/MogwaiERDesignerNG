@@ -1,6 +1,21 @@
  
      Release Notes for MogwaiERDesignerNG
      
+Requirements
+
+* Java 5 Runtime ( SDK not required )
+
+Release 1.0.1
+
+* Tested reverse engineering with the following databases
+  MSSQL Dialect  : Microsoft SQL Server Version 09.00.3042
+  MySQL Dialect  : MySQL Version 5.0.45-community-nt
+                   MySQL Version 4.1.22-community-nt
+  Oracle Dialect : Oracle Database 10g Release 10.2.0.3.0 - Production
+* New JGraph Version ( Image Export is now working )
+* Added support for index editing
+* Removed DB2 dialect ( no test environment available )
+* Added generic JDBC dialect
 
 Release 1.0
 

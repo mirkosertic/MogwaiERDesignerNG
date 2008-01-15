@@ -35,7 +35,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:05 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public class RelationEdgeView extends EdgeView {
 
@@ -92,7 +92,6 @@ public class RelationEdgeView extends EdgeView {
                 view.beginShape = null;
                 view.lineShape = null;
                 view.endShape = null;
-                
                 Point2D p0 = p[0];
                 Point2D pe = p[n - 1];
                 Point2D p1 = p[1];

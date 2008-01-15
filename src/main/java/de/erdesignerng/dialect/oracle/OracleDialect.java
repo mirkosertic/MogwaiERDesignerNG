@@ -23,14 +23,14 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:14 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class OracleDialect extends SQL92Dialect {
 
     public OracleDialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
-        setMaxObjectNameLength(28);
+        setMaxObjectNameLength(32);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
     }

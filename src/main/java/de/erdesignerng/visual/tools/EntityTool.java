@@ -24,7 +24,7 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:11 $
+ * @version $Date: 2008-01-15 19:22:44 $
  */
 public class EntityTool extends BaseTool {
 

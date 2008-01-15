@@ -24,14 +24,14 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:06 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
     public MSSQLDialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
-        setMaxObjectNameLength(28);
+        setMaxObjectNameLength(128);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
     }
