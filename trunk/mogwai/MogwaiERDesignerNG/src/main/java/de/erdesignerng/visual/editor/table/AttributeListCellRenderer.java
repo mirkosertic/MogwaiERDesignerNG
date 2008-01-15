@@ -35,7 +35,7 @@ import de.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:13 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 

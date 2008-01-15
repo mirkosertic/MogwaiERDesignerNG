@@ -19,7 +19,7 @@ package de.erdesignerng.visual.tools;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:11 $
+ * @version $Date: 2008-01-15 19:22:44 $
  */
 public enum ToolEnum {
     HAND(), ENTITY(), RELATION();

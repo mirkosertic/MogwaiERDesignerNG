@@ -32,7 +32,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:04 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public abstract class Dialect {
 
@@ -102,17 +102,18 @@ public abstract class Dialect {
      */
     public String checkName(String aName) throws ElementInvalidNameException {
         if ((aName == null) || ("".equals(aName))) {
-            throw new ElementInvalidNameException();
+            throw new ElementInvalidNameException("Element must have a name");
         }
 
         if (!spacesAllowedInObjectNames) {
             if (aName.indexOf(' ') > 0) {
-                throw new ElementInvalidNameException();
+                throw new ElementInvalidNameException("No spaces are allowed in an object name");
             }
         }
 
         if (aName.length() > maxObjectNameLength) {
-            throw new ElementInvalidNameException();
+            throw new ElementInvalidNameException("Object name to long : " + aName + " length is " + aName.length()
+                    + " maximum is " + maxObjectNameLength);
         }
 
         return castType.cast(aName);
@@ -151,7 +152,7 @@ public abstract class Dialect {
     /**
      * Get the reverse engineering strategy.
      * 
-     * @return
+     * @return the reverse engineering strategy
      */
     public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
 
@@ -201,7 +202,7 @@ public abstract class Dialect {
      * @param aUrl
      * @param aUser
      * @param aPassword
-     * @return
+     * @return the connection
      * @throws ClassNotFoundException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -217,5 +218,9 @@ public abstract class Dialect {
         theProperties.put("user", aUser);
         theProperties.put("password", aPassword);
         return theDriver.connect(aUrl, theProperties);
+    }
+
+    public boolean supportsSchemaInformation() {
+        return true;
     }
 }

@@ -27,25 +27,25 @@ import de.erdesignerng.visual.cells.ModelCell;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:15 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 final class ERDesignerGraphModelListener implements GraphModelListener {
     public void graphChanged(GraphModelEvent aEvent) {
         GraphLayoutCacheChange theChange = aEvent.getChange();
-    
+
         Object[] theChangedObjects = theChange.getChanged();
         Map theChangedAttributes = theChange.getPreviousAttributes();
         if (theChangedAttributes != null) {
             for (Object theChangedObject : theChangedObjects) {
                 Map theAttributes = (Map) theChangedAttributes.get(theChangedObject);
-    
+
                 if (theChangedObject instanceof ModelCell) {
-    
+
                     ModelCell theCell = (ModelCell) theChangedObject;
                     theCell.transferAttributesToProperties(theAttributes);
                 }
             }
         }
-    
+
     }
 }

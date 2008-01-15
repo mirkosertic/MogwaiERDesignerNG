@@ -20,10 +20,9 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:07 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class IndexList extends ModelItemVector<Index> {
 
     private static final long serialVersionUID = 890361971577085178L;
-
 }

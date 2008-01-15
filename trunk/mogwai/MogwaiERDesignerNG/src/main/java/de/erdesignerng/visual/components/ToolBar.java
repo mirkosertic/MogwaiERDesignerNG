@@ -29,7 +29,7 @@ import javax.swing.JToolBar;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:16 $
+ * @version $Date: 2008-01-15 19:22:47 $
  */
 public class ToolBar extends JToolBar {
 

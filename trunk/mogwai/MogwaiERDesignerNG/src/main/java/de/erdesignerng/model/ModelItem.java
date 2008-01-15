@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:08 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public abstract class ModelItem {
 
@@ -47,7 +47,7 @@ public abstract class ModelItem {
     /**
      * Set the name.
      * 
-     * @param aName
+     * @param name
      *            the name to set
      */
     public void setName(String aName) {
@@ -62,7 +62,7 @@ public abstract class ModelItem {
     }
 
     /**
-     * @param aSystemId
+     * @param systemId
      *            the systemId to set
      */
     public void setSystemId(String aSystemId) {

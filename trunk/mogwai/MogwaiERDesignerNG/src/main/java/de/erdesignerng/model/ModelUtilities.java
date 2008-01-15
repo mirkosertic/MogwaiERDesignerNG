@@ -25,7 +25,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:07 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public final class ModelUtilities {
 
@@ -112,7 +112,7 @@ public final class ModelUtilities {
      * Create a unique system id.
      * 
      * @param aClass
-     * @return the system id
+     * @return the newly created id
      */
     public static String createSystemIdFor(Object aObject) {
         return UUID.randomUUID().toString();

@@ -22,8 +22,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:09 $
- * @param <T> the type 
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public interface ModelCell<T> {
 

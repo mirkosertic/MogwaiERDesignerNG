@@ -46,7 +46,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:13 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class TableEditor extends BaseEditor {
 

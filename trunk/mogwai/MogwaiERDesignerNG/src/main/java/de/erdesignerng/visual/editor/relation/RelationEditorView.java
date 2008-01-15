@@ -16,7 +16,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:15 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -353,7 +353,7 @@ public class RelationEditorView extends JPanel {
     /**
      * Setter for the group value for group Group1.
      * 
-     * @param value
+     * @param the
      *            value for the current selected item in the group or null if
      *            nothing is selected
      */

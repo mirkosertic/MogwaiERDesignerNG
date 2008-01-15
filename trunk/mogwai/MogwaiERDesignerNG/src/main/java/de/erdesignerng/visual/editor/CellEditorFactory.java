@@ -35,7 +35,7 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:12 $
+ * @version $Date: 2008-01-15 19:22:44 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 

@@ -8,7 +8,9 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultList;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPane;
@@ -18,7 +20,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:13 $
+ * @version $Date: 2008-01-15 19:22:45 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -30,7 +32,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultTabbedPaneTab m_attributestab;
 
-    private javax.swing.JList m_attributelist;
+    private DefaultList m_attributelist;
 
     private DefaultButton m_newbutton;
 
@@ -56,17 +58,17 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultLabel m_component_42;
 
-    private javax.swing.JComboBox m_default;
+    private DefaultComboBox m_default;
 
     private DefaultTabbedPaneTab m_attributecommenttab;
 
-    private javax.swing.JTextArea m_attributecomment;
+    private DefaultTextArea m_attributecomment;
 
     private DefaultButton m_updateattributebutton;
 
     private DefaultTabbedPaneTab m_indexestab;
 
-    private javax.swing.JList m_indexlist;
+    private DefaultList m_indexlist;
 
     private DefaultButton m_newindexbutton;
 
@@ -164,7 +166,7 @@ public class TableEditorView extends DefaultPanel {
         if (m_maintabbedpane == null) {
             m_maintabbedpane = new DefaultTabbedPane();
             m_maintabbedpane.addTab(null, this.getAttributesTab());
-            // m_maintabbedpane.addTab(null, this.getIndexesTab());
+            m_maintabbedpane.addTab(null, this.getIndexesTab());
             m_maintabbedpane.addTab(null, this.getMainCommensTab());
             m_maintabbedpane.setName("MainTabbedPane");
             m_maintabbedpane.setSelectedIndex(0);
@@ -214,8 +216,7 @@ public class TableEditorView extends DefaultPanel {
     public javax.swing.JList getAttributeList() {
 
         if (m_attributelist == null) {
-            m_attributelist = new javax.swing.JList();
-            m_attributelist.setName("AttributeList");
+            m_attributelist = new DefaultList();
         }
 
         return m_attributelist;
@@ -437,8 +438,7 @@ public class TableEditorView extends DefaultPanel {
     public javax.swing.JComboBox getDefault() {
 
         if (m_default == null) {
-            m_default = new javax.swing.JComboBox();
-            m_default.setName("Default");
+            m_default = new DefaultComboBox();
         }
 
         return m_default;
@@ -478,8 +478,7 @@ public class TableEditorView extends DefaultPanel {
     public javax.swing.JTextArea getAttributeComment() {
 
         if (m_attributecomment == null) {
-            m_attributecomment = new javax.swing.JTextArea();
-            m_attributecomment.setName("AttributeComment");
+            m_attributecomment = new DefaultTextArea();
         }
 
         return m_attributecomment;
@@ -537,7 +536,7 @@ public class TableEditorView extends DefaultPanel {
     public javax.swing.JList getIndexList() {
 
         if (m_indexlist == null) {
-            m_indexlist = new javax.swing.JList();
+            m_indexlist = new DefaultList();
             m_indexlist.setName("IndexList");
         }
 
@@ -827,7 +826,7 @@ public class TableEditorView extends DefaultPanel {
     /**
      * Setter for the group value for group Group1.
      * 
-     * @param value
+     * @param the
      *            value for the current selected item in the group or null if
      *            nothing is selected
      */

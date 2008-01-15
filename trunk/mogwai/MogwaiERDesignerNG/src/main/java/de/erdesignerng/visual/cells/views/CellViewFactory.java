@@ -29,7 +29,7 @@ import de.erdesignerng.visual.cells.TableCell;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:06 $
+ * @version $Date: 2008-01-15 19:22:42 $
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 

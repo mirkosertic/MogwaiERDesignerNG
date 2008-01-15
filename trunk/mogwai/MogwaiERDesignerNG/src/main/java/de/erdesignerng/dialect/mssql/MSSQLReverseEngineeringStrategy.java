@@ -5,7 +5,7 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:06 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy {
 

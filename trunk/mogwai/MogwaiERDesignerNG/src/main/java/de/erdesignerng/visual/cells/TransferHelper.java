@@ -22,7 +22,7 @@ import java.awt.geom.Point2D;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-14 20:01:11 $
+ * @version $Date: 2008-01-15 19:22:43 $
  */
 public final class TransferHelper {
 
