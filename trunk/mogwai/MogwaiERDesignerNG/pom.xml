@@ -1,170 +1,157 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sourceforge.mogwai</groupId>
-	<artifactId>mogwai-erdesignerng</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0</version>
-	<name>MogwaiERDesignerNG</name>
-	<description>
-		Mogwai ER-Designer is an entity relationship design tool.
-	</description>
-	<url>http://mogwai.sourceforge.net</url>
-	<developers>
-		<developer>
-			<id>mirkosertic</id>
-			<name>Mirko Sertic</name>
-			<roles>
-				<role>Project admin</role>
-			</roles>
-			<email>mail@mirkosertic.de</email>
-			<organization>Project Mogwai</organization>
-		</developer>
-	</developers>
-	<inceptionYear>2002</inceptionYear>
-	<licenses>
-		<license>
-			<name>GNU LESSER GENERAL PUBLIC LICENSE Version 2.1</name>
-		</license>
-	</licenses>
-	<mailingLists>
-		<mailingList>
-			<name>Mogwai users mailing list</name>
-			<post>mogwai-users@lists.sourceforge.net</post>
-		</mailingList>
-	</mailingLists>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<configuration>
-							<tasks>
-
-								<taskdef name="XMLResourceBundle"
-									classname="de.mogwai.common.i18n.XMLResourceBundleTask">
-								</taskdef>
-
-								<XMLResourceBundle
-									src="src/main/java"
-									dest="src/main/resources">
-									<fileset dir="src/main/resources">
-										<include name="*.xml" />
-									</fileset>
-								</XMLResourceBundle>
-
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>net.sourceforge.mogwai</groupId>
-						<artifactId>mogwai-i18n</artifactId>
-						<version>2.9</version>
-					</dependency>
-				</dependencies>
-
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>javadoc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<links>
-						<link>
-							http://java.sun.com/j2se/1.5.0/docs/api
-						</link>
-					</links>
-				</configuration>
-			</plugin>
-
-			<plugin>
-		        <artifactId>maven-assembly-plugin</artifactId>
-        		<configuration>
-		          <descriptors>
-        			    <descriptor>assembly.xml</descriptor>
-		          </descriptors>
-   		        </configuration>			
-			</plugin>
-						
-		</plugins>
-	</build>
-	<dependencies>
-		<dependency>
-			<groupId>net.sourceforge.mogwai</groupId>
-			<artifactId>mogwai-databinding</artifactId>
-			<version>1.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.mogwai</groupId>
-			<artifactId>mogwai-i18n</artifactId>
-			<version>2.9</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.mogwai</groupId>
-			<artifactId>mogwai-looks</artifactId>
-			<version>1.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.mogwai</groupId>
-			<artifactId>mogwai-smartstart</artifactId>
-			<version>1.0</version>
-			<scope>compile</scope>
-		</dependency>		
-		<dependency>
-			<groupId>jgoodies</groupId>
-			<artifactId>forms</artifactId>
-			<version>1.0.6</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>jgraph</groupId>
-			<artifactId>jgraph</artifactId>
-			<version>5.10.2.0</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<artifactId>batik-svggen</artifactId>
-			<groupId>batik</groupId>
-			<version>1.6-1</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<artifactId>swing-worker</artifactId>
-			<groupId>net.java.dev</groupId>
-			<version>1.1</version>
-			<scope>compile</scope>
-		</dependency>
-
-	</dependencies>
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.sourceforge.mogwai</groupId>
+  <artifactId>mogwai-erdesignerng</artifactId>
+  <name>MogwaiERDesignerNG</name>
+  <version>1.0</version>
+  <description>Mogwai ER-Designer is an entity relationship design tool.</description>
+  <url>http://mogwai.sourceforge.net</url>
+  <inceptionYear>2002</inceptionYear>
+  <mailingLists>
+    <mailingList>
+      <name>Mogwai users mailing list</name>
+      <post>mogwai-users@lists.sourceforge.net</post>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <id>mirkosertic</id>
+      <name>Mirko Sertic</name>
+      <email>mail@mirkosertic.de</email>
+      <organization>Project Mogwai</organization>
+      <roles>
+        <role>Project admin</role>
+      </roles>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE Version 2.1</name>
+    </license>
+  </licenses>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <taskdef name="XMLResourceBundle" classname="de.mogwai.common.i18n.XMLResourceBundleTask"></taskdef>
+                <XMLResourceBundle dest="src/main/resources" src="src/main/java">
+                  <fileset dir="src/main/resources">
+                    <include name="*.xml" />
+                  </fileset>
+                </XMLResourceBundle>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.mogwai</groupId>
+            <artifactId>mogwai-i18n</artifactId>
+            <version>2.9</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>javadoc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+          </links>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>net.sourceforge.mogwai</groupId>
+      <artifactId>mogwai-databinding</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.mogwai</groupId>
+      <artifactId>mogwai-i18n</artifactId>
+      <version>2.9</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.mogwai</groupId>
+      <artifactId>mogwai-looks</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.mogwai</groupId>
+      <artifactId>mogwai-smartstart</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>jgoodies</groupId>
+      <artifactId>forms</artifactId>
+      <version>1.0.6</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>jgraph</groupId>
+      <artifactId>jgraph</artifactId>
+      <version>5.10.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>batik</groupId>
+      <artifactId>batik-svggen</artifactId>
+      <version>1.6-1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev</groupId>
+      <artifactId>swing-worker</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.15</version>
+    </dependency>
+  </dependencies>
 </project>
