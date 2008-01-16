@@ -46,13 +46,11 @@ import de.mogwai.common.client.looks.components.DefaultCheckBoxListModel;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
-import de.mogwai.common.client.looks.components.table.DefaultListTableModel;
-import de.mogwai.common.client.looks.components.table.DefaultTableDescriptor;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 20:43:31 $
+ * @version $Date: 2008-01-16 22:13:03 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -174,6 +172,7 @@ public class TableEditor extends BaseEditor {
         indexBindingInfo.addBinding("name", editingView.getIndexName(), true);
 
         RadioButtonAdapter theAdapter = new RadioButtonAdapter();
+        theAdapter.addMapping(IndexType.PRIMARYKEY, editingView.getPrimaryIndex());
         theAdapter.addMapping(IndexType.UNIQUE, editingView.getUniqueIndex());
         theAdapter.addMapping(IndexType.NONUNIQUE, editingView.getNotUniqueIndex());
         indexBindingInfo.addBinding("indexType", theAdapter);
@@ -332,12 +331,18 @@ public class TableEditor extends BaseEditor {
             boolean isNew = !indexListModel.contains(theValue);
 
             editingView.getNewIndexButton().setEnabled(true);
-            editingView.getDeleteIndexButton().setEnabled(!isNew);
             editingView.getUpdateIndexButton().setEnabled(true);
 
-            editingView.getIndexFieldList().setEnabled(true);
-
             indexBindingInfo.setEnabled(true);
+
+            boolean isPrimary = theValue.getIndexType().equals(IndexType.PRIMARYKEY);
+
+            editingView.getIndexFieldList().setEnabled(!isPrimary);
+            editingView.getPrimaryIndex().setEnabled(!isPrimary);
+            editingView.getUniqueIndex().setEnabled(!isPrimary);
+            editingView.getNotUniqueIndex().setEnabled(!isPrimary);
+
+            editingView.getDeleteIndexButton().setEnabled(!isPrimary);
         } else {
 
             editingView.getNewIndexButton().setEnabled(true);
@@ -442,9 +447,22 @@ public class TableEditor extends BaseEditor {
         if (theValidationResult.size() == 0) {
             indexBindingInfo.view2model();
 
+            if (theModel.getIndexType().equals(IndexType.PRIMARYKEY)) {
+                for (int i = 0; i < indexListModel.getSize(); i++) {
+                    Index theIndex = (Index) indexListModel.get(i);
+                    if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
+                        displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.THEREISALREADYAPRIMARYKEY));
+                        return;
+                    }
+                }
+            }
+
             if (!indexListModel.contains(theModel)) {
                 indexListModel.add(theModel);
             }
+
+            theModel.getAttributes().clear();
+            theModel.getAttributes().addAll(editingView.getIndexFieldList().getSelectedItems());
 
             updateIndexEditFields();
         }
@@ -467,6 +485,10 @@ public class TableEditor extends BaseEditor {
             for (Attribute theAttribute : removedAttributes) {
                 theTable.getAttributes().removeById(theAttribute.getSystemId());
             }
+            for (Index theIndex : removedIndexes) {
+                theTable.getIndexes().removeById(theIndex.getSystemId());
+            }
+
         }
 
         for (String theKey : knownAttributeValues.keySet()) {
@@ -478,6 +500,21 @@ public class TableEditor extends BaseEditor {
             } else {
                 try {
                     theExistantAttribute.restoreFrom(theAttribute);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        for (String theKey : knownIndexValues.keySet()) {
+            Index theIndex = knownIndexValues.get(theKey);
+
+            Index theExistantIndex = theTable.getIndexes().findBySystemId(theKey);
+            if (theExistantIndex == null) {
+                theTable.addIndex(model, theIndex);
+            } else {
+                try {
+                    theExistantIndex.restoreFrom(theIndex);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

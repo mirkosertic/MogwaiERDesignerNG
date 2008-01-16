@@ -23,7 +23,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 20:43:31 $
+ * @version $Date: 2008-01-16 22:13:03 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -88,6 +88,8 @@ public class TableEditorView extends DefaultPanel {
     private DefaultRadioButton m_uniqueindex;
 
     private DefaultRadioButton m_notuniqueindex;
+
+    private DefaultRadioButton m_primaryindex;
 
     private DefaultCheckBoxList<Attribute> m_indexfieldlist;
 
@@ -600,7 +602,7 @@ public class TableEditorView extends DefaultPanel {
         if (m_indexgeneraltab == null) {
             m_indexgeneraltab = new DefaultTabbedPaneTab(m_indextabbedpane, ERDesignerBundle.GENERAL);
 
-            String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu";
+            String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -610,8 +612,9 @@ public class TableEditorView extends DefaultPanel {
 
             m_indexgeneraltab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
             m_indexgeneraltab.add(getIndexName(), cons.xywh(4, 2, 1, 1));
-            m_indexgeneraltab.add(getUniqueIndex(), cons.xywh(4, 8, 1, 1));
-            m_indexgeneraltab.add(getNotUniqueIndex(), cons.xywh(4, 10, 1, 1));
+            m_indexgeneraltab.add(getPrimaryIndex(), cons.xywh(4, 8, 1, 1));            
+            m_indexgeneraltab.add(getUniqueIndex(), cons.xywh(4, 10, 1, 1));
+            m_indexgeneraltab.add(getNotUniqueIndex(), cons.xywh(4, 12, 1, 1));
             m_indexgeneraltab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 3));
             m_indexgeneraltab.setName("IndexGeneralTab");
         }
@@ -662,6 +665,16 @@ public class TableEditorView extends DefaultPanel {
         return m_uniqueindex;
     }
 
+    public DefaultRadioButton getPrimaryIndex() {
+
+        if (m_primaryindex == null) {
+            m_primaryindex = new DefaultRadioButton(ERDesignerBundle.INDEXISPRIMARY);
+        }
+
+        return m_primaryindex;
+    }
+
+    
     /**
      * Getter method for component NotUniqueIndex.
      * 
@@ -779,6 +792,7 @@ public class TableEditorView extends DefaultPanel {
     private void buildGroups() {
 
         ButtonGroup Group1 = new ButtonGroup();
+        Group1.add(getPrimaryIndex());
         Group1.add(getUniqueIndex());
         Group1.add(getNotUniqueIndex());
     }
