@@ -12,10 +12,11 @@ Release 1.0.1
   MySQL Dialect  : MySQL Version 5.0.45-community-nt
                    MySQL Version 4.1.22-community-nt
   Oracle Dialect : Oracle Database 10g Release 10.2.0.3.0 - Production
-* New JGraph Version ( Image Export is now working )
+* New JGraph Version ( Image Export is now working correctly )
 * Added support for index editing
 * Removed DB2 dialect ( no test environment available )
 * Added generic JDBC dialect
+* Added schema validation for loading ERDesigner models from file
 
 Release 1.0
 

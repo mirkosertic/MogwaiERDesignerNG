@@ -39,7 +39,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 20:04:24 $
+ * @version $Date: 2008-01-16 19:27:07 $
  */
 public abstract class JDBCReverseEngineeringStrategy {
 
@@ -238,13 +238,12 @@ public abstract class JDBCReverseEngineeringStrategy {
         while (theIndexResults.next()) {
 
             String theIndexName = theIndexResults.getString("INDEX_NAME");
-            if ((theIndexName != null)
-                    && ((theIndex == null) || (!theIndex.getName().equals(theIndexName)))) {
+            if ((theIndexName != null) && ((theIndex == null) || (!theIndex.getName().equals(theIndexName)))) {
 
                 if (aTable.getIndexes().findByName(theIndexName) == null) {
                     theIndex = new Index();
                     theIndex.setName(theIndexName);
-                    
+
                     boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
                     if (isNonUnique) {
                         theIndex.setIndexType(IndexType.UNIQUE);
@@ -338,10 +337,10 @@ public abstract class JDBCReverseEngineeringStrategy {
                         case DatabaseMetaData.importedKeySetNull:
                             theRelation.setOnUpdate(CascadeType.SET_NULL);
                             break;
-                        case DatabaseMetaData.importedKeyCascade: 
+                        case DatabaseMetaData.importedKeyCascade:
                             theRelation.setOnUpdate(CascadeType.CASCADE);
                             break;
-                        default: 
+                        default:
                             theRelation.setOnUpdate(CascadeType.CASCADE);
                         }
                     } else {
@@ -351,16 +350,16 @@ public abstract class JDBCReverseEngineeringStrategy {
                     if (theDeleteRule != null) {
                         int theType = Integer.parseInt(theDeleteRule.toString());
                         switch (theType) {
-                        case DatabaseMetaData.importedKeyNoAction: 
+                        case DatabaseMetaData.importedKeyNoAction:
                             theRelation.setOnDelete(CascadeType.NOTHING);
                             break;
-                        case DatabaseMetaData.importedKeySetNull: 
+                        case DatabaseMetaData.importedKeySetNull:
                             theRelation.setOnDelete(CascadeType.SET_NULL);
                             break;
-                        case DatabaseMetaData.importedKeyCascade: 
+                        case DatabaseMetaData.importedKeyCascade:
                             theRelation.setOnDelete(CascadeType.CASCADE);
                             break;
-                        default: 
+                        default:
                             theRelation.setOnDelete(CascadeType.CASCADE);
                         }
                     } else {
