@@ -193,4 +193,8 @@ public interface ERDesignerBundle {
   String INDEXISUNIQUE = "INDEXISUNIQUE";
   /** Index ist nicht eindeutig */
   String INDEXISNOTUNIQUE = "INDEXISNOTUNIQUE";
+  /** Index ist Primärschlüssel */
+  String INDEXISPRIMARY = "INDEXISPRIMARY";
+  /** Es existiert schon ein Primärschlüssel! */
+  String THEREISALREADYAPRIMARYKEY = "THEREISALREADYAPRIMARYKEY";
 }
