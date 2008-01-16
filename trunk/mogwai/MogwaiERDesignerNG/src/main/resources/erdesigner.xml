@@ -377,6 +377,14 @@
 			<Text lang="de">Index ist nicht eindeutig</Text>		
 			<Text lang="en">Index is not unique</Text>					
 		</Entry>
+		<Entry id="INDEXISPRIMARY">
+			<Text lang="de">Index ist Primärschlüssel</Text>		
+			<Text lang="en">Index is primary key</Text>					
+		</Entry>
+		<Entry id="THEREISALREADYAPRIMARYKEY">
+			<Text lang="de">Es existiert schon ein Primärschlüssel!</Text>		
+			<Text lang="en">There is already a primary key</Text>					
+		</Entry>
 		
 	</Bundle>
 </Resource>

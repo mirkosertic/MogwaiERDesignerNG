@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2008-01-16 22:13:03 $
  */
 public class Index extends OwnedModelItem<Table> implements ModelItemClonable<Index> {
 
@@ -51,6 +51,10 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
         theIndex.setOwner(getOwner());
         theIndex.setName(getName());
         theIndex.setIndexType(getIndexType());
+
+        for (Attribute theAttribute : attributes) {
+            theIndex.getAttributes().add(theAttribute.clone());
+        }
         return theIndex;
     }
 
@@ -58,5 +62,16 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
         setName(aValue.getName());
         setIndexType(aValue.getIndexType());
         setOwner(aValue.getOwner());
+
+        attributes.clear();
+
+        for (Attribute theAttribute : aValue.getAttributes()) {
+            Attribute theFound = getOwner().getAttributes().findBySystemId(theAttribute.getSystemId());
+            if (theFound != null) {
+                attributes.add(theFound);
+            } else {
+                throw new Exception("Cannot find attribute " + theAttribute.getName());
+            }
+        }
     }
 }
