@@ -31,7 +31,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.ERDesignerMainFrame;
 import de.mogwai.common.i18n.ResourceHelper;
 
-public class ReverseEnginneringTest extends TestCase {
+public class ReverseEnginneringTester extends TestCase {
 
     protected void runRETest(String aFileName, String aDestname) throws BackingStoreException,
             SAXException, IOException, ParserConfigurationException, ClassNotFoundException, InstantiationException,
