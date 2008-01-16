@@ -20,8 +20,11 @@ package de.erdesignerng.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,12 +33,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Attribute;
@@ -51,7 +59,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:44 $
+ * @version $Date: 2008-01-16 19:27:07 $
  */
 public final class ModelIOUtilities {
 
@@ -202,6 +210,46 @@ public final class ModelIOUtilities {
     public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
         Document theDocument = documentBuilder.parse(aInputStream);
         aInputStream.close();
+
+        final List<SAXParseException> theExceptions = new ArrayList<SAXParseException>();
+
+        // Validate the document
+        SchemaFactory theSchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+        // hook up org.xml.sax.ErrorHandler implementation.
+        theSchemaFactory.setErrorHandler(new ErrorHandler() {
+
+            public void error(SAXParseException aException) throws SAXException {
+                theExceptions.add(aException);
+            }
+
+            public void fatalError(SAXParseException aException) throws SAXException {
+                theExceptions.add(aException);
+            }
+
+            public void warning(SAXParseException aException) throws SAXException {
+                theExceptions.add(aException);
+            }
+        });
+
+        // get the custom xsd schema describing the required format for my XML
+        // files.
+        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource("/erdesignerschema.xsd"));
+
+        // Create a Validator capable of validating XML files according to my
+        // custom schema.
+        Validator validator = theSchema.newValidator();
+
+        // parse the XML DOM tree againts the stricter XSD schema
+        validator.validate(new DOMSource(theDocument));
+
+        if (theExceptions.size() > 0) {
+            for (SAXParseException theException : theExceptions) {
+                System.out.println(theException.getMessage());
+            }
+            throw new IOException("Failed to validate document against schema");
+        }
+
         Model theModel = new Model();
 
         NodeList theElements = theDocument.getElementsByTagName(CONFIGURATION);
