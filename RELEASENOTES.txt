@@ -5,6 +5,13 @@ Requirements
 
 * Java 5 Runtime ( SDK not required )
 
+Release 1.0
+
+* First support for editing domains, defaultvalues, tables and relations
+* First support for reverse engineering of different JDBC datasources
+* JDBC dialects available for MySQL, MySQL(InnoDB), MSSQL, Oracle , Postgres 
+  and DB2
+
 Release 1.0.1
 
 * Tested reverse engineering with the following databases
@@ -17,11 +24,4 @@ Release 1.0.1
 * Removed DB2 dialect ( no test environment available )
 * Added generic JDBC dialect
 * Added schema validation for loading ERDesigner models from file
-
-Release 1.0
-
-* First support for editing domains, defaultvalues, tables and relations
-* First support for reverse engineering of different JDBC datasources
-* JDBC dialects available for MySQL, MySQL(InnoDB), MSSQL, Oracle , Postgres 
-  and DB2
      
