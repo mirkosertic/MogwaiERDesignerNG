@@ -43,7 +43,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:44 $
+ * @version $Date: 2008-01-16 20:43:31 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -78,7 +78,7 @@ public class ReverseEngineerEditor extends BaseEditor {
             commandUpdate();
         }
     }, this, ERDesignerBundle.UPDATE);
-
+    
     /**
      * @param parent
      */
