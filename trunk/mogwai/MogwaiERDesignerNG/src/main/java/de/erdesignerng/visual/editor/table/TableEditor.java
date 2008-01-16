@@ -42,14 +42,17 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultCheckBoxListModel;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
+import de.mogwai.common.client.looks.components.table.DefaultListTableModel;
+import de.mogwai.common.client.looks.components.table.DefaultTableDescriptor;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2008-01-16 20:43:31 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -330,20 +333,40 @@ public class TableEditor extends BaseEditor {
 
             editingView.getNewIndexButton().setEnabled(true);
             editingView.getDeleteIndexButton().setEnabled(!isNew);
-            editingView.getIndexList().setEnabled(true);
-            editingView.getIndexName().setEnabled(true);
             editingView.getUpdateIndexButton().setEnabled(true);
 
+            editingView.getIndexFieldList().setEnabled(true);
+
+            indexBindingInfo.setEnabled(true);
         } else {
 
             editingView.getNewIndexButton().setEnabled(true);
-            editingView.getIndexList().setEnabled(true);
             editingView.getDeleteIndexButton().setEnabled(false);
-            editingView.getIndexName().setEnabled(false);
             editingView.getUpdateIndexButton().setEnabled(false);
+
+            editingView.getIndexFieldList().setEnabled(false);
+
+            indexBindingInfo.setEnabled(false);
         }
 
         indexBindingInfo.model2view();
+
+        DefaultCheckBoxListModel<Attribute> theModel = editingView.getIndexFieldList().getModel();
+        theModel.clear();
+
+        List<Attribute> theSelectedAttributes = new ArrayList<Attribute>();
+
+        for (int i = 0; i < attributeListModel.getSize(); i++) {
+            Attribute theAttribute = (Attribute) attributeListModel.get(i);
+            theModel.add(theAttribute);
+
+            if (theValue != null) {
+                if (theValue.getAttributes().findBySystemId(theAttribute.getSystemId()) != null) {
+                    theSelectedAttributes.add(theAttribute);
+                }
+            }
+        }
+        editingView.getIndexFieldList().setSelectedItems(theSelectedAttributes);
 
         editingView.getIndexList().invalidate();
         editingView.getIndexList().setSelectedValue(indexBindingInfo.getDefaultModel(), true);

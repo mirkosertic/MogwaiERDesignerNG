@@ -6,8 +6,10 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.Attribute;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
+import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
@@ -21,7 +23,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 20:04:24 $
+ * @version $Date: 2008-01-16 20:43:31 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -87,7 +89,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultRadioButton m_notuniqueindex;
 
-    private javax.swing.JTable m_indexfieldlist;
+    private DefaultCheckBoxList<Attribute> m_indexfieldlist;
 
     private DefaultButton m_updateindexbutton;
 
@@ -679,29 +681,10 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JTable getIndexFieldList() {
+    public DefaultCheckBoxList<Attribute> getIndexFieldList() {
 
         if (m_indexfieldlist == null) {
-            m_indexfieldlist = new javax.swing.JTable() {
-                /**
-                 * public TableCellRenderer getCellRenderer(int row, int column) {
-                 * return new AttributeSelectListCellRenderer(); }
-                 * 
-                 * public TableCellEditor getCellEditor(int row, int column) {
-                 * 
-                 * AttributeSelectListCellRenderer.Item item =
-                 * (AttributeSelectListCellRenderer.Item) this
-                 * .getModel().getValueAt(row, column);
-                 * 
-                 * AttributeSelectListCellEditor editor = new
-                 * AttributeSelectListCellEditor( item);
-                 * 
-                 * return editor; }
-                 */
-            };
-            m_indexfieldlist.setName("IndexFieldList");
-            m_indexfieldlist.setShowGrid(false);
-            m_indexfieldlist.setOpaque(false);
+            m_indexfieldlist = new DefaultCheckBoxList<Attribute>();
         }
 
         return m_indexfieldlist;
