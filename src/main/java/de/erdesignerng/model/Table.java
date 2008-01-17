@@ -26,7 +26,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 20:04:24 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -41,8 +41,8 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
      *            the model
      * @param aAttribute
      *            the table
-     * @throws ElementAlreadyExistsException
-     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @throws ElementInvalidNameException is thrown in case of an error
      */
     public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
             ElementInvalidNameException {
@@ -60,8 +60,8 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
      *            the model
      * @param aIndex
      *            the table
-     * @throws ElementAlreadyExistsException
-     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @throws ElementInvalidNameException is thrown in case of an error
      */
     public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 

@@ -39,32 +39,32 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
-public abstract class JDBCReverseEngineeringStrategy {
+public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
-    protected Dialect dialect;
+    protected T dialect;
 
-    protected JDBCReverseEngineeringStrategy(Dialect aDialect) {
+    protected JDBCReverseEngineeringStrategy(T aDialect) {
         dialect = aDialect;
     }
 
-    protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, String aSize,
-            String aDecimalDigits, ReverseEngineeringOptions aOptions) {
+    protected String convertColumnTypeToRealType(String aTypeName) {
+        return aTypeName;
+    }
 
-        StringBuffer theTypeDefinition = new StringBuffer(aTypeName);
-        if (((aSize != null)) && (aTypeName.indexOf(")") < 0)) {
-            theTypeDefinition.append("(");
-            theTypeDefinition.append(aSize);
-            if (aDecimalDigits != null) {
-                theTypeDefinition.append(",");
-                theTypeDefinition.append(aDecimalDigits);
-            }
-            theTypeDefinition.append(")");
+    protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, String aSize,
+            String aDecimalDigits, ReverseEngineeringOptions aOptions)
+            throws ReverseEngineeringException {
+
+        DataType theDataType = dialect.getDataType(convertColumnTypeToRealType(aTypeName));
+        if (theDataType == null) {
+            throw new ReverseEngineeringException("Unknown data type " + aTypeName);
         }
 
-        String theDataType = theTypeDefinition.toString();
-        Domain theDomain = aModel.getDomains().findByDataType(theDataType);
+        String theTypeDefinition = theDataType.createTypeDefinitionFor(aSize, aDecimalDigits);
+
+        Domain theDomain = aModel.getDomains().findByDataType(theTypeDefinition);
         if (theDomain != null) {
 
             if (theDomain.getName().equals(aColumnName)) {
@@ -88,7 +88,7 @@ public abstract class JDBCReverseEngineeringStrategy {
 
                     theDomain = new Domain();
                     theDomain.setName(theName);
-                    theDomain.setDatatype(theDataType);
+                    theDomain.setDatatype(theTypeDefinition);
 
                     aModel.getDomains().add(theDomain);
 
@@ -99,7 +99,7 @@ public abstract class JDBCReverseEngineeringStrategy {
         } else {
             theDomain = new Domain();
             theDomain.setName(aColumnName);
-            theDomain.setDatatype(theDataType);
+            theDomain.setDatatype(theTypeDefinition);
 
             aModel.getDomains().add(theDomain);
         }
@@ -108,15 +108,24 @@ public abstract class JDBCReverseEngineeringStrategy {
     }
 
     /**
-     * Reverse engineer an existing table.
+     * Reverse enginner an existing table.
      * 
      * @param aModel
-     * @param aCatalogName
-     * @param aSchemaName
+     *            the model
+     * @param aOptions
+     *            the options
+     * @param aNotifier
+     *            the notifier
+     * @param aEntry
+     *            the schema entry
      * @param aTableName
+     *            the table name
      * @param aConnection
+     *            the connection
      * @throws SQLException
+     *             is thrown in case of an error
      * @throws ReverseEngineeringException
+     *             is thrown in case of an error
      */
     protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, String aTableName, Connection aConnection)
@@ -183,7 +192,11 @@ public abstract class JDBCReverseEngineeringStrategy {
             reverseEngineerPrimaryKey(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable);
 
             // Reverse engineer indexes
-            reverseEngineerIndexes(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable);
+            try {
+                reverseEngineerIndexes(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable);
+            } catch (SQLException e) {
+                // if there is an sql exception, just ignore it
+            }
 
             // We are done here
             try {
@@ -285,10 +298,19 @@ public abstract class JDBCReverseEngineeringStrategy {
      * Reverse engineer relations.
      * 
      * @param aModel
-     * @param aSchemaName
+     *            the model
+     * @param aOptions
+     *            the options
+     * @param aNotifier
+     *            the notifier
+     * @param aEntry
+     *            the schema entry
      * @param aConnection
+     *            the connection
      * @throws SQLException
+     *             is thrown in case of an error
      * @throws ReverseEngineeringException
+     *             is thrown in case of an error
      */
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, Connection aConnection) throws SQLException,
@@ -402,15 +424,35 @@ public abstract class JDBCReverseEngineeringStrategy {
     }
 
     /**
-     * Reverse engineer the existing tables in a schema.
+     * Check if the table is a valid table for reverse engineering.
+     * 
+     * @param aTableName
+     *            the table name
+     * @param aTableType
+     *            the table type
+     * @return true if the table is valid, else false
+     */
+    protected boolean isValidTable(String aTableName, String aTableType) {
+        return true;
+    }
+
+    /**
+     * Reverse engineer the tables of a given schema entry.
      * 
      * @param aModel
+     *            the model
      * @param aOptions
+     *            the options
      * @param aNotifier
+     *            the notifier
      * @param aEntry
+     *            the schema entry
      * @param aConnection
+     *            the connection
      * @throws SQLException
+     *             is thrown in case of an error
      * @throws ReverseEngineeringException
+     *             is thrown in case of an error
      */
     protected void reverseEnginnerTables(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, Connection aConnection) throws SQLException,
@@ -435,7 +477,9 @@ public abstract class JDBCReverseEngineeringStrategy {
 
             // Make sure that tables are not reverse engineered twice!
             if (!aModel.getTables().elementExists(theTableName, dialect.isCaseSensitive())) {
-                reverseEngineerTable(aModel, aOptions, aNotifier, aEntry, theTableName, aConnection);
+                if (isValidTable(theTableName, theTableType)) {
+                    reverseEngineerTable(aModel, aOptions, aNotifier, aEntry, theTableName, aConnection);
+                }
             }
         }
         theTablesResultSet.close();
@@ -478,5 +522,19 @@ public abstract class JDBCReverseEngineeringStrategy {
         }
 
         return theList;
+    }
+
+    protected void getDataTypes(Connection aConnection) throws SQLException {
+        DatabaseMetaData theMetaData = aConnection.getMetaData();
+        ResultSet theResult = theMetaData.getTypeInfo();
+        while (theResult.next()) {
+            String theTypeName = theResult.getString("TYPE_NAME");
+            String thePrefix = theResult.getString("LITERAL_PREFIX");
+            String theSuffix = theResult.getString("LITERAL_SUFFIX");
+            String theCreateParams = theResult.getString("CREATE_PARAMS");
+
+            System.out.println("registerType(\"" + theTypeName + "\",\"" + thePrefix + "\",\"" + theSuffix + "\",\""
+                    + theCreateParams + "\");");
+        }
     }
 }

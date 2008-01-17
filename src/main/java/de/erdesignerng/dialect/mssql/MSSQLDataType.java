@@ -17,15 +17,11 @@
  */
 package de.erdesignerng.dialect.mssql;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.DataType;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- */
-public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
+public class MSSQLDataType extends DataType {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
-        super(aDialect);
+    public MSSQLDataType(String aName, String aDefinition) {
+        super(aName, aDefinition);
     }
 }

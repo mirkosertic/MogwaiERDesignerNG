@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:42 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class ReverseEngineeringOptions {
 
@@ -33,7 +33,7 @@ public class ReverseEngineeringOptions {
     private TableNamingEnum tableNaming;
 
     private List<SchemaEntry> schemaEntries = new ArrayList<SchemaEntry>();
-
+    
     /**
      * @return the defaultValueNaming
      */

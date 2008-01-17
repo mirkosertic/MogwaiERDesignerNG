@@ -17,17 +17,20 @@
  */
 package de.erdesignerng.dialect.postgres;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
     public PostgresDialect() {
+        super("postgres_datatypes.xml");
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
         setMaxObjectNameLength(28);
@@ -55,4 +58,16 @@ public class PostgresDialect extends SQL92Dialect {
         return "jdbc:postgresql://<host>:<port>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
+        return new PostgresDataType(aTypeName, aCreateParams);
+    }
+
+    @Override
+    public SQLGenerator createSQLGenerator() {
+        return new PostgresSQLGenerator(this);
+    }
 }

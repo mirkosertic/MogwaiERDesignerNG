@@ -17,17 +17,21 @@
  */
 package de.erdesignerng.dialect.oracle;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class OracleDialect extends SQL92Dialect {
 
     public OracleDialect() {
+        super("oracle_datatypes.xml");
+        
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
         setMaxObjectNameLength(32);
@@ -55,4 +59,16 @@ public class OracleDialect extends SQL92Dialect {
         return "jdbc:oracle:thin:@//<host>:<port>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
+        return new OracleDataType(aTypeName, aCreateParams);
+    }
+
+    @Override
+    public SQLGenerator createSQLGenerator() {
+        return new OracleSQLGenerator(this);
+    }
 }

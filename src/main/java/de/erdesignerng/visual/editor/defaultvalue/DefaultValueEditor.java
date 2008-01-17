@@ -42,7 +42,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -94,7 +94,10 @@ public class DefaultValueEditor extends BaseEditor {
     }, this, ERDesignerBundle.DELETE);
 
     /**
-     * @param parent
+     * Create an editor. 
+     * 
+     * @param aModel the model
+     * @param aParent the parent container
      */
     public DefaultValueEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.DEFAULTVALUES);
