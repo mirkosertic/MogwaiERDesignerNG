@@ -11,7 +11,7 @@
         <include>*.txt</include>
         <include>*.bat</include>
         <include>*.sh</include>
-        <include>*.xml</include>        
+        <include>*_datatypes.xml</include>
       </includes>
     </fileSet>
     <fileSet>
