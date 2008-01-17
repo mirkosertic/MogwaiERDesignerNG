@@ -15,17 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mssql;
+package de.erdesignerng.dialect.mysql;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- */
-public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
+public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
+    public MySQLSQLGenerator(MySQLDialect aDialect) {
         super(aDialect);
     }
 }

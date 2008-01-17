@@ -15,17 +15,25 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mssql;
+package de.erdesignerng.dialect.config;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- */
-public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
+public class ConfigDataTypes {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
-        super(aDialect);
+    private List<ConfigDataType> types = new ArrayList<ConfigDataType>();
+
+    /**
+     * Gibt den Wert des Attributs <code>types</code> zurück.
+     * 
+     * @return Wert des Attributs types.
+     */
+    public List<ConfigDataType> getTypes() {
+        return types;
+    }
+    
+    public void addType(ConfigDataType aType) {
+        types.add(aType);
     }
 }

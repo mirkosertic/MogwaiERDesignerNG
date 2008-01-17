@@ -17,9 +17,11 @@
  */
 package de.erdesignerng.dialect.mysql;
 
+import de.erdesignerng.dialect.SQLGenerator;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class MySQLInnoDBDialect extends MySQLDialect {
 
@@ -29,5 +31,13 @@ public class MySQLInnoDBDialect extends MySQLDialect {
     @Override
     public String getUniqueName() {
         return "MySQLInnoDBDialect";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SQLGenerator createSQLGenerator() {
+        return new MySQLInnoDBSQLGenerator(this);
     }
 }

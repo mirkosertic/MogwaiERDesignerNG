@@ -35,7 +35,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:42 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class RelationEdgeView extends EdgeView {
 
@@ -144,10 +144,7 @@ public class RelationEdgeView extends EdgeView {
                     }
 
                     view.sharedPath.lineTo((float) p[n - 1].getX(), (float) p[n - 1].getY());
-                }
-
-                /* END */
-                else {
+                } else {
                     for (int i = 1; i < n - 1; i++) {
                         view.sharedPath.lineTo((float) p[i].getX(), (float) p[i].getY());
                     }

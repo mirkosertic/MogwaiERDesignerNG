@@ -15,17 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mssql;
+package de.erdesignerng.dialect.oracle;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.DataType;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- */
-public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
+public class OracleDataType extends DataType {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
-        super(aDialect);
+    public OracleDataType(String aName, String aDefinition) {
+        super(aName, aDefinition);
     }
 }

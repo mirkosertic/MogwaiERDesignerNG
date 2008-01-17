@@ -17,15 +17,12 @@
  */
 package de.erdesignerng.dialect.mssql;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- */
-public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
+public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
+    public MSSQLSQLGenerator(MSSQLDialect aDialect) {
         super(aDialect);
     }
+
 }

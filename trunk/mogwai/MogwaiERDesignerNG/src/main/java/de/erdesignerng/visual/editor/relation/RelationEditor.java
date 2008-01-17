@@ -38,7 +38,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:46 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -65,7 +65,10 @@ public class RelationEditor extends BaseEditor {
     }, this, ERDesignerBundle.CANCEL);
 
     /**
-     * @param parent
+     * Create a relation editor. 
+     * 
+     * @param aModel the model
+     * @param aParent the parent container
      */
     public RelationEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.RELATIONEDITOR);

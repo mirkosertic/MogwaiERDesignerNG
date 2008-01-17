@@ -17,18 +17,21 @@
  */
 package de.erdesignerng.dialect.mssql;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
     public MSSQLDialect() {
+        super("mssql_datatypes.xml");
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
         setMaxObjectNameLength(128);
@@ -56,4 +59,16 @@ public class MSSQLDialect extends SQL92Dialect {
         return "jdbc:jtds:sqlserver://<host>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
+        return new MSSQLDataType(aTypeName, aCreateParams);
+    }
+
+    @Override
+    public SQLGenerator createSQLGenerator() {
+        return new MSSQLSQLGenerator(this);
+    }    
 }

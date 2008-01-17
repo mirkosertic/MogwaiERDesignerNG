@@ -21,7 +21,7 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2008-01-17 19:34:29 $
  * @param <T>
  *            the type
  */
@@ -51,6 +51,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
      * @param aName
      *            the name of the element
      * @param aCaseSensitive
+     *            true if checking is case sensitive, else false
      * 
      * @return true if it exists, else false.
      */

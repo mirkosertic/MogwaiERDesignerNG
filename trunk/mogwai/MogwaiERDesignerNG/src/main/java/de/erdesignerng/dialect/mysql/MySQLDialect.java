@@ -17,22 +17,26 @@
  */
 package de.erdesignerng.dialect.mysql;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
     public MySQLDialect() {
+        super("mysql_datatypes.xml");
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(true);
         setMaxObjectNameLength(30);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
+
     }
 
     @Override
@@ -58,5 +62,18 @@ public class MySQLDialect extends SQL92Dialect {
     @Override
     public boolean supportsSchemaInformation() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
+        return new MySQLDataType(aTypeName, aCreateParams);
+    }
+
+    @Override
+    public SQLGenerator createSQLGenerator() {
+        return new MySQLSQLGenerator(this);
     }
 }

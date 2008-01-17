@@ -13,7 +13,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:46 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class ApplicationPreferences {
 
@@ -83,7 +83,7 @@ public class ApplicationPreferences {
     /**
      * Save the preferences.
      * 
-     * @throws BackingStoreException
+     * @throws BackingStoreException is thrown if the operation fails
      */
     public void store() throws BackingStoreException {
 

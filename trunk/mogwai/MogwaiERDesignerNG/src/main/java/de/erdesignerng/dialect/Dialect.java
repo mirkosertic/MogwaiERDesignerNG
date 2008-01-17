@@ -17,22 +17,23 @@
  */
 package de.erdesignerng.dialect;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.digester.Digester;
+
+import de.erdesignerng.dialect.config.ConfigDataType;
+import de.erdesignerng.dialect.config.ConfigDataTypes;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:42 $
+ * @version $Date: 2008-01-17 19:34:28 $
  */
 public abstract class Dialect {
 
@@ -45,6 +46,38 @@ public abstract class Dialect {
     private boolean nullablePrimaryKeyAllowed;
 
     private NameCastType castType;
+
+    private Map<String, DataType> dataTypes = new HashMap<String, DataType>();
+
+    protected Dialect(String aDatatypeKonfigFilename) {
+        if (aDatatypeKonfigFilename != null) {
+            loadDatatypeKonfiguration(aDatatypeKonfigFilename);
+        }
+    }
+
+    protected void loadDatatypeKonfiguration(String aKonfigfilename) {
+
+        System.out.println("Loading " + aKonfigfilename);
+
+        Digester theDigester = new Digester();
+
+        theDigester.addObjectCreate("datatypes", ConfigDataTypes.class);
+        theDigester.addSetProperties("datatypes");
+        theDigester.addObjectCreate("datatypes/datatype", ConfigDataType.class);
+        theDigester.addSetProperties("datatypes/datatype");
+        theDigester.addSetNext("datatypes/datatype", "addType");
+
+        ConfigDataTypes theConfiguration = null;
+        try {
+            theConfiguration = (ConfigDataTypes) theDigester.parse(new File(aKonfigfilename));
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot load configuration", e);
+        }
+
+        for (ConfigDataType theType : theConfiguration.getTypes()) {
+            registerType(theType.getName(), theType.getPattern());
+        }
+    }
 
     /**
      * @return the caseSensitive
@@ -156,33 +189,6 @@ public abstract class Dialect {
      */
     public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
 
-    public abstract List<String> createAlterAttributeSQL(Table aTable, String attributeName, Domain aDomain,
-            boolean aNullable);
-
-    public abstract List<String> createRenameAttributeSQL(Table aTable, Attribute aAttribute, String aNewName);
-
-    public abstract List<String> createRenameRelationSQL(Relation aRelation, String aNewName);
-
-    public abstract List<String> createRenameTableSQL(Table aTable, String aNewName);
-
-    public abstract List<String> createRenameIndexSQL(Table aTable, Index index, String aNewName);
-
-    public abstract List<String> createDropAttributeSQL(Attribute aAttribute);
-
-    public abstract List<String> createDropRelationSQL(Relation aRelation);
-
-    public abstract List<String> createDropIndexSQL(Index aIndex);
-
-    public abstract List<String> createDropTableSQL(Table aTable);
-
-    public abstract List<String> createAddTableSQL(Table aTable);
-
-    public abstract List<String> createAddAttributeSQL(Attribute aAttribute);
-
-    public abstract List<String> createAddIndexSQL(Index aAttribute);
-
-    public abstract List<String> createAddRelationSQL(Relation aRelation);
-
     public abstract String getUniqueName();
 
     @Override
@@ -198,15 +204,24 @@ public abstract class Dialect {
      * Create a connection to a database.
      * 
      * @param aClassLoader
+     *            the classloader
      * @param aDriver
+     *            the name of the driver
      * @param aUrl
+     *            the url
      * @param aUser
+     *            the user
      * @param aPassword
+     *            the password
      * @return the connection
      * @throws ClassNotFoundException
+     *             is thrown in case of an error
      * @throws InstantiationException
+     *             is thrown in case of an error
      * @throws IllegalAccessException
+     *             is thrown in case of an error
      * @throws SQLException
+     *             is thrown in case of an error
      */
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
             String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
@@ -223,4 +238,26 @@ public abstract class Dialect {
     public boolean supportsSchemaInformation() {
         return true;
     }
+
+    /**
+     * Get a defined data type.
+     * 
+     * @param aTypeName
+     *            the type name
+     * @return the data type or null if its not existant
+     */
+    public DataType getDataType(String aTypeName) {
+        return dataTypes.get(aTypeName);
+    }
+
+    protected abstract DataType createDataTypeFor(String aTypeName, String aCreateParams);
+
+    protected void registerType(String aTypename, String aPattern) {
+
+        System.out.println(getClass().getSimpleName() + " -> Registering type " + aTypename + " with pattern "
+                + aPattern);
+        dataTypes.put(aTypename, createDataTypeFor(aTypename, aPattern));
+    }
+    
+    public abstract SQLGenerator createSQLGenerator();
 }
