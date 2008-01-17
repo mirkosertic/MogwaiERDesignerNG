@@ -17,17 +17,20 @@
  */
 package de.erdesignerng.dialect.generic;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:46 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class GenericJDBCDialect extends SQL92Dialect {
 
     public GenericJDBCDialect() {
+        super(null);
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
         setMaxObjectNameLength(255);
@@ -58,5 +61,23 @@ public class GenericJDBCDialect extends SQL92Dialect {
     @Override
     public boolean supportsSchemaInformation() {
         return true;
+    }
+
+    @Override
+    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
+        return new GenericDataType(aTypeName, aCreateParams);
+    }
+
+    @Override
+    public SQLGenerator createSQLGenerator() {
+        return new GenericSQLGenerator(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataType getDataType(String aTypeName) {
+        return new GenericDataType(aTypeName, "[$size],[$decimal]");
     }
 }

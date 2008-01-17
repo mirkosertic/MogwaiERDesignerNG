@@ -31,7 +31,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -51,8 +51,6 @@ public class Model implements OwnedModelItemVerifier {
 
     private RelationList relations = new RelationList();
 
-    private ModelHistory history = new ModelHistory(this);
-
     private Dialect dialect = new MySQLDialect();
 
     private ModelProperties properties = new ModelProperties();
@@ -62,8 +60,8 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aTable
      *            the table
-     * @throws ElementAlreadyExistsException
-     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @throws ElementInvalidNameException is thrown in case of an error
      */
     public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
@@ -82,8 +80,8 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aDomain
      *            the table
-     * @throws ElementAlreadyExistsException
-     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @throws ElementInvalidNameException is thrown in case of an error
      */
     public void addDomain(Domain aDomain) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
@@ -98,14 +96,12 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aRelation
      *            the table
-     * @throws ElementAlreadyExistsException
-     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @throws ElementInvalidNameException is thrown in case of an error
      */
     public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
         ModelUtilities.checkNameAndExistance(relations, aRelation, dialect);
-
-        history.createAddRelationCommand(aRelation);
 
         aRelation.setOwner(this);
         relations.add(aRelation);
@@ -116,8 +112,8 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aDefaultValue
      *            the table
-     * @throws ElementAlreadyExistsException
-     * @throws ElementInvalidNameException
+     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @throws ElementInvalidNameException is thrown in case of an error
      */
     public void addDefaultValue(DefaultValue aDefaultValue) throws ElementAlreadyExistsException,
             ElementInvalidNameException {
@@ -135,14 +131,6 @@ public class Model implements OwnedModelItemVerifier {
         if (aSender instanceof Domain) {
             ModelUtilities.checkExistance(domains, aName, dialect);
         }
-    }
-
-    public ModelHistory getModelHistory() {
-        return history;
-    }
-
-    public void setModelHistory(ModelHistory aModelHistory) {
-        history = aModelHistory;
     }
 
     public Dialect getDialect() {

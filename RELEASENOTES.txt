@@ -15,13 +15,15 @@ Release 1.0
 Release 1.0.1
 
 * Tested reverse engineering with the following databases
-  MSSQL Dialect  : Microsoft SQL Server Version 09.00.3042
-  MySQL Dialect  : MySQL Version 5.0.45-community-nt
-                   MySQL Version 4.1.22-community-nt
-  Oracle Dialect : Oracle Database 10g Release 10.2.0.3.0 - Production
+  MSSQL Dialect  : Microsoft SQL Server Version 09.00.3042 ( JTDS JDBC - Driver 1.2.2 )
+                   Microsoft SQL Server 08.00.2039 ( JTDS JDBC - Driver 1.2.2 )
+  MySQL Dialect  : MySQL Version 5.0.45-community-nt (MySQL Connector 5.1.5 )
+                   MySQL Version 4.1.22-community-nt (MySQL Connector 5.1.5 )
+  Oracle Dialect : Oracle Database 10g Release 10.2.0.3.0 - Production ( Oracle 10 client )
 * New JGraph Version ( Image Export is now working correctly )
 * Added support for index editing
 * Removed DB2 dialect ( no test environment available )
 * Added generic JDBC dialect
 * Added schema validation for loading ERDesigner models from file
+* Added configuration files for dialect datatypes
      

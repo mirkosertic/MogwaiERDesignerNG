@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -97,7 +97,10 @@ public class DomainEditor extends BaseEditor {
     }, this, ERDesignerBundle.DELETE);
 
     /**
-     * @param aParent
+     * Create a domain editor. 
+     * 
+     * @param aModel the model
+     * @param aParent the parent container
      */
     public DomainEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.DOMAINS);

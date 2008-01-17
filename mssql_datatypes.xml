@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<datatypes>
+	<datatype name="bit"/>
+	<datatype name="tinyint"/>
+	<datatype name="tinyint identity"/>
+	<datatype name="bigint"/>
+	<datatype name="bigint identity"/>
+	<datatype name="varbinary" pattern="$size"/>
+	<datatype name="binary" pattern="$size"/>
+	<datatype name="timestamp"/>
+	<datatype name="char" pattern="$size"/>
+	<datatype name="nchar" pattern="$size"/>
+	<datatype name="uniqueidentifier"/>
+	<datatype name="numeric" pattern="$size,$decimal"/>
+	<datatype name="numeric() identity" pattern="$size"/>
+	<datatype name="decimal" pattern="$size,$decimal"/>
+	<datatype name="money"/>
+	<datatype name="smallmoney"/>
+	<datatype name="decimal() identity" pattern="$size"/>
+	<datatype name="int"/>
+	<datatype name="int identity"/>
+	<datatype name="smallint"/>
+	<datatype name="smallint identity"/>
+	<datatype name="real"/>
+	<datatype name="float"/>
+	<datatype name="varchar" pattern="$size"/>
+	<datatype name="nvarchar" pattern="$size"/>
+	<datatype name="sysname"/>
+	<datatype name="sql_variant"/>
+	<datatype name="datetime"/>
+	<datatype name="smalldatetime"/>
+	<datatype name="image"/>
+	<datatype name="ntext"/>
+	<datatype name="xml"/>
+	<datatype name="text"/>
+</datatypes>	       

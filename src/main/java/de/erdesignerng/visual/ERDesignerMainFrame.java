@@ -99,7 +99,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-17 19:34:30 $
  */
 public class ERDesignerMainFrame extends DefaultFrame {
 
@@ -716,7 +716,7 @@ public class ERDesignerMainFrame extends DefaultFrame {
     /**
      * Log an exception.
      * 
-     * @param aException
+     * @param aException the exception
      */
     protected void logException(Exception aException) {
         aException.printStackTrace();

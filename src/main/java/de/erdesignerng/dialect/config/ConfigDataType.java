@@ -15,41 +15,47 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model;
+package de.erdesignerng.dialect.config;
 
-import de.erdesignerng.exception.CannotDeleteException;
+public class ConfigDataType {
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- * @param <T>
- *            the type
- */
-public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends ModelItem {
-
-    private T owner;
+    private String name;
+    
+    private String pattern;
 
     /**
-     * @return the owner
-     */
-    public T getOwner() {
-        return owner;
-    }
-
-    /**
-     * @param aOwner
-     *            the owner to set
-     */
-    public void setOwner(T aOwner) {
-        owner = aOwner;
-    }
-
-    /**
-     * Delete this element.
+     * Gibt den Wert des Attributs <code>name</code> zurück.
      * 
-     * @throws CannotDeleteException is thrown in case of an error
+     * @return Wert des Attributs name.
      */
-    public void delete() throws CannotDeleteException {
-        owner.delete(this);
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>name</code>.
+     * 
+     * @param name Wert für das Attribut name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>pattern</code> zurück.
+     * 
+     * @return Wert des Attributs pattern.
+     */
+    public String getPattern() {
+        return pattern;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>pattern</code>.
+     * 
+     * @param pattern Wert für das Attribut pattern.
+     */
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 }

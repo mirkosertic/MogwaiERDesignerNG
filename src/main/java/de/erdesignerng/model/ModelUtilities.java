@@ -25,7 +25,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-17 19:34:29 $
  */
 public final class ModelUtilities {
 
@@ -35,15 +35,15 @@ public final class ModelUtilities {
     /**
      * Check existance in a list.
      * 
-     * @param aVector
-     * @param aName
-     * @param aProperties
-     * @throws ElementAlreadyExistsException
+     * @param aVector the list
+     * @param aName the name
+     * @param aDialect  the dialect
+     * @throws ElementAlreadyExistsException is thrown if name exists
      */
-    public static void checkExistance(ModelItemVector aVector, String aName, Dialect aProperties)
+    public static void checkExistance(ModelItemVector aVector, String aName, Dialect aDialect)
             throws ElementAlreadyExistsException {
 
-        if (aVector.elementExists(aName, aProperties.isCaseSensitive())) {
+        if (aVector.elementExists(aName, aDialect.isCaseSensitive())) {
             throw new ElementAlreadyExistsException(aName);
         }
 
@@ -52,18 +52,18 @@ public final class ModelUtilities {
     /**
      * Check the name of an item and its existance in a list.
      * 
-     * @param aVector
-     * @param aItem
-     * @param aProperties
-     * @throws ElementInvalidNameException
-     * @throws ElementAlreadyExistsException
+     * @param aVector the list
+     * @param aItem the item
+     * @param aDialect the dialect
+     * @throws ElementInvalidNameException is thrown in case of an error
+     * @throws ElementAlreadyExistsException is thrown in case of an error
      */
-    public static void checkNameAndExistance(ModelItemVector aVector, OwnedModelItem aItem, Dialect aProperties)
+    public static void checkNameAndExistance(ModelItemVector aVector, OwnedModelItem aItem, Dialect aDialect)
             throws ElementInvalidNameException, ElementAlreadyExistsException {
 
-        aItem.setName(aProperties.checkName(aItem.getName()));
+        aItem.setName(aDialect.checkName(aItem.getName()));
 
-        checkExistance(aVector, aItem.getName(), aProperties);
+        checkExistance(aVector, aItem.getName(), aDialect);
     }
 
     /**
@@ -88,30 +88,9 @@ public final class ModelUtilities {
     }
 
     /**
-     * Find the model history.
-     * 
-     * @param aItem
-     *            the item to start searching at
-     * @return the found model history.
-     */
-    public static ModelHistory getModelHistory(OwnedModelItem aItem) {
-
-        Object theOwner = aItem.getOwner();
-        if (theOwner instanceof Model) {
-            return ((Model) theOwner).getModelHistory();
-        }
-
-        if (theOwner instanceof OwnedModelItem) {
-            return getModelHistory((OwnedModelItem) theOwner);
-        }
-
-        return null;
-    }
-
-    /**
      * Create a unique system id.
      * 
-     * @param aClass
+     * @param aObject the object the id shall be created for
      * @return the newly created id
      */
     public static String createSystemIdFor(Object aObject) {

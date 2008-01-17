@@ -15,17 +15,22 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mssql;
+package de.erdesignerng.dialect;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+public class SQLGenerator<T extends Dialect> {
+    
+    private T dialect;
+    
+    public SQLGenerator(T aDialect) {
+        dialect = aDialect;
+    }
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
- */
-public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
-
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
-        super(aDialect);
+    /**
+     * Gibt den Wert des Attributs <code>dialect</code> zurück.
+     * 
+     * @return Wert des Attributs dialect.
+     */
+    public T getDialect() {
+        return dialect;
     }
 }
