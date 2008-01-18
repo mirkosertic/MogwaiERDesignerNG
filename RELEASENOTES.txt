@@ -27,3 +27,6 @@ Release 1.0.1
 * Added schema validation for loading ERDesigner models from file
 * Added configuration files for dialect datatypes
      
+Release 1.0.2
+
+* First version including the SquirrelSQL plugin ( for Squirrel 2.6.4 )

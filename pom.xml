@@ -3,7 +3,7 @@
   <groupId>net.sourceforge.mogwai</groupId>
   <artifactId>mogwai-erdesignerng</artifactId>
   <name>MogwaiERDesignerNG</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>Mogwai ER-Designer is an entity relationship design tool.</description>
   <url>http://mogwai.sourceforge.net</url>
   <inceptionYear>2002</inceptionYear>
@@ -87,7 +87,8 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>assembly.xml</descriptor>
+            <descriptor>assembly-dist.xml</descriptor>
+            <descriptor>assembly-squirrelplugin.xml</descriptor>
           </descriptors>
         </configuration>
       </plugin>
@@ -152,6 +153,18 @@
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
       <version>1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>squirrelsql</groupId>
+      <artifactId>squirrel-fw</artifactId>
+      <version>2.6.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>squirrelsql</groupId>
+      <artifactId>squirrel-client</artifactId>
+      <version>2.6.4</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
