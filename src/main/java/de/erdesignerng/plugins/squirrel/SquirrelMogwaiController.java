@@ -18,10 +18,11 @@
 package de.erdesignerng.plugins.squirrel;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 18:21:03 $
  */
 public class SquirrelMogwaiController {
 
@@ -31,11 +32,11 @@ public class SquirrelMogwaiController {
     
     private SquirrelMogwaiTabSheet tabsheet;
 
-    public SquirrelMogwaiController(ISession aSession, SquirrelMogwaiPlugin aPlugin) {
+    public SquirrelMogwaiController(ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
         session = aSession;
         plugin = aPlugin;
         
-        tabsheet = new SquirrelMogwaiTabSheet(aSession, aPlugin);
+        tabsheet = new SquirrelMogwaiTabSheet(aSession, aPlugin, aNode);
         
         session.getSessionSheet().selectMainTab(
                 session.getSessionSheet().addMainTab(tabsheet));
@@ -43,5 +44,9 @@ public class SquirrelMogwaiController {
 
     public void sessionEnding() {
         tabsheet.sessionEnding(session);
+    }
+
+    public void startReverseEngineering() {
+        tabsheet.startReverseEngineering();
     }
 }

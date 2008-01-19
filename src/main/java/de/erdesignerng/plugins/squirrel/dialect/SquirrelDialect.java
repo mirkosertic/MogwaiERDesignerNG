@@ -21,21 +21,40 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 18:21:02 $
  */
 public class SquirrelDialect extends Dialect {
 
     private ISession session;
     
-    public SquirrelDialect(ISession aSession) {
+    private ObjectTreeNode node;
+    
+    public SquirrelDialect() {
+        initialize();
+    }
+    
+    public SquirrelDialect(ISession aSession, ObjectTreeNode aNode) {
         session = aSession;
+        node = aNode;
+        
+        initialize();
+    }
+    
+    private void initialize() {
+        setSpacesAllowedInObjectNames(false);
+        setCaseSensitive(true);
+        setMaxObjectNameLength(255);
+        setNullablePrimaryKeyAllowed(false);
+        setCastType(NameCastType.NOTHING);
     }
     
     public ISession getSession() {
@@ -44,7 +63,7 @@ public class SquirrelDialect extends Dialect {
     
     @Override
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-        return super.createConnection(aClassLoader, aDriver, aUrl, aUser, aPassword);
+        return session.getSQLConnection().getConnection();
     }
 
     @Override
@@ -70,11 +89,16 @@ public class SquirrelDialect extends Dialect {
 
     @Override
     public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new SquirrelReverseEngineeringStrategy(this);
+        return new SquirrelReverseEngineeringStrategy(this, node);
     }
 
     @Override
     public String getUniqueName() {
         return "Squirrel";
+    }
+
+    @Override
+    public boolean supportsSchemaInformation() {
+        return false;
     }
 }

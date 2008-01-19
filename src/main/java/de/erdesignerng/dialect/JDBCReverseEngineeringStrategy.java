@@ -39,9 +39,10 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:23 $
+ * @version $Date: 2008-01-19 18:21:02 $
+ * @param <T> the dialect
  */
-public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T>{
+public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
 
     protected JDBCReverseEngineeringStrategy(T aDialect) {
         super(aDialect);
@@ -52,8 +53,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, String aSize,
-            String aDecimalDigits, ReverseEngineeringOptions aOptions)
-            throws ReverseEngineeringException {
+            String aDecimalDigits, ReverseEngineeringOptions aOptions) throws ReverseEngineeringException {
 
         DataType theDataType = dialect.getDataType(convertColumnTypeToRealType(aTypeName));
         if (theDataType == null) {
@@ -350,38 +350,14 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
                     if (theUpdateRule != null) {
                         int theType = Integer.parseInt(theUpdateRule.toString());
-                        switch (theType) {
-                        case DatabaseMetaData.importedKeyNoAction:
-                            theRelation.setOnUpdate(CascadeType.NOTHING);
-                            break;
-                        case DatabaseMetaData.importedKeySetNull:
-                            theRelation.setOnUpdate(CascadeType.SET_NULL);
-                            break;
-                        case DatabaseMetaData.importedKeyCascade:
-                            theRelation.setOnUpdate(CascadeType.CASCADE);
-                            break;
-                        default:
-                            theRelation.setOnUpdate(CascadeType.CASCADE);
-                        }
+                        theRelation.setOnUpdate(getCascadeType(theType));
                     } else {
                         theRelation.setOnUpdate(CascadeType.NOTHING);
                     }
 
                     if (theDeleteRule != null) {
                         int theType = Integer.parseInt(theDeleteRule.toString());
-                        switch (theType) {
-                        case DatabaseMetaData.importedKeyNoAction:
-                            theRelation.setOnDelete(CascadeType.NOTHING);
-                            break;
-                        case DatabaseMetaData.importedKeySetNull:
-                            theRelation.setOnDelete(CascadeType.SET_NULL);
-                            break;
-                        case DatabaseMetaData.importedKeyCascade:
-                            theRelation.setOnDelete(CascadeType.CASCADE);
-                            break;
-                        default:
-                            theRelation.setOnDelete(CascadeType.CASCADE);
-                        }
+                        theRelation.setOnDelete(getCascadeType(theType));
                     } else {
                         theRelation.setOnDelete(CascadeType.NOTHING);
                     }
