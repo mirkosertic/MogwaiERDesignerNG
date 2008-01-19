@@ -17,31 +17,26 @@
  */
 package de.erdesignerng.plugins.squirrel;
 
-import net.sourceforge.squirrel_sql.client.session.ISession;
+import java.awt.BorderLayout;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
- */
-public class SquirrelMogwaiController {
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-    private ISession session;
+import de.erdesignerng.ERDesignerBundle;
+import de.mogwai.common.i18n.ResourceHelper;
+import de.mogwai.common.i18n.ResourceHelperProvider;
 
-    private SquirrelMogwaiPlugin plugin;
+public class ResourceProviderPanel extends JPanel implements ResourceHelperProvider {
+
+    public ResourceProviderPanel() {
+        setLayout(new BorderLayout());
+    }
     
-    private SquirrelMogwaiTabSheet tabsheet;
-
-    public SquirrelMogwaiController(ISession aSession, SquirrelMogwaiPlugin aPlugin) {
-        session = aSession;
-        plugin = aPlugin;
-        
-        tabsheet = new SquirrelMogwaiTabSheet(aSession, aPlugin);
-        
-        session.getSessionSheet().selectMainTab(
-                session.getSessionSheet().addMainTab(tabsheet));
+    public ResourceHelper getResourceHelper() {
+        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
     }
 
-    public void sessionEnding() {
-        tabsheet.sessionEnding(session);
+    public void setContent(JComponent aComponent) {
+        add(aComponent, BorderLayout.CENTER);
     }
 }
