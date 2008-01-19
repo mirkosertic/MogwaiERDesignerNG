@@ -17,42 +17,16 @@
  */
 package de.erdesignerng.dialect;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-19 15:04:23 $
  */
-public final class DialectFactory {
+public abstract class JDBCDialect extends Dialect {
 
-    private static DialectFactory me;
-
-    private Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
-
-    private DialectFactory() {
-    }
-    
-    public static DialectFactory getInstance() {
-        if (me == null) {
-            me = new DialectFactory();
+    protected JDBCDialect(String aDatatypeKonfigFilename) {
+        if (aDatatypeKonfigFilename != null) {
+            loadDatatypeKonfiguration(aDatatypeKonfigFilename);
         }
-        return me;
-    }
-
-    public void registerDialect(JDBCDialect aDialect) {
-        knownDialects.put(aDialect.getUniqueName(), aDialect);
-    }
-
-    public Dialect getDialect(String aUniqueName) {
-        return knownDialects.get(aUniqueName);
-    }
-
-    public List<Dialect> getSupportedDialects() {
-        Vector<Dialect> theDialects = new Vector<Dialect>();
-        theDialects.addAll(knownDialects.values());
-        return theDialects;
     }
 }

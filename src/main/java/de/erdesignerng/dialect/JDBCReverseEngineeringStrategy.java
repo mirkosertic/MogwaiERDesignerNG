@@ -39,14 +39,12 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-19 15:04:23 $
  */
-public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
-
-    protected T dialect;
+public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T>{
 
     protected JDBCReverseEngineeringStrategy(T aDialect) {
-        dialect = aDialect;
+        super(aDialect);
     }
 
     protected String convertColumnTypeToRealType(String aTypeName) {
@@ -488,6 +486,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         reverseEngineerRelations(aModel, aOptions, aNotifier, aEntry, aConnection);
     }
 
+    @Override
     public Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
 
@@ -507,6 +506,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         return theNewModel;
     }
 
+    @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
         List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
