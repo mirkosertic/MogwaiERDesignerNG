@@ -26,6 +26,7 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTr
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -52,11 +53,11 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     
     private ObjectTreeNode node;
     
-    public SquirrelMogwaiTabSheet(ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
+    public SquirrelMogwaiTabSheet(ApplicationPreferences aPreferences, ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
         session = aSession;
         plugin = aPlugin;
         node = aNode;
-        component = new ERDesignerComponent(this);
+        component = new ERDesignerComponent(aPreferences, this);
         
         content.setDetailComponent(component.getDetailComponent());
         panel.setContent(content);
@@ -137,5 +138,9 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 
     public void startReverseEngineering() {
         component.commandReverseEngineer();
+    }
+
+    public boolean supportsPreferences() {
+        return false;
     }
 }

@@ -46,11 +46,10 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.VertexView;
 
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
 
 public class GraphvizLayout implements Layouter {
-
-    private String dotCommand = "C:\\Program Files\\Graphviz2.17\\bin\\dot.exe";
 
     private ProcessBuilder processBuilder;
 
@@ -65,8 +64,11 @@ public class GraphvizLayout implements Layouter {
 
     private JGraph graph;
 
-    public void applyLayout(JGraph aGraph, Object[] aCells) throws LayoutException {
-        processBuilder = new ProcessBuilder(dotCommand, "-y -Tdot");
+    public void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException {
+        
+        String theDotCommand = aPreferences.getDotPath();
+        
+        processBuilder = new ProcessBuilder(theDotCommand, "-y -Tdot");
         processBuilder.redirectErrorStream(true);
 
         graph = aGraph;

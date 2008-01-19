@@ -39,4 +39,6 @@ public interface ERDesignerWorldConnector {
     boolean supportsConnectionEditor();
     
     Model createNewModel();
+    
+    boolean supportsPreferences();
 }

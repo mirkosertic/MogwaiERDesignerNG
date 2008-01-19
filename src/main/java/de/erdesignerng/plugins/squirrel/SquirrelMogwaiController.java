@@ -19,10 +19,11 @@ package de.erdesignerng.plugins.squirrel;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
+import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:21:03 $
+ * @version $Date: 2008-01-19 21:48:06 $
  */
 public class SquirrelMogwaiController {
 
@@ -32,11 +33,11 @@ public class SquirrelMogwaiController {
     
     private SquirrelMogwaiTabSheet tabsheet;
 
-    public SquirrelMogwaiController(ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
+    public SquirrelMogwaiController(ApplicationPreferences aPreferences, ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
         session = aSession;
         plugin = aPlugin;
         
-        tabsheet = new SquirrelMogwaiTabSheet(aSession, aPlugin, aNode);
+        tabsheet = new SquirrelMogwaiTabSheet(aPreferences, aSession, aPlugin, aNode);
         
         session.getSessionSheet().selectMainTab(
                 session.getSessionSheet().addMainTab(tabsheet));

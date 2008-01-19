@@ -385,6 +385,14 @@
 			<Text lang="de">Es existiert schon ein Primärschlüssel!</Text>		
 			<Text lang="en">There is already a primary key</Text>					
 		</Entry>
+		<Entry id="PREFERENCES">
+			<Text lang="de">Voreinstellungen...</Text>		
+			<Text lang="en">Preferences...</Text>					
+		</Entry>
+		<Entry id="DOTPATH">
+			<Text lang="de">Pfad zu DOT</Text>		
+			<Text lang="en">Path to DOT</Text>					
+		</Entry>
 		
 	</Bundle>
 </Resource>

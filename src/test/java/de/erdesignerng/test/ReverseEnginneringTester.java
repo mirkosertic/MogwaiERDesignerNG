@@ -28,7 +28,6 @@ import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.io.ModelIOUtilities;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.ERDesignerMainFrame;
 import de.mogwai.common.i18n.ResourceHelper;
 
 public class ReverseEnginneringTester extends TestCase {
@@ -37,7 +36,7 @@ public class ReverseEnginneringTester extends TestCase {
             SAXException, IOException, ParserConfigurationException, ClassNotFoundException, InstantiationException,
             IllegalAccessException, SQLException, ReverseEngineeringException, TransformerException {
 
-        ApplicationPreferences thePreferences = new ApplicationPreferences(new ERDesignerMainFrame(), 20);
+        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
 
         Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFileName));
 
