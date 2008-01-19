@@ -21,9 +21,9 @@ import de.erdesignerng.dialect.SQLGenerator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 18:21:02 $
  */
-public class SquirrelSQLGenerator extends SQLGenerator<SquirrelDialect>{
+public class SquirrelSQLGenerator extends SQLGenerator<SquirrelDialect> {
 
     public SquirrelSQLGenerator(SquirrelDialect aDialect) {
         super(aDialect);

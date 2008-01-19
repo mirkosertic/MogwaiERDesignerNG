@@ -18,15 +18,19 @@
 package de.erdesignerng.dialect;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.List;
 
 import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 18:21:02 $
+ * @param <T>
+ *            the dialect
  */
 public abstract class ReverseEngineeringStrategy<T extends Dialect> {
 
@@ -38,7 +42,19 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
 
     public abstract Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException;
-    
+
     public abstract List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException;
-    
+
+    protected CascadeType getCascadeType(int aValue) {
+        switch (aValue) {
+        case DatabaseMetaData.importedKeyNoAction:
+            return CascadeType.NOTHING;
+        case DatabaseMetaData.importedKeySetNull:
+            return CascadeType.SET_NULL;
+        case DatabaseMetaData.importedKeyCascade:
+            return CascadeType.CASCADE;
+        default:
+            return CascadeType.CASCADE;
+        }
+    }
 }

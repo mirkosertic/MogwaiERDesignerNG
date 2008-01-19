@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
+import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 
 import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.action.ActionCollection;
@@ -32,6 +34,7 @@ import net.sourceforge.squirrel_sql.client.plugin.PluginException;
 import net.sourceforge.squirrel_sql.client.plugin.PluginSessionCallback;
 import net.sourceforge.squirrel_sql.client.session.IObjectTreeAPI;
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.util.log.ILogger;
@@ -39,7 +42,7 @@ import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 18:21:03 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -86,6 +89,8 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         IApplication theApplication = getApplication();
 
         resources = new SquirrelMogwaiPluginResources(this);
+        
+        DialectFactory.getInstance().registerDialect(new SquirrelDialect());
 
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
@@ -97,13 +102,6 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     }
 
     public PluginSessionCallback sessionStarted(final ISession session) {
-        SquirrelMogwaiController[] theControllers = new SquirrelMogwaiController[0];
-
-        for (int i = 0; i < theControllers.length; i++) {
-            theControllers[i] = new SquirrelMogwaiController(session, this);
-        }
-
-        controllersBySessionID.put(session.getIdentifier(), theControllers);
 
         IObjectTreeAPI theAPI = session.getSessionInternalFrame().getObjectTreeAPI();
 
@@ -137,18 +135,18 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     }
 
 
-    public SquirrelMogwaiController createNewGraphControllerForSession(ISession session) {
-        SquirrelMogwaiController[] theControllers = controllersBySessionID.get(session.getIdentifier());
+    public SquirrelMogwaiController createNewGraphControllerForSession(ISession aSession, ObjectTreeNode aNode) {
+        SquirrelMogwaiController[] theControllers = controllersBySessionID.get(aSession.getIdentifier());
 
         Vector<SquirrelMogwaiController> theTemp = new Vector<SquirrelMogwaiController>();
         if (null != theControllers) {
             theTemp.addAll(Arrays.asList(theControllers));
         }
-        SquirrelMogwaiController theResult = new SquirrelMogwaiController(session, this);
+        SquirrelMogwaiController theResult = new SquirrelMogwaiController(aSession, this, aNode);
         theTemp.add(theResult);
 
         theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp.size()]);
-        controllersBySessionID.put(session.getIdentifier(), theControllers);
+        controllersBySessionID.put(aSession.getIdentifier(), theControllers);
 
         return theResult;
     }

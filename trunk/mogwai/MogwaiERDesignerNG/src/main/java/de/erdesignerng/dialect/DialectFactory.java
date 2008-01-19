@@ -24,7 +24,7 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:23 $
+ * @version $Date: 2008-01-19 18:21:02 $
  */
 public final class DialectFactory {
 
@@ -42,7 +42,7 @@ public final class DialectFactory {
         return me;
     }
 
-    public void registerDialect(JDBCDialect aDialect) {
+    public void registerDialect(Dialect aDialect) {
         knownDialects.put(aDialect.getUniqueName(), aDialect);
     }
 
