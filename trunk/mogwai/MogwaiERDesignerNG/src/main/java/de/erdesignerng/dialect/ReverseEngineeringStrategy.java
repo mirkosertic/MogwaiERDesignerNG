@@ -17,42 +17,28 @@
  */
 package de.erdesignerng.dialect;
 
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+
+import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-19 15:04:23 $
  */
-public final class DialectFactory {
+public abstract class ReverseEngineeringStrategy<T extends Dialect> {
 
-    private static DialectFactory me;
+    protected T dialect;
 
-    private Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
-
-    private DialectFactory() {
+    protected ReverseEngineeringStrategy(T aDialect) {
+        dialect = aDialect;
     }
+
+    public abstract Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException;
     
-    public static DialectFactory getInstance() {
-        if (me == null) {
-            me = new DialectFactory();
-        }
-        return me;
-    }
-
-    public void registerDialect(JDBCDialect aDialect) {
-        knownDialects.put(aDialect.getUniqueName(), aDialect);
-    }
-
-    public Dialect getDialect(String aUniqueName) {
-        return knownDialects.get(aUniqueName);
-    }
-
-    public List<Dialect> getSupportedDialects() {
-        Vector<Dialect> theDialects = new Vector<Dialect>();
-        theDialects.addAll(knownDialects.values());
-        return theDialects;
-    }
+    public abstract List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException;
+    
 }

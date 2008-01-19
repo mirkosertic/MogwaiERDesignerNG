@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.dialect;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
@@ -33,7 +32,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:28 $
+ * @version $Date: 2008-01-19 15:04:23 $
  */
 public abstract class Dialect {
 
@@ -49,10 +48,7 @@ public abstract class Dialect {
 
     private Map<String, DataType> dataTypes = new HashMap<String, DataType>();
 
-    protected Dialect(String aDatatypeKonfigFilename) {
-        if (aDatatypeKonfigFilename != null) {
-            loadDatatypeKonfiguration(aDatatypeKonfigFilename);
-        }
+    protected Dialect() {
     }
 
     protected void loadDatatypeKonfiguration(String aKonfigfilename) {
@@ -69,7 +65,8 @@ public abstract class Dialect {
 
         ConfigDataTypes theConfiguration = null;
         try {
-            theConfiguration = (ConfigDataTypes) theDigester.parse(new File(aKonfigfilename));
+            theConfiguration = (ConfigDataTypes) theDigester.parse(getClass().getResourceAsStream(
+                    "/de/erdesignerng/" + aKonfigfilename));
         } catch (Exception e) {
             throw new RuntimeException("Cannot load configuration", e);
         }
@@ -187,7 +184,7 @@ public abstract class Dialect {
      * 
      * @return the reverse engineering strategy
      */
-    public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
+    public abstract ReverseEngineeringStrategy getReverseEngineeringStrategy();
 
     public abstract String getUniqueName();
 
@@ -258,6 +255,6 @@ public abstract class Dialect {
                 + aPattern);
         dataTypes.put(aTypename, createDataTypeFor(aTypename, aPattern));
     }
-    
+
     public abstract SQLGenerator createSQLGenerator();
 }
