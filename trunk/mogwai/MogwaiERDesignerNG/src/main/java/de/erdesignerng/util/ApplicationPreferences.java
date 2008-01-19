@@ -30,11 +30,13 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 21:48:06 $
  */
 public class ApplicationPreferences {
 
     private static final String LRUPREFIX = "file_";
+    
+    private static final String DOT_PATH = "DOT_PATH";
 
     private static final String CLASSPATHPREFIX = "classpath_";
 
@@ -45,10 +47,26 @@ public class ApplicationPreferences {
     private List<File> classpathfiles = new Vector<File>();
 
     private Preferences preferences;
+    
+    private String dotPath;
+    
+    private static ApplicationPreferences me;
+    
+    public static ApplicationPreferences getInstance() {
+        
+        if (me == null) {
+            try {
+                me = new ApplicationPreferences(20);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return me;
+    }
 
-    public ApplicationPreferences(Object aOwner, int aSize) throws BackingStoreException {
+    protected ApplicationPreferences(int aSize) throws BackingStoreException {
 
-        preferences = Preferences.userNodeForPackage(aOwner.getClass());
+        preferences = Preferences.userNodeForPackage(getClass());
         String[] theNames = preferences.keys();
         for (String theName : theNames) {
             if (theName.startsWith(LRUPREFIX)) {
@@ -67,6 +85,8 @@ public class ApplicationPreferences {
         }
 
         size = aSize;
+        
+        dotPath = preferences.get(DOT_PATH, "");
 
     }
 
@@ -122,6 +142,8 @@ public class ApplicationPreferences {
             preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i).toString());
         }
 
+        preferences.put(DOT_PATH, dotPath);
+        
         preferences.flush();
     }
 
@@ -137,5 +159,19 @@ public class ApplicationPreferences {
         }
 
         return new URLClassLoader(theUrls);
+    }
+
+    /**
+     * @return the dotPath
+     */
+    public String getDotPath() {
+        return dotPath;
+    }
+
+    /**
+     * @param dotPath the dotPath to set
+     */
+    public void setDotPath(String dotPath) {
+        this.dotPath = dotPath;
     }
 }

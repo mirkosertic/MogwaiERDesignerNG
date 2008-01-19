@@ -19,7 +19,9 @@ package de.erdesignerng.visual.layout;
 
 import org.jgraph.JGraph;
 
+import de.erdesignerng.util.ApplicationPreferences;
+
 public interface Layouter {
 
-    void applyLayout(JGraph aGraph, Object[] aCells) throws LayoutException;
+    void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException;
 }

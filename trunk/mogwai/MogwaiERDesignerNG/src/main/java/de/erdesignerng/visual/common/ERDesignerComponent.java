@@ -73,6 +73,7 @@ import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
+import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.export.Exporter;
@@ -257,12 +258,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction zoomInAction;
 
     private DefaultAction zoomOutAction;
+    
+    private DefaultAction preferencesAction;
 
     private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
-    public ERDesignerComponent(ERDesignerWorldConnector aConnector) {
+    public ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
-        
+        preferences = aPreferences;
         initActions();
     }
     
@@ -275,7 +278,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.REVERSEENGINEER);        
-        
+
+        preferencesAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+                commandPreferences();
+            }
+
+        }, this, ERDesignerBundle.PREFERENCES);        
+
         saveAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -425,6 +436,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         logicalView = new DefaultRadioButtonMenuItem(logicalAction);        
         
         ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(ERDesignerBundle.FILE);
+        if (worldConnector.supportsPreferences()) {
+            theFileMenu.add(preferencesAction);
+            theFileMenu.addSeparator();
+        }
         
         theFileMenu.add(newAction);
         theFileMenu.addSeparator();
@@ -459,6 +474,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theExportMenu.add(theSVGExportMenu);
         addExportEntries(theSVGExportMenu, new SVGExporter());
 
+        UIInitializer.getInstance().initialize(theExportMenu);
+        
         theFileMenu.add(theExportMenu);
 
         theFileMenu.addSeparator();
@@ -555,12 +572,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         
         worldConnector.initTitle();
 
-        try {
-            preferences = new ApplicationPreferences(this, 10);
-        } catch (BackingStoreException e) {
-            logException(e);
-        }
-
         initLRUMenu();
 
         UIInitializer.getInstance().initialize(scrollPane);
@@ -601,6 +612,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
     }
+    
+    protected void commandPreferences() {
+        PreferencesEditor theEditor = new PreferencesEditor(scrollPane, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                logException(e);
+            }
+        }
+
+    }    
 
     protected void commandDBConnection() {
         DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(scrollPane, model, preferences);
@@ -678,7 +701,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandLayoutGraphviz() {
         try {
             Layouter theLayout = LayouterFactory.getInstance().createGraphvizLayouter();
-            theLayout.applyLayout(graph, graph.getRoots());
+            theLayout.applyLayout(preferences, graph, graph.getRoots());
         } catch (Exception e) {
             logException(e);
         }
