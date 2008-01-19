@@ -1,0 +1,63 @@
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+package de.erdesignerng.visual.common;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JMenuItem;
+
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
+
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-01-19 15:25:31 $
+ */
+public class ERDesignerToolbarEntry extends DefaultButton {
+    
+    private DefaultPopupMenu menu = new DefaultPopupMenu();
+    
+    public ERDesignerToolbarEntry(String aId) {
+        super(aId);
+        
+        addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                menu.show(ERDesignerToolbarEntry.this, 0, getSize().height);
+            }
+        });
+    }
+    
+    public DefaultPopupMenu getMenu() {
+        return menu;
+    }
+    
+    public void add(JMenuItem aItem) {
+        menu.add(aItem);
+    }
+
+    public JMenuItem add(DefaultAction aAction) {
+        return menu.add(aAction);
+    }
+
+    public void addSeparator() {
+        menu.addSeparator();
+    }
+}

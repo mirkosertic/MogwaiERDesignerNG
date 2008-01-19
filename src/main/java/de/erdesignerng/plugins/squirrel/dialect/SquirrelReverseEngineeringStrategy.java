@@ -30,7 +30,7 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:24 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 

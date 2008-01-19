@@ -10,6 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.JDBCDialect;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -23,7 +24,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -51,7 +52,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
     private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
 
         @Override
-        public void handleDialectChange(Dialect aDialect) {
+        public void handleDialectChange(JDBCDialect aDialect) {
             commandChangeDialect(aDialect);
         }
     };
@@ -159,7 +160,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         }
     }
 
-    private void commandChangeDialect(Dialect aDialect) {
+    private void commandChangeDialect(JDBCDialect aDialect) {
 
         if (!bindingInfo.isBinding()) {
             DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();

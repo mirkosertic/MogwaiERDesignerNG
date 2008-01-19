@@ -22,13 +22,21 @@ import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.generic.GenericJDBCDialect;
+import de.erdesignerng.dialect.mssql.MSSQLDialect;
+import de.erdesignerng.dialect.mysql.MySQLDialect;
+import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
+import de.erdesignerng.dialect.oracle.OracleDialect;
+import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
+import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public final class ERDesigner {
 
@@ -38,10 +46,23 @@ public final class ERDesigner {
     public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
             ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 
+        DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
+        theScreen.setVisible(true);
+        
+        DialectFactory theFactory = DialectFactory.getInstance();
+        theFactory.registerDialect(new MSSQLDialect());
+        theFactory.registerDialect(new MySQLDialect());
+        theFactory.registerDialect(new MySQLInnoDBDialect());
+        theFactory.registerDialect(new OracleDialect());
+        theFactory.registerDialect(new PostgresDialect());
+        theFactory.registerDialect(new GenericJDBCDialect());
+        
         ERDesignerMainFrame frame = new ERDesignerMainFrame();
         frame.setModel(new Model());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        
+        theScreen.setVisible(false);
         frame.setVisible(true);
     }
 }

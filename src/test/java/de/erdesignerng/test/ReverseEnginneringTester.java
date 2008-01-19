@@ -19,9 +19,9 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DefaultValueNamingEnum;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DomainNamingEnum;
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
+import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.exception.ReverseEngineeringException;
@@ -42,7 +42,7 @@ public class ReverseEnginneringTester extends TestCase {
         Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFileName));
 
         Dialect theDialect = theModel.getDialect();
-        JDBCReverseEngineeringStrategy theStrategy = theDialect.getReverseEngineeringStrategy();
+        ReverseEngineeringStrategy theStrategy = theDialect.getReverseEngineeringStrategy();
 
         System.out.println("Running test with dialect " + theDialect);
 

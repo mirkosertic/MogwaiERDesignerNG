@@ -20,7 +20,7 @@ package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:23 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public abstract class JDBCDialect extends Dialect {
 

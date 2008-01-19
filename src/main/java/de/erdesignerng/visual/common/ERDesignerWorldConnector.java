@@ -15,33 +15,28 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.plugins.squirrel;
+package de.erdesignerng.visual.common;
 
-import net.sourceforge.squirrel_sql.client.session.ISession;
+import java.io.File;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
- */
-public class SquirrelMogwaiController {
+import de.erdesignerng.model.Model;
+import de.mogwai.common.client.looks.components.DefaultToolbar;
 
-    private ISession session;
+public interface ERDesignerWorldConnector {
 
-    private SquirrelMogwaiPlugin plugin;
+    void initTitle(File aFile);
+
+    void initTitle();
+
+    void setStatusText(String theMessage);
     
-    private SquirrelMogwaiTabSheet tabsheet;
-
-    public SquirrelMogwaiController(ISession aSession, SquirrelMogwaiPlugin aPlugin) {
-        session = aSession;
-        plugin = aPlugin;
-        
-        tabsheet = new SquirrelMogwaiTabSheet(aSession, aPlugin);
-        
-        session.getSessionSheet().selectMainTab(
-                session.getSessionSheet().addMainTab(tabsheet));
-    }
-
-    public void sessionEnding() {
-        tabsheet.sessionEnding(session);
-    }
+    DefaultToolbar getToolBar();
+    
+    boolean supportsExitApplication();
+    
+    boolean supportsClasspathEditor();
+    
+    boolean supportsConnectionEditor();
+    
+    Model createNewModel();
 }

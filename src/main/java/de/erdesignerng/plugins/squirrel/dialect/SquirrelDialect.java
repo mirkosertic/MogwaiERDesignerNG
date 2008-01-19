@@ -28,7 +28,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:24 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class SquirrelDialect extends Dialect {
 
