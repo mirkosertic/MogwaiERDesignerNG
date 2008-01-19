@@ -27,8 +27,8 @@ import javax.swing.ListSelectionModel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DefaultValueNamingEnum;
 import de.erdesignerng.dialect.DomainNamingEnum;
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
+import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.model.Model;
@@ -43,7 +43,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -164,7 +164,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
                 schemaList.clear();
 
-                JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+                ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
 
                 List<SchemaEntry> theEntries = theStrategy.getSchemaEntries(theConnection);
                 for (SchemaEntry theEntry : theEntries) {

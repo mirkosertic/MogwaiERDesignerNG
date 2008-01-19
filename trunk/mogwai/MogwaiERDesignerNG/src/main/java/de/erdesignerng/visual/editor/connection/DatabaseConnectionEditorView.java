@@ -9,7 +9,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.JDBCDialect;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
@@ -83,7 +83,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         dialect.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                handleDialectChange((Dialect) dialect.getSelectedItem());
+                handleDialectChange((JDBCDialect) dialect.getSelectedItem());
             }
 
         });
@@ -111,7 +111,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         return user;
     }
 
-    public void handleDialectChange(Dialect aDialect) {
+    public void handleDialectChange(JDBCDialect aDialect) {
     }
 
     /**

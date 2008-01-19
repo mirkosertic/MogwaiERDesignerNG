@@ -39,7 +39,7 @@ import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-18 21:05:26 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -112,6 +112,7 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         theAPI.addToPopup(DatabaseObjectType.SCHEMA, theActionCollection.get(StartMogwaiAction.class));        
 
         PluginSessionCallback ret = new PluginSessionCallback() {
+            
             public void sqlInternalFrameOpened(SQLInternalFrame sqlInternalFrame, ISession sess) {
             }
 

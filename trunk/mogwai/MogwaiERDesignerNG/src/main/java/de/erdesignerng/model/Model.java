@@ -22,7 +22,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -31,7 +30,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -51,7 +50,7 @@ public class Model implements OwnedModelItemVerifier {
 
     private RelationList relations = new RelationList();
 
-    private Dialect dialect = new MySQLDialect();
+    private Dialect dialect;
 
     private ModelProperties properties = new ModelProperties();
 
@@ -137,8 +136,8 @@ public class Model implements OwnedModelItemVerifier {
         return dialect;
     }
 
-    public void setDialect(Dialect modelProperties) {
-        dialect = modelProperties;
+    public void setDialect(Dialect aDialect) {
+        dialect = aDialect;
     }
 
     public void delete(ModelItem aSender) throws CannotDeleteException {

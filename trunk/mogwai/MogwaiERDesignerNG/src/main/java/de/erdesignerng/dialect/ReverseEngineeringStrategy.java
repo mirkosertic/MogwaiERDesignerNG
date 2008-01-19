@@ -26,7 +26,7 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:23 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public abstract class ReverseEngineeringStrategy<T extends Dialect> {
 

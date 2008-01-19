@@ -20,20 +20,18 @@ package de.erdesignerng.plugins.squirrel.action;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 
-import de.erdesignerng.plugins.squirrel.SquirrelMogwaiController;
-import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPlugin;
-import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginResources;
-
 import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.action.SquirrelAction;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.action.ISessionAction;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
-import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
+import de.erdesignerng.plugins.squirrel.SquirrelMogwaiController;
+import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPlugin;
+import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginResources;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-18 21:05:36 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class StartMogwaiAction extends SquirrelAction implements ISessionAction {
 
@@ -41,7 +39,8 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
 
     protected final SquirrelMogwaiPlugin plugin;
 
-    public StartMogwaiAction(IApplication aApplication, SquirrelMogwaiPluginResources aResources, SquirrelMogwaiPlugin aPlugin) {
+    public StartMogwaiAction(IApplication aApplication, SquirrelMogwaiPluginResources aResources,
+            SquirrelMogwaiPlugin aPlugin) {
         super(aApplication, aResources);
         plugin = aPlugin;
     }
@@ -54,12 +53,10 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
             SquirrelMogwaiController toAddTo = null;
 
             for (int i = 0; i < selectedNodes.length; i++) {
-                if (selectedNodes[i].getDatabaseObjectType() == DatabaseObjectType.TABLE) {
 
-                    SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
-                    if (0 == controllers.length) {
-                        toAddTo = plugin.createNewGraphControllerForSession(session);
-                    }
+                SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
+                if (0 == controllers.length) {
+                    toAddTo = plugin.createNewGraphControllerForSession(session);
                 }
 
                 // Handle whatever

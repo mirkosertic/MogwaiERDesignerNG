@@ -6,7 +6,7 @@ import de.erdesignerng.dialect.Dialect;
  * Descriptor for a database dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
 public class DatabaseConnectionDatamodel {
 
@@ -24,8 +24,8 @@ public class DatabaseConnectionDatamodel {
         return dialect;
     }
 
-    public void setDialect(Dialect connection) {
-        dialect = connection;
+    public void setDialect(Dialect aDialect) {
+        dialect = aDialect;
     }
 
     public String getDriver() {

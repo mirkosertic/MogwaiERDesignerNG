@@ -17,14 +17,14 @@
  */
 package de.erdesignerng.dialect.sql92;
 
-import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.JDBCDialect;
 import de.erdesignerng.model.Attribute;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-19 15:25:31 $
  */
-public abstract class SQL92Dialect extends Dialect {
+public abstract class SQL92Dialect extends JDBCDialect {
 
     protected SQL92Dialect(String aDatatypeKonfigFilename) {
         super(aDatatypeKonfigFilename);
