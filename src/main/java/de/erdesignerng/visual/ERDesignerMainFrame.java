@@ -23,6 +23,7 @@ import java.io.File;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -33,7 +34,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 21:48:07 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -62,7 +63,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     private void initialize() {
-        component = new ERDesignerComponent(this);
+        component = new ERDesignerComponent(ApplicationPreferences.getInstance(), this);
         getDefaultFrameContent().setDetailComponent(component.getDetailComponent());
     }
 
@@ -107,5 +108,9 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     public Model createNewModel() {
         return new Model();
+    }
+
+    public boolean supportsPreferences() {
+        return true;
     }
 }

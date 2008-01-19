@@ -30,3 +30,4 @@ Release 1.0.1
 Release 1.0.2
 
 * First version including the SquirrelSQL plugin ( for Squirrel 2.6.4 )
+* DOT Path ( AT&T Layout library ) is now configurable with preferences dialog

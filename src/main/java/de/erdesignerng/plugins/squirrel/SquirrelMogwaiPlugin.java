@@ -20,10 +20,7 @@ package de.erdesignerng.plugins.squirrel;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Vector;
-
-import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
-import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
+import java.util.prefs.BackingStoreException;
 
 import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.action.ActionCollection;
@@ -32,6 +29,7 @@ import net.sourceforge.squirrel_sql.client.gui.session.SQLInternalFrame;
 import net.sourceforge.squirrel_sql.client.plugin.DefaultSessionPlugin;
 import net.sourceforge.squirrel_sql.client.plugin.PluginException;
 import net.sourceforge.squirrel_sql.client.plugin.PluginSessionCallback;
+import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
 import net.sourceforge.squirrel_sql.client.session.IObjectTreeAPI;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
@@ -39,10 +37,15 @@ import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.util.log.ILogger;
 import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
+import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
+import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
+import de.erdesignerng.plugins.squirrel.preferences.SquirrelMogwaiPreferences;
+import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:21:03 $
+ * @version $Date: 2008-01-19 21:48:06 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -52,6 +55,10 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
     private SquirrelMogwaiPluginResources resources;
 
+    private ApplicationPreferences preferences;
+    
+    private SquirrelMogwaiPreferences preferencesPanel;
+    
     public String getInternalName() {
         return "mogwai";
     }
@@ -89,15 +96,28 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         IApplication theApplication = getApplication();
 
         resources = new SquirrelMogwaiPluginResources(this);
+        preferences = ApplicationPreferences.getInstance();
+
+        preferencesPanel = new SquirrelMogwaiPreferences(preferences);
         
         DialectFactory.getInstance().registerDialect(new SquirrelDialect());
 
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }
+    
+    @Override
+    public IGlobalPreferencesPanel[] getGlobalPreferencePanels() {
+        return new IGlobalPreferencesPanel[] {preferencesPanel};
+    }
 
     @Override
     public void unload() {
+        try {
+            preferences.store();
+        } catch (BackingStoreException e) {
+            // Hier passiert nichts
+        }
         super.unload();
     }
 
@@ -142,7 +162,7 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         if (null != theControllers) {
             theTemp.addAll(Arrays.asList(theControllers));
         }
-        SquirrelMogwaiController theResult = new SquirrelMogwaiController(aSession, this, aNode);
+        SquirrelMogwaiController theResult = new SquirrelMogwaiController(preferences, aSession, this, aNode);
         theTemp.add(theResult);
 
         theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp.size()]);

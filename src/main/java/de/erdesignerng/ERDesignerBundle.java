@@ -197,4 +197,8 @@ public interface ERDesignerBundle {
   String INDEXISPRIMARY = "INDEXISPRIMARY";
   /** Es existiert schon ein Primärschlüssel! */
   String THEREISALREADYAPRIMARYKEY = "THEREISALREADYAPRIMARYKEY";
+  /** Voreinstellungen... */
+  String PREFERENCES = "PREFERENCES";
+  /** Pfad zu DOT */
+  String DOTPATH = "DOTPATH";
 }
