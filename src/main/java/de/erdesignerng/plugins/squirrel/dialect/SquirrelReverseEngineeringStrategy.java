@@ -33,6 +33,7 @@ import net.sourceforge.squirrel_sql.fw.sql.ProgressCallBack;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
 import net.sourceforge.squirrel_sql.fw.sql.TableColumnInfo;
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -48,7 +49,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:21:02 $
+ * @version $Date: 2008-01-19 18:49:08 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 
@@ -85,15 +86,10 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
                 theAttribute.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theColumnRemarks);
             }
 
-            Domain theDomain = new Domain();
-            theDomain.setName("DOM");
-            // Domain theDomain = createDomainFor(aModel, theColumnName,
-            // theTypeName, theSize, theDecimalDigits,
-            // aOptions);
+            Domain theDomain = createDomainFor(aModel, theColumn, aOptions);
 
-            // DefaultValue theDefault = createDefaultValueFor(aModel,
-            // theColumn.getColumnName(), theColumn.getDefaultValue());
-            DefaultValue theDefault = null;
+            DefaultValue theDefault = createDefaultValueFor(aModel,
+            theColumn.getColumnName(), theColumn.getDefaultValue());
 
             theAttribute.setDefinition(theDomain, "1".equals(theColumn.isNullable()), theDefault);
 
@@ -117,6 +113,62 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
         } catch (Exception e) {
             throw new ReverseEngineeringException(e.getMessage());
         }
+    }
+    
+    protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
+        return null;
+    }    
+
+    protected Domain createDomainFor(Model aModel, TableColumnInfo aColumn, ReverseEngineeringOptions aOption) {
+
+        String aColumnName = aColumn.getColumnName();
+
+        DataType theType = dialect.getDataType(aColumn.getTypeName());
+        String theTypeDefinition = theType.createTypeDefinitionFor("" + aColumn.getColumnSize(), ""
+                + aColumn.getDecimalDigits());
+
+        Domain theDomain = aModel.getDomains().findByDataType(theTypeDefinition);
+        if (theDomain != null) {
+
+            if (theDomain.getName().equals(aColumnName)) {
+                return theDomain;
+            }
+
+            for (int i = 0; i < 10000; i++) {
+                String theName = aColumnName;
+                if (i > 0) {
+                    theName = theName + "_" + i;
+                }
+
+                theDomain = aModel.getDomains().findByName(theName);
+                if (theDomain != null) {
+                    if (theDomain.getName().equals(aColumnName)) {
+                        return theDomain;
+                    }
+                }
+
+                if (!aModel.getDomains().elementExists(theName, dialect.isCaseSensitive())) {
+
+                    theDomain = new Domain();
+                    theDomain.setName(theName);
+                    theDomain.setDatatype(theTypeDefinition);
+
+                    aModel.getDomains().add(theDomain);
+
+                    return theDomain;
+                }
+            }
+
+        } else {
+            theDomain = new Domain();
+            theDomain.setName(aColumnName);
+            theDomain.setDatatype(theTypeDefinition);
+
+            aModel.getDomains().add(theDomain);
+        }
+
+        return theDomain;
+
     }
 
     protected void reverseEngineerTables(Model aModel, ReverseEngineeringOptions aOptions,
