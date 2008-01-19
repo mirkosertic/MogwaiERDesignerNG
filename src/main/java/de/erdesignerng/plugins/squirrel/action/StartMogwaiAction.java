@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.plugins.squirrel.action;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.squirrel_sql.client.IApplication;
@@ -31,7 +30,7 @@ import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginResources;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-19 18:21:03 $
  */
 public class StartMogwaiAction extends SquirrelAction implements ISessionAction {
 
@@ -49,18 +48,16 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
         if (session != null) {
             ObjectTreeNode[] selectedNodes = session.getSessionSheet().getObjectTreePanel().getSelectedNodes();
 
-            Point[] refCascadeIndent = new Point[1];
-            SquirrelMogwaiController toAddTo = null;
+            SquirrelMogwaiController theNewController = null;
 
             for (int i = 0; i < selectedNodes.length; i++) {
 
                 SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
-                if (0 == controllers.length) {
-                    toAddTo = plugin.createNewGraphControllerForSession(session);
+                if ((controllers == null) || (0 == controllers.length)) {
+                    theNewController = plugin.createNewGraphControllerForSession(session, selectedNodes[i]);
                 }
-
-                // Handle whatever
-                // toAddTo.addTable(selectedNodes[i], refCascadeIndent);
+                
+                theNewController.startReverseEngineering();
             }
 
         }

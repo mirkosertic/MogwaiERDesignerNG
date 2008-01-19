@@ -22,8 +22,10 @@ import java.io.File;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -48,14 +50,21 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     
     private String title;
     
-    public SquirrelMogwaiTabSheet(ISession aSession, SquirrelMogwaiPlugin aPlugin) {
+    private ObjectTreeNode node;
+    
+    public SquirrelMogwaiTabSheet(ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
         session = aSession;
         plugin = aPlugin;
+        node = aNode;
         component = new ERDesignerComponent(this);
         
         content.setDetailComponent(component.getDetailComponent());
         panel.setContent(content);
-        
+
+        Model theModel = new Model();
+        theModel.setDialect(new SquirrelDialect(aSession, aNode));
+        component.setModel(theModel);
+
         UIInitializer.getInstance().initialize(panel);
     }
 
@@ -114,7 +123,9 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     public Model createNewModel() {
-        return new Model();
+        Model theModel = new Model();
+        theModel.setDialect(new SquirrelDialect(session, node));
+        return theModel;
     }
 
     @Override
@@ -122,5 +133,9 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         super.sessionEnding(aSession);
         
         component.savePreferences();
+    }
+
+    public void startReverseEngineering() {
+        component.commandReverseEngineer();
     }
 }

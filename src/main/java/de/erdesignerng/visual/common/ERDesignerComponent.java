@@ -738,7 +738,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         graph.repaint();
     }
 
-    protected void commandReverseEngineer() {
+    public void commandReverseEngineer() {
 
         ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
@@ -986,6 +986,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         try {
             preferences.store();
         } catch (Exception e) {
+            // Nothing will happen here
         }
     }
 }
