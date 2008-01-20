@@ -9,7 +9,6 @@
     <fileSet>
       <includes>
         <include>*.txt</include>
-        <include>*_datatypes.xml</include>
       </includes>
     </fileSet>
 	<fileSet>
@@ -18,13 +17,16 @@
       <includes>
         <include>*.*</include>
       </includes>
-    </fileSet>    
+    </fileSet>   
 	<fileSet>
-      <directory>target</directory>
       <outputDirectory>plugins/mogwai</outputDirectory>
       <includes>
         <include>RELEASENOTES.txt</include>
       </includes>
+    </fileSet>     
+	<fileSet>
+      <directory>src</directory>
+      <outputDirectory>src</outputDirectory>
     </fileSet>    
 	<fileSet>
       <directory>target</directory>

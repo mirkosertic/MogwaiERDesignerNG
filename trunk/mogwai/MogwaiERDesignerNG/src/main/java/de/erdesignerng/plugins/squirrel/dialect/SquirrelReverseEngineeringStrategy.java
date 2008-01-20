@@ -49,7 +49,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:49:08 $
+ * @version $Date: 2008-01-20 14:10:24 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 
@@ -177,7 +177,7 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
         String[] theTableTypes = theMeta.getTableTypes();
         IDatabaseObjectInfo theObjectInfo = node.getDatabaseObjectInfo();
 
-        ITableInfo[] theInfos = theMeta.getTables(theObjectInfo.getCatalogName(), theObjectInfo.getSchemaName(), null,
+        ITableInfo[] theInfos = theMeta.getTables(theObjectInfo.getCatalogName(), theObjectInfo.getSimpleName(), null,
                 theTableTypes, new ProgressCallBack() {
 
                     public void currentlyLoading(String aInfo) {
@@ -201,13 +201,6 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
 
             aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theTableInfo.getSimpleName());
 
-            Map<Integer, String> thePKAttributes = new HashMap<Integer, String>();
-
-            PrimaryKeyInfo[] thePrimaryKeys = aMeta.getPrimaryKey(theTableInfo);
-            for (PrimaryKeyInfo thePrimaryKey : thePrimaryKeys) {
-                thePKAttributes.put((int) thePrimaryKey.getKeySequence(), thePrimaryKey.getColumnName());
-            }
-
             Table theImportingTable = aModel.getTables().findByName(theTableInfo.getSimpleName());
 
             ForeignKeyInfo[] theFKs = aMeta.getImportedKeysInfo(theTableInfo);
@@ -216,6 +209,12 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
                 Table theExportingTable = aModel.getTables().findByName(theInfo.getPrimaryKeyTableName());
                 if (theExportingTable == null) {
                     throw new ReverseEngineeringException("Cannot find table " + theInfo.getPrimaryKeyTableName());
+                }
+                
+                Map<Integer, String> thePKAttributes = new HashMap<Integer, String>();
+                PrimaryKeyInfo[] thePrimaryKeys = aMeta.getPrimaryKey(node.getDatabaseObjectInfo().getCatalogName(), node.getDatabaseObjectInfo().getSchemaName(), theExportingTable.getName());
+                for (PrimaryKeyInfo thePrimaryKey : thePrimaryKeys) {
+                    thePKAttributes.put((int) thePrimaryKey.getKeySequence(), thePrimaryKey.getColumnName());
                 }
 
                 Relation theRelation = new Relation();
