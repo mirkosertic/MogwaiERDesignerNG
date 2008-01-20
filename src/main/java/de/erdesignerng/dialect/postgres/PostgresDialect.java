@@ -25,17 +25,17 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-20 14:10:24 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
     public PostgresDialect() {
         super("postgres_datatypes.xml");
         setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(false);
-        setMaxObjectNameLength(28);
+        setCaseSensitive(true);
+        setMaxObjectNameLength(255);
         setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.UPPERCASE);
+        setCastType(NameCastType.NOTHING);
     }
 
     @Override
