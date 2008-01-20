@@ -110,7 +110,7 @@
     <dependency>
       <groupId>net.sourceforge.mogwai</groupId>
       <artifactId>mogwai-looks</artifactId>
-      <version>1.3</version>
+      <version>1.4</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

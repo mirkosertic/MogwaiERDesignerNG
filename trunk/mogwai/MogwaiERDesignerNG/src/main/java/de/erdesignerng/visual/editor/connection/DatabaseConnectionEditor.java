@@ -24,7 +24,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-20 12:24:05 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -149,6 +149,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
                 Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
                         .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword());
+                
                 theConnection.close();
 
                 displayInfoMessage(getResourceHelper().getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
@@ -168,8 +169,9 @@ public class DatabaseConnectionEditor extends BaseEditor {
             if (aDialect != null) {
                 theDescriptor.setDriver(aDialect.getDriverClassName());
                 theDescriptor.setUrl(aDialect.getDriverURLTemplate());
+                theDescriptor.setDialect(aDialect);
             }
-
+            
             bindingInfo.model2view();
         }
     }

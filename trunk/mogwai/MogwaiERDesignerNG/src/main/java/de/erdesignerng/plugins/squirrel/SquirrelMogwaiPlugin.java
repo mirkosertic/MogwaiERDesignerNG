@@ -42,10 +42,12 @@ import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 import de.erdesignerng.plugins.squirrel.preferences.SquirrelMogwaiPreferences;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.mogwai.common.client.looks.UIConfiguration;
+import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 21:48:06 $
+ * @version $Date: 2008-01-20 12:24:05 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -56,9 +58,9 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     private SquirrelMogwaiPluginResources resources;
 
     private ApplicationPreferences preferences;
-    
+
     private SquirrelMogwaiPreferences preferencesPanel;
-    
+
     public String getInternalName() {
         return "mogwai";
     }
@@ -93,22 +95,28 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     @Override
     public synchronized void initialize() throws PluginException {
         super.initialize();
+        
+        // Initialize Mogwai Looks
+        UIConfiguration theConfig = new UIConfiguration();
+        theConfig.setApplyConfiguration(false);
+        UIInitializer.getInstance(theConfig);
+        
         IApplication theApplication = getApplication();
 
         resources = new SquirrelMogwaiPluginResources(this);
         preferences = ApplicationPreferences.getInstance();
 
         preferencesPanel = new SquirrelMogwaiPreferences(preferences);
-        
+
         DialectFactory.getInstance().registerDialect(new SquirrelDialect());
 
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }
-    
+
     @Override
     public IGlobalPreferencesPanel[] getGlobalPreferencePanels() {
-        return new IGlobalPreferencesPanel[] {preferencesPanel};
+        return new IGlobalPreferencesPanel[] { preferencesPanel };
     }
 
     @Override
@@ -127,10 +135,10 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
         ActionCollection theActionCollection = getApplication().getActionCollection();
         theAPI.addToPopup(DatabaseObjectType.CATALOG, theActionCollection.get(StartMogwaiAction.class));
-        theAPI.addToPopup(DatabaseObjectType.SCHEMA, theActionCollection.get(StartMogwaiAction.class));        
+        theAPI.addToPopup(DatabaseObjectType.SCHEMA, theActionCollection.get(StartMogwaiAction.class));
 
         PluginSessionCallback ret = new PluginSessionCallback() {
-            
+
             public void sqlInternalFrameOpened(SQLInternalFrame sqlInternalFrame, ISession sess) {
             }
 
@@ -144,16 +152,16 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     @Override
     public void sessionEnding(ISession session) {
         SquirrelMogwaiController[] theControllers = controllersBySessionID.remove(session.getIdentifier());
-
-        for (int i = 0; i < theControllers.length; i++) {
-            theControllers[i].sessionEnding();
+        if (theControllers != null) {
+            for (int i = 0; i < theControllers.length; i++) {
+                theControllers[i].sessionEnding();
+            }
         }
     }
 
     public SquirrelMogwaiController[] getGraphControllers(ISession session) {
         return controllersBySessionID.get(session.getIdentifier());
     }
-
 
     public SquirrelMogwaiController createNewGraphControllerForSession(ISession aSession, ObjectTreeNode aNode) {
         SquirrelMogwaiController[] theControllers = controllersBySessionID.get(aSession.getIdentifier());

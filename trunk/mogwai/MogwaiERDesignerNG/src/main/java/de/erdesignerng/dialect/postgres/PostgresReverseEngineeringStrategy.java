@@ -17,15 +17,41 @@
  */
 package de.erdesignerng.dialect.postgres;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.SchemaEntry;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-20 12:24:05 $
  */
 public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<PostgresDialect> {
 
     public PostgresReverseEngineeringStrategy(PostgresDialect aDialect) {
         super(aDialect);
     }
+    
+    @Override
+    public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
+
+        List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+
+        DatabaseMetaData theMetadata = aConnection.getMetaData();
+        ResultSet theResult = theMetadata.getSchemas();
+
+        while (theResult.next()) {
+            String theSchemaName = theResult.getString("TABLE_SCHEM");
+            String theCatalogName = null;
+
+            theList.add(new SchemaEntry(theCatalogName, theSchemaName));
+        }
+
+        return theList;
+    }    
 }
