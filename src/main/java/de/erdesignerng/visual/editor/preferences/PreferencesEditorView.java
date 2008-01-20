@@ -46,7 +46,7 @@ public class PreferencesEditorView extends JPanel {
 
         preferences.getDotPath().setText(ap.getDotPath());
 
-        String theColDef = "2dlu,150dlu,2dlu";
+        String theColDef = "2dlu,250dlu,2dlu";
         String theRowDef = "2dlu,p,10dlu,p,2dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);

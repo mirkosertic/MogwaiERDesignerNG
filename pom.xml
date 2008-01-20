@@ -71,7 +71,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
           <execution>
-            <phase>xpackage</phase>
+            <phase>package</phase>
             <goals>
               <goal>javadoc</goal>
             </goals>
