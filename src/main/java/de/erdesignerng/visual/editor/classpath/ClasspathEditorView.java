@@ -61,15 +61,15 @@ public class ClasspathEditorView extends JPanel {
 
         JPanel thePanel = new JPanel();
 
-        theColDef = "fill:2dlu:grow,50dlu,2dlu,50dlu,2dlu";
+        theColDef = "60dlu,fill:2dlu:grow,60dlu";
         theRowDef = "p";
 
         theLayout = new FormLayout(theColDef, theRowDef);
         thePanel.setLayout(theLayout);
 
-        thePanel.add(okButton, cons.xy(2, 1));
+        thePanel.add(okButton, cons.xy(1, 1));
         okButton.setText("Ok");
-        thePanel.add(cancelButton, cons.xy(4, 1));
+        thePanel.add(cancelButton, cons.xy(3, 1));
         cancelButton.setText("Cancel");
 
         add(thePanel, cons.xyw(2, 7, 3));
