@@ -39,7 +39,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:21:02 $
+ * @version $Date: 2008-01-20 12:24:05 $
  * @param <T> the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
@@ -500,7 +500,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return theList;
     }
 
-    protected void getDataTypes(Connection aConnection) throws SQLException {
+    public void getDataTypes(Connection aConnection) throws SQLException {
         DatabaseMetaData theMetaData = aConnection.getMetaData();
         ResultSet theResult = theMetaData.getTypeInfo();
         while (theResult.next()) {

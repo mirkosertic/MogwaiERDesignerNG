@@ -30,7 +30,7 @@ import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginResources;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:21:03 $
+ * @version $Date: 2008-01-20 12:24:05 $
  */
 public class StartMogwaiAction extends SquirrelAction implements ISessionAction {
 
@@ -55,9 +55,8 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
                 SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
                 if ((controllers == null) || (0 == controllers.length)) {
                     theNewController = plugin.createNewGraphControllerForSession(session, selectedNodes[i]);
+                    theNewController.startReverseEngineering();                    
                 }
-                
-                theNewController.startReverseEngineering();
             }
 
         }
