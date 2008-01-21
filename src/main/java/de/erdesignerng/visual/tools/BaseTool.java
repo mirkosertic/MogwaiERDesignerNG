@@ -17,13 +17,18 @@
  */
 package de.erdesignerng.visual.tools;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.jgraph.graph.BasicMarqueeHandler;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-21 20:54:49 $
  */
 public abstract class BaseTool extends BasicMarqueeHandler {
 
@@ -31,5 +36,21 @@ public abstract class BaseTool extends BasicMarqueeHandler {
 
     public BaseTool(ERDesignerGraph aGraph) {
         graph = aGraph;
+    }
+
+    protected ResourceHelper getResourceHelper() {
+        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    }
+
+    protected void displayErrorMessage(String aMessage) {
+        String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
+        JOptionPane.showMessageDialog(SwingUtilities.getRoot(graph), aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
+    }
+
+    protected boolean displayQuestionMessage(String aMessageKey) {
+        String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
+        String theMessage = getResourceHelper().getText(aMessageKey);
+        return JOptionPane.showConfirmDialog(SwingUtilities.getRoot(graph), theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+
     }
 }

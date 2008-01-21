@@ -25,12 +25,15 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
+import de.erdesignerng.modificationtracker.ModelModificationTracker;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-21 20:54:50 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -53,6 +56,8 @@ public class Model implements OwnedModelItemVerifier {
     private Dialect dialect;
 
     private ModelProperties properties = new ModelProperties();
+    
+    private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
 
     /**
      * Add a table to the database model.
@@ -234,12 +239,29 @@ public class Model implements OwnedModelItemVerifier {
         return getRelations().isForeignKeyAttribute(theRealAttribute);
     }
 
-    public void removeTable(Table aTable) {
+    /**
+     * Remove a table from the model.
+     * 
+     * @param aTable the table
+     * @throws VetoException will be thrown if the modificationtracker has a veto for completing this operation
+     */
+    public void removeTable(Table aTable) throws VetoException {
+        
+        modificationTracker.removeTable(aTable);
+        
         tables.remove(aTable);
         relations.removeByTable(aTable);
     }
 
-    public void removeRelation(Relation aRelation) {
+    /**
+     * Remove a relation from the model.
+     * 
+     * @param aRelation the relation
+     * @throws VetoException will be thrown if the modificationtracker has a veto for completing this operation
+     */
+    public void removeRelation(Relation aRelation) throws VetoException {
+        
+        modificationTracker.removeRelation(aRelation);
         relations.remove(aRelation);
     }
 }
