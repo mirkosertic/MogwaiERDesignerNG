@@ -31,6 +31,7 @@ import org.jgraph.graph.GraphModel;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
@@ -39,7 +40,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-21 20:54:50 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -64,18 +65,17 @@ public class ERDesignerGraph extends JGraph {
         setMarqueeHandler(aTool);
     }
 
-    public void commandDeleteCell(GraphCell aCell) {
+    public void commandDeleteCell(GraphCell aCell) throws VetoException {
 
         GraphModel theModel = getModel();
 
         if (aCell instanceof RelationEdge) {
             RelationEdge theEdge = (RelationEdge) aCell;
 
-            theModel.remove(new Object[] { theEdge });
-
             getDBModel().removeRelation((Relation) theEdge.getUserObject());
-
+            theModel.remove(new Object[] { theEdge });
         }
+
         if (aCell instanceof TableCell) {
             TableCell theCell = (TableCell) aCell;
             Table theTable = (Table) theCell.getUserObject();

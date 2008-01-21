@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import org.jgraph.graph.GraphCell;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
@@ -36,7 +37,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:44 $
+ * @version $Date: 2008-01-21 20:54:49 $
  */
 public class HandTool extends BaseTool {
 
@@ -76,7 +77,15 @@ public class HandTool extends BaseTool {
         theAction.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                graph.commandDeleteCell(aCell);
+                if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+                    try {
+                        graph.commandDeleteCell(aCell);
+                    } catch (VetoException ex) {
+
+                        // TODO [mirkosertic] add better error handling here
+                        displayErrorMessage("Cannot delete model entry : " + ex.getMessage());
+                    }
+                }
             }
         });
 
