@@ -23,9 +23,9 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
-public class Relation extends OwnedModelItem<Model> {
+public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
     public static final String PROPERTY_POINTS = "points";
 
@@ -93,5 +93,24 @@ public class Relation extends OwnedModelItem<Model> {
     public void setOnUpdate(CascadeType aOnUpdate) {
         onUpdate = aOnUpdate;
     }
+    
+    @Override
+    public Relation clone() {
+        return null;
+    }
 
+    public void restoreFrom(Relation aValue) throws Exception {
+        setName(aValue.getName());
+        setImportingTable(aValue.getImportingTable());
+        setExportingTable(aValue.getExportingTable());
+        setOnDelete(aValue.getOnDelete());
+        setOnUpdate(aValue.getOnUpdate());
+        mapping = aValue.getMapping();
+    }
+
+    public boolean isModified(Relation theTempRelation) {
+
+        //TODO check is modified here
+        return false;
+    }    
 }

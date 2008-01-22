@@ -23,11 +23,17 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain> {
 
     private String datatype;
+
+    private int domainSize;
+
+    private int fraction;
+
+    private int radix;
 
     private boolean sequenced;
 
@@ -90,6 +96,51 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         javaClassName = aJavaClassName;
     }
 
+    /**
+     * @return the faction
+     */
+    public int getFraction() {
+        return fraction;
+    }
+
+    /**
+     * @param faction
+     *            the faction to set
+     */
+    public void setFraction(int faction) {
+        this.fraction = faction;
+    }
+
+    /**
+     * @return the radix
+     */
+    public int getRadix() {
+        return radix;
+    }
+
+    /**
+     * @param radix
+     *            the radix to set
+     */
+    public void setRadix(int radix) {
+        this.radix = radix;
+    }
+
+    /**
+     * @return the size
+     */
+    public int getDomainSize() {
+        return domainSize;
+    }
+
+    /**
+     * @param size
+     *            the size to set
+     */
+    public void setDomainSize(int size) {
+        this.domainSize = size;
+    }
+
     @Override
     public Domain clone() {
         Domain theValue = new Domain();
@@ -98,6 +149,9 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         theValue.setSequenced(isSequenced());
         theValue.setJavaClassName(getJavaClassName());
         theValue.setComment(getComment());
+        theValue.setDomainSize(getDomainSize());
+        theValue.setFraction(getFraction());
+        theValue.setRadix(getRadix());
         return theValue;
     }
 
@@ -107,6 +161,13 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         setSequenced(aValue.isSequenced());
         setJavaClassName(aValue.getJavaClassName());
         setComment(aValue.getComment());
+        setDomainSize(aValue.getDomainSize());
+        setFraction(aValue.getFraction());
+        setRadix(aValue.getRadix());
+    }
+
+    public boolean equals(String aDataType, int aSize, int aFraction, int aRadix) {
+        return (domainSize == aSize) && (fraction == aFraction) && (radix == aRadix) && (aDataType.equals(datatype));
     }
 
 }

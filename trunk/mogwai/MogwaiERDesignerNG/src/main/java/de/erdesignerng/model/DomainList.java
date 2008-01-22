@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public class DomainList extends ModelItemVector<Domain> {
 
@@ -31,11 +31,14 @@ public class DomainList extends ModelItemVector<Domain> {
      * 
      * @param aDataType
      *            the system id
+     * @param aSize the size
+     * @param aPrecision the precision
+     * @param aRadix the radix
      * @return the found element
      */
-    public Domain findByDataType(String aDataType) {
+    public Domain findByDataType(String aDataType, int aSize, int aPrecision, int aRadix) {
         for (Domain theDomain : this) {
-            if (aDataType.equals(theDomain.getDatatype())) {
+            if (theDomain.equals(aDataType, aSize, aPrecision, aRadix)) {
                 return theDomain;
             }
         }

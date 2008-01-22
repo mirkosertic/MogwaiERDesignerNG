@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -112,6 +112,35 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         setComment(aValue.getComment());
         setPrimaryKey(aValue.isPrimaryKey());
         setOwner(aValue.getOwner());
+    }
+
+    public boolean isModified(Attribute aAttribute) {
+
+        if (!getName().equals(aAttribute.getName())) {
+            return true;
+        }
+
+        if (!domain.equals(aAttribute.getDomain())) {
+            return true;
+        }
+
+        if (!defaultValue.equals(aAttribute.getDefaultValue())) {
+            return true;
+        }
+
+        if (!getComment().equals(aAttribute.getComment())) {
+            return true;
+        }
+
+        if (!nullable == aAttribute.isNullable()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isRenamed(Attribute aAttribute) {
+        return !getName().equals(aAttribute.getName());
     }
 
 }
