@@ -20,10 +20,12 @@ package de.erdesignerng.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.erdesignerng.model.serializer.RelationSerializer;
+
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-22 23:25:43 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -41,6 +43,8 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     private CascadeType onUpdate = CascadeType.CASCADE;
 
+    public static final RelationSerializer SERIALIZER = new RelationSerializer();
+    
     /**
      * @return the end
      */
