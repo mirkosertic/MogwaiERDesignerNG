@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 20:04:24 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public abstract class ModelItem {
 
@@ -88,5 +88,9 @@ public abstract class ModelItem {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+    
+    public boolean isRenamed(String aName) {
+        return !name.equals(aName);
     }
 }

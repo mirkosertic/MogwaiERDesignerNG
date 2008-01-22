@@ -59,7 +59,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2008-01-22 20:54:06 $
  */
 public final class ModelIOUtilities {
 
@@ -146,6 +146,12 @@ public final class ModelIOUtilities {
     protected static final String DEFAULTVALUEREFID = "defaultvaluerefid";
 
     protected static final String COMMENT = "Comment";
+
+    protected static final String SIZE = "size";
+
+    protected static final String FRACTION = "fraction";
+
+    protected static final String RADIX = "radix";
 
     private static ModelIOUtilities me;
 
@@ -297,6 +303,9 @@ public final class ModelIOUtilities {
             theDomain.setDatatype(theElement.getAttribute(DATATYPE));
             theDomain.setJavaClassName(theElement.getAttribute(JAVA_CLASS_NAME));
             theDomain.setSequenced(TRUE.equals(theElement.getAttribute(SEQUENCED)));
+            theDomain.setDomainSize(Integer.parseInt(theElement.getAttribute(SIZE)));
+            theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
+            theDomain.setRadix(Integer.parseInt(theElement.getAttribute(RADIX)));
 
             theModel.getDomains().add(theDomain);
         }
@@ -494,6 +503,9 @@ public final class ModelIOUtilities {
             // Zusatzdaten
             theDomainElement.setAttribute(DATATYPE, theDomain.getDatatype());
             theDomainElement.setAttribute(JAVA_CLASS_NAME, theDomain.getJavaClassName());
+            theDomainElement.setAttribute(SIZE, "" + theDomain.getDomainSize());
+            theDomainElement.setAttribute(FRACTION, "" + theDomain.getFraction());
+            theDomainElement.setAttribute(RADIX, "" + theDomain.getRadix());
             setBooleanAttribute(theDomainElement, SEQUENCED, theDomain.isSequenced());
         }
 

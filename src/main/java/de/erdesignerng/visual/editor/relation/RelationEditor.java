@@ -38,7 +38,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-01-22 20:54:06 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -139,18 +139,29 @@ public class RelationEditor extends BaseEditor {
     @Override
     public void applyValues() throws Exception {
         Relation theRelation = bindingInfo.getDefaultModel();
+        
+        Relation theTempRelation = new Relation();
+        bindingInfo.setDefaultModel(theTempRelation);
+        
         bindingInfo.view2model();
 
         if (!model.getRelations().contains(theRelation)) {
             model.addRelation(theRelation);
-
         }
 
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Attribute thePKAttribute = (Attribute) tableModel.getValueAt(i, 0);
             Attribute theAssignedAttribute = (Attribute) tableModel.getValueAt(i, 1);
 
-            theRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
+            theTempRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
+        }
+        
+        if (theRelation.isRenamed(theTempRelation.getName())) {
+            model.renameRelation(theRelation, theTempRelation.getName());
+        }
+        
+        if (theRelation.isModified(theTempRelation)) {
+            model.changeRelation(theRelation, theTempRelation);
         }
     }
 }

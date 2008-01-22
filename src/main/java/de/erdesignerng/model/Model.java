@@ -33,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-21 20:54:50 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -66,9 +66,12 @@ public class Model implements OwnedModelItemVerifier {
      *            the table
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException is thrown in case of an error
+     * @throws VetoException if there is a veto for doing this
      */
-    public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException {
+    public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException , VetoException {
 
+        modificationTracker.addTable(aTable);
+        
         ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
 
         for (Attribute theAttribute : aTable.getAttributes()) {
@@ -103,11 +106,13 @@ public class Model implements OwnedModelItemVerifier {
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException is thrown in case of an error
      */
-    public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException {
+    public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException , VetoException {
 
         ModelUtilities.checkNameAndExistance(relations, aRelation, dialect);
 
-        aRelation.setOwner(this);
+        aRelation.setOwner(this);        
+        modificationTracker.addRelation(aRelation);
+
         relations.add(aRelation);
     }
 
@@ -263,5 +268,75 @@ public class Model implements OwnedModelItemVerifier {
         
         modificationTracker.removeRelation(aRelation);
         relations.remove(aRelation);
+    }
+
+    public void removeAttributeFromTable(Table aTable, String aSystemId) throws VetoException {
+        
+        modificationTracker.removeAttributeFromTable(aTable, aSystemId);
+        aTable.getAttributes().removeById(aSystemId);
+    }
+
+    public void removeIndex(Table aTable, String aSystemId) throws VetoException {
+        
+        modificationTracker.removeIndexFromTable(aTable, aSystemId);
+        aTable.getIndexes().removeById(aSystemId);
+    }
+
+    public void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
+        
+        modificationTracker.addAttributeToTable(aTable, aAttribute);
+        aTable.addAttribute(this, aAttribute);
+    }
+
+    public void changeAttribute(Attribute aExistantAttribute, Attribute aNewAttribute) throws Exception {
+        
+        modificationTracker.changeAttribute(aExistantAttribute, aNewAttribute);
+        
+        aExistantAttribute.restoreFrom(aNewAttribute);
+    }
+
+    public void addIndexToTable(Table aTable, Index aIndex) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
+        
+        modificationTracker.addIndexToTable(aTable, aIndex);
+        
+        aTable.addIndex(this, aIndex);
+    }
+
+    public void changeIndex(Index aExistantIndex, Index aNewIndex) throws Exception {
+
+        modificationTracker.changeIndex(aExistantIndex, aNewIndex);
+        
+        aExistantIndex.restoreFrom(aNewIndex);        
+    }
+
+    public void renameTable(Table aTable, String aNewName) throws VetoException {
+        
+        modificationTracker.renameTable(aTable, aNewName);
+        
+        aTable.setName(aNewName);
+    }
+
+    public void changeTableComment(Table aTable, String aNewComment) throws VetoException {
+        
+        modificationTracker.changeTableComment(aTable, aNewComment);
+        
+        aTable.setComment(aNewComment);
+    }
+
+    public void renameAttribute(Attribute aExistantAttribute, String aNewName) throws VetoException {
+        modificationTracker.renameAttribute(aExistantAttribute, aNewName);
+        
+        aExistantAttribute.setName(aNewName);
+    }
+
+    public void renameRelation(Relation aRelation, String aNewName) throws VetoException {
+        modificationTracker.renameRelation(aRelation, aNewName);
+        aRelation.setName(aNewName);
+    }
+
+    public void changeRelation(Relation aRelation, Relation aTempRelation) throws Exception {
+        
+        modificationTracker.changeRelation(aRelation, aTempRelation);
+        aRelation.restoreFrom(aTempRelation);
     }
 }

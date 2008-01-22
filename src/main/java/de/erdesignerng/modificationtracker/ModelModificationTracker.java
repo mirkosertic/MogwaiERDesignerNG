@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.modificationtracker;
 
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 
@@ -26,4 +28,29 @@ public interface ModelModificationTracker {
 
     void removeRelation(Relation aRelation) throws VetoException;
 
+    void addTable(Table aTable) throws VetoException;
+
+    void removeAttributeFromTable(Table aTable, String aSystemId) throws VetoException;
+
+    void removeIndexFromTable(Table aTable, String aSystemId) throws VetoException;
+
+    void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException;
+
+    void changeAttribute(Attribute aExistantAttribute, Attribute aNewAttribute) throws VetoException;
+
+    void addIndexToTable(Table aTable, Index aIndex) throws VetoException;
+
+    void changeIndex(Index aExistantIndex, Index aNewIndex) throws VetoException;
+
+    void renameTable(Table aTable, String aNewName) throws VetoException;
+
+    void changeTableComment(Table aTable, String aNewComment) throws VetoException;
+
+    void renameAttribute(Attribute aExistantAttribute, String aNewName) throws VetoException;
+
+    void addRelation(Relation aRelation) throws VetoException;
+
+    void renameRelation(Relation aRelation, String aNewName) throws VetoException;
+
+    void changeRelation(Relation aRelation, Relation aTempRelation) throws VetoException;
 }

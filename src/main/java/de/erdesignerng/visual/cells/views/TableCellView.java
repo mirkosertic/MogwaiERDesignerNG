@@ -35,6 +35,7 @@ import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
@@ -45,7 +46,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-22 20:54:06 $
  */
 public class TableCellView extends VertexView {
 
@@ -69,6 +70,8 @@ public class TableCellView extends VertexView {
         private boolean selected;
 
         private boolean domainDisplayMode;
+
+        private Dialect dialect;
 
         private static ImageIcon key = IconFactory.getKeyIcon();
 
@@ -145,7 +148,7 @@ public class TableCellView extends VertexView {
                     if (domainDisplayMode) {
                         theText += theAttribute.getDomain().getName();
                     } else {
-                        theText += theAttribute.getDomain().getDatatype();
+                        theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -180,7 +183,7 @@ public class TableCellView extends VertexView {
                     if (domainDisplayMode) {
                         theText += theAttribute.getDomain().getName();
                     } else {
-                        theText += theAttribute.getDomain().getDatatype();
+                        theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
                     }
 
                     if (isFK) {
@@ -224,7 +227,7 @@ public class TableCellView extends VertexView {
                     if (domainDisplayMode) {
                         theText += theAttribute.getDomain().getName();
                     } else {
-                        theText += theAttribute.getDomain().getDatatype();
+                        theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -247,7 +250,7 @@ public class TableCellView extends VertexView {
                 if (domainDisplayMode) {
                     theText += theAttribute.getDomain().getName();
                 } else {
-                    theText += theAttribute.getDomain().getDatatype();
+                    theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
                 }
 
                 if (theAttribute.isForeignKey()) {
@@ -281,6 +284,7 @@ public class TableCellView extends VertexView {
             table = (Table) ((TableCell) theView.getCell()).getUserObject();
             selected = aSelected;
             domainDisplayMode = ((ERDesignerGraph) aGraph).isDomainDisplayMode();
+            dialect = ((ERDesignerGraph) aGraph).getDBModel().getDialect();
 
             return this;
         }
