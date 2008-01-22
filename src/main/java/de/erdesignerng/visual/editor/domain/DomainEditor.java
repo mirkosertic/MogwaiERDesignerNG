@@ -35,6 +35,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.DomainList;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -45,7 +46,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-22 21:57:47 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -97,10 +98,12 @@ public class DomainEditor extends BaseEditor {
     }, this, ERDesignerBundle.DELETE);
 
     /**
-     * Create a domain editor. 
+     * Create a domain editor.
      * 
-     * @param aModel the model
-     * @param aParent the parent container
+     * @param aModel
+     *            the model
+     * @param aParent
+     *            the parent container
      */
     public DomainEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.DOMAINS);
@@ -232,7 +235,7 @@ public class DomainEditor extends BaseEditor {
             if (!domainListModel.contains(theModel)) {
 
                 if (model.getDefaultValues().findByName(theModel.getName()) != null) {
-                    displayErrorMessage("Name already in use!");
+                    MessagesHelper.displayErrorMessage(this, "Name already in use!");
                     return;
                 }
                 domainListModel.add(theModel);
@@ -249,7 +252,7 @@ public class DomainEditor extends BaseEditor {
         Domain theDomain = bindingInfo.getDefaultModel();
 
         if (!model.getTables().isDomainUsed(theDomain)) {
-            if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 
                 removedDomains.add(theDomain);
                 domainListModel.remove(theDomain);
@@ -257,7 +260,7 @@ public class DomainEditor extends BaseEditor {
                 commandNew();
             }
         } else {
-            displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
         }
     }
 

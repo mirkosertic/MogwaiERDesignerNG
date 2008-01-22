@@ -39,6 +39,7 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
@@ -51,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:06 $
+ * @version $Date: 2008-01-22 21:57:47 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -406,14 +407,15 @@ public class TableEditor extends BaseEditor {
 
         if (!model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
 
-            if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
                 knownAttributeValues.remove(theAttribute.getSystemId());
                 attributeListModel.remove(theAttribute);
 
                 removedAttributes.add(theAttribute);
             }
         } else {
-            displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ATTRIBUTEISUSEDINFOREIGNKEYS));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                    ERDesignerBundle.ATTRIBUTEISUSEDINFOREIGNKEYS));
         }
     }
 
@@ -429,7 +431,7 @@ public class TableEditor extends BaseEditor {
     private void commandDeleteIndex() {
         Index theAttribute = indexBindingInfo.getDefaultModel();
 
-        if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+        if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
             knownIndexValues.remove(theAttribute.getSystemId());
             indexListModel.remove(theAttribute);
 
@@ -452,7 +454,8 @@ public class TableEditor extends BaseEditor {
                 for (int i = 0; i < indexListModel.getSize(); i++) {
                     Index theIndex = (Index) indexListModel.get(i);
                     if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
-                        displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.THEREISALREADYAPRIMARYKEY));
+                        MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                                ERDesignerBundle.THEREISALREADYAPRIMARYKEY));
                         return;
                     }
                 }
