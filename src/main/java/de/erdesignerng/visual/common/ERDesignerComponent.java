@@ -64,6 +64,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.ExportType;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
@@ -727,6 +728,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         setModel(theModel);
 
         worldConnector.initTitle();
+        
+        worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.NEWMODELCREATED));        
     }
 
     protected void commandOpenFile() {
@@ -756,8 +759,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             preferences.addLRUFile(aFile);
 
             initLRUMenu();
+            
+            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
 
         } catch (Exception e) {
+            
+            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(ERDesignerBundle.ERRORLOADINGFILE));
+            
             logException(e);
         }
     }
@@ -769,6 +777,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     public void commandReverseEngineer() {
+        
+        if (model.getDialect() == null) {
+            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+            return;
+        }
 
         ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
@@ -815,6 +828,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 preferences.addLRUFile(theFile);
 
                 initLRUMenu();
+                
+                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));                
 
             } catch (Exception e) {
                 logException(e);

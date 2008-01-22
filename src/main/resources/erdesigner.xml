@@ -393,6 +393,25 @@
 			<Text lang="de">Pfad zu DOT</Text>		
 			<Text lang="en">Path to DOT</Text>					
 		</Entry>
-		
+		<Entry id="ERRORLOADINGFILE">
+			<Text lang="de">Fehler beim Laden der Datei</Text>		
+			<Text lang="en">Error loading file</Text>					
+		</Entry>
+		<Entry id="FILELOADED">
+			<Text lang="de">Datei erfolgreich geladen</Text>		
+			<Text lang="en">File loaded</Text>					
+		</Entry>
+		<Entry id="FILESAVED">
+			<Text lang="de">Datei erfolgreich gespeichert</Text>		
+			<Text lang="en">File saved</Text>					
+		</Entry>
+		<Entry id="NEWMODELCREATED">
+			<Text lang="de">Neues Modell erzeugt</Text>		
+			<Text lang="en">New model created</Text>					
+		</Entry>
+		<Entry id="PLEASEDEFINEADATABASECONNECTIONFIRST">
+			<Text lang="de">Bitte definieren Sie vorher eine Datenbankverbindung!</Text>		
+			<Text lang="en">Please define a database connection prior to usinf this operation!</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

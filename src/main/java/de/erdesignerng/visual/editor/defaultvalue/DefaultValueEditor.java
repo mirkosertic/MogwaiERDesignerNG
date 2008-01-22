@@ -32,6 +32,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.DefaultValueList;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -42,7 +43,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-01-22 21:57:47 $
  */
 public class DefaultValueEditor extends BaseEditor {
 
@@ -94,10 +95,12 @@ public class DefaultValueEditor extends BaseEditor {
     }, this, ERDesignerBundle.DELETE);
 
     /**
-     * Create an editor. 
+     * Create an editor.
      * 
-     * @param aModel the model
-     * @param aParent the parent container
+     * @param aModel
+     *            the model
+     * @param aParent
+     *            the parent container
      */
     public DefaultValueEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.DEFAULTVALUES);
@@ -209,7 +212,7 @@ public class DefaultValueEditor extends BaseEditor {
             if (!defaultValuesListModel.contains(theModel)) {
 
                 if (model.getDefaultValues().findByName(theModel.getName()) != null) {
-                    displayErrorMessage("Name already in use!");
+                    MessagesHelper.displayErrorMessage(this, "Name already in use!");
                     return;
                 }
                 defaultValuesListModel.add(theModel);
@@ -225,7 +228,7 @@ public class DefaultValueEditor extends BaseEditor {
         DefaultValue theDomain = bindingInfo.getDefaultModel();
 
         if (!model.getTables().isDefaultValueUsed(theDomain)) {
-            if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 
                 removedDefaultValues.add(theDomain);
                 defaultValuesListModel.remove(theDomain);
@@ -233,7 +236,7 @@ public class DefaultValueEditor extends BaseEditor {
                 commandNew();
             }
         } else {
-            displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.ELEMENTINUSE));
         }
     }
 

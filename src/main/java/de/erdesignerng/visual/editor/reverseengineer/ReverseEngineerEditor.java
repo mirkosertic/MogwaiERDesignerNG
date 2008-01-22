@@ -33,6 +33,7 @@ import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.ComboboxModelAdapter;
@@ -43,7 +44,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-22 21:57:47 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -145,7 +146,7 @@ public class ReverseEngineerEditor extends BaseEditor {
             Object[] theSelectesValues = editingView.getschemaList().getSelectedValues();
             if (((theSelectesValues == null) || (theSelectesValues.length == 0))
                     && (model.getDialect().supportsSchemaInformation())) {
-                displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
+                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
                 return;
             }
             setModalResult(MODAL_RESULT_OK);
@@ -172,7 +173,7 @@ public class ReverseEngineerEditor extends BaseEditor {
                 }
 
             } catch (Exception e) {
-                displayErrorMessage(e.getMessage());
+                MessagesHelper.displayErrorMessage(this, e.getMessage());
             } finally {
                 if (theConnection != null) {
                     try {
