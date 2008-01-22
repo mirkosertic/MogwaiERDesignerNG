@@ -38,6 +38,7 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
@@ -50,7 +51,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 22:13:03 $
+ * @version $Date: 2008-01-22 20:54:06 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -474,19 +475,29 @@ public class TableEditor extends BaseEditor {
     }
 
     @Override
-    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException {
+    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         Table theTable = tableBindingInfo.getDefaultModel();
+        Table theTempTable = new Table();
+
+        tableBindingInfo.setDefaultModel(theTempTable);
         tableBindingInfo.view2model();
+        if (theTable.isRenamed(theTempTable.getName())) {
+            model.renameTable(theTable, theTempTable.getName());
+        }
+
+        if (!theTable.getComment().equals(theTempTable.getComment())) {
+            model.changeTableComment(theTable, theTempTable.getComment());
+        }
 
         if (!model.getTables().contains(theTable)) {
             model.addTable(theTable);
         } else {
             for (Attribute theAttribute : removedAttributes) {
-                theTable.getAttributes().removeById(theAttribute.getSystemId());
+                model.removeAttributeFromTable(theTable, theAttribute.getSystemId());
             }
             for (Index theIndex : removedIndexes) {
-                theTable.getIndexes().removeById(theIndex.getSystemId());
+                model.removeIndex(theTable, theIndex.getSystemId());
             }
 
         }
@@ -496,12 +507,20 @@ public class TableEditor extends BaseEditor {
 
             Attribute theExistantAttribute = theTable.getAttributes().findBySystemId(theKey);
             if (theExistantAttribute == null) {
-                theTable.addAttribute(model, theAttribute);
+                model.addAttributeToTable(theTable, theAttribute);
             } else {
                 try {
-                    theExistantAttribute.restoreFrom(theAttribute);
+                    if (theExistantAttribute.isRenamed(theAttribute)) {
+                        model.renameAttribute(theExistantAttribute, theAttribute.getName());
+                    } else {
+                        if (theExistantAttribute.isModified(theAttribute)) {
+                            model.changeAttribute(theExistantAttribute, theAttribute);
+                        }
+                    }
+                } catch (VetoException e1) {
+                    throw e1;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logFatalError(e);
                 }
             }
         }
@@ -511,12 +530,16 @@ public class TableEditor extends BaseEditor {
 
             Index theExistantIndex = theTable.getIndexes().findBySystemId(theKey);
             if (theExistantIndex == null) {
-                theTable.addIndex(model, theIndex);
+                model.addIndexToTable(theTable, theIndex);
             } else {
                 try {
-                    theExistantIndex.restoreFrom(theIndex);
+                    if (theExistantIndex.isModified(theIndex)) {
+                        model.changeIndex(theExistantIndex, theIndex);
+                    }
+                } catch (VetoException e1) {
+                    throw e1;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logFatalError(e);
                 }
             }
         }

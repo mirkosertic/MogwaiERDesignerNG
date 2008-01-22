@@ -21,11 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import de.erdesignerng.model.Domain;
+
 /**
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public class DataType {
 
@@ -56,11 +58,12 @@ public class DataType {
         return name;
     }
 
-    protected String patternToType(String aSize, String aDecimalDigits) {
+    protected String patternToType(Domain aDomain) {
 
         Map<String, String> theMapping = new HashMap<String, String>();
-        theMapping.put("$size", aSize);
-        theMapping.put("$decimal", aDecimalDigits);
+        theMapping.put("$size", "" + aDomain.getDomainSize());
+        theMapping.put("$decimal", "" + aDomain.getFraction());
+        theMapping.put("$radix", "" + aDomain.getRadix());
 
         StringBuilder theResult = new StringBuilder();
         StringTokenizer theSt = new StringTokenizer(pattern, ",");
@@ -94,13 +97,13 @@ public class DataType {
         return theResult.toString();
     }
 
-    public String createTypeDefinitionFor(String aSize, String aDecimalDigits) {
+    public String createTypeDefinitionFor(Domain aDomain) {
 
         if (pattern == null) {
             return name;
         }
 
-        String theAppend = patternToType(aSize, aDecimalDigits);
+        String theAppend = patternToType(aDomain);
         if (theAppend.length() == 0) {
             return name;
         }

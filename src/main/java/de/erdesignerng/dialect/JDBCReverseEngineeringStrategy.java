@@ -39,70 +39,13 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-20 12:24:05 $
+ * @version $Date: 2008-01-22 20:54:05 $
  * @param <T> the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
 
     protected JDBCReverseEngineeringStrategy(T aDialect) {
         super(aDialect);
-    }
-
-    protected String convertColumnTypeToRealType(String aTypeName) {
-        return aTypeName;
-    }
-
-    protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, String aSize,
-            String aDecimalDigits, ReverseEngineeringOptions aOptions) throws ReverseEngineeringException {
-
-        DataType theDataType = dialect.getDataType(convertColumnTypeToRealType(aTypeName));
-        if (theDataType == null) {
-            throw new ReverseEngineeringException("Unknown data type " + aTypeName);
-        }
-
-        String theTypeDefinition = theDataType.createTypeDefinitionFor(aSize, aDecimalDigits);
-
-        Domain theDomain = aModel.getDomains().findByDataType(theTypeDefinition);
-        if (theDomain != null) {
-
-            if (theDomain.getName().equals(aColumnName)) {
-                return theDomain;
-            }
-
-            for (int i = 0; i < 10000; i++) {
-                String theName = aColumnName;
-                if (i > 0) {
-                    theName = theName + "_" + i;
-                }
-
-                theDomain = aModel.getDomains().findByName(theName);
-                if (theDomain != null) {
-                    if (theDomain.getName().equals(aColumnName)) {
-                        return theDomain;
-                    }
-                }
-
-                if (!aModel.getDomains().elementExists(theName, dialect.isCaseSensitive())) {
-
-                    theDomain = new Domain();
-                    theDomain.setName(theName);
-                    theDomain.setDatatype(theTypeDefinition);
-
-                    aModel.getDomains().add(theDomain);
-
-                    return theDomain;
-                }
-            }
-
-        } else {
-            theDomain = new Domain();
-            theDomain.setName(aColumnName);
-            theDomain.setDatatype(theTypeDefinition);
-
-            aModel.getDomains().add(theDomain);
-        }
-
-        return theDomain;
     }
 
     /**
@@ -159,8 +102,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
                 String theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
                 String theTypeName = theColumnsResultSet.getString("TYPE_NAME");
-                String theSize = theColumnsResultSet.getString("COLUMN_SIZE");
-                String theDecimalDigits = theColumnsResultSet.getString("DECIMAL_DIGITS");
+                
+                int theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
+                int theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
+                int theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
+                
                 String theNullable = theColumnsResultSet.getString("NULLABLE");
                 String theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
                 String theColumnRemarks = theColumnsResultSet.getString("REMARKS");
@@ -171,7 +117,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     theAttribute.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theColumnRemarks);
                 }
 
-                Domain theDomain = createDomainFor(aModel, theColumnName, theTypeName, theSize, theDecimalDigits,
+                Domain theDomain = createDomainFor(aModel, theColumnName, theTypeName, theSize, theFraction, theRadix,
                         aOptions);
 
                 DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);

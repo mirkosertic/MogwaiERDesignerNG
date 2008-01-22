@@ -60,6 +60,7 @@ import de.erdesignerng.io.ModelIOUtilities;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.ExportType;
@@ -583,7 +584,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theEditor.initializeFor(theTable);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
-                theEditor.applyValues();
+                
+                try {
+                    theEditor.applyValues();
+                } catch (VetoException e) {
+                    e.printStackTrace();
+                    return;
+                }
 
                 TableCell theCell = new TableCell(theTable);
                 theCell.transferPropertiesToAttributes(theTable);
@@ -940,7 +947,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         };
-        graph.setUI(new ERDesignerGraphUI());
+        graph.setUI(new ERDesignerGraphUI(this));
 
         scrollPane.getViewport().removeAll();
         scrollPane.getViewport().add(graph);

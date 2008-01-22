@@ -29,10 +29,11 @@ import org.apache.commons.digester.Digester;
 import de.erdesignerng.dialect.config.ConfigDataType;
 import de.erdesignerng.dialect.config.ConfigDataTypes;
 import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.model.Domain;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:04:23 $
+ * @version $Date: 2008-01-22 20:54:05 $
  */
 public abstract class Dialect {
 
@@ -257,4 +258,12 @@ public abstract class Dialect {
     }
 
     public abstract SQLGenerator createSQLGenerator();
+
+    public String getPhysicalDeclarationFor(Domain aDomain) {
+        DataType theDataType = getDataType(aDomain.getDatatype());
+        if (theDataType == null) {
+            return "!!Unknown!!";
+        }
+        return theDataType.createTypeDefinitionFor(aDomain);
+    }
 }
