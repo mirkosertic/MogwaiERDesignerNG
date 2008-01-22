@@ -19,15 +19,13 @@ package de.erdesignerng.visual.editor;
 
 import java.awt.Component;
 
-import javax.swing.JOptionPane;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultDialog;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-22 21:57:47 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -89,25 +87,6 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
         modalResult = DialogConstants.MODAL_RESULT_CANCEL;
         setVisible(true);
         return modalResult;
-    }
-
-    protected void displayErrorMessage(String aMessage) {
-
-        String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
-        JOptionPane.showMessageDialog(this, aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
-    }
-
-    protected void displayInfoMessage(String aMessage) {
-
-        String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
-        JOptionPane.showMessageDialog(this, aMessage, theInfoText, JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    protected boolean displayQuestionMessage(String aMessageKey) {
-        String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
-        String theMessage = getResourceHelper().getText(aMessageKey);
-        return JOptionPane.showConfirmDialog(this, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-
     }
 
     public abstract void applyValues() throws Exception;

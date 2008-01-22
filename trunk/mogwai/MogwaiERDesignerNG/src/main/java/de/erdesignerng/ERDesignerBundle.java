@@ -201,4 +201,14 @@ public interface ERDesignerBundle {
   String PREFERENCES = "PREFERENCES";
   /** Pfad zu DOT */
   String DOTPATH = "DOTPATH";
+  /** Fehler beim Laden der Datei */
+  String ERRORLOADINGFILE = "ERRORLOADINGFILE";
+  /** Datei erfolgreich geladen */
+  String FILELOADED = "FILELOADED";
+  /** Datei erfolgreich gespeichert */
+  String FILESAVED = "FILESAVED";
+  /** Neues Modell erzeugt */
+  String NEWMODELCREATED = "NEWMODELCREATED";
+  /** Bitte definieren Sie vorher eine Datenbankverbindung! */
+  String PLEASEDEFINEADATABASECONNECTIONFIRST = "PLEASEDEFINEADATABASECONNECTIONFIRST";
 }

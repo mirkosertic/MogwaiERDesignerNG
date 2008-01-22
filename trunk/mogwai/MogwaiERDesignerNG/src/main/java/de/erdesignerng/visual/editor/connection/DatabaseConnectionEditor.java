@@ -13,6 +13,7 @@ import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.JDBCDialect;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -24,7 +25,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-20 12:24:05 $
+ * @version $Date: 2008-01-22 21:57:47 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -149,14 +150,15 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
                 Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
                         .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword());
-                
+
                 theConnection.close();
 
-                displayInfoMessage(getResourceHelper().getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
+                MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(
+                        ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
 
             } catch (Exception e) {
 
-                displayErrorMessage(e.getMessage());
+                MessagesHelper.displayErrorMessage(this, e.getMessage());
             }
         }
     }
@@ -171,7 +173,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
                 theDescriptor.setUrl(aDialect.getDriverURLTemplate());
                 theDescriptor.setDialect(aDialect);
             }
-            
+
             bindingInfo.model2view();
         }
     }
