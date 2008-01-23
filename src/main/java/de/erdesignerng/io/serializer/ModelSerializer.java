@@ -15,13 +15,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.io.serializer;
 
 import java.util.Map;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
@@ -29,6 +31,8 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 
 public class ModelSerializer extends Serializer {
+    
+    public static final ModelSerializer SERIALIZER = new ModelSerializer();
     
     protected static final String MODEL = "Model";
 
@@ -69,24 +73,54 @@ public class ModelSerializer extends Serializer {
         // Default values
         Element theDefaultValuesElement = addElement(aDocument, theRootElement, DEFAULTVALUES);
         for (DefaultValue theDefaultValue : aModel.getDefaultValues()) {
-            DefaultValue.SERIALIZER.serialize(theDefaultValue, aDocument, theDefaultValuesElement);
+            DefaultValueSerializer.SERIALIZER.serialize(theDefaultValue, aDocument, theDefaultValuesElement);
         }
 
         // Domains serialisieren
         Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
         for (Domain theDomain : aModel.getDomains()) {
-            Domain.SERIALIZER.serialize(theDomain, aDocument, theDomainsElement);
+            DomainSerializer.SERIALIZER.serialize(theDomain, aDocument, theDomainsElement);
         }
 
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
-            Table.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
+            TableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
         }
 
         Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
         for (Relation theRelation : aModel.getRelations()) {
-            Relation.SERIALIZER.serialize(theRelation, aDocument, theRelationsElement);
+            RelationSerializer.SERIALIZER.serialize(theRelation, aDocument, theRelationsElement);
         }
         
+    }
+
+    public Model deserializeFrom(Document aDocument) {
+        Model theModel = new Model();
+        
+        NodeList theElements = aDocument.getElementsByTagName(CONFIGURATION);
+        for (int i = 0; i < theElements.getLength(); i++) {
+            Element theElement = (Element) theElements.item(i);
+
+            NodeList theProperties = theElement.getElementsByTagName(PROPERTY);
+            for (int j = 0; j < theProperties.getLength(); j++) {
+                Element theProperty = (Element) theProperties.item(j);
+
+                String theName = theProperty.getAttribute(NAME);
+                String theValue = theProperty.getAttribute(VALUE);
+
+                if (DIALECT.equals(theName)) {
+                    theModel.setDialect(DialectFactory.getInstance().getDialect(theValue));
+                } else {
+                    theModel.getProperties().setProperty(theName, theValue);
+                }
+            }
+        }
+        
+        DefaultValueSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        DomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        TableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        RelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        
+        return theModel;
     }
 }

@@ -25,7 +25,6 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.serializer.ModelSerializer;
 import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
 import de.erdesignerng.modificationtracker.ModelModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -34,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 23:25:43 $
+ * @version $Date: 2008-01-23 18:40:23 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -60,8 +59,6 @@ public class Model implements OwnedModelItemVerifier {
     
     private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
 
-    public static final ModelSerializer SERIALIZER = new ModelSerializer();
-    
     /**
      * Add a table to the database model.
      * 

@@ -15,16 +15,22 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.io.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
 
 public class AttributeSerializer extends Serializer {
 
+    public static final AttributeSerializer SERIALIZER = new AttributeSerializer();
+    
     public static final String ATTRIBUTE = "Attribute";
 
     public static final String DOMAINREFID = "domainrefid";
@@ -55,5 +61,43 @@ public class AttributeSerializer extends Serializer {
         }
 
         serializeCommentElement(aDocument, theAttributeElement, aAttribute);
+    }
+
+    public void deserializeFrom(Model aModel, Table aTable, Document aDocument, Element aElement) {
+        // Parse the Attributes
+        NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
+        for (int j = 0; j < theAttributes.getLength(); j++) {
+            Element theAttributeElement = (Element) theAttributes.item(j);
+
+            Attribute theAttribute = new Attribute();
+            theAttribute.setOwner(aTable);
+            deserializeProperties(theAttributeElement, theAttribute);
+
+            deserializeCommentElement(theAttributeElement, theAttribute);
+
+            String theDomainId = theAttributeElement.getAttribute(DOMAINREFID);
+
+            Domain theDomain = aModel.getDomains().findBySystemId(theDomainId);
+
+            if (theDomain == null) {
+                throw new IllegalArgumentException("Cannot find domain with id " + theDomainId);
+            }
+
+            DefaultValue theDefault = null;
+            String theDefaultRefId = theAttributeElement.getAttribute(DEFAULTVALUEREFID);
+            if ((theDefaultRefId != null) && (!"".equals(theDefaultRefId))) {
+                theDefault = aModel.getDefaultValues().findBySystemId(theDefaultRefId);
+                if (theDefault == null) {
+                    throw new IllegalArgumentException("Cannot find default value with id " + theDefaultRefId);
+                }
+            }
+
+            theAttribute.setDefinition(theDomain, TRUE.equals(theAttributeElement.getAttribute(NULLABLE)),
+                    theDefault);
+
+            theAttribute.setPrimaryKey(TRUE.equals(theAttributeElement.getAttribute(PRIMARYKEY)));
+
+            aTable.getAttributes().add(theAttribute);
+        }
     }
 }

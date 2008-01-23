@@ -15,14 +15,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.io.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.DefaultValue;
+import de.erdesignerng.model.Model;
 
 public class DefaultValueSerializer extends Serializer {
+    
+    public static final DefaultValueSerializer SERIALIZER = new DefaultValueSerializer();
     
     public static final String DEFAULTVALUE = "Defaultvalue";    
 
@@ -35,4 +39,19 @@ public class DefaultValueSerializer extends Serializer {
         // Zusatzdaten
         theDefaultValueElement.setAttribute(DATATYPE, aValue.getDatatype());
     }
+
+    public void deserializeFrom(Model aModel, Document aDocument) {
+        // Default values
+        NodeList theElements = aDocument.getElementsByTagName(DEFAULTVALUE);
+        for (int i = 0; i < theElements.getLength(); i++) {
+            Element theElement = (Element) theElements.item(i);
+
+            DefaultValue theDefaultValue = new DefaultValue();
+            theDefaultValue.setOwner(aModel);
+            deserializeProperties(theElement, theDefaultValue);
+
+            theDefaultValue.setDatatype(theElement.getAttribute(DATATYPE));
+
+            aModel.getDefaultValues().add(theDefaultValue);
+        }    }
 }

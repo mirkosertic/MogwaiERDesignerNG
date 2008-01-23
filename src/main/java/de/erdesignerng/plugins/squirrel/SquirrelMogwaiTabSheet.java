@@ -143,4 +143,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     public boolean supportsPreferences() {
         return false;
     }
+
+    public void initLoadedModel(Model aModel) {
+    }
 }
