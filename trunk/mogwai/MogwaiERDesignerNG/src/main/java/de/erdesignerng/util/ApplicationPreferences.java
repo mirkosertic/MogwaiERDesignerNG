@@ -30,7 +30,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 21:48:06 $
+ * @version $Date: 2008-01-23 21:01:23 $
  */
 public class ApplicationPreferences {
 
@@ -66,7 +66,7 @@ public class ApplicationPreferences {
 
     protected ApplicationPreferences(int aSize) throws BackingStoreException {
 
-        preferences = Preferences.userNodeForPackage(getClass());
+        preferences = Preferences.userNodeForPackage(ApplicationPreferences.class);
         String[] theNames = preferences.keys();
         for (String theName : theNames) {
             if (theName.startsWith(LRUPREFIX)) {
