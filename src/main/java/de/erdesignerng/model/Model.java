@@ -33,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:23 $
+ * @version $Date: 2008-01-23 19:30:52 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -338,5 +338,19 @@ public class Model implements OwnedModelItemVerifier {
         
         modificationTracker.changeRelation(aRelation, aTempRelation);
         aRelation.restoreFrom(aTempRelation);
+    }
+
+    /**
+     * @return the modificationTracker
+     */
+    public ModelModificationTracker getModificationTracker() {
+        return modificationTracker;
+    }
+
+    /**
+     * @param modificationTracker the modificationTracker to set
+     */
+    public void setModificationTracker(ModelModificationTracker modificationTracker) {
+        this.modificationTracker = modificationTracker;
     }
 }
