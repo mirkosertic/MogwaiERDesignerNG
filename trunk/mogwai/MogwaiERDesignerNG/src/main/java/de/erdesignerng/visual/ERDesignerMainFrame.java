@@ -23,6 +23,7 @@ import java.io.File;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
@@ -34,7 +35,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:28 $
+ * @version $Date: 2008-01-23 19:30:52 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -115,5 +116,6 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     public void initLoadedModel(Model aModel) {
+        aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 }

@@ -18,10 +18,106 @@
 package de.erdesignerng.dialect.sql92;
 
 import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.StatementList;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     protected SQL92SQLGenerator(T aDialect) {
         super(aDialect);
+    }
+
+    @Override
+    public StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createAddRelationStatement(Relation aRelation) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createAddTableStatement(Table aTable) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createChangeIndexStatement(Index aExistantIndex, Index aNewIndex) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createChangeTableCommentStatement(Table aTable, String aNewComment) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRemoveAttributeFromTableStatement(Table aTable, String aSystemId) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRemoveIndexFromTableStatement(Table aTable, String aSystemId) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRemoveTableStatement(Table aTable) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRenameRelationStatement(Relation aRelation, String aNewName) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
