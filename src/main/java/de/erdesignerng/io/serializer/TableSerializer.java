@@ -15,16 +15,20 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.io.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
 public class TableSerializer extends Serializer {
+    
+    public static final TableSerializer SERIALIZER = new TableSerializer();
     
     public static final String TABLE = "Table";    
 
@@ -37,12 +41,32 @@ public class TableSerializer extends Serializer {
 
         // Attribute serialisieren
         for (Attribute theAttribute : aTable.getAttributes()) {
-            Attribute.SERIALIZER.serialize(theAttribute, aDocument, theTableElement);
+            AttributeSerializer.SERIALIZER.serialize(theAttribute, aDocument, theTableElement);
         }
 
         // Indexes serialisieren
         for (Index theIndex : aTable.getIndexes()) {
-            Index.SERIALIZER.serialize(theIndex, aDocument, theTableElement);
+            IndexSerializer.SERIALIZER.serialize(theIndex, aDocument, theTableElement);
         }
+    }
+
+    public void deserializeFrom(Model aModel, Document aDocument) {
+        // Now, parse tables
+        NodeList theElements = aDocument.getElementsByTagName(TABLE);
+        for (int i = 0; i < theElements.getLength(); i++) {
+            Element theElement = (Element) theElements.item(i);
+
+            Table theTable = new Table();
+            theTable.setOwner(aModel);
+            deserializeProperties(theElement, theTable);
+
+            deserializeCommentElement(theElement, theTable);
+            
+            AttributeSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
+            IndexSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
+
+            aModel.getTables().add(theTable);
+        }
+        
     }
 }

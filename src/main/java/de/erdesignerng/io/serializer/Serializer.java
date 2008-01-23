@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.io.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -90,4 +90,16 @@ public class Serializer {
         }
     }
 
+    protected void deserializeProperties(Element aElement, ModelItem aModelItem) {
+
+        aModelItem.setSystemId(aElement.getAttribute(ID));
+        aModelItem.setName(aElement.getAttribute(NAME));
+
+        NodeList theProperties = aElement.getElementsByTagName(PROPERTY);
+        for (int i = 0; i < theProperties.getLength(); i++) {
+            Element theElement = (Element) theProperties.item(i);
+
+            aModelItem.getProperties().setProperty(theElement.getAttribute(NAME), theElement.getAttribute(VALUE));
+        }
+    }    
 }

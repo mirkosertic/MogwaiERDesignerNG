@@ -15,14 +15,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.io.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Model;
 
 public class DomainSerializer extends Serializer {
+    
+    public static final DomainSerializer SERIALIZER = new DomainSerializer();
 
     public static final String DOMAIN = "Domain";
 
@@ -50,5 +54,27 @@ public class DomainSerializer extends Serializer {
         theDomainElement.setAttribute(RADIX, "" + aDomain.getRadix());
         setBooleanAttribute(theDomainElement, SEQUENCED, aDomain.isSequenced());
 
+    }
+
+    public void deserializeFrom(Model aModel, Document aDocument) {
+        
+        // First of all, parse the domains
+        NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
+        for (int i = 0; i < theElements.getLength(); i++) {
+            Element theElement = (Element) theElements.item(i);
+
+            Domain theDomain = new Domain();
+            theDomain.setOwner(aModel);
+            deserializeProperties(theElement, theDomain);
+
+            theDomain.setDatatype(theElement.getAttribute(DATATYPE));
+            theDomain.setJavaClassName(theElement.getAttribute(JAVA_CLASS_NAME));
+            theDomain.setSequenced(TRUE.equals(theElement.getAttribute(SEQUENCED)));
+            theDomain.setDomainSize(Integer.parseInt(theElement.getAttribute(SIZE)));
+            theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
+            theDomain.setRadix(Integer.parseInt(theElement.getAttribute(RADIX)));
+
+            aModel.getDomains().add(theDomain);
+        }        
     }
 }

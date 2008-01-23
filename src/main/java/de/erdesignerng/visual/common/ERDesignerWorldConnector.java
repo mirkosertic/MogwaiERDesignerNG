@@ -41,4 +41,6 @@ public interface ERDesignerWorldConnector {
     Model createNewModel();
     
     boolean supportsPreferences();
+
+    void initLoadedModel(Model aModel);
 }
