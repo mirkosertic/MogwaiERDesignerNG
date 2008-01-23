@@ -34,7 +34,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 21:48:07 $
+ * @version $Date: 2008-01-23 18:40:28 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -112,5 +112,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     public boolean supportsPreferences() {
         return true;
+    }
+
+    public void initLoadedModel(Model aModel) {
     }
 }

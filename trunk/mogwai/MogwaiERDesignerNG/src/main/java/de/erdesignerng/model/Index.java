@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.model;
 
-import de.erdesignerng.model.serializer.IndexSerializer;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 23:25:43 $
+ * @version $Date: 2008-01-23 18:40:23 $
  */
 public class Index extends OwnedModelItem<Table> implements ModelItemClonable<Index> {
 
@@ -30,8 +29,6 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
 
     private AttributeList attributes = new AttributeList();
 
-    public static final IndexSerializer SERIALIZER = new IndexSerializer();
-    
     public AttributeList getAttributes() {
         return attributes;
     }

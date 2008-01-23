@@ -751,6 +751,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         try {
             Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFile));
+            worldConnector.initLoadedModel(theModel);
+            
             setModel(theModel);
 
             currentEditingFile = aFile;

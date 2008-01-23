@@ -19,18 +19,15 @@ package de.erdesignerng.model;
 
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.serializer.DefaultValueSerializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 23:25:43 $
+ * @version $Date: 2008-01-23 18:40:24 $
  */
 public class DefaultValue extends OwnedModelItem<Model> implements ModelItemClonable<DefaultValue> {
 
     private String datatype;
     
-    public static final DefaultValueSerializer SERIALIZER = new DefaultValueSerializer();
-
     /**
      * Gibt den Wert des Attributs <code>datatype</code> zurück.
      * 

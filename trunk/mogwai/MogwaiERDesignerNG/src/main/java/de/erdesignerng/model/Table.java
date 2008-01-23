@@ -23,11 +23,10 @@ import java.util.Vector;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.serializer.TableSerializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 23:25:43 $
+ * @version $Date: 2008-01-23 18:40:24 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -35,8 +34,6 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
 
     private IndexList indexes = new IndexList();
 
-    public static final TableSerializer SERIALIZER = new TableSerializer();
-    
     /**
      * Add an attribute to the table.
      * 

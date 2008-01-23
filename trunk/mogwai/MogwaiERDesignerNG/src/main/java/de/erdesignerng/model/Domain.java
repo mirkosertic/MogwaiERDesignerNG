@@ -19,12 +19,11 @@ package de.erdesignerng.model;
 
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.serializer.DomainSerializer;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 23:25:43 $
+ * @version $Date: 2008-01-23 18:40:23 $
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain> {
 
@@ -40,8 +39,6 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
 
     private String javaClassName;
     
-    public static final DomainSerializer SERIALIZER = new DomainSerializer();
-
     /**
      * Gibt den Wert des Attributs <code>datatype</code> zurück.
      * 

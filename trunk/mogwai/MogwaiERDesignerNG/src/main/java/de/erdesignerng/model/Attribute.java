@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.model;
 
-import de.erdesignerng.model.serializer.AttributeSerializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 23:25:43 $
+ * @version $Date: 2008-01-23 18:40:24 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -33,8 +32,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     private boolean primaryKey;
     
-    public static final AttributeSerializer SERIALIZER = new AttributeSerializer();
-
     public void setDefinition(Domain aDomain, boolean aNullable, DefaultValue aDefaultValue) {
 
         nullable = aNullable;
