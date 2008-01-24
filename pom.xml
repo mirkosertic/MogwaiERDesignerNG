@@ -49,7 +49,7 @@
             </goals>
             <configuration>
               <tasks>
-                <taskdef name="XMLResourceBundle" classname="de.mogwai.common.i18n.XMLResourceBundleTask"></taskdef>
+                <taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"></taskdef>
                 <XMLResourceBundle dest="src/main/resources" src="src/main/java">
                   <fileset dir="src/main/resources">
                     <include name="*.xml" />
@@ -165,6 +165,11 @@
       <artifactId>squirrel-client</artifactId>
       <version>2.6.4</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>axis</groupId>
+      <artifactId>axis</artifactId>
+      <version>1.4</version>
     </dependency>
   </dependencies>
 </project>
