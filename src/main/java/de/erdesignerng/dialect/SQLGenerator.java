@@ -26,6 +26,8 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 public abstract class SQLGenerator<T extends Dialect> {
     
+    public static final String TAB = "    ";
+    
     private T dialect;
     
     public SQLGenerator(T aDialect) {

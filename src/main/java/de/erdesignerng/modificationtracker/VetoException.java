@@ -19,4 +19,7 @@ package de.erdesignerng.modificationtracker;
 
 public class VetoException extends Exception {
 
+    public VetoException(Exception e) {
+        super(e);
+    }
 }
