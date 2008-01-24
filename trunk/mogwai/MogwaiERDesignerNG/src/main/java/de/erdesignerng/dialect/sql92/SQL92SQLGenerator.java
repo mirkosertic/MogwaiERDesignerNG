@@ -36,8 +36,28 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     @Override
     public StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute) throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + aTable.getName() + " ADD ");
+
+        theStatement.append(aAttribute.getName());
+        theStatement.append(" ");
+        theStatement.append(getDialect().getPhysicalDeclarationFor(aAttribute.getDomain()));
+        theStatement.append(" ");
+
+        boolean isNullable = aAttribute.isNullable();
+        if (aAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
+            isNullable = false;
+        }
+
+        if (!isNullable) {
+            theStatement.append("NOT NULL");
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
     }
 
     @Override
@@ -108,8 +128,30 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+        Table theTable = aExistantAttribute.getOwner();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + theTable.getName() + " MODIFY ");
+
+        theStatement.append(aExistantAttribute.getName());
+        theStatement.append(" ");
+        theStatement.append(getDialect().getPhysicalDeclarationFor(aNewAttribute.getDomain()));
+        theStatement.append(" ");
+
+        boolean isNullable = aNewAttribute.isNullable();
+        if (aNewAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
+            isNullable = false;
+        }
+
+        if (!isNullable) {
+            theStatement.append("NOT NULL");
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
     }
 
     @Override
@@ -132,8 +174,10 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     @Override
     public StatementList createRemoveAttributeFromTableStatement(Table aTable, String aSystemId) throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+        StatementList theResult = new StatementList();
+        theResult.add(new Statement("ALTER TABLE " + aTable.getName() + " DROP COLUMN "
+                + aTable.getAttributes().findBySystemId(aSystemId).getName()));
+        return theResult;
     }
 
     @Override
@@ -158,8 +202,20 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+        Table theTable = aExistantAttribute.getOwner();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + theTable.getName() + " RENAME COLUMN ");
+
+        theStatement.append(aExistantAttribute.getName());
+        theStatement.append(" TO ");
+        theStatement.append(aNewName);
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
     }
 
     @Override

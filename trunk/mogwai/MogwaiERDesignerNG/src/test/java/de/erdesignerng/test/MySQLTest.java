@@ -31,7 +31,7 @@ public class MySQLTest extends BaseUseCases {
 
         model = new Model();
         model.setDialect(new MySQLDialect());
-        
+
         model.setModificationTracker(new MyTracker(model));
 
         Class.forName("com.mysql.jdbc.Driver");
@@ -39,7 +39,7 @@ public class MySQLTest extends BaseUseCases {
     }
 
     @Override
-    public Domain createCharDomain(String aName,int aLength) {
+    public Domain createCharDomain(String aName, int aLength) {
         Domain theDomain = new Domain();
         theDomain.setName(aName);
         theDomain.setDatatype("VARCHAR");
