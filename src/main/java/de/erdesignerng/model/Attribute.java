@@ -20,13 +20,13 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:24 $
+ * @version $Date: 2008-01-24 18:32:49 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
     private Domain domain;
 
-    private boolean nullable;
+    private boolean nullable = true;
 
     private DefaultValue defaultValue;
 
