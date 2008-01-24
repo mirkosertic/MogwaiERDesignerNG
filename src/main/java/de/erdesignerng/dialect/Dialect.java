@@ -33,7 +33,7 @@ import de.erdesignerng.model.Domain;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-24 18:32:49 $
+ * @version $Date: 2008-01-24 19:35:41 $
  */
 public abstract class Dialect {
 
@@ -231,10 +231,10 @@ public abstract class Dialect {
         theProperties.put("user", aUser);
         theProperties.put("password", aPassword);
         Connection theConnection = theDriver.connect(aUrl, theProperties);
-        
-        System.out.println("Product : "+theConnection.getMetaData().getDatabaseProductName());
-        System.out.println("Version : "+theConnection.getMetaData().getDatabaseProductVersion());
-        
+
+        System.out.println("Product : " + theConnection.getMetaData().getDatabaseProductName());
+        System.out.println("Version : " + theConnection.getMetaData().getDatabaseProductVersion());
+
         return theConnection;
     }
 
