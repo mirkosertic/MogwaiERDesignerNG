@@ -23,6 +23,7 @@ import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
@@ -69,6 +70,8 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         for (Index theIndex : aTable.getIndexes()) {
             if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
                 theResult.addAll(createAddPrimaryKeyToTable(aTable, theIndex));
+            } else {
+                theResult.addAll(createAddIndexToTableStatement(aTable, theIndex));
             }
         }
 
@@ -187,4 +190,73 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
     }
 
+    @Override
+    public StatementList createAddRelationStatement(Relation aRelation) throws VetoException {
+
+        Table theImportingTable = aRelation.getImportingTable();
+        Table theExportingTable = aRelation.getExportingTable();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement = new StringBuilder("ALTER TABLE ");
+        theStatement.append(theImportingTable.getName());
+        theStatement.append(" ADD CONSTRAINT ");
+        theStatement.append(aRelation.getName());
+        theStatement.append(" FOREIGN KEY (");
+
+        boolean first = true;
+        for (Attribute theAttribute : aRelation.getMapping().values()) {
+            if (!first) {
+                theStatement.append(",");
+            }
+            theStatement.append(theAttribute.getName());
+            first = false;
+        }
+
+        theStatement.append(") REFERENCES ");
+        theStatement.append(theExportingTable.getName());
+        theStatement.append("(");
+
+        first = true;
+        for (Attribute theAttribute : aRelation.getMapping().keySet()) {
+            if (!first) {
+                theStatement.append(",");
+            }
+            theStatement.append(theAttribute.getName());
+            first = false;
+        }
+
+        theStatement.append(")");
+
+        switch (aRelation.getOnDelete()) {
+        case CASCADE:
+            theStatement.append(" ON DELETE CASCADE");
+            break;
+        case NOTHING:
+            theStatement.append(" ON DELETE NO ACTION");
+            break;
+        case SET_NULL:
+            theStatement.append(" ON DELETE SET NULL");
+            break;
+        default:
+        }
+
+        switch (aRelation.getOnUpdate()) {
+        case CASCADE:
+            theStatement.append(" ON UPDATE CASCADE");
+            break;
+        case NOTHING:
+            theStatement.append(" ON UPDATE NO ACTION");
+            break;
+        case SET_NULL:
+            theStatement.append(" ON UPDATE SET NULL");
+            break;
+        default:
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
 }
