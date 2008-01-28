@@ -37,8 +37,6 @@ public class AttributeSerializer extends Serializer {
 
     public static final String NULLABLE = "nullable";
 
-    public static final String PRIMARYKEY = "primarykey";
-
     public static final String DEFAULTVALUEREFID = "defaultvaluerefid";
 
     public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
@@ -53,8 +51,6 @@ public class AttributeSerializer extends Serializer {
         theAttributeElement.setAttribute(DOMAINREFID, theDomain.getSystemId());
 
         setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
-
-        setBooleanAttribute(theAttributeElement, PRIMARYKEY, aAttribute.isPrimaryKey());
 
         if (aAttribute.getDefaultValue() != null) {
             theAttributeElement.setAttribute(DEFAULTVALUEREFID, aAttribute.getDefaultValue().getSystemId());
@@ -94,8 +90,6 @@ public class AttributeSerializer extends Serializer {
 
             theAttribute.setDefinition(theDomain, TRUE.equals(theAttributeElement.getAttribute(NULLABLE)),
                     theDefault);
-
-            theAttribute.setPrimaryKey(TRUE.equals(theAttributeElement.getAttribute(PRIMARYKEY)));
 
             aTable.getAttributes().add(theAttribute);
         }

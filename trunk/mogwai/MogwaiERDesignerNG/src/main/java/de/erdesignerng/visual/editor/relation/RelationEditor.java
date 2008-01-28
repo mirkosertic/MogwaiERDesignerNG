@@ -19,7 +19,6 @@ package de.erdesignerng.visual.editor.relation;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -27,6 +26,7 @@ import javax.swing.JComboBox;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -38,7 +38,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:06 $
+ * @version $Date: 2008-01-28 21:39:40 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -65,10 +65,12 @@ public class RelationEditor extends BaseEditor {
     }, this, ERDesignerBundle.CANCEL);
 
     /**
-     * Create a relation editor. 
+     * Create a relation editor.
      * 
-     * @param aModel the model
-     * @param aParent the parent container
+     * @param aModel
+     *            the model
+     * @param aParent
+     *            the parent container
      */
     public RelationEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.RELATIONEDITOR);
@@ -114,11 +116,15 @@ public class RelationEditor extends BaseEditor {
         bindingInfo.setDefaultModel(aRelation);
         bindingInfo.model2view();
 
-        List<Attribute> thePrimaryKey = aRelation.getExportingTable().getPrimaryKey();
-
-        Attribute[] theAssigned = new Attribute[thePrimaryKey.size()];
-        for (int count = 0; count < thePrimaryKey.size(); count++) {
-            theAssigned[count] = aRelation.getMapping().get(thePrimaryKey.get(count));
+        Index thePrimaryKey = aRelation.getExportingTable().getPrimarykey();
+        Attribute[] theAssigned;
+        if (thePrimaryKey != null) {
+            theAssigned = new Attribute[thePrimaryKey.getAttributes().size()];
+            for (int count = 0; count < thePrimaryKey.getAttributes().size(); count++) {
+                theAssigned[count] = aRelation.getMapping().get(thePrimaryKey.getAttributes().get(count));
+            }
+        } else {
+            theAssigned = new Attribute[0];
         }
         tableModel = new AttributeTableModel(aRelation.getExportingTable().getName(), aRelation.getImportingTable()
                 .getName(), thePrimaryKey, theAssigned);
@@ -139,10 +145,10 @@ public class RelationEditor extends BaseEditor {
     @Override
     public void applyValues() throws Exception {
         Relation theRelation = bindingInfo.getDefaultModel();
-        
+
         Relation theTempRelation = new Relation();
         bindingInfo.setDefaultModel(theTempRelation);
-        
+
         bindingInfo.view2model();
 
         if (!model.getRelations().contains(theRelation)) {
@@ -155,11 +161,11 @@ public class RelationEditor extends BaseEditor {
 
             theTempRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
         }
-        
+
         if (theRelation.isRenamed(theTempRelation.getName())) {
             model.renameRelation(theRelation, theTempRelation.getName());
         }
-        
+
         if (theRelation.isModified(theTempRelation)) {
             model.changeRelation(theRelation, theTempRelation);
         }

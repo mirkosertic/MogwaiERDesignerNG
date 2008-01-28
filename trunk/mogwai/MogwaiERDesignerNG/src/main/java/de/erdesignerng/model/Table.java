@@ -17,16 +17,13 @@
  */
 package de.erdesignerng.model;
 
-import java.util.List;
-import java.util.Vector;
-
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:24 $
+ * @version $Date: 2008-01-28 21:39:40 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -149,15 +146,12 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
         attributes = aAttributes;
     }
 
-    public List<Attribute> getPrimaryKey() {
-        Vector<Attribute> thePK = new Vector<Attribute>();
-
-        for (Attribute theAttribute : attributes) {
-            if (theAttribute.isPrimaryKey()) {
-                thePK.add(theAttribute);
+    public Index getPrimarykey() {
+        for (Index theIndex : getIndexes()) {
+            if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
+                return theIndex;
             }
         }
-
-        return thePK;
+        return null;
     }
 }

@@ -37,6 +37,7 @@ import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.IconFactory;
@@ -46,7 +47,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:06 $
+ * @version $Date: 2008-01-28 21:39:40 $
  */
 public class TableCellView extends VertexView {
 
@@ -100,6 +101,8 @@ public class TableCellView extends VertexView {
         @Override
         public void paint(Graphics aGraphics) {
 
+            Index thePrimaryKey = table.getPrimarykey();
+
             Dimension theSize = getSize();
             int theWidth = theSize.width;
             int theHeight = theSize.height;
@@ -135,7 +138,13 @@ public class TableCellView extends VertexView {
 
             // Draw the attributes
             for (Attribute theAttribute : table.getAttributes()) {
-                if (theAttribute.isPrimaryKey()) {
+
+                boolean isPrimaryKey = false;
+                if (thePrimaryKey != null) {
+                    isPrimaryKey = thePrimaryKey.getAttributes().contains(theAttribute);
+                }
+
+                if (isPrimaryKey) {
 
                     hasPrimaryKey = true;
 
@@ -201,6 +210,9 @@ public class TableCellView extends VertexView {
 
         @Override
         public Dimension getPreferredSize() {
+            
+            Index thePrimaryKey = table.getPrimarykey();
+            
             int theMaxX = 150;
             int theMaxY = 8;
 
@@ -218,7 +230,13 @@ public class TableCellView extends VertexView {
             theAllAttributes.addAll(table.getAttributes());
 
             for (Attribute theAttribute : table.getAttributes()) {
-                if (theAttribute.isPrimaryKey()) {
+                
+                boolean isPrimaryKey = false;
+                if (thePrimaryKey != null) {
+                    isPrimaryKey = thePrimaryKey.getAttributes().contains(theAttribute);
+                }
+                
+                if (isPrimaryKey) {
 
                     theAllAttributes.remove(theAttribute);
 

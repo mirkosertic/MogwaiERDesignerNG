@@ -39,7 +39,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-28 21:39:40 $
  * @param <T> the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
@@ -181,7 +181,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                         + aTable.getName());
             }
 
-            theIndexAttribute.setPrimaryKey(true);
+            thePrimaryKeyIndex.getAttributes().add(theIndexAttribute);
 
         }
         thePrimaryKeyResultSet.close();
