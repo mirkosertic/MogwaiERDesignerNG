@@ -54,10 +54,10 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
     public void changeTableComment(Table aTable, String aNewComment) throws VetoException {
     }
 
-    public void removeAttributeFromTable(Table aTable, String aSystemId) throws VetoException {
+    public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException {
     }
 
-    public void removeIndexFromTable(Table aTable, String aSystemId) throws VetoException {
+    public void removeIndexFromTable(Table aTable, Index aIndex) throws VetoException {
     }
 
     public void renameAttribute(Attribute aExistantAttribute, String aNewName) throws VetoException {
@@ -67,5 +67,11 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
     }
 
     public void renameTable(Table aTable, String aNewName) throws VetoException {
+    }
+
+    public void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException {
+    }
+
+    public void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException {
     }
 }

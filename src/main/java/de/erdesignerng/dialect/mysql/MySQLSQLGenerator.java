@@ -17,11 +17,174 @@
  */
 package de.erdesignerng.dialect.mysql;
 
+import de.erdesignerng.dialect.Statement;
+import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
     public MySQLSQLGenerator(MySQLDialect aDialect) {
         super(aDialect);
     }
+
+    @Override
+    public StatementList createAddTableStatement(Table aTable) throws VetoException {
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("CREATE TABLE " + aTable.getName() + " (\n");
+        for (int i = 0; i < aTable.getAttributes().size(); i++) {
+            Attribute theAttribute = aTable.getAttributes().get(i);
+
+            theStatement.append(TAB);
+            theStatement.append(theAttribute.getName());
+            theStatement.append(" ");
+            theStatement.append(getDialect().getPhysicalDeclarationFor(theAttribute.getDomain()));
+            theStatement.append(" ");
+
+            boolean isNullable = theAttribute.isNullable();
+            if (theAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
+                isNullable = false;
+            }
+
+            if (!isNullable) {
+                theStatement.append("NOT NULL");
+            }
+
+            if (i < aTable.getAttributes().size() - 1) {
+                theStatement.append(",");
+            }
+
+            theStatement.append("\n");
+        }
+        theStatement.append(")");
+        theResult.add(new Statement(theStatement.toString()));
+
+        for (Index theIndex : aTable.getIndexes()) {
+            if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
+                theResult.addAll(createAddPrimaryKeyToTable(aTable, theIndex));
+            }
+        }
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
+            throws VetoException {
+        Table theTable = aExistantAttribute.getOwner();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + theTable.getName() + " MODIFY ");
+
+        theStatement.append(aExistantAttribute.getName());
+        theStatement.append(" ");
+        theStatement.append(getDialect().getPhysicalDeclarationFor(aNewAttribute.getDomain()));
+        theStatement.append(" ");
+
+        boolean isNullable = aNewAttribute.isNullable();
+        if (aNewAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
+            isNullable = false;
+        }
+
+        if (!isNullable) {
+            theStatement.append("NOT NULL");
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + aTable.getName() + " RENAME TO ");
+
+        theStatement.append(aNewName);
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + aTable.getName() + " DROP PRIMARY KEY");
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement = new StringBuilder("ALTER TABLE ");
+        theStatement.append(aTable.getName());
+        theStatement.append(" ADD CONSTRAINT ");
+        theStatement.append(aIndex.getName());
+        theStatement.append(" PRIMARY KEY(");
+
+        for (int i = 0; i < aIndex.getAttributes().size(); i++) {
+            if (i > 0) {
+                theStatement.append(",");
+            }
+            theStatement.append(aIndex.getAttributes().get(i).getName());
+        }
+        theStatement.append(")");
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
+            throws VetoException {
+        Table theTable = aExistantAttribute.getOwner();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + theTable.getName() + " CHANGE ");
+
+        theStatement.append(aExistantAttribute.getName());
+        theStatement.append(" ");
+        theStatement.append(aNewName);
+        theStatement.append(" ");
+        theStatement.append(getDialect().getPhysicalDeclarationFor(aExistantAttribute.getDomain()));
+        theStatement.append(" ");
+
+        boolean isNullable = aExistantAttribute.isNullable();
+        if (aExistantAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
+            isNullable = false;
+        }
+
+        if (!isNullable) {
+            theStatement.append("NOT NULL");
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+
+    }
+
 }

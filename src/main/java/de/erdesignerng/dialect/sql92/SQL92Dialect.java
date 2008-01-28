@@ -18,24 +18,14 @@
 package de.erdesignerng.dialect.sql92;
 
 import de.erdesignerng.dialect.JDBCDialect;
-import de.erdesignerng.model.Attribute;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-28 20:00:45 $
  */
 public abstract class SQL92Dialect extends JDBCDialect {
 
     protected SQL92Dialect(String aDatatypeKonfigFilename) {
         super(aDatatypeKonfigFilename);
-    }
-
-    protected void addAttributeDefinition(StringBuffer aBuffer, Attribute aAttribute) {
-
-        aBuffer.append(aAttribute.getName() + " " + aAttribute.getDomain().getDatatype());
-        if (!aAttribute.isNullable()) {
-            aBuffer.append(" NOT NULL");
-        }
-
     }
 }

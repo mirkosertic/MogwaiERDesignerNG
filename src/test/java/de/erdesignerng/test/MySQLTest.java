@@ -23,6 +23,12 @@ import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 
+/**
+ * Test for MySQL dialect.
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-01-28 20:00:45 $
+ */
 public class MySQLTest extends BaseUseCases {
 
     @Override
