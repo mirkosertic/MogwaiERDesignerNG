@@ -26,6 +26,8 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
@@ -94,8 +96,7 @@ public abstract class BaseUseCases extends TestCase {
         model.removeTable(theTempTable);
     }
 
-    public void testCreateAndDropTableRemoveAttribute() throws ElementAlreadyExistsException,
-            ElementInvalidNameException, VetoException {
+    public void testDropAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
 
@@ -112,13 +113,12 @@ public abstract class BaseUseCases extends TestCase {
         }
 
         model.addTable(theTempTable);
-        model.removeAttributeFromTable(theTempTable, theTempTable.getAttributes().get(0).getSystemId());
+        model.removeAttributeFromTable(theTempTable, theTempTable.getAttributes().get(0));
 
         model.removeTable(theTempTable);
     }
 
-    public void testCreateAndDropTableAddAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException,
-            VetoException {
+    public void testAddAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
 
@@ -144,7 +144,7 @@ public abstract class BaseUseCases extends TestCase {
         model.removeTable(theTempTable);
     }
 
-    public void testCreateAndDropTableModifyAttribute() throws Exception {
+    public void testModifyAttribute() throws Exception {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
 
@@ -161,18 +161,18 @@ public abstract class BaseUseCases extends TestCase {
         }
 
         model.addTable(theTempTable);
-        
+
         Attribute theAttribute = theTempTable.getAttributes().get(0);
-        
+
         Attribute theNewAttribute = theAttribute.clone();
         theNewAttribute.setDomain(createCharDomain("TESTDOMAIN2", 40));
-        
+
         model.changeAttribute(theAttribute, theNewAttribute);
-        
+
         model.removeTable(theTempTable);
     }
 
-    public void testCreateAndDropTableRenameAttribute() throws Exception {
+    public void testRenameAttribute() throws Exception {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
 
@@ -189,12 +189,206 @@ public abstract class BaseUseCases extends TestCase {
         }
 
         model.addTable(theTempTable);
-        
+
         Attribute theAttribute = theTempTable.getAttributes().get(0);
-        
+
         model.renameAttribute(theAttribute, "LALA");
+
+        model.removeAttributeFromTable(theTempTable, theAttribute);
+
+        model.removeTable(theTempTable);
+    }
+
+    public void testRenameTable() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test6");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMN_" + i);
+            theAttribute.setPrimaryKey(i < 2);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+
+        model.addTable(theTempTable);
+
+        model.renameTable(theTempTable, "lulu");
+
+        model.removeTable(theTempTable);
+    }
+
+    public void testDropPrimaryKey() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test7");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMN_" + i);
+            theAttribute.setPrimaryKey(i < 2);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+        
+        Index theIndex = new Index();
+        theIndex.setName("TESTINDEX");
+        theIndex.setIndexType(IndexType.PRIMARYKEY);
+        theIndex.getAttributes().add(theTempTable.getAttributes().get(0));
+        theTempTable.addIndex(model, theIndex);
+
+        model.addTable(theTempTable);
+        
+        model.removeIndex(theTempTable, theIndex);
         
         model.removeTable(theTempTable);
     }
+    
+    public void testAddPrimaryKey() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test8");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMN_" + i);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+        
+        model.addTable(theTempTable);
+        
+        Index theIndex = new Index();
+        theIndex.setName("PK");
+        theIndex.setIndexType(IndexType.PRIMARYKEY);
+        
+        theIndex.getAttributes().add(theTempTable.getAttributes().get(0));
+        theIndex.getAttributes().add(theTempTable.getAttributes().get(1));        
+        
+        model.addIndexToTable(theTempTable, theIndex);
+        
+        model.removeTable(theTempTable);
+    }
+    
+    public void testAddUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test9");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMN_" + i);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+        
+        model.addTable(theTempTable);
+        
+        Index theUniqueIndex = new Index();
+        theUniqueIndex.setName("INX1");
+        theUniqueIndex.setIndexType(IndexType.UNIQUE);
+        
+        theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
+        
+        model.addIndexToTable(theTempTable, theUniqueIndex);
+
+        Index theNonUnuqueIndex = new Index();
+        theNonUnuqueIndex.setName("INX2");
+        theNonUnuqueIndex.setIndexType(IndexType.NONUNIQUE);
+        
+        theNonUnuqueIndex.getAttributes().add(theTempTable.getAttributes().get(1));
+        
+        model.addIndexToTable(theTempTable, theNonUnuqueIndex);
+        
+        model.removeTable(theTempTable);
+    }    
+ 
+    public void testDropUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test10");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMN_" + i);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+        
+        model.addTable(theTempTable);
+        
+        Index theUniqueIndex = new Index();
+        theUniqueIndex.setName("INX1");
+        theUniqueIndex.setIndexType(IndexType.UNIQUE);
+        
+        theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
+        
+        model.addIndexToTable(theTempTable, theUniqueIndex);
+
+        Index theNonUnuqueIndex = new Index();
+        theNonUnuqueIndex.setName("INX2");
+        theNonUnuqueIndex.setIndexType(IndexType.NONUNIQUE);
+        
+        theNonUnuqueIndex.getAttributes().add(theTempTable.getAttributes().get(1));
+        
+        model.addIndexToTable(theTempTable, theNonUnuqueIndex);
+        
+        model.removeIndex(theTempTable, theUniqueIndex);
+        model.removeIndex(theTempTable, theNonUnuqueIndex);
+        
+        model.removeTable(theTempTable);
+    }    
+
+    public void testChangeIndex() throws Exception {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test11");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMN_" + i);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+        
+        model.addTable(theTempTable);
+        
+        Index theUniqueIndex = new Index();
+        theUniqueIndex.setName("INX1");
+        theUniqueIndex.setIndexType(IndexType.UNIQUE);
+        
+        theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
+        
+        model.addIndexToTable(theTempTable, theUniqueIndex);
+        
+        Index theClone = theUniqueIndex.clone();
+        theClone.setName("LALAINDEX");
+        theClone.setIndexType(IndexType.NONUNIQUE);
+        
+        model.changeIndex(theUniqueIndex, theClone);
+
+        model.removeIndex(theTempTable, theUniqueIndex);
+        
+        model.removeTable(theTempTable);
+    }    
 
 }

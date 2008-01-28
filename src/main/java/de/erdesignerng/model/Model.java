@@ -33,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 19:30:52 $
+ * @version $Date: 2008-01-28 20:00:45 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -105,6 +105,7 @@ public class Model implements OwnedModelItemVerifier {
      *            the table
      * @throws ElementAlreadyExistsException is thrown in case of an error
      * @throws ElementInvalidNameException is thrown in case of an error
+     * @throws VetoException is thrown in case of an error
      */
     public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException , VetoException {
 
@@ -270,16 +271,20 @@ public class Model implements OwnedModelItemVerifier {
         relations.remove(aRelation);
     }
 
-    public void removeAttributeFromTable(Table aTable, String aSystemId) throws VetoException {
+    public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException {
         
-        modificationTracker.removeAttributeFromTable(aTable, aSystemId);
-        aTable.getAttributes().removeById(aSystemId);
+        modificationTracker.removeAttributeFromTable(aTable, aAttribute);
+        aTable.getAttributes().removeById(aAttribute.getSystemId());
     }
 
-    public void removeIndex(Table aTable, String aSystemId) throws VetoException {
+    public void removeIndex(Table aTable, Index aIndex) throws VetoException {
         
-        modificationTracker.removeIndexFromTable(aTable, aSystemId);
-        aTable.getIndexes().removeById(aSystemId);
+        if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
+            modificationTracker.removePrimaryKeyFromTable(aTable, aIndex);
+        } else {
+            modificationTracker.removeIndexFromTable(aTable, aIndex);
+        }
+        aTable.getIndexes().removeById(aIndex.getSystemId());
     }
 
     public void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
@@ -297,7 +302,11 @@ public class Model implements OwnedModelItemVerifier {
 
     public void addIndexToTable(Table aTable, Index aIndex) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
         
-        modificationTracker.addIndexToTable(aTable, aIndex);
+        if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
+            modificationTracker.addPrimaryKeyToTable(aTable, aIndex);
+        } else {
+            modificationTracker.addIndexToTable(aTable, aIndex);
+        }
         
         aTable.addIndex(this, aIndex);
     }
