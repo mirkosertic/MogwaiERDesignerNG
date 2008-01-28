@@ -29,6 +29,7 @@ import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -391,4 +392,162 @@ public abstract class BaseUseCases extends TestCase {
         model.removeTable(theTempTable);
     }    
 
+    public void testAddRelation() throws Exception {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTableA = new Table();
+        theTableA.setName("test12a");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMNA_" + i);
+            theTableA.addAttribute(model, theAttribute);
+        }
+        
+        Index theTableAIndex = new Index();
+        theTableAIndex.setIndexType(IndexType.PRIMARYKEY);
+        theTableAIndex.setName("test12a_pk");
+        theTableAIndex.getAttributes().add(theTableA.getAttributes().get(0));
+        theTableA.addIndex(model, theTableAIndex);
+
+        Table theTableB = new Table();
+        theTableB.setName("test12b");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMNB_" + i);
+            theTableB.addAttribute(model, theAttribute);
+        }
+        
+        Index theTableBIndex = new Index();
+        theTableBIndex.setIndexType(IndexType.PRIMARYKEY);
+        theTableBIndex.setName("test12b_pk");
+        theTableBIndex.getAttributes().add(theTableB.getAttributes().get(0));
+        theTableB.addIndex(model, theTableBIndex);
+        
+        model.addTable(theTableA);
+        model.addTable(theTableB);
+        
+        Relation theRelation = new Relation();
+        theRelation.setName("REL");
+        theRelation.setExportingTable(theTableA);
+        theRelation.setImportingTable(theTableB);
+        theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
+        
+        model.removeTable(theTableB);
+        model.removeTable(theTableA);        
+    } 
+    
+    public void testDropRelation() throws Exception {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTableA = new Table();
+        theTableA.setName("test13a");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMNA_" + i);
+            theTableA.addAttribute(model, theAttribute);
+        }
+        
+        Index theTableAIndex = new Index();
+        theTableAIndex.setIndexType(IndexType.PRIMARYKEY);
+        theTableAIndex.setName("test12a_pk");
+        theTableAIndex.getAttributes().add(theTableA.getAttributes().get(0));
+        theTableA.addIndex(model, theTableAIndex);
+
+        Table theTableB = new Table();
+        theTableB.setName("test13b");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMNB_" + i);
+            theTableB.addAttribute(model, theAttribute);
+        }
+        
+        Index theTableBIndex = new Index();
+        theTableBIndex.setIndexType(IndexType.PRIMARYKEY);
+        theTableBIndex.setName("test13b_pk");
+        theTableBIndex.getAttributes().add(theTableB.getAttributes().get(0));
+        theTableB.addIndex(model, theTableBIndex);
+        
+        model.addTable(theTableA);
+        model.addTable(theTableB);
+        
+        Relation theRelation = new Relation();
+        theRelation.setName("REL");
+        theRelation.setExportingTable(theTableA);
+        theRelation.setImportingTable(theTableB);
+        theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
+        
+        model.addRelation(theRelation);
+        
+        model.removeRelation(theRelation);
+        
+        model.removeTable(theTableB);
+        model.removeTable(theTableA);        
+    }    
+    
+    public void testChangeRelation() throws Exception {
+
+        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
+
+        model.addDomain(theDomain);
+
+        Table theTableA = new Table();
+        theTableA.setName("test14a");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMNA_" + i);
+            theTableA.addAttribute(model, theAttribute);
+        }
+        
+        Index theTableAIndex = new Index();
+        theTableAIndex.setIndexType(IndexType.PRIMARYKEY);
+        theTableAIndex.setName("test14a_pk");
+        theTableAIndex.getAttributes().add(theTableA.getAttributes().get(0));
+        theTableA.addIndex(model, theTableAIndex);
+
+        Table theTableB = new Table();
+        theTableB.setName("test14b");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            theAttribute.setDomain(theDomain);
+            theAttribute.setName("COLUMNB_" + i);
+            theTableB.addAttribute(model, theAttribute);
+        }
+        
+        Index theTableBIndex = new Index();
+        theTableBIndex.setIndexType(IndexType.PRIMARYKEY);
+        theTableBIndex.setName("test14b_pk");
+        theTableBIndex.getAttributes().add(theTableB.getAttributes().get(0));
+        theTableB.addIndex(model, theTableBIndex);
+        
+        model.addTable(theTableA);
+        model.addTable(theTableB);
+        
+        Relation theRelation = new Relation();
+        theRelation.setName("REL");
+        theRelation.setExportingTable(theTableA);
+        theRelation.setImportingTable(theTableB);
+        theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
+        
+        model.addRelation(theRelation);
+
+        Relation theClone = theRelation.clone();
+        theClone.setName("LALAREL");
+        model.changeRelation(theRelation, theClone);
+        
+        model.removeRelation(theRelation);
+        
+        model.removeTable(theTableB);
+        model.removeTable(theTableA);        
+    }    
 }
