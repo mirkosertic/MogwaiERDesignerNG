@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:24 $
+ * @version $Date: 2008-01-28 21:20:15 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -93,10 +93,18 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
     public void setOnUpdate(CascadeType aOnUpdate) {
         onUpdate = aOnUpdate;
     }
-    
+
     @Override
     public Relation clone() {
-        return null;
+        Relation theClone = new Relation();
+        theClone.setImportingTable(getImportingTable());
+        theClone.setExportingTable(getExportingTable());
+        theClone.setOnDelete(getOnDelete());
+        theClone.setOnUpdate(getOnUpdate());
+        for (Attribute theAttribute : getMapping().keySet()) {
+            theClone.getMapping().put(theAttribute, getMapping().get(theAttribute));
+        }
+        return theClone;
     }
 
     public void restoreFrom(Relation aValue) throws Exception {
@@ -110,7 +118,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     public boolean isModified(Relation theTempRelation) {
 
-        //TODO check is modified here
+        // TODO check is modified here
         return false;
-    }    
+    }
 }

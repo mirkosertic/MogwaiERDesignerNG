@@ -110,8 +110,10 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     @Override
     public StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation) throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+        StatementList theList = new StatementList();
+        theList.addAll(createRemoveRelationStatement(aRelation));
+        theList.addAll(createAddRelationStatement(aTempRelation));
+        return theList;
     }
 
     @Override
@@ -146,8 +148,13 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     @Override
     public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+
+        Table theImportingTable = aRelation.getImportingTable();
+
+        StatementList theResult = new StatementList();
+        theResult.add(new Statement("ALTER TABLE " + theImportingTable.getName() + " DROP FOREIGN KEY "
+                + aRelation.getName()));
+        return theResult;
     }
 
     @Override
