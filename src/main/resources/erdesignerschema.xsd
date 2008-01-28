@@ -118,7 +118,6 @@
 												<xs:attribute name="id" use="required"/>
 												<xs:attribute name="name" use="required"/>
 												<xs:attribute name="nullable" use="required"/>
-												<xs:attribute name="primarykey" use="required"/>
 											</xs:complexType>
 										</xs:element>
 										<xs:element name="Index" minOccurs="0" maxOccurs="unbounded">

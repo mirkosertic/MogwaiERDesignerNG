@@ -46,9 +46,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append(" ");
 
         boolean isNullable = aAttribute.isNullable();
-        if (aAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
-            isNullable = false;
-        }
 
         if (!isNullable) {
             theStatement.append("NOT NULL");

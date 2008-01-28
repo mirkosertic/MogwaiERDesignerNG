@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-24 18:32:49 $
+ * @version $Date: 2008-01-28 21:39:40 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -30,8 +30,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     private DefaultValue defaultValue;
 
-    private boolean primaryKey;
-    
     public void setDefinition(Domain aDomain, boolean aNullable, DefaultValue aDefaultValue) {
 
         nullable = aNullable;
@@ -83,14 +81,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         this.nullable = nullable;
     }
 
-    public boolean isPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(boolean primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
     @Override
     public Attribute clone() {
         Attribute theAttribute = new Attribute();
@@ -101,7 +91,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         theAttribute.setNullable(isNullable());
         theAttribute.setDefaultValue(getDefaultValue());
         theAttribute.setComment(getComment());
-        theAttribute.setPrimaryKey(isPrimaryKey());
         return theAttribute;
     }
 
@@ -111,7 +100,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         setNullable(aValue.isNullable());
         setDefaultValue(aValue.getDefaultValue());
         setComment(aValue.getComment());
-        setPrimaryKey(aValue.isPrimaryKey());
         setOwner(aValue.getOwner());
     }
 

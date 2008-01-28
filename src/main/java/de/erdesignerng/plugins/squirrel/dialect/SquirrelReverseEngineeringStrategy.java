@@ -41,6 +41,8 @@ import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
@@ -48,7 +50,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-28 21:39:40 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 
@@ -100,11 +102,23 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
             }
         }
 
+        Index thePrimaryKeyIndex = null;
         PrimaryKeyInfo[] thePrimaryKeys = aMeta.getPrimaryKey(aInfo);
         for (PrimaryKeyInfo thePrimaryKey : thePrimaryKeys) {
 
+            if (thePrimaryKeyIndex == null) {
+                thePrimaryKeyIndex = new Index();
+                thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
+                thePrimaryKeyIndex.setName(thePrimaryKey.getSimpleName());
+                try {
+                    theTable.addIndex(aModel, thePrimaryKeyIndex);
+                } catch (Exception e) {
+                    throw new ReverseEngineeringException(e.getMessage());
+                }
+            }
+
             Attribute theAttribute = theTable.getAttributes().findByName(thePrimaryKey.getColumnName());
-            theAttribute.setPrimaryKey(true);
+            thePrimaryKeyIndex.getAttributes().add(theAttribute);
         }
 
         // We are done here
