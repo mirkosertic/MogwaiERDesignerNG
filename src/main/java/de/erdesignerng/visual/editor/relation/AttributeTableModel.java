@@ -17,20 +17,19 @@
  */
 package de.erdesignerng.visual.editor.relation;
 
-import java.util.List;
-
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:46 $
+ * @version $Date: 2008-01-28 21:39:40 $
  */
 public class AttributeTableModel implements TableModel {
 
-    private List<Attribute> primaryKey;
+    private Index primaryKey;
 
     private Attribute[] assignedAttributes;
 
@@ -38,7 +37,7 @@ public class AttributeTableModel implements TableModel {
 
     private String assignedTableName;
 
-    public AttributeTableModel(String aPrimaryEntityName, String aSecondaryEntityName, List<Attribute> aPrimaryKey,
+    public AttributeTableModel(String aPrimaryEntityName, String aSecondaryEntityName, Index aPrimaryKey,
             Attribute[] aSecondaryKey) {
         primaryKey = aPrimaryKey;
         assignedAttributes = aSecondaryKey;
@@ -63,14 +62,14 @@ public class AttributeTableModel implements TableModel {
     }
 
     public int getRowCount() {
-        return primaryKey.size();
+        return primaryKey.getAttributes().size();
     }
 
     public Object getValueAt(int aRow, int aColumn) {
         if (aColumn == 1) {
             return assignedAttributes[aRow];
         } else {
-            return primaryKey.get(aRow);
+            return primaryKey.getAttributes().get(aRow);
         }
     }
 

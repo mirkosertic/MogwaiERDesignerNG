@@ -50,9 +50,6 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
             theStatement.append(" ");
 
             boolean isNullable = theAttribute.isNullable();
-            if (theAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
-                isNullable = false;
-            }
 
             if (!isNullable) {
                 theStatement.append("NOT NULL");
@@ -94,9 +91,6 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theStatement.append(" ");
 
         boolean isNullable = aNewAttribute.isNullable();
-        if (aNewAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
-            isNullable = false;
-        }
 
         if (!isNullable) {
             theStatement.append("NOT NULL");
@@ -176,9 +170,6 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theStatement.append(" ");
 
         boolean isNullable = aExistantAttribute.isNullable();
-        if (aExistantAttribute.isPrimaryKey() && (!getDialect().isNullablePrimaryKeyAllowed())) {
-            isNullable = false;
-        }
 
         if (!isNullable) {
             theStatement.append("NOT NULL");

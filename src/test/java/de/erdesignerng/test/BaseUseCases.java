@@ -89,7 +89,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
 
@@ -109,7 +108,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
 
@@ -131,7 +129,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
 
@@ -157,7 +154,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
 
@@ -185,7 +181,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
 
@@ -212,7 +207,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
 
@@ -235,7 +229,6 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
-            theAttribute.setPrimaryKey(i < 2);
             theTempTable.addAttribute(model, theAttribute);
         }
         
