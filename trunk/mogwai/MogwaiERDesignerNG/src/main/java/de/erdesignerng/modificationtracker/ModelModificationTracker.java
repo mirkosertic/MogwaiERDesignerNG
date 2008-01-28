@@ -30,9 +30,9 @@ public interface ModelModificationTracker {
 
     void addTable(Table aTable) throws VetoException;
 
-    void removeAttributeFromTable(Table aTable, String aSystemId) throws VetoException;
+    void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException;
 
-    void removeIndexFromTable(Table aTable, String aSystemId) throws VetoException;
+    void removeIndexFromTable(Table aTable, Index aIndex) throws VetoException;
 
     void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException;
 
@@ -53,4 +53,8 @@ public interface ModelModificationTracker {
     void renameRelation(Relation aRelation, String aNewName) throws VetoException;
 
     void changeRelation(Relation aRelation, Relation aTempRelation) throws VetoException;
+
+    void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException;
+
+    void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException;
 }

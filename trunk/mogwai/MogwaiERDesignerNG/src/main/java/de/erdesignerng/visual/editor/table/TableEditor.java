@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 21:57:47 $
+ * @version $Date: 2008-01-28 20:00:46 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -497,10 +497,10 @@ public class TableEditor extends BaseEditor {
             model.addTable(theTable);
         } else {
             for (Attribute theAttribute : removedAttributes) {
-                model.removeAttributeFromTable(theTable, theAttribute.getSystemId());
+                model.removeAttributeFromTable(theTable, theAttribute);
             }
             for (Index theIndex : removedIndexes) {
-                model.removeIndex(theTable, theIndex.getSystemId());
+                model.removeIndex(theTable, theIndex);
             }
 
         }

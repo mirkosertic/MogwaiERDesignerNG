@@ -73,12 +73,12 @@ public class HistoryModificationTracker implements ModelModificationTracker {
         addStatementsToHistory(getSQLGenerator().createChangeTableCommentStatement(aTable, aNewComment));
     }
 
-    public void removeAttributeFromTable(Table aTable, String aSystemId) throws VetoException {
-        addStatementsToHistory(getSQLGenerator().createRemoveAttributeFromTableStatement(aTable, aSystemId));
+    public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createRemoveAttributeFromTableStatement(aTable, aAttribute));
     }
 
-    public void removeIndexFromTable(Table aTable, String aSystemId) throws VetoException {
-        addStatementsToHistory(getSQLGenerator().createRemoveIndexFromTableStatement(aTable, aSystemId));
+    public void removeIndexFromTable(Table aTable, Index aIndex) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createRemoveIndexFromTableStatement(aTable, aIndex));
     }
 
     public void removeRelation(Relation aRelation) throws VetoException {
@@ -99,5 +99,13 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 
     public void renameTable(Table aTable, String aNewName) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createRenameTableStatement(aTable, aNewName));
+    }
+
+    public void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createRemovePrimaryKeyStatement(aTable, aIndex));
+    }
+
+    public void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createAddPrimaryKeyToTable(aTable, aIndex));
     }
 }

@@ -63,13 +63,17 @@ public abstract class SQLGenerator<T extends Dialect> {
     
     public abstract StatementList createChangeTableCommentStatement(Table aTable, String aNewComment) throws VetoException;
 
-    public abstract StatementList createRemoveAttributeFromTableStatement(Table aTable, String aSystemId) throws VetoException;
+    public abstract StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute) throws VetoException;
 
-    public abstract StatementList createRemoveIndexFromTableStatement(Table aTable, String aSystemId) throws VetoException;
+    public abstract StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException;
     
     public abstract StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException;
     
     public abstract StatementList createRenameRelationStatement(Relation aRelation, String aNewName) throws VetoException;
 
     public abstract StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException;
+
+    public abstract StatementList createRemovePrimaryKeyStatement(Table table, Index index) throws VetoException;
+
+    public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
 }

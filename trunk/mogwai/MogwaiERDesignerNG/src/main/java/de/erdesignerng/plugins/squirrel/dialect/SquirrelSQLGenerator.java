@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 19:30:52 $
+ * @version $Date: 2008-01-28 20:00:46 $
  */
 public class SquirrelSQLGenerator extends SQLGenerator<SquirrelDialect> {
 
@@ -84,13 +84,13 @@ public class SquirrelSQLGenerator extends SQLGenerator<SquirrelDialect> {
     }
 
     @Override
-    public StatementList createRemoveAttributeFromTableStatement(Table aTable, String aSystemId) throws VetoException {
+    public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute) throws VetoException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public StatementList createRemoveIndexFromTableStatement(Table aTable, String aSystemId) throws VetoException {
+    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -121,6 +121,18 @@ public class SquirrelSQLGenerator extends SQLGenerator<SquirrelDialect> {
 
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createRemovePrimaryKeyStatement(Table table, Index index) throws VetoException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
         // TODO Auto-generated method stub
         return null;
     }
