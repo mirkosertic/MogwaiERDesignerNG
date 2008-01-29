@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 20:27:56 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -64,8 +64,8 @@ public class OracleDialect extends SQL92Dialect {
      * {@inheritDoc}
      */
     @Override
-    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
-        return new OracleDataType(aTypeName, aCreateParams);
+    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
+        return new OracleDataType(aId, aTypeName, aCreateParams);
     }
 
     @Override

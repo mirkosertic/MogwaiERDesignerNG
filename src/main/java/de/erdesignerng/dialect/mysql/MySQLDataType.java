@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 public class MySQLDataType extends DataType {
 
-    public MySQLDataType(String aName, String aDefinition) {
-        super(aName, aDefinition);
+    public MySQLDataType(String aId, String aName, String aDefinition) {
+        super(aId, aName, aDefinition);
     }
 }

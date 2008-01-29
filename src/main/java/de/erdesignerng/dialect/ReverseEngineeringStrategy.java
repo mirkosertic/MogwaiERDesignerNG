@@ -29,7 +29,7 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-29 22:04:11 $
  * @param <T>
  *            the dialect
  */
@@ -95,7 +95,7 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
 
                     theDomain = new Domain();
                     theDomain.setName(theName);
-                    theDomain.setDatatype(theDataType.getName());
+                    theDomain.setDatatype(theDataType);
                     theDomain.setDomainSize(aSize);
                     theDomain.setFraction(aFraction);
                     theDomain.setRadix(aRadix);
@@ -109,7 +109,7 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
         } else {
             theDomain = new Domain();
             theDomain.setName(aColumnName);
-            theDomain.setDatatype(theDataType.getName());
+            theDomain.setDatatype(theDataType);
             theDomain.setDomainSize(aSize);
             theDomain.setFraction(aFraction);
             theDomain.setRadix(aRadix);

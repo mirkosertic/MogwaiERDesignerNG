@@ -30,7 +30,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 21:01:23 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class ApplicationPreferences {
 
@@ -42,7 +42,7 @@ public class ApplicationPreferences {
 
     private int size;
 
-    private List<File> LRUfiles = new Vector<File>();
+    private List<File> lrufiles = new Vector<File>();
 
     private List<File> classpathfiles = new Vector<File>();
 
@@ -72,7 +72,7 @@ public class ApplicationPreferences {
             if (theName.startsWith(LRUPREFIX)) {
                 File theFile = new File(preferences.get(theName, ""));
                 if (theFile.exists()) {
-                    LRUfiles.add(theFile);
+                    lrufiles.add(theFile);
                 }
             }
             if (theName.startsWith(CLASSPATHPREFIX)) {
@@ -98,19 +98,19 @@ public class ApplicationPreferences {
      */
     public void addLRUFile(File aFile) {
 
-        if (!LRUfiles.contains(aFile)) {
-            LRUfiles.add(aFile);
-            if (LRUfiles.size() > size) {
-                LRUfiles.remove(0);
+        if (!lrufiles.contains(aFile)) {
+            lrufiles.add(aFile);
+            if (lrufiles.size() > size) {
+                lrufiles.remove(0);
             }
         } else {
-            LRUfiles.remove(aFile);
-            LRUfiles.add(0, aFile);
+            lrufiles.remove(aFile);
+            lrufiles.add(0, aFile);
         }
     }
 
-    public List<File> getLRUfiles() {
-        return LRUfiles;
+    public List<File> getLrufiles() {
+        return lrufiles;
     }
 
     public List<File> getClasspathFiles() {
@@ -134,8 +134,8 @@ public class ApplicationPreferences {
             }
         }
 
-        for (int i = 0; i < LRUfiles.size(); i++) {
-            preferences.put(LRUPREFIX + i, LRUfiles.get(i).toString());
+        for (int i = 0; i < lrufiles.size(); i++) {
+            preferences.put(LRUPREFIX + i, lrufiles.get(i).toString());
         }
 
         for (int i = 0; i < classpathfiles.size(); i++) {

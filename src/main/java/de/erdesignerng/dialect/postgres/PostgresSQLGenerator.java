@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 21:17:24 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
@@ -99,7 +99,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         theStatement.append(" ALTER ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" TYPE ");
-        theStatement.append(getDialect().getPhysicalDeclarationFor(aNewAttribute.getDomain()));
+        theStatement.append(aNewAttribute.getPhysicalDeclaration());
 
         theResult.add(new Statement(theStatement.toString()));
 

@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-20 14:10:24 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -62,8 +62,8 @@ public class PostgresDialect extends SQL92Dialect {
      * {@inheritDoc}
      */
     @Override
-    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
-        return new PostgresDataType(aTypeName, aCreateParams);
+    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
+        return new PostgresDataType(aId, aTypeName, aCreateParams);
     }
 
     @Override

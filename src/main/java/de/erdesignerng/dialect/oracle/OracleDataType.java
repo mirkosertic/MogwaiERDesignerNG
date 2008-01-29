@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 public class OracleDataType extends DataType {
 
-    public OracleDataType(String aName, String aDefinition) {
-        super(aName, aDefinition);
+    public OracleDataType(String aId, String aName, String aDefinition) {
+        super(aId, aName, aDefinition);
     }
 }
