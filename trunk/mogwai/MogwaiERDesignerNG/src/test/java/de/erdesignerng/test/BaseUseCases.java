@@ -63,10 +63,11 @@ public abstract class BaseUseCases extends TestCase {
             for (Statement theStatement : aStatement) {
                 String theSQL = theStatement.getSql();
                 try {
-                    System.out.println(theSQL);
                     connection.createStatement().execute(theSQL);
+                    assertTrue(theSQL, true);
+                    System.out.println(theSQL);
                 } catch (Exception e) {
-                    throw new VetoException(e);
+                    throw new VetoException(theStatement.getSql(), e);
                 }
             }
         } else {
@@ -229,6 +230,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
+            theAttribute.setNullable(false);
             theTempTable.addAttribute(model, theAttribute);
         }
         
@@ -257,6 +259,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMN_" + i);
+            theAttribute.setNullable(false);
             theTempTable.addAttribute(model, theAttribute);
         }
         
@@ -397,6 +400,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNA_" + i);
+            theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
         }
         
@@ -412,6 +416,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNB_" + i);
+            theAttribute.setNullable(false);            
             theTableB.addAttribute(model, theAttribute);
         }
         
@@ -429,6 +434,7 @@ public abstract class BaseUseCases extends TestCase {
         theRelation.setExportingTable(theTableA);
         theRelation.setImportingTable(theTableB);
         theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
+        model.addRelation(theRelation);
         
         model.removeTable(theTableB);
         model.removeTable(theTableA);        
@@ -446,6 +452,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNA_" + i);
+            theAttribute.setNullable(false);            
             theTableA.addAttribute(model, theAttribute);
         }
         
@@ -461,6 +468,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNB_" + i);
+            theAttribute.setNullable(false);            
             theTableB.addAttribute(model, theAttribute);
         }
         
@@ -499,6 +507,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNA_" + i);
+            theAttribute.setNullable(false);            
             theTableA.addAttribute(model, theAttribute);
         }
         
@@ -514,6 +523,7 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNB_" + i);
+            theAttribute.setNullable(false);            
             theTableB.addAttribute(model, theAttribute);
         }
         
