@@ -921,7 +921,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         lruMenu.removeAll();
         if (preferences != null) {
 
-            List<File> theFiles = preferences.getLRUfiles();
+            List<File> theFiles = preferences.getLrufiles();
             for (final File theFile : theFiles) {
                 JMenuItem theItem = new JMenuItem(theFile.toString());
                 theItem.addActionListener(new ActionListener() {

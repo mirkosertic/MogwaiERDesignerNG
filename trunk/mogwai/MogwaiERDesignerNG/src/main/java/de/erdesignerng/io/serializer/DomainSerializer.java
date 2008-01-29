@@ -47,7 +47,7 @@ public class DomainSerializer extends Serializer {
         serializeProperties(aDocument, theDomainElement, aDomain);
 
         // Zusatzdaten
-        theDomainElement.setAttribute(DATATYPE, aDomain.getDatatype());
+        theDomainElement.setAttribute(DATATYPE, aDomain.getDatatype().getId());
         theDomainElement.setAttribute(JAVA_CLASS_NAME, aDomain.getJavaClassName());
         theDomainElement.setAttribute(SIZE, "" + aDomain.getDomainSize());
         theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
@@ -67,7 +67,7 @@ public class DomainSerializer extends Serializer {
             theDomain.setOwner(aModel);
             deserializeProperties(theElement, theDomain);
 
-            theDomain.setDatatype(theElement.getAttribute(DATATYPE));
+            theDomain.setDatatype(aModel.getDialect().getDataTypeById(theElement.getAttribute(DATATYPE)));
             theDomain.setJavaClassName(theElement.getAttribute(JAVA_CLASS_NAME));
             theDomain.setSequenced(TRUE.equals(theElement.getAttribute(SEQUENCED)));
             theDomain.setDomainSize(Integer.parseInt(theElement.getAttribute(SIZE)));

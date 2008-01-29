@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 20:27:56 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
@@ -97,7 +97,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(getDialect().getPhysicalDeclarationFor(aNewAttribute.getDomain()));
+        theStatement.append(aNewAttribute.getPhysicalDeclaration());
         theStatement.append(" ");
 
         boolean isNullable = aNewAttribute.isNullable();

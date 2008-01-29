@@ -28,7 +28,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 20:27:56 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
@@ -77,7 +77,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theStatement.append(" ");
         theStatement.append(aNewName);
         theStatement.append(" ");
-        theStatement.append(getDialect().getPhysicalDeclarationFor(aExistantAttribute.getDomain()));
+        theStatement.append(aExistantAttribute.getPhysicalDeclaration());
         theStatement.append(" ");
 
         boolean isNullable = aExistantAttribute.isNullable();
@@ -104,7 +104,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(getDialect().getPhysicalDeclarationFor(aNewAttribute.getDomain()));
+        theStatement.append(aNewAttribute.getPhysicalDeclaration());
         theStatement.append(" ");
 
         boolean isNullable = aNewAttribute.isNullable();

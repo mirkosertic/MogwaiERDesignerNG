@@ -47,7 +47,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class TableCellView extends VertexView {
 
@@ -157,7 +157,7 @@ public class TableCellView extends VertexView {
                     if (domainDisplayMode) {
                         theText += theAttribute.getDomain().getName();
                     } else {
-                        theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
+                        theText += theAttribute.getPhysicalDeclaration();
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -192,7 +192,7 @@ public class TableCellView extends VertexView {
                     if (domainDisplayMode) {
                         theText += theAttribute.getDomain().getName();
                     } else {
-                        theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
+                        theText += theAttribute.getPhysicalDeclaration();
                     }
 
                     if (isFK) {
@@ -245,7 +245,7 @@ public class TableCellView extends VertexView {
                     if (domainDisplayMode) {
                         theText += theAttribute.getDomain().getName();
                     } else {
-                        theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
+                        theText += theAttribute.getPhysicalDeclaration();
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -268,7 +268,7 @@ public class TableCellView extends VertexView {
                 if (domainDisplayMode) {
                     theText += theAttribute.getDomain().getName();
                 } else {
-                    theText += dialect.getPhysicalDeclarationFor(theAttribute.getDomain());
+                    theText += theAttribute.getPhysicalDeclaration();
                 }
 
                 if (theAttribute.isForeignKey()) {

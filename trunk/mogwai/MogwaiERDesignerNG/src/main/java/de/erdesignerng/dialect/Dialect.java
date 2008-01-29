@@ -29,11 +29,10 @@ import org.apache.commons.digester.Digester;
 import de.erdesignerng.dialect.config.ConfigDataType;
 import de.erdesignerng.dialect.config.ConfigDataTypes;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Domain;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 20:27:56 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public abstract class Dialect {
 
@@ -44,9 +43,9 @@ public abstract class Dialect {
     private int maxObjectNameLength;
 
     private boolean nullablePrimaryKeyAllowed;
-    
+
     private boolean supportsOnUpdate = true;
-    
+
     private boolean supportsOnDelete = true;
 
     private NameCastType castType;
@@ -76,8 +75,10 @@ public abstract class Dialect {
             throw new RuntimeException("Cannot load configuration", e);
         }
 
+        int counter = 0;
+
         for (ConfigDataType theType : theConfiguration.getTypes()) {
-            registerType(theType.getName(), theType.getPattern());
+            registerType("TYP_" + counter++, theType.getName(), theType.getPattern());
         }
     }
 
@@ -257,24 +258,16 @@ public abstract class Dialect {
         return dataTypes.get(aTypeName);
     }
 
-    protected abstract DataType createDataTypeFor(String aTypeName, String aCreateParams);
+    protected abstract DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams);
 
-    protected void registerType(String aTypename, String aPattern) {
+    protected void registerType(String aId, String aTypename, String aPattern) {
 
         System.out.println(getClass().getSimpleName() + " -> Registering type " + aTypename + " with pattern "
                 + aPattern);
-        dataTypes.put(aTypename, createDataTypeFor(aTypename, aPattern));
+        dataTypes.put(aTypename, createDataTypeFor(aId, aTypename, aPattern));
     }
 
     public abstract SQLGenerator createSQLGenerator();
-
-    public String getPhysicalDeclarationFor(Domain aDomain) {
-        DataType theDataType = getDataType(aDomain.getDatatype());
-        if (theDataType == null) {
-            return "!!Unknown!!";
-        }
-        return theDataType.createTypeDefinitionFor(aDomain);
-    }
 
     /**
      * @return the supportsOnDelete
@@ -284,7 +277,8 @@ public abstract class Dialect {
     }
 
     /**
-     * @param supportsOnDelete the supportsOnDelete to set
+     * @param supportsOnDelete
+     *            the supportsOnDelete to set
      */
     public void setSupportsOnDelete(boolean supportsOnDelete) {
         this.supportsOnDelete = supportsOnDelete;
@@ -298,9 +292,25 @@ public abstract class Dialect {
     }
 
     /**
-     * @param supportsOnUpdate the supportsOnUpdate to set
+     * @param supportsOnUpdate
+     *            the supportsOnUpdate to set
      */
     public void setSupportsOnUpdate(boolean supportsOnUpdate) {
         this.supportsOnUpdate = supportsOnUpdate;
+    }
+
+    /**
+     * Get a datatype by id.
+     * 
+     * @param aId the id of the datatype
+     * @return the datatype or null if nothing was found
+     */
+    public DataType getDataTypeById(String aId) {
+        for (DataType aType : dataTypes.values()) {
+            if (aId.equals(aType.getId())) {
+                return aType;
+            }
+        }
+        return null;
     }
 }

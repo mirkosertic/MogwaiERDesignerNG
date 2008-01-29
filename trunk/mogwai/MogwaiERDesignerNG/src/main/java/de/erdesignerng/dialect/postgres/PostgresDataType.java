@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 public class PostgresDataType extends DataType {
 
-    public PostgresDataType(String aName, String aDefinition) {
-        super(aName, aDefinition);
+    public PostgresDataType(String aId, String aName, String aDefinition) {
+        super(aId, aName, aDefinition);
     }
 }

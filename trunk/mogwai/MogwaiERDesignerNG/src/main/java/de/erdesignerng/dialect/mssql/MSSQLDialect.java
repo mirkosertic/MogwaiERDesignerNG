@@ -26,7 +26,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
@@ -63,8 +63,8 @@ public class MSSQLDialect extends SQL92Dialect {
      * {@inheritDoc}
      */
     @Override
-    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
-        return new MSSQLDataType(aTypeName, aCreateParams);
+    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
+        return new MSSQLDataType(aId, aTypeName, aCreateParams);
     }
 
     @Override

@@ -27,17 +27,20 @@ import de.erdesignerng.model.Domain;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class DataType {
+    
+    protected String id;
 
     protected String name;
 
     protected String pattern;
 
-    protected DataType(String aName, String aDefinition) {
+    protected DataType(String aId, String aName, String aDefinition) {
         name = aName;
         pattern = aDefinition;
+        id = aId;
     }
 
     /**
@@ -56,6 +59,13 @@ public class DataType {
      */
     public String getName() {
         return name;
+    }
+    
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
 
     protected String patternToType(Domain aDomain) {

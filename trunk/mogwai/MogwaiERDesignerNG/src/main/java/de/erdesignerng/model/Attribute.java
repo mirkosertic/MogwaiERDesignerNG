@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -132,4 +132,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         return !getName().equals(aAttribute.getName());
     }
 
+    public String getPhysicalDeclaration() {
+        return getDomain().getDatatype().createTypeDefinitionFor(getDomain());
+    }
 }
