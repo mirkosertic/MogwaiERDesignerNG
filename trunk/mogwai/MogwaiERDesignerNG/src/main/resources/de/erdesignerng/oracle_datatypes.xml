@@ -12,7 +12,8 @@
 	<datatype name="NUMBER" pattern="$size,$decimal"/>
 	<datatype name="FLOAT"/>
 	<datatype name="REAL"/>
-	<datatype name="VARCHAR2" pattern="$size"/>
+	<datatype name="VARCHAR" pattern="$size"/>
+	<datatype name="VARCHAR2" pattern="$size"/>	
 	<datatype name="DATE"/>
 	<datatype name="TIMESTAMP"/>
 	<datatype name="STRUCT"/>
