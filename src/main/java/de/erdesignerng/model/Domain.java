@@ -17,17 +17,18 @@
  */
 package de.erdesignerng.model;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:23 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain> {
 
-    private String datatype;
+    private DataType datatype;
 
     private int domainSize;
 
@@ -44,7 +45,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
      * 
      * @return Wert des Attributs datatype.
      */
-    public String getDatatype() {
+    public DataType getDatatype() {
         return datatype;
     }
 
@@ -54,7 +55,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
      * @param aDatatype
      *            Wert für das Attribut datatype.
      */
-    public void setDatatype(String aDatatype) {
+    public void setDatatype(DataType aDatatype) {
         datatype = aDatatype;
     }
 

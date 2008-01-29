@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 public class SquirrelDataType extends DataType {
 
-    public SquirrelDataType(String aName, String aDefinition) {
-        super(aName, aDefinition);
+    public SquirrelDataType(String aId, String aName, String aDefinition) {
+        super(aId, aName, aDefinition);
     }
 }

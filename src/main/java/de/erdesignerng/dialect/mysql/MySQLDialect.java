@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
@@ -68,8 +68,8 @@ public class MySQLDialect extends SQL92Dialect {
      * {@inheritDoc}
      */
     @Override
-    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
-        return new MySQLDataType(aTypeName, aCreateParams);
+    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
+        return new MySQLDataType(aId, aTypeName, aCreateParams);
     }
 
     @Override

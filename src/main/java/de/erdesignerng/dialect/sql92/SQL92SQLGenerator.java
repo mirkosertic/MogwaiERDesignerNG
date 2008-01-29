@@ -29,7 +29,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 20:27:56 $
+ * @version $Date: 2008-01-29 22:04:11 $
  * @param <T> the dialect
  */
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
@@ -47,7 +47,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
         theStatement.append(aAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(getDialect().getPhysicalDeclarationFor(aAttribute.getDomain()));
+        theStatement.append(aAttribute.getPhysicalDeclaration());
         theStatement.append(" ");
 
         boolean isNullable = aAttribute.isNullable();
@@ -262,7 +262,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             theStatement.append(TAB);
             theStatement.append(theAttribute.getName());
             theStatement.append(" ");
-            theStatement.append(getDialect().getPhysicalDeclarationFor(theAttribute.getDomain()));
+            theStatement.append(theAttribute.getPhysicalDeclaration());
             theStatement.append(" ");
 
             boolean isNullable = theAttribute.isNullable();

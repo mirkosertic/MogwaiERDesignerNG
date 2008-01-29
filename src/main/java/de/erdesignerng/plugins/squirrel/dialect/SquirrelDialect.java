@@ -30,7 +30,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:49:08 $
+ * @version $Date: 2008-01-29 22:04:11 $
  */
 public class SquirrelDialect extends Dialect {
 
@@ -87,8 +87,8 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    protected DataType createDataTypeFor(String aTypeName, String aCreateParams) {
-        return new SquirrelDataType(aTypeName, aCreateParams);
+    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
+        return new SquirrelDataType(aId, aTypeName, aCreateParams);
     }
     
     @Override
@@ -103,6 +103,6 @@ public class SquirrelDialect extends Dialect {
     
     @Override
     public DataType getDataType(String aTypeName) {
-        return new SquirrelDataType(aTypeName, "[$size],[$decimal]");
+        return new SquirrelDataType("", aTypeName, "[$size],[$decimal]");
     }    
 }
