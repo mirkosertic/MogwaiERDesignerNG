@@ -27,6 +27,11 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-01-29 20:27:56 $
+ * @param <T> the dialect
+ */
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     protected SQL92SQLGenerator(T aDialect) {
@@ -128,30 +133,34 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
         theStatement.append(")");
 
-        switch (aRelation.getOnDelete()) {
-        case CASCADE:
-            theStatement.append(" ON DELETE CASCADE");
-            break;
-        case NOTHING:
-            theStatement.append(" ON DELETE NO ACTION");
-            break;
-        case SET_NULL:
-            theStatement.append(" ON DELETE SET NULL");
-            break;
-        default:
+        if (getDialect().isSupportsOnDelete()) {
+            switch (aRelation.getOnDelete()) {
+            case CASCADE:
+                theStatement.append(" ON DELETE CASCADE");
+                break;
+            case NOTHING:
+                theStatement.append(" ON DELETE NO ACTION");
+                break;
+            case SET_NULL:
+                theStatement.append(" ON DELETE SET NULL");
+                break;
+            default:
+            }
         }
 
-        switch (aRelation.getOnUpdate()) {
-        case CASCADE:
-            theStatement.append(" ON UPDATE CASCADE");
-            break;
-        case NOTHING:
-            theStatement.append(" ON UPDATE NO ACTION");
-            break;
-        case SET_NULL:
-            theStatement.append(" ON UPDATE SET NULL");
-            break;
-        default:
+        if (getDialect().isSupportsOnUpdate()) {
+            switch (aRelation.getOnUpdate()) {
+            case CASCADE:
+                theStatement.append(" ON UPDATE CASCADE");
+                break;
+            case NOTHING:
+                theStatement.append(" ON UPDATE NO ACTION");
+                break;
+            case SET_NULL:
+                theStatement.append(" ON UPDATE SET NULL");
+                break;
+            default:
+            }
         }
 
         theResult.add(new Statement(theStatement.toString()));
@@ -213,7 +222,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
         StatementList theResult = new StatementList();
         theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable.getName())
-                + " DROP FOREIGN KEY " + aRelation.getName()));
+                + " DROP CONSTRAINT " + aRelation.getName()));
         return theResult;
     }
 

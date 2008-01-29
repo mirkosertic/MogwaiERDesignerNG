@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-01-29 20:27:56 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -37,6 +37,7 @@ public class OracleDialect extends SQL92Dialect {
         setMaxObjectNameLength(32);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
+        setSupportsOnUpdate(false);
     }
 
     @Override
