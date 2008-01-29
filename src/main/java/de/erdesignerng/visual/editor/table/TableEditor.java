@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 20:00:46 $
+ * @version $Date: 2008-01-29 19:39:50 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -147,7 +147,7 @@ public class TableEditor extends BaseEditor {
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
-        editingView.getAttributeList().setCellRenderer(new AttributeListCellRenderer());
+        editingView.getAttributeList().setCellRenderer(new AttributeListCellRenderer(this));
 
         for (Domain theDomain : aModel.getDomains()) {
             domainListModel.add(theDomain);
@@ -547,5 +547,15 @@ public class TableEditor extends BaseEditor {
             }
         }
 
+    }
+
+    public boolean isPrimaryKey(Attribute aAttribute) {
+        for (int i = 0; i < indexListModel.getSize(); i++) {
+            Index theIndex = (Index) indexListModel.get(i);
+            if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
+                return theIndex.getAttributes().contains(aAttribute);
+            }
+        }
+        return false;
     }
 }

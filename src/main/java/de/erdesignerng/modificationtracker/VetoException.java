@@ -22,4 +22,9 @@ public class VetoException extends Exception {
     public VetoException(Exception e) {
         super(e);
     }
+    
+    public VetoException(String aMessage, Exception e) {
+        super(aMessage, e);
+    }
+    
 }
