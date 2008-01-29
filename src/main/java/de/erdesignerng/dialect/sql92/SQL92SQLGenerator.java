@@ -38,7 +38,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + aTable.getName() + " ADD ");
+        theStatement.append("ALTER TABLE " + escapeTableName(aTable.getName()) + " ADD ");
 
         theStatement.append(aAttribute.getName());
         theStatement.append(" ");
@@ -70,7 +70,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("INDEX ");
         theStatement.append(aIndex.getName());
         theStatement.append(" ON ");
-        theStatement.append(aTable.getName());
+        theStatement.append(escapeTableName(aTable.getName()));
         theStatement.append(" (");
 
         for (int i = 0; i < aIndex.getAttributes().size(); i++) {
@@ -92,8 +92,71 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     @Override
     public StatementList createAddRelationStatement(Relation aRelation) throws VetoException {
-        // TODO Auto-generated method stub
-        return null;
+        Table theImportingTable = aRelation.getImportingTable();
+        Table theExportingTable = aRelation.getExportingTable();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement = new StringBuilder("ALTER TABLE ");
+        theStatement.append(escapeTableName(theImportingTable.getName()));
+        theStatement.append(" ADD CONSTRAINT ");
+        theStatement.append(aRelation.getName());
+        theStatement.append(" FOREIGN KEY (");
+
+        boolean first = true;
+        for (Attribute theAttribute : aRelation.getMapping().values()) {
+            if (!first) {
+                theStatement.append(",");
+            }
+            theStatement.append(theAttribute.getName());
+            first = false;
+        }
+
+        theStatement.append(") REFERENCES ");
+        theStatement.append(theExportingTable.getName());
+        theStatement.append("(");
+
+        first = true;
+        for (Attribute theAttribute : aRelation.getMapping().keySet()) {
+            if (!first) {
+                theStatement.append(",");
+            }
+            theStatement.append(theAttribute.getName());
+            first = false;
+        }
+
+        theStatement.append(")");
+
+        switch (aRelation.getOnDelete()) {
+        case CASCADE:
+            theStatement.append(" ON DELETE CASCADE");
+            break;
+        case NOTHING:
+            theStatement.append(" ON DELETE NO ACTION");
+            break;
+        case SET_NULL:
+            theStatement.append(" ON DELETE SET NULL");
+            break;
+        default:
+        }
+
+        switch (aRelation.getOnUpdate()) {
+        case CASCADE:
+            theStatement.append(" ON UPDATE CASCADE");
+            break;
+        case NOTHING:
+            theStatement.append(" ON UPDATE NO ACTION");
+            break;
+        case SET_NULL:
+            theStatement.append(" ON UPDATE SET NULL");
+            break;
+        default:
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
     }
 
     @Override
@@ -123,7 +186,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute)
             throws VetoException {
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + aTable.getName() + " DROP COLUMN " + aAttribute.getName()));
+        theResult.add(new Statement("ALTER TABLE " + escapeTableName(aTable.getName()) + " DROP COLUMN "
+                + aAttribute.getName()));
         return theResult;
     }
 
@@ -132,11 +196,10 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(aTable.getName());
-        theStatement.append(" DROP INDEX ");
-
+        theStatement.append("DROP INDEX ");
         theStatement.append(aIndex.getName());
+        theStatement.append(" ON ");
+        theStatement.append(escapeTableName(aTable.getName()));
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -149,15 +212,15 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + theImportingTable.getName() + " DROP FOREIGN KEY "
-                + aRelation.getName()));
+        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable.getName())
+                + " DROP FOREIGN KEY " + aRelation.getName()));
         return theResult;
     }
 
     @Override
     public StatementList createRemoveTableStatement(Table aTable) throws VetoException {
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("DROP TABLE " + aTable.getName()));
+        theResult.add(new Statement("DROP TABLE " + escapeTableName(aTable.getName())));
         return theResult;
     }
 
@@ -179,7 +242,44 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     @Override
     public StatementList createAddTableStatement(Table aTable) throws VetoException {
-        return null;
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " (\n");
+        for (int i = 0; i < aTable.getAttributes().size(); i++) {
+            Attribute theAttribute = aTable.getAttributes().get(i);
+
+            theStatement.append(TAB);
+            theStatement.append(theAttribute.getName());
+            theStatement.append(" ");
+            theStatement.append(getDialect().getPhysicalDeclarationFor(theAttribute.getDomain()));
+            theStatement.append(" ");
+
+            boolean isNullable = theAttribute.isNullable();
+
+            if (!isNullable) {
+                theStatement.append("NOT NULL");
+            }
+
+            if (i < aTable.getAttributes().size() - 1) {
+                theStatement.append(",");
+            }
+
+            theStatement.append("\n");
+        }
+        theStatement.append(")");
+        theResult.add(new Statement(theStatement.toString()));
+
+        for (Index theIndex : aTable.getIndexes()) {
+            if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
+                theResult.addAll(createAddPrimaryKeyToTable(aTable, theIndex));
+            } else {
+                theResult.addAll(createAddIndexToTableStatement(aTable, theIndex));
+            }
+        }
+
+        return theResult;
     }
 
     @Override
@@ -189,13 +289,39 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRemovePrimaryKeyStatement(Table table, Index index) throws VetoException {
-        return null;
+    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement
+                .append("ALTER TABLE " + escapeTableName(aTable.getName()) + " DROP CONSTRAINT " + aIndex.getName());
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
     }
 
     @Override
     public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
-        return null;
-    }
 
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement = new StringBuilder("ALTER TABLE ");
+        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(" ADD CONSTRAINT ");
+        theStatement.append(aIndex.getName());
+        theStatement.append(" PRIMARY KEY(");
+
+        for (int i = 0; i < aIndex.getAttributes().size(); i++) {
+            if (i > 0) {
+                theStatement.append(",");
+            }
+            theStatement.append(aIndex.getAttributes().get(i).getName());
+        }
+        theStatement.append(")");
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
 }

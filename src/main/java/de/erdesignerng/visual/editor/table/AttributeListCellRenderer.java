@@ -35,7 +35,7 @@ import de.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-01-29 19:39:50 $
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 
@@ -49,7 +49,12 @@ public class AttributeListCellRenderer implements ListCellRenderer {
 
     private static ImageIcon keyIcon = IconFactory.getKeyIcon();
 
-    public AttributeListCellRenderer() {
+    private TableEditor editor;
+    
+    public AttributeListCellRenderer(TableEditor aEditor) {
+        
+        editor = aEditor;
+        
         panel = new JPanel(new BorderLayout());
         labelPanel = new JPanel(new BorderLayout());
 
@@ -81,11 +86,14 @@ public class AttributeListCellRenderer implements ListCellRenderer {
 
         label.setForeground(Color.black);
 
-        if (theAttribute.isPrimaryKey() || theAttribute.isForeignKey()) {
+        
+        boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
+        
+        if (isPrimaryKey || theAttribute.isForeignKey()) {
             label.setForeground(Color.red);
         }
 
-        keyLabel.setVisible(theAttribute.isPrimaryKey());
+        keyLabel.setVisible(isPrimaryKey);
 
         labelPanel.setOpaque(isSelected);
         if (isSelected) {
