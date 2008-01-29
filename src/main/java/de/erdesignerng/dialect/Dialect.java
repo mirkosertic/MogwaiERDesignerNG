@@ -33,7 +33,7 @@ import de.erdesignerng.model.Domain;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-24 19:35:41 $
+ * @version $Date: 2008-01-29 20:27:56 $
  */
 public abstract class Dialect {
 
@@ -44,6 +44,10 @@ public abstract class Dialect {
     private int maxObjectNameLength;
 
     private boolean nullablePrimaryKeyAllowed;
+    
+    private boolean supportsOnUpdate = true;
+    
+    private boolean supportsOnDelete = true;
 
     private NameCastType castType;
 
@@ -270,5 +274,33 @@ public abstract class Dialect {
             return "!!Unknown!!";
         }
         return theDataType.createTypeDefinitionFor(aDomain);
+    }
+
+    /**
+     * @return the supportsOnDelete
+     */
+    public boolean isSupportsOnDelete() {
+        return supportsOnDelete;
+    }
+
+    /**
+     * @param supportsOnDelete the supportsOnDelete to set
+     */
+    public void setSupportsOnDelete(boolean supportsOnDelete) {
+        this.supportsOnDelete = supportsOnDelete;
+    }
+
+    /**
+     * @return the supportsOnUpdate
+     */
+    public boolean isSupportsOnUpdate() {
+        return supportsOnUpdate;
+    }
+
+    /**
+     * @param supportsOnUpdate the supportsOnUpdate to set
+     */
+    public void setSupportsOnUpdate(boolean supportsOnUpdate) {
+        this.supportsOnUpdate = supportsOnUpdate;
     }
 }

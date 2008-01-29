@@ -295,7 +295,7 @@ public abstract class BaseUseCases extends TestCase {
         model.addTable(theTempTable);
         
         Index theUniqueIndex = new Index();
-        theUniqueIndex.setName("INX1");
+        theUniqueIndex.setName("test9_idx1");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
         
         theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
@@ -303,7 +303,7 @@ public abstract class BaseUseCases extends TestCase {
         model.addIndexToTable(theTempTable, theUniqueIndex);
 
         Index theNonUnuqueIndex = new Index();
-        theNonUnuqueIndex.setName("INX2");
+        theNonUnuqueIndex.setName("test9_idx2");
         theNonUnuqueIndex.setIndexType(IndexType.NONUNIQUE);
         
         theNonUnuqueIndex.getAttributes().add(theTempTable.getAttributes().get(1));
@@ -331,7 +331,7 @@ public abstract class BaseUseCases extends TestCase {
         model.addTable(theTempTable);
         
         Index theUniqueIndex = new Index();
-        theUniqueIndex.setName("INX1");
+        theUniqueIndex.setName("test10_idx1");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
         
         theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
@@ -339,7 +339,7 @@ public abstract class BaseUseCases extends TestCase {
         model.addIndexToTable(theTempTable, theUniqueIndex);
 
         Index theNonUnuqueIndex = new Index();
-        theNonUnuqueIndex.setName("INX2");
+        theNonUnuqueIndex.setName("test10_idx2");
         theNonUnuqueIndex.setIndexType(IndexType.NONUNIQUE);
         
         theNonUnuqueIndex.getAttributes().add(theTempTable.getAttributes().get(1));
@@ -370,7 +370,7 @@ public abstract class BaseUseCases extends TestCase {
         model.addTable(theTempTable);
         
         Index theUniqueIndex = new Index();
-        theUniqueIndex.setName("INX1");
+        theUniqueIndex.setName("test11_idx1");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
         
         theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
@@ -378,7 +378,7 @@ public abstract class BaseUseCases extends TestCase {
         model.addIndexToTable(theTempTable, theUniqueIndex);
         
         Index theClone = theUniqueIndex.clone();
-        theClone.setName("LALAINDEX");
+        theClone.setName("test11_idx2");
         theClone.setIndexType(IndexType.NONUNIQUE);
         
         model.changeIndex(theUniqueIndex, theClone);

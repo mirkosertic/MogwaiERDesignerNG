@@ -27,7 +27,7 @@ import de.erdesignerng.model.Model;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 19:39:50 $
+ * @version $Date: 2008-01-29 20:27:56 $
  */
 public class OracleTest extends BaseUseCases {
 
@@ -40,15 +40,15 @@ public class OracleTest extends BaseUseCases {
 
         model.setModificationTracker(new MyTracker(model));
 
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/test", "test", "test");
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        connection = DriverManager.getConnection("jdbc:oracle:thin:@//192.168.0.140/XE", "erdesigner", "erdesigner");
     }
 
     @Override
     public Domain createCharDomain(String aName, int aLength) {
         Domain theDomain = new Domain();
         theDomain.setName(aName);
-        theDomain.setDatatype("VARCHAR");
+        theDomain.setDatatype("VARCHAR2");
         theDomain.setDomainSize(aLength);
         return theDomain;
     }

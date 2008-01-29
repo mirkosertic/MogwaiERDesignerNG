@@ -40,3 +40,5 @@ Release 1.0.3
 
 * Refactored domain system for support of size, decimal digits and radix
 * Added model modification tracker to track model changes
+* Removed generic jdbc dialect
+* Added unit tests for MySQL, MSSQL, Oracle and Postgres dialect

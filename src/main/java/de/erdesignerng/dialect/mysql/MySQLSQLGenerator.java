@@ -22,12 +22,13 @@ import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 19:39:50 $
+ * @version $Date: 2008-01-29 20:27:56 $
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
@@ -115,5 +116,16 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }    
+    }  
+    
+    @Override
+    public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
+
+        Table theImportingTable = aRelation.getImportingTable();
+
+        StatementList theResult = new StatementList();
+        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable.getName())
+                + " DROP FOREIGN KEY " + aRelation.getName()));
+        return theResult;
+    }
 }

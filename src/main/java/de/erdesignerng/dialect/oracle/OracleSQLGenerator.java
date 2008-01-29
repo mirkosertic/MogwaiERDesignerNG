@@ -17,11 +17,97 @@
  */
 package de.erdesignerng.dialect.oracle;
 
+import de.erdesignerng.dialect.Statement;
+import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-01-29 20:27:56 $
+ */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
     public OracleSQLGenerator(OracleDialect aDialect) {
         super(aDialect);
     }
+    
+    @Override
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE ");
+        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(" RENAME TO ");
+
+        theStatement.append(aNewName);
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
+        
+        Table theTable = aExistantAttribute.getOwner();
+        
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE ");
+        theStatement.append(escapeTableName(theTable.getName()));
+        theStatement.append(" RENAME COLUMN ");
+        theStatement.append(aExistantAttribute.getName());
+        theStatement.append(" TO ");
+        theStatement.append(aNewName);
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("DROP INDEX ");
+        theStatement.append(aIndex.getName());
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    } 
+    
+    @Override
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
+            throws VetoException {
+        Table theTable = aExistantAttribute.getOwner();
+
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("ALTER TABLE " + escapeTableName(theTable.getName()) + " MODIFY ");
+
+        theStatement.append(aExistantAttribute.getName());
+        theStatement.append(" ");
+        theStatement.append(getDialect().getPhysicalDeclarationFor(aNewAttribute.getDomain()));
+        theStatement.append(" ");
+
+        boolean isNullable = aNewAttribute.isNullable();
+
+        if (!isNullable) {
+            theStatement.append("NOT NULL");
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }    
 }
