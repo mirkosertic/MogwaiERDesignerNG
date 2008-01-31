@@ -30,7 +30,7 @@ import de.erdesignerng.model.Model;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 16:14:37 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class MSSQLTest extends BaseUseCases {
 
@@ -52,8 +52,8 @@ public class MSSQLTest extends BaseUseCases {
     public Domain createCharDomain(String aName, int aLength) {
         Domain theDomain = new Domain();
         theDomain.setName(aName);
-        // theDomain.setDatatype("varchar");
-        theDomain.setDomainSize(aLength);
+        theDomain.setDatatype(model.getDialect().getDataTypeByName("varchar"));
+        theDomain.setSize(aLength);
         return theDomain;
     }
 

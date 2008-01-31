@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 19:39:50 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -167,7 +167,6 @@ public class TableEditor extends BaseEditor {
         attributeBindingInfo.addBinding("comment", editingView.getAttributeComment());
         attributeBindingInfo.addBinding("domain", editingView.getDomainList(), true);
         attributeBindingInfo.addBinding("nullable", editingView.getNullable());
-        attributeBindingInfo.addBinding("primaryKey", editingView.getPrimaryKey());
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
         attributeBindingInfo.configure();
 
@@ -206,12 +205,6 @@ public class TableEditor extends BaseEditor {
         editingView.getNewButton().setAction(newAttributeAction);
         editingView.getDeleteButton().setAction(deleteAttributeAction);
         editingView.getUpdateAttributeButton().setAction(updateAttribute);
-        editingView.getPrimaryKey().addItemListener(new java.awt.event.ItemListener() {
-
-            public void itemStateChanged(java.awt.event.ItemEvent e) {
-                commandPrimaryKeyItemStateChanged(e);
-            }
-        });
         editingView.getUpdateIndexButton().setAction(updateIndex);
         editingView.getNewIndexButton().setAction(newIndexAction);
         editingView.getDeleteIndexButton().setAction(deleteIndexAction);
@@ -306,7 +299,6 @@ public class TableEditor extends BaseEditor {
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
             editingView.getDefault().setEnabled(true);
-            editingView.getPrimaryKey().setEnabled(true);
 
         } else {
             editingView.getNewButton().setEnabled(true);
@@ -315,7 +307,6 @@ public class TableEditor extends BaseEditor {
             editingView.getAttributeName().setEnabled(false);
             editingView.getNullable().setEnabled(false);
             editingView.getDefault().setEnabled(false);
-            editingView.getPrimaryKey().setEnabled(false);
         }
 
         attributeBindingInfo.model2view();
@@ -337,14 +328,12 @@ public class TableEditor extends BaseEditor {
 
             indexBindingInfo.setEnabled(true);
 
-            boolean isPrimary = theValue.getIndexType().equals(IndexType.PRIMARYKEY);
+            editingView.getIndexFieldList().setEnabled(true);
+            editingView.getPrimaryIndex().setEnabled(true);
+            editingView.getUniqueIndex().setEnabled(true);
+            editingView.getNotUniqueIndex().setEnabled(true);
 
-            editingView.getIndexFieldList().setEnabled(!isPrimary);
-            editingView.getPrimaryIndex().setEnabled(!isPrimary);
-            editingView.getUniqueIndex().setEnabled(!isPrimary);
-            editingView.getNotUniqueIndex().setEnabled(!isPrimary);
-
-            editingView.getDeleteIndexButton().setEnabled(!isPrimary);
+            editingView.getDeleteIndexButton().setEnabled(!isNew);
         } else {
 
             editingView.getNewIndexButton().setEnabled(true);
@@ -424,10 +413,6 @@ public class TableEditor extends BaseEditor {
         updateAttributeEditFields();
     }
 
-    private void commandPrimaryKeyItemStateChanged(java.awt.event.ItemEvent evt) {
-        // TODO: Implement functionality here
-    }
-
     private void commandDeleteIndex() {
         Index theAttribute = indexBindingInfo.getDefaultModel();
 
@@ -449,16 +434,22 @@ public class TableEditor extends BaseEditor {
         Vector theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
             indexBindingInfo.view2model();
-
+            
             if (theModel.getIndexType().equals(IndexType.PRIMARYKEY)) {
                 for (int i = 0; i < indexListModel.getSize(); i++) {
                     Index theIndex = (Index) indexListModel.get(i);
-                    if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
+                    if ((theIndex.getIndexType().equals(IndexType.PRIMARYKEY) && (!theModel.equals(theIndex)))) {
                         MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                                 ERDesignerBundle.THEREISALREADYAPRIMARYKEY));
                         return;
                     }
                 }
+            }
+            
+            if (theModel.getAttributes().size() == 0) {
+                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                        ERDesignerBundle.INDEXMUSTHAVEATLEASTONEATTRIBUTE));
+                return;
             }
 
             if (!indexListModel.contains(theModel)) {

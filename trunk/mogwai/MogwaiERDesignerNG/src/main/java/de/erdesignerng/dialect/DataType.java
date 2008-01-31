@@ -27,20 +27,53 @@ import de.erdesignerng.model.Domain;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 16:14:37 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
-public class DataType {
-    
+public class DataType implements Comparable<DataType> {
+
+    public static final String SIZE_TOKEN = "$size";
+
+    public static final String PRECISION_TOKEN = "$precision";
+
+    public static final String SCALE_TOKEN = "$scale";
+
     protected String name;
 
     protected String pattern;
-    
+
     protected int jdbcType;
+
+    protected boolean identity;
+
+    protected int maxOccoursPerTable = -1;
+
+    private boolean supportsSize = false;
+
+    private boolean supportsPrecision = false;
+
+    private boolean supportsScale = false;
 
     protected DataType(String aName, String aDefinition, int aJdbcType) {
         name = aName;
         pattern = aDefinition;
         jdbcType = aJdbcType;
+
+        for (StringTokenizer theST = new StringTokenizer(aDefinition, ","); theST.hasMoreTokens();) {
+            String theToken = theST.nextToken();
+            if (SIZE_TOKEN.equals(theToken)) {
+                supportsSize = true;
+            } else {
+                if (PRECISION_TOKEN.equals(theToken)) {
+                    supportsPrecision = true;
+                } else {
+                    if (SCALE_TOKEN.equals(theToken)) {
+                        supportsScale = true;
+                    } else {
+                        throw new IllegalArgumentException("Invalid Token : " + theToken);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -60,13 +93,13 @@ public class DataType {
     public String getName() {
         return name;
     }
-    
+
     protected String patternToType(Domain aDomain) {
 
         Map<String, String> theMapping = new HashMap<String, String>();
-        theMapping.put("$size", "" + aDomain.getDomainSize());
-        theMapping.put("$decimal", "" + aDomain.getFraction());
-        theMapping.put("$radix", "" + aDomain.getRadix());
+        theMapping.put(SIZE_TOKEN, "" + aDomain.getSize());
+        theMapping.put(PRECISION_TOKEN, "" + aDomain.getPrecision());
+        theMapping.put(SCALE_TOKEN, "" + aDomain.getScale());
 
         StringBuilder theResult = new StringBuilder();
         StringTokenizer theSt = new StringTokenizer(pattern, ",");
@@ -117,5 +150,49 @@ public class DataType {
         }
 
         return name + "(" + theAppend + ")";
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public int compareTo(DataType aType) {
+        return name.compareTo(aType.getName());
+    }
+
+    /**
+     * @return the identity
+     */
+    public boolean isIdentity() {
+        return identity;
+    }
+
+    /**
+     * @return the maxOccoursPerTable
+     */
+    public int getMaxOccoursPerTable() {
+        return maxOccoursPerTable;
+    }
+
+    /**
+     * @return the supportsPrecision
+     */
+    public boolean supportsPrecision() {
+        return supportsPrecision;
+    }
+
+    /**
+     * @return the supportsScale
+     */
+    public boolean supportsScale() {
+        return supportsScale;
+    }
+
+    /**
+     * @return the supportsSize
+     */
+    public boolean supportsSize() {
+        return supportsSize;
     }
 }
