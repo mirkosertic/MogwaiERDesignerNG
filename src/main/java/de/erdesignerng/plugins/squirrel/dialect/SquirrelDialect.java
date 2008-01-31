@@ -22,7 +22,6 @@ import java.sql.SQLException;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
-import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -30,7 +29,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public class SquirrelDialect extends Dialect {
 
@@ -87,11 +86,6 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
-        return new SquirrelDataType(aId, aTypeName, aCreateParams);
-    }
-    
-    @Override
     public String getUniqueName() {
         return "Squirrel";
     }
@@ -100,9 +94,4 @@ public class SquirrelDialect extends Dialect {
     public boolean supportsSchemaInformation() {
         return false;
     }
-    
-    @Override
-    public DataType getDataType(String aTypeName) {
-        return new SquirrelDataType("", aTypeName, "[$size],[$decimal]");
-    }    
 }

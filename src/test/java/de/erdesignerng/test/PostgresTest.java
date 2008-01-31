@@ -17,7 +17,10 @@
  */
 package de.erdesignerng.test;
 
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Types;
 
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.model.Domain;
@@ -27,7 +30,7 @@ import de.erdesignerng.model.Model;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 21:17:24 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public class PostgresTest extends BaseUseCases {
 
@@ -48,8 +51,30 @@ public class PostgresTest extends BaseUseCases {
     public Domain createCharDomain(String aName, int aLength) {
         Domain theDomain = new Domain();
         theDomain.setName(aName);
-        theDomain.setDatatype("char");
+        //theDomain.setDatatype("char");
         theDomain.setDomainSize(aLength);
         return theDomain;
     }
+    
+    /**
+     * Test extraction of datatypes.
+     * @throws Exception is thrown in case of an error
+     */
+    public void testExtractDataTypes() throws Exception {
+        DatabaseMetaData theMeta = connection.getMetaData();
+        ResultSet theTypes = theMeta.getTypeInfo();
+        while (theTypes.next()) {
+            String theTypeName = theTypes.getString("TYPE_NAME");
+            int theType = theTypes.getInt("DATA_TYPE");
+            String theParams = theTypes.getString("CREATE_PARAMS");
+            if (theParams == null) {
+                theParams = "";
+            }
+            if (!(Types.OTHER == theType) && !(Types.ARRAY == theType)) {
+                System.out.println("registerType(new PostgresLDataType(\"" + theTypeName + "\",\"" + theParams + "\","
+                        + getTypeName(theType) + "));");
+            }
+        }
+    }
+    
 }

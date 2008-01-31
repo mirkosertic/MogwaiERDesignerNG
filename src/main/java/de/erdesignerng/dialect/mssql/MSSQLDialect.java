@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.dialect.mssql;
 
-import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
@@ -26,17 +25,50 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
     public MSSQLDialect() {
-        super("mssql_datatypes.xml");
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
         setMaxObjectNameLength(128);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
+
+        registerType(new MSSQLDataType("bit", "", java.sql.Types.BIT));
+        registerType(new MSSQLDataType("tinyint", "", java.sql.Types.TINYINT));
+        registerType(new MSSQLDataType("tinyint identity", "", java.sql.Types.TINYINT));
+        registerType(new MSSQLDataType("bigint", "", java.sql.Types.BIGINT));
+        registerType(new MSSQLDataType("bigint identity", "", java.sql.Types.BIGINT));
+        registerType(new MSSQLDataType("varbinary", "max length", java.sql.Types.VARBINARY));
+        registerType(new MSSQLDataType("binary", "length", java.sql.Types.BINARY));
+        registerType(new MSSQLDataType("timestamp", "", java.sql.Types.BINARY));
+        registerType(new MSSQLDataType("char", "length", java.sql.Types.CHAR));
+        registerType(new MSSQLDataType("nchar", "length", java.sql.Types.CHAR));
+        registerType(new MSSQLDataType("uniqueidentifier", "", java.sql.Types.CHAR));
+        registerType(new MSSQLDataType("numeric", "precision,scale", java.sql.Types.NUMERIC));
+        registerType(new MSSQLDataType("numeric() identity", "precision", java.sql.Types.NUMERIC));
+        registerType(new MSSQLDataType("decimal", "precision,scale", java.sql.Types.DECIMAL));
+        registerType(new MSSQLDataType("money", "", java.sql.Types.DECIMAL));
+        registerType(new MSSQLDataType("smallmoney", "", java.sql.Types.DECIMAL));
+        registerType(new MSSQLDataType("decimal() identity", "precision", java.sql.Types.DECIMAL));
+        registerType(new MSSQLDataType("int", "", java.sql.Types.INTEGER));
+        registerType(new MSSQLDataType("int identity", "", java.sql.Types.INTEGER));
+        registerType(new MSSQLDataType("smallint", "", java.sql.Types.SMALLINT));
+        registerType(new MSSQLDataType("smallint identity", "", java.sql.Types.SMALLINT));
+        registerType(new MSSQLDataType("real", "", java.sql.Types.REAL));
+        registerType(new MSSQLDataType("float", "", java.sql.Types.DOUBLE));
+        registerType(new MSSQLDataType("varchar", "max length", java.sql.Types.VARCHAR));
+        registerType(new MSSQLDataType("nvarchar", "max length", java.sql.Types.VARCHAR));
+        registerType(new MSSQLDataType("sysname", "", java.sql.Types.VARCHAR));
+        registerType(new MSSQLDataType("sql_variant", "", java.sql.Types.VARCHAR));
+        registerType(new MSSQLDataType("datetime", "", java.sql.Types.TIMESTAMP));
+        registerType(new MSSQLDataType("smalldatetime", "", java.sql.Types.TIMESTAMP));
+        registerType(new MSSQLDataType("image", "", java.sql.Types.BLOB));
+        registerType(new MSSQLDataType("ntext", "", java.sql.Types.CLOB));
+        registerType(new MSSQLDataType("xml", "", java.sql.Types.CLOB));
+        registerType(new MSSQLDataType("text", "", java.sql.Types.CLOB));
     }
 
     @Override
@@ -59,16 +91,8 @@ public class MSSQLDialect extends SQL92Dialect {
         return "jdbc:jtds:sqlserver://<host>/<db>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
-        return new MSSQLDataType(aId, aTypeName, aCreateParams);
-    }
-
     @Override
     public SQLGenerator createSQLGenerator() {
         return new MSSQLSQLGenerator(this);
-    }    
+    }
 }

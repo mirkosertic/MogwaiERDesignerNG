@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 public class MSSQLDataType extends DataType {
 
-    public MSSQLDataType(String aId, String aName, String aDefinition) {
-        super(aId, aName, aDefinition);
+    public MSSQLDataType(String aName, String aDefinition, int aJdbcType) {
+        super(aName, aDefinition, aJdbcType);
     }
 }

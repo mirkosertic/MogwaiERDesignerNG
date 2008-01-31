@@ -21,11 +21,7 @@ import de.erdesignerng.dialect.JDBCDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 20:00:45 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public abstract class SQL92Dialect extends JDBCDialect {
-
-    protected SQL92Dialect(String aDatatypeKonfigFilename) {
-        super(aDatatypeKonfigFilename);
-    }
 }
