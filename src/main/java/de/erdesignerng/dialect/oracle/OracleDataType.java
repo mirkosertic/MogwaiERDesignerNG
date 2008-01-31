@@ -24,4 +24,10 @@ public class OracleDataType extends DataType {
     public OracleDataType(String aName, String aDefinition, int aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);
     }
+    
+    public OracleDataType(String aName, String aDefinition, int aJdbcDataType, int aMaxOccoursPerTable) {
+        super(aName, aDefinition, aJdbcDataType);
+        maxOccoursPerTable = aMaxOccoursPerTable;
+    }
+    
 }

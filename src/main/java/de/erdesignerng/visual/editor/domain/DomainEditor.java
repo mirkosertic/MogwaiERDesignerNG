@@ -19,12 +19,12 @@ package de.erdesignerng.visual.editor.domain;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListSelectionEvent;
@@ -35,6 +35,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.DomainList;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -46,11 +47,13 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 21:57:47 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class DomainEditor extends BaseEditor {
 
     private DefaultListModel domainListModel;
+
+    private DefaultComboBoxModel datatypesModel;
 
     private BindingInfo<Domain> bindingInfo = new BindingInfo<Domain>();
 
@@ -112,6 +115,15 @@ public class DomainEditor extends BaseEditor {
 
         initialize();
 
+        datatypesModel = new DefaultComboBoxModel();
+        List<DataType> theTypes = model.getDialect().getDataTypes();
+        Collections.sort(theTypes);
+        for (DataType theType : theTypes) {
+            datatypesModel.addElement(theType);
+        }
+
+        editingView.getDataType().setModel(datatypesModel);
+
         domainListModel = editingView.getDomainList().getModel();
         for (Domain theDomain : aModel.getDomains()) {
 
@@ -122,27 +134,21 @@ public class DomainEditor extends BaseEditor {
             knownValues.put(theClone.getName(), theClone);
         }
 
+        editingView.getDataType().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent aEvent) {
+                updateSpinners((DataType) editingView.getDataType().getSelectedItem());
+            }
+
+        });
+
         editingView.getDomainList().setModel(domainListModel);
 
-        // And finally update the corresponding editor fields..
-        // Setup the java class list
-        Vector javaTypes = new Vector();
-        javaTypes.add("String");
-        javaTypes.add("Integer");
-        javaTypes.add("Double");
-        javaTypes.add("Long");
-        javaTypes.add("Float");
-        javaTypes.add("Byte");
-        javaTypes.add("Character");
-        javaTypes.add("java.util.Date");
-        Collections.sort(javaTypes);
-
-        editingView.getJavatype().setModel(new DefaultComboBoxModel(javaTypes));
-
         bindingInfo.addBinding("name", editingView.getDomainName(), true);
-        bindingInfo.addBinding("datatype", editingView.getDeclaration(), true);
-        bindingInfo.addBinding("sequenced", editingView.getSequenced());
-        bindingInfo.addBinding("javaClassName", editingView.getJavatype(), true);
+        bindingInfo.addBinding("datatype", editingView.getDataType(), true);
+        bindingInfo.addBinding("size", editingView.getSizeSpinner(), true);
+        bindingInfo.addBinding("precision", editingView.getPrecisionSpinner(), true);
+        bindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
         bindingInfo.configure();
 
         updateEditFields();
@@ -182,28 +188,44 @@ public class DomainEditor extends BaseEditor {
 
             boolean isNew = !domainListModel.contains(theValue);
 
+            editingView.getDataType().setEnabled(true);
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(!isNew);
             editingView.getDomainName().setEnabled(true);
-            editingView.getDeclaration().setEnabled(true);
             editingView.getUpdateButton().setEnabled(true);
-            editingView.getSequenced().setEnabled(true);
-            editingView.getJavatype().setEnabled(true);
+            editingView.getSizeSpinner().setEnabled(true);
+            editingView.getPrecisionSpinner().setEnabled(true);
+            editingView.getScaleSpinner().setEnabled(true);
 
         } else {
+            editingView.getDataType().setEnabled(false);
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(false);
             editingView.getDomainName().setEnabled(false);
-            editingView.getDeclaration().setEnabled(false);
             editingView.getUpdateButton().setEnabled(false);
-            editingView.getSequenced().setEnabled(false);
-            editingView.getJavatype().setEnabled(false);
+            editingView.getSizeSpinner().setEnabled(false);
+            editingView.getPrecisionSpinner().setEnabled(false);
+            editingView.getScaleSpinner().setEnabled(false);
         }
 
         bindingInfo.model2view();
 
+        updateSpinners(theValue != null ? theValue.getDatatype() : null);
+
         editingView.getDomainList().invalidate();
         editingView.getDomainList().setSelectedValue(bindingInfo.getDefaultModel(), true);
+    }
+
+    private void updateSpinners(DataType aDataType) {
+        if (aDataType != null) {
+            editingView.getSizeSpinner().setEnabled(aDataType.supportsSize());
+            editingView.getPrecisionSpinner().setEnabled(aDataType.supportsPrecision());
+            editingView.getScaleSpinner().setEnabled(aDataType.supportsScale());
+        } else {
+            editingView.getSizeSpinner().setEnabled(false);
+            editingView.getPrecisionSpinner().setEnabled(false);
+            editingView.getScaleSpinner().setEnabled(false);
+        }
     }
 
     private void commandClose() {

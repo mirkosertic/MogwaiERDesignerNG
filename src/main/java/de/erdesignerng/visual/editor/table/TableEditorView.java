@@ -23,7 +23,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 22:13:03 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -50,8 +50,6 @@ public class TableEditorView extends DefaultPanel {
     private DefaultTextField m_attributename;
 
     private DefaultList m_domainlist;
-
-    private DefaultCheckBox m_primarykey;
 
     private DefaultCheckBox m_nullable;
 
@@ -295,8 +293,7 @@ public class TableEditorView extends DefaultPanel {
             m_attributesgeneraltab.add(getComponent_20(), cons.xywh(2, 2, 1, 1));
             m_attributesgeneraltab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
             m_attributesgeneraltab.add(new DefaultScrollPane(getDomainList()), cons.xywh(2, 4, 3, 3));
-            m_attributesgeneraltab.add(getPrimaryKey(), cons.xywh(4, 8, 1, 1));
-            m_attributesgeneraltab.add(getNullable(), cons.xywh(4, 10, 1, 1));
+            m_attributesgeneraltab.add(getNullable(), cons.xywh(4, 8, 1, 1));
             // this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
             // .xywh(4, 12, 1, 1));
             m_attributesgeneraltab.setName("AttributesGeneralTab");
@@ -346,20 +343,6 @@ public class TableEditorView extends DefaultPanel {
         }
 
         return m_domainlist;
-    }
-
-    /**
-     * Getter method for component PrimaryKey.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JCheckBox getPrimaryKey() {
-
-        if (m_primarykey == null) {
-            m_primarykey = new DefaultCheckBox(ERDesignerBundle.PRIMARYKEY);
-        }
-
-        return m_primarykey;
     }
 
     /**

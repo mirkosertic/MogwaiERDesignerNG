@@ -98,7 +98,7 @@
     <dependency>
       <groupId>net.sourceforge.mogwai</groupId>
       <artifactId>mogwai-databinding</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -110,7 +110,7 @@
     <dependency>
       <groupId>net.sourceforge.mogwai</groupId>
       <artifactId>mogwai-looks</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

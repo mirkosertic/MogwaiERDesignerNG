@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public abstract class ModelItem {
 
@@ -93,4 +93,36 @@ public abstract class ModelItem {
     public boolean isRenamed(String aName) {
         return !name.equals(aName);
     }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((systemId == null) ? 0 : systemId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ModelItem other = (ModelItem) obj;
+        if (systemId == null) {
+            if (other.systemId != null) {
+                return false;
+            }
+        } else if (!systemId.equals(other.systemId)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

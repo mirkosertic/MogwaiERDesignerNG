@@ -6,19 +6,19 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Domain;
 import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
+import de.mogwai.common.client.looks.components.DefaultSpinner;
 import de.mogwai.common.client.looks.components.DefaultTabbedPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class DomainEditorView extends DefaultPanel {
 
@@ -34,17 +34,23 @@ public class DomainEditorView extends DefaultPanel {
 
     private DefaultLabel nameLabel = new DefaultLabel(ERDesignerBundle.NAME);
 
-    private DefaultLabel declarationLabel = new DefaultLabel(ERDesignerBundle.DECLRATATION);
+    private DefaultLabel datatypeLabel = new DefaultLabel(ERDesignerBundle.DATATYPE);
 
-    private DefaultLabel javaTypeLabel = new DefaultLabel(ERDesignerBundle.JAVATYPE);
+    private DefaultLabel sizeLabel = new DefaultLabel(ERDesignerBundle.SIZE);
+
+    private DefaultLabel precisionLabel = new DefaultLabel(ERDesignerBundle.PRECISION);
+    
+    private DefaultLabel scaleLabel = new DefaultLabel(ERDesignerBundle.SCALE);
 
     private DefaultTextField domainname = new DefaultTextField();
-
-    private DefaultTextField declaration = new DefaultTextField();
-
-    private DefaultComboBox javatype = new DefaultComboBox();
-
-    private DefaultCheckBox sequenced = new DefaultCheckBox(ERDesignerBundle.SEQUENCED);
+    
+    private DefaultComboBox dataType = new DefaultComboBox();
+    
+    private DefaultSpinner sizeSpinner = new DefaultSpinner();
+    
+    private DefaultSpinner precisionSpinner = new DefaultSpinner();
+    
+    private DefaultSpinner scaleSpinner = new DefaultSpinner();
 
     private DefaultButton updatebutton;
 
@@ -162,12 +168,20 @@ public class DomainEditorView extends DefaultPanel {
             CellConstraints cons = new CellConstraints();
 
             domainPropertiesTab.add(getNameLabel(), cons.xywh(2, 2, 1, 1));
-            domainPropertiesTab.add(getDeclarationLabel(), cons.xywh(2, 4, 1, 1));
-            domainPropertiesTab.add(getJavaTypeLabel(), cons.xywh(2, 8, 1, 1));
             domainPropertiesTab.add(getDomainName(), cons.xywh(4, 2, 1, 1));
-            domainPropertiesTab.add(getDeclaration(), cons.xywh(4, 4, 1, 1));
-            domainPropertiesTab.add(getJavatype(), cons.xywh(4, 8, 1, 1));
-            domainPropertiesTab.add(getSequenced(), cons.xywh(4, 10, 1, 1));
+            
+            domainPropertiesTab.add(getDatatypeLabel(), cons.xywh(2, 4, 1, 1));
+            domainPropertiesTab.add(getDataType(), cons.xywh(4, 4, 1, 1));
+            
+            domainPropertiesTab.add(getSizeLabel(), cons.xywh(2, 6, 1, 1));
+            domainPropertiesTab.add(getSizeSpinner(), cons.xywh(4, 6, 1, 1));
+            
+            domainPropertiesTab.add(getPrecisionLabel(), cons.xywh(2, 8, 1, 1));
+            domainPropertiesTab.add(getPrecisionSpinner(), cons.xywh(4, 8, 1, 1));
+            
+            domainPropertiesTab.add(getScaleLabel(), cons.xywh(2, 10, 1, 1));
+            domainPropertiesTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
+            
             domainPropertiesTab.add(getUpdateButton(), cons.xywh(4, 12, 1, 1));
         }
 
@@ -189,19 +203,9 @@ public class DomainEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public DefaultLabel getDeclarationLabel() {
+    public DefaultLabel getDatatypeLabel() {
 
-        return declarationLabel;
-    }
-
-    /**
-     * Getter method for component Component_12.
-     * 
-     * @return the initialized component
-     */
-    public DefaultLabel getJavaTypeLabel() {
-
-        return javaTypeLabel;
+        return datatypeLabel;
     }
 
     /**
@@ -212,36 +216,6 @@ public class DomainEditorView extends DefaultPanel {
     public DefaultTextField getDomainName() {
 
         return domainname;
-    }
-
-    /**
-     * Getter method for component Declaration.
-     * 
-     * @return the initialized component
-     */
-    public DefaultTextField getDeclaration() {
-
-        return declaration;
-    }
-
-    /**
-     * Getter method for component Javatype.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JComboBox getJavatype() {
-
-        return javatype;
-    }
-
-    /**
-     * Getter method for component Sequenced.
-     * 
-     * @return the initialized component
-     */
-    public DefaultCheckBox getSequenced() {
-
-        return sequenced;
     }
 
     /**
@@ -284,5 +258,54 @@ public class DomainEditorView extends DefaultPanel {
         }
 
         return cancelbutton;
+    }
+
+    /**
+     * @return the precisionLabel
+     */
+    public DefaultLabel getPrecisionLabel() {
+        return precisionLabel;
+    }
+
+    /**
+     * @return the precisionSpinner
+     */
+    public DefaultSpinner getPrecisionSpinner() {
+        return precisionSpinner;
+    }
+
+    /**
+     * @return the scaleLabel
+     */
+    public DefaultLabel getScaleLabel() {
+        return scaleLabel;
+    }
+
+    /**
+     * @return the scaleSpinner
+     */
+    public DefaultSpinner getScaleSpinner() {
+        return scaleSpinner;
+    }
+
+    /**
+     * @return the sizeLabel
+     */
+    public DefaultLabel getSizeLabel() {
+        return sizeLabel;
+    }
+
+    /**
+     * @return the sizeSpinner
+     */
+    public DefaultSpinner getSizeSpinner() {
+        return sizeSpinner;
+    }
+
+    /**
+     * @return the dataType
+     */
+    public DefaultComboBox getDataType() {
+        return dataType;
     }
 }

@@ -29,7 +29,7 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-01-31 20:08:52 $
  * @param <T>
  *            the dialect
  */
@@ -64,14 +64,14 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
     }
     
     protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, int aSize,
-            int aFraction, int aRadix, ReverseEngineeringOptions aOptions) throws ReverseEngineeringException {
+            int aPrecision, int aScale, ReverseEngineeringOptions aOptions) throws ReverseEngineeringException {
 
-        DataType theDataType = dialect.getDataType(convertColumnTypeToRealType(aTypeName));
+        DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(aTypeName));
         if (theDataType == null) {
             throw new ReverseEngineeringException("Unknown data type " + aTypeName);
         }
 
-        Domain theDomain = aModel.getDomains().findByDataType(theDataType.getName(), aSize, aFraction, aRadix);
+        Domain theDomain = aModel.getDomains().findByDataType(theDataType.getName(), aSize, aPrecision, aScale);
         if (theDomain != null) {
 
             if (theDomain.getName().equals(aColumnName)) {
@@ -96,9 +96,9 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
                     theDomain = new Domain();
                     theDomain.setName(theName);
                     theDomain.setDatatype(theDataType);
-                    theDomain.setDomainSize(aSize);
-                    theDomain.setFraction(aFraction);
-                    theDomain.setRadix(aRadix);
+                    theDomain.setSize(aSize);
+                    theDomain.setPrecision(aPrecision);
+                    theDomain.setScale(aScale);
 
                     aModel.getDomains().add(theDomain);
 
@@ -110,9 +110,9 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
             theDomain = new Domain();
             theDomain.setName(aColumnName);
             theDomain.setDatatype(theDataType);
-            theDomain.setDomainSize(aSize);
-            theDomain.setFraction(aFraction);
-            theDomain.setRadix(aRadix);
+            theDomain.setSize(aSize);
+            theDomain.setPrecision(aPrecision);
+            theDomain.setScale(aScale);
 
             aModel.getDomains().add(theDomain);
         }

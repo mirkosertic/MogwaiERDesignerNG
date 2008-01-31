@@ -24,7 +24,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 16:14:37 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -39,24 +39,24 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(new PostgresDataType("bytea", "", java.sql.Types.BINARY));
         registerType(new PostgresDataType("name", "", java.sql.Types.VARCHAR));
         registerType(new PostgresDataType("int8", "", java.sql.Types.BIGINT));
-        registerType(new PostgresDataType("bigserial", "", java.sql.Types.BIGINT));
+        registerType(new PostgresDataType("bigserial", "", java.sql.Types.BIGINT, true));
         registerType(new PostgresDataType("int2", "", java.sql.Types.SMALLINT));
         registerType(new PostgresDataType("int4", "", java.sql.Types.INTEGER));
-        registerType(new PostgresDataType("serial", "", java.sql.Types.INTEGER));
+        registerType(new PostgresDataType("serial", "", java.sql.Types.INTEGER, true));
         registerType(new PostgresDataType("text", "", java.sql.Types.VARCHAR));
         registerType(new PostgresDataType("oid", "", java.sql.Types.INTEGER));
         registerType(new PostgresDataType("float4", "", java.sql.Types.REAL));
         registerType(new PostgresDataType("float8", "", java.sql.Types.DOUBLE));
         registerType(new PostgresDataType("money", "", java.sql.Types.DOUBLE));
         registerType(new PostgresDataType("bpchar", "", java.sql.Types.CHAR));
-        registerType(new PostgresDataType("varchar", "", java.sql.Types.VARCHAR));
+        registerType(new PostgresDataType("varchar", "$size", java.sql.Types.VARCHAR));
         registerType(new PostgresDataType("date", "", java.sql.Types.DATE));
         registerType(new PostgresDataType("time", "", java.sql.Types.TIME));
         registerType(new PostgresDataType("timestamp", "", java.sql.Types.TIMESTAMP));
         registerType(new PostgresDataType("timestamptz", "", java.sql.Types.TIMESTAMP));
         registerType(new PostgresDataType("timetz", "", java.sql.Types.TIME));
         registerType(new PostgresDataType("bit", "", java.sql.Types.BIT));
-        registerType(new PostgresDataType("numeric", "", java.sql.Types.NUMERIC));
+        registerType(new PostgresDataType("numeric", "$precision,$scale", java.sql.Types.NUMERIC));
     }
 
     @Override
