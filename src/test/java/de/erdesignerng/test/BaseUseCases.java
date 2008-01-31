@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 
 import junit.framework.TestCase;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
@@ -87,6 +88,36 @@ public abstract class BaseUseCases extends TestCase {
             }
         }
         return "";
+    }
+
+    public void testCreateTableWithAllDatatypes() throws ElementAlreadyExistsException, ElementInvalidNameException,
+            VetoException {
+
+        Table theTable = new Table();
+        theTable.setName("testTable");
+        int i = 0;
+        for (DataType theType : model.getDialect().getDataTypes()) {
+            if ((!theType.isIdentity()) && (theType.getMaxOccoursPerTable() < 0))  {
+                Domain theDomain = new Domain();
+                theDomain.setName("DOM_" + i);
+                theDomain.setDatatype(theType);
+                theDomain.setSize(10);
+                theDomain.setPrecision(5);
+                theDomain.setScale(3);
+
+                model.addDomain(theDomain);
+
+                Attribute theAttribute = new Attribute();
+                theAttribute.setName("ATTR_" + i);
+                theAttribute.setDomain(theDomain);
+
+                theTable.getAttributes().add(theAttribute);
+                i++;
+            }
+        }
+
+        model.addTable(theTable);
+        model.removeTable(theTable);
     }
 
     public void testCreateAndDropTable() throws ElementAlreadyExistsException, ElementInvalidNameException,

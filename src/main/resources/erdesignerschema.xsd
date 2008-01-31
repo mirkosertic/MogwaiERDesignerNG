@@ -66,12 +66,10 @@
 									</xs:sequence>
 									<xs:attribute name="datatype" use="required"/>
 									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="javaclassname" use="optional"/>
 									<xs:attribute name="name" use="required"/>
-									<xs:attribute name="sequenced" use="required"/>
 									<xs:attribute name="size" use="required"/>
-									<xs:attribute name="fraction" use="required"/>
-									<xs:attribute name="radix" use="required"/>									
+									<xs:attribute name="precision" use="required"/>
+									<xs:attribute name="scale" use="required"/>									
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>

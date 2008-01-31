@@ -24,4 +24,15 @@ public class PostgresDataType extends DataType {
     public PostgresDataType(String aName, String aDefinition, int aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);
     }
+
+    public PostgresDataType(String aName, String aDefinition, int aJdbcDataType, boolean aIdentity) {
+        super(aName, aDefinition, aJdbcDataType);
+
+        identity = aIdentity;
+        if (aIdentity) {
+            maxOccoursPerTable = 1;
+        }
+
+    }
+
 }

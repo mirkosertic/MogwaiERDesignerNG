@@ -31,14 +31,10 @@ public class DomainSerializer extends Serializer {
     public static final String DOMAIN = "Domain";
 
     public static final String SIZE = "size";
+    
+    public static final String PRECISION = "precision";
 
-    public static final String FRACTION = "fraction";
-
-    public static final String RADIX = "radix";
-
-    public static final String SEQUENCED = "sequenced";
-
-    public static final String JAVA_CLASS_NAME = "javaclassname";
+    public static final String SCALE = "scale";
 
     public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
         Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
@@ -47,13 +43,10 @@ public class DomainSerializer extends Serializer {
         serializeProperties(aDocument, theDomainElement, aDomain);
 
         // Zusatzdaten
-        theDomainElement.setAttribute(DATATYPE, aDomain.getDatatype().getId());
-        theDomainElement.setAttribute(JAVA_CLASS_NAME, aDomain.getJavaClassName());
-        theDomainElement.setAttribute(SIZE, "" + aDomain.getDomainSize());
-        theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
-        theDomainElement.setAttribute(RADIX, "" + aDomain.getRadix());
-        setBooleanAttribute(theDomainElement, SEQUENCED, aDomain.isSequenced());
-
+        theDomainElement.setAttribute(DATATYPE, aDomain.getDatatype().getName());
+        theDomainElement.setAttribute(SIZE, "" + aDomain.getSize());
+        theDomainElement.setAttribute(PRECISION, "" + aDomain.getPrecision());
+        theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {
@@ -67,12 +60,10 @@ public class DomainSerializer extends Serializer {
             theDomain.setOwner(aModel);
             deserializeProperties(theElement, theDomain);
 
-            theDomain.setDatatype(aModel.getDialect().getDataTypeById(theElement.getAttribute(DATATYPE)));
-            theDomain.setJavaClassName(theElement.getAttribute(JAVA_CLASS_NAME));
-            theDomain.setSequenced(TRUE.equals(theElement.getAttribute(SEQUENCED)));
-            theDomain.setDomainSize(Integer.parseInt(theElement.getAttribute(SIZE)));
-            theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
-            theDomain.setRadix(Integer.parseInt(theElement.getAttribute(RADIX)));
+            theDomain.setDatatype(aModel.getDialect().getDataTypeByName(theElement.getAttribute(DATATYPE)));
+            theDomain.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
+            theDomain.setPrecision(Integer.parseInt(theElement.getAttribute(PRECISION)));
+            theDomain.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
 
             aModel.getDomains().add(theDomain);
         }        

@@ -24,4 +24,12 @@ public class MSSQLDataType extends DataType {
     public MSSQLDataType(String aName, String aDefinition, int aJdbcType) {
         super(aName, aDefinition, aJdbcType);
     }
+    
+    public MSSQLDataType(String aName, String aDefinition, int aJdbcType, boolean aIdentity) {
+        super(aName, aDefinition, aJdbcType);
+        identity = aIdentity;
+        if (aIdentity) {
+            maxOccoursPerTable = 1;
+        }
+    }
 }

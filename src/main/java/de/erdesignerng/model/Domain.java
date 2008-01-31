@@ -24,122 +24,72 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-01-31 20:08:52 $
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain> {
 
     private DataType datatype;
 
-    private int domainSize;
+    private int size;
 
-    private int fraction;
+    private int precision;
 
-    private int radix;
+    private int scale;
 
-    private boolean sequenced;
-
-    private String javaClassName;
-    
     /**
-     * Gibt den Wert des Attributs <code>datatype</code> zurück.
-     * 
-     * @return Wert des Attributs datatype.
+     * @return the datatype
      */
     public DataType getDatatype() {
         return datatype;
     }
 
     /**
-     * Setzt den Wert des Attributs <code>datatype</code>.
-     * 
-     * @param aDatatype
-     *            Wert für das Attribut datatype.
+     * @param datatype the datatype to set
      */
-    public void setDatatype(DataType aDatatype) {
-        datatype = aDatatype;
+    public void setDatatype(DataType datatype) {
+        this.datatype = datatype;
     }
 
     /**
-     * Gibt den Wert des Attributs <code>sequenced</code> zurück.
-     * 
-     * @return Wert des Attributs sequenced.
+     * @return the precision
      */
-    public boolean isSequenced() {
-        return sequenced;
+    public int getPrecision() {
+        return precision;
     }
 
     /**
-     * Setzt den Wert des Attributs <code>sequenced</code>.
-     * 
-     * @param aSequenced
-     *            Wert für das Attribut sequenced.
+     * @param precision the precision to set
      */
-    public void setSequenced(boolean aSequenced) {
-        sequenced = aSequenced;
+    public void setPrecision(int precision) {
+        this.precision = precision;
     }
 
     /**
-     * Gibt den Wert des Attributs <code>javaClassName</code> zurück.
-     * 
-     * @return Wert des Attributs javaClassName.
+     * @return the scale
      */
-    public String getJavaClassName() {
-        return javaClassName;
+    public int getScale() {
+        return scale;
     }
 
     /**
-     * Setzt den Wert des Attributs <code>javaClassName</code>.
-     * 
-     * @param aJavaClassName
-     *            Wert für das Attribut javaClassName.
+     * @param scale the scale to set
      */
-    public void setJavaClassName(String aJavaClassName) {
-        javaClassName = aJavaClassName;
-    }
-
-    /**
-     * @return the faction
-     */
-    public int getFraction() {
-        return fraction;
-    }
-
-    /**
-     * @param faction
-     *            the faction to set
-     */
-    public void setFraction(int faction) {
-        this.fraction = faction;
-    }
-
-    /**
-     * @return the radix
-     */
-    public int getRadix() {
-        return radix;
-    }
-
-    /**
-     * @param radix
-     *            the radix to set
-     */
-    public void setRadix(int radix) {
-        this.radix = radix;
+    public void setScale(int scale) {
+        this.scale = scale;
     }
 
     /**
      * @return the size
      */
-    public int getDomainSize() {
-        return domainSize;
+    public int getSize() {
+        return size;
     }
 
     /**
-     * @param size
-     *            the size to set
+     * @param size the size to set
      */
-    public void setDomainSize(int size) {
-        this.domainSize = size;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     @Override
@@ -147,28 +97,25 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         Domain theValue = new Domain();
         theValue.setName(getName());
         theValue.setDatatype(getDatatype());
-        theValue.setSequenced(isSequenced());
-        theValue.setJavaClassName(getJavaClassName());
+        theValue.setSize(getSize());
+        theValue.setPrecision(getPrecision());
+        theValue.setScale(getScale());        
         theValue.setComment(getComment());
-        theValue.setDomainSize(getDomainSize());
-        theValue.setFraction(getFraction());
-        theValue.setRadix(getRadix());
+        
         return theValue;
     }
 
     public void restoreFrom(Domain aValue) throws ElementAlreadyExistsException, ElementInvalidNameException {
         setName(aValue.getName());
         setDatatype(aValue.getDatatype());
-        setSequenced(aValue.isSequenced());
-        setJavaClassName(aValue.getJavaClassName());
         setComment(aValue.getComment());
-        setDomainSize(aValue.getDomainSize());
-        setFraction(aValue.getFraction());
-        setRadix(aValue.getRadix());
+        setSize(aValue.getSize());
+        setPrecision(aValue.getPrecision());
+        setScale(aValue.getScale());
     }
 
-    public boolean equals(String aDataType, int aSize, int aFraction, int aRadix) {
-        return (domainSize == aSize) && (fraction == aFraction) && (radix == aRadix) && (aDataType.equals(datatype));
+    public boolean equals(String aDataType, int aSize, int aPrecision, int aScale) {
+        return (size == aSize) && (precision == aPrecision) && (scale == aScale) && (aDataType.equals(datatype));
     }
 
 }

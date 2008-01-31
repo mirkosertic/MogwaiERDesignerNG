@@ -28,7 +28,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 16:14:37 $
+ * @version $Date: 2008-01-31 20:08:51 $
  */
 public abstract class Dialect {
 
@@ -247,5 +247,23 @@ public abstract class Dialect {
      */
     public void setSupportsOnUpdate(boolean supportsOnUpdate) {
         this.supportsOnUpdate = supportsOnUpdate;
+    }
+
+    /**
+     * Get the supported data types.
+     * 
+     * @return the list of datatypes
+     */
+    public List<DataType> getDataTypes() {
+        return dataTypes;
+    }
+
+    public DataType getDataTypeByName(String aName) {
+        for (DataType aType : dataTypes) {
+            if (aType.getName().equals(aName)) {
+                return aType;
+            }
+        }
+        return null;
     }
 }

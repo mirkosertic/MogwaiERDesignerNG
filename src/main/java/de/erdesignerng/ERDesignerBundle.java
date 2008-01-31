@@ -211,4 +211,14 @@ public interface ERDesignerBundle {
   String NEWMODELCREATED = "NEWMODELCREATED";
   /** Bitte definieren Sie vorher eine Datenbankverbindung! */
   String PLEASEDEFINEADATABASECONNECTIONFIRST = "PLEASEDEFINEADATABASECONNECTIONFIRST";
+  /** Size */
+  String SIZE = "SIZE";
+  /** Precision */
+  String PRECISION = "PRECISION";
+  /** Scale */
+  String SCALE = "SCALE";
+  /** Datentyp */
+  String DATATYPE = "DATATYPE";
+  /** Ein Index muss mindestens ein Attribut beinhalten! */
+  String INDEXMUSTHAVEATLEASTONEATTRIBUTE = "INDEXMUSTHAVEATLEASTONEATTRIBUTE";
 }

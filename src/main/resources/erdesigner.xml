@@ -413,5 +413,25 @@
 			<Text lang="de">Bitte definieren Sie vorher eine Datenbankverbindung!</Text>		
 			<Text lang="en">Please define a database connection prior to usinf this operation!</Text>					
 		</Entry>
+		<Entry id="SIZE">
+			<Text lang="de">Size</Text>		
+			<Text lang="en">Size</Text>					
+		</Entry>
+		<Entry id="PRECISION">
+			<Text lang="de">Precision</Text>		
+			<Text lang="en">Precision</Text>					
+		</Entry>
+		<Entry id="SCALE">
+			<Text lang="de">Scale</Text>		
+			<Text lang="en">Scale</Text>					
+		</Entry>
+		<Entry id="DATATYPE">
+			<Text lang="de">Datentyp</Text>		
+			<Text lang="en">Datatype</Text>					
+		</Entry>
+		<Entry id="INDEXMUSTHAVEATLEASTONEATTRIBUTE">
+			<Text lang="de">Ein Index muss mindestens ein Attribut beinhalten!</Text>		
+			<Text lang="en">An Index must contain at least one attribute!</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
