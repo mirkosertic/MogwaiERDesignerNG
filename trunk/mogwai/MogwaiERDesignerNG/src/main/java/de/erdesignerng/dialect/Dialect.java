@@ -20,19 +20,15 @@ package de.erdesignerng.dialect;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.digester.Digester;
-
-import de.erdesignerng.dialect.config.ConfigDataType;
-import de.erdesignerng.dialect.config.ConfigDataTypes;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public abstract class Dialect {
 
@@ -50,37 +46,7 @@ public abstract class Dialect {
 
     private NameCastType castType;
 
-    private Map<String, DataType> dataTypes = new HashMap<String, DataType>();
-
-    protected Dialect() {
-    }
-
-    protected void loadDatatypeKonfiguration(String aKonfigfilename) {
-
-        System.out.println("Loading " + aKonfigfilename);
-
-        Digester theDigester = new Digester();
-
-        theDigester.addObjectCreate("datatypes", ConfigDataTypes.class);
-        theDigester.addSetProperties("datatypes");
-        theDigester.addObjectCreate("datatypes/datatype", ConfigDataType.class);
-        theDigester.addSetProperties("datatypes/datatype");
-        theDigester.addSetNext("datatypes/datatype", "addType");
-
-        ConfigDataTypes theConfiguration = null;
-        try {
-            theConfiguration = (ConfigDataTypes) theDigester.parse(getClass().getResourceAsStream(
-                    "/de/erdesignerng/" + aKonfigfilename));
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot load configuration", e);
-        }
-
-        int counter = 0;
-
-        for (ConfigDataType theType : theConfiguration.getTypes()) {
-            registerType("TYP_" + counter++, theType.getName(), theType.getPattern());
-        }
-    }
+    private List<DataType> dataTypes = new ArrayList<DataType>();
 
     /**
      * @return the caseSensitive
@@ -247,24 +213,8 @@ public abstract class Dialect {
         return true;
     }
 
-    /**
-     * Get a defined data type.
-     * 
-     * @param aTypeName
-     *            the type name
-     * @return the data type or null if its not existant
-     */
-    public DataType getDataType(String aTypeName) {
-        return dataTypes.get(aTypeName);
-    }
-
-    protected abstract DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams);
-
-    protected void registerType(String aId, String aTypename, String aPattern) {
-
-        System.out.println(getClass().getSimpleName() + " -> Registering type " + aTypename + " with pattern "
-                + aPattern);
-        dataTypes.put(aTypename, createDataTypeFor(aId, aTypename, aPattern));
+    protected void registerType(DataType aType) {
+        dataTypes.add(aType);
     }
 
     public abstract SQLGenerator createSQLGenerator();
@@ -297,20 +247,5 @@ public abstract class Dialect {
      */
     public void setSupportsOnUpdate(boolean supportsOnUpdate) {
         this.supportsOnUpdate = supportsOnUpdate;
-    }
-
-    /**
-     * Get a datatype by id.
-     * 
-     * @param aId the id of the datatype
-     * @return the datatype or null if nothing was found
-     */
-    public DataType getDataTypeById(String aId) {
-        for (DataType aType : dataTypes.values()) {
-            if (aId.equals(aType.getId())) {
-                return aType;
-            }
-        }
-        return null;
     }
 }

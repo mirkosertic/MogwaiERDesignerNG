@@ -20,13 +20,7 @@ package de.erdesignerng.dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public abstract class JDBCDialect extends Dialect {
-
-    protected JDBCDialect(String aDatatypeKonfigFilename) {
-        if (aDatatypeKonfigFilename != null) {
-            loadDatatypeKonfiguration(aDatatypeKonfigFilename);
-        }
-    }
 }
