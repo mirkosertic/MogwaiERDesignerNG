@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.dialect.oracle;
 
-import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
@@ -25,19 +24,33 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-01-31 16:14:37 $
  */
 public class OracleDialect extends SQL92Dialect {
 
     public OracleDialect() {
-        super("oracle_datatypes.xml");
-        
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
         setMaxObjectNameLength(32);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
         setSupportsOnUpdate(false);
+
+        registerType(new OracleDataType("NUMBER", "", java.sql.Types.BIGINT));
+        registerType(new OracleDataType("LONG RAW", "", java.sql.Types.LONGVARBINARY));
+        registerType(new OracleDataType("RAW", "", java.sql.Types.VARBINARY));
+        registerType(new OracleDataType("LONG", "", java.sql.Types.LONGVARCHAR));
+        registerType(new OracleDataType("CHAR", "", java.sql.Types.CHAR));
+        registerType(new OracleDataType("NUMBER", "", java.sql.Types.NUMERIC));
+        registerType(new OracleDataType("FLOAT", "", java.sql.Types.FLOAT));
+        registerType(new OracleDataType("REAL", "", java.sql.Types.REAL));
+        registerType(new OracleDataType("VARCHAR2", "", java.sql.Types.VARCHAR));
+        registerType(new OracleDataType("DATE", "", java.sql.Types.DATE));
+        registerType(new OracleDataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
+        registerType(new OracleDataType("STRUCT", "", java.sql.Types.STRUCT));
+        registerType(new OracleDataType("BLOB", "", java.sql.Types.BLOB));
+        registerType(new OracleDataType("CLOB", "", java.sql.Types.CLOB));
+        registerType(new OracleDataType("REF", "", java.sql.Types.REF));
     }
 
     @Override
@@ -58,14 +71,6 @@ public class OracleDialect extends SQL92Dialect {
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:oracle:thin:@//<host>:<port>/<db>";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected DataType createDataTypeFor(String aId, String aTypeName, String aCreateParams) {
-        return new OracleDataType(aId, aTypeName, aCreateParams);
     }
 
     @Override

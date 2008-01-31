@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.test;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 
 import junit.framework.TestCase;
@@ -76,6 +77,17 @@ public abstract class BaseUseCases extends TestCase {
     }
 
     public abstract Domain createCharDomain(String aName, int aLength);
+
+    public String getTypeName(int aIntValue) throws IllegalAccessException {
+        Class theClass = java.sql.Types.class;
+        for (Field theField : theClass.getFields()) {
+            int theValue = theField.getInt(theClass);
+            if (aIntValue == theValue) {
+                return theClass.getName() + "." + theField.getName();
+            }
+        }
+        return "";
+    }
 
     public void testCreateAndDropTable() throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
@@ -233,7 +245,7 @@ public abstract class BaseUseCases extends TestCase {
             theAttribute.setNullable(false);
             theTempTable.addAttribute(model, theAttribute);
         }
-        
+
         Index theIndex = new Index();
         theIndex.setName("TESTINDEX");
         theIndex.setIndexType(IndexType.PRIMARYKEY);
@@ -241,12 +253,12 @@ public abstract class BaseUseCases extends TestCase {
         theTempTable.addIndex(model, theIndex);
 
         model.addTable(theTempTable);
-        
+
         model.removeIndex(theTempTable, theIndex);
-        
+
         model.removeTable(theTempTable);
     }
-    
+
     public void testAddPrimaryKey() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
@@ -262,22 +274,23 @@ public abstract class BaseUseCases extends TestCase {
             theAttribute.setNullable(false);
             theTempTable.addAttribute(model, theAttribute);
         }
-        
+
         model.addTable(theTempTable);
-        
+
         Index theIndex = new Index();
         theIndex.setName("PK");
         theIndex.setIndexType(IndexType.PRIMARYKEY);
-        
+
         theIndex.getAttributes().add(theTempTable.getAttributes().get(0));
-        theIndex.getAttributes().add(theTempTable.getAttributes().get(1));        
-        
+        theIndex.getAttributes().add(theTempTable.getAttributes().get(1));
+
         model.addIndexToTable(theTempTable, theIndex);
-        
+
         model.removeTable(theTempTable);
     }
-    
-    public void testAddUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+    public void testAddUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
+            VetoException {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
 
@@ -291,29 +304,30 @@ public abstract class BaseUseCases extends TestCase {
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
-        
+
         model.addTable(theTempTable);
-        
+
         Index theUniqueIndex = new Index();
         theUniqueIndex.setName("test9_idx1");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
-        
+
         theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
-        
+
         model.addIndexToTable(theTempTable, theUniqueIndex);
 
         Index theNonUnuqueIndex = new Index();
         theNonUnuqueIndex.setName("test9_idx2");
         theNonUnuqueIndex.setIndexType(IndexType.NONUNIQUE);
-        
+
         theNonUnuqueIndex.getAttributes().add(theTempTable.getAttributes().get(1));
-        
+
         model.addIndexToTable(theTempTable, theNonUnuqueIndex);
-        
+
         model.removeTable(theTempTable);
-    }    
- 
-    public void testDropUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+    }
+
+    public void testDropUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
+            VetoException {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
 
@@ -327,30 +341,30 @@ public abstract class BaseUseCases extends TestCase {
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
-        
+
         model.addTable(theTempTable);
-        
+
         Index theUniqueIndex = new Index();
         theUniqueIndex.setName("test10_idx1");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
-        
+
         theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
-        
+
         model.addIndexToTable(theTempTable, theUniqueIndex);
 
         Index theNonUnuqueIndex = new Index();
         theNonUnuqueIndex.setName("test10_idx2");
         theNonUnuqueIndex.setIndexType(IndexType.NONUNIQUE);
-        
+
         theNonUnuqueIndex.getAttributes().add(theTempTable.getAttributes().get(1));
-        
+
         model.addIndexToTable(theTempTable, theNonUnuqueIndex);
-        
+
         model.removeIndex(theTempTable, theUniqueIndex);
         model.removeIndex(theTempTable, theNonUnuqueIndex);
-        
+
         model.removeTable(theTempTable);
-    }    
+    }
 
     public void testChangeIndex() throws Exception {
 
@@ -366,27 +380,27 @@ public abstract class BaseUseCases extends TestCase {
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
-        
+
         model.addTable(theTempTable);
-        
+
         Index theUniqueIndex = new Index();
         theUniqueIndex.setName("test11_idx1");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
-        
+
         theUniqueIndex.getAttributes().add(theTempTable.getAttributes().get(0));
-        
+
         model.addIndexToTable(theTempTable, theUniqueIndex);
-        
+
         Index theClone = theUniqueIndex.clone();
         theClone.setName("test11_idx2");
         theClone.setIndexType(IndexType.NONUNIQUE);
-        
+
         model.changeIndex(theUniqueIndex, theClone);
 
         model.removeIndex(theTempTable, theUniqueIndex);
-        
+
         model.removeTable(theTempTable);
-    }    
+    }
 
     public void testAddRelation() throws Exception {
 
@@ -403,7 +417,7 @@ public abstract class BaseUseCases extends TestCase {
             theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
         }
-        
+
         Index theTableAIndex = new Index();
         theTableAIndex.setIndexType(IndexType.PRIMARYKEY);
         theTableAIndex.setName("test12a_pk");
@@ -416,30 +430,30 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNB_" + i);
-            theAttribute.setNullable(false);            
+            theAttribute.setNullable(false);
             theTableB.addAttribute(model, theAttribute);
         }
-        
+
         Index theTableBIndex = new Index();
         theTableBIndex.setIndexType(IndexType.PRIMARYKEY);
         theTableBIndex.setName("test12b_pk");
         theTableBIndex.getAttributes().add(theTableB.getAttributes().get(0));
         theTableB.addIndex(model, theTableBIndex);
-        
+
         model.addTable(theTableA);
         model.addTable(theTableB);
-        
+
         Relation theRelation = new Relation();
         theRelation.setName("REL");
         theRelation.setExportingTable(theTableA);
         theRelation.setImportingTable(theTableB);
         theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
         model.addRelation(theRelation);
-        
+
         model.removeTable(theTableB);
-        model.removeTable(theTableA);        
-    } 
-    
+        model.removeTable(theTableA);
+    }
+
     public void testDropRelation() throws Exception {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
@@ -452,10 +466,10 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNA_" + i);
-            theAttribute.setNullable(false);            
+            theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
         }
-        
+
         Index theTableAIndex = new Index();
         theTableAIndex.setIndexType(IndexType.PRIMARYKEY);
         theTableAIndex.setName("test12a_pk");
@@ -468,33 +482,33 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNB_" + i);
-            theAttribute.setNullable(false);            
+            theAttribute.setNullable(false);
             theTableB.addAttribute(model, theAttribute);
         }
-        
+
         Index theTableBIndex = new Index();
         theTableBIndex.setIndexType(IndexType.PRIMARYKEY);
         theTableBIndex.setName("test13b_pk");
         theTableBIndex.getAttributes().add(theTableB.getAttributes().get(0));
         theTableB.addIndex(model, theTableBIndex);
-        
+
         model.addTable(theTableA);
         model.addTable(theTableB);
-        
+
         Relation theRelation = new Relation();
         theRelation.setName("REL");
         theRelation.setExportingTable(theTableA);
         theRelation.setImportingTable(theTableB);
         theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
-        
+
         model.addRelation(theRelation);
-        
+
         model.removeRelation(theRelation);
-        
+
         model.removeTable(theTableB);
-        model.removeTable(theTableA);        
-    }    
-    
+        model.removeTable(theTableA);
+    }
+
     public void testChangeRelation() throws Exception {
 
         Domain theDomain = createCharDomain("TESTDOMAIN", 20);
@@ -507,10 +521,10 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNA_" + i);
-            theAttribute.setNullable(false);            
+            theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
         }
-        
+
         Index theTableAIndex = new Index();
         theTableAIndex.setIndexType(IndexType.PRIMARYKEY);
         theTableAIndex.setName("test14a_pk");
@@ -523,34 +537,34 @@ public abstract class BaseUseCases extends TestCase {
             Attribute theAttribute = new Attribute();
             theAttribute.setDomain(theDomain);
             theAttribute.setName("COLUMNB_" + i);
-            theAttribute.setNullable(false);            
+            theAttribute.setNullable(false);
             theTableB.addAttribute(model, theAttribute);
         }
-        
+
         Index theTableBIndex = new Index();
         theTableBIndex.setIndexType(IndexType.PRIMARYKEY);
         theTableBIndex.setName("test14b_pk");
         theTableBIndex.getAttributes().add(theTableB.getAttributes().get(0));
         theTableB.addIndex(model, theTableBIndex);
-        
+
         model.addTable(theTableA);
         model.addTable(theTableB);
-        
+
         Relation theRelation = new Relation();
         theRelation.setName("REL");
         theRelation.setExportingTable(theTableA);
         theRelation.setImportingTable(theTableB);
         theRelation.getMapping().put(theTableA.getAttributes().get(0), theTableB.getAttributes().get(0));
-        
+
         model.addRelation(theRelation);
 
         Relation theClone = theRelation.clone();
         theClone.setName("LALAREL");
         model.changeRelation(theRelation, theClone);
-        
+
         model.removeRelation(theRelation);
-        
+
         model.removeTable(theTableB);
-        model.removeTable(theTableA);        
-    }    
+        model.removeTable(theTableA);
+    }
 }
