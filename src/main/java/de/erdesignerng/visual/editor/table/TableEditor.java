@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:36 $
+ * @version $Date: 2008-02-01 22:41:46 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -148,7 +148,7 @@ public class TableEditor extends BaseEditor {
             public void actionPerformed(ActionEvent e) {
                 setSpinnerState((DataType) editingView.getDataType().getSelectedItem());
             }
-            
+
         });
 
         attributeListModel = editingView.getAttributeList().getModel();
@@ -169,10 +169,12 @@ public class TableEditor extends BaseEditor {
         attributeBindingInfo.addBinding("size", editingView.getSizeSpinner(), true);
         attributeBindingInfo.addBinding("fraction", editingView.getFractionSpinner(), true);
         attributeBindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
-        attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());        
+        attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
         attributeBindingInfo.configure();
 
         indexBindingInfo.addBinding("name", editingView.getIndexName(), true);
+        indexBindingInfo.addBinding("attributes", new IndexAttributesPropertyAdapter(editingView.getIndexFieldList(),
+                null));
 
         RadioButtonAdapter theAdapter = new RadioButtonAdapter();
         theAdapter.addMapping(IndexType.PRIMARYKEY, editingView.getPrimaryIndex());
@@ -280,7 +282,7 @@ public class TableEditor extends BaseEditor {
             updateAttributeEditFields();
         }
     }
-    
+
     private void setSpinnerState(DataType aValue) {
         if (aValue != null) {
             editingView.getSizeSpinner().setEnabled(aValue.supportsSize());
@@ -308,7 +310,7 @@ public class TableEditor extends BaseEditor {
             editingView.getDefault().setEnabled(true);
             editingView.getDataType().setEnabled(true);
             setSpinnerState(theValue.getDatatype());
-            
+
         } else {
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(false);
@@ -355,24 +357,14 @@ public class TableEditor extends BaseEditor {
             indexBindingInfo.setEnabled(false);
         }
 
-        indexBindingInfo.model2view();
-
-        DefaultCheckBoxListModel<Attribute> theModel = editingView.getIndexFieldList().getModel();
-        theModel.clear();
-
-        List<Attribute> theSelectedAttributes = new ArrayList<Attribute>();
+        DefaultCheckBoxListModel theAttModel = editingView.getIndexFieldList().getModel();
+        theAttModel.clear();
 
         for (int i = 0; i < attributeListModel.getSize(); i++) {
-            Attribute theAttribute = (Attribute) attributeListModel.get(i);
-            theModel.add(theAttribute);
-
-            if (theValue != null) {
-                if (theValue.getAttributes().findBySystemId(theAttribute.getSystemId()) != null) {
-                    theSelectedAttributes.add(theAttribute);
-                }
-            }
+            theAttModel.add(attributeListModel.get(i));
         }
-        editingView.getIndexFieldList().setSelectedItems(theSelectedAttributes);
+        
+        indexBindingInfo.model2view();
 
         editingView.getIndexList().invalidate();
         editingView.getIndexList().setSelectedValue(indexBindingInfo.getDefaultModel(), true);
