@@ -20,12 +20,13 @@ package de.erdesignerng.visual.editor;
 import java.awt.Component;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.components.DefaultDialog;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 21:57:47 $
+ * @version $Date: 2008-02-01 21:05:35 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -97,7 +98,8 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
     }
     
     protected void logFatalError(Exception e) {
-        
+        ExceptionEditor theEditor = new ExceptionEditor(this, e);
+        theEditor.showModal();
     }
 
 }

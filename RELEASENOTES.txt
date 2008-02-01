@@ -42,3 +42,8 @@ Release 1.0.3
 * Added model modification tracker to track model changes
 * Removed generic jdbc dialect
 * Added unit tests for MySQL, MSSQL, Oracle and Postgres dialect
+* Added first beta of DB2 support
+* Removed domain dictionary ( Now in Table editor )
+* Removed default value dictionalry ( Now in Table editor )
+* Added Exception notifier dialog
+* Added SQL Browser window

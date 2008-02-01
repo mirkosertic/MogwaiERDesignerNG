@@ -127,8 +127,8 @@ public interface ERDesignerBundle {
   String ENTITYNAME = "ENTITYNAME";
   /** Default */
   String DEFAULT = "DEFAULT";
-  /** Ist Pflichtfeld ( nicht NULL ) */
-  String REQUIRED = "REQUIRED";
+  /** Ist NULLABLE */
+  String NULLABLE = "NULLABLE";
   /** Ist Primärschlüssel */
   String PRIMARYKEY = "PRIMARYKEY";
   /** Allgemeines */
@@ -211,14 +211,24 @@ public interface ERDesignerBundle {
   String NEWMODELCREATED = "NEWMODELCREATED";
   /** Bitte definieren Sie vorher eine Datenbankverbindung! */
   String PLEASEDEFINEADATABASECONNECTIONFIRST = "PLEASEDEFINEADATABASECONNECTIONFIRST";
-  /** Size */
+  /** Grösse */
   String SIZE = "SIZE";
-  /** Precision */
-  String PRECISION = "PRECISION";
-  /** Scale */
+  /** Nachkommastellen */
+  String FRACTION = "FRACTION";
+  /** Skalierung */
   String SCALE = "SCALE";
   /** Datentyp */
   String DATATYPE = "DATATYPE";
   /** Ein Index muss mindestens ein Attribut beinhalten! */
   String INDEXMUSTHAVEATLEASTONEATTRIBUTE = "INDEXMUSTHAVEATLEASTONEATTRIBUTE";
+  /** DDL Generierung... */
+  String GENERATECREATEDBDDL = "GENERATECREATEDBDDL";
+  /** Schliessen */
+  String CLOSE = "CLOSE";
+  /** Ausführen */
+  String EXECUTE = "EXECUTE";
+  /** In Datei speichern */
+  String SAVETOFILE = "SAVETOFILE";
+  /** SQL Fenster */
+  String SQLWINDOW = "SQLWINDOW";
 }

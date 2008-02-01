@@ -33,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:25 $
+ * @version $Date: 2008-02-01 21:05:34 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -46,8 +46,6 @@ public class Model implements OwnedModelItemVerifier {
     public static final String PROPERTY_PASSWORD = "PASSWORD";
 
     private TableList tables = new TableList();
-
-    private DefaultValueList defaultValues = new DefaultValueList();
 
     private RelationList relations = new RelationList();
 
@@ -97,23 +95,6 @@ public class Model implements OwnedModelItemVerifier {
         modificationTracker.addRelation(aRelation);
 
         relations.add(aRelation);
-    }
-
-    /**
-     * Add a default value to the database model.
-     * 
-     * @param aDefaultValue
-     *            the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException is thrown in case of an error
-     */
-    public void addDefaultValue(DefaultValue aDefaultValue) throws ElementAlreadyExistsException,
-            ElementInvalidNameException {
-
-        ModelUtilities.checkNameAndExistance(defaultValues, aDefaultValue, dialect);
-
-        aDefaultValue.setOwner(this);
-        defaultValues.add(aDefaultValue);
     }
 
     public void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException {
@@ -166,10 +147,6 @@ public class Model implements OwnedModelItemVerifier {
 
     public TableList getTables() {
         return tables;
-    }
-
-    public DefaultValueList getDefaultValues() {
-        return defaultValues;
     }
 
     public ModelProperties getProperties() {

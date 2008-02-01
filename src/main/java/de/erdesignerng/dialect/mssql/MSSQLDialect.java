@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:24 $
+ * @version $Date: 2008-02-01 21:05:32 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
@@ -69,6 +69,8 @@ public class MSSQLDialect extends SQL92Dialect {
         registerType(new MSSQLDataType("ntext", "", java.sql.Types.CLOB));
         registerType(new MSSQLDataType("xml", "", java.sql.Types.CLOB));
         registerType(new MSSQLDataType("text", "", java.sql.Types.CLOB));
+        
+        seal();
     }
 
     @Override

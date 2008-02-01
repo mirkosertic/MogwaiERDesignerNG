@@ -24,7 +24,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-02-01 21:05:36 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -49,6 +49,8 @@ public class OracleDialect extends SQL92Dialect {
         registerType(new OracleDataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
         registerType(new OracleDataType("BLOB", "", java.sql.Types.BLOB));
         registerType(new OracleDataType("CLOB", "", java.sql.Types.CLOB));
+        
+        seal();        
     }
 
     @Override

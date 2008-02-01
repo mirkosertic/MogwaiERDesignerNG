@@ -245,9 +245,9 @@
 			<Text lang="de">Default</Text>		
 			<Text lang="en">Default</Text>					
 		</Entry>
-		<Entry id="REQUIRED">
-			<Text lang="de">Ist Pflichtfeld ( nicht NULL )</Text>		
-			<Text lang="en">Is required ( not NULL )</Text>					
+		<Entry id="NULLABLE">
+			<Text lang="de">Ist NULLABLE</Text>		
+			<Text lang="en">Is NULLABLE</Text>					
 		</Entry>
 		<Entry id="PRIMARYKEY">
 			<Text lang="de">Ist Primärschlüssel</Text>		
@@ -414,15 +414,15 @@
 			<Text lang="en">Please define a database connection prior to usinf this operation!</Text>					
 		</Entry>
 		<Entry id="SIZE">
-			<Text lang="de">Size</Text>		
+			<Text lang="de">Grösse</Text>		
 			<Text lang="en">Size</Text>					
 		</Entry>
-		<Entry id="PRECISION">
-			<Text lang="de">Precision</Text>		
-			<Text lang="en">Precision</Text>					
+		<Entry id="FRACTION">
+			<Text lang="de">Nachkommastellen</Text>		
+			<Text lang="en">Fraction</Text>					
 		</Entry>
 		<Entry id="SCALE">
-			<Text lang="de">Scale</Text>		
+			<Text lang="de">Skalierung</Text>		
 			<Text lang="en">Scale</Text>					
 		</Entry>
 		<Entry id="DATATYPE">
@@ -433,5 +433,26 @@
 			<Text lang="de">Ein Index muss mindestens ein Attribut beinhalten!</Text>		
 			<Text lang="en">An Index must contain at least one attribute!</Text>					
 		</Entry>
+		<Entry id="GENERATECREATEDBDDL">
+			<Text lang="de">DDL Generierung...</Text>		
+			<Text lang="en">Create DDL for model...</Text>					
+		</Entry>
+		<Entry id="CLOSE">
+			<Text lang="de">Schliessen</Text>		
+			<Text lang="en">Close</Text>					
+		</Entry>
+		<Entry id="EXECUTE">
+			<Text lang="de">Ausführen</Text>		
+			<Text lang="en">Execute</Text>					
+		</Entry>
+		<Entry id="SAVETOFILE">
+			<Text lang="de">In Datei speichern</Text>		
+			<Text lang="en">Save to file</Text>					
+		</Entry>
+		<Entry id="SQLWINDOW">
+			<Text lang="de">SQL Fenster</Text>		
+			<Text lang="en">SQL Window</Text>					
+		</Entry>
+		
 	</Bundle>
 </Resource>
