@@ -19,6 +19,7 @@ package de.erdesignerng.dialect;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -84,4 +85,18 @@ public abstract class SQLGenerator<T extends Dialect> {
     public abstract StatementList createRemovePrimaryKeyStatement(Table table, Index index) throws VetoException;
 
     public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
+    
+    public StatementList createCreateAllObjects(Model aModel) throws VetoException {
+        
+        StatementList theResult = new StatementList();
+        for (Table theTable : aModel.getTables()) {
+            theResult.addAll(createAddTableStatement(theTable));
+        }
+        for (Relation theRelation : aModel.getRelations()) {
+            theResult.addAll(createAddRelationStatement(theRelation));
+        }
+        
+        return theResult;
+    }
+    
 }

@@ -24,12 +24,11 @@ import java.util.List;
 
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.CascadeType;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:52 $
+ * @version $Date: 2008-02-01 17:20:24 $
  * @param <T>
  *            the dialect
  */
@@ -62,61 +61,4 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
     protected String convertColumnTypeToRealType(String aTypeName) {
         return aTypeName;
     }
-    
-    protected Domain createDomainFor(Model aModel, String aColumnName, String aTypeName, int aSize,
-            int aPrecision, int aScale, ReverseEngineeringOptions aOptions) throws ReverseEngineeringException {
-
-        DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(aTypeName));
-        if (theDataType == null) {
-            throw new ReverseEngineeringException("Unknown data type " + aTypeName);
-        }
-
-        Domain theDomain = aModel.getDomains().findByDataType(theDataType.getName(), aSize, aPrecision, aScale);
-        if (theDomain != null) {
-
-            if (theDomain.getName().equals(aColumnName)) {
-                return theDomain;
-            }
-
-            for (int i = 0; i < 10000; i++) {
-                String theName = aColumnName;
-                if (i > 0) {
-                    theName = theName + "_" + i;
-                }
-
-                theDomain = aModel.getDomains().findByName(theName);
-                if (theDomain != null) {
-                    if (theDomain.getName().equals(aColumnName)) {
-                        return theDomain;
-                    }
-                }
-
-                if (!aModel.getDomains().elementExists(theName, dialect.isCaseSensitive())) {
-
-                    theDomain = new Domain();
-                    theDomain.setName(theName);
-                    theDomain.setDatatype(theDataType);
-                    theDomain.setSize(aSize);
-                    theDomain.setPrecision(aPrecision);
-                    theDomain.setScale(aScale);
-
-                    aModel.getDomains().add(theDomain);
-
-                    return theDomain;
-                }
-            }
-
-        } else {
-            theDomain = new Domain();
-            theDomain.setName(aColumnName);
-            theDomain.setDatatype(theDataType);
-            theDomain.setSize(aSize);
-            theDomain.setPrecision(aPrecision);
-            theDomain.setScale(aScale);
-
-            aModel.getDomains().add(theDomain);
-        }
-
-        return theDomain;
-    }    
 }

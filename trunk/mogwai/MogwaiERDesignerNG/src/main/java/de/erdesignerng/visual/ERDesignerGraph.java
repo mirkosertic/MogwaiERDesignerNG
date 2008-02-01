@@ -40,7 +40,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-21 20:54:50 $
+ * @version $Date: 2008-02-01 17:20:30 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -111,13 +111,6 @@ public class ERDesignerGraph extends JGraph {
     }
 
     public void commandNewTable(Point2D aPoint) {
-    }
-
-    /**
-     * @return the domainDisplayMode
-     */
-    public boolean isDomainDisplayMode() {
-        return domainDisplayMode;
     }
 
     /**

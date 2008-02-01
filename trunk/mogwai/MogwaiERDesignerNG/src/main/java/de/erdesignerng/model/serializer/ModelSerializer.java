@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.io.serializer;
+package de.erdesignerng.model.serializer;
 
 import java.util.Map;
 
@@ -25,7 +25,6 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.DefaultValue;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
@@ -76,12 +75,6 @@ public class ModelSerializer extends Serializer {
             DefaultValueSerializer.SERIALIZER.serialize(theDefaultValue, aDocument, theDefaultValuesElement);
         }
 
-        // Domains serialisieren
-        Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
-        for (Domain theDomain : aModel.getDomains()) {
-            DomainSerializer.SERIALIZER.serialize(theDomain, aDocument, theDomainsElement);
-        }
-
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
             TableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
@@ -117,7 +110,6 @@ public class ModelSerializer extends Serializer {
         }
         
         DefaultValueSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        DomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         TableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         RelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         

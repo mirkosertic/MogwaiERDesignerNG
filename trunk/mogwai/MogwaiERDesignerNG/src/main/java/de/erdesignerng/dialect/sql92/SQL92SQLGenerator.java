@@ -29,7 +29,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-02-01 17:20:27 $
  * @param <T> the dialect
  */
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
@@ -278,6 +278,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             theStatement.append("\n");
         }
         theStatement.append(")");
+        theStatement.append(createCreateTableSuffix(aTable));
         theResult.add(new Statement(theStatement.toString()));
 
         for (Index theIndex : aTable.getIndexes()) {
@@ -289,6 +290,10 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
 
         return theResult;
+    }
+    
+    protected String createCreateTableSuffix(Table aTable) {
+        return "";
     }
 
     @Override

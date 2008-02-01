@@ -15,22 +15,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mysql;
+package de.erdesignerng.dialect.db2;
 
-import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.dialect.DataType;
 
-public class MySQLInnoDBSQLGenerator extends SQL92SQLGenerator<MySQLInnoDBDialect> {
+public class DB2DataType extends DataType {
 
-    public MySQLInnoDBSQLGenerator(MySQLInnoDBDialect aDialect) {
-        super(aDialect);
+    public DB2DataType(String aName, String aDefinition, int aJdbcType) {
+        super(aName, aDefinition, aJdbcType);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String createCreateTableSuffix(Table aTable) {
-        return " ENGINE=InnoDB";
+    
+    public DB2DataType(String aName, String aDefinition, int aJdbcType, boolean aIdentity) {
+        super(aName, aDefinition, aJdbcType);
+        identity = aIdentity;
+        if (aIdentity) {
+            maxOccoursPerTable = 1;
+        }
     }
 }

@@ -27,6 +27,7 @@ import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
@@ -35,7 +36,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 19:30:52 $
+ * @version $Date: 2008-02-01 17:20:30 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -115,7 +116,12 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         return true;
     }
 
-    public void initLoadedModel(Model aModel) {
+    public void initializeLoadedModel(Model aModel) {
         aModel.setModificationTracker(new HistoryModificationTracker(aModel));
+    }
+
+    public void notifyAboutException(Exception aException) {
+        ExceptionEditor theEditor = new ExceptionEditor(this, aException);
+        theEditor.showModal();
     }
 }

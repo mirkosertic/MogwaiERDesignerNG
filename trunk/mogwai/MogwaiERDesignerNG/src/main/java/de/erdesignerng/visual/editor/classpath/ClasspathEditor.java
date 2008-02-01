@@ -35,10 +35,10 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
- * Editor for the database connection.
+ * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 21:48:06 $
+ * @version $Date: 2008-02-01 17:20:28 $
  */
 public class ClasspathEditor extends BaseEditor {
 

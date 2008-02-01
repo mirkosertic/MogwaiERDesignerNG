@@ -19,13 +19,11 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:52 $
+ * @version $Date: 2008-02-01 17:20:25 $
  */
 public abstract class ModelItem {
 
     public static final String PROPERTY_LOCATION = "LOCATION";
-
-    public static final String PROPERTY_REMARKS = "REMARKS";
 
     private String systemId = ModelUtilities.createSystemIdFor(this);
 
@@ -96,9 +94,9 @@ public abstract class ModelItem {
 
     @Override
     public int hashCode() {
-        final int PRIME = 31;
+        final int thePrime = 31;
         int result = 1;
-        result = PRIME * result + ((systemId == null) ? 0 : systemId.hashCode());
+        result = thePrime * result + ((systemId == null) ? 0 : systemId.hashCode());
         return result;
     }
 

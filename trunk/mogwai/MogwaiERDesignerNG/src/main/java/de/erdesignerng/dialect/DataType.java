@@ -21,19 +21,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Attribute;
 
 /**
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:52 $
+ * @version $Date: 2008-02-01 17:20:24 $
  */
 public class DataType implements Comparable<DataType> {
 
     public static final String SIZE_TOKEN = "$size";
 
-    public static final String PRECISION_TOKEN = "$precision";
+    public static final String FRACTION_TOKEN = "$fraction";
 
     public static final String SCALE_TOKEN = "$scale";
 
@@ -49,7 +49,7 @@ public class DataType implements Comparable<DataType> {
 
     private boolean supportsSize = false;
 
-    private boolean supportsPrecision = false;
+    private boolean supportsFraction = false;
 
     private boolean supportsScale = false;
 
@@ -63,8 +63,8 @@ public class DataType implements Comparable<DataType> {
             if (SIZE_TOKEN.equals(theToken)) {
                 supportsSize = true;
             } else {
-                if (PRECISION_TOKEN.equals(theToken)) {
-                    supportsPrecision = true;
+                if (FRACTION_TOKEN.equals(theToken)) {
+                    supportsFraction = true;
                 } else {
                     if (SCALE_TOKEN.equals(theToken)) {
                         supportsScale = true;
@@ -94,11 +94,11 @@ public class DataType implements Comparable<DataType> {
         return name;
     }
 
-    protected String patternToType(Domain aDomain) {
+    protected String patternToType(Attribute aDomain) {
 
         Map<String, String> theMapping = new HashMap<String, String>();
         theMapping.put(SIZE_TOKEN, "" + aDomain.getSize());
-        theMapping.put(PRECISION_TOKEN, "" + aDomain.getPrecision());
+        theMapping.put(FRACTION_TOKEN, "" + aDomain.getFraction());
         theMapping.put(SCALE_TOKEN, "" + aDomain.getScale());
 
         StringBuilder theResult = new StringBuilder();
@@ -133,20 +133,20 @@ public class DataType implements Comparable<DataType> {
         return theResult.toString();
     }
 
-    public String createTypeDefinitionFor(Domain aDomain) {
+    public String createTypeDefinitionFor(Attribute aAttribute) {
 
         if (pattern == null) {
             return name;
         }
 
-        String theAppend = patternToType(aDomain);
+        String theAppend = patternToType(aAttribute);
         if (theAppend.length() == 0) {
             return name;
         }
 
-        int p = pattern.indexOf("(");
+        int p = name.indexOf("(");
         if (p > 0) {
-            return new StringBuilder(pattern).insert(p + 1, theAppend).toString();
+            return new StringBuilder(name).insert(p + 1, theAppend).toString();
         }
 
         return name + "(" + theAppend + ")";
@@ -178,8 +178,8 @@ public class DataType implements Comparable<DataType> {
     /**
      * @return the supportsPrecision
      */
-    public boolean supportsPrecision() {
-        return supportsPrecision;
+    public boolean supportsFraction() {
+        return supportsFraction;
     }
 
     /**
