@@ -7,7 +7,7 @@ import java.util.Map;
  * Properties.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-02-01 21:05:34 $
  */
 public class ModelProperties {
 
@@ -39,6 +39,10 @@ public class ModelProperties {
 
     public void setIntProperty(String aName, int aValue) {
         properties.put(aName, "" + aValue);
+    }
+
+    public void copyFrom(Model aModel) {
+        setProperties(aModel.getProperties().getProperties());
     }
 
 }

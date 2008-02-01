@@ -24,7 +24,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
@@ -69,12 +68,6 @@ public class ModelSerializer extends Serializer {
             thePropertyElement.setAttribute(VALUE, theValue);
         }
 
-        // Default values
-        Element theDefaultValuesElement = addElement(aDocument, theRootElement, DEFAULTVALUES);
-        for (DefaultValue theDefaultValue : aModel.getDefaultValues()) {
-            DefaultValueSerializer.SERIALIZER.serialize(theDefaultValue, aDocument, theDefaultValuesElement);
-        }
-
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
             TableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
@@ -109,7 +102,6 @@ public class ModelSerializer extends Serializer {
             }
         }
         
-        DefaultValueSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         TableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         RelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         

@@ -18,14 +18,23 @@
 package de.erdesignerng.dialect.mysql;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-02-01 21:05:35 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
     public MySQLReverseEngineeringStrategy(MySQLDialect aDialect) {
         super(aDialect);
+    }
+    
+    @Override
+    protected String convertIndexNameFor(Table aTable, String aIndexName) {
+        if ("PRIMARY".equals(aIndexName)) {
+            return "PK_" + aTable.getName();
+        }
+        return super.convertIndexNameFor(aTable, aIndexName);
     }
 }

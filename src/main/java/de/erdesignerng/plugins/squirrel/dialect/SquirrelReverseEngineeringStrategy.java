@@ -42,7 +42,6 @@ import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -51,7 +50,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:27 $
+ * @version $Date: 2008-02-01 21:05:36 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 
@@ -103,8 +102,6 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
                 throw new ReverseEngineeringException("Unknown data type " + theTypeName);
             }
             
-            DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
-
             boolean isNullable = true;
             switch (theNullable) {
             case DatabaseMetaData.columnNoNulls:
@@ -121,7 +118,7 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
             theAttribute.setSize(theSize);
             theAttribute.setFraction(theFraction);
             theAttribute.setScale(theRadix);
-            theAttribute.setDefaultValue(theDefault);
+            theAttribute.setDefaultValue(theDefaultValue);
             theAttribute.setNullable(isNullable);
             try {
                 theTable.addAttribute(aModel, theAttribute);
@@ -155,10 +152,6 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
         } catch (Exception e) {
             throw new ReverseEngineeringException(e.getMessage());
         }
-    }
-
-    protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
-        return null;
     }
 
     protected void reverseEngineerTables(Model aModel, ReverseEngineeringOptions aOptions,

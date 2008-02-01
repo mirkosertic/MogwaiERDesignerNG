@@ -21,11 +21,13 @@ import de.erdesignerng.dialect.SQLGenerator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-02-01 21:05:35 $
  */
 public class MySQLInnoDBDialect extends MySQLDialect {
 
     public MySQLInnoDBDialect() {
+        
+        seal();        
     }
 
     @Override

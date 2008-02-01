@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:27 $
+ * @version $Date: 2008-02-01 21:05:35 $
  */
 public class DB2Dialect extends SQL92Dialect {
 
@@ -50,6 +50,8 @@ public class DB2Dialect extends SQL92Dialect {
         registerType(new DB2DataType("DATE", "", java.sql.Types.DATE));
         registerType(new DB2DataType("TIME", "", java.sql.Types.TIME));
         registerType(new DB2DataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
+        
+        seal();
     }
 
     @Override

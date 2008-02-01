@@ -24,7 +24,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:27 $
+ * @version $Date: 2008-02-01 21:05:36 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -55,8 +55,6 @@ public class TableEditorView extends DefaultPanel {
     private DefaultTabbedPaneTab optionsTab;
 
     private DefaultLabel component42;
-
-    private DefaultComboBox defaultValue;
 
     private DefaultTabbedPaneTab attributeCommentsTab;
 
@@ -102,9 +100,11 @@ public class TableEditorView extends DefaultPanel {
     
     private DefaultSpinner sizeSpinner = new DefaultSpinner();
     
-    private DefaultSpinner precisionSpinner = new DefaultSpinner();
+    private DefaultSpinner fractionSpinner = new DefaultSpinner();
     
     private DefaultSpinner scaleSpinner = new DefaultSpinner();
+    
+    private DefaultTextField defaultValue = new DefaultTextField();
     
     /**
      * Constructor.
@@ -268,7 +268,6 @@ public class TableEditorView extends DefaultPanel {
         if (component15 == null) {
             component15 = new DefaultTabbedPane();
             component15.addTab(null, getAttributesGeneralTab());
-            component15.addTab(null, getOptionsTab());
             component15.addTab(null, getAttributeCommentTab());
             component15.setName("Component_15");
             component15.setSelectedIndex(0);
@@ -287,7 +286,7 @@ public class TableEditorView extends DefaultPanel {
         if (attributesGeneralTab == null) {
             attributesGeneralTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.GENERAL);
 
-            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
+            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -301,12 +300,16 @@ public class TableEditorView extends DefaultPanel {
             attributesGeneralTab.add(getDataType(), cons.xywh(4, 4, 1, 1));
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SIZE), cons.xywh(2, 6, 1, 1));
             attributesGeneralTab.add(getSizeSpinner(), cons.xywh(4, 6, 1, 1));
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.PRECISION), cons.xywh(2, 8, 1, 1));
-            attributesGeneralTab.add(getPrecisionSpinner(), cons.xywh(4, 8, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.FRACTION), cons.xywh(2, 8, 1, 1));
+            attributesGeneralTab.add(getFractionSpinner(), cons.xywh(4, 8, 1, 1));
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
             attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
             
             attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
+            
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DEFAULT), cons.xywh(2, 14, 1, 1));
+            attributesGeneralTab.add(getDefault(), cons.xywh(4, 14, 1, 1));
+            
 
             attributesGeneralTab.setName("AttributesGeneralTab");
         }
@@ -351,37 +354,10 @@ public class TableEditorView extends DefaultPanel {
     public javax.swing.JCheckBox getNullable() {
 
         if (nullable == null) {
-            nullable = new DefaultCheckBox(ERDesignerBundle.REQUIRED);
+            nullable = new DefaultCheckBox(ERDesignerBundle.NULLABLE);
         }
 
         return nullable;
-    }
-
-    /**
-     * Getter method for component OptionsTab.
-     * 
-     * @return the initialized component
-     */
-    public DefaultTabbedPaneTab getOptionsTab() {
-
-        if (optionsTab == null) {
-            optionsTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.OPTIONS);
-
-            String rowDef = "2dlu,p,2dlu";
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
-
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            optionsTab.setLayout(layout);
-
-            CellConstraints cons = new CellConstraints();
-
-            optionsTab.add(getComponent42(), cons.xywh(2, 2, 1, 1));
-            optionsTab.add(getDefault(), cons.xywh(4, 2, 1, 1));
-            optionsTab.setName("OptionsTab");
-            optionsTab.setVisible(false);
-        }
-
-        return optionsTab;
     }
 
     /**
@@ -403,10 +379,10 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JComboBox getDefault() {
+    public DefaultTextField getDefault() {
 
         if (defaultValue == null) {
-            defaultValue = new DefaultComboBox();
+            defaultValue = new DefaultTextField();
         }
 
         return defaultValue;
@@ -801,8 +777,8 @@ public class TableEditorView extends DefaultPanel {
     /**
      * @return the precisionSpinner
      */
-    public DefaultSpinner getPrecisionSpinner() {
-        return precisionSpinner;
+    public DefaultSpinner getFractionSpinner() {
+        return fractionSpinner;
     }
 
     /**

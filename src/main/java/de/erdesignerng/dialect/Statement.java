@@ -21,6 +21,8 @@ public class Statement {
 
     private String sql;
     
+    private boolean executed;
+    
     public Statement(String aSQL) {
         sql = aSQL;
     }
@@ -30,5 +32,19 @@ public class Statement {
      */
     public String getSql() {
         return sql;
+    }
+
+    /**
+     * @return the executed
+     */
+    public boolean isExecuted() {
+        return executed;
+    }
+
+    /**
+     * @param executed the executed to set
+     */
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
     }
 }

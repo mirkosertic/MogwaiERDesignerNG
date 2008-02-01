@@ -28,7 +28,6 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
-import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -37,7 +36,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:24 $
+ * @version $Date: 2008-02-01 21:05:32 $
  * @param <T>
  *            the dialect
  */
@@ -122,8 +121,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     throw new ReverseEngineeringException("Unknown data type " + theTypeName);
                 }
                 
-                DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
-
                 boolean isNullable = true;
                 switch (theNullable) {
                 case DatabaseMetaData.columnNoNulls:
@@ -140,7 +137,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 theAttribute.setSize(theSize);
                 theAttribute.setFraction(theFraction);
                 theAttribute.setScale(theRadix);
-                theAttribute.setDefaultValue(theDefault);
+                theAttribute.setDefaultValue(theDefaultValue);
                 theAttribute.setNullable(isNullable);
 
                 try {
@@ -185,7 +182,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             if (thePrimaryKeyIndex == null) {
                 thePrimaryKeyIndex = new Index();
                 thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
-                thePrimaryKeyIndex.setName(thePKName);
+                thePrimaryKeyIndex.setName(convertIndexNameFor(aTable, thePKName));
 
                 try {
                     aTable.addIndex(aModel, thePrimaryKeyIndex);
@@ -205,6 +202,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         }
         thePrimaryKeyResultSet.close();
     }
+    
+    protected String convertIndexNameFor(Table aTable, String aIndexName) {
+        return aIndexName;
+    }
 
     protected void reverseEngineerIndexes(Model aModel, String aTableName, String aSchemaName, String aCatalogName,
             DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
@@ -213,7 +214,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         Index theIndex = null;
         while (theIndexResults.next()) {
 
-            String theIndexName = theIndexResults.getString("INDEX_NAME");
+            String theIndexName = convertIndexNameFor(aTable, theIndexResults.getString("INDEX_NAME"));
             if ((theIndexName != null) && ((theIndex == null) || (!theIndex.getName().equals(theIndexName)))) {
 
                 if (aTable.getIndexes().findByName(theIndexName) == null) {
@@ -251,10 +252,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
         }
         theIndexResults.close();
-    }
-
-    protected DefaultValue createDefaultValueFor(Model aModel, String aColumnName, String aDefaultValue) {
-        return null;
     }
 
     /**

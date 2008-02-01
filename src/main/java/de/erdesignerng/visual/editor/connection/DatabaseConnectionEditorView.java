@@ -65,7 +65,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         JPanel thePanel = new JPanel();
 
-        theColDef = "50dlu,2dlu:grow,50dlu,2dlu,50dlu,2dlu";
+        theColDef = "60dlu,2dlu:grow,60dlu,2dlu,60dlu,2dlu";
         theRowDef = "p";
 
         theLayout = new FormLayout(theColDef, theRowDef);
