@@ -36,7 +36,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:32 $
+ * @version $Date: 2008-02-01 22:41:46 $
  * @param <T>
  *            the dialect
  */
@@ -223,9 +223,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
                     boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
                     if (isNonUnique) {
-                        theIndex.setIndexType(IndexType.UNIQUE);
-                    } else {
                         theIndex.setIndexType(IndexType.NONUNIQUE);
+                    } else {
+                        theIndex.setIndexType(IndexType.UNIQUE);
                     }
 
                     try {
@@ -327,7 +327,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     try {
                         aModel.addRelation(theRelation);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        throw new ReverseEngineeringException(e.getMessage());
                     }
                 }
 
