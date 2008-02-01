@@ -18,12 +18,14 @@
 package de.erdesignerng.plugins.squirrel.dialect;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
+import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.sql.ForeignKeyColumnInfo;
 import net.sourceforge.squirrel_sql.fw.sql.ForeignKeyInfo;
 import net.sourceforge.squirrel_sql.fw.sql.IDatabaseObjectInfo;
@@ -33,6 +35,7 @@ import net.sourceforge.squirrel_sql.fw.sql.ProgressCallBack;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
 import net.sourceforge.squirrel_sql.fw.sql.TableColumnInfo;
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -40,17 +43,15 @@ import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.DefaultValue;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
+ * @version $Date: 2008-02-01 17:20:27 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 
@@ -72,7 +73,7 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
 
         String theTableRemarks = aInfo.getRemarks();
         if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
-            theTable.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theTableRemarks);
+            theTable.setComment(theTableRemarks);
         }
 
         TableColumnInfo[] theColumns = aMeta.getColumnInfo(aInfo);
@@ -81,20 +82,47 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
             Attribute theAttribute = new Attribute();
             theAttribute.setName(dialect.getCastType().cast(theColumn.getColumnName()));
 
+            String theColumnName = theColumn.getColumnName();
             String theColumnRemarks = theColumn.getRemarks();
+            String theTypeName = theColumn.getTypeName();
+
+            int theSize = theColumn.getColumnSize();
+            int theFraction = theColumn.getDecimalDigits();
+            int theRadix = theColumn.getRadix();
+
+            int theNullable = theColumn.isNullAllowed();
+
+            String theDefaultValue = theColumn.getDefaultValue();
 
             if ((theColumnRemarks != null) && (!"".equals(theColumnRemarks))) {
-                theAttribute.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theColumnRemarks);
+                theAttribute.setComment(theColumnRemarks);
+            }
+            
+            DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(theTypeName));
+            if (theDataType == null) {
+                throw new ReverseEngineeringException("Unknown data type " + theTypeName);
+            }
+            
+            DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
+
+            boolean isNullable = true;
+            switch (theNullable) {
+            case DatabaseMetaData.columnNoNulls:
+                isNullable = false;
+                break;
+            case DatabaseMetaData.columnNullable:
+                isNullable = true;
+                break;
+            default:
+                //TODO [mse] What should happen here?
             }
 
-            Domain theDomain = createDomainFor(aModel, theColumn.getColumnName(), theColumn.getTypeName(), theColumn
-                    .getColumnSize(), theColumn.getDecimalDigits(), theColumn.getRadix(), aOptions);
-
-            DefaultValue theDefault = createDefaultValueFor(aModel, theColumn.getColumnName(), theColumn
-                    .getDefaultValue());
-
-            theAttribute.setDefinition(theDomain, "1".equals(theColumn.isNullable()), theDefault);
-
+            theAttribute.setDatatype(theDataType);
+            theAttribute.setSize(theSize);
+            theAttribute.setFraction(theFraction);
+            theAttribute.setScale(theRadix);
+            theAttribute.setDefaultValue(theDefault);
+            theAttribute.setNullable(isNullable);
             try {
                 theTable.addAttribute(aModel, theAttribute);
             } catch (Exception e) {
@@ -138,8 +166,19 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
         SQLDatabaseMetaData theMeta = dialect.getSession().getSQLConnection().getSQLMetaData();
         String[] theTableTypes = theMeta.getTableTypes();
         IDatabaseObjectInfo theObjectInfo = node.getDatabaseObjectInfo();
+        
+        String theCatalogName = null;
+        String theSchemaname = null;
+        if (theObjectInfo.getDatabaseObjectType().getIdentifier().equals(DatabaseObjectType.CATALOG.getIdentifier())) {
+            theCatalogName = theObjectInfo.getSimpleName();
+            theSchemaname = null;
+        } else {
+            theCatalogName = theObjectInfo.getCatalogName();
+            theSchemaname = theObjectInfo.getSimpleName();
+        }
+        
 
-        ITableInfo[] theInfos = theMeta.getTables(theObjectInfo.getCatalogName(), theObjectInfo.getSimpleName(), null,
+        ITableInfo[] theInfos = theMeta.getTables(theCatalogName, theSchemaname, null,
                 theTableTypes, new ProgressCallBack() {
 
                     public void currentlyLoading(String aInfo) {

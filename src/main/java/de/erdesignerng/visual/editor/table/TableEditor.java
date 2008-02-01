@@ -33,7 +33,6 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.DefaultValue;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -52,7 +51,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:52 $
+ * @version $Date: 2008-02-01 17:20:27 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -143,29 +142,22 @@ public class TableEditor extends BaseEditor {
         initialize();
 
         attributeListModel = editingView.getAttributeList().getModel();
-        domainListModel = editingView.getDomainList().getModel();
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
         editingView.getAttributeList().setCellRenderer(new AttributeListCellRenderer(this));
-
-        for (Domain theDomain : aModel.getDomains()) {
-            domainListModel.add(theDomain);
-        }
-        editingView.getDomainList().setModel(domainListModel);
 
         for (DefaultValue theValue : aModel.getDefaultValues()) {
             defaultValuesListModel.addElement(theValue);
         }
         editingView.getDefault().setModel(defaultValuesListModel);
 
-        tableBindingInfo.addBinding("name", editingView.getEntity_name(), true);
+        tableBindingInfo.addBinding("name", editingView.getEntityName(), true);
         tableBindingInfo.addBinding("comment", editingView.getEntityComment());
         tableBindingInfo.configure();
 
         attributeBindingInfo.addBinding("name", editingView.getAttributeName(), true);
         attributeBindingInfo.addBinding("comment", editingView.getAttributeComment());
-        attributeBindingInfo.addBinding("domain", editingView.getDomainList(), true);
         attributeBindingInfo.addBinding("nullable", editingView.getNullable());
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
         attributeBindingInfo.configure();
@@ -214,12 +206,6 @@ public class TableEditor extends BaseEditor {
                 commandIndexListValueChanged(e);
             }
         });
-        editingView.getDomainDictionary().addActionListener(new java.awt.event.ActionListener() {
-
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                commandStartDomainEditor(e);
-            }
-        });
 
         setContentPane(editingView);
         pack();
@@ -232,7 +218,7 @@ public class TableEditor extends BaseEditor {
         tableBindingInfo.setDefaultModel(aTable);
         tableBindingInfo.model2view();
 
-        editingView.getEntity_name().setName(aTable.getName());
+        editingView.getEntityName().setName(aTable.getName());
         for (Attribute theAttribute : aTable.getAttributes()) {
 
             Attribute theClone = theAttribute.clone();
@@ -295,7 +281,6 @@ public class TableEditor extends BaseEditor {
 
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(!isNew);
-            editingView.getDomainList().setEnabled(true);
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
             editingView.getDefault().setEnabled(true);
@@ -303,7 +288,6 @@ public class TableEditor extends BaseEditor {
         } else {
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(false);
-            editingView.getDomainList().setEnabled(false);
             editingView.getAttributeName().setEnabled(false);
             editingView.getNullable().setEnabled(false);
             editingView.getDefault().setEnabled(false);
@@ -462,10 +446,6 @@ public class TableEditor extends BaseEditor {
             updateIndexEditFields();
         }
 
-    }
-
-    private void commandStartDomainEditor(ActionEvent e) {
-        // TODO: Implement functionality here
     }
 
     @Override

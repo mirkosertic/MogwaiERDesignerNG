@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.oracle;
+package de.erdesignerng.dialect.db2;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
@@ -23,56 +23,57 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
+ * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-02-01 17:20:27 $
  */
-public class OracleDialect extends SQL92Dialect {
+public class DB2Dialect extends SQL92Dialect {
 
-    public OracleDialect() {
+    public DB2Dialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
-        setMaxObjectNameLength(32);
+        setMaxObjectNameLength(128);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
-        setSupportsOnUpdate(false);
 
-        registerType(new OracleDataType("NUMBER", "$size,$fraction", java.sql.Types.BIGINT));
-        registerType(new OracleDataType("LONG RAW", "", java.sql.Types.LONGVARBINARY, 1));
-        registerType(new OracleDataType("RAW", "$size", java.sql.Types.VARBINARY, 1));
-        registerType(new OracleDataType("LONG", "", java.sql.Types.LONGVARCHAR, 1));
-        registerType(new OracleDataType("CHAR", "$size", java.sql.Types.CHAR));
-        registerType(new OracleDataType("NUMBER", "$size,$fraction", java.sql.Types.NUMERIC));
-        registerType(new OracleDataType("FLOAT", "", java.sql.Types.FLOAT));
-        registerType(new OracleDataType("REAL", "", java.sql.Types.REAL));
-        registerType(new OracleDataType("VARCHAR2", "$size", java.sql.Types.VARCHAR));
-        registerType(new OracleDataType("DATE", "", java.sql.Types.DATE));
-        registerType(new OracleDataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
-        registerType(new OracleDataType("BLOB", "", java.sql.Types.BLOB));
-        registerType(new OracleDataType("CLOB", "", java.sql.Types.CLOB));
+        registerType(new DB2DataType("VARCHAR() FOR BIT DATA", "$size", java.sql.Types.VARBINARY));
+        registerType(new DB2DataType("CHAR() FOR BIT DATA", "$size", java.sql.Types.BINARY));
+        registerType(new DB2DataType("CHAR", "$size", java.sql.Types.CHAR));
+        registerType(new DB2DataType("NUMERIC", "$size,$fraction", java.sql.Types.NUMERIC));
+        registerType(new DB2DataType("DECIMAL", "$size,$fraction", java.sql.Types.DECIMAL));
+        registerType(new DB2DataType("BIGINT", "", java.sql.Types.BIGINT));
+        registerType(new DB2DataType("INTEGER", "", java.sql.Types.INTEGER));
+        registerType(new DB2DataType("SMALLINT", "", java.sql.Types.SMALLINT));
+        registerType(new DB2DataType("REAL", "", java.sql.Types.FLOAT));
+        registerType(new DB2DataType("FLOAT", "$size", java.sql.Types.DOUBLE));
+        registerType(new DB2DataType("VARCHAR", "$size", java.sql.Types.VARCHAR));
+        registerType(new DB2DataType("DATE", "", java.sql.Types.DATE));
+        registerType(new DB2DataType("TIME", "", java.sql.Types.TIME));
+        registerType(new DB2DataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
     }
 
     @Override
     public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new OracleReverseEngineeringStrategy(this);
+        return new DB2ReverseEngineeringStrategy(this);
     }
 
     @Override
     public String getUniqueName() {
-        return "OracleDialect";
+        return "DB2";
     }
 
     @Override
     public String getDriverClassName() {
-        return "oracle.jdbc.driver.OracleDriver";
+        return "hit.db2.Db2Driver";
     }
 
     @Override
     public String getDriverURLTemplate() {
-        return "jdbc:oracle:thin:@//<host>:<port>/<db>";
+        return "jdbc:db2://<host>/<db>";
     }
 
     @Override
     public SQLGenerator createSQLGenerator() {
-        return new OracleSQLGenerator(this);
+        return new DB2SQLGenerator(this);
     }
 }

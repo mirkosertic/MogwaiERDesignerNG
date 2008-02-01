@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.io;
+package de.erdesignerng.model;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,12 +41,11 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import de.erdesignerng.io.serializer.ModelSerializer;
-import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.ModelSerializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:28 $
+ * @version $Date: 2008-02-01 17:20:25 $
  */
 public final class ModelIOUtilities {
 

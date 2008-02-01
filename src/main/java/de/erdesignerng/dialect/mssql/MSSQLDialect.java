@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:53 $
+ * @version $Date: 2008-02-01 17:20:24 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
@@ -47,12 +47,12 @@ public class MSSQLDialect extends SQL92Dialect {
         registerType(new MSSQLDataType("char", "$size", java.sql.Types.CHAR));
         registerType(new MSSQLDataType("nchar", "$size", java.sql.Types.CHAR));
         registerType(new MSSQLDataType("uniqueidentifier", "", java.sql.Types.CHAR));
-        registerType(new MSSQLDataType("numeric", "$precision,$scale", java.sql.Types.NUMERIC));
-        registerType(new MSSQLDataType("numeric() identity", "$precision", java.sql.Types.NUMERIC, true));
-        registerType(new MSSQLDataType("decimal", "$precision,$scale", java.sql.Types.DECIMAL));
+        registerType(new MSSQLDataType("numeric", "$size,$fraction", java.sql.Types.NUMERIC));
+        registerType(new MSSQLDataType("numeric() identity", "$size,$fraction", java.sql.Types.NUMERIC, true));
+        registerType(new MSSQLDataType("decimal", "$size,$fraction", java.sql.Types.DECIMAL));
         registerType(new MSSQLDataType("money", "", java.sql.Types.DECIMAL));
         registerType(new MSSQLDataType("smallmoney", "", java.sql.Types.DECIMAL));
-        registerType(new MSSQLDataType("decimal() identity", "$precision", java.sql.Types.DECIMAL, true));
+        registerType(new MSSQLDataType("decimal() identity", "$size,$fraction", java.sql.Types.DECIMAL, true));
         registerType(new MSSQLDataType("int", "", java.sql.Types.INTEGER));
         registerType(new MSSQLDataType("int identity", "", java.sql.Types.INTEGER, true));
         registerType(new MSSQLDataType("smallint", "", java.sql.Types.SMALLINT));

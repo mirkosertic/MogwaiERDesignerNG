@@ -38,7 +38,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
+ * @version $Date: 2008-02-01 17:20:30 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -79,7 +79,7 @@ public class RelationEditor extends BaseEditor {
 
         model = aModel;
 
-        bindingInfo.addBinding("name", editingView.getRelationname(), true);
+        bindingInfo.addBinding("name", editingView.getRelationName(), true);
 
         RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
         theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
@@ -129,11 +129,11 @@ public class RelationEditor extends BaseEditor {
         tableModel = new AttributeTableModel(aRelation.getExportingTable().getName(), aRelation.getImportingTable()
                 .getName(), thePrimaryKey, theAssigned);
 
-        editingView.getComponent_5().setModel(tableModel);
-        editingView.getComponent_5().getTableHeader().setReorderingAllowed(false);
+        editingView.getComponent5().setModel(tableModel);
+        editingView.getComponent5().getTableHeader().setReorderingAllowed(false);
 
         JComboBox theAttributes = new JComboBox(aRelation.getImportingTable().getAttributes());
-        editingView.getComponent_5().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
+        editingView.getComponent5().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
     }
 
     private void commandOk() {

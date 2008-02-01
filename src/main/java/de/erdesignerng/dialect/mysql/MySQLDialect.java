@@ -24,7 +24,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:53 $
+ * @version $Date: 2008-02-01 17:20:30 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
@@ -44,8 +44,8 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(new MySQLDataType("TINYINT UNSIGNED", "", java.sql.Types.TINYINT));
         registerType(new MySQLDataType("BIGINT", "", java.sql.Types.BIGINT));
         registerType(new MySQLDataType("BIGINT UNSIGNED", "", java.sql.Types.BIGINT));
-        registerType(new MySQLDataType("NUMERIC", "$precision,$scale", java.sql.Types.NUMERIC));
-        registerType(new MySQLDataType("DECIMAL", "$precision,$scale", java.sql.Types.DECIMAL));
+        registerType(new MySQLDataType("NUMERIC", "$size,$fraction", java.sql.Types.NUMERIC));
+        registerType(new MySQLDataType("DECIMAL", "$size,$fraction", java.sql.Types.DECIMAL));
         registerType(new MySQLDataType("INTEGER", "", java.sql.Types.INTEGER));
         registerType(new MySQLDataType("INTEGER UNSIGNED", "", java.sql.Types.INTEGER));
         registerType(new MySQLDataType("INT", "", java.sql.Types.INTEGER));
@@ -54,10 +54,10 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(new MySQLDataType("MEDIUMINT UNSIGNED", "", java.sql.Types.INTEGER));
         registerType(new MySQLDataType("SMALLINT", "", java.sql.Types.SMALLINT));
         registerType(new MySQLDataType("SMALLINT UNSIGNED", "", java.sql.Types.SMALLINT));
-        registerType(new MySQLDataType("FLOAT", "$precision,$scale", java.sql.Types.REAL));
-        registerType(new MySQLDataType("DOUBLE", "$precision,$scale", java.sql.Types.DOUBLE));
-        registerType(new MySQLDataType("DOUBLE PRECISION", "$precision,$scale", java.sql.Types.DOUBLE));
-        registerType(new MySQLDataType("REAL", "$precision,$scale", java.sql.Types.DOUBLE));
+        registerType(new MySQLDataType("FLOAT", "$size,$fraction", java.sql.Types.REAL));
+        registerType(new MySQLDataType("DOUBLE", "$size,$fraction", java.sql.Types.DOUBLE));
+        registerType(new MySQLDataType("DOUBLE PRECISION", "$size,$fraction", java.sql.Types.DOUBLE));
+        registerType(new MySQLDataType("REAL", "$size,$fraction", java.sql.Types.DOUBLE));
         
         // Blob
         registerType(new MySQLDataType("LONG VARBINARY", "", java.sql.Types.LONGVARBINARY));

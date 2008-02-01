@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2008-02-01 17:20:25 $
  */
 public class TableList extends ModelItemVector<Table> {
 
@@ -43,24 +43,6 @@ public class TableList extends ModelItemVector<Table> {
     }
 
     /**
-     * Test if a domain is used by a table.
-     * 
-     * @param aDomain
-     *            the domain
-     * @return true if its used, else false
-     */
-    public boolean isDomainUsed(Domain aDomain) {
-        for (Table theTable : this) {
-            for (Attribute theAttribute : theTable.getAttributes()) {
-                if (theAttribute.getDomain().getName().equals(aDomain.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * Test if a defaultvalue is used by a table.
      * 
      * @param aDefault
@@ -79,5 +61,4 @@ public class TableList extends ModelItemVector<Table> {
         }
         return false;
     }
-
 }

@@ -1,0 +1,154 @@
+package de.erdesignerng.visual.editor.sql;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultList;
+
+/**
+ * Visual class sqleditorview.
+ * 
+ * Created with Mogwai FormMaker 0.6.
+ */
+public class SQLEditorView extends JPanel {
+
+    private DefaultList sqlList;
+
+    private JPanel buttonPanel;
+
+    private DefaultButton closeButton;
+
+    private DefaultButton executeButton;
+
+    private DefaultButton saveToFileButton;
+
+    /**
+     * Constructor.
+     */
+    public SQLEditorView() {
+        initialize();
+    }
+
+    /**
+     * Initialize method.
+     */
+    private void initialize() {
+
+        String rowDef = "2dlu,fill:250dlu,10dlu,p,2dlu";
+        String colDef = "2dlu,250dlu,2dlu";
+
+        FormLayout layout = new FormLayout(colDef, rowDef);
+        setLayout(layout);
+
+        CellConstraints cons = new CellConstraints();
+
+        this.add(new JScrollPane(getSqlList()), cons.xywh(2, 2, 1, 1));
+        this.add(getButtonPanel(), cons.xywh(2, 4, 1, 1));
+
+        buildGroups();
+    }
+
+    /**
+     * Getter method for component sqllist.
+     * 
+     * @return the initialized component
+     */
+    public DefaultList getSqlList() {
+        
+        if (sqlList == null) {
+            sqlList = new DefaultList();
+            sqlList.setName("sqllist");
+        }
+
+        return sqlList;
+    }
+
+    /**
+     * Getter method for component buttonpanel.
+     * 
+     * @return the initialized component
+     */
+    public JPanel getButtonPanel() {
+
+        if (buttonPanel == null) {
+            buttonPanel = new JPanel();
+
+            String rowDef = "p";
+            String colDef = "fill:40dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
+
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            buttonPanel.setLayout(layout);
+
+            CellConstraints cons = new CellConstraints();
+
+            buttonPanel.add(getCloseButton(), cons.xywh(1, 1, 1, 1));
+            buttonPanel.add(getExecuteButton(), cons.xywh(3, 1, 1, 1));
+            buttonPanel.add(getSaveToFileButton(), cons.xywh(5, 1, 1, 1));
+            buttonPanel.setName("buttonpanel");
+        }
+
+        return buttonPanel;
+    }
+
+    /**
+     * Getter method for component closebutton.
+     * 
+     * @return the initialized component
+     */
+    public DefaultButton getCloseButton() {
+
+        if (closeButton == null) {
+            closeButton = new DefaultButton();
+            closeButton.setActionCommand("Close");
+            closeButton.setName("closebutton");
+            closeButton.setText("Close");
+        }
+
+        return closeButton;
+    }
+
+    /**
+     * Getter method for component executeButton.
+     * 
+     * @return the initialized component
+     */
+    public DefaultButton getExecuteButton() {
+
+        if (executeButton == null) {
+            executeButton = new DefaultButton();
+            executeButton.setActionCommand("Execute");
+            executeButton.setName("executeButton");
+            executeButton.setText("Execute");
+        }
+
+        return executeButton;
+    }
+
+    /**
+     * Getter method for component saveToFileButton.
+     * 
+     * @return the initialized component
+     */
+    public DefaultButton getSaveToFileButton() {
+
+        if (saveToFileButton == null) {
+            saveToFileButton = new DefaultButton();
+            saveToFileButton.setActionCommand("saveToFile");
+            saveToFileButton.setName("saveToFileButton");
+            saveToFileButton.setText("saveToFile");
+        }
+
+        return saveToFileButton;
+    }
+
+    /**
+     * Initialize method.
+     */
+    private void buildGroups() {
+
+    }
+}

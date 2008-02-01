@@ -102,8 +102,8 @@ public abstract class BaseUseCases extends TestCase {
                 theDomain.setName("DOM_" + i);
                 theDomain.setDatatype(theType);
                 theDomain.setSize(10);
-                theDomain.setPrecision(5);
-                theDomain.setScale(3);
+                theDomain.setFraction(0);
+                theDomain.setScale(2);
 
                 model.addDomain(theDomain);
 

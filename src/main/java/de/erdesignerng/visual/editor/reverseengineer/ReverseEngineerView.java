@@ -32,33 +32,33 @@ import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:44 $
+ * @version $Date: 2008-02-01 17:20:27 $
  */
 public class ReverseEngineerView extends JPanel {
 
-    private JPanel m_schemagrid;
+    private JPanel schemaGrid;
 
-    private DefaultList m_schemalist;
+    private DefaultList schemaList;
 
-    private DefaultButton m_refreshbutton;
+    private DefaultButton schemaRefreshButton;
 
-    private DefaultButton m_startbutton;
+    private DefaultButton startButton;
 
-    private DefaultButton m_cancelbutton;
+    private DefaultButton cancelButton;
 
-    private JPanel m_engineeringoptions;
+    private JPanel engineeringOptions;
 
-    private DefaultLabel m_component_9;
+    private DefaultLabel component9;
 
-    private DefaultLabel m_component_10;
+    private DefaultLabel component10;
 
-    private DefaultLabel m_component_11;
+    private DefaultLabel component11;
 
-    private DefaultComboBox m_naming;
+    private DefaultComboBox naming;
 
-    private DefaultComboBox m_domaingeneration;
+    private DefaultComboBox domainGeneration;
 
-    private DefaultComboBox m_defaultvaluegeneration;
+    private DefaultComboBox defaultValueGeneration;
 
     /**
      * Constructor.
@@ -81,11 +81,11 @@ public class ReverseEngineerView extends JPanel {
         CellConstraints cons = new CellConstraints();
 
         this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
-        this.add(this.getschemagrid(), cons.xywh(2, 4, 3, 1));
+        this.add(this.getSchemaGrid(), cons.xywh(2, 4, 3, 1));
         this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
-        this.add(this.getstartbutton(), cons.xywh(2, 10, 1, 1));
-        this.add(this.getcancelbutton(), cons.xywh(4, 10, 1, 1));
-        this.add(this.getengineeringoptions(), cons.xywh(2, 8, 3, 1));
+        this.add(this.getStartButton(), cons.xywh(2, 10, 1, 1));
+        this.add(this.getCancelButton(), cons.xywh(4, 10, 1, 1));
+        this.add(this.getEngineeringOptions(), cons.xywh(2, 8, 3, 1));
 
         this.buildGroups();
     }
@@ -95,26 +95,26 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public JPanel getschemagrid() {
+    public JPanel getSchemaGrid() {
 
-        if (m_schemagrid == null) {
-            m_schemagrid = new JPanel();
+        if (schemaGrid == null) {
+            schemaGrid = new JPanel();
 
             String rowDef = "2dlu,80dlu,2dlu,p,2dlu";
             String colDef = "40dlu:grow,2dlu,50dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_schemagrid.setLayout(layout);
+            schemaGrid.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_schemagrid.add(new JScrollPane(this.getschemaList()), cons.xywh(1, 2, 3, 1));
-            m_schemagrid.add(this.getrefreshbutton(), cons.xywh(3, 4, 1, 1));
-            m_schemagrid.setName("schemagrid");
-            m_schemagrid.setToolTipText("1 , 3");
+            schemaGrid.add(new JScrollPane(this.getSchemaList()), cons.xywh(1, 2, 3, 1));
+            schemaGrid.add(this.getRefreshButton(), cons.xywh(3, 4, 1, 1));
+            schemaGrid.setName("schemagrid");
+            schemaGrid.setToolTipText("1 , 3");
         }
 
-        return m_schemagrid;
+        return schemaGrid;
     }
 
     /**
@@ -122,13 +122,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public DefaultList getschemaList() {
+    public DefaultList getSchemaList() {
 
-        if (m_schemalist == null) {
-            m_schemalist = new DefaultList();
+        if (schemaList == null) {
+            schemaList = new DefaultList();
         }
 
-        return m_schemalist;
+        return schemaList;
     }
 
     /**
@@ -136,13 +136,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JButton getrefreshbutton() {
+    public javax.swing.JButton getRefreshButton() {
 
-        if (m_refreshbutton == null) {
-            m_refreshbutton = new DefaultButton();
+        if (schemaRefreshButton == null) {
+            schemaRefreshButton = new DefaultButton();
         }
 
-        return m_refreshbutton;
+        return schemaRefreshButton;
     }
 
     /**
@@ -150,13 +150,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JButton getstartbutton() {
+    public javax.swing.JButton getStartButton() {
 
-        if (m_startbutton == null) {
-            m_startbutton = new DefaultButton();
+        if (startButton == null) {
+            startButton = new DefaultButton();
         }
 
-        return m_startbutton;
+        return startButton;
     }
 
     /**
@@ -164,13 +164,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JButton getcancelbutton() {
+    public javax.swing.JButton getCancelButton() {
 
-        if (m_cancelbutton == null) {
-            m_cancelbutton = new DefaultButton();
+        if (cancelButton == null) {
+            cancelButton = new DefaultButton();
         }
 
-        return m_cancelbutton;
+        return cancelButton;
     }
 
     /**
@@ -178,30 +178,30 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public JPanel getengineeringoptions() {
+    public JPanel getEngineeringOptions() {
 
-        if (m_engineeringoptions == null) {
-            m_engineeringoptions = new JPanel();
+        if (engineeringOptions == null) {
+            engineeringOptions = new JPanel();
 
             String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "80dlu,2dlu,40dlu:grow";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_engineeringoptions.setLayout(layout);
+            engineeringOptions.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_engineeringoptions.add(this.getComponent_9(), cons.xywh(1, 2, 1, 1));
-            m_engineeringoptions.add(this.getComponent_10(), cons.xywh(1, 4, 1, 1));
-            m_engineeringoptions.add(this.getComponent_11(), cons.xywh(1, 6, 1, 1));
-            m_engineeringoptions.add(this.getNaming(), cons.xywh(3, 2, 1, 1));
-            m_engineeringoptions.add(this.getDomaingeneration(), cons.xywh(3, 4, 1, 1));
-            m_engineeringoptions.add(this.getDefaultvaluegeneration(), cons.xywh(3, 6, 1, 1));
-            m_engineeringoptions.setName("engineeringoptions");
-            m_engineeringoptions.setToolTipText("3 , 7");
+            engineeringOptions.add(this.getComponent9(), cons.xywh(1, 2, 1, 1));
+            engineeringOptions.add(this.getComponent10(), cons.xywh(1, 4, 1, 1));
+            engineeringOptions.add(this.getComponent11(), cons.xywh(1, 6, 1, 1));
+            engineeringOptions.add(this.getNaming(), cons.xywh(3, 2, 1, 1));
+            engineeringOptions.add(this.getDomainGeneration(), cons.xywh(3, 4, 1, 1));
+            engineeringOptions.add(this.getDefaultValueGeneration(), cons.xywh(3, 6, 1, 1));
+            engineeringOptions.setName("engineeringoptions");
+            engineeringOptions.setToolTipText("3 , 7");
         }
 
-        return m_engineeringoptions;
+        return engineeringOptions;
     }
 
     /**
@@ -209,13 +209,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_9() {
+    public javax.swing.JLabel getComponent9() {
 
-        if (m_component_9 == null) {
-            m_component_9 = new DefaultLabel(ERDesignerBundle.TABLEGENERATION);
+        if (component9 == null) {
+            component9 = new DefaultLabel(ERDesignerBundle.TABLEGENERATION);
         }
 
-        return m_component_9;
+        return component9;
     }
 
     /**
@@ -223,13 +223,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_10() {
+    public javax.swing.JLabel getComponent10() {
 
-        if (m_component_10 == null) {
-            m_component_10 = new DefaultLabel(ERDesignerBundle.DOMAINGENERATION);
+        if (component10 == null) {
+            component10 = new DefaultLabel(ERDesignerBundle.DOMAINGENERATION);
         }
 
-        return m_component_10;
+        return component10;
     }
 
     /**
@@ -237,13 +237,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_11() {
+    public javax.swing.JLabel getComponent11() {
 
-        if (m_component_11 == null) {
-            m_component_11 = new DefaultLabel(ERDesignerBundle.DEFAULTVALUEENERATION);
+        if (component11 == null) {
+            component11 = new DefaultLabel(ERDesignerBundle.DEFAULTVALUEENERATION);
         }
 
-        return m_component_11;
+        return component11;
     }
 
     /**
@@ -253,11 +253,11 @@ public class ReverseEngineerView extends JPanel {
      */
     public javax.swing.JComboBox getNaming() {
 
-        if (m_naming == null) {
-            m_naming = new DefaultComboBox();
+        if (naming == null) {
+            naming = new DefaultComboBox();
         }
 
-        return m_naming;
+        return naming;
     }
 
     /**
@@ -265,13 +265,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JComboBox getDomaingeneration() {
+    public javax.swing.JComboBox getDomainGeneration() {
 
-        if (m_domaingeneration == null) {
-            m_domaingeneration = new DefaultComboBox();
+        if (domainGeneration == null) {
+            domainGeneration = new DefaultComboBox();
         }
 
-        return m_domaingeneration;
+        return domainGeneration;
     }
 
     /**
@@ -279,13 +279,13 @@ public class ReverseEngineerView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JComboBox getDefaultvaluegeneration() {
+    public javax.swing.JComboBox getDefaultValueGeneration() {
 
-        if (m_defaultvaluegeneration == null) {
-            m_defaultvaluegeneration = new DefaultComboBox();
+        if (defaultValueGeneration == null) {
+            defaultValueGeneration = new DefaultComboBox();
         }
 
-        return m_defaultvaluegeneration;
+        return defaultValueGeneration;
     }
 
     /**

@@ -17,32 +17,25 @@
  */
 package de.erdesignerng.model;
 
+import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-02-01 17:20:25 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
-    private Domain domain;
+    private DataType datatype;
+
+    private int size;
+
+    private int fraction;
+
+    private int scale;
 
     private boolean nullable = true;
 
     private DefaultValue defaultValue;
-
-    public void setDefinition(Domain aDomain, boolean aNullable, DefaultValue aDefaultValue) {
-
-        nullable = aNullable;
-        domain = aDomain;
-        defaultValue = aDefaultValue;
-    }
-
-    /**
-     * @return the domain
-     */
-    public Domain getDomain() {
-        return domain;
-    }
 
     /**
      * @return the nullable
@@ -73,12 +66,40 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         this.defaultValue = defaultValue;
     }
 
-    public void setDomain(Domain domain) {
-        this.domain = domain;
-    }
-
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
+    }
+    
+    public DataType getDatatype() {
+        return datatype;
+    }
+
+    public void setDatatype(DataType datatype) {
+        this.datatype = datatype;
+    }
+
+    public int getFraction() {
+        return fraction;
+    }
+
+    public void setFraction(int fraction) {
+        this.fraction = fraction;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     @Override
@@ -87,7 +108,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         theAttribute.setSystemId(getSystemId());
         theAttribute.setOwner(getOwner());
         theAttribute.setName(getName());
-        theAttribute.setDomain(getDomain());
+        theAttribute.setDatatype(getDatatype());
+        theAttribute.setSize(getSize());
+        theAttribute.setFraction(getFraction());
+        theAttribute.setScale(getScale());
         theAttribute.setNullable(isNullable());
         theAttribute.setDefaultValue(getDefaultValue());
         theAttribute.setComment(getComment());
@@ -96,7 +120,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     public void restoreFrom(Attribute aValue) throws Exception {
         setName(aValue.getName());
-        setDomain(aValue.getDomain());
+        setDatatype(aValue.getDatatype());
+        setSize(aValue.getSize());
+        setFraction(aValue.getFraction());
+        setScale(aValue.getScale());
         setNullable(aValue.isNullable());
         setDefaultValue(aValue.getDefaultValue());
         setComment(aValue.getComment());
@@ -109,7 +136,19 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
             return true;
         }
 
-        if (!domain.equals(aAttribute.getDomain())) {
+        if (!datatype.equals(aAttribute.getDatatype())) {
+            return true;
+        }
+
+        if (size != aAttribute.getSize()) {
+            return true;
+        }
+
+        if (fraction != aAttribute.getFraction()) {
+            return true;
+        }
+
+        if (scale != aAttribute.getScale()) {
             return true;
         }
 
@@ -133,6 +172,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public String getPhysicalDeclaration() {
-        return getDomain().getDatatype().createTypeDefinitionFor(getDomain());
+        return datatype.createTypeDefinitionFor(this);
     }
 }
