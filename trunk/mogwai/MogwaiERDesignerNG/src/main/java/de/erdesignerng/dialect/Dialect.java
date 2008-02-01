@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -28,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:51 $
+ * @version $Date: 2008-02-01 21:05:31 $
  */
 public abstract class Dialect {
 
@@ -265,5 +266,9 @@ public abstract class Dialect {
             }
         }
         return null;
+    }
+    
+    protected void seal() {
+        Collections.sort(dataTypes);
     }
 }

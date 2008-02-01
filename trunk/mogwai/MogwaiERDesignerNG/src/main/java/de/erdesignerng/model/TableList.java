@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:25 $
+ * @version $Date: 2008-02-01 21:05:35 $
  */
 public class TableList extends ModelItemVector<Table> {
 
@@ -40,25 +40,5 @@ public class TableList extends ModelItemVector<Table> {
             }
         }
         return null;
-    }
-
-    /**
-     * Test if a defaultvalue is used by a table.
-     * 
-     * @param aDefault
-     *            the default value
-     * @return true if its used, else false
-     */
-    public boolean isDefaultValueUsed(DefaultValue aDefault) {
-        for (Table theTable : this) {
-            for (Attribute theAttribute : theTable.getAttributes()) {
-                if (theAttribute.getDefaultValue() != null) {
-                    if (theAttribute.getDefaultValue().getName().equals(aDefault.getName())) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 }

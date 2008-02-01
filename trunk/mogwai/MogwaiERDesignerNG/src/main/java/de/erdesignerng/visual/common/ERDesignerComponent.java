@@ -74,7 +74,6 @@ import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
-import de.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
@@ -172,8 +171,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction dbConnectionAction;
     
-    private DefaultAction defaultValuesAction;
-
     private DefaultAction domainsAction;
     
     private DefaultAction entityAction;
@@ -354,14 +351,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DBCONNECTION);
         
-        defaultValuesAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandShowDefaultValuesEditor();
-            }
-
-        }, this, ERDesignerBundle.DEFAULTVALUES);
-        
         zoomAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -391,7 +380,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 commandGenerateSQL();
             }
 
-        }, this, ERDesignerBundle.ZOOMOUT);        
+        }, this, ERDesignerBundle.GENERATECREATEDBDDL);        
         
         lruMenu = new DefaultMenu(lruAction);        
         
@@ -464,9 +453,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
         
         theDBMenu.add(new DefaultMenuItem(reverseEngineerAction));
-        theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(domainsAction));
-        theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(generateSQL));
         
@@ -747,6 +733,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theWorker.execute();
 
                 Model theModel = theWorker.get();
+                theModel.getProperties().copyFrom(model);
                 if (theModel != null) {
                     setModel(theModel);
                 }
@@ -819,17 +806,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandSetZoom(ZoomInfo aZoomInfo) {
         graph.setScale(aZoomInfo.getValue());
         zoomBox.setSelectedItem(aZoomInfo);
-    }
-
-    protected void commandShowDefaultValuesEditor() {
-        DefaultValueEditor theEditor = new DefaultValueEditor(model, scrollPane);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
     }
 
     protected void commandZoomIn() {

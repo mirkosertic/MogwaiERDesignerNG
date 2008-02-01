@@ -19,6 +19,7 @@ package de.erdesignerng.visual.editor.table;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,10 +30,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ChangeEvent;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -51,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:27 $
+ * @version $Date: 2008-02-01 21:05:36 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -67,11 +68,7 @@ public class TableEditor extends BaseEditor {
 
     private DefaultListModel attributeListModel;
 
-    private DefaultListModel domainListModel;
-
     private DefaultListModel indexListModel;
-
-    private DefaultComboBoxModel defaultValuesListModel = new DefaultComboBoxModel();
 
     private Map<String, Attribute> knownAttributeValues = new HashMap<String, Attribute>();
 
@@ -141,16 +138,24 @@ public class TableEditor extends BaseEditor {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
 
+        DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
+        for (DataType theType : aModel.getDialect().getDataTypes()) {
+            theDataTypes.addElement(theType);
+        }
+        editingView.getDataType().setModel(theDataTypes);
+        editingView.getDataType().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                setSpinnerState((DataType) editingView.getDataType().getSelectedItem());
+            }
+            
+        });
+
         attributeListModel = editingView.getAttributeList().getModel();
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
         editingView.getAttributeList().setCellRenderer(new AttributeListCellRenderer(this));
-
-        for (DefaultValue theValue : aModel.getDefaultValues()) {
-            defaultValuesListModel.addElement(theValue);
-        }
-        editingView.getDefault().setModel(defaultValuesListModel);
 
         tableBindingInfo.addBinding("name", editingView.getEntityName(), true);
         tableBindingInfo.addBinding("comment", editingView.getEntityComment());
@@ -160,6 +165,11 @@ public class TableEditor extends BaseEditor {
         attributeBindingInfo.addBinding("comment", editingView.getAttributeComment());
         attributeBindingInfo.addBinding("nullable", editingView.getNullable());
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
+        attributeBindingInfo.addBinding("datatype", editingView.getDataType(), true);
+        attributeBindingInfo.addBinding("size", editingView.getSizeSpinner(), true);
+        attributeBindingInfo.addBinding("fraction", editingView.getFractionSpinner(), true);
+        attributeBindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
+        attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());        
         attributeBindingInfo.configure();
 
         indexBindingInfo.addBinding("name", editingView.getIndexName(), true);
@@ -270,6 +280,18 @@ public class TableEditor extends BaseEditor {
             updateAttributeEditFields();
         }
     }
+    
+    private void setSpinnerState(DataType aValue) {
+        if (aValue != null) {
+            editingView.getSizeSpinner().setEnabled(aValue.supportsSize());
+            editingView.getFractionSpinner().setEnabled(aValue.supportsFraction());
+            editingView.getScaleSpinner().setEnabled(aValue.supportsScale());
+        } else {
+            editingView.getSizeSpinner().setEnabled(false);
+            editingView.getFractionSpinner().setEnabled(false);
+            editingView.getScaleSpinner().setEnabled(false);
+        }
+    }
 
     private void updateAttributeEditFields() {
 
@@ -284,13 +306,17 @@ public class TableEditor extends BaseEditor {
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
             editingView.getDefault().setEnabled(true);
-
+            editingView.getDataType().setEnabled(true);
+            setSpinnerState(theValue.getDatatype());
+            
         } else {
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(false);
             editingView.getAttributeName().setEnabled(false);
             editingView.getNullable().setEnabled(false);
             editingView.getDefault().setEnabled(false);
+            editingView.getDataType().setEnabled(false);
+            setSpinnerState(null);
         }
 
         attributeBindingInfo.model2view();
@@ -418,7 +444,7 @@ public class TableEditor extends BaseEditor {
         Vector theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
             indexBindingInfo.view2model();
-            
+
             if (theModel.getIndexType().equals(IndexType.PRIMARYKEY)) {
                 for (int i = 0; i < indexListModel.getSize(); i++) {
                     Index theIndex = (Index) indexListModel.get(i);
@@ -429,7 +455,7 @@ public class TableEditor extends BaseEditor {
                     }
                 }
             }
-            
+
             if (theModel.getAttributes().size() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.INDEXMUSTHAVEATLEASTONEATTRIBUTE));

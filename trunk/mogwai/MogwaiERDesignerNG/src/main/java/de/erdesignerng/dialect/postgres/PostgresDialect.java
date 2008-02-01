@@ -24,7 +24,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:27 $
+ * @version $Date: 2008-02-01 21:05:37 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -57,6 +57,8 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(new PostgresDataType("timetz", "", java.sql.Types.TIME));
         registerType(new PostgresDataType("bit", "", java.sql.Types.BIT));
         registerType(new PostgresDataType("numeric", "$size,$fraction", java.sql.Types.NUMERIC));
+        
+        seal();        
     }
 
     @Override

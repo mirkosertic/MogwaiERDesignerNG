@@ -22,34 +22,39 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.DefaultValue;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
 public class AttributeSerializer extends Serializer {
 
     public static final AttributeSerializer SERIALIZER = new AttributeSerializer();
-    
+
     public static final String ATTRIBUTE = "Attribute";
+
+    public static final String SIZE = "size";
+
+    public static final String FRACTION = "fraction";
+
+    public static final String SCALE = "scale";
 
     public static final String NULLABLE = "nullable";
 
-    public static final String DEFAULTVALUEREFID = "defaultvaluerefid";
+    public static final String DEFAULTVALUE = "defaultvalue";
 
     public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
-        
+
         Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
 
         // Basisdaten des Modelelementes speichern
         serializeProperties(aDocument, theAttributeElement, aAttribute);
 
-        // Domain usw
+        theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
+        theAttributeElement.setAttribute(SIZE, "" + aAttribute.getSize());
+        theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
+        theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
+        theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
 
         setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
-
-        if (aAttribute.getDefaultValue() != null) {
-            theAttributeElement.setAttribute(DEFAULTVALUEREFID, aAttribute.getDefaultValue().getSystemId());
-        }
 
         serializeCommentElement(aDocument, theAttributeElement, aAttribute);
     }
@@ -62,18 +67,16 @@ public class AttributeSerializer extends Serializer {
 
             Attribute theAttribute = new Attribute();
             theAttribute.setOwner(aTable);
-            deserializeProperties(theAttributeElement, theAttribute);
 
+            deserializeProperties(theAttributeElement, theAttribute);
             deserializeCommentElement(theAttributeElement, theAttribute);
 
-            DefaultValue theDefault = null;
-            String theDefaultRefId = theAttributeElement.getAttribute(DEFAULTVALUEREFID);
-            if ((theDefaultRefId != null) && (!"".equals(theDefaultRefId))) {
-                theDefault = aModel.getDefaultValues().findBySystemId(theDefaultRefId);
-                if (theDefault == null) {
-                    throw new IllegalArgumentException("Cannot find default value with id " + theDefaultRefId);
-                }
-            }
+            theAttribute.setDatatype(aModel.getDialect().getDataTypeByName(theAttributeElement.getAttribute(DATATYPE)));
+            theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
+            theAttribute.setSize(Integer.parseInt(theAttributeElement.getAttribute(SIZE)));
+            theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));
+            theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
+            theAttribute.setNullable(TRUE.equals(theAttributeElement.getAttribute(NULLABLE)));
 
             aTable.getAttributes().add(theAttribute);
         }
