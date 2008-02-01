@@ -29,18 +29,17 @@ import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.DefaultValue;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
- * @param <T> the dialect
+ * @version $Date: 2008-02-01 17:20:24 $
+ * @param <T>
+ *            the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
 
@@ -93,7 +92,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             theTable.setName(dialect.getCastType().cast(aTableName));
 
             if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
-                theTable.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theTableRemarks);
+                theTable.setComment(theTableRemarks);
             }
 
             // Reverse engineer attributes
@@ -102,27 +101,47 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
                 String theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
                 String theTypeName = theColumnsResultSet.getString("TYPE_NAME");
-                
+
                 int theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
                 int theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
                 int theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
-                
-                String theNullable = theColumnsResultSet.getString("NULLABLE");
+
+                int theNullable = theColumnsResultSet.getInt("NULLABLE");
+
                 String theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
                 String theColumnRemarks = theColumnsResultSet.getString("REMARKS");
 
                 Attribute theAttribute = new Attribute();
                 theAttribute.setName(dialect.getCastType().cast(theColumnName));
                 if ((theColumnRemarks != null) && (!"".equals(theColumnRemarks))) {
-                    theAttribute.getProperties().setProperty(ModelItem.PROPERTY_REMARKS, theColumnRemarks);
+                    theAttribute.setComment(theColumnRemarks);
                 }
-
-                Domain theDomain = createDomainFor(aModel, theColumnName, theTypeName, theSize, theFraction, theRadix,
-                        aOptions);
-
+                
+                DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(theTypeName));
+                if (theDataType == null) {
+                    throw new ReverseEngineeringException("Unknown data type " + theTypeName);
+                }
+                
                 DefaultValue theDefault = createDefaultValueFor(aModel, theColumnName, theDefaultValue);
 
-                theAttribute.setDefinition(theDomain, "1".equals(theNullable), theDefault);
+                boolean isNullable = true;
+                switch (theNullable) {
+                case DatabaseMetaData.columnNoNulls:
+                    isNullable = false;
+                    break;
+                case DatabaseMetaData.columnNullable:
+                    isNullable = true;
+                    break;
+                default:
+                    //TODO [mse] What should happen here?
+                }
+
+                theAttribute.setDatatype(theDataType);
+                theAttribute.setSize(theSize);
+                theAttribute.setFraction(theFraction);
+                theAttribute.setScale(theRadix);
+                theAttribute.setDefaultValue(theDefault);
+                theAttribute.setNullable(isNullable);
 
                 try {
                     theTable.addAttribute(aModel, theAttribute);
@@ -312,7 +331,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                         aModel.addRelation(theRelation);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        throw new ReverseEngineeringException(e.getMessage());
                     }
                 }
 

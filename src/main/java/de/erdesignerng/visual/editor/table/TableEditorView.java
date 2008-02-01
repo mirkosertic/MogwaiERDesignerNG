@@ -16,6 +16,7 @@ import de.mogwai.common.client.looks.components.DefaultList;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultRadioButton;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
+import de.mogwai.common.client.looks.components.DefaultSpinner;
 import de.mogwai.common.client.looks.components.DefaultTabbedPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
@@ -23,84 +24,88 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 20:08:52 $
+ * @version $Date: 2008-02-01 17:20:27 $
  */
 public class TableEditorView extends DefaultPanel {
 
-    private DefaultLabel m_component_1;
+    private DefaultLabel component1;
 
-    private DefaultTextField m_entity_name;
+    private DefaultTextField entityName;
 
-    private DefaultTabbedPane m_maintabbedpane;
+    private DefaultTabbedPane mainTabbedPane;
 
-    private DefaultTabbedPaneTab m_attributestab;
+    private DefaultTabbedPaneTab attributesTab;
 
-    private DefaultList m_attributelist;
+    private DefaultList attributeList;
 
-    private DefaultButton m_newbutton;
+    private DefaultButton newButton;
 
-    private DefaultButton m_deletebutton;
+    private DefaultButton deleteButton;
 
-    private DefaultTabbedPane m_component_15;
+    private DefaultTabbedPane component15;
 
-    private DefaultTabbedPaneTab m_attributesgeneraltab;
+    private DefaultTabbedPaneTab attributesGeneralTab;
 
-    private DefaultLabel m_component_20;
+    private DefaultLabel component20;
 
-    private DefaultTextField m_attributename;
+    private DefaultTextField attributeName;
 
-    private DefaultList m_domainlist;
+    private DefaultCheckBox nullable;
 
-    private DefaultCheckBox m_nullable;
+    private DefaultTabbedPaneTab optionsTab;
 
-    private javax.swing.JButton m_domaindictionary;
+    private DefaultLabel component42;
 
-    private DefaultTabbedPaneTab m_optionstab;
+    private DefaultComboBox defaultValue;
 
-    private DefaultLabel m_component_42;
+    private DefaultTabbedPaneTab attributeCommentsTab;
 
-    private DefaultComboBox m_default;
+    private DefaultTextArea attributeComments;
 
-    private DefaultTabbedPaneTab m_attributecommenttab;
+    private DefaultButton updateAttributeButton;
 
-    private DefaultTextArea m_attributecomment;
+    private DefaultTabbedPaneTab indexesTab;
 
-    private DefaultButton m_updateattributebutton;
+    private DefaultList indexList;
 
-    private DefaultTabbedPaneTab m_indexestab;
+    private DefaultButton newIndexButton;
 
-    private DefaultList m_indexlist;
+    private DefaultButton deleteIndexButton;
 
-    private DefaultButton m_newindexbutton;
+    private DefaultTabbedPane indexTabbedPane;
 
-    private DefaultButton m_deleteindexbutton;
+    private DefaultTabbedPaneTab indexGeneralTab;
 
-    private DefaultTabbedPane m_indextabbedpane;
+    private DefaultLabel label1;
 
-    private DefaultTabbedPaneTab m_indexgeneraltab;
+    private DefaultTextField indexName;
 
-    private DefaultLabel m_label1;
+    private DefaultRadioButton uniqueIndex;
 
-    private DefaultTextField m_indexname;
+    private DefaultRadioButton notUniqueIndex;
 
-    private DefaultRadioButton m_uniqueindex;
+    private DefaultRadioButton primaryKeyIndex;
 
-    private DefaultRadioButton m_notuniqueindex;
+    private DefaultCheckBoxList<Attribute> indexAttributesList;
 
-    private DefaultRadioButton m_primaryindex;
+    private DefaultButton updateIndexButton;
 
-    private DefaultCheckBoxList<Attribute> m_indexfieldlist;
+    private DefaultTabbedPaneTab tableCommentsTab;
 
-    private DefaultButton m_updateindexbutton;
+    private DefaultTextArea tableComment;
 
-    private DefaultTabbedPaneTab m_maincommenstab;
+    private DefaultButton okButton;
 
-    private DefaultTextArea m_entitycomment;
-
-    private DefaultButton m_okbutton;
-
-    private DefaultButton m_cancelbutton;
-
+    private DefaultButton cancelButton;
+    
+    private DefaultComboBox dataType = new DefaultComboBox();
+    
+    private DefaultSpinner sizeSpinner = new DefaultSpinner();
+    
+    private DefaultSpinner precisionSpinner = new DefaultSpinner();
+    
+    private DefaultSpinner scaleSpinner = new DefaultSpinner();
+    
     /**
      * Constructor.
      */
@@ -121,8 +126,8 @@ public class TableEditorView extends DefaultPanel {
 
         CellConstraints cons = new CellConstraints();
 
-        this.add(getComponent_1(), cons.xywh(2, 2, 1, 1));
-        this.add(getEntity_name(), cons.xywh(4, 2, 4, 1));
+        this.add(getComponent1(), cons.xywh(2, 2, 1, 1));
+        this.add(getEntityName(), cons.xywh(4, 2, 4, 1));
         this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
         this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
         this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
@@ -135,13 +140,13 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_1() {
+    public javax.swing.JLabel getComponent1() {
 
-        if (m_component_1 == null) {
-            m_component_1 = new DefaultLabel(ERDesignerBundle.ENTITYNAME);
+        if (component1 == null) {
+            component1 = new DefaultLabel(ERDesignerBundle.ENTITYNAME);
         }
 
-        return m_component_1;
+        return component1;
     }
 
     /**
@@ -149,14 +154,14 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public DefaultTextField getEntity_name() {
+    public DefaultTextField getEntityName() {
 
-        if (m_entity_name == null) {
-            m_entity_name = new DefaultTextField();
-            m_entity_name.setName("Entity_name");
+        if (entityName == null) {
+            entityName = new DefaultTextField();
+            entityName.setName("Entity_name");
         }
 
-        return m_entity_name;
+        return entityName;
     }
 
     /**
@@ -166,16 +171,16 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPane getMainTabbedPane() {
 
-        if (m_maintabbedpane == null) {
-            m_maintabbedpane = new DefaultTabbedPane();
-            m_maintabbedpane.addTab(null, getAttributesTab());
-            m_maintabbedpane.addTab(null, getIndexesTab());
-            m_maintabbedpane.addTab(null, getMainCommensTab());
-            m_maintabbedpane.setName("MainTabbedPane");
-            m_maintabbedpane.setSelectedIndex(0);
+        if (mainTabbedPane == null) {
+            mainTabbedPane = new DefaultTabbedPane();
+            mainTabbedPane.addTab(null, getAttributesTab());
+            mainTabbedPane.addTab(null, getIndexesTab());
+            mainTabbedPane.addTab(null, getTableCommentsTab());
+            mainTabbedPane.setName("MainTabbedPane");
+            mainTabbedPane.setSelectedIndex(0);
         }
 
-        return m_maintabbedpane;
+        return mainTabbedPane;
     }
 
     /**
@@ -185,14 +190,14 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPaneTab getAttributesTab() {
 
-        if (m_attributestab == null) {
-            m_attributestab = new DefaultTabbedPaneTab(m_maintabbedpane, ERDesignerBundle.ATTRIBUTES);
+        if (attributesTab == null) {
+            attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
 
             String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
             String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_attributestab.setLayout(layout);
+            attributesTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
@@ -200,15 +205,15 @@ public class TableEditorView extends DefaultPanel {
             // 1));
             // this.m_attributestab.add(this.getDownButton(), cons
             // .xywh(9, 2, 1, 1));
-            m_attributestab.add(new DefaultScrollPane(getAttributeList()), cons.xywh(2, 4, 8, 3));
-            m_attributestab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
-            m_attributestab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
-            m_attributestab.add(getComponent_15(), cons.xywh(11, 2, 3, 5));
-            m_attributestab.add(getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
-            m_attributestab.setName("AttributesTab");
+            attributesTab.add(new DefaultScrollPane(getAttributeList()), cons.xywh(2, 4, 8, 3));
+            attributesTab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
+            attributesTab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
+            attributesTab.add(getComponent15(), cons.xywh(11, 2, 3, 5));
+            attributesTab.add(getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
+            attributesTab.setName("AttributesTab");
         }
 
-        return m_attributestab;
+        return attributesTab;
     }
 
     /**
@@ -218,11 +223,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultList getAttributeList() {
 
-        if (m_attributelist == null) {
-            m_attributelist = new DefaultList();
+        if (attributeList == null) {
+            attributeList = new DefaultList();
         }
 
-        return m_attributelist;
+        return attributeList;
     }
 
     /**
@@ -232,11 +237,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getNewButton() {
 
-        if (m_newbutton == null) {
-            m_newbutton = new DefaultButton(ERDesignerBundle.NEW);
+        if (newButton == null) {
+            newButton = new DefaultButton(ERDesignerBundle.NEW);
         }
 
-        return m_newbutton;
+        return newButton;
     }
 
     /**
@@ -246,11 +251,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getDeleteButton() {
 
-        if (m_deletebutton == null) {
-            m_deletebutton = new DefaultButton(ERDesignerBundle.DELETE);
+        if (deleteButton == null) {
+            deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
         }
 
-        return m_deletebutton;
+        return deleteButton;
     }
 
     /**
@@ -258,18 +263,18 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public DefaultTabbedPane getComponent_15() {
+    public DefaultTabbedPane getComponent15() {
 
-        if (m_component_15 == null) {
-            m_component_15 = new DefaultTabbedPane();
-            m_component_15.addTab(null, getAttributesGeneralTab());
-            m_component_15.addTab(null, getOptionsTab());
-            m_component_15.addTab(null, getAttributeCommentTab());
-            m_component_15.setName("Component_15");
-            m_component_15.setSelectedIndex(0);
+        if (component15 == null) {
+            component15 = new DefaultTabbedPane();
+            component15.addTab(null, getAttributesGeneralTab());
+            component15.addTab(null, getOptionsTab());
+            component15.addTab(null, getAttributeCommentTab());
+            component15.setName("Component_15");
+            component15.setSelectedIndex(0);
         }
 
-        return m_component_15;
+        return component15;
     }
 
     /**
@@ -279,27 +284,34 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPaneTab getAttributesGeneralTab() {
 
-        if (m_attributesgeneraltab == null) {
-            m_attributesgeneraltab = new DefaultTabbedPaneTab(m_component_15, ERDesignerBundle.GENERAL);
+        if (attributesGeneralTab == null) {
+            attributesGeneralTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.GENERAL);
 
-            String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu,p";
+            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_attributesgeneraltab.setLayout(layout);
+            attributesGeneralTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_attributesgeneraltab.add(getComponent_20(), cons.xywh(2, 2, 1, 1));
-            m_attributesgeneraltab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
-            m_attributesgeneraltab.add(new DefaultScrollPane(getDomainList()), cons.xywh(2, 4, 3, 3));
-            m_attributesgeneraltab.add(getNullable(), cons.xywh(4, 8, 1, 1));
-            // this.m_attributesgeneraltab.add(this.getDomainDictionary(), cons
-            // .xywh(4, 12, 1, 1));
-            m_attributesgeneraltab.setName("AttributesGeneralTab");
+            attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
+            attributesGeneralTab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DATATYPE), cons.xywh(2, 4, 1, 1));
+            attributesGeneralTab.add(getDataType(), cons.xywh(4, 4, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SIZE), cons.xywh(2, 6, 1, 1));
+            attributesGeneralTab.add(getSizeSpinner(), cons.xywh(4, 6, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.PRECISION), cons.xywh(2, 8, 1, 1));
+            attributesGeneralTab.add(getPrecisionSpinner(), cons.xywh(4, 8, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
+            attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
+            
+            attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
+
+            attributesGeneralTab.setName("AttributesGeneralTab");
         }
 
-        return m_attributesgeneraltab;
+        return attributesGeneralTab;
     }
 
     /**
@@ -307,13 +319,13 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_20() {
+    public javax.swing.JLabel getComponent20() {
 
-        if (m_component_20 == null) {
-            m_component_20 = new DefaultLabel(ERDesignerBundle.NAME);
+        if (component20 == null) {
+            component20 = new DefaultLabel(ERDesignerBundle.NAME);
         }
 
-        return m_component_20;
+        return component20;
     }
 
     /**
@@ -323,26 +335,12 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTextField getAttributeName() {
 
-        if (m_attributename == null) {
-            m_attributename = new DefaultTextField();
-            m_attributename.setName("AttributeName");
+        if (attributeName == null) {
+            attributeName = new DefaultTextField();
+            attributeName.setName("AttributeName");
         }
 
-        return m_attributename;
-    }
-
-    /**
-     * Getter method for component DomainList.
-     * 
-     * @return the initialized component
-     */
-    public DefaultList getDomainList() {
-
-        if (m_domainlist == null) {
-            m_domainlist = new DefaultList();
-        }
-
-        return m_domainlist;
+        return attributeName;
     }
 
     /**
@@ -352,28 +350,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JCheckBox getNullable() {
 
-        if (m_nullable == null) {
-            m_nullable = new DefaultCheckBox(ERDesignerBundle.REQUIRED);
+        if (nullable == null) {
+            nullable = new DefaultCheckBox(ERDesignerBundle.REQUIRED);
         }
 
-        return m_nullable;
-    }
-
-    /**
-     * Getter method for component DomainDictionary.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JButton getDomainDictionary() {
-
-        if (m_domaindictionary == null) {
-            m_domaindictionary = new javax.swing.JButton();
-            m_domaindictionary.setActionCommand("Domain dictionary ...");
-            m_domaindictionary.setName("DomainDictionary");
-            m_domaindictionary.setText("Domain dictionary ...");
-        }
-
-        return m_domaindictionary;
+        return nullable;
     }
 
     /**
@@ -383,24 +364,24 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPaneTab getOptionsTab() {
 
-        if (m_optionstab == null) {
-            m_optionstab = new DefaultTabbedPaneTab(m_component_15, ERDesignerBundle.OPTIONS);
+        if (optionsTab == null) {
+            optionsTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.OPTIONS);
 
             String rowDef = "2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_optionstab.setLayout(layout);
+            optionsTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_optionstab.add(getComponent_42(), cons.xywh(2, 2, 1, 1));
-            m_optionstab.add(getDefault(), cons.xywh(4, 2, 1, 1));
-            m_optionstab.setName("OptionsTab");
-            m_optionstab.setVisible(false);
+            optionsTab.add(getComponent42(), cons.xywh(2, 2, 1, 1));
+            optionsTab.add(getDefault(), cons.xywh(4, 2, 1, 1));
+            optionsTab.setName("OptionsTab");
+            optionsTab.setVisible(false);
         }
 
-        return m_optionstab;
+        return optionsTab;
     }
 
     /**
@@ -408,13 +389,13 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_42() {
+    public javax.swing.JLabel getComponent42() {
 
-        if (m_component_42 == null) {
-            m_component_42 = new DefaultLabel(ERDesignerBundle.DEFAULT);
+        if (component42 == null) {
+            component42 = new DefaultLabel(ERDesignerBundle.DEFAULT);
         }
 
-        return m_component_42;
+        return component42;
     }
 
     /**
@@ -424,11 +405,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JComboBox getDefault() {
 
-        if (m_default == null) {
-            m_default = new DefaultComboBox();
+        if (defaultValue == null) {
+            defaultValue = new DefaultComboBox();
         }
 
-        return m_default;
+        return defaultValue;
     }
 
     /**
@@ -438,23 +419,23 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPaneTab getAttributeCommentTab() {
 
-        if (m_attributecommenttab == null) {
-            m_attributecommenttab = new DefaultTabbedPaneTab(m_component_15, ERDesignerBundle.COMMENTS);
+        if (attributeCommentsTab == null) {
+            attributeCommentsTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.COMMENTS);
 
             String rowDef = "2dlu,p,160dlu:grow,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_attributecommenttab.setLayout(layout);
+            attributeCommentsTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_attributecommenttab.add(new DefaultScrollPane(getAttributeComment()), cons.xywh(2, 2, 3, 3));
-            m_attributecommenttab.setName("AttributeCommentTab");
-            m_attributecommenttab.setVisible(false);
+            attributeCommentsTab.add(new DefaultScrollPane(getAttributeComment()), cons.xywh(2, 2, 3, 3));
+            attributeCommentsTab.setName("AttributeCommentTab");
+            attributeCommentsTab.setVisible(false);
         }
 
-        return m_attributecommenttab;
+        return attributeCommentsTab;
     }
 
     /**
@@ -464,11 +445,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JTextArea getAttributeComment() {
 
-        if (m_attributecomment == null) {
-            m_attributecomment = new DefaultTextArea();
+        if (attributeComments == null) {
+            attributeComments = new DefaultTextArea();
         }
 
-        return m_attributecomment;
+        return attributeComments;
     }
 
     /**
@@ -478,11 +459,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getUpdateAttributeButton() {
 
-        if (m_updateattributebutton == null) {
-            m_updateattributebutton = new DefaultButton(ERDesignerBundle.UPDATE);
+        if (updateAttributeButton == null) {
+            updateAttributeButton = new DefaultButton(ERDesignerBundle.UPDATE);
         }
 
-        return m_updateattributebutton;
+        return updateAttributeButton;
     }
 
     /**
@@ -492,27 +473,27 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPaneTab getIndexesTab() {
 
-        if (m_indexestab == null) {
-            m_indexestab = new DefaultTabbedPaneTab(m_maintabbedpane, ERDesignerBundle.INDEXES);
+        if (indexesTab == null) {
+            indexesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.INDEXES);
 
             String rowDef = "2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
             String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_indexestab.setLayout(layout);
+            indexesTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_indexestab.add(new DefaultScrollPane(getIndexList()), cons.xywh(2, 2, 8, 3));
-            m_indexestab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
-            m_indexestab.add(getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
-            m_indexestab.add(getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
-            m_indexestab.add(getUpdateIndexButton(), cons.xywh(13, 6, 1, 1));
-            m_indexestab.setName("IndexesTab");
-            m_indexestab.setVisible(false);
+            indexesTab.add(new DefaultScrollPane(getIndexList()), cons.xywh(2, 2, 8, 3));
+            indexesTab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
+            indexesTab.add(getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
+            indexesTab.add(getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
+            indexesTab.add(getUpdateIndexButton(), cons.xywh(13, 6, 1, 1));
+            indexesTab.setName("IndexesTab");
+            indexesTab.setVisible(false);
         }
 
-        return m_indexestab;
+        return indexesTab;
     }
 
     /**
@@ -522,12 +503,12 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultList getIndexList() {
 
-        if (m_indexlist == null) {
-            m_indexlist = new DefaultList();
-            m_indexlist.setName("IndexList");
+        if (indexList == null) {
+            indexList = new DefaultList();
+            indexList.setName("IndexList");
         }
 
-        return m_indexlist;
+        return indexList;
     }
 
     /**
@@ -537,11 +518,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getNewIndexButton() {
 
-        if (m_newindexbutton == null) {
-            m_newindexbutton = new DefaultButton(ERDesignerBundle.NEW);
+        if (newIndexButton == null) {
+            newIndexButton = new DefaultButton(ERDesignerBundle.NEW);
         }
 
-        return m_newindexbutton;
+        return newIndexButton;
     }
 
     /**
@@ -551,11 +532,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getDeleteIndexButton() {
 
-        if (m_deleteindexbutton == null) {
-            m_deleteindexbutton = new DefaultButton(ERDesignerBundle.DELETE);
+        if (deleteIndexButton == null) {
+            deleteIndexButton = new DefaultButton(ERDesignerBundle.DELETE);
         }
 
-        return m_deleteindexbutton;
+        return deleteIndexButton;
     }
 
     /**
@@ -565,14 +546,14 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPane getIndexTabbedPane() {
 
-        if (m_indextabbedpane == null) {
-            m_indextabbedpane = new DefaultTabbedPane();
-            m_indextabbedpane.addTab(null, getIndexGeneralTab());
-            m_indextabbedpane.setName("IndexTabbedPane");
-            m_indextabbedpane.setSelectedIndex(0);
+        if (indexTabbedPane == null) {
+            indexTabbedPane = new DefaultTabbedPane();
+            indexTabbedPane.addTab(null, getIndexGeneralTab());
+            indexTabbedPane.setName("IndexTabbedPane");
+            indexTabbedPane.setSelectedIndex(0);
         }
 
-        return m_indextabbedpane;
+        return indexTabbedPane;
     }
 
     /**
@@ -582,27 +563,27 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTabbedPaneTab getIndexGeneralTab() {
 
-        if (m_indexgeneraltab == null) {
-            m_indexgeneraltab = new DefaultTabbedPaneTab(m_indextabbedpane, ERDesignerBundle.GENERAL);
+        if (indexGeneralTab == null) {
+            indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
 
             String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_indexgeneraltab.setLayout(layout);
+            indexGeneralTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_indexgeneraltab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
-            m_indexgeneraltab.add(getIndexName(), cons.xywh(4, 2, 1, 1));
-            m_indexgeneraltab.add(getPrimaryIndex(), cons.xywh(4, 8, 1, 1));            
-            m_indexgeneraltab.add(getUniqueIndex(), cons.xywh(4, 10, 1, 1));
-            m_indexgeneraltab.add(getNotUniqueIndex(), cons.xywh(4, 12, 1, 1));
-            m_indexgeneraltab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 3));
-            m_indexgeneraltab.setName("IndexGeneralTab");
+            indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
+            indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 1, 1));
+            indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 8, 1, 1));            
+            indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 10, 1, 1));
+            indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 12, 1, 1));
+            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 3));
+            indexGeneralTab.setName("IndexGeneralTab");
         }
 
-        return m_indexgeneraltab;
+        return indexGeneralTab;
     }
 
     /**
@@ -612,11 +593,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultLabel getLabel1() {
 
-        if (m_label1 == null) {
-            m_label1 = new DefaultLabel(ERDesignerBundle.NAME);
+        if (label1 == null) {
+            label1 = new DefaultLabel(ERDesignerBundle.NAME);
         }
 
-        return m_label1;
+        return label1;
     }
 
     /**
@@ -626,12 +607,12 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTextField getIndexName() {
 
-        if (m_indexname == null) {
-            m_indexname = new DefaultTextField();
-            m_indexname.setName("IndexName");
+        if (indexName == null) {
+            indexName = new DefaultTextField();
+            indexName.setName("IndexName");
         }
 
-        return m_indexname;
+        return indexName;
     }
 
     /**
@@ -641,20 +622,20 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultRadioButton getUniqueIndex() {
 
-        if (m_uniqueindex == null) {
-            m_uniqueindex = new DefaultRadioButton(ERDesignerBundle.INDEXISUNIQUE);
+        if (uniqueIndex == null) {
+            uniqueIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISUNIQUE);
         }
 
-        return m_uniqueindex;
+        return uniqueIndex;
     }
 
     public DefaultRadioButton getPrimaryIndex() {
 
-        if (m_primaryindex == null) {
-            m_primaryindex = new DefaultRadioButton(ERDesignerBundle.INDEXISPRIMARY);
+        if (primaryKeyIndex == null) {
+            primaryKeyIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISPRIMARY);
         }
 
-        return m_primaryindex;
+        return primaryKeyIndex;
     }
 
     
@@ -665,11 +646,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultRadioButton getNotUniqueIndex() {
 
-        if (m_notuniqueindex == null) {
-            m_notuniqueindex = new DefaultRadioButton(ERDesignerBundle.INDEXISNOTUNIQUE);
+        if (notUniqueIndex == null) {
+            notUniqueIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISNOTUNIQUE);
         }
 
-        return m_notuniqueindex;
+        return notUniqueIndex;
     }
 
     /**
@@ -679,11 +660,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultCheckBoxList<Attribute> getIndexFieldList() {
 
-        if (m_indexfieldlist == null) {
-            m_indexfieldlist = new DefaultCheckBoxList<Attribute>();
+        if (indexAttributesList == null) {
+            indexAttributesList = new DefaultCheckBoxList<Attribute>();
         }
 
-        return m_indexfieldlist;
+        return indexAttributesList;
     }
 
     /**
@@ -693,11 +674,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultButton getUpdateIndexButton() {
 
-        if (m_updateindexbutton == null) {
-            m_updateindexbutton = new DefaultButton(ERDesignerBundle.UPDATE);
+        if (updateIndexButton == null) {
+            updateIndexButton = new DefaultButton(ERDesignerBundle.UPDATE);
         }
 
-        return m_updateindexbutton;
+        return updateIndexButton;
     }
 
     /**
@@ -705,25 +686,25 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public DefaultTabbedPaneTab getMainCommensTab() {
+    public DefaultTabbedPaneTab getTableCommentsTab() {
 
-        if (m_maincommenstab == null) {
-            m_maincommenstab = new DefaultTabbedPaneTab(m_maintabbedpane, ERDesignerBundle.COMMENTS);
+        if (tableCommentsTab == null) {
+            tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
 
             String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
             String colDef = "2dlu,40dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_maincommenstab.setLayout(layout);
+            tableCommentsTab.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_maincommenstab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
-            m_maincommenstab.setName("MainCommensTab");
-            m_maincommenstab.setVisible(false);
+            tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
+            tableCommentsTab.setName("MainCommensTab");
+            tableCommentsTab.setVisible(false);
         }
 
-        return m_maincommenstab;
+        return tableCommentsTab;
     }
 
     /**
@@ -733,12 +714,12 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultTextArea getEntityComment() {
 
-        if (m_entitycomment == null) {
-            m_entitycomment = new DefaultTextArea();
-            m_entitycomment.setName("EntityComment");
+        if (tableComment == null) {
+            tableComment = new DefaultTextArea();
+            tableComment.setName("EntityComment");
         }
 
-        return m_entitycomment;
+        return tableComment;
     }
 
     /**
@@ -748,11 +729,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getOkButton() {
 
-        if (m_okbutton == null) {
-            m_okbutton = new DefaultButton(ERDesignerBundle.OK);
+        if (okButton == null) {
+            okButton = new DefaultButton(ERDesignerBundle.OK);
         }
 
-        return m_okbutton;
+        return okButton;
     }
 
     /**
@@ -762,11 +743,11 @@ public class TableEditorView extends DefaultPanel {
      */
     public javax.swing.JButton getCancelButton() {
 
-        if (m_cancelbutton == null) {
-            m_cancelbutton = new DefaultButton(ERDesignerBundle.CANCEL);
+        if (cancelButton == null) {
+            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
         }
 
-        return m_cancelbutton;
+        return cancelButton;
     }
 
     /**
@@ -774,10 +755,10 @@ public class TableEditorView extends DefaultPanel {
      */
     private void buildGroups() {
 
-        ButtonGroup Group1 = new ButtonGroup();
-        Group1.add(getPrimaryIndex());
-        Group1.add(getUniqueIndex());
-        Group1.add(getNotUniqueIndex());
+        ButtonGroup theGroup = new ButtonGroup();
+        theGroup.add(getPrimaryIndex());
+        theGroup.add(getUniqueIndex());
+        theGroup.add(getNotUniqueIndex());
     }
 
     /**
@@ -808,5 +789,33 @@ public class TableEditorView extends DefaultPanel {
 
         getUniqueIndex().setSelected("U".equals(aValue));
         getNotUniqueIndex().setSelected("NU".equals(aValue));
+    }
+
+    /**
+     * @return the dataType
+     */
+    public DefaultComboBox getDataType() {
+        return dataType;
+    }
+
+    /**
+     * @return the precisionSpinner
+     */
+    public DefaultSpinner getPrecisionSpinner() {
+        return precisionSpinner;
+    }
+
+    /**
+     * @return the scaleSpinner
+     */
+    public DefaultSpinner getScaleSpinner() {
+        return scaleSpinner;
+    }
+
+    /**
+     * @return the sizeSpinner
+     */
+    public DefaultSpinner getSizeSpinner() {
+        return sizeSpinner;
     }
 }

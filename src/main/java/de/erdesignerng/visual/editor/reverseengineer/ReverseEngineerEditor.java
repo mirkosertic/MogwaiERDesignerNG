@@ -44,7 +44,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 21:57:47 $
+ * @version $Date: 2008-02-01 17:20:27 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -105,14 +105,14 @@ public class ReverseEngineerEditor extends BaseEditor {
                         ERDesignerBundle.STANDART)));
 
         bindingInfo.addBinding("tableGenerator", editingView.getNaming(), true);
-        bindingInfo.addBinding("domainGenerator", editingView.getDomaingeneration(), true);
-        bindingInfo.addBinding("defaultValueGenerator", editingView.getDefaultvaluegeneration(), true);
+        bindingInfo.addBinding("domainGenerator", editingView.getDomainGeneration(), true);
+        bindingInfo.addBinding("defaultValueGenerator", editingView.getDefaultValueGeneration(), true);
         bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(editingView.getNaming()));
-        bindingInfo.addBinding("domainOptions", new ComboboxModelAdapter(editingView.getDomaingeneration()));
+        bindingInfo.addBinding("domainOptions", new ComboboxModelAdapter(editingView.getDomainGeneration()));
         bindingInfo
-                .addBinding("defaultValueOptions", new ComboboxModelAdapter(editingView.getDefaultvaluegeneration()));
+                .addBinding("defaultValueOptions", new ComboboxModelAdapter(editingView.getDefaultValueGeneration()));
 
-        schemaList = editingView.getschemaList().getModel();
+        schemaList = editingView.getSchemaList().getModel();
 
         preferences = aPreferences;
 
@@ -126,13 +126,13 @@ public class ReverseEngineerEditor extends BaseEditor {
     private void initialize() {
 
         editingView = new ReverseEngineerView();
-        editingView.getstartbutton().setAction(okAction);
-        editingView.getcancelbutton().setAction(cancelAction);
-        editingView.getrefreshbutton().setAction(updateAction);
-        editingView.getschemaList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        editingView.getStartButton().setAction(okAction);
+        editingView.getCancelButton().setAction(cancelAction);
+        editingView.getRefreshButton().setAction(updateAction);
+        editingView.getSchemaList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        editingView.getschemaList().setEnabled(model.getDialect().supportsSchemaInformation());
-        editingView.getrefreshbutton().setEnabled(model.getDialect().supportsSchemaInformation());
+        editingView.getSchemaList().setEnabled(model.getDialect().supportsSchemaInformation());
+        editingView.getRefreshButton().setEnabled(model.getDialect().supportsSchemaInformation());
 
         setContentPane(editingView);
         setResizable(false);
@@ -143,7 +143,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
     private void commandOk() {
         if (bindingInfo.validate().size() == 0) {
-            Object[] theSelectesValues = editingView.getschemaList().getSelectedValues();
+            Object[] theSelectesValues = editingView.getSchemaList().getSelectedValues();
             if (((theSelectesValues == null) || (theSelectesValues.length == 0))
                     && (model.getDialect().supportsSchemaInformation())) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
@@ -198,7 +198,7 @@ public class ReverseEngineerEditor extends BaseEditor {
         theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
 
         if (model.getDialect().supportsSchemaInformation()) {
-            for (Object theEntry : editingView.getschemaList().getSelectedValues()) {
+            for (Object theEntry : editingView.getSchemaList().getSelectedValues()) {
                 theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
             }
         }

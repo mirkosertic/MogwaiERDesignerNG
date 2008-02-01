@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.db2.DB2Dialect;
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
@@ -35,7 +36,7 @@ import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 20:27:56 $
+ * @version $Date: 2008-02-01 17:20:30 $
  */
 public final class ERDesigner {
 
@@ -49,6 +50,7 @@ public final class ERDesigner {
         theScreen.setVisible(true);
         
         DialectFactory theFactory = DialectFactory.getInstance();
+        theFactory.registerDialect(new DB2Dialect());        
         theFactory.registerDialect(new MSSQLDialect());
         theFactory.registerDialect(new MySQLDialect());
         theFactory.registerDialect(new MySQLInnoDBDialect());

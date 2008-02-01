@@ -144,6 +144,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         return false;
     }
 
-    public void initLoadedModel(Model aModel) {
+    public void initializeLoadedModel(Model aModel) {
+    }
+
+    public void notifyAboutException(Exception aException) {
+        session.showErrorMessage(aException);
     }
 }

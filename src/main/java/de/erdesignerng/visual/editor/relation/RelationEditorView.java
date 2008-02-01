@@ -16,15 +16,15 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 20:04:24 $
+ * @version $Date: 2008-02-01 17:20:30 $
  */
 public class RelationEditorView extends JPanel {
 
-    private DefaultLabel m_component_1;
+    private DefaultLabel component1;
 
-    private DefaultTextField m_relationname;
+    private DefaultTextField relationName;
 
-    private javax.swing.JTable m_component_5;
+    private javax.swing.JTable component5;
 
     private JPanel onDeleteContainer;
 
@@ -42,11 +42,11 @@ public class RelationEditorView extends JPanel {
 
     private DefaultRadioButton onUpdateSetNull;
 
-    private JPanel m_component_8;
+    private JPanel component8;
 
-    private DefaultButton m_okbutton;
+    private DefaultButton okButton;
 
-    private DefaultButton m_cancelbutton;
+    private DefaultButton cancelButton;
 
     /**
      * Constructor.
@@ -68,17 +68,17 @@ public class RelationEditorView extends JPanel {
 
         CellConstraints cons = new CellConstraints();
 
-        add(getComponent_1(), cons.xywh(2, 4, 1, 1));
+        add(getComponent1(), cons.xywh(2, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
-        add(getRelationname(), cons.xywh(4, 4, 1, 1));
+        add(getRelationName(), cons.xywh(4, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(2, 6, 3, 1));
-        add(new JScrollPane(getComponent_5()), cons.xywh(2, 8, 3, 1));
+        add(new JScrollPane(getComponent5()), cons.xywh(2, 8, 3, 1));
         add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(2, 10, 3, 1));
         add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
         add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
         add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
 
-        add(getComponent_8(), cons.xywh(2, 20, 3, 1));
+        add(getComponent8(), cons.xywh(2, 20, 3, 1));
 
         buildGroups();
     }
@@ -88,13 +88,13 @@ public class RelationEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_1() {
+    public javax.swing.JLabel getComponent1() {
 
-        if (m_component_1 == null) {
-            m_component_1 = new DefaultLabel(ERDesignerBundle.RELATIONNAME);
+        if (component1 == null) {
+            component1 = new DefaultLabel(ERDesignerBundle.RELATIONNAME);
         }
 
-        return m_component_1;
+        return component1;
     }
 
     /**
@@ -102,13 +102,13 @@ public class RelationEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public DefaultTextField getRelationname() {
+    public DefaultTextField getRelationName() {
 
-        if (m_relationname == null) {
-            m_relationname = new DefaultTextField();
+        if (relationName == null) {
+            relationName = new DefaultTextField();
         }
 
-        return m_relationname;
+        return relationName;
     }
 
     /**
@@ -116,14 +116,14 @@ public class RelationEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JTable getComponent_5() {
+    public javax.swing.JTable getComponent5() {
 
-        if (m_component_5 == null) {
-            m_component_5 = new javax.swing.JTable();
-            m_component_5.setName("Component_5");
+        if (component5 == null) {
+            component5 = new javax.swing.JTable();
+            component5.setName("Component_5");
         }
 
-        return m_component_5;
+        return component5;
     }
 
     /**
@@ -264,25 +264,25 @@ public class RelationEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public JPanel getComponent_8() {
+    public JPanel getComponent8() {
 
-        if (m_component_8 == null) {
-            m_component_8 = new JPanel();
+        if (component8 == null) {
+            component8 = new JPanel();
 
             String rowDef = "p";
             String colDef = "60dlu,2dlu:grow,60dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_component_8.setLayout(layout);
+            component8.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_component_8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
-            m_component_8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
-            m_component_8.setName("Component_8");
+            component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
+            component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
+            component8.setName("Component_8");
         }
 
-        return m_component_8;
+        return component8;
     }
 
     /**
@@ -292,11 +292,11 @@ public class RelationEditorView extends JPanel {
      */
     public DefaultButton getOKButton() {
 
-        if (m_okbutton == null) {
-            m_okbutton = new DefaultButton(ERDesignerBundle.OK);
+        if (okButton == null) {
+            okButton = new DefaultButton(ERDesignerBundle.OK);
         }
 
-        return m_okbutton;
+        return okButton;
     }
 
     /**
@@ -306,11 +306,11 @@ public class RelationEditorView extends JPanel {
      */
     public DefaultButton getCancelButton() {
 
-        if (m_cancelbutton == null) {
-            m_cancelbutton = new DefaultButton(ERDesignerBundle.CANCEL);
+        if (cancelButton == null) {
+            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
         }
 
-        return m_cancelbutton;
+        return cancelButton;
     }
 
     /**
@@ -318,15 +318,15 @@ public class RelationEditorView extends JPanel {
      */
     private void buildGroups() {
 
-        ButtonGroup Group1 = new ButtonGroup();
-        Group1.add(getOnDeleteCascadeNothing());
-        Group1.add(getOnDeleteCascade());
-        Group1.add(getOnDeleteSetNull());
+        ButtonGroup theGroup1 = new ButtonGroup();
+        theGroup1.add(getOnDeleteCascadeNothing());
+        theGroup1.add(getOnDeleteCascade());
+        theGroup1.add(getOnDeleteSetNull());
 
-        ButtonGroup Group2 = new ButtonGroup();
-        Group2.add(getOnUpdateCascadeNothing());
-        Group2.add(getOnUpdateCascade());
-        Group2.add(getOnUpdateSetNull());
+        ButtonGroup theGroup2 = new ButtonGroup();
+        theGroup2.add(getOnUpdateCascadeNothing());
+        theGroup2.add(getOnUpdateCascade());
+        theGroup2.add(getOnUpdateSetNull());
 
     }
 

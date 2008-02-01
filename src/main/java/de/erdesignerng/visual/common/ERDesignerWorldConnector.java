@@ -38,9 +38,11 @@ public interface ERDesignerWorldConnector {
     
     boolean supportsConnectionEditor();
     
+    boolean supportsPreferences();
+    
     Model createNewModel();
     
-    boolean supportsPreferences();
-
-    void initLoadedModel(Model aModel);
+    void initializeLoadedModel(Model aModel);
+    
+    void notifyAboutException(Exception aException);
 }

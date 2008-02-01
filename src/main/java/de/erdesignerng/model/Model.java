@@ -33,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 20:00:45 $
+ * @version $Date: 2008-02-01 17:20:25 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -46,8 +46,6 @@ public class Model implements OwnedModelItemVerifier {
     public static final String PROPERTY_PASSWORD = "PASSWORD";
 
     private TableList tables = new TableList();
-
-    private DomainList domains = new DomainList();
 
     private DefaultValueList defaultValues = new DefaultValueList();
 
@@ -80,22 +78,6 @@ public class Model implements OwnedModelItemVerifier {
 
         aTable.setOwner(this);
         tables.add(aTable);
-    }
-
-    /**
-     * Add a domain to the database model.
-     * 
-     * @param aDomain
-     *            the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException is thrown in case of an error
-     */
-    public void addDomain(Domain aDomain) throws ElementAlreadyExistsException, ElementInvalidNameException {
-
-        ModelUtilities.checkNameAndExistance(domains, aDomain, dialect);
-
-        aDomain.setOwner(this);
-        domains.add(aDomain);
     }
 
     /**
@@ -138,9 +120,6 @@ public class Model implements OwnedModelItemVerifier {
         if (aSender instanceof Table) {
             ModelUtilities.checkExistance(tables, aName, dialect);
         }
-        if (aSender instanceof Domain) {
-            ModelUtilities.checkExistance(domains, aName, dialect);
-        }
     }
 
     public Dialect getDialect() {
@@ -164,14 +143,6 @@ public class Model implements OwnedModelItemVerifier {
 
             return;
         }
-        if (aSender instanceof Domain) {
-
-            Domain theDomain = (Domain) aSender;
-
-            domains.remove(theDomain);
-
-            return;
-        }
 
         if (aSender instanceof Relation) {
 
@@ -189,44 +160,20 @@ public class Model implements OwnedModelItemVerifier {
         return dialect.checkName(aName);
     }
 
-    public DomainList getDomains() {
-        return domains;
-    }
-
-    public void setDomains(DomainList aDomains) {
-        domains = aDomains;
-    }
-
     public RelationList getRelations() {
         return relations;
-    }
-
-    public void setRelations(RelationList aRelations) {
-        relations = aRelations;
     }
 
     public TableList getTables() {
         return tables;
     }
 
-    public void setTables(TableList aTables) {
-        tables = aTables;
-    }
-
     public DefaultValueList getDefaultValues() {
         return defaultValues;
     }
 
-    public void setDefaultValues(DefaultValueList aDefaultValues) {
-        defaultValues = aDefaultValues;
-    }
-
     public ModelProperties getProperties() {
         return properties;
-    }
-
-    public void setProperties(ModelProperties properties) {
-        this.properties = properties;
     }
 
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,

@@ -47,13 +47,13 @@ import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-20 12:24:05 $
+ * @version $Date: 2008-02-01 17:20:29 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
     private Hashtable<IIdentifier, SquirrelMogwaiController[]> controllersBySessionID = new Hashtable<IIdentifier, SquirrelMogwaiController[]>();
 
-    private static ILogger LOGGER = LoggerController.createLogger(SquirrelMogwaiPlugin.class);
+    private static final ILogger LOGGER = LoggerController.createLogger(SquirrelMogwaiPlugin.class);
 
     private SquirrelMogwaiPluginResources resources;
 

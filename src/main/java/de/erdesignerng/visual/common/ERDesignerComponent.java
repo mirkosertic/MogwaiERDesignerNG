@@ -54,10 +54,11 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
+import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
-import de.erdesignerng.io.ModelIOUtilities;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -74,9 +75,9 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.defaultvalue.DefaultValueEditor;
-import de.erdesignerng.visual.editor.domain.DomainEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
+import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
@@ -97,7 +98,6 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
-import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
@@ -151,7 +151,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 };
                 return strategy.createModelFromConnection(connection, options, theNotifier);
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
             return null;
         }
@@ -164,27 +164,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
     
-    private class ZoomInfo {
-
-        private String description;
-
-        private double value;
-
-        public ZoomInfo(String aDescription, double aValue) {
-            description = aDescription;
-            value = aValue;
-        }
-
-        public double getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return description;
-        }
-    }
-
     private static GraphModelListener graphModelListener = new ERDesignerGrapgModelListener();
 
     private DefaultAction classpathAction;
@@ -225,10 +204,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction loadAction;
 
-    private DefaultAction logicalAction;
-
-    private DefaultRadioButtonMenuItem logicalView;
-
     private DefaultAction lruAction;
 
     private DefaultMenu lruMenu;
@@ -236,8 +211,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private Model model;
 
     private DefaultAction newAction;
-
-    private DefaultAction physicalAction;
 
     private ApplicationPreferences preferences;
 
@@ -262,8 +235,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction zoomOutAction;
     
     private DefaultAction preferencesAction;
+    
+    private DefaultAction generateSQL;
 
-    private final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
+    private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
     public ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
@@ -305,14 +280,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.RELATION);        
         
-        physicalAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandPhysicalView();
-            }
-
-        }, this, ERDesignerBundle.PHYSICALVIEW);        
-        
         newAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
@@ -321,14 +288,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }, this, ERDesignerBundle.NEWMODEL);        
         
         lruAction = new DefaultAction(this, ERDesignerBundle.RECENTLYUSEDFILES);        
-        
-        logicalAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLogicalView();
-            }
-
-        }, this, ERDesignerBundle.LOGICALVIEW);        
         
         layoutgraphvizAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -379,14 +338,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }, this, ERDesignerBundle.EXITPROGRAM);
         
         
-        domainsAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandShowDomainEditor();
-            }
-
-        }, this, ERDesignerBundle.DOMAINS);
-        
         classpathAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
@@ -434,8 +385,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.ZOOMOUT);        
 
+        generateSQL = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandGenerateSQL();
+            }
+
+        }, this, ERDesignerBundle.ZOOMOUT);        
+        
         lruMenu = new DefaultMenu(lruAction);        
-        logicalView = new DefaultRadioButtonMenuItem(logicalAction);        
         
         ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(ERDesignerBundle.FILE);
         if (worldConnector.supportsPreferences()) {
@@ -509,7 +467,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(domainsAction));
         theDBMenu.add(new DefaultMenuItem(defaultValuesAction));
-
+        theDBMenu.addSeparator();
+        theDBMenu.add(new DefaultMenuItem(generateSQL));
+        
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
         DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
@@ -519,17 +479,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.addSeparator();
         theViewMenu.add(new DefaultMenuItem(zoomInAction));
         theViewMenu.add(new DefaultMenuItem(zoomOutAction));
-        theViewMenu.addSeparator();
-
-        DefaultRadioButtonMenuItem thePhysicalView = new DefaultRadioButtonMenuItem(physicalAction);
-        ButtonGroup theViewTypeButtonGroup = new ButtonGroup();
-        theViewTypeButtonGroup.add(logicalView);
-        theViewTypeButtonGroup.add(thePhysicalView);
-
-        logicalView.setSelected(true);
-
-        theViewMenu.add(logicalView);
-        theViewMenu.add(thePhysicalView);
 
         DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
         theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
@@ -604,7 +553,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theCell.transferAttributesToProperties(theCell.getAttributes());
 
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
         }
     }
@@ -615,7 +564,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
         }
 
@@ -627,7 +576,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
         }
 
@@ -639,7 +588,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
         }
     }
@@ -652,7 +601,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         try {
             preferences.store();
         } catch (BackingStoreException e) {
-            logException(e);
+            worldConnector.notifyAboutException(e);
         }
 
         System.exit(0);
@@ -680,7 +629,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                             aExporter.exportToStream(theTableCellView.getRendererComponent(graph, false, false, false),
                                     new FileOutputStream(theOutputFile));
                         } catch (Exception e) {
-                            logException(e);
+                            worldConnector.notifyAboutException(e);
                         }
                     }
                 }
@@ -699,7 +648,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 try {
                     aExporter.fullExportToStream(graph, new FileOutputStream(theFile));
                 } catch (Exception e) {
-                    logException(e);
+                    worldConnector.notifyAboutException(e);
                 }
             }
 
@@ -711,7 +660,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             Layouter theLayout = LayouterFactory.getInstance().createGraphvizLayouter();
             theLayout.applyLayout(preferences, graph, graph.getRoots());
         } catch (Exception e) {
-            logException(e);
+            worldConnector.notifyAboutException(e);
         }
     }
 
@@ -751,7 +700,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         try {
             Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFile));
-            worldConnector.initLoadedModel(theModel);
+            worldConnector.initializeLoadedModel(theModel);
             
             setModel(theModel);
 
@@ -768,7 +717,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(ERDesignerBundle.ERRORLOADINGFILE));
             
-            logException(e);
+            worldConnector.notifyAboutException(e);
         }
     }
 
@@ -803,7 +752,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
 
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
 
         }
@@ -834,7 +783,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));                
 
             } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
 
         }
@@ -878,18 +827,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                logException(e);
-            }
-        }
-    }
-
-    protected void commandShowDomainEditor() {
-        DomainEditor theEditor = new DomainEditor(model, scrollPane);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                logException(e);
+                worldConnector.notifyAboutException(e);
             }
         }
     }
@@ -909,6 +847,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theIndex++;
             zoomBox.setSelectedIndex(theIndex);
             commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+        }
+    }
+    
+    protected void commandGenerateSQL() {
+        try {
+            StatementList theStatements = model.getDialect().createSQLGenerator().createCreateAllObjects(model);
+            SQLEditor theEditor = new SQLEditor(scrollPane, model, theStatements);
+            theEditor.showModal();
+        } catch (VetoException e) {
+            worldConnector.notifyAboutException(e);
         }
     }
 
@@ -937,15 +885,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 lruMenu.add(theItem);
             }
         }
-    }
-    
-    /**
-     * Log an exception.
-     * 
-     * @param aException the exception
-     */
-    protected void logException(Exception aException) {
-        aException.printStackTrace();
     }
     
     public void setModel(Model aModel) {
@@ -993,8 +932,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
         commandSetTool(ToolEnum.HAND);
-
-        logicalView.setSelected(graph.isDomainDisplayMode());
     }
     
     protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
@@ -1033,7 +970,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         try {
             preferences.store();
         } catch (Exception e) {
-            // Nothing will happen here
+            worldConnector.notifyAboutException(e);
         }
     }
 }

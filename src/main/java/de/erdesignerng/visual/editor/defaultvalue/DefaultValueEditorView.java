@@ -15,33 +15,33 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-02-01 17:20:29 $
  */
 public class DefaultValueEditorView extends JPanel {
 
-    private javax.swing.JList m_defaultvaluelist;
+    private javax.swing.JList defaultValueList;
 
-    private DefaultButton m_newbutton;
+    private DefaultButton newButton;
 
-    private DefaultButton m_deletebutton;
+    private DefaultButton deleteButton;
 
-    private DefaultTabbedPane m_detailtabbedpane;
+    private DefaultTabbedPane detailTabbedPane;
 
-    private DefaultTabbedPaneTab m_component_6;
+    private DefaultTabbedPaneTab component6;
 
-    private DefaultLabel m_component_9;
+    private DefaultLabel component9;
 
-    private DefaultLabel m_component_10;
+    private DefaultLabel component10;
 
-    private DefaultTextField m_defaultvaluename;
+    private DefaultTextField defaultValueName;
 
-    private DefaultTextField m_declaration;
+    private DefaultTextField declaration;
 
-    private javax.swing.JButton m_updatebutton;
+    private javax.swing.JButton updateButton;
 
-    private javax.swing.JButton m_okbutton;
+    private javax.swing.JButton okButton;
 
-    private javax.swing.JButton m_cancelbutton;
+    private javax.swing.JButton cancelButton;
 
     /**
      * Constructor.
@@ -87,12 +87,12 @@ public class DefaultValueEditorView extends JPanel {
      */
     public javax.swing.JList getDefaultValueList() {
 
-        if (m_defaultvaluelist == null) {
-            m_defaultvaluelist = new javax.swing.JList();
-            m_defaultvaluelist.setName("DefaultValueList");
+        if (defaultValueList == null) {
+            defaultValueList = new javax.swing.JList();
+            defaultValueList.setName("DefaultValueList");
         }
 
-        return m_defaultvaluelist;
+        return defaultValueList;
     }
 
     /**
@@ -102,11 +102,11 @@ public class DefaultValueEditorView extends JPanel {
      */
     public DefaultButton getNewButton() {
 
-        if (m_newbutton == null) {
-            m_newbutton = new DefaultButton(ERDesignerBundle.NEW);
+        if (newButton == null) {
+            newButton = new DefaultButton(ERDesignerBundle.NEW);
         }
 
-        return m_newbutton;
+        return newButton;
     }
 
     /**
@@ -116,11 +116,11 @@ public class DefaultValueEditorView extends JPanel {
      */
     public DefaultButton getDeleteButton() {
 
-        if (m_deletebutton == null) {
-            m_deletebutton = new DefaultButton(ERDesignerBundle.DELETE);
+        if (deleteButton == null) {
+            deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
         }
 
-        return m_deletebutton;
+        return deleteButton;
     }
 
     /**
@@ -130,13 +130,13 @@ public class DefaultValueEditorView extends JPanel {
      */
     public javax.swing.JTabbedPane getDetailTabbedPane() {
 
-        if (m_detailtabbedpane == null) {
-            m_detailtabbedpane = new DefaultTabbedPane();
-            m_detailtabbedpane.addTab(null, this.getDetailTab());
-            m_detailtabbedpane.setSelectedIndex(0);
+        if (detailTabbedPane == null) {
+            detailTabbedPane = new DefaultTabbedPane();
+            detailTabbedPane.addTab(null, this.getDetailTab());
+            detailTabbedPane.setSelectedIndex(0);
         }
 
-        return m_detailtabbedpane;
+        return detailTabbedPane;
     }
 
     /**
@@ -146,26 +146,26 @@ public class DefaultValueEditorView extends JPanel {
      */
     public JPanel getDetailTab() {
 
-        if (m_component_6 == null) {
-            m_component_6 = new DefaultTabbedPaneTab(getDetailTabbedPane(), ERDesignerBundle.DEFAULTVALUEPROPERTIES);
+        if (component6 == null) {
+            component6 = new DefaultTabbedPaneTab(getDetailTabbedPane(), ERDesignerBundle.DEFAULTVALUEPROPERTIES);
 
             String rowDef = "2dlu,p,2dlu,p,20dlu,p,2dlu";
             String colDef = "2dlu,left:60dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
-            m_component_6.setLayout(layout);
+            component6.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            m_component_6.add(this.getComponent_9(), cons.xywh(2, 2, 1, 1));
-            m_component_6.add(this.getComponent_10(), cons.xywh(2, 4, 1, 1));
-            m_component_6.add(this.getDefaultValueName(), cons.xywh(4, 2, 1, 1));
-            m_component_6.add(this.getDeclaration(), cons.xywh(4, 4, 1, 1));
-            m_component_6.add(this.getUpdateButton(), cons.xywh(4, 6, 1, 1));
-            m_component_6.setName("Component_6");
+            component6.add(this.getComponent9(), cons.xywh(2, 2, 1, 1));
+            component6.add(this.getComponent10(), cons.xywh(2, 4, 1, 1));
+            component6.add(this.getDefaultValueName(), cons.xywh(4, 2, 1, 1));
+            component6.add(this.getDeclaration(), cons.xywh(4, 4, 1, 1));
+            component6.add(this.getUpdateButton(), cons.xywh(4, 6, 1, 1));
+            component6.setName("Component_6");
         }
 
-        return m_component_6;
+        return component6;
     }
 
     /**
@@ -173,13 +173,13 @@ public class DefaultValueEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_9() {
+    public javax.swing.JLabel getComponent9() {
 
-        if (m_component_9 == null) {
-            m_component_9 = new DefaultLabel(ERDesignerBundle.NAME);
+        if (component9 == null) {
+            component9 = new DefaultLabel(ERDesignerBundle.NAME);
         }
 
-        return m_component_9;
+        return component9;
     }
 
     /**
@@ -187,13 +187,13 @@ public class DefaultValueEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JLabel getComponent_10() {
+    public javax.swing.JLabel getComponent10() {
 
-        if (m_component_10 == null) {
-            m_component_10 = new DefaultLabel(ERDesignerBundle.DECLRATATION);
+        if (component10 == null) {
+            component10 = new DefaultLabel(ERDesignerBundle.DECLRATATION);
         }
 
-        return m_component_10;
+        return component10;
     }
 
     /**
@@ -203,12 +203,12 @@ public class DefaultValueEditorView extends JPanel {
      */
     public DefaultTextField getDefaultValueName() {
 
-        if (m_defaultvaluename == null) {
-            m_defaultvaluename = new DefaultTextField();
-            m_defaultvaluename.setName("DefaultValueName");
+        if (defaultValueName == null) {
+            defaultValueName = new DefaultTextField();
+            defaultValueName.setName("DefaultValueName");
         }
 
-        return m_defaultvaluename;
+        return defaultValueName;
     }
 
     /**
@@ -218,12 +218,12 @@ public class DefaultValueEditorView extends JPanel {
      */
     public DefaultTextField getDeclaration() {
 
-        if (m_declaration == null) {
-            m_declaration = new DefaultTextField();
-            m_declaration.setName("Declaration");
+        if (declaration == null) {
+            declaration = new DefaultTextField();
+            declaration.setName("Declaration");
         }
 
-        return m_declaration;
+        return declaration;
     }
 
     /**
@@ -233,11 +233,11 @@ public class DefaultValueEditorView extends JPanel {
      */
     public javax.swing.JButton getUpdateButton() {
 
-        if (m_updatebutton == null) {
-            m_updatebutton = new javax.swing.JButton();
+        if (updateButton == null) {
+            updateButton = new javax.swing.JButton();
         }
 
-        return m_updatebutton;
+        return updateButton;
     }
 
     /**
@@ -247,11 +247,11 @@ public class DefaultValueEditorView extends JPanel {
      */
     public javax.swing.JButton getOkButton() {
 
-        if (m_okbutton == null) {
-            m_okbutton = new javax.swing.JButton();
+        if (okButton == null) {
+            okButton = new javax.swing.JButton();
         }
 
-        return m_okbutton;
+        return okButton;
     }
 
     /**
@@ -261,10 +261,10 @@ public class DefaultValueEditorView extends JPanel {
      */
     public javax.swing.JButton getCancelButton() {
 
-        if (m_cancelbutton == null) {
-            m_cancelbutton = new javax.swing.JButton();
+        if (cancelButton == null) {
+            cancelButton = new javax.swing.JButton();
         }
 
-        return m_cancelbutton;
+        return cancelButton;
     }
 }

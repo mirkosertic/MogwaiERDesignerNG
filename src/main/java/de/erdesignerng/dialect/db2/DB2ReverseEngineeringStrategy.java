@@ -15,22 +15,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mysql;
+package de.erdesignerng.dialect.db2;
 
-import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 
-public class MySQLInnoDBSQLGenerator extends SQL92SQLGenerator<MySQLInnoDBDialect> {
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-02-01 17:20:27 $
+ */
+public class DB2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<DB2Dialect> {
 
-    public MySQLInnoDBSQLGenerator(MySQLInnoDBDialect aDialect) {
+    public DB2ReverseEngineeringStrategy(DB2Dialect aDialect) {
         super(aDialect);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String createCreateTableSuffix(Table aTable) {
-        return " ENGINE=InnoDB";
     }
 }

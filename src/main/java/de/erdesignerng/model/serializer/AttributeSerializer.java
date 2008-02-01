@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.io.serializer;
+package de.erdesignerng.model.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,7 +23,6 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.DefaultValue;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
@@ -32,8 +31,6 @@ public class AttributeSerializer extends Serializer {
     public static final AttributeSerializer SERIALIZER = new AttributeSerializer();
     
     public static final String ATTRIBUTE = "Attribute";
-
-    public static final String DOMAINREFID = "domainrefid";
 
     public static final String NULLABLE = "nullable";
 
@@ -47,8 +44,6 @@ public class AttributeSerializer extends Serializer {
         serializeProperties(aDocument, theAttributeElement, aAttribute);
 
         // Domain usw
-        Domain theDomain = aAttribute.getDomain();
-        theAttributeElement.setAttribute(DOMAINREFID, theDomain.getSystemId());
 
         setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
 
@@ -71,14 +66,6 @@ public class AttributeSerializer extends Serializer {
 
             deserializeCommentElement(theAttributeElement, theAttribute);
 
-            String theDomainId = theAttributeElement.getAttribute(DOMAINREFID);
-
-            Domain theDomain = aModel.getDomains().findBySystemId(theDomainId);
-
-            if (theDomain == null) {
-                throw new IllegalArgumentException("Cannot find domain with id " + theDomainId);
-            }
-
             DefaultValue theDefault = null;
             String theDefaultRefId = theAttributeElement.getAttribute(DEFAULTVALUEREFID);
             if ((theDefaultRefId != null) && (!"".equals(theDefaultRefId))) {
@@ -87,9 +74,6 @@ public class AttributeSerializer extends Serializer {
                     throw new IllegalArgumentException("Cannot find default value with id " + theDefaultRefId);
                 }
             }
-
-            theAttribute.setDefinition(theDomain, TRUE.equals(theAttributeElement.getAttribute(NULLABLE)),
-                    theDefault);
 
             aTable.getAttributes().add(theAttribute);
         }

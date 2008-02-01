@@ -15,34 +15,25 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model;
+package de.erdesignerng.visual.common;
 
-/**
- * 
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:05 $
- */
-public class DomainList extends ModelItemVector<Domain> {
+public class ZoomInfo {
 
-    private static final long serialVersionUID = 7547407545913894968L;
+    private String description;
 
-    /**
-     * Find a domain by a given datatype.
-     * 
-     * @param aDataType
-     *            the system id
-     * @param aSize the size
-     * @param aPrecision the precision
-     * @param aRadix the radix
-     * @return the found element
-     */
-    public Domain findByDataType(String aDataType, int aSize, int aPrecision, int aRadix) {
-        for (Domain theDomain : this) {
-            if (theDomain.equals(aDataType, aSize, aPrecision, aRadix)) {
-                return theDomain;
-            }
-        }
-        return null;
+    private double value;
+
+    public ZoomInfo(String aDescription, double aValue) {
+        description = aDescription;
+        value = aValue;
     }
 
+    public double getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return description;
+    }
 }

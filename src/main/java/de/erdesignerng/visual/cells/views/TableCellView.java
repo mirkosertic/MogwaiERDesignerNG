@@ -47,7 +47,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-02-01 17:20:24 $
  */
 public class TableCellView extends VertexView {
 
@@ -69,8 +69,6 @@ public class TableCellView extends VertexView {
         private boolean roundedRect = false;
 
         private boolean selected;
-
-        private boolean domainDisplayMode;
 
         private Dialect dialect;
 
@@ -154,11 +152,8 @@ public class TableCellView extends VertexView {
 
                     String theText = theAttribute.getName();
                     theText += " : ";
-                    if (domainDisplayMode) {
-                        theText += theAttribute.getDomain().getName();
-                    } else {
-                        theText += theAttribute.getPhysicalDeclaration();
-                    }
+
+                    theText += theAttribute.getPhysicalDeclaration();
 
                     if (theAttribute.isForeignKey()) {
                         theText += " (FK)";
@@ -189,11 +184,8 @@ public class TableCellView extends VertexView {
 
                     String theText = theAttribute.getName();
                     theText += " : ";
-                    if (domainDisplayMode) {
-                        theText += theAttribute.getDomain().getName();
-                    } else {
-                        theText += theAttribute.getPhysicalDeclaration();
-                    }
+
+                    theText += theAttribute.getPhysicalDeclaration();
 
                     if (isFK) {
                         theText += " (FK)";
@@ -242,11 +234,8 @@ public class TableCellView extends VertexView {
 
                     String theText = theAttribute.getName();
                     theText += " : ";
-                    if (domainDisplayMode) {
-                        theText += theAttribute.getDomain().getName();
-                    } else {
-                        theText += theAttribute.getPhysicalDeclaration();
-                    }
+
+                    theText += theAttribute.getPhysicalDeclaration();
 
                     if (theAttribute.isForeignKey()) {
                         theText += " (FK)";
@@ -265,11 +254,8 @@ public class TableCellView extends VertexView {
 
                 String theText = theAttribute.getName();
                 theText += " : ";
-                if (domainDisplayMode) {
-                    theText += theAttribute.getDomain().getName();
-                } else {
-                    theText += theAttribute.getPhysicalDeclaration();
-                }
+
+                theText += theAttribute.getPhysicalDeclaration();
 
                 if (theAttribute.isForeignKey()) {
                     theText += " (FK)";
@@ -301,7 +287,6 @@ public class TableCellView extends VertexView {
             TableCellView theView = (TableCellView) aView;
             table = (Table) ((TableCell) theView.getCell()).getUserObject();
             selected = aSelected;
-            domainDisplayMode = ((ERDesignerGraph) aGraph).isDomainDisplayMode();
             dialect = ((ERDesignerGraph) aGraph).getDBModel().getDialect();
 
             return this;
