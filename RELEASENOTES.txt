@@ -48,4 +48,5 @@ Release 1.1
 * Added Exception notifier dialog
 * Added SQL Browser window
 * Added export functionality for DDL scripts for whole model
-* Addex export functionality for DDL scripts of last changes
+* Added export functionality for DDL scripts of last changes
+* Added saving of model modifications in separate SQL files

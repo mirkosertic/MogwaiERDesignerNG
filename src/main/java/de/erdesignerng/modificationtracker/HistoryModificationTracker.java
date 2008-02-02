@@ -18,6 +18,7 @@
 package de.erdesignerng.modificationtracker;
 
 import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
@@ -116,5 +117,15 @@ public class HistoryModificationTracker implements ModelModificationTracker {
      */
     public StatementList getStatements() {
         return statements;
+    }
+
+    public StatementList getNotSavedStatements() {
+        StatementList theResult = new StatementList();
+        for (Statement theStatement : statements) {
+            if (!theStatement.isSaved()) {
+                theResult.add(theStatement);
+            }
+        }
+        return theResult;
     }
 }
