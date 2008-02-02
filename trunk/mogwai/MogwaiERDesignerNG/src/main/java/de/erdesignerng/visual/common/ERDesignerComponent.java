@@ -559,6 +559,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
+            
+            graph.layout();
         }
     }
 
@@ -595,10 +597,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 worldConnector.notifyAboutException(e);
             }
         }
-    }
-
-    protected void commandDelete(Object aCell) {
-
     }
 
     protected void commandExport(Exporter aExporter, ExportType aExportType) {
@@ -986,5 +984,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }
+    }
+
+    public ERDesignerWorldConnector getWorldConnector() {
+        return worldConnector;
     }
 }

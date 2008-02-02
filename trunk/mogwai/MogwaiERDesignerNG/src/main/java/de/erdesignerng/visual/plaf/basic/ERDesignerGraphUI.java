@@ -28,14 +28,13 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 20:54:06 $
+ * @version $Date: 2008-02-02 17:48:06 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -111,10 +110,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
                     try {
                         theDialog.applyValues();
-                    } catch (VetoException e1) {
-                        // TODO undo eberything
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        graph.layout();                        
+                    } catch (Exception e1) {
+                        erdesigner.getWorldConnector().notifyAboutException(e1);
                     }
                 }
 

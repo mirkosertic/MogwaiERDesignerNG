@@ -22,10 +22,8 @@ import java.io.File;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
@@ -37,10 +35,6 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesignerWorldConnector {
 
-    private ISession session;
-    
-    private SquirrelMogwaiPlugin plugin;
-    
     private ERDesignerComponent component;
     
     private ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
@@ -51,20 +45,18 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     
     private String title;
     
-    private ObjectTreeNode node;
+    private SquirrelMogwaiController controller;
     
-    public SquirrelMogwaiTabSheet(ApplicationPreferences aPreferences, ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
-        session = aSession;
-        plugin = aPlugin;
-        node = aNode;
-        component = new ERDesignerComponent(aPreferences, this);
+    public SquirrelMogwaiTabSheet(SquirrelMogwaiController aController) {
+    
+        controller = aController;
+        
+        component = new ERDesignerComponent(ApplicationPreferences.getInstance(), this);
         
         content.setDetailComponent(component.getDetailComponent());
         panel.setContent(content);
 
-        Model theModel = new Model();
-        theModel.setDialect(new SquirrelDialect(aSession, aNode));
-        component.setModel(theModel);
+        component.setModel(createNewModel());
 
         UIInitializer.getInstance().initialize(panel);
     }
@@ -125,7 +117,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 
     public Model createNewModel() {
         Model theModel = new Model();
-        theModel.setDialect(new SquirrelDialect(session, node));
+        theModel.setDialect(controller.getDialect());
         return theModel;
     }
 
@@ -148,9 +140,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     public void notifyAboutException(Exception aException) {
-        session.showErrorMessage(aException);
+        controller.notifyAboutException(aException);
     }
 
     public void exitApplication() {
+        controller.exitApplication();
     }
 }

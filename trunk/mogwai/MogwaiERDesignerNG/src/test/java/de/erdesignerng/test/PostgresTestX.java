@@ -23,14 +23,14 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.db2.DB2Dialect;
-import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 
 /**
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:26 $
+ * @version $Date: 2008-02-02 17:48:01 $
  */
 public class PostgresTestX extends BaseUseCases {
 
@@ -46,16 +46,13 @@ public class PostgresTestX extends BaseUseCases {
         Class.forName("hit.db2.Db2Driver");
         connection = DriverManager.getConnection("jdbc:db2://tcpv01:5027/DB21;package_collection_id=HITJ;ccsid=500;job_name=OA6ACCIS;auto_create_packages=no", "r373", "ccis123");
     }
-
-    @Override
-    public Domain createCharDomain(String aName, int aLength) {
-        Domain theDomain = new Domain();
-        theDomain.setName(aName);
-        theDomain.setDatatype(model.getDialect().getDataTypeByName("varchar"));
-        theDomain.setSize(aLength);
-        return theDomain;
-    }
     
+    @Override
+    public void setTextAttribute(Attribute aAttribute) {
+        aAttribute.setDatatype(model.getDialect().getDataTypeByName("varchar"));
+        aAttribute.setSize(20);
+    }    
+
     /**
      * Test extraction of datatypes.
      * @throws Exception is thrown in case of an error

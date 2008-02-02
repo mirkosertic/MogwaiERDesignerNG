@@ -37,7 +37,7 @@ import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.util.log.ILogger;
 import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
-import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 import de.erdesignerng.plugins.squirrel.preferences.SquirrelMogwaiPreferences;
@@ -47,7 +47,7 @@ import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:29 $
+ * @version $Date: 2008-02-02 17:48:04 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -108,8 +108,6 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
         preferencesPanel = new SquirrelMogwaiPreferences(preferences);
 
-        DialectFactory.getInstance().registerDialect(new SquirrelDialect());
-
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }
@@ -124,7 +122,7 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         try {
             preferences.store();
         } catch (BackingStoreException e) {
-            // Hier passiert nichts
+            // Nothing will happen here
         }
         super.unload();
     }
@@ -162,15 +160,23 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     public SquirrelMogwaiController[] getGraphControllers(ISession session) {
         return controllersBySessionID.get(session.getIdentifier());
     }
+    
+    protected Dialect determineDialect(ISession aSession) {
+        return null;
+    }
 
     public SquirrelMogwaiController createNewGraphControllerForSession(ISession aSession, ObjectTreeNode aNode) {
+
+        Dialect theDialect = determineDialect(aSession);
+        SquirrelDialect theSquirrelDialect = new SquirrelDialect(theDialect, aSession);
+        
         SquirrelMogwaiController[] theControllers = controllersBySessionID.get(aSession.getIdentifier());
 
         Vector<SquirrelMogwaiController> theTemp = new Vector<SquirrelMogwaiController>();
         if (null != theControllers) {
             theTemp.addAll(Arrays.asList(theControllers));
         }
-        SquirrelMogwaiController theResult = new SquirrelMogwaiController(preferences, aSession, this, aNode);
+        SquirrelMogwaiController theResult = new SquirrelMogwaiController(theSquirrelDialect, aSession, this);
         theTemp.add(theResult);
 
         theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp.size()]);
@@ -190,6 +196,8 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
         theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp.size()]);
         controllersBySessionID.put(session.getIdentifier(), theControllers);
+    }
 
+    public void shutdownEditor(SquirrelMogwaiController controller) {
     }
 }

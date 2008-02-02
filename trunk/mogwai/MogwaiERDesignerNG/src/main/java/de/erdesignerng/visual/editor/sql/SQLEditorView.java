@@ -22,6 +22,8 @@ public class SQLEditorView extends JPanel {
 
     private DefaultButton closeButton;
 
+    private DefaultButton deleteButton;
+
     private DefaultButton executeButton;
 
     private DefaultButton saveToFileButton;
@@ -77,7 +79,7 @@ public class SQLEditorView extends JPanel {
         if (buttonPanel == null) {
             buttonPanel = new JPanel();
 
-            String rowDef = "p";
+            String rowDef = "p,10dlu,p";
             String colDef = "fill:80dlu,2dlu:grow,fill:80dlu,2dlu,fill:80dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -85,9 +87,10 @@ public class SQLEditorView extends JPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            buttonPanel.add(getCloseButton(), cons.xywh(1, 1, 1, 1));
+            buttonPanel.add(getDeleteButton(), cons.xywh(1, 1, 1, 1));
             buttonPanel.add(getExecuteButton(), cons.xywh(3, 1, 1, 1));
             buttonPanel.add(getSaveToFileButton(), cons.xywh(5, 1, 1, 1));
+            buttonPanel.add(getCloseButton(), cons.xywh(1, 3, 1, 1));            
             buttonPanel.setName("buttonpanel");
         }
 
@@ -127,6 +130,24 @@ public class SQLEditorView extends JPanel {
 
         return executeButton;
     }
+    
+    /**
+     * Getter method for component deleteButton.
+     * 
+     * @return the initialized component
+     */
+    public DefaultButton getDeleteButton() {
+
+        if (deleteButton == null) {
+            deleteButton = new DefaultButton();
+            deleteButton.setActionCommand("Execute");
+            deleteButton.setName("executeButton");
+            deleteButton.setText("Execute");
+        }
+
+        return deleteButton;
+    }
+    
 
     /**
      * Getter method for component saveToFileButton.
