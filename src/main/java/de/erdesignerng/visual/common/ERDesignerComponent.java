@@ -54,6 +54,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
@@ -828,8 +829,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     
     protected void commandGenerateSQL() {
         try {
-            StatementList theStatements = model.getDialect().createSQLGenerator().createCreateAllObjects(model);
-            SQLEditor theEditor = new SQLEditor(scrollPane, model, theStatements);
+            SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
+            StatementList theStatements = theGenerator.createCreateAllObjects(model);
+            SQLEditor theEditor = new SQLEditor(scrollPane, model, theStatements, currentEditingFile, theGenerator, "schema.sql");
             theEditor.showModal();
         } catch (VetoException e) {
             worldConnector.notifyAboutException(e);

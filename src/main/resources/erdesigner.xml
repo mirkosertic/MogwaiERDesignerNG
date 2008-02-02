@@ -437,22 +437,27 @@
 			<Text lang="de">DDL Generierung...</Text>		
 			<Text lang="en">Create DDL for model...</Text>					
 		</Entry>
-		<Entry id="CLOSE">
-			<Text lang="de">Schliessen</Text>		
-			<Text lang="en">Close</Text>					
-		</Entry>
-		<Entry id="EXECUTE">
+		<Entry id="EXECUTESCRIPT">
 			<Text lang="de">Ausführen</Text>		
 			<Text lang="en">Execute</Text>					
+			<Icon>/de/erdesignerng/icons/database_save.png</Icon>
 		</Entry>
-		<Entry id="SAVETOFILE">
+		<Entry id="SAVESCRIPTTOFILE">
 			<Text lang="de">In Datei speichern</Text>		
 			<Text lang="en">Save to file</Text>					
+			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SQLWINDOW">
 			<Text lang="de">SQL Fenster</Text>		
 			<Text lang="en">SQL Window</Text>					
 		</Entry>
-		
+		<Entry id="EXCEPTIONWINDOW">
+			<Text lang="de">Fehler ( Stacktrace )</Text>		
+			<Text lang="en">Exception ( Stacktrace )</Text>					
+		</Entry>
+		<Entry id="CLOSE">
+			<Text lang="de">Schliessen</Text>		
+			<Text lang="en">Close</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

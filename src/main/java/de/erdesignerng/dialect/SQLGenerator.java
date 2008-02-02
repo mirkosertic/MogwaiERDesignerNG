@@ -98,5 +98,9 @@ public abstract class SQLGenerator<T extends Dialect> {
         
         return theResult;
     }
+
+    public String createScriptStatementSeparator() {
+        return ";";
+    }
     
 }

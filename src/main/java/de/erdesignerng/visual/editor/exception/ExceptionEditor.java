@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.exception;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -25,19 +26,28 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor for exceptions.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:26 $
+ * @version $Date: 2008-02-02 12:07:29 $
  */
 public class ExceptionEditor extends BaseEditor {
 
     private ExceptionEditorView view = new ExceptionEditorView();
+    
+    private DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandClose();
+        }
+    }, this, ERDesignerBundle.CLOSE);    
 
     public ExceptionEditor(Component aParent, Exception aException) {
-        super(aParent, ERDesignerBundle.CLASSPATHCONFIGURATION);
+        super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
 
         initialize();
 
@@ -50,6 +60,8 @@ public class ExceptionEditor extends BaseEditor {
     }
 
     private void initialize() {
+        
+        view.getCloseButton().setAction(closeAction);
 
         setContentPane(view);
         setResizable(false);
