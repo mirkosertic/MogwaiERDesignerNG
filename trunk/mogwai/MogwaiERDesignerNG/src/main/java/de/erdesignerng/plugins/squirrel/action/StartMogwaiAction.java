@@ -23,14 +23,23 @@ import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.action.SquirrelAction;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.action.ISessionAction;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
+import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.db2.DB2Dialect;
+import de.erdesignerng.dialect.mssql.MSSQLDialect;
+import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
+import de.erdesignerng.dialect.oracle.OracleDialect;
+import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiController;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPlugin;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginResources;
+import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-20 12:24:05 $
+ * @version $Date: 2008-02-02 18:49:15 $
  */
 public class StartMogwaiAction extends SquirrelAction implements ISessionAction {
 
@@ -44,21 +53,50 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
         plugin = aPlugin;
     }
 
+    protected Dialect determineDialect(ISession aSession) {
+        if (DialectFactory.isOracle(aSession.getMetaData())) {
+            return new OracleDialect();
+        }
+        if (DialectFactory.isMySQL(aSession.getMetaData())) {
+            return new MySQLInnoDBDialect();
+        }
+        if (DialectFactory.isMySQL5(aSession.getMetaData())) {
+            return new MySQLInnoDBDialect();
+        }
+        if (DialectFactory.isMSSQLServer(aSession.getMetaData())) {
+            return new MSSQLDialect();
+        }
+        if (DialectFactory.isPostgreSQL(aSession.getMetaData())) {
+            return new PostgresDialect();
+        }
+        if (DialectFactory.isDB2(aSession.getMetaData())) {
+            return new DB2Dialect();
+        }
+        return null;
+    }
+
     public void actionPerformed(ActionEvent evt) {
         if (session != null) {
-            ObjectTreeNode[] selectedNodes = session.getSessionSheet().getObjectTreePanel().getSelectedNodes();
 
-            SquirrelMogwaiController theNewController = null;
+            Dialect theDialect = determineDialect(session);
+            if (theDialect != null) {
 
-            for (int i = 0; i < selectedNodes.length; i++) {
+                session.showMessage("Mogwai Dialect : " + theDialect.getClass().getName());
+                for (DataType theDataType : theDialect.getDataTypes()) {
+                    session.showMessage(" Supported datatype : " + theDataType.getName());
+                }
+
+                SquirrelMogwaiController theNewController = null;
 
                 SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
                 if ((controllers == null) || (0 == controllers.length)) {
-                    theNewController = plugin.createNewGraphControllerForSession(session, selectedNodes[i]);
-                    theNewController.startReverseEngineering();                    
+                    theNewController = plugin.createNewGraphControllerForSession(session, theDialect);
+                    theNewController.startReverseEngineering();
                 }
+            } else {
+                ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+                session.showErrorMessage(theHelper.getText(ERDesignerBundle.DIALECTISNOTSUPPORTED));
             }
-
         }
     }
 

@@ -22,7 +22,7 @@ import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:04 $
+ * @version $Date: 2008-02-02 18:49:15 $
  */
 public class SquirrelMogwaiController {
 
@@ -66,5 +66,9 @@ public class SquirrelMogwaiController {
 
     public SquirrelDialect getDialect() {
         return dialect;
+    }
+    
+    public ISession getSession() {
+        return session;
     }
 }

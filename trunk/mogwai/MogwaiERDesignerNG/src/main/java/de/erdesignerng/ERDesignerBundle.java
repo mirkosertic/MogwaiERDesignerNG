@@ -237,4 +237,6 @@ public interface ERDesignerBundle {
   String GENERATECHANGELOG = "GENERATECHANGELOG";
   /** Eine Tabelle muss mindestens ein Attribut heinhalten. */
   String TABLEMUSTHAVEATLEASTONEATTRIBUTE = "TABLEMUSTHAVEATLEASTONEATTRIBUTE";
+  /** Der Datenbankdialekt wird nicht unterstützt!. */
+  String DIALECTISNOTSUPPORTED = "DIALECTISNOTSUPPORTED";
 }
