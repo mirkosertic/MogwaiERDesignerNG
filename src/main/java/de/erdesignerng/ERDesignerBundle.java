@@ -233,4 +233,8 @@ public interface ERDesignerBundle {
   String EXCEPTIONWINDOW = "EXCEPTIONWINDOW";
   /** Schliessen. */
   String CLOSE = "CLOSE";
+  /** Aktuelle DB Änderungen.... */
+  String GENERATECHANGELOG = "GENERATECHANGELOG";
+  /** Eine Tabelle muss mindestens ein Attribut heinhalten. */
+  String TABLEMUSTHAVEATLEASTONEATTRIBUTE = "TABLEMUSTHAVEATLEASTONEATTRIBUTE";
 }

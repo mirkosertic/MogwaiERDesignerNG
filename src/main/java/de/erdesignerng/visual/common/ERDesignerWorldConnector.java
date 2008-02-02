@@ -45,4 +45,6 @@ public interface ERDesignerWorldConnector {
     void initializeLoadedModel(Model aModel);
     
     void notifyAboutException(Exception aException);
+    
+    void exitApplication();
 }

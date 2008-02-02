@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 22:41:46 $
+ * @version $Date: 2008-02-02 14:57:50 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -251,6 +251,11 @@ public class TableEditor extends BaseEditor {
 
     private void commandOk() {
         if (tableBindingInfo.validate().size() == 0) {
+            if (attributeListModel.getSize() == 0) {
+                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                        ERDesignerBundle.TABLEMUSTHAVEATLEASTONEATTRIBUTE));
+                return;
+            }
             setModalResult(MODAL_RESULT_OK);
         }
     }
@@ -363,7 +368,7 @@ public class TableEditor extends BaseEditor {
         for (int i = 0; i < attributeListModel.getSize(); i++) {
             theAttModel.add(attributeListModel.get(i));
         }
-        
+
         indexBindingInfo.model2view();
 
         editingView.getIndexList().invalidate();
@@ -470,72 +475,91 @@ public class TableEditor extends BaseEditor {
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         Table theTable = tableBindingInfo.getDefaultModel();
-        Table theTempTable = new Table();
-
-        tableBindingInfo.setDefaultModel(theTempTable);
-        tableBindingInfo.view2model();
-        if (theTable.isRenamed(theTempTable.getName())) {
-            model.renameTable(theTable, theTempTable.getName());
-        }
-
-        if (!theTable.getComment().equals(theTempTable.getComment())) {
-            model.changeTableComment(theTable, theTempTable.getComment());
-        }
 
         if (!model.getTables().contains(theTable)) {
+            
+            tableBindingInfo.view2model();
+            
+            // The table is new, so just add it 
+            for (int i = 0; i < attributeListModel.getSize(); i++) {
+                theTable.addAttribute(model, (Attribute) attributeListModel.get(i));
+            }
+
+            for (int i = 0; i < indexListModel.getSize(); i++) {
+                theTable.addIndex(model, (Index) indexListModel.get(i));
+            }
+
             model.addTable(theTable);
         } else {
+            // The table exists already in the model
+            Table theTempTable = new Table();
+
+            tableBindingInfo.setDefaultModel(theTempTable);
+            tableBindingInfo.view2model();
+
+            // Check if it was renamed and issue the required commands
+            if (theTable.isRenamed(theTempTable.getName())) {
+                model.renameTable(theTable, theTempTable.getName());
+            }
+
+            // Check if the comment was changed and issue the required commands
+            if (!theTable.getComment().equals(theTempTable.getComment())) {
+                model.changeTableComment(theTable, theTempTable.getComment());
+            }
+
+            // Remove the removed attributes
             for (Attribute theAttribute : removedAttributes) {
                 model.removeAttributeFromTable(theTable, theAttribute);
             }
+            
+            // Remove the removed indexes
             for (Index theIndex : removedIndexes) {
                 model.removeIndex(theTable, theIndex);
             }
 
-        }
+            // And finally check all attributes if they are new or were renamed or modified
+            for (String theKey : knownAttributeValues.keySet()) {
+                Attribute theAttribute = knownAttributeValues.get(theKey);
 
-        for (String theKey : knownAttributeValues.keySet()) {
-            Attribute theAttribute = knownAttributeValues.get(theKey);
-
-            Attribute theExistantAttribute = theTable.getAttributes().findBySystemId(theKey);
-            if (theExistantAttribute == null) {
-                model.addAttributeToTable(theTable, theAttribute);
-            } else {
-                try {
-                    if (theExistantAttribute.isRenamed(theAttribute)) {
-                        model.renameAttribute(theExistantAttribute, theAttribute.getName());
-                    } else {
-                        if (theExistantAttribute.isModified(theAttribute)) {
-                            model.changeAttribute(theExistantAttribute, theAttribute);
+                Attribute theExistantAttribute = theTable.getAttributes().findBySystemId(theKey);
+                if (theExistantAttribute == null) {
+                    model.addAttributeToTable(theTable, theAttribute);
+                } else {
+                    try {
+                        if (theExistantAttribute.isRenamed(theAttribute)) {
+                            model.renameAttribute(theExistantAttribute, theAttribute.getName());
+                        } else {
+                            if (theExistantAttribute.isModified(theAttribute)) {
+                                model.changeAttribute(theExistantAttribute, theAttribute);
+                            }
                         }
+                    } catch (VetoException e1) {
+                        throw e1;
+                    } catch (Exception e) {
+                        logFatalError(e);
                     }
-                } catch (VetoException e1) {
-                    throw e1;
-                } catch (Exception e) {
-                    logFatalError(e);
+                }
+            }
+
+            for (String theKey : knownIndexValues.keySet()) {
+                Index theIndex = knownIndexValues.get(theKey);
+
+                Index theExistantIndex = theTable.getIndexes().findBySystemId(theKey);
+                if (theExistantIndex == null) {
+                    model.addIndexToTable(theTable, theIndex);
+                } else {
+                    try {
+                        if (theExistantIndex.isModified(theIndex)) {
+                            model.changeIndex(theExistantIndex, theIndex);
+                        }
+                    } catch (VetoException e1) {
+                        throw e1;
+                    } catch (Exception e) {
+                        logFatalError(e);
+                    }
                 }
             }
         }
-
-        for (String theKey : knownIndexValues.keySet()) {
-            Index theIndex = knownIndexValues.get(theKey);
-
-            Index theExistantIndex = theTable.getIndexes().findBySystemId(theKey);
-            if (theExistantIndex == null) {
-                model.addIndexToTable(theTable, theIndex);
-            } else {
-                try {
-                    if (theExistantIndex.isModified(theIndex)) {
-                        model.changeIndex(theExistantIndex, theIndex);
-                    }
-                } catch (VetoException e1) {
-                    throw e1;
-                } catch (Exception e) {
-                    logFatalError(e);
-                }
-            }
-        }
-
     }
 
     public boolean isPrimaryKey(Attribute aAttribute) {
