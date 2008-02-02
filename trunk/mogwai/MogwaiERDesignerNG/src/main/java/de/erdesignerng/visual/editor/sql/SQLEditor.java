@@ -20,19 +20,26 @@ package de.erdesignerng.visual.editor.sql;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.jdesktop.swingworker.SwingWorker;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
+import de.erdesignerng.io.SQLFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -45,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:32 $
+ * @version $Date: 2008-02-02 12:07:28 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -61,14 +68,20 @@ public class SQLEditor extends BaseEditor {
         public void processActionEvent(ActionEvent e) {
             commandExecute();
         }
-    }, this, ERDesignerBundle.EXECUTE);
+    }, this, ERDesignerBundle.EXECUTESCRIPT);
 
     private DefaultAction saveToFileAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandSaveToFile();
         }
-    }, this, ERDesignerBundle.SAVETOFILE);
+    }, this, ERDesignerBundle.SAVESCRIPTTOFILE);
+
+    private File lastEditedFile;
+
+    private SQLGenerator generator;
+
+    private String filename;
 
     private class ExecuteSQLSwingWorker extends SwingWorker<String, String> {
 
@@ -80,19 +93,19 @@ public class SQLEditor extends BaseEditor {
             closeAction.setEnabled(false);
             executeAction.setEnabled(false);
             saveToFileAction.setEnabled(false);
-            
+
             Connection theConnection = null;
             try {
-                
+
                 theConnection = model.createConnection(ApplicationPreferences.getInstance());
-                
+
                 for (int i = 0; i < theModel.getSize(); i++) {
                     Statement theStatement = (Statement) theModel.get(i);
                     if (!theStatement.isExecuted()) {
 
                         view.getSqlList().setSelectedIndex(i);
                         view.getSqlList().ensureIndexIsVisible(i);
-                        
+
                         java.sql.Statement theJDBCStatement = null;
                         try {
                             theJDBCStatement = theConnection.createStatement();
@@ -124,7 +137,7 @@ public class SQLEditor extends BaseEditor {
                         // Do nothing here
                     }
                 }
-                
+
                 closeAction.setEnabled(true);
                 executeAction.setEnabled(true);
                 saveToFileAction.setEnabled(true);
@@ -143,8 +156,9 @@ public class SQLEditor extends BaseEditor {
     private final class StatementRenderer implements ListCellRenderer {
 
         private DefaultTextArea component = new DefaultTextArea();
+
         private UIInitializer initializer = UIInitializer.getInstance();
-        
+
         public Component getListCellRendererComponent(JList aList, Object aValue, int aIndex, boolean isSelected,
                 boolean cellHasFocus) {
             Statement theStatement = (Statement) aValue;
@@ -154,14 +168,14 @@ public class SQLEditor extends BaseEditor {
                 component.setForeground(Color.GRAY);
 
             }
-            
+
             component.setText(theStatement.getSql());
             if (isSelected) {
                 component.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
             } else {
                 component.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
             }
-            
+
             return component;
         }
     }
@@ -170,12 +184,16 @@ public class SQLEditor extends BaseEditor {
 
     private Model model;
 
-    public SQLEditor(Component aParent, Model aModel, StatementList aStatements) {
+    public SQLEditor(Component aParent, Model aModel, StatementList aStatements, File aLastEditedFile,
+            SQLGenerator aGenerator, String aFileName) {
         super(aParent, ERDesignerBundle.SQLWINDOW);
 
         initialize();
 
         model = aModel;
+        lastEditedFile = aLastEditedFile;
+        generator = aGenerator;
+        filename = aFileName;
 
         view.getSqlList().setCellRenderer(new StatementRenderer());
 
@@ -211,6 +229,37 @@ public class SQLEditor extends BaseEditor {
     }
 
     private void commandSaveToFile() {
+        SQLFileFilter theFiler = new SQLFileFilter();
 
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        theChooser.setFileFilter(theFiler);
+        if (lastEditedFile != null) {
+            theChooser.setSelectedFile(new File(lastEditedFile.getParent(), filename));
+        }
+        if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+
+            DefaultListModel theModel = (DefaultListModel) view.getSqlList().getModel();
+            try {
+                File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+                FileWriter theWriter = new FileWriter(theFile);
+                PrintWriter thePW = new PrintWriter(theWriter);
+
+                for (int i = 0; i < theModel.getSize(); i++) {
+                    Statement theStatement = (Statement) theModel.get(i);
+
+                    thePW.print(theStatement.getSql());
+                    thePW.println(generator.createScriptStatementSeparator());
+                }
+
+                thePW.flush();
+                thePW.close();
+
+                MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+
+            } catch (Exception e) {
+                logFatalError(e);
+            }
+        }
     }
 }
