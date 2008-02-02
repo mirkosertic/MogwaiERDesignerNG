@@ -61,7 +61,7 @@ public class ExceptionEditorView extends JPanel {
             buttonPanel = new JPanel();
 
             String rowDef = "p";
-            String colDef = "fill:40dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
+            String colDef = "fill:60dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             buttonPanel.setLayout(layout);

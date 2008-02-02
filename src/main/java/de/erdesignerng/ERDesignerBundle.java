@@ -7,228 +7,230 @@ public interface ERDesignerBundle {
 
   String BUNDLE_NAME = "de/erdesignerng/ERDesignerBundle";
 
-  /**  */
+  /** . */
   String TITLE = "TITLE";
-  /** Datei */
+  /** Datei. */
   String FILE = "FILE";
-  /** Zuletzt benutzte Dateien */
+  /** Zuletzt benutzte Dateien. */
   String RECENTLYUSEDFILES = "RECENTLYUSEDFILES";
-  /** Neues Modell */
+  /** Neues Modell. */
   String NEWMODEL = "NEWMODEL";
-  /** Modell speichern... */
+  /** Modell speichern.... */
   String SAVEMODEL = "SAVEMODEL";
-  /** Modell laden... */
+  /** Modell laden.... */
   String LOADMODEL = "LOADMODEL";
-  /** Programm beenden */
+  /** Programm beenden. */
   String EXITPROGRAM = "EXITPROGRAM";
-  /** Export */
+  /** Export. */
   String EXPORT = "EXPORT";
-  /** als SVG */
+  /** als SVG. */
   String ASSVG = "ASSVG";
-  /** als PNG */
+  /** als PNG. */
   String ASPNG = "ASPNG";
-  /** als JPEG */
+  /** als JPEG. */
   String ASJPEG = "ASJPEG";
-  /** als BMP */
+  /** als BMP. */
   String ASBMP = "ASBMP";
-  /** Datenbank */
+  /** Datenbank. */
   String DATABASE = "DATABASE";
-  /** Klassenpfad... */
+  /** Klassenpfad.... */
   String CLASSPATH = "CLASSPATH";
-  /** Datenbankverbindung... */
+  /** Datenbankverbindung.... */
   String DBCONNECTION = "DBCONNECTION";
-  /** Reverse engineer... */
+  /** Reverse engineer.... */
   String REVERSEENGINEER = "REVERSEENGINEER";
-  /** Domänen... */
+  /** Domänen.... */
   String DOMAINS = "DOMAINS";
-  /** Defaultwerte... */
+  /** Defaultwerte.... */
   String DEFAULTVALUES = "DEFAULTVALUES";
-  /** Ansicht */
+  /** Ansicht. */
   String VIEW = "VIEW";
-  /** Vergrössern */
+  /** Vergrössern. */
   String ZOOMIN = "ZOOMIN";
-  /** Verkleinern */
+  /** Verkleinern. */
   String ZOOMOUT = "ZOOMOUT";
-  /**  */
+  /** . */
   String HAND = "HAND";
-  /**  */
+  /** . */
   String ENTITY = "ENTITY";
-  /**  */
+  /** . */
   String RELATION = "RELATION";
-  /** Vergrösserung */
+  /** Vergrösserung. */
   String ZOOM = "ZOOM";
-  /** Konfiguration Treiber-Klassenpfad */
+  /** Konfiguration Treiber-Klassenpfad. */
   String CLASSPATHCONFIGURATION = "CLASSPATHCONFIGURATION";
-  /** Konfiguration Datenbankverbindung */
+  /** Konfiguration Datenbankverbindung. */
   String CONNECTIONCONFIGURATION = "CONNECTIONCONFIGURATION";
-  /** Entität editieren */
+  /** Entität editieren. */
   String ENTITYEDITOR = "ENTITYEDITOR";
-  /** Relation editieren */
+  /** Relation editieren. */
   String RELATIONEDITOR = "RELATIONEDITOR";
-  /** Layout */
+  /** Layout. */
   String LAYOUT = "LAYOUT";
-  /** Layout durch GraphViz */
+  /** Layout durch GraphViz. */
   String LAYOUTBYGRAPHVIZ = "LAYOUTBYGRAPHVIZ";
-  /** Name */
+  /** Name. */
   String NAME = "NAME";
-  /** Deklaration */
+  /** Deklaration. */
   String DECLRATATION = "DECLRATATION";
-  /** Java Typ */
+  /** Java Typ. */
   String JAVATYPE = "JAVATYPE";
-  /** Sequenziert */
+  /** Sequenziert. */
   String SEQUENCED = "SEQUENCED";
-  /** Eigenschaften der Domäne */
+  /** Eigenschaften der Domäne. */
   String DOMAINPROPERTIES = "DOMAINPROPERTIES";
-  /** Das Attribut ist Teil eines Fremdschlüssels */
+  /** Das Attribut ist Teil eines Fremdschlüssels. */
   String ATTRIBUTEISUSEDINFOREIGNKEYS = "ATTRIBUTEISUSEDINFOREIGNKEYS";
-  /** Information */
+  /** Information. */
   String INFORMATION = "INFORMATION";
-  /** Fehler */
+  /** Fehler. */
   String ERROR = "ERROR";
-  /** Frage */
+  /** Frage. */
   String QUESTION = "QUESTION";
-  /** Wollen Sie das Element wirklich löschen? */
+  /** Wollen Sie das Element wirklich löschen?. */
   String DOYOUREALLYWANTTODELETE = "DOYOUREALLYWANTTODELETE";
-  /** Die Verbindung scheint zu funktionieren */
+  /** Die Verbindung scheint zu funktionieren. */
   String CONNECTIONSEEMSTOBEOK = "CONNECTIONSEEMSTOBEOK";
-  /** Neu */
+  /** Neu. */
   String NEW = "NEW";
-  /** Löschen */
+  /** Löschen. */
   String DELETE = "DELETE";
-  /** Aktualisieren */
+  /** Aktualisieren. */
   String UPDATE = "UPDATE";
-  /** Ok */
+  /** Ok. */
   String OK = "OK";
-  /** Abbrechen */
+  /** Abbrechen. */
   String CANCEL = "CANCEL";
-  /** Test */
+  /** Test. */
   String TEST = "TEST";
-  /** Dialekt */
+  /** Dialekt. */
   String DIALECT = "DIALECT";
-  /** Treiber */
+  /** Treiber. */
   String JDBCDRIVER = "JDBCDRIVER";
-  /** JDBC-URL */
+  /** JDBC-URL. */
   String JDBCURL = "JDBCURL";
-  /** Benutzer */
+  /** Benutzer. */
   String USER = "USER";
-  /** Kennwort */
+  /** Kennwort. */
   String PASSWORD = "PASSWORD";
-  /** Eigenschaften des Defaultwertes */
+  /** Eigenschaften des Defaultwertes. */
   String DEFAULTVALUEPROPERTIES = "DEFAULTVALUEPROPERTIES";
-  /**  */
+  /** . */
   String ADDFOLDER = "ADDFOLDER";
-  /**  */
+  /** . */
   String REMOVEFOLDER = "REMOVEFOLDER";
-  /**  */
+  /** . */
   String UP = "UP";
-  /**  */
+  /** . */
   String DOWN = "DOWN";
-  /** Name der Entität */
+  /** Name der Entität. */
   String ENTITYNAME = "ENTITYNAME";
-  /** Default */
+  /** Default. */
   String DEFAULT = "DEFAULT";
-  /** Ist NULLABLE */
+  /** Ist NULLABLE. */
   String NULLABLE = "NULLABLE";
-  /** Ist Primärschlüssel */
+  /** Ist Primärschlüssel. */
   String PRIMARYKEY = "PRIMARYKEY";
-  /** Allgemeines */
+  /** Allgemeines. */
   String GENERAL = "GENERAL";
-  /** Optionen */
+  /** Optionen. */
   String OPTIONS = "OPTIONS";
-  /** Kommentare */
+  /** Kommentare. */
   String COMMENTS = "COMMENTS";
-  /** Attribute */
+  /** Attribute. */
   String ATTRIBUTES = "ATTRIBUTES";
-  /** Indizes */
+  /** Indizes. */
   String INDEXES = "INDEXES";
-  /** Nichts */
+  /** Nichts. */
   String DATABASEDEFAULT = "DATABASEDEFAULT";
-  /** CASCADE */
+  /** CASCADE. */
   String CASCADE = "CASCADE";
-  /** SET NULL */
+  /** SET NULL. */
   String SETNULL = "SETNULL";
-  /** Name der Relation */
+  /** Name der Relation. */
   String RELATIONNAME = "RELATIONNAME";
-  /** Alles in eine Datei... */
+  /** Alles in eine Datei.... */
   String ALLINONEFILE = "ALLINONEFILE";
-  /** Eine Datei pro Tabelle... */
+  /** Eine Datei pro Tabelle.... */
   String ONEFILEPERTABLE = "ONEFILEPERTABLE";
-  /** Das Element wird benutzt und kann daher nicht gelöscht werden */
+  /** Das Element wird benutzt und kann daher nicht gelöscht werden. */
   String ELEMENTINUSE = "ELEMENTINUSE";
-  /** Logische Ansicht(Domänen) */
+  /** Logische Ansicht(Domänen). */
   String LOGICALVIEW = "LOGICALVIEW";
-  /** Physische Ansicht(Deklarationen) */
+  /** Physische Ansicht(Deklarationen). */
   String PHYSICALVIEW = "PHYSICALVIEW";
-  /** Tablengenerierung */
+  /** Tablengenerierung. */
   String TABLEGENERATION = "TABLEGENERATION";
-  /** Domänengenerierung */
+  /** Domänengenerierung. */
   String DOMAINGENERATION = "DOMAINGENERATION";
-  /** Defaultgenerierung */
+  /** Defaultgenerierung. */
   String DEFAULTVALUEENERATION = "DEFAULTVALUEENERATION";
-  /** Sie müssen mindestens ein Schema auswählen */
+  /** Sie müssen mindestens ein Schema auswählen. */
   String CHOOSEONESCHEMA = "CHOOSEONESCHEMA";
-  /** Standard */
+  /** Standard. */
   String STANDART = "STANDART";
-  /** Reverseengineering von Schema {0} */
+  /** Reverseengineering von Schema {0}. */
   String ENGINEERINGSCHEMA = "ENGINEERINGSCHEMA";
-  /** Reverseengineering von Tabelle {0} */
+  /** Reverseengineering von Tabelle {0}. */
   String ENGINEERINGTABLE = "ENGINEERINGTABLE";
-  /** Reverseengineering von Relationen für Tabelle {0} */
+  /** Reverseengineering von Relationen für Tabelle {0}. */
   String ENGINEERINGRELATION = "ENGINEERINGRELATION";
-  /** Reverseengineering beendet */
+  /** Reverseengineering beendet. */
   String ENGINEERINGFINISHED = "ENGINEERINGFINISHED";
-  /** Eigenschaften der Relation */
+  /** Eigenschaften der Relation. */
   String RELATIONPROPERTIES = "RELATIONPROPERTIES";
-  /** Mapping der Eigenschaften */
+  /** Mapping der Eigenschaften. */
   String ATTRIBUTEMAPPING = "ATTRIBUTEMAPPING";
-  /** Behandlung von ON DELETE */
+  /** Behandlung von ON DELETE. */
   String ONDELETEHANDLING = "ONDELETEHANDLING";
-  /** Behandlung von ON UPDATE */
+  /** Behandlung von ON UPDATE. */
   String ONUPDATEHANDLING = "ONUPDATEHANDLING";
-  /** Schema Optionen */
+  /** Schema Optionen. */
   String SCHEMAOPTIONS = "SCHEMAOPTIONS";
-  /** Engineering Optionen */
+  /** Engineering Optionen. */
   String ENGINEERINGOPTIONS = "ENGINEERINGOPTIONS";
-  /** Index ist eindeutig */
+  /** Index ist eindeutig. */
   String INDEXISUNIQUE = "INDEXISUNIQUE";
-  /** Index ist nicht eindeutig */
+  /** Index ist nicht eindeutig. */
   String INDEXISNOTUNIQUE = "INDEXISNOTUNIQUE";
-  /** Index ist Primärschlüssel */
+  /** Index ist Primärschlüssel. */
   String INDEXISPRIMARY = "INDEXISPRIMARY";
-  /** Es existiert schon ein Primärschlüssel! */
+  /** Es existiert schon ein Primärschlüssel!. */
   String THEREISALREADYAPRIMARYKEY = "THEREISALREADYAPRIMARYKEY";
-  /** Voreinstellungen... */
+  /** Voreinstellungen.... */
   String PREFERENCES = "PREFERENCES";
-  /** Pfad zu DOT */
+  /** Pfad zu DOT. */
   String DOTPATH = "DOTPATH";
-  /** Fehler beim Laden der Datei */
+  /** Fehler beim Laden der Datei. */
   String ERRORLOADINGFILE = "ERRORLOADINGFILE";
-  /** Datei erfolgreich geladen */
+  /** Datei erfolgreich geladen. */
   String FILELOADED = "FILELOADED";
-  /** Datei erfolgreich gespeichert */
+  /** Datei erfolgreich gespeichert. */
   String FILESAVED = "FILESAVED";
-  /** Neues Modell erzeugt */
+  /** Neues Modell erzeugt. */
   String NEWMODELCREATED = "NEWMODELCREATED";
-  /** Bitte definieren Sie vorher eine Datenbankverbindung! */
+  /** Bitte definieren Sie vorher eine Datenbankverbindung!. */
   String PLEASEDEFINEADATABASECONNECTIONFIRST = "PLEASEDEFINEADATABASECONNECTIONFIRST";
-  /** Grösse */
+  /** Grösse. */
   String SIZE = "SIZE";
-  /** Nachkommastellen */
+  /** Nachkommastellen. */
   String FRACTION = "FRACTION";
-  /** Skalierung */
+  /** Skalierung. */
   String SCALE = "SCALE";
-  /** Datentyp */
+  /** Datentyp. */
   String DATATYPE = "DATATYPE";
-  /** Ein Index muss mindestens ein Attribut beinhalten! */
+  /** Ein Index muss mindestens ein Attribut beinhalten!. */
   String INDEXMUSTHAVEATLEASTONEATTRIBUTE = "INDEXMUSTHAVEATLEASTONEATTRIBUTE";
-  /** DDL Generierung... */
+  /** DDL Generierung.... */
   String GENERATECREATEDBDDL = "GENERATECREATEDBDDL";
-  /** Schliessen */
-  String CLOSE = "CLOSE";
-  /** Ausführen */
-  String EXECUTE = "EXECUTE";
-  /** In Datei speichern */
-  String SAVETOFILE = "SAVETOFILE";
-  /** SQL Fenster */
+  /** Ausführen. */
+  String EXECUTESCRIPT = "EXECUTESCRIPT";
+  /** In Datei speichern. */
+  String SAVESCRIPTTOFILE = "SAVESCRIPTTOFILE";
+  /** SQL Fenster. */
   String SQLWINDOW = "SQLWINDOW";
+  /** Fehler ( Stacktrace ). */
+  String EXCEPTIONWINDOW = "EXCEPTIONWINDOW";
+  /** Schliessen. */
+  String CLOSE = "CLOSE";
 }
