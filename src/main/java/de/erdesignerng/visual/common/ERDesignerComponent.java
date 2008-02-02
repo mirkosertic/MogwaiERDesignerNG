@@ -25,8 +25,12 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +58,7 @@ import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
@@ -151,7 +156,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 };
                 Model theModel = strategy.createModelFromConnection(worldConnector, connection, options, theNotifier);
                 return theModel;
-                
+
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
@@ -535,7 +540,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
             return;
         }
-        
+
         Table theTable = new Table();
         TableEditor theEditor = new TableEditor(model, scrollPane);
         theEditor.initializeFor(theTable);
@@ -561,7 +566,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
-            
+
             graph.layout();
         }
     }
@@ -744,10 +749,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 Model theModel = theWorker.get();
                 if (theModel != null) {
-                    
+
                     worldConnector.initializeLoadedModel(theModel);
-                    
-                    theModel.getProperties().copyFrom(model);                    
+
+                    theModel.getProperties().copyFrom(model);
                     setModel(theModel);
                 }
 
@@ -779,6 +784,34 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 preferences.addLRUFile(theFile);
 
                 initLRUMenu();
+
+                if (model.getModificationTracker() instanceof HistoryModificationTracker) {
+                    HistoryModificationTracker theTracker = (HistoryModificationTracker) model.getModificationTracker();
+                    StatementList theStatements = theTracker.getNotSavedStatements();
+                    if (theStatements.size() > 0) {
+                        StringBuilder theFileName = new StringBuilder(theFile.toString());
+                        int p = theFileName.lastIndexOf(".");
+                        if (p > 0) {
+
+                            SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
+
+                            theFileName = new StringBuilder(theFileName.substring(0, p));
+
+                            DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                            theFileName.insert(p, "_" + theFormat.format(new Date()));
+                            theFileName.append(".sql");
+
+                            PrintWriter theWriter = new PrintWriter(new File(theFileName.toString()));
+                            for (Statement theStatement : theStatements) {
+                                theWriter.print(theStatement.getSql());
+                                theWriter.println(theGenerator.createScriptStatementSeparator());
+                                theStatement.setSaved(true);
+
+                            }
+                            theWriter.close();
+                        }
+                    }
+                }
 
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
@@ -840,13 +873,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void commandGenerateSQL() {
-        
+
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
                     ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
             return;
         }
-        
+
         try {
             SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
             StatementList theStatements = theGenerator.createCreateAllObjects(model);
@@ -857,19 +890,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             worldConnector.notifyAboutException(e);
         }
     }
-    
+
     protected String generateChangelogSQLFileName() {
         return "changelog.sql";
     }
 
     protected void commandGenerateChangelogSQL() {
-        
+
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
                     ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
             return;
         }
-        
+
         SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
         StatementList theStatements = ((HistoryModificationTracker) model.getModificationTracker()).getStatements();
         SQLEditor theEditor = new SQLEditor(scrollPane, model, theStatements, currentEditingFile, theGenerator,

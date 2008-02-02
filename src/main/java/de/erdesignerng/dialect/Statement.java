@@ -23,6 +23,8 @@ public class Statement {
     
     private boolean executed;
     
+    private boolean saved;
+    
     public Statement(String aSQL) {
         sql = aSQL;
     }
@@ -46,5 +48,26 @@ public class Statement {
      */
     public void setExecuted(boolean executed) {
         this.executed = executed;
+    }
+
+    /**
+     * @return the saved
+     */
+    public boolean isSaved() {
+        return saved;
+    }
+
+    /**
+     * @param saved the saved to set
+     */
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
+    /**
+     * @param sql the sql to set
+     */
+    public void setSql(String sql) {
+        this.sql = sql;
     }
 }
