@@ -12,11 +12,12 @@ import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultRadioButton;
 import de.mogwai.common.client.looks.components.DefaultSeparator;
+import de.mogwai.common.client.looks.components.DefaultTable;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-02-02 22:01:32 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -24,7 +25,7 @@ public class RelationEditorView extends JPanel {
 
     private DefaultTextField relationName;
 
-    private javax.swing.JTable component5;
+    private DefaultTable attributeMappingTable;
 
     private JPanel onDeleteContainer;
 
@@ -72,7 +73,7 @@ public class RelationEditorView extends JPanel {
         add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
         add(getRelationName(), cons.xywh(4, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(2, 6, 3, 1));
-        add(new JScrollPane(getComponent5()), cons.xywh(2, 8, 3, 1));
+        add(new JScrollPane(getAttributeMappingTable()), cons.xywh(2, 8, 3, 1));
         add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(2, 10, 3, 1));
         add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
         add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
@@ -116,14 +117,14 @@ public class RelationEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public javax.swing.JTable getComponent5() {
+    public DefaultTable getAttributeMappingTable() {
 
-        if (component5 == null) {
-            component5 = new javax.swing.JTable();
-            component5.setName("Component_5");
+        if (attributeMappingTable == null) {
+            attributeMappingTable = new DefaultTable();
+            attributeMappingTable.setName("Component_5");
         }
 
-        return component5;
+        return attributeMappingTable;
     }
 
     /**

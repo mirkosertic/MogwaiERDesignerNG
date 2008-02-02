@@ -21,13 +21,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
-import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -39,7 +34,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 18:49:15 $
+ * @version $Date: 2008-02-02 22:01:32 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -81,6 +76,7 @@ public class RelationEditor extends BaseEditor {
         model = aModel;
 
         bindingInfo.addBinding("name", editingView.getRelationName(), true);
+        bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(), null));
 
         RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
         theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
@@ -118,25 +114,6 @@ public class RelationEditor extends BaseEditor {
     public void initializeFor(Relation aRelation) {
         bindingInfo.setDefaultModel(aRelation);
         bindingInfo.model2view();
-
-        Index thePrimaryKey = aRelation.getExportingTable().getPrimarykey();
-        Attribute[] theAssigned;
-        if (thePrimaryKey != null) {
-            theAssigned = new Attribute[thePrimaryKey.getAttributes().size()];
-            for (int count = 0; count < thePrimaryKey.getAttributes().size(); count++) {
-                theAssigned[count] = aRelation.getMapping().get(thePrimaryKey.getAttributes().get(count));
-            }
-        } else {
-            theAssigned = new Attribute[0];
-        }
-        tableModel = new AttributeTableModel(aRelation.getExportingTable().getName(), aRelation.getImportingTable()
-                .getName(), thePrimaryKey, theAssigned);
-
-        editingView.getComponent5().setModel(tableModel);
-        editingView.getComponent5().getTableHeader().setReorderingAllowed(false);
-
-        JComboBox theAttributes = new JComboBox(aRelation.getImportingTable().getAttributes());
-        editingView.getComponent5().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
     }
 
     private void commandOk() {
@@ -149,28 +126,24 @@ public class RelationEditor extends BaseEditor {
     public void applyValues() throws Exception {
         Relation theRelation = bindingInfo.getDefaultModel();
 
-        Relation theTempRelation = new Relation();
-        bindingInfo.setDefaultModel(theTempRelation);
-
-        bindingInfo.view2model();
-
         if (!model.getRelations().contains(theRelation)) {
+            
+            bindingInfo.view2model();            
             model.addRelation(theRelation);
-        }
+            
+        } else {
 
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            Attribute thePKAttribute = (Attribute) tableModel.getValueAt(i, 0);
-            Attribute theAssignedAttribute = (Attribute) tableModel.getValueAt(i, 1);
+            Relation theTempRelation = new Relation();
+            bindingInfo.setDefaultModel(theTempRelation);
+            bindingInfo.view2model();
+            
+            if (theRelation.isRenamed(theTempRelation.getName())) {
+                model.renameRelation(theRelation, theTempRelation.getName());
+            }
 
-            theTempRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
-        }
-
-        if (theRelation.isRenamed(theTempRelation.getName())) {
-            model.renameRelation(theRelation, theTempRelation.getName());
-        }
-
-        if (theRelation.isModified(theTempRelation)) {
-            model.changeRelation(theRelation, theTempRelation);
+            if (theRelation.isModified(theTempRelation)) {
+                model.changeRelation(theRelation, theTempRelation);
+            }
         }
     }
 }
