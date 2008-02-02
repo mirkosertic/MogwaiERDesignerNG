@@ -149,7 +149,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
 
                 };
-                return strategy.createModelFromConnection(worldConnector, connection, options, theNotifier);
+                Model theModel = strategy.createModelFromConnection(worldConnector, connection, options, theNotifier);
+                return theModel;
+                
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
@@ -741,8 +743,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theWorker.execute();
 
                 Model theModel = theWorker.get();
-                theModel.getProperties().copyFrom(model);
                 if (theModel != null) {
+                    
+                    worldConnector.initializeLoadedModel(theModel);
+                    
+                    theModel.getProperties().copyFrom(model);                    
                     setModel(theModel);
                 }
 

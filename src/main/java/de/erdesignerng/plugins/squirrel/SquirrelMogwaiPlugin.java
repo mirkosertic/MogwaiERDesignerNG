@@ -32,7 +32,6 @@ import net.sourceforge.squirrel_sql.client.plugin.PluginSessionCallback;
 import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
 import net.sourceforge.squirrel_sql.client.session.IObjectTreeAPI;
 import net.sourceforge.squirrel_sql.client.session.ISession;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.util.log.ILogger;
@@ -47,7 +46,7 @@ import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:04 $
+ * @version $Date: 2008-02-02 18:49:14 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -95,12 +94,12 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     @Override
     public synchronized void initialize() throws PluginException {
         super.initialize();
-        
+
         // Initialize Mogwai Looks
         UIConfiguration theConfig = new UIConfiguration();
         theConfig.setApplyConfiguration(false);
         UIInitializer.getInstance(theConfig);
-        
+
         IApplication theApplication = getApplication();
 
         resources = new SquirrelMogwaiPluginResources(this);
@@ -160,16 +159,11 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     public SquirrelMogwaiController[] getGraphControllers(ISession session) {
         return controllersBySessionID.get(session.getIdentifier());
     }
-    
-    protected Dialect determineDialect(ISession aSession) {
-        return null;
-    }
 
-    public SquirrelMogwaiController createNewGraphControllerForSession(ISession aSession, ObjectTreeNode aNode) {
+    public SquirrelMogwaiController createNewGraphControllerForSession(ISession aSession, Dialect aDialect) {
 
-        Dialect theDialect = determineDialect(aSession);
-        SquirrelDialect theSquirrelDialect = new SquirrelDialect(theDialect, aSession);
-        
+        SquirrelDialect theSquirrelDialect = new SquirrelDialect(aDialect, aSession);
+
         SquirrelMogwaiController[] theControllers = controllersBySessionID.get(aSession.getIdentifier());
 
         Vector<SquirrelMogwaiController> theTemp = new Vector<SquirrelMogwaiController>();

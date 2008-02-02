@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.relation;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.DefaultCellEditor;
@@ -38,7 +39,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-02-02 18:49:15 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -94,6 +95,8 @@ public class RelationEditor extends BaseEditor {
         bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
 
         bindingInfo.configure();
+
+        setPreferredSize(new Dimension(438, 554));
     }
 
     /**

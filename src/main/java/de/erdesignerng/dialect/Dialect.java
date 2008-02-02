@@ -29,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:31 $
+ * @version $Date: 2008-02-02 18:49:14 $
  */
 public abstract class Dialect {
 
@@ -204,9 +204,6 @@ public abstract class Dialect {
         theProperties.put("password", aPassword);
         Connection theConnection = theDriver.connect(aUrl, theProperties);
 
-        System.out.println("Product : " + theConnection.getMetaData().getDatabaseProductName());
-        System.out.println("Version : " + theConnection.getMetaData().getDatabaseProductVersion());
-
         return theConnection;
     }
 
@@ -261,7 +258,7 @@ public abstract class Dialect {
 
     public DataType getDataTypeByName(String aName) {
         for (DataType aType : dataTypes) {
-            if (aType.getName().equals(aName)) {
+            if (aType.getName().equalsIgnoreCase(aName)) {
                 return aType;
             }
         }

@@ -467,5 +467,9 @@
 			<Text lang="de">Eine Tabelle muss mindestens ein Attribut heinhalten</Text>		
 			<Text lang="en">A table must have contain least one attribute!</Text>					
 		</Entry>
+		<Entry id="DIALECTISNOTSUPPORTED">
+			<Text lang="de">Der Datenbankdialekt wird nicht unterstützt!</Text>		
+			<Text lang="en">The database dialect is not supported!</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
