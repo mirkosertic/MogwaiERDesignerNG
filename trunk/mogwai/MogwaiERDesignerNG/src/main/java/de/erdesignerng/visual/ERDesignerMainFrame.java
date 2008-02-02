@@ -20,6 +20,7 @@ package de.erdesignerng.visual;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.prefs.BackingStoreException;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
@@ -36,7 +37,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-02-02 14:57:50 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -45,9 +46,9 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     public ERDesignerMainFrame() {
         super(ERDesignerBundle.TITLE);
         initialize();
-        
+
         setSize(800, 600);
-        
+
         addWindowListener(new WindowAdapter() {
 
             @Override
@@ -55,7 +56,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
                 component.savePreferences();
             }
         });
-        
+
         UIInitializer.getInstance().initialize(this);
     }
 
@@ -85,7 +86,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         }
 
         setTitle(getResourceHelper().getText(getResourceBundleID()) + theTitle);
-        
+
     }
 
     public void setStatusText(String aMessage) {
@@ -109,7 +110,9 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     public Model createNewModel() {
-        return new Model();
+        Model theModel = new Model();
+        theModel.setModificationTracker(new HistoryModificationTracker(theModel));
+        return theModel;
     }
 
     public boolean supportsPreferences() {
@@ -123,5 +126,15 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     public void notifyAboutException(Exception aException) {
         ExceptionEditor theEditor = new ExceptionEditor(this, aException);
         theEditor.showModal();
+    }
+
+    public void exitApplication() {
+        try {
+            ApplicationPreferences.getInstance().store();
+        } catch (BackingStoreException e) {
+            notifyAboutException(e);
+        }
+
+        System.exit(0);
     }
 }

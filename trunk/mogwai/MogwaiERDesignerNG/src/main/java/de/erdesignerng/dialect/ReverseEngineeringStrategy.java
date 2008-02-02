@@ -25,10 +25,11 @@ import java.util.List;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:24 $
+ * @version $Date: 2008-02-02 14:57:50 $
  * @param <T>
  *            the dialect
  */
@@ -40,8 +41,9 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
         dialect = aDialect;
     }
 
-    public abstract Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException;
+    public abstract Model createModelFromConnection(ERDesignerWorldConnector aConnector, Connection aConnection,
+            ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
+            ReverseEngineeringException;
 
     public abstract List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException;
 
@@ -57,7 +59,7 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
             return CascadeType.CASCADE;
         }
     }
-    
+
     protected String convertColumnTypeToRealType(String aTypeName) {
         return aTypeName;
     }

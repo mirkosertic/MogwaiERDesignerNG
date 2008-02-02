@@ -120,7 +120,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     public boolean supportsExitApplication() {
-        return false;
+        return true;
     }
 
     public Model createNewModel() {
@@ -149,5 +149,8 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 
     public void notifyAboutException(Exception aException) {
         session.showErrorMessage(aException);
+    }
+
+    public void exitApplication() {
     }
 }

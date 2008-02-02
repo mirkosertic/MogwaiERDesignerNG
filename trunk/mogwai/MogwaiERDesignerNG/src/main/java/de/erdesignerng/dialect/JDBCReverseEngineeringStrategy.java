@@ -33,10 +33,11 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 22:41:46 $
+ * @version $Date: 2008-02-02 14:57:50 $
  * @param <T>
  *            the dialect
  */
@@ -115,12 +116,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 if ((theColumnRemarks != null) && (!"".equals(theColumnRemarks))) {
                     theAttribute.setComment(theColumnRemarks);
                 }
-                
+
                 DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(theTypeName));
                 if (theDataType == null) {
                     throw new ReverseEngineeringException("Unknown data type " + theTypeName);
                 }
-                
+
                 boolean isNullable = true;
                 switch (theNullable) {
                 case DatabaseMetaData.columnNoNulls:
@@ -130,7 +131,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     isNullable = true;
                     break;
                 default:
-                    //TODO [mse] What should happen here?
+                    // TODO [mse] What should happen here?
                 }
 
                 theAttribute.setDatatype(theDataType);
@@ -202,7 +203,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         }
         thePrimaryKeyResultSet.close();
     }
-    
+
     protected String convertIndexNameFor(Table aTable, String aIndexName) {
         return aIndexName;
     }
@@ -424,10 +425,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     @Override
-    public Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
+    public Model createModelFromConnection(ERDesignerWorldConnector aConnector, Connection aConnection,
+            ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
+            ReverseEngineeringException {
 
-        Model theNewModel = new Model();
+        Model theNewModel = aConnector.createNewModel();
         theNewModel.setDialect(dialect);
 
         if (dialect.supportsSchemaInformation()) {

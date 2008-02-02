@@ -21,7 +21,7 @@ import de.erdesignerng.exception.CannotDeleteException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-02-02 14:57:50 $
  * @param <T>
  *            the type
  */
@@ -47,7 +47,8 @@ public abstract class OwnedModelItem<T extends OwnedModelItemVerifier> extends M
     /**
      * Delete this element.
      * 
-     * @throws CannotDeleteException is thrown in case of an error
+     * @throws CannotDeleteException
+     *             is thrown in case of an error
      */
     public void delete() throws CannotDeleteException {
         owner.delete(this);

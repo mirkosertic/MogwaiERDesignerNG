@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:34 $
+ * @version $Date: 2008-02-02 14:57:50 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -152,11 +152,11 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
             return true;
         }
 
-        if (!defaultValue.equals(aAttribute.getDefaultValue())) {
+        if (isStringModified(defaultValue, aAttribute.getDefaultValue())) {
             return true;
         }
 
-        if (!getComment().equals(aAttribute.getComment())) {
+        if (isStringModified(getComment(), aAttribute.getComment())) {
             return true;
         }
 

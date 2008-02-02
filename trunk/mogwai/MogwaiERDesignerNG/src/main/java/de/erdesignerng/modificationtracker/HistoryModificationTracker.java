@@ -28,6 +28,8 @@ import de.erdesignerng.model.Table;
 public class HistoryModificationTracker implements ModelModificationTracker {
 
     private Model model;
+    
+    private StatementList statements = new StatementList();
 
     public HistoryModificationTracker(Model aModel) {
         model = aModel;
@@ -38,7 +40,7 @@ public class HistoryModificationTracker implements ModelModificationTracker {
     }
 
     protected void addStatementsToHistory(StatementList aStatement) throws VetoException {
-
+        statements.addAll(aStatement);
     }
 
     public void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException {
@@ -107,5 +109,12 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 
     public void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createAddPrimaryKeyToTable(aTable, aIndex));
+    }
+
+    /**
+     * @return the statements
+     */
+    public StatementList getStatements() {
+        return statements;
     }
 }
