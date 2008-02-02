@@ -22,13 +22,6 @@ import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.dialect.db2.DB2Dialect;
-import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.dialect.mysql.MySQLDialect;
-import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
-import de.erdesignerng.dialect.oracle.OracleDialect;
-import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
@@ -36,7 +29,7 @@ import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-02-02 17:48:06 $
  */
 public final class ERDesigner {
 
@@ -48,14 +41,6 @@ public final class ERDesigner {
 
         DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
         theScreen.setVisible(true);
-        
-        DialectFactory theFactory = DialectFactory.getInstance();
-        theFactory.registerDialect(new DB2Dialect());        
-        theFactory.registerDialect(new MSSQLDialect());
-        theFactory.registerDialect(new MySQLDialect());
-        theFactory.registerDialect(new MySQLInnoDBDialect());
-        theFactory.registerDialect(new OracleDialect());
-        theFactory.registerDialect(new PostgresDialect());
         
         ERDesignerMainFrame frame = new ERDesignerMainFrame();
         frame.setModel(new Model());

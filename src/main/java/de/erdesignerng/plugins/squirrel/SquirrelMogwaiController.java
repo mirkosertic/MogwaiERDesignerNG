@@ -18,29 +18,30 @@
 package de.erdesignerng.plugins.squirrel;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
-import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 21:48:06 $
+ * @version $Date: 2008-02-02 17:48:04 $
  */
 public class SquirrelMogwaiController {
 
     private ISession session;
 
     private SquirrelMogwaiPlugin plugin;
-    
+
     private SquirrelMogwaiTabSheet tabsheet;
 
-    public SquirrelMogwaiController(ApplicationPreferences aPreferences, ISession aSession, SquirrelMogwaiPlugin aPlugin, ObjectTreeNode aNode) {
+    private SquirrelDialect dialect;
+
+    public SquirrelMogwaiController(SquirrelDialect aDialect, ISession aSession, SquirrelMogwaiPlugin aPlugin) {
         session = aSession;
         plugin = aPlugin;
-        
-        tabsheet = new SquirrelMogwaiTabSheet(aPreferences, aSession, aPlugin, aNode);
-        
-        session.getSessionSheet().selectMainTab(
-                session.getSessionSheet().addMainTab(tabsheet));
+        dialect = aDialect;
+
+        tabsheet = new SquirrelMogwaiTabSheet(this);
+
+        session.getSessionSheet().selectMainTab(session.getSessionSheet().addMainTab(tabsheet));
     }
 
     public void sessionEnding() {
@@ -49,5 +50,21 @@ public class SquirrelMogwaiController {
 
     public void startReverseEngineering() {
         tabsheet.startReverseEngineering();
+    }
+
+    public void notifyAboutException(Exception aException) {
+        session.showErrorMessage(aException);
+    }
+
+    public SquirrelMogwaiPlugin getPlugin() {
+        return plugin;
+    }
+
+    public void exitApplication() {
+        plugin.shutdownEditor(this);
+    }
+
+    public SquirrelDialect getDialect() {
+        return dialect;
     }
 }

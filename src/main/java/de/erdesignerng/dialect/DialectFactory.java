@@ -22,9 +22,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import de.erdesignerng.dialect.db2.DB2Dialect;
+import de.erdesignerng.dialect.mssql.MSSQLDialect;
+import de.erdesignerng.dialect.mysql.MySQLDialect;
+import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
+import de.erdesignerng.dialect.oracle.OracleDialect;
+import de.erdesignerng.dialect.postgres.PostgresDialect;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 18:21:02 $
+ * @version $Date: 2008-02-02 17:48:04 $
  */
 public final class DialectFactory {
 
@@ -38,11 +45,17 @@ public final class DialectFactory {
     public static DialectFactory getInstance() {
         if (me == null) {
             me = new DialectFactory();
+            me.registerDialect(new DB2Dialect());        
+            me.registerDialect(new MSSQLDialect());
+            me.registerDialect(new MySQLDialect());
+            me.registerDialect(new MySQLInnoDBDialect());
+            me.registerDialect(new OracleDialect());
+            me.registerDialect(new PostgresDialect());
         }
         return me;
     }
 
-    public void registerDialect(Dialect aDialect) {
+    private void registerDialect(Dialect aDialect) {
         knownDialects.put(aDialect.getUniqueName(), aDialect);
     }
 

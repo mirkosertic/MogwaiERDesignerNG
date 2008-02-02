@@ -19,47 +19,33 @@ package de.erdesignerng.plugins.squirrel.dialect;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
+
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.exception.ElementInvalidNameException;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-01-31 16:14:37 $
- */
 public class SquirrelDialect extends Dialect {
-
+    
+    private Dialect dialect;
+    
     private ISession session;
     
-    private ObjectTreeNode node;
-    
-    public SquirrelDialect() {
-        initialize();
-    }
-    
-    public SquirrelDialect(ISession aSession, ObjectTreeNode aNode) {
+    public SquirrelDialect(Dialect aDialect, ISession aSession) {
+        dialect = aDialect;
         session = aSession;
-        node = aNode;
-        
-        initialize();
     }
-    
-    private void initialize() {
-        setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(true);
-        setMaxObjectNameLength(255);
-        setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.NOTHING);
+
+    @Override
+    public String checkName(String aName) throws ElementInvalidNameException {
+        return dialect.checkName(aName);
     }
-    
-    public ISession getSession() {
-        return session;
-    }
-    
+
     @Override
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         return session.getSQLConnection().getConnection();
@@ -67,31 +53,116 @@ public class SquirrelDialect extends Dialect {
 
     @Override
     public SQLGenerator createSQLGenerator() {
-        return new SquirrelSQLGenerator(this);
+        return dialect.createSQLGenerator();
+    }
+
+    @Override
+    public NameCastType getCastType() {
+        return dialect.getCastType();
+    }
+
+    @Override
+    public DataType getDataTypeByName(String aName) {
+        return dialect.getDataTypeByName(aName);
+    }
+
+    @Override
+    public List<DataType> getDataTypes() {
+        return dialect.getDataTypes();
     }
 
     @Override
     public String getDriverClassName() {
-        return null;
+        return dialect.getDriverClassName();
     }
 
     @Override
     public String getDriverURLTemplate() {
-        return null;
+        return dialect.getDriverURLTemplate();
+    }
+
+    @Override
+    public int getMaxObjectNameLength() {
+        return dialect.getMaxObjectNameLength();
     }
 
     @Override
     public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new SquirrelReverseEngineeringStrategy(this, node);
+        return dialect.getReverseEngineeringStrategy();
     }
 
     @Override
     public String getUniqueName() {
-        return "Squirrel";
+        return dialect.getUniqueName();
+    }
+
+    @Override
+    public boolean isCaseSensitive() {
+        return dialect.isCaseSensitive();
+    }
+
+    @Override
+    public boolean isNullablePrimaryKeyAllowed() {
+        return dialect.isNullablePrimaryKeyAllowed();
+    }
+
+    @Override
+    public boolean isSpacesAllowedInObjectNames() {
+        return dialect.isSpacesAllowedInObjectNames();
+    }
+
+    @Override
+    public boolean isSupportsOnDelete() {
+        return dialect.isSupportsOnDelete();
+    }
+
+    @Override
+    public boolean isSupportsOnUpdate() {
+        return dialect.isSupportsOnUpdate();
+    }
+
+    @Override
+    public void setCaseSensitive(boolean aCaseSensitive) {
+        dialect.setCaseSensitive(aCaseSensitive);
+    }
+
+    @Override
+    public void setCastType(NameCastType aCastType) {
+        dialect.setCastType(aCastType);
+    }
+
+    @Override
+    public void setMaxObjectNameLength(int aMaxObjectNameLength) {
+        dialect.setMaxObjectNameLength(aMaxObjectNameLength);
+    }
+
+    @Override
+    public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
+        dialect.setNullablePrimaryKeyAllowed(aNullablePrimaryKeyAllowed);
+    }
+
+    @Override
+    public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
+        dialect.setSpacesAllowedInObjectNames(aSpacesAllowedInObjectNames);
+    }
+
+    @Override
+    public void setSupportsOnDelete(boolean supportsOnDelete) {
+        dialect.setSupportsOnDelete(supportsOnDelete);
+    }
+
+    @Override
+    public void setSupportsOnUpdate(boolean supportsOnUpdate) {
+        dialect.setSupportsOnUpdate(supportsOnUpdate);
     }
 
     @Override
     public boolean supportsSchemaInformation() {
-        return false;
+        return dialect.supportsSchemaInformation();
+    }
+
+    @Override
+    public String toString() {
+        return dialect.toString();
     }
 }

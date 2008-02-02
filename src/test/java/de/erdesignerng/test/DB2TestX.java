@@ -23,14 +23,14 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.postgres.PostgresDialect;
-import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 
 /**
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:26 $
+ * @version $Date: 2008-02-02 17:48:01 $
  */
 public class DB2TestX extends BaseUseCases {
 
@@ -47,15 +47,6 @@ public class DB2TestX extends BaseUseCases {
         connection = DriverManager.getConnection("jdbc:postgresql://192.168.0.140:5432/erdesigner", "erdesigner", "erdesigner");
     }
 
-    @Override
-    public Domain createCharDomain(String aName, int aLength) {
-        Domain theDomain = new Domain();
-        theDomain.setName(aName);
-        theDomain.setDatatype(model.getDialect().getDataTypeByName("varchar"));
-        theDomain.setSize(aLength);
-        return theDomain;
-    }
-    
     /**
      * Test extraction of datatypes.
      * @throws Exception is thrown in case of an error
@@ -75,6 +66,12 @@ public class DB2TestX extends BaseUseCases {
                         + getTypeName(theType) + "));");
             }
         }
+    }
+
+    @Override
+    public void setTextAttribute(Attribute aAttribute) {
+        aAttribute.setDatatype(model.getDialect().getDataTypeByName("varchar"));
+        aAttribute.setSize(20);
     }
     
 }
