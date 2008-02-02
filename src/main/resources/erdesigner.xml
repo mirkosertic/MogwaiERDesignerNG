@@ -459,5 +459,13 @@
 			<Text lang="de">Schliessen</Text>		
 			<Text lang="en">Close</Text>					
 		</Entry>
+		<Entry id="GENERATECHANGELOG">
+			<Text lang="de">Aktuelle DB Änderungen...</Text>		
+			<Text lang="en">Current db changes...</Text>					
+		</Entry>
+		<Entry id="TABLEMUSTHAVEATLEASTONEATTRIBUTE">
+			<Text lang="de">Eine Tabelle muss mindestens ein Attribut heinhalten</Text>		
+			<Text lang="en">A table must have contain least one attribute!</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

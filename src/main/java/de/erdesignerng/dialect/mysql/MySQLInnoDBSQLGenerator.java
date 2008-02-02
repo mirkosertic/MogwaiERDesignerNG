@@ -17,10 +17,9 @@
  */
 package de.erdesignerng.dialect.mysql;
 
-import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Table;
 
-public class MySQLInnoDBSQLGenerator extends SQL92SQLGenerator<MySQLInnoDBDialect> {
+public class MySQLInnoDBSQLGenerator extends MySQLSQLGenerator {
 
     public MySQLInnoDBSQLGenerator(MySQLInnoDBDialect aDialect) {
         super(aDialect);

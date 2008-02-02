@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sun.security.acl.WorldGroupImpl;
+
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.sql.ForeignKeyColumnInfo;
@@ -47,10 +49,11 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:36 $
+ * @version $Date: 2008-02-02 14:57:50 $
  */
 public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrategy<SquirrelDialect> {
 
@@ -251,7 +254,7 @@ public class SquirrelReverseEngineeringStrategy extends ReverseEngineeringStrate
     }
 
     @Override
-    public Model createModelFromConnection(Connection aConnection, ReverseEngineeringOptions aOptions,
+    public Model createModelFromConnection(ERDesignerWorldConnector aConnector. Connection aConnection, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
         Model theModel = new Model();
         theModel.setDialect(dialect);
