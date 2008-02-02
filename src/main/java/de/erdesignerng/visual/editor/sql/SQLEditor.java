@@ -29,6 +29,8 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -52,7 +54,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 12:07:28 $
+ * @version $Date: 2008-02-02 17:48:02 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -77,6 +79,13 @@ public class SQLEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.SAVESCRIPTTOFILE);
 
+    private DefaultAction deleteAction = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandDeleteSelectedEntry();
+        }
+    }, this, ERDesignerBundle.DELETE);
+
     private File lastEditedFile;
 
     private SQLGenerator generator;
@@ -93,6 +102,7 @@ public class SQLEditor extends BaseEditor {
             closeAction.setEnabled(false);
             executeAction.setEnabled(false);
             saveToFileAction.setEnabled(false);
+            deleteAction.setEnabled(false);
 
             Connection theConnection = null;
             try {
@@ -196,11 +206,19 @@ public class SQLEditor extends BaseEditor {
         filename = aFileName;
 
         view.getSqlList().setCellRenderer(new StatementRenderer());
+        view.getSqlList().addListSelectionListener(new ListSelectionListener() {
 
+            public void valueChanged(ListSelectionEvent e) {
+                deleteAction.setEnabled(view.getSqlList().getSelectedIndex() >= 0);
+            }
+        });
+        
         view.getCloseButton().setAction(closeAction);
         view.getExecuteButton().setAction(executeAction);
         view.getSaveToFileButton().setAction(saveToFileAction);
-
+        view.getDeleteButton().setAction(deleteAction);
+        deleteAction.setEnabled(false);
+        
         DefaultListModel theModel = (DefaultListModel) view.getSqlList().getModel();
         for (Statement theStatement : aStatements) {
             theModel.add(theStatement);
@@ -260,6 +278,16 @@ public class SQLEditor extends BaseEditor {
             } catch (Exception e) {
                 logFatalError(e);
             }
+        }
+    }
+    
+    private void commandDeleteSelectedEntry() {
+        
+        if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+            Object theSelectedElement = view.getSqlList().getSelectedValue();
+        
+            DefaultListModel theModel = (DefaultListModel) view.getSqlList().getModel();
+            theModel.remove(theSelectedElement);
         }
     }
 }

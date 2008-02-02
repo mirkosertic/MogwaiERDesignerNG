@@ -28,7 +28,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-02-02 17:48:04 $
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
@@ -128,4 +128,6 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
                 + " DROP FOREIGN KEY " + aRelation.getName()));
         return theResult;
     }
+    
+    
 }

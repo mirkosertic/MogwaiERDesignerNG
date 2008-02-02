@@ -23,14 +23,14 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 
 /**
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:26 $
+ * @version $Date: 2008-02-02 17:48:02 $
  */
 public class MSSQLTestX extends BaseUseCases {
 
@@ -47,15 +47,12 @@ public class MSSQLTestX extends BaseUseCases {
         connection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.0.140:1433/ERDesignerTest",
                 "erdesigner", "erdesigner");
     }
-
+    
     @Override
-    public Domain createCharDomain(String aName, int aLength) {
-        Domain theDomain = new Domain();
-        theDomain.setName(aName);
-        theDomain.setDatatype(model.getDialect().getDataTypeByName("varchar"));
-        theDomain.setSize(aLength);
-        return theDomain;
-    }
+    public void setTextAttribute(Attribute aAttribute) {
+        aAttribute.setDatatype(model.getDialect().getDataTypeByName("varchar"));
+        aAttribute.setSize(20);
+    }    
 
     /**
      * Test extraction of datatypes.

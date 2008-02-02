@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 14:57:50 $
+ * @version $Date: 2008-02-02 17:48:05 $
  */
 public abstract class ModelItem {
 
@@ -94,6 +94,10 @@ public abstract class ModelItem {
         }
         return !name.equals(aName);
     }
+    
+    public boolean isCommentChanged(String aComment) {
+        return isStringModified(comment, aComment);
+    }    
 
     @Override
     public int hashCode() {

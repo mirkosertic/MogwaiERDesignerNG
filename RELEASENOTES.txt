@@ -36,7 +36,7 @@ Release 1.0.2
 * Tested reverse engineering with the following databases
   PostgreSQL Dialect : PostgreSQL 8.2.6 ( JDBC3 Driver )
   
-Release 1.0.3
+Release 1.1
 
 * Refactored domain system for support of size, decimal digits and radix
 * Added model modification tracker to track model changes
@@ -47,3 +47,5 @@ Release 1.0.3
 * Removed default value dictionalry ( Now in Table editor )
 * Added Exception notifier dialog
 * Added SQL Browser window
+* Added export functionality for DDL scripts for whole model
+* Addex export functionality for DDL scripts of last changes

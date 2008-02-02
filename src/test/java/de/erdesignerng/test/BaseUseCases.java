@@ -27,7 +27,6 @@ import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -77,7 +76,7 @@ public abstract class BaseUseCases extends TestCase {
         }
     }
 
-    public abstract Domain createCharDomain(String aName, int aLength);
+    public abstract void setTextAttribute(Attribute aAttribute);
 
     public String getTypeName(int aIntValue) throws IllegalAccessException {
         Class theClass = java.sql.Types.class;
@@ -98,18 +97,10 @@ public abstract class BaseUseCases extends TestCase {
         int i = 0;
         for (DataType theType : model.getDialect().getDataTypes()) {
             if ((!theType.isIdentity()) && (theType.getMaxOccoursPerTable() < 0))  {
-                Domain theDomain = new Domain();
-                theDomain.setName("DOM_" + i);
-                theDomain.setDatatype(theType);
-                theDomain.setSize(10);
-                theDomain.setFraction(0);
-                theDomain.setScale(2);
-
-                model.addDomain(theDomain);
 
                 Attribute theAttribute = new Attribute();
                 theAttribute.setName("ATTR_" + i);
-                theAttribute.setDomain(theDomain);
+                setTextAttribute(theAttribute);
 
                 theTable.getAttributes().add(theAttribute);
                 i++;
@@ -123,15 +114,11 @@ public abstract class BaseUseCases extends TestCase {
     public void testCreateAndDropTable() throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test1");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -142,15 +129,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testDropAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test2");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -163,21 +146,17 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testAddAttribute() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test3");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
 
         Attribute theNewAttribute = new Attribute();
-        theNewAttribute.setDomain(theDomain);
+        setTextAttribute(theNewAttribute);
         theNewAttribute.setName("LALA");
 
         model.addTable(theTempTable);
@@ -188,15 +167,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testModifyAttribute() throws Exception {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test4");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -206,7 +181,7 @@ public abstract class BaseUseCases extends TestCase {
         Attribute theAttribute = theTempTable.getAttributes().get(0);
 
         Attribute theNewAttribute = theAttribute.clone();
-        theNewAttribute.setDomain(createCharDomain("TESTDOMAIN2", 40));
+        setTextAttribute(theNewAttribute);
 
         model.changeAttribute(theAttribute, theNewAttribute);
 
@@ -215,15 +190,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testRenameAttribute() throws Exception {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test5");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -241,15 +212,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testRenameTable() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test6");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -263,15 +230,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testDropPrimaryKey() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test7");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theAttribute.setNullable(false);
             theTempTable.addAttribute(model, theAttribute);
@@ -292,15 +255,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testAddPrimaryKey() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test8");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theAttribute.setNullable(false);
             theTempTable.addAttribute(model, theAttribute);
@@ -323,15 +282,11 @@ public abstract class BaseUseCases extends TestCase {
     public void testAddUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test9");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -360,15 +315,11 @@ public abstract class BaseUseCases extends TestCase {
     public void testDropUniqueAndNonUniqueIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test10");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -399,15 +350,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testChangeIndex() throws Exception {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTempTable = new Table();
         theTempTable.setName("test11");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMN_" + i);
             theTempTable.addAttribute(model, theAttribute);
         }
@@ -435,15 +382,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testAddRelation() throws Exception {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTableA = new Table();
         theTableA.setName("test12a");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMNA_" + i);
             theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
@@ -459,7 +402,7 @@ public abstract class BaseUseCases extends TestCase {
         theTableB.setName("test12b");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMNB_" + i);
             theAttribute.setNullable(false);
             theTableB.addAttribute(model, theAttribute);
@@ -487,15 +430,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testDropRelation() throws Exception {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTableA = new Table();
         theTableA.setName("test13a");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMNA_" + i);
             theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
@@ -511,7 +450,7 @@ public abstract class BaseUseCases extends TestCase {
         theTableB.setName("test13b");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMNB_" + i);
             theAttribute.setNullable(false);
             theTableB.addAttribute(model, theAttribute);
@@ -542,15 +481,11 @@ public abstract class BaseUseCases extends TestCase {
 
     public void testChangeRelation() throws Exception {
 
-        Domain theDomain = createCharDomain("TESTDOMAIN", 20);
-
-        model.addDomain(theDomain);
-
         Table theTableA = new Table();
         theTableA.setName("test14a");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMNA_" + i);
             theAttribute.setNullable(false);
             theTableA.addAttribute(model, theAttribute);
@@ -566,7 +501,7 @@ public abstract class BaseUseCases extends TestCase {
         theTableB.setName("test14b");
         for (int i = 0; i < 5; i++) {
             Attribute theAttribute = new Attribute();
-            theAttribute.setDomain(theDomain);
+            setTextAttribute(theAttribute);
             theAttribute.setName("COLUMNB_" + i);
             theAttribute.setNullable(false);
             theTableB.addAttribute(model, theAttribute);

@@ -23,14 +23,14 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.mysql.MySQLDialect;
-import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 
 /**
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:26 $
+ * @version $Date: 2008-02-02 17:48:01 $
  */
 public class MySQLTestX extends BaseUseCases {
 
@@ -46,16 +46,13 @@ public class MySQLTestX extends BaseUseCases {
         Class.forName("com.mysql.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://localhost/test", "test", "test");
     }
-
-    @Override
-    public Domain createCharDomain(String aName, int aLength) {
-        Domain theDomain = new Domain();
-        theDomain.setName(aName);
-        theDomain.setDatatype(model.getDialect().getDataTypeByName("VARCHAR"));
-        theDomain.setSize(aLength);
-        return theDomain;
-    }
     
+    @Override
+    public void setTextAttribute(Attribute aAttribute) {
+        aAttribute.setDatatype(model.getDialect().getDataTypeByName("VARCHAR"));
+        aAttribute.setSize(20);
+    }    
+
     /**
      * Test extraction of datatypes.
      * @throws Exception is thrown in case of an error

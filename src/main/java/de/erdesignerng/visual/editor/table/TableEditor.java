@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 14:57:50 $
+ * @version $Date: 2008-02-02 17:48:06 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -461,6 +461,7 @@ public class TableEditor extends BaseEditor {
 
             if (!indexListModel.contains(theModel)) {
                 indexListModel.add(theModel);
+                knownIndexValues.put(theModel.getSystemId(), theModel);
             }
 
             theModel.getAttributes().clear();
@@ -477,10 +478,10 @@ public class TableEditor extends BaseEditor {
         Table theTable = tableBindingInfo.getDefaultModel();
 
         if (!model.getTables().contains(theTable)) {
-            
+
             tableBindingInfo.view2model();
-            
-            // The table is new, so just add it 
+
+            // The table is new, so just add it
             for (int i = 0; i < attributeListModel.getSize(); i++) {
                 theTable.addAttribute(model, (Attribute) attributeListModel.get(i));
             }
@@ -503,7 +504,7 @@ public class TableEditor extends BaseEditor {
             }
 
             // Check if the comment was changed and issue the required commands
-            if (!theTable.getComment().equals(theTempTable.getComment())) {
+            if (!theTable.isCommentChanged(theTempTable.getComment())) {
                 model.changeTableComment(theTable, theTempTable.getComment());
             }
 
@@ -511,13 +512,14 @@ public class TableEditor extends BaseEditor {
             for (Attribute theAttribute : removedAttributes) {
                 model.removeAttributeFromTable(theTable, theAttribute);
             }
-            
+
             // Remove the removed indexes
             for (Index theIndex : removedIndexes) {
                 model.removeIndex(theTable, theIndex);
             }
 
-            // And finally check all attributes if they are new or were renamed or modified
+            // And finally check all attributes if they are new or were renamed
+            // or modified
             for (String theKey : knownAttributeValues.keySet()) {
                 Attribute theAttribute = knownAttributeValues.get(theKey);
 

@@ -23,7 +23,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
+ * @version $Date: 2008-02-02 17:48:05 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -62,11 +62,7 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
      */
     public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-        Model theOwner = getOwner();
-        if (theOwner != null) {
-            ModelUtilities.checkNameAndExistance(indexes, aIndex, theOwner.getDialect());
-        }
-
+        ModelUtilities.checkNameAndExistance(indexes, aIndex, aModel.getDialect());
         aIndex.setOwner(this);
 
         indexes.add(aIndex);
