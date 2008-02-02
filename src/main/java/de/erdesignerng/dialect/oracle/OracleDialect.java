@@ -24,7 +24,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:36 $
+ * @version $Date: 2008-02-02 18:49:14 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -36,7 +36,6 @@ public class OracleDialect extends SQL92Dialect {
         setCastType(NameCastType.UPPERCASE);
         setSupportsOnUpdate(false);
 
-        registerType(new OracleDataType("NUMBER", "$size,$fraction", java.sql.Types.BIGINT));
         registerType(new OracleDataType("LONG RAW", "", java.sql.Types.LONGVARBINARY, 1));
         registerType(new OracleDataType("RAW", "$size", java.sql.Types.VARBINARY, 1));
         registerType(new OracleDataType("LONG", "", java.sql.Types.LONGVARCHAR, 1));

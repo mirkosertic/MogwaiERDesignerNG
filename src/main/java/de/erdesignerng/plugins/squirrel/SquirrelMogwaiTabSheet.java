@@ -24,6 +24,7 @@ import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
@@ -101,6 +102,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 
     public void setStatusText(String aMessage) {
         content.getStatusBar().setText(aMessage);
+        controller.getSession().showMessage(aMessage);
     }
 
     public boolean supportsClasspathEditor() {
@@ -112,12 +114,13 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     public boolean supportsExitApplication() {
-        return true;
+        return false;
     }
 
     public Model createNewModel() {
         Model theModel = new Model();
         theModel.setDialect(controller.getDialect());
+        theModel.setModificationTracker(new HistoryModificationTracker(theModel));
         return theModel;
     }
 

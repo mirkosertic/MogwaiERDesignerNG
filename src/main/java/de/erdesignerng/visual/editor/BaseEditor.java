@@ -26,7 +26,7 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:35 $
+ * @version $Date: 2008-02-02 18:49:15 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -86,6 +86,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
     public int showModal() {
         modalResult = DialogConstants.MODAL_RESULT_CANCEL;
+        pack();
         setVisible(true);
         return modalResult;
     }
