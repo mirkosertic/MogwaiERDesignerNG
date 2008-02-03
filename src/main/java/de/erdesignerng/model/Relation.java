@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:20:15 $
+ * @version $Date: 2008-02-03 13:43:30 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -113,12 +113,30 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
         setExportingTable(aValue.getExportingTable());
         setOnDelete(aValue.getOnDelete());
         setOnUpdate(aValue.getOnUpdate());
-        mapping = aValue.getMapping();
+        for (Attribute theAttribute : aValue.getMapping().keySet()) {
+            mapping.put(theAttribute, aValue.getMapping().get(theAttribute));
+        }
     }
 
-    public boolean isModified(Relation theTempRelation) {
-
-        // TODO check is modified here
+    public boolean isModified(Relation aRelation) {
+        if (isStringModified(getName(), aRelation.getName())) {
+            return true;
+        }
+        if (!aRelation.getOnDelete().equals(getOnDelete())) {
+            return true;
+        }
+        if (!aRelation.getOnUpdate().equals(getOnUpdate())) {
+            return true;
+        }
+        
+        for (Attribute thePK : getMapping().keySet()) {
+            Attribute theFK = getMapping().get(thePK);
+            Attribute theForeignFK = aRelation.getMapping().get(thePK);
+            if (!theFK.equals(theForeignFK)) {
+                return true;
+            }
+            
+        }        
         return false;
     }
 }

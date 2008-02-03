@@ -3,6 +3,7 @@ package de.erdesignerng.visual.editor.connection;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -25,7 +26,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-22 21:57:47 $
+ * @version $Date: 2008-02-03 13:43:31 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -151,10 +152,15 @@ public class DatabaseConnectionEditor extends BaseEditor {
                 Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
                         .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword());
 
+                DatabaseMetaData theMeta = theConnection.getMetaData();
+
+                String theDB = theMeta.getDatabaseProductName();
+                String theVersion = theMeta.getDatabaseProductVersion();
+
                 theConnection.close();
 
                 MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(
-                        ERDesignerBundle.CONNECTIONSEEMSTOBEOK));
+                        ERDesignerBundle.CONNECTIONSEEMSTOBEOK) + " DB : " + theDB + " " + theVersion);
 
             } catch (Exception e) {
 

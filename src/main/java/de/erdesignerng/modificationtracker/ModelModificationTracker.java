@@ -50,8 +50,6 @@ public interface ModelModificationTracker {
 
     void addRelation(Relation aRelation) throws VetoException;
 
-    void renameRelation(Relation aRelation, String aNewName) throws VetoException;
-
     void changeRelation(Relation aRelation, Relation aTempRelation) throws VetoException;
 
     void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException;

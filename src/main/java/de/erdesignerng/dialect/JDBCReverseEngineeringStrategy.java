@@ -33,11 +33,13 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
+import de.erdesignerng.modificationtracker.ModelModificationTracker;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 14:57:50 $
+ * @version $Date: 2008-02-03 13:43:30 $
  * @param <T>
  *            the dialect
  */
@@ -430,6 +432,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             ReverseEngineeringException {
 
         Model theNewModel = aConnector.createNewModel();
+        
+        // The modification tracker is disabled during reverse engineering
+        ModelModificationTracker theOldModificationTracker = theNewModel.getModificationTracker();
+        theNewModel.setModificationTracker(new EmptyModelModificationTracker());
+        
         theNewModel.setDialect(dialect);
 
         if (dialect.supportsSchemaInformation()) {
@@ -440,6 +447,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             reverseEnginnerTables(theNewModel, aOptions, aNotifier, null, aConnection);
         }
 
+        theNewModel.setModificationTracker(theOldModificationTracker);
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
 
         return theNewModel;

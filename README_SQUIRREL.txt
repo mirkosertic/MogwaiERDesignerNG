@@ -21,6 +21,12 @@ will start the reverse engineering process. After the reverse enginnering
 is finished, you can view, format, modify and export your database
 as XML, PNG, GIF, JPEG, SVG.
 
+Upgrade
+
+Please make sure hat before installing a new version of Mogwai ERDesigner NG
+into Squirrel, every jar added by the older installation is removed and replaced
+with the newer version!
+
 Have fun!
 
 For problems and comments, please use the issue tracker hosted at
