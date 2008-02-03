@@ -34,7 +34,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:06 $
+ * @version $Date: 2008-02-03 13:43:30 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -49,7 +49,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         @Override
         public void mouseClicked(MouseEvent aEvent) {
             if (aEvent.isPopupTrigger()) {
-                System.out.println(aEvent.getX() + " " + aEvent.getY() + " for " + cell);
+                // System.out.println(aEvent.getX() + " " + aEvent.getY() + " for " + cell);
             }
         }
     };

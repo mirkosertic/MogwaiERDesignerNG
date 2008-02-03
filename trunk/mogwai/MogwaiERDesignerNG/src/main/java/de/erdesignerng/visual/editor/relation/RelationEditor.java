@@ -34,11 +34,9 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 22:01:32 $
+ * @version $Date: 2008-02-03 13:43:31 $
  */
 public class RelationEditor extends BaseEditor {
-
-    private AttributeTableModel tableModel;
 
     private Model model;
 
@@ -133,14 +131,10 @@ public class RelationEditor extends BaseEditor {
             
         } else {
 
-            Relation theTempRelation = new Relation();
+            Relation theTempRelation = theRelation.clone();
             bindingInfo.setDefaultModel(theTempRelation);
             bindingInfo.view2model();
             
-            if (theRelation.isRenamed(theTempRelation.getName())) {
-                model.renameRelation(theRelation, theTempRelation.getName());
-            }
-
             if (theRelation.isModified(theTempRelation)) {
                 model.changeRelation(theRelation, theTempRelation);
             }

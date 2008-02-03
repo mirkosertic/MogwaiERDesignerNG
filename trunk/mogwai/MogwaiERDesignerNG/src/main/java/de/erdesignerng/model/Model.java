@@ -33,7 +33,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:34 $
+ * @version $Date: 2008-02-03 13:43:30 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -159,8 +159,6 @@ public class Model implements OwnedModelItemVerifier {
                 properties.getProperty(Model.PROPERTY_DRIVER), properties.getProperty(Model.PROPERTY_URL),
                 properties.getProperty(Model.PROPERTY_USER), properties.getProperty(Model.PROPERTY_PASSWORD));
         DatabaseMetaData theMetaData = theConnection.getMetaData();
-        System.out.println("DB : " + theMetaData.getDatabaseProductName());
-        System.out.println("Version : " + theMetaData.getDatabaseProductVersion());
         return theConnection;
     }
 
@@ -260,11 +258,6 @@ public class Model implements OwnedModelItemVerifier {
         modificationTracker.renameAttribute(aExistantAttribute, aNewName);
         
         aExistantAttribute.setName(aNewName);
-    }
-
-    public void renameRelation(Relation aRelation, String aNewName) throws VetoException {
-        modificationTracker.renameRelation(aRelation, aNewName);
-        aRelation.setName(aNewName);
     }
 
     public void changeRelation(Relation aRelation, Relation aTempRelation) throws Exception {
