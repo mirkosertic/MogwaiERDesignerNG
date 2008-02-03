@@ -17,12 +17,20 @@
  */
 package de.erdesignerng.visual.editor.table;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.erdesignerng.model.Index;
+import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
+import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
+import de.mogwai.common.i18n.ResourceHelper;
 
 public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 
+    private ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
+    
     public IndexAttributesPropertyAdapter(DefaultCheckBoxList aComponent, String aPropertyName) {
         super(aComponent, aPropertyName);
     }
@@ -44,5 +52,20 @@ public class IndexAttributesPropertyAdapter extends PropertyAdapter {
         theIndex.getAttributes().clear();
         theIndex.getAttributes().addAll(theComponent.getSelectedItems());
 
+    }
+    
+    @Override
+    public List<ValidationError> validate() {
+        List<ValidationError> theResult = new ArrayList<ValidationError>();
+        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+        if (theComponent.getSelectedItems().size() == 0) {
+            theResult.add(new ValidationError(this, helper.getText(BindingBundle.MISSINGREQUIREDFIELD)));
+        }
+        if (theResult.size() > 0) {
+            markInvalid(theResult);
+        } else {
+            markValid();
+        }
+        return theResult;
     }
 }
