@@ -17,15 +17,13 @@
  */
 package de.erdesignerng.dialect.db2;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:35 $
+ * @version $Date: 2008-02-03 13:53:49 $
  */
 public class DB2Dialect extends SQL92Dialect {
 
@@ -55,7 +53,7 @@ public class DB2Dialect extends SQL92Dialect {
     }
 
     @Override
-    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+    public DB2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new DB2ReverseEngineeringStrategy(this);
     }
 
@@ -75,7 +73,7 @@ public class DB2Dialect extends SQL92Dialect {
     }
 
     @Override
-    public SQLGenerator createSQLGenerator() {
+    public DB2SQLGenerator createSQLGenerator() {
         return new DB2SQLGenerator(this);
     }
 }

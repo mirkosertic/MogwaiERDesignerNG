@@ -17,14 +17,12 @@
  */
 package de.erdesignerng.dialect.postgres;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:37 $
+ * @version $Date: 2008-02-03 13:53:49 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -62,7 +60,7 @@ public class PostgresDialect extends SQL92Dialect {
     }
 
     @Override
-    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+    public PostgresReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new PostgresReverseEngineeringStrategy(this);
     }
 
@@ -82,7 +80,7 @@ public class PostgresDialect extends SQL92Dialect {
     }
 
     @Override
-    public SQLGenerator createSQLGenerator() {
+    public PostgresSQLGenerator createSQLGenerator() {
         return new PostgresSQLGenerator(this);
     }
 }
