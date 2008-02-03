@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ChangeEvent;
@@ -44,6 +43,7 @@ import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
+import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultCheckBoxListModel;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
@@ -53,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 18:49:15 $
+ * @version $Date: 2008-02-03 10:37:56 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -276,7 +276,7 @@ public class TableEditor extends BaseEditor {
 
     private void commandUpdateAttribute(java.awt.event.ActionEvent evt) {
         Attribute theModel = attributeBindingInfo.getDefaultModel();
-        Vector theValidationResult = attributeBindingInfo.validate();
+        List<ValidationError> theValidationResult = attributeBindingInfo.validate();
         if (theValidationResult.size() == 0) {
             attributeBindingInfo.view2model();
 
@@ -440,7 +440,7 @@ public class TableEditor extends BaseEditor {
 
     private void commandUpdateIndex() {
         Index theModel = indexBindingInfo.getDefaultModel();
-        Vector theValidationResult = indexBindingInfo.validate();
+        List<ValidationError> theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
             indexBindingInfo.view2model();
 
@@ -453,12 +453,6 @@ public class TableEditor extends BaseEditor {
                         return;
                     }
                 }
-            }
-
-            if (theModel.getAttributes().size() == 0) {
-                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
-                        ERDesignerBundle.INDEXMUSTHAVEATLEASTONEATTRIBUTE));
-                return;
             }
 
             if (!indexListModel.contains(theModel)) {
