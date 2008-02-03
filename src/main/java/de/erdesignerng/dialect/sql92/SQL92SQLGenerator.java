@@ -29,7 +29,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:05 $
+ * @version $Date: 2008-02-03 13:43:30 $
  * @param <T>
  *            the dialect
  */
@@ -244,17 +244,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
-            throws VetoException {
-        return EMPTY_STATEMENTLIST;
-    }
-
-    @Override
-    public StatementList createRenameRelationStatement(Relation aRelation, String aNewName) throws VetoException {
-        return EMPTY_STATEMENTLIST;
-    }
-
-    @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
         return EMPTY_STATEMENTLIST;
     }
@@ -347,5 +336,10 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
+    }
+
+    @Override
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
+        return EMPTY_STATEMENTLIST;
     }
 }

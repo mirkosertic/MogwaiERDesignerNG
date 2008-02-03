@@ -96,10 +96,6 @@ public class HistoryModificationTracker implements ModelModificationTracker {
         addStatementsToHistory(getSQLGenerator().createRenameAttributeStatement(aExistantAttribute, aNewName));
     }
 
-    public void renameRelation(Relation aRelation, String aNewName) throws VetoException {
-        addStatementsToHistory(getSQLGenerator().createRenameRelationStatement(aRelation, aNewName));
-    }
-
     public void renameTable(Table aTable, String aNewName) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createRenameTableStatement(aTable, aNewName));
     }
