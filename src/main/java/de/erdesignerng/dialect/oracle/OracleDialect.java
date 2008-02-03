@@ -17,14 +17,12 @@
  */
 package de.erdesignerng.dialect.oracle;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 18:49:14 $
+ * @version $Date: 2008-02-03 13:53:49 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -53,7 +51,7 @@ public class OracleDialect extends SQL92Dialect {
     }
 
     @Override
-    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+    public OracleReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new OracleReverseEngineeringStrategy(this);
     }
 
@@ -73,7 +71,7 @@ public class OracleDialect extends SQL92Dialect {
     }
 
     @Override
-    public SQLGenerator createSQLGenerator() {
+    public OracleSQLGenerator createSQLGenerator() {
         return new OracleSQLGenerator(this);
     }
 }

@@ -17,15 +17,13 @@
  */
 package de.erdesignerng.dialect.mssql;
 
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:32 $
+ * @version $Date: 2008-02-03 13:53:49 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
@@ -74,7 +72,7 @@ public class MSSQLDialect extends SQL92Dialect {
     }
 
     @Override
-    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+    public MSSQLReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new MSSQLReverseEngineeringStrategy(this);
     }
 
@@ -94,7 +92,7 @@ public class MSSQLDialect extends SQL92Dialect {
     }
 
     @Override
-    public SQLGenerator createSQLGenerator() {
+    public MSSQLSQLGenerator createSQLGenerator() {
         return new MSSQLSQLGenerator(this);
     }
 }
