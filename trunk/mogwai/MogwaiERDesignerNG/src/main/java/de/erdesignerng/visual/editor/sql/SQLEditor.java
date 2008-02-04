@@ -54,7 +54,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:02 $
+ * @version $Date: 2008-02-04 18:23:34 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -140,11 +140,13 @@ public class SQLEditor extends BaseEditor {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (theConnection != null) {
-                    try {
-                        theConnection.close();
-                    } catch (Exception e) {
-                        // Do nothing here
+                if (!model.getDialect().generatesManagedConnection()) {
+                    if (theConnection != null) {
+                        try {
+                            theConnection.close();
+                        } catch (Exception e) {
+                            // Do nothing here
+                        }
                     }
                 }
 

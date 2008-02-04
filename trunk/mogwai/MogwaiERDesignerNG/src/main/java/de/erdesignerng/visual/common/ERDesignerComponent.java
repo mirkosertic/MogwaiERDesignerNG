@@ -755,6 +755,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     theModel.getProperties().copyFrom(model);
                     setModel(theModel);
                 }
+                
+                if (!model.getDialect().generatesManagedConnection()) {
+                    theConnection.close();
+                }
 
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);

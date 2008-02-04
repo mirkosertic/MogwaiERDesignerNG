@@ -29,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 18:49:14 $
+ * @version $Date: 2008-02-04 18:23:33 $
  */
 public abstract class Dialect {
 
@@ -44,6 +44,8 @@ public abstract class Dialect {
     private boolean supportsOnUpdate = true;
 
     private boolean supportsOnDelete = true;
+    
+    private boolean generatesManagedConnection = false;
 
     private NameCastType castType;
 
@@ -268,4 +270,14 @@ public abstract class Dialect {
     protected void seal() {
         Collections.sort(dataTypes);
     }
+
+    public boolean generatesManagedConnection() {
+        return generatesManagedConnection;
+    }
+
+    public void setGeneratesManagedConnection(boolean generatesStaticConnection) {
+        this.generatesManagedConnection = generatesStaticConnection;
+    }
+    
+    
 }
