@@ -50,3 +50,7 @@ Release 1.1
 * Added export functionality for DDL scripts for whole model
 * Added export functionality for DDL scripts of last changes
 * Added saving of model modifications in separate SQL files
+
+Release 1.1.1
+
+* Bug Fixing in Squirrel Plugin ( Connection was closed during Reverse Engineering )
