@@ -39,6 +39,8 @@ public class SquirrelDialect extends Dialect {
     public SquirrelDialect(Dialect aDialect, ISession aSession) {
         dialect = aDialect;
         session = aSession;
+        
+        setGeneratesManagedConnection(true);
     }
 
     @Override

@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-02-04 18:23:33 $
  */
 public class ReverseEngineeringOptions {
 
@@ -96,5 +96,10 @@ public class ReverseEngineeringOptions {
      */
     public void setSchemaEntries(List<SchemaEntry> schemaEntries) {
         this.schemaEntries = schemaEntries;
+    }
+
+    @Override
+    public String toString() {
+        return schemaEntries.toString();
     }
 }

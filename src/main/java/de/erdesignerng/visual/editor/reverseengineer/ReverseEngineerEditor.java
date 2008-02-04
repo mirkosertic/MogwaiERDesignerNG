@@ -44,7 +44,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:27 $
+ * @version $Date: 2008-02-04 18:23:34 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -175,11 +175,13 @@ public class ReverseEngineerEditor extends BaseEditor {
             } catch (Exception e) {
                 MessagesHelper.displayErrorMessage(this, e.getMessage());
             } finally {
-                if (theConnection != null) {
-                    try {
-                        theConnection.close();
-                    } catch (Exception e) {
-                        // Nothing will happen here
+                if (!model.getDialect().generatesManagedConnection()) {
+                    if (theConnection != null) {
+                        try {
+                            theConnection.close();
+                        } catch (Exception e) {
+                            // Nothing will happen here
+                        }
                     }
                 }
             }

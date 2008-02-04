@@ -26,7 +26,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:43:31 $
+ * @version $Date: 2008-02-04 18:23:34 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -157,7 +157,9 @@ public class DatabaseConnectionEditor extends BaseEditor {
                 String theDB = theMeta.getDatabaseProductName();
                 String theVersion = theMeta.getDatabaseProductVersion();
 
-                theConnection.close();
+                if (!theDialect.generatesManagedConnection()) {
+                    theConnection.close();
+                }
 
                 MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.CONNECTIONSEEMSTOBEOK) + " DB : " + theDB + " " + theVersion);
