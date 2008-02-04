@@ -140,6 +140,8 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     public void initializeLoadedModel(Model aModel) {
+        aModel.setDialect(controller.getDialect());
+        aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 
     public void notifyAboutException(Exception aException) {
