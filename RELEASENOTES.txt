@@ -54,3 +54,4 @@ Release 1.1
 Release 1.1.1
 
 * Bug Fixing in Squirrel Plugin ( Connection was closed during Reverse Engineering )
+* Bug Fixing in Squirrel Plugin ( DDL Generation fails in PluginMode )
