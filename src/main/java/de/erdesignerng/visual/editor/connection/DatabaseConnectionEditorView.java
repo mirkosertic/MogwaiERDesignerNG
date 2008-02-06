@@ -40,7 +40,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
     private void initialize() {
 
-        String theColDef = "2dlu,p,2dlu,150dlu,2";
+        String theColDef = "2dlu,p,2dlu,fill:150dlu:grow,2";
         String theRowDef = "2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,10dlu,p,2dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);

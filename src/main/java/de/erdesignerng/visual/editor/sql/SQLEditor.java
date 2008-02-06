@@ -19,6 +19,7 @@ package de.erdesignerng.visual.editor.sql;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
@@ -54,7 +55,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-04 18:23:34 $
+ * @version $Date: 2008-02-06 19:15:57 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -214,13 +215,13 @@ public class SQLEditor extends BaseEditor {
                 deleteAction.setEnabled(view.getSqlList().getSelectedIndex() >= 0);
             }
         });
-        
+
         view.getCloseButton().setAction(closeAction);
         view.getExecuteButton().setAction(executeAction);
         view.getSaveToFileButton().setAction(saveToFileAction);
         view.getDeleteButton().setAction(deleteAction);
         deleteAction.setEnabled(false);
-        
+
         DefaultListModel theModel = (DefaultListModel) view.getSqlList().getModel();
         for (Statement theStatement : aStatements) {
             theModel.add(theStatement);
@@ -231,8 +232,9 @@ public class SQLEditor extends BaseEditor {
 
         setContentPane(view);
         setResizable(false);
-        pack();
 
+        pack();
+        
         UIInitializer.getInstance().initialize(this);
     }
 
@@ -282,12 +284,12 @@ public class SQLEditor extends BaseEditor {
             }
         }
     }
-    
+
     private void commandDeleteSelectedEntry() {
-        
+
         if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
             Object theSelectedElement = view.getSqlList().getSelectedValue();
-        
+
             DefaultListModel theModel = (DefaultListModel) view.getSqlList().getModel();
             theModel.remove(theSelectedElement);
         }

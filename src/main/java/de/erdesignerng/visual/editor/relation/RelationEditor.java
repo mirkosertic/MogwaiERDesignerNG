@@ -34,7 +34,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:43:31 $
+ * @version $Date: 2008-02-06 19:16:01 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -74,7 +74,8 @@ public class RelationEditor extends BaseEditor {
         model = aModel;
 
         bindingInfo.addBinding("name", editingView.getRelationName(), true);
-        bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(), null));
+        bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(),
+                null));
 
         RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
         theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
@@ -89,8 +90,6 @@ public class RelationEditor extends BaseEditor {
         bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
 
         bindingInfo.configure();
-
-        setPreferredSize(new Dimension(438, 554));
     }
 
     /**
@@ -104,6 +103,7 @@ public class RelationEditor extends BaseEditor {
 
         setContentPane(editingView);
         setResizable(false);
+
         pack();
 
         UIInitializer.getInstance().initialize(this);
@@ -125,16 +125,16 @@ public class RelationEditor extends BaseEditor {
         Relation theRelation = bindingInfo.getDefaultModel();
 
         if (!model.getRelations().contains(theRelation)) {
-            
-            bindingInfo.view2model();            
+
+            bindingInfo.view2model();
             model.addRelation(theRelation);
-            
+
         } else {
 
             Relation theTempRelation = theRelation.clone();
             bindingInfo.setDefaultModel(theTempRelation);
             bindingInfo.view2model();
-            
+
             if (theRelation.isModified(theTempRelation)) {
                 model.changeRelation(theRelation, theTempRelation);
             }

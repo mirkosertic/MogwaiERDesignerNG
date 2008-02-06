@@ -53,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 10:37:56 $
+ * @version $Date: 2008-02-06 19:16:01 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -185,7 +185,6 @@ public class TableEditor extends BaseEditor {
         indexBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
-        setPreferredSize(new Dimension(803, 478));
     }
 
     /**
@@ -222,8 +221,9 @@ public class TableEditor extends BaseEditor {
         });
 
         setContentPane(editingView);
-        pack();
 
+        pack();
+        
         editingView.getUpdateIndexButton().setEnabled(false);
     }
 
