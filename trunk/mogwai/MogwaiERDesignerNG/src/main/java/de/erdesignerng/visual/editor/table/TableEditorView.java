@@ -24,7 +24,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:36 $
+ * @version $Date: 2008-02-06 19:16:02 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -118,8 +118,8 @@ public class TableEditorView extends DefaultPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,220dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,140dlu:grow,50dlu:grow,2dlu,50dlu:grow,2dlu";
+        String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
+        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
@@ -542,8 +542,8 @@ public class TableEditorView extends DefaultPanel {
         if (indexGeneralTab == null) {
             indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
 
-            String rowDef = "2dlu,p,2dlu,p,100dlu:grow,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
+            String rowDef = "2dlu,p,2dlu,fill:20dlu:grow,2dlu,p,2dlu,p,2dlu,p,2dlu,p,8dlu";            
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             indexGeneralTab.setLayout(layout);
@@ -552,10 +552,10 @@ public class TableEditorView extends DefaultPanel {
 
             indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
             indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 1, 1));
+            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 1));
             indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 8, 1, 1));            
             indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 10, 1, 1));
             indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 12, 1, 1));
-            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 3));
             indexGeneralTab.setName("IndexGeneralTab");
         }
 

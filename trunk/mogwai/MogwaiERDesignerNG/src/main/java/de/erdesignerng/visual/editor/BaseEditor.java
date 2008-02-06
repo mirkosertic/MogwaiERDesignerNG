@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
@@ -26,7 +27,7 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 18:49:15 $
+ * @version $Date: 2008-02-06 19:16:00 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -88,6 +89,10 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
         modalResult = DialogConstants.MODAL_RESULT_CANCEL;
         pack();
         setVisible(true);
+        
+        //Dimension theSize = getSize();
+        //System.out.println("setPreferredSize(new Dimension("+theSize.width+","+theSize.height+"));");
+        //System.out.println("setMinimumSize(new Dimension("+theSize.width+","+theSize.height+"));");        
         return modalResult;
     }
 

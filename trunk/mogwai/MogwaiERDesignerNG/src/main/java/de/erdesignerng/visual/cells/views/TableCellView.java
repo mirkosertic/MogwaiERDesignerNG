@@ -22,6 +22,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
@@ -47,7 +48,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:24 $
+ * @version $Date: 2008-02-06 19:16:00 $
  */
 public class TableCellView extends VertexView {
 
@@ -105,6 +106,7 @@ public class TableCellView extends VertexView {
             int theWidth = theSize.width;
             int theHeight = theSize.height;
 
+            aGraphics.setFont(getFont());
             aGraphics.setColor(getBackground());
             aGraphics.fillRect(0, 0, theWidth, theHeight);
 
@@ -202,9 +204,9 @@ public class TableCellView extends VertexView {
 
         @Override
         public Dimension getPreferredSize() {
-            
+
             Index thePrimaryKey = table.getPrimarykey();
-            
+
             int theMaxX = 150;
             int theMaxY = 8;
 
@@ -222,12 +224,12 @@ public class TableCellView extends VertexView {
             theAllAttributes.addAll(table.getAttributes());
 
             for (Attribute theAttribute : table.getAttributes()) {
-                
+
                 boolean isPrimaryKey = false;
                 if (thePrimaryKey != null) {
                     isPrimaryKey = thePrimaryKey.getAttributes().contains(theAttribute);
                 }
-                
+
                 if (isPrimaryKey) {
 
                     theAllAttributes.remove(theAttribute);
@@ -269,8 +271,12 @@ public class TableCellView extends VertexView {
                 theYOffset += theMetrics.getHeight();
             }
 
-            theYOffset += 8;
-            theMaxX += 8;
+            theYOffset += 16;
+            theMaxX += 16;
+
+            Insets theInsets = getInsets();
+            theMaxX += theInsets.left + theInsets.right;
+            theMaxY += theInsets.top + theInsets.bottom;
 
             if (theYOffset > theMaxY) {
                 theMaxY = theYOffset;

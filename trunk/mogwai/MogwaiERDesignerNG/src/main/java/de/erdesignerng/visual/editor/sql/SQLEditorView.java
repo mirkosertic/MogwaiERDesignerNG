@@ -40,8 +40,8 @@ public class SQLEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,fill:300dlu,10dlu,p,2dlu";
-        String colDef = "2dlu,300dlu,2dlu";
+        String rowDef = "2dlu,fill:300dlu:grow,10dlu,p,2dlu";
+        String colDef = "2dlu,fill:300dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);

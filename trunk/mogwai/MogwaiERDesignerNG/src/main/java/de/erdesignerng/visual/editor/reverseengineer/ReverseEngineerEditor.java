@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.reverseengineer;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.List;
@@ -44,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-04 18:23:34 $
+ * @version $Date: 2008-02-06 19:15:59 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -81,11 +82,14 @@ public class ReverseEngineerEditor extends BaseEditor {
     }, this, ERDesignerBundle.UPDATE);
 
     /**
-     * Create a reverse engineering editor. 
+     * Create a reverse engineering editor.
      * 
-     * @param aModel the model
-     * @param aParent the parent container
-     * @param aPreferences the preferences
+     * @param aModel
+     *            the model
+     * @param aParent
+     *            the parent container
+     * @param aPreferences
+     *            the preferences
      */
     public ReverseEngineerEditor(Model aModel, Component aParent, ApplicationPreferences aPreferences) {
         super(aParent, ERDesignerBundle.REVERSEENGINEER);
@@ -136,8 +140,9 @@ public class ReverseEngineerEditor extends BaseEditor {
 
         setContentPane(editingView);
         setResizable(false);
-        pack();
 
+        pack();
+        
         UIInitializer.getInstance().initialize(this);
     }
 

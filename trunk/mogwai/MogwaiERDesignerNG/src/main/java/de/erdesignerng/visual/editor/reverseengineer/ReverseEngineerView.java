@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:06 $
+ * @version $Date: 2008-02-06 19:15:58 $
  */
 public class ReverseEngineerView extends JPanel {
 
@@ -73,7 +73,7 @@ public class ReverseEngineerView extends JPanel {
     private void initialize() {
 
         String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,fill:60dlu,60dlu:grow,fill:60dlu,2dlu";
+        String colDef = "2dlu,fill:60dlu:grow,fill:60dlu:grow,fill:60dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         this.setLayout(layout);

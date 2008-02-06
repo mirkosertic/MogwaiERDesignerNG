@@ -17,7 +17,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 22:01:32 $
+ * @version $Date: 2008-02-06 19:16:01 $
  */
 public class RelationEditorView extends JPanel {
 
@@ -62,7 +62,7 @@ public class RelationEditorView extends JPanel {
     private void initialize() {
 
         String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,60dlu,2dlu,150dlu,2dlu";
+        String colDef = "2dlu,60dlu,2dlu,fill:150dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
