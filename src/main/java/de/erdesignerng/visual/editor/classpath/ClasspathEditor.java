@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.classpath;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
@@ -38,7 +39,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:28 $
+ * @version $Date: 2008-02-06 19:15:58 $
  */
 public class ClasspathEditor extends BaseEditor {
 
@@ -101,6 +102,7 @@ public class ClasspathEditor extends BaseEditor {
 
         setContentPane(view);
         setResizable(false);
+
         pack();
 
         UIInitializer.getInstance().initialize(this);

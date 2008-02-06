@@ -55,3 +55,7 @@ Release 1.1.1
 
 * Bug Fixing in Squirrel Plugin ( Connection was closed during Reverse Engineering )
 * Bug Fixing in Squirrel Plugin ( DDL Generation fails in PluginMode )
+
+Release 1.1.2
+
+* Bug Fixing for some Swing Layouts to make then viewable in Netbeans

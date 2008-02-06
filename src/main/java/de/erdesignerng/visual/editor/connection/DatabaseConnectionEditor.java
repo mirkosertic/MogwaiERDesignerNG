@@ -1,6 +1,7 @@
 package de.erdesignerng.visual.editor.connection;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -26,7 +27,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-04 18:23:34 $
+ * @version $Date: 2008-02-06 19:16:00 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -110,6 +111,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
         setContentPane(view);
         setResizable(false);
+
         pack();
 
         UIInitializer.getInstance().initialize(this);
@@ -162,7 +164,8 @@ public class DatabaseConnectionEditor extends BaseEditor {
                 }
 
                 MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(
-                        ERDesignerBundle.CONNECTIONSEEMSTOBEOK) + " DB : " + theDB + " " + theVersion);
+                        ERDesignerBundle.CONNECTIONSEEMSTOBEOK)
+                        + " DB : " + theDB + " " + theVersion);
 
             } catch (Exception e) {
 
