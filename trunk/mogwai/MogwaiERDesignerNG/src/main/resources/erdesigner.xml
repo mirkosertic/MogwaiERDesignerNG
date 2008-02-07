@@ -128,6 +128,22 @@
 			<Text lang="de">Layout durch GraphViz</Text>		
 			<Text lang="en">Layout by Graphviz</Text>					
 		</Entry>
+		<Entry id="LAYOUTBYRADIAL">
+			<Text lang="de">Layout durch RadialLayout</Text>		
+			<Text lang="en">Layout by RadialLayout</Text>					
+		</Entry>
+		<Entry id="LAYOUTBYSPRING">
+			<Text lang="de">Layout durch SpringLayout</Text>		
+			<Text lang="en">Layout by SpringLayout</Text>					
+		</Entry>
+		<Entry id="LAYOUTBYGRID">
+			<Text lang="de">Layout durch GridLayout</Text>		
+			<Text lang="en">Layout by GridLayout</Text>					
+		</Entry>
+		<Entry id="LAYOUTBYTREE">
+			<Text lang="de">Layout durch TreeLayout</Text>		
+			<Text lang="en">Layout by TreeLayout</Text>					
+		</Entry>
 		<Entry id="NAME">
 			<Text lang="de">Name</Text>		
 			<Text lang="en">Name</Text>					

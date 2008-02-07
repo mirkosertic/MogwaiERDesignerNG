@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
-
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.NameCastType;
