@@ -19,10 +19,11 @@ package de.erdesignerng.visual.layout.zest;
 
 import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
-public class SpringZestLayouter extends ZestLayouter {
+public class SpringZestLayouter extends ZestLayouter<SpringLayoutAlgorithm> {
 
     public SpringZestLayouter() {
         super(new SpringLayoutAlgorithm());
+        layout.setIterations(1000);
     }
 
 }

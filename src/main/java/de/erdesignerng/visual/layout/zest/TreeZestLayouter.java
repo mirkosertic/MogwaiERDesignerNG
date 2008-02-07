@@ -19,7 +19,7 @@ package de.erdesignerng.visual.layout.zest;
 
 import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
-public class TreeZestLayouter extends ZestLayouter {
+public class TreeZestLayouter extends ZestLayouter<TreeLayoutAlgorithm> {
 
     public TreeZestLayouter() {
         super(new TreeLayoutAlgorithm());

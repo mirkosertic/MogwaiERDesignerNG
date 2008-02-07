@@ -23,6 +23,8 @@ import java.util.HashSet;
 
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.progress.ProgressEvent;
+import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphModel;
@@ -36,12 +38,28 @@ import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.layout.LayoutException;
 import de.erdesignerng.visual.layout.Layouter;
 
-public class ZestLayouter implements Layouter {
+public class ZestLayouter<T extends LayoutAlgorithm> implements Layouter {
 
-    private LayoutAlgorithm layout;
+    protected T layout;
 
-    protected ZestLayouter(LayoutAlgorithm aLayout) {
+    protected ZestLayouter(T aLayout) {
         layout = aLayout;
+        layout.addProgressListener(new ProgressListener() {
+
+            public void progressEnded(ProgressEvent aEvent) {
+                System.out.println("Layout finished");
+            }
+
+            public void progressStarted(ProgressEvent aEvent) {
+                System.out.println("Layout start");
+            }
+
+            public void progressUpdated(ProgressEvent aEvent) {
+                System.out.println("Layout progress " + aEvent.getStepsCompleted() + " / "
+                        + aEvent.getTotalNumberOfSteps());
+            }
+
+        });
     }
 
     public void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException {
@@ -83,21 +101,23 @@ public class ZestLayouter implements Layouter {
 
                 Object theSource = DefaultGraphModel.getSourceVertex(theModel, theEdgeView.getCell());
                 Object theTarget = DefaultGraphModel.getTargetVertex(theModel, theEdgeView.getCell());
-                
+
                 CellView theSourceView = theLayoutCache.getMapping(theSource, true);
                 CellView theTargetView = theLayoutCache.getMapping(theTarget, true);
-                
+
                 TableCell theSourceCell = (TableCell) theSourceView.getCell();
                 TableCell theTargetCell = (TableCell) theTargetView.getCell();
-                
+
                 ERDesignerLayoutEntity theSourceEntity = findByEntity(theTables, theSourceCell);
                 ERDesignerLayoutEntity theTargetEntity = findByEntity(theTables, theTargetCell);
 
                 ERDesignerLayoutRelationship theRelation = new ERDesignerLayoutRelationship();
                 theRelation.setSourceInLayout(theSourceEntity);
                 theRelation.setDestinationInLayout(theTargetEntity);
-                
+
                 theRelationships.add(theRelation);
+                
+                layout.addRelationship(theRelation);
             }
         }
 
@@ -105,8 +125,14 @@ public class ZestLayouter implements Layouter {
         ERDesignerLayoutRelationship[] theRelations = theRelationships
                 .toArray(new ERDesignerLayoutRelationship[theRelationships.size()]);
 
+        int theTotalWidth = 1000;
+        int theTotalHeight = 1000;
+        double theRatio = theTotalWidth / theTotalHeight;
+        
+        layout.setEntityAspectRatio(theRatio);
+        
         try {
-            layout.applyLayout(theEntities, theRelations, 0, 0, 8000, 8000, false, false);
+            layout.applyLayout(theEntities, theRelations, 0, 0, theTotalWidth, theTotalHeight, false, false);
         } catch (InvalidLayoutConfiguration e) {
             throw new LayoutException("Error during layouting", e);
         }
@@ -114,13 +140,19 @@ public class ZestLayouter implements Layouter {
         for (ERDesignerLayoutEntity theEntity : theEntities) {
             TableCell theCell = theEntity.getCell();
             double theX = theEntity.getXInLayout();
-            double theY = theEntity.getXInLayout();
+            double theY = theEntity.getYInLayout();
             double theWidth = theEntity.getWidthInLayout();
             double theHeight = theEntity.getHeightInLayout();
 
-            Rectangle2D theOldDimensions = GraphConstants.getBounds(theCell.getAttributes());
-            GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(theX, theY, theOldDimensions.getWidth(), theOldDimensions.getHeight()));
+            theWidth = 10;
+            theHeight = 10;
             
+            Rectangle2D theOldDimensions = GraphConstants.getBounds(theCell.getAttributes());
+            // GraphConstants.setBounds(theCell.getAttributes(), new
+            // Rectangle2D.Double(theX, theY, theOldDimensions.getWidth(),
+            // theOldDimensions.getHeight()));
+            GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(theX, theY, theWidth, theHeight));
+
             theLayoutCache.editCell(theCell, theCell.getAttributes());
         }
     }

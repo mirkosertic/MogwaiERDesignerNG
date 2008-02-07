@@ -19,10 +19,11 @@ package de.erdesignerng.visual.layout.zest;
 
 import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
 
-public class GridZestLayouter extends ZestLayouter {
+public class GridZestLayouter extends ZestLayouter<GridLayoutAlgorithm> {
 
     public GridZestLayouter() {
         super(new GridLayoutAlgorithm());
+        layout.setRowPadding(100);
     }
 
 }
