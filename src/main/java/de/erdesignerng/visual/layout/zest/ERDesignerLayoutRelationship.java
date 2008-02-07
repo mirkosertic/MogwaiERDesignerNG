@@ -3,6 +3,7 @@ package de.erdesignerng.visual.layout.zest;
 import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
 import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.layouts.dataStructures.BendPoint;
 
 public class ERDesignerLayoutRelationship implements LayoutRelationship {
 
@@ -73,6 +74,6 @@ public class ERDesignerLayoutRelationship implements LayoutRelationship {
     }
 
     public void clearBendPoints() {
-        bendPoints = null;
+        bendPoints = new BendPoint[0];
     }
 }
