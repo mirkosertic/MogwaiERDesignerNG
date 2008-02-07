@@ -48,7 +48,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:16:00 $
+ * @version $Date: 2008-02-07 21:05:12 $
  */
 public class TableCellView extends VertexView {
 
@@ -271,8 +271,8 @@ public class TableCellView extends VertexView {
                 theYOffset += theMetrics.getHeight();
             }
 
-            theYOffset += 16;
-            theMaxX += 16;
+            theYOffset += 8;
+            theMaxX += 8;
 
             Insets theInsets = getInsets();
             theMaxX += theInsets.left + theInsets.right;
@@ -283,7 +283,6 @@ public class TableCellView extends VertexView {
             }
 
             return new Dimension(theMaxX, theMaxY);
-
         }
 
         @Override
