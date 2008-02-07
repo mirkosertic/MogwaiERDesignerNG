@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.table;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:16:01 $
+ * @version $Date: 2008-02-07 20:04:24 $
  */
 public class TableEditor extends BaseEditor {
 

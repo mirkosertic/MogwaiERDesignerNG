@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.preferences;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import de.erdesignerng.ERDesignerBundle;
@@ -33,7 +32,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:15:59 $
+ * @version $Date: 2008-02-07 20:04:23 $
  */
 public class PreferencesEditor extends BaseEditor {
 

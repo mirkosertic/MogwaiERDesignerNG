@@ -17,6 +17,12 @@
  */
 package de.erdesignerng.visual.layout;
 
+import de.erdesignerng.visual.layout.graphviz.GraphvizLayout;
+import de.erdesignerng.visual.layout.zest.GridZestLayouter;
+import de.erdesignerng.visual.layout.zest.RadialZestLayouter;
+import de.erdesignerng.visual.layout.zest.SpringZestLayouter;
+import de.erdesignerng.visual.layout.zest.TreeZestLayouter;
+
 public final class LayouterFactory {
 
     private static LayouterFactory me;
@@ -34,4 +40,21 @@ public final class LayouterFactory {
     public Layouter createGraphvizLayouter() {
         return new GraphvizLayout();
     }
+    
+    public Layouter createRadialLayouter() {
+        return new RadialZestLayouter();
+    }
+    
+    public Layouter createSpringLayouter() {
+        return new SpringZestLayouter();
+    }
+
+    public Layouter createGridLayouter() {
+        return new GridZestLayouter();
+    }
+
+    public Layouter createTreeLayouter() {
+        return new TreeZestLayouter();
+    }
+
 }
