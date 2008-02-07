@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.reverseengineer;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.List;
@@ -45,7 +44,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:15:59 $
+ * @version $Date: 2008-02-07 20:04:23 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 

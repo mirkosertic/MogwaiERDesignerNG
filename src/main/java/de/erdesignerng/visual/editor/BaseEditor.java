@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor;
 
 import java.awt.Component;
-import java.awt.Dimension;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
@@ -27,7 +26,7 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:16:00 $
+ * @version $Date: 2008-02-07 20:04:23 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 

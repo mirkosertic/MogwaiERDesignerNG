@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.layout;
+package de.erdesignerng.visual.layout.graphviz;
 
 import java.awt.Font;
 import java.awt.Point;
@@ -48,6 +48,8 @@ import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
+import de.erdesignerng.visual.layout.LayoutException;
+import de.erdesignerng.visual.layout.Layouter;
 
 public class GraphvizLayout implements Layouter {
 

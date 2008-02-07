@@ -207,6 +207,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction layoutgraphvizAction;
 
+    private DefaultAction layoutradialAction;
+    
+    private DefaultAction layoutspringAction;
+
+    private DefaultAction layoutgridAction;
+
+    private DefaultAction layouttreeAction;
+
     private DefaultAction loadAction;
 
     private DefaultAction lruAction;
@@ -299,10 +307,42 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         layoutgraphvizAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
-                commandLayoutGraphviz();
+                commandLayout(LayouterFactory.getInstance().createGraphvizLayouter());
             }
 
         }, this, ERDesignerBundle.LAYOUTBYGRAPHVIZ);
+
+        layoutradialAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandLayout(LayouterFactory.getInstance().createRadialLayouter());
+            }
+
+        }, this, ERDesignerBundle.LAYOUTBYRADIAL);
+
+        layoutspringAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandLayout(LayouterFactory.getInstance().createSpringLayouter());
+            }
+
+        }, this, ERDesignerBundle.LAYOUTBYSPRING);
+
+        layoutgridAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandLayout(LayouterFactory.getInstance().createGridLayouter());
+            }
+
+        }, this, ERDesignerBundle.LAYOUTBYGRID);
+
+        layouttreeAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandLayout(LayouterFactory.getInstance().createTreeLayouter());
+            }
+
+        }, this, ERDesignerBundle.LAYOUTBYTREE);
 
         loadAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -479,6 +519,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
         theLayoutMenu.add(new DefaultMenuItem(layoutgraphvizAction));
+        theLayoutMenu.add(new DefaultMenuItem(layoutradialAction));
+        theLayoutMenu.add(new DefaultMenuItem(layoutspringAction));
+        theLayoutMenu.add(new DefaultMenuItem(layouttreeAction));
+        theLayoutMenu.add(new DefaultMenuItem(layoutgridAction));
 
         theViewMenu.add(theLayoutMenu);
         theViewMenu.addSeparator();
@@ -654,10 +698,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected void commandLayoutGraphviz() {
+    protected void commandLayout(Layouter aLayouter) {
         try {
-            Layouter theLayout = LayouterFactory.getInstance().createGraphvizLayouter();
-            theLayout.applyLayout(preferences, graph, graph.getRoots());
+            aLayouter.applyLayout(preferences, graph, graph.getRoots());
+            
+            System.out.println("Finished");
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }

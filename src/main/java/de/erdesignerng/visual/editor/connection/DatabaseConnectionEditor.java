@@ -1,7 +1,6 @@
 package de.erdesignerng.visual.editor.connection;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -27,7 +26,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:16:00 $
+ * @version $Date: 2008-02-07 20:04:24 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
