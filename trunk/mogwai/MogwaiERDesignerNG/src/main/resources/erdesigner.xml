@@ -487,5 +487,9 @@
 			<Text lang="de">Der Datenbankdialekt wird nicht unterstützt!</Text>		
 			<Text lang="en">The database dialect is not supported!</Text>					
 		</Entry>
+		<Entry id="EXTRA">
+			<Text lang="de">Extra</Text>		
+			<Text lang="en">Extra</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

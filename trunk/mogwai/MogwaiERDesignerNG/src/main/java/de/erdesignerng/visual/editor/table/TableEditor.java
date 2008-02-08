@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:24 $
+ * @version $Date: 2008-02-08 19:49:26 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -170,6 +170,7 @@ public class TableEditor extends BaseEditor {
         attributeBindingInfo.addBinding("fraction", editingView.getFractionSpinner(), true);
         attributeBindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
+        attributeBindingInfo.addBinding("extra", editingView.getExtra());
         attributeBindingInfo.configure();
 
         indexBindingInfo.addBinding("name", editingView.getIndexName(), true);
@@ -222,7 +223,7 @@ public class TableEditor extends BaseEditor {
         setContentPane(editingView);
 
         pack();
-        
+
         editingView.getUpdateIndexButton().setEnabled(false);
     }
 
@@ -314,6 +315,7 @@ public class TableEditor extends BaseEditor {
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
             editingView.getDefault().setEnabled(true);
+            editingView.getExtra().setEnabled(model.getDialect().isSupportsColumnExtra());
             editingView.getDataType().setEnabled(true);
             setSpinnerState(theValue.getDatatype());
 
@@ -323,6 +325,7 @@ public class TableEditor extends BaseEditor {
             editingView.getAttributeName().setEnabled(false);
             editingView.getNullable().setEnabled(false);
             editingView.getDefault().setEnabled(false);
+            editingView.getExtra().setEnabled(false);
             editingView.getDataType().setEnabled(false);
             setSpinnerState(null);
         }
