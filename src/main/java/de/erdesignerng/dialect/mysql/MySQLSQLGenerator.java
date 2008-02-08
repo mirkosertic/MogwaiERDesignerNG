@@ -28,13 +28,33 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 18:05:25 $
+ * @version $Date: 2008-02-08 20:38:54 $
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
     public MySQLSQLGenerator(MySQLDialect aDialect) {
         super(aDialect);
     }
+
+    @Override
+    public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
+        boolean theHasAutoIncrement = false;
+        for (Attribute theAttribute : aTable.getAttributes()) {
+            String theExtra = theAttribute.getExtra();
+            if (theExtra != null) {
+                if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
+                    theHasAutoIncrement = true;
+                }
+            }
+        }
+        
+        if (theHasAutoIncrement) {
+            return new StatementList();
+        }
+        return super.createAddPrimaryKeyToTable(aTable, aIndex);
+    }
+    
+    
 
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
@@ -53,6 +73,20 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
     @Override
     public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
+        
+        boolean theHasAutoIncrement = false;
+        for (Attribute theAttribute : aTable.getAttributes()) {
+            String theExtra = theAttribute.getExtra();
+            if (theExtra != null) {
+                if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
+                    theHasAutoIncrement = true;
+                }
+            }
+        }
+        if (theHasAutoIncrement) {
+            return new StatementList();
+        }
+        
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 

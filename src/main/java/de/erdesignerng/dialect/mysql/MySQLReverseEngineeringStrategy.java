@@ -17,19 +17,29 @@
  */
 package de.erdesignerng.dialect.mysql;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.ReverseEngineeringNotifier;
+import de.erdesignerng.dialect.ReverseEngineeringOptions;
+import de.erdesignerng.dialect.SchemaEntry;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:35 $
+ * @version $Date: 2008-02-08 20:38:54 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
     public MySQLReverseEngineeringStrategy(MySQLDialect aDialect) {
         super(aDialect);
     }
-    
+
     @Override
     protected String convertIndexNameFor(Table aTable, String aIndexName) {
         if ("PRIMARY".equals(aIndexName)) {
@@ -37,4 +47,24 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         }
         return super.convertIndexNameFor(aTable, aIndexName);
     }
+
+    @Override
+    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, String aTableName, Connection aConnection)
+            throws SQLException {
+        Statement theStatement = aConnection.createStatement();
+        ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aTableName);
+        while (theResult.next()) {
+            String theColumnName = theResult.getString("Field");
+            if (aAttribute.getName().equals(theColumnName)) {
+                String theExtra = theResult.getString("Extra");
+                if ("AUTO_INCREMENT".equalsIgnoreCase(theExtra)) {
+                    aAttribute.setExtra("AUTO_INCREMENT PRIMARY KEY");
+                }
+            }
+        }
+        theResult.close();
+        theStatement.close();
+    }
+
 }

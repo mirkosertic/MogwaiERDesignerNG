@@ -48,7 +48,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 21:05:12 $
+ * @version $Date: 2008-02-08 20:38:54 $
  */
 public class TableCellView extends VertexView {
 
@@ -157,6 +157,10 @@ public class TableCellView extends VertexView {
 
                     theText += theAttribute.getPhysicalDeclaration();
 
+                    if (theAttribute.getExtra() != null) {
+                        theText += " ";
+                        theText += theAttribute.getExtra();
+                    }
                     if (theAttribute.isForeignKey()) {
                         theText += " (FK)";
                     }
@@ -189,6 +193,10 @@ public class TableCellView extends VertexView {
 
                     theText += theAttribute.getPhysicalDeclaration();
 
+                    if (theAttribute.getExtra() != null) {
+                        theText += " ";
+                        theText += theAttribute.getExtra();
+                    }
                     if (isFK) {
                         theText += " (FK)";
                     }
@@ -239,9 +247,15 @@ public class TableCellView extends VertexView {
 
                     theText += theAttribute.getPhysicalDeclaration();
 
+                    if (theAttribute.getExtra() != null) {
+                        theText += " ";
+                        theText += theAttribute.getExtra();
+                    }
+
                     if (theAttribute.isForeignKey()) {
                         theText += " (FK)";
                     }
+                    
 
                     theLength = theMetrics.stringWidth(theText);
                     if (theLength + theXTextOffset > theMaxX) {
@@ -259,6 +273,11 @@ public class TableCellView extends VertexView {
 
                 theText += theAttribute.getPhysicalDeclaration();
 
+                if (theAttribute.getExtra() != null) {
+                    theText += " ";
+                    theText += theAttribute.getExtra();
+                }
+                
                 if (theAttribute.isForeignKey()) {
                     theText += " (FK)";
                 }
