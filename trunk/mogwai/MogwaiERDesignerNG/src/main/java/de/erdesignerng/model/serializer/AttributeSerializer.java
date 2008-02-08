@@ -40,6 +40,8 @@ public class AttributeSerializer extends Serializer {
     public static final String NULLABLE = "nullable";
 
     public static final String DEFAULTVALUE = "defaultvalue";
+    
+    public static final String EXTRA = "extra";
 
     public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
 
@@ -53,6 +55,7 @@ public class AttributeSerializer extends Serializer {
         theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
         theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
         theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
+        theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
 
         setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
 
@@ -77,6 +80,7 @@ public class AttributeSerializer extends Serializer {
             theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));
             theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
             theAttribute.setNullable(TRUE.equals(theAttributeElement.getAttribute(NULLABLE)));
+            theAttribute.setExtra(theAttributeElement.getAttribute(EXTRA));
 
             aTable.getAttributes().add(theAttribute);
         }

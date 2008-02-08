@@ -39,7 +39,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:43:30 $
+ * @version $Date: 2008-02-08 20:38:54 $
  * @param <T>
  *            the dialect
  */
@@ -47,6 +47,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
     protected JDBCReverseEngineeringStrategy(T aDialect) {
         super(aDialect);
+    }
+
+    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, String aTableName, Connection aConnection)
+            throws SQLException {
     }
 
     /**
@@ -142,6 +147,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 theAttribute.setScale(theRadix);
                 theAttribute.setDefaultValue(theDefaultValue);
                 theAttribute.setNullable(isNullable);
+
+                reverseEngineerAttribute(aModel, theAttribute, aOptions, aNotifier, aEntry, aTableName, aConnection);
 
                 try {
                     theTable.addAttribute(aModel, theAttribute);
@@ -432,11 +439,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             ReverseEngineeringException {
 
         Model theNewModel = aConnector.createNewModel();
-        
+
         // The modification tracker is disabled during reverse engineering
         ModelModificationTracker theOldModificationTracker = theNewModel.getModificationTracker();
         theNewModel.setModificationTracker(new EmptyModelModificationTracker());
-        
+
         theNewModel.setDialect(dialect);
 
         if (dialect.supportsSchemaInformation()) {
