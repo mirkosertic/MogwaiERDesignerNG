@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-02-08 18:05:25 $
  */
 public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
@@ -79,14 +79,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(aNewAttribute.getPhysicalDeclaration());
-        theStatement.append(" ");
-
-        boolean isNullable = aNewAttribute.isNullable();
-
-        if (!isNullable) {
-            theStatement.append("NOT NULL");
-        }
+        theStatement.append(createAttributeDataDefinition(aNewAttribute));
 
         theResult.add(new Statement(theStatement.toString()));
 

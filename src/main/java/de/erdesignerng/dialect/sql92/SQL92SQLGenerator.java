@@ -29,7 +29,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:43:30 $
+ * @version $Date: 2008-02-08 18:05:25 $
  * @param <T>
  *            the dialect
  */
@@ -40,6 +40,26 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     protected SQL92SQLGenerator(T aDialect) {
         super(aDialect);
     }
+    
+    protected String createAttributeDataDefinition(Attribute aAttribute) {
+        StringBuilder theBuilder = new StringBuilder();
+        theBuilder.append(aAttribute.getPhysicalDeclaration());
+        boolean isNullable = aAttribute.isNullable();
+
+        if (!isNullable) {
+            theBuilder.append(" NOT NULL");
+        }
+        
+        return theBuilder.toString();
+    }
+    
+    protected String createCompleteAttributeDefinition(Attribute aAttribute) {
+        StringBuilder theBuilder = new StringBuilder();
+        theBuilder.append(aAttribute.getName());
+        theBuilder.append(" ");
+        theBuilder.append(createAttributeDataDefinition(aAttribute));
+        return theBuilder.toString();
+    }
 
     @Override
     public StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute) throws VetoException {
@@ -47,17 +67,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE " + escapeTableName(aTable.getName()) + " ADD ");
-
-        theStatement.append(aAttribute.getName());
-        theStatement.append(" ");
-        theStatement.append(aAttribute.getPhysicalDeclaration());
-        theStatement.append(" ");
-
-        boolean isNullable = aAttribute.isNullable();
-
-        if (!isNullable) {
-            theStatement.append("NOT NULL");
-        }
+        theStatement.append(createCompleteAttributeDefinition(aAttribute));
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -259,16 +269,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             Attribute theAttribute = aTable.getAttributes().get(i);
 
             theStatement.append(TAB);
-            theStatement.append(theAttribute.getName());
-            theStatement.append(" ");
-            theStatement.append(theAttribute.getPhysicalDeclaration());
-            theStatement.append(" ");
-
-            boolean isNullable = theAttribute.isNullable();
-
-            if (!isNullable) {
-                theStatement.append("NOT NULL");
-            }
+            theStatement.append(createCompleteAttributeDefinition(theAttribute));
 
             if (i < aTable.getAttributes().size() - 1) {
                 theStatement.append(",");
