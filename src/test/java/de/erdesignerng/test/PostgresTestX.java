@@ -17,12 +17,9 @@
  */
 package de.erdesignerng.test;
 
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Types;
 
-import de.erdesignerng.dialect.db2.DB2Dialect;
+import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 
@@ -30,7 +27,7 @@ import de.erdesignerng.model.Model;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:01 $
+ * @version $Date: 2008-02-08 19:38:18 $
  */
 public class PostgresTestX extends BaseUseCases {
 
@@ -39,12 +36,12 @@ public class PostgresTestX extends BaseUseCases {
         super.setUp();
 
         model = new Model();
-        model.setDialect(new DB2Dialect());
+        model.setDialect(new PostgresDialect());
 
         model.setModificationTracker(new MyTracker(model));
 
-        Class.forName("hit.db2.Db2Driver");
-        connection = DriverManager.getConnection("jdbc:db2://tcpv01:5027/DB21;package_collection_id=HITJ;ccsid=500;job_name=OA6ACCIS;auto_create_packages=no", "r373", "ccis123");
+        Class.forName("org.postgresql.Driver");
+        connection = DriverManager.getConnection("jdbc:postgresql://192.168.0.140:5432/erdesigner", "erdesigner", "erdesigner");
     }
     
     @Override
@@ -52,27 +49,4 @@ public class PostgresTestX extends BaseUseCases {
         aAttribute.setDatatype(model.getDialect().getDataTypeByName("varchar"));
         aAttribute.setSize(20);
     }    
-
-    /**
-     * Test extraction of datatypes.
-     * @throws Exception is thrown in case of an error
-     */
-    public void testExtractDataTypes() throws Exception {
-        DatabaseMetaData theMeta = connection.getMetaData();
-        ResultSet theTypes = theMeta.getTypeInfo();
-        while (theTypes.next()) {
-            String theTypeName = theTypes.getString("TYPE_NAME");
-            int theType = theTypes.getInt("DATA_TYPE");
-            String theParams = theTypes.getString("CREATE_PARAMS");
-            if (theParams == null) {
-                theParams = "";
-            }
-            if (!(Types.OTHER == theType) && !(Types.ARRAY == theType)) {
-                System.out.println("registerType(new DB2DataType(\"" + theTypeName + "\",\"" + theParams + "\","
-                        + getTypeName(theType) + "));");
-            }
-        }
-        System.exit(0);
-    }
-    
 }

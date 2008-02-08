@@ -29,19 +29,23 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 18:05:25 $
+ * @version $Date: 2008-02-08 19:38:17 $
  * @param <T>
  *            the dialect
  */
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     private static final StatementList EMPTY_STATEMENTLIST = new StatementList();
-    
+
     protected SQL92SQLGenerator(T aDialect) {
         super(aDialect);
     }
     
     protected String createAttributeDataDefinition(Attribute aAttribute) {
+        return createAttributeDataDefinition(aAttribute, false);
+    }
+
+    protected String createAttributeDataDefinition(Attribute aAttribute, boolean aIgnoreDefault) {
         StringBuilder theBuilder = new StringBuilder();
         theBuilder.append(aAttribute.getPhysicalDeclaration());
         boolean isNullable = aAttribute.isNullable();
@@ -49,10 +53,24 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         if (!isNullable) {
             theBuilder.append(" NOT NULL");
         }
-        
+
+        if (!aIgnoreDefault) {
+        String theDefault = aAttribute.getDefaultValue();
+        if ((theDefault != null) && (!"".equals(theDefault))) {
+            theBuilder.append(" DEFAULT ");
+            theBuilder.append(theDefault);
+        }
+        }
+
+        String theExtra = aAttribute.getExtra();
+        if ((theExtra != null) && (!"".equals(theExtra))) {
+            theBuilder.append(" ");
+            theBuilder.append(theExtra);
+        }
+
         return theBuilder.toString();
     }
-    
+
     protected String createCompleteAttributeDefinition(Attribute aAttribute) {
         StringBuilder theBuilder = new StringBuilder();
         theBuilder.append(aAttribute.getName());
@@ -340,7 +358,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
+            throws VetoException {
         return EMPTY_STATEMENTLIST;
     }
 }

@@ -27,7 +27,7 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:24 $
+ * @version $Date: 2008-02-08 19:38:19 $
  */
 public class DataType implements Comparable<DataType> {
 
@@ -52,7 +52,7 @@ public class DataType implements Comparable<DataType> {
     private boolean supportsFraction = false;
 
     private boolean supportsScale = false;
-
+    
     protected DataType(String aName, String aDefinition, int aJdbcType) {
         name = aName;
         pattern = aDefinition;

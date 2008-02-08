@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 18:05:25 $
+ * @version $Date: 2008-02-08 19:38:19 $
  */
 public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
@@ -79,7 +79,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(createAttributeDataDefinition(aNewAttribute));
+        theStatement.append(createAttributeDataDefinition(aNewAttribute, true));
 
         theResult.add(new Statement(theStatement.toString()));
 
