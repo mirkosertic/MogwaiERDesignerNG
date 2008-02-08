@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:38:17 $
+ * @version $Date: 2008-02-08 20:38:54 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -117,6 +117,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         theAttribute.setNullable(isNullable());
         theAttribute.setDefaultValue(getDefaultValue());
         theAttribute.setComment(getComment());
+        theAttribute.setExtra(getExtra());
         return theAttribute;
     }
 
@@ -129,6 +130,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         setNullable(aValue.isNullable());
         setDefaultValue(aValue.getDefaultValue());
         setComment(aValue.getComment());
+        setExtra(aValue.getExtra());
         setOwner(aValue.getOwner());
     }
 

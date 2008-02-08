@@ -60,3 +60,5 @@ Release 1.1.2
 
 * Bug Fixing for some Swing Layouts to make then viewable in Netbeans
 * Implemented Layouters powered by Eclipse ZEST
+* Bug Fixing 1886490 [ERDesignerNG] Default values not respected
+* Bug Fixing 1886489 [ERDesignerNG] Reverse engineering / MySQL AUTO_INCREMENT

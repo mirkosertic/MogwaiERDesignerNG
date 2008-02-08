@@ -62,6 +62,7 @@
 												<xs:attribute name="scale" use="required"/>
 												<xs:attribute name="datatype" use="required"/>
 												<xs:attribute name="defaultvalue" use="optional"/>
+												<xs:attribute name="extra" use="optional"/>												
 												<xs:attribute name="id" use="required"/>
 												<xs:attribute name="name" use="required"/>
 												<xs:attribute name="nullable" use="required"/>

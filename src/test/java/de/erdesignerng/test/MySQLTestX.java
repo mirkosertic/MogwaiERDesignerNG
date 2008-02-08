@@ -23,14 +23,20 @@ import java.sql.ResultSet;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.mysql.MySQLDialect;
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:01 $
+ * @version $Date: 2008-02-08 20:38:54 $
  */
 public class MySQLTestX extends BaseUseCases {
 
@@ -51,7 +57,15 @@ public class MySQLTestX extends BaseUseCases {
     public void setTextAttribute(Attribute aAttribute) {
         aAttribute.setDatatype(model.getDialect().getDataTypeByName("VARCHAR"));
         aAttribute.setSize(20);
-    }    
+    }  
+    
+    public void setInt(Attribute aAttribute) {
+        aAttribute.setDatatype(model.getDialect().getDataTypeByName("INTEGER"));
+    }      
+
+    public void setLong(Attribute aAttribute) {
+        aAttribute.setDatatype(model.getDialect().getDataTypeByName("BIGINT"));
+    }      
 
     /**
      * Test extraction of datatypes.
@@ -73,4 +87,85 @@ public class MySQLTestX extends BaseUseCases {
             }
         }
     }
+    
+    public void testCreateAutoIncrementTable() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test700");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            setInt(theAttribute);
+            theAttribute.setName("COLUMN_" + i);
+            theAttribute.setNullable(false);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+
+        Index theIndex = new Index();
+        theIndex.setName("TESTINDEX");
+        theIndex.setIndexType(IndexType.PRIMARYKEY);
+        Attribute theAttribute = theTempTable.getAttributes().get(0);
+        theAttribute.setExtra("AUTO_INCREMENT PRIMARY KEY");
+        theIndex.getAttributes().add(theAttribute);
+        theTempTable.addIndex(model, theIndex);
+
+        model.addTable(theTempTable);
+        model.removeTable(theTempTable);
+    }
+    
+    public void testCreateAutoIncrementTableDropPK() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test701");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            setInt(theAttribute);
+            theAttribute.setName("COLUMN_" + i);
+            theAttribute.setNullable(false);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+
+        Index theIndex = new Index();
+        theIndex.setName("TESTINDEX");
+        theIndex.setIndexType(IndexType.PRIMARYKEY);
+        Attribute theAttribute = theTempTable.getAttributes().get(0);
+        theAttribute.setExtra("AUTO_INCREMENT PRIMARY KEY");
+        theIndex.getAttributes().add(theAttribute);
+        theTempTable.addIndex(model, theIndex);
+
+        model.addTable(theTempTable);
+        
+        model.removeIndex(theTempTable, theIndex);
+        
+        model.removeTable(theTempTable);
+    }  
+    
+    public void testChangeAutoIncrementTable() throws Exception {
+
+        Table theTempTable = new Table();
+        theTempTable.setName("test702");
+        for (int i = 0; i < 5; i++) {
+            Attribute theAttribute = new Attribute();
+            setInt(theAttribute);
+            theAttribute.setName("COLUMN_" + i);
+            theAttribute.setNullable(false);
+            theTempTable.addAttribute(model, theAttribute);
+        }
+
+        Index theIndex = new Index();
+        theIndex.setName("TESTINDEX");
+        theIndex.setIndexType(IndexType.PRIMARYKEY);
+        
+        Attribute theAttribute = theTempTable.getAttributes().get(0);
+        theAttribute.setExtra("AUTO_INCREMENT PRIMARY KEY");
+        theIndex.getAttributes().add(theAttribute);
+        theTempTable.addIndex(model, theIndex);
+
+        model.addTable(theTempTable);
+        
+        Attribute theClone = theAttribute.clone();
+        setLong(theClone);
+        model.changeAttribute(theAttribute, theClone);
+        
+        model.removeTable(theTempTable);
+    }    
 }
