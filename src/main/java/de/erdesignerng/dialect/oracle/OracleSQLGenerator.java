@@ -27,13 +27,43 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 18:05:25 $
+ * @version $Date: 2008-02-08 19:38:19 $
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
     public OracleSQLGenerator(OracleDialect aDialect) {
         super(aDialect);
     }
+
+    @Override
+    protected String createAttributeDataDefinition(Attribute aAttribute) {
+        StringBuilder theBuilder = new StringBuilder();
+        theBuilder.append(aAttribute.getPhysicalDeclaration());
+        boolean isNullable = aAttribute.isNullable();
+
+        String theDefault = aAttribute.getDefaultValue();        
+        boolean hasDefault = false;
+        if ((theDefault != null) && (!"".equals(theDefault))) {
+            hasDefault = true;
+        }
+        
+        if ((!isNullable) && (!hasDefault)) {
+            theBuilder.append(" NOT NULL");
+        }
+        
+        if (hasDefault) {
+            theBuilder.append(" DEFAULT ");
+            theBuilder.append(theDefault);
+        }
+        
+        String theExtra = aAttribute.getExtra();
+        if ((theExtra != null) && (!"".equals(theExtra))) {
+            theBuilder.append(" ");
+            theBuilder.append(theExtra);
+        }
+        
+        return theBuilder.toString();
+    }    
     
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {

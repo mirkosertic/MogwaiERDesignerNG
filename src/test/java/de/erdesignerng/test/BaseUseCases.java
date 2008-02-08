@@ -96,7 +96,7 @@ public abstract class BaseUseCases extends TestCase {
         theTable.setName("testTable");
         int i = 0;
         for (DataType theType : model.getDialect().getDataTypes()) {
-            if ((!theType.isIdentity()) && (theType.getMaxOccoursPerTable() < 0))  {
+            if ((!theType.isIdentity()) && (theType.getMaxOccoursPerTable() < 0)) {
 
                 Attribute theAttribute = new Attribute();
                 theAttribute.setName("ATTR_" + i);
@@ -532,5 +532,89 @@ public abstract class BaseUseCases extends TestCase {
 
         model.removeTable(theTableB);
         model.removeTable(theTableA);
+    }
+
+    public void testCreateTableWithDefaultValues() throws ElementAlreadyExistsException, ElementInvalidNameException,
+            VetoException {
+
+        Table theTable = new Table();
+        theTable.setName("test15");
+
+        Attribute theAttribute1 = new Attribute();
+        theAttribute1.setName("AT1");
+        setTextAttribute(theAttribute1);
+        theTable.addAttribute(model, theAttribute1);
+
+        Attribute theAttribute2 = new Attribute();
+        theAttribute2.setName("AT2");
+        theAttribute2.setNullable(false);
+        setTextAttribute(theAttribute2);
+        theTable.addAttribute(model, theAttribute2);
+
+        Attribute theAttribute3 = new Attribute();
+        theAttribute3.setName("AT3");
+        theAttribute3.setDefaultValue("'LALA'");
+        setTextAttribute(theAttribute3);
+        theTable.addAttribute(model, theAttribute3);
+
+        Attribute theAttribute4 = new Attribute();
+        theAttribute4.setName("AT4");
+        theAttribute4.setNullable(false);
+        theAttribute4.setDefaultValue("'LALA'");
+        setTextAttribute(theAttribute4);
+        theTable.addAttribute(model, theAttribute4);
+
+        model.addTable(theTable);
+        model.removeTable(theTable);
+    }
+
+    public void testCreateTableChangeDefaultChangeNullable() throws Exception {
+
+        Table theTable = new Table();
+        theTable.setName("test16");
+
+        Attribute theAttribute1 = new Attribute();
+        theAttribute1.setName("AT1");
+        setTextAttribute(theAttribute1);
+        theTable.addAttribute(model, theAttribute1);
+
+        Attribute theAttribute2 = new Attribute();
+        theAttribute2.setName("AT2");
+        theAttribute2.setNullable(false);
+        setTextAttribute(theAttribute2);
+        theTable.addAttribute(model, theAttribute2);
+
+        Attribute theAttribute3 = new Attribute();
+        theAttribute3.setName("AT3");
+        theAttribute3.setDefaultValue("'LALA'");
+        setTextAttribute(theAttribute3);
+        theTable.addAttribute(model, theAttribute3);
+
+        Attribute theAttribute4 = new Attribute();
+        theAttribute4.setName("AT4");
+        theAttribute4.setNullable(false);
+        theAttribute4.setDefaultValue("'LALA'");
+        setTextAttribute(theAttribute4);
+        theTable.addAttribute(model, theAttribute4);
+
+        model.addTable(theTable);
+        
+        Attribute theClone = theAttribute1.clone();
+        theClone.setDefaultValue("'LULU'");
+        model.changeAttribute(theAttribute1, theClone);
+
+        theClone = theAttribute2.clone();
+        theClone.setDefaultValue("'LULU'");
+        model.changeAttribute(theAttribute2, theClone);
+
+        theClone = theAttribute3.clone();
+        theClone.setDefaultValue(null);
+        model.changeAttribute(theAttribute3, theClone);
+
+        theClone = theAttribute4.clone();
+        theClone.setDefaultValue(null);
+        model.changeAttribute(theAttribute4, theClone);
+
+        model.removeTable(theTable);
     }
 }
