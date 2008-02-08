@@ -24,7 +24,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:16:02 $
+ * @version $Date: 2008-02-08 19:49:26 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -77,6 +77,8 @@ public class TableEditorView extends DefaultPanel {
     private DefaultLabel label1;
 
     private DefaultTextField indexName;
+    
+    private DefaultTextField extra;
 
     private DefaultRadioButton uniqueIndex;
 
@@ -286,7 +288,7 @@ public class TableEditorView extends DefaultPanel {
         if (attributesGeneralTab == null) {
             attributesGeneralTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.GENERAL);
 
-            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
+            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -309,6 +311,8 @@ public class TableEditorView extends DefaultPanel {
             
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DEFAULT), cons.xywh(2, 14, 1, 1));
             attributesGeneralTab.add(getDefault(), cons.xywh(4, 14, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.EXTRA), cons.xywh(2, 16, 1, 1));
+            attributesGeneralTab.add(getExtra(), cons.xywh(4, 16, 1, 1));
             
 
             attributesGeneralTab.setName("AttributesGeneralTab");
@@ -387,6 +391,15 @@ public class TableEditorView extends DefaultPanel {
 
         return defaultValue;
     }
+    
+    public DefaultTextField getExtra() {
+
+        if (extra == null) {
+            extra = new DefaultTextField();
+        }
+
+        return extra;
+    }    
 
     /**
      * Getter method for component AttributeCommentTab.

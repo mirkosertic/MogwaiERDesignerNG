@@ -247,4 +247,6 @@ public interface ERDesignerBundle {
   String TABLEMUSTHAVEATLEASTONEATTRIBUTE = "TABLEMUSTHAVEATLEASTONEATTRIBUTE";
   /** Der Datenbankdialekt wird nicht unterstützt!. */
   String DIALECTISNOTSUPPORTED = "DIALECTISNOTSUPPORTED";
+  /** Extra. */
+  String EXTRA = "EXTRA";
 }
