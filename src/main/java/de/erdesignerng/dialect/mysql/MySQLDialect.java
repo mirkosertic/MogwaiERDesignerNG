@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:53:49 $
+ * @version $Date: 2008-02-08 19:49:27 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
@@ -32,6 +32,7 @@ public class MySQLDialect extends SQL92Dialect {
         setMaxObjectNameLength(30);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
+        setSupportsColumnExtra(true);
 
         // Other
         registerType(new MySQLDataType("BIT", "$size", java.sql.Types.BIT));
