@@ -263,4 +263,8 @@ public interface ERDesignerBundle {
   String REDEFINED = "REDEFINED";
   /** Layout erstellt. */
   String LAYOUTFINISHED = "LAYOUTFINISHED";
+  /** Bitte geben Sie die Grösse des Layoutes in Pixeln an. */
+  String INPUTLAYOUTSIZE = "INPUTLAYOUTSIZE";
+  /** Die Grössenangabe war ungültig. */
+  String INVALIDSIZESPECIFIED = "INVALIDSIZESPECIFIED";
 }

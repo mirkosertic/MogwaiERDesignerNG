@@ -722,12 +722,27 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void commandLayout(Layouter aLayouter) {
-        
+
         if (aLayouter instanceof SizeableLayouter) {
             SizeableLayouter theLayouter = (SizeableLayouter) aLayouter;
-            // TODO: Ask User for size here
+
+            String theSize = MessagesHelper.askForInput(scrollPane, ERDesignerBundle.INPUTLAYOUTSIZE, "1000,1000");
+            if (theSize == null) {
+                return;
+            }
+
+            try {
+
+                int p = theSize.indexOf(",");
+                int theWidth = Integer.parseInt(theSize.substring(0, p));
+                int theHeight = Integer.parseInt(theSize.substring(p + 1));
+
+                theLayouter.setSize(new Dimension(theWidth, theHeight));
+            } catch (Exception e) {
+                MessagesHelper.displayErrorMessage(scrollPane, ERDesignerBundle.INVALIDSIZESPECIFIED);
+            }
         }
-        
+
         try {
             aLayouter.applyLayout(preferences, graph, graph.getRoots());
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.LAYOUTFINISHED));
@@ -1111,14 +1126,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     public ERDesignerWorldConnector getWorldConnector() {
         return worldConnector;
     }
-    
+
     protected void commandCompleteCompare() {
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
                     ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
             return;
         }
-        
+
         ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
@@ -1148,6 +1163,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 worldConnector.notifyAboutException(e);
             }
 
-        }        
+        }
     }
 }
