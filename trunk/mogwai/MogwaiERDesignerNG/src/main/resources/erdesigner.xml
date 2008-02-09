@@ -511,5 +511,9 @@
 			<Text lang="de">Umdefiniert {0} </Text>		
 			<Text lang="en">Redefined {0}</Text>					
 		</Entry>		
+		<Entry id="LAYOUTFINISHED">
+			<Text lang="de">Layout erstellt</Text>		
+			<Text lang="en">Layout finished</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>

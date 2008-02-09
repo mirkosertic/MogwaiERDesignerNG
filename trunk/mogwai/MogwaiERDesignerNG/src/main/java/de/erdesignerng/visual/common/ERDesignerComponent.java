@@ -714,8 +714,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandLayout(Layouter aLayouter) {
         try {
             aLayouter.applyLayout(preferences, graph, graph.getRoots());
-
-            System.out.println("Finished");
+            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.LAYOUTFINISHED));
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }
@@ -1104,7 +1103,35 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
         
-        CompleteCompareEditor theEditor = new CompleteCompareEditor(scrollPane, model, model);
-        theEditor.showModal();
+        ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+
+            try {
+
+                final Connection theConnection = model.createConnection(preferences);
+                final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+                final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+
+                SwingWorker<Model, String> theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
+                        theConnection);
+                theWorker.execute();
+
+                Model theModel = theWorker.get();
+                if (theModel != null) {
+
+                    CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, theModel);
+                    theCompare.showModal();
+
+                }
+
+                if (!model.getDialect().generatesManagedConnection()) {
+                    theConnection.close();
+                }
+
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
+
+        }        
     }
 }
