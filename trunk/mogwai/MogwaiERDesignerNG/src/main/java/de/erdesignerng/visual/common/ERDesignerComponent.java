@@ -181,8 +181,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction dbConnectionAction;
 
-    private DefaultAction domainsAction;
-
     private DefaultAction entityAction;
 
     private JToggleButton entityButton;
