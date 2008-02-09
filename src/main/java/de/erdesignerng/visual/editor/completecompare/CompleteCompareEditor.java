@@ -38,7 +38,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 13:28:56 $
+ * @version $Date: 2008-02-09 14:57:35 $
  */
 public class CompleteCompareEditor extends BaseEditor {
 
@@ -59,7 +59,7 @@ public class CompleteCompareEditor extends BaseEditor {
         super(aParent, ERDesignerBundle.COMPLETECOMPARE);
 
         initialize();
-        
+
         currentModel = aCurrentModel;
         databaseModel = aDatabaseModel;
 
@@ -73,7 +73,7 @@ public class CompleteCompareEditor extends BaseEditor {
 
         UIInitializer.getInstance().initialize(this);
     }
-    
+
     private void refreshView() {
 
         DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(getResourceHelper().getText(
@@ -165,11 +165,11 @@ public class CompleteCompareEditor extends BaseEditor {
                             if (theAttributeFromModel.isModified(theAttributeFromDB)) {
                                 // Compute the difference
 
-                                String theDiffInfo = "";
+                                String theDiffInfo = theAttributeFromModel.getPhysicalDeclaration();
 
                                 // Differences in definition
                                 DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
-                                        this, theAttributeName + theDiffInfo));
+                                        this, theAttributeName + " " + theDiffInfo));
                                 theModelSideTableNode.add(error);
 
                             } else {
@@ -189,8 +189,8 @@ public class CompleteCompareEditor extends BaseEditor {
 
                         // The entity is existant, but the attribute is
                         // missing
-                        DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
-                                this, theAttributeName));
+                        DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(this,
+                                theAttributeName));
                         theModelSideTableNode.add(missing);
 
                     }
@@ -199,8 +199,8 @@ public class CompleteCompareEditor extends BaseEditor {
 
                     // The entity is not exising in the model, so every
                     // attribute is missing
-                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
-                            this, theAttributeName));
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(this,
+                            theAttributeName));
                     theModelSideTableNode.add(missing);
 
                 }
@@ -221,12 +221,12 @@ public class CompleteCompareEditor extends BaseEditor {
 
                             if (theAttributeFromDB.isModified(theAttributeFromModel)) {
 
-                                String diffInfo = "";
+                                String diffInfo = theAttributeFromDB.getPhysicalDeclaration();
 
                                 // Modified
                                 // Differences in definition
                                 DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
-                                        this, theAttributeName + diffInfo));
+                                        this, theAttributeName + " " + diffInfo));
                                 theDBSideTableNode.add(error);
 
                             } else {
@@ -244,8 +244,8 @@ public class CompleteCompareEditor extends BaseEditor {
 
                         // The entity is existant, but the attribute is
                         // missing
-                        DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
-                                this, theAttributeName));
+                        DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(this,
+                                theAttributeName));
                         theDBSideTableNode.add(missing);
 
                     }
@@ -254,8 +254,8 @@ public class CompleteCompareEditor extends BaseEditor {
 
                     // The entity is not exising in the model, so every
                     // attribute is missing
-                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
-                            this, theAttributeName));
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(this,
+                            theAttributeName));
                     theDBSideTableNode.add(missing);
 
                 }
