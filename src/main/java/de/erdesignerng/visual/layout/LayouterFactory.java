@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.layout;
 
 import de.erdesignerng.visual.layout.graphviz.GraphvizLayout;
+import de.erdesignerng.visual.layout.jung.JungFRLayouter;
 import de.erdesignerng.visual.layout.zest.GridZestLayouter;
 import de.erdesignerng.visual.layout.zest.RadialZestLayouter;
 import de.erdesignerng.visual.layout.zest.SpringZestLayouter;
@@ -57,4 +58,7 @@ public final class LayouterFactory {
         return new TreeZestLayouter();
     }
 
+    public Layouter createFRLayouter() {
+        return new JungFRLayouter();
+    }
 }

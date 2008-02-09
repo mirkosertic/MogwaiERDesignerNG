@@ -346,4 +346,8 @@ public class GraphvizLayout implements Layouter {
         return p;
     }
 
+    public boolean requiresSize() {
+        return false;
+    }
+
 }

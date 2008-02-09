@@ -15,13 +15,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.layout;
+package de.erdesignerng.visual.layout.jung;
 
-import org.jgraph.JGraph;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.visualization.FRLayout;
+import edu.uci.ics.jung.visualization.Layout;
 
-import de.erdesignerng.util.ApplicationPreferences;
+public class JungFRLayouter extends JungLayouter {
 
-public interface Layouter {
-    
-    void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException;
+    @Override
+    protected Layout createLayout(Graph aGraph) {
+        return new FRLayout(aGraph);
+    }
+
 }
