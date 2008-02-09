@@ -6,6 +6,19 @@ Requirements
 
 * Java 5 Runtime ( SDK not required )
 
+License
+
+This software includes or is based on the following libraries:
+
+  Apache Commons ( www.apache.org )
+  Apache Batik ( www.apache.org )  
+  JGraph ( www.jgraph.com )  
+  JGoodies ( www.jgoodies.com )  
+  JUNG ( jung.sourceforge.net )    
+  SQuirreL ( squirrel-sql.sourceforge.net )    
+  Eclipse ZEST ( www.eclise.org )  
+  ... Many more ...
+
 Release 1.0
 
 * First support for editing domains, defaultvalues, tables and relations
@@ -59,7 +72,7 @@ Release 1.1.1
 Release 1.2
 
 * Bug Fixing for some Swing Layouts to make then viewable in Netbeans
-* Implemented Layouters powered by Eclipse ZEST
+* Implemented Layouters powered by Eclipse ZEST and JUNG
 * Bug Fixing 1886490 [ERDesignerNG] Default values not respected
 * Bug Fixing 1886489 [ERDesignerNG] Reverse engineering / MySQL AUTO_INCREMENT
 * Implemented Complete Compare fuctionality
