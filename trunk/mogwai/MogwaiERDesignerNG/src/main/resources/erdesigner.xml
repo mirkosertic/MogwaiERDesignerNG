@@ -519,5 +519,13 @@
 			<Text lang="de">Layout erstellt</Text>		
 			<Text lang="en">Layout finished</Text>					
 		</Entry>		
+		<Entry id="INPUTLAYOUTSIZE">
+			<Text lang="de">Bitte geben Sie die Grösse des Layoutes in Pixeln an</Text>		
+			<Text lang="en">Please enter the layout size in pixels</Text>					
+		</Entry>		
+		<Entry id="INVALIDSIZESPECIFIED">
+			<Text lang="de">Die Grössenangabe war ungültig</Text>		
+			<Text lang="en">The specified size is invalid</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>
