@@ -15,29 +15,26 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual;
+package de.erdesignerng.visual.editor.completecompare;
 
-import javax.swing.ImageIcon;
+import de.erdesignerng.ERDesignerBundle;
 
 /**
- * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 13:28:57 $
+ * @version $Date: 2008-02-09 13:28:56 $
  */
-public final class IconFactory {
+public class RedefinedAttributeInfo {
 
-    private IconFactory() {
+    private CompleteCompareEditor editor;
+    private String what;
+
+    public RedefinedAttributeInfo(CompleteCompareEditor aEditor, String aWhat) {
+        editor = aEditor;
+        what = editor.getResourceHelper().getFormattedText(ERDesignerBundle.REDEFINED, aWhat);
     }
 
-    public static ImageIcon getKeyIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/key.gif"));
-    }
-
-    public static ImageIcon getMissingIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/fatalerror_obj.gif"));
-    }
-
-    public static ImageIcon getMatchingIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/ok_st_obj.gif"));
+    @Override
+    public String toString() {
+        return what;
     }
 }

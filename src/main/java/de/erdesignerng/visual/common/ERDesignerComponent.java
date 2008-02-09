@@ -79,6 +79,7 @@ import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
+import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
@@ -208,7 +209,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction layoutgraphvizAction;
 
     private DefaultAction layoutradialAction;
-    
+
     private DefaultAction layoutspringAction;
 
     private DefaultAction layoutgridAction;
@@ -232,6 +233,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private JToggleButton relationButton;
 
     private DefaultAction reverseEngineerAction;
+
+    private DefaultAction completeCompareAction;
 
     private DefaultAction saveAction;
 
@@ -439,6 +442,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.GENERATECHANGELOG);
 
+        completeCompareAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandCompleteCompare();
+            }
+
+        }, this, ERDesignerBundle.COMPLETECOMPARE);
+
         lruMenu = new DefaultMenu(lruAction);
 
         ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(ERDesignerBundle.FILE);
@@ -514,6 +525,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.add(new DefaultMenuItem(generateSQL));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(generateChangelog));
+        theDBMenu.addSeparator();
+        theDBMenu.add(new DefaultMenuItem(completeCompareAction));
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
@@ -701,7 +714,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandLayout(Layouter aLayouter) {
         try {
             aLayouter.applyLayout(preferences, graph, graph.getRoots());
-            
+
             System.out.println("Finished");
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
@@ -800,7 +813,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     theModel.getProperties().copyFrom(model);
                     setModel(theModel);
                 }
-                
+
                 if (!model.getDialect().generatesManagedConnection()) {
                     theConnection.close();
                 }
@@ -814,6 +827,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandSaveFile() {
 
+        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date theNow = new Date();
+
         ModelFileFilter theFiler = new ModelFileFilter();
 
         JFileChooser theChooser = new JFileChooser();
@@ -824,6 +840,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
             try {
+
+                if (theFile.exists()) {
+                    File theBakFile = new File(theFile.toString() + "_" + theFormat.format(theNow));
+                    theFile.renameTo(theBakFile);
+                }
 
                 ModelIOUtilities.getInstance().serializeModelToXML(model, new FileOutputStream(theFile));
 
@@ -846,8 +867,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                             theFileName = new StringBuilder(theFileName.substring(0, p));
 
-                            DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                            theFileName.insert(p, "_" + theFormat.format(new Date()));
+                            theFileName.insert(p, "_" + theFormat.format(theNow));
                             theFileName.append(".sql");
 
                             PrintWriter theWriter = new PrintWriter(new File(theFileName.toString()));
@@ -1075,5 +1095,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     public ERDesignerWorldConnector getWorldConnector() {
         return worldConnector;
+    }
+    
+    protected void commandCompleteCompare() {
+        if (model.getDialect() == null) {
+            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
+                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+            return;
+        }
+        
+        CompleteCompareEditor theEditor = new CompleteCompareEditor(scrollPane, model, model);
+        theEditor.showModal();
     }
 }

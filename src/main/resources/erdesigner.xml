@@ -491,5 +491,25 @@
 			<Text lang="de">Extra</Text>		
 			<Text lang="en">Extra</Text>					
 		</Entry>
+		<Entry id="COMPLETECOMPARE">
+			<Text lang="de">Vergleichen mit Datenbank...</Text>		
+			<Text lang="en">Compare to database...</Text>					
+		</Entry>
+		<Entry id="MODEL">
+			<Text lang="de">Modell</Text>		
+			<Text lang="en">Model</Text>					
+		</Entry>
+		<Entry id="MISSINGENTITY">
+			<Text lang="de">Tabelle {0} fehlt</Text>		
+			<Text lang="en">Entity {0} is missing</Text>					
+		</Entry>
+		<Entry id="MISSINGATTRIBUTE">
+			<Text lang="de">Attribut {0} fehlt</Text>		
+			<Text lang="en">Attribute {0} is missing</Text>					
+		</Entry>
+		<Entry id="REDEFINED">
+			<Text lang="de">Umdefiniert {0} </Text>		
+			<Text lang="en">Redefined {0}</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>

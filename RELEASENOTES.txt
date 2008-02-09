@@ -31,7 +31,7 @@ Release 1.0.1
 Release 1.0.2
 
 * First version including the SquirrelSQL plugin ( for Squirrel 2.6.4 )
-* Added SquirrelDialect to interface with the Squirrel DatabaseMedaData API
+* Added SquirrelDialect to interface with the Squirrel DatabaseMezaData API
 * DOT Path ( AT&T Layout library ) is now configurable with preferences dialog
 * Tested reverse engineering with the following databases
   PostgreSQL Dialect : PostgreSQL 8.2.6 ( JDBC3 Driver )
@@ -56,9 +56,10 @@ Release 1.1.1
 * Bug Fixing in Squirrel Plugin ( Connection was closed during Reverse Engineering )
 * Bug Fixing in Squirrel Plugin ( DDL Generation fails in PluginMode )
 
-Release 1.1.2
+Release 1.2
 
 * Bug Fixing for some Swing Layouts to make then viewable in Netbeans
 * Implemented Layouters powered by Eclipse ZEST
 * Bug Fixing 1886490 [ERDesignerNG] Default values not respected
 * Bug Fixing 1886489 [ERDesignerNG] Reverse engineering / MySQL AUTO_INCREMENT
+* Implemented Complete Compare fuctionality
