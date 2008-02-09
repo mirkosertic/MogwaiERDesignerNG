@@ -17,11 +17,13 @@
  */
 package de.erdesignerng.visual.layout;
 
-import org.jgraph.JGraph;
+import java.awt.Dimension;
 
-import de.erdesignerng.util.ApplicationPreferences;
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-02-09 18:42:22 $
+ */
+public interface SizeableLayouter extends Layouter {
 
-public interface Layouter {
-    
-    void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException;
+    void setSize(Dimension aDimension);
 }

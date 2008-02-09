@@ -69,14 +69,16 @@ public interface ERDesignerBundle {
   String LAYOUT = "LAYOUT";
   /** Layout durch GraphViz. */
   String LAYOUTBYGRAPHVIZ = "LAYOUTBYGRAPHVIZ";
-  /** Layout durch RadialLayout. */
+  /** Layout durch RadialLayout ( Experimentell ). */
   String LAYOUTBYRADIAL = "LAYOUTBYRADIAL";
-  /** Layout durch SpringLayout. */
+  /** Layout durch SpringLayout ( Experimentell ). */
   String LAYOUTBYSPRING = "LAYOUTBYSPRING";
-  /** Layout durch GridLayout. */
+  /** Layout durch GridLayout ( Experimentell ). */
   String LAYOUTBYGRID = "LAYOUTBYGRID";
-  /** Layout durch TreeLayout. */
+  /** Layout durch TreeLayout ( Experimentell ). */
   String LAYOUTBYTREE = "LAYOUTBYTREE";
+  /** Layout durch FRLayout ( Experimentell ). */
+  String LAYOUTBYFR = "LAYOUTBYFR";
   /** Name. */
   String NAME = "NAME";
   /** Deklaration. */

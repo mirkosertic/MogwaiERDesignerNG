@@ -90,6 +90,7 @@ import de.erdesignerng.visual.export.ImageExporter;
 import de.erdesignerng.visual.export.SVGExporter;
 import de.erdesignerng.visual.layout.Layouter;
 import de.erdesignerng.visual.layout.LayouterFactory;
+import de.erdesignerng.visual.layout.SizeableLayouter;
 import de.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
 import de.erdesignerng.visual.tools.EntityTool;
 import de.erdesignerng.visual.tools.HandTool;
@@ -215,6 +216,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction layoutgridAction;
 
     private DefaultAction layouttreeAction;
+
+    private DefaultAction layoutfrAction;
 
     private DefaultAction loadAction;
 
@@ -346,6 +349,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.LAYOUTBYTREE);
+
+        layoutfrAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandLayout(LayouterFactory.getInstance().createFRLayouter());
+            }
+
+        }, this, ERDesignerBundle.LAYOUTBYFR);
 
         loadAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -536,6 +547,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theLayoutMenu.add(new DefaultMenuItem(layoutspringAction));
         theLayoutMenu.add(new DefaultMenuItem(layouttreeAction));
         theLayoutMenu.add(new DefaultMenuItem(layoutgridAction));
+        theLayoutMenu.add(new DefaultMenuItem(layoutfrAction));
 
         theViewMenu.add(theLayoutMenu);
         theViewMenu.addSeparator();
@@ -712,6 +724,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void commandLayout(Layouter aLayouter) {
+        
+        if (aLayouter instanceof SizeableLayouter) {
+            SizeableLayouter theLayouter = (SizeableLayouter) aLayouter;
+            // TODO: Ask User for size here
+        }
+        
         try {
             aLayouter.applyLayout(preferences, graph, graph.getRoots());
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.LAYOUTFINISHED));

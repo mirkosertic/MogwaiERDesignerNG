@@ -22,7 +22,7 @@ import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 
 import de.erdesignerng.visual.cells.TableCell;
 
-public class ERDesignerLayoutEntity implements LayoutEntity {
+public class ERDesignerZestLayoutEntity implements LayoutEntity {
 
     private double heightInLayout;
 
