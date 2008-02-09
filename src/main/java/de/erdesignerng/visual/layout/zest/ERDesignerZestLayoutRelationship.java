@@ -5,10 +5,10 @@ import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
 import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.mylyn.zest.layouts.dataStructures.BendPoint;
 
-public class ERDesignerLayoutRelationship implements LayoutRelationship {
+public class ERDesignerZestLayoutRelationship implements LayoutRelationship {
 
-    private ERDesignerLayoutEntity destinationInLayout;
-    private ERDesignerLayoutEntity sourceInLayout;
+    private ERDesignerZestLayoutEntity destinationInLayout;
+    private ERDesignerZestLayoutEntity sourceInLayout;
 
     private Object layoutInformation;
     
@@ -34,14 +34,14 @@ public class ERDesignerLayoutRelationship implements LayoutRelationship {
     /**
      * @return the destinationInLayout
      */
-    public ERDesignerLayoutEntity getDestinationInLayout() {
+    public ERDesignerZestLayoutEntity getDestinationInLayout() {
         return destinationInLayout;
     }
 
     /**
      * @param destinationInLayout the destinationInLayout to set
      */
-    public void setDestinationInLayout(ERDesignerLayoutEntity destinationInLayout) {
+    public void setDestinationInLayout(ERDesignerZestLayoutEntity destinationInLayout) {
         this.destinationInLayout = destinationInLayout;
     }
 
@@ -62,14 +62,14 @@ public class ERDesignerLayoutRelationship implements LayoutRelationship {
     /**
      * @return the sourceInLayout
      */
-    public ERDesignerLayoutEntity getSourceInLayout() {
+    public ERDesignerZestLayoutEntity getSourceInLayout() {
         return sourceInLayout;
     }
 
     /**
      * @param sourceInLayout the sourceInLayout to set
      */
-    public void setSourceInLayout(ERDesignerLayoutEntity sourceInLayout) {
+    public void setSourceInLayout(ERDesignerZestLayoutEntity sourceInLayout) {
         this.sourceInLayout = sourceInLayout;
     }
 

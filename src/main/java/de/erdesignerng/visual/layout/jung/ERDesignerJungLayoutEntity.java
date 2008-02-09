@@ -15,13 +15,33 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.layout;
+package de.erdesignerng.visual.layout.jung;
 
-import org.jgraph.JGraph;
+import de.erdesignerng.visual.cells.TableCell;
+import edu.uci.ics.jung.graph.Vertex;
 
-import de.erdesignerng.util.ApplicationPreferences;
+public class ERDesignerJungLayoutEntity  {
 
-public interface Layouter {
+    private Vertex vertex;
     
-    void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException;
+    private TableCell cell;
+    
+    public ERDesignerJungLayoutEntity(Vertex aVertex, TableCell aCell) {
+        vertex = aVertex;
+        cell = aCell;
+    }
+
+    /**
+     * @return the cell
+     */
+    public TableCell getCell() {
+        return cell;
+    }
+
+    /**
+     * @return the vertex
+     */
+    public Vertex getVertex() {
+        return vertex;
+    }
 }

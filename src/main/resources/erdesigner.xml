@@ -129,20 +129,24 @@
 			<Text lang="en">Layout by Graphviz</Text>					
 		</Entry>
 		<Entry id="LAYOUTBYRADIAL">
-			<Text lang="de">Layout durch RadialLayout</Text>		
-			<Text lang="en">Layout by RadialLayout</Text>					
+			<Text lang="de">Layout durch RadialLayout ( Experimentell )</Text>		
+			<Text lang="en">Layout by RadialLayout (Experimental)</Text>					
 		</Entry>
 		<Entry id="LAYOUTBYSPRING">
-			<Text lang="de">Layout durch SpringLayout</Text>		
-			<Text lang="en">Layout by SpringLayout</Text>					
+			<Text lang="de">Layout durch SpringLayout ( Experimentell )</Text>		
+			<Text lang="en">Layout by SpringLayout (Experimental</Text>					
 		</Entry>
 		<Entry id="LAYOUTBYGRID">
-			<Text lang="de">Layout durch GridLayout</Text>		
-			<Text lang="en">Layout by GridLayout</Text>					
+			<Text lang="de">Layout durch GridLayout ( Experimentell )</Text>		
+			<Text lang="en">Layout by GridLayout (Experimental</Text>					
 		</Entry>
 		<Entry id="LAYOUTBYTREE">
-			<Text lang="de">Layout durch TreeLayout</Text>		
-			<Text lang="en">Layout by TreeLayout</Text>					
+			<Text lang="de">Layout durch TreeLayout ( Experimentell )</Text>		
+			<Text lang="en">Layout by TreeLayout (Experimental</Text>					
+		</Entry>
+		<Entry id="LAYOUTBYFR">
+			<Text lang="de">Layout durch FRLayout ( Experimentell )</Text>		
+			<Text lang="en">Layout by FRLayout (Experimental</Text>					
 		</Entry>
 		<Entry id="NAME">
 			<Text lang="de">Name</Text>		

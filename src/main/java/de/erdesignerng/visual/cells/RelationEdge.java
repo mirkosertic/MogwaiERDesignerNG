@@ -31,7 +31,7 @@ import de.erdesignerng.model.Relation;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-02-09 18:42:28 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
@@ -44,7 +44,8 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         GraphConstants.setDisconnectable(getAttributes(), false);
         GraphConstants.setLineBegin(getAttributes(), GraphConstants.ARROW_DIAMOND);
         GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
-
+        GraphConstants.setBendable(getAttributes(), true);
+        
         setSource(aImporting.getChildAt(0));
         setTarget(aExporting.getChildAt(0));
     }

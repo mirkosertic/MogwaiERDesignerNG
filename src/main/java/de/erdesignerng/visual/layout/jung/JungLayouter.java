@@ -15,17 +15,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.layout.zest;
+package de.erdesignerng.visual.layout.jung;
 
 import java.awt.Dimension;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressEvent;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphModel;
@@ -38,37 +35,35 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.layout.LayoutException;
 import de.erdesignerng.visual.layout.SizeableLayouter;
+import edu.uci.ics.jung.graph.DirectedEdge;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.Vertex;
+import edu.uci.ics.jung.graph.impl.DirectedSparseEdge;
+import edu.uci.ics.jung.graph.impl.DirectedSparseGraph;
+import edu.uci.ics.jung.graph.impl.DirectedSparseVertex;
+import edu.uci.ics.jung.visualization.Layout;
 
-public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter {
-
-    protected T layout;
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-02-09 18:42:27 $
+ */
+public abstract class JungLayouter implements SizeableLayouter {
+    
+    protected int maxIterations = 100;
     
     private Dimension size;
-
-    protected ZestLayouter(T aLayout) {
-        layout = aLayout;
-        layout.addProgressListener(new ProgressListener() {
-
-            public void progressEnded(ProgressEvent aEvent) {
-                System.out.println("Layout finished");
-            }
-
-            public void progressStarted(ProgressEvent aEvent) {
-                System.out.println("Layout start");
-            }
-
-            public void progressUpdated(ProgressEvent aEvent) {
-                System.out.println("Layout progress " + aEvent.getStepsCompleted() + " / "
-                        + aEvent.getTotalNumberOfSteps());
-            }
-
-        });
+    
+    protected JungLayouter() {
     }
+    
+    protected abstract Layout createLayout(Graph aGraph);
 
     public void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException {
 
-        Collection<ERDesignerZestLayoutEntity> theTables = new HashSet<ERDesignerZestLayoutEntity>();
-        Collection<ERDesignerZestLayoutRelationship> theRelationships = new HashSet<ERDesignerZestLayoutRelationship>();
+        Graph theGraph = new DirectedSparseGraph();
+
+        Collection<ERDesignerJungLayoutEntity> theTables = new HashSet<ERDesignerJungLayoutEntity>();
+        Collection<ERDesignerJungLayoutRelationship> theRelationships = new HashSet<ERDesignerJungLayoutRelationship>();
 
         GraphModel theModel = aGraph.getModel();
         GraphLayoutCache theLayoutCache = aGraph.getGraphLayoutCache();
@@ -84,10 +79,8 @@ public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter
                 TableCell theCell = (TableCell) theCellView.getCell();
                 Rectangle2D theBounds = GraphConstants.getBounds(((TableCell) theCellView.getCell()).getAttributes());
 
-                ERDesignerZestLayoutEntity theEntity = new ERDesignerZestLayoutEntity();
-                theEntity.setCell(theCell);
-                theEntity.setLocationInLayout(theBounds.getX(), theBounds.getY());
-                theEntity.setSizeInLayout(theBounds.getWidth(), theBounds.getHeight());
+                Vertex theVertex = theGraph.addVertex(new DirectedSparseVertex());
+                ERDesignerJungLayoutEntity theEntity = new ERDesignerJungLayoutEntity(theVertex, theCell);
 
                 theTables.add(theEntity);
             }
@@ -111,61 +104,55 @@ public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter
                 TableCell theSourceCell = (TableCell) theSourceView.getCell();
                 TableCell theTargetCell = (TableCell) theTargetView.getCell();
 
-                ERDesignerZestLayoutEntity theSourceEntity = findByEntity(theTables, theSourceCell);
-                ERDesignerZestLayoutEntity theTargetEntity = findByEntity(theTables, theTargetCell);
+                ERDesignerJungLayoutEntity theSourceEntity = findByEntity(theTables, theSourceCell);
+                ERDesignerJungLayoutEntity theTargetEntity = findByEntity(theTables, theTargetCell);
 
-                ERDesignerZestLayoutRelationship theRelation = new ERDesignerZestLayoutRelationship();
+                ERDesignerJungLayoutRelationship theRelation = new ERDesignerJungLayoutRelationship();
                 theRelation.setSourceInLayout(theSourceEntity);
                 theRelation.setDestinationInLayout(theTargetEntity);
 
+                DirectedEdge theEdge = (DirectedEdge) theGraph.addEdge(new DirectedSparseEdge(theSourceEntity
+                        .getVertex(), theTargetEntity.getVertex()));
+                theRelation.setEdge(theEdge);
+
                 theRelationships.add(theRelation);
-                
-                layout.addRelationship(theRelation);
             }
         }
 
-        ERDesignerZestLayoutEntity[] theEntities = theTables.toArray(new ERDesignerZestLayoutEntity[theTables.size()]);
-        ERDesignerZestLayoutRelationship[] theRelations = theRelationships
-                .toArray(new ERDesignerZestLayoutRelationship[theRelationships.size()]);
+        Layout theLayout = createLayout(theGraph);
+        theLayout.initialize(size);
 
-        int theTotalWidth = size.width;
-        int theTotalHeight = size.height;
-        double theRatio = theTotalWidth / theTotalHeight;
-        
-        layout.setEntityAspectRatio(theRatio);
-        
-        try {
-            layout.applyLayout(theEntities, theRelations, 0, 0, theTotalWidth, theTotalHeight, false, false);
-        } catch (InvalidLayoutConfiguration e) {
-            throw new LayoutException("Error during layouting", e);
+        if (theLayout.isIncremental()) {
+            
+            int theIterations = 0;
+            
+            while ((!theLayout.incrementsAreDone()) && (theIterations++ < maxIterations)) {
+                theLayout.advancePositions();
+            }
         }
 
-        for (ERDesignerZestLayoutEntity theEntity : theEntities) {
+        for (ERDesignerJungLayoutEntity theEntity : theTables) {
+
             TableCell theCell = theEntity.getCell();
-            double theX = theEntity.getXInLayout();
-            double theY = theEntity.getYInLayout();
-            double theWidth = theEntity.getWidthInLayout();
-            double theHeight = theEntity.getHeightInLayout();
+            Point2D thePoint = theLayout.getLocation(theEntity.getVertex());
 
             Rectangle2D theOldDimensions = GraphConstants.getBounds(theCell.getAttributes());
-            // GraphConstants.setBounds(theCell.getAttributes(), new
-            // Rectangle2D.Double(theX, theY, theOldDimensions.getWidth(),
-            // theOldDimensions.getHeight()));
-            GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(theX, theY, theWidth, theHeight));
+            GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(thePoint.getX(), thePoint.getY(),
+                    theOldDimensions.getWidth(), theOldDimensions.getHeight()));
 
             theLayoutCache.editCell(theCell, theCell.getAttributes());
         }
     }
 
-    private ERDesignerZestLayoutEntity findByEntity(Collection<ERDesignerZestLayoutEntity> aNodes, TableCell aSourceCell) {
-        for (ERDesignerZestLayoutEntity theEntity : aNodes) {
+    private ERDesignerJungLayoutEntity findByEntity(Collection<ERDesignerJungLayoutEntity> aNodes, TableCell aSourceCell) {
+        for (ERDesignerJungLayoutEntity theEntity : aNodes) {
             if (theEntity.getCell() == aSourceCell) {
                 return theEntity;
             }
         }
         return null;
     }
-
+    
     public void setSize(Dimension aSize) {
         size = aSize;
     }
