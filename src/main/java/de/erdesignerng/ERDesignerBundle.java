@@ -249,4 +249,14 @@ public interface ERDesignerBundle {
   String DIALECTISNOTSUPPORTED = "DIALECTISNOTSUPPORTED";
   /** Extra. */
   String EXTRA = "EXTRA";
+  /** Vergleichen mit Datenbank.... */
+  String COMPLETECOMPARE = "COMPLETECOMPARE";
+  /** Modell. */
+  String MODEL = "MODEL";
+  /** Tabelle {0} fehlt. */
+  String MISSINGENTITY = "MISSINGENTITY";
+  /** Attribut {0} fehlt. */
+  String MISSINGATTRIBUTE = "MISSINGATTRIBUTE";
+  /** Umdefiniert {0} . */
+  String REDEFINED = "REDEFINED";
 }
