@@ -259,4 +259,6 @@ public interface ERDesignerBundle {
   String MISSINGATTRIBUTE = "MISSINGATTRIBUTE";
   /** Umdefiniert {0} . */
   String REDEFINED = "REDEFINED";
+  /** Layout erstellt. */
+  String LAYOUTFINISHED = "LAYOUTFINISHED";
 }
