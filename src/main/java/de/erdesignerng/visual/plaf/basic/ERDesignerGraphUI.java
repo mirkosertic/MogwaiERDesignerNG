@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
 import de.erdesignerng.visual.common.ERDesignerComponent;
@@ -34,22 +35,23 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:43:30 $
+ * @version $Date: 2008-02-10 12:38:57 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
     private ERDesignerComponent erdesigner;
-    
+
     public ERDesignerGraphUI(ERDesignerComponent aComponent) {
         erdesigner = aComponent;
     }
-    
+
     public class MyMouseHandler extends MouseHandler {
 
         @Override
         public void mouseClicked(MouseEvent aEvent) {
             if (aEvent.isPopupTrigger()) {
-                // System.out.println(aEvent.getX() + " " + aEvent.getY() + " for " + cell);
+                // System.out.println(aEvent.getX() + " " + aEvent.getY() + "
+                // for " + cell);
             }
         }
     };
@@ -62,14 +64,12 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     @Override
     protected boolean startEditing(Object cell, MouseEvent event) {
         completeEditing();
-        
+
         if (graph.isCellEditable(cell)) {
             CellView tmp = graphLayoutCache.getMapping(cell, false);
             cellEditor = tmp.getEditor();
             editingComponent = cellEditor.getGraphCellEditorComponent(graph, cell, graph.isCellSelected(cell));
             if (cellEditor.isCellEditable(event)) {
-
-                editingCell = cell;
 
                 editingCell = cell;
                 editingComponent.validate();
@@ -110,7 +110,6 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
                     try {
                         theDialog.applyValues();
-                        graph.layout();                        
                     } catch (Exception e1) {
                         erdesigner.getWorldConnector().notifyAboutException(e1);
                     }
@@ -118,10 +117,13 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
                 editingComponent = null;
 
+                // Mark the cell as edited, so it is resized during
+                // redisplay to its new preferred size
+                DefaultGraphCell theCell = (DefaultGraphCell) editingCell;
+                graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());
+
                 graph.invalidate();
                 graph.repaint();
-
-                return false;
             } else {
                 editingComponent = null;
             }

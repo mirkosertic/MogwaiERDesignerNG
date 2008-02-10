@@ -49,7 +49,7 @@
             </goals>
             <configuration>
               <tasks>
-                <taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"></taskdef>
+                <taskdef name="XMLResourceBundle" classname="de.mogwai.common.i18n.XMLResourceBundleTask"></taskdef>
                 <XMLResourceBundle dest="src/main/resources" src="src/main/java">
                   <fileset dir="src/main/resources">
                     <include name="*.xml" />

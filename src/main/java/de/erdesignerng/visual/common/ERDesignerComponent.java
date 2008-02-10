@@ -739,7 +739,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 theLayouter.setSize(new Dimension(theWidth, theHeight));
             } catch (Exception e) {
-                MessagesHelper.displayErrorMessage(scrollPane, ERDesignerBundle.INVALIDSIZESPECIFIED);
+                MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(ERDesignerBundle.INVALIDSIZESPECIFIED));
+                return;
             }
         }
 
