@@ -29,7 +29,7 @@ import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:06 $
+ * @version $Date: 2008-02-10 12:38:57 $
  */
 public final class ERDesigner {
 
@@ -46,6 +46,11 @@ public final class ERDesigner {
         frame.setModel(new Model());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+        }
         
         theScreen.setVisible(false);
         frame.setVisible(true);
