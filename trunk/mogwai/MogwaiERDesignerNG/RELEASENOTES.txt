@@ -57,7 +57,7 @@ Release 1.1
 * Added unit tests for MySQL, MSSQL, Oracle and Postgres dialect
 * Added first beta of DB2 support
 * Removed domain dictionary ( Now in Table editor )
-* Removed default value dictionalry ( Now in Table editor )
+* Removed default value dictionary ( Now in Table editor )
 * Added Exception notifier dialog
 * Added SQL Browser window
 * Added export functionality for DDL scripts for whole model
