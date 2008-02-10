@@ -8,7 +8,7 @@ Requirements
 
 License
 
-This software includes or is based on the following libraries:
+This software uses or is based on the following libraries:
 
   Apache Commons ( www.apache.org )
   Apache Batik ( www.apache.org )  
@@ -71,8 +71,9 @@ Release 1.1.1
 
 Release 1.2
 
-* Bug Fixing for some Swing Layouts to make then viewable in Netbeans
+* Bug Fixing for some Swing Layouts to make them viewable in Netbeans
 * Implemented Layouters powered by Eclipse ZEST and JUNG
 * Bug Fixing 1886490 [ERDesignerNG] Default values not respected
 * Bug Fixing 1886489 [ERDesignerNG] Reverse engineering / MySQL AUTO_INCREMENT
 * Implemented Complete Compare fuctionality
+* A backup of the original MXM file is now made for security reasons
