@@ -29,7 +29,7 @@ import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-10 12:38:57 $
+ * @version $Date: 2008-02-10 17:15:03 $
  */
 public final class ERDesigner {
 
@@ -50,6 +50,7 @@ public final class ERDesigner {
         try {
             Thread.sleep(1000);
         } catch (Exception e) {
+            // Just wait here :-)
         }
         
         theScreen.setVisible(false);

@@ -19,11 +19,12 @@ package de.erdesignerng.visual.editor.completecompare;
 
 import javax.swing.JPanel;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultSeparator;
 import de.mogwai.common.client.looks.components.DefaultTree;
 
 /**
@@ -85,9 +86,9 @@ public class CompleteCompareEditorView extends JPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            contentPanel.add(DefaultComponentFactory.getInstance().createSeparator("Current model"), cons.xywh(
+            contentPanel.add(new DefaultSeparator(ERDesignerBundle.MODEL), cons.xywh(
                     1, 2, 1, 1));
-            contentPanel.add(DefaultComponentFactory.getInstance().createSeparator("Database"), cons.xywh(3, 2,
+            contentPanel.add(new DefaultSeparator(ERDesignerBundle.DATABASE), cons.xywh(3, 2,
                     1, 1));
             contentPanel.add(getCurrentModelView().getScrollPane(), cons.xywh(1, 4, 1, 1));
             contentPanel.add(getDatabaseView().getScrollPane(), cons.xywh(3, 4, 1, 1));
