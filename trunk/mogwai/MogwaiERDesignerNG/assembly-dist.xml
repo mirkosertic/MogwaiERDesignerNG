@@ -32,7 +32,7 @@
   <dependencySets>
     <dependencySet>
       <outputDirectory>lib</outputDirectory>
-      <scope>runtime</scope>
+      <scope>compile</scope>
     </dependencySet>
   </dependencySets>  
 </assembly>
