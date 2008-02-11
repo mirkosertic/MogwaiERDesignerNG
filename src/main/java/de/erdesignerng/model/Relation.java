@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:43:30 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -117,8 +117,19 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
             mapping.put(theAttribute, aValue.getMapping().get(theAttribute));
         }
     }
+    
+    public Attribute findKeyAttributeByName(String aName) {
+        
+        for (Attribute theAttribute : getMapping().keySet()) {
+            if (theAttribute.getName().equals(aName)) {
+                return theAttribute;
+            }
+        }
+        
+        return null;
+    }
 
-    public boolean isModified(Relation aRelation) {
+    public boolean isModified(Relation aRelation, boolean aUseName) {
         if (isStringModified(getName(), aRelation.getName())) {
             return true;
         }
@@ -128,15 +139,33 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
         if (!aRelation.getOnUpdate().equals(getOnUpdate())) {
             return true;
         }
-        
-        for (Attribute thePK : getMapping().keySet()) {
-            Attribute theFK = getMapping().get(thePK);
-            Attribute theForeignFK = aRelation.getMapping().get(thePK);
-            if (!theFK.equals(theForeignFK)) {
-                return true;
+
+        if (aUseName) {
+            for (Attribute thePK : getMapping().keySet()) {
+                Attribute theFK = getMapping().get(thePK);
+                
+                Attribute thePKR = aRelation.findKeyAttributeByName(thePK.getName());
+                if (thePKR == null) {
+                    return true;
+                }
+                Attribute theFKR = aRelation.getMapping().get(thePKR);
+                if (theFKR == null) {
+                    return true;
+                }
+                if (!theFK.getName().equals(theFKR.getName())) {
+                    return true;
+                }
             }
-            
-        }        
+        } else {
+            for (Attribute thePK : getMapping().keySet()) {
+                Attribute theFK = getMapping().get(thePK);
+                Attribute theForeignFK = aRelation.getMapping().get(thePK);
+                if (!theFK.equals(theForeignFK)) {
+                    return true;
+                }
+
+            }
+        }
         return false;
     }
 }

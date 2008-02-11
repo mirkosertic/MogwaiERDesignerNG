@@ -21,20 +21,11 @@ import de.erdesignerng.ERDesignerBundle;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 13:28:56 $
+ * @version $Date: 2008-02-11 18:01:03 $
  */
-public class RedefinedAttributeInfo {
-
-    private CompleteCompareEditor editor;
-    private String what;
+public class RedefinedAttributeInfo extends RedefinedInfo {
 
     public RedefinedAttributeInfo(CompleteCompareEditor aEditor, String aWhat) {
-        editor = aEditor;
-        what = editor.getResourceHelper().getFormattedText(ERDesignerBundle.REDEFINED, aWhat);
-    }
-
-    @Override
-    public String toString() {
-        return what;
+        super(aEditor, ERDesignerBundle.REDEFINED, aWhat);
     }
 }
