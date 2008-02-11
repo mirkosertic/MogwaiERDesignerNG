@@ -130,8 +130,28 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }
     }
+    
+    private class ReverseEngineeringResult {
+        
+        private Exception exception;
+        
+        private Model model;
+        
+        public ReverseEngineeringResult(Exception aException, Model aModel) {
+            exception = aException;
+            model = aModel;
+        }
+        
+        public Exception getException() {
+            return exception;
+        }
+        
+        public Model getModel() {
+            return model;
+        }
+    }
 
-    private final class ReverseEngineerSwingWorker extends SwingWorker<Model, String> {
+    private final class ReverseEngineerSwingWorker extends SwingWorker<ReverseEngineeringResult, String> {
         private final Connection connection;
 
         private final ReverseEngineeringOptions options;
@@ -146,7 +166,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         @Override
-        protected Model doInBackground() throws Exception {
+        protected ReverseEngineeringResult doInBackground() throws Exception {
             try {
                 ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
 
@@ -157,12 +177,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 };
                 Model theModel = strategy.createModelFromConnection(worldConnector, connection, options, theNotifier);
-                return theModel;
+                return new ReverseEngineeringResult(null, theModel);
 
             } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
+                return new ReverseEngineeringResult(e, null);
             }
-            return null;
         }
 
         @Override
@@ -832,17 +851,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
-                SwingWorker<Model, String> theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
+                ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
                         theConnection);
                 theWorker.execute();
 
-                Model theModel = theWorker.get();
+                ReverseEngineeringResult theResult = theWorker.get();
+                Model theModel = theResult.getModel();
                 if (theModel != null) {
 
                     worldConnector.initializeLoadedModel(theModel);
 
                     theModel.getProperties().copyFrom(model);
                     setModel(theModel);
+                } else {
+                    worldConnector.notifyAboutException(theResult.getException());
                 }
 
                 if (!model.getDialect().generatesManagedConnection()) {
@@ -913,6 +935,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }
 
+                worldConnector.initTitle(currentEditingFile);
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
             } catch (Exception e) {
@@ -1144,16 +1167,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
-                SwingWorker<Model, String> theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
+                ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
                         theConnection);
                 theWorker.execute();
 
-                Model theModel = theWorker.get();
+                ReverseEngineeringResult theResult = theWorker.get();
+                Model theModel = theResult.getModel();
                 if (theModel != null) {
 
                     CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, theModel);
                     theCompare.showModal();
 
+                } else {
+                    worldConnector.notifyAboutException(theResult.getException());
                 }
 
                 if (!model.getDialect().generatesManagedConnection()) {

@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:24 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -134,7 +134,7 @@ public class RelationEditor extends BaseEditor {
             bindingInfo.setDefaultModel(theTempRelation);
             bindingInfo.view2model();
 
-            if (theRelation.isModified(theTempRelation)) {
+            if (theRelation.isModified(theTempRelation, false)) {
                 model.changeRelation(theRelation, theTempRelation);
             }
         }

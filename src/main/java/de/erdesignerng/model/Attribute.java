@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 14:57:35 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -31,7 +31,8 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     private int fraction;
 
-    private int scale;
+    // Default scale is 10
+    private int scale = 10;
 
     private boolean nullable = true;
 
@@ -93,6 +94,12 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setScale(int scale) {
+        if (scale == 0) {
+            // Scale can either be 2 or 10.
+            // Setting to 10 if 0 fixes a bug from
+            // adding new attributes
+            scale = 10;
+        }
         this.scale = scale;
     }
 

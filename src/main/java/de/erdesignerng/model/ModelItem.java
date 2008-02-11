@@ -19,7 +19,7 @@ package de.erdesignerng.model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:05 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public abstract class ModelItem {
 
@@ -130,12 +130,12 @@ public abstract class ModelItem {
     }
     
     protected boolean isStringModified(String aValue1, String aValue2) {
-        if (aValue1 != null) {
-            return !aValue1.equals(aValue2);
+        if (aValue1 == null) {
+            aValue1 = "";
         }
-        if (aValue2 != null) {
-            return !aValue2.equals(aValue1);
+        if (aValue2 == null) {
+            aValue2 = "";
         }
-        return aValue1 != aValue2;
+        return !aValue1.equals(aValue2);
     }    
 }

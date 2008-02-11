@@ -515,6 +515,14 @@
 			<Text lang="de">Umdefiniert {0} </Text>		
 			<Text lang="en">Redefined {0}</Text>					
 		</Entry>		
+		<Entry id="MISSINGINDEX">
+			<Text lang="de">Index {0} fehlt</Text>		
+			<Text lang="en">Index {0} is missing</Text>					
+		</Entry>
+		<Entry id="MISSINGRELATION">
+			<Text lang="de">Relation {0} fehlt</Text>		
+			<Text lang="en">Relation {0} is missing</Text>					
+		</Entry>
 		<Entry id="LAYOUTFINISHED">
 			<Text lang="de">Layout erstellt</Text>		
 			<Text lang="en">Layout finished</Text>					
@@ -526,6 +534,10 @@
 		<Entry id="INVALIDSIZESPECIFIED">
 			<Text lang="de">Die Grössenangabe war ungültig</Text>		
 			<Text lang="en">The specified size is invalid</Text>					
+		</Entry>		
+		<Entry id="RELATIONS">
+			<Text lang="de">Relationen ( Fremdschlüssel )</Text>		
+			<Text lang="en">Relations ( Foreign keys )</Text>					
 		</Entry>		
 	</Bundle>
 </Resource>

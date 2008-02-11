@@ -29,7 +29,7 @@ import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-10 17:15:03 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public final class ERDesigner {
 
