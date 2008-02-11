@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:49:26 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -549,7 +549,7 @@ public class TableEditor extends BaseEditor {
                     model.addIndexToTable(theTable, theIndex);
                 } else {
                     try {
-                        if (theExistantIndex.isModified(theIndex)) {
+                        if (theExistantIndex.isModified(theIndex, false)) {
                             model.changeIndex(theExistantIndex, theIndex);
                         }
                     } catch (VetoException e1) {

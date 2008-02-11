@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.model;
 
-
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-23 18:40:23 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class Index extends OwnedModelItem<Table> implements ModelItemClonable<Index> {
 
@@ -76,7 +75,7 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
         }
     }
 
-    public boolean isModified(Index aIndex) {
+    public boolean isModified(Index aIndex, boolean aUseName) {
 
         if (!getName().equals(aIndex.getName())) {
             return true;
@@ -86,15 +85,29 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
             return true;
         }
 
-        for (Attribute theAttribute : getAttributes()) {
-            if (aIndex.getAttributes().findBySystemId(theAttribute.getSystemId()) == null) {
-                return true;
+        if (aUseName) {
+            for (Attribute theAttribute : getAttributes()) {
+                if (aIndex.getAttributes().findByName(theAttribute.getName()) == null) {
+                    return true;
+                }
             }
-        }
 
-        for (Attribute theAttribute : aIndex.getAttributes()) {
-            if (getAttributes().findBySystemId(theAttribute.getSystemId()) == null) {
-                return true;
+            for (Attribute theAttribute : aIndex.getAttributes()) {
+                if (getAttributes().findByName(theAttribute.getName()) == null) {
+                    return true;
+                }
+            }
+        } else {
+            for (Attribute theAttribute : getAttributes()) {
+                if (aIndex.getAttributes().findBySystemId(theAttribute.getSystemId()) == null) {
+                    return true;
+                }
+            }
+
+            for (Attribute theAttribute : aIndex.getAttributes()) {
+                if (getAttributes().findBySystemId(theAttribute.getSystemId()) == null) {
+                    return true;
+                }
             }
         }
 

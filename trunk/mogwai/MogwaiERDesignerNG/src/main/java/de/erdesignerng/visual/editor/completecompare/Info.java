@@ -17,15 +17,19 @@
  */
 package de.erdesignerng.visual.editor.completecompare;
 
-import de.erdesignerng.ERDesignerBundle;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:03 $
- */
-public class MissingAttributeInfo extends MissingInfo {
+public class Info {
+    
+    private CompleteCompareEditor editor;
+    private String what;
 
-    public MissingAttributeInfo(CompleteCompareEditor aEditor, String aWhat) {
-        super(aEditor, ERDesignerBundle.MISSINGATTRIBUTE, aWhat);
+    protected Info(CompleteCompareEditor aEditor, String aKey, String aWhat) {
+        editor = aEditor;
+        what = editor.getResourceHelper().getFormattedText(aKey, aWhat);
+    }
+
+    @Override
+    public String toString() {
+        return what;
     }
 }

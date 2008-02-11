@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for exceptions.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 12:07:29 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class ExceptionEditor extends BaseEditor {
 
@@ -49,6 +49,8 @@ public class ExceptionEditor extends BaseEditor {
     public ExceptionEditor(Component aParent, Exception aException) {
         super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
 
+        aException.printStackTrace();
+        
         initialize();
 
         StringWriter theWriter = new StringWriter();

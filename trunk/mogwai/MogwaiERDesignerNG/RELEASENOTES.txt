@@ -77,3 +77,8 @@ Release 1.2
 * Bug Fixing 1886489 [ERDesignerNG] Reverse engineering / MySQL AUTO_INCREMENT
 * Implemented Complete Compare fuctionality
 * A backup of the original MXM file is now made for security reasons
+
+Release 1.2.1
+
+* Several bug fixes preventing the complete compare to work in some
+  conditions

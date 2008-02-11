@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-02-11 18:01:04 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
@@ -98,6 +98,16 @@ public class RelationList extends ModelItemVector<Relation> {
             }
         }
         removeAll(theRelationsToRemove);
+    }
+
+    public List<Relation> getForeignKeysFor(Table aTable) {
+        List<Relation> theResult = new ArrayList<Relation>();
+        for (Relation theRelation : this) {
+            if (theRelation.getImportingTable().getSystemId().equals(aTable.getSystemId())) {
+                theResult.add(theRelation);
+            }
+        }
+        return theResult;
     }
 
 }

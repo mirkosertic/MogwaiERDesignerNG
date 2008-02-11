@@ -23,9 +23,9 @@ import de.erdesignerng.ERDesignerBundle;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-02-11 18:01:03 $
  */
-public class MissingAttributeInfo extends MissingInfo {
+public class MissingRelationInfo extends MissingInfo {
 
-    public MissingAttributeInfo(CompleteCompareEditor aEditor, String aWhat) {
-        super(aEditor, ERDesignerBundle.MISSINGATTRIBUTE, aWhat);
+    public MissingRelationInfo(CompleteCompareEditor aEditor, String aWhat) {
+        super(aEditor, ERDesignerBundle.MISSINGRELATION, aWhat);
     }
 }

@@ -39,7 +39,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 20:38:54 $
+ * @version $Date: 2008-02-11 18:01:03 $
  * @param <T>
  *            the dialect
  */
@@ -126,7 +126,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
                 DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(theTypeName));
                 if (theDataType == null) {
-                    throw new ReverseEngineeringException("Unknown data type " + theTypeName);
+                    throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for " + aTableName
+                            + "." + theColumnName);
                 }
 
                 boolean isNullable = true;

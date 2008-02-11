@@ -261,10 +261,16 @@ public interface ERDesignerBundle {
   String MISSINGATTRIBUTE = "MISSINGATTRIBUTE";
   /** Umdefiniert {0} . */
   String REDEFINED = "REDEFINED";
+  /** Index {0} fehlt. */
+  String MISSINGINDEX = "MISSINGINDEX";
+  /** Relation {0} fehlt. */
+  String MISSINGRELATION = "MISSINGRELATION";
   /** Layout erstellt. */
   String LAYOUTFINISHED = "LAYOUTFINISHED";
   /** Bitte geben Sie die Grösse des Layoutes in Pixeln an. */
   String INPUTLAYOUTSIZE = "INPUTLAYOUTSIZE";
   /** Die Grössenangabe war ungültig. */
   String INVALIDSIZESPECIFIED = "INVALIDSIZESPECIFIED";
+  /** Relationen ( Fremdschlüssel ). */
+  String RELATIONS = "RELATIONS";
 }

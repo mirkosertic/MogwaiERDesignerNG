@@ -28,7 +28,7 @@ import de.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 13:28:56 $
+ * @version $Date: 2008-02-11 18:01:03 $
  */
 public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
 
@@ -51,7 +51,7 @@ public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
         setOpenIcon(leaf ? matchingIcon : null);
         setClosedIcon(leaf ? matchingIcon : null);
     
-        if (theNode.getUserObject() instanceof MissingEntityInfo) {
+        if (theNode.getUserObject() instanceof MissingInfo) {
     
             setLeafIcon(missingIcon);
             setOpenIcon(missingIcon);
@@ -59,15 +59,7 @@ public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
     
         }
     
-        if (theNode.getUserObject() instanceof MissingAttributeInfo) {
-    
-            setLeafIcon(missingIcon);
-            setOpenIcon(missingIcon);
-            setClosedIcon(missingIcon);
-    
-        }
-    
-        if (theNode.getUserObject() instanceof RedefinedAttributeInfo) {
+        if (theNode.getUserObject() instanceof RedefinedInfo) {
     
             setLeafIcon(missingIcon);
             setOpenIcon(missingIcon);
