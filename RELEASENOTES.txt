@@ -82,3 +82,10 @@ Release 1.2.1
 
 * Several bug fixes preventing the complete compare to work in some
   conditions
+  
+Release 1.2.2
+
+* Bug Fixing 1899736 [ERDesignerNG] English should be default locale
+* Bug Fixing 1891226 [ERDesignerNG] Scale not defaults to 10
+* Bug Fixing 1891017 [ERDesignerNG] UI hangs if re throws exception
+* Bug Fixing 1890979 [ERDesignerNG] Complete compare fails sometimes
