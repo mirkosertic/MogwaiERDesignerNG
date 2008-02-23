@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:53:49 $
+ * @version $Date: 2008-02-23 17:41:10 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -42,10 +42,14 @@ public class OracleDialect extends SQL92Dialect {
         registerType(new OracleDataType("FLOAT", "", java.sql.Types.FLOAT));
         registerType(new OracleDataType("REAL", "", java.sql.Types.REAL));
         registerType(new OracleDataType("VARCHAR2", "$size", java.sql.Types.VARCHAR));
+        registerType(new OracleDataType("NVARCHAR2", "$size", java.sql.Types.VARCHAR));
         registerType(new OracleDataType("DATE", "", java.sql.Types.DATE));
         registerType(new OracleDataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
         registerType(new OracleDataType("BLOB", "", java.sql.Types.BLOB));
         registerType(new OracleDataType("CLOB", "", java.sql.Types.CLOB));
+        registerType(new OracleDataType("NCLOB", "", java.sql.Types.CLOB));
+        registerType(new OracleDataType("XMLTYPE", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("ROWID", "", java.sql.Types.OTHER));
         
         seal();        
     }

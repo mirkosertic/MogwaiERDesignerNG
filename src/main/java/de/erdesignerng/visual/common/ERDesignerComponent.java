@@ -130,22 +130,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }
     }
-    
+
     private class ReverseEngineeringResult {
-        
+
         private Exception exception;
-        
+
         private Model model;
-        
+
         public ReverseEngineeringResult(Exception aException, Model aModel) {
             exception = aException;
             model = aModel;
         }
-        
+
         public Exception getException() {
             return exception;
         }
-        
+
         public Model getModel() {
             return model;
         }
@@ -758,7 +758,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 theLayouter.setSize(new Dimension(theWidth, theHeight));
             } catch (Exception e) {
-                MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(ERDesignerBundle.INVALIDSIZESPECIFIED));
+                MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
+                        ERDesignerBundle.INVALIDSIZESPECIFIED));
                 return;
             }
         }
@@ -1158,11 +1159,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
 
-        ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
+        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
             try {
-
                 final Connection theConnection = model.createConnection(preferences);
                 final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
@@ -1189,7 +1189,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
-
         }
     }
 }
