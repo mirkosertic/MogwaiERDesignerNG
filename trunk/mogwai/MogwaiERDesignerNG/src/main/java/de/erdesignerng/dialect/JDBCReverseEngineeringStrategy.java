@@ -39,7 +39,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:03 $
+ * @version $Date: 2008-02-23 17:41:10 $
  * @param <T>
  *            the dialect
  */
@@ -164,7 +164,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
             // Reverse engineer indexes
             try {
-                reverseEngineerIndexes(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable);
+                reverseEngineerIndexes(aModel, aTableName, theSchemaName, theCatalogName, theMetaData, theTable, aNotifier);
             } catch (SQLException e) {
                 // if there is an sql exception, just ignore it
             }
@@ -219,7 +219,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     protected void reverseEngineerIndexes(Model aModel, String aTableName, String aSchemaName, String aCatalogName,
-            DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
+            DatabaseMetaData aMetaData, Table aTable, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
 
         ResultSet theIndexResults = aMetaData.getIndexInfo(aCatalogName, aSchemaName, aTableName, false, true);
         Index theIndex = null;
@@ -238,6 +238,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     } else {
                         theIndex.setIndexType(IndexType.UNIQUE);
                     }
+                    
+                    aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGINDEX, theIndex.getName());
 
                     try {
                         aTable.addIndex(aModel, theIndex);
@@ -255,10 +257,17 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 Attribute theIndexAttribute = aTable.getAttributes().findByName(
                         dialect.getCastType().cast(theColumnName));
                 if (theIndexAttribute == null) {
-                    throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
-                            + aTable.getName());
+
+                    // The index is corrupt or
+                    // It is a oracle function based index
+                    if (aTable.getIndexes().contains(theIndex)) {
+                        aNotifier.notifyMessage(ERDesignerBundle.SKIPINDEX, theIndex.getName());
+                        aTable.getIndexes().remove(theIndex);
+                    }
+                    
+                } else {
+                    theIndex.getAttributes().add(theIndexAttribute);
                 }
-                theIndex.getAttributes().add(theIndexAttribute);
             }
 
         }
