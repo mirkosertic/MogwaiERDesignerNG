@@ -183,6 +183,10 @@ public interface ERDesignerBundle {
   String ENGINEERINGSCHEMA = "ENGINEERINGSCHEMA";
   /** Reverse engineering of table {0}. */
   String ENGINEERINGTABLE = "ENGINEERINGTABLE";
+  /** Reverse engineering of index {0}. */
+  String ENGINEERINGINDEX = "ENGINEERINGINDEX";
+  /** Index {0} is ignored. */
+  String SKIPINDEX = "SKIPINDEX";
   /** Reverse engineering of relations for table {0}. */
   String ENGINEERINGRELATION = "ENGINEERINGRELATION";
   /** Reverse engineering finished. */

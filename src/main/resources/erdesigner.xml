@@ -357,6 +357,14 @@
 			<Text lang="de">Reverseengineering von Tabelle {0}</Text>		
 			<Text lang="en">Reverse engineering of table {0}</Text>					
 		</Entry>
+		<Entry id="ENGINEERINGINDEX">
+			<Text lang="de">Reverseengineering von Index {0}</Text>		
+			<Text lang="en">Reverse engineering of index {0}</Text>					
+		</Entry>
+		<Entry id="SKIPINDEX">
+			<Text lang="de">Index {0} wird ignoriert</Text>		
+			<Text lang="en">Index {0} is ignored</Text>					
+		</Entry>
 		<Entry id="ENGINEERINGRELATION">
 			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>		
 			<Text lang="en">Reverse engineering of relations for table {0}</Text>					
