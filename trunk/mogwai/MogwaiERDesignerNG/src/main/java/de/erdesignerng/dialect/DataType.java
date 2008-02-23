@@ -27,7 +27,7 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:38:19 $
+ * @version $Date: 2008-02-23 16:38:30 $
  */
 public class DataType implements Comparable<DataType> {
 
@@ -36,6 +36,8 @@ public class DataType implements Comparable<DataType> {
     public static final String FRACTION_TOKEN = "$fraction";
 
     public static final String SCALE_TOKEN = "$scale";
+
+    private static final int PRIME = 31;
 
     protected String name;
 
@@ -195,4 +197,35 @@ public class DataType implements Comparable<DataType> {
     public boolean supportsSize() {
         return supportsSize;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DataType other = (DataType) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
