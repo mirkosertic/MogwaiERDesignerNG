@@ -33,13 +33,11 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
-import de.erdesignerng.modificationtracker.ModelModificationTracker;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 15:46:49 $
+ * @version $Date: 2008-03-02 16:11:21 $
  * @param <T>
  *            the dialect
  */
@@ -389,33 +387,23 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     @Override
-    public Model createModelFromConnection(ERDesignerWorldConnector aConnector, Connection aConnection,
+    public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection,
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
             ReverseEngineeringException {
 
-        Model theNewModel = aConnector.createNewModel();
-
-        // The modification tracker is disabled during reverse engineering
-        ModelModificationTracker theOldModificationTracker = theNewModel.getModificationTracker();
-        theNewModel.setModificationTracker(new EmptyModelModificationTracker());
-
-        theNewModel.setDialect(dialect);
         for (TableEntry theTable : aOptions.getTableEntries()) {
-            reverseEngineerTable(theNewModel, aOptions, aNotifier, theTable, aConnection);
+            reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);
         }
 
         if (dialect.supportsSchemaInformation()) {
             for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
-                reverseEngineerRelations(theNewModel, aOptions, aNotifier, theEntry, aConnection);
+                reverseEngineerRelations(aModel, aOptions, aNotifier, theEntry, aConnection);
             }
         } else {
-            reverseEngineerRelations(theNewModel, aOptions, aNotifier, null, aConnection);
+            reverseEngineerRelations(aModel, aOptions, aNotifier, null, aConnection);
         }
 
-        theNewModel.setModificationTracker(theOldModificationTracker);
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
-
-        return theNewModel;
     }
 
     @Override
