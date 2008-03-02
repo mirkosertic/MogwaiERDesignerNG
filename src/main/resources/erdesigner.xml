@@ -547,5 +547,9 @@
 			<Text lang="de">Relationen ( Fremdschlüssel )</Text>		
 			<Text lang="en">Relations ( Foreign keys )</Text>					
 		</Entry>		
+		<Entry id="TABLESELECTION">
+			<Text lang="de">Tabellenauswahl</Text>		
+			<Text lang="en">Table selection</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>
