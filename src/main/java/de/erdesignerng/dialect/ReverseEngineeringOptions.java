@@ -22,13 +22,9 @@ import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 12:03:44 $
+ * @version $Date: 2008-03-02 13:44:50 $
  */
 public class ReverseEngineeringOptions {
-
-    private DefaultValueNamingEnum defaultValueNaming;
-
-    private DomainNamingEnum domainNaming;
 
     private TableNamingEnum tableNaming;
 
@@ -36,36 +32,6 @@ public class ReverseEngineeringOptions {
     
     private List<TableEntry> tableEntries = new ArrayList<TableEntry>();
     
-    /**
-     * @return the defaultValueNaming
-     */
-    public DefaultValueNamingEnum getDefaultValueNaming() {
-        return defaultValueNaming;
-    }
-
-    /**
-     * @param defaultValueNaming
-     *            the defaultValueNaming to set
-     */
-    public void setDefaultValueNaming(DefaultValueNamingEnum defaultValueNaming) {
-        this.defaultValueNaming = defaultValueNaming;
-    }
-
-    /**
-     * @return the domainNaming
-     */
-    public DomainNamingEnum getDomainNaming() {
-        return domainNaming;
-    }
-
-    /**
-     * @param domainNaming
-     *            the domainNaming to set
-     */
-    public void setDomainNaming(DomainNamingEnum domainNaming) {
-        this.domainNaming = domainNaming;
-    }
-
     /**
      * @return the tableNaming
      */

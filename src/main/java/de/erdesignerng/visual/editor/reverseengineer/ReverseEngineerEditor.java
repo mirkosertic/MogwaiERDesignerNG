@@ -25,8 +25,6 @@ import java.util.List;
 import javax.swing.ListSelectionModel;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.DefaultValueNamingEnum;
-import de.erdesignerng.dialect.DomainNamingEnum;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
@@ -44,7 +42,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:23 $
+ * @version $Date: 2008-03-02 13:44:51 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -101,19 +99,9 @@ public class ReverseEngineerEditor extends BaseEditor {
 
         theModel.getTableOptions().add(
                 new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper().getText(ERDesignerBundle.STANDART)));
-        theModel.getDomainOptions().add(
-                new NameValuePair(DomainNamingEnum.STANDARD, getResourceHelper().getText(ERDesignerBundle.STANDART)));
-        theModel.getDefaultValueOptions().add(
-                new NameValuePair(DefaultValueNamingEnum.STANDARD, getResourceHelper().getText(
-                        ERDesignerBundle.STANDART)));
 
         bindingInfo.addBinding("tableGenerator", editingView.getNaming(), true);
-        bindingInfo.addBinding("domainGenerator", editingView.getDomainGeneration(), true);
-        bindingInfo.addBinding("defaultValueGenerator", editingView.getDefaultValueGeneration(), true);
         bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(editingView.getNaming()));
-        bindingInfo.addBinding("domainOptions", new ComboboxModelAdapter(editingView.getDomainGeneration()));
-        bindingInfo
-                .addBinding("defaultValueOptions", new ComboboxModelAdapter(editingView.getDefaultValueGeneration()));
 
         schemaList = editingView.getSchemaList().getModel();
 
@@ -199,8 +187,6 @@ public class ReverseEngineerEditor extends BaseEditor {
         bindingInfo.view2model();
 
         ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-        theOptions.setDefaultValueNaming((DefaultValueNamingEnum) theModel.getDefaultValueGenerator().getValue());
-        theOptions.setDomainNaming((DomainNamingEnum) theModel.getDomainGenerator().getValue());
         theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
 
         if (model.getDialect().supportsSchemaInformation()) {

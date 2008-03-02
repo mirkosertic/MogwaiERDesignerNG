@@ -277,4 +277,6 @@ public interface ERDesignerBundle {
   String INVALIDSIZESPECIFIED = "INVALIDSIZESPECIFIED";
   /** Relations ( Foreign keys ). */
   String RELATIONS = "RELATIONS";
+  /** Table selection. */
+  String TABLESELECTION = "TABLESELECTION";
 }

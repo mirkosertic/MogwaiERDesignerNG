@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-06 19:15:58 $
+ * @version $Date: 2008-03-02 13:44:51 $
  */
 public class ReverseEngineerView extends JPanel {
 
@@ -55,10 +55,6 @@ public class ReverseEngineerView extends JPanel {
     private DefaultLabel component11;
 
     private DefaultComboBox naming;
-
-    private DefaultComboBox domainGeneration;
-
-    private DefaultComboBox defaultValueGeneration;
 
     /**
      * Constructor.
@@ -111,7 +107,6 @@ public class ReverseEngineerView extends JPanel {
             schemaGrid.add(new JScrollPane(this.getSchemaList()), cons.xywh(1, 2, 3, 1));
             schemaGrid.add(this.getRefreshButton(), cons.xywh(3, 4, 1, 1));
             schemaGrid.setName("schemagrid");
-            schemaGrid.setToolTipText("1 , 3");
         }
 
         return schemaGrid;
@@ -192,13 +187,8 @@ public class ReverseEngineerView extends JPanel {
             CellConstraints cons = new CellConstraints();
 
             engineeringOptions.add(this.getComponent9(), cons.xywh(1, 2, 1, 1));
-            engineeringOptions.add(this.getComponent10(), cons.xywh(1, 4, 1, 1));
-            engineeringOptions.add(this.getComponent11(), cons.xywh(1, 6, 1, 1));
             engineeringOptions.add(this.getNaming(), cons.xywh(3, 2, 1, 1));
-            engineeringOptions.add(this.getDomainGeneration(), cons.xywh(3, 4, 1, 1));
-            engineeringOptions.add(this.getDefaultValueGeneration(), cons.xywh(3, 6, 1, 1));
             engineeringOptions.setName("engineeringoptions");
-            engineeringOptions.setToolTipText("3 , 7");
         }
 
         return engineeringOptions;
@@ -219,34 +209,6 @@ public class ReverseEngineerView extends JPanel {
     }
 
     /**
-     * Getter method for component Component_10.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JLabel getComponent10() {
-
-        if (component10 == null) {
-            component10 = new DefaultLabel(ERDesignerBundle.DOMAINGENERATION);
-        }
-
-        return component10;
-    }
-
-    /**
-     * Getter method for component Component_11.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JLabel getComponent11() {
-
-        if (component11 == null) {
-            component11 = new DefaultLabel(ERDesignerBundle.DEFAULTVALUEENERATION);
-        }
-
-        return component11;
-    }
-
-    /**
      * Getter method for component Naming.
      * 
      * @return the initialized component
@@ -258,34 +220,6 @@ public class ReverseEngineerView extends JPanel {
         }
 
         return naming;
-    }
-
-    /**
-     * Getter method for component Domaingeneration.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JComboBox getDomainGeneration() {
-
-        if (domainGeneration == null) {
-            domainGeneration = new DefaultComboBox();
-        }
-
-        return domainGeneration;
-    }
-
-    /**
-     * Getter method for component Defaultvaluegeneration.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JComboBox getDefaultValueGeneration() {
-
-        if (defaultValueGeneration == null) {
-            defaultValueGeneration = new DefaultComboBox();
-        }
-
-        return defaultValueGeneration;
     }
 
     /**
