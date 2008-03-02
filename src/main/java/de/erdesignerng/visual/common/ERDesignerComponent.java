@@ -850,8 +850,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 final Connection theConnection = model.createConnection(preferences);
                 final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
-                final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
+                ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+                theOptions.getTableEntries().addAll(theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
+                
+                
+                // Try to detect the table names that should be reverse engineered
                 ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
                         theConnection);
                 theWorker.execute();

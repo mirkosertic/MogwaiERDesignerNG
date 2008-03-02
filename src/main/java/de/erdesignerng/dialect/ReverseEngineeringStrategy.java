@@ -29,7 +29,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 14:57:50 $
+ * @version $Date: 2008-03-02 12:03:44 $
  * @param <T>
  *            the dialect
  */
@@ -63,4 +63,6 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
     protected String convertColumnTypeToRealType(String aTypeName) {
         return aTypeName;
     }
+
+    public abstract List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries) throws SQLException;
 }

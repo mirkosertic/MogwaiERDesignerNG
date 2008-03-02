@@ -25,14 +25,14 @@ import java.sql.Statement;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.SchemaEntry;
+import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 20:38:54 $
+ * @version $Date: 2008-03-02 12:03:45 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
@@ -50,10 +50,10 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
 
     @Override
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, String aTableName, Connection aConnection)
+            ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection)
             throws SQLException {
         Statement theStatement = aConnection.createStatement();
-        ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aTableName);
+        ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aEntry.getTableName());
         while (theResult.next()) {
             String theColumnName = theResult.getString("Field");
             if (aAttribute.getName().equals(theColumnName)) {
