@@ -39,7 +39,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 12:03:44 $
+ * @version $Date: 2008-03-02 15:46:49 $
  * @param <T>
  *            the dialect
  */
@@ -314,54 +314,58 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
 
                     Table theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
-                    if (theExportingTable == null) {
-                        throw new ReverseEngineeringException("Cannot find table " + thePKTableName + " in model");
-                    }
+                    if (theExportingTable != null) {
 
-                    theRelation = new Relation();
-                    theRelation.setName(dialect.getCastType().cast(theFKName));
-                    theRelation.setExportingTable(theExportingTable);
-                    theRelation.setImportingTable(theTable);
+                        // The relation is only added to the model
+                        // if the exporting table is also part of the model
+                        theRelation = new Relation();
+                        theRelation.setName(dialect.getCastType().cast(theFKName));
+                        theRelation.setExportingTable(theExportingTable);
+                        theRelation.setImportingTable(theTable);
 
-                    if (theUpdateRule != null) {
-                        int theType = Integer.parseInt(theUpdateRule.toString());
-                        theRelation.setOnUpdate(getCascadeType(theType));
-                    } else {
-                        theRelation.setOnUpdate(CascadeType.NOTHING);
-                    }
+                        if (theUpdateRule != null) {
+                            int theType = Integer.parseInt(theUpdateRule.toString());
+                            theRelation.setOnUpdate(getCascadeType(theType));
+                        } else {
+                            theRelation.setOnUpdate(CascadeType.NOTHING);
+                        }
 
-                    if (theDeleteRule != null) {
-                        int theType = Integer.parseInt(theDeleteRule.toString());
-                        theRelation.setOnDelete(getCascadeType(theType));
-                    } else {
-                        theRelation.setOnDelete(CascadeType.NOTHING);
-                    }
+                        if (theDeleteRule != null) {
+                            int theType = Integer.parseInt(theDeleteRule.toString());
+                            theRelation.setOnDelete(getCascadeType(theType));
+                        } else {
+                            theRelation.setOnDelete(CascadeType.NOTHING);
+                        }
 
-                    try {
-                        aModel.addRelation(theRelation);
-                    } catch (Exception e) {
-                        throw new ReverseEngineeringException(e.getMessage());
+                        try {
+                            aModel.addRelation(theRelation);
+                        } catch (Exception e) {
+                            throw new ReverseEngineeringException(e.getMessage());
+                        }
                     }
                 }
 
-                String thePKColumnName = theForeignKeys.getString("PKCOLUMN_NAME");
-                String theFKColumnName = theForeignKeys.getString("FKCOLUMN_NAME");
+                if ((theRelation != null) && (theRelation.getImportingTable() != null)
+                        && (theRelation.getExportingTable() != null)) {
+                    String thePKColumnName = theForeignKeys.getString("PKCOLUMN_NAME");
+                    String theFKColumnName = theForeignKeys.getString("FKCOLUMN_NAME");
 
-                Attribute theExportingAttribute = theRelation.getExportingTable().getAttributes().findByName(
-                        dialect.getCastType().cast(thePKColumnName));
-                if (theExportingAttribute == null) {
-                    throw new ReverseEngineeringException("Cannot find column " + thePKColumnName + " in table "
-                            + theRelation.getExportingTable().getName());
+                    Attribute theExportingAttribute = theRelation.getExportingTable().getAttributes().findByName(
+                            dialect.getCastType().cast(thePKColumnName));
+                    if (theExportingAttribute == null) {
+                        throw new ReverseEngineeringException("Cannot find column " + thePKColumnName + " in table "
+                                + theRelation.getExportingTable().getName());
+                    }
+
+                    Attribute theImportingAttribute = theRelation.getImportingTable().getAttributes().findByName(
+                            dialect.getCastType().cast(theFKColumnName));
+                    if (theImportingAttribute == null) {
+                        throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table "
+                                + theRelation.getImportingTable().getName());
+                    }
+
+                    theRelation.getMapping().put(theExportingAttribute, theImportingAttribute);
                 }
-
-                Attribute theImportingAttribute = theRelation.getImportingTable().getAttributes().findByName(
-                        dialect.getCastType().cast(theFKColumnName));
-                if (theImportingAttribute == null) {
-                    throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table "
-                            + theRelation.getImportingTable().getName());
-                }
-
-                theRelation.getMapping().put(theExportingAttribute, theImportingAttribute);
             }
             theForeignKeys.close();
         }
