@@ -153,17 +153,21 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     private final class ReverseEngineerSwingWorker extends SwingWorker<ReverseEngineeringResult, String> {
-        private final Connection connection;
 
-        private final ReverseEngineeringOptions options;
+        private Model tempModel;
+        
+        private Connection connection;
 
-        private final ReverseEngineeringStrategy strategy;
+        private ReverseEngineeringOptions options;
 
-        private ReverseEngineerSwingWorker(ReverseEngineeringOptions options, ReverseEngineeringStrategy strategy,
+        private ReverseEngineeringStrategy strategy;
+
+        private ReverseEngineerSwingWorker(Model aModel, ReverseEngineeringOptions options, ReverseEngineeringStrategy strategy,
                 Connection connection) {
             this.options = options;
             this.strategy = strategy;
             this.connection = connection;
+            this.tempModel = aModel;
         }
 
         @Override
@@ -177,8 +181,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
 
                 };
-                Model theModel = strategy.createModelFromConnection(worldConnector, connection, options, theNotifier);
-                return new ReverseEngineeringResult(null, theModel);
+                
+                strategy.updateModelFromConnection(tempModel, worldConnector, connection, options, theNotifier);
+                
+                return new ReverseEngineeringResult(null, tempModel);
 
             } catch (Exception e) {
                 return new ReverseEngineeringResult(e, null);
@@ -849,8 +855,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             try {
 
-                final Connection theConnection = model.createConnection(preferences);
-                final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+                Connection theConnection = model.createConnection(preferences);
+                ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
 
                 ReverseEngineeringOptions theOptions = theEditor.createREOptions();
                 theOptions.getTableEntries().addAll(
@@ -861,17 +867,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     // Try to detect the table names that should be reverse
                     // engineered
-                    ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
+                    ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(model, theOptions, theStrategy,
                             theConnection);
                     theWorker.execute();
 
                     ReverseEngineeringResult theResult = theWorker.get();
                     Model theModel = theResult.getModel();
                     if (theModel != null) {
-
-                        worldConnector.initializeLoadedModel(theModel);
-
-                        theModel.getProperties().copyFrom(model);
                         setModel(theModel);
                     } else {
                         worldConnector.notifyAboutException(theResult.getException());
@@ -1169,23 +1171,31 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
 
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
+        ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
             try {
-                final Connection theConnection = model.createConnection(preferences);
-                final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
-                final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+                Connection theConnection = model.createConnection(preferences);
+                ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+                ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
-                ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theOptions, theStrategy,
+                // Es werden alle Tabellen beim Vergleich berücksichtigt!
+                theOptions.getTableEntries().addAll(
+                        theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
+
+                Model theDatabaseModel = worldConnector.createNewModel();
+                theDatabaseModel.setDialect(model.getDialect());
+                theDatabaseModel.getProperties().copyFrom(model);
+                
+                ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theDatabaseModel, theOptions, theStrategy,
                         theConnection);
                 theWorker.execute();
 
                 ReverseEngineeringResult theResult = theWorker.get();
-                Model theModel = theResult.getModel();
-                if (theModel != null) {
+                theDatabaseModel = theResult.getModel();
+                if (theDatabaseModel != null) {
 
-                    CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, theModel);
+                    CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, theDatabaseModel);
                     theCompare.showModal();
 
                 } else {

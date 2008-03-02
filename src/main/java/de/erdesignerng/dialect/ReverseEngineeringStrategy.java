@@ -29,7 +29,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 12:03:44 $
+ * @version $Date: 2008-03-02 16:11:21 $
  * @param <T>
  *            the dialect
  */
@@ -41,7 +41,7 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
         dialect = aDialect;
     }
 
-    public abstract Model createModelFromConnection(ERDesignerWorldConnector aConnector, Connection aConnection,
+    public abstract void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection,
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
             ReverseEngineeringException;
 
