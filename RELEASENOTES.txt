@@ -90,3 +90,6 @@ Release 1.2.2
 * Bug Fixing 1891017 [ERDesignerNG] UI hangs if re throws exception
 * Bug Fixing 1890979 [ERDesignerNG] Complete compare fails sometimes
 * Bug Fixing 1899732 [ERDesignerNG] Fails to reverse engineer oracle columns
+
+Release 1.2.3
+
