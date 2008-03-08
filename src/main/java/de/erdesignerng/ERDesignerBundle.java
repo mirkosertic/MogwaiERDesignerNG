@@ -279,4 +279,6 @@ public interface ERDesignerBundle {
   String RELATIONS = "RELATIONS";
   /** Table selection. */
   String TABLESELECTION = "TABLESELECTION";
+  /** Add to new subject area. */
+  String ADDTONEWSUBJECTAREA = "ADDTONEWSUBJECTAREA";
 }

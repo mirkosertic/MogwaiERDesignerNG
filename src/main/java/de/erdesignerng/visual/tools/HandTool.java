@@ -35,7 +35,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 12:58:07 $
+ * @version $Date: 2008-03-08 16:25:20 $
  */
 public class HandTool extends BaseTool {
 
@@ -70,9 +70,9 @@ public class HandTool extends BaseTool {
 
         DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-        DefaultAction theAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
-        DefaultMenuItem theItem = new DefaultMenuItem(theAction);
-        theAction.addActionListener(new ActionListener() {
+        DefaultAction theDeleteAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
+        DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
+        theDeleteAction.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
@@ -87,7 +87,21 @@ public class HandTool extends BaseTool {
             }
         });
 
-        theMenu.add(theItem);
+        theMenu.add(theDeleteItem);
+        
+        theMenu.addSeparator();
+
+        DefaultAction theAddAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ADDTONEWSUBJECTAREA);
+        DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
+        theAddAction.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                graph.commandAddToNewSubjectArea(aCells);
+            }
+        });
+        
+        theMenu.add(theAddItem);
+        
         UIInitializer.getInstance().initialize(theMenu);
 
         return theMenu;
