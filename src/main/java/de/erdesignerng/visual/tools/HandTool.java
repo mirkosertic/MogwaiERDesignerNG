@@ -24,8 +24,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.jgraph.graph.GraphCell;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.ERDesignerGraph;
@@ -37,7 +35,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-21 20:54:49 $
+ * @version $Date: 2008-03-08 12:58:07 $
  */
 public class HandTool extends BaseTool {
 
@@ -57,10 +55,10 @@ public class HandTool extends BaseTool {
     public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
 
-            GraphCell theClickedCell = (GraphCell) graph.getFirstCellForLocation(e.getX(), e.getY());
+            Object[] theCells = graph.getSelectionCells();
 
-            if (theClickedCell != null) {
-                DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theClickedCell);
+            if ((theCells != null) && (theCells.length > 0)) {
+                DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theCells);
                 menu.show(graph, e.getX(), e.getY());
             }
         } else {
@@ -68,7 +66,7 @@ public class HandTool extends BaseTool {
         }
     }
 
-    public DefaultPopupMenu createPopupMenu(Point aPoint, final GraphCell aCell) {
+    public DefaultPopupMenu createPopupMenu(Point aPoint, final Object[] aCells) {
 
         DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
@@ -79,7 +77,7 @@ public class HandTool extends BaseTool {
             public void actionPerformed(ActionEvent e) {
                 if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
                     try {
-                        graph.commandDeleteCell(aCell);
+                        graph.commandDeleteCells(aCells);
                     } catch (VetoException ex) {
 
                         // TODO [mirkosertic] add better error handling here

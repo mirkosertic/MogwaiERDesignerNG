@@ -23,7 +23,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:05 $
+ * @version $Date: 2008-03-08 12:58:05 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -82,8 +82,6 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     }
 
     public void delete(ModelItem aSender) throws CannotDeleteException {
-
-        Model theOwner = getOwner();
 
         if (aSender instanceof Attribute) {
             if (attributes.size() == 1) {
