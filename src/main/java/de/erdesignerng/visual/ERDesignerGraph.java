@@ -41,7 +41,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 21:57:35 $
+ * @version $Date: 2008-03-08 22:24:24 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -51,7 +51,7 @@ public class ERDesignerGraph extends JGraph {
         super(aModel, aLayoutCache);
         // setPortsVisible(true);
         model = aDBModel;
-        
+
         setMoveIntoGroups(true);
         setMoveOutOfGroups(true);
     }
@@ -122,16 +122,21 @@ public class ERDesignerGraph extends JGraph {
 
     /**
      * Create a new subject area for a set of cells.
-     * @param aCells the cells to add to the subject area
+     * 
+     * @param aCells
+     *            the cells to add to the subject area
      */
-    public void commandAddToNewSubjectArea(Object[] aCells) {
+    public void commandAddToNewSubjectArea(List<TableCell> aCells) {
 
         SubjectArea theArea = new SubjectArea();
         SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
-        
-        getGraphLayoutCache().insertGroup(theSubjectAreaCell, aCells);
-        
+        for (TableCell theCell : aCells) {
+            theArea.getTables().add((Table) theCell.getUserObject());
+        }
+
+        getGraphLayoutCache().insertGroup(theSubjectAreaCell, aCells.toArray());
+
         model.addSubjectArea(theArea);
-        getGraphLayoutCache().toBack(new Object[] {theSubjectAreaCell});
+        getGraphLayoutCache().toBack(new Object[] { theSubjectAreaCell });
     }
 }

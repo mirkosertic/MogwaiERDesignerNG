@@ -22,16 +22,36 @@ import org.w3c.dom.Element;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 21:57:35 $
+ * @version $Date: 2008-03-08 22:24:24 $
  */
 public class SubjectAreaSerializer extends Serializer {
 
     public static final SubjectAreaSerializer SERIALIZER = new SubjectAreaSerializer();
 
-    public void serialize(SubjectArea aArea, Document aDocument, Element aSubjectAreasElement) {
+    public static final String SUBJECTAREA = "Subjectarea";
+
+    public static final String ITEM = "Item";
+
+    public static final String TABLEREFID = "tablerefid";
+
+    public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
+
+        Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
+
+        // Basisdaten des Modelelementes speichern
+        serializeProperties(aDocument, theSubjectAreaElement, aArea);
+
+        for (Table theTable : aArea.getTables()) {
+
+            Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+            theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
+
+        }
+
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {

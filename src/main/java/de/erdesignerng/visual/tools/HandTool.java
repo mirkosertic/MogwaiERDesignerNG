@@ -21,12 +21,15 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.visual.cells.TableCell;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -35,7 +38,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 21:57:35 $
+ * @version $Date: 2008-03-08 22:24:24 $
  */
 public class HandTool extends BaseTool {
 
@@ -88,21 +91,33 @@ public class HandTool extends BaseTool {
         });
 
         theMenu.add(theDeleteItem);
-        
-        // TODO [mirkosertic] Check for table availability here
-        theMenu.addSeparator();
 
-        DefaultAction theAddAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ADDTONEWSUBJECTAREA);
-        DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
-        theAddAction.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                graph.commandAddToNewSubjectArea(aCells);
+        final List<TableCell> theTableCells = new ArrayList<TableCell>();
+        for (Object theCell : aCells) {
+            if (theCell instanceof TableCell) {
+                TableCell theTableCell = (TableCell) theCell;
+                if (theTableCell.getParent() == null) {
+                    theTableCells.add(theTableCell);
+                }
             }
-        });
-        
-        theMenu.add(theAddItem);
-        
+        }
+
+        if (theTableCells.size() > 0) {
+            theMenu.addSeparator();
+
+            DefaultAction theAddAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+                    ERDesignerBundle.ADDTONEWSUBJECTAREA);
+            DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
+            theAddAction.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    graph.commandAddToNewSubjectArea(theTableCells);
+                }
+            });
+
+            theMenu.add(theAddItem);
+        }
+
         UIInitializer.getInstance().initialize(theMenu);
 
         return theMenu;
