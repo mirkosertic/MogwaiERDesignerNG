@@ -551,5 +551,9 @@
 			<Text lang="de">Tabellenauswahl</Text>		
 			<Text lang="en">Table selection</Text>					
 		</Entry>		
+		<Entry id="ADDTONEWSUBJECTAREA">
+			<Text lang="de">Zu einem neuen Subjectarea hinzufügen</Text>		
+			<Text lang="en">Add to new subject area</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>

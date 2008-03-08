@@ -48,7 +48,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 20:38:54 $
+ * @version $Date: 2008-03-08 16:25:22 $
  */
 public class TableCellView extends VertexView {
 
@@ -108,7 +108,7 @@ public class TableCellView extends VertexView {
 
             aGraphics.setFont(getFont());
             aGraphics.setColor(getBackground());
-            aGraphics.fillRect(0, 0, theWidth, theHeight);
+            //aGraphics.fillRect(0, 0, theWidth, theHeight);
 
             FontMetrics theMetrics = aGraphics.getFontMetrics();
 

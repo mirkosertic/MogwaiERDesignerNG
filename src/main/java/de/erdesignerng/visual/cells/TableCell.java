@@ -31,7 +31,7 @@ import de.erdesignerng.model.Table;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-03-08 16:25:32 $
  */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
@@ -40,7 +40,7 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
         GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
         GraphConstants.setGradientColor(getAttributes(), Color.orange);
-        GraphConstants.setOpaque(getAttributes(), true);
+        GraphConstants.setOpaque(getAttributes(), false);
         GraphConstants.setAutoSize(getAttributes(), true);
         GraphConstants.setEditable(getAttributes(), true);
         addPort();

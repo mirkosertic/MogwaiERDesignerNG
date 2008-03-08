@@ -29,9 +29,11 @@ import org.jgraph.graph.GraphModel;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.cells.RelationEdge;
+import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.tools.BaseTool;
@@ -39,7 +41,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 12:58:10 $
+ * @version $Date: 2008-03-08 16:25:33 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -113,5 +115,20 @@ public class ERDesignerGraph extends JGraph {
     }
 
     public void commandNewTable(Point2D aPoint) {
+    }
+
+    /**
+     * Create a new subject area for a set of cells.
+     * @param aCells
+     */
+    public void commandAddToNewSubjectArea(Object[] aCells) {
+
+        SubjectArea theArea = new SubjectArea();
+        SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
+        
+        getGraphLayoutCache().insertGroup(theSubjectAreaCell, aCells);
+        
+        model.addSubjectArea(theArea);
+        getGraphLayoutCache().toBack(new Object[] {theSubjectAreaCell});
     }
 }
