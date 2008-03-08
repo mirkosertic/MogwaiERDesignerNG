@@ -24,12 +24,13 @@ import org.jgraph.graph.PortView;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.visual.cells.RelationEdge;
+import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:42 $
+ * @version $Date: 2008-03-08 16:25:21 $
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 
@@ -37,6 +38,9 @@ public class CellViewFactory extends DefaultCellViewFactory {
     protected VertexView createVertexView(Object aVertex) {
         if (aVertex instanceof TableCell) {
             return new TableCellView((TableCell) aVertex);
+        }
+        if (aVertex instanceof SubjectAreaCell) {
+            return new SubjectAreaCellView((SubjectAreaCell) aVertex);
         }
         return super.createVertexView(aVertex);
     }

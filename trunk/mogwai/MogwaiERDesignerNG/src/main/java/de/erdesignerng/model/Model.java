@@ -32,7 +32,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 12:58:04 $
+ * @version $Date: 2008-03-08 16:25:25 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -47,6 +47,8 @@ public class Model implements OwnedModelItemVerifier {
     private TableList tables = new TableList();
 
     private RelationList relations = new RelationList();
+    
+    private SubjectAreaList subjectAreas = new SubjectAreaList();
 
     private Dialect dialect;
 
@@ -276,5 +278,15 @@ public class Model implements OwnedModelItemVerifier {
      */
     public void setModificationTracker(ModelModificationTracker modificationTracker) {
         this.modificationTracker = modificationTracker;
+    }
+    
+    /**
+     * Add a new subject area.
+     * 
+     * @param aArea the area
+     */
+    public void addSubjectArea(SubjectArea aArea) {
+        subjectAreas.add(aArea);
+        
     }
 }

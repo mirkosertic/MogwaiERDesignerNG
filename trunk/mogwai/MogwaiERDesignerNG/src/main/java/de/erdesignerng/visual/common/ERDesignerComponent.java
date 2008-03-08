@@ -124,7 +124,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     if (theChangedObject instanceof ModelCell) {
 
                         ModelCell theCell = (ModelCell) theChangedObject;
-                        theCell.transferAttributesToProperties(theAttributes);
+                        if (theAttributes != null) {
+                            theCell.transferAttributesToProperties(theAttributes);
+                        }
                     }
                 }
             }
