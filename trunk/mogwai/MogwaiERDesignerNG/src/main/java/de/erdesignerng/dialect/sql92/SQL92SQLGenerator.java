@@ -29,7 +29,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:38:17 $
+ * @version $Date: 2008-03-08 12:58:08 $
  * @param <T>
  *            the dialect
  */
@@ -132,9 +132,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         Table theExportingTable = aRelation.getExportingTable();
 
         StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
-
-        theStatement = new StringBuilder("ALTER TABLE ");
+        StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
         theStatement.append(escapeTableName(theImportingTable.getName()));
         theStatement.append(" ADD CONSTRAINT ");
         theStatement.append(aRelation.getName());
@@ -337,9 +335,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
 
         StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+        StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
 
-        theStatement = new StringBuilder("ALTER TABLE ");
         theStatement.append(escapeTableName(aTable.getName()));
         theStatement.append(" ADD CONSTRAINT ");
         theStatement.append(aIndex.getName());
