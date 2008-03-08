@@ -779,12 +779,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected void commandLogicalView() {
-        graph.setDomainDisplayMode(true);
-        graph.invalidate();
-        graph.repaint();
-    }
-
     protected void commandNew() {
         currentEditingFile = null;
 
@@ -834,12 +828,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             worldConnector.notifyAboutException(e);
         }
-    }
-
-    protected void commandPhysicalView() {
-        graph.setDomainDisplayMode(false);
-        graph.invalidate();
-        graph.repaint();
     }
 
     public void commandReverseEngineer() {

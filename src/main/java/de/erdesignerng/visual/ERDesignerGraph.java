@@ -24,7 +24,6 @@ import java.util.List;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
@@ -40,13 +39,11 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:30 $
+ * @version $Date: 2008-03-08 12:58:10 $
  */
 public class ERDesignerGraph extends JGraph {
 
     private Model model;
-
-    private boolean domainDisplayMode = true;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
@@ -65,59 +62,56 @@ public class ERDesignerGraph extends JGraph {
         setMarqueeHandler(aTool);
     }
 
-    public void commandDeleteCell(GraphCell aCell) throws VetoException {
+    public void commandDeleteCells(Object[] aCells) throws VetoException {
 
         GraphModel theModel = getModel();
 
-        if (aCell instanceof RelationEdge) {
-            RelationEdge theEdge = (RelationEdge) aCell;
+        List theObjectsToRemove = new ArrayList();
 
-            getDBModel().removeRelation((Relation) theEdge.getUserObject());
-            theModel.remove(new Object[] { theEdge });
-        }
+        for (Object theSingleCell : aCells) {
 
-        if (aCell instanceof TableCell) {
-            TableCell theCell = (TableCell) aCell;
-            Table theTable = (Table) theCell.getUserObject();
+            if (!theObjectsToRemove.contains(theSingleCell)) {
+                if (theSingleCell instanceof RelationEdge) {
+                    RelationEdge theEdge = (RelationEdge) theSingleCell;
 
-            List theObjectsToRemove = new ArrayList();
-            theObjectsToRemove.add(theCell);
+                    getDBModel().removeRelation((Relation) theEdge.getUserObject());
+                    theModel.remove(new Object[] { theEdge });
+                }
 
-            getDBModel().removeTable(theTable);
+                if (theSingleCell instanceof TableCell) {
+                    TableCell theCell = (TableCell) theSingleCell;
+                    Table theTable = (Table) theCell.getUserObject();
 
-            CellView[] theViews = getGraphLayoutCache().getAllViews();
-            for (CellView theView : theViews) {
-                if (theView instanceof RelationEdgeView) {
-                    RelationEdgeView theRelationView = (RelationEdgeView) theView;
-                    RelationEdge theEdge = (RelationEdge) theRelationView.getCell();
-                    TableCell theSource = (TableCell) ((DefaultPort) theEdge.getSource()).getParent();
-                    TableCell theDestination = (TableCell) ((DefaultPort) theEdge.getTarget()).getParent();
+                    theObjectsToRemove.add(theCell);
 
-                    if (theTable.equals(theSource.getUserObject())) {
-                        getDBModel().removeRelation((Relation) theEdge.getUserObject());
-                        theObjectsToRemove.add(theEdge);
-                    } else {
-                        if (theTable.equals(theDestination.getUserObject())) {
-                            getDBModel().removeRelation((Relation) theEdge.getUserObject());
-                            theObjectsToRemove.add(theEdge);
+                    getDBModel().removeTable(theTable);
+
+                    CellView[] theViews = getGraphLayoutCache().getAllViews();
+                    for (CellView theView : theViews) {
+                        if (theView instanceof RelationEdgeView) {
+                            RelationEdgeView theRelationView = (RelationEdgeView) theView;
+                            RelationEdge theEdge = (RelationEdge) theRelationView.getCell();
+                            TableCell theSource = (TableCell) ((DefaultPort) theEdge.getSource()).getParent();
+                            TableCell theDestination = (TableCell) ((DefaultPort) theEdge.getTarget()).getParent();
+
+                            if (theTable.equals(theSource.getUserObject())) {
+                                getDBModel().removeRelation((Relation) theEdge.getUserObject());
+                                theObjectsToRemove.add(theEdge);
+                            } else {
+                                if (theTable.equals(theDestination.getUserObject())) {
+                                    getDBModel().removeRelation((Relation) theEdge.getUserObject());
+                                    theObjectsToRemove.add(theEdge);
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            theModel.remove(theObjectsToRemove.toArray());
         }
 
+        theModel.remove(theObjectsToRemove.toArray());
     }
 
     public void commandNewTable(Point2D aPoint) {
-    }
-
-    /**
-     * @param domainDisplayMode
-     *            the domainDisplayMode to set
-     */
-    public void setDomainDisplayMode(boolean domainDisplayMode) {
-        this.domainDisplayMode = domainDisplayMode;
     }
 }
