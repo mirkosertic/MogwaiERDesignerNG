@@ -65,6 +65,7 @@ import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -74,6 +75,7 @@ import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
+import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
@@ -111,7 +113,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class ERDesignerComponent implements ResourceHelperProvider {
 
-    private static final class ERDesignerGrapgModelListener implements GraphModelListener {
+    private class ERDesignerGrapgModelListener implements GraphModelListener {
         public void graphChanged(GraphModelEvent aEvent) {
             GraphLayoutCacheChange theChange = aEvent.getChange();
 
@@ -126,6 +128,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                         ModelCell theCell = (ModelCell) theChangedObject;
                         if (theAttributes != null) {
                             theCell.transferAttributesToProperties(theAttributes);
+                        }
+                    }
+
+                    if (theChangedObject instanceof SubjectAreaCell) {
+
+                        SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
+                        if (theCell.getChildCount() == 0) {
+                            commandRemoveSubjectArea(theCell);
+                        } else {
+                            commandUpdateSubjectArea(theCell);
                         }
                     }
                 }
@@ -157,15 +169,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private final class ReverseEngineerSwingWorker extends SwingWorker<ReverseEngineeringResult, String> {
 
         private Model tempModel;
-        
+
         private Connection connection;
 
         private ReverseEngineeringOptions options;
 
         private ReverseEngineeringStrategy strategy;
 
-        private ReverseEngineerSwingWorker(Model aModel, ReverseEngineeringOptions options, ReverseEngineeringStrategy strategy,
-                Connection connection) {
+        private ReverseEngineerSwingWorker(Model aModel, ReverseEngineeringOptions options,
+                ReverseEngineeringStrategy strategy, Connection connection) {
             this.options = options;
             this.strategy = strategy;
             this.connection = connection;
@@ -183,9 +195,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
 
                 };
-                
+
                 strategy.updateModelFromConnection(tempModel, worldConnector, connection, options, theNotifier);
-                
+
                 return new ReverseEngineeringResult(null, tempModel);
 
             } catch (Exception e) {
@@ -200,8 +212,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         }
     }
-
-    private static GraphModelListener graphModelListener = new ERDesignerGrapgModelListener();
 
     private DefaultAction classpathAction;
 
@@ -857,8 +867,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     // Try to detect the table names that should be reverse
                     // engineered
-                    ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(model, theOptions, theStrategy,
-                            theConnection);
+                    ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(model, theOptions,
+                            theStrategy, theConnection);
                     theWorker.execute();
 
                     ReverseEngineeringResult theResult = theWorker.get();
@@ -1069,7 +1079,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         graphModel = new DefaultGraphModel();
         layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory());
 
-        graphModel.addGraphModelListener(graphModelListener);
+        graphModel.addGraphModelListener(new ERDesignerGrapgModelListener());
 
         graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
@@ -1154,6 +1164,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         return worldConnector;
     }
 
+    protected void commandRemoveSubjectArea(SubjectAreaCell aCell) {
+        graph.getGraphLayoutCache().remove(new Object[] { aCell });
+        model.removeSubjectArea((SubjectArea) aCell.getUserObject());
+    }
+
+    protected void commandUpdateSubjectArea(SubjectAreaCell aCell) {
+
+        SubjectArea theArea = (SubjectArea) aCell.getUserObject();
+        theArea.getTables().clear();
+        for (Object theObject : aCell.getChildren()) {
+            if (theObject instanceof TableCell) {
+                theArea.getTables().add((Table) ((TableCell) theObject).getUserObject());
+            }
+        }
+    }
+
     protected void commandCompleteCompare() {
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
@@ -1176,9 +1202,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 Model theDatabaseModel = worldConnector.createNewModel();
                 theDatabaseModel.setDialect(model.getDialect());
                 theDatabaseModel.getProperties().copyFrom(model);
-                
-                ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theDatabaseModel, theOptions, theStrategy,
-                        theConnection);
+
+                ReverseEngineerSwingWorker theWorker = new ReverseEngineerSwingWorker(theDatabaseModel, theOptions,
+                        theStrategy, theConnection);
                 theWorker.execute();
 
                 ReverseEngineeringResult theResult = theWorker.get();
