@@ -32,7 +32,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:25 $
+ * @version $Date: 2008-03-08 21:57:35 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -287,6 +287,21 @@ public class Model implements OwnedModelItemVerifier {
      */
     public void addSubjectArea(SubjectArea aArea) {
         subjectAreas.add(aArea);
-        
+    }
+
+    /**
+     * Remove a subject area.
+     *  
+     * @param aArea the area
+     */
+    public void removeSubjectArea(SubjectArea aArea) {
+        subjectAreas.remove(aArea);
+    }
+
+    /**
+     * @return the subjectAreas
+     */
+    public SubjectAreaList getSubjectAreas() {
+        return subjectAreas;
     }
 }

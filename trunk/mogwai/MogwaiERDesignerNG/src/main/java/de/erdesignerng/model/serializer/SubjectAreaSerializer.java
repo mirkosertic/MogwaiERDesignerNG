@@ -15,50 +15,25 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model;
+package de.erdesignerng.model.serializer;
 
-import java.awt.Color;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.SubjectArea;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-03-08 21:57:35 $
  */
-public class SubjectArea extends ModelItem {
-    
-    private Color color;
-    
-    private TableList tables = new TableList();
-    
-    public SubjectArea() {
-        setName("Subject Area");
-        setColor(Color.lightGray);
+public class SubjectAreaSerializer extends Serializer {
+
+    public static final SubjectAreaSerializer SERIALIZER = new SubjectAreaSerializer();
+
+    public void serialize(SubjectArea aArea, Document aDocument, Element aSubjectAreasElement) {
     }
 
-    /**
-     * @return the color
-     */
-    public Color getColor() {
-        return color;
-    }
-
-    /**
-     * @param color the color to set
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    /**
-     * @return the tables
-     */
-    public TableList getTables() {
-        return tables;
-    }
-
-    /**
-     * @param tables the tables to set
-     */
-    public void setTables(TableList tables) {
-        this.tables = tables;
+    public void deserializeFrom(Model aModel, Document aDocument) {
     }
 }

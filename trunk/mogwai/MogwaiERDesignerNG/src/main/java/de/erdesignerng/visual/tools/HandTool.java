@@ -35,7 +35,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:20 $
+ * @version $Date: 2008-03-08 21:57:35 $
  */
 public class HandTool extends BaseTool {
 
@@ -89,6 +89,7 @@ public class HandTool extends BaseTool {
 
         theMenu.add(theDeleteItem);
         
+        // TODO [mirkosertic] Check for table availability here
         theMenu.addSeparator();
 
         DefaultAction theAddAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ADDTONEWSUBJECTAREA);
