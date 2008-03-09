@@ -21,6 +21,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingUtilities;
 
@@ -35,7 +36,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-10 12:38:57 $
+ * @version $Date: 2008-03-09 15:55:24 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -48,11 +49,91 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     public class MyMouseHandler extends MouseHandler {
 
         @Override
-        public void mouseClicked(MouseEvent aEvent) {
-            if (aEvent.isPopupTrigger()) {
-                // System.out.println(aEvent.getX() + " " + aEvent.getY() + "
-                // for " + cell);
+        public void mousePressed(MouseEvent e) {
+            handler = null;
+            if (!e.isConsumed() && graph.isEnabled()) {
+                graph.requestFocus();
+                int s = graph.getTolerance();
+                Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+                        2 * s));
+                lastFocus = focus;
+                focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
+                cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
+                if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
+                    CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+                    if (theTemp != null) {
+                        cell = theTemp;
+                    }
+                }
+                if (focus == null) {
+                    focus = cell;
+                }
+                completeEditing();
+                boolean isForceMarquee = isForceMarqueeEvent(e);
+                boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());
+                if (!isForceMarquee) {
+                    if (e.getClickCount() == graph.getEditClickCount() && focus != null && isEditable
+                            && graph.isCellEditable(focus.getCell()) && handleEditTrigger(cell.getCell(), e)) {
+                        e.consume();
+                        cell = null;
+                    } else if (!isToggleSelectionEvent(e)) {
+                        if (handle != null) {
+                            handle.mousePressed(e);
+                            handler = handle;
+                        }
+                        // Immediate Selection
+                        if (!e.isConsumed() && cell != null && !graph.isCellSelected(cell.getCell())) {
+                            selectCellForEvent(cell.getCell(), e);
+                            focus = cell;
+                            if (handle != null) {
+                                handle.mousePressed(e);
+                                handler = handle;
+                            }
+                            e.consume();
+                            cell = null;
+                        }
+                    }
+                }
+                // Marquee Selection
+                if (!e.isConsumed() && marquee != null
+                        && (!isToggleSelectionEvent(e) || focus == null || isForceMarquee)) {
+                    marquee.mousePressed(e);
+                    handler = marquee;
+                }
             }
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == graph.getEditClickCount()) {
+                
+                int s = graph.getTolerance();
+                
+                Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+                        2 * s));
+                lastFocus = focus;
+                focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
+                cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
+                if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
+                    CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+                    if (theTemp != null) {
+                        cell = theTemp;
+                    }
+                }
+                if (focus == null) {
+                    focus = cell;
+                }
+                
+                if (cell != null) {
+                    if (handleEditTrigger(cell.getCell(), e)) {
+                        e.consume();
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void postProcessSelection(MouseEvent e, Object cell, boolean wasSelected) {
         }
     };
 
