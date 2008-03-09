@@ -32,7 +32,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 21:57:35 $
+ * @version $Date: 2008-03-09 18:20:28 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -179,6 +179,8 @@ public class Model implements OwnedModelItemVerifier {
         
         tables.remove(aTable);
         relations.removeByTable(aTable);
+        
+        subjectAreas.removeTable(aTable);
     }
 
     /**
