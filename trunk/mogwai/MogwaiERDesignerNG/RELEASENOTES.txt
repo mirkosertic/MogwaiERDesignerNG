@@ -95,3 +95,4 @@ Release 1.2.3
 
 * Implemented FR 1899729 [ERDesignerNG] Table selection for reverse engineer
 * Implemented FR 1905362 [ERDesignerNG] Reuse current model during reverse enginer
+* Implemented FR 1903318 [ERDesignerNG] Add support for subject areas

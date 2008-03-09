@@ -30,6 +30,7 @@ import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,10 +49,12 @@ import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
+import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
@@ -64,6 +67,7 @@ import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
@@ -78,6 +82,7 @@ import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
+import de.erdesignerng.visual.cells.views.SubjectAreaCellView;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
@@ -723,14 +728,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 CellView[] theViews = layoutCache.getAllViews();
                 for (CellView theView : theViews) {
                     if (theView instanceof TableCellView) {
-                        TableCellView theTableCellView = (TableCellView) theView;
-                        TableCell theTableCell = (TableCell) theTableCellView.getCell();
-                        Table theTable = (Table) theTableCell.getUserObject();
+                        VertexView theItemCellView = (VertexView) theView;
+                        DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
+                        ModelItem theItem = (ModelItem) theItemCell.getUserObject();
 
-                        File theOutputFile = new File(theBaseDirectory, theTable.getName()
+                        File theOutputFile = new File(theBaseDirectory, theItem.getName()
                                 + aExporter.getFileExtension());
                         try {
-                            aExporter.exportToStream(theTableCellView.getRendererComponent(graph, false, false, false),
+                            aExporter.exportToStream(theItemCellView.getRendererComponent(graph, false, false, false),
                                     new FileOutputStream(theOutputFile));
                         } catch (Exception e) {
                             worldConnector.notifyAboutException(e);
@@ -1114,6 +1119,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theCell.transferPropertiesToAttributes(theRelation);
 
             layoutCache.insert(theCell);
+        }
+        
+        for (SubjectArea theSubjectArea : model.getSubjectAreas()) {
+
+            SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theSubjectArea);
+            List<TableCell> theTableCells = new ArrayList<TableCell>();
+            
+            for (Table theTable : theSubjectArea.getTables()) {
+                theTableCells.add(theCells.get(theTable));
+            }
+            
+            layoutCache.insertGroup(theSubjectAreaCell, theTableCells.toArray());
+            layoutCache.toBack(new Object[] { theSubjectAreaCell });
+
         }
 
         commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);

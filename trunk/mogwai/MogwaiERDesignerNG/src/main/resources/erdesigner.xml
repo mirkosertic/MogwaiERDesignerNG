@@ -555,5 +555,17 @@
 			<Text lang="de">Zu einem neuen Subjectarea hinzufügen</Text>		
 			<Text lang="en">Add to new subject area</Text>					
 		</Entry>		
+		<Entry id="SUBJECTAREAPROPERTIES">
+			<Text lang="de">Eigenschaften des Subject Areas</Text>		
+			<Text lang="en">Subject area properties</Text>					
+		</Entry>		
+		<Entry id="SUBJECTAREAEDITOR">
+			<Text lang="de">Subject Area bearbeiten</Text>		
+			<Text lang="en">Edit subject area</Text>					
+		</Entry>		
+		<Entry id="COLOR">
+			<Text lang="de">Farbe</Text>		
+			<Text lang="en">Color</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>
