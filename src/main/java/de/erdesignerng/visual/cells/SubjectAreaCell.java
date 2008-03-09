@@ -32,6 +32,7 @@ public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<Subje
         GraphConstants.setAutoSize(getAttributes(), true);
         GraphConstants.setEditable(getAttributes(), true);
         GraphConstants.setInset(getAttributes(), 20);
+        GraphConstants.setGroupOpaque(getAttributes(), true);
     }
     
     public void transferAttributesToProperties(Map aAttributes) {

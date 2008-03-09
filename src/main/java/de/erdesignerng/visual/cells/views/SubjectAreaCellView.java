@@ -38,7 +38,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:22 $
+ * @version $Date: 2008-03-09 15:55:25 $
  */
 public class SubjectAreaCellView extends VertexView {
 
@@ -52,7 +52,7 @@ public class SubjectAreaCellView extends VertexView {
     public CellViewRenderer getRenderer() {
         return renderer;
     }
-
+    
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
         private SubjectArea subjectArea;
