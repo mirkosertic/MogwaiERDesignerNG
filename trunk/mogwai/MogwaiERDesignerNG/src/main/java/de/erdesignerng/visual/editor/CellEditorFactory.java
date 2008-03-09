@@ -35,7 +35,7 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:44 $
+ * @version $Date: 2008-03-09 15:55:24 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
@@ -63,7 +63,7 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
             return theEditor;
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Cannot create editor for " + aValue.getClass());
     }
 
     @Override
