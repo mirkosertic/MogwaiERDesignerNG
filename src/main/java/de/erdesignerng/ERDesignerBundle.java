@@ -281,4 +281,10 @@ public interface ERDesignerBundle {
   String TABLESELECTION = "TABLESELECTION";
   /** Add to new subject area. */
   String ADDTONEWSUBJECTAREA = "ADDTONEWSUBJECTAREA";
+  /** Subject area properties. */
+  String SUBJECTAREAPROPERTIES = "SUBJECTAREAPROPERTIES";
+  /** Edit subject area. */
+  String SUBJECTAREAEDITOR = "SUBJECTAREAEDITOR";
+  /** Color. */
+  String COLOR = "COLOR";
 }

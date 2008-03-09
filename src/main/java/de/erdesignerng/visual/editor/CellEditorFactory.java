@@ -26,16 +26,19 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCellEditor;
 
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.cells.RelationEdge;
+import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
+import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 15:55:24 $
+ * @version $Date: 2008-03-09 18:20:29 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
@@ -49,6 +52,15 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
             Table theTable = (Table) theCell.getUserObject();
             TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
             theEditor.initializeFor(theTable);
+            return theEditor;
+        }
+
+        if (aValue instanceof SubjectAreaCell) {
+            SubjectAreaCell theCell = (SubjectAreaCell) aValue;
+
+            SubjectArea theSubjectArea = (SubjectArea) theCell.getUserObject();
+            SubjectAreaEditor theEditor = new SubjectAreaEditor(aParent);
+            theEditor.initializeFor(theSubjectArea);
             return theEditor;
         }
 

@@ -131,6 +131,37 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+
+				<xs:element name="Subjectareas" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Definition of subject areas</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Subjectarea">
+								<xs:annotation>
+									<xs:documentation>A subject area</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="Item" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>A mapping element</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="tablerefid" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="id" use="required"/>
+									<xs:attribute name="name" use="required"/>
+									<xs:attribute name="color" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
 			</xs:sequence>
 			<xs:attribute name="version" type="xs:string"/>
 		</xs:complexType>

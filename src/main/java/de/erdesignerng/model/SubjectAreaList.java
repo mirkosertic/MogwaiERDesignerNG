@@ -17,10 +17,33 @@
  */
 package de.erdesignerng.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:25 $
+ * @version $Date: 2008-03-09 18:20:28 $
  */
 public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 
+    /**
+     * Remove a table from the subject areas.
+     * 
+     * If a subject area has no tables, it is removed from the model.
+     * 
+     * @param aTable the table
+     */
+    public void removeTable(Table aTable) {
+        
+        List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
+        
+        for (SubjectArea theArea : this) {
+            theArea.getTables().remove(aTable);
+            if (theArea.getTables().size() == 0) {
+                theRemovedAreas.add(theArea);
+            }
+        }
+        
+        removeAll(theRemovedAreas);
+    }
 }
