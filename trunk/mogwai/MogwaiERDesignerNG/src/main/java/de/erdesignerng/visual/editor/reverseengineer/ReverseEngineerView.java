@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultSeparator;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 13:44:51 $
+ * @version $Date: 2008-03-11 20:27:51 $
  */
 public class ReverseEngineerView extends JPanel {
 
@@ -49,10 +49,6 @@ public class ReverseEngineerView extends JPanel {
     private JPanel engineeringOptions;
 
     private DefaultLabel component9;
-
-    private DefaultLabel component10;
-
-    private DefaultLabel component11;
 
     private DefaultComboBox naming;
 

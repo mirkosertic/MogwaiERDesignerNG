@@ -147,7 +147,7 @@ public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter
             double theWidth = theEntity.getWidthInLayout();
             double theHeight = theEntity.getHeightInLayout();
 
-            Rectangle2D theOldDimensions = GraphConstants.getBounds(theCell.getAttributes());
+            //Rectangle2D theOldDimensions = GraphConstants.getBounds(theCell.getAttributes());
             // GraphConstants.setBounds(theCell.getAttributes(), new
             // Rectangle2D.Double(theX, theY, theOldDimensions.getWidth(),
             // theOldDimensions.getHeight()));

@@ -36,11 +36,9 @@ import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
-import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
@@ -48,7 +46,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:22 $
+ * @version $Date: 2008-03-11 20:27:53 $
  */
 public class TableCellView extends VertexView {
 
@@ -70,8 +68,6 @@ public class TableCellView extends VertexView {
         private boolean roundedRect = false;
 
         private boolean selected;
-
-        private Dialect dialect;
 
         private static ImageIcon key = IconFactory.getKeyIcon();
 
@@ -311,7 +307,6 @@ public class TableCellView extends VertexView {
             TableCellView theView = (TableCellView) aView;
             table = (Table) ((TableCell) theView.getCell()).getUserObject();
             selected = aSelected;
-            dialect = ((ERDesignerGraph) aGraph).getDBModel().getDialect();
 
             return this;
         }

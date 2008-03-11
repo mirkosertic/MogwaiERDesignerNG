@@ -34,8 +34,6 @@ import net.sourceforge.squirrel_sql.client.session.IObjectTreeAPI;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
-import net.sourceforge.squirrel_sql.fw.util.log.ILogger;
-import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
@@ -46,13 +44,11 @@ import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 18:49:14 $
+ * @version $Date: 2008-03-11 20:27:51 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
     private Hashtable<IIdentifier, SquirrelMogwaiController[]> controllersBySessionID = new Hashtable<IIdentifier, SquirrelMogwaiController[]>();
-
-    private static final ILogger LOGGER = LoggerController.createLogger(SquirrelMogwaiPlugin.class);
 
     private SquirrelMogwaiPluginResources resources;
 

@@ -24,7 +24,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:49:26 $
+ * @version $Date: 2008-03-11 20:27:53 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -51,8 +51,6 @@ public class TableEditorView extends DefaultPanel {
     private DefaultTextField attributeName;
 
     private DefaultCheckBox nullable;
-
-    private DefaultTabbedPaneTab optionsTab;
 
     private DefaultLabel component42;
 

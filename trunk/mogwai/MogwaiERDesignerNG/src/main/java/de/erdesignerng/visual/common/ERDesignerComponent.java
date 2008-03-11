@@ -82,7 +82,6 @@ import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
-import de.erdesignerng.visual.cells.views.SubjectAreaCellView;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
@@ -233,8 +232,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction exportAction;
 
     private DefaultAction exportSVGAction;
-
-    private DefaultAction fileAction;
 
     private ERDesignerGraph graph;
 
@@ -426,8 +423,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.ENTITY);
-
-        fileAction = new DefaultAction(this, ERDesignerBundle.FILE);
 
         exportAction = new DefaultAction(this, ERDesignerBundle.EXPORT);
 
