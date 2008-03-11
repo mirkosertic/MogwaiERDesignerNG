@@ -54,7 +54,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:23 $
+ * @version $Date: 2008-03-11 20:07:40 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -196,6 +196,8 @@ public class SQLEditor extends BaseEditor {
 
     private Model model;
 
+    private StatementList statements;
+
     public SQLEditor(Component aParent, Model aModel, StatementList aStatements, File aLastEditedFile,
             SQLGenerator aGenerator, String aFileName) {
         super(aParent, ERDesignerBundle.SQLWINDOW);
@@ -206,6 +208,7 @@ public class SQLEditor extends BaseEditor {
         lastEditedFile = aLastEditedFile;
         generator = aGenerator;
         filename = aFileName;
+        statements = aStatements;
 
         view.getSqlList().setCellRenderer(new StatementRenderer());
         view.getSqlList().addListSelectionListener(new ListSelectionListener() {
@@ -233,12 +236,24 @@ public class SQLEditor extends BaseEditor {
         setResizable(false);
 
         pack();
-        
+
         UIInitializer.getInstance().initialize(this);
     }
 
     @Override
     public void applyValues() throws Exception {
+
+        DefaultListModel theModel = (DefaultListModel) view.getSqlList().getModel();
+
+        StatementList theDeleted = new StatementList();
+        for (Statement theStatement : statements) {
+            if (!theModel.contains(theStatement)) {
+                theDeleted.add(theStatement);
+            }
+        }
+
+        statements.removeAll(theDeleted);
+
     }
 
     private void commandClose() {
