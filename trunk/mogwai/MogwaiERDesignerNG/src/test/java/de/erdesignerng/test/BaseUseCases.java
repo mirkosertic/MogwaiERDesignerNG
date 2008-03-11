@@ -63,12 +63,22 @@ public abstract class BaseUseCases extends TestCase {
         if (aStatement != null) {
             for (Statement theStatement : aStatement) {
                 String theSQL = theStatement.getSql();
+                java.sql.Statement theJDBCStatement = null;
                 try {
-                    connection.createStatement().execute(theSQL);
+                    theJDBCStatement = connection.createStatement();
+                    theJDBCStatement.execute(theSQL);
                     assertTrue(theSQL, true);
                     System.out.println(theSQL);
                 } catch (Exception e) {
                     throw new VetoException(theStatement.getSql(), e);
+                } finally {
+                    if (theJDBCStatement != null) {
+                        try {
+                            theJDBCStatement.close();
+                        } catch (Exception e) {
+                            // Do nothing here
+                        }
+                    }
                 }
             }
         } else {
