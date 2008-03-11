@@ -45,7 +45,7 @@ import edu.uci.ics.jung.visualization.Layout;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 18:42:27 $
+ * @version $Date: 2008-03-11 20:27:52 $
  */
 public abstract class JungLayouter implements SizeableLayouter {
     
@@ -77,7 +77,7 @@ public abstract class JungLayouter implements SizeableLayouter {
 
                 CellView theCellView = theLayoutCache.getMapping(cell, true);
                 TableCell theCell = (TableCell) theCellView.getCell();
-                Rectangle2D theBounds = GraphConstants.getBounds(((TableCell) theCellView.getCell()).getAttributes());
+                //Rectangle2D theBounds = GraphConstants.getBounds(((TableCell) theCellView.getCell()).getAttributes());
 
                 Vertex theVertex = theGraph.addVertex(new DirectedSparseVertex());
                 ERDesignerJungLayoutEntity theEntity = new ERDesignerJungLayoutEntity(theVertex, theCell);

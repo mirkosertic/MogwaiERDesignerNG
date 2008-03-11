@@ -38,11 +38,9 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 18:20:29 $
+ * @version $Date: 2008-03-11 20:27:51 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
-
-    private Object editingValue;
 
     protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
 
@@ -81,13 +79,9 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
     @Override
     public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
 
-        editingValue = aValue;
-
         BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
-
         theEditor.validate();
 
-        editingValue = aValue;
         return theEditor;
     }
 
