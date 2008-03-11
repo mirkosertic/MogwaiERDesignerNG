@@ -17,11 +17,13 @@
  */
 package de.erdesignerng.model;
 
+import java.io.Serializable;
+
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-03-11 20:41:56 $
  */
-public abstract class ModelItem {
+public abstract class ModelItem implements Serializable {
 
     public static final String PROPERTY_LOCATION = "LOCATION";
 

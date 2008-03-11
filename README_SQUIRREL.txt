@@ -4,7 +4,7 @@
      
 Requirements
 
-This Plugin has been tested with SquirrelSQL 2.6.4     
+This Plugin has been tested with SquirrelSQL 2.6.4 and higher    
      
 Installation
 

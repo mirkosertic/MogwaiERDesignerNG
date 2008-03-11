@@ -150,7 +150,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    private class ReverseEngineeringResult {
+    private static class ReverseEngineeringResult {
 
         private Exception exception;
 

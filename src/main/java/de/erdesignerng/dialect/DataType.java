@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -27,9 +28,9 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-23 16:38:30 $
+ * @version $Date: 2008-03-11 20:41:56 $
  */
-public class DataType implements Comparable<DataType> {
+public class DataType implements Comparable<DataType> , Serializable {
 
     public static final String SIZE_TOKEN = "$size";
 
