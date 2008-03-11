@@ -766,6 +766,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandLayout(Layouter aLayouter) {
 
+        if (model.getSubjectAreas().size() > 0) {
+            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
+                    ERDesignerBundle.MODELSWITHSUBJECTAREASARENOTSUPPORTED));
+            return;
+        }
+        
         if (aLayouter instanceof SizeableLayouter) {
             SizeableLayouter theLayouter = (SizeableLayouter) aLayouter;
 
