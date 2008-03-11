@@ -567,5 +567,9 @@
 			<Text lang="de">Farbe</Text>		
 			<Text lang="en">Color</Text>					
 		</Entry>		
+		<Entry id="MODELSWITHSUBJECTAREASARENOTSUPPORTED">
+			<Text lang="de">Modelle mit Subject Areas werden von dieser Funktion nicht unterstützt.</Text>		
+			<Text lang="en">Models with subject areas are not supported by this operation</Text>					
+		</Entry>		
 	</Bundle>
 </Resource>
