@@ -287,4 +287,6 @@ public interface ERDesignerBundle {
   String SUBJECTAREAEDITOR = "SUBJECTAREAEDITOR";
   /** Color. */
   String COLOR = "COLOR";
+  /** Models with subject areas are not supported by this operation. */
+  String MODELSWITHSUBJECTAREASARENOTSUPPORTED = "MODELSWITHSUBJECTAREASARENOTSUPPORTED";
 }
