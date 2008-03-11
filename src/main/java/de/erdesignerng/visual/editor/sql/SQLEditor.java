@@ -54,7 +54,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:07:40 $
+ * @version $Date: 2008-03-11 20:41:58 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -165,7 +165,7 @@ public class SQLEditor extends BaseEditor {
         }
     }
 
-    private final class StatementRenderer implements ListCellRenderer {
+    private static final class StatementRenderer implements ListCellRenderer {
 
         private DefaultTextArea component = new DefaultTextArea();
 

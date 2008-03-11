@@ -1,5 +1,6 @@
 package de.erdesignerng.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,9 +8,9 @@ import java.util.Map;
  * Properties.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 21:05:34 $
+ * @version $Date: 2008-03-11 20:41:57 $
  */
-public class ModelProperties {
+public class ModelProperties implements Serializable {
 
     private Map<String, String> properties = new HashMap<String, String>();
 

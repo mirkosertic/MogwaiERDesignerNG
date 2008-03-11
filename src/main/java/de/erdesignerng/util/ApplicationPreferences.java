@@ -21,6 +21,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Vector;
 import java.util.prefs.BackingStoreException;
@@ -30,7 +32,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-03-11 20:41:56 $
  */
 public class ApplicationPreferences {
 
@@ -149,7 +151,7 @@ public class ApplicationPreferences {
 
     public ClassLoader createDriverClassLoader() {
 
-        URL[] theUrls = new URL[classpathfiles.size()];
+        final URL[] theUrls = new URL[classpathfiles.size()];
         for (int i = 0; i < classpathfiles.size(); i++) {
             try {
                 theUrls[i] = classpathfiles.get(i).toURL();
@@ -158,7 +160,12 @@ public class ApplicationPreferences {
             }
         }
 
-        return new URLClassLoader(theUrls);
+        return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+
+            public ClassLoader run() {
+                return new URLClassLoader(theUrls);
+            }
+        });
     }
 
     /**

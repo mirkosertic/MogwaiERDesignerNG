@@ -128,8 +128,8 @@ public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter
         ERDesignerZestLayoutRelationship[] theRelations = theRelationships
                 .toArray(new ERDesignerZestLayoutRelationship[theRelationships.size()]);
 
-        int theTotalWidth = size.width;
-        int theTotalHeight = size.height;
+        double theTotalWidth = size.width;
+        double theTotalHeight = size.height;
         double theRatio = theTotalWidth / theTotalHeight;
         
         layout.setEntityAspectRatio(theRatio);
