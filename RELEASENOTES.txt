@@ -91,7 +91,7 @@ Release 1.2.2
 * Bug Fixing 1890979 [ERDesignerNG] Complete compare fails sometimes
 * Bug Fixing 1899732 [ERDesignerNG] Fails to reverse engineer oracle columns
 
-Release 1.2.3
+Release 1.3
 
 * Implemented FR 1899729 [ERDesignerNG] Table selection for reverse engineer
 * Implemented FR 1905362 [ERDesignerNG] Reuse current model during reverse enginer
