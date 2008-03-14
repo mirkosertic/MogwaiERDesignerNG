@@ -8,8 +8,7 @@
  * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more * details.
  * 
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
@@ -37,7 +36,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 16:11:21 $
+ * @version $Date: 2008-03-14 18:05:39 $
  * @param <T>
  *            the dialect
  */
@@ -84,6 +83,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             String theTableRemarks = theTablesResultSet.getString("REMARKS");
 
             Table theTable = new Table();
+
             theTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
 
             if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
@@ -108,6 +108,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 String theColumnRemarks = theColumnsResultSet.getString("REMARKS");
 
                 Attribute theAttribute = new Attribute();
+
                 theAttribute.setName(dialect.getCastType().cast(theColumnName));
                 if ((theColumnRemarks != null) && (!"".equals(theColumnRemarks))) {
                     theAttribute.setComment(theColumnRemarks);
@@ -252,6 +253,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     // The index is corrupt or
                     // It is a oracle function based index
                     if (aTable.getIndexes().contains(theIndex)) {
+
                         aNotifier.notifyMessage(ERDesignerBundle.SKIPINDEX, theIndex.getName());
                         aTable.getIndexes().remove(theIndex);
                     }
@@ -316,29 +318,38 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
                         // The relation is only added to the model
                         // if the exporting table is also part of the model
-                        theRelation = new Relation();
-                        theRelation.setName(dialect.getCastType().cast(theFKName));
-                        theRelation.setExportingTable(theExportingTable);
-                        theRelation.setImportingTable(theTable);
+                        String theRelationName = dialect.getCastType().cast(theFKName);
+                        theRelation = aModel.getRelations().findByName(theRelationName);
+                        if (theRelation == null) {
+                            theRelation = new Relation();
+                            theRelation.setName(theRelationName);
 
-                        if (theUpdateRule != null) {
-                            int theType = Integer.parseInt(theUpdateRule.toString());
-                            theRelation.setOnUpdate(getCascadeType(theType));
-                        } else {
-                            theRelation.setOnUpdate(CascadeType.NOTHING);
-                        }
+                            theRelation.setExportingTable(theExportingTable);
+                            theRelation.setImportingTable(theTable);
 
-                        if (theDeleteRule != null) {
-                            int theType = Integer.parseInt(theDeleteRule.toString());
-                            theRelation.setOnDelete(getCascadeType(theType));
-                        } else {
-                            theRelation.setOnDelete(CascadeType.NOTHING);
-                        }
+                            if (theUpdateRule != null) {
+                                int theType = Integer.parseInt(theUpdateRule.toString());
 
-                        try {
-                            aModel.addRelation(theRelation);
-                        } catch (Exception e) {
-                            throw new ReverseEngineeringException(e.getMessage());
+                                theRelation.setOnUpdate(getCascadeType(theType));
+                            } else {
+
+                                theRelation.setOnUpdate(CascadeType.NOTHING);
+                            }
+
+                            if (theDeleteRule != null) {
+                                int theType = Integer.parseInt(theDeleteRule.toString());
+
+                                theRelation.setOnDelete(getCascadeType(theType));
+                            } else {
+
+                                theRelation.setOnDelete(CascadeType.NOTHING);
+                            }
+
+                            try {
+                                aModel.addRelation(theRelation);
+                            } catch (Exception e) {
+                                throw new ReverseEngineeringException(e.getMessage());
+                            }
                         }
                     }
                 }
