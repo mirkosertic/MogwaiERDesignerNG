@@ -41,7 +41,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 22:24:24 $
+ * @version $Date: 2008-03-14 18:10:35 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -89,8 +89,6 @@ public class ERDesignerGraph extends JGraph {
 
                     theObjectsToRemove.add(theCell);
 
-                    getDBModel().removeTable(theTable);
-
                     CellView[] theViews = getGraphLayoutCache().getAllViews();
                     for (CellView theView : theViews) {
                         if (theView instanceof RelationEdgeView) {
@@ -110,6 +108,8 @@ public class ERDesignerGraph extends JGraph {
                             }
                         }
                     }
+                    
+                    getDBModel().removeTable(theTable);                    
                 }
             }
         }

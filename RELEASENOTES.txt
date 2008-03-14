@@ -97,3 +97,4 @@ Release 1.2.3
 * Implemented FR 1905362 [ERDesignerNG] Reuse current model during reverse enginer
 * Implemented FR 1903318 [ERDesignerNG] Add support for subject areas
 * Bug Fixing 1912834 [ERDesignerNG] RE Table selection fails
+* Bug Fixing 1912838 [ERDesignerNG] Dropping a table should drop the constraints
