@@ -22,14 +22,14 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:49:27 $
+ * @version $Date: 2008-04-05 18:19:20 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
     public MySQLDialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(true);
-        setMaxObjectNameLength(30);
+        setMaxObjectNameLength(64);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
         setSupportsColumnExtra(true);
@@ -45,6 +45,7 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(new MySQLDataType("BIGINT UNSIGNED", "", java.sql.Types.BIGINT));
         registerType(new MySQLDataType("NUMERIC", "$size,$fraction", java.sql.Types.NUMERIC));
         registerType(new MySQLDataType("DECIMAL", "$size,$fraction", java.sql.Types.DECIMAL));
+        registerType(new MySQLDataType("DECIMAL UNSIGNED", "$size,$fraction", java.sql.Types.DECIMAL));
         registerType(new MySQLDataType("INTEGER", "", java.sql.Types.INTEGER));
         registerType(new MySQLDataType("INTEGER UNSIGNED", "", java.sql.Types.INTEGER));
         registerType(new MySQLDataType("INT", "", java.sql.Types.INTEGER));

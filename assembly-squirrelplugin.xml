@@ -23,7 +23,14 @@
       <includes>
         <include>RELEASENOTES.txt</include>
       </includes>
-    </fileSet>     
+    </fileSet>   
+	<fileSet>
+      <directory>doc</directory>
+      <outputDirectory>userdoc</outputDirectory>
+      <includes>
+        <include>*.pdf</include>
+      </includes>
+    </fileSet>    
 	<fileSet>
       <directory>src</directory>
       <outputDirectory>src</outputDirectory>

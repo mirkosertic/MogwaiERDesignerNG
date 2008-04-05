@@ -18,6 +18,13 @@
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
 	<fileSet>
+      <directory>doc</directory>
+      <outputDirectory>userdoc</outputDirectory>
+      <includes>
+        <include>*.pdf</include>
+      </includes>
+    </fileSet>    
+	<fileSet>
       <directory>target</directory>
       <outputDirectory>dist</outputDirectory>
       <includes>
