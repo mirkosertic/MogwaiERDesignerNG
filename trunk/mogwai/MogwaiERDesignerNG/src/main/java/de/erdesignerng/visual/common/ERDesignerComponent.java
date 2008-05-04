@@ -74,6 +74,7 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.RecentlyUsedConnection;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.MessagesHelper;
@@ -633,7 +634,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         worldConnector.initTitle();
 
-        initLRUMenu();
+        updateRecentlyUsedMenuEntries();
 
         UIInitializer.getInstance().initialize(scrollPane);
     }
@@ -699,12 +700,50 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
     }
+    
+    protected void updateRecentlyUsedMenuEntries() {
+
+        lruMenu.removeAll();
+        if (preferences != null) {
+
+            List<File> theFiles = preferences.getRecentlyUsedFiles();
+            for (final File theFile : theFiles) {
+                JMenuItem theItem = new JMenuItem(theFile.toString());
+                theItem.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                        commandOpenFile(theFile);
+                    }
+
+                });
+
+                UIInitializer.getInstance().initializeFontAndColors(theItem);
+
+                lruMenu.add(theItem);
+            }
+        }
+        
+    }
+    
+    protected void addCurrentConnectionToConnectionHistory() {
+        
+        RecentlyUsedConnection theConnection = model.createConnectionHistoryEntry();
+        addConnectionToConnectionHistory(theConnection); 
+    }
+
+    protected void addConnectionToConnectionHistory(RecentlyUsedConnection aConnection) {
+        
+        preferences.addRecentlyUsedConnection(aConnection);
+        
+        updateRecentlyUsedMenuEntries();
+    }
 
     protected void commandDBConnection() {
         DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(scrollPane, model, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
+                addCurrentConnectionToConnectionHistory();
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
@@ -834,10 +873,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             currentEditingFile = aFile;
             worldConnector.initTitle(currentEditingFile);
 
-            preferences.addLRUFile(aFile);
+            preferences.addRecentlyUsedFile(aFile);
 
-            initLRUMenu();
-
+            addCurrentConnectionToConnectionHistory();
+            
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
 
         } catch (Exception e) {
@@ -923,9 +962,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 currentEditingFile = theFile;
                 worldConnector.initTitle();
 
-                preferences.addLRUFile(theFile);
+                preferences.addRecentlyUsedFile(theFile);
 
-                initLRUMenu();
+                updateRecentlyUsedMenuEntries();
 
                 if (model.getModificationTracker() instanceof HistoryModificationTracker) {
                     HistoryModificationTracker theTracker = (HistoryModificationTracker) model.getModificationTracker();
@@ -1054,29 +1093,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     public ResourceHelper getResourceHelper() {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
-
-    private void initLRUMenu() {
-
-        lruMenu.removeAll();
-        if (preferences != null) {
-
-            List<File> theFiles = preferences.getLrufiles();
-            for (final File theFile : theFiles) {
-                JMenuItem theItem = new JMenuItem(theFile.toString());
-                theItem.addActionListener(new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        commandOpenFile(theFile);
-                    }
-
-                });
-
-                UIInitializer.getInstance().initializeFontAndColors(theItem);
-
-                lruMenu.add(theItem);
-            }
-        }
     }
 
     public void setModel(Model aModel) {
@@ -1230,6 +1246,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 ReverseEngineeringResult theResult = theWorker.get();
                 theDatabaseModel = theResult.getModel();
                 if (theDatabaseModel != null) {
+                    
+                    addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
                     CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, theDatabaseModel);
                     theCompare.showModal();

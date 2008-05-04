@@ -28,11 +28,12 @@ import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
 import de.erdesignerng.modificationtracker.ModelModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.RecentlyUsedConnection;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 18:20:28 $
+ * @version $Date: 2008-05-04 17:24:43 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -305,5 +306,14 @@ public class Model implements OwnedModelItemVerifier {
      */
     public SubjectAreaList getSubjectAreas() {
         return subjectAreas;
+    }
+
+    /**
+     * Create a connection history entry for the current loaded connection.
+     * 
+     * @return the history entry
+     */
+    public RecentlyUsedConnection createConnectionHistoryEntry() {
+        return new RecentlyUsedConnection(dialect.getUniqueName(), getProperties().getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER));
     }
 }
