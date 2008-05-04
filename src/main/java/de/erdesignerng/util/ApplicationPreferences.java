@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.prefs.BackingStoreException;
@@ -32,30 +33,34 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:41:56 $
+ * @version $Date: 2008-05-04 17:24:43 $
  */
 public class ApplicationPreferences {
 
     private static final String LRUPREFIX = "file_";
-    
+
     private static final String DOT_PATH = "DOT_PATH";
 
     private static final String CLASSPATHPREFIX = "classpath_";
 
+    private static final String LRCPREFIX = "lrc_";
+
     private int size;
 
-    private List<File> lrufiles = new Vector<File>();
+    private List<File> recentlyUsedFiles = new Vector<File>();
 
     private List<File> classpathfiles = new Vector<File>();
 
+    private List<RecentlyUsedConnection> recentlyUsedConnections = new Vector<RecentlyUsedConnection>();
+
     private Preferences preferences;
-    
+
     private String dotPath;
-    
+
     private static ApplicationPreferences me;
-    
+
     public static ApplicationPreferences getInstance() {
-        
+
         if (me == null) {
             try {
                 me = new ApplicationPreferences(20);
@@ -69,12 +74,12 @@ public class ApplicationPreferences {
     protected ApplicationPreferences(int aSize) throws BackingStoreException {
 
         preferences = Preferences.userNodeForPackage(ApplicationPreferences.class);
-        String[] theNames = preferences.keys();
+        List<String> theNames = Arrays.asList(preferences.keys());
         for (String theName : theNames) {
             if (theName.startsWith(LRUPREFIX)) {
                 File theFile = new File(preferences.get(theName, ""));
                 if (theFile.exists()) {
-                    lrufiles.add(theFile);
+                    recentlyUsedFiles.add(theFile);
                 }
             }
             if (theName.startsWith(CLASSPATHPREFIX)) {
@@ -86,8 +91,19 @@ public class ApplicationPreferences {
 
         }
 
+        for (int i = 0; i < size; i++) {
+            if (theNames.contains(LRCPREFIX + "DIALECT_" + i)) {
+                String theDialect = preferences.get(LRCPREFIX + "DIALECT_" + i, "");
+                String theURL = preferences.get(LRCPREFIX + "URL_" + i, "");
+                String theUser = preferences.get(LRCPREFIX + "USER_" + i, "");
+
+                RecentlyUsedConnection theConnection = new RecentlyUsedConnection(theDialect, theURL, theUser);
+                recentlyUsedConnections.add(theConnection);
+            }
+        }
+
         size = aSize;
-        
+
         dotPath = preferences.get(DOT_PATH, "");
 
     }
@@ -98,21 +114,44 @@ public class ApplicationPreferences {
      * @param aFile
      *            the file to add
      */
-    public void addLRUFile(File aFile) {
+    public void addRecentlyUsedFile(File aFile) {
 
-        if (!lrufiles.contains(aFile)) {
-            lrufiles.add(aFile);
-            if (lrufiles.size() > size) {
-                lrufiles.remove(0);
+        if (!recentlyUsedFiles.contains(aFile)) {
+            recentlyUsedFiles.add(aFile);
+            if (recentlyUsedFiles.size() > size) {
+                recentlyUsedFiles.remove(0);
             }
         } else {
-            lrufiles.remove(aFile);
-            lrufiles.add(0, aFile);
+            recentlyUsedFiles.remove(aFile);
+            recentlyUsedFiles.add(0, aFile);
         }
     }
 
-    public List<File> getLrufiles() {
-        return lrufiles;
+    /**
+     * Add a last used connection to the list.
+     * 
+     * @param aConnection
+     *            the connection
+     */
+    public void addRecentlyUsedConnection(RecentlyUsedConnection aConnection) {
+        if (!recentlyUsedConnections.contains(aConnection)) {
+            recentlyUsedConnections.add(aConnection);
+            if (recentlyUsedConnections.size() > size) {
+                recentlyUsedConnections.remove(0);
+            }
+        } else {
+            recentlyUsedConnections.remove(aConnection);
+            recentlyUsedConnections.add(0, aConnection);
+        }
+
+    }
+
+    public List<File> getRecentlyUsedFiles() {
+        return recentlyUsedFiles;
+    }
+
+    public List<RecentlyUsedConnection> getRecentlyUsedConnections() {
+        return recentlyUsedConnections;
     }
 
     public List<File> getClasspathFiles() {
@@ -122,7 +161,8 @@ public class ApplicationPreferences {
     /**
      * Save the preferences.
      * 
-     * @throws BackingStoreException is thrown if the operation fails
+     * @throws BackingStoreException
+     *             is thrown if the operation fails
      */
     public void store() throws BackingStoreException {
 
@@ -136,8 +176,15 @@ public class ApplicationPreferences {
             }
         }
 
-        for (int i = 0; i < lrufiles.size(); i++) {
-            preferences.put(LRUPREFIX + i, lrufiles.get(i).toString());
+        for (int i = 0; i < recentlyUsedFiles.size(); i++) {
+            preferences.put(LRUPREFIX + i, recentlyUsedFiles.get(i).toString());
+        }
+
+        for (int i = 0; i < recentlyUsedConnections.size(); i++) {
+            RecentlyUsedConnection theConnection = recentlyUsedConnections.get(i);
+            preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection.getDialect());
+            preferences.put(LRCPREFIX + "URL_" + i, theConnection.getUrl());
+            preferences.put(LRCPREFIX + "USER_" + i, theConnection.getUsername());
         }
 
         for (int i = 0; i < classpathfiles.size(); i++) {
@@ -145,7 +192,7 @@ public class ApplicationPreferences {
         }
 
         preferences.put(DOT_PATH, dotPath);
-        
+
         preferences.flush();
     }
 
@@ -176,7 +223,8 @@ public class ApplicationPreferences {
     }
 
     /**
-     * @param dotPath the dotPath to set
+     * @param dotPath
+     *            the dotPath to set
      */
     public void setDotPath(String dotPath) {
         this.dotPath = dotPath;
