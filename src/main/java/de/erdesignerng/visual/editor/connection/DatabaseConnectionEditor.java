@@ -14,6 +14,7 @@ import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.JDBCDialect;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.RecentlyUsedConnection;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -26,7 +27,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:24 $
+ * @version $Date: 2008-05-05 19:07:41 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -65,7 +66,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
     private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
-    public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences) {
+    public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences, RecentlyUsedConnection aConnection) {
         super(aParent, ERDesignerBundle.CONNECTIONCONFIGURATION);
 
         model = aModel;
@@ -84,11 +85,13 @@ public class DatabaseConnectionEditor extends BaseEditor {
         view.getDialect().setModel(theModel);
 
         DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
-        theDescriptor.setDialect(model.getDialect());
-        theDescriptor.setDriver(model.getProperties().getProperty(Model.PROPERTY_DRIVER));
-        theDescriptor.setUrl(model.getProperties().getProperty(Model.PROPERTY_URL));
-        theDescriptor.setUser(model.getProperties().getProperty(Model.PROPERTY_USER));
-        theDescriptor.setPassword(model.getProperties().getProperty(Model.PROPERTY_PASSWORD));
+        if (aConnection.getDialect() != null) {
+            theDescriptor.setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
+        }
+        theDescriptor.setDriver(aConnection.getDriver());
+        theDescriptor.setUrl(aConnection.getUrl());
+        theDescriptor.setUser(aConnection.getUsername());
+        theDescriptor.setPassword(aConnection.getPassword());
 
         bindingInfo.setDefaultModel(theDescriptor);
         bindingInfo.addBinding("dialect", view.getDialect(), true);
