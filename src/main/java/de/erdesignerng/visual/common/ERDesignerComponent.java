@@ -264,6 +264,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu lruMenu;
 
+    private DefaultMenu storedConnections;
+
     private Model model;
 
     private DefaultAction newAction;
@@ -500,6 +502,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         lruMenu = new DefaultMenu(lruAction);
 
+        DefaultAction theStoredConnectionsAction = new DefaultAction(this, ERDesignerBundle.STOREDDBCONNECTION);
+        storedConnections = new DefaultMenu(theStoredConnectionsAction);
+
         ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(ERDesignerBundle.FILE);
         if (worldConnector.supportsPreferences()) {
             theFileMenu.add(preferencesAction);
@@ -561,6 +566,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         if (worldConnector.supportsConnectionEditor()) {
             theDBMenu.add(new DefaultMenuItem(dbConnectionAction));
+            theDBMenu.add(storedConnections);
             addSeparator = true;
         }
 
@@ -700,10 +706,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
     }
-    
+
     protected void updateRecentlyUsedMenuEntries() {
 
         lruMenu.removeAll();
+        storedConnections.removeAll();
+
         if (preferences != null) {
 
             List<File> theFiles = preferences.getRecentlyUsedFiles();
@@ -721,25 +729,43 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 lruMenu.add(theItem);
             }
+
+            for (final RecentlyUsedConnection theConnectionInfo : preferences.getRecentlyUsedConnections()) {
+                JMenuItem theItem = new JMenuItem(theConnectionInfo.toString());
+                theItem.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                        commandDBConnection(theConnectionInfo);
+                    }
+
+                });
+
+                UIInitializer.getInstance().initializeFontAndColors(theItem);
+
+                storedConnections.add(theItem);
+            }
         }
-        
     }
-    
+
     protected void addCurrentConnectionToConnectionHistory() {
-        
+
         RecentlyUsedConnection theConnection = model.createConnectionHistoryEntry();
-        addConnectionToConnectionHistory(theConnection); 
+        addConnectionToConnectionHistory(theConnection);
     }
 
     protected void addConnectionToConnectionHistory(RecentlyUsedConnection aConnection) {
-        
+
         preferences.addRecentlyUsedConnection(aConnection);
-        
+
         updateRecentlyUsedMenuEntries();
     }
-
+    
     protected void commandDBConnection() {
-        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(scrollPane, model, preferences);
+        commandDBConnection(model.createConnectionHistoryEntry());
+    }
+
+    protected void commandDBConnection(RecentlyUsedConnection aConnection) {
+        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(scrollPane, model, preferences, aConnection);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
@@ -805,7 +831,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     ERDesignerBundle.MODELSWITHSUBJECTAREASARENOTSUPPORTED));
             return;
         }
-        
+
         if (aLayouter instanceof SizeableLayouter) {
             SizeableLayouter theLayouter = (SizeableLayouter) aLayouter;
 
@@ -876,7 +902,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             preferences.addRecentlyUsedFile(aFile);
 
             addCurrentConnectionToConnectionHistory();
-            
+
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
 
         } catch (Exception e) {
@@ -1137,16 +1163,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             layoutCache.insert(theCell);
         }
-        
+
         for (SubjectArea theSubjectArea : model.getSubjectAreas()) {
 
             SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theSubjectArea);
             List<TableCell> theTableCells = new ArrayList<TableCell>();
-            
+
             for (Table theTable : theSubjectArea.getTables()) {
                 theTableCells.add(theCells.get(theTable));
             }
-            
+
             layoutCache.insertGroup(theSubjectAreaCell, theTableCells.toArray());
             layoutCache.toBack(new Object[] { theSubjectAreaCell });
 
@@ -1246,7 +1272,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 ReverseEngineeringResult theResult = theWorker.get();
                 theDatabaseModel = theResult.getModel();
                 if (theDatabaseModel != null) {
-                    
+
                     addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
                     CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, theDatabaseModel);

@@ -33,7 +33,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-04 17:24:43 $
+ * @version $Date: 2008-05-05 19:07:42 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -48,13 +48,13 @@ public class Model implements OwnedModelItemVerifier {
     private TableList tables = new TableList();
 
     private RelationList relations = new RelationList();
-    
+
     private SubjectAreaList subjectAreas = new SubjectAreaList();
 
     private Dialect dialect;
 
     private ModelProperties properties = new ModelProperties();
-    
+
     private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
 
     /**
@@ -62,14 +62,17 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aTable
      *            the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException is thrown in case of an error
-     * @throws VetoException if there is a veto for doing this
+     * @throws ElementAlreadyExistsException
+     *             is thrown in case of an error
+     * @throws ElementInvalidNameException
+     *             is thrown in case of an error
+     * @throws VetoException
+     *             if there is a veto for doing this
      */
-    public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException , VetoException {
+    public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         modificationTracker.addTable(aTable);
-        
+
         ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
 
         for (Attribute theAttribute : aTable.getAttributes()) {
@@ -85,15 +88,19 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aRelation
      *            the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException is thrown in case of an error
-     * @throws VetoException is thrown in case of an error
+     * @throws ElementAlreadyExistsException
+     *             is thrown in case of an error
+     * @throws ElementInvalidNameException
+     *             is thrown in case of an error
+     * @throws VetoException
+     *             is thrown in case of an error
      */
-    public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException , VetoException {
+    public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException,
+            VetoException {
 
         ModelUtilities.checkNameAndExistance(relations, aRelation, dialect);
 
-        aRelation.setOwner(this);        
+        aRelation.setOwner(this);
         modificationTracker.addRelation(aRelation);
 
         relations.add(aRelation);
@@ -171,39 +178,45 @@ public class Model implements OwnedModelItemVerifier {
     /**
      * Remove a table from the model.
      * 
-     * @param aTable the table
-     * @throws VetoException will be thrown if the modificationtracker has a veto for completing this operation
+     * @param aTable
+     *            the table
+     * @throws VetoException
+     *             will be thrown if the modificationtracker has a veto for
+     *             completing this operation
      */
     public void removeTable(Table aTable) throws VetoException {
-        
+
         modificationTracker.removeTable(aTable);
-        
+
         tables.remove(aTable);
         relations.removeByTable(aTable);
-        
+
         subjectAreas.removeTable(aTable);
     }
 
     /**
      * Remove a relation from the model.
      * 
-     * @param aRelation the relation
-     * @throws VetoException will be thrown if the modificationtracker has a veto for completing this operation
+     * @param aRelation
+     *            the relation
+     * @throws VetoException
+     *             will be thrown if the modificationtracker has a veto for
+     *             completing this operation
      */
     public void removeRelation(Relation aRelation) throws VetoException {
-        
+
         modificationTracker.removeRelation(aRelation);
         relations.remove(aRelation);
     }
 
     public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException {
-        
+
         modificationTracker.removeAttributeFromTable(aTable, aAttribute);
         aTable.getAttributes().removeById(aAttribute.getSystemId());
     }
 
     public void removeIndex(Table aTable, Index aIndex) throws VetoException {
-        
+
         if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
             modificationTracker.removePrimaryKeyFromTable(aTable, aIndex);
         } else {
@@ -212,59 +225,61 @@ public class Model implements OwnedModelItemVerifier {
         aTable.getIndexes().removeById(aIndex.getSystemId());
     }
 
-    public void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
-        
+    public void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException,
+            ElementAlreadyExistsException, ElementInvalidNameException {
+
         modificationTracker.addAttributeToTable(aTable, aAttribute);
         aTable.addAttribute(this, aAttribute);
     }
 
     public void changeAttribute(Attribute aExistantAttribute, Attribute aNewAttribute) throws Exception {
-        
+
         modificationTracker.changeAttribute(aExistantAttribute, aNewAttribute);
-        
+
         aExistantAttribute.restoreFrom(aNewAttribute);
     }
 
-    public void addIndexToTable(Table aTable, Index aIndex) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
-        
+    public void addIndexToTable(Table aTable, Index aIndex) throws VetoException, ElementAlreadyExistsException,
+            ElementInvalidNameException {
+
         if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
             modificationTracker.addPrimaryKeyToTable(aTable, aIndex);
         } else {
             modificationTracker.addIndexToTable(aTable, aIndex);
         }
-        
+
         aTable.addIndex(this, aIndex);
     }
 
     public void changeIndex(Index aExistantIndex, Index aNewIndex) throws Exception {
 
         modificationTracker.changeIndex(aExistantIndex, aNewIndex);
-        
-        aExistantIndex.restoreFrom(aNewIndex);        
+
+        aExistantIndex.restoreFrom(aNewIndex);
     }
 
     public void renameTable(Table aTable, String aNewName) throws VetoException {
-        
+
         modificationTracker.renameTable(aTable, aNewName);
-        
+
         aTable.setName(aNewName);
     }
 
     public void changeTableComment(Table aTable, String aNewComment) throws VetoException {
-        
+
         modificationTracker.changeTableComment(aTable, aNewComment);
-        
+
         aTable.setComment(aNewComment);
     }
 
     public void renameAttribute(Attribute aExistantAttribute, String aNewName) throws VetoException {
         modificationTracker.renameAttribute(aExistantAttribute, aNewName);
-        
+
         aExistantAttribute.setName(aNewName);
     }
 
     public void changeRelation(Relation aRelation, Relation aTempRelation) throws Exception {
-        
+
         modificationTracker.changeRelation(aRelation, aTempRelation);
         aRelation.restoreFrom(aTempRelation);
     }
@@ -277,16 +292,18 @@ public class Model implements OwnedModelItemVerifier {
     }
 
     /**
-     * @param modificationTracker the modificationTracker to set
+     * @param modificationTracker
+     *            the modificationTracker to set
      */
     public void setModificationTracker(ModelModificationTracker modificationTracker) {
         this.modificationTracker = modificationTracker;
     }
-    
+
     /**
      * Add a new subject area.
      * 
-     * @param aArea the area
+     * @param aArea
+     *            the area
      */
     public void addSubjectArea(SubjectArea aArea) {
         subjectAreas.add(aArea);
@@ -294,8 +311,9 @@ public class Model implements OwnedModelItemVerifier {
 
     /**
      * Remove a subject area.
-     *  
-     * @param aArea the area
+     * 
+     * @param aArea
+     *            the area
      */
     public void removeSubjectArea(SubjectArea aArea) {
         subjectAreas.remove(aArea);
@@ -314,6 +332,9 @@ public class Model implements OwnedModelItemVerifier {
      * @return the history entry
      */
     public RecentlyUsedConnection createConnectionHistoryEntry() {
-        return new RecentlyUsedConnection(dialect.getUniqueName(), getProperties().getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER));
+        String theDialectName = dialect != null ? dialect.getUniqueName() : null;
+        return new RecentlyUsedConnection(theDialectName, getProperties().getProperty(PROPERTY_URL), getProperties()
+                .getProperty(PROPERTY_USER), getProperties().getProperty(PROPERTY_DRIVER), getProperties().getProperty(
+                PROPERTY_PASSWORD));
     }
 }

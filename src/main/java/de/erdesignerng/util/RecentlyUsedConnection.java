@@ -21,7 +21,7 @@ package de.erdesignerng.util;
  * An entry for the last used connection history.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-04 17:24:43 $
+ * @version $Date: 2008-05-05 19:07:41 $
  */
 public class RecentlyUsedConnection {
 
@@ -30,11 +30,17 @@ public class RecentlyUsedConnection {
     private String url;
 
     private String username;
+    
+    private String driver;
+    
+    private String password;
 
-    public RecentlyUsedConnection(String aDialect, String aURL, String aUserName) {
+    public RecentlyUsedConnection(String aDialect, String aURL, String aUserName, String aDriver, String aPassword) {
         dialect = aDialect;
         url = aURL;
         username = aUserName;
+        driver = aDriver;
+        password = aPassword;
     }
 
     /**
@@ -58,11 +64,26 @@ public class RecentlyUsedConnection {
         return username;
     }
 
+    /**
+     * @return the driver
+     */
+    public String getDriver() {
+        return driver;
+    }
+    
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
         result = PRIME * result + ((dialect == null) ? 0 : dialect.hashCode());
+        result = PRIME * result + ((driver == null) ? 0 : driver.hashCode());
         result = PRIME * result + ((url == null) ? 0 : url.hashCode());
         result = PRIME * result + ((username == null) ? 0 : username.hashCode());
         return result;
@@ -87,6 +108,13 @@ public class RecentlyUsedConnection {
         } else if (!dialect.equals(other.dialect)) {
             return false;
         }
+        if (driver == null) {
+            if (other.driver != null) {
+                return false;
+            }
+        } else if (!driver.equals(other.driver)) {
+            return false;
+        }
         if (url == null) {
             if (other.url != null) {
                 return false;
@@ -106,6 +134,6 @@ public class RecentlyUsedConnection {
 
     @Override
     public String toString() {
-        return dialect + "/" + username + " " + url;
+        return dialect + "/" + username + " -> " + url;
     }
 }

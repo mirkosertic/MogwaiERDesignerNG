@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-04 17:24:43 $
+ * @version $Date: 2008-05-05 19:07:41 $
  */
 public class ApplicationPreferences {
 
@@ -91,13 +91,15 @@ public class ApplicationPreferences {
 
         }
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < aSize; i++) {
             if (theNames.contains(LRCPREFIX + "DIALECT_" + i)) {
                 String theDialect = preferences.get(LRCPREFIX + "DIALECT_" + i, "");
                 String theURL = preferences.get(LRCPREFIX + "URL_" + i, "");
                 String theUser = preferences.get(LRCPREFIX + "USER_" + i, "");
+                String theDriver = preferences.get(LRCPREFIX + "DRIVER_" + i, "");
+                String thePass = preferences.get(LRCPREFIX + "PASS_" + i, "");
 
-                RecentlyUsedConnection theConnection = new RecentlyUsedConnection(theDialect, theURL, theUser);
+                RecentlyUsedConnection theConnection = new RecentlyUsedConnection(theDialect, theURL, theUser, theDriver, thePass);
                 recentlyUsedConnections.add(theConnection);
             }
         }
@@ -185,6 +187,8 @@ public class ApplicationPreferences {
             preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection.getDialect());
             preferences.put(LRCPREFIX + "URL_" + i, theConnection.getUrl());
             preferences.put(LRCPREFIX + "USER_" + i, theConnection.getUsername());
+            preferences.put(LRCPREFIX + "DRIVER_" + i, theConnection.getDriver());
+            preferences.put(LRCPREFIX + "PASS_" + i, theConnection.getPassword());
         }
 
         for (int i = 0; i < classpathfiles.size(); i++) {
