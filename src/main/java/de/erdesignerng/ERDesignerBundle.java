@@ -225,7 +225,7 @@ public interface ERDesignerBundle {
   String FILESAVED = "FILESAVED";
   /** New model created. */
   String NEWMODELCREATED = "NEWMODELCREATED";
-  /** Please define a database connection prior to usinf this operation!. */
+  /** Please define a database connection prior to using this operation!. */
   String PLEASEDEFINEADATABASECONNECTIONFIRST = "PLEASEDEFINEADATABASECONNECTIONFIRST";
   /** Size. */
   String SIZE = "SIZE";
@@ -249,7 +249,7 @@ public interface ERDesignerBundle {
   String EXCEPTIONWINDOW = "EXCEPTIONWINDOW";
   /** Close. */
   String CLOSE = "CLOSE";
-  /** Current db changes.... */
+  /** Current DB changes.... */
   String GENERATECHANGELOG = "GENERATECHANGELOG";
   /** A table must have contain least one attribute!. */
   String TABLEMUSTHAVEATLEASTONEATTRIBUTE = "TABLEMUSTHAVEATLEASTONEATTRIBUTE";
@@ -257,7 +257,7 @@ public interface ERDesignerBundle {
   String DIALECTISNOTSUPPORTED = "DIALECTISNOTSUPPORTED";
   /** Extra. */
   String EXTRA = "EXTRA";
-  /** Compare to database.... */
+  /** Compare with database.... */
   String COMPLETECOMPARE = "COMPLETECOMPARE";
   /** Model. */
   String MODEL = "MODEL";
