@@ -444,7 +444,7 @@
 		</Entry>
 		<Entry id="PLEASEDEFINEADATABASECONNECTIONFIRST">
 			<Text lang="de">Bitte definieren Sie vorher eine Datenbankverbindung!</Text>		
-			<Text lang="en">Please define a database connection prior to usinf this operation!</Text>					
+			<Text lang="en">Please define a database connection prior to using this operation!</Text>					
 		</Entry>
 		<Entry id="SIZE">
 			<Text lang="de">Grösse</Text>		
@@ -494,7 +494,7 @@
 		</Entry>
 		<Entry id="GENERATECHANGELOG">
 			<Text lang="de">Aktuelle DB Änderungen...</Text>		
-			<Text lang="en">Current db changes...</Text>					
+			<Text lang="en">Current DB changes...</Text>					
 		</Entry>
 		<Entry id="TABLEMUSTHAVEATLEASTONEATTRIBUTE">
 			<Text lang="de">Eine Tabelle muss mindestens ein Attribut heinhalten</Text>		
@@ -510,7 +510,7 @@
 		</Entry>
 		<Entry id="COMPLETECOMPARE">
 			<Text lang="de">Vergleichen mit Datenbank...</Text>		
-			<Text lang="en">Compare to database...</Text>					
+			<Text lang="en">Compare with database...</Text>					
 		</Entry>
 		<Entry id="MODEL">
 			<Text lang="de">Modell</Text>		
