@@ -103,4 +103,5 @@ Releaee 1.4
 * Bug Fixing 1934764 [ERDesignerNG] Table name length limitation for MySQL wrong
 * Bug Fixing 1934765 [ERDesignerNG] DataType DECIMAL UNSIGNED fails in MySQL
 * Fixed some spelling mistakes
+* Implemented FR 1950583 [ERDesignerNG] Save connection parameters
 
