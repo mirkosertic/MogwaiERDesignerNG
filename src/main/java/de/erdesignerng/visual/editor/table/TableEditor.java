@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-05-15 18:16:31 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -502,7 +502,7 @@ public class TableEditor extends BaseEditor {
             }
 
             // Check if the comment was changed and issue the required commands
-            if (!theTable.isCommentChanged(theTempTable.getComment())) {
+            if (theTable.isCommentChanged(theTempTable.getComment())) {
                 model.changeTableComment(theTable, theTempTable.getComment());
             }
 
