@@ -100,6 +100,7 @@ Release 1.3
 * Bug Fixing 1912838 [ERDesignerNG] Dropping a table should drop the constraints
 
 Release 1.4
+
 * Bug Fixing 1934764 [ERDesignerNG] Table name length limitation for MySQL wrong
 * Bug Fixing 1934765 [ERDesignerNG] DataType DECIMAL UNSIGNED fails in MySQL
 * Fixed some spelling mistakes
