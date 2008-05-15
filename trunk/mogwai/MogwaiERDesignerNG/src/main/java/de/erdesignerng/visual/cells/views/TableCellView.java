@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
+import org.apache.commons.lang.StringUtils;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.CellViewRenderer;
@@ -38,6 +39,7 @@ import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.cells.TableCell;
@@ -46,7 +48,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:27:53 $
+ * @version $Date: 2008-05-15 18:16:31 $
  */
 public class TableCellView extends VertexView {
 
@@ -68,6 +70,8 @@ public class TableCellView extends VertexView {
         private boolean roundedRect = false;
 
         private boolean selected;
+
+        private boolean includeComments = false;
 
         private static ImageIcon key = IconFactory.getKeyIcon();
 
@@ -93,6 +97,16 @@ public class TableCellView extends VertexView {
             aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
         }
 
+        protected String getConvertedName(ModelItem aItem) {
+            String theText = aItem.getName();
+            if (includeComments) {
+                if (!StringUtils.isEmpty(aItem.getComment())) {
+                    theText += " (" + aItem.getComment() + ")";
+                }
+            }
+            return theText;
+        }
+
         @Override
         public void paint(Graphics aGraphics) {
 
@@ -104,12 +118,14 @@ public class TableCellView extends VertexView {
 
             aGraphics.setFont(getFont());
             aGraphics.setColor(getBackground());
-            //aGraphics.fillRect(0, 0, theWidth, theHeight);
+            // aGraphics.fillRect(0, 0, theWidth, theHeight);
 
             FontMetrics theMetrics = aGraphics.getFontMetrics();
 
             aGraphics.setColor(Color.black);
-            aGraphics.drawString(table.getName(), 0, theMetrics.getAscent());
+            String theString = getConvertedName(table);
+
+            aGraphics.drawString(theString, 0, theMetrics.getAscent());
 
             int theYOffset = theMetrics.getHeight();
 
@@ -148,20 +164,21 @@ public class TableCellView extends VertexView {
 
                     aGraphics.setColor(Color.red);
 
-                    String theText = theAttribute.getName();
-                    theText += " : ";
+                    theString = getConvertedName(theAttribute);
 
-                    theText += theAttribute.getPhysicalDeclaration();
+                    theString += " : ";
+
+                    theString += theAttribute.getPhysicalDeclaration();
 
                     if (theAttribute.getExtra() != null) {
-                        theText += " ";
-                        theText += theAttribute.getExtra();
+                        theString += " ";
+                        theString += theAttribute.getExtra();
                     }
                     if (theAttribute.isForeignKey()) {
-                        theText += " (FK)";
+                        theString += " (FK)";
                     }
 
-                    aGraphics.drawString(theText, theTextXOffset, theYOffset + theMetrics.getAscent());
+                    aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
                     key.paintIcon(this, aGraphics, 5, theYOffset + 4);
                     theYOffset += theMetrics.getHeight();
                 }
@@ -184,22 +201,23 @@ public class TableCellView extends VertexView {
 
                     boolean isFK = theAttribute.isForeignKey();
 
-                    String theText = theAttribute.getName();
-                    theText += " : ";
+                    theString = getConvertedName(theAttribute);
 
-                    theText += theAttribute.getPhysicalDeclaration();
+                    theString += " : ";
+
+                    theString += theAttribute.getPhysicalDeclaration();
 
                     if (theAttribute.getExtra() != null) {
-                        theText += " ";
-                        theText += theAttribute.getExtra();
+                        theString += " ";
+                        theString += theAttribute.getExtra();
                     }
                     if (isFK) {
-                        theText += " (FK)";
+                        theString += " (FK)";
                     }
 
                     aGraphics.setColor(isFK ? Color.red : Color.black);
 
-                    aGraphics.drawString(theText, theTextXOffset, theYOffset + theMetrics.getAscent());
+                    aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
                     theYOffset += theMetrics.getHeight();
                 }
             }
@@ -219,7 +237,9 @@ public class TableCellView extends VertexView {
             int theYOffset = theMetrics.getHeight();
             int theXTextOffset = 30;
 
-            int theLength = theMetrics.stringWidth(table.getName());
+            String theString = getConvertedName(table);
+
+            int theLength = theMetrics.stringWidth(theString);
             if (theLength > theMaxX) {
                 theMaxX = theLength + 5;
             }
@@ -238,7 +258,7 @@ public class TableCellView extends VertexView {
 
                     theAllAttributes.remove(theAttribute);
 
-                    String theText = theAttribute.getName();
+                    String theText = getConvertedName(theAttribute);
                     theText += " : ";
 
                     theText += theAttribute.getPhysicalDeclaration();
@@ -251,7 +271,6 @@ public class TableCellView extends VertexView {
                     if (theAttribute.isForeignKey()) {
                         theText += " (FK)";
                     }
-                    
 
                     theLength = theMetrics.stringWidth(theText);
                     if (theLength + theXTextOffset > theMaxX) {
@@ -264,7 +283,7 @@ public class TableCellView extends VertexView {
 
             for (Attribute theAttribute : theAllAttributes) {
 
-                String theText = theAttribute.getName();
+                String theText = getConvertedName(theAttribute);
                 theText += " : ";
 
                 theText += theAttribute.getPhysicalDeclaration();
@@ -273,7 +292,7 @@ public class TableCellView extends VertexView {
                     theText += " ";
                     theText += theAttribute.getExtra();
                 }
-                
+
                 if (theAttribute.isForeignKey()) {
                     theText += " (FK)";
                 }

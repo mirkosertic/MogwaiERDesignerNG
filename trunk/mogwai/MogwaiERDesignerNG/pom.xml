@@ -49,8 +49,8 @@
             </goals>
             <configuration>
               <tasks>
-                <taskdef name="XMLResourceBundle" classname="de.mogwai.common.i18n.XMLResourceBundleTask"></taskdef>
-                <XMLResourceBundle dest="src/main/resources" src="src/main/java" defaultLanguage="en">
+                <taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"></taskdef>
+                <XMLResourceBundle dest="src/main/resources" defaultLanguage="en" src="src/main/java">
                   <fileset dir="src/main/resources">
                     <include name="*.xml" />
                   </fileset>
@@ -181,6 +181,11 @@
       <groupId>jung</groupId>
       <artifactId>jung</artifactId>
       <version>1.7.6</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.3</version>
     </dependency>
   </dependencies>
 </project>
