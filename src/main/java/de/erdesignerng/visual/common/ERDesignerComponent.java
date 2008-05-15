@@ -299,7 +299,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction generateSQL;
 
     private DefaultAction generateChangelog;
-
+    
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
     public ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
@@ -580,6 +580,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(generateChangelog));
         theDBMenu.addSeparator();
+        
         theDBMenu.add(new DefaultMenuItem(completeCompareAction));
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
@@ -741,7 +742,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 });
 
                 UIInitializer.getInstance().initializeFontAndColors(theItem);
-
                 storedConnections.add(theItem);
             }
         }
