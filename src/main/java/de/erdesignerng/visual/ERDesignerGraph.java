@@ -41,11 +41,13 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-14 18:10:35 $
+ * @version $Date: 2008-05-16 18:35:40 $
  */
 public class ERDesignerGraph extends JGraph {
 
     private Model model;
+    
+    private boolean displayComments;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
@@ -138,5 +140,19 @@ public class ERDesignerGraph extends JGraph {
 
         model.addSubjectArea(theArea);
         getGraphLayoutCache().toBack(new Object[] { theSubjectAreaCell });
+    }
+
+    /**
+     * @return the displayComments
+     */
+    public boolean isDisplayComments() {
+        return displayComments;
+    }
+
+    /**
+     * @param displayComments the displayComments to set
+     */
+    public void setDisplayComments(boolean displayComments) {
+        this.displayComments = displayComments;
     }
 }
