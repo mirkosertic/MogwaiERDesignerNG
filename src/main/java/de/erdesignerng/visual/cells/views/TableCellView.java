@@ -41,6 +41,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
@@ -48,7 +49,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-15 18:16:31 $
+ * @version $Date: 2008-05-16 18:35:41 $
  */
 public class TableCellView extends VertexView {
 
@@ -326,6 +327,9 @@ public class TableCellView extends VertexView {
             TableCellView theView = (TableCellView) aView;
             table = (Table) ((TableCell) theView.getCell()).getUserObject();
             selected = aSelected;
+            
+            ERDesignerGraph theGraph = (ERDesignerGraph)aGraph;
+            includeComments = theGraph.isDisplayComments();
 
             return this;
         }
