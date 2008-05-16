@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <Resource>
 	<Bundle interface="de.erdesignerng.ERDesignerBundle">
 		<Entry id="TITLE">
@@ -575,6 +575,10 @@
 		<Entry id="MODELSWITHSUBJECTAREASARENOTSUPPORTED">
 			<Text lang="de">Modelle mit Subject Areas werden von dieser Funktion nicht unterstützt.</Text>		
 			<Text lang="en">Models with subject areas are not supported by this operation</Text>					
+		</Entry>
+		<Entry id="DISPLAYCOMMENTS">
+			<Text lang="de">Kommentare anzeigen</Text>		
+			<Text lang="en">Display comments</Text>					
 		</Entry>		
 	</Bundle>
 </Resource>

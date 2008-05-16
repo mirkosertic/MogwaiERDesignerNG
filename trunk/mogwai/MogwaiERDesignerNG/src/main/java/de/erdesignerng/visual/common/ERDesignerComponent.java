@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.common;
 
+import java.awt.CheckboxMenuItem;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +39,7 @@ import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -105,6 +107,7 @@ import de.erdesignerng.visual.tools.HandTool;
 import de.erdesignerng.visual.tools.RelationTool;
 import de.erdesignerng.visual.tools.ToolEnum;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.components.DefaultToggleButton;
@@ -299,6 +302,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction generateSQL;
 
     private DefaultAction generateChangelog;
+    
+    private DefaultAction displayCommentsAction;
     
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
@@ -595,6 +600,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         theViewMenu.add(theLayoutMenu);
         theViewMenu.addSeparator();
+        
+        displayCommentsAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e.getSource();
+                commandSetDisplayCommentsState(theItem.isSelected());
+            }
+
+        }, this, ERDesignerBundle.DISPLAYCOMMENTS);
+
+        theViewMenu.add(new DefaultCheckboxMenuItem(displayCommentsAction));
+        theViewMenu.addSeparator();
+        
         theViewMenu.add(new DefaultMenuItem(zoomInAction));
         theViewMenu.add(new DefaultMenuItem(zoomOutAction));
 
@@ -1290,5 +1308,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 worldConnector.notifyAboutException(e);
             }
         }
+    }
+    
+    /**
+     * Toggle the include comments view state.
+     */
+    protected void commandSetDisplayCommentsState(boolean aState) {
+        graph.setDisplayComments(aState);
+        graph.repaint();
     }
 }

@@ -291,4 +291,6 @@ public interface ERDesignerBundle {
   String COLOR = "COLOR";
   /** Models with subject areas are not supported by this operation. */
   String MODELSWITHSUBJECTAREASARENOTSUPPORTED = "MODELSWITHSUBJECTAREASARENOTSUPPORTED";
+  /** Display comments. */
+  String DISPLAYCOMMENTS = "DISPLAYCOMMENTS";
 }

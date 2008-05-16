@@ -106,4 +106,5 @@ Release 1.4
 * Fixed some spelling mistakes
 * Implemented FR 1950583 [ERDesignerNG] Save connection parameters
 * Bug Fixing 1958824 [ERDesignerNG] [ERDesignerNG] entity comment not saved
+* Implemented FR 1938750 [ERDesignerNG] Show comments in editing area
 
