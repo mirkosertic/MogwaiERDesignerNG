@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-05-21 17:57:14 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -37,7 +37,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     private boolean nullable = true;
 
     private String defaultValue;
-    
+
     private String extra;
 
     /**
@@ -72,7 +72,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
-    
+
     public DataType getDatatype() {
         return datatype;
     }
@@ -151,16 +151,22 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
             return true;
         }
 
-        if (size != aAttribute.getSize()) {
-            return true;
+        if (datatype.supportsSize()) {
+            if (size != aAttribute.getSize()) {
+                return true;
+            }
         }
 
-        if (fraction != aAttribute.getFraction()) {
-            return true;
+        if (datatype.supportsFraction()) {
+            if (fraction != aAttribute.getFraction()) {
+                return true;
+            }
         }
 
-        if (scale != aAttribute.getScale()) {
-            return true;
+        if (datatype.supportsScale()) {
+            if (scale != aAttribute.getScale()) {
+                return true;
+            }
         }
 
         if (isStringModified(defaultValue, aAttribute.getDefaultValue())) {
@@ -178,10 +184,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         if (!nullable == aAttribute.isNullable()) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * @return the extra
      */
@@ -190,7 +196,8 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     /**
-     * @param extra the extra to set
+     * @param extra
+     *                the extra to set
      */
     public void setExtra(String extra) {
         this.extra = extra;
