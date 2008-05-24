@@ -21,9 +21,11 @@ package de.erdesignerng.util;
  * An entry for the last used connection history.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-05 19:07:41 $
+ * @version $Date: 2008-05-24 16:53:51 $
  */
 public class RecentlyUsedConnection {
+    
+    private static final int PRIME = 31;
 
     private String dialect;
 
@@ -80,7 +82,6 @@ public class RecentlyUsedConnection {
 
     @Override
     public int hashCode() {
-        final int PRIME = 31;
         int result = 1;
         result = PRIME * result + ((dialect == null) ? 0 : dialect.hashCode());
         result = PRIME * result + ((driver == null) ? 0 : driver.hashCode());
