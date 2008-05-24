@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
@@ -41,7 +42,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-16 18:35:40 $
+ * @version $Date: 2008-05-24 17:00:46 $
  */
 public class ERDesignerGraph extends JGraph {
 
@@ -73,7 +74,7 @@ public class ERDesignerGraph extends JGraph {
 
         GraphModel theModel = getModel();
 
-        List theObjectsToRemove = new ArrayList();
+        List<DefaultGraphCell> theObjectsToRemove = new ArrayList<DefaultGraphCell>();
 
         for (Object theSingleCell : aCells) {
 
