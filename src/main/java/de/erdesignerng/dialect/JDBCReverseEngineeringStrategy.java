@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
@@ -36,9 +38,9 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-14 18:05:39 $
+ * @version $Date: 2008-05-24 12:39:55 $
  * @param <T>
- *            the dialect
+ *                the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
 
@@ -54,19 +56,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse enginner an existing table.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aOptions
-     *            the options
+     *                the options
      * @param aNotifier
-     *            the notifier
+     *                the notifier
      * @param aTableEntry
-     *            the table name
+     *                the table name
      * @param aConnection
-     *            the connection
+     *                the connection
      * @throws SQLException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ReverseEngineeringException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
@@ -170,21 +172,32 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         theTablesResultSet.close();
     }
 
-    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
-            Table aTable) throws SQLException, ReverseEngineeringException {
+    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry
+            aTableEntry, DatabaseMetaData aMetaData,
+            Table aTable) throws SQLException, ReverseEngineeringException
+            {
 
-        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry
-                .getSchemaName(), aTableEntry.getTableName());
+        ResultSet thePrimaryKeyResultSet =
+            aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry
+                    .getSchemaName(), aTableEntry.getTableName());
         Index thePrimaryKeyIndex = null;
         while (thePrimaryKeyResultSet.next()) {
 
-            String thePKName = thePrimaryKeyResultSet.getString("PK_NAME");
-            String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
+            String thePKName =
+                thePrimaryKeyResultSet.getString("PK_NAME");
+            String theColumnName =
+                thePrimaryKeyResultSet.getString("COLUMN_NAME");
 
             if (thePrimaryKeyIndex == null) {
                 thePrimaryKeyIndex = new Index();
                 thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
-                thePrimaryKeyIndex.setName(convertIndexNameFor(aTable, thePKName));
+                thePrimaryKeyIndex.setName(convertIndexNameFor(aTable,
+                        thePKName));
+                if (StringUtils.isEmpty(thePrimaryKeyIndex.getName())) {
+                    // Assume the default name is TABLE_NAME+"_FK"
+                    thePrimaryKeyIndex.setName(aTableEntry.getTableName() +
+                    "_FK");
+                }
 
                 try {
                     aTable.addIndex(aModel, thePrimaryKeyIndex);
@@ -193,7 +206,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 }
             }
 
-            Attribute theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName));
+            Attribute theIndexAttribute =
+                aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName)
+                );
             if (theIndexAttribute == null) {
                 throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
                         + aTable.getName());
@@ -204,7 +219,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         }
         thePrimaryKeyResultSet.close();
     }
-
+    
     protected String convertIndexNameFor(Table aTable, String aIndexName) {
         return aIndexName;
     }
@@ -271,19 +286,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse engineer relations.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aOptions
-     *            the options
+     *                the options
      * @param aNotifier
-     *            the notifier
+     *                the notifier
      * @param aEntry
-     *            the schema entry
+     *                the schema entry
      * @param aConnection
-     *            the connection
+     *                the connection
      * @throws SQLException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ReverseEngineeringException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, Connection aConnection) throws SQLException,
@@ -388,9 +403,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Check if the table is a valid table for reverse engineering.
      * 
      * @param aTableName
-     *            the table name
+     *                the table name
      * @param aTableType
-     *            the table type
+     *                the table type
      * @return true if the table is valid, else false
      */
     protected boolean isValidTable(String aTableName, String aTableType) {
