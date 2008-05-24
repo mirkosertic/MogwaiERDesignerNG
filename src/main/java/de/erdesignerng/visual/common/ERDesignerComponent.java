@@ -1310,6 +1310,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     
     /**
      * Toggle the include comments view state.
+     * 
+     * @param aState true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);

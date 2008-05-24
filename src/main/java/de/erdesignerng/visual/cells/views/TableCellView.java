@@ -49,7 +49,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-16 18:35:41 $
+ * @version $Date: 2008-05-24 16:53:51 $
  */
 public class TableCellView extends VertexView {
 
@@ -327,8 +327,8 @@ public class TableCellView extends VertexView {
             TableCellView theView = (TableCellView) aView;
             table = (Table) ((TableCell) theView.getCell()).getUserObject();
             selected = aSelected;
-            
-            ERDesignerGraph theGraph = (ERDesignerGraph)aGraph;
+
+            ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
             includeComments = theGraph.isDisplayComments();
 
             return this;
