@@ -106,6 +106,7 @@ Release 1.4
 * Bug Fixing 1958824 [ERDesignerNG] entity comment not saved
 * Bug Fixing 1968870 [ERDesignerNG] Complete compare fails on attributes
 * Bug Fixing 1969689 [ERDesignerNG] Reverse engineer pk fails on DB2
+* Bug Fixing 1970375 [ERDesignerNG] Reverse engineer fk fails on DB2
 * Fixed some spelling mistakes
 * Implemented FR 1950583 [ERDesignerNG] Save connection parameters
 * Implemented FR 1938750 [ERDesignerNG] Show comments in editing area

@@ -38,7 +38,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-24 12:39:55 $
+ * @version $Date: 2008-05-24 12:43:00 $
  * @param <T>
  *                the dialect
  */
@@ -172,31 +172,24 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         theTablesResultSet.close();
     }
 
-    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry
-            aTableEntry, DatabaseMetaData aMetaData,
-            Table aTable) throws SQLException, ReverseEngineeringException
-            {
+    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
+            Table aTable) throws SQLException, ReverseEngineeringException {
 
-        ResultSet thePrimaryKeyResultSet =
-            aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry
-                    .getSchemaName(), aTableEntry.getTableName());
+        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry
+                .getSchemaName(), aTableEntry.getTableName());
         Index thePrimaryKeyIndex = null;
         while (thePrimaryKeyResultSet.next()) {
 
-            String thePKName =
-                thePrimaryKeyResultSet.getString("PK_NAME");
-            String theColumnName =
-                thePrimaryKeyResultSet.getString("COLUMN_NAME");
+            String thePKName = thePrimaryKeyResultSet.getString("PK_NAME");
+            String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
 
             if (thePrimaryKeyIndex == null) {
                 thePrimaryKeyIndex = new Index();
                 thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
-                thePrimaryKeyIndex.setName(convertIndexNameFor(aTable,
-                        thePKName));
+                thePrimaryKeyIndex.setName(convertIndexNameFor(aTable, thePKName));
                 if (StringUtils.isEmpty(thePrimaryKeyIndex.getName())) {
                     // Assume the default name is TABLE_NAME+"_FK"
-                    thePrimaryKeyIndex.setName(aTableEntry.getTableName() +
-                    "_FK");
+                    thePrimaryKeyIndex.setName(aTableEntry.getTableName() + "_FK");
                 }
 
                 try {
@@ -206,9 +199,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 }
             }
 
-            Attribute theIndexAttribute =
-                aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName)
-                );
+            Attribute theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName));
             if (theIndexAttribute == null) {
                 throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table "
                         + aTable.getName());
@@ -219,7 +210,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         }
         thePrimaryKeyResultSet.close();
     }
-    
+
     protected String convertIndexNameFor(Table aTable, String aIndexName) {
         return aIndexName;
     }
@@ -313,16 +304,23 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             theCatalogName = aEntry.getCatalogName();
         }
 
+        int theSysCounter = 0;
+
         for (Table theTable : aModel.getTables()) {
 
             aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theTable.getName());
+
+            String theOldFKName = null;
 
             // Foreign keys
             Relation theRelation = null;
             ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, theTable.getName());
             while (theForeignKeys.next()) {
                 String theFKName = theForeignKeys.getString("FK_NAME");
-                if ((theRelation == null) || (!theFKName.equals(theRelation.getName()))) {
+
+                if ((theRelation == null) || (!theFKName.equals(theOldFKName))) {
+
+                    theOldFKName = theFKName;
 
                     String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
                     String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
@@ -335,7 +333,20 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                         // if the exporting table is also part of the model
                         String theRelationName = dialect.getCastType().cast(theFKName);
                         theRelation = aModel.getRelations().findByName(theRelationName);
+
+                        boolean addNew = false;
                         if (theRelation == null) {
+                            addNew = true;
+                        } else {
+                            if (!theRelation.getExportingTable().equals(theExportingTable)
+                                    || !theRelation.getImportingTable().equals(theTable)) {
+                                theRelationName = "ERRELSYS_" + theSysCounter++;
+                                addNew = true;
+                            }
+                        }
+
+                        if (addNew) {
+
                             theRelation = new Relation();
                             theRelation.setName(theRelationName);
 
