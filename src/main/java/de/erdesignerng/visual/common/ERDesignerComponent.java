@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.CheckboxMenuItem;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +38,6 @@ import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -1315,6 +1313,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
+        for (CellView theView : layoutCache.getCellViews()) {
+            graph.updateAutoSize(theView);
+        }
+        graph.invalidate();
         graph.repaint();
     }
 }
