@@ -25,7 +25,7 @@ import de.erdesignerng.model.Index;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-28 21:39:40 $
+ * @version $Date: 2008-05-24 17:00:47 $
  */
 public class AttributeTableModel implements TableModel {
 
@@ -45,7 +45,7 @@ public class AttributeTableModel implements TableModel {
         assignedTableName = aSecondaryEntityName;
     }
 
-    public Class getColumnClass(int aColumn) {
+    public Class<Object> getColumnClass(int aColumn) {
         return Object.class;
     }
 
