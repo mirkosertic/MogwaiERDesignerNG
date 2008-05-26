@@ -303,6 +303,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     
     private DefaultAction displayCommentsAction;
     
+    private DefaultCheckboxMenuItem displayCommentsMenuItem;
+
+    private DefaultAction displayGridAction;
+    
+    private DefaultCheckboxMenuItem displayGridMenuItem;
+
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
     public ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
@@ -608,7 +614,21 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYCOMMENTS);
 
-        theViewMenu.add(new DefaultCheckboxMenuItem(displayCommentsAction));
+        displayCommentsMenuItem = new DefaultCheckboxMenuItem(displayCommentsAction); 
+        theViewMenu.add(displayCommentsMenuItem);
+        
+        displayGridAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e.getSource();
+                commandSetDisplayGridState(theItem.isSelected());
+            }
+
+        }, this, ERDesignerBundle.DISPLAYGRID);
+
+        displayGridMenuItem = new DefaultCheckboxMenuItem(displayGridAction); 
+        theViewMenu.add(displayGridMenuItem);
+        
         theViewMenu.addSeparator();
         
         theViewMenu.add(new DefaultMenuItem(zoomInAction));
@@ -1154,7 +1174,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         };
         graph.setUI(new ERDesignerGraphUI(this));
-
+        
+        commandSetDisplayGridState(displayGridMenuItem.isSelected());
+        commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
+        commandSetGridSize(preferences.getGridSize());
+        
         scrollPane.getViewport().removeAll();
         scrollPane.getViewport().add(graph);
 
@@ -1320,5 +1344,27 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
         graph.invalidate();
         graph.repaint();
+    }
+    
+    /**
+     * Toggle the include comments view state.
+     * 
+     * @param aState true if comments shall be displayed, else false
+     */
+    protected void commandSetDisplayGridState(boolean aState) {
+        graph.setGridEnabled(aState);
+        graph.setGridVisible(aState);
+        
+        graph.invalidate();
+        graph.repaint();
+    }  
+    
+    /**
+     * Set the size of the display grid.
+     * 
+     * @param aSize the size
+     */
+    public void commandSetGridSize(int aSize) {
+        graph.setGridSize(aSize);
     }
 }

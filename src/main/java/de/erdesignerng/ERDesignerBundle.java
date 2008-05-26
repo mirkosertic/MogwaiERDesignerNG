@@ -293,4 +293,6 @@ public interface ERDesignerBundle {
   String MODELSWITHSUBJECTAREASARENOTSUPPORTED = "MODELSWITHSUBJECTAREASARENOTSUPPORTED";
   /** Display comments. */
   String DISPLAYCOMMENTS = "DISPLAYCOMMENTS";
+  /** Display grid. */
+  String DISPLAYGRID = "DISPLAYGRID";
 }
