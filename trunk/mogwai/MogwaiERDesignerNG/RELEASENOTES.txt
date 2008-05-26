@@ -110,3 +110,4 @@ Release 1.4
 * Fixed some spelling mistakes
 * Implemented FR 1950583 [ERDesignerNG] Save connection parameters
 * Implemented FR 1938750 [ERDesignerNG] Show comments in editing area
+* Implemented FR 1973045 [ERDesignerNG] Add grid view to editor

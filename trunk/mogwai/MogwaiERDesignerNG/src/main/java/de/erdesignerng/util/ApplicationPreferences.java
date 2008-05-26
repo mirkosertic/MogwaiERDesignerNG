@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-05 19:07:41 $
+ * @version $Date: 2008-05-26 19:11:35 $
  */
 public class ApplicationPreferences {
 
@@ -44,6 +44,8 @@ public class ApplicationPreferences {
     private static final String CLASSPATHPREFIX = "classpath_";
 
     private static final String LRCPREFIX = "lrc_";
+    
+    private static final String GRIDSIZE = "gridsize";
 
     private int size;
 
@@ -56,6 +58,8 @@ public class ApplicationPreferences {
     private Preferences preferences;
 
     private String dotPath;
+    
+    private int gridSize;
 
     private static ApplicationPreferences me;
 
@@ -105,6 +109,7 @@ public class ApplicationPreferences {
         }
 
         size = aSize;
+        gridSize = preferences.getInt(GRIDSIZE, 10);
 
         dotPath = preferences.get(DOT_PATH, "");
 
@@ -159,6 +164,20 @@ public class ApplicationPreferences {
     public List<File> getClasspathFiles() {
         return classpathfiles;
     }
+    
+    /**
+     * @return the gridSize
+     */
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    /**
+     * @param gridSize the gridSize to set
+     */
+    public void setGridSize(int gridSize) {
+        this.gridSize = gridSize;
+    }
 
     /**
      * Save the preferences.
@@ -196,6 +215,7 @@ public class ApplicationPreferences {
         }
 
         preferences.put(DOT_PATH, dotPath);
+        preferences.putInt(GRIDSIZE, gridSize);
 
         preferences.flush();
     }
