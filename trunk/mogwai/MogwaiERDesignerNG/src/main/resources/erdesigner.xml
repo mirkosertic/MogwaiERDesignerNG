@@ -583,6 +583,10 @@
 		<Entry id="DISPLAYGRID">
 			<Text lang="de">Gitter anzeigen</Text>		
 			<Text lang="en">Display grid</Text>					
+		</Entry>
+		<Entry id="EDITORGRIDSIZE">
+			<Text lang="de">Gittergrösse im Editor (Pixel)</Text>		
+			<Text lang="en">Editor grid size (px)</Text>					
 		</Entry>		
 	</Bundle>
 </Resource>

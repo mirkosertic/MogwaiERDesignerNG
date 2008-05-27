@@ -44,7 +44,7 @@ public class PreferencesEditorView extends JPanel {
 
         preferences = new PreferencesPanel();
 
-        preferences.getDotPath().setText(ap.getDotPath());
+        preferences.initValues(ap);
 
         String theColDef = "2dlu,fill:250dlu:grow,2dlu";
         String theRowDef = "2dlu,p,10dlu,p,2dlu";

@@ -27,10 +27,13 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.util.ApplicationPreferences;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultSpinner;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.i18n.ResourceHelper;
@@ -43,6 +46,10 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
     private DefaultTextField dotPath = new DefaultTextField();
 
     private DefaultAction okAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ADDFOLDER);
+    
+    private DefaultSpinner gridSize = new DefaultSpinner();
+    
+    private BindingInfo<ApplicationPreferences> bindinginfo;
 
     public PreferencesPanel() {
         initialize();
@@ -51,7 +58,7 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
     private void initialize() {
 
         String theColDef = "2dlu,p,2dlu,p:grow,2dlu,20dlu,2";
-        String theRowDef = "2dlu,p,50dlu";
+        String theRowDef = "2dlu,p,2dlu,p,50dlu";
 
         searchDotButton.setAction(okAction);
         okAction.addActionListener(new ActionListener() {
@@ -70,7 +77,44 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         add(dotPath, cons.xy(4, 2));
         add(searchDotButton, cons.xy(6, 2));
 
+        add(new DefaultLabel(ERDesignerBundle.EDITORGRIDSIZE), cons.xy(2, 4));
+        add(gridSize, cons.xywh(4, 4 , 3, 1));
+
         UIInitializer.getInstance().initialize(this);
+        
+        bindinginfo = new BindingInfo<ApplicationPreferences>();
+        bindinginfo.addBinding("dotPath", dotPath);
+        bindinginfo.addBinding("gridSize", gridSize, true);        
+        
+        bindinginfo.configure();
+    }
+    
+    /**
+     * Initialize the view with values from the preferences.
+     * 
+     * @param aPreferences the preferences
+     */
+    public void initValues(ApplicationPreferences aPreferences) {
+        bindinginfo.setDefaultModel(aPreferences);
+        bindinginfo.model2view();
+    }
+    
+    /**
+     * Apply the current view values to the preferences after validation.
+     * if validation fails, no changes are made.
+     *  
+     * @param aPreferences the preferences
+     * @return true if validation is ok, else false
+     */
+    public boolean applyValues(ApplicationPreferences aPreferences) {
+        
+        bindinginfo.setDefaultModel(aPreferences);
+        
+        if (bindinginfo.validate().size() == 0) {
+            bindinginfo.view2model();
+            return true;
+        }
+        return false;
     }
 
     public ResourceHelper getResourceHelper() {
@@ -89,20 +133,5 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
             
             dotPath.setText(theFile.toString());
         }        
-    }
-
-    /**
-     * @return the dotPath
-     */
-    public DefaultTextField getDotPath() {
-        return dotPath;
-    }
-
-    /**
-     * @param dotPath
-     *            the dotPath to set
-     */
-    public void setDotPath(DefaultTextField dotPath) {
-        this.dotPath = dotPath;
     }
 }

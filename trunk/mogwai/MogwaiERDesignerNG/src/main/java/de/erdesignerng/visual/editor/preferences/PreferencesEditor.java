@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:23 $
+ * @version $Date: 2008-05-27 18:10:59 $
  */
 public class PreferencesEditor extends BaseEditor {
 
@@ -79,11 +79,12 @@ public class PreferencesEditor extends BaseEditor {
 
     @Override
     public void applyValues() throws Exception {
-        preferences.setDotPath(view.getPreferences().getDotPath().getText());
     }
 
     private void commandClose() {
 
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
+        if (view.getPreferences().applyValues(preferences)) {
+            setModalResult(DialogConstants.MODAL_RESULT_OK);
+        }
     }
 }

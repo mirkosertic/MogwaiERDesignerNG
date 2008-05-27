@@ -26,6 +26,12 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.preferences.PreferencesPanel;
 import de.mogwai.common.i18n.ResourceHelper;
 
+/**
+ * The preferences dialog for Squirrel.
+ * 
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-05-27 18:10:59 $
+ */
 public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
     private PreferencesPanel panel;
@@ -38,14 +44,16 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
     }
     
     public void initialize(IApplication aApplication) {
-        panel.getDotPath().setText(preferences.getDotPath());
+        panel.initValues(preferences);
     }
 
     public void uninitialize(IApplication aApplication) {
     }
 
     public void applyChanges() {
-        preferences.setDotPath(panel.getDotPath().getText());
+        if (!panel.applyValues(preferences)) {
+            //TODO [rarf] How to prevent it from closing if validation fails?
+        }
     }
 
     public String getHint() {
