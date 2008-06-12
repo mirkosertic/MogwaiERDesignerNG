@@ -27,7 +27,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-05 19:07:41 $
+ * @version $Date: 2008-06-12 20:14:37 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -119,6 +119,9 @@ public class DatabaseConnectionEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
 

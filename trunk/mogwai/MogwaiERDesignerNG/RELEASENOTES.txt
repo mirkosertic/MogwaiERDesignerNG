@@ -111,3 +111,7 @@ Release 1.4
 * Implemented FR 1950583 [ERDesignerNG] Save connection parameters
 * Implemented FR 1938750 [ERDesignerNG] Show comments in editing area
 * Implemented FR 1973045 [ERDesignerNG] Add grid view to editor
+
+Release 1.5
+
+* Working on comments in editor

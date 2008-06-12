@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 18:20:28 $
+ * @version $Date: 2008-06-12 20:14:46 $
  */
 public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 
@@ -39,7 +39,27 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
         
         for (SubjectArea theArea : this) {
             theArea.getTables().remove(aTable);
-            if (theArea.getTables().size() == 0) {
+            if (theArea.isEmpty()) {
+                theRemovedAreas.add(theArea);
+            }
+        }
+        
+        removeAll(theRemovedAreas);
+    }
+
+    /**
+     * Remove a comment from all subject areas.
+     * 
+     * If a subject area is emopty, if will be removed completly
+     * 
+     * @param aComment the comment
+     */
+    public void removeComment(Comment aComment) {
+        List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
+        
+        for (SubjectArea theArea : this) {
+            theArea.getComments().remove(aComment);
+            if (theArea.isEmpty()) {
                 theRemovedAreas.add(theArea);
             }
         }

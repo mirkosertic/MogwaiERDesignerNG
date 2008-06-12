@@ -30,7 +30,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 18:20:26 $
+ * @version $Date: 2008-06-12 20:15:05 $
  */
 public class SubjectAreaEditor extends BaseEditor {
 
@@ -102,6 +102,9 @@ public class SubjectAreaEditor extends BaseEditor {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
         bindingInfo.view2model();

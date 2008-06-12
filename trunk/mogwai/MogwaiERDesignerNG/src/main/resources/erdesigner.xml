@@ -587,6 +587,17 @@
 		<Entry id="EDITORGRIDSIZE">
 			<Text lang="de">Gittergrösse im Editor (Pixel)</Text>		
 			<Text lang="en">Editor grid size (px)</Text>					
+		</Entry>
+		<Entry id="COMMENTEDITOR">
+			<Text lang="de">Kommentar bearbeiten</Text>		
+			<Text lang="en">Edit comment</Text>					
 		</Entry>		
+		<Entry id="COMMENTPROPERTIES">
+			<Text lang="de">Eigenschaften des Kommentares</Text>		
+			<Text lang="en">Comment properties</Text>					
+		</Entry>		
+		<Entry id="COMMENT">
+			<Icon>/de/erdesignerng/icons/comment_add.gif</Icon>
+		</Entry>
 	</Bundle>
 </Resource>

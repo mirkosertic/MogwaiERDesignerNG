@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:53:49 $
+ * @version $Date: 2008-06-12 20:15:28 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -59,26 +59,41 @@ public class PostgresDialect extends SQL92Dialect {
         seal();        
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgresReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new PostgresReverseEngineeringStrategy(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUniqueName() {
         return "PostgresDialect";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverClassName() {
         return "org.postgresql.Driver";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:postgresql://<host>:<port>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgresSQLGenerator createSQLGenerator() {
         return new PostgresSQLGenerator(this);

@@ -24,11 +24,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2008-06-12 20:15:32 $
+ */
 public class ModelSerializer extends Serializer {
     
     public static final ModelSerializer SERIALIZER = new ModelSerializer();
@@ -50,6 +55,8 @@ public class ModelSerializer extends Serializer {
     protected static final String RELATIONS = "Relations";
     
     protected static final String SUBJECTAREAS = "Subjectareas";
+    
+    protected static final String COMMENTS = "Comments";
 
     public void serialize(Model aModel, Document aDocument) {
         
@@ -85,9 +92,13 @@ public class ModelSerializer extends Serializer {
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
             SubjectAreaSerializer.SERIALIZER.serialize(theSubjectArea, aDocument, theSubjectAreasElement);
         }
-
+        
+        Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
+        for (Comment theComment : aModel.getComments()) {
+            CommentSerializer.SERIALIZER.serialize(theComment, aDocument, theCommentsElement);
+        }
     }
-
+    
     public Model deserializeFrom(Document aDocument) {
         Model theModel = new Model();
         
@@ -112,6 +123,7 @@ public class ModelSerializer extends Serializer {
         
         TableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         RelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        CommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         SubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         
         return theModel;

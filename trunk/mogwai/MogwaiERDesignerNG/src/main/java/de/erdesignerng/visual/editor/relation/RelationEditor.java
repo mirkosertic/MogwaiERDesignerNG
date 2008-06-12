@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-06-12 20:15:40 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -119,6 +119,9 @@ public class RelationEditor extends BaseEditor {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
         Relation theRelation = bindingInfo.getDefaultModel();

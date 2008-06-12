@@ -29,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:49:25 $
+ * @version $Date: 2008-06-12 20:13:59 $
  */
 public abstract class Dialect {
 
@@ -165,6 +165,9 @@ public abstract class Dialect {
 
     public abstract String getUniqueName();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return getUniqueName();

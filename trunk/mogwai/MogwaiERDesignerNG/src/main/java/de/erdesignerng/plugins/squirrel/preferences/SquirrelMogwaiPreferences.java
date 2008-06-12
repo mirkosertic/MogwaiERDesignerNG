@@ -22,6 +22,7 @@ import java.awt.Component;
 import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPlugin;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.preferences.PreferencesPanel;
 import de.mogwai.common.i18n.ResourceHelper;
@@ -30,7 +31,7 @@ import de.mogwai.common.i18n.ResourceHelper;
  * The preferences dialog for Squirrel.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-27 18:10:59 $
+ * @version $Date: 2008-06-12 20:15:33 $
  */
 public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
@@ -38,8 +39,11 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
     
     private ApplicationPreferences preferences;
     
-    public SquirrelMogwaiPreferences(ApplicationPreferences aPreferences) {
+    private SquirrelMogwaiPlugin plugin;
+    
+    public SquirrelMogwaiPreferences(SquirrelMogwaiPlugin aPlugin, ApplicationPreferences aPreferences) {
         preferences = aPreferences;
+        plugin = aPlugin;
         panel = new PreferencesPanel();
     }
     
@@ -52,6 +56,7 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
     public void applyChanges() {
         if (!panel.applyValues(preferences)) {
+            plugin.refreshPreferences();
             //TODO [rarf] How to prevent it from closing if validation fails?
         }
     }

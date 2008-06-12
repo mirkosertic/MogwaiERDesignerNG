@@ -15,35 +15,27 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.cells.views;
+package de.erdesignerng.visual.tools;
 
-import java.awt.geom.Rectangle2D;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 
-import org.jgraph.JGraph;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.PortView;
+import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
+ * Tool to add comments to the editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:22 $
+ * @version $Date: 2008-06-12 20:15:10 $
  */
-public class DefaultPortView extends PortView {
+public class CommentTool extends BaseTool {
 
-    public DefaultPortView(Object aObject) {
-        super(aObject);
+    public CommentTool(ERDesignerGraph aGraph) {
+        super(aGraph);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
-        GraphCell theCell = (GraphCell) getParentView().getCell();
-        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
-
-        return theBounds.contains(aRect.getX(), aRect.getY());
+    public void mousePressed(MouseEvent e) {
+        graph.commandNewComment(new Point2D.Double(e.getX(), e.getY()));
     }
-
 }

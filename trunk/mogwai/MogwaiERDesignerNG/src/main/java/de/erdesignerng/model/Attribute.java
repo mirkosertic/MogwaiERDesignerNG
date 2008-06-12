@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-21 17:57:14 $
+ * @version $Date: 2008-06-12 20:14:41 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
@@ -111,6 +111,9 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         this.size = size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Attribute clone() {
         Attribute theAttribute = new Attribute();

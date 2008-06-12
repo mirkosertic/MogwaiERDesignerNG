@@ -20,14 +20,18 @@ package de.erdesignerng.model;
 import java.awt.Color;
 
 /**
+ * A subject area.
+ * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 21:57:35 $
+ * @version $Date: 2008-06-12 20:14:45 $
  */
 public class SubjectArea extends ModelItem {
     
     private Color color;
     
     private TableList tables = new TableList();
+    
+    private CommentList comments = new CommentList();
     
     public SubjectArea() {
         setName("Subject Area");
@@ -60,5 +64,32 @@ public class SubjectArea extends ModelItem {
      */
     public void setTables(TableList tables) {
         this.tables = tables;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>comments</code> zurück.
+     * 
+     * @return Wert des Attributs comments.
+     */
+    public CommentList getComments() {
+        return comments;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>comments</code>.
+     * 
+     * @param comments Wert für das Attribut comments.
+     */
+    public void setComments(CommentList comments) {
+        this.comments = comments;
+    }
+    
+    /**
+     * Test, if this subject area contains any item. 
+     * 
+     * @return true if it is empty, else false
+     */
+    public boolean isEmpty() {
+        return (comments.size() == 0) && (tables.size() == 0);
     }
 }

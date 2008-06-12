@@ -31,7 +31,7 @@ import de.erdesignerng.model.Relation;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-09 18:42:28 $
+ * @version $Date: 2008-06-12 20:15:17 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
@@ -50,6 +50,9 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         setTarget(aExporting.getChildAt(0));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void transferAttributesToProperties(Map aAttributes) {
 
         Relation theRelation = (Relation) getUserObject();
@@ -83,6 +86,9 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void transferPropertiesToAttributes(Relation aObject) {
 
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
