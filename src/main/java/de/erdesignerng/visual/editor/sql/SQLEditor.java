@@ -54,7 +54,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:41:58 $
+ * @version $Date: 2008-06-12 20:15:40 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -240,6 +240,9 @@ public class SQLEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
 

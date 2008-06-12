@@ -35,7 +35,7 @@ import de.erdesignerng.visual.IconFactory;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 19:39:50 $
+ * @version $Date: 2008-06-12 20:15:34 $
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 
@@ -78,6 +78,9 @@ public class AttributeListCellRenderer implements ListCellRenderer {
         labelPanel.setBackground(new Color(221, 221, 233));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
             boolean cellHasFocus) {
 

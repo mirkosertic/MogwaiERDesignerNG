@@ -23,7 +23,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:53:49 $
+ * @version $Date: 2008-06-12 20:15:21 $
  */
 public class DB2Dialect extends SQL92Dialect {
 
@@ -52,26 +52,41 @@ public class DB2Dialect extends SQL92Dialect {
         seal();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DB2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new DB2ReverseEngineeringStrategy(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUniqueName() {
         return "DB2";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverClassName() {
         return "hit.db2.Db2Driver";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:db2://<host>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DB2SQLGenerator createSQLGenerator() {
         return new DB2SQLGenerator(this);

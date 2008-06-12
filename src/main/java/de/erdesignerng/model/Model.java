@@ -33,7 +33,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-05 19:07:42 $
+ * @version $Date: 2008-06-12 20:14:38 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -50,6 +50,8 @@ public class Model implements OwnedModelItemVerifier {
     private RelationList relations = new RelationList();
 
     private SubjectAreaList subjectAreas = new SubjectAreaList();
+    
+    private CommentList comments = new CommentList();
 
     private Dialect dialect;
 
@@ -336,5 +338,34 @@ public class Model implements OwnedModelItemVerifier {
         return new RecentlyUsedConnection(theDialectName, getProperties().getProperty(PROPERTY_URL), getProperties()
                 .getProperty(PROPERTY_USER), getProperties().getProperty(PROPERTY_DRIVER), getProperties().getProperty(
                 PROPERTY_PASSWORD));
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>comments</code> zurück.
+     * 
+     * @return Wert des Attributs comments.
+     */
+    public CommentList getComments() {
+        return comments;
+    }
+
+    /**
+     * Remove a comment from the model. 
+     * 
+     * @param aComment the comment
+     */
+    public void removeComment(Comment aComment) {
+        comments.remove(aComment);
+        subjectAreas.removeComment(aComment);
+    }
+
+    /**
+     * Add a comment to the model. 
+     * 
+     * @param aComment the comment
+     */
+    public void addComment(Comment aComment) {
+        aComment.setOwner(this);
+        comments.add(aComment);
     }
 }

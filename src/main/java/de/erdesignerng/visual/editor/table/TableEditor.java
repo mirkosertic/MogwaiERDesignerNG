@@ -52,7 +52,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-15 18:16:31 $
+ * @version $Date: 2008-06-12 20:15:35 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -470,6 +470,9 @@ public class TableEditor extends BaseEditor {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 

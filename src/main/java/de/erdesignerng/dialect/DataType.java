@@ -28,7 +28,7 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:41:56 $
+ * @version $Date: 2008-06-12 20:14:04 $
  */
 public class DataType implements Comparable<DataType> , Serializable {
 
@@ -155,6 +155,9 @@ public class DataType implements Comparable<DataType> , Serializable {
         return name + "(" + theAppend + ")";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return name;
@@ -199,6 +202,9 @@ public class DataType implements Comparable<DataType> , Serializable {
         return supportsSize;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = 1;
@@ -206,6 +212,9 @@ public class DataType implements Comparable<DataType> , Serializable {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

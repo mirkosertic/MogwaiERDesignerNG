@@ -29,9 +29,10 @@ import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 
 /**
+ * A table cell.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:32 $
+ * @version $Date: 2008-06-12 20:15:13 $
  */
 public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
 
@@ -46,6 +47,9 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
         addPort();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void transferAttributesToProperties(Map aAttributes) {
 
         Table theTable = (Table) getUserObject();
@@ -54,6 +58,9 @@ public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
         theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void transferPropertiesToAttributes(Table aObject) {
 
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(

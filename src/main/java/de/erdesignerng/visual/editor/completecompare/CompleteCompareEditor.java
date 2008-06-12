@@ -42,7 +42,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:03 $
+ * @version $Date: 2008-06-12 20:13:57 $
  */
 public class CompleteCompareEditor extends BaseEditor {
 
@@ -584,6 +584,9 @@ public class CompleteCompareEditor extends BaseEditor {
         setContentPane(editingView);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
     }

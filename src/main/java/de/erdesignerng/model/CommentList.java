@@ -15,35 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.cells.views;
-
-import java.awt.geom.Rectangle2D;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.PortView;
+package de.erdesignerng.model;
 
 /**
+ * A list of comments. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:22 $
+ * @version $Date: 2008-06-12 20:14:47 $
  */
-public class DefaultPortView extends PortView {
-
-    public DefaultPortView(Object aObject) {
-        super(aObject);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
-        GraphCell theCell = (GraphCell) getParentView().getCell();
-        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
-
-        return theBounds.contains(aRect.getX(), aRect.getY());
-    }
-
+public class CommentList extends ModelItemVector<Comment> {
 }

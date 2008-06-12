@@ -25,12 +25,15 @@ import javax.swing.JComponent;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCellEditor;
 
+import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
@@ -38,7 +41,7 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:27:51 $
+ * @version $Date: 2008-06-12 20:15:19 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
@@ -62,6 +65,15 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
             return theEditor;
         }
 
+        if (aValue instanceof CommentCell) {
+            CommentCell theCell = (CommentCell) aValue;
+
+            Comment theComment = (Comment) theCell.getUserObject();
+            CommentEditor theEditor = new CommentEditor(theComment.getOwner(), aParent);
+            theEditor.initializeFor(theComment);
+            return theEditor;
+        }
+
         if (aValue instanceof RelationEdge) {
             RelationEdge theCell = (RelationEdge) aValue;
 
@@ -76,6 +88,9 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
         throw new IllegalArgumentException("Cannot create editor for " + aValue.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
 
@@ -85,6 +100,9 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
         return theEditor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isCellEditable(EventObject aEvent) {
         return true;

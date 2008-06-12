@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-26 19:11:35 $
+ * @version $Date: 2008-06-12 20:14:12 $
  */
 public class ApplicationPreferences {
 
@@ -234,7 +234,7 @@ public class ApplicationPreferences {
         return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
 
             public ClassLoader run() {
-                return new URLClassLoader(theUrls);
+                return new URLClassLoader(theUrls, Thread.currentThread().getContextClassLoader());
             }
         });
     }

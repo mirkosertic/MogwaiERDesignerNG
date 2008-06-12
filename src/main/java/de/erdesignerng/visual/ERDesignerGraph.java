@@ -28,11 +28,13 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
@@ -42,9 +44,9 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-24 17:00:46 $
+ * @version $Date: 2008-06-12 20:14:58 $
  */
-public class ERDesignerGraph extends JGraph {
+public abstract class ERDesignerGraph extends JGraph {
 
     private Model model;
     
@@ -86,6 +88,13 @@ public class ERDesignerGraph extends JGraph {
                     theModel.remove(new Object[] { theEdge });
                 }
 
+                if (theSingleCell instanceof CommentCell) {
+                    CommentCell theComment = (CommentCell) theSingleCell;
+
+                    getDBModel().removeComment((Comment) theComment.getUserObject());
+                    theModel.remove(new Object[] { theComment });
+                }
+
                 if (theSingleCell instanceof TableCell) {
                     TableCell theCell = (TableCell) theSingleCell;
                     Table theTable = (Table) theCell.getUserObject();
@@ -120,8 +129,12 @@ public class ERDesignerGraph extends JGraph {
         theModel.remove(theObjectsToRemove.toArray());
     }
 
-    public void commandNewTable(Point2D aPoint) {
-    }
+    /**
+     * Add a new taböe to the model. 
+     * 
+     * @param aPoint the location
+     */
+    public abstract void commandNewTable(Point2D aPoint);
 
     /**
      * Create a new subject area for a set of cells.
@@ -156,4 +169,11 @@ public class ERDesignerGraph extends JGraph {
     public void setDisplayComments(boolean displayComments) {
         this.displayComments = displayComments;
     }
+
+    /**
+     * Add a new comment to the model. 
+     * 
+     * @param aLocation the location
+     */
+    public abstract void commandNewComment(Point2D aLocation);
 }

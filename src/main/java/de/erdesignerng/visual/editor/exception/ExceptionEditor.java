@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for exceptions.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-06-12 20:15:36 $
  */
 public class ExceptionEditor extends BaseEditor {
 
@@ -72,6 +72,9 @@ public class ExceptionEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
     }

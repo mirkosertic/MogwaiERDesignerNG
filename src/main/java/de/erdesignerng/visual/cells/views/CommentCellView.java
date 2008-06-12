@@ -20,9 +20,11 @@ package de.erdesignerng.visual.cells.views;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.io.Serializable;
+
+import javax.swing.JTextArea;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -31,39 +33,48 @@ import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.visual.cells.SubjectAreaCell;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
 
 /**
+ * View for comment cells.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:27 $
+ * @version $Date: 2008-06-12 20:14:25 $
  */
-public class SubjectAreaCellView extends VertexView {
+public class CommentCellView extends VertexView {
 
     private static MyRenderer renderer = new MyRenderer();
 
-    public SubjectAreaCellView(SubjectAreaCell aCell) {
+    public CommentCellView(CommentCell aCell) {
         super(aCell);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CellViewRenderer getRenderer() {
         return renderer;
     }
-    
+
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
-        private SubjectArea subjectArea;
-
+        private JTextArea textarea = new JTextArea();
+        
         private boolean selected;
-
+        
         public MyRenderer() {
-            setBackground(Color.white);
+            textarea.setFont(textarea.getFont().deriveFont(Font.BOLD));
+            textarea.setOpaque(false);
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Dimension getPreferredSize() {
+            Dimension theSize = textarea.getPreferredSize();
+            
+            return new Dimension(theSize.width + 20, theSize.height + 20);
         }
 
         /**
@@ -71,23 +82,14 @@ public class SubjectAreaCellView extends VertexView {
          */
         @Override
         public void paint(Graphics aGraphics) {
-
             Dimension theSize = getSize();
-            int theWidth = theSize.width;
-            int theHeight = theSize.height;
-
-            aGraphics.setColor(subjectArea.getColor());
-            aGraphics.fillRect(0, 0, theWidth - 1, theHeight - 1);
-
-            aGraphics.setColor(selected ? Color.blue : Color.black);
-            aGraphics.drawRect(0, 0, theWidth - 1, theHeight - 1);
-
-            aGraphics.setColor(Color.black);
-
-            FontMetrics theMetrics = aGraphics.getFontMetrics();
-            int theYOffset = theMetrics.getHeight();
-
-            aGraphics.drawString(subjectArea.getName(), 5, theYOffset);
+            
+            aGraphics.setColor(selected ? Color.blue : Color.gray);
+            aGraphics.drawRoundRect(0, 0, theSize.width - 1, theSize.height - 1, 10, 10);
+            
+            textarea.setSize(new Dimension(theSize.width - 20, theSize.height - 20));
+            aGraphics.translate(10, 10);
+            textarea.paint(aGraphics);
         }
 
         /**
@@ -97,10 +99,11 @@ public class SubjectAreaCellView extends VertexView {
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
 
-            SubjectAreaCellView theView = (SubjectAreaCellView) aView;
-            subjectArea = (SubjectArea) ((SubjectAreaCell) theView.getCell()).getUserObject();
+            CommentCellView theView = (CommentCellView) aView;
+            Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
+            textarea.setText(theComment.getComment());
             selected = aSelected;
-
+            
             return this;
         }
     }

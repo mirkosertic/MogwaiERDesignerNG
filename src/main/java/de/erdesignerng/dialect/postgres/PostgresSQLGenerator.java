@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-29 22:04:11 $
+ * @version $Date: 2008-06-12 20:15:26 $
  */
 public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
@@ -35,6 +35,9 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         super(aDialect);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
         StatementList theResult = new StatementList();
@@ -47,7 +50,10 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
         return theResult;
     }   
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
@@ -65,6 +71,9 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         return theResult;
     }  
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
         
@@ -85,6 +94,9 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         return theResult;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {

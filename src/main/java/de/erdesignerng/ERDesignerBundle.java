@@ -297,4 +297,10 @@ public interface ERDesignerBundle {
   String DISPLAYGRID = "DISPLAYGRID";
   /** Editor grid size (px). */
   String EDITORGRIDSIZE = "EDITORGRIDSIZE";
+  /** Edit comment. */
+  String COMMENTEDITOR = "COMMENTEDITOR";
+  /** Comment properties. */
+  String COMMENTPROPERTIES = "COMMENTPROPERTIES";
+  /** . */
+  String COMMENT = "COMMENT";
 }

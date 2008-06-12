@@ -21,7 +21,7 @@ package de.erdesignerng.util;
  * An entry for the last used connection history.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-24 16:53:51 $
+ * @version $Date: 2008-06-12 20:14:16 $
  */
 public class RecentlyUsedConnection {
     
@@ -80,6 +80,9 @@ public class RecentlyUsedConnection {
         return password;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = 1;
@@ -90,6 +93,9 @@ public class RecentlyUsedConnection {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -133,6 +139,9 @@ public class RecentlyUsedConnection {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return dialect + "/" + username + " -> " + url;
