@@ -38,7 +38,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:24 $
+ * @version $Date: 2008-06-12 20:13:56 $
  */
 public class ClasspathEditor extends BaseEditor {
 
@@ -107,6 +107,9 @@ public class ClasspathEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void applyValues() throws Exception {
 

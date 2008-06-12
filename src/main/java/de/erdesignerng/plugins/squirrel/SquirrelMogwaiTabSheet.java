@@ -62,6 +62,9 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         UIInitializer.getInstance().initialize(panel);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void refreshComponent() {
     }
@@ -124,6 +127,9 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         return theModel;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void sessionEnding(ISession aSession) {
         super.sessionEnding(aSession);
@@ -150,5 +156,14 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 
     public void exitApplication() {
         controller.exitApplication();
+    }
+
+    /**
+     * The preferences were changed, so they need to be reloaded. 
+     * 
+     * @param aPreferences the preferences
+     */
+    public void refreshPreferences(ApplicationPreferences aPreferences) {
+        component.refreshPreferences(aPreferences);
     }
 }

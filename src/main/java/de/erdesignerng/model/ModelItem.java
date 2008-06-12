@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:41:56 $
+ * @version $Date: 2008-06-12 20:14:43 $
  */
 public abstract class ModelItem implements Serializable {
 
@@ -77,6 +77,9 @@ public abstract class ModelItem implements Serializable {
         this.properties = properties;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return name;
@@ -101,6 +104,9 @@ public abstract class ModelItem implements Serializable {
         return isStringModified(comment, aComment);
     }    
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         final int thePrime = 31;
@@ -109,6 +115,9 @@ public abstract class ModelItem implements Serializable {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

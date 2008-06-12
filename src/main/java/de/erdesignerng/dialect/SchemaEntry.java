@@ -66,6 +66,9 @@ public class SchemaEntry {
         this.schemaName = schemaName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         if (catalogName != null) {

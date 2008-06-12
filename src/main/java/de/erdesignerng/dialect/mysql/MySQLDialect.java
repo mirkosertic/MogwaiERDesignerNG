@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-04-05 18:19:20 $
+ * @version $Date: 2008-06-12 20:14:55 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
@@ -86,31 +86,49 @@ public class MySQLDialect extends SQL92Dialect {
         seal();        
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MySQLReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new MySQLReverseEngineeringStrategy(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUniqueName() {
         return "MySQLDialect";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverClassName() {
         return "com.mysql.jdbc.Driver";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:mysql://<host>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean supportsSchemaInformation() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MySQLSQLGenerator createSQLGenerator() {
         return new MySQLSQLGenerator(this);

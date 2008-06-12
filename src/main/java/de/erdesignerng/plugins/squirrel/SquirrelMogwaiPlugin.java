@@ -39,12 +39,13 @@ import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
 import de.erdesignerng.plugins.squirrel.preferences.SquirrelMogwaiPreferences;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.MavenPropertiesLocator;
 import de.mogwai.common.client.looks.UIConfiguration;
 import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:27:51 $
+ * @version $Date: 2008-06-12 20:14:28 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -56,37 +57,61 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
     private SquirrelMogwaiPreferences preferencesPanel;
 
+    /**
+     * {@inheritDoc}
+     */
     public String getInternalName() {
         return "mogwai";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getDescriptiveName() {
         return "Mogwai ERDesigner";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getVersion() {
-        return "1.0";
+        return MavenPropertiesLocator.getERDesignerVersionInfo();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getAuthor() {
         return "Mirko Sertic";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getChangeLogFileName() {
         return "RELEASENOTES.txt";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getHelpFileName() {
         return "readme.html";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLicenceFileName() {
         return "licence.txt";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void initialize() throws PluginException {
         super.initialize();
@@ -101,17 +126,23 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         resources = new SquirrelMogwaiPluginResources(this);
         preferences = ApplicationPreferences.getInstance();
 
-        preferencesPanel = new SquirrelMogwaiPreferences(preferences);
+        preferencesPanel = new SquirrelMogwaiPreferences(this, preferences);
 
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IGlobalPreferencesPanel[] getGlobalPreferencePanels() {
         return new IGlobalPreferencesPanel[] { preferencesPanel };
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unload() {
         try {
@@ -122,6 +153,9 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         super.unload();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public PluginSessionCallback sessionStarted(final ISession session) {
 
         IObjectTreeAPI theAPI = session.getSessionInternalFrame().getObjectTreeAPI();
@@ -142,6 +176,9 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void sessionEnding(ISession session) {
         SquirrelMogwaiController[] theControllers = controllersBySessionID.remove(session.getIdentifier());
@@ -189,5 +226,16 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     }
 
     public void shutdownEditor(SquirrelMogwaiController controller) {
+    }
+
+    /**
+     * The preferences were changed, so they need to be published to all controllers. 
+     */
+    public void refreshPreferences() {
+        for (SquirrelMogwaiController[] theControllers : controllersBySessionID.values()) {
+            for (SquirrelMogwaiController theController : theControllers) {
+                theController.refreshPreferences(preferences);
+            }
+        }
     }
 }

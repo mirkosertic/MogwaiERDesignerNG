@@ -19,7 +19,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:41:57 $
+ * @version $Date: 2008-06-12 20:15:04 $
  */
 public class SubjectAreaEditorView extends JPanel {
 
@@ -39,7 +39,7 @@ public class SubjectAreaEditorView extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            Color theColor = new JColorChooser(colorPanel.getBackground()).showDialog(SubjectAreaEditorView.this, ResourceHelper.getResourceHelper(
+            Color theColor = JColorChooser.showDialog(SubjectAreaEditorView.this, ResourceHelper.getResourceHelper(
                     ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.COLOR), colorPanel.getBackground());
             if (theColor != null) {
                 colorPanel.setBackground(theColor);

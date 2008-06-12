@@ -26,6 +26,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.MavenPropertiesLocator;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
@@ -37,7 +38,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 14:57:50 $
+ * @version $Date: 2008-06-12 20:14:56 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -58,6 +59,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         });
 
         UIInitializer.getInstance().initialize(this);
+        initTitle();
     }
 
     @Override
@@ -85,8 +87,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
             theTitle.append(" - ").append(aFile.toString());
         }
 
-        setTitle(getResourceHelper().getText(getResourceBundleID()) + theTitle);
-
+        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo(); 
+        setTitle(getResourceHelper().getText(getResourceBundleID()) + " " + theVersion + " " + theTitle);
     }
 
     public void setStatusText(String aMessage) {

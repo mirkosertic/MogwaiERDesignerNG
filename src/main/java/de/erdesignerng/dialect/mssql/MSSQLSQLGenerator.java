@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:38:19 $
+ * @version $Date: 2008-06-12 20:14:30 $
  */
 public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
@@ -35,6 +35,9 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
         super(aDialect);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
         Table theImportingTable = aRelation.getImportingTable();
@@ -45,6 +48,9 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
@@ -55,6 +61,9 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
@@ -67,6 +76,9 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {

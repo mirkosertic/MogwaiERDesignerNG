@@ -38,7 +38,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-24 12:43:00 $
+ * @version $Date: 2008-06-12 20:13:58 $
  * @param <T>
  *                the dialect
  */
@@ -354,7 +354,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                             theRelation.setImportingTable(theTable);
 
                             if (theUpdateRule != null) {
-                                int theType = Integer.parseInt(theUpdateRule.toString());
+                                int theType = Integer.parseInt(theUpdateRule);
 
                                 theRelation.setOnUpdate(getCascadeType(theType));
                             } else {
@@ -363,7 +363,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                             }
 
                             if (theDeleteRule != null) {
-                                int theType = Integer.parseInt(theDeleteRule.toString());
+                                int theType = Integer.parseInt(theDeleteRule);
 
                                 theRelation.setOnDelete(getCascadeType(theType));
                             } else {
@@ -423,6 +423,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection,
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
@@ -443,6 +446,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
@@ -508,6 +514,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries)
             throws SQLException {

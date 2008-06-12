@@ -131,7 +131,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-
+				
 				<xs:element name="Subjectareas" minOccurs="0" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation>Definition of subject areas</xs:documentation>
@@ -149,7 +149,8 @@
 												<xs:documentation>A mapping element</xs:documentation>
 											</xs:annotation>
 											<xs:complexType>
-												<xs:attribute name="tablerefid" use="required"/>
+												<xs:attribute name="tablerefid"/>
+												<xs:attribute name="commentrefid"/>
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
@@ -161,7 +162,30 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-
+				
+				<xs:element name="Comments" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Definition of comments</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="ModelComment">
+								<xs:annotation>
+									<xs:documentation>A comment</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element name="Comment" type="CommentType" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="id" use="required"/>
+									<xs:attribute name="name" use="optional"/>									
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>				
+				
 			</xs:sequence>
 			<xs:attribute name="version" type="xs:string"/>
 		</xs:complexType>

@@ -23,17 +23,22 @@ import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.PortView;
 import org.jgraph.graph.VertexView;
 
+import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 
 /**
+ * Factory for the cell views.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 16:25:21 $
+ * @version $Date: 2008-06-12 20:14:23 $
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected VertexView createVertexView(Object aVertex) {
         if (aVertex instanceof TableCell) {
@@ -42,9 +47,15 @@ public class CellViewFactory extends DefaultCellViewFactory {
         if (aVertex instanceof SubjectAreaCell) {
             return new SubjectAreaCellView((SubjectAreaCell) aVertex);
         }
+        if (aVertex instanceof CommentCell) {
+            return new CommentCellView((CommentCell) aVertex);
+        }
         return super.createVertexView(aVertex);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EdgeView createEdgeView(Object aObject) {
         if (aObject instanceof RelationEdge) {
@@ -53,6 +64,9 @@ public class CellViewFactory extends DefaultCellViewFactory {
         return super.createEdgeView(aObject);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected PortView createPortView(Object cell) {
         if (cell instanceof DefaultPort) {

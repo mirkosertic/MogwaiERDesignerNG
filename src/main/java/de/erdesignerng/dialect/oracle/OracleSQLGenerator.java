@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:38:19 $
+ * @version $Date: 2008-06-12 20:14:33 $
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
@@ -35,6 +35,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         super(aDialect);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String createAttributeDataDefinition(Attribute aAttribute) {
         StringBuilder theBuilder = new StringBuilder();
@@ -65,6 +68,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         return theBuilder.toString();
     }    
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
@@ -82,6 +88,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
         
@@ -102,6 +111,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
         StatementList theResult = new StatementList();
@@ -115,6 +127,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         return theResult;
     } 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {

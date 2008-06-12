@@ -29,7 +29,7 @@ import de.erdesignerng.dialect.SchemaEntry;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:30 $
+ * @version $Date: 2008-06-12 20:14:34 $
  */
 public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<OracleDialect> {
 
@@ -37,6 +37,9 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         super(aDialect);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 

@@ -28,7 +28,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 20:38:54 $
+ * @version $Date: 2008-06-12 20:14:52 $
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
@@ -36,6 +36,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         super(aDialect);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
         boolean theHasAutoIncrement = false;
@@ -54,8 +57,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         return super.createAddPrimaryKeyToTable(aTable, aIndex);
     }
     
-    
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
@@ -71,6 +75,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
         
@@ -97,6 +104,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         return theResult;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
@@ -126,6 +136,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {
@@ -145,6 +158,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         return theResult;
     }  
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
 

@@ -23,7 +23,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:53:49 $
+ * @version $Date: 2008-06-12 20:14:31 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
@@ -71,26 +71,41 @@ public class MSSQLDialect extends SQL92Dialect {
         seal();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSSQLReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new MSSQLReverseEngineeringStrategy(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUniqueName() {
         return "MSSQLDialect";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverClassName() {
         return "net.sourceforge.jtds.jdbc.Driver";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:jtds:sqlserver://<host>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSSQLSQLGenerator createSQLGenerator() {
         return new MSSQLSQLGenerator(this);

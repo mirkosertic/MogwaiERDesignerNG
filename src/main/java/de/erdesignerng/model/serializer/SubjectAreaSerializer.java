@@ -19,17 +19,19 @@ package de.erdesignerng.model.serializer;
 
 import java.awt.Color;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 18:20:28 $
+ * @version $Date: 2008-06-12 20:15:31 $
  */
 public class SubjectAreaSerializer extends Serializer {
 
@@ -40,6 +42,8 @@ public class SubjectAreaSerializer extends Serializer {
     public static final String ITEM = "Item";
 
     public static final String TABLEREFID = "tablerefid";
+
+    public static final String COMMENTREFID = "commentrefid";
 
     public static final String COLOR = "color";
 
@@ -58,6 +62,12 @@ public class SubjectAreaSerializer extends Serializer {
 
         }
 
+        for (Comment theComment : aArea.getComments()) {
+
+            Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+            theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
+
+        }
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {
@@ -76,13 +86,25 @@ public class SubjectAreaSerializer extends Serializer {
 
                 Element theItemElement = (Element) theTables.item(j);
                 String theTableId = theItemElement.getAttribute(TABLEREFID);
+                String theCommentId = theItemElement.getAttribute(COMMENTREFID);
 
-                Table theTable = aModel.getTables().findBySystemId(theTableId);
-                if (theTable == null) {
-                    throw new IllegalArgumentException("Cannot find table with id " + theTableId);
+                if (!StringUtils.isEmpty(theTableId)) {
+                    Table theTable = aModel.getTables().findBySystemId(theTableId);
+                    if (theTable == null) {
+                        throw new IllegalArgumentException("Cannot find table with id " + theTableId);
+                    }
+
+                    theSubjectArea.getTables().add(theTable);
                 }
+                
+                if (!StringUtils.isEmpty(theCommentId)) {
+                    Comment theComment = aModel.getComments().findBySystemId(theCommentId);
+                    if (theComment == null) {
+                        throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
+                    }
 
-                theSubjectArea.getTables().add(theTable);
+                    theSubjectArea.getComments().add(theComment);
+                }
             }
 
             aModel.getSubjectAreas().add(theSubjectArea);

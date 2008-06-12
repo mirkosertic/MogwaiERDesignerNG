@@ -34,7 +34,7 @@ import de.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-05 19:07:41 $
+ * @version $Date: 2008-06-12 20:14:07 $
  */
 public final class DialectFactory {
 
@@ -45,7 +45,7 @@ public final class DialectFactory {
     private DialectFactory() {
     }
     
-    public static DialectFactory getInstance() {
+    public static synchronized DialectFactory getInstance() {
         if (me == null) {
             me = new DialectFactory();
             me.registerDialect(new DB2Dialect());        

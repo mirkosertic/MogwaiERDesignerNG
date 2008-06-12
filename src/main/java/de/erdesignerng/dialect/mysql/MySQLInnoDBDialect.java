@@ -20,7 +20,7 @@ package de.erdesignerng.dialect.mysql;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-03 13:53:49 $
+ * @version $Date: 2008-06-12 20:14:53 $
  */
 public class MySQLInnoDBDialect extends MySQLDialect {
 
@@ -29,6 +29,9 @@ public class MySQLInnoDBDialect extends MySQLDialect {
         seal();        
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUniqueName() {
         return "MySQLInnoDBDialect";

@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-23 17:41:10 $
+ * @version $Date: 2008-06-12 20:14:36 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -54,16 +54,25 @@ public class OracleDialect extends SQL92Dialect {
         seal();        
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new OracleReverseEngineeringStrategy(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUniqueName() {
         return "OracleDialect";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDriverClassName() {
         return "oracle.jdbc.driver.OracleDriver";
@@ -74,6 +83,9 @@ public class OracleDialect extends SQL92Dialect {
         return "jdbc:oracle:thin:@//<host>:<port>/<db>";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleSQLGenerator createSQLGenerator() {
         return new OracleSQLGenerator(this);

@@ -15,32 +15,38 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.preferences;
+package de.erdesignerng.visual.editor.comment;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.ERDesignerGraph;
-import de.erdesignerng.visual.common.ERDesignerComponent;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.erdesignerng.visual.editor.DialogConstants;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
- * Editor for the database connection.
+ * Editor for comments.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:21 $
+ * @version $Date: 2008-06-12 20:15:01 $
  */
-public class PreferencesEditor extends BaseEditor {
+public class CommentEditor extends BaseEditor {
+
+    private BindingInfo<Comment> bindingInfo = new BindingInfo<Comment>();
+
+    private CommentEditorView editingView;
+    
+    private Model model;
 
     private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
-            commandClose();
+            commandOk();
         }
     }, this, ERDesignerBundle.OK);
 
@@ -51,29 +57,34 @@ public class PreferencesEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.CANCEL);
 
-    private PreferencesEditorView view;
-
-    private ApplicationPreferences preferences;
-    
-    private ERDesignerComponent component;
-
-    public PreferencesEditor(ERDesignerGraph aParent, ApplicationPreferences aPreferences, ERDesignerComponent aComponent) {
-        super(aParent, ERDesignerBundle.PREFERENCES);
-
-        view = new PreferencesEditorView(aPreferences);
+    /**
+     * Create a relation editor.
+     * 
+     * @param aModel the db model
+     * @param aParent
+     *            the parent container
+     */
+    public CommentEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.COMMENTEDITOR);
 
         initialize();
+        
+        model = aModel;
 
-        preferences = aPreferences;
-        component = aComponent;
+        bindingInfo.addBinding("comment", editingView.getComment(), true);
+        bindingInfo.configure();
     }
 
+    /**
+     * This method initializes this.
+     */
     private void initialize() {
 
-        view.getOkButton().setAction(okAction);
-        view.getCancelButton().setAction(cancelAction);
+        editingView = new CommentEditorView();
+        editingView.getOKButton().setAction(okAction);
+        editingView.getCancelButton().setAction(cancelAction);
 
-        setContentPane(view);
+        setContentPane(editingView);
         setResizable(false);
 
         pack();
@@ -81,17 +92,29 @@ public class PreferencesEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
+    public void initializeFor(Comment aArea) {
+        
+        bindingInfo.setDefaultModel(aArea);
+        bindingInfo.model2view();
+    }
+
+    private void commandOk() {
+        if (bindingInfo.validate().size() == 0) {
+            setModalResult(MODAL_RESULT_OK);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void applyValues() throws Exception {
-    }
-
-    private void commandClose() {
-        if (view.getPreferences().applyValues(preferences)) {
-            setModalResult(DialogConstants.MODAL_RESULT_OK);
-            component.refreshPreferences(preferences);
+        
+        Comment theComment = bindingInfo.getDefaultModel();
+        
+        bindingInfo.view2model();
+        if (!model.getComments().contains(theComment)) {
+            model.addComment(theComment);
         }
     }
 }

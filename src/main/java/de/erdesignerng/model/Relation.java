@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-06-12 20:14:51 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -94,6 +94,9 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
         onUpdate = aOnUpdate;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Relation clone() {
         Relation theClone = new Relation();

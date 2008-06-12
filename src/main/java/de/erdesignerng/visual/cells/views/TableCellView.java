@@ -49,7 +49,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-24 16:53:51 $
+ * @version $Date: 2008-06-12 20:14:23 $
  */
 public class TableCellView extends VertexView {
 
@@ -59,6 +59,9 @@ public class TableCellView extends VertexView {
         super(aCell);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CellViewRenderer getRenderer() {
         return renderer;
@@ -108,6 +111,9 @@ public class TableCellView extends VertexView {
             return theText;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void paint(Graphics aGraphics) {
 
@@ -225,6 +231,9 @@ public class TableCellView extends VertexView {
 
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Dimension getPreferredSize() {
 
@@ -320,6 +329,9 @@ public class TableCellView extends VertexView {
             return new Dimension(theMaxX, theMaxY);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
@@ -335,6 +347,9 @@ public class TableCellView extends VertexView {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GraphCellEditor getEditor() {
         return new CellEditorFactory();

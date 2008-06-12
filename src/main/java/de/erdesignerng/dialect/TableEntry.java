@@ -4,7 +4,7 @@ package de.erdesignerng.dialect;
  * Descriptor for a table.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 13:44:51 $
+ * @version $Date: 2008-06-12 20:14:01 $
  */
 public class TableEntry extends SchemaEntry {
 
@@ -30,6 +30,9 @@ public class TableEntry extends SchemaEntry {
         this.tableName = tableName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         String theResult = super.toString();

@@ -32,7 +32,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 12:03:45 $
+ * @version $Date: 2008-06-12 20:14:55 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
@@ -40,6 +40,9 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         super(aDialect);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String convertIndexNameFor(Table aTable, String aIndexName) {
         if ("PRIMARY".equals(aIndexName)) {
@@ -48,6 +51,9 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         return super.convertIndexNameFor(aTable, aIndexName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection)
