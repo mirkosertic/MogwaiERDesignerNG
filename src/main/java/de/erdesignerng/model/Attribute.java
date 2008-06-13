@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2008-06-13 18:44:57 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> , LayoutProvider {
 
@@ -143,7 +143,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         return theAttribute;
     }
 
-    public void restoreFrom(Attribute aValue) throws Exception {
+    public void restoreFrom(Attribute aValue) {
         setName(aValue.getName());
         setDatatype(aValue.getDatatype());
         setSize(aValue.getSize());
