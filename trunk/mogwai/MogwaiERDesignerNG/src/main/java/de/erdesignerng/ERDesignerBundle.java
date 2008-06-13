@@ -301,6 +301,8 @@ public interface ERDesignerBundle {
   String COMMENTEDITOR = "COMMENTEDITOR";
   /** Comment properties. */
   String COMMENTPROPERTIES = "COMMENTPROPERTIES";
+  /** Domain editor.... */
+  String DOMAINEDITOR = "DOMAINEDITOR";
   /** . */
   String COMMENT = "COMMENT";
 }

@@ -595,7 +595,11 @@
 		<Entry id="COMMENTPROPERTIES">
 			<Text lang="de">Eigenschaften des Kommentares</Text>		
 			<Text lang="en">Comment properties</Text>					
-		</Entry>		
+		</Entry>
+		<Entry id="DOMAINEDITOR">
+			<Text lang="de">Domänen Editor...</Text>		
+			<Text lang="en">Domain editor...</Text>					
+		</Entry>
 		<Entry id="COMMENT">
 			<Icon>/de/erdesignerng/icons/comment_add.gif</Icon>
 		</Entry>

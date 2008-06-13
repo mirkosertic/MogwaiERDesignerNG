@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * The domain editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-06-13 17:32:43 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -95,7 +95,7 @@ public class DomainEditor extends BaseEditor {
     }, this, ERDesignerBundle.UPDATE);
 
     public DomainEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.ENTITYEDITOR);
+        super(aParent, ERDesignerBundle.DOMAINEDITOR);
         initialize();
 
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();

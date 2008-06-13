@@ -128,7 +128,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-06-13 17:32:42 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -506,7 +506,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 commandEditDomains();
             }
 
-        }, this, ERDesignerBundle.DBCONNECTION);
+        }, this, ERDesignerBundle.DOMAINEDITOR);
 
         zoomAction = new DefaultAction(new ActionEventProcessor() {
 
