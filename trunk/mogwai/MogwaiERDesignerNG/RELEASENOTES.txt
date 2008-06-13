@@ -116,3 +116,4 @@ Release 1.5
 
 * Working on comments in editor
 * Implemented FR 1958830 [ERDesignerNG] notes/text on diagram
+* Bug Fixing 1977581 [ERDesignerNG] grid related minor issues
