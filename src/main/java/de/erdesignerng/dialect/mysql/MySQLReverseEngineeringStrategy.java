@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -32,7 +34,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-06-13 17:17:22 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
@@ -56,8 +58,7 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
      */
     @Override
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection)
-            throws SQLException {
+            ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection) throws SQLException {
         Statement theStatement = aConnection.createStatement();
         ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aEntry.getTableName());
         while (theResult.next()) {
@@ -71,6 +72,17 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         }
         theResult.close();
         theStatement.close();
+
+        if (aAttribute.getDatatype().isJDBCStringType()) {
+            String theDefaultValue = aAttribute.getDefaultValue();
+            if (!StringUtils.isEmpty(theDefaultValue)) {
+                if (!theDefaultValue.startsWith("'")) {
+                    theDefaultValue = dialect.getStringSeparatorChars() + theDefaultValue
+                            + dialect.getStringSeparatorChars();
+                    aAttribute.setDefaultValue(theDefaultValue);
+                }
+            }
+        }
     }
 
 }

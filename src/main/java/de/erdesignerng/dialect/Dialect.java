@@ -29,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2008-06-13 17:17:22 $
  */
 public abstract class Dialect {
 
@@ -296,5 +296,14 @@ public abstract class Dialect {
      */
     public void setSupportsColumnExtra(boolean supportsColumnExtra) {
         this.supportsColumnExtra = supportsColumnExtra;
+    }
+    
+    /**
+     * Get the separator chars for strings ( how they are escaped in SQL ).
+     *  
+     * @return the separator chars
+     */
+    public String getStringSeparatorChars() {
+        return "'";
     }
 }
