@@ -25,14 +25,14 @@ import de.erdesignerng.dialect.DataType;
  * A Domain. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:56 $
+ * @version $Date: 2008-06-13 17:32:43 $
  */
 public class Domain extends DataType implements LayoutProvider {
 
     private Attribute attribute = new Attribute();
     
     public Domain() {
-        super(null, null, Types.OTHER);
+        super("", "", Types.OTHER);
     }
 
     /**
