@@ -38,7 +38,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:27 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class SubjectAreaCellView extends VertexView {
 

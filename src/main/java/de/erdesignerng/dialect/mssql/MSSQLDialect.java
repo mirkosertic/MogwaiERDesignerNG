@@ -23,7 +23,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:31 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 

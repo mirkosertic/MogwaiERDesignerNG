@@ -18,10 +18,45 @@
 package de.erdesignerng.model;
 
 /**
- * A list of comments. 
+ * Provider for layout information. 
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:57 $
  */
-public class CommentList extends ModelItemVector<Comment> {
+public interface LayoutProvider {
+
+    /**
+     * Get the default value. 
+     * 
+     * @return the default value
+     */
+    String getDefaultValue();
+    
+    /**
+     * Get the extras. 
+     * 
+     * @return the extras
+     */
+    String getExtra();
+    
+    /**
+     * Test if this is nullable. 
+     * 
+     * @return true if nullable, else false
+     */
+    boolean isNullable();
+    
+    /**
+     * Get the Physical declaration. 
+     * 
+     * @return the declaration
+     */
+    String getPhysicalDeclaration();
+    
+    /**
+     * Get the logical declaration. 
+     * 
+     * @return the logical declaration
+     */
+    String getLogicalDeclaration();
 }

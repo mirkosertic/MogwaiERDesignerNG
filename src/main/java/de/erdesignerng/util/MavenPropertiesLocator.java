@@ -25,7 +25,7 @@ import java.util.Properties;
  * Utility class to deal with maven.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:17 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public final class MavenPropertiesLocator {
 

@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:22 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 
@@ -91,10 +91,10 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(aNewAttribute.getPhysicalDeclaration());
+        theStatement.append(aNewAttribute.getLayoutProvider().getPhysicalDeclaration());
         theStatement.append(" ");
 
-        boolean isNullable = aNewAttribute.isNullable();
+        boolean isNullable = aNewAttribute.getLayoutProvider().isNullable();
 
         if (!isNullable) {
             theStatement.append("NOT NULL");

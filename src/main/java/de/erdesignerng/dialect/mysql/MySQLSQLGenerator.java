@@ -28,7 +28,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:52 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
@@ -43,7 +43,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
         boolean theHasAutoIncrement = false;
         for (Attribute theAttribute : aTable.getAttributes()) {
-            String theExtra = theAttribute.getExtra();
+            String theExtra = theAttribute.getLayoutProvider().getExtra();
             if (theExtra != null) {
                 if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
                     theHasAutoIncrement = true;
@@ -83,7 +83,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         
         boolean theHasAutoIncrement = false;
         for (Attribute theAttribute : aTable.getAttributes()) {
-            String theExtra = theAttribute.getExtra();
+            String theExtra = theAttribute.getLayoutProvider().getExtra();
             if (theExtra != null) {
                 if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
                     theHasAutoIncrement = true;
@@ -121,10 +121,10 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theStatement.append(" ");
         theStatement.append(aNewName);
         theStatement.append(" ");
-        theStatement.append(aExistantAttribute.getPhysicalDeclaration());
+        theStatement.append(aExistantAttribute.getLayoutProvider().getPhysicalDeclaration());
         theStatement.append(" ");
 
-        boolean isNullable = aExistantAttribute.isNullable();
+        boolean isNullable = aExistantAttribute.getLayoutProvider().isNullable();
 
         if (!isNullable) {
             theStatement.append("NOT NULL");

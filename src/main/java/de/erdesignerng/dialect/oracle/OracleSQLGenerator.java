@@ -21,13 +21,14 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:33 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
@@ -40,9 +41,12 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
      */
     @Override
     protected String createAttributeDataDefinition(Attribute aAttribute) {
+        
+        LayoutProvider theInfoProvider = aAttribute.getLayoutProvider();
+        
         StringBuilder theBuilder = new StringBuilder();
-        theBuilder.append(aAttribute.getPhysicalDeclaration());
-        boolean isNullable = aAttribute.isNullable();
+        theBuilder.append(theInfoProvider.getPhysicalDeclaration());
+        boolean isNullable = theInfoProvider.isNullable();
 
         String theDefault = aAttribute.getDefaultValue();        
         boolean hasDefault = false;
@@ -59,7 +63,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
             theBuilder.append(theDefault);
         }
         
-        String theExtra = aAttribute.getExtra();
+        String theExtra = theInfoProvider.getExtra();
         if ((theExtra != null) && (!"".equals(theExtra))) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);

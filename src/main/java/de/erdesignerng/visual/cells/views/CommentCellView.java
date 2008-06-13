@@ -41,7 +41,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
  * View for comment cells.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:25 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class CommentCellView extends VertexView {
 

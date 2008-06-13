@@ -31,7 +31,7 @@ import de.mogwai.common.i18n.ResourceHelper;
  * The preferences dialog for Squirrel.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:33 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 

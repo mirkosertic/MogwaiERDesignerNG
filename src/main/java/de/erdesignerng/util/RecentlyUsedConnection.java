@@ -21,7 +21,7 @@ package de.erdesignerng.util;
  * An entry for the last used connection history.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:16 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class RecentlyUsedConnection {
     
