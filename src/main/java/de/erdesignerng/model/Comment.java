@@ -21,7 +21,7 @@ package de.erdesignerng.model;
  * A model comment. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:40 $
+ * @version $Date: 2008-06-13 16:48:57 $
  */
 public class Comment extends OwnedModelItem<Model> {
     

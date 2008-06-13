@@ -29,7 +29,7 @@ import de.erdesignerng.dialect.SchemaEntry;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:34 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<OracleDialect> {
 

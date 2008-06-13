@@ -42,7 +42,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:18 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 

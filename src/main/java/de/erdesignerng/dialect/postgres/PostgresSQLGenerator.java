@@ -21,13 +21,14 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:26 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
@@ -100,6 +101,9 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {
+        
+        LayoutProvider theInfoProvider = aNewAttribute.getLayoutProvider();
+        
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
@@ -111,7 +115,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         theStatement.append(" ALTER ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" TYPE ");
-        theStatement.append(aNewAttribute.getPhysicalDeclaration());
+        theStatement.append(theInfoProvider.getPhysicalDeclaration());
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -122,7 +126,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         theStatement.append(" ALTER ");
         theStatement.append(aExistantAttribute.getName());
 
-        boolean isNullable = aNewAttribute.isNullable();
+        boolean isNullable = theInfoProvider.isNullable();
 
         if (!isNullable) {
             theStatement.append("SET NOT NULL");

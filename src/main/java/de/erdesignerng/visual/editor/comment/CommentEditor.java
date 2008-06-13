@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for comments.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:01 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class CommentEditor extends BaseEditor {
 

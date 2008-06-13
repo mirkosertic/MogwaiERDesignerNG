@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:44 $
+ * @version $Date: 2008-06-13 16:48:57 $
  */
 public class Index extends OwnedModelItem<Table> implements ModelItemClonable<Index> {
 

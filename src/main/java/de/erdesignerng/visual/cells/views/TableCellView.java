@@ -49,7 +49,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:23 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class TableCellView extends VertexView {
 
@@ -76,6 +76,8 @@ public class TableCellView extends VertexView {
         private boolean selected;
 
         private boolean includeComments = false;
+
+        private boolean physicalLayout = true;
 
         private static ImageIcon key = IconFactory.getKeyIcon();
 
@@ -175,12 +177,18 @@ public class TableCellView extends VertexView {
 
                     theString += " : ";
 
-                    theString += theAttribute.getPhysicalDeclaration();
+                    if (physicalLayout) {
+                        theString += theAttribute.getLayoutProvider().getPhysicalDeclaration();
 
-                    if (theAttribute.getExtra() != null) {
-                        theString += " ";
-                        theString += theAttribute.getExtra();
+                        if (theAttribute.getExtra() != null) {
+                            theString += " ";
+                            theString += theAttribute.getLayoutProvider().getExtra();
+                        }
+
+                    } else {
+                        theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
                     }
+
                     if (theAttribute.isForeignKey()) {
                         theString += " (FK)";
                     }
@@ -212,11 +220,15 @@ public class TableCellView extends VertexView {
 
                     theString += " : ";
 
-                    theString += theAttribute.getPhysicalDeclaration();
+                    if (physicalLayout) {
+                        theString += theAttribute.getLayoutProvider().getPhysicalDeclaration();
 
-                    if (theAttribute.getExtra() != null) {
-                        theString += " ";
-                        theString += theAttribute.getExtra();
+                        if (theAttribute.getExtra() != null) {
+                            theString += " ";
+                            theString += theAttribute.getExtra();
+                        }
+                    } else {
+                        theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
                     }
                     if (isFK) {
                         theString += " (FK)";
@@ -271,11 +283,15 @@ public class TableCellView extends VertexView {
                     String theText = getConvertedName(theAttribute);
                     theText += " : ";
 
-                    theText += theAttribute.getPhysicalDeclaration();
+                    if (physicalLayout) {
+                        theText += theAttribute.getLayoutProvider().getPhysicalDeclaration();
 
-                    if (theAttribute.getExtra() != null) {
-                        theText += " ";
-                        theText += theAttribute.getExtra();
+                        if (theAttribute.getExtra() != null) {
+                            theText += " ";
+                            theText += theAttribute.getLayoutProvider().getExtra();
+                        }
+                    } else {
+                        theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -296,11 +312,15 @@ public class TableCellView extends VertexView {
                 String theText = getConvertedName(theAttribute);
                 theText += " : ";
 
-                theText += theAttribute.getPhysicalDeclaration();
+                if (physicalLayout) {
+                    theText += theAttribute.getLayoutProvider().getPhysicalDeclaration();
 
-                if (theAttribute.getExtra() != null) {
-                    theText += " ";
-                    theText += theAttribute.getExtra();
+                    if (theAttribute.getExtra() != null) {
+                        theText += " ";
+                        theText += theAttribute.getLayoutProvider().getExtra();
+                    }
+                } else {
+                    theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
                 }
 
                 if (theAttribute.isForeignKey()) {
@@ -342,6 +362,7 @@ public class TableCellView extends VertexView {
 
             ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
             includeComments = theGraph.isDisplayComments();
+            physicalLayout = theGraph.isPhysicalLayout();
 
             return this;
         }

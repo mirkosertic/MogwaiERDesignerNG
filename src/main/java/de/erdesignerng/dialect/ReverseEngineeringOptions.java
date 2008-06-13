@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:09 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class ReverseEngineeringOptions {
 

@@ -28,7 +28,7 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:04 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class DataType implements Comparable<DataType> , Serializable {
 
@@ -236,6 +236,4 @@ public class DataType implements Comparable<DataType> , Serializable {
         }
         return true;
     }
-    
-    
 }

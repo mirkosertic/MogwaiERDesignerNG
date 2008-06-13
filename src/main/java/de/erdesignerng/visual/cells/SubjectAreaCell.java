@@ -28,7 +28,7 @@ import de.erdesignerng.model.SubjectArea;
  * A subject area. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:12 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<SubjectArea> {
 

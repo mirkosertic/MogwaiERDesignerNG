@@ -33,6 +33,7 @@ import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -52,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:35 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -139,9 +140,10 @@ public class TableEditor extends BaseEditor {
         initialize();
 
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
-        for (DataType theType : aModel.getDialect().getDataTypes()) {
+        for (DataType theType : aModel.getAvailableDataTypes()) {
             theDataTypes.addElement(theType);
         }
+
         editingView.getDataType().setModel(theDataTypes);
         editingView.getDataType().addActionListener(new ActionListener() {
 
@@ -307,17 +309,19 @@ public class TableEditor extends BaseEditor {
         Attribute theValue = attributeBindingInfo.getDefaultModel();
 
         if (theValue != null) {
-
+            DataType theDataType = theValue.getDatatype();
+            
             boolean isNew = !attributeListModel.contains(theValue);
 
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(!isNew);
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
-            editingView.getDefault().setEnabled(true);
-            editingView.getExtra().setEnabled(model.getDialect().isSupportsColumnExtra());
+            editingView.getDefault().setEnabled(!(theDataType instanceof Domain));
+            editingView.getExtra().setEnabled(
+                    model.getDialect().isSupportsColumnExtra() && !(theDataType instanceof Domain));
             editingView.getDataType().setEnabled(true);
-            setSpinnerState(theValue.getDatatype());
+            setSpinnerState(theDataType);
 
         } else {
             editingView.getNewButton().setEnabled(true);

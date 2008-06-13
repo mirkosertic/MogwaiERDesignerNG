@@ -38,7 +38,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:13:58 $
+ * @version $Date: 2008-06-13 16:48:57 $
  * @param <T>
  *                the dialect
  */

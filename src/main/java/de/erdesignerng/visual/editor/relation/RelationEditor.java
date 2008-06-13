@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:40 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class RelationEditor extends BaseEditor {
 

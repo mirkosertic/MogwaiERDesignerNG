@@ -30,7 +30,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:05 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class SubjectAreaEditor extends BaseEditor {
 

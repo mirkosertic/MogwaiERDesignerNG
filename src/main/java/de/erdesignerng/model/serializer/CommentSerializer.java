@@ -26,7 +26,7 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:29 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class CommentSerializer extends Serializer {
 
