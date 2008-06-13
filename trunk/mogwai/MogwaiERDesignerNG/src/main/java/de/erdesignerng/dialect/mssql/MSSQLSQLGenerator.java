@@ -27,7 +27,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:30 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 

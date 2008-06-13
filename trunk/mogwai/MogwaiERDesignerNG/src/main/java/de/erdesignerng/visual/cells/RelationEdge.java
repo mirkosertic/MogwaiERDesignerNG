@@ -31,7 +31,7 @@ import de.erdesignerng.model.Relation;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:17 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 

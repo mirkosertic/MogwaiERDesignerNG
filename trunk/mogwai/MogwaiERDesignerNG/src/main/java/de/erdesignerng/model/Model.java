@@ -19,7 +19,11 @@ package de.erdesignerng.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
@@ -33,7 +37,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:38 $
+ * @version $Date: 2008-06-13 16:48:57 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -50,8 +54,10 @@ public class Model implements OwnedModelItemVerifier {
     private RelationList relations = new RelationList();
 
     private SubjectAreaList subjectAreas = new SubjectAreaList();
-    
+
     private CommentList comments = new CommentList();
+
+    private DomainList domains = new DomainList();
 
     private Dialect dialect;
 
@@ -63,13 +69,13 @@ public class Model implements OwnedModelItemVerifier {
      * Add a table to the database model.
      * 
      * @param aTable
-     *            the table
+     *                the table
      * @throws ElementAlreadyExistsException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ElementInvalidNameException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws VetoException
-     *             if there is a veto for doing this
+     *                 if there is a veto for doing this
      */
     public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
@@ -89,13 +95,13 @@ public class Model implements OwnedModelItemVerifier {
      * Add a relation to the database model.
      * 
      * @param aRelation
-     *            the table
+     *                the table
      * @throws ElementAlreadyExistsException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ElementInvalidNameException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws VetoException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
@@ -181,10 +187,10 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a table from the model.
      * 
      * @param aTable
-     *            the table
+     *                the table
      * @throws VetoException
-     *             will be thrown if the modificationtracker has a veto for
-     *             completing this operation
+     *                 will be thrown if the modificationtracker has a veto for
+     *                 completing this operation
      */
     public void removeTable(Table aTable) throws VetoException {
 
@@ -200,10 +206,10 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a relation from the model.
      * 
      * @param aRelation
-     *            the relation
+     *                the relation
      * @throws VetoException
-     *             will be thrown if the modificationtracker has a veto for
-     *             completing this operation
+     *                 will be thrown if the modificationtracker has a veto for
+     *                 completing this operation
      */
     public void removeRelation(Relation aRelation) throws VetoException {
 
@@ -295,7 +301,7 @@ public class Model implements OwnedModelItemVerifier {
 
     /**
      * @param modificationTracker
-     *            the modificationTracker to set
+     *                the modificationTracker to set
      */
     public void setModificationTracker(ModelModificationTracker modificationTracker) {
         this.modificationTracker = modificationTracker;
@@ -305,7 +311,7 @@ public class Model implements OwnedModelItemVerifier {
      * Add a new subject area.
      * 
      * @param aArea
-     *            the area
+     *                the area
      */
     public void addSubjectArea(SubjectArea aArea) {
         subjectAreas.add(aArea);
@@ -315,7 +321,7 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a subject area.
      * 
      * @param aArea
-     *            the area
+     *                the area
      */
     public void removeSubjectArea(SubjectArea aArea) {
         subjectAreas.remove(aArea);
@@ -350,9 +356,10 @@ public class Model implements OwnedModelItemVerifier {
     }
 
     /**
-     * Remove a comment from the model. 
+     * Remove a comment from the model.
      * 
-     * @param aComment the comment
+     * @param aComment
+     *                the comment
      */
     public void removeComment(Comment aComment) {
         comments.remove(aComment);
@@ -360,12 +367,55 @@ public class Model implements OwnedModelItemVerifier {
     }
 
     /**
-     * Add a comment to the model. 
+     * Add a comment to the model.
      * 
-     * @param aComment the comment
+     * @param aComment
+     *                the comment
      */
     public void addComment(Comment aComment) {
         aComment.setOwner(this);
         comments.add(aComment);
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>domains</code> zurück.
+     * 
+     * @return Wert des Attributs domains.
+     */
+    public DomainList getDomains() {
+        return domains;
+    }
+
+    /**
+     * Get the available data types.
+     * 
+     * The available data types are the dialect datatypes plus the defined domains.
+     * 
+     * @return the available data types
+     */
+    public List<DataType> getAvailableDataTypes() {
+        List<DataType> theResult = new ArrayList<DataType>();
+        theResult.addAll(dialect.getDataTypes());
+        theResult.addAll(domains);
+        Collections.sort(theResult);
+        return theResult;
+    }
+
+    /**
+     * Add a domain to the model. 
+     * 
+     * @param aDomain the domain
+     */
+    public void addDomain(Domain aDomain) {
+        domains.add(aDomain);
+    }
+
+    /**
+     * Remove a domain from the model. 
+     * 
+     * @param aDomain a domain
+     */
+    public void removeDomain(Domain aDomain) {
+        domains.remove(aDomain);
     }
 }

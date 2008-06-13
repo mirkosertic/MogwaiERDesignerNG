@@ -23,7 +23,7 @@ import java.awt.Color;
  * A subject area.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:45 $
+ * @version $Date: 2008-06-13 16:48:57 $
  */
 public class SubjectArea extends ModelItem {
     

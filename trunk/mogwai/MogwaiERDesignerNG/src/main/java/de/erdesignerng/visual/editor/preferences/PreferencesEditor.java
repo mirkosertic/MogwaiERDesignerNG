@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:21 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class PreferencesEditor extends BaseEditor {
 

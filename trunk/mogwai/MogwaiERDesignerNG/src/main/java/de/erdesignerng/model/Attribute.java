@@ -21,9 +21,9 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:41 $
+ * @version $Date: 2008-06-13 16:48:57 $
  */
-public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
+public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> , LayoutProvider {
 
     private DataType datatype;
 
@@ -39,6 +39,18 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     private String defaultValue;
 
     private String extra;
+    
+    /**
+     * Get the layout provider. 
+     * 
+     * @return the physical layout provider
+     */
+    public LayoutProvider getLayoutProvider() {
+        if (datatype instanceof LayoutProvider) {
+            return (LayoutProvider) datatype;
+        }
+        return this;
+    }
 
     /**
      * @return the nullable
@@ -206,11 +218,27 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         this.extra = extra;
     }
 
+    /**
+     * Test if the attribute was renamed. 
+     * 
+     * @param aAttribute the new attribute
+     * @return true if it was renamed, else false
+     */
     public boolean isRenamed(Attribute aAttribute) {
         return !getName().equals(aAttribute.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getPhysicalDeclaration() {
         return datatype.createTypeDefinitionFor(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLogicalDeclaration() {
+        return getPhysicalDeclaration();
     }
 }

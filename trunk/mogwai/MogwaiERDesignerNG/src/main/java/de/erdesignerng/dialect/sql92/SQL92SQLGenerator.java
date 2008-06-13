@@ -21,6 +21,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Relation;
@@ -29,7 +30,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:41 $
+ * @version $Date: 2008-06-13 16:49:00 $
  * @param <T>
  *            the dialect
  */
@@ -46,9 +47,12 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     protected String createAttributeDataDefinition(Attribute aAttribute, boolean aIgnoreDefault) {
+
+        LayoutProvider theProvider = aAttribute.getLayoutProvider();
+        
         StringBuilder theBuilder = new StringBuilder();
-        theBuilder.append(aAttribute.getPhysicalDeclaration());
-        boolean isNullable = aAttribute.isNullable();
+        theBuilder.append(theProvider.getPhysicalDeclaration());
+        boolean isNullable = theProvider.isNullable();
 
         if (!isNullable) {
             theBuilder.append(" NOT NULL");
@@ -62,7 +66,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
         }
 
-        String theExtra = aAttribute.getExtra();
+        String theExtra = theProvider.getExtra();
         if ((theExtra != null) && (!"".equals(theExtra))) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);

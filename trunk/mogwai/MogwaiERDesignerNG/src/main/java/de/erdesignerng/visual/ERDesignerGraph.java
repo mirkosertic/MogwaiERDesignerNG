@@ -44,13 +44,15 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:58 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
     private Model model;
     
     private boolean displayComments;
+    
+    private boolean physicalLayout;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
@@ -168,6 +170,24 @@ public abstract class ERDesignerGraph extends JGraph {
      */
     public void setDisplayComments(boolean displayComments) {
         this.displayComments = displayComments;
+    }
+    
+    /**
+     * Gibt den Wert des Attributs <code>physicalLayout</code> zurück.
+     * 
+     * @return Wert des Attributs physicalLayout.
+     */
+    public boolean isPhysicalLayout() {
+        return physicalLayout;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>physicalLayout</code>.
+     * 
+     * @param physicalLayout Wert für das Attribut physicalLayout.
+     */
+    public void setPhysicalLayout(boolean physicalLayout) {
+        this.physicalLayout = physicalLayout;
     }
 
     /**

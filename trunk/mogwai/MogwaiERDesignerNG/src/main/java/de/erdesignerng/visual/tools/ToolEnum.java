@@ -21,7 +21,7 @@ package de.erdesignerng.visual.tools;
  * Enum for the different tools available in the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:08 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public enum ToolEnum {
     HAND(), ENTITY(), RELATION(), COMMENT();

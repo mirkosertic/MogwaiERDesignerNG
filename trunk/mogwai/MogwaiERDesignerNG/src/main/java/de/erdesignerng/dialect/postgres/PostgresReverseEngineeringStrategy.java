@@ -29,7 +29,7 @@ import de.erdesignerng.dialect.SchemaEntry;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:27 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<PostgresDialect> {
 

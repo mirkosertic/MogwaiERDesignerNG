@@ -91,6 +91,7 @@ import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
+import de.erdesignerng.visual.editor.domain.DomainEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
@@ -127,7 +128,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:21 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -247,6 +248,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private File currentEditingFile;
 
     private DefaultAction dbConnectionAction;
+    
+    private DefaultAction domainsAction;
 
     private DefaultAction entityAction;
 
@@ -497,6 +500,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DBCONNECTION);
 
+        domainsAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandEditDomains();
+            }
+
+        }, this, ERDesignerBundle.DBCONNECTION);
+
         zoomAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -617,6 +628,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (addSeparator) {
             theDBMenu.addSeparator();
         }
+        
+        theDBMenu.add(domainsAction);
+        theDBMenu.addSeparator();
 
         theDBMenu.add(new DefaultMenuItem(reverseEngineerAction));
         theDBMenu.addSeparator();
@@ -844,6 +858,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
                 theEditor.applyValues();
                 addCurrentConnectionToConnectionHistory();
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
+        }
+    }
+
+    /**
+     * Edit the domains. 
+     */
+    protected void commandEditDomains() {
+        DomainEditor theEditor = new DomainEditor(model, scrollPane);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }

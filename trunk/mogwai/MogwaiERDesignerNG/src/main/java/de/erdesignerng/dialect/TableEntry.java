@@ -4,7 +4,7 @@ package de.erdesignerng.dialect;
  * Descriptor for a table.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:01 $
+ * @version $Date: 2008-06-13 16:48:58 $
  */
 public class TableEntry extends SchemaEntry {
 

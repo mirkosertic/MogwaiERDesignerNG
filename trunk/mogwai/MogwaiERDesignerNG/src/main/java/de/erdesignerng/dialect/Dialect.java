@@ -29,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:13:59 $
+ * @version $Date: 2008-06-13 16:48:57 $
  */
 public abstract class Dialect {
 

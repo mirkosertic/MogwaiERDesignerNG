@@ -17,11 +17,14 @@
  */
 package de.erdesignerng.model;
 
+import java.util.Vector;
+
 /**
- * A list of comments. 
+ * A list of domains. 
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:57 $
  */
-public class CommentList extends ModelItemVector<Comment> {
+public class DomainList extends Vector<Domain> {
+
 }

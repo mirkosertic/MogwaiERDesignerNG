@@ -38,7 +38,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:14:56 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 

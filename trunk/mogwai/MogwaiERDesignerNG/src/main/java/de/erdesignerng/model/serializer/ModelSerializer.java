@@ -32,7 +32,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:32 $
+ * @version $Date: 2008-06-13 16:49:00 $
  */
 public class ModelSerializer extends Serializer {
     

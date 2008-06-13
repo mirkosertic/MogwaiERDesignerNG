@@ -33,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for exceptions.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:36 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ExceptionEditor extends BaseEditor {
 

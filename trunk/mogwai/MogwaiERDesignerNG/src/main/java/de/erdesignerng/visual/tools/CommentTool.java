@@ -26,7 +26,7 @@ import de.erdesignerng.visual.ERDesignerGraph;
  * Tool to add comments to the editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-12 20:15:10 $
+ * @version $Date: 2008-06-13 16:48:59 $
  */
 public class CommentTool extends BaseTool {
 
