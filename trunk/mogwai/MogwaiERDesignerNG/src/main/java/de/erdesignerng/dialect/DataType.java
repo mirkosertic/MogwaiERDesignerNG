@@ -18,6 +18,7 @@
 package de.erdesignerng.dialect;
 
 import java.io.Serializable;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -28,9 +29,9 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-06-13 17:17:22 $
  */
-public class DataType implements Comparable<DataType> , Serializable {
+public class DataType implements Comparable<DataType>, Serializable {
 
     public static final String SIZE_TOKEN = "$size";
 
@@ -55,7 +56,7 @@ public class DataType implements Comparable<DataType> , Serializable {
     private boolean supportsFraction = false;
 
     private boolean supportsScale = false;
-    
+
     protected DataType(String aName, String aDefinition, int aJdbcType) {
         name = aName;
         pattern = aDefinition;
@@ -235,5 +236,21 @@ public class DataType implements Comparable<DataType> , Serializable {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Test if the Type is a String type.
+     * 
+     * @return true if it is a string type, else false
+     */
+    public boolean isJDBCStringType() {
+        switch (jdbcType) {
+        case Types.CHAR:
+        case Types.LONGVARCHAR:
+        case Types.VARCHAR:
+            return true;
+        default:
+            return false;
+        }
     }
 }
