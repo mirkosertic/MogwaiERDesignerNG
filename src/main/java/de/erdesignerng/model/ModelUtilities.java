@@ -25,7 +25,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-06-15 16:59:31 $
  */
 public final class ModelUtilities {
 
@@ -35,15 +35,25 @@ public final class ModelUtilities {
     /**
      * Check existance in a list.
      * 
-     * @param aVector the list
-     * @param aName the name
-     * @param aDialect  the dialect
-     * @throws ElementAlreadyExistsException is thrown if name exists
+     * @param aVector
+     *                the list
+     * @param aName
+     *                the name
+     * @param aDialect
+     *                the dialect
+     * @throws ElementAlreadyExistsException
+     *                 is thrown if name exists
      */
     public static void checkExistance(ModelItemVector aVector, String aName, Dialect aDialect)
             throws ElementAlreadyExistsException {
 
-        if (aVector.elementExists(aName, aDialect.isCaseSensitive())) {
+        boolean theCaseSensitive = false;
+
+        if (aDialect != null) {
+            theCaseSensitive = aDialect.isCaseSensitive();
+        }
+
+        if (aVector.elementExists(aName, theCaseSensitive)) {
             throw new ElementAlreadyExistsException(aName);
         }
 
@@ -52,16 +62,23 @@ public final class ModelUtilities {
     /**
      * Check the name of an item and its existance in a list.
      * 
-     * @param aVector the list
-     * @param aItem the item
-     * @param aDialect the dialect
-     * @throws ElementInvalidNameException is thrown in case of an error
-     * @throws ElementAlreadyExistsException is thrown in case of an error
+     * @param aVector
+     *                the list
+     * @param aItem
+     *                the item
+     * @param aDialect
+     *                the dialect
+     * @throws ElementInvalidNameException
+     *                 is thrown in case of an error
+     * @throws ElementAlreadyExistsException
+     *                 is thrown in case of an error
      */
     public static void checkNameAndExistance(ModelItemVector aVector, OwnedModelItem aItem, Dialect aDialect)
             throws ElementInvalidNameException, ElementAlreadyExistsException {
 
-        aItem.setName(aDialect.checkName(aItem.getName()));
+        if (aDialect != null) {
+            aItem.setName(aDialect.checkName(aItem.getName()));
+        }
 
         checkExistance(aVector, aItem.getName(), aDialect);
     }
@@ -70,7 +87,7 @@ public final class ModelUtilities {
      * Find the model properties.
      * 
      * @param aItem
-     *            the item to start searching at
+     *                the item to start searching at
      * @return the found model history.
      */
     public static Dialect getModelProperties(OwnedModelItem aItem) {
@@ -90,7 +107,8 @@ public final class ModelUtilities {
     /**
      * Create a unique system id.
      * 
-     * @param aObject the object the id shall be created for
+     * @param aObject
+     *                the object the id shall be created for
      * @return the newly created id
      */
     public static String createSystemIdFor(Object aObject) {

@@ -53,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-06-15 16:59:32 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -318,8 +318,12 @@ public class TableEditor extends BaseEditor {
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
             editingView.getDefault().setEnabled(!(theDataType instanceof Domain));
-            editingView.getExtra().setEnabled(
-                    model.getDialect().isSupportsColumnExtra() && !(theDataType instanceof Domain));
+            if (model.getDialect() != null) {
+                editingView.getExtra().setEnabled(
+                        model.getDialect().isSupportsColumnExtra() && !(theDataType instanceof Domain));
+            } else {
+                editingView.getExtra().setEnabled(false);
+            }
             editingView.getDataType().setEnabled(true);
             setSpinnerState(theDataType);
 
