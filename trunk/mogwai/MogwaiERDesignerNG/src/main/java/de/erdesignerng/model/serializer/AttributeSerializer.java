@@ -74,7 +74,7 @@ public class AttributeSerializer extends Serializer {
             deserializeProperties(theAttributeElement, theAttribute);
             deserializeCommentElement(theAttributeElement, theAttribute);
 
-            theAttribute.setDatatype(aModel.getDialect().getDataTypeByName(theAttributeElement.getAttribute(DATATYPE)));
+            theAttribute.setDatatype(aModel.getDialect().getDataTypes().findByName(theAttributeElement.getAttribute(DATATYPE)));
             theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
             theAttribute.setSize(Integer.parseInt(theAttributeElement.getAttribute(SIZE)));
             theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));

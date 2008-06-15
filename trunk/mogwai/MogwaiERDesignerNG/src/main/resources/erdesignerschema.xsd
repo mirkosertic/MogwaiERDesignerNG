@@ -20,6 +20,28 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+				<xs:element name="Domains" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The list of domains defined for this model</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Domain">
+								<xs:annotation>
+									<xs:documentation>A definition for a domain</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="size" use="required"/>
+									<xs:attribute name="fraction" use="required"/>
+									<xs:attribute name="scale" use="required"/>
+									<xs:attribute name="datatype" use="required"/>
+									<xs:attribute name="id" use="required"/>
+									<xs:attribute name="name" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>				
 				<xs:element name="Tables">
 					<xs:annotation>
 						<xs:documentation>The list of Tables defined for this model</xs:documentation>

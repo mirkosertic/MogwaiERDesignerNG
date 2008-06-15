@@ -27,12 +27,13 @@ import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-06-15 17:53:55 $
  */
 public class ModelSerializer extends Serializer {
     
@@ -78,6 +79,11 @@ public class ModelSerializer extends Serializer {
             thePropertyElement.setAttribute(VALUE, theValue);
         }
 
+        Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
+        for (Domain theTable : aModel.getDomains()) {
+            DomainSerializer.SERIALIZER.serialize(theTable, aDocument, theDomainsElement);
+        }
+        
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
             TableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
@@ -120,7 +126,8 @@ public class ModelSerializer extends Serializer {
                 }
             }
         }
-        
+
+        DomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);        
         TableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         RelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         CommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
