@@ -23,8 +23,23 @@ import java.util.Vector;
  * A list of domains. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2008-06-15 10:57:04 $
  */
 public class DomainList extends Vector<Domain> {
+
+    /**
+     * Find a domain by system id.
+     *  
+     * @param aSystemId the system id
+     * @return the domain or null if domain does not exist
+     */
+    public Domain findBySystemId(String aSystemId) {
+        for (Domain theDomain : this) {
+            if (aSystemId.equals(theDomain.getSystemId())) {
+                return theDomain;
+            }
+        }
+        return null;
+    }
 
 }

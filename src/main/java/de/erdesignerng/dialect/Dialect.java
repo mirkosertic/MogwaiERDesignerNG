@@ -29,7 +29,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:17:22 $
+ * @version $Date: 2008-06-15 10:57:04 $
  */
 public abstract class Dialect {
 
@@ -203,7 +203,7 @@ public abstract class Dialect {
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
             String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
             SQLException {
-        Class theDriverClass = aClassLoader.loadClass(aDriver);
+        Class<Driver> theDriverClass = (Class<Driver>) aClassLoader.loadClass(aDriver);
         Driver theDriver = (Driver) theDriverClass.newInstance();
 
         Properties theProperties = new Properties();
