@@ -37,7 +37,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2008-06-15 16:59:32 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -81,10 +81,12 @@ public class Model implements OwnedModelItemVerifier {
 
         modificationTracker.addTable(aTable);
 
-        ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
+        if (dialect != null) {
+            ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
 
-        for (Attribute theAttribute : aTable.getAttributes()) {
-            theAttribute.setName(dialect.checkName(theAttribute.getName()));
+            for (Attribute theAttribute : aTable.getAttributes()) {
+                theAttribute.setName(dialect.checkName(theAttribute.getName()));
+            }
         }
 
         aTable.setOwner(this);
@@ -395,7 +397,9 @@ public class Model implements OwnedModelItemVerifier {
      */
     public List<DataType> getAvailableDataTypes() {
         List<DataType> theResult = new ArrayList<DataType>();
-        theResult.addAll(dialect.getDataTypes());
+        if (dialect != null) {
+            theResult.addAll(dialect.getDataTypes());
+        }
         theResult.addAll(domains);
         Collections.sort(theResult);
         return theResult;

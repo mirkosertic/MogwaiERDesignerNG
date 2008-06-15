@@ -128,7 +128,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:32:42 $
+ * @version $Date: 2008-06-15 16:59:31 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -736,11 +736,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandAddTable(Point2D aPoint) {
 
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
-            return;
-        }
+//        if (model.getDialect() == null) {
+//            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
+//                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+//            return;
+//        }
 
         Table theTable = new Table();
         TableEditor theEditor = new TableEditor(model, scrollPane);
