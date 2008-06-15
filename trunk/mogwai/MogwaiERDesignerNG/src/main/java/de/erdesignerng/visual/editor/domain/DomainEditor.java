@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * The domain editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:32:43 $
+ * @version $Date: 2008-06-15 10:57:04 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -99,8 +99,11 @@ public class DomainEditor extends BaseEditor {
         initialize();
 
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
-        for (DataType theType : aModel.getDialect().getDataTypes()) {
-            theDataTypes.addElement(theType);
+        theDataTypes.addElement(DataType.UNDEFINED);
+        if (aModel.getDialect() != null) {
+            for (DataType theType : aModel.getDialect().getDataTypes()) {
+                theDataTypes.addElement(theType);
+            }
         }
 
         editingView.getDataType().setModel(theDataTypes);
@@ -114,14 +117,19 @@ public class DomainEditor extends BaseEditor {
 
         domainListModel = editingView.getDomainList().getModel();
         for (Domain theDomain : aModel.getDomains()) {
-            domainListModel.add(theDomain);
+            domainListModel.add(theDomain.clone());
         }
 
         model = aModel;
 
+        domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
+        domainBindingInfo.addBinding("attribute.size", editingView.getSizeSpinner());
+        domainBindingInfo.addBinding("attribute.fraction", editingView.getFractionSpinner());
+        domainBindingInfo.addBinding("attribute.scale", editingView.getScaleSpinner());
         domainBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
+        updateDomainEditFields();
     }
 
     /**
@@ -145,14 +153,6 @@ public class DomainEditor extends BaseEditor {
         setContentPane(editingView);
 
         pack();
-    }
-
-    public void initializeFor(Domain aDomain) {
-
-        domainBindingInfo.setDefaultModel(aDomain);
-        domainBindingInfo.model2view();
-
-        updateDomainEditFields();
     }
 
     private void commandOk() {
@@ -254,8 +254,12 @@ public class DomainEditor extends BaseEditor {
 
         for (int i = 0; i < domainListModel.getSize(); i++) {
             Domain theDomain = (Domain) domainListModel.get(i);
-            if (!model.getDomains().contains(theDomain)) {
+
+            Domain theOriginalDomain = model.getDomains().findBySystemId(theDomain.getSystemId());
+            if (theOriginalDomain == null) {
                 model.addDomain(theDomain);
+            } else {
+                theOriginalDomain.restoreFrom(theDomain);
             }
         }
     }

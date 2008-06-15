@@ -25,15 +25,33 @@ import de.erdesignerng.dialect.DataType;
  * A Domain. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:32:43 $
+ * @version $Date: 2008-06-15 10:57:04 $
  */
 public class Domain extends DataType implements LayoutProvider {
 
+    private String systemId = ModelUtilities.createSystemIdFor(this);
+    
     private Attribute attribute = new Attribute();
     
     public Domain() {
         super("", "", Types.OTHER);
     }
+    
+    /**
+     * @return the systemId
+     */
+    public String getSystemId() {
+        return systemId;
+    }
+
+    /**
+     * @param systemId the systemId to set
+     */
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
+
 
     /**
      * {@inheritDoc}
@@ -111,4 +129,27 @@ public class Domain extends DataType implements LayoutProvider {
     public String getLogicalDeclaration() {
         return getName();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Domain clone() {
+        Domain theDomain = new Domain();
+        theDomain.setSystemId(getSystemId());
+        theDomain.setName(getName());
+        theDomain.setAttribute(getAttribute().clone());
+        return theDomain;
+    }   
+
+    /**
+     * Restore the data from a clone.
+     * 
+     * @param aValue the clone
+     */
+    public void restoreFrom(Domain aValue) {
+        setName(aValue.getName());
+        setSystemId(aValue.getSystemId());
+        getAttribute().restoreFrom(aValue.getAttribute());
+    }    
 }
