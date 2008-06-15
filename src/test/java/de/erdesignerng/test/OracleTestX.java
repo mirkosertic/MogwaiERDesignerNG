@@ -30,7 +30,7 @@ import de.erdesignerng.model.Model;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-02 17:48:00 $
+ * @version $Date: 2008-06-15 17:53:54 $
  */
 public class OracleTestX extends BaseUseCases {
 
@@ -49,7 +49,7 @@ public class OracleTestX extends BaseUseCases {
     
     @Override
     public void setTextAttribute(Attribute aAttribute) {
-        aAttribute.setDatatype(model.getDialect().getDataTypeByName("VARCHAR2"));
+        aAttribute.setDatatype(model.getDialect().getDataTypes().findByName("VARCHAR2"));
         aAttribute.setSize(20);
     }    
     

@@ -19,10 +19,9 @@ package de.erdesignerng.plugins.squirrel.dialect;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
-import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -63,12 +62,7 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    public DataType getDataTypeByName(String aName) {
-        return dialect.getDataTypeByName(aName);
-    }
-
-    @Override
-    public List<DataType> getDataTypes() {
+    public DataTypeList getDataTypes() {
         return dialect.getDataTypes();
     }
 

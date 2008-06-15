@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * The domain editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 10:57:04 $
+ * @version $Date: 2008-06-15 17:53:55 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -99,11 +99,8 @@ public class DomainEditor extends BaseEditor {
         initialize();
 
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
-        theDataTypes.addElement(DataType.UNDEFINED);
-        if (aModel.getDialect() != null) {
-            for (DataType theType : aModel.getDialect().getDataTypes()) {
-                theDataTypes.addElement(theType);
-            }
+        for (DataType theType : aModel.getDomainDataTypes()) {
+            theDataTypes.addElement(theType);
         }
 
         editingView.getDataType().setModel(theDataTypes);
