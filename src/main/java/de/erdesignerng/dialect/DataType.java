@@ -29,7 +29,7 @@ import de.erdesignerng.model.Attribute;
  * A database data type.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:17:22 $
+ * @version $Date: 2008-06-15 10:57:04 $
  */
 public class DataType implements Comparable<DataType>, Serializable {
 
@@ -38,6 +38,8 @@ public class DataType implements Comparable<DataType>, Serializable {
     public static final String FRACTION_TOKEN = "$fraction";
 
     public static final String SCALE_TOKEN = "$scale";
+    
+    public static final DataType UNDEFINED = new DataType("UNDEFINED", "" , Types.OTHER);
 
     private static final int PRIME = 31;
 
@@ -96,6 +98,13 @@ public class DataType implements Comparable<DataType>, Serializable {
      */
     public String getName() {
         return name;
+    }
+    
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     protected String patternToType(Attribute aDomain) {

@@ -24,7 +24,7 @@ public class ReverseEngineerDataModel {
 
     private NameValuePair tableGenerator;
 
-    private List tableOptions = new ArrayList();
+    private List<Object> tableOptions = new ArrayList<Object>();
 
     /**
      * @return the tableGenerator
@@ -44,7 +44,7 @@ public class ReverseEngineerDataModel {
     /**
      * @return the tableOptions
      */
-    public List getTableOptions() {
+    public List<Object> getTableOptions() {
         return tableOptions;
     }
 
@@ -52,7 +52,7 @@ public class ReverseEngineerDataModel {
      * @param tableOptions
      *            the tableOptions to set
      */
-    public void setTableOptions(List tableOptions) {
+    public void setTableOptions(List<Object> tableOptions) {
         this.tableOptions = tableOptions;
     }
 

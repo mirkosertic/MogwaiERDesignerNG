@@ -19,6 +19,7 @@ package de.erdesignerng.test;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.Types;
 
 import junit.framework.TestCase;
 import de.erdesignerng.dialect.DataType;
@@ -89,7 +90,7 @@ public abstract class BaseUseCases extends TestCase {
     public abstract void setTextAttribute(Attribute aAttribute);
 
     public String getTypeName(int aIntValue) throws IllegalAccessException {
-        Class theClass = java.sql.Types.class;
+        Class<Types> theClass = java.sql.Types.class;
         for (Field theField : theClass.getFields()) {
             int theValue = theField.getInt(theClass);
             if (aIntValue == theValue) {

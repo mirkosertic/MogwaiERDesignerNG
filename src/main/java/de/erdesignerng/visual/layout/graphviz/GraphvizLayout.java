@@ -285,15 +285,14 @@ public class GraphvizLayout implements Layouter {
     private void setLabelPositions(Map<EdgeView, Point> aPositions) {
         Map<Object, Map> nestedAttributes = new HashMap<Object, Map>();
 
-        Collection keys = aPositions.keySet();
-        for (Object key : keys) {
+        Collection<EdgeView> keys = aPositions.keySet();
+        for (EdgeView key : keys) {
             Map editAttributes = new HashMap();
 
-            EdgeView edge = (EdgeView) key;
-            Point2D p = getRelativeLabelPosition(edge, aPositions.get(edge));
+            Point2D p = getRelativeLabelPosition(key, aPositions.get(key));
 
             GraphConstants.setLabelPosition(editAttributes, p);
-            nestedAttributes.put(edge.getCell(), editAttributes);
+            nestedAttributes.put(key.getCell(), editAttributes);
         }
         // finally applys the changed attributes
         graph.getGraphLayoutCache().edit(nestedAttributes);
