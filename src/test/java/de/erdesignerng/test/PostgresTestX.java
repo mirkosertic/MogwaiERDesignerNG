@@ -27,7 +27,7 @@ import de.erdesignerng.model.Model;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 19:38:18 $
+ * @version $Date: 2008-06-15 17:53:55 $
  */
 public class PostgresTestX extends BaseUseCases {
 
@@ -46,7 +46,7 @@ public class PostgresTestX extends BaseUseCases {
     
     @Override
     public void setTextAttribute(Attribute aAttribute) {
-        aAttribute.setDatatype(model.getDialect().getDataTypeByName("varchar"));
+        aAttribute.setDatatype(model.getDialect().getDataTypes().findByName("varchar"));
         aAttribute.setSize(20);
     }    
 }

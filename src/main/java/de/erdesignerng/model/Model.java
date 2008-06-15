@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
@@ -37,7 +38,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 16:59:32 $
+ * @version $Date: 2008-06-15 17:53:55 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -421,5 +422,19 @@ public class Model implements OwnedModelItemVerifier {
      */
     public void removeDomain(Domain aDomain) {
         domains.remove(aDomain);
+    }
+
+    /**
+     * Get the list of supported datatypes for domains.
+     * 
+     * @return the list of datatypes.
+     */
+    public DataTypeList getDomainDataTypes() {
+        DataTypeList theResult = new DataTypeList();
+        theResult.add(DataType.UNDEFINED);
+        if (dialect != null) {
+            theResult.addAll(dialect.getDataTypes());
+        }
+        return theResult;
     }
 }

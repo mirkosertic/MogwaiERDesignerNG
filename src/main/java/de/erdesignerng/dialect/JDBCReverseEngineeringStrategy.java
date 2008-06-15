@@ -38,7 +38,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2008-06-15 17:53:55 $
  * @param <T>
  *                the dialect
  */
@@ -116,7 +116,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     theAttribute.setComment(theColumnRemarks);
                 }
 
-                DataType theDataType = dialect.getDataTypeByName(convertColumnTypeToRealType(theTypeName));
+                DataType theDataType = dialect.getDataTypes().findByName(convertColumnTypeToRealType(theTypeName));
                 if (theDataType == null) {
                     throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for "
                             + aTableEntry.getTableName() + "." + theColumnName);

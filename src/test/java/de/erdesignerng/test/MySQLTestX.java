@@ -36,7 +36,7 @@ import de.erdesignerng.modificationtracker.VetoException;
  * Test for MySQL dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-08 20:38:54 $
+ * @version $Date: 2008-06-15 17:53:54 $
  */
 public class MySQLTestX extends BaseUseCases {
 
@@ -55,16 +55,16 @@ public class MySQLTestX extends BaseUseCases {
     
     @Override
     public void setTextAttribute(Attribute aAttribute) {
-        aAttribute.setDatatype(model.getDialect().getDataTypeByName("VARCHAR"));
+        aAttribute.setDatatype(model.getDialect().getDataTypes().findByName("VARCHAR"));
         aAttribute.setSize(20);
     }  
     
     public void setInt(Attribute aAttribute) {
-        aAttribute.setDatatype(model.getDialect().getDataTypeByName("INTEGER"));
+        aAttribute.setDatatype(model.getDialect().getDataTypes().findByName("INTEGER"));
     }      
 
     public void setLong(Attribute aAttribute) {
-        aAttribute.setDatatype(model.getDialect().getDataTypeByName("BIGINT"));
+        aAttribute.setDatatype(model.getDialect().getDataTypes().findByName("BIGINT"));
     }      
 
     /**

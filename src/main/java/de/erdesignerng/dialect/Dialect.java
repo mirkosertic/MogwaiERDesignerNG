@@ -20,16 +20,14 @@ package de.erdesignerng.dialect;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 10:57:04 $
+ * @version $Date: 2008-06-15 17:53:55 $
  */
 public abstract class Dialect {
 
@@ -51,7 +49,7 @@ public abstract class Dialect {
 
     private NameCastType castType;
 
-    private List<DataType> dataTypes = new ArrayList<DataType>();
+    private DataTypeList dataTypes = new DataTypeList();
 
     /**
      * @return the caseSensitive
@@ -259,19 +257,10 @@ public abstract class Dialect {
      * 
      * @return the list of datatypes
      */
-    public List<DataType> getDataTypes() {
+    public DataTypeList getDataTypes() {
         return dataTypes;
     }
 
-    public DataType getDataTypeByName(String aName) {
-        for (DataType aType : dataTypes) {
-            if (aType.getName().equalsIgnoreCase(aName)) {
-                return aType;
-            }
-        }
-        return null;
-    }
-    
     protected void seal() {
         Collections.sort(dataTypes);
     }
