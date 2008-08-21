@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual.layout.zest;
 
-import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 
 public class RadialZestLayouter extends ZestLayouter<RadialLayoutAlgorithm> {
 
