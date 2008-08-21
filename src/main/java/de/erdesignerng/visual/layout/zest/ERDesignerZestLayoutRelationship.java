@@ -1,9 +1,9 @@
 package de.erdesignerng.visual.layout.zest;
 
-import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
-import org.eclipse.mylyn.zest.layouts.dataStructures.BendPoint;
+import org.eclipse.zest.layouts.LayoutBendPoint;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.dataStructures.BendPoint;
 
 public class ERDesignerZestLayoutRelationship implements LayoutRelationship {
 
@@ -13,6 +13,8 @@ public class ERDesignerZestLayoutRelationship implements LayoutRelationship {
     private Object layoutInformation;
     
     private LayoutBendPoint[] bendPoints;
+    
+    private Object graphData;
     
     public void populateLayoutConstraint(LayoutConstraint aConstraints) {
     }
@@ -75,5 +77,13 @@ public class ERDesignerZestLayoutRelationship implements LayoutRelationship {
 
     public void clearBendPoints() {
         bendPoints = new BendPoint[0];
+    }
+
+    public Object getGraphData() {
+        return graphData;
+    }
+
+    public void setGraphData(Object graphData) {
+        this.graphData = graphData;
     }
 }

@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual.layout.zest;
 
-import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
 public class GridZestLayouter extends ZestLayouter<GridLayoutAlgorithm> {
 
