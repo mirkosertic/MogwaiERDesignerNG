@@ -22,10 +22,10 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressEvent;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.progress.ProgressEvent;
+import org.eclipse.zest.layouts.progress.ProgressListener;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphModel;

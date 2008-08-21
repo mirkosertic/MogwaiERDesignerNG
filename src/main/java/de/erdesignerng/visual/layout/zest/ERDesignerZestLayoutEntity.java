@@ -17,8 +17,8 @@
  */
 package de.erdesignerng.visual.layout.zest;
 
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 import de.erdesignerng.visual.cells.TableCell;
 
@@ -35,6 +35,8 @@ public class ERDesignerZestLayoutEntity implements LayoutEntity {
     private Object layoutInformation;
     
     private TableCell cell;
+    
+    private Object graphData;
 
     public void populateLayoutConstraint(LayoutConstraint aConstraint) {
     }
@@ -140,5 +142,13 @@ public class ERDesignerZestLayoutEntity implements LayoutEntity {
      */
     public void setCell(TableCell cellView) {
         this.cell = cellView;
+    }
+
+    public Object getGraphData() {
+        return graphData;
+    }
+
+    public void setGraphData(Object graphData) {
+        this.graphData = graphData;
     }
 }
