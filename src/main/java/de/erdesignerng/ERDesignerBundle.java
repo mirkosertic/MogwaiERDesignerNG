@@ -305,4 +305,8 @@ public interface ERDesignerBundle {
   String DOMAINEDITOR = "DOMAINEDITOR";
   /** . */
   String COMMENT = "COMMENT";
+  /** The exporting table needs to have a primary key. */
+  String EXPORTINGTABLENEEDSPRIMARYKEY = "EXPORTINGTABLENEEDSPRIMARYKEY";
+  /** Cannot delete element from model : {0}. */
+  String CANNOTDELETEMODELITEM = "CANNOTDELETEMODELITEM";
 }

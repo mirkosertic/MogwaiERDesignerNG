@@ -32,17 +32,14 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.Port;
 import org.jgraph.graph.PortView;
 
-import de.erdesignerng.model.Relation;
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
-import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
-import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.editor.relation.RelationEditor;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:43 $
+ * @version $Date: 2008-09-23 18:13:28 $
  */
 public class RelationTool extends BaseTool {
 
@@ -172,26 +169,12 @@ public class RelationTool extends BaseTool {
         GraphCell theSourceCell = (GraphCell) ((DefaultPort) aSource).getParent();
         GraphCell theTargetCell = (GraphCell) ((DefaultPort) aTarget).getParent();
         if ((theSourceCell instanceof TableCell) && (theTargetCell instanceof TableCell)) {
-            Table theSourceTable = (Table) ((TableCell) theSourceCell).getUserObject();
+
             Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
-
-            Relation theRelation = new Relation();
-            theRelation.setImportingTable(theSourceTable);
-            theRelation.setExportingTable(theTargetTable);
-
-            RelationEditor theEditor = new RelationEditor(theSourceTable.getOwner(), graph);
-            theEditor.initializeFor(theRelation);
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-                RelationEdge theEdge = new RelationEdge(theRelation, (TableCell) theSourceCell,
-                        (TableCell) theTargetCell);
-
-                try {
-                    theEditor.applyValues();
-                    graph.getGraphLayoutCache().insert(theEdge);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (theTargetTable.hasPrimaryKey()) {
+                graph.commandNewRelation(theSourceCell, theTargetCell);
+            } else {
+                displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.EXPORTINGTABLENEEDSPRIMARYKEY));
             }
         }
     }

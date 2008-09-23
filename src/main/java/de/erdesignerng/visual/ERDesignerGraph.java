@@ -25,6 +25,7 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
+import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
@@ -39,19 +40,21 @@ import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
+import de.erdesignerng.visual.editor.DialogConstants;
+import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.tools.BaseTool;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-09-23 18:13:29 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
     private Model model;
-    
+
     private boolean displayComments;
-    
+
     private boolean physicalLayout;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
@@ -122,8 +125,8 @@ public abstract class ERDesignerGraph extends JGraph {
                             }
                         }
                     }
-                    
-                    getDBModel().removeTable(theTable);                    
+
+                    getDBModel().removeTable(theTable);
                 }
             }
         }
@@ -132,9 +135,10 @@ public abstract class ERDesignerGraph extends JGraph {
     }
 
     /**
-     * Add a new taböe to the model. 
+     * Add a new taböe to the model.
      * 
-     * @param aPoint the location
+     * @param aPoint
+     *                the location
      */
     public abstract void commandNewTable(Point2D aPoint);
 
@@ -142,7 +146,7 @@ public abstract class ERDesignerGraph extends JGraph {
      * Create a new subject area for a set of cells.
      * 
      * @param aCells
-     *            the cells to add to the subject area
+     *                the cells to add to the subject area
      */
     public void commandAddToNewSubjectArea(List<TableCell> aCells) {
 
@@ -166,12 +170,13 @@ public abstract class ERDesignerGraph extends JGraph {
     }
 
     /**
-     * @param displayComments the displayComments to set
+     * @param displayComments
+     *                the displayComments to set
      */
     public void setDisplayComments(boolean displayComments) {
         this.displayComments = displayComments;
     }
-    
+
     /**
      * Gibt den Wert des Attributs <code>physicalLayout</code> zurück.
      * 
@@ -184,16 +189,48 @@ public abstract class ERDesignerGraph extends JGraph {
     /**
      * Setzt den Wert des Attributs <code>physicalLayout</code>.
      * 
-     * @param physicalLayout Wert für das Attribut physicalLayout.
+     * @param physicalLayout
+     *                Wert für das Attribut physicalLayout.
      */
     public void setPhysicalLayout(boolean physicalLayout) {
         this.physicalLayout = physicalLayout;
     }
 
     /**
-     * Add a new comment to the model. 
+     * Add a new comment to the model.
      * 
-     * @param aLocation the location
+     * @param aLocation
+     *                the location
      */
     public abstract void commandNewComment(Point2D aLocation);
+
+    /**
+     * Add a new relation to the model.
+     * 
+     * @param theSourceCell
+     * @param theTargetCell
+     */
+    public void commandNewRelation(GraphCell theSourceCell, GraphCell theTargetCell) {
+
+        Table theSourceTable = (Table) ((TableCell) theSourceCell).getUserObject();
+        Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
+
+        Relation theRelation = new Relation();
+        theRelation.setImportingTable(theSourceTable);
+        theRelation.setExportingTable(theTargetTable);
+
+        RelationEditor theEditor = new RelationEditor(theSourceTable.getOwner(), this);
+        theEditor.initializeFor(theRelation);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+
+            RelationEdge theEdge = new RelationEdge(theRelation, (TableCell) theSourceCell, (TableCell) theTargetCell);
+
+            try {
+                theEditor.applyValues();
+                getGraphLayoutCache().insert(theEdge);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
