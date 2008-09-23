@@ -38,7 +38,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 22:24:24 $
+ * @version $Date: 2008-09-23 18:13:28 $
  */
 public class HandTool extends BaseTool {
 
@@ -82,9 +82,7 @@ public class HandTool extends BaseTool {
                     try {
                         graph.commandDeleteCells(aCells);
                     } catch (VetoException ex) {
-
-                        // TODO [mirkosertic] add better error handling here
-                        displayErrorMessage("Cannot delete model entry : " + ex.getMessage());
+                        displayErrorMessage(getResourceHelper().getFormattedText(ERDesignerBundle.CANNOTDELETEMODELITEM, ex.getMessage()));
                     }
                 }
             }

@@ -23,7 +23,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-08 12:58:05 $
+ * @version $Date: 2008-09-23 18:13:28 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -35,11 +35,13 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
      * Add an attribute to the table.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aAttribute
-     *            the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException is thrown in case of an error
+     *                the table
+     * @throws ElementAlreadyExistsException
+     *                 is thrown in case of an error
+     * @throws ElementInvalidNameException
+     *                 is thrown in case of an error
      */
     public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
             ElementInvalidNameException {
@@ -54,11 +56,13 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
      * Add an index to the table.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aIndex
-     *            the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException is thrown in case of an error
+     *                the table
+     * @throws ElementAlreadyExistsException
+     *                 is thrown in case of an error
+     * @throws ElementInvalidNameException
+     *                 is thrown in case of an error
      */
     public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
@@ -147,5 +151,18 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
             }
         }
         return null;
+    }
+
+    /**
+     * Test if the Table has a primary key.
+     * 
+     * @return true if yes, wlese false
+     */
+    public boolean hasPrimaryKey() {
+        Index theIndex = getPrimarykey();
+        if (theIndex != null) {
+            return theIndex.getAttributes().size() > 0;
+        }
+        return false;
     }
 }

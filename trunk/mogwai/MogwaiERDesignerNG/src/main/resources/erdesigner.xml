@@ -603,5 +603,13 @@
 		<Entry id="COMMENT">
 			<Icon>/de/erdesignerng/icons/comment_add.gif</Icon>
 		</Entry>
+		<Entry id="EXPORTINGTABLENEEDSPRIMARYKEY">
+			<Text lang="de">Die exportierende Tabelle muss einen Primmärschlüsse haben!</Text>		
+			<Text lang="en">The exporting table needs to have a primary key</Text>					
+		</Entry>
+		<Entry id="CANNOTDELETEMODELITEM">
+			<Text lang="de">Element kann nicht aus dem Model gelöscht werden : {0}</Text>		
+			<Text lang="en">Cannot delete element from model : {0}</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
