@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-09-23 18:20:58 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -55,8 +55,23 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(new PostgresDataType("timetz", "", java.sql.Types.TIME));
         registerType(new PostgresDataType("bit", "", java.sql.Types.BIT));
         registerType(new PostgresDataType("numeric", "$size,$fraction", java.sql.Types.NUMERIC));
+
+        // Patch [ 2124875 ] Add Postgres data types
+        registerType(new PostgresDataType("char", "$size", java.sql.Types.CHAR));
+        registerType(new PostgresDataType("character", "$size", java.sql.Types.CHAR));
+        registerType(new PostgresDataType("boolean", "", java.sql.Types.BOOLEAN));
+        registerType(new PostgresDataType("interval", "", java.sql.Types.TIMESTAMP));
+        registerType(new PostgresDataType("smallint", "", java.sql.Types.SMALLINT));
+        registerType(new PostgresDataType("integer", "", java.sql.Types.INTEGER));
+
+        registerType(new PostgresDataType("bigint", "", java.sql.Types.BIGINT));
+        registerType(new PostgresDataType("real", "", java.sql.Types.REAL));
+        registerType(new PostgresDataType("double precision", "", java.sql.Types.DOUBLE));
         
-        seal();        
+        //TODO [mirkosertic] Check for JDBC3 compliance
+        //registerType(new PostgresDataType("xml", "", java.sql.Types.SQLXML));
+
+        seal();
     }
 
     /**
