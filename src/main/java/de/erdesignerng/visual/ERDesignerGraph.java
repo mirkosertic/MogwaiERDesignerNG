@@ -47,7 +47,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-09-23 18:13:29 $
+ * @version $Date: 2008-11-01 18:38:33 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
@@ -56,6 +56,8 @@ public abstract class ERDesignerGraph extends JGraph {
     private boolean displayComments;
 
     private boolean physicalLayout;
+    
+    private DisplayLevel displayLevel;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
@@ -232,5 +234,19 @@ public abstract class ERDesignerGraph extends JGraph {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * @return the displayLevel
+     */
+    public DisplayLevel getDisplayLevel() {
+        return displayLevel;
+    }
+
+    /**
+     * @param displayLevel the displayLevel to set
+     */
+    public void setDisplayLevel(DisplayLevel displayLevel) {
+        this.displayLevel = displayLevel;
     }
 }

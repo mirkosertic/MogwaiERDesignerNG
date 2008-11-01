@@ -76,6 +76,7 @@ import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.RecentlyUsedConnection;
+import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.MessagesHelper;
@@ -119,6 +120,7 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
+import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
@@ -128,7 +130,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 16:59:31 $
+ * @version $Date: 2008-11-01 18:38:32 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -248,7 +250,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private File currentEditingFile;
 
     private DefaultAction dbConnectionAction;
-    
+
     private DefaultAction domainsAction;
 
     private DefaultAction entityAction;
@@ -338,6 +340,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction displayGridAction;
 
     private DefaultCheckboxMenuItem displayGridMenuItem;
+
+    private DefaultAction displayLevelAction;
+
+    private DefaultRadioButtonMenuItem displayAllMenuItem;
+
+    private DefaultAction displayAllAction;
+
+    private DefaultAction displayPKOnlyAction;
+
+    private DefaultAction displayPKAndFK;
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
@@ -628,7 +640,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (addSeparator) {
             theDBMenu.addSeparator();
         }
-        
+
         theDBMenu.add(domainsAction);
         theDBMenu.addSeparator();
 
@@ -664,6 +676,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }, this, ERDesignerBundle.DISPLAYCOMMENTS);
 
         displayCommentsMenuItem = new DefaultCheckboxMenuItem(displayCommentsAction);
+        displayCommentsMenuItem.setSelected(true);
         theViewMenu.add(displayCommentsMenuItem);
 
         displayGridAction = new DefaultAction(new ActionEventProcessor() {
@@ -677,6 +690,48 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         displayGridMenuItem = new DefaultCheckboxMenuItem(displayGridAction);
         theViewMenu.add(displayGridMenuItem);
+
+        DefaultMenu theDisplayLevelMenu = new DefaultMenu(this, ERDesignerBundle.DISPLAYLEVEL);
+        theViewMenu.add(theDisplayLevelMenu);
+
+        displayAllAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetDisplayLevel(DisplayLevel.ALL);
+            }
+
+        }, this, ERDesignerBundle.DISPLAYALL);
+
+        displayPKOnlyAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY);
+            }
+
+        }, this, ERDesignerBundle.DISPLAYPRIMARYKEY);
+
+        displayPKAndFK = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS);
+            }
+
+        }, this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
+
+        displayAllMenuItem = new DefaultRadioButtonMenuItem(displayAllAction);
+        DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(displayPKOnlyAction);
+        DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(displayPKAndFK);
+
+        ButtonGroup theDisplayLevelGroup = new ButtonGroup();
+        theDisplayLevelGroup.add(displayAllMenuItem);
+        theDisplayLevelGroup.add(thePKOnlyItem);
+        theDisplayLevelGroup.add(thePKAndFKItem);
+
+        theDisplayLevelMenu.add(displayAllMenuItem);
+        theDisplayLevelMenu.add(thePKOnlyItem);
+        theDisplayLevelMenu.add(thePKAndFKItem);
+
+        UIInitializer.getInstance().initialize(theDisplayLevelMenu);
 
         theViewMenu.addSeparator();
 
@@ -736,11 +791,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandAddTable(Point2D aPoint) {
 
-//        if (model.getDialect() == null) {
-//            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-//                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
-//            return;
-//        }
+        // if (model.getDialect() == null) {
+        // MessagesHelper.displayErrorMessage(graph,
+        // getResourceHelper().getText(
+        // ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+        // return;
+        // }
 
         Table theTable = new Table();
         TableEditor theEditor = new TableEditor(model, scrollPane);
@@ -865,7 +921,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Edit the domains. 
+     * Edit the domains.
      */
     protected void commandEditDomains() {
         DomainEditor theEditor = new DomainEditor(model, scrollPane);
@@ -1269,6 +1325,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         commandSetDisplayGridState(displayGridMenuItem.isSelected());
         commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
 
+        displayAllMenuItem.setSelected(true);
+
         refreshPreferences(preferences);
 
         scrollPane.getViewport().removeAll();
@@ -1487,11 +1545,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
-        for (CellView theView : layoutCache.getCellViews()) {
-            graph.updateAutoSize(theView);
-        }
-        graph.invalidate();
-        graph.repaint();
+        repaintGraph();
     }
 
     /**
@@ -1503,9 +1557,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
         graph.setGridVisible(aState);
-
-        graph.invalidate();
-        graph.repaint();
+        repaintGraph();
     }
 
     /**
@@ -1516,8 +1568,26 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
+        repaintGraph();
+    }
 
+    protected void commandSetDisplayLevel(DisplayLevel aLevel) {
+        graph.setDisplayLevel(aLevel);
+        repaintGraph();
+    }
+
+    /**
+     * Repaint the current graph.
+     */
+    protected void repaintGraph() {
+        for (CellView theView : layoutCache.getCellViews()) {
+            graph.updateAutoSize(theView);
+        }
         graph.invalidate();
         graph.repaint();
+        if (graph.getParent() != null) {
+            graph.getParent().invalidate();
+            graph.getParent().repaint();
+        }
     }
 }
