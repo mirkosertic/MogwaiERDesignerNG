@@ -309,4 +309,12 @@ public interface ERDesignerBundle {
   String EXPORTINGTABLENEEDSPRIMARYKEY = "EXPORTINGTABLENEEDSPRIMARYKEY";
   /** Cannot delete element from model : {0}. */
   String CANNOTDELETEMODELITEM = "CANNOTDELETEMODELITEM";
+  /** Display level. */
+  String DISPLAYLEVEL = "DISPLAYLEVEL";
+  /** All. */
+  String DISPLAYALL = "DISPLAYALL";
+  /** Primary keys only. */
+  String DISPLAYPRIMARYKEY = "DISPLAYPRIMARYKEY";
+  /** Primary- and foreign keys. */
+  String DISPLAYPRIMARYKEYANDFOREIGNKEY = "DISPLAYPRIMARYKEYANDFOREIGNKEY";
 }

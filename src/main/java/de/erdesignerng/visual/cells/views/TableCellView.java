@@ -41,6 +41,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.cells.TableCell;
@@ -49,7 +50,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-01 18:38:33 $
  */
 public class TableCellView extends VertexView {
 
@@ -78,6 +79,8 @@ public class TableCellView extends VertexView {
         private boolean includeComments = false;
 
         private boolean physicalLayout = true;
+
+        private DisplayLevel displayLevel;
 
         private static ImageIcon key = IconFactory.getKeyIcon();
 
@@ -199,45 +202,51 @@ public class TableCellView extends VertexView {
                 }
             }
 
-            // Only do the following if there are any not primary key attributes
-            if (theAllAttributes.size() > 0) {
+            if (DisplayLevel.ALL.equals(displayLevel) || (DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS.equals(displayLevel))) {
 
-                // This line is only neccesary in case that there are PK
+                // Only do the following if there are any not primary key
                 // attributes
-                if (hasPrimaryKey) {
+                if (theAllAttributes.size() > 0) {
 
-                    // Draw the border line
-                    aGraphics.setColor(Color.black);
-                    aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
-                }
+                    // This line is only neccesary in case that there are PK
+                    // attributes
+                    if (hasPrimaryKey) {
 
-                // Draw the attributes
-                for (Attribute theAttribute : theAllAttributes) {
+                        // Draw the border line
+                        aGraphics.setColor(Color.black);
+                        aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
+                    }
 
-                    boolean isFK = theAttribute.isForeignKey();
+                    // Draw the attributes
+                    for (Attribute theAttribute : theAllAttributes) {
 
-                    theString = getConvertedName(theAttribute);
+                        if (DisplayLevel.ALL.equals(displayLevel) || (theAttribute.isForeignKey())) {
+                            boolean isFK = theAttribute.isForeignKey();
 
-                    theString += " : ";
+                            theString = getConvertedName(theAttribute);
 
-                    if (physicalLayout) {
-                        theString += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+                            theString += " : ";
 
-                        if (theAttribute.getExtra() != null) {
-                            theString += " ";
-                            theString += theAttribute.getExtra();
+                            if (physicalLayout) {
+                                theString += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+
+                                if (theAttribute.getExtra() != null) {
+                                    theString += " ";
+                                    theString += theAttribute.getExtra();
+                                }
+                            } else {
+                                theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
+                            }
+                            if (isFK) {
+                                theString += " (FK)";
+                            }
+
+                            aGraphics.setColor(isFK ? Color.red : Color.black);
+
+                            aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
+                            theYOffset += theMetrics.getHeight();
                         }
-                    } else {
-                        theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
                     }
-                    if (isFK) {
-                        theString += " (FK)";
-                    }
-
-                    aGraphics.setColor(isFK ? Color.red : Color.black);
-
-                    aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
-                    theYOffset += theMetrics.getHeight();
                 }
             }
 
@@ -307,32 +316,37 @@ public class TableCellView extends VertexView {
                 }
             }
 
-            for (Attribute theAttribute : theAllAttributes) {
+            if (DisplayLevel.ALL.equals(displayLevel) || (DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS.equals(displayLevel))) {
+                for (Attribute theAttribute : theAllAttributes) {
 
-                String theText = getConvertedName(theAttribute);
-                theText += " : ";
+                    if (DisplayLevel.ALL.equals(displayLevel) || (theAttribute.isForeignKey())) {
 
-                if (physicalLayout) {
-                    theText += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+                        String theText = getConvertedName(theAttribute);
+                        theText += " : ";
 
-                    if (theAttribute.getExtra() != null) {
-                        theText += " ";
-                        theText += theAttribute.getLayoutProvider().getExtra();
+                        if (physicalLayout) {
+                            theText += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+
+                            if (theAttribute.getExtra() != null) {
+                                theText += " ";
+                                theText += theAttribute.getLayoutProvider().getExtra();
+                            }
+                        } else {
+                            theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
+                        }
+
+                        if (theAttribute.isForeignKey()) {
+                            theText += " (FK)";
+                        }
+
+                        theLength = theMetrics.stringWidth(theText);
+                        if (theLength + theXTextOffset > theMaxX) {
+                            theMaxX = theLength + theXTextOffset;
+                        }
+
+                        theYOffset += theMetrics.getHeight();
                     }
-                } else {
-                    theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
                 }
-
-                if (theAttribute.isForeignKey()) {
-                    theText += " (FK)";
-                }
-
-                theLength = theMetrics.stringWidth(theText);
-                if (theLength + theXTextOffset > theMaxX) {
-                    theMaxX = theLength + theXTextOffset;
-                }
-
-                theYOffset += theMetrics.getHeight();
             }
 
             theYOffset += 8;
@@ -363,6 +377,7 @@ public class TableCellView extends VertexView {
             ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
             includeComments = theGraph.isDisplayComments();
             physicalLayout = theGraph.isPhysicalLayout();
+            displayLevel = theGraph.getDisplayLevel();
 
             return this;
         }

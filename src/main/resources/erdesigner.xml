@@ -611,5 +611,21 @@
 			<Text lang="de">Element kann nicht aus dem Model gelöscht werden : {0}</Text>		
 			<Text lang="en">Cannot delete element from model : {0}</Text>					
 		</Entry>
+		<Entry id="DISPLAYLEVEL">
+			<Text lang="de">Anzeigetiefe</Text>		
+			<Text lang="en">Display level</Text>					
+		</Entry>
+		<Entry id="DISPLAYALL">
+			<Text lang="de">Alles</Text>		
+			<Text lang="en">All</Text>					
+		</Entry>
+		<Entry id="DISPLAYPRIMARYKEY">
+			<Text lang="de">Nur Primärschlüssel</Text>		
+			<Text lang="en">Primary keys only</Text>					
+		</Entry>
+		<Entry id="DISPLAYPRIMARYKEYANDFOREIGNKEY">
+			<Text lang="de">Primär- und Fremdschlüssel</Text>		
+			<Text lang="en">Primary- and foreign keys</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

@@ -120,3 +120,7 @@ Release 1.5
 * Bug Fixing 1978355 [ERDesignerNG] string default values on MySQL
 * Bug Fixing 2070251 [ERDesignerNG] Lack of primary key causes exception
 * Applied patch 2124875 [ERDesignerNG] Add Postgres data types
+
+Release 1.6
+
+* Implemented FR 2184481 Allow specifying table fields to show after rev. engineering
