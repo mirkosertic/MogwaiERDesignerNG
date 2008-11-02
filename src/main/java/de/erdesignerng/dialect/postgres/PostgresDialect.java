@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-09-23 18:20:58 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -112,5 +112,10 @@ public class PostgresDialect extends SQL92Dialect {
     @Override
     public PostgresSQLGenerator createSQLGenerator() {
         return new PostgresSQLGenerator(this);
+    }
+
+    @Override
+    public Class getHibernateDialectClass() {
+        return org.hibernate.dialect.PostgreSQLDialect.class;
     }
 }

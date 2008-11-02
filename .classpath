@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="target-eclipse/classes" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" output="target-eclipse/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="maven.type" value="test"/>

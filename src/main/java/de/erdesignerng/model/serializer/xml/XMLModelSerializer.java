@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.model.serializer.xml;
 
 import java.util.Map;
 
@@ -33,11 +33,11 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 17:53:55 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
-public class ModelSerializer extends Serializer {
+public class XMLModelSerializer extends XMLSerializer {
     
-    public static final ModelSerializer SERIALIZER = new ModelSerializer();
+    public static final XMLModelSerializer SERIALIZER = new XMLModelSerializer();
     
     protected static final String MODEL = "Model";
 
@@ -81,27 +81,27 @@ public class ModelSerializer extends Serializer {
 
         Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
         for (Domain theTable : aModel.getDomains()) {
-            DomainSerializer.SERIALIZER.serialize(theTable, aDocument, theDomainsElement);
+            XMLDomainSerializer.SERIALIZER.serialize(theTable, aDocument, theDomainsElement);
         }
         
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
-            TableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
+            XMLTableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
         }
 
         Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
         for (Relation theRelation : aModel.getRelations()) {
-            RelationSerializer.SERIALIZER.serialize(theRelation, aDocument, theRelationsElement);
+            XMLRelationSerializer.SERIALIZER.serialize(theRelation, aDocument, theRelationsElement);
         }
 
         Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
-            SubjectAreaSerializer.SERIALIZER.serialize(theSubjectArea, aDocument, theSubjectAreasElement);
+            XMLSubjectAreaSerializer.SERIALIZER.serialize(theSubjectArea, aDocument, theSubjectAreasElement);
         }
         
         Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
         for (Comment theComment : aModel.getComments()) {
-            CommentSerializer.SERIALIZER.serialize(theComment, aDocument, theCommentsElement);
+            XMLCommentSerializer.SERIALIZER.serialize(theComment, aDocument, theCommentsElement);
         }
     }
     
@@ -127,11 +127,11 @@ public class ModelSerializer extends Serializer {
             }
         }
 
-        DomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);        
-        TableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        RelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        CommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        SubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        XMLDomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);        
+        XMLTableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        XMLRelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        XMLCommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        XMLSubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         
         return theModel;
     }

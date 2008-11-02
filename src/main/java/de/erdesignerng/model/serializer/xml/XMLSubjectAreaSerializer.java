@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.model.serializer.xml;
 
 import java.awt.Color;
 
@@ -31,11 +31,11 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
-public class SubjectAreaSerializer extends Serializer {
+public class XMLSubjectAreaSerializer extends XMLSerializer {
 
-    public static final SubjectAreaSerializer SERIALIZER = new SubjectAreaSerializer();
+    public static final XMLSubjectAreaSerializer SERIALIZER = new XMLSubjectAreaSerializer();
 
     public static final String SUBJECTAREA = "Subjectarea";
 

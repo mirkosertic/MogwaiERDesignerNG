@@ -160,4 +160,9 @@ public class SquirrelDialect extends Dialect {
     public String toString() {
         return dialect.toString();
     }
+
+    @Override
+    public Class getHibernateDialectClass() {
+        return dialect.getHibernateDialectClass();
+    }
 }

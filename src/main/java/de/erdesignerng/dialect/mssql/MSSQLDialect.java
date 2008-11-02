@@ -23,7 +23,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
 public class MSSQLDialect extends SQL92Dialect {
 
@@ -109,5 +109,10 @@ public class MSSQLDialect extends SQL92Dialect {
     @Override
     public MSSQLSQLGenerator createSQLGenerator() {
         return new MSSQLSQLGenerator(this);
+    }
+    
+    @Override
+    public Class getHibernateDialectClass() {
+        return org.hibernate.dialect.SQLServerDialect.class;
     }
 }
