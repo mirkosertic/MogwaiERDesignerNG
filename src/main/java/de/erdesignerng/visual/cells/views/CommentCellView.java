@@ -34,6 +34,7 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.Comment;
+import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
 
@@ -41,7 +42,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
  * View for comment cells.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-02 10:05:43 $
  */
 public class CommentCellView extends VertexView {
 
@@ -58,23 +59,30 @@ public class CommentCellView extends VertexView {
 
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
+        private static final Dimension NULL_DIMENSION = new Dimension(0, 0);
+
         private JTextArea textarea = new JTextArea();
-        
+
         private boolean selected;
-        
+
+        private boolean visible;
+
         public MyRenderer() {
             textarea.setFont(textarea.getFont().deriveFont(Font.BOLD));
             textarea.setOpaque(false);
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public Dimension getPreferredSize() {
-            Dimension theSize = textarea.getPreferredSize();
-            
-            return new Dimension(theSize.width + 20, theSize.height + 20);
+            if (visible) {
+                Dimension theSize = textarea.getPreferredSize();
+
+                return new Dimension(theSize.width + 20, theSize.height + 20);
+            }
+            return NULL_DIMENSION;
         }
 
         /**
@@ -82,14 +90,17 @@ public class CommentCellView extends VertexView {
          */
         @Override
         public void paint(Graphics aGraphics) {
-            Dimension theSize = getSize();
-            
-            aGraphics.setColor(selected ? Color.blue : Color.gray);
-            aGraphics.drawRoundRect(0, 0, theSize.width - 1, theSize.height - 1, 10, 10);
-            
-            textarea.setSize(new Dimension(theSize.width - 20, theSize.height - 20));
-            aGraphics.translate(10, 10);
-            textarea.paint(aGraphics);
+
+            if (visible) {
+                Dimension theSize = getSize();
+
+                aGraphics.setColor(selected ? Color.blue : Color.gray);
+                aGraphics.drawRoundRect(0, 0, theSize.width - 1, theSize.height - 1, 10, 10);
+
+                textarea.setSize(new Dimension(theSize.width - 20, theSize.height - 20));
+                aGraphics.translate(10, 10);
+                textarea.paint(aGraphics);
+            }
         }
 
         /**
@@ -99,11 +110,14 @@ public class CommentCellView extends VertexView {
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
 
+            ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
+
             CommentCellView theView = (CommentCellView) aView;
             Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
             textarea.setText(theComment.getComment());
             selected = aSelected;
-            
+            visible = theGraph.isDisplayComments();
+
             return this;
         }
     }
