@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="de.erdesignerng.model.serializer.dictionary.entities"
+	default-lazy="false">
+
+	<class name="IndexEntity" table="mogdict_indexes" select-before-update="true">
+
+		<id name="systemId" >
+			<generator class="assigned" />
+		</id>
+		
+		<version name="version"/>
+		
+		<property name="creationUser" not-null="false"/>
+		<property name="creationDate" not-null="false"/>
+		<property name="lastModificationUser" not-null="false"/>
+		<property name="lastModificationDate" not-null="false"/>
+
+		<property name="name" not-null="true"/>
+		<property name="comment" not-null="false"/>
+		
+		<property name="type" not-null="true"/>
+		
+		<list name="attributes" cascade="all-delete-orphan" table="mogdict_indexes_attr">
+			<key column="indexid" />
+			<list-index column="listindex" />
+			<element column="attributeid" type="string" />
+		</list>
+
+	</class>
+</hibernate-mapping>

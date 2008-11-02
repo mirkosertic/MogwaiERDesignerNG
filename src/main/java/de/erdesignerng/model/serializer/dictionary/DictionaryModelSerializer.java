@@ -28,6 +28,7 @@ import org.hibernate.cfg.Environment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.dictionary.entities.AttributeEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.DomainEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.IndexEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
 
 /**
@@ -44,6 +45,7 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         theConfiguration.addClass(DomainEntity.class);
         theConfiguration.addClass(TableEntity.class);
         theConfiguration.addClass(AttributeEntity.class);
+        theConfiguration.addClass(IndexEntity.class);
         theConfiguration.setProperty(Environment.DIALECT, aModel.getDialect().getHibernateDialectClass().getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());
