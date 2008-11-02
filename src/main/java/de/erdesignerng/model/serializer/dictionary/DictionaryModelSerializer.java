@@ -21,6 +21,7 @@ import java.sql.Connection;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 
@@ -34,7 +35,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
  * 
  * @author msertic
  */
-public class DictionaryModelSerializer {
+public class DictionaryModelSerializer extends DictionarySerializer {
 
     public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
 
@@ -57,14 +58,30 @@ public class DictionaryModelSerializer {
         return theSessionFactory.openSession(aConnection, AuditInterceptor.INSTANCE);
     }
 
-    public void serialize(Model aModel, Connection aConnection) {
+    public void serialize(Model aModel, Connection aConnection) throws Exception {
 
         ThreadbasedConnectionProvider.initializeForThread(aConnection);
+        Session theSession = null;
+        Transaction theTx = null;
         try {
 
-            Session theSession = createSession(aModel, aConnection);
-
+            theSession = createSession(aModel, aConnection);    
+            theTx = theSession.beginTransaction();
+            
+            DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession);
+            
+            theTx.commit();
+            
+        } catch (Exception e) {
+            theTx.rollback();
+            
+            throw e;
         } finally {
+
+            if (theSession != null) {
+                theSession.close();
+            }
+            
             ThreadbasedConnectionProvider.cleanup();
         }
 

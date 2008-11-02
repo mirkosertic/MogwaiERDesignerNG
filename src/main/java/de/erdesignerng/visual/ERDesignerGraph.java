@@ -48,7 +48,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 10:05:43 $
+ * @version $Date: 2008-11-02 15:53:47 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
@@ -210,8 +210,8 @@ public abstract class ERDesignerGraph extends JGraph {
     /**
      * Add a new relation to the model.
      * 
-     * @param theSourceCell
-     * @param theTargetCell
+     * @param theSourceCell the source
+     * @param theTargetCell the target
      */
     public void commandNewRelation(GraphCell theSourceCell, GraphCell theTargetCell) {
 
