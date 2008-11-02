@@ -27,7 +27,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 17:53:55 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
 public abstract class Dialect {
 
@@ -295,4 +295,11 @@ public abstract class Dialect {
     public String getStringSeparatorChars() {
         return "'";
     }
+
+    /**
+     * Get the hibernate dialect class for this dialect.
+     * 
+     * @return the class
+     */
+    public abstract Class getHibernateDialectClass();
 }

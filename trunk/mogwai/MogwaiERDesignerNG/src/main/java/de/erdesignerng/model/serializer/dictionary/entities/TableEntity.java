@@ -15,38 +15,31 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect.mysql;
+package de.erdesignerng.model.serializer.dictionary.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * Entity for a table.
+ * 
+ * @author msertic
  */
-public class MySQLInnoDBDialect extends MySQLDialect {
-
-    public MySQLInnoDBDialect() {
-        
-        seal();        
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getUniqueName() {
-        return "MySQLInnoDBDialect";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MySQLInnoDBSQLGenerator createSQLGenerator() {
-        return new MySQLInnoDBSQLGenerator(this);
-    }
+public class TableEntity extends ModelEntity {
     
-    @Override
-    public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.MySQLInnoDBDialect.class;
+    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+
+    /**
+     * @return the attributes
+     */
+    public List<AttributeEntity> getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * @param attributes the attributes to set
+     */
+    public void setAttributes(List<AttributeEntity> attributes) {
+        this.attributes = attributes;
     }
 }

@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.model.serializer.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,9 +27,9 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 
-public class RelationSerializer extends Serializer {
+public class XMLRelationSerializer extends XMLSerializer {
     
-    public static final RelationSerializer SERIALIZER = new RelationSerializer();
+    public static final XMLRelationSerializer SERIALIZER = new XMLRelationSerializer();
     
     public static final String RELATION = "Relation";
 

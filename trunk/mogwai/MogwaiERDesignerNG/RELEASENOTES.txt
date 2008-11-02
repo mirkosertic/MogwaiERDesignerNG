@@ -124,4 +124,5 @@ Release 1.5
 Release 1.6
 
 * Implemented FR 2184481 Allow specifying table fields to show after rev. engineering
+* Implemented FR 1886304 [ERDesignerNG] Allow saving of model to database
 * Bug Fixing 2215901 [ERDesignerNG] showing and hiding comments does not work
