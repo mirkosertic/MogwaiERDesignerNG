@@ -130,7 +130,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-01 18:38:32 $
+ * @version $Date: 2008-11-02 10:05:43 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -1322,11 +1322,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         };
         graph.setUI(new ERDesignerGraphUI(this));
 
-        commandSetDisplayGridState(displayGridMenuItem.isSelected());
-        commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
-
+        
         displayAllMenuItem.setSelected(true);
+        displayCommentsMenuItem.setSelected(true);
 
+        commandSetDisplayGridState(displayGridMenuItem.isSelected());
+        commandSetDisplayCommentsState(true);
+        commandSetDisplayLevel(DisplayLevel.ALL);
+        
         refreshPreferences(preferences);
 
         scrollPane.getViewport().removeAll();
@@ -1583,11 +1586,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         for (CellView theView : layoutCache.getCellViews()) {
             graph.updateAutoSize(theView);
         }
+        graph.getGraphLayoutCache().reload();
         graph.invalidate();
         graph.repaint();
-        if (graph.getParent() != null) {
-            graph.getParent().invalidate();
-            graph.getParent().repaint();
-        }
     }
 }

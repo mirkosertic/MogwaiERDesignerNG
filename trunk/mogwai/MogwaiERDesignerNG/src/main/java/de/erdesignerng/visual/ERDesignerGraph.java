@@ -18,6 +18,7 @@
 package de.erdesignerng.visual;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-01 18:38:33 $
+ * @version $Date: 2008-11-02 10:05:43 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
@@ -56,8 +57,8 @@ public abstract class ERDesignerGraph extends JGraph {
     private boolean displayComments;
 
     private boolean physicalLayout;
-    
-    private DisplayLevel displayLevel;
+
+    private DisplayLevel displayLevel = DisplayLevel.ALL;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
@@ -244,9 +245,16 @@ public abstract class ERDesignerGraph extends JGraph {
     }
 
     /**
-     * @param displayLevel the displayLevel to set
+     * @param displayLevel
+     *                the displayLevel to set
      */
     public void setDisplayLevel(DisplayLevel displayLevel) {
         this.displayLevel = displayLevel;
+    }
+
+    @Override
+    public void repaint() {
+        addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
+        super.repaint();
     }
 }

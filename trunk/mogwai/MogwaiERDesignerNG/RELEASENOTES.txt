@@ -124,3 +124,4 @@ Release 1.5
 Release 1.6
 
 * Implemented FR 2184481 Allow specifying table fields to show after rev. engineering
+* Bug Fixing 2215901 [ERDesignerNG] showing and hiding comments does not work
