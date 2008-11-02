@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.model.serializer.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,9 +25,9 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
-public class AttributeSerializer extends Serializer {
+public class XMLAttributeSerializer extends XMLSerializer {
 
-    public static final AttributeSerializer SERIALIZER = new AttributeSerializer();
+    public static final XMLAttributeSerializer SERIALIZER = new XMLAttributeSerializer();
 
     public static final String ATTRIBUTE = "Attribute";
 

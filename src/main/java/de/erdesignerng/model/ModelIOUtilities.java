@@ -41,11 +41,11 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import de.erdesignerng.model.serializer.ModelSerializer;
+import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-01 17:20:25 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
 public final class ModelIOUtilities {
 
@@ -130,13 +130,13 @@ public final class ModelIOUtilities {
             throw new IOException("Failed to validate document against schema");
         }
 
-        return ModelSerializer.SERIALIZER.deserializeFrom(theDocument);
+        return XMLModelSerializer.SERIALIZER.deserializeFrom(theDocument);
     }
 
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
         Document theDocument = documentBuilder.newDocument();
 
-        ModelSerializer.SERIALIZER.serialize(aModel, theDocument);
+        XMLModelSerializer.SERIALIZER.serialize(aModel, theDocument);
 
         Transformer theTransformer = transformerFactory.newTransformer();
         theTransformer.transform(new DOMSource(theDocument), new StreamResult(aStream));

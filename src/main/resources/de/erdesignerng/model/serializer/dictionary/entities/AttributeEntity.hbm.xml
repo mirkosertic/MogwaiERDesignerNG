@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="de.erdesignerng.model.serializer.dictionary.entities"
+	default-lazy="false">
+
+	<class name="AttributeEntity" table="mogdict_attributes" select-before-update="true">
+
+		<id name="systemId" >
+			<generator class="assigned" />
+		</id>
+		
+		<version name="version"/>
+		
+		<property name="creationUser" not-null="false"/>
+		<property name="creationDate" not-null="false"/>
+		<property name="lastModificationUser" not-null="false"/>
+		<property name="lastModificationDate" not-null="false"/>
+
+		<property name="name" not-null="true"/>
+		<property name="comment" not-null="false"/>
+		
+		<property name="datatype" not-null="false"/>
+		<property name="domain" not-null="false"/>
+		<property name="size" not-null="true"/>
+		<property name="fraction" not-null="true"/>
+		<property name="scale" not-null="true"/>
+		<property name="nullable" not-null="true"/>
+		<property name="defaultValue" not-null="false"/>
+		<property name="extra" not-null="false"/>
+	</class>
+</hibernate-mapping>

@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.model.serializer.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,9 +26,9 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 
-public class TableSerializer extends Serializer {
+public class XMLTableSerializer extends XMLSerializer {
     
-    public static final TableSerializer SERIALIZER = new TableSerializer();
+    public static final XMLTableSerializer SERIALIZER = new XMLTableSerializer();
     
     public static final String TABLE = "Table";    
 
@@ -41,12 +41,12 @@ public class TableSerializer extends Serializer {
 
         // Attribute serialisieren
         for (Attribute theAttribute : aTable.getAttributes()) {
-            AttributeSerializer.SERIALIZER.serialize(theAttribute, aDocument, theTableElement);
+            XMLAttributeSerializer.SERIALIZER.serialize(theAttribute, aDocument, theTableElement);
         }
 
         // Indexes serialisieren
         for (Index theIndex : aTable.getIndexes()) {
-            IndexSerializer.SERIALIZER.serialize(theIndex, aDocument, theTableElement);
+            XMLIndexSerializer.SERIALIZER.serialize(theIndex, aDocument, theTableElement);
         }
     }
 
@@ -62,8 +62,8 @@ public class TableSerializer extends Serializer {
 
             deserializeCommentElement(theElement, theTable);
             
-            AttributeSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
-            IndexSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
+            XMLAttributeSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
+            XMLIndexSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
 
             aModel.getTables().add(theTable);
         }

@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer;
+package de.erdesignerng.model.serializer.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,11 +26,11 @@ import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
-public class CommentSerializer extends Serializer {
+public class XMLCommentSerializer extends XMLSerializer {
 
-    public static final CommentSerializer SERIALIZER = new CommentSerializer();
+    public static final XMLCommentSerializer SERIALIZER = new XMLCommentSerializer();
 
     public static final String COMMENT = "ModelComment";
 

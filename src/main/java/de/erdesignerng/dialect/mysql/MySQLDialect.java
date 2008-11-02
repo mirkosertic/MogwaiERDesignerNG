@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-11-02 14:20:18 $
  */
 public class MySQLDialect extends SQL92Dialect {
 
@@ -132,5 +132,10 @@ public class MySQLDialect extends SQL92Dialect {
     @Override
     public MySQLSQLGenerator createSQLGenerator() {
         return new MySQLSQLGenerator(this);
+    }
+    
+    @Override
+    public Class getHibernateDialectClass() {
+        return org.hibernate.dialect.MySQLDialect.class;
     }
 }
