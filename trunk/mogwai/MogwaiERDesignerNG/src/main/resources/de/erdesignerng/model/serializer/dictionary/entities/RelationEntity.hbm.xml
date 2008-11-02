@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping
+	package="de.erdesignerng.model.serializer.dictionary.entities"
+	default-lazy="false">
+
+	<class name="RelationEntity" table="mogdict_relations"
+		select-before-update="true">
+
+		<id name="systemId">
+			<generator class="assigned" />
+		</id>
+
+		<version name="version" />
+
+		<property name="creationUser" not-null="false" />
+		<property name="creationDate" not-null="false" />
+		<property name="lastModificationUser" not-null="false" />
+		<property name="lastModificationDate" not-null="false" />
+
+		<property name="name" not-null="true" />
+		<property name="comment" not-null="false" />
+
+		<map name="properties" table="mogdict_relations_props" cascade="all-delete-orphan">
+			<key column="relationid" />
+			<map-key column="propname" type="string" />
+			<element column="propvalue" type="string" />
+		</map>
+		
+		<property name="importingTable" not-null="true"/>
+		<property name="exportingTable" not-null="true"/>
+		<property name="onDelete" not-null="true"/>
+		<property name="onUpdate" not-null="true"/>
+		
+		<map name="mapping" table="mogdict_relations_map" cascade="all-delete-orphan">
+			<key column="relationid" />
+			<map-key column="sourceattribute" type="string" />
+			<element column="destattribute" type="string" />
+		</map>		
+	</class>
+</hibernate-mapping>
