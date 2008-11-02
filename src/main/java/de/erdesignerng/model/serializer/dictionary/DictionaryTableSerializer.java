@@ -69,6 +69,8 @@ public class DictionaryTableSerializer extends DictionarySerializer {
             copyBaseAttributes(theTable, theExisting);
             
             DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
+            
+            DictionaryIndexSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
 
             if (existing) {
                 aSession.update(theExisting);

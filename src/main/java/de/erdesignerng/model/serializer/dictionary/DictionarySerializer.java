@@ -22,6 +22,11 @@ import java.util.Map;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 
+/**
+ * Base class for all serializers.
+ * 
+ * @author msertic
+ */
 public abstract class DictionarySerializer {
     
     protected void copyBaseAttributes(ModelItem aSource, ModelEntity aDestination) {

@@ -21,41 +21,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Entity for a table.
+ * Entity for indexes.
  * 
  * @author msertic
  */
-public class TableEntity extends ModelEntity {
-    
-    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+public class IndexEntity extends ModelEntity {
 
-    private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
+    private int type;
+    
+    private List<String> attributes = new ArrayList<String>();
+
+    /**
+     * @return the type
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
 
     /**
      * @return the attributes
      */
-    public List<AttributeEntity> getAttributes() {
+    public List<String> getAttributes() {
         return attributes;
     }
 
     /**
      * @param attributes the attributes to set
      */
-    public void setAttributes(List<AttributeEntity> attributes) {
+    public void setAttributes(List<String> attributes) {
         this.attributes = attributes;
-    }
-
-    /**
-     * @return the indexes
-     */
-    public List<IndexEntity> getIndexes() {
-        return indexes;
-    }
-
-    /**
-     * @param indexes the indexes to set
-     */
-    public void setIndexes(List<IndexEntity> indexes) {
-        this.indexes = indexes;
     }
 }

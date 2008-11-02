@@ -29,6 +29,12 @@
 			<one-to-many class="AttributeEntity" />
 		</list>
 
+		<list name="indexes" cascade="all-delete-orphan">
+			<key column="tableid" />
+			<list-index column="listindex" />
+			<one-to-many class="IndexEntity" />
+		</list>
+
 		<map name="properties" table="mogdict_tables_props" cascade="all-delete-orphan">
 			<key column="tableid" />
 			<map-key column="propname" type="string" />
