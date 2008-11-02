@@ -33,7 +33,7 @@ public class AuditInterceptor extends EmptyInterceptor {
     public static final AuditInterceptor INSTANCE = new AuditInterceptor();
 
     protected String getCurrentUserId() {
-        return System.getProperty("os.user");
+        return System.getProperty("user.name");
     }
     
     @Override

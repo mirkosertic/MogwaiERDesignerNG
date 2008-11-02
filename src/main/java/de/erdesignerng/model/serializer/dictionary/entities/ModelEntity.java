@@ -34,7 +34,7 @@ public abstract class ModelEntity {
 
     private String comment;
 
-    private Long version;
+    private Integer version;
 
     private String creationUser;
 
@@ -91,14 +91,14 @@ public abstract class ModelEntity {
     /**
      * @return the version
      */
-    public Long getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
     /**
      * @param version the version to set
      */
-    public void setVersion(Long version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 
