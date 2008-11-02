@@ -29,6 +29,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.dictionary.entities.AttributeEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.DomainEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.IndexEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.RelationEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
 
 /**
@@ -46,6 +47,7 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         theConfiguration.addClass(TableEntity.class);
         theConfiguration.addClass(AttributeEntity.class);
         theConfiguration.addClass(IndexEntity.class);
+        theConfiguration.addClass(RelationEntity.class);
         theConfiguration.setProperty(Environment.DIALECT, aModel.getDialect().getHibernateDialectClass().getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());
@@ -70,7 +72,11 @@ public class DictionaryModelSerializer extends DictionarySerializer {
             theSession = createSession(aModel, aConnection);    
             theTx = theSession.beginTransaction();
             
+            DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theSession);
+            
             DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession);
+            
+            DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession);
             
             theTx.commit();
             
