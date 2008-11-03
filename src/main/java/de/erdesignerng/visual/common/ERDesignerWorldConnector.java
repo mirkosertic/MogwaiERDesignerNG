@@ -24,7 +24,7 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
 
 public interface ERDesignerWorldConnector {
 
-    void initTitle(File aFile);
+    void initTitle(String aFile);
 
     void initTitle();
 

@@ -20,6 +20,8 @@ package de.erdesignerng.model;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +43,13 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import de.erdesignerng.model.serializer.dictionary.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
+import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * @version $Date: 2008-11-03 20:21:13 $
  */
 public final class ModelIOUtilities {
 
@@ -142,5 +146,22 @@ public final class ModelIOUtilities {
         theTransformer.transform(new DOMSource(theDocument), new StreamResult(aStream));
 
         aStream.close();
+    }
+    
+    public void serializeModelToDB(Model aModel, ApplicationPreferences aPreferences) throws Exception {
+        
+        Connection theConnection = null;
+        try {
+            theConnection = aModel.createConnection(aPreferences);
+            DictionaryModelSerializer.SERIALIZER.serialize(aModel, theConnection);
+        } finally {
+            if (theConnection != null) {
+                try {
+                    theConnection.close();
+                } catch (Exception e) {
+                    // Ignore this
+                }
+            }
+        }
     }
 }

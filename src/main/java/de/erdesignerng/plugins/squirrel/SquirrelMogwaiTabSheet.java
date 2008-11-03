@@ -89,10 +89,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         return content.getToolbar();
     }
 
-    public void initTitle(File aFile) {
+    public void initTitle(String aFile) {
         StringBuffer theTitle = new StringBuffer();
         if (aFile != null) {
-            theTitle.append(" - ").append(aFile.toString());
+            theTitle.append(" - ").append(aFile);
         }
 
         title = helper.getText(ERDesignerBundle.TITLE) + theTitle;
