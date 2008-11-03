@@ -130,7 +130,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 10:05:43 $
+ * @version $Date: 2008-11-03 20:21:13 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -315,6 +315,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction saveAction;
 
+    private DefaultAction saveToDBAction;
+
     private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
     private ERDesignerWorldConnector worldConnector;
@@ -384,6 +386,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.SAVEMODEL);
+
+        saveToDBAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+                commandSaveToDB();
+            }
+
+        }, this, ERDesignerBundle.SAVEMODELTODB);
 
         relationAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -582,6 +592,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.addSeparator();
         theFileMenu.add(saveAction);
         theFileMenu.add(loadAction);
+        theFileMenu.addSeparator();
+        theFileMenu.add(saveToDBAction);
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -1055,7 +1067,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             setModel(theModel);
 
             currentEditingFile = aFile;
-            worldConnector.initTitle(currentEditingFile);
+            worldConnector.initTitle(currentEditingFile.toString());
 
             preferences.addRecentlyUsedFile(aFile);
 
@@ -1177,7 +1189,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }
 
-                worldConnector.initTitle(currentEditingFile);
+                worldConnector.initTitle(currentEditingFile.toString());
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
             } catch (Exception e) {
@@ -1185,6 +1197,21 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }
+    }
+
+    protected void commandSaveToDB() {
+
+        try {
+
+            ModelIOUtilities.getInstance().serializeModelToDB(model, preferences);
+
+            worldConnector.initTitle(model.createConnectionHistoryEntry().toString());
+            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        }
+
     }
 
     /**
@@ -1322,14 +1349,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         };
         graph.setUI(new ERDesignerGraphUI(this));
 
-        
         displayAllMenuItem.setSelected(true);
         displayCommentsMenuItem.setSelected(true);
 
         commandSetDisplayGridState(displayGridMenuItem.isSelected());
         commandSetDisplayCommentsState(true);
         commandSetDisplayLevel(DisplayLevel.ALL);
-        
+
         refreshPreferences(preferences);
 
         scrollPane.getViewport().removeAll();

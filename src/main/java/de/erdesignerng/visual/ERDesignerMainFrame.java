@@ -38,7 +38,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-11-03 20:21:13 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
@@ -80,11 +80,11 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         return getDefaultFrameContent().getToolbar();
     }
 
-    public void initTitle(File aFile) {
+    public void initTitle(String aFile) {
 
         StringBuffer theTitle = new StringBuffer();
         if (aFile != null) {
-            theTitle.append(" - ").append(aFile.toString());
+            theTitle.append(" - ").append(aFile);
         }
 
         String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo(); 

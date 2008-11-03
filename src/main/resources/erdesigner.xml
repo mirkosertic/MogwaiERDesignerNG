@@ -22,6 +22,11 @@
 			<Text lang="en">Save model...</Text>					
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
+		<Entry id="SAVEMODELTODB">
+			<Text lang="de">Modell in DB speichern...</Text>		
+			<Text lang="en">Save model to database...</Text>					
+			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
+		</Entry>
 		<Entry id="LOADMODEL">
 			<Text lang="de">Modell laden...</Text>		
 			<Text lang="en">Load model...</Text>					
