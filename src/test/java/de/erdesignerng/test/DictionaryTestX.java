@@ -31,6 +31,10 @@ public class DictionaryTestX extends TestCase {
         
         theDictSerializer.serialize(theModel, theConnection);
         
+        Model theNewModel = theDictSerializer.deserialize(theModel, theConnection);
+        System.out.println(theNewModel.getDomains().size());
+        System.out.println(theNewModel.getTables().size());
+        
         theConnection.close();
     }
 

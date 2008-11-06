@@ -39,4 +39,15 @@ public abstract class DictionarySerializer {
             aDestination.getProperties().put(theEntry.getKey(), theEntry.getValue());
         }
     }
+    
+    protected void copyBaseAttributes(ModelEntity aSource, ModelItem aDestination) {
+        aDestination.setSystemId(aSource.getSystemId());
+        aDestination.setName(aSource.getName());
+        aDestination.setComment(aSource.getComment());
+        
+        aDestination.getProperties().getProperties().clear();
+        for (Map.Entry<String, String> theEntry : aSource.getProperties().entrySet()) {
+            aDestination.getProperties().getProperties().put(theEntry.getKey(), theEntry.getValue());
+        }
+    }
 }

@@ -94,4 +94,42 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         }
 
     }
+
+    public Model deserialize(Model aModel, Connection aConnection) throws Exception {
+
+        ThreadbasedConnectionProvider.initializeForThread(aConnection);
+        Session theSession = null;
+        Transaction theTx = null;
+        try {
+            
+            Model theNewModel = new Model();
+            theNewModel.getProperties().copyFrom(aModel);
+            theNewModel.setDialect(aModel.getDialect());
+
+            theSession = createSession(aModel, aConnection);    
+            theTx = theSession.beginTransaction();
+            
+            DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theSession);
+            
+            DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theSession);
+            
+            //DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession);
+            
+            theTx.rollback();
+            
+            return theNewModel;
+            
+        } catch (Exception e) {
+            theTx.rollback();
+            
+            throw e;
+        } finally {
+
+            if (theSession != null) {
+                theSession.close();
+            }
+            
+            ThreadbasedConnectionProvider.cleanup();
+        }
+    }
 }
