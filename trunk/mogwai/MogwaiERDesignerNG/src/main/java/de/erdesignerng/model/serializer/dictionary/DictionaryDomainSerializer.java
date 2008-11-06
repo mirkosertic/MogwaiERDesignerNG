@@ -47,6 +47,15 @@ public class DictionaryDomainSerializer extends DictionarySerializer {
         aDestination.setScale(aSource.getAttribute().getScale());
     }
     
+    protected void copyBaseAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
+        aDestination.setSystemId(aSource.getSystemId());
+        aDestination.setName(aSource.getName());
+        aDestination.getAttribute().setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+        aDestination.getAttribute().setSize(aSource.getSize());
+        aDestination.getAttribute().setFraction(aSource.getFraction());
+        aDestination.getAttribute().setScale(aSource.getScale());
+    }
+    
     public void serialize(Model aModel, Session aSession) {
 
         Set<DomainEntity> theRemovedDomains = new HashSet<DomainEntity>();
@@ -55,8 +64,8 @@ public class DictionaryDomainSerializer extends DictionarySerializer {
         Criteria theCriteria = aSession.createCriteria(DomainEntity.class);
         for (Object theObject : theCriteria.list()) {
             DomainEntity theTableEntity = (DomainEntity) theObject;
-            Domain theTable = aModel.getDomains().findBySystemId(theTableEntity.getSystemId());
-            if (theTable == null) {
+            Domain theDomain = aModel.getDomains().findBySystemId(theTableEntity.getSystemId());
+            if (theDomain == null) {
                 theRemovedDomains.add(theTableEntity);
             } else {
                 theDomains.put(theTableEntity.getSystemId(), theTableEntity);
@@ -82,6 +91,18 @@ public class DictionaryDomainSerializer extends DictionarySerializer {
             } else {
                 aSession.save(theExisting);
             }
+        }
+    }
+
+    public void deserialize(Model aModel, Session aSession) {
+        Criteria theCriteria = aSession.createCriteria(DomainEntity.class);
+        for (Object theObject : theCriteria.list()) {
+            DomainEntity theEntity = (DomainEntity) theObject;
+            
+            Domain theDomain = new Domain();
+            copyBaseAttributes(theEntity, theDomain, aModel);
+            
+            aModel.getDomains().add(theDomain);
         }
     }
 }

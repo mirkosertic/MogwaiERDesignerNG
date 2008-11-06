@@ -41,7 +41,7 @@ public class DictionaryTableSerializer extends DictionarySerializer {
     public void serialize(Model aModel, Session aSession) {
 
         Set<TableEntity> theRemovedTables = new HashSet<TableEntity>();
-        
+
         Map<String, TableEntity> theTables = new HashMap<String, TableEntity>();
         Criteria theCriteria = aSession.createCriteria(TableEntity.class);
         for (Object theObject : theCriteria.list()) {
@@ -53,7 +53,7 @@ public class DictionaryTableSerializer extends DictionarySerializer {
                 theTables.put(theTableEntity.getSystemId(), theTableEntity);
             }
         }
-        
+
         for (TableEntity theRemovedTable : theRemovedTables) {
             aSession.delete(theRemovedTable);
         }
@@ -67,9 +67,9 @@ public class DictionaryTableSerializer extends DictionarySerializer {
             }
 
             copyBaseAttributes(theTable, theExisting);
-            
+
             DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
-            
+
             DictionaryIndexSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
 
             if (existing) {
@@ -77,6 +77,25 @@ public class DictionaryTableSerializer extends DictionarySerializer {
             } else {
                 aSession.save(theExisting);
             }
+        }
+    }
+
+    public void deserialize(Model aModel, Session aSession) {
+        Criteria theCriteria = aSession.createCriteria(TableEntity.class);
+        for (Object theObject : theCriteria.list()) {
+            TableEntity theTableEntity = (TableEntity) theObject;
+
+            Table theTable = new Table();
+
+            copyBaseAttributes(theTableEntity, theTable);
+
+            DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
+
+            // DictionaryIndexSerializer.SERIALIZER.serialize(theTable,
+            // theExisting, aSession);
+
+            theTable.setOwner(aModel);
+            aModel.getTables().add(theTable);
         }
     }
 }

@@ -22,10 +22,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.dictionary.entities.AttributeEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
@@ -55,6 +57,21 @@ public class DictionaryAttributeSerializer extends DictionarySerializer {
         aDestination.setDefaultValue(aSource.getDefaultValue());
         aDestination.setExtra(aSource.getExtra());
     }
+    
+    protected void copyExtendedAttributes(AttributeEntity aSource, Attribute aDestination, Model aModel) {
+        
+        if (!StringUtils.isEmpty(aSource.getDomain())) {
+            aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomain()));
+        } else {
+            aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+        }
+        aDestination.setSize(aSource.getSize());
+        aDestination.setFraction(aSource.getFraction());
+        aDestination.setScale(aSource.getScale());
+        aDestination.setNullable(aSource.isNullable());
+        aDestination.setDefaultValue(aSource.getDefaultValue());
+        aDestination.setExtra(aSource.getExtra());
+    }    
     
     public void serialize(Table aTable, TableEntity aTableEntity, Session aSession) {
 
@@ -91,5 +108,18 @@ public class DictionaryAttributeSerializer extends DictionarySerializer {
             }
         }
         
+    }
+
+    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity, Session aSession) {
+        for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
+            
+            Attribute theAttribute = new Attribute();
+            
+            copyBaseAttributes(theAttributeEntity, theAttribute);
+            copyExtendedAttributes(theAttributeEntity, theAttribute, aModel);
+            
+            theAttribute.setOwner(aTable);
+            aTable.getAttributes().add(theAttribute);
+        }
     }
 }

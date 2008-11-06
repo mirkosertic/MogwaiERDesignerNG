@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-03 20:21:13 $
+ * @version $Date: 2008-11-06 22:01:08 $
  */
 public final class ModelIOUtilities {
 
@@ -164,4 +163,22 @@ public final class ModelIOUtilities {
             }
         }
     }
+    
+    public Model deserializeModelfromDB(Model aModel, ApplicationPreferences aPreferences) throws Exception {
+        
+        Connection theConnection = null;
+        try {
+            theConnection = aModel.createConnection(aPreferences);
+            return DictionaryModelSerializer.SERIALIZER.deserialize(aModel, theConnection);
+        } finally {
+            if (theConnection != null) {
+                try {
+                    theConnection.close();
+                } catch (Exception e) {
+                    // Ignore this
+                }
+            }
+        }
+    }
+    
 }

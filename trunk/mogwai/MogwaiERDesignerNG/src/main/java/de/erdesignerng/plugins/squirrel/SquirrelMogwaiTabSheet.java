@@ -18,7 +18,6 @@
 package de.erdesignerng.plugins.squirrel;
 
 import java.awt.Component;
-import java.io.File;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;

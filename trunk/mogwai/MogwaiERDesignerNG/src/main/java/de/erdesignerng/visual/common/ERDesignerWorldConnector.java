@@ -17,11 +17,14 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.io.File;
-
 import de.erdesignerng.model.Model;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 
+/**
+ * Interface from ERDesignerNG to the outside world.
+ * 
+ * @author msertic
+ */
 public interface ERDesignerWorldConnector {
 
     void initTitle(String aFile);
