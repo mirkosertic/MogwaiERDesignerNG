@@ -19,7 +19,6 @@ package de.erdesignerng.visual;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.util.prefs.BackingStoreException;
 
 import de.erdesignerng.ERDesignerBundle;
@@ -38,7 +37,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-03 20:21:13 $
+ * @version $Date: 2008-11-06 22:01:08 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
