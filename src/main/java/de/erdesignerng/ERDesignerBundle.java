@@ -19,6 +19,8 @@ public interface ERDesignerBundle {
   String SAVEMODEL = "SAVEMODEL";
   /** Save model to database.... */
   String SAVEMODELTODB = "SAVEMODELTODB";
+  /** Load model from database.... */
+  String LOADMODELFROMDB = "LOADMODELFROMDB";
   /** Load model.... */
   String LOADMODEL = "LOADMODEL";
   /** Exit. */

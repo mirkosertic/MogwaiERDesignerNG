@@ -130,7 +130,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-03 20:21:13 $
+ * @version $Date: 2008-11-11 18:50:34 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -296,6 +296,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction lruAction;
 
     private DefaultMenu lruMenu;
+    
+    private DefaultMenu loadFromDBMenu;
 
     private DefaultMenu storedConnections;
 
@@ -316,7 +318,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction saveAction;
 
     private DefaultAction saveToDBAction;
-
+    
     private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
     private ERDesignerWorldConnector worldConnector;
@@ -463,7 +465,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         loadAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
-                commandOpenFile();
+                commandOpenFromFile();
             }
 
         }, this, ERDesignerBundle.LOADMODEL);
@@ -593,7 +595,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.add(saveAction);
         theFileMenu.add(loadAction);
         theFileMenu.addSeparator();
+        
+        DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
+        loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
+        
         theFileMenu.add(saveToDBAction);
+        theFileMenu.add(loadFromDBMenu);
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -868,6 +875,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         lruMenu.removeAll();
         storedConnections.removeAll();
+        loadFromDBMenu.removeAll();
 
         if (preferences != null) {
 
@@ -877,7 +885,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theItem.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        commandOpenFile(theFile);
+                        commandOpenFromFile(theFile);
                     }
 
                 });
@@ -888,8 +896,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
             for (final RecentlyUsedConnection theConnectionInfo : preferences.getRecentlyUsedConnections()) {
-                JMenuItem theItem = new JMenuItem(theConnectionInfo.toString());
-                theItem.addActionListener(new ActionListener() {
+                JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
+                theItem1.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
                         commandDBConnection(theConnectionInfo);
@@ -897,8 +905,21 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 });
 
-                UIInitializer.getInstance().initializeFontAndColors(theItem);
-                storedConnections.add(theItem);
+                UIInitializer.getInstance().initializeFontAndColors(theItem1);
+                storedConnections.add(theItem1);
+                
+                JMenuItem theItem2 = new JMenuItem(theConnectionInfo.toString());
+                theItem2.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                        commandOpenFromDB(theConnectionInfo);
+                    }
+
+                });
+
+                UIInitializer.getInstance().initializeFontAndColors(theItem2);
+                loadFromDBMenu.add(theItem2);
+                
             }
         }
     }
@@ -1043,7 +1064,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.NEWMODELCREATED));
     }
 
-    protected void commandOpenFile() {
+    protected void commandOpenFromFile() {
 
         ModelFileFilter theFiler = new ModelFileFilter();
 
@@ -1054,11 +1075,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
 
-            commandOpenFile(theFile);
+            commandOpenFromFile(theFile);
         }
     }
 
-    protected void commandOpenFile(File aFile) {
+    protected void commandOpenFromFile(File aFile) {
 
         try {
             Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFile));
@@ -1205,6 +1226,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             ModelIOUtilities.getInstance().serializeModelToDB(model, preferences);
 
+            currentEditingFile = null;
+            
             worldConnector.initTitle(model.createConnectionHistoryEntry().toString());
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
@@ -1213,6 +1236,32 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
     }
+
+    /**
+     * Open the databaase model from an existing connection.
+     *  
+     * @param aConnectionInfo the connectioninfo.
+     */
+    protected void commandOpenFromDB(RecentlyUsedConnection aConnectionInfo) {
+
+        try {
+
+            Model theModel = worldConnector.createNewModel();
+            theModel.initializeWith(aConnectionInfo);
+            
+            theModel = ModelIOUtilities.getInstance().deserializeModelfromDB(theModel, preferences);
+            worldConnector.initializeLoadedModel(theModel);
+
+            worldConnector.initTitle(aConnectionInfo.toString());
+            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+            
+            setModel(theModel);
+
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        }
+
+    }    
 
     /**
      * Set the current editing tool.
