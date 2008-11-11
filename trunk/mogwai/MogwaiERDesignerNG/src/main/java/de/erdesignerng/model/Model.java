@@ -26,6 +26,7 @@ import java.util.List;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -38,7 +39,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 17:53:55 $
+ * @version $Date: 2008-11-11 18:50:34 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -347,6 +348,19 @@ public class Model implements OwnedModelItemVerifier {
         return new RecentlyUsedConnection(theDialectName, getProperties().getProperty(PROPERTY_URL), getProperties()
                 .getProperty(PROPERTY_USER), getProperties().getProperty(PROPERTY_DRIVER), getProperties().getProperty(
                 PROPERTY_PASSWORD));
+    }
+
+    /**
+     * Initialize the model with a defined connection.
+     *  
+     * @param aConnection the connection
+     */
+    public void initializeWith(RecentlyUsedConnection aConnection) {
+        setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
+        getProperties().setProperty(PROPERTY_DRIVER, aConnection.getDriver());
+        getProperties().setProperty(PROPERTY_USER, aConnection.getUsername());
+        getProperties().setProperty(PROPERTY_PASSWORD, aConnection.getPassword());
+        getProperties().setProperty(PROPERTY_URL, aConnection.getUrl());
     }
 
     /**
