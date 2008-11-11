@@ -86,14 +86,14 @@ public class DictionaryTableSerializer extends DictionarySerializer {
             TableEntity theTableEntity = (TableEntity) theObject;
 
             Table theTable = new Table();
-
+            theTable.setOwner(aModel);
+            
             copyBaseAttributes(theTableEntity, theTable);
 
             DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
 
             DictionaryIndexSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
 
-            theTable.setOwner(aModel);
             aModel.getTables().add(theTable);
         }
     }

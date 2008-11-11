@@ -40,16 +40,69 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
 
     public static final DictionaryRelationSerializer SERIALIZER = new DictionaryRelationSerializer();
 
+    private static final int CASCADE_INT = 0;
+
+    private static final int CASCADE_SETNULL = 1;
+
+    private static final int CASCADE_NOTHING = 2;
+
     protected int cascadeTypeToInt(CascadeType aType) {
         switch (aType) {
         case CASCADE:
-            return 0;
+            return CASCADE_INT;
         case SET_NULL:
-            return 1;
+            return CASCADE_SETNULL;
         case NOTHING:
-            return 2;
+            return CASCADE_NOTHING;
         default:
-            return -1;
+            throw new RuntimeException("Unknown cascade type : " + aType);
+        }
+    }
+
+    protected CascadeType intToCascadeType(int aType) {
+        switch (aType) {
+        case CASCADE_INT:
+            return CascadeType.CASCADE;
+        case CASCADE_SETNULL:
+            return CascadeType.SET_NULL;
+        case CASCADE_NOTHING:
+            return CascadeType.NOTHING;
+        default:
+            throw new RuntimeException("Invalid cascade type : " + aType);
+        }
+    }
+
+    private void copyExtendedAttributes(Relation aSource, RelationEntity aDestination) {
+        aDestination.setImportingTable(aSource.getImportingTable().getSystemId());
+        aDestination.setExportingTable(aSource.getExportingTable().getSystemId());
+        aDestination.setOnUpdate(cascadeTypeToInt(aSource.getOnUpdate()));
+        aDestination.setOnDelete(cascadeTypeToInt(aSource.getOnDelete()));
+
+        aDestination.getMapping().clear();
+        for (Map.Entry<Attribute, Attribute> theEntry : aSource.getMapping().entrySet()) {
+            aDestination.getMapping().put(theEntry.getKey().getSystemId(), theEntry.getValue().getSystemId());
+        }
+    }
+
+    private void copyExtendedAttributes(RelationEntity aSource, Relation aDestination, Model aModel) {
+        aDestination.setImportingTable(aModel.getTables().findBySystemId(aSource.getImportingTable()));
+        aDestination.setExportingTable(aModel.getTables().findBySystemId(aSource.getExportingTable()));
+        aDestination.setOnUpdate(intToCascadeType(aSource.getOnUpdate()));
+        aDestination.setOnDelete(intToCascadeType(aSource.getOnDelete()));
+
+        aDestination.getMapping().clear();
+        for (Map.Entry<String, String> theEntry : aSource.getMapping().entrySet()) {
+            Attribute theAt1 = aDestination.getExportingTable().getAttributes().findBySystemId(theEntry.getKey());
+            Attribute theAt2 = aDestination.getImportingTable().getAttributes().findBySystemId(theEntry.getValue());
+            if (theAt1 == null) {
+                throw new RuntimeException("Cannot find attribute" + theEntry.getKey());
+            }
+
+            if (theAt2 == null) {
+                throw new RuntimeException("Cannot find attribute" + theEntry.getValue());
+            }
+
+            aDestination.getMapping().put(theAt1, theAt2);
         }
     }
 
@@ -83,21 +136,29 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
 
             copyBaseAttributes(theRelation, theExisting);
 
-            theExisting.setImportingTable(theRelation.getImportingTable().getSystemId());
-            theExisting.setExportingTable(theRelation.getExportingTable().getSystemId());
-            theExisting.setOnUpdate(cascadeTypeToInt(theRelation.getOnUpdate()));
-            theExisting.setOnDelete(cascadeTypeToInt(theRelation.getOnDelete()));
-
-            theExisting.getMapping().clear();
-            for (Map.Entry<Attribute, Attribute> theEntry : theRelation.getMapping().entrySet()) {
-                theExisting.getMapping().put(theEntry.getKey().getSystemId(), theEntry.getValue().getSystemId());
-            }
+            copyExtendedAttributes(theRelation, theExisting);
 
             if (existing) {
                 aSession.update(theExisting);
             } else {
                 aSession.save(theExisting);
             }
+        }
+    }
+
+    public void deserialize(Model aModel, Session aSession) {
+        Criteria theCriteria = aSession.createCriteria(RelationEntity.class);
+        for (Object theObject : theCriteria.list()) {
+            RelationEntity theRelationEntity = (RelationEntity) theObject;
+
+            Relation theRelation = new Relation();
+            theRelation.setOwner(aModel);
+
+            copyBaseAttributes(theRelationEntity, theRelation);
+
+            copyExtendedAttributes(theRelationEntity, theRelation, aModel);
+
+            aModel.getRelations().add(theRelation);
         }
     }
 }
