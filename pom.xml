@@ -53,7 +53,7 @@
                 <taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"/>
                 <XMLResourceBundle dest="src/main/resources" defaultLanguage="en" src="src/main/java">
                   <fileset dir="src/main/resources">
-                    <include name="*.xml"/>
+                    <include name="erdesigner.xml"/>
                   </fileset>
                 </XMLResourceBundle>
               </tasks>
