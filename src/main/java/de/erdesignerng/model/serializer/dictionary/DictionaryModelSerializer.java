@@ -113,7 +113,7 @@ public class DictionaryModelSerializer extends DictionarySerializer {
             
             DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theSession);
             
-            //DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession);
+            DictionaryRelationSerializer.SERIALIZER.deserialize(theNewModel, theSession);
             
             theTx.rollback();
             
