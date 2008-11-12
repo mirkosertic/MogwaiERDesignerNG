@@ -17,29 +17,14 @@
  */
 package de.erdesignerng.model;
 
-import java.util.Vector;
-
 /**
- * A list of domains. 
+ * Interface for all sorts of lists in the model.
  * 
- * @author $Author: mirkosertic $
- * @version $Date: 2008-11-12 19:11:45 $
+ * @author msertic
+ *
+ * @param <T> the list element type
  */
-public class DomainList extends Vector<Domain> implements ModelList<Domain> {
+public interface ModelList<T> {
 
-    /**
-     * Find a domain by system id.
-     *  
-     * @param aSystemId the system id
-     * @return the domain or null if domain does not exist
-     */
-    public Domain findBySystemId(String aSystemId) {
-        for (Domain theDomain : this) {
-            if (aSystemId.equals(theDomain.getSystemId())) {
-                return theDomain;
-            }
-        }
-        return null;
-    }
-
+    T findBySystemId(String aSystemId);
 }

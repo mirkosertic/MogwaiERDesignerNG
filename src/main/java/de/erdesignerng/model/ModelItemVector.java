@@ -21,11 +21,11 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2008-11-12 19:11:45 $
  * @param <T>
- *            the type
+ *                the type
  */
-public class ModelItemVector<T extends ModelItem> extends Vector<T> {
+public class ModelItemVector<T extends ModelItem> extends Vector<T> implements ModelList<T> {
 
     private static final long serialVersionUID = 5030067810497396582L;
 
@@ -33,7 +33,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
      * Find an entry by a given system id.
      * 
      * @param aSystemId
-     *            the system id
+     *                the system id
      * @return the found element
      */
     public T findBySystemId(String aSystemId) {
@@ -49,9 +49,9 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
      * Check if a named element already exists in this list.
      * 
      * @param aName
-     *            the name of the element
+     *                the name of the element
      * @param aCaseSensitive
-     *            true if checking is case sensitive, else false
+     *                true if checking is case sensitive, else false
      * 
      * @return true if it exists, else false.
      */
@@ -75,7 +75,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
      * Find an attribute by a given name.
      * 
      * @param aName
-     *            the name
+     *                the name
      * @return the found element
      */
     public T findByName(String aName) {
@@ -91,7 +91,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
      * Delete an attribute by a given name.
      * 
      * @param aName
-     *            the name
+     *                the name
      */
     public void removeByName(String aName) {
         remove(findByName(aName));
@@ -101,7 +101,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> {
      * Delete an attribute by a given id.
      * 
      * @param aSystemId
-     *            the id
+     *                the id
      */
     public void removeById(String aSystemId) {
         remove(findBySystemId(aSystemId));

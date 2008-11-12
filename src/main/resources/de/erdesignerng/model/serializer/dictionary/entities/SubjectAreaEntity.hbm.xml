@@ -5,7 +5,7 @@
 <hibernate-mapping package="de.erdesignerng.model.serializer.dictionary.entities"
 	default-lazy="false">
 
-	<class name="IndexEntity" table="mogdict_indexes" select-before-update="true">
+	<class name="IndexEntity" table="mogdict_sa" select-before-update="true">
 
 		<id name="systemId" >
 			<generator class="assigned" />
@@ -21,12 +21,18 @@
 		<property name="name" not-null="true"/>
 		<property name="comment" not-null="false" type="org.hibernate.type.StringClobType"/>
 		
-		<property name="type" not-null="true"/>
+		<property name="color" not-null="true"/>
 		
-		<list name="attributes" cascade="all-delete-orphan" table="mogdict_indexes_attr">
+		<list name="tables" cascade="all-delete-orphan" table="mogdict_sa_tables" fetch="select">
 			<key column="indexid" />
 			<list-index column="listindex" />
-			<element column="attributeid" type="string" />
+			<element column="tableid" type="string" />
+		</list>
+
+		<list name="comments" cascade="all-delete-orphan" table="mogdict_sa_comments" fetch="select">
+			<key column="indexid" />
+			<list-index column="listindex" />
+			<element column="commentid" type="string" />
 		</list>
 
 	</class>

@@ -17,9 +17,16 @@
  */
 package de.erdesignerng.model.serializer.dictionary;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 
 import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.ModelList;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 
 /**
@@ -28,26 +35,49 @@ import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
  * @author msertic
  */
 public abstract class DictionarySerializer {
-    
+
     protected void copyBaseAttributes(ModelItem aSource, ModelEntity aDestination) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
         aDestination.setComment(aSource.getComment());
-        
+
         aDestination.getProperties().clear();
         for (Map.Entry<String, String> theEntry : aSource.getProperties().getProperties().entrySet()) {
             aDestination.getProperties().put(theEntry.getKey(), theEntry.getValue());
         }
     }
-    
+
     protected void copyBaseAttributes(ModelEntity aSource, ModelItem aDestination) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
         aDestination.setComment(aSource.getComment());
-        
+
         aDestination.getProperties().getProperties().clear();
         for (Map.Entry<String, String> theEntry : aSource.getProperties().entrySet()) {
             aDestination.getProperties().getProperties().put(theEntry.getKey(), theEntry.getValue());
         }
+    }
+
+    protected Map<String, ModelEntity> deletedRemovedInstances(ModelList aItems, Class aEntityClass, Session aSession) {
+
+        Set<ModelEntity> theRemovedComments = new HashSet<ModelEntity>();
+
+        Map<String, ModelEntity> theComments = new HashMap<String, ModelEntity>();
+        Criteria theCriteria = aSession.createCriteria(aEntityClass);
+        for (Object theObject : theCriteria.list()) {
+            ModelEntity theCommentEntity = (ModelEntity) theObject;
+            Object theComment = aItems.findBySystemId(theCommentEntity.getSystemId());
+            if (theComment == null) {
+                theRemovedComments.add(theCommentEntity);
+            } else {
+                theComments.put(theCommentEntity.getSystemId(), theCommentEntity);
+            }
+        }
+
+        for (ModelEntity theRemovedElement : theRemovedComments) {
+            aSession.delete(theRemovedElement);
+        }
+
+        return theComments;
     }
 }

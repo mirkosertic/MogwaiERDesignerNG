@@ -19,7 +19,7 @@
 		<property name="lastModificationDate" not-null="false"/>
 
 		<property name="name" not-null="true"/>
-		<property name="comment" not-null="false"/>
+		<property name="comment" not-null="false" type="org.hibernate.type.StringClobType"/>
 		
 		<property name="datatype" not-null="false"/>
 		<property name="domain" not-null="false"/>
