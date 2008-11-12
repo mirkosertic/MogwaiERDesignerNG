@@ -22,37 +22,33 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
+import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.dictionary.entities.CommentEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
-import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
 
 /**
- * Serializer for tables.
+ * Serializer for comments.
  * 
  * @author msertic
  */
-public class DictionaryTableSerializer extends DictionarySerializer {
+public class DictionaryCommentSerializer extends DictionarySerializer {
 
-    public static final DictionaryTableSerializer SERIALIZER = new DictionaryTableSerializer();
+    public static final DictionaryCommentSerializer SERIALIZER = new DictionaryCommentSerializer();
 
     public void serialize(Model aModel, Session aSession) {
 
-        Map<String, ModelEntity> theTables = deletedRemovedInstances(aModel.getTables(), TableEntity.class, aSession);
+        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), ModelEntity.class, aSession);
         
-        for (Table theTable : aModel.getTables()) {
+        for (Comment theComment : aModel.getComments()) {
             boolean existing = true;
-            TableEntity theExisting = (TableEntity) theTables.get(theTable.getSystemId());
+            CommentEntity theExisting = (CommentEntity) theComments.get(theComment.getSystemId());
             if (theExisting == null) {
-                theExisting = new TableEntity();
+                theExisting = new CommentEntity();
                 existing = false;
             }
 
-            copyBaseAttributes(theTable, theExisting);
-
-            DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
-
-            DictionaryIndexSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
+            copyBaseAttributes(theComment, theExisting);
 
             if (existing) {
                 aSession.update(theExisting);
@@ -63,20 +59,16 @@ public class DictionaryTableSerializer extends DictionarySerializer {
     }
 
     public void deserialize(Model aModel, Session aSession) {
-        Criteria theCriteria = aSession.createCriteria(TableEntity.class);
+        Criteria theCriteria = aSession.createCriteria(CommentEntity.class);
         for (Object theObject : theCriteria.list()) {
-            TableEntity theTableEntity = (TableEntity) theObject;
+            CommentEntity theCommentEntity = (CommentEntity) theObject;
 
-            Table theTable = new Table();
-            theTable.setOwner(aModel);
+            Comment theComment = new Comment();
+            theComment.setOwner(aModel);
             
-            copyBaseAttributes(theTableEntity, theTable);
+            copyBaseAttributes(theCommentEntity, theComment);
 
-            DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
-
-            DictionaryIndexSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
-
-            aModel.getTables().add(theTable);
+            aModel.getComments().add(theComment);
         }
     }
 }

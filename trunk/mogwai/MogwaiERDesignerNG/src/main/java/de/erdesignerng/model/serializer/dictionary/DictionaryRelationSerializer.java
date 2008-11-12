@@ -17,18 +17,16 @@
  */
 package de.erdesignerng.model.serializer.dictionary;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Model;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.RelationEntity;
 
 /**
@@ -108,27 +106,11 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
 
     public void serialize(Model aModel, Session aSession) {
 
-        Set<RelationEntity> theRemovedRelations = new HashSet<RelationEntity>();
-
-        Map<String, RelationEntity> theRelations = new HashMap<String, RelationEntity>();
-        Criteria theCriteria = aSession.createCriteria(RelationEntity.class);
-        for (Object theObject : theCriteria.list()) {
-            RelationEntity theTableEntity = (RelationEntity) theObject;
-            Relation theTable = aModel.getRelations().findBySystemId(theTableEntity.getSystemId());
-            if (theTable == null) {
-                theRemovedRelations.add(theTableEntity);
-            } else {
-                theRelations.put(theTableEntity.getSystemId(), theTableEntity);
-            }
-        }
-
-        for (RelationEntity theEntry : theRemovedRelations) {
-            aSession.delete(theEntry);
-        }
+        Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), RelationEntity.class, aSession); 
 
         for (Relation theRelation : aModel.getRelations()) {
             boolean existing = true;
-            RelationEntity theExisting = theRelations.get(theRelation.getSystemId());
+            RelationEntity theExisting = (RelationEntity) theRelations.get(theRelation.getSystemId());
             if (theExisting == null) {
                 theExisting = new RelationEntity();
                 existing = false;

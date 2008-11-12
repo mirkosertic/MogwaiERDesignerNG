@@ -27,9 +27,11 @@ import org.hibernate.cfg.Environment;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.dictionary.entities.AttributeEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.CommentEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.DomainEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.IndexEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.RelationEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.SubjectAreaEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
 
 /**
@@ -48,6 +50,8 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         theConfiguration.addClass(AttributeEntity.class);
         theConfiguration.addClass(IndexEntity.class);
         theConfiguration.addClass(RelationEntity.class);
+        theConfiguration.addClass(CommentEntity.class);
+        theConfiguration.addClass(SubjectAreaEntity.class);
         theConfiguration.setProperty(Environment.DIALECT, aModel.getDialect().getHibernateDialectClass().getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());
@@ -77,6 +81,10 @@ public class DictionaryModelSerializer extends DictionarySerializer {
             DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession);
             
             DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession);
+            
+            DictionaryCommentSerializer.SERIALIZER.serialize(aModel, theSession);
+            
+            DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theSession);
             
             theTx.commit();
             
@@ -114,6 +122,10 @@ public class DictionaryModelSerializer extends DictionarySerializer {
             DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theSession);
             
             DictionaryRelationSerializer.SERIALIZER.deserialize(theNewModel, theSession);
+            
+            DictionaryCommentSerializer.SERIALIZER.deserialize(theNewModel, theSession);
+            
+            DictionarySubjectAreaSerializer.SERIALIZER.deserialize(theNewModel, theSession);
             
             theTx.rollback();
             
