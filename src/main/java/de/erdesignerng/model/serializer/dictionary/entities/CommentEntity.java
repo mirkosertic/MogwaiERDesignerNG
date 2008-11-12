@@ -15,31 +15,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model;
+package de.erdesignerng.model.serializer.dictionary.entities;
 
-import java.util.Vector;
 
 /**
- * A list of domains. 
+ * Entity for comments.
  * 
- * @author $Author: mirkosertic $
- * @version $Date: 2008-11-12 19:11:45 $
+ * @author msertic
  */
-public class DomainList extends Vector<Domain> implements ModelList<Domain> {
-
-    /**
-     * Find a domain by system id.
-     *  
-     * @param aSystemId the system id
-     * @return the domain or null if domain does not exist
-     */
-    public Domain findBySystemId(String aSystemId) {
-        for (Domain theDomain : this) {
-            if (aSystemId.equals(theDomain.getSystemId())) {
-                return theDomain;
-            }
-        }
-        return null;
-    }
-
+public class CommentEntity extends ModelEntity {
+    
 }

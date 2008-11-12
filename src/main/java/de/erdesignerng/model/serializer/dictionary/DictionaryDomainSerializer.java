@@ -17,10 +17,7 @@
  */
 package de.erdesignerng.model.serializer.dictionary;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -28,6 +25,7 @@ import org.hibernate.Session;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.dictionary.entities.DomainEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 
 /**
  * Serializer for domains.
@@ -58,27 +56,11 @@ public class DictionaryDomainSerializer extends DictionarySerializer {
     
     public void serialize(Model aModel, Session aSession) {
 
-        Set<DomainEntity> theRemovedDomains = new HashSet<DomainEntity>();
-        
-        Map<String, DomainEntity> theDomains = new HashMap<String, DomainEntity>();
-        Criteria theCriteria = aSession.createCriteria(DomainEntity.class);
-        for (Object theObject : theCriteria.list()) {
-            DomainEntity theTableEntity = (DomainEntity) theObject;
-            Domain theDomain = aModel.getDomains().findBySystemId(theTableEntity.getSystemId());
-            if (theDomain == null) {
-                theRemovedDomains.add(theTableEntity);
-            } else {
-                theDomains.put(theTableEntity.getSystemId(), theTableEntity);
-            }
-        }
-        
-        for (DomainEntity theRemovedTable : theRemovedDomains) {
-            aSession.delete(theRemovedTable);
-        }
+        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), DomainEntity.class, aSession);
 
         for (Domain theDomain : aModel.getDomains()) {
             boolean existing = true;
-            DomainEntity theExisting = theDomains.get(theDomain.getSystemId());
+            DomainEntity theExisting = (DomainEntity) theDomains.get(theDomain.getSystemId());
             if (theExisting == null) {
                 theExisting = new DomainEntity();
                 existing = false;
