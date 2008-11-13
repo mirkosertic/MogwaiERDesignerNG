@@ -4,7 +4,7 @@
   <groupId>net.sourceforge.mogwai</groupId>
   <artifactId>mogwai-erdesignerng</artifactId>
   <name>MogwaiERDesignerNG</name>
-  <version>1.6-SNAPSHOT</version>
+  <version>1.6</version>
   <description>Mogwai ER-Designer is an entity relationship design tool.</description>
   <url>http://mogwai.sourceforge.net</url>
   <inceptionYear>2002</inceptionYear>
@@ -12,7 +12,7 @@
     <mailingList>
       <name>Mogwai users mailing list</name>
       <post>mogwai-users@lists.sourceforge.net</post>
-    </mailingList>
+    </mailingList> 
   </mailingLists>
   <developers>
     <developer>
@@ -41,7 +41,24 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>javadoc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+          </links>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.0</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -51,6 +68,7 @@
             <configuration>
               <tasks>
                 <taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"/>
+                
                 <XMLResourceBundle dest="src/main/resources" defaultLanguage="en" src="src/main/java">
                   <fileset dir="src/main/resources">
                     <include name="erdesigner.xml"/>
@@ -67,22 +85,6 @@
             <version>2.10</version>
           </dependency>
         </dependencies>
-      </plugin>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>javadoc</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-          </links>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
