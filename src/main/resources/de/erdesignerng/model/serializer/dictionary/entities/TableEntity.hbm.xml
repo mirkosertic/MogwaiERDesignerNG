@@ -21,7 +21,7 @@
 		<property name="lastModificationDate" not-null="false" />
 
 		<property name="name" not-null="true" />
-		<property name="comment" not-null="false" type="org.hibernate.type.StringClobType"/>
+		<property name="comment" not-null="false" type="text"/>		
 
 		<list name="attributes" cascade="all-delete-orphan">
 			<key column="tableid" />

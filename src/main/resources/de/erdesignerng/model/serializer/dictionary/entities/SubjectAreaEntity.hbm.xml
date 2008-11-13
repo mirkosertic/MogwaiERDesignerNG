@@ -5,7 +5,7 @@
 <hibernate-mapping package="de.erdesignerng.model.serializer.dictionary.entities"
 	default-lazy="false">
 
-	<class name="IndexEntity" table="mogdict_sa" select-before-update="true">
+	<class name="SubjectAreaEntity" table="mogdict_sa" select-before-update="true">
 
 		<id name="systemId" >
 			<generator class="assigned" />
@@ -19,7 +19,7 @@
 		<property name="lastModificationDate" not-null="false"/>
 
 		<property name="name" not-null="true"/>
-		<property name="comment" not-null="false" type="org.hibernate.type.StringClobType"/>
+		<property name="comment" not-null="false" type="text"/>		
 		
 		<property name="color" not-null="true"/>
 		

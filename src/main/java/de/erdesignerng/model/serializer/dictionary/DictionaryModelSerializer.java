@@ -89,7 +89,9 @@ public class DictionaryModelSerializer extends DictionarySerializer {
             theTx.commit();
             
         } catch (Exception e) {
-            theTx.rollback();
+            if (theTx != null) {
+                theTx.rollback();
+            }
             
             throw e;
         } finally {
