@@ -54,7 +54,6 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         theConfiguration.addClass(SubjectAreaEntity.class);
         theConfiguration.setProperty(Environment.DIALECT, aModel.getDialect().getHibernateDialectClass().getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
-        theConfiguration.setProperty(Environment.SHOW_SQL, "true");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());
         return theConfiguration;
     }
