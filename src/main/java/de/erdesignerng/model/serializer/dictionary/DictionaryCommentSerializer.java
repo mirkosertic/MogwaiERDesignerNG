@@ -38,7 +38,7 @@ public class DictionaryCommentSerializer extends DictionarySerializer {
 
     public void serialize(Model aModel, Session aSession) {
 
-        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), ModelEntity.class, aSession);
+        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), CommentEntity.class, aSession);
         
         for (Comment theComment : aModel.getComments()) {
             boolean existing = true;
