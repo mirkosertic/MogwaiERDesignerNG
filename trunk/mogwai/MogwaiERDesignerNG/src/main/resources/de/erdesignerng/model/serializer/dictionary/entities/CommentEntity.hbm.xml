@@ -20,9 +20,8 @@
 		<property name="lastModificationUser" not-null="false" />
 		<property name="lastModificationDate" not-null="false" />
 
-		<property name="name" not-null="true" />
-		<property name="comment" not-null="false" type="org.hibernate.type.StringClobType"/>
-
+		<property name="comment" not-null="false" type="text"/>
+		
 		<map name="properties" table="mogdict_comments_props" cascade="all-delete-orphan">
 			<key column="tableid" />
 			<map-key column="propname" type="string" />
