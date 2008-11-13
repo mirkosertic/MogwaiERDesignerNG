@@ -95,7 +95,7 @@ public class DictionarySubjectAreaSerializer extends DictionarySerializer {
     }
 
     public void deserialize(Model aModel, Session aSession) {
-        Criteria theCriteria = aSession.createCriteria(SubjectArea.class);
+        Criteria theCriteria = aSession.createCriteria(SubjectAreaEntity.class);
         
         for (Object theObject : theCriteria.list()) {
             SubjectAreaEntity theEntity = (SubjectAreaEntity) theObject;

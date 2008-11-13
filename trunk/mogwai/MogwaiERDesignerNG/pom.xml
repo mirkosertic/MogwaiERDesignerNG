@@ -56,7 +56,7 @@
           </links>
         </configuration>
       </plugin>
-      <!-- <plugin>
+      <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.0</version>
         <executions>
@@ -85,7 +85,7 @@
             <version>2.10</version>
           </dependency>
         </dependencies>
-      </plugin> -->
+      </plugin> 
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
