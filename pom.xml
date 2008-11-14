@@ -216,4 +216,12 @@
       <version>1.5.2</version>
     </dependency>
   </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>emma-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
