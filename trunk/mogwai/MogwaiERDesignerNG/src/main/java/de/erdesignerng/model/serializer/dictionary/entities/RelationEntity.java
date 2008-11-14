@@ -17,8 +17,8 @@
  */
 package de.erdesignerng.model.serializer.dictionary.entities;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entity for a table.
@@ -31,7 +31,7 @@ public class RelationEntity extends ModelEntity {
 
     private String exportingTable;
 
-    private Map<String, String> mapping = new HashMap<String, String>();
+    private List<StringKeyValuePair> mapping = new ArrayList<StringKeyValuePair>();
 
     private int onDelete;
 
@@ -68,21 +68,6 @@ public class RelationEntity extends ModelEntity {
     }
 
     /**
-     * @return the mapping
-     */
-    public Map<String, String> getMapping() {
-        return mapping;
-    }
-
-    /**
-     * @param mapping
-     *                the mapping to set
-     */
-    public void setMapping(Map<String, String> mapping) {
-        this.mapping = mapping;
-    }
-
-    /**
      * @return the onDelete
      */
     public int getOnDelete() {
@@ -110,5 +95,19 @@ public class RelationEntity extends ModelEntity {
      */
     public void setOnUpdate(int onUpdate) {
         this.onUpdate = onUpdate;
+    }
+
+    /**
+     * @return the mapping
+     */
+    public List<StringKeyValuePair> getMapping() {
+        return mapping;
+    }
+
+    /**
+     * @param mapping the mapping to set
+     */
+    public void setMapping(List<StringKeyValuePair> mapping) {
+        this.mapping = mapping;
     }
 }

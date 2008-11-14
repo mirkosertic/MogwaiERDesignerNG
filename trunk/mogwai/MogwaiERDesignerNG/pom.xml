@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.sourceforge.mogwai</groupId>
   <artifactId>mogwai-erdesignerng</artifactId>
@@ -214,6 +214,12 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.8.0.7</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <reporting>

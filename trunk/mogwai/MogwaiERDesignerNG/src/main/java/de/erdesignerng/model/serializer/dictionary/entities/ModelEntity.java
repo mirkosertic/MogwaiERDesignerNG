@@ -18,8 +18,8 @@
 package de.erdesignerng.model.serializer.dictionary.entities;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for all model entities.
@@ -44,7 +44,7 @@ public abstract class ModelEntity {
 
     private Timestamp lastModificationDate;
 
-    private Map<String, String> properties = new HashMap<String, String>();
+    private List<StringKeyValuePair> properties = new ArrayList<StringKeyValuePair>();
 
     /**
      * @return the systemId
@@ -161,14 +161,14 @@ public abstract class ModelEntity {
     /**
      * @return the properties
      */
-    public Map<String, String> getProperties() {
+    public List<StringKeyValuePair> getProperties() {
         return properties;
     }
 
     /**
      * @param properties the properties to set
      */
-    public void setProperties(Map<String, String> properties) {
+    public void setProperties(List<StringKeyValuePair> properties) {
         this.properties = properties;
     }
 }
