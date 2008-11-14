@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * The domain editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 17:53:55 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -120,6 +120,7 @@ public class DomainEditor extends BaseEditor {
         model = aModel;
 
         domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
+        domainBindingInfo.addBinding("attribute.datatype", editingView.getDataType());        
         domainBindingInfo.addBinding("attribute.size", editingView.getSizeSpinner());
         domainBindingInfo.addBinding("attribute.fraction", editingView.getFractionSpinner());
         domainBindingInfo.addBinding("attribute.scale", editingView.getScaleSpinner());

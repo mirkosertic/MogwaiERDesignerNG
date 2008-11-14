@@ -39,7 +39,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-11 18:50:34 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -410,8 +410,8 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @return the available data types
      */
-    public List<DataType> getAvailableDataTypes() {
-        List<DataType> theResult = new ArrayList<DataType>();
+    public DataTypeList getAvailableDataTypes() {
+        DataTypeList theResult = new DataTypeList();
         if (dialect != null) {
             theResult.addAll(dialect.getDataTypes());
         }

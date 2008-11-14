@@ -17,13 +17,14 @@
  */
 package de.erdesignerng.model;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.collections.map.ListOrderedMap;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -35,7 +36,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     private Table exportingTable;
 
-    private Map<Attribute, Attribute> mapping = new HashMap<Attribute, Attribute>();
+    private Map<Attribute, Attribute> mapping = new ListOrderedMap();
 
     private CascadeType onDelete = CascadeType.CASCADE;
 
