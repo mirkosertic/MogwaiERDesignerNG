@@ -28,6 +28,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.RelationEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.StringKeyValuePair;
 
 /**
  * Serializer for relations.
@@ -78,7 +79,10 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
 
         aDestination.getMapping().clear();
         for (Map.Entry<Attribute, Attribute> theEntry : aSource.getMapping().entrySet()) {
-            aDestination.getMapping().put(theEntry.getKey().getSystemId(), theEntry.getValue().getSystemId());
+            StringKeyValuePair theMappingEntry = new StringKeyValuePair();
+            theMappingEntry.setKey(theEntry.getKey().getSystemId());
+            theMappingEntry.setValue(theEntry.getValue().getSystemId());
+            aDestination.getMapping().add(theMappingEntry);
         }
     }
 
@@ -89,7 +93,7 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
         aDestination.setOnDelete(intToCascadeType(aSource.getOnDelete()));
 
         aDestination.getMapping().clear();
-        for (Map.Entry<String, String> theEntry : aSource.getMapping().entrySet()) {
+        for (StringKeyValuePair theEntry : aSource.getMapping()) {
             Attribute theAt1 = aDestination.getExportingTable().getAttributes().findBySystemId(theEntry.getKey());
             Attribute theAt2 = aDestination.getImportingTable().getAttributes().findBySystemId(theEntry.getValue());
             if (theAt1 == null) {

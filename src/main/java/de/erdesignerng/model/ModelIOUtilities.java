@@ -48,7 +48,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-14 22:08:51 $
  */
 public final class ModelIOUtilities {
 
@@ -135,8 +135,9 @@ public final class ModelIOUtilities {
 
         Connection theConnection = null;
         try {
+            Class theDialectClass = aModel.getDialect().getHibernateDialectClass();
             theConnection = aModel.createConnection(aPreferences);
-            DictionaryModelSerializer.SERIALIZER.serialize(aModel, theConnection);
+            DictionaryModelSerializer.SERIALIZER.serialize(aModel, theConnection, theDialectClass);
         } finally {
             if (theConnection != null) {
                 if (!aModel.getDialect().generatesManagedConnection()) {
@@ -154,8 +155,9 @@ public final class ModelIOUtilities {
 
         Connection theConnection = null;
         try {
+            Class theDialectClass = aModel.getDialect().getHibernateDialectClass();
             theConnection = aModel.createConnection(aPreferences);
-            return DictionaryModelSerializer.SERIALIZER.deserialize(aModel, theConnection);
+            return DictionaryModelSerializer.SERIALIZER.deserialize(aModel, theConnection, theDialectClass);
         } finally {
             if (theConnection != null) {
                 if (!aModel.getDialect().generatesManagedConnection()) {

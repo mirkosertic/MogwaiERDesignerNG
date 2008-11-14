@@ -28,6 +28,7 @@ import org.hibernate.Session;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.ModelList;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.StringKeyValuePair;
 
 /**
  * Base class for all serializers.
@@ -43,7 +44,10 @@ public abstract class DictionarySerializer {
 
         aDestination.getProperties().clear();
         for (Map.Entry<String, String> theEntry : aSource.getProperties().getProperties().entrySet()) {
-            aDestination.getProperties().put(theEntry.getKey(), theEntry.getValue());
+            StringKeyValuePair theElement = new StringKeyValuePair();
+            theElement.setKey(theEntry.getKey());
+            theElement.setValue(theEntry.getValue());
+            aDestination.getProperties().add(theElement);
         }
     }
 
@@ -53,8 +57,8 @@ public abstract class DictionarySerializer {
         aDestination.setComment(aSource.getComment());
 
         aDestination.getProperties().getProperties().clear();
-        for (Map.Entry<String, String> theEntry : aSource.getProperties().entrySet()) {
-            aDestination.getProperties().getProperties().put(theEntry.getKey(), theEntry.getValue());
+        for (StringKeyValuePair theElement : aSource.getProperties()) {
+            aDestination.getProperties().getProperties().put(theElement.getKey(), theElement.getValue());
         }
     }
 

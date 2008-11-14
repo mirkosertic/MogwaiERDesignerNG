@@ -23,21 +23,27 @@
 		<property name="name" not-null="true" />
 		<property name="comment" not-null="false" type="text"/>		
 
-		<map name="properties" table="mogdict_relations_props" cascade="all-delete-orphan">
+		<list name="properties" table="mogdict_relations_props" cascade="all-delete-orphan">
 			<key column="relationid" />
-			<map-key column="propname" type="string" />
-			<element column="propvalue" type="string" />
-		</map>
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property name="key" not-null="true"/>
+				<property name="value" not-null="true"/>
+			</composite-element>
+		</list>
 		
 		<property name="importingTable" not-null="true"/>
 		<property name="exportingTable" not-null="true"/>
 		<property name="onDelete" not-null="true"/>
 		<property name="onUpdate" not-null="true"/>
 		
-		<map name="mapping" table="mogdict_relations_map" cascade="all-delete-orphan">
+		<list name="mapping" table="mogdict_relations_map" cascade="all-delete-orphan">
 			<key column="relationid" />
-			<map-key column="sourceattribute" type="string" />
-			<element column="destattribute" type="string" />
-		</map>		
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property name="key" not-null="true"/>
+				<property name="value" not-null="true"/>
+			</composite-element>
+		</list>		
 	</class>
 </hibernate-mapping>
