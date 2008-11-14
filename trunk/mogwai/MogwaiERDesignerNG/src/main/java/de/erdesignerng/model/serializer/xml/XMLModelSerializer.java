@@ -33,7 +33,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
 public class XMLModelSerializer extends XMLSerializer {
     

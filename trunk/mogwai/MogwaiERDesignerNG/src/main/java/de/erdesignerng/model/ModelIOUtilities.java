@@ -48,25 +48,9 @@ import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-06 22:01:08 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
 public final class ModelIOUtilities {
-
-    protected static final String ID = "id";
-
-    protected static final String NAME = "name";
-
-    protected static final String VALUE = "value";
-
-    protected static final String PROPERTY = "Property";
-
-    protected static final String CASCADE = "cascade";
-
-    protected static final String SET_NULL = "setnull";
-
-    protected static final String NOTHING = "nothing";
-
-    protected static final String DEFAULT = "default";
 
     private static ModelIOUtilities me;
 
@@ -146,39 +130,42 @@ public final class ModelIOUtilities {
 
         aStream.close();
     }
-    
+
     public void serializeModelToDB(Model aModel, ApplicationPreferences aPreferences) throws Exception {
-        
+
         Connection theConnection = null;
         try {
             theConnection = aModel.createConnection(aPreferences);
             DictionaryModelSerializer.SERIALIZER.serialize(aModel, theConnection);
         } finally {
             if (theConnection != null) {
-                try {
-                    theConnection.close();
-                } catch (Exception e) {
-                    // Ignore this
+                if (!aModel.getDialect().generatesManagedConnection()) {
+                    try {
+                        theConnection.close();
+                    } catch (Exception e) {
+                        // Ignore this
+                    }
                 }
             }
         }
     }
-    
+
     public Model deserializeModelfromDB(Model aModel, ApplicationPreferences aPreferences) throws Exception {
-        
+
         Connection theConnection = null;
         try {
             theConnection = aModel.createConnection(aPreferences);
             return DictionaryModelSerializer.SERIALIZER.deserialize(aModel, theConnection);
         } finally {
             if (theConnection != null) {
-                try {
-                    theConnection.close();
-                } catch (Exception e) {
-                    // Ignore this
+                if (!aModel.getDialect().generatesManagedConnection()) {
+                    try {
+                        theConnection.close();
+                    } catch (Exception e) {
+                        // Ignore this
+                    }
                 }
             }
         }
     }
-    
 }

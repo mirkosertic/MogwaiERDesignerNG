@@ -1,0 +1,1 @@
+EXEC sp_rename 'TESTTABLE.AT1' , 'AT1_NEW' , 'COLUMN';

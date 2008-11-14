@@ -36,17 +36,17 @@ public class XMLDomainSerializer extends XMLSerializer {
 
     public static final String SCALE = "scale";
 
-    public void serialize(Domain aTable, Document aDocument, Element aRootElement) {
+    public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
         Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
         // Basisdaten des Modelelementes speichern
-        theDomainElement.setAttribute(ID, aTable.getSystemId());
-        theDomainElement.setAttribute(NAME, aTable.getName());
+        theDomainElement.setAttribute(ID, aDomain.getSystemId());
+        theDomainElement.setAttribute(NAME, aDomain.getName());
 
-        theDomainElement.setAttribute(DATATYPE, aTable.getAttribute().getDatatype().getName());
-        theDomainElement.setAttribute(SIZE, "" + aTable.getAttribute().getSize());
-        theDomainElement.setAttribute(FRACTION, "" + aTable.getAttribute().getFraction());
-        theDomainElement.setAttribute(SCALE, "" + aTable.getAttribute().getScale());
+        theDomainElement.setAttribute(DATATYPE, aDomain.getAttribute().getDatatype().getName());
+        theDomainElement.setAttribute(SIZE, "" + aDomain.getAttribute().getSize());
+        theDomainElement.setAttribute(FRACTION, "" + aDomain.getAttribute().getFraction());
+        theDomainElement.setAttribute(SCALE, "" + aDomain.getAttribute().getScale());
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {

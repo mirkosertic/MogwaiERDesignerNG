@@ -30,7 +30,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-11-14 18:17:15 $
  * @param <T>
  *            the dialect
  */
@@ -150,7 +150,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append(" ADD CONSTRAINT ");
         theStatement.append(aRelation.getName());
         theStatement.append(" FOREIGN KEY (");
-
+        
         boolean first = true;
         for (Attribute theAttribute : aRelation.getMapping().values()) {
             if (!first) {
@@ -320,7 +320,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " (\n");
+        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " (" + getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute theAttribute = aTable.getAttributes().get(i);
 
@@ -331,7 +331,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                 theStatement.append(",");
             }
 
-            theStatement.append("\n");
+            theStatement.append(getLineSeparator());
         }
         theStatement.append(")");
         theStatement.append(createCreateTableSuffix(aTable));

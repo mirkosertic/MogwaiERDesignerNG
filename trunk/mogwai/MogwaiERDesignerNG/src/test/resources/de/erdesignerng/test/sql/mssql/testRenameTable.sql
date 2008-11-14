@@ -1,0 +1,1 @@
+EXEC sp_rename 'TESTTABLE' , 'TESTTABLE1';
