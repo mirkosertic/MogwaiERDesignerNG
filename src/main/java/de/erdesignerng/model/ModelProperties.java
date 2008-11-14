@@ -1,18 +1,18 @@
 package de.erdesignerng.model;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Properties.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:41:57 $
+ * @version $Date: 2008-11-14 21:10:04 $
  */
 public class ModelProperties implements Serializable {
 
-    private Map<String, String> properties = new HashMap<String, String>();
+    private Map<String, String> properties = new TreeMap<String, String>();
 
     public Map<String, String> getProperties() {
         return properties;

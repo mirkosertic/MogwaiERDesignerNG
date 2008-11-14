@@ -40,7 +40,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * Test for XML based model io. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-14 21:10:04 $
  */
 public class XMLIOTest extends BaseERDesignerTestCaseImpl {
 
@@ -61,8 +61,7 @@ public class XMLIOTest extends BaseERDesignerTestCaseImpl {
 
         String theOriginalFile = readResourceFile("examplemodel.mxm");
         String theNewFile = theStringWriter.toString();
-        System.out.println(theOriginalFile.length());
-        System.out.println(theNewFile.length());
+        
         assertTrue(theOriginalFile.equals(theNewFile));
     }
 }
