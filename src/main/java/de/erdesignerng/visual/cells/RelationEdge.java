@@ -31,7 +31,7 @@ import de.erdesignerng.model.Relation;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
@@ -57,7 +57,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
         Relation theRelation = (Relation) getUserObject();
 
-        Point2D theOffset = GraphConstants.getOffset(aAttributes);
+        Point2D theOffset = GraphConstants.getLabelPosition(aAttributes);
         if (theOffset != null) {
 
             String theLocation = ((int) theOffset.getX()) + ":" + ((int) theOffset.getY());
@@ -94,7 +94,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
                 Relation.PROPERTY_TEXT_OFFSET));
         if (thePoint != null) {
-            GraphConstants.setOffset(getAttributes(), thePoint);
+            GraphConstants.setLabelPosition(getAttributes(), thePoint);
         }
 
         String thePoints = aObject.getProperties().getProperty(Relation.PROPERTY_POINTS);

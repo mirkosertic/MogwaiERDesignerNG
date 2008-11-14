@@ -15,38 +15,25 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test;
+package de.erdesignerng.test.sql.mysql;
 
-import java.sql.DriverManager;
-
-import de.erdesignerng.dialect.postgres.PostgresDialect;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Model;
+import de.erdesignerng.dialect.mysql.MySQLDialect;
+import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for MySQL dialect.
+ * Test for the MySQL SQL Generator. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 17:53:55 $
+ * @version $Date: 2008-11-14 18:17:15 $
  */
-public class PostgresTestX extends BaseUseCases {
+public class MySQLDialectTest extends AbstractDialectTestCase {
 
-    @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        model = new Model();
-        model.setDialect(new PostgresDialect());
-
-        model.setModificationTracker(new MyTracker(model));
-
-        Class.forName("org.postgresql.Driver");
-        connection = DriverManager.getConnection("jdbc:postgresql://192.168.0.140:5432/erdesigner", "erdesigner", "erdesigner");
+        dialect = new MySQLDialect();
+        textDataType = dialect.getDataTypes().findByName("VARCHAR");
+        intDataType = dialect.getDataTypes().findByName("INTEGER");
+        basePath = "/de/erdesignerng/test/sql/mysql/";
     }
-    
-    @Override
-    public void setTextAttribute(Attribute aAttribute) {
-        aAttribute.setDatatype(model.getDialect().getDataTypes().findByName("varchar"));
-        aAttribute.setSize(20);
-    }    
 }
