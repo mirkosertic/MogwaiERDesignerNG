@@ -43,7 +43,7 @@ public class DictionaryModelSerializer extends DictionarySerializer {
 
     public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
 
-    protected Configuration createConfiguration(Model aModel) {
+    protected Configuration createConfiguration(Model aModel, Class aHibernateDialectClass) {
         Configuration theConfiguration = new Configuration();
         theConfiguration.addClass(DomainEntity.class);
         theConfiguration.addClass(TableEntity.class);
@@ -52,28 +52,28 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         theConfiguration.addClass(RelationEntity.class);
         theConfiguration.addClass(CommentEntity.class);
         theConfiguration.addClass(SubjectAreaEntity.class);
-        theConfiguration.setProperty(Environment.DIALECT, aModel.getDialect().getHibernateDialectClass().getName());
+        theConfiguration.setProperty(Environment.DIALECT, aHibernateDialectClass.getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());
         return theConfiguration;
     }
 
-    protected Session createSession(Model aModel, Connection aConnection) {
+    protected Session createSession(Model aModel, Connection aConnection, Class aHibernateDialectClass) {
 
-        Configuration theConfiguration = createConfiguration(aModel);
+        Configuration theConfiguration = createConfiguration(aModel, aHibernateDialectClass);
         SessionFactory theSessionFactory = theConfiguration.buildSessionFactory();
 
         return theSessionFactory.openSession(aConnection, AuditInterceptor.INSTANCE);
     }
 
-    public void serialize(Model aModel, Connection aConnection) throws Exception {
+    public void serialize(Model aModel, Connection aConnection, Class aHibernateDialectClass) throws Exception {
 
         ThreadbasedConnectionProvider.initializeForThread(aConnection);
         Session theSession = null;
         Transaction theTx = null;
         try {
 
-            theSession = createSession(aModel, aConnection);    
+            theSession = createSession(aModel, aConnection, aHibernateDialectClass);    
             theTx = theSession.beginTransaction();
             
             DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theSession);
@@ -105,7 +105,7 @@ public class DictionaryModelSerializer extends DictionarySerializer {
 
     }
 
-    public Model deserialize(Model aModel, Connection aConnection) throws Exception {
+    public Model deserialize(Model aModel, Connection aConnection, Class aHibernateDialectClass) throws Exception {
 
         ThreadbasedConnectionProvider.initializeForThread(aConnection);
         Session theSession = null;
@@ -116,7 +116,7 @@ public class DictionaryModelSerializer extends DictionarySerializer {
             theNewModel.getProperties().copyFrom(aModel);
             theNewModel.setDialect(aModel.getDialect());
 
-            theSession = createSession(aModel, aConnection);    
+            theSession = createSession(aModel, aConnection, aHibernateDialectClass);    
             theTx = theSession.beginTransaction();
             
             DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theSession);

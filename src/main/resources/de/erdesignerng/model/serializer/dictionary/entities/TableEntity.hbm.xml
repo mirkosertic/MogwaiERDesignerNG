@@ -35,10 +35,14 @@
 			<one-to-many class="IndexEntity" />
 		</list>
 
-		<map name="properties" table="mogdict_tables_props" cascade="all-delete-orphan">
+		<list name="properties" table="mogdict_tables_props" cascade="all-delete-orphan">
 			<key column="tableid" />
-			<map-key column="propname" type="string" />
-			<element column="propvalue" type="string" />
-		</map>
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property name="key" not-null="true"/>
+				<property name="value" not-null="true"/>
+			</composite-element>
+		</list>
+		
 	</class>
 </hibernate-mapping>
