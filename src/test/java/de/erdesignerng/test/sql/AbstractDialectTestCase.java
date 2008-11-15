@@ -43,7 +43,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * Base test class for all sql generators. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-15 12:03:53 $
  */
 public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl {
 
@@ -403,7 +403,6 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
 
         // Modify the model here
         theModel.removeAttributeFromTable(theTable, theTable.getAttributes().findByName("AT1"));
-        ;
 
         SQLGenerator theGenerator = dialect.createSQLGenerator();
         StatementList theStatementList = theTracker.getStatements();
