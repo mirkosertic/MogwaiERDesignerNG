@@ -34,7 +34,7 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:17:22 $
+ * @version $Date: 2008-11-15 19:12:36 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
@@ -59,6 +59,16 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
     @Override
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection) throws SQLException {
+
+        // Special treatment for BIT types
+        if ("BIT".equals(aAttribute.getDatatype().getName())) {
+            String theDefault = aAttribute.getDefaultValue();
+            if (!StringUtils.isEmpty(theDefault) && (theDefault.length() == 1)) {
+                int theDefaultInt = theDefault.charAt(0);
+                aAttribute.setDefaultValue("" + theDefaultInt);
+            }
+        }
+
         Statement theStatement = aConnection.createStatement();
         ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aEntry.getTableName());
         while (theResult.next()) {

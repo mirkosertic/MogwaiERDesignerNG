@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect.oracle;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
@@ -28,7 +30,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-11-15 19:12:36 $
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
@@ -50,7 +52,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
         String theDefault = aAttribute.getDefaultValue();        
         boolean hasDefault = false;
-        if ((theDefault != null) && (!"".equals(theDefault))) {
+        if (!StringUtils.isEmpty(theDefault)) {
             hasDefault = true;
         }
         
@@ -64,7 +66,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         }
         
         String theExtra = theInfoProvider.getExtra();
-        if ((theExtra != null) && (!"".equals(theExtra))) {
+        if (!StringUtils.isEmpty(theExtra)) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);
         }

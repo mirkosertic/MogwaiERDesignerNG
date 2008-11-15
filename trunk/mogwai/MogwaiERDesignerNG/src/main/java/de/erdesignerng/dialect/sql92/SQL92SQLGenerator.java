@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect.sql92;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.PlattformConfig;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
@@ -31,9 +33,9 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 12:02:19 $
+ * @version $Date: 2008-11-15 19:12:36 $
  * @param <T>
- *            the dialect
+ *                the dialect
  */
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
@@ -42,7 +44,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     protected SQL92SQLGenerator(T aDialect) {
         super(aDialect);
     }
-    
+
     protected String createAttributeDataDefinition(Attribute aAttribute) {
         return createAttributeDataDefinition(aAttribute, false);
     }
@@ -50,7 +52,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     protected String createAttributeDataDefinition(Attribute aAttribute, boolean aIgnoreDefault) {
 
         LayoutProvider theProvider = aAttribute.getLayoutProvider();
-        
+
         StringBuilder theBuilder = new StringBuilder();
         theBuilder.append(theProvider.getPhysicalDeclaration());
         boolean isNullable = theProvider.isNullable();
@@ -60,15 +62,15 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
 
         if (!aIgnoreDefault) {
-        String theDefault = aAttribute.getDefaultValue();
-        if ((theDefault != null) && (!"".equals(theDefault))) {
-            theBuilder.append(" DEFAULT ");
-            theBuilder.append(theDefault);
-        }
+            String theDefault = aAttribute.getDefaultValue();
+            if (!StringUtils.isEmpty(theDefault)) {
+                theBuilder.append(" DEFAULT ");
+                theBuilder.append(theDefault);
+            }
         }
 
         String theExtra = theProvider.getExtra();
-        if ((theExtra != null) && (!"".equals(theExtra))) {
+        if (!StringUtils.isEmpty(theExtra)) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);
         }
@@ -151,7 +153,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append(" ADD CONSTRAINT ");
         theStatement.append(aRelation.getName());
         theStatement.append(" FOREIGN KEY (");
-        
+
         boolean first = true;
         for (Attribute theAttribute : aRelation.getMapping().values()) {
             if (!first) {
@@ -321,7 +323,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " (" + PlattformConfig.getLineSeparator());
+        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " ("
+                + PlattformConfig.getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute theAttribute = aTable.getAttributes().get(i);
 

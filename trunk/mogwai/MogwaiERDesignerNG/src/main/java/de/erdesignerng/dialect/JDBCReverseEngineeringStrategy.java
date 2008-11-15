@@ -38,7 +38,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 17:53:55 $
+ * @version $Date: 2008-11-15 19:12:36 $
  * @param <T>
  *                the dialect
  */
@@ -88,7 +88,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
             theTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
 
-            if ((theTableRemarks != null) && (!"".equals(theTableRemarks))) {
+            if (!StringUtils.isEmpty(theTableRemarks)) {
                 theTable.setComment(theTableRemarks);
             }
 
@@ -112,7 +112,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 Attribute theAttribute = new Attribute();
 
                 theAttribute.setName(dialect.getCastType().cast(theColumnName));
-                if ((theColumnRemarks != null) && (!"".equals(theColumnRemarks))) {
+                if (!StringUtils.isEmpty(theColumnRemarks)) {
                     theAttribute.setComment(theColumnRemarks);
                 }
 
