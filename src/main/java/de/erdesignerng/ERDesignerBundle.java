@@ -17,9 +17,9 @@ public interface ERDesignerBundle {
   String NEWMODEL = "NEWMODEL";
   /** Save model.... */
   String SAVEMODEL = "SAVEMODEL";
-  /** Save model to database.... */
+  /** Save model to repository.... */
   String SAVEMODELTODB = "SAVEMODELTODB";
-  /** Load model from database.... */
+  /** Load model from repository.... */
   String LOADMODELFROMDB = "LOADMODELFROMDB";
   /** Load model.... */
   String LOADMODEL = "LOADMODEL";
@@ -295,7 +295,7 @@ public interface ERDesignerBundle {
   String COLOR = "COLOR";
   /** Models with subject areas are not supported by this operation. */
   String MODELSWITHSUBJECTAREASARENOTSUPPORTED = "MODELSWITHSUBJECTAREASARENOTSUPPORTED";
-  /** Display comments. */
+  /** Display element comments. */
   String DISPLAYCOMMENTS = "DISPLAYCOMMENTS";
   /** Display grid. */
   String DISPLAYGRID = "DISPLAYGRID";
@@ -321,4 +321,12 @@ public interface ERDesignerBundle {
   String DISPLAYPRIMARYKEY = "DISPLAYPRIMARYKEY";
   /** Primary- and foreign keys. */
   String DISPLAYPRIMARYKEYANDFOREIGNKEY = "DISPLAYPRIMARYKEYANDFOREIGNKEY";
+  /** Natural order. */
+  String DISPLAYNATURALORDER = "DISPLAYNATURALORDER";
+  /** Ascending order. */
+  String DISPLAYASCENDING = "DISPLAYASCENDING";
+  /** Descending order. */
+  String DISPLAYDESCENDING = "DISPLAYDESCENDING";
+  /** Attribute order. */
+  String DISPLAYORDER = "DISPLAYORDER";
 }

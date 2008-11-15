@@ -24,8 +24,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -33,7 +33,7 @@ import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-15 19:22:45 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public class ImageExporter implements Exporter {
 
@@ -41,7 +41,7 @@ public class ImageExporter implements Exporter {
 
     public static List<String> getSupportedFormats() {
 
-        Vector<String> theKnown = new Vector<String>();
+        List<String> theKnown = new ArrayList<String>();
         String[] theList = ImageIO.getWriterMIMETypes();
         for (String theEntry : theList) {
             theKnown.add(theEntry.toUpperCase());

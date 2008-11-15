@@ -17,9 +17,10 @@
  */
 package de.erdesignerng.plugins.squirrel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
 import java.util.prefs.BackingStoreException;
 
 import net.sourceforge.squirrel_sql.client.IApplication;
@@ -45,7 +46,7 @@ import de.mogwai.common.client.looks.UIInitializer;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
@@ -199,7 +200,7 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
         SquirrelMogwaiController[] theControllers = controllersBySessionID.get(aSession.getIdentifier());
 
-        Vector<SquirrelMogwaiController> theTemp = new Vector<SquirrelMogwaiController>();
+        List<SquirrelMogwaiController> theTemp = new ArrayList<SquirrelMogwaiController>();
         if (null != theControllers) {
             theTemp.addAll(Arrays.asList(theControllers));
         }
@@ -214,7 +215,7 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
 
     public void removeGraphController(SquirrelMogwaiController toRemove, ISession session) {
         SquirrelMogwaiController[] theControllers = controllersBySessionID.get(session.getIdentifier());
-        Vector<SquirrelMogwaiController> theTemp = new Vector<SquirrelMogwaiController>();
+        List<SquirrelMogwaiController> theTemp = new ArrayList<SquirrelMogwaiController>();
         for (int i = 0; i < theControllers.length; i++) {
             if (!theControllers[i].equals(toRemove)) {
                 theTemp.add(theControllers[i]);
