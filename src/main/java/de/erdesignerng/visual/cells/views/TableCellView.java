@@ -24,11 +24,15 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang.StringUtils;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -42,6 +46,7 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.DisplayLevel;
+import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.cells.TableCell;
@@ -50,9 +55,13 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-01 18:38:33 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public class TableCellView extends VertexView {
+
+    private static final Comparator NAME_COMPARATOR = new BeanComparator("name", String.CASE_INSENSITIVE_ORDER);
+
+    private static final Comparator REVERSE_NAME_COMPARATOR = new ReverseComparator(NAME_COMPARATOR);
 
     private static MyRenderer renderer = new MyRenderer();
 
@@ -81,6 +90,8 @@ public class TableCellView extends VertexView {
         private boolean physicalLayout = true;
 
         private DisplayLevel displayLevel;
+
+        private DisplayOrder displayOrder;
 
         private static ImageIcon key = IconFactory.getKeyIcon();
 
@@ -155,13 +166,29 @@ public class TableCellView extends VertexView {
 
             int theTextXOffset = 15;
 
-            List<Attribute> theAllAttributes = new Vector<Attribute>();
-            theAllAttributes.addAll(table.getAttributes());
+            List<Attribute> theTempList = new ArrayList<Attribute>();
+            theTempList.addAll(table.getAttributes());
+
+            switch (displayOrder) {
+            case NATURAL:
+                break;
+            case ASCENDING:
+                Collections.sort(theTempList, NAME_COMPARATOR);
+                break;
+            case DESCENDING:
+                Collections.sort(theTempList, REVERSE_NAME_COMPARATOR);
+                break;
+            default:
+                throw new IllegalStateException("Unknown display order");
+            }
+
+            List<Attribute> theAllAttributes = new ArrayList<Attribute>();
+            theAllAttributes.addAll(theTempList);
 
             boolean hasPrimaryKey = false;
 
             // Draw the attributes
-            for (Attribute theAttribute : table.getAttributes()) {
+            for (Attribute theAttribute : theTempList) {
 
                 boolean isPrimaryKey = false;
                 if (thePrimaryKey != null) {
@@ -275,7 +302,7 @@ public class TableCellView extends VertexView {
                 theMaxX = theLength + 5;
             }
 
-            List<Attribute> theAllAttributes = new Vector<Attribute>();
+            List<Attribute> theAllAttributes = new ArrayList<Attribute>();
             theAllAttributes.addAll(table.getAttributes());
 
             for (Attribute theAttribute : table.getAttributes()) {
@@ -378,6 +405,7 @@ public class TableCellView extends VertexView {
             includeComments = theGraph.isDisplayComments();
             physicalLayout = theGraph.isPhysicalLayout();
             displayLevel = theGraph.getDisplayLevel();
+            displayOrder = theGraph.getDisplayOrder();
 
             return this;
         }

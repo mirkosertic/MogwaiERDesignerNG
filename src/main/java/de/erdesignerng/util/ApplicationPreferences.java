@@ -23,9 +23,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public class ApplicationPreferences {
 
@@ -49,11 +49,11 @@ public class ApplicationPreferences {
 
     private int size;
 
-    private List<File> recentlyUsedFiles = new Vector<File>();
+    private List<File> recentlyUsedFiles = new ArrayList<File>();
 
-    private List<File> classpathfiles = new Vector<File>();
+    private List<File> classpathfiles = new ArrayList<File>();
 
-    private List<RecentlyUsedConnection> recentlyUsedConnections = new Vector<RecentlyUsedConnection>();
+    private List<RecentlyUsedConnection> recentlyUsedConnections = new ArrayList<RecentlyUsedConnection>();
 
     private Preferences preferences;
 

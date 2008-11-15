@@ -48,7 +48,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 15:53:47 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
@@ -59,6 +59,8 @@ public abstract class ERDesignerGraph extends JGraph {
     private boolean physicalLayout;
 
     private DisplayLevel displayLevel = DisplayLevel.ALL;
+    
+    private DisplayOrder displayOrder = DisplayOrder.NATURAL;
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
@@ -250,6 +252,20 @@ public abstract class ERDesignerGraph extends JGraph {
      */
     public void setDisplayLevel(DisplayLevel displayLevel) {
         this.displayLevel = displayLevel;
+    }
+    
+    /**
+     * @return the displayOrder
+     */
+    public DisplayOrder getDisplayOrder() {
+        return displayOrder;
+    }
+
+    /**
+     * @param displayOrder the displayOrder to set
+     */
+    public void setDisplayOrder(DisplayOrder displayOrder) {
+        this.displayOrder = displayOrder;
     }
 
     @Override
