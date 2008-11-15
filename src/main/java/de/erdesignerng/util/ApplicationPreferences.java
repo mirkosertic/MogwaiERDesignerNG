@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 16:57:57 $
+ * @version $Date: 2008-11-15 19:12:36 $
  */
 public class ApplicationPreferences {
 
@@ -204,6 +204,7 @@ public class ApplicationPreferences {
 
         for (int i = 0; i < recentlyUsedConnections.size(); i++) {
             RecentlyUsedConnection theConnection = recentlyUsedConnections.get(i);
+            preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection.getAlias());            
             preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection.getDialect());
             preferences.put(LRCPREFIX + "URL_" + i, theConnection.getUrl());
             preferences.put(LRCPREFIX + "USER_" + i, theConnection.getUsername());
