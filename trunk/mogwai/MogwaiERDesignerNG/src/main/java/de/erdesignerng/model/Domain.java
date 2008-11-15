@@ -25,9 +25,9 @@ import de.erdesignerng.dialect.DataType;
  * A Domain. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 10:57:04 $
+ * @version $Date: 2008-11-15 14:36:54 $
  */
-public class Domain extends DataType implements LayoutProvider {
+public class Domain extends DataType implements LayoutProvider , Cloneable {
 
     private String systemId = ModelUtilities.createSystemIdFor(this);
     
