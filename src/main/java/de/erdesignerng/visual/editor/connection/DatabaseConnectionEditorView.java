@@ -35,6 +35,8 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 public class DatabaseConnectionEditorView extends DefaultPanel {
 
+    private DefaultTextField alias = new DefaultTextField();
+    
     private DefaultComboBox dialect = new DefaultComboBox();
 
     private DefaultTextField driver = new DefaultTextField();
@@ -58,7 +60,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
     private void initialize() {
 
         String theColDef = "2dlu,p,2dlu,fill:150dlu:grow,2";
-        String theRowDef = "2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,10dlu,p,2dlu";
+        String theRowDef = "2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,10dlu,p,2dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
@@ -67,18 +69,21 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         add(new DefaultLabel(ERDesignerBundle.DIALECT), cons.xy(2, 2));
         add(dialect, cons.xy(4, 2));
+        
+        add(new DefaultLabel(ERDesignerBundle.ALIAS), cons.xy(2, 4));
+        add(alias, cons.xy(4, 4));
+        
+        add(new DefaultLabel(ERDesignerBundle.JDBCDRIVER), cons.xy(2, 6));
+        add(driver, cons.xy(4, 6));
 
-        add(new DefaultLabel(ERDesignerBundle.JDBCDRIVER), cons.xy(2, 4));
-        add(driver, cons.xy(4, 4));
+        add(new DefaultLabel(ERDesignerBundle.JDBCURL), cons.xy(2, 8));
+        add(url, cons.xy(4, 8));
 
-        add(new DefaultLabel(ERDesignerBundle.JDBCURL), cons.xy(2, 6));
-        add(url, cons.xy(4, 6));
+        add(new DefaultLabel(ERDesignerBundle.USER), cons.xy(2, 10));
+        add(user, cons.xy(4, 10));
 
-        add(new DefaultLabel(ERDesignerBundle.USER), cons.xy(2, 8));
-        add(user, cons.xy(4, 8));
-
-        add(new DefaultLabel(ERDesignerBundle.PASSWORD), cons.xy(2, 10));
-        add(password, cons.xy(4, 10));
+        add(new DefaultLabel(ERDesignerBundle.PASSWORD), cons.xy(2, 12));
+        add(password, cons.xy(4, 12));
 
         JPanel thePanel = new JPanel();
 
@@ -105,7 +110,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         });
 
-        add(thePanel, cons.xyw(2, 12, 3));
+        add(thePanel, cons.xyw(2, 14, 3));
     }
 
     public DefaultComboBox getDialect() {
@@ -150,5 +155,12 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
      */
     public DefaultButton getTestButton() {
         return testButton;
+    }
+
+    /**
+     * @return the alias
+     */
+    public DefaultTextField getAlias() {
+        return alias;
     }
 }

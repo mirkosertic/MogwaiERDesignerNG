@@ -17,27 +17,31 @@
  */
 package de.erdesignerng.util;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * An entry for the last used connection history.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-15 16:57:57 $
  */
 public class RecentlyUsedConnection {
-    
-    private static final int PRIME = 31;
+
+    private String alias;
 
     private String dialect;
 
     private String url;
 
     private String username;
-    
+
     private String driver;
-    
+
     private String password;
 
-    public RecentlyUsedConnection(String aDialect, String aURL, String aUserName, String aDriver, String aPassword) {
+    public RecentlyUsedConnection(String aAlias, String aDialect, String aURL, String aUserName, String aDriver,
+            String aPassword) {
+        alias = aAlias;
         dialect = aDialect;
         url = aURL;
         username = aUserName;
@@ -72,30 +76,34 @@ public class RecentlyUsedConnection {
     public String getDriver() {
         return driver;
     }
-    
+
     /**
      * @return the password
      */
     public String getPassword() {
         return password;
     }
-
+    
     /**
-     * {@inheritDoc}
+     * @return the alias
      */
+    public String getAlias() {
+        return alias;
+    }
+
     @Override
     public int hashCode() {
+        final int prime = 31;
         int result = 1;
-        result = PRIME * result + ((dialect == null) ? 0 : dialect.hashCode());
-        result = PRIME * result + ((driver == null) ? 0 : driver.hashCode());
-        result = PRIME * result + ((url == null) ? 0 : url.hashCode());
-        result = PRIME * result + ((username == null) ? 0 : username.hashCode());
+        result = prime * result + ((alias == null) ? 0 : alias.hashCode());
+        result = prime * result + ((dialect == null) ? 0 : dialect.hashCode());
+        result = prime * result + ((driver == null) ? 0 : driver.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -108,6 +116,13 @@ public class RecentlyUsedConnection {
             return false;
         }
         final RecentlyUsedConnection other = (RecentlyUsedConnection) obj;
+        if (alias == null) {
+            if (other.alias != null) {
+                return false;
+            }
+        } else if (!alias.equals(other.alias)) {
+            return false;
+        }
         if (dialect == null) {
             if (other.dialect != null) {
                 return false;
@@ -120,6 +135,13 @@ public class RecentlyUsedConnection {
                 return false;
             }
         } else if (!driver.equals(other.driver)) {
+            return false;
+        }
+        if (password == null) {
+            if (other.password != null) {
+                return false;
+            }
+        } else if (!password.equals(other.password)) {
             return false;
         }
         if (url == null) {
@@ -144,6 +166,9 @@ public class RecentlyUsedConnection {
      */
     @Override
     public String toString() {
+        if (!StringUtils.isEmpty(alias)) {
+            return alias;
+        }
         return dialect + "/" + username + " -> " + url;
     }
 }
