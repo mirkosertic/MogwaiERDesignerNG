@@ -40,8 +40,8 @@
 			<key column="tableid" foreign-key="mogdict_tables_props_fk1" />
 			<list-index column="listindex"/>
 			<composite-element class="StringKeyValuePair">
-				<property name="key" not-null="true"/>
-				<property name="value" not-null="true"/>
+				<property name="key" column="propname" not-null="true"/>
+				<property name="value" column="propvalue" not-null="true"/>
 			</composite-element>
 		</list>
 		
