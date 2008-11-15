@@ -45,7 +45,7 @@
   </fileSets>
   <dependencySets>
     <dependencySet>
-      <outputDirectory>plugins</outputDirectory>
+      <outputDirectory>lib</outputDirectory>
       <scope>runtime</scope>
     </dependencySet>
   </dependencySets>  
