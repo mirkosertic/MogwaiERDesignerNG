@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect.sql92;
 
+import de.erdesignerng.PlattformConfig;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
@@ -30,7 +31,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-15 12:02:19 $
  * @param <T>
  *            the dialect
  */
@@ -320,7 +321,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " (" + getLineSeparator());
+        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " (" + PlattformConfig.getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute theAttribute = aTable.getAttributes().get(i);
 
@@ -331,7 +332,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                 theStatement.append(",");
             }
 
-            theStatement.append(getLineSeparator());
+            theStatement.append(PlattformConfig.getLineSeparator());
         }
         theStatement.append(")");
         theStatement.append(createCreateTableSuffix(aTable));

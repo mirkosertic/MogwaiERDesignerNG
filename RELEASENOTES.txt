@@ -128,4 +128,5 @@ Release 1.6
 * Bug Fixing 2215901 [ERDesignerNG] showing and hiding comments does not work
 * Bug Fixing 2278602 [ERDesignerNG] Relation text offset position not stored
 * Bug Fixing 2283538 [ERDesignerNG] Relation does not take care of attribute order
+* Bug Fixing 2283527 [ERDesignerNG] Line separators sometimes wrong
 
