@@ -46,6 +46,7 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.VertexView;
 
+import de.erdesignerng.PlattformConfig;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.layout.LayoutException;
@@ -67,17 +68,20 @@ public class GraphvizLayout implements Layouter {
     private JGraph graph;
 
     public void applyLayout(ApplicationPreferences aPreferences, JGraph aGraph, Object[] aCells) throws LayoutException {
-        
+
         String theDotCommand = aPreferences.getDotPath();
-        
+
         processBuilder = new ProcessBuilder(theDotCommand, "-y -Tdot");
         processBuilder.redirectErrorStream(true);
+
+        String theLineSeparator = PlattformConfig.getLineSeparator();
 
         graph = aGraph;
         try {
             if (!callDot(aCells)) {
-                throw new LayoutException("Error while trying to layout the graph using Graphviz.\n\n"
-                        + "See the output of the process call below:\n\n" + lastLog);
+                throw new LayoutException("Error while trying to layout the graph using Graphviz." + theLineSeparator
+                        + theLineSeparator + "See the output of the process call below:" + theLineSeparator
+                        + theLineSeparator + lastLog);
             }
         } catch (LayoutException e) {
             throw e;
@@ -93,6 +97,8 @@ public class GraphvizLayout implements Layouter {
         Collection<EdgeView> theEdges = new HashSet<EdgeView>();
 
         GraphModel theModel = graph.getModel();
+
+        String theLineSeparator = PlattformConfig.getLineSeparator();
 
         for (Object cell : aCells) {
 
@@ -111,7 +117,8 @@ public class GraphvizLayout implements Layouter {
         StringBuilder theInput = new StringBuilder();
 
         // building the input for graphviz
-        theInput.append("digraph {\n" + "dpi=72;\n" + "charset=\"UTF-8\";\n");
+        theInput.append("digraph {" + theLineSeparator + "dpi=72;" + theLineSeparator + "charset=\"UTF-8\";"
+                + theLineSeparator);
         theInput.append("edge [labeljust=l");
 
         Font theEdgesFont = GraphConstants.getFont(theEdges.iterator().next().getAttributes());
@@ -120,9 +127,9 @@ public class GraphvizLayout implements Layouter {
         theInput.append(", fontname=\"" + theFontName.replace("\"", "\\\"") + "\"");
         theInput.append(", fontsize=\"" + theFontSize.replace("\"", "\\\"") + "\"");
 
-        theInput.append("];\n");
+        theInput.append("];" + theLineSeparator);
         theInput.append("node [shape=box, fixedsize=true");
-        theInput.append("];\n");
+        theInput.append("];" + theLineSeparator);
 
         Map<CellView, String> theNodes2strings = new HashMap<CellView, String>();
         Map<String, CellView> theStrings2nodes = new HashMap<String, CellView>();
@@ -141,7 +148,7 @@ public class GraphvizLayout implements Layouter {
                 theInput.append("box");
             }
 
-            theInput.append(", fixedsize=true];\n");
+            theInput.append(", fixedsize=true];" + theLineSeparator);
         }
 
         Map<String, EdgeView> theStrings2edges = new HashMap<String, EdgeView>();
@@ -156,14 +163,12 @@ public class GraphvizLayout implements Layouter {
             theStrings2edges.put(s, edge);
             // the dots "..." are inserted to get some more space on the left
             // and right side of the labels
-            theInput.append(s + " [label=\"..." + edge.getCell().toString().replace("\"", "\\\"") + "...\"" + "];\n");
+            theInput.append(s + " [label=\"..." + edge.getCell().toString().replace("\"", "\\\"") + "...\"" + "];"
+                    + theLineSeparator);
         }
-        theInput.append("}\n");
+        theInput.append("}" + theLineSeparator);
         theProcessWriter.write(theInput.toString());
         theProcessWriter.close();
-
-        // for Debugging
-        // System.out.println("\nDot input:\n" + dotInput.toString());
 
         // parsing the output of graphviz
         Map<EdgeView, Point> labelsAbsolutePositions = new HashMap<EdgeView, Point>();
@@ -174,7 +179,7 @@ public class GraphvizLayout implements Layouter {
         StringBuilder buf = new StringBuilder();
         StringBuilder longLine = null;
         for (String line = theDotResultReader.readLine(); line != null; line = theDotResultReader.readLine()) {
-            buf.append(line).append("\n");
+            buf.append(line).append(theLineSeparator);
             if (line.endsWith("\\")) {
                 if (longLine == null) {
                     longLine = new StringBuilder();
@@ -259,15 +264,13 @@ public class GraphvizLayout implements Layouter {
         lastLog = buf.toString();
         theDotProcess.waitFor();
 
-        // for Debugging
-        // System.out.println("\nDot output:\n" + buf.toString());
-
         setLabelPositions(labelsAbsolutePositions);
 
         if (theDotProcess.exitValue() == 0) {
             return true;
         } else {
-            buf.append("\n!!! exit value of graphviz: " + theDotProcess.exitValue() + " !!!\n");
+            buf.append(theLineSeparator + "!!! exit value of graphviz: " + theDotProcess.exitValue() + " !!!"
+                    + theLineSeparator);
             lastLog = buf.toString();
             return false;
         }
@@ -279,8 +282,8 @@ public class GraphvizLayout implements Layouter {
      * JGraph.
      * 
      * @param aPositions
-     *            A map which maps edges and thus their labels to absolute
-     *            positions
+     *                A map which maps edges and thus their labels to absolute
+     *                positions
      */
     private void setLabelPositions(Map<EdgeView, Point> aPositions) {
         Map<Object, Map> nestedAttributes = new HashMap<Object, Map>();
@@ -303,9 +306,9 @@ public class GraphvizLayout implements Layouter {
      * positions.
      * 
      * @param aEdgeView
-     *            The edge to which the label belongs to
+     *                The edge to which the label belongs to
      * @param aPoint
-     *            The absolute position of the label
+     *                The absolute position of the label
      * @return The relative position of the label
      */
     private Point2D getRelativeLabelPosition(EdgeView aEdgeView, Point aPoint) {
