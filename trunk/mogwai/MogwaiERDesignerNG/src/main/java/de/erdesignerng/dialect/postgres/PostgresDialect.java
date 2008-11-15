@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * @version $Date: 2008-11-15 17:04:23 $
  */
 public class PostgresDialect extends SQL92Dialect {
 
@@ -67,9 +67,7 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(new PostgresDataType("bigint", "", java.sql.Types.BIGINT));
         registerType(new PostgresDataType("real", "", java.sql.Types.REAL));
         registerType(new PostgresDataType("double precision", "", java.sql.Types.DOUBLE));
-        
-        //TODO [mirkosertic] Check for JDBC3 compliance
-        //registerType(new PostgresDataType("xml", "", java.sql.Types.SQLXML));
+        registerType(new PostgresDataType("xml", "", java.sql.Types.OTHER));
 
         seal();
     }

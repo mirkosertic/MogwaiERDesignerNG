@@ -132,4 +132,5 @@ Release 1.6
 * Bug Fixing 2283538 [ERDesignerNG] Relation does not take care of attribute order
 * Bug Fixing 2283527 [ERDesignerNG] Line separators sometimes wrong
 * Bug Fixing 2284610 [ERDesignerNG] domains cannot be saved
+* Applied patch 2124875 [ERDesignerNG] Add Postgres data types
 
