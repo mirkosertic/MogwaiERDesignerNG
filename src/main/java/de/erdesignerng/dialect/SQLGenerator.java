@@ -35,10 +35,6 @@ public abstract class SQLGenerator<T extends Dialect> {
         dialect = aDialect;
     }
     
-    protected String getLineSeparator() {
-        return System.getProperty("line.separator"); 
-    }
-    
     /**
      * Gibt den Wert des Attributs <code>dialect</code> zurück.
      * 
