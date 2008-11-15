@@ -37,13 +37,15 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 11:48:34 $
+ * @version $Date: 2008-11-15 16:57:57 $
  */
 public class Model implements OwnedModelItemVerifier {
 
     public static final String PROPERTY_DRIVER = "DRIVER";
 
     public static final String PROPERTY_URL = "URL";
+
+    public static final String PROPERTY_ALIAS = "ALIAS";
 
     public static final String PROPERTY_USER = "USER";
 
@@ -172,6 +174,16 @@ public class Model implements OwnedModelItemVerifier {
         return properties;
     }
 
+    /**
+     * Create a JDBC database connection.
+     *  
+     * @param aPreferences the preferences
+     * @return the database connection
+     * @throws ClassNotFoundException is thrown in case of an exception
+     * @throws InstantiationException is thrown in case of an exception
+     * @throws IllegalAccessException is thrown in case of an exception
+     * @throws SQLException is thrown in case of an exception
+     */
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
         Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
@@ -343,18 +355,20 @@ public class Model implements OwnedModelItemVerifier {
      */
     public RecentlyUsedConnection createConnectionHistoryEntry() {
         String theDialectName = dialect != null ? dialect.getUniqueName() : null;
-        return new RecentlyUsedConnection(theDialectName, getProperties().getProperty(PROPERTY_URL), getProperties()
-                .getProperty(PROPERTY_USER), getProperties().getProperty(PROPERTY_DRIVER), getProperties().getProperty(
-                PROPERTY_PASSWORD));
+        return new RecentlyUsedConnection(getProperties().getProperty(PROPERTY_ALIAS), theDialectName, getProperties()
+                .getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER), getProperties().getProperty(
+                PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD));
     }
 
     /**
      * Initialize the model with a defined connection.
-     *  
-     * @param aConnection the connection
+     * 
+     * @param aConnection
+     *                the connection
      */
     public void initializeWith(RecentlyUsedConnection aConnection) {
         setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
+        getProperties().setProperty(PROPERTY_ALIAS, aConnection.getAlias());
         getProperties().setProperty(PROPERTY_DRIVER, aConnection.getDriver());
         getProperties().setProperty(PROPERTY_USER, aConnection.getUsername());
         getProperties().setProperty(PROPERTY_PASSWORD, aConnection.getPassword());
@@ -404,7 +418,8 @@ public class Model implements OwnedModelItemVerifier {
     /**
      * Get the available data types.
      * 
-     * The available data types are the dialect datatypes plus the defined domains.
+     * The available data types are the dialect datatypes plus the defined
+     * domains.
      * 
      * @return the available data types
      */
@@ -419,18 +434,20 @@ public class Model implements OwnedModelItemVerifier {
     }
 
     /**
-     * Add a domain to the model. 
+     * Add a domain to the model.
      * 
-     * @param aDomain the domain
+     * @param aDomain
+     *                the domain
      */
     public void addDomain(Domain aDomain) {
         domains.add(aDomain);
     }
 
     /**
-     * Remove a domain from the model. 
+     * Remove a domain from the model.
      * 
-     * @param aDomain a domain
+     * @param aDomain
+     *                a domain
      */
     public void removeDomain(Domain aDomain) {
         domains.remove(aDomain);

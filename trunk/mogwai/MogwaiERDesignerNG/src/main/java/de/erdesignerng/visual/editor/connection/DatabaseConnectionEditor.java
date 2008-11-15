@@ -27,7 +27,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2008-11-15 16:57:57 $
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
@@ -66,7 +66,8 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
     private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
-    public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences, RecentlyUsedConnection aConnection) {
+    public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences,
+            RecentlyUsedConnection aConnection) {
         super(aParent, ERDesignerBundle.CONNECTIONCONFIGURATION);
 
         model = aModel;
@@ -88,12 +89,14 @@ public class DatabaseConnectionEditor extends BaseEditor {
         if (aConnection.getDialect() != null) {
             theDescriptor.setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
         }
+        theDescriptor.setAlias(aConnection.getAlias());
         theDescriptor.setDriver(aConnection.getDriver());
         theDescriptor.setUrl(aConnection.getUrl());
         theDescriptor.setUser(aConnection.getUsername());
         theDescriptor.setPassword(aConnection.getPassword());
 
         bindingInfo.setDefaultModel(theDescriptor);
+        bindingInfo.addBinding("alias", view.getAlias(), true);
         bindingInfo.addBinding("dialect", view.getDialect(), true);
         bindingInfo.addBinding("driver", view.getDriver(), true);
         bindingInfo.addBinding("url", view.getUrl(), true);
@@ -128,6 +131,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
 
         model.setDialect(theDescriptor.getDialect());
+        model.getProperties().setProperty(Model.PROPERTY_ALIAS, theDescriptor.getAlias());
         model.getProperties().setProperty(Model.PROPERTY_DRIVER, theDescriptor.getDriver());
         model.getProperties().setProperty(Model.PROPERTY_URL, theDescriptor.getUrl());
         model.getProperties().setProperty(Model.PROPERTY_USER, theDescriptor.getUser());
@@ -189,7 +193,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
                 theDescriptor.setUrl(aDialect.getDriverURLTemplate());
                 theDescriptor.setDialect(aDialect);
             }
-
+            
             bindingInfo.model2view();
         }
     }

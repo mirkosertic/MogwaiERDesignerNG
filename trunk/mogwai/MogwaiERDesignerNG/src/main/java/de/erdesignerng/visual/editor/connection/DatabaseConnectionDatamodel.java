@@ -6,10 +6,12 @@ import de.erdesignerng.dialect.Dialect;
  * Descriptor for a database dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-19 15:25:31 $
+ * @version $Date: 2008-11-15 16:57:57 $
  */
 public class DatabaseConnectionDatamodel {
 
+    private String alias;
+    
     private Dialect dialect;
 
     private String driver;
@@ -60,4 +62,17 @@ public class DatabaseConnectionDatamodel {
         this.password = password;
     }
 
+    /**
+     * @return the alias
+     */
+    public String getAlias() {
+        return alias;
+    }
+
+    /**
+     * @param alias the alias to set
+     */
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 }
