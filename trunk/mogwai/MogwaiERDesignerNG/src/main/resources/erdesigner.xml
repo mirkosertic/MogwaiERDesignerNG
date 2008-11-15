@@ -23,13 +23,13 @@
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODELTODB">
-			<Text lang="de">Modell in DB speichern...</Text>		
-			<Text lang="en">Save model to database...</Text>					
+			<Text lang="de">Modell in Repository speichern...</Text>		
+			<Text lang="en">Save model to repository...</Text>					
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="LOADMODELFROMDB">
-			<Text lang="de">Modell aus DB laden...</Text>		
-			<Text lang="en">Load model from database...</Text>					
+			<Text lang="de">Modell aus Repository laden...</Text>		
+			<Text lang="en">Load model from repository...</Text>					
 			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="LOADMODEL">
@@ -587,8 +587,8 @@
 			<Text lang="en">Models with subject areas are not supported by this operation</Text>					
 		</Entry>
 		<Entry id="DISPLAYCOMMENTS">
-			<Text lang="de">Kommentare anzeigen</Text>		
-			<Text lang="en">Display comments</Text>					
+			<Text lang="de">Elementkommentare anzeigen</Text>		
+			<Text lang="en">Display element comments</Text>					
 		</Entry>
 		<Entry id="DISPLAYGRID">
 			<Text lang="de">Gitter anzeigen</Text>		
@@ -636,6 +636,22 @@
 		<Entry id="DISPLAYPRIMARYKEYANDFOREIGNKEY">
 			<Text lang="de">Primär- und Fremdschlüssel</Text>		
 			<Text lang="en">Primary- and foreign keys</Text>					
+		</Entry>
+		<Entry id="DISPLAYNATURALORDER">
+			<Text lang="de">Natürliche Sortierung</Text>		
+			<Text lang="en">Natural order</Text>					
+		</Entry>
+		<Entry id="DISPLAYASCENDING">
+			<Text lang="de">Aufsteigend sortiert</Text>		
+			<Text lang="en">Ascending order</Text>					
+		</Entry>
+		<Entry id="DISPLAYDESCENDING">
+			<Text lang="de">Absteigend sortiert</Text>		
+			<Text lang="en">Descending order</Text>					
+		</Entry>
+		<Entry id="DISPLAYORDER">
+			<Text lang="de">Attributreihenfolge</Text>		
+			<Text lang="en">Attribute order</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

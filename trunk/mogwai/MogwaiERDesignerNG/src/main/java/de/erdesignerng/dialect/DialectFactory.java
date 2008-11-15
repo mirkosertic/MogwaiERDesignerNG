@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.dialect;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.commons.beanutils.BeanComparator;
 
@@ -34,7 +34,7 @@ import de.erdesignerng.dialect.postgres.PostgresDialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public final class DialectFactory {
 
@@ -67,7 +67,7 @@ public final class DialectFactory {
     }
 
     public List<Dialect> getSupportedDialects() {
-        Vector<Dialect> theDialects = new Vector<Dialect>();
+        List<Dialect> theDialects = new ArrayList<Dialect>();
         theDialects.addAll(knownDialects.values());
         Collections.sort(theDialects, new BeanComparator("uniqueName", String.CASE_INSENSITIVE_ORDER));
         return theDialects;

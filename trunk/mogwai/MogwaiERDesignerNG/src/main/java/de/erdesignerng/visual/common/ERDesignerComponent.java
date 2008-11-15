@@ -77,6 +77,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.RecentlyUsedConnection;
 import de.erdesignerng.visual.DisplayLevel;
+import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.MessagesHelper;
@@ -130,7 +131,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-11 18:50:34 $
+ * @version $Date: 2008-11-15 14:21:15 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -345,8 +346,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultCheckboxMenuItem displayGridMenuItem;
 
-    private DefaultAction displayLevelAction;
-
     private DefaultRadioButtonMenuItem displayAllMenuItem;
 
     private DefaultAction displayAllAction;
@@ -354,6 +353,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction displayPKOnlyAction;
 
     private DefaultAction displayPKAndFK;
+    
+    private DefaultRadioButtonMenuItem displayNaturalOrderMenuItem;
+
+    private DefaultAction displayNaturalOrderAction;
+
+    private DefaultAction displayAscendingOrderAction;
+
+    private DefaultAction displayDescendingOrderAction;
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
@@ -751,6 +758,48 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDisplayLevelMenu.add(thePKAndFKItem);
 
         UIInitializer.getInstance().initialize(theDisplayLevelMenu);
+        
+        DefaultMenu theDisplayOrderMenu = new DefaultMenu(this, ERDesignerBundle.DISPLAYORDER);
+        theViewMenu.add(theDisplayOrderMenu);
+
+        displayNaturalOrderAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetDisplayOrder(DisplayOrder.NATURAL);
+            }
+
+        }, this, ERDesignerBundle.DISPLAYNATURALORDER);
+
+        displayAscendingOrderAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetDisplayOrder(DisplayOrder.ASCENDING);
+            }
+
+        }, this, ERDesignerBundle.DISPLAYASCENDING);
+
+        displayDescendingOrderAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetDisplayOrder(DisplayOrder.DESCENDING);
+            }
+
+        }, this, ERDesignerBundle.DISPLAYDESCENDING);
+
+        displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(displayNaturalOrderAction);
+        DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(displayAscendingOrderAction);
+        DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(displayDescendingOrderAction);
+
+        ButtonGroup theDisplayOrderGroup = new ButtonGroup();
+        theDisplayOrderGroup.add(displayNaturalOrderMenuItem);
+        theDisplayOrderGroup.add(theAscendingItem);
+        theDisplayOrderGroup.add(theDescendingItem);
+
+        theDisplayOrderMenu.add(displayNaturalOrderMenuItem);
+        theDisplayOrderMenu.add(theAscendingItem);
+        theDisplayOrderMenu.add(theDescendingItem);
+
+        UIInitializer.getInstance().initialize(theDisplayOrderMenu);
 
         theViewMenu.addSeparator();
 
@@ -1399,11 +1448,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         graph.setUI(new ERDesignerGraphUI(this));
 
         displayAllMenuItem.setSelected(true);
+        displayNaturalOrderMenuItem.setSelected(true);
         displayCommentsMenuItem.setSelected(true);
 
         commandSetDisplayGridState(displayGridMenuItem.isSelected());
         commandSetDisplayCommentsState(true);
         commandSetDisplayLevel(DisplayLevel.ALL);
+        commandSetDisplayOrder(DisplayOrder.NATURAL);
 
         refreshPreferences(preferences);
 
@@ -1649,8 +1700,23 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         repaintGraph();
     }
 
+    /**
+     * Set the current display level.
+     *  
+     * @param aLevel the level
+     */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
+        repaintGraph();
+    }
+
+    /**
+     * Set the current display order.
+     *  
+     * @param aOrder the display order
+     */
+    protected void commandSetDisplayOrder(DisplayOrder aOrder) {
+        graph.setDisplayOrder(aOrder);
         repaintGraph();
     }
 

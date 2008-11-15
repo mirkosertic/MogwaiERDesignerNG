@@ -125,6 +125,7 @@ Release 1.6
 
 * Implemented FR 2184481 Allow specifying table fields to show after rev. engineering
 * Implemented FR 1886304 [ERDesignerNG] Allow saving of model to database
+* Implemented FR 1958835 [ERDesignerNG] ability to sort columns
 * Bug Fixing 2215901 [ERDesignerNG] showing and hiding comments does not work
 * Bug Fixing 2278602 [ERDesignerNG] Relation text offset position not stored
 * Bug Fixing 2283538 [ERDesignerNG] Relation does not take care of attribute order
