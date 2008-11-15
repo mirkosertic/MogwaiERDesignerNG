@@ -7,14 +7,15 @@
 
 	<class name="DomainEntity" table="mogdict_domains" select-before-update="true">
 
-		<id name="systemId" >
-			<generator class="assigned" />
+		<id name="id" >
+			<generator class="native" />
 		</id>
-		
 		<version name="version"/>
 		
-		<property name="creationUser" not-null="false"/>
-		<property name="creationDate" not-null="false"/>
+		<property name="systemId" not-null="true"/>		
+		
+		<property name="creationUser" not-null="true"/>
+		<property name="creationDate" not-null="true"/>
 		<property name="lastModificationUser" not-null="false"/>
 		<property name="lastModificationDate" not-null="false"/>
 

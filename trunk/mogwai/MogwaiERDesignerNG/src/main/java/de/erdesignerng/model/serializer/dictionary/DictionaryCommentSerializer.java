@@ -25,6 +25,7 @@ import org.hibernate.Session;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.dictionary.entities.CommentEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.DictionaryEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 
 /**
@@ -32,13 +33,13 @@ import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
  * 
  * @author msertic
  */
-public class DictionaryCommentSerializer extends DictionarySerializer {
+public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryCommentSerializer SERIALIZER = new DictionaryCommentSerializer();
 
-    public void serialize(Model aModel, Session aSession) {
+    public void serialize(Model aModel, Session aSession, DictionaryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), CommentEntity.class, aSession);
+        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity.getComments());
         
         for (Comment theComment : aModel.getComments()) {
             boolean existing = true;
@@ -50,10 +51,8 @@ public class DictionaryCommentSerializer extends DictionarySerializer {
 
             copyBaseAttributes(theComment, theExisting);
 
-            if (existing) {
-                aSession.update(theExisting);
-            } else {
-                aSession.save(theExisting);
+            if (!existing) {
+                aDictionaryEntity.getComments().add(theExisting);
             }
         }
     }

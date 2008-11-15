@@ -27,6 +27,7 @@ import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.dictionary.entities.DictionaryEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.SubjectAreaEntity;
 
@@ -35,7 +36,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.SubjectAreaEntity;
  * 
  * @author msertic
  */
-public class DictionarySubjectAreaSerializer extends DictionarySerializer {
+public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
 
     public static final DictionarySubjectAreaSerializer SERIALIZER = new DictionarySubjectAreaSerializer();
 
@@ -69,11 +70,11 @@ public class DictionarySubjectAreaSerializer extends DictionarySerializer {
             aDestination.getComments().add(aModel.getComments().findBySystemId(theComment));
         }
     }
-    
-    public void serialize(Model aModel, Session aSession) {
 
-        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getSubjectAreas(),
-                SubjectAreaEntity.class, aSession);
+    public void serialize(Model aModel, Session aSession, DictionaryEntity aDictionaryEntity) {
+
+        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getSubjectAreas(), aDictionaryEntity
+                .getSubjectareas());
 
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
             boolean existing = true;
@@ -86,17 +87,15 @@ public class DictionarySubjectAreaSerializer extends DictionarySerializer {
             copyBaseAttributes(theSubjectArea, theExisting);
             copyExtendedAttributes(theSubjectArea, theExisting);
 
-            if (existing) {
-                aSession.update(theExisting);
-            } else {
-                aSession.save(theExisting);
+            if (!existing) {
+                aDictionaryEntity.getSubjectareas().add(theExisting);
             }
         }
     }
 
     public void deserialize(Model aModel, Session aSession) {
         Criteria theCriteria = aSession.createCriteria(SubjectAreaEntity.class);
-        
+
         for (Object theObject : theCriteria.list()) {
             SubjectAreaEntity theEntity = (SubjectAreaEntity) theObject;
 
@@ -104,7 +103,7 @@ public class DictionarySubjectAreaSerializer extends DictionarySerializer {
 
             copyBaseAttributes(theEntity, theSubjectArea);
             copyExtendedAttributes(theEntity, theSubjectArea, aModel);
-            
+
             aModel.getSubjectAreas().add(theSubjectArea);
         }
     }

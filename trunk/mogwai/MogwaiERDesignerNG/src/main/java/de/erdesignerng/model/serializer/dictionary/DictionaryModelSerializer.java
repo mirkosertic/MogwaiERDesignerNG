@@ -18,7 +18,9 @@
 package de.erdesignerng.model.serializer.dictionary;
 
 import java.sql.Connection;
+import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -26,8 +28,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.serializer.dictionary.entities.AttributeEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.ChangeEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.CommentEntity;
+import de.erdesignerng.model.serializer.dictionary.entities.DictionaryEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.DomainEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.IndexEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.RelationEntity;
@@ -39,7 +44,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
  * 
  * @author msertic
  */
-public class DictionaryModelSerializer extends DictionarySerializer {
+public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
 
@@ -52,6 +57,8 @@ public class DictionaryModelSerializer extends DictionarySerializer {
         theConfiguration.addClass(RelationEntity.class);
         theConfiguration.addClass(CommentEntity.class);
         theConfiguration.addClass(SubjectAreaEntity.class);
+        theConfiguration.addClass(DictionaryEntity.class);
+        theConfiguration.addClass(ChangeEntity.class);
         theConfiguration.setProperty(Environment.DIALECT, aHibernateDialectClass.getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());
@@ -75,16 +82,36 @@ public class DictionaryModelSerializer extends DictionarySerializer {
 
             theSession = createSession(aModel, aConnection, aHibernateDialectClass);    
             theTx = theSession.beginTransaction();
+
+            DictionaryEntity theEntity = null;
+            boolean existing = false;
+            Criteria theCriteria = theSession.createCriteria(DictionaryEntity.class);
+            List theEntities = theCriteria.list();
+            if (theEntities.size() == 1) {
+                theEntity = (DictionaryEntity) theEntities.get(0);
+                existing = true;
+            } else {
+                theEntity = new DictionaryEntity();
+                theEntity.setSystemId(ModelUtilities.createSystemIdFor(theEntity));
+                theEntity.setName("MODEL");
+            }
+
             
-            DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theSession);
+            DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
             
-            DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession);
+            DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
             
-            DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession);
+            DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
             
-            DictionaryCommentSerializer.SERIALIZER.serialize(aModel, theSession);
+            DictionaryCommentSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
             
-            DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theSession);
+            DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
+            
+            if (existing) {
+                theSession.update(theEntity);
+            } else {
+                theSession.save(theEntity);
+            }
             
             theTx.commit();
             

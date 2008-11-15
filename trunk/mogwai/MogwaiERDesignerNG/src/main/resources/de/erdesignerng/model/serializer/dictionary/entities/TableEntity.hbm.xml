@@ -9,11 +9,12 @@
 	<class name="TableEntity" table="mogdict_tables"
 		select-before-update="true">
 
-		<id name="systemId">
-			<generator class="assigned" />
+		<id name="id" >
+			<generator class="native" />
 		</id>
-
-		<version name="version" />
+		<version name="version"/>
+		
+		<property name="systemId" not-null="true"/>		
 
 		<property name="creationUser" not-null="false" />
 		<property name="creationDate" not-null="false" />
@@ -24,19 +25,19 @@
 		<property name="comment" not-null="false" type="text"/>		
 
 		<list name="attributes" cascade="all-delete-orphan">
-			<key column="tableid" />
+			<key column="tableid" foreign-key="mogdict_attributes_fk1"/>
 			<list-index column="listindex" />
 			<one-to-many class="AttributeEntity" />
 		</list>
 
 		<list name="indexes" cascade="all-delete-orphan">
-			<key column="tableid" />
+			<key column="tableid" foreign-key="mogdict_indexes_fk1"/>
 			<list-index column="listindex" />
 			<one-to-many class="IndexEntity" />
 		</list>
 
 		<list name="properties" table="mogdict_tables_props" cascade="all-delete-orphan">
-			<key column="tableid" />
+			<key column="tableid" foreign-key="mogdict_tables_props_fk1" />
 			<list-index column="listindex"/>
 			<composite-element class="StringKeyValuePair">
 				<property name="key" not-null="true"/>

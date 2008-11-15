@@ -24,6 +24,7 @@ import org.hibernate.Session;
 
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.dictionary.entities.DictionaryEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.DomainEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 
@@ -32,7 +33,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
  * 
  * @author msertic
  */
-public class DictionaryDomainSerializer extends DictionarySerializer {
+public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryDomainSerializer SERIALIZER = new DictionaryDomainSerializer();
 
@@ -54,9 +55,9 @@ public class DictionaryDomainSerializer extends DictionarySerializer {
         aDestination.getAttribute().setScale(aSource.getScale());
     }
     
-    public void serialize(Model aModel, Session aSession) {
+    public void serialize(Model aModel, Session aSession, DictionaryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), DomainEntity.class, aSession);
+        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getDomains());
 
         for (Domain theDomain : aModel.getDomains()) {
             boolean existing = true;
@@ -68,10 +69,8 @@ public class DictionaryDomainSerializer extends DictionarySerializer {
 
             copyBaseAttributes(theDomain, theExisting);
             
-            if (existing) {
-                aSession.update(theExisting);
-            } else {
-                aSession.save(theExisting);
+            if (!existing) {
+                aDictionaryEntity.getDomains().add(theExisting);
             }
         }
     }
