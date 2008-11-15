@@ -23,13 +23,18 @@
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODELTODB">
-			<Text lang="de">Modell in Repository speichern...</Text>		
-			<Text lang="en">Save model to repository...</Text>					
+			<Text lang="de">Modell in Repository speichern</Text>		
+			<Text lang="en">Save model to repository</Text>					
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="LOADMODELFROMDB">
 			<Text lang="de">Modell aus Repository laden...</Text>		
 			<Text lang="en">Load model from repository...</Text>					
+			<Icon>/de/erdesignerng/icons/folder.png</Icon>
+		</Entry>
+		<Entry id="LOADMODELFROMDBNONDASHED">
+			<Text lang="de">Modell aus Repository laden</Text>		
+			<Text lang="en">Load model from repository</Text>					
 			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="LOADMODEL">
