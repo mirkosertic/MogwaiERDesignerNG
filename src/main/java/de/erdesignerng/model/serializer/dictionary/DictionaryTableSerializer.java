@@ -24,6 +24,7 @@ import org.hibernate.Session;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.dictionary.entities.DictionaryEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
 
@@ -32,13 +33,13 @@ import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
  * 
  * @author msertic
  */
-public class DictionaryTableSerializer extends DictionarySerializer {
+public class DictionaryTableSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryTableSerializer SERIALIZER = new DictionaryTableSerializer();
 
-    public void serialize(Model aModel, Session aSession) {
+    public void serialize(Model aModel, Session aSession, DictionaryEntity aDictionary) {
 
-        Map<String, ModelEntity> theTables = deletedRemovedInstances(aModel.getTables(), TableEntity.class, aSession);
+        Map<String, ModelEntity> theTables = deletedRemovedInstances(aModel.getTables(), aDictionary.getTables());
         
         for (Table theTable : aModel.getTables()) {
             boolean existing = true;
@@ -54,10 +55,8 @@ public class DictionaryTableSerializer extends DictionarySerializer {
 
             DictionaryIndexSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
 
-            if (existing) {
-                aSession.update(theExisting);
-            } else {
-                aSession.save(theExisting);
+            if (!existing) {
+                aDictionary.getTables().add(theExisting);
             }
         }
     }

@@ -27,6 +27,8 @@ import java.util.List;
  * @author msertic
  */
 public abstract class ModelEntity {
+    
+    private Long id;
 
     private String systemId;
 
@@ -170,5 +172,19 @@ public abstract class ModelEntity {
      */
     public void setProperties(List<StringKeyValuePair> properties) {
         this.properties = properties;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 }

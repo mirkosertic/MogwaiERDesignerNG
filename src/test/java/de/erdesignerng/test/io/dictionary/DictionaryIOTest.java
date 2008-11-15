@@ -28,7 +28,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 
 import de.erdesignerng.model.Model;
@@ -40,7 +39,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * Test for XML based model io.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 22:08:51 $
+ * @version $Date: 2008-11-15 11:48:34 $
  */
 public class DictionaryIOTest extends BaseERDesignerTestCaseImpl {
 
@@ -73,8 +72,6 @@ public class DictionaryIOTest extends BaseERDesignerTestCaseImpl {
             
             String theOriginalFile = readResourceFile("examplemodel.mxm");
             String theNewFile = theStringWriter.toString();
-            
-            System.out.println(StringUtils.difference(theOriginalFile, theNewFile));
             
             assertTrue(theOriginalFile.equals(theNewFile));
             
