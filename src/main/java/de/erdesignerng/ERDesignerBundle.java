@@ -253,7 +253,7 @@ public interface ERDesignerBundle {
   String EXCEPTIONWINDOW = "EXCEPTIONWINDOW";
   /** Close. */
   String CLOSE = "CLOSE";
-  /** Current DB changes.... */
+  /** Current database changes.... */
   String GENERATECHANGELOG = "GENERATECHANGELOG";
   /** A table must have contain least one attribute!. */
   String TABLEMUSTHAVEATLEASTONEATTRIBUTE = "TABLEMUSTHAVEATLEASTONEATTRIBUTE";
@@ -319,7 +319,7 @@ public interface ERDesignerBundle {
   String DISPLAYALL = "DISPLAYALL";
   /** Primary keys only. */
   String DISPLAYPRIMARYKEY = "DISPLAYPRIMARYKEY";
-  /** Primary- and foreign keys. */
+  /** Primary and foreign keys. */
   String DISPLAYPRIMARYKEYANDFOREIGNKEY = "DISPLAYPRIMARYKEYANDFOREIGNKEY";
   /** Natural order. */
   String DISPLAYNATURALORDER = "DISPLAYNATURALORDER";
@@ -329,4 +329,6 @@ public interface ERDesignerBundle {
   String DISPLAYDESCENDING = "DISPLAYDESCENDING";
   /** Attribute order. */
   String DISPLAYORDER = "DISPLAYORDER";
+  /** Alias. */
+  String ALIAS = "ALIAS";
 }

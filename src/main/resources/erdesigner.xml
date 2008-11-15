@@ -2,7 +2,7 @@
 <Resource>
 	<Bundle interface="de.erdesignerng.ERDesignerBundle">
 		<Entry id="TITLE">
-			<Text>ER-Designer NG</Text>		
+			<Text>Mogwai ER-Designer NG</Text>		
 		</Entry>
 		<Entry id="FILE">
 			<Text lang="de">Datei</Text>		
@@ -495,7 +495,7 @@
 			<Text lang="en">SQL Window</Text>					
 		</Entry>
 		<Entry id="EXCEPTIONWINDOW">
-			<Text lang="de">Fehler ( Stacktrace )</Text>		
+			<Text lang="de">Ausnahmesituation ( Stacktrace )</Text>		
 			<Text lang="en">Exception ( Stacktrace )</Text>					
 		</Entry>
 		<Entry id="CLOSE">
@@ -503,11 +503,11 @@
 			<Text lang="en">Close</Text>					
 		</Entry>
 		<Entry id="GENERATECHANGELOG">
-			<Text lang="de">Aktuelle DB Änderungen...</Text>		
-			<Text lang="en">Current DB changes...</Text>					
+			<Text lang="de">Aktuelle Datenbankänderungen...</Text>		
+			<Text lang="en">Current database changes...</Text>					
 		</Entry>
 		<Entry id="TABLEMUSTHAVEATLEASTONEATTRIBUTE">
-			<Text lang="de">Eine Tabelle muss mindestens ein Attribut heinhalten</Text>		
+			<Text lang="de">Eine Tabelle muss mindestens ein Attribut beinhalten</Text>		
 			<Text lang="en">A table must have contain least one attribute!</Text>					
 		</Entry>
 		<Entry id="DIALECTISNOTSUPPORTED">
@@ -567,7 +567,7 @@
 			<Text lang="en">Table selection</Text>					
 		</Entry>		
 		<Entry id="ADDTONEWSUBJECTAREA">
-			<Text lang="de">Zu einem neuen Subjectarea hinzufügen</Text>		
+			<Text lang="de">Zu einem neuen Subject Area hinzufügen</Text>		
 			<Text lang="en">Add to new subject area</Text>					
 		</Entry>		
 		<Entry id="SUBJECTAREAPROPERTIES">
@@ -635,7 +635,7 @@
 		</Entry>
 		<Entry id="DISPLAYPRIMARYKEYANDFOREIGNKEY">
 			<Text lang="de">Primär- und Fremdschlüssel</Text>		
-			<Text lang="en">Primary- and foreign keys</Text>					
+			<Text lang="en">Primary and foreign keys</Text>					
 		</Entry>
 		<Entry id="DISPLAYNATURALORDER">
 			<Text lang="de">Natürliche Sortierung</Text>		
@@ -652,6 +652,10 @@
 		<Entry id="DISPLAYORDER">
 			<Text lang="de">Attributreihenfolge</Text>		
 			<Text lang="en">Attribute order</Text>					
+		</Entry>
+		<Entry id="ALIAS">
+			<Text lang="de">Alias</Text>		
+			<Text lang="en">Alias</Text>					
 		</Entry>
 	</Bundle>
 </Resource>
