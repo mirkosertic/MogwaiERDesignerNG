@@ -132,7 +132,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:36:54 $
+ * @version $Date: 2008-11-15 21:05:39 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -301,6 +301,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu loadFromDBMenu;
 
+    private DefaultMenuItem loadFromDBMenuItem;
+
     private DefaultMenu storedConnections;
 
     private Model model;
@@ -400,7 +402,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         saveToDBAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
-                commandSaveToDB();
+                commandSaveToRepository();
             }
 
         }, this, ERDesignerBundle.SAVEMODELTODB);
@@ -604,11 +606,28 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.add(loadAction);
         theFileMenu.addSeparator();
 
-        DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
-        loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
-
         theFileMenu.add(saveToDBAction);
-        theFileMenu.add(loadFromDBMenu);
+        if (worldConnector.supportsConnectionEditor()) {
+
+            DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
+            loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
+
+            theFileMenu.add(loadFromDBMenu);
+        } else {
+
+            DefaultAction theLoadFromDBAction = new DefaultAction(new ActionEventProcessor() {
+
+                public void processActionEvent(ActionEvent e) {
+
+                    commandOpenFromRepositoryInManagedConnection();
+
+                }
+            }, this, ERDesignerBundle.LOADMODELFROMDBNONDASHED);
+
+            loadFromDBMenuItem = new DefaultMenuItem(theLoadFromDBAction);
+
+            theFileMenu.add(loadFromDBMenuItem);
+        }
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -962,7 +981,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theItem2.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        commandOpenFromDB(theConnectionInfo);
+                        commandOpenFromRepository(theConnectionInfo);
                     }
 
                 });
@@ -1296,7 +1315,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected void commandSaveToDB() {
+    /**
+     * Save the current model to a repository.
+     */
+    protected void commandSaveToRepository() {
 
         try {
 
@@ -1314,25 +1336,50 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Open the databaase model from an existing connection.
+     * Open the database model from a managed connection.
+     */
+    protected void commandOpenFromRepositoryInManagedConnection() {
+
+        try {
+
+            Model theModel = worldConnector.createNewModel();
+
+            commandOpenFromRepositoryHelper(theModel);
+
+            worldConnector.initTitle();
+
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        }
+
+    }
+
+    protected void commandOpenFromRepositoryHelper(Model theModel) throws Exception {
+
+        theModel = ModelIOUtilities.getInstance().deserializeModelfromDB(theModel, preferences);
+        worldConnector.initializeLoadedModel(theModel);
+
+        worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+
+        setModel(theModel);
+    }
+
+    /**
+     * Open the database model from an existing connection.
      * 
      * @param aConnectionInfo
      *                the connectioninfo.
      */
-    protected void commandOpenFromDB(RecentlyUsedConnection aConnectionInfo) {
+    protected void commandOpenFromRepository(RecentlyUsedConnection aConnectionInfo) {
 
         try {
 
             Model theModel = worldConnector.createNewModel();
             theModel.initializeWith(aConnectionInfo);
 
-            theModel = ModelIOUtilities.getInstance().deserializeModelfromDB(theModel, preferences);
-            worldConnector.initializeLoadedModel(theModel);
+            commandOpenFromRepositoryHelper(theModel);
 
             worldConnector.initTitle(aConnectionInfo.toString());
-            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
-
-            setModel(theModel);
 
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
