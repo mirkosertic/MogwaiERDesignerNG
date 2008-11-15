@@ -129,4 +129,5 @@ Release 1.6
 * Bug Fixing 2278602 [ERDesignerNG] Relation text offset position not stored
 * Bug Fixing 2283538 [ERDesignerNG] Relation does not take care of attribute order
 * Bug Fixing 2283527 [ERDesignerNG] Line separators sometimes wrong
+* Bug Fixing 2284610 [ERDesignerNG] domains cannot be saved
 
