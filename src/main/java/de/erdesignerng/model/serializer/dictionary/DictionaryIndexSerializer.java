@@ -37,7 +37,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
  * 
  * @author msertic
  */
-public class DictionaryIndexSerializer extends DictionarySerializer {
+public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
     private static final int TYPE_UNIQUE = 0;
 
@@ -118,11 +118,8 @@ public class DictionaryIndexSerializer extends DictionarySerializer {
             copyBaseAttributes(theIndex, theEntity);
             copyExtendedAttributes(theIndex, theEntity);
 
-            if (existing) {
-                aSession.update(theEntity);
-            } else {
+            if (!existing) {
                 aTableEntity.getIndexes().add(theEntity);
-                aSession.save(theEntity);
             }
         }
 

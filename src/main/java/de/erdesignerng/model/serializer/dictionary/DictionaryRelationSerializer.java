@@ -26,6 +26,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.serializer.dictionary.entities.DictionaryEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.ModelEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.RelationEntity;
 import de.erdesignerng.model.serializer.dictionary.entities.StringKeyValuePair;
@@ -35,7 +36,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.StringKeyValuePair;
  * 
  * @author msertic
  */
-public class DictionaryRelationSerializer extends DictionarySerializer {
+public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryRelationSerializer SERIALIZER = new DictionaryRelationSerializer();
 
@@ -108,9 +109,9 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
         }
     }
 
-    public void serialize(Model aModel, Session aSession) {
+    public void serialize(Model aModel, Session aSession, DictionaryEntity aDictionary) {
 
-        Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), RelationEntity.class, aSession); 
+        Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), aDictionary.getRelations()); 
 
         for (Relation theRelation : aModel.getRelations()) {
             boolean existing = true;
@@ -124,10 +125,8 @@ public class DictionaryRelationSerializer extends DictionarySerializer {
 
             copyExtendedAttributes(theRelation, theExisting);
 
-            if (existing) {
-                aSession.update(theExisting);
-            } else {
-                aSession.save(theExisting);
+            if (!existing) {
+                aDictionary.getRelations().add(theExisting);
             }
         }
     }

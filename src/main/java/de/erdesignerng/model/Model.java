@@ -19,9 +19,7 @@ package de.erdesignerng.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
@@ -39,7 +37,7 @@ import de.erdesignerng.util.RecentlyUsedConnection;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-15 11:48:34 $
  */
 public class Model implements OwnedModelItemVerifier {
 

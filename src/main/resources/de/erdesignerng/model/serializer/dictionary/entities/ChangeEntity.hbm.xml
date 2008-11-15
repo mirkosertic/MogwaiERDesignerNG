@@ -5,7 +5,7 @@
 <hibernate-mapping package="de.erdesignerng.model.serializer.dictionary.entities"
 	default-lazy="false">
 
-	<class name="IndexEntity" table="mogdict_indexes" select-before-update="true">
+	<class name="ChangeEntity" table="mogdict_change" select-before-update="true">
 
 		<id name="id" >
 			<generator class="native" />
@@ -19,16 +19,10 @@
 		<property name="lastModificationUser" not-null="false"/>
 		<property name="lastModificationDate" not-null="false"/>
 
-		<property name="name" not-null="true"/>
-		<property name="comment" not-null="false" type="text"/>
-		
-		<property name="type" not-null="true"/>
-		
-		<list name="attributes" cascade="all-delete-orphan" table="mogdict_indexes_attr">
-			<key column="indexid" foreign-key="mogdict_indexes_attr_fk1"/>
-			<list-index column="listindex" />
-			<element column="attributeid" type="string" not-null="true"/>
+		<list name="statements" table="mogdict_change_stm" cascade="all-delete-orphan">
+			<key column="changeid" foreign-key="mogdict_change_stm_fk1" not-null="true"/>
+			<list-index column="listindex"/>
+			<element column="stm" type="text" not-null="true"/>
 		</list>
-
 	</class>
 </hibernate-mapping>

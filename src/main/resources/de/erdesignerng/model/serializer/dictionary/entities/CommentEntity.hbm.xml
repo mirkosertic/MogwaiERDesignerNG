@@ -9,21 +9,22 @@
 	<class name="CommentEntity" table="mogdict_comments"
 		select-before-update="true">
 
-		<id name="systemId">
-			<generator class="assigned" />
+		<id name="id" >
+			<generator class="native" />
 		</id>
+		<version name="version"/>
+		
+		<property name="systemId" not-null="true"/>		
 
-		<version name="version" />
-
-		<property name="creationUser" not-null="false" />
-		<property name="creationDate" not-null="false" />
+		<property name="creationUser" not-null="true" />
+		<property name="creationDate" not-null="true" />
 		<property name="lastModificationUser" not-null="false" />
 		<property name="lastModificationDate" not-null="false" />
 
 		<property name="comment" not-null="false" type="text"/>
 		
 		<list name="properties" table="mogdict_comments_props" cascade="all-delete-orphan">
-			<key column="tableid" />
+			<key column="tableid" foreign-key="mogdict_comments_props_fk1"/>
 			<list-index column="listindex"/>
 			<composite-element class="StringKeyValuePair">
 				<property name="key" not-null="true"/>

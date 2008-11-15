@@ -37,7 +37,7 @@ import de.erdesignerng.model.serializer.dictionary.entities.TableEntity;
  * 
  * @author msertic
  */
-public class DictionaryAttributeSerializer extends DictionarySerializer {
+public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryAttributeSerializer SERIALIZER = new DictionaryAttributeSerializer();
     
@@ -100,11 +100,8 @@ public class DictionaryAttributeSerializer extends DictionarySerializer {
             copyBaseAttributes(theAttribute, theEntity);
             copyExtendedAttributes(theAttribute, theEntity);
             
-            if (existing) {
-                aSession.update(theEntity);
-            } else {
+            if (!existing) {
                 aTableEntity.getAttributes().add(theEntity);
-                aSession.save(theEntity);
             }
         }
         
