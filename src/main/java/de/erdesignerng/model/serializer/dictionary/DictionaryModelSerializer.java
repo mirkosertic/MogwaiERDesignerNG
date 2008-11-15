@@ -161,7 +161,9 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
             return theNewModel;
             
         } catch (Exception e) {
-            theTx.rollback();
+            if (theTx != null) {
+                theTx.rollback();
+            }
             
             throw e;
         } finally {

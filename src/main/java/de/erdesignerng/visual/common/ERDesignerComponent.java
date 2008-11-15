@@ -132,7 +132,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 21:05:39 $
+ * @version $Date: 2008-11-15 23:10:49 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -300,8 +300,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultMenu lruMenu;
 
     private DefaultMenu loadFromDBMenu;
-
-    private DefaultMenuItem loadFromDBMenuItem;
 
     private DefaultMenu storedConnections;
 
@@ -604,29 +602,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.addSeparator();
         theFileMenu.add(saveAction);
         theFileMenu.add(loadAction);
-        theFileMenu.addSeparator();
 
-        theFileMenu.add(saveToDBAction);
         if (worldConnector.supportsConnectionEditor()) {
+            theFileMenu.addSeparator();
+            theFileMenu.add(saveToDBAction);
 
             DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
             loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
 
             theFileMenu.add(loadFromDBMenu);
-        } else {
-
-            DefaultAction theLoadFromDBAction = new DefaultAction(new ActionEventProcessor() {
-
-                public void processActionEvent(ActionEvent e) {
-
-                    commandOpenFromRepositoryInManagedConnection();
-
-                }
-            }, this, ERDesignerBundle.LOADMODELFROMDBNONDASHED);
-
-            loadFromDBMenuItem = new DefaultMenuItem(theLoadFromDBAction);
-
-            theFileMenu.add(loadFromDBMenuItem);
         }
         theFileMenu.addSeparator();
 
@@ -988,7 +972,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 UIInitializer.getInstance().initializeFontAndColors(theItem2);
                 loadFromDBMenu.add(theItem2);
-
             }
         }
     }
