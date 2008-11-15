@@ -33,12 +33,12 @@ import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-15 14:36:54 $
  */
 public class XMLModelSerializer extends XMLSerializer {
-    
+
     public static final XMLModelSerializer SERIALIZER = new XMLModelSerializer();
-    
+
     protected static final String MODEL = "Model";
 
     protected static final String VERSION = "version";
@@ -54,13 +54,13 @@ public class XMLModelSerializer extends XMLSerializer {
     protected static final String TABLES = "Tables";
 
     protected static final String RELATIONS = "Relations";
-    
+
     protected static final String SUBJECTAREAS = "Subjectareas";
-    
+
     protected static final String COMMENTS = "Comments";
 
     public void serialize(Model aModel, Document aDocument) {
-        
+
         Element theRootElement = addElement(aDocument, aDocument, MODEL);
         theRootElement.setAttribute(VERSION, "1.0");
 
@@ -70,20 +70,17 @@ public class XMLModelSerializer extends XMLSerializer {
         theDialectElement.setAttribute(NAME, DIALECT);
         theDialectElement.setAttribute(VALUE, aModel.getDialect().getUniqueName());
 
-        Map<String, String> theProperties = aModel.getProperties().getProperties();
-        for (String theKey : theProperties.keySet()) {
-            String theValue = theProperties.get(theKey);
-
+        for (Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
             Element thePropertyElement = addElement(aDocument, theConfigurationElement, PROPERTY);
-            thePropertyElement.setAttribute(NAME, theKey);
-            thePropertyElement.setAttribute(VALUE, theValue);
+            thePropertyElement.setAttribute(NAME, theEntry.getKey());
+            thePropertyElement.setAttribute(VALUE, theEntry.getValue());
         }
 
         Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
         for (Domain theTable : aModel.getDomains()) {
             XMLDomainSerializer.SERIALIZER.serialize(theTable, aDocument, theDomainsElement);
         }
-        
+
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
             XMLTableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
@@ -98,16 +95,16 @@ public class XMLModelSerializer extends XMLSerializer {
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
             XMLSubjectAreaSerializer.SERIALIZER.serialize(theSubjectArea, aDocument, theSubjectAreasElement);
         }
-        
+
         Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
         for (Comment theComment : aModel.getComments()) {
             XMLCommentSerializer.SERIALIZER.serialize(theComment, aDocument, theCommentsElement);
         }
     }
-    
+
     public Model deserializeFrom(Document aDocument) {
         Model theModel = new Model();
-        
+
         NodeList theElements = aDocument.getElementsByTagName(CONFIGURATION);
         for (int i = 0; i < theElements.getLength(); i++) {
             Element theElement = (Element) theElements.item(i);
@@ -127,12 +124,12 @@ public class XMLModelSerializer extends XMLSerializer {
             }
         }
 
-        XMLDomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);        
+        XMLDomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLTableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLRelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLCommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLSubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        
+
         return theModel;
     }
 }

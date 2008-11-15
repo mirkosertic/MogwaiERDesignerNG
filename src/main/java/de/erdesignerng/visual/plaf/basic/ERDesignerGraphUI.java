@@ -36,7 +36,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-09 15:55:24 $
+ * @version $Date: 2008-11-15 14:36:54 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -106,9 +106,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == graph.getEditClickCount()) {
-                
+
                 int s = graph.getTolerance();
-                
+
                 Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
                         2 * s));
                 lastFocus = focus;
@@ -123,7 +123,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 if (focus == null) {
                     focus = cell;
                 }
-                
+
                 if (cell != null) {
                     if (handleEditTrigger(cell.getCell(), e)) {
                         e.consume();
@@ -165,26 +165,23 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                     stopEditingInCompleteEditing = true;
                 }
 
-                if (event instanceof MouseEvent) {
-                    /*
-                     * Find the component that will get forwarded all the mouse
-                     * events until mouseReleased.
-                     */
-                    Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
-                            editingComponent);
+                /*
+                 * Find the component that will get forwarded all the mouse
+                 * events until mouseReleased.
+                 */
+                Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
+                        editingComponent);
 
-                    /*
-                     * Create an instance of BasicTreeMouseListener to handle
-                     * passing the mouse/motion events to the necessary
-                     * component.
-                     */
-                    // We really want similiar behavior to getMouseEventTarget,
-                    // but it is package private.
-                    Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent,
-                            componentPoint.x, componentPoint.y);
-                    if (activeComponent != null) {
-                        new MouseInputHandler(graph, activeComponent, event);
-                    }
+                /*
+                 * Create an instance of BasicTreeMouseListener to handle
+                 * passing the mouse/motion events to the necessary component.
+                 */
+                // We really want similiar behavior to getMouseEventTarget,
+                // but it is package private.
+                Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent, componentPoint.x,
+                        componentPoint.y);
+                if (activeComponent != null) {
+                    new MouseInputHandler(graph, activeComponent, event);
                 }
 
                 BaseEditor theDialog = (BaseEditor) editingComponent;

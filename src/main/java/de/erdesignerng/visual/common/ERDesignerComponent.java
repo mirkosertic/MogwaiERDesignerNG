@@ -25,6 +25,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.text.DateFormat;
@@ -131,7 +132,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:21:15 $
+ * @version $Date: 2008-11-15 14:36:54 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -297,7 +298,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction lruAction;
 
     private DefaultMenu lruMenu;
-    
+
     private DefaultMenu loadFromDBMenu;
 
     private DefaultMenu storedConnections;
@@ -319,7 +320,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction saveAction;
 
     private DefaultAction saveToDBAction;
-    
+
     private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
     private ERDesignerWorldConnector worldConnector;
@@ -353,7 +354,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction displayPKOnlyAction;
 
     private DefaultAction displayPKAndFK;
-    
+
     private DefaultRadioButtonMenuItem displayNaturalOrderMenuItem;
 
     private DefaultAction displayNaturalOrderAction;
@@ -602,10 +603,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.add(saveAction);
         theFileMenu.add(loadAction);
         theFileMenu.addSeparator();
-        
+
         DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
         loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
-        
+
         theFileMenu.add(saveToDBAction);
         theFileMenu.add(loadFromDBMenu);
         theFileMenu.addSeparator();
@@ -758,7 +759,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDisplayLevelMenu.add(thePKAndFKItem);
 
         UIInitializer.getInstance().initialize(theDisplayLevelMenu);
-        
+
         DefaultMenu theDisplayOrderMenu = new DefaultMenu(this, ERDesignerBundle.DISPLAYORDER);
         theViewMenu.add(theDisplayOrderMenu);
 
@@ -956,7 +957,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 UIInitializer.getInstance().initializeFontAndColors(theItem1);
                 storedConnections.add(theItem1);
-                
+
                 JMenuItem theItem2 = new JMenuItem(theConnectionInfo.toString());
                 theItem2.addActionListener(new ActionListener() {
 
@@ -968,7 +969,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 UIInitializer.getInstance().initializeFontAndColors(theItem2);
                 loadFromDBMenu.add(theItem2);
-                
+
             }
         }
     }
@@ -1130,8 +1131,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandOpenFromFile(File aFile) {
 
+        FileInputStream theStream = null;
+
         try {
-            Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(new FileInputStream(aFile));
+            theStream = new FileInputStream(aFile);
+
+            Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
             worldConnector.initializeLoadedModel(theModel);
 
             setModel(theModel);
@@ -1150,6 +1155,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(ERDesignerBundle.ERRORLOADINGFILE));
 
             worldConnector.notifyAboutException(e);
+        } finally {
+            if (theStream != null) {
+                try {
+                    theStream.close();
+                } catch (IOException e) {
+                    // Ignore this exception
+                }
+            }
         }
     }
 
@@ -1216,6 +1229,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (theChooser.showSaveDialog(scrollPane) == JFileChooser.APPROVE_OPTION) {
 
             File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+            FileOutputStream theStream = null;
+            PrintWriter theWriter = null;
             try {
 
                 if (theFile.exists()) {
@@ -1223,7 +1238,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     theFile.renameTo(theBakFile);
                 }
 
-                ModelIOUtilities.getInstance().serializeModelToXML(model, new FileOutputStream(theFile));
+                theStream = new FileOutputStream(theFile);
+
+                ModelIOUtilities.getInstance().serializeModelToXML(model, theStream);
 
                 currentEditingFile = theFile;
                 worldConnector.initTitle();
@@ -1247,14 +1264,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                             theFileName.insert(p, "_" + theFormat.format(theNow));
                             theFileName.append(".sql");
 
-                            PrintWriter theWriter = new PrintWriter(new File(theFileName.toString()));
+                            theWriter = new PrintWriter(new File(theFileName.toString()));
                             for (Statement theStatement : theStatements) {
                                 theWriter.print(theStatement.getSql());
                                 theWriter.println(theGenerator.createScriptStatementSeparator());
                                 theStatement.setSaved(true);
 
                             }
-                            theWriter.close();
                         }
                     }
                 }
@@ -1264,6 +1280,17 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
+            } finally {
+                if (theStream != null) {
+                    try {
+                        theStream.close();
+                    } catch (IOException e) {
+                        // Ignore this exception
+                    }
+                }
+                if (theWriter != null) {
+                    theWriter.close();
+                }
             }
 
         }
@@ -1276,7 +1303,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             ModelIOUtilities.getInstance().serializeModelToDB(model, preferences);
 
             currentEditingFile = null;
-            
+
             worldConnector.initTitle(model.createConnectionHistoryEntry().toString());
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
@@ -1288,8 +1315,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     /**
      * Open the databaase model from an existing connection.
-     *  
-     * @param aConnectionInfo the connectioninfo.
+     * 
+     * @param aConnectionInfo
+     *                the connectioninfo.
      */
     protected void commandOpenFromDB(RecentlyUsedConnection aConnectionInfo) {
 
@@ -1297,20 +1325,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             Model theModel = worldConnector.createNewModel();
             theModel.initializeWith(aConnectionInfo);
-            
+
             theModel = ModelIOUtilities.getInstance().deserializeModelfromDB(theModel, preferences);
             worldConnector.initializeLoadedModel(theModel);
 
             worldConnector.initTitle(aConnectionInfo.toString());
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
-            
+
             setModel(theModel);
 
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }
 
-    }    
+    }
 
     /**
      * Set the current editing tool.
@@ -1702,8 +1730,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     /**
      * Set the current display level.
-     *  
-     * @param aLevel the level
+     * 
+     * @param aLevel
+     *                the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -1712,8 +1741,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     /**
      * Set the current display order.
-     *  
-     * @param aOrder the display order
+     * 
+     * @param aOrder
+     *                the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);
