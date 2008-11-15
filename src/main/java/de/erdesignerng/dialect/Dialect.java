@@ -23,11 +23,13 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * @version $Date: 2008-11-15 19:12:36 $
  */
 public abstract class Dialect {
 
@@ -106,7 +108,7 @@ public abstract class Dialect {
      *             will be thrown if the name is invalid
      */
     public String checkName(String aName) throws ElementInvalidNameException {
-        if ((aName == null) || ("".equals(aName))) {
+        if (StringUtils.isEmpty(aName)) {
             throw new ElementInvalidNameException("Element must have a name");
         }
 
