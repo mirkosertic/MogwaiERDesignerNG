@@ -662,5 +662,18 @@
 			<Text lang="de">Alias</Text>		
 			<Text lang="en">Alias</Text>					
 		</Entry>
+		<Entry id="CREATENEWENTRY">
+			<Text lang="de">Neuen Eintrag erzeugen</Text>		
+			<Text lang="en">Create new entry</Text>					
+		</Entry>
+		<Entry id="OVERWRITEEXISTINGENTRY">
+			<Text lang="de">Existierenden Eintrag überschreiben</Text>		
+			<Text lang="en">Overwrite existing entry</Text>					
+		</Entry>
+		<Entry id="DELETEENTRY">
+			<Text lang="de">Eintrag löschen</Text>		
+			<Text lang="en">Delete entry</Text>
+			<Icon>/de/erdesignerng/icons/delete.png</Icon>
+		</Entry>
 	</Bundle>
 </Resource>
