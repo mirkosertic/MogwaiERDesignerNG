@@ -19,13 +19,12 @@ package de.erdesignerng.model.serializer.repository;
 
 import java.util.Map;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 
 /**
@@ -61,19 +60,17 @@ public class DictionaryTableSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, Session aSession) {
-        Criteria theCriteria = aSession.createCriteria(TableEntity.class);
-        for (Object theObject : theCriteria.list()) {
-            TableEntity theTableEntity = (TableEntity) theObject;
+    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+        for (TableEntity theTableEntity : aRepositoryEntity.getTables()) {
 
             Table theTable = new Table();
             theTable.setOwner(aModel);
             
             copyBaseAttributes(theTableEntity, theTable);
 
-            DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
+            DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
 
-            DictionaryIndexSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity, aSession);
+            DictionaryIndexSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
 
             aModel.getTables().add(theTable);
         }

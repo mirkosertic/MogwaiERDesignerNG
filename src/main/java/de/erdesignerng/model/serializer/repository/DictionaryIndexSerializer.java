@@ -125,7 +125,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
     }
 
-    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity, Session aSession) {
+    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
         for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
             Index theIndex = new Index();
 

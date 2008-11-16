@@ -18,6 +18,7 @@
 package de.erdesignerng.model.serializer.repository;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -26,16 +27,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.criterion.Projections;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.serializer.repository.entities.AttributeEntity;
 import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 import de.erdesignerng.model.serializer.repository.entities.CommentEntity;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.DomainEntity;
 import de.erdesignerng.model.serializer.repository.entities.IndexEntity;
 import de.erdesignerng.model.serializer.repository.entities.RelationEntity;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 
@@ -80,7 +82,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
         Transaction theTx = null;
         try {
 
-            theSession = createSession(aConnection, aHibernateDialectClass);    
+            theSession = createSession(aConnection, aHibernateDialectClass);
             theTx = theSession.beginTransaction();
 
             RepositoryEntity theEntity = null;
@@ -96,80 +98,135 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 theEntity.setName("MODEL");
             }
 
-            
             DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
-            
+
             DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
-            
+
             DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
-            
+
             DictionaryCommentSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
-            
+
             DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
-            
+
             if (existing) {
                 theSession.update(theEntity);
             } else {
                 theSession.save(theEntity);
             }
-            
+
             theTx.commit();
-            
+
         } catch (Exception e) {
             if (theTx != null) {
                 theTx.rollback();
             }
-            
+
             throw e;
         } finally {
 
             if (theSession != null) {
                 theSession.close();
             }
-            
+
             ThreadbasedConnectionProvider.cleanup();
         }
 
     }
 
-    public Model deserialize(Connection aConnection, Class aHibernateDialectClass) throws Exception {
+    public Model deserialize(RepositoryEntryDesciptor aDescriptor, Connection aConnection, Class aHibernateDialectClass)
+            throws Exception {
 
         ThreadbasedConnectionProvider.initializeForThread(aConnection);
         Session theSession = null;
         Transaction theTx = null;
         try {
-            
+
             Model theNewModel = new Model();
 
-            theSession = createSession(aConnection, aHibernateDialectClass);    
+            theSession = createSession(aConnection, aHibernateDialectClass);
             theTx = theSession.beginTransaction();
-            
-            DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theSession);
-            
-            DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theSession);
-            
-            DictionaryRelationSerializer.SERIALIZER.deserialize(theNewModel, theSession);
-            
-            DictionaryCommentSerializer.SERIALIZER.deserialize(theNewModel, theSession);
-            
-            DictionarySubjectAreaSerializer.SERIALIZER.deserialize(theNewModel, theSession);
-            
+
+            RepositoryEntity theRepositoryEntity = (RepositoryEntity) theSession.get(RepositoryEntity.class,
+                    aDescriptor.getId());
+
+            DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
+
+            DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
+
+            DictionaryRelationSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
+
+            DictionaryCommentSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
+
+            DictionarySubjectAreaSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
+
             theTx.rollback();
-            
+
             return theNewModel;
-            
+
         } catch (Exception e) {
             if (theTx != null) {
                 theTx.rollback();
             }
-            
+
             throw e;
         } finally {
 
             if (theSession != null) {
                 theSession.close();
             }
-            
+
+            ThreadbasedConnectionProvider.cleanup();
+        }
+    }
+
+    /**
+     * Get the available repository entries.
+     * 
+     * @param aDialectClass the hibernate dialect class
+     * @param aConnection the jdbc connection
+     * @return list of entries
+     * @throws Exception will be thrown in case of an exception
+     */
+    public List<RepositoryEntryDesciptor> getRepositoryEntries(Class aDialectClass, Connection aConnection)
+            throws Exception {
+        ThreadbasedConnectionProvider.initializeForThread(aConnection);
+        Session theSession = null;
+        Transaction theTx = null;
+        try {
+
+            theSession = createSession(aConnection, aDialectClass);
+            theTx = theSession.beginTransaction();
+
+            List<RepositoryEntryDesciptor> theResult = new ArrayList<RepositoryEntryDesciptor>();
+
+            Criteria theCriteria = theSession.createCriteria(RepositoryEntity.class);
+            theCriteria.setProjection(Projections.projectionList().add(Projections.property("id")).add(
+                    Projections.property("name")));
+            for (Object theObject : theCriteria.list()) {
+                Object[] theArray = (Object[]) theObject;
+                
+                RepositoryEntryDesciptor theEntry = new RepositoryEntryDesciptor();
+                theEntry.setId((Long) theArray[0]);
+                theEntry.setName((String) theArray[1]);
+                theResult.add(theEntry);
+            }
+
+            theTx.rollback();
+
+            return theResult;
+
+        } catch (Exception e) {
+            if (theTx != null) {
+                theTx.rollback();
+            }
+
+            throw e;
+        } finally {
+
+            if (theSession != null) {
+                theSession.close();
+            }
+
             ThreadbasedConnectionProvider.cleanup();
         }
     }

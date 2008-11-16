@@ -20,11 +20,16 @@ package de.erdesignerng.visual.editor.repository;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.util.List;
+
+import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -33,7 +38,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to load models from a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 15:22:55 $
+ * @version $Date: 2008-11-16 16:13:38 $
  */
 public class LoadFromRepositoryEditor extends BaseEditor {
 
@@ -56,11 +61,22 @@ public class LoadFromRepositoryEditor extends BaseEditor {
     private ApplicationPreferences preferences;
     
     private Connection connection;
+    
+    private BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(new LoadFromRepositoryDataModel());
 
-    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection) {
+    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection, List<RepositoryEntryDesciptor> aEntries) {
         super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
+        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+        for (RepositoryEntryDesciptor theEntry : aEntries) {
+            theModel.addElement(theEntry);
+        }
+        view.getExistingNameBox().setModel(theModel);
+        
         initialize();
+        
+        bindingInfo.addBinding("entry", view.getExistingNameBox(), true);
+        bindingInfo.configure();
 
         preferences = aPreferences;
         connection = aConnection;
@@ -88,6 +104,20 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 
     private void commandClose() {
 
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
+        if (bindingInfo.validate().size() == 0) {
+            
+            bindingInfo.view2model();
+            
+            setModalResult(DialogConstants.MODAL_RESULT_OK);
+        }
+    }
+ 
+    /**
+     * Get the data model.
+     * 
+     * @return the data model
+     */
+    public LoadFromRepositoryDataModel getModel() {
+        return bindingInfo.getDefaultModel();
     }
 }
