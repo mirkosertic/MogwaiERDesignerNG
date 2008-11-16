@@ -107,7 +107,7 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
         
     }
 
-    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity, Session aSession) {
+    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
         for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
             
             Attribute theAttribute = new Attribute();

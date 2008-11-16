@@ -20,15 +20,14 @@ package de.erdesignerng.model.serializer.repository;
 import java.awt.Color;
 import java.util.Map;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
 
 /**
@@ -93,11 +92,8 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, Session aSession) {
-        Criteria theCriteria = aSession.createCriteria(SubjectAreaEntity.class);
-
-        for (Object theObject : theCriteria.list()) {
-            SubjectAreaEntity theEntity = (SubjectAreaEntity) theObject;
+    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+        for (SubjectAreaEntity theEntity : aRepositoryEntity.getSubjectareas()) {
 
             SubjectArea theSubjectArea = new SubjectArea();
 

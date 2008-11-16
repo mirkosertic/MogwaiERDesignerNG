@@ -19,16 +19,15 @@ package de.erdesignerng.model.serializer.repository;
 
 import java.util.Map;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
 import de.erdesignerng.model.serializer.repository.entities.RelationEntity;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.StringKeyValuePair;
 
 /**
@@ -131,10 +130,8 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, Session aSession) {
-        Criteria theCriteria = aSession.createCriteria(RelationEntity.class);
-        for (Object theObject : theCriteria.list()) {
-            RelationEntity theRelationEntity = (RelationEntity) theObject;
+    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+        for (RelationEntity theRelationEntity : aRepositoryEntity.getRelations()) {
 
             Relation theRelation = new Relation();
             theRelation.setOwner(aModel);
