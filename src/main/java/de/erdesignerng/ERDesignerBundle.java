@@ -17,12 +17,10 @@ public interface ERDesignerBundle {
   String NEWMODEL = "NEWMODEL";
   /** Save model.... */
   String SAVEMODEL = "SAVEMODEL";
-  /** Save model to repository. */
+  /** Save model to repository.... */
   String SAVEMODELTODB = "SAVEMODELTODB";
   /** Load model from repository.... */
   String LOADMODELFROMDB = "LOADMODELFROMDB";
-  /** Load model from repository. */
-  String LOADMODELFROMDBNONDASHED = "LOADMODELFROMDBNONDASHED";
   /** Load model.... */
   String LOADMODEL = "LOADMODEL";
   /** Exit. */
@@ -339,4 +337,6 @@ public interface ERDesignerBundle {
   String OVERWRITEEXISTINGENTRY = "OVERWRITEEXISTINGENTRY";
   /** Delete entry. */
   String DELETEENTRY = "DELETEENTRY";
+  /** New name. */
+  String NEWNAME = "NEWNAME";
 }
