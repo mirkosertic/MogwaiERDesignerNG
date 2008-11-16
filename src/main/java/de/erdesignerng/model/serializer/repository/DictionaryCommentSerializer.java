@@ -19,14 +19,13 @@ package de.erdesignerng.model.serializer.repository;
 
 import java.util.Map;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.repository.entities.CommentEntity;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 
 /**
  * Serializer for comments.
@@ -57,10 +56,8 @@ public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    public void deserialize(Model aModel, Session aSession) {
-        Criteria theCriteria = aSession.createCriteria(CommentEntity.class);
-        for (Object theObject : theCriteria.list()) {
-            CommentEntity theCommentEntity = (CommentEntity) theObject;
+    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+        for (CommentEntity theCommentEntity : aRepositoryEntity.getComments()) {
 
             Comment theComment = new Comment();
             theComment.setOwner(aModel);

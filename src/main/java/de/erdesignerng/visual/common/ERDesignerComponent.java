@@ -76,6 +76,7 @@ import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -138,7 +139,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 15:22:55 $
+ * @version $Date: 2008-11-16 16:13:38 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -1360,11 +1361,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword());
+            
+            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect, theConnection);
 
-            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences, theConnection);
+            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences, theConnection, theEntries);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDialect, theConnection, preferences);
+                RepositoryEntryDesciptor theDescriptor = theEditor.getModel().getEntry();
+                
+                Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor, theDialect, theConnection, preferences);
                 worldConnector.initializeLoadedModel(theModel);
 
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
@@ -1657,6 +1662,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         return currentEditingFile;
     }
 
+    /**
+     * Save the preferences.
+     */
     public void savePreferences() {
         try {
             preferences.store();
