@@ -19,6 +19,7 @@ package de.erdesignerng.visual.editor.repository;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -32,7 +33,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to load models from a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2008-11-16 15:22:55 $
  */
 public class LoadFromRepositoryEditor extends BaseEditor {
 
@@ -53,13 +54,16 @@ public class LoadFromRepositoryEditor extends BaseEditor {
     private LoadFromRepositoryView view = new LoadFromRepositoryView();
 
     private ApplicationPreferences preferences;
+    
+    private Connection connection;
 
-    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences) {
+    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection) {
         super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
         initialize();
 
         preferences = aPreferences;
+        connection = aConnection;
     }
 
     private void initialize() {

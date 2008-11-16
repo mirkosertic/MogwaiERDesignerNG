@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -58,6 +59,8 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -135,7 +138,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2008-11-16 15:22:55 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -304,8 +307,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu lruMenu;
 
-    private DefaultMenu loadFromDBMenu;
-
     private DefaultMenu storedConnections;
 
     private Model model;
@@ -324,7 +325,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction saveAction;
 
-    private DefaultAction saveToDBAction;
+    private DefaultAction saveToRepository;
 
     private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
@@ -402,7 +403,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.SAVEMODEL);
 
-        saveToDBAction = new DefaultAction(new ActionEventProcessor() {
+        saveToRepository = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
                 commandSaveToRepository();
@@ -618,12 +619,17 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         theFileMenu.addSeparator();
         theFileMenu.add(new DefaultMenuItem(repositoryConnectionAction));
-        theFileMenu.add(saveToDBAction);
+        theFileMenu.add(saveToRepository);
 
-        DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
-        loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
+        DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(new DefaultAction(new ActionEventProcessor() {
 
-        theFileMenu.add(loadFromDBMenu);
+            public void processActionEvent(ActionEvent e) {
+                commandOpenFromRepository();
+            }
+
+        }, this, ERDesignerBundle.LOADMODELFROMDB));
+
+        theFileMenu.add(theLoadFromDBMenu);
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -940,7 +946,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         lruMenu.removeAll();
         storedConnections.removeAll();
-        loadFromDBMenu.removeAll();
 
         if (preferences != null) {
 
@@ -972,18 +977,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 UIInitializer.getInstance().initializeFontAndColors(theItem1);
                 storedConnections.add(theItem1);
-
-                JMenuItem theItem2 = new JMenuItem(theConnectionInfo.toString());
-                theItem2.addActionListener(new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        commandOpenFromRepository(theConnectionInfo);
-                    }
-
-                });
-
-                UIInitializer.getInstance().initializeFontAndColors(theItem2);
-                loadFromDBMenu.add(theItem2);
             }
         }
     }
@@ -1350,55 +1343,44 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Open the database model from a managed connection.
+     * Open the database model from an existing connection.
      */
-    protected void commandOpenFromRepositoryInManagedConnection() {
+    protected void commandOpenFromRepository() {
 
+        ConnectionDescriptor theRepositoryConnection = preferences.getRepositoryConnection();
+        if (theRepositoryConnection == null) {
+            MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
+                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
+            return;
+        }
+        Connection theConnection = null;
+        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());        
         try {
 
-            Model theModel = worldConnector.createNewModel();
+            theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
+                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
+                    theRepositoryConnection.getPassword());
 
-            commandOpenFromRepositoryHelper(theModel);
+            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences, theConnection);
+            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-            worldConnector.initTitle();
+                Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDialect, theConnection, preferences);
+                worldConnector.initializeLoadedModel(theModel);
+
+                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+
+                setModel(theModel);
+            }
 
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
-        }
-
-    }
-
-    protected void commandOpenFromRepositoryHelper(Model theModel) throws Exception {
-
-        theModel = ModelIOUtilities.getInstance().deserializeModelfromDB(theModel, preferences);
-        worldConnector.initializeLoadedModel(theModel);
-
-        worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
-
-        setModel(theModel);
-    }
-
-    /**
-     * Open the database model from an existing connection.
-     * 
-     * @param aConnectionInfo
-     *                the connectioninfo.
-     */
-    protected void commandOpenFromRepository(ConnectionDescriptor aConnectionInfo) {
-
-        LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-
-                Model theModel = worldConnector.createNewModel();
-                theModel.initializeWith(aConnectionInfo);
-
-                commandOpenFromRepositoryHelper(theModel);
-
-                worldConnector.initTitle(aConnectionInfo.toString());
-
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
+        } finally {
+            if (theConnection != null && !theDialect.generatesManagedConnection()) {
+                try {
+                    theConnection.close();
+                } catch (SQLException e) {
+                    // Do nothing here
+                }
             }
         }
     }

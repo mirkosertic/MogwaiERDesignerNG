@@ -42,13 +42,14 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2008-11-16 15:22:55 $
  */
 public final class ModelIOUtilities {
 
@@ -151,23 +152,9 @@ public final class ModelIOUtilities {
         }
     }
 
-    public Model deserializeModelfromDB(Model aModel, ApplicationPreferences aPreferences) throws Exception {
+    public Model deserializeModelfromRepository(Dialect aDialect, Connection aConnection, ApplicationPreferences aPreferences)
+            throws Exception {
 
-        Connection theConnection = null;
-        try {
-            Class theDialectClass = aModel.getDialect().getHibernateDialectClass();
-            theConnection = aModel.createConnection(aPreferences);
-            return DictionaryModelSerializer.SERIALIZER.deserialize(aModel, theConnection, theDialectClass);
-        } finally {
-            if (theConnection != null) {
-                if (!aModel.getDialect().generatesManagedConnection()) {
-                    try {
-                        theConnection.close();
-                    } catch (Exception e) {
-                        // Ignore this
-                    }
-                }
-            }
-        }
+        return DictionaryModelSerializer.SERIALIZER.deserialize(aConnection, aDialect.getHibernateDialectClass());
     }
 }
