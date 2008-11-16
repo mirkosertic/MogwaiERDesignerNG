@@ -23,18 +23,13 @@
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODELTODB">
-			<Text lang="de">Modell in Repository speichern</Text>		
-			<Text lang="en">Save model to repository</Text>					
+			<Text lang="de">Modell in Repository speichern...</Text>		
+			<Text lang="en">Save model to repository...</Text>					
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="LOADMODELFROMDB">
 			<Text lang="de">Modell aus Repository laden...</Text>		
 			<Text lang="en">Load model from repository...</Text>					
-			<Icon>/de/erdesignerng/icons/folder.png</Icon>
-		</Entry>
-		<Entry id="LOADMODELFROMDBNONDASHED">
-			<Text lang="de">Modell aus Repository laden</Text>		
-			<Text lang="en">Load model from repository</Text>					
 			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="LOADMODEL">
@@ -674,6 +669,10 @@
 			<Text lang="de">Eintrag löschen</Text>		
 			<Text lang="en">Delete entry</Text>
 			<Icon>/de/erdesignerng/icons/delete.png</Icon>
+		</Entry>
+		<Entry id="NEWNAME">
+			<Text lang="de">Neuer Name</Text>		
+			<Text lang="en">New name</Text>					
 		</Entry>
 	</Bundle>
 </Resource>
