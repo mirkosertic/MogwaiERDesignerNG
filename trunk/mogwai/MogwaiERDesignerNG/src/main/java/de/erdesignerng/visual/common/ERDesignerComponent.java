@@ -95,6 +95,7 @@ import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
+import de.erdesignerng.visual.editor.loadfromdictionary.LoadFromDictionaryEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
@@ -133,7 +134,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 10:29:20 $
+ * @version $Date: 2008-11-16 11:26:42 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -1303,7 +1304,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Save the current model to a repository.
      */
     protected void commandSaveToRepository() {
-        
+
         SaveToDictionaryEditor theEditor = new SaveToDictionaryEditor(scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
@@ -1358,19 +1359,21 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandOpenFromRepository(RecentlyUsedConnection aConnectionInfo) {
 
-        try {
+        LoadFromDictionaryEditor theEditor = new LoadFromDictionaryEditor(scrollPane, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
 
-            Model theModel = worldConnector.createNewModel();
-            theModel.initializeWith(aConnectionInfo);
+                Model theModel = worldConnector.createNewModel();
+                theModel.initializeWith(aConnectionInfo);
 
-            commandOpenFromRepositoryHelper(theModel);
+                commandOpenFromRepositoryHelper(theModel);
 
-            worldConnector.initTitle(aConnectionInfo.toString());
+                worldConnector.initTitle(aConnectionInfo.toString());
 
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
         }
-
     }
 
     /**

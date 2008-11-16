@@ -15,12 +15,10 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.savetodictionary;
+package de.erdesignerng.visual.editor.loadfromdictionary;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-
-import javax.swing.ButtonGroup;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -31,12 +29,12 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
- * Editor to save models to a repository.
+ * Editor to load models from a repository.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 11:26:42 $
  */
-public class SaveToDictionaryEditor extends BaseEditor {
+public class LoadFromDictionaryEditor extends BaseEditor {
 
     private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -52,12 +50,12 @@ public class SaveToDictionaryEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.CANCEL);
 
-    private SaveToDictionaryView view = new SaveToDictionaryView();
+    private LoadFromDictionaryView view = new LoadFromDictionaryView();
 
     private ApplicationPreferences preferences;
 
-    public SaveToDictionaryEditor(Component aParent, ApplicationPreferences aPreferences) {
-        super(aParent, ERDesignerBundle.SAVEMODELTODB);
+    public LoadFromDictionaryEditor(Component aParent, ApplicationPreferences aPreferences) {
+        super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
         initialize();
 
@@ -66,12 +64,6 @@ public class SaveToDictionaryEditor extends BaseEditor {
 
     private void initialize() {
         
-        ButtonGroup theGroup = new ButtonGroup();
-        theGroup.add(view.getExistingEntryButton());
-        theGroup.add(view.getNewEntryButton());
-        
-        view.getExistingEntryButton().setSelected(true);
-
         view.getOkButton().setAction(okAction);
         view.getCancelButton().setAction(cancelAction);
 
