@@ -75,6 +75,11 @@
 			<Text lang="en">DB - Connection...</Text>					
 			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
 		</Entry>
+		<Entry id="REPOSITORYCONNECTION">
+			<Text lang="de">Verbindung zum Repository...</Text>		
+			<Text lang="en">Repository connection...</Text>					
+			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
+		</Entry>
 		<Entry id="STOREDDBCONNECTION">
 			<Text lang="de">Letzte Datenbankverbindungen</Text>		
 			<Text lang="en">Last DB - Connections</Text>					

@@ -12,7 +12,6 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.JDBCDialect;
-import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
@@ -29,7 +28,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 14:22:01 $
  */
-public class DatabaseConnectionEditor extends BaseEditor {
+public class RepositoryConnectionEditor extends BaseEditor {
 
     private DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -52,7 +51,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.CANCEL);
 
-    private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
+    private RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 
         @Override
         public void handleDialectChange(JDBCDialect aDialect) {
@@ -60,17 +59,13 @@ public class DatabaseConnectionEditor extends BaseEditor {
         }
     };
 
-    private Model model;
-
     private ApplicationPreferences preferences;
 
     private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
-    public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences,
-            ConnectionDescriptor aConnection) {
-        super(aParent, ERDesignerBundle.CONNECTIONCONFIGURATION);
+    public RepositoryConnectionEditor(Component aParent, ApplicationPreferences aPreferences) {
+        super(aParent, ERDesignerBundle.REPOSITORYCONNECTION);
 
-        model = aModel;
         preferences = aPreferences;
 
         initialize();
@@ -86,17 +81,19 @@ public class DatabaseConnectionEditor extends BaseEditor {
         view.getDialect().setModel(theModel);
 
         DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
-        if (aConnection.getDialect() != null) {
-            theDescriptor.setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
+        
+        ConnectionDescriptor theConnection = aPreferences.getRepositoryConnection();
+        if (theConnection != null) {
+            if (theConnection.getDialect() != null) {
+                theDescriptor.setDialect(DialectFactory.getInstance().getDialect(theConnection.getDialect()));
+            }
+            theDescriptor.setDriver(theConnection.getDriver());
+            theDescriptor.setUrl(theConnection.getUrl());
+            theDescriptor.setUser(theConnection.getUsername());
+            theDescriptor.setPassword(theConnection.getPassword());
         }
-        theDescriptor.setAlias(aConnection.getAlias());
-        theDescriptor.setDriver(aConnection.getDriver());
-        theDescriptor.setUrl(aConnection.getUrl());
-        theDescriptor.setUser(aConnection.getUsername());
-        theDescriptor.setPassword(aConnection.getPassword());
 
         bindingInfo.setDefaultModel(theDescriptor);
-        bindingInfo.addBinding("alias", view.getAlias(), true);
         bindingInfo.addBinding("dialect", view.getDialect(), true);
         bindingInfo.addBinding("driver", view.getDriver(), true);
         bindingInfo.addBinding("url", view.getUrl(), true);
@@ -129,13 +126,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
     public void applyValues() throws Exception {
 
         DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
-
-        model.setDialect(theDescriptor.getDialect());
-        model.getProperties().setProperty(Model.PROPERTY_ALIAS, theDescriptor.getAlias());
-        model.getProperties().setProperty(Model.PROPERTY_DRIVER, theDescriptor.getDriver());
-        model.getProperties().setProperty(Model.PROPERTY_URL, theDescriptor.getUrl());
-        model.getProperties().setProperty(Model.PROPERTY_USER, theDescriptor.getUser());
-        model.getProperties().setProperty(Model.PROPERTY_PASSWORD, theDescriptor.getPassword());
+        preferences.setRepositoryConnection(theDescriptor.createConnectionDescriptor());
     }
 
     private void commandClose() {

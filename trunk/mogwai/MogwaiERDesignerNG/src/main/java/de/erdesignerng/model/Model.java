@@ -32,12 +32,12 @@ import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
 import de.erdesignerng.modificationtracker.ModelModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.util.RecentlyUsedConnection;
+import de.erdesignerng.util.ConnectionDescriptor;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 16:57:57 $
+ * @version $Date: 2008-11-16 14:22:01 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -353,9 +353,9 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @return the history entry
      */
-    public RecentlyUsedConnection createConnectionHistoryEntry() {
+    public ConnectionDescriptor createConnectionHistoryEntry() {
         String theDialectName = dialect != null ? dialect.getUniqueName() : null;
-        return new RecentlyUsedConnection(getProperties().getProperty(PROPERTY_ALIAS), theDialectName, getProperties()
+        return new ConnectionDescriptor(getProperties().getProperty(PROPERTY_ALIAS), theDialectName, getProperties()
                 .getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER), getProperties().getProperty(
                 PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD));
     }
@@ -366,7 +366,7 @@ public class Model implements OwnedModelItemVerifier {
      * @param aConnection
      *                the connection
      */
-    public void initializeWith(RecentlyUsedConnection aConnection) {
+    public void initializeWith(ConnectionDescriptor aConnection) {
         setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
         getProperties().setProperty(PROPERTY_ALIAS, aConnection.getAlias());
         getProperties().setProperty(PROPERTY_DRIVER, aConnection.getDriver());
