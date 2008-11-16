@@ -341,4 +341,6 @@ public interface ERDesignerBundle {
   String DELETEENTRY = "DELETEENTRY";
   /** New name. */
   String NEWNAME = "NEWNAME";
+  /** An exception occoured while connecting to the repository. */
+  String ERRORINREPOSITORYCONNECTION = "ERRORINREPOSITORYCONNECTION";
 }
