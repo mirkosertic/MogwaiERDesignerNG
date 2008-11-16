@@ -31,7 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.dictionary.DictionaryModelSerializer;
+import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
@@ -39,7 +39,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * Test for XML based model io.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 11:48:34 $
+ * @version $Date: 2008-11-16 14:22:01 $
  */
 public class DictionaryIOTest extends BaseERDesignerTestCaseImpl {
 

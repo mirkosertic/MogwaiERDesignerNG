@@ -41,6 +41,8 @@ public interface ERDesignerBundle {
   String CLASSPATH = "CLASSPATH";
   /** DB - Connection.... */
   String DBCONNECTION = "DBCONNECTION";
+  /** Repository connection.... */
+  String REPOSITORYCONNECTION = "REPOSITORYCONNECTION";
   /** Last DB - Connections. */
   String STOREDDBCONNECTION = "STOREDDBCONNECTION";
   /** Reverse engineer.... */

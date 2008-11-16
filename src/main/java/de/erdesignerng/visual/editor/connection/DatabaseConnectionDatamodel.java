@@ -1,12 +1,13 @@
 package de.erdesignerng.visual.editor.connection;
 
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.util.ConnectionDescriptor;
 
 /**
  * Descriptor for a database dialect.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 16:57:57 $
+ * @version $Date: 2008-11-16 14:22:01 $
  */
 public class DatabaseConnectionDatamodel {
 
@@ -74,5 +75,14 @@ public class DatabaseConnectionDatamodel {
      */
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    /**
+     * Create a connection descriptor.
+     * 
+     * @return a connection descriptor
+     */
+    public ConnectionDescriptor createConnectionDescriptor() {
+        return new ConnectionDescriptor(alias, dialect.getUniqueName(), url, user, driver, password);
     }
 }
