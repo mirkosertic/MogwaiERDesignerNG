@@ -139,7 +139,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 16:13:38 $
+ * @version $Date: 2008-11-16 17:48:26 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -1326,19 +1326,49 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandSaveToRepository() {
 
-        SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, preferences);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
+        ConnectionDescriptor theRepositoryConnection = preferences.getRepositoryConnection();
+        if (theRepositoryConnection == null) {
+            MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
+                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
+            return;
+        }
+        Connection theConnection = null;
+        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());        
+        try {
 
-                ModelIOUtilities.getInstance().serializeModelToDB(model, preferences);
+            theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
+                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
+                    theRepositoryConnection.getPassword());
+            
+            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect, theConnection);
 
-                currentEditingFile = null;
+            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, preferences, theEntries);
+            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                try {
 
-                worldConnector.initTitle(model.createConnectionHistoryEntry().toString());
-                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+                    RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
+                    theDesc.setName("Test");
+                    
+                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, model, preferences);
 
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
+                    currentEditingFile = null;
+
+                    worldConnector.initTitle(theDesc.getName());
+                    worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+
+                } catch (Exception e) {
+                    worldConnector.notifyAboutException(e);
+                }
+            }
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        } finally {
+            if (theConnection != null && !theDialect.generatesManagedConnection()) {
+                try {
+                    theConnection.close();
+                } catch (SQLException e) {
+                    // Do nothing here
+                }
             }
         }
     }

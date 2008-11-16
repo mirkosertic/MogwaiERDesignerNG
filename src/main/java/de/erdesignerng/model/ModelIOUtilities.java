@@ -50,7 +50,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 16:13:38 $
+ * @version $Date: 2008-11-16 17:48:26 $
  */
 public final class ModelIOUtilities {
 
@@ -133,13 +133,24 @@ public final class ModelIOUtilities {
         aStream.close();
     }
 
-    public void serializeModelToDB(Model aModel, ApplicationPreferences aPreferences) throws Exception {
+    /**
+     * Save a model to a repository.
+     * 
+     * @param aDesc the element descriptor
+     * @param aModel the model
+     * @param aPreferences the preferences
+     * @return the descriptor
+     * @throws Exception will be thrown in case of an exception
+     */
+    public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Model aModel, ApplicationPreferences aPreferences) throws Exception {
 
         Connection theConnection = null;
         try {
             Class theDialectClass = aModel.getDialect().getHibernateDialectClass();
             theConnection = aModel.createConnection(aPreferences);
-            DictionaryModelSerializer.SERIALIZER.serialize(aModel, theConnection, theDialectClass);
+            aDesc = DictionaryModelSerializer.SERIALIZER.serialize(aDesc, aModel, theConnection, theDialectClass);
+            
+            return aDesc;
         } finally {
             if (theConnection != null) {
                 if (!aModel.getDialect().generatesManagedConnection()) {

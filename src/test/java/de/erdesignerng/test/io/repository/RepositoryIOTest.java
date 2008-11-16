@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.io.dictionary;
+package de.erdesignerng.test.io.repository;
 
 import java.io.StringWriter;
 import java.sql.Connection;
@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
@@ -39,9 +40,9 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * Test for XML based model io.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2008-11-16 17:48:26 $
  */
-public class DictionaryIOTest extends BaseERDesignerTestCaseImpl {
+public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
 
     public void testLoadSaveDictionary() throws Exception {
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
@@ -57,9 +58,12 @@ public class DictionaryIOTest extends BaseERDesignerTestCaseImpl {
             
             Class theHibernateDialect = org.hibernate.dialect.HSQLDialect.class;
             
-            DictionaryModelSerializer.SERIALIZER.serialize(theModel, theConnection, theHibernateDialect);
+            RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
+            theDesc.setName("Dummy");
             
-            Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theModel, theConnection, theHibernateDialect);
+            theDesc = DictionaryModelSerializer.SERIALIZER.serialize(theDesc, theModel, theConnection, theHibernateDialect);
+            
+            Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theDesc, theConnection, theHibernateDialect);
 
             Document theEmptyDoc = theBuilder.newDocument();
             XMLModelSerializer.SERIALIZER.serialize(theNewModel, theEmptyDoc);

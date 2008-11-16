@@ -19,10 +19,12 @@ package de.erdesignerng.visual.editor.repository;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -34,7 +36,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2008-11-16 17:48:26 $
  */
 public class SaveToRepositoryEditor extends BaseEditor {
 
@@ -56,7 +58,7 @@ public class SaveToRepositoryEditor extends BaseEditor {
 
     private ApplicationPreferences preferences;
 
-    public SaveToRepositoryEditor(Component aParent, ApplicationPreferences aPreferences) {
+    public SaveToRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, List<RepositoryEntryDesciptor> aEntries) {
         super(aParent, ERDesignerBundle.SAVEMODELTODB);
 
         initialize();
