@@ -47,7 +47,7 @@ public class ClasspathEditorView extends JPanel {
 
     private void initialize() {
 
-        String theColDef = "2dlu,fill:150dlu:grow,2dlu,p,2";
+        String theColDef = "2dlu,fill:150dlu:grow,2dlu,p,2dlu";
         String theRowDef = "2dlu,fill:150dlu,p,2dlu,p,10dlu,p,2dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);

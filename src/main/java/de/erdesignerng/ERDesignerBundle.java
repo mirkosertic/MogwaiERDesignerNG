@@ -333,4 +333,10 @@ public interface ERDesignerBundle {
   String DISPLAYORDER = "DISPLAYORDER";
   /** Alias. */
   String ALIAS = "ALIAS";
+  /** Create new entry. */
+  String CREATENEWENTRY = "CREATENEWENTRY";
+  /** Overwrite existing entry. */
+  String OVERWRITEEXISTINGENTRY = "OVERWRITEEXISTINGENTRY";
+  /** Delete entry. */
+  String DELETEENTRY = "DELETEENTRY";
 }
