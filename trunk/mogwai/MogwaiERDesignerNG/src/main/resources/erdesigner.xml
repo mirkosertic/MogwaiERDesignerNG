@@ -679,5 +679,9 @@
 			<Text lang="de">Neuer Name</Text>		
 			<Text lang="en">New name</Text>					
 		</Entry>
+		<Entry id="ERRORINREPOSITORYCONNECTION">
+			<Text lang="de">Es trat ein Fehler bei der Verbindung zum Repository auf.</Text>		
+			<Text lang="en">An exception occoured while connecting to the repository</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
