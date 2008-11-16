@@ -98,6 +98,7 @@ import de.erdesignerng.visual.editor.domain.DomainEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
+import de.erdesignerng.visual.editor.savetodictionary.SaveToDictionaryEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.export.Exporter;
@@ -132,7 +133,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 23:10:49 $
+ * @version $Date: 2008-11-16 10:29:20 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -1302,20 +1303,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Save the current model to a repository.
      */
     protected void commandSaveToRepository() {
+        
+        SaveToDictionaryEditor theEditor = new SaveToDictionaryEditor(scrollPane, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
 
-        try {
+                ModelIOUtilities.getInstance().serializeModelToDB(model, preferences);
 
-            ModelIOUtilities.getInstance().serializeModelToDB(model, preferences);
+                currentEditingFile = null;
 
-            currentEditingFile = null;
+                worldConnector.initTitle(model.createConnectionHistoryEntry().toString());
+                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
-            worldConnector.initTitle(model.createConnectionHistoryEntry().toString());
-            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
-
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
         }
-
     }
 
     /**
