@@ -21,6 +21,7 @@
 		
 		<property name="name" not-null="true"/>
 		<property name="comment" type="text"/>
+		<property name="dialect" not-null="true"/>
 		
 		<list name="domains" cascade="all-delete-orphan">
 			<key column="repid" not-null="true" foreign-key="mogrep_domains_fk1"/>

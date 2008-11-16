@@ -24,6 +24,8 @@ import java.util.List;
  * @author msertic
  */
 public class RepositoryEntity extends ModelEntity {
+    
+    private String dialect;
 
     private List<DomainEntity> domains = new ArrayList<DomainEntity>();
     
@@ -119,5 +121,19 @@ public class RepositoryEntity extends ModelEntity {
      */
     public void setChanges(List<ChangeEntity> changes) {
         this.changes = changes;
+    }
+
+    /**
+     * @return the dialect
+     */
+    public String getDialect() {
+        return dialect;
+    }
+
+    /**
+     * @param dialect the dialect to set
+     */
+    public void setDialect(String dialect) {
+        this.dialect = dialect;
     }
 }

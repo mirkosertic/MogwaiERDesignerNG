@@ -20,6 +20,7 @@ package de.erdesignerng.model.serializer.repository;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -29,6 +30,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.criterion.Projections;
 
+import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.serializer.repository.entities.AttributeEntity;
@@ -38,6 +40,7 @@ import de.erdesignerng.model.serializer.repository.entities.DomainEntity;
 import de.erdesignerng.model.serializer.repository.entities.IndexEntity;
 import de.erdesignerng.model.serializer.repository.entities.RelationEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
+import de.erdesignerng.model.serializer.repository.entities.StringKeyValuePair;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 
@@ -75,7 +78,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
         return theSessionFactory.openSession(aConnection, AuditInterceptor.INSTANCE);
     }
 
-    public void serialize(Model aModel, Connection aConnection, Class aHibernateDialectClass) throws Exception {
+    public RepositoryEntryDesciptor serialize(RepositoryEntryDesciptor aDesc, Model aModel, Connection aConnection, Class aHibernateDialectClass) throws Exception {
 
         ThreadbasedConnectionProvider.initializeForThread(aConnection);
         Session theSession = null;
@@ -86,18 +89,26 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
             theTx = theSession.beginTransaction();
 
             RepositoryEntity theEntity = null;
-            boolean existing = false;
-            Criteria theCriteria = theSession.createCriteria(RepositoryEntity.class);
-            List theEntities = theCriteria.list();
-            if (theEntities.size() == 1) {
-                theEntity = (RepositoryEntity) theEntities.get(0);
-                existing = true;
-            } else {
+            if (aDesc.getId() == null) {
                 theEntity = new RepositoryEntity();
-                theEntity.setSystemId(ModelUtilities.createSystemIdFor(theEntity));
-                theEntity.setName("MODEL");
+                theEntity.setSystemId(ModelUtilities.createSystemIdFor(theEntity));                
+            } else {
+                theEntity = (RepositoryEntity) theSession.get(RepositoryEntity.class, aDesc.getId());
             }
 
+            theEntity.setName(aDesc.getName());
+            theEntity.setDialect(aModel.getDialect().getUniqueName());
+            
+            // Serialize properties
+            theEntity.getProperties().clear();
+            for (Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
+                StringKeyValuePair theElement = new StringKeyValuePair();
+                theElement.setKey(theEntry.getKey());
+                theElement.setValue(theEntry.getValue());
+                theEntity.getProperties().add(theElement);
+            }
+            
+            // Serialize the rest
             DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
 
             DictionaryTableSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
@@ -108,13 +119,13 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
             DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
 
-            if (existing) {
-                theSession.update(theEntity);
-            } else {
-                theSession.save(theEntity);
-            }
+            theSession.saveOrUpdate(theEntity);
 
             theTx.commit();
+            
+            aDesc.setName(theEntity.getName());
+            aDesc.setId(theEntity.getId());
+            return aDesc;
 
         } catch (Exception e) {
             if (theTx != null) {
@@ -148,7 +159,15 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
             RepositoryEntity theRepositoryEntity = (RepositoryEntity) theSession.get(RepositoryEntity.class,
                     aDescriptor.getId());
-
+            
+            // Deserialize the properties
+            theNewModel.getProperties().getProperties().clear();
+            for (StringKeyValuePair theElement : theRepositoryEntity.getProperties()) {
+                theNewModel.getProperties().getProperties().put(theElement.getKey(), theElement.getValue());
+            }
+            theNewModel.setDialect(DialectFactory.getInstance().getDialect(theRepositoryEntity.getDialect()));
+            
+            // Deserialize the rest
             DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
 
             DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
