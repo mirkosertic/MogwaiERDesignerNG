@@ -42,13 +42,13 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import de.erdesignerng.model.serializer.dictionary.DictionaryModelSerializer;
+import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 22:08:51 $
+ * @version $Date: 2008-11-16 14:22:01 $
  */
 public final class ModelIOUtilities {
 

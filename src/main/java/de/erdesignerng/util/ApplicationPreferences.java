@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 19:12:36 $
+ * @version $Date: 2008-11-16 14:22:01 $
  */
 public class ApplicationPreferences {
 
@@ -44,7 +44,9 @@ public class ApplicationPreferences {
     private static final String CLASSPATHPREFIX = "classpath_";
 
     private static final String LRCPREFIX = "lrc_";
-    
+
+    private static final String RPCPREFIX = "rpc_";
+
     private static final String GRIDSIZE = "gridsize";
 
     private int size;
@@ -53,13 +55,15 @@ public class ApplicationPreferences {
 
     private List<File> classpathfiles = new ArrayList<File>();
 
-    private List<RecentlyUsedConnection> recentlyUsedConnections = new ArrayList<RecentlyUsedConnection>();
+    private List<ConnectionDescriptor> recentlyUsedConnections = new ArrayList<ConnectionDescriptor>();
 
     private Preferences preferences;
 
     private String dotPath;
-    
+
     private int gridSize;
+
+    private ConnectionDescriptor repositoryConnection;
 
     private static ApplicationPreferences me;
 
@@ -95,6 +99,16 @@ public class ApplicationPreferences {
 
         }
 
+        if (theNames.contains(RPCPREFIX + "DIALECT")) {
+            String theDialect = preferences.get(RPCPREFIX + "DIALECT", "");
+            String theURL = preferences.get(RPCPREFIX + "URL", "");
+            String theUser = preferences.get(RPCPREFIX + "USER", "");
+            String theDriver = preferences.get(RPCPREFIX + "DRIVER", "");
+            String thePass = preferences.get(RPCPREFIX + "PASS", "");
+
+            repositoryConnection = new ConnectionDescriptor(null, theDialect, theURL, theUser, theDriver, thePass);
+        }
+
         for (int i = 0; i < aSize; i++) {
             if (theNames.contains(LRCPREFIX + "DIALECT_" + i)) {
                 String theAlias = preferences.get(LRCPREFIX + "ALIAS_" + i, "");
@@ -104,7 +118,8 @@ public class ApplicationPreferences {
                 String theDriver = preferences.get(LRCPREFIX + "DRIVER_" + i, "");
                 String thePass = preferences.get(LRCPREFIX + "PASS_" + i, "");
 
-                RecentlyUsedConnection theConnection = new RecentlyUsedConnection(theAlias, theDialect, theURL, theUser, theDriver, thePass);
+                ConnectionDescriptor theConnection = new ConnectionDescriptor(theAlias, theDialect, theURL, theUser,
+                        theDriver, thePass);
                 recentlyUsedConnections.add(theConnection);
             }
         }
@@ -120,7 +135,7 @@ public class ApplicationPreferences {
      * Add a file to the recently used LRUfiles list.
      * 
      * @param aFile
-     *            the file to add
+     *                the file to add
      */
     public void addRecentlyUsedFile(File aFile) {
 
@@ -139,9 +154,9 @@ public class ApplicationPreferences {
      * Add a last used connection to the list.
      * 
      * @param aConnection
-     *            the connection
+     *                the connection
      */
-    public void addRecentlyUsedConnection(RecentlyUsedConnection aConnection) {
+    public void addRecentlyUsedConnection(ConnectionDescriptor aConnection) {
         if (!recentlyUsedConnections.contains(aConnection)) {
             recentlyUsedConnections.add(aConnection);
             if (recentlyUsedConnections.size() > size) {
@@ -158,14 +173,14 @@ public class ApplicationPreferences {
         return recentlyUsedFiles;
     }
 
-    public List<RecentlyUsedConnection> getRecentlyUsedConnections() {
+    public List<ConnectionDescriptor> getRecentlyUsedConnections() {
         return recentlyUsedConnections;
     }
 
     public List<File> getClasspathFiles() {
         return classpathfiles;
     }
-    
+
     /**
      * @return the gridSize
      */
@@ -174,7 +189,8 @@ public class ApplicationPreferences {
     }
 
     /**
-     * @param gridSize the gridSize to set
+     * @param gridSize
+     *                the gridSize to set
      */
     public void setGridSize(int gridSize) {
         this.gridSize = gridSize;
@@ -184,7 +200,7 @@ public class ApplicationPreferences {
      * Save the preferences.
      * 
      * @throws BackingStoreException
-     *             is thrown if the operation fails
+     *                 is thrown if the operation fails
      */
     public void store() throws BackingStoreException {
 
@@ -196,6 +212,9 @@ public class ApplicationPreferences {
             if (theName.startsWith(CLASSPATHPREFIX)) {
                 preferences.remove(theName);
             }
+            if (theName.startsWith(RPCPREFIX)) {
+                preferences.remove(theName);
+            }
         }
 
         for (int i = 0; i < recentlyUsedFiles.size(); i++) {
@@ -203,8 +222,8 @@ public class ApplicationPreferences {
         }
 
         for (int i = 0; i < recentlyUsedConnections.size(); i++) {
-            RecentlyUsedConnection theConnection = recentlyUsedConnections.get(i);
-            preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection.getAlias());            
+            ConnectionDescriptor theConnection = recentlyUsedConnections.get(i);
+            preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection.getAlias());
             preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection.getDialect());
             preferences.put(LRCPREFIX + "URL_" + i, theConnection.getUrl());
             preferences.put(LRCPREFIX + "USER_" + i, theConnection.getUsername());
@@ -218,6 +237,14 @@ public class ApplicationPreferences {
 
         preferences.put(DOT_PATH, dotPath);
         preferences.putInt(GRIDSIZE, gridSize);
+
+        if (repositoryConnection != null) {
+            preferences.put(RPCPREFIX + "DIALECT", repositoryConnection.getDialect());
+            preferences.put(RPCPREFIX + "URL", repositoryConnection.getUrl());
+            preferences.put(RPCPREFIX + "USER", repositoryConnection.getUsername());
+            preferences.put(RPCPREFIX + "DRIVER", repositoryConnection.getDriver());
+            preferences.put(RPCPREFIX + "PASS", repositoryConnection.getPassword());
+        }
 
         preferences.flush();
     }
@@ -250,9 +277,24 @@ public class ApplicationPreferences {
 
     /**
      * @param dotPath
-     *            the dotPath to set
+     *                the dotPath to set
      */
     public void setDotPath(String dotPath) {
         this.dotPath = dotPath;
+    }
+
+    /**
+     * @return the repositoryConnection
+     */
+    public ConnectionDescriptor getRepositoryConnection() {
+        return repositoryConnection;
+    }
+
+    /**
+     * @param repositoryConnection
+     *                the repositoryConnection to set
+     */
+    public void setRepositoryConnection(ConnectionDescriptor repositoryConnection) {
+        this.repositoryConnection = repositoryConnection;
     }
 }

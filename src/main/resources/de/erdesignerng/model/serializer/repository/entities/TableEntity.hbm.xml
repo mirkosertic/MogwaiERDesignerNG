@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping
+	package="de.erdesignerng.model.serializer.repository.entities"
+	default-lazy="false">
+
+	<class name="TableEntity" table="mogrep_tables"
+		select-before-update="true">
+
+		<id name="id" >
+			<generator class="native" />
+		</id>
+		<version name="version"/>
+		
+		<property name="systemId" not-null="true"/>		
+
+		<property name="creationUser" not-null="false" />
+		<property name="creationDate" not-null="false" />
+		<property name="lastModificationUser" not-null="false" />
+		<property name="lastModificationDate" not-null="false" />
+
+		<property name="name" not-null="true" />
+		<property name="comment" not-null="false" type="text"/>		
+
+		<list name="attributes" cascade="all-delete-orphan">
+			<key column="tableid" foreign-key="mogrep_attributes_fk1"/>
+			<list-index column="listindex" />
+			<one-to-many class="AttributeEntity" />
+		</list>
+
+		<list name="indexes" cascade="all-delete-orphan">
+			<key column="tableid" foreign-key="mogrep_indexes_fk1"/>
+			<list-index column="listindex" />
+			<one-to-many class="IndexEntity" />
+		</list>
+
+		<list name="properties" table="mogrep_tables_props" cascade="all-delete-orphan">
+			<key column="tableid" foreign-key="mogrep_tables_props_fk1" />
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property name="key" column="propname" not-null="true"/>
+				<property name="value" column="propvalue" not-null="true"/>
+			</composite-element>
+		</list>
+		
+	</class>
+</hibernate-mapping>

@@ -76,7 +76,7 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.util.RecentlyUsedConnection;
+import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.ERDesignerGraph;
@@ -94,12 +94,13 @@ import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
+import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
-import de.erdesignerng.visual.editor.loadfromdictionary.LoadFromDictionaryEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
+import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
+import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
-import de.erdesignerng.visual.editor.savetodictionary.SaveToDictionaryEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.export.Exporter;
@@ -134,7 +135,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 11:26:42 $
+ * @version $Date: 2008-11-16 14:22:01 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -254,6 +255,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private File currentEditingFile;
 
     private DefaultAction dbConnectionAction;
+
+    private DefaultAction repositoryConnectionAction;
 
     private DefaultAction domainsAction;
 
@@ -534,6 +537,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DBCONNECTION);
 
+        repositoryConnectionAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandRepositoryConnection();
+            }
+
+        }, this, ERDesignerBundle.REPOSITORYCONNECTION);
+
         domainsAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
@@ -605,15 +616,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.add(saveAction);
         theFileMenu.add(loadAction);
 
-        if (worldConnector.supportsConnectionEditor()) {
-            theFileMenu.addSeparator();
-            theFileMenu.add(saveToDBAction);
+        theFileMenu.addSeparator();
+        theFileMenu.add(new DefaultMenuItem(repositoryConnectionAction));
+        theFileMenu.add(saveToDBAction);
 
-            DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
-            loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
+        DefaultAction theLoadFromDBAction = new DefaultAction(this, ERDesignerBundle.LOADMODELFROMDB);
+        loadFromDBMenu = new DefaultMenu(theLoadFromDBAction);
 
-            theFileMenu.add(loadFromDBMenu);
-        }
+        theFileMenu.add(loadFromDBMenu);
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -950,7 +960,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 lruMenu.add(theItem);
             }
 
-            for (final RecentlyUsedConnection theConnectionInfo : preferences.getRecentlyUsedConnections()) {
+            for (final ConnectionDescriptor theConnectionInfo : preferences.getRecentlyUsedConnections()) {
                 JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
                 theItem1.addActionListener(new ActionListener() {
 
@@ -980,27 +990,44 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void addCurrentConnectionToConnectionHistory() {
 
-        RecentlyUsedConnection theConnection = model.createConnectionHistoryEntry();
+        ConnectionDescriptor theConnection = model.createConnectionHistoryEntry();
         addConnectionToConnectionHistory(theConnection);
     }
 
-    protected void addConnectionToConnectionHistory(RecentlyUsedConnection aConnection) {
+    protected void addConnectionToConnectionHistory(ConnectionDescriptor aConnection) {
 
         preferences.addRecentlyUsedConnection(aConnection);
 
         updateRecentlyUsedMenuEntries();
     }
 
+    /**
+     * Edit the database connection.
+     */
     protected void commandDBConnection() {
         commandDBConnection(model.createConnectionHistoryEntry());
     }
 
-    protected void commandDBConnection(RecentlyUsedConnection aConnection) {
+    protected void commandDBConnection(ConnectionDescriptor aConnection) {
         DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(scrollPane, model, preferences, aConnection);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
                 addCurrentConnectionToConnectionHistory();
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
+        }
+    }
+
+    /**
+     * Edit the repository connection.
+     */
+    protected void commandRepositoryConnection() {
+        RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(scrollPane, preferences);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
@@ -1305,7 +1332,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandSaveToRepository() {
 
-        SaveToDictionaryEditor theEditor = new SaveToDictionaryEditor(scrollPane, preferences);
+        SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
@@ -1357,9 +1384,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * @param aConnectionInfo
      *                the connectioninfo.
      */
-    protected void commandOpenFromRepository(RecentlyUsedConnection aConnectionInfo) {
+    protected void commandOpenFromRepository(ConnectionDescriptor aConnectionInfo) {
 
-        LoadFromDictionaryEditor theEditor = new LoadFromDictionaryEditor(scrollPane, preferences);
+        LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
