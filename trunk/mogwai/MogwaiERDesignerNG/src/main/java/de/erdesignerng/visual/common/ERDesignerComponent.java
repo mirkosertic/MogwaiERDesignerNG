@@ -102,6 +102,7 @@ import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
+import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
@@ -139,7 +140,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-17 18:59:59 $
+ * @version $Date: 2008-11-17 20:53:54 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -371,6 +372,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction displayAscendingOrderAction;
 
     private DefaultAction displayDescendingOrderAction;
+    
+    private DefaultAction createMigrationScriptAction;
+    
+    private DefaultMenu repositoryUtilsMenu;
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
@@ -603,6 +608,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.COMPLETECOMPARE);
+        
+        createMigrationScriptAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+                commandCreateMigrationScript();
+            }
+
+        }, this, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
+        
 
         lruMenu = new DefaultMenu(lruAction);
 
@@ -633,6 +647,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }, this, ERDesignerBundle.LOADMODELFROMDB));
 
         theFileMenu.add(theLoadFromDBMenu);
+        
+        repositoryUtilsMenu = new DefaultMenu(this, ERDesignerBundle.REPOSITORYUTILS);
+        repositoryUtilsMenu.add(new DefaultMenuItem(createMigrationScriptAction));
+        
+        UIInitializer.getInstance().initialize(repositoryUtilsMenu);
+        
+        theFileMenu.add(repositoryUtilsMenu);
+        
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -878,6 +900,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         worldConnector.initTitle();
 
         updateRecentlyUsedMenuEntries();
+        
+        setupViewForNothing();
 
         UIInitializer.getInstance().initialize(scrollPane);
     }
@@ -1373,6 +1397,41 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         }
     }
+    
+    /**
+     * Create a migration script from repository.
+     */
+    protected void commandCreateMigrationScript() {
+
+        ConnectionDescriptor theRepositoryConnection = preferences.getRepositoryConnection();
+        if (theRepositoryConnection == null) {
+            MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
+                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
+            return;
+        }
+        Connection theConnection = null;
+        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());        
+        try {
+
+            theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
+                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
+                    theRepositoryConnection.getPassword());
+            
+             MigrationScriptEditor theEditor = new MigrationScriptEditor(scrollPane);
+             theEditor.showModal();
+             
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        } finally {
+            if (theConnection != null && !theDialect.generatesManagedConnection()) {
+                try {
+                    theConnection.close();
+                } catch (SQLException e) {
+                    // Do nothing here
+                }
+            }
+        }
+    }    
 
     /**
      * Open the database model from an existing connection.
@@ -1435,6 +1494,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         currentEditingFile = null;
         currentRepositoryEntry = aDescriptor;
         worldConnector.initTitle(aDescriptor.getName());
+        repositoryUtilsMenu.setEnabled(true);
     }
 
     /**
@@ -1447,6 +1507,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         currentEditingFile = aFile;
         currentRepositoryEntry = null;
         worldConnector.initTitle(aFile.toString());
+        repositoryUtilsMenu.setEnabled(false);
     }
     
     /**
@@ -1456,6 +1517,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         
         currentEditingFile = null;
         currentRepositoryEntry = null;
+        repositoryUtilsMenu.setEnabled(false);
         worldConnector.initTitle();
     }    
 
