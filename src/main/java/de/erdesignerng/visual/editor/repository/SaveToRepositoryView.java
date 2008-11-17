@@ -17,6 +17,9 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -89,6 +92,18 @@ public class SaveToRepositoryView extends JPanel {
         cancelButton.setText("Cancel");
 
         add(thePanel, cons.xyw(2, 13, 5));
+        
+        existingNameBox.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                commandChangeRepositoryEntry();
+            }});
+    }
+    
+    /**
+     * Is invoked when the repository entry was changed.
+     */
+    public void commandChangeRepositoryEntry() {
     }
 
     /**
