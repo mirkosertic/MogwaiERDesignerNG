@@ -34,7 +34,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * View for the save to dictionary dialog.
- *  
+ * 
  * @author msertic
  */
 public class SaveToRepositoryView extends JPanel {
@@ -46,7 +46,7 @@ public class SaveToRepositoryView extends JPanel {
     private DefaultRadioButton existingEntryButton = new DefaultRadioButton(ERDesignerBundle.OVERWRITEEXISTINGENTRY);
 
     private DefaultComboBox existingNameBox = new DefaultComboBox();
-    
+
     private DefaultTextField existingNameField = new DefaultTextField();
 
     private DefaultButton okButton = new DefaultButton();
@@ -92,14 +92,15 @@ public class SaveToRepositoryView extends JPanel {
         cancelButton.setText("Cancel");
 
         add(thePanel, cons.xyw(2, 13, 5));
-        
+
         existingNameBox.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 commandChangeRepositoryEntry();
-            }});
+            }
+        });
     }
-    
+
     /**
      * Is invoked when the repository entry was changed.
      */

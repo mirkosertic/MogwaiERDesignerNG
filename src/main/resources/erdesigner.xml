@@ -683,5 +683,21 @@
 			<Text lang="de">Es trat ein Fehler bei der Verbindung zum Repository auf.</Text>		
 			<Text lang="en">An exception occoured while connecting to the repository</Text>					
 		</Entry>
+		<Entry id="REPOSITORYUTILS">
+			<Text lang="de">Repository Werkzeuge...</Text>		
+			<Text lang="en">Repository utilities...</Text>					
+		</Entry>
+		<Entry id="CREATEMIGRATIONSCRIPT">
+			<Text lang="de">Migrationskript erstellen...</Text>		
+			<Text lang="en">Create migration script...</Text>					
+		</Entry>
+		<Entry id="FROMVERSION">
+			<Text lang="de">Quellversion</Text>		
+			<Text lang="en">From version</Text>					
+		</Entry>
+		<Entry id="TOVERSION">
+			<Text lang="de">Zielversion</Text>		
+			<Text lang="en">To version</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

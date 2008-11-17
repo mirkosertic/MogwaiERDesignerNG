@@ -24,12 +24,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Model;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:04 $
+ * @version $Date: 2008-11-17 20:53:55 $
  */
 public final class ERDesigner {
 
@@ -43,7 +42,7 @@ public final class ERDesigner {
         theScreen.setVisible(true);
         
         ERDesignerMainFrame frame = new ERDesignerMainFrame();
-        frame.setModel(new Model());
+        frame.setModel(frame.createNewModel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         
