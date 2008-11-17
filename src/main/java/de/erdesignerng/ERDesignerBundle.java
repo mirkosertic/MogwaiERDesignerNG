@@ -343,4 +343,12 @@ public interface ERDesignerBundle {
   String NEWNAME = "NEWNAME";
   /** An exception occoured while connecting to the repository. */
   String ERRORINREPOSITORYCONNECTION = "ERRORINREPOSITORYCONNECTION";
+  /** Repository utilities.... */
+  String REPOSITORYUTILS = "REPOSITORYUTILS";
+  /** Create migration script.... */
+  String CREATEMIGRATIONSCRIPT = "CREATEMIGRATIONSCRIPT";
+  /** From version. */
+  String FROMVERSION = "FROMVERSION";
+  /** To version. */
+  String TOVERSION = "TOVERSION";
 }
