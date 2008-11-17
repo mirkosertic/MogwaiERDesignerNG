@@ -22,12 +22,13 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
+import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -36,7 +37,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 17:48:26 $
+ * @version $Date: 2008-11-17 19:00:00 $
  */
 public class SaveToRepositoryEditor extends BaseEditor {
 
@@ -54,16 +55,54 @@ public class SaveToRepositoryEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.CANCEL);
 
-    private SaveToRepositoryView view = new SaveToRepositoryView();
+    private SaveToRepositoryView view = new SaveToRepositoryView() {
+      
+        @Override
+        public void commandChangeRepositoryEntry() {
+            SaveToRepositoryEditor.this.commandChangeRepositoryEntry();
+        }
+        
+    };
 
-    private ApplicationPreferences preferences;
+    private BindingInfo<SaveToRepositoryDataModel> bindingInfo1;
+    private BindingInfo<SaveToRepositoryDataModel> bindingInfo2;
 
-    public SaveToRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, List<RepositoryEntryDesciptor> aEntries) {
+    public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDesciptor> aEntries, RepositoryEntryDesciptor aCurrentEntry) {
         super(aParent, ERDesignerBundle.SAVEMODELTODB);
 
         initialize();
+        
+        SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
+        bindingInfo1 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
+        bindingInfo2 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
+        
+        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+        for (RepositoryEntryDesciptor theEntry : aEntries) {
+            theModel.addElement(theEntry);
+        }
+        view.getExistingNameBox().setModel(theModel);
+        if (theModel.getSize() > 0) {
+            theBindModel.setExistingEntry((RepositoryEntryDesciptor) theModel.getElementAt(0));
+            theBindModel.setNameForExistantEntry(theBindModel.getExistingEntry().getName());
+        }
+        
+        if (aCurrentEntry == null) {
+            view.getNewEntryButton().setSelected(true);
+        } else {
+            view.getExistingEntryButton().setSelected(true);
+            theBindModel.setExistingEntry(aCurrentEntry);
+            theBindModel.setNameForExistantEntry(aCurrentEntry.getName());
+        }
+        
+        
+        bindingInfo1.addBinding("nameForNewEntry", view.getNewNameField(), true);
+        bindingInfo1.configure();
 
-        preferences = aPreferences;
+        bindingInfo2.addBinding("existingEntry", view.getExistingNameBox(), true);
+        bindingInfo2.addBinding("nameForExistantEntry", view.getExistingNameField(), true);
+        bindingInfo2.configure();
+        
+        bindingInfo2.model2view();
     }
 
     private void initialize() {
@@ -91,9 +130,51 @@ public class SaveToRepositoryEditor extends BaseEditor {
     @Override
     public void applyValues() throws Exception {
     }
+    
+    private void commandChangeRepositoryEntry() {
+        RepositoryEntryDesciptor theDesc = (RepositoryEntryDesciptor) view.getExistingNameBox().getSelectedItem();
+        if (theDesc != null) {
+            SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
+            theModel.setExistingEntry(theDesc);
+            theModel.setNameForExistantEntry(theDesc.getName());
+            bindingInfo2.model2view();
+        }
+    }
 
     private void commandClose() {
+        
+        if (view.getNewEntryButton().isSelected()) {
+            if (bindingInfo1.validate().size() == 0) {
+                bindingInfo1.view2model();
+                setModalResult(DialogConstants.MODAL_RESULT_OK);
+            }
+        }
 
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
+        if (view.getExistingEntryButton().isSelected()) {
+            if (bindingInfo2.validate().size() == 0) {
+                bindingInfo2.view2model();
+                setModalResult(DialogConstants.MODAL_RESULT_OK);
+            }
+        }
+    }
+
+    /**
+     * Create a repository descriptor for the selected entry. 
+     * 
+     * @return the descriptor
+     */
+    public RepositoryEntryDesciptor getRepositoryDescriptor() {
+        
+        SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
+        
+        if (view.getNewEntryButton().isSelected()) {
+            RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
+            theDesc.setName(theModel.getNameForNewEntry());
+            return theDesc;            
+        }
+
+        RepositoryEntryDesciptor theDesc = theModel.getExistingEntry();
+        theDesc.setName(theModel.getNameForExistantEntry());
+        return theDesc;
     }
 }

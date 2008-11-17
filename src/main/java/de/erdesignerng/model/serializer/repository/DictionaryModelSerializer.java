@@ -28,9 +28,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
 import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.Statement;
+import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.serializer.repository.entities.AttributeEntity;
@@ -43,6 +46,8 @@ import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.StringKeyValuePair;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
+import de.erdesignerng.modificationtracker.HistoryModificationTracker;
+import de.erdesignerng.modificationtracker.ModelModificationTracker;
 
 /**
  * Serializer to store the model in a data dictionary.
@@ -118,6 +123,23 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
             DictionaryCommentSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
 
             DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theSession, theEntity);
+            
+            // Serialize changes
+            ModelModificationTracker theTracker = aModel.getModificationTracker();
+            if (theTracker instanceof HistoryModificationTracker) {
+                HistoryModificationTracker theHistTracker = (HistoryModificationTracker) theTracker;
+                StatementList theList = theHistTracker.getNotSavedStatements();
+                if (theList.size() > 0) {
+                    ChangeEntity theChange = new ChangeEntity();
+                    theChange.setSystemId(ModelUtilities.createSystemIdFor(theChange));
+                    for (Statement theStatement : theList) {
+                        theChange.getStatements().add(theStatement.getSql());
+                        theStatement.setSaved(true);
+                    }
+                    
+                    theEntity.getChanges().add(theChange);
+                }
+            }
 
             theSession.saveOrUpdate(theEntity);
 
@@ -221,6 +243,8 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
             Criteria theCriteria = theSession.createCriteria(RepositoryEntity.class);
             theCriteria.setProjection(Projections.projectionList().add(Projections.property("id")).add(
                     Projections.property("name")));
+            theCriteria.addOrder(Order.asc("name"));
+            
             for (Object theObject : theCriteria.list()) {
                 Object[] theArray = (Object[]) theObject;
                 

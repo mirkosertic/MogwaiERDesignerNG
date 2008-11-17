@@ -139,7 +139,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 17:48:26 $
+ * @version $Date: 2008-11-17 18:59:59 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -257,6 +257,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction classpathAction;
 
     private File currentEditingFile;
+    
+    private RepositoryEntryDesciptor currentRepositoryEntry;
 
     private DefaultAction dbConnectionAction;
 
@@ -1129,12 +1131,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void commandNew() {
-        currentEditingFile = null;
 
         Model theModel = worldConnector.createNewModel();
         setModel(theModel);
-
-        worldConnector.initTitle();
+        
+        setupViewForNothing();
 
         worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.NEWMODELCREATED));
     }
@@ -1166,13 +1167,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             setModel(theModel);
 
-            currentEditingFile = aFile;
-            worldConnector.initTitle(currentEditingFile.toString());
-
             preferences.addRecentlyUsedFile(aFile);
 
             addCurrentConnectionToConnectionHistory();
 
+            setupViewFor(aFile);
             worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
 
         } catch (Exception e) {
@@ -1191,6 +1190,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
+    /**
+     * Reverse engineer a model from a database connection. 
+     */
     public void commandReverseEngineer() {
 
         if (model.getDialect() == null) {
@@ -1240,6 +1242,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
+    /**
+     * Save the current model to file. 
+     */
     protected void commandSaveFile() {
 
         DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -1267,7 +1272,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 ModelIOUtilities.getInstance().serializeModelToXML(model, theStream);
 
-                currentEditingFile = theFile;
                 worldConnector.initTitle();
 
                 preferences.addRecentlyUsedFile(theFile);
@@ -1300,7 +1304,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }
 
-                worldConnector.initTitle(currentEditingFile.toString());
+                setupViewFor(theFile);
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
             } catch (Exception e) {
@@ -1342,18 +1346,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             
             List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect, theConnection);
 
-            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, preferences, theEntries);
+            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, theEntries, currentRepositoryEntry);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
                 try {
 
-                    RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
-                    theDesc.setName("Test");
+                    RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
                     
                     theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, model, preferences);
 
-                    currentEditingFile = null;
-
-                    worldConnector.initTitle(theDesc.getName());
+                    setupViewFor(theDesc);
                     worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
                 } catch (Exception e) {
@@ -1402,7 +1403,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor, theDialect, theConnection, preferences);
                 worldConnector.initializeLoadedModel(theModel);
 
+                setupViewFor(theDescriptor);
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+                
+                currentRepositoryEntry = theDescriptor;
+                currentEditingFile = null;
 
                 setModel(theModel);
             }
@@ -1419,6 +1424,40 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         }
     }
+    
+    /**
+     * Setup the view for a model loaded from repository. 
+     * 
+     * @param aDescriptor the entry descriptor
+     */
+    protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
+        
+        currentEditingFile = null;
+        currentRepositoryEntry = aDescriptor;
+        worldConnector.initTitle(aDescriptor.getName());
+    }
+
+    /**
+     * Setup the view for a model loaded from file.
+     * 
+     * @param aFile the file
+     */
+    protected void setupViewFor(File aFile) {
+        
+        currentEditingFile = aFile;
+        currentRepositoryEntry = null;
+        worldConnector.initTitle(aFile.toString());
+    }
+    
+    /**
+     * Setup the view for an empty model.
+     */
+    protected void setupViewForNothing() {
+        
+        currentEditingFile = null;
+        currentRepositoryEntry = null;
+        worldConnector.initTitle();
+    }    
 
     /**
      * Set the current editing tool.
