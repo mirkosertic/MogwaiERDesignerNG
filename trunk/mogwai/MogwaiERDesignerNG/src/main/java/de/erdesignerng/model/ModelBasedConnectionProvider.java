@@ -15,26 +15,36 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mssql;
+package de.erdesignerng.model;
 
-import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
+import java.sql.Connection;
+
+import de.erdesignerng.dialect.ConnectionProvider;
+import de.erdesignerng.util.ApplicationPreferences;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
+ * Implementation of a connection provider. 
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-19 17:57:11 $
  */
-public class MSSQLDialectTest extends AbstractDialectTestCase {
+public class ModelBasedConnectionProvider implements ConnectionProvider {
+    
+    private Model model;
+    
+    public ModelBasedConnectionProvider(Model aModel) {
+        model = aModel;
+    }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    public Connection createConnection(ApplicationPreferences aPreferences) throws Exception {
+        return model.createConnection(aPreferences);
+    }
 
-        dialect = new MSSQLDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("int");
-        basePath = "/de/erdesignerng/test/sql/mssql/";
+    public String createScriptStatementSeparator() {
+        return model.getDialect().createSQLGenerator().createScriptStatementSeparator();
+    }
+
+    public boolean generatesManagedConnection() {
+        return model.getDialect().generatesManagedConnection();
     }
 }

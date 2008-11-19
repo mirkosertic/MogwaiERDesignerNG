@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
-import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
-
 /**
  * Datamodel for the migration script dialog.
  * 
@@ -26,35 +24,23 @@ import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
  */
 public class MigrationScriptDataModel {
 
-    private ChangeEntity sourceChange;
-    
-    private ChangeEntity destinationChange;
+    private ChangeDescriptor sourceChange;
 
-    /**
-     * @return the sourceChange
-     */
-    public ChangeEntity getSourceChange() {
+    private ChangeDescriptor destinationChange;
+
+    public ChangeDescriptor getSourceChange() {
         return sourceChange;
     }
 
-    /**
-     * @param sourceChange the sourceChange to set
-     */
-    public void setSourceChange(ChangeEntity sourceChange) {
+    public void setSourceChange(ChangeDescriptor sourceChange) {
         this.sourceChange = sourceChange;
     }
 
-    /**
-     * @return the destinationChange
-     */
-    public ChangeEntity getDestinationChange() {
+    public ChangeDescriptor getDestinationChange() {
         return destinationChange;
     }
 
-    /**
-     * @param destinationChange the destinationChange to set
-     */
-    public void setDestinationChange(ChangeEntity destinationChange) {
+    public void setDestinationChange(ChangeDescriptor destinationChange) {
         this.destinationChange = destinationChange;
     }
 }

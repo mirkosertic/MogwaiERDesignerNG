@@ -24,10 +24,11 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  * Test for the Oracle SQL Generator. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2008-11-19 17:57:11 $
  */
 public class OracleDialectTest extends AbstractDialectTestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
 

@@ -15,26 +15,39 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mssql;
+package de.erdesignerng.dialect;
 
-import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
+import java.sql.Connection;
+
+import de.erdesignerng.util.ApplicationPreferences;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-19 17:57:11 $
  */
-public class MSSQLDialectTest extends AbstractDialectTestCase {
+public interface ConnectionProvider {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        dialect = new MSSQLDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("int");
-        basePath = "/de/erdesignerng/test/sql/mssql/";
-    }
+    /**
+     * Create a connection. 
+     * 
+     * @param aPreferences the preferences
+     * @return a connection
+     * @throws Exception will be thrown in case of an error
+     */
+    Connection createConnection(ApplicationPreferences aPreferences) throws Exception;
+    
+    /**
+     * Test, of the created connection is managed. 
+     * 
+     * @return true if managed, else false
+     */
+    boolean generatesManagedConnection();
+    
+    /**
+     * Get the script statement separator. 
+     * 
+     * @return the separator
+     */
+    String createScriptStatementSeparator();
 }
