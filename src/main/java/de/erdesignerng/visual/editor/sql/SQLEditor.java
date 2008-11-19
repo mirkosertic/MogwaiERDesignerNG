@@ -35,11 +35,10 @@ import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingworker.SwingWorker;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.ConnectionProvider;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.SQLFileFilter;
-import de.erdesignerng.model.Model;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -54,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2008-11-19 17:57:11 $
  */
 public class SQLEditor extends BaseEditor {
 
@@ -88,8 +87,6 @@ public class SQLEditor extends BaseEditor {
 
     private File lastEditedFile;
 
-    private SQLGenerator generator;
-
     private String filename;
 
     private class ExecuteSQLSwingWorker extends SwingWorker<String, String> {
@@ -107,7 +104,7 @@ public class SQLEditor extends BaseEditor {
             Connection theConnection = null;
             try {
 
-                theConnection = model.createConnection(ApplicationPreferences.getInstance());
+                theConnection = connectionAdapter.createConnection(ApplicationPreferences.getInstance());
 
                 for (int i = 0; i < theModel.getSize(); i++) {
                     Statement theStatement = (Statement) theModel.get(i);
@@ -140,7 +137,7 @@ public class SQLEditor extends BaseEditor {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (!model.getDialect().generatesManagedConnection()) {
+                if (!connectionAdapter.generatesManagedConnection()) {
                     if (theConnection != null) {
                         try {
                             theConnection.close();
@@ -194,19 +191,17 @@ public class SQLEditor extends BaseEditor {
 
     private SQLEditorView view = new SQLEditorView();
 
-    private Model model;
+    private ConnectionProvider connectionAdapter;
 
     private StatementList statements;
 
-    public SQLEditor(Component aParent, Model aModel, StatementList aStatements, File aLastEditedFile,
-            SQLGenerator aGenerator, String aFileName) {
+    public SQLEditor(Component aParent, ConnectionProvider aConnectionAdapter, StatementList aStatements, File aLastEditedFile, String aFileName) {
         super(aParent, ERDesignerBundle.SQLWINDOW);
 
         initialize();
 
-        model = aModel;
+        connectionAdapter = aConnectionAdapter;
         lastEditedFile = aLastEditedFile;
-        generator = aGenerator;
         filename = aFileName;
         statements = aStatements;
 
@@ -275,6 +270,8 @@ public class SQLEditor extends BaseEditor {
         theChooser.setFileFilter(theFiler);
         if (lastEditedFile != null) {
             theChooser.setSelectedFile(new File(lastEditedFile.getParent(), filename));
+        } else {
+            theChooser.setSelectedFile(new File(filename));
         }
         if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 
@@ -288,7 +285,7 @@ public class SQLEditor extends BaseEditor {
                     Statement theStatement = (Statement) theModel.get(i);
 
                     thePW.print(theStatement.getSql());
-                    thePW.println(generator.createScriptStatementSeparator());
+                    thePW.println(connectionAdapter.createScriptStatementSeparator());
                 }
 
                 thePW.flush();

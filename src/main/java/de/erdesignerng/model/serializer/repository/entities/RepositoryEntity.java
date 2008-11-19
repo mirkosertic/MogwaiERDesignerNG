@@ -20,23 +20,26 @@ package de.erdesignerng.model.serializer.repository.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.erdesignerng.dialect.Statement;
+import de.erdesignerng.dialect.StatementList;
+
 /**
  * @author msertic
  */
 public class RepositoryEntity extends ModelEntity {
-    
+
     private String dialect;
 
     private List<DomainEntity> domains = new ArrayList<DomainEntity>();
-    
+
     private List<TableEntity> tables = new ArrayList<TableEntity>();
-    
+
     private List<RelationEntity> relations = new ArrayList<RelationEntity>();
 
     private List<CommentEntity> comments = new ArrayList<CommentEntity>();
-    
+
     private List<SubjectAreaEntity> subjectareas = new ArrayList<SubjectAreaEntity>();
-    
+
     private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
 
     /**
@@ -47,7 +50,8 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param domains the domains to set
+     * @param domains
+     *                the domains to set
      */
     public void setDomains(List<DomainEntity> domains) {
         this.domains = domains;
@@ -61,7 +65,8 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param tables the tables to set
+     * @param tables
+     *                the tables to set
      */
     public void setTables(List<TableEntity> tables) {
         this.tables = tables;
@@ -75,7 +80,8 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param relations the relations to set
+     * @param relations
+     *                the relations to set
      */
     public void setRelations(List<RelationEntity> relations) {
         this.relations = relations;
@@ -89,7 +95,8 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param comments the comments to set
+     * @param comments
+     *                the comments to set
      */
     public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
@@ -103,7 +110,8 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param subjectareas the subjectareas to set
+     * @param subjectareas
+     *                the subjectareas to set
      */
     public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
         this.subjectareas = subjectareas;
@@ -117,7 +125,8 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param changes the changes to set
+     * @param changes
+     *                the changes to set
      */
     public void setChanges(List<ChangeEntity> changes) {
         this.changes = changes;
@@ -131,9 +140,34 @@ public class RepositoryEntity extends ModelEntity {
     }
 
     /**
-     * @param dialect the dialect to set
+     * @param dialect
+     *                the dialect to set
      */
     public void setDialect(String dialect) {
         this.dialect = dialect;
+    }
+
+    /**
+     * Create a changelog.
+     * 
+     * @param aSource
+     *                the source change ( included )
+     * @param aDestination
+     *                the destination change ( included )
+     * @return the statements
+     */
+    public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {
+        StatementList theStatements = new StatementList();
+
+        int a = changes.indexOf(aSource);
+        int b = changes.indexOf(aDestination);
+        for (int i = a; i <= b; i++) {
+            ChangeEntity theChange = changes.get(i);
+            for (String theStm : theChange.getStatements()) {
+                theStatements.add(new Statement(theStm));
+            }
+        }
+
+        return theStatements;
     }
 }

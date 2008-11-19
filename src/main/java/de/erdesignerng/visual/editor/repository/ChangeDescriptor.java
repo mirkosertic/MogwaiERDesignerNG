@@ -15,26 +15,41 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mssql;
+package de.erdesignerng.visual.editor.repository;
 
-import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
+ * A change descriptor.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-19 17:57:11 $
  */
-public class MSSQLDialectTest extends AbstractDialectTestCase {
+public class ChangeDescriptor {
+
+    private static final DateFormat FORMAT = new SimpleDateFormat();
+
+    private ChangeEntity change;
+    private int index;
+
+    public ChangeDescriptor(ChangeEntity aChange, int aIndex) {
+        change = aChange;
+        index = aIndex;
+    }
 
     @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    public String toString() {
+        return "#" + index + " " + change.getCreationUser() + "@" + FORMAT.format(change.getCreationDate());
+    }
 
-        dialect = new MSSQLDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("int");
-        basePath = "/de/erdesignerng/test/sql/mssql/";
+    public ChangeEntity getChange() {
+        return change;
+    }
+    
+    public int getIndex() {
+        return index;
     }
 }
