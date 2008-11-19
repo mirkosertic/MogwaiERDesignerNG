@@ -19,10 +19,17 @@ package de.erdesignerng.visual.editor.repository;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.text.MessageFormat;
+
+import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.ConnectionProvider;
+import de.erdesignerng.dialect.StatementList;
+import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.erdesignerng.visual.editor.DialogConstants;
+import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
@@ -32,14 +39,14 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-17 20:53:55 $
+ * @version $Date: 2008-11-19 17:57:11 $
  */
 public class MigrationScriptEditor extends BaseEditor {
 
     private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
-            commandClose();
+            commandGenerateChangeLog();
         }
     }, this, ERDesignerBundle.OK);
 
@@ -55,10 +62,25 @@ public class MigrationScriptEditor extends BaseEditor {
     private BindingInfo<MigrationScriptDataModel> bindingInfo = new BindingInfo<MigrationScriptDataModel>(
             new MigrationScriptDataModel());
 
-    public MigrationScriptEditor(Component aParent) {
+    private RepositoryEntity repositoryEntity;
+
+    private ConnectionProvider connectionProvider;
+
+    public MigrationScriptEditor(Component aParent, RepositoryEntity aRepositoryEntity,
+            ConnectionProvider aConnectionProvider) {
         super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
         initialize();
+
+        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+        for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
+            theModel.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
+        }
+        view.getSourceVersion().setModel(theModel);
+        view.getDestinationVersion().setModel(theModel);
+
+        repositoryEntity = aRepositoryEntity;
+        connectionProvider = aConnectionProvider;
 
         bindingInfo.addBinding("sourceChange", view.getSourceVersion(), true);
         bindingInfo.addBinding("destinationChange", view.getDestinationVersion(), true);
@@ -85,8 +107,22 @@ public class MigrationScriptEditor extends BaseEditor {
     public void applyValues() throws Exception {
     }
 
-    private void commandClose() {
+    private void commandGenerateChangeLog() {
 
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
+        if (bindingInfo.validate().size() == 0) {
+            bindingInfo.view2model();
+
+            MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();
+
+            MessageFormat theFormat = new MessageFormat("changelog-{0}-to-{1}.sql");
+            String theChangeLogFile = theFormat.format(new String[] { "" + theModel.getSourceChange().getIndex(),
+                    "" + theModel.getDestinationChange().getIndex() });
+
+            StatementList theStatements = repositoryEntity.createChangeLog(theModel.getSourceChange().getChange(),
+                    theModel.getDestinationChange().getChange());
+
+            SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile);
+            theEditor.showModal();
+        }
     }
 }

@@ -61,6 +61,7 @@ import org.jgraph.graph.VertexView;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.GenericConnectionProvider;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -71,12 +72,15 @@ import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelBasedConnectionProvider;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -140,7 +144,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-17 20:53:54 $
+ * @version $Date: 2008-11-19 17:57:11 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -258,7 +262,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction classpathAction;
 
     private File currentEditingFile;
-    
+
     private RepositoryEntryDesciptor currentRepositoryEntry;
 
     private DefaultAction dbConnectionAction;
@@ -372,9 +376,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction displayAscendingOrderAction;
 
     private DefaultAction displayDescendingOrderAction;
-    
+
     private DefaultAction createMigrationScriptAction;
-    
+
     private DefaultMenu repositoryUtilsMenu;
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
@@ -608,7 +612,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.COMPLETECOMPARE);
-        
+
         createMigrationScriptAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -616,7 +620,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
-        
 
         lruMenu = new DefaultMenu(lruAction);
 
@@ -647,14 +650,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }, this, ERDesignerBundle.LOADMODELFROMDB));
 
         theFileMenu.add(theLoadFromDBMenu);
-        
+
         repositoryUtilsMenu = new DefaultMenu(this, ERDesignerBundle.REPOSITORYUTILS);
         repositoryUtilsMenu.add(new DefaultMenuItem(createMigrationScriptAction));
-        
+
         UIInitializer.getInstance().initialize(repositoryUtilsMenu);
-        
+
         theFileMenu.add(repositoryUtilsMenu);
-        
+
         theFileMenu.addSeparator();
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
@@ -900,7 +903,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         worldConnector.initTitle();
 
         updateRecentlyUsedMenuEntries();
-        
+
         setupViewForNothing();
 
         UIInitializer.getInstance().initialize(scrollPane);
@@ -1158,7 +1161,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         Model theModel = worldConnector.createNewModel();
         setModel(theModel);
-        
+
         setupViewForNothing();
 
         worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.NEWMODELCREATED));
@@ -1215,7 +1218,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Reverse engineer a model from a database connection. 
+     * Reverse engineer a model from a database connection.
      */
     public void commandReverseEngineer() {
 
@@ -1267,7 +1270,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Save the current model to file. 
+     * Save the current model to file.
      */
     protected void commandSaveFile() {
 
@@ -1361,21 +1364,23 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
         Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());        
+        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword());
-            
-            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect, theConnection);
 
-            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, theEntries, currentRepositoryEntry);
+            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
+                    theConnection);
+
+            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, theEntries,
+                    currentRepositoryEntry);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
                 try {
 
                     RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
-                    
+
                     theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, model, preferences);
 
                     setupViewFor(theDesc);
@@ -1397,7 +1402,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         }
     }
-    
+
     /**
      * Create a migration script from repository.
      */
@@ -1410,16 +1415,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
         Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());        
+        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword());
-            
-             MigrationScriptEditor theEditor = new MigrationScriptEditor(scrollPane);
-             theEditor.showModal();
-             
+
+            RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER.getRepositoryEntity(theDialect
+                    .getHibernateDialectClass(), theConnection, currentRepositoryEntry);
+
+            MigrationScriptEditor theEditor = new MigrationScriptEditor(scrollPane, theEntity,
+                    new GenericConnectionProvider(theConnection, theDialect.createSQLGenerator()
+                            .createScriptStatementSeparator()));
+
+            theEditor.showModal();
+
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         } finally {
@@ -1431,7 +1442,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         }
-    }    
+    }
 
     /**
      * Open the database model from an existing connection.
@@ -1445,26 +1456,29 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
         Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());        
+        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword());
-            
-            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect, theConnection);
 
-            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences, theConnection, theEntries);
+            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
+                    theConnection);
+
+            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences, theConnection,
+                    theEntries);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
                 RepositoryEntryDesciptor theDescriptor = theEditor.getModel().getEntry();
-                
-                Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor, theDialect, theConnection, preferences);
+
+                Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor,
+                        theDialect, theConnection, preferences);
                 worldConnector.initializeLoadedModel(theModel);
 
                 setupViewFor(theDescriptor);
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
-                
+
                 currentRepositoryEntry = theDescriptor;
                 currentEditingFile = null;
 
@@ -1483,14 +1497,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         }
     }
-    
+
     /**
-     * Setup the view for a model loaded from repository. 
+     * Setup the view for a model loaded from repository.
      * 
-     * @param aDescriptor the entry descriptor
+     * @param aDescriptor
+     *                the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
-        
+
         currentEditingFile = null;
         currentRepositoryEntry = aDescriptor;
         worldConnector.initTitle(aDescriptor.getName());
@@ -1500,26 +1515,27 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Setup the view for a model loaded from file.
      * 
-     * @param aFile the file
+     * @param aFile
+     *                the file
      */
     protected void setupViewFor(File aFile) {
-        
+
         currentEditingFile = aFile;
         currentRepositoryEntry = null;
         worldConnector.initTitle(aFile.toString());
         repositoryUtilsMenu.setEnabled(false);
     }
-    
+
     /**
      * Setup the view for an empty model.
      */
     protected void setupViewForNothing() {
-        
+
         currentEditingFile = null;
         currentRepositoryEntry = null;
         repositoryUtilsMenu.setEnabled(false);
         worldConnector.initTitle();
-    }    
+    }
 
     /**
      * Set the current editing tool.
@@ -1596,8 +1612,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         try {
             SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
             StatementList theStatements = theGenerator.createCreateAllObjects(model);
-            SQLEditor theEditor = new SQLEditor(scrollPane, model, theStatements, currentEditingFile, theGenerator,
-                    "schema.sql");
+            SQLEditor theEditor = new SQLEditor(scrollPane, new ModelBasedConnectionProvider(model), theStatements,
+                    currentEditingFile, "schema.sql");
             theEditor.showModal();
         } catch (VetoException e) {
             worldConnector.notifyAboutException(e);
@@ -1616,10 +1632,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             return;
         }
 
-        SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
         StatementList theStatements = ((HistoryModificationTracker) model.getModificationTracker()).getStatements();
-        SQLEditor theEditor = new SQLEditor(scrollPane, model, theStatements, currentEditingFile, theGenerator,
-                generateChangelogSQLFileName());
+        SQLEditor theEditor = new SQLEditor(scrollPane, new ModelBasedConnectionProvider(model), theStatements,
+                currentEditingFile, generateChangelogSQLFileName());
         theEditor.showModal();
     }
 
