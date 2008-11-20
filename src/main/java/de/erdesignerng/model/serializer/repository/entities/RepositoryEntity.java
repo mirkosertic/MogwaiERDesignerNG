@@ -161,7 +161,7 @@ public class RepositoryEntity extends ModelEntity {
 
         int a = changes.indexOf(aSource);
         int b = changes.indexOf(aDestination);
-        for (int i = a; i <= b; i++) {
+        for (int i = a; i < b; i++) {
             ChangeEntity theChange = changes.get(i);
             for (String theStm : theChange.getStatements()) {
                 theStatements.add(new Statement(theStm));
