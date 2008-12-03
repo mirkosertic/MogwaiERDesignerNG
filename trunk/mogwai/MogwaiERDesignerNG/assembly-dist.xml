@@ -25,13 +25,6 @@
       </includes>
     </fileSet>    
 	<fileSet>
-      <directory>target</directory>
-      <outputDirectory>dist</outputDirectory>
-      <includes>
-        <include>*.jar</include>
-      </includes>
-    </fileSet>    
-	<fileSet>
       <directory>target/site/apidocs</directory>
       <outputDirectory>javadoc</outputDirectory>
     </fileSet>    
@@ -39,7 +32,7 @@
   <dependencySets>
     <dependencySet>
       <outputDirectory>lib</outputDirectory>
-      <scope>compile</scope>
+      <scope>runtime</scope>
     </dependencySet>
   </dependencySets>  
 </assembly>
