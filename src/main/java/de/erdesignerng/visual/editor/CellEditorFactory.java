@@ -29,19 +29,22 @@ import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
+import de.erdesignerng.visual.editor.view.ViewEditor;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
@@ -52,6 +55,15 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 
             Table theTable = (Table) theCell.getUserObject();
             TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
+            theEditor.initializeFor(theTable);
+            return theEditor;
+        }
+
+        if (aValue instanceof ViewCell) {
+            ViewCell theCell = (ViewCell) aValue;
+
+            View theTable = (View) theCell.getUserObject();
+            ViewEditor theEditor = new ViewEditor(theTable.getOwner(), aParent);
             theEditor.initializeFor(theTable);
             return theEditor;
         }

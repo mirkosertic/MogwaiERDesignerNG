@@ -35,11 +35,14 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.cells.CommentCell;
+import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
@@ -48,7 +51,7 @@ import de.erdesignerng.visual.tools.BaseTool;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:21:15 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public abstract class ERDesignerGraph extends JGraph {
 
@@ -105,6 +108,13 @@ public abstract class ERDesignerGraph extends JGraph {
                     theModel.remove(new Object[] { theComment });
                 }
 
+                if (theSingleCell instanceof ViewCell) {
+                    ViewCell theViewCell = (ViewCell) theSingleCell;
+
+                    getDBModel().removeView((View) theViewCell.getUserObject());
+                    theModel.remove(new Object[] { theViewCell });
+                }
+
                 if (theSingleCell instanceof TableCell) {
                     TableCell theCell = (TableCell) theSingleCell;
                     Table theTable = (Table) theCell.getUserObject();
@@ -140,7 +150,7 @@ public abstract class ERDesignerGraph extends JGraph {
     }
 
     /**
-     * Add a new taböe to the model.
+     * Add a new table to the model.
      * 
      * @param aPoint
      *                the location
@@ -148,17 +158,30 @@ public abstract class ERDesignerGraph extends JGraph {
     public abstract void commandNewTable(Point2D aPoint);
 
     /**
+     * Add a new view to the model. 
+     * 
+     * @param aPoint the location
+     */
+    public abstract void commandNewView(Point2D aPoint);
+
+    /**
      * Create a new subject area for a set of cells.
      * 
      * @param aCells
      *                the cells to add to the subject area
      */
-    public void commandAddToNewSubjectArea(List<TableCell> aCells) {
+    public void commandAddToNewSubjectArea(List<ModelCell> aCells) {
 
         SubjectArea theArea = new SubjectArea();
         SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
-        for (TableCell theCell : aCells) {
-            theArea.getTables().add((Table) theCell.getUserObject());
+        for (ModelCell theCell : aCells) {
+            Object theUserObject = theCell.getUserObject();
+            if (theUserObject instanceof Table) {
+                theArea.getTables().add((Table) theUserObject);
+            }
+            if (theUserObject instanceof View) {
+                theArea.getViews().add((View) theUserObject);
+            }
         }
 
         getGraphLayoutCache().insertGroup(theSubjectAreaCell, aCells.toArray());
@@ -268,6 +291,9 @@ public abstract class ERDesignerGraph extends JGraph {
         this.displayOrder = displayOrder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void repaint() {
         addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));

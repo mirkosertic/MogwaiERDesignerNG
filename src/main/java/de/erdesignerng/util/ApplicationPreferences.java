@@ -29,11 +29,13 @@ import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class ApplicationPreferences {
 
@@ -223,7 +225,9 @@ public class ApplicationPreferences {
 
         for (int i = 0; i < recentlyUsedConnections.size(); i++) {
             ConnectionDescriptor theConnection = recentlyUsedConnections.get(i);
-            preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection.getAlias());
+            if (!StringUtils.isEmpty(theConnection.getAlias())) {
+                preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection.getAlias());
+            }
             preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection.getDialect());
             preferences.put(LRCPREFIX + "URL_" + i, theConnection.getUrl());
             preferences.put(LRCPREFIX + "USER_" + i, theConnection.getUsername());

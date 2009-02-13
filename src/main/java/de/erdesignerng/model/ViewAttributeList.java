@@ -15,26 +15,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mssql;
+package de.erdesignerng.model;
 
-import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
+ * A list of view attributes. 
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-02-13 18:47:14 $
  */
-public class MSSQLDialectTest extends AbstractDialectTestCase {
+public class ViewAttributeList extends ModelItemVector<ViewAttribute> {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        dialect = new MSSQLDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("int");
-        basePath = "/de/erdesignerng/test/sql/mssql/";
-    }
 }

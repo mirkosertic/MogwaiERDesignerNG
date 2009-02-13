@@ -27,12 +27,13 @@ import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.cells.ViewCell;
 
 /**
  * Factory for the cell views.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 
@@ -50,6 +51,10 @@ public class CellViewFactory extends DefaultCellViewFactory {
         if (aVertex instanceof CommentCell) {
             return new CommentCellView((CommentCell) aVertex);
         }
+        if (aVertex instanceof ViewCell) {
+            return new ViewCellView((ViewCell) aVertex);
+        }
+        
         return super.createVertexView(aVertex);
     }
 

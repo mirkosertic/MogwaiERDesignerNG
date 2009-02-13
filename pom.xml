@@ -20,6 +20,7 @@
 		</repository>
 	</repositories>
 	<build>
+		<defaultGoal>package</defaultGoal>
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -55,6 +56,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -160,6 +162,11 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge</groupId>
+			<artifactId>sqleonardo</artifactId>
+			<version>2009.01</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>

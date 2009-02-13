@@ -23,13 +23,15 @@ import java.awt.Color;
  * A subject area.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class SubjectArea extends ModelItem {
     
     private Color color;
     
     private TableList tables = new TableList();
+    
+    private ViewList views = new ViewList();
     
     private CommentList comments = new CommentList();
     
@@ -90,6 +92,24 @@ public class SubjectArea extends ModelItem {
      * @return true if it is empty, else false
      */
     public boolean isEmpty() {
-        return (comments.size() == 0) && (tables.size() == 0);
+        return (comments.size() == 0) && (tables.size() == 0) && (views.size() == 0);
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>views</code> zurück.
+     * 
+     * @return Wert des Attributs views.
+     */
+    public ViewList getViews() {
+        return views;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>views</code>.
+     * 
+     * @param views Wert für das Attribut views.
+     */
+    public void setViews(ViewList views) {
+        this.views = views;
     }
 }

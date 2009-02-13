@@ -15,26 +15,31 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mssql;
+package de.erdesignerng.test.sql;
 
-import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
+import de.erdesignerng.test.sql.mssql.MSSQLDialectTest;
+import de.erdesignerng.test.sql.mysql.MySQLDialectTest;
+import de.erdesignerng.test.sql.mysqlinnodb.MySQLInnoDBDialectTest;
+import de.erdesignerng.test.sql.oracle.OracleDialectTest;
+import de.erdesignerng.test.sql.postgres.PostgresDialectTest;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
+ * Testsuite for all SQL Generators.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-02-13 18:47:14 $
  */
-public class MSSQLDialectTest extends AbstractDialectTestCase {
+public class SQLGeneratorTestSuite extends TestSuite {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        dialect = new MSSQLDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("int");
-        basePath = "/de/erdesignerng/test/sql/mssql/";
+    public static Test suite() {
+        TestSuite theSuite = new TestSuite();
+        theSuite.addTestSuite(MSSQLDialectTest.class);
+        theSuite.addTestSuite(MySQLDialectTest.class);
+        theSuite.addTestSuite(MySQLInnoDBDialectTest.class);
+        theSuite.addTestSuite(OracleDialectTest.class);
+        theSuite.addTestSuite(PostgresDialectTest.class);
+        return theSuite;
     }
 }

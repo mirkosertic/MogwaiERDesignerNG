@@ -39,7 +39,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-19 17:57:11 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class MigrationScriptEditor extends BaseEditor {
 
@@ -73,11 +73,14 @@ public class MigrationScriptEditor extends BaseEditor {
         initialize();
 
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();        
         for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
             theModel.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
+            theModel2.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
         }
+        
         view.getSourceVersion().setModel(theModel);
-        view.getDestinationVersion().setModel(theModel);
+        view.getDestinationVersion().setModel(theModel2);
 
         repositoryEntity = aRepositoryEntity;
         connectionProvider = aConnectionProvider;

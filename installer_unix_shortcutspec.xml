@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<shortcuts>
+	<programGroup defaultName="Mogwai/ER-DesignerNG"
+		location="startMenu" />
+
+	<shortcut name="ERDesigner NG" programGroup="yes" desktop="no"
+		applications="no" startMenu="yes" startup="no"
+		target="$INSTALL_PATH/run.sh" commandLine=""
+		workingDirectory="$INSTALL_PATH" description="" type="Application"
+		encoding="UTF-8" terminal="true" KdeSubstUID="false"
+		initialState="normal">
+		<createForPack name="Base" />
+	</shortcut>
+
+	<shortcut name="Documentation" programGroup="yes" desktop="no"
+		applications="no" startMenu="yes" startup="no" target="acroread"
+		workingDirectory="" commandLine="" initialState="noShow"
+		iconFile="help" iconIndex="0"
+		url="$INSTALL_PATH/userdoc/Mogwai ERDesigner NG.pdf" type="Link"
+		encoding="UTF-8" description="">
+		<createForPack name="Docs" />
+	</shortcut>
+</shortcuts>

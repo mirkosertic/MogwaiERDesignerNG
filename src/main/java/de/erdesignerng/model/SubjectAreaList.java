@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 
@@ -59,6 +59,26 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
         
         for (SubjectArea theArea : this) {
             theArea.getComments().remove(aComment);
+            if (theArea.isEmpty()) {
+                theRemovedAreas.add(theArea);
+            }
+        }
+        
+        removeAll(theRemovedAreas);
+    }
+
+    /**
+     * Remove a view from the subject areas.
+     * 
+     * If a subject area has no tables, it is removed from the model.
+     * 
+     * @param aView the view
+     */    
+    public void removeView(View aView) {
+        List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
+        
+        for (SubjectArea theArea : this) {
+            theArea.getViews().remove(aView);
             if (theArea.isEmpty()) {
                 theRemovedAreas.add(theArea);
             }
