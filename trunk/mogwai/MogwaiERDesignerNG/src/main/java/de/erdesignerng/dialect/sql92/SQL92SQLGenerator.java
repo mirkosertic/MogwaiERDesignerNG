@@ -29,11 +29,12 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 19:12:36 $
+ * @version $Date: 2009-02-13 18:47:14 $
  * @param <T>
  *                the dialect
  */
@@ -414,5 +415,44 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
         return EMPTY_STATEMENTLIST;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StatementList createAddViewStatement(View aView) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+        theStatement.append("CREATE VIEW ");
+        theStatement.append(escapeTableName(aView.getName()));
+        theStatement.append(" AS ");
+        theStatement.append(aView.getSql());
+        theResult.add(new Statement(theStatement.toString()));
+        return theResult;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StatementList createChangeViewStatement(View aView) {
+        StatementList theResult = new StatementList();
+        theResult.addAll(createDropViewStatement(aView));
+        theResult.addAll(createAddViewStatement(aView));
+        return theResult;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StatementList createDropViewStatement(View aView) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+        theStatement.append("DROP VIEW ");
+        theStatement.append(escapeTableName(aView.getName()));
+        theResult.add(new Statement(theStatement.toString()));
+        return theResult;
     }
 }

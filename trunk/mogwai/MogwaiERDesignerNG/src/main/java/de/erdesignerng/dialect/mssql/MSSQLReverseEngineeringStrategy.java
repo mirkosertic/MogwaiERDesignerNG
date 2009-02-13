@@ -17,15 +17,71 @@
  */
 package de.erdesignerng.dialect.mssql;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.TableEntry;
+import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-17 19:34:29 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSSQLDialect> {
 
     public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
         super(aDialect);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String[] getReverseEngineeringTableTypes() {
+        return new String[] { TABLE_TABLE_TYPE, VIEW_TABLE_TYPE };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isTableTypeView(String aTableType) {
+        return VIEW_TABLE_TYPE.equals(aTableType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
+            throws SQLException, ReverseEngineeringException {
+        PreparedStatement theStatement = aConnection
+                .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
+        theStatement.setString(1, aViewEntry.getTableName());
+        ResultSet theResult = null;
+        try {
+            theResult = theStatement.executeQuery();
+            while (theResult.next()) {
+                String theViewDefinition = theResult.getString("VIEW_DEFINITION");
+                String theViewDefinitionLower = theViewDefinition.toLowerCase();
+                if (theViewDefinitionLower.startsWith("create view ")) {
+                    int p = theViewDefinitionLower.indexOf(" as ");
+                    if (p >= 0) {
+                        theViewDefinition = theViewDefinition.substring(p + 4);
+                    }
+                }
+                return theViewDefinition;
+            }
+            return null;
+        } finally {
+            if (theResult != null) {
+                theResult.close();
+            }
+            theStatement.close();
+        }
     }
 }

@@ -4,15 +4,17 @@ package de.erdesignerng.dialect;
  * Descriptor for a table.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class TableEntry extends SchemaEntry {
 
     private String tableName;
+    private String tableType;
 
-    public TableEntry(String aCatalogName, String aSchemaName, String aTableName) {
+    public TableEntry(String aCatalogName, String aSchemaName, String aTableName, String aTableType) {
         super(aCatalogName, aSchemaName);
         tableName = aTableName;
+        tableType = aTableType;
     }
 
     /**
@@ -24,10 +26,29 @@ public class TableEntry extends SchemaEntry {
 
     /**
      * @param tableName
-     *            the tableName to set
+     *                the tableName to set
      */
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>tableType</code> zurück.
+     * 
+     * @return Wert des Attributs tableType.
+     */
+    public String getTableType() {
+        return tableType;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>tableType</code>.
+     * 
+     * @param tableType
+     *                Wert für das Attribut tableType.
+     */
+    public void setTableType(String tableType) {
+        this.tableType = tableType;
     }
 
     /**

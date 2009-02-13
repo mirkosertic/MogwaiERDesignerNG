@@ -22,11 +22,18 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-01-16 19:27:07 $
+ * @version $Date: 2009-02-13 18:47:14 $
  * @param <T>
  *            the type
  */
 public interface ModelCell<T> {
+    
+    /**
+     * Get the user object assigned to the cell. 
+     * 
+     * @return the user object
+     */
+    Object getUserObject();
 
     /**
      * Transfer the cell attributes to the model properties.

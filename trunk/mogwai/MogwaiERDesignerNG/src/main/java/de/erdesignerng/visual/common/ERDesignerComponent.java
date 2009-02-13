@@ -78,6 +78,7 @@ import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
@@ -95,6 +96,7 @@ import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -112,6 +114,7 @@ import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
+import de.erdesignerng.visual.editor.view.ViewEditor;
 import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
 import de.erdesignerng.visual.export.SVGExporter;
@@ -124,6 +127,7 @@ import de.erdesignerng.visual.tools.EntityTool;
 import de.erdesignerng.visual.tools.HandTool;
 import de.erdesignerng.visual.tools.RelationTool;
 import de.erdesignerng.visual.tools.ToolEnum;
+import de.erdesignerng.visual.tools.ViewTool;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
@@ -144,7 +148,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-19 17:57:11 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -272,6 +276,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction domainsAction;
 
     private DefaultAction entityAction;
+    
+    private DefaultAction viewAction;
 
     private JToggleButton entityButton;
 
@@ -292,6 +298,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction commentAction;
 
     private JToggleButton commentButton;
+    
+    private JToggleButton viewButton;
 
     private DefaultAction layoutAction;
 
@@ -520,6 +528,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetTool(ToolEnum.ENTITY);
+            }
+
+        }, this, ERDesignerBundle.ENTITY);
+
+        viewAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandSetTool(ToolEnum.VIEW);
             }
 
         }, this, ERDesignerBundle.ENTITY);
@@ -888,17 +904,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         relationButton = new DefaultToggleButton(relationAction);
         entityButton = new DefaultToggleButton(entityAction);
         commentButton = new DefaultToggleButton(commentAction);
+        viewButton = new DefaultToggleButton(viewAction);
 
         ButtonGroup theGroup = new ButtonGroup();
         theGroup.add(handButton);
         theGroup.add(relationButton);
         theGroup.add(entityButton);
         theGroup.add(commentButton);
+        theGroup.add(viewButton);
 
         theToolBar.add(handButton);
         theToolBar.add(entityButton);
         theToolBar.add(relationButton);
         theToolBar.add(commentButton);
+        theToolBar.add(viewButton);
 
         worldConnector.initTitle();
 
@@ -947,6 +966,45 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             graph.doLayout();
         }
     }
+    
+    protected void commandAddView(Point2D aPoint) {
+
+        // if (model.getDialect() == null) {
+        // MessagesHelper.displayErrorMessage(graph,
+        // getResourceHelper().getText(
+        // ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+        // return;
+        // }
+        
+        View theView = new View();
+        ViewEditor theEditor = new ViewEditor(model, scrollPane);
+        theEditor.initializeFor(theView);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+
+                try {
+                    theEditor.applyValues();
+                } catch (VetoException e) {
+                    worldConnector.notifyAboutException(e);
+                }
+
+                ViewCell theCell = new ViewCell(theView);
+                theCell.transferPropertiesToAttributes(theView);
+
+                GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
+                        -1, -1));
+
+                layoutCache.insert(theCell);
+
+                theCell.transferAttributesToProperties(theCell.getAttributes());
+
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
+
+            graph.doLayout();
+        }
+    }    
 
     protected void commandClasspath() {
         ClasspathEditor theEditor = new ClasspathEditor(scrollPane, preferences);
@@ -1381,7 +1439,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
 
-                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, model, preferences);
+                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theConnection, model, preferences);
 
                     setupViewFor(theDesc);
                     worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
@@ -1576,6 +1634,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             graph.setTool(new CommentTool(graph));
         }
+        if (aTool.equals(ToolEnum.VIEW)) {
+
+            if (!viewButton.isSelected()) {
+                viewButton.setSelected(true);
+            }
+
+            graph.setTool(new ViewTool(graph));
+        }
     }
 
     protected void commandSetZoom(ZoomInfo aZoomInfo) {
@@ -1659,14 +1725,28 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void commandNewTable(Point2D aLocation) {
                 ERDesignerComponent.this.commandAddTable(aLocation);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void commandNewComment(Point2D aLocation) {
                 ERDesignerComponent.this.commandAddComment(aLocation);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void commandNewView(Point2D aLocation) {
+                ERDesignerComponent.this.commandAddView(aLocation);
             }
         };
         graph.setUI(new ERDesignerGraphUI(this));
@@ -1686,6 +1766,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         scrollPane.getViewport().add(graph);
 
         Map<Table, TableCell> theModelTableCells = new HashMap<Table, TableCell>();
+        Map<View, ViewCell> theModelViewCells = new HashMap<View, ViewCell>();
         Map<Comment, CommentCell> theModelCommentCells = new HashMap<Comment, CommentCell>();
 
         for (Table theTable : model.getTables()) {
@@ -1695,6 +1776,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             layoutCache.insert(theCell);
 
             theModelTableCells.put(theTable, theCell);
+        }
+
+        for (View theView : model.getViews()) {
+            ViewCell theCell = new ViewCell(theView);
+            theCell.transferPropertiesToAttributes(theView);
+
+            layoutCache.insert(theCell);
+
+            theModelViewCells.put(theView, theCell);
         }
 
         for (Comment theComment : model.getComments()) {
@@ -1724,6 +1814,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             for (Table theTable : theSubjectArea.getTables()) {
                 theTableCells.add(theModelTableCells.get(theTable));
+            }
+
+            for (View theView : theSubjectArea.getViews()) {
+                theTableCells.add(theModelViewCells.get(theView));
             }
 
             for (Comment theComment : theSubjectArea.getComments()) {

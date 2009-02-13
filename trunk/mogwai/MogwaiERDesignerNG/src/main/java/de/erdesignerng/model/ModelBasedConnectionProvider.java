@@ -26,7 +26,7 @@ import de.erdesignerng.util.ApplicationPreferences;
  * Implementation of a connection provider. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-19 17:57:11 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class ModelBasedConnectionProvider implements ConnectionProvider {
     
