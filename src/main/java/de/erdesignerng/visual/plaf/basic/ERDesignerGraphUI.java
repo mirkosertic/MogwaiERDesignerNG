@@ -36,7 +36,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:36:54 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -209,6 +209,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEditing(JGraph graph) {
         return false;

@@ -19,6 +19,7 @@ package de.erdesignerng.dialect.postgres;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,10 +27,13 @@ import java.util.List;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
+import de.erdesignerng.dialect.TableEntry;
+import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<PostgresDialect> {
 
@@ -56,5 +60,53 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         return theList;
+    }    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String[] getReverseEngineeringTableTypes() {
+        return new String[] { TABLE_TABLE_TYPE, VIEW_TABLE_TYPE };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isTableTypeView(String aTableType) {
+        return VIEW_TABLE_TYPE.equals(aTableType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
+            throws SQLException, ReverseEngineeringException {
+        PreparedStatement theStatement = aConnection
+                .prepareStatement("SELECT * FROM information_schema.views WHERE table_name = ?");
+        theStatement.setString(1, aViewEntry.getTableName());
+        ResultSet theResult = null;
+        try {
+            theResult = theStatement.executeQuery();
+            while (theResult.next()) {
+                String theViewDefinition = theResult.getString("view_definition");
+                String theViewDefinitionLower = theViewDefinition.toLowerCase();
+                if (theViewDefinitionLower.startsWith("create view ")) {
+                    int p = theViewDefinitionLower.indexOf(" as ");
+                    if (p >= 0) {
+                        theViewDefinition = theViewDefinition.substring(p + 4);
+                    }
+                }
+                return theViewDefinition;
+            }
+            return null;
+        } finally {
+            if (theResult != null) {
+                theResult.close();
+            }
+            theStatement.close();
+        }
     }    
 }

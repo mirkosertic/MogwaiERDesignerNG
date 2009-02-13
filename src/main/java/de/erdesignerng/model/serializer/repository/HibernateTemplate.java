@@ -39,7 +39,7 @@ import de.erdesignerng.model.serializer.repository.entities.TableEntity;
  * Template class for hibernate operations. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-19 17:57:11 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public abstract class HibernateTemplate {
     
@@ -82,11 +82,27 @@ public abstract class HibernateTemplate {
         ThreadbasedConnectionProvider.initializeForThread(connection);
         Session theSession = null;
         Transaction theTx = null;
+
+        Thread theCurrentThread = Thread.currentThread();
+        ClassLoader theClassLoader = theCurrentThread.getContextClassLoader();
+        ClassLoader theMogwaiClassLoader = HibernateTemplate.class.getClassLoader();
+        
+        boolean overrideClassLoader = !theClassLoader.equals(theMogwaiClassLoader);
+        if (overrideClassLoader) {
+            theCurrentThread.setContextClassLoader(HibernateTemplate.class.getClassLoader());
+        }
+        
         try {
-
+            
             theSession = createSession(connection, dialectClass);
+        
+            if (overrideClassLoader) {
+                theCurrentThread.setContextClassLoader(null);
+                theClassLoader = null;
+            }
+            
             theTx = theSession.beginTransaction();
-
+            
             Object theResult = doInSession(theSession);
 
             theTx.commit();
@@ -106,6 +122,10 @@ public abstract class HibernateTemplate {
             }
 
             ThreadbasedConnectionProvider.cleanup();
+            
+            if (theClassLoader != null && overrideClassLoader) {
+                theCurrentThread.setContextClassLoader(null);
+            }
         }            
     }
 }

@@ -29,7 +29,9 @@ import javax.swing.SwingUtilities;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.TableCell;
+import de.erdesignerng.visual.cells.ViewCell;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -38,7 +40,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-09-23 18:13:28 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class HandTool extends BaseTool {
 
@@ -90,12 +92,18 @@ public class HandTool extends BaseTool {
 
         theMenu.add(theDeleteItem);
 
-        final List<TableCell> theTableCells = new ArrayList<TableCell>();
+        final List<ModelCell> theTableCells = new ArrayList<ModelCell>();
         for (Object theCell : aCells) {
             if (theCell instanceof TableCell) {
                 TableCell theTableCell = (TableCell) theCell;
                 if (theTableCell.getParent() == null) {
                     theTableCells.add(theTableCell);
+                }
+            }
+            if (theCell instanceof ViewCell) {
+                ViewCell theViewCell = (ViewCell) theCell;
+                if (theViewCell.getParent() == null) {
+                    theTableCells.add(theViewCell);
                 }
             }
         }

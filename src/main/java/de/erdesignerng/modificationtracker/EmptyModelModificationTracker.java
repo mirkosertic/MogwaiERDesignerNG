@@ -21,6 +21,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 public class EmptyModelModificationTracker implements ModelModificationTracker {
 
@@ -73,5 +74,14 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
     }
 
     public void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException {
+    }
+
+    public void addView(View aView) throws VetoException {
+    }
+
+    public void changeView(View aView) throws VetoException {
+    }
+
+    public void removeView(View aView) throws VetoException {
     }
 }

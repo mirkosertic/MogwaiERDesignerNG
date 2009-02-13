@@ -53,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-19 17:57:11 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class SQLEditor extends BaseEditor {
 

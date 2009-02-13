@@ -34,15 +34,20 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
+import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 19:12:36 $
+ * @version $Date: 2009-02-13 18:47:14 $
  * @param <T>
  *                the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
+    
+    public static final String TABLE_TABLE_TYPE = "TABLE";
+    public static final String VIEW_TABLE_TYPE = "VIEW";
 
     protected JDBCReverseEngineeringStrategy(T aDialect) {
         super(aDialect);
@@ -53,6 +58,80 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     /**
+     * Reverse engineerer the sql statement for a view. 
+     * 
+     * @param aViewEntry die view entry
+     * @param aConnection the connection
+     * @param aView the view
+     * @return the sql statement 
+     * @throws SQLException is thrown in case of an exception
+     * @throws ReverseEngineeringException is thrown in case of an exception
+     */
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException,
+            ReverseEngineeringException {
+        return null;
+    }
+    
+    /**
+     * Reverse enginner an existing view.
+     * 
+     * @param aModel
+     *                the model
+     * @param aOptions
+     *                the options
+     * @param aNotifier
+     *                the notifier
+     * @param aViewEntry
+     *                the table
+     * @param aConnection
+     *                the connection
+     * @throws SQLException
+     *                 is thrown in case of an error
+     * @throws ReverseEngineeringException
+     *                 is thrown in case of an error
+     */
+    protected void reverseEngineerView(Model aModel, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, TableEntry aViewEntry, Connection aConnection) throws SQLException,
+            ReverseEngineeringException {
+
+        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aViewEntry.getTableName());
+
+        DatabaseMetaData theMetaData = aConnection.getMetaData();
+
+        ResultSet theViewsResultSet = theMetaData.getTables(aViewEntry.getCatalogName(), aViewEntry.getSchemaName(),
+                aViewEntry.getTableName(), new String[] { aViewEntry.getTableType() });
+        while (theViewsResultSet.next()) {
+
+            String theViewRemarks = theViewsResultSet.getString("REMARKS");
+
+            View theView = new View();
+
+            theView.setName(dialect.getCastType().cast(aViewEntry.getTableName()));
+
+            if (!StringUtils.isEmpty(theViewRemarks)) {
+                theView.setComment(theViewRemarks);
+            }
+            
+            String theStatement = reverseEngineerViewSQL(aViewEntry, aConnection, theView);
+            try {
+                SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
+            } catch (Exception e) {
+                throw new ReverseEngineeringException("Problem reading view definition", e);
+            }
+            theView.setSql(theStatement);
+
+            // We are done here
+            try {
+                aModel.addView(theView);
+            } catch (Exception e) {
+                throw new ReverseEngineeringException(e.getMessage());
+            }
+
+        }
+        theViewsResultSet.close();
+    }
+    
+    /**
      * Reverse enginner an existing table.
      * 
      * @param aModel
@@ -62,7 +141,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * @param aNotifier
      *                the notifier
      * @param aTableEntry
-     *                the table name
+     *                the table
      * @param aConnection
      *                the connection
      * @throws SQLException
@@ -79,7 +158,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         DatabaseMetaData theMetaData = aConnection.getMetaData();
 
         ResultSet theTablesResultSet = theMetaData.getTables(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(),
-                aTableEntry.getTableName(), new String[] { "TABLE" });
+                aTableEntry.getTableName(), new String[] { aTableEntry.getTableType() });
         while (theTablesResultSet.next()) {
 
             String theTableRemarks = theTablesResultSet.getString("REMARKS");
@@ -107,6 +186,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 int theNullable = theColumnsResultSet.getInt("NULLABLE");
 
                 String theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
+                if (!StringUtils.isEmpty(theDefaultValue)) {
+                    theDefaultValue = theDefaultValue.trim();
+                }
                 String theColumnRemarks = theColumnsResultSet.getString("REMARKS");
 
                 Attribute theAttribute = new Attribute();
@@ -251,26 +333,49 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             }
 
             if (theIndex != null) {
+                short aPosition = theIndexResults.getShort("ORDINAL_POSITION");
+
                 String theColumnName = theIndexResults.getString("COLUMN_NAME");
-                Attribute theIndexAttribute = aTable.getAttributes().findByName(
-                        dialect.getCastType().cast(theColumnName));
-                if (theIndexAttribute == null) {
+                String theASCorDESC = theIndexResults.getString("ASC_OR_DESC");
 
-                    // The index is corrupt or
-                    // It is a oracle function based index
-                    if (aTable.getIndexes().contains(theIndex)) {
-
-                        aNotifier.notifyMessage(ERDesignerBundle.SKIPINDEX, theIndex.getName());
-                        aTable.getIndexes().remove(theIndex);
-                    }
-
-                } else {
-                    theIndex.getAttributes().add(theIndexAttribute);
-                }
+                reverseEngineerIndexAttribute(aMetaData, aTableEntry, aTable, aNotifier, theIndex, theColumnName, aPosition, theASCorDESC);
             }
 
         }
         theIndexResults.close();
+    }
+
+    /**
+     * Reverse engineer an attribute within an index. 
+     *
+     * @param aMetaData the database meta data
+     * @param aTableEntry the current table entry
+     * @param aTable the table
+     * @param aNotifier the notifier
+     * @param aIndex the current index
+     * @param aColumnName the column name
+     * @param aPosition the column position
+     * @param aASCorDESC "A" = Ascending, "D" = Descending, NULL = sort not supported
+     * @throws SQLException in case of an error
+     * @throws ReverseEngineeringException in case of an error 
+     */
+    protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable, ReverseEngineeringNotifier aNotifier, Index aIndex,
+            String aColumnName, short aPosition, String aASCorDESC) throws SQLException, ReverseEngineeringException {
+        Attribute theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(aColumnName));
+        if (theIndexAttribute == null) {
+
+            // The index is corrupt or
+            // It is a oracle function based index
+            // Should be overridden in
+            if (aTable.getIndexes().contains(aIndex)) {
+
+                aNotifier.notifyMessage(ERDesignerBundle.SKIPINDEX, aIndex.getName());
+                aTable.getIndexes().remove(aIndex);
+            }
+
+        } else {
+            aIndex.getAttributes().add(theIndexAttribute);
+        }
     }
 
     /**
@@ -406,8 +511,24 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         }
     }
 
+    /**
+     * Get the list of available table types that shall be reverse engineered.
+     * Default is only "TABLE", but can be overridden by subclasses. 
+     * 
+     * @return the l
+     */
     protected String[] getReverseEngineeringTableTypes() {
-        return new String[] { "TABLE" };
+        return new String[] { TABLE_TABLE_TYPE };
+    }
+    
+    /**
+     * Test if a table type is a view. 
+     * 
+     * @param aTableType the table type
+     * @return true if yes, else false
+     */
+    protected boolean isTableTypeView(String aTableType) {
+        return false;
     }
 
     /**
@@ -424,6 +545,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     /**
+     * Check if the table is a valid view for reverse engineering.
+     * 
+     * @param aTableName
+     *                the table name
+     * @param aTableType
+     *                the table type
+     * @return true if the table is valid, else false
+     */
+    protected boolean isValidView(String aTableName, String aTableType) {
+        return true;
+    }
+    
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -432,7 +566,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             ReverseEngineeringException {
 
         for (TableEntry theTable : aOptions.getTableEntries()) {
-            reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);
+            if (isTableTypeView(theTable.getTableType())) {
+                reverseEngineerView(aModel, aOptions, aNotifier, theTable, aConnection);
+            } else {
+                reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);                
+            }
         }
 
         if (dialect.supportsSchemaInformation()) {
@@ -499,14 +637,23 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         } else {
             theTablesResultSet = theMetaData.getTables(null, null, null, getReverseEngineeringTableTypes());
         }
+        
         while (theTablesResultSet.next()) {
 
             String theTableType = theTablesResultSet.getString("TABLE_TYPE");
             String theTableName = theTablesResultSet.getString("TABLE_NAME");
 
-            if (isValidTable(theTableName, theTableType)) {
-                TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName);
-                theResult.add(theEntry);
+            
+            if (isTableTypeView(theTableType)) {
+                if (isValidView(theTableName, theTableType)) {
+                    TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
+                    theResult.add(theEntry);
+                }
+            } else {
+                if (isValidTable(theTableName, theTableType)) {
+                    TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
+                    theResult.add(theEntry);
+                }
             }
         }
         theTablesResultSet.close();
@@ -534,5 +681,4 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
         return theResult;
     }
-
 }

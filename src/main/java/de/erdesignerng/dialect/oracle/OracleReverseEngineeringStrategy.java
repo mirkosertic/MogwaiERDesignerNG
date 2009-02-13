@@ -19,17 +19,24 @@ package de.erdesignerng.dialect.oracle;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.SchemaEntry;
+import de.erdesignerng.dialect.TableEntry;
+import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<OracleDialect> {
 
@@ -79,4 +86,81 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         return aTypeName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable,
+            ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aAscOrDesc)
+            throws SQLException, ReverseEngineeringException {
+
+        // This needs only to be checked if it is a function bsed index
+        if (!aColumnName.endsWith("$")) {
+            super.reverseEngineerIndexAttribute(aMetaData, aTableEntry, aTable, aNotifier, aIndex, aColumnName,
+                    aPosition, aAscOrDesc);
+            return;
+        }
+
+        Connection theConnection = aMetaData.getConnection();
+        PreparedStatement theStatement = theConnection
+                .prepareStatement("SELECT * FROM USER_IND_EXPRESSIONS WHERE INDEX_NAME = ? AND TABLE_NAME = ? AND COLUMN_POSITION = ?");
+        theStatement.setString(1, aIndex.getName());
+        theStatement.setString(2, aTable.getName());
+        theStatement.setShort(3, aPosition);
+        ResultSet theResult = theStatement.executeQuery();
+        boolean found = false;
+        while (theResult.next()) {
+            found = true;
+            String theColumnExpression = theResult.getString("COLUMN_EXPRESSION");
+
+            // seems to be a function
+            System.out.println("Found function based column " + aColumnName + " for " + aTable.getName() + " index "
+                    + aIndex.getName() + " pos " + aPosition + " with expression " + theColumnExpression);
+        }
+        theResult.close();
+        theStatement.close();
+        if (!found) {
+            throw new ReverseEngineeringException("Cannot find index column information for " + aColumnName + " index "
+                    + aIndex.getName() + " table " + aTable.getName());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String[] getReverseEngineeringTableTypes() {
+        return new String[] { TABLE_TABLE_TYPE, VIEW_TABLE_TYPE };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isTableTypeView(String aTableType) {
+        return VIEW_TABLE_TYPE.equals(aTableType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
+            throws SQLException, ReverseEngineeringException {
+        PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM USER_VIEWS WHERE VIEW_NAME = ?");
+        theStatement.setString(1, aViewEntry.getTableName());
+        ResultSet theResult = null;
+        try {
+            theResult = theStatement.executeQuery();
+            while (theResult.next()) {
+                return theResult.getString("TEXT");
+            }
+            return null;
+        } finally {
+            if (theResult != null) {
+                theResult.close();
+            }
+            theStatement.close();
+        }
+    }
 }

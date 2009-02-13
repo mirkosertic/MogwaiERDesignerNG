@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 10:57:04 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
@@ -104,6 +104,16 @@ public class RelationList extends ModelItemVector<Relation> {
         List<Relation> theResult = new ArrayList<Relation>();
         for (Relation theRelation : this) {
             if (theRelation.getImportingTable().getSystemId().equals(aTable.getSystemId())) {
+                theResult.add(theRelation);
+            }
+        }
+        return theResult;
+    }
+
+    public List<Relation> getExportedKeysFor(Table aTable) {
+        List<Relation> theResult = new ArrayList<Relation>();
+        for (Relation theRelation : this) {
+            if (theRelation.getExportingTable().getSystemId().equals(aTable.getSystemId())) {
                 theResult.add(theRelation);
             }
         }

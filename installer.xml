@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<installation version="1.0">
+	<info>
+		<appname>Mogwai ERDesignerNG</appname>
+		<appversion>1.6</appversion>
+		<url>http://mogwai.sourceforge.net</url>
+	</info>
+	<guiprefs width="640" height="480" resizable="no">
+		<modifier key="useButtonIcons" value="no" />
+		<modifier key="useLabelIcons" value="no" />
+		<modifier key="labelGap" value="2" />
+		<modifier key="layoutAnchor" value="NORTHWEST" />
+		<modifier key="useHeadingPanel" value="yes" />
+		<modifier key="headingImageOnLeft" value="yes" />
+		<modifier key="headingLineCount" value="1" />
+		<modifier key="headingFontSize" value="1.5" />
+		<modifier key="headingBackgroundColor" value="0x00ffffff" />
+		<modifier key="headingPanelCounter" value="text" />
+		<modifier key="headingPanelCounterPos" value="inHeading" />
+	</guiprefs>
+	<locale>
+		<langpack iso3="eng" />
+	</locale>
+	<resources>
+		<res id="LicencePanel.licence" src="LICENSE_MOGWAI.txt" />
+		<res src="installer_shortcutspec.xml" id="shortcutSpec.xml"/>
+		<res src="installer_unix_shortcutspec.xml" id="Unix_shortcutSpec.xml"/>
+	</resources>
+	<panels>
+		<panel classname="HelloPanel" />
+		<panel classname="LicencePanel" />
+		<panel classname="TargetPanel" />
+		<panel classname="PacksPanel" />
+		<panel classname="InstallPanel" />
+		<panel classname="ShortcutPanel" />
+		<panel classname="FinishPanel" />
+	</panels>
+	<packs>
+		<pack name="Base" required="yes">
+			<description>Core</description>
+			<file src="LICENSE_MOGWAI.txt" targetdir="$INSTALL_PATH" />
+			<file src="README_SQUIRREL.txt" targetdir="$INSTALL_PATH" />
+			<file src="RELEASENOTES.txt" targetdir="$INSTALL_PATH" />
+			<file src="run.bat" targetdir="$INSTALL_PATH"/>
+			<file src="run.sh" targetdir="$INSTALL_PATH" os="unix" />
+			<file src="run.sh" targetdir="$INSTALL_PATH" os="mac" />
+			<file src="dist" targetdir="$INSTALL_PATH" />
+			<file src="lib" targetdir="$INSTALL_PATH" />
+			<executable os="unix" targetfile="$INSTALL_PATH/run.sh"
+				stage="never" />
+			<executable os="mac" targetfile="$INSTALL_PATH/run.sh"
+				stage="never" />
+		</pack>
+		<pack name="Docs" required="no" preselected="yes">
+			<description>The documentation</description>
+			<file src="userdoc" targetdir="$INSTALL_PATH" />
+			<file src="javadoc" targetdir="$INSTALL_PATH" />
+		</pack>
+		<pack name="Sources" required="no" preselected="yes">
+			<description>The sources</description>
+			<file src="src" targetdir="$INSTALL_PATH" />
+		</pack>
+	</packs>
+	
+	<native type="izpack" name="ShellLink.dll"/>
+</installation>

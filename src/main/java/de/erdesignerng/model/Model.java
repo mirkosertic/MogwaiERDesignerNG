@@ -37,7 +37,7 @@ import de.erdesignerng.util.ConnectionDescriptor;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public class Model implements OwnedModelItemVerifier {
 
@@ -60,6 +60,8 @@ public class Model implements OwnedModelItemVerifier {
     private CommentList comments = new CommentList();
 
     private DomainList domains = new DomainList();
+
+    private ViewList views = new ViewList();
 
     private Dialect dialect;
 
@@ -176,13 +178,18 @@ public class Model implements OwnedModelItemVerifier {
 
     /**
      * Create a JDBC database connection.
-     *  
-     * @param aPreferences the preferences
+     * 
+     * @param aPreferences
+     *                the preferences
      * @return the database connection
-     * @throws ClassNotFoundException is thrown in case of an exception
-     * @throws InstantiationException is thrown in case of an exception
-     * @throws IllegalAccessException is thrown in case of an exception
-     * @throws SQLException is thrown in case of an exception
+     * @throws ClassNotFoundException
+     *                 is thrown in case of an exception
+     * @throws InstantiationException
+     *                 is thrown in case of an exception
+     * @throws IllegalAccessException
+     *                 is thrown in case of an exception
+     * @throws SQLException
+     *                 is thrown in case of an exception
      */
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
@@ -454,6 +461,51 @@ public class Model implements OwnedModelItemVerifier {
     }
 
     /**
+     * Add a view to the model.
+     * 
+     * @param aView
+     *                the view
+     * @throws VetoException 
+     * @throws ElementAlreadyExistsException 
+     * @throws ElementInvalidNameException 
+     */
+    public void addView(View aView) throws VetoException, ElementInvalidNameException, ElementAlreadyExistsException {
+        
+        modificationTracker.addView(aView);
+
+        if (dialect != null) {
+            ModelUtilities.checkNameAndExistance(tables, aView, dialect);
+        }
+
+        aView.setOwner(this);
+        views.add(aView);
+    }
+
+    /**
+     * Remove a view from the model.
+     * 
+     * @param aView
+     *                a view
+     * @throws VetoException 
+     */
+    public void removeView(View aView) throws VetoException {
+        
+        modificationTracker.removeView(aView);
+
+        views.remove(aView);
+        subjectAreas.removeView(aView);
+    }
+    
+    /**
+     * Gibt den Wert des Attributs <code>views</code> zurück.
+     * 
+     * @return Wert des Attributs views.
+     */
+    public ViewList getViews() {
+        return views;
+    }
+
+    /**
      * Get the list of supported datatypes for domains.
      * 
      * @return the list of datatypes.
@@ -465,5 +517,15 @@ public class Model implements OwnedModelItemVerifier {
             theResult.addAll(dialect.getDataTypes());
         }
         return theResult;
+    }
+
+    /**
+     * Mark a view as changed. 
+     * 
+     * @param aView the view
+     * @throws VetoException 
+     */
+    public void changeView(View aView) throws VetoException {
+        modificationTracker.changeView(aView);
     }
 }

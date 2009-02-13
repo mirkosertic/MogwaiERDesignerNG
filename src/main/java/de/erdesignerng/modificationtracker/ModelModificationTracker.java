@@ -21,6 +21,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 public interface ModelModificationTracker {
 
@@ -55,4 +56,10 @@ public interface ModelModificationTracker {
     void removePrimaryKeyFromTable(Table aTable, Index aIndex) throws VetoException;
 
     void addPrimaryKeyToTable(Table aTable, Index aIndex) throws VetoException;
+
+    void addView(View aView) throws VetoException;
+
+    void removeView(View aView) throws VetoException;
+
+    void changeView(View aView) throws VetoException;
 }

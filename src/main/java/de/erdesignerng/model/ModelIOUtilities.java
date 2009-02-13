@@ -50,7 +50,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 17:48:26 $
+ * @version $Date: 2009-02-13 18:47:14 $
  */
 public final class ModelIOUtilities {
 
@@ -136,20 +136,26 @@ public final class ModelIOUtilities {
     /**
      * Save a model to a repository.
      * 
-     * @param aDesc the element descriptor
-     * @param aModel the model
-     * @param aPreferences the preferences
+     * @param aDesc
+     *                the element descriptor
+     * @param aConnection
+     *                the connection
+     * @param aModel
+     *                the model
+     * @param aPreferences
+     *                the preferences
      * @return the descriptor
-     * @throws Exception will be thrown in case of an exception
+     * @throws Exception
+     *                 will be thrown in case of an exception
      */
-    public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Model aModel, ApplicationPreferences aPreferences) throws Exception {
+    public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Connection aConnection,
+            Model aModel, ApplicationPreferences aPreferences) throws Exception {
 
         Connection theConnection = null;
         try {
             Class theDialectClass = aModel.getDialect().getHibernateDialectClass();
-            theConnection = aModel.createConnection(aPreferences);
-            aDesc = DictionaryModelSerializer.SERIALIZER.serialize(aDesc, aModel, theConnection, theDialectClass);
-            
+            aDesc = DictionaryModelSerializer.SERIALIZER.serialize(aDesc, aModel, aConnection, theDialectClass);
+
             return aDesc;
         } finally {
             if (theConnection != null) {
@@ -167,28 +173,39 @@ public final class ModelIOUtilities {
     /**
      * Deserialize a model from a repository.
      * 
-     * @param aDescriptor the descriptor for the repository entity
-     * @param aDialect the repository dialect
-     * @param aConnection the repository connection
-     * @param aPreferences the preferences
+     * @param aDescriptor
+     *                the descriptor for the repository entity
+     * @param aDialect
+     *                the repository dialect
+     * @param aConnection
+     *                the repository connection
+     * @param aPreferences
+     *                the preferences
      * @return the loaded model
-     * @throws Exception will be thrown in case of an exception
+     * @throws Exception
+     *                 will be thrown in case of an exception
      */
-    public Model deserializeModelfromRepository(RepositoryEntryDesciptor aDescriptor, Dialect aDialect, Connection aConnection, ApplicationPreferences aPreferences)
-            throws Exception {
+    public Model deserializeModelfromRepository(RepositoryEntryDesciptor aDescriptor, Dialect aDialect,
+            Connection aConnection, ApplicationPreferences aPreferences) throws Exception {
 
-        return DictionaryModelSerializer.SERIALIZER.deserialize(aDescriptor, aConnection, aDialect.getHibernateDialectClass());
+        return DictionaryModelSerializer.SERIALIZER.deserialize(aDescriptor, aConnection, aDialect
+                .getHibernateDialectClass());
     }
 
     /**
      * Get the available repository descriptors.
-     *  
-     * @param aDialect the dialect
-     * @param aConnection the connection
+     * 
+     * @param aDialect
+     *                the dialect
+     * @param aConnection
+     *                the connection
      * @return the list of descriptors
-     * @throws Exception will be thrown in case of an exception
+     * @throws Exception
+     *                 will be thrown in case of an exception
      */
-    public List<RepositoryEntryDesciptor> getRepositoryEntries(Dialect aDialect, Connection aConnection) throws Exception {
-        return DictionaryModelSerializer.SERIALIZER.getRepositoryEntries(aDialect.getHibernateDialectClass(), aConnection);
+    public List<RepositoryEntryDesciptor> getRepositoryEntries(Dialect aDialect, Connection aConnection)
+            throws Exception {
+        return DictionaryModelSerializer.SERIALIZER.getRepositoryEntries(aDialect.getHibernateDialectClass(),
+                aConnection);
     }
 }

@@ -25,6 +25,7 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 public class HistoryModificationTracker implements ModelModificationTracker {
 
@@ -123,5 +124,26 @@ public class HistoryModificationTracker implements ModelModificationTracker {
             }
         }
         return theResult;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addView(View aView) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createAddViewStatement(aView));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void changeView(View aView) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createChangeViewStatement(aView));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeView(View aView) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createDropViewStatement(aView));
     }
 }
