@@ -30,10 +30,11 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:36:54 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class XMLModelSerializer extends XMLSerializer {
 
@@ -54,15 +55,19 @@ public class XMLModelSerializer extends XMLSerializer {
     protected static final String TABLES = "Tables";
 
     protected static final String RELATIONS = "Relations";
+    
+    protected static final String VIEWS = "Views";
 
     protected static final String SUBJECTAREAS = "Subjectareas";
 
     protected static final String COMMENTS = "Comments";
 
+    protected static final String CURRENT_VERSION = "2.0";
+
     public void serialize(Model aModel, Document aDocument) {
 
         Element theRootElement = addElement(aDocument, aDocument, MODEL);
-        theRootElement.setAttribute(VERSION, "1.0");
+        theRootElement.setAttribute(VERSION, CURRENT_VERSION);
 
         Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
 
@@ -91,6 +96,11 @@ public class XMLModelSerializer extends XMLSerializer {
             XMLRelationSerializer.SERIALIZER.serialize(theRelation, aDocument, theRelationsElement);
         }
 
+        Element theViewsElement = addElement(aDocument, theRootElement, VIEWS);
+        for (View theView : aModel.getViews()) {
+            XMLViewSerializer.SERIALIZER.serialize(theView, aDocument, theViewsElement);
+        }
+
         Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
             XMLSubjectAreaSerializer.SERIALIZER.serialize(theSubjectArea, aDocument, theSubjectAreasElement);
@@ -105,7 +115,16 @@ public class XMLModelSerializer extends XMLSerializer {
     public Model deserializeFrom(Document aDocument) {
         Model theModel = new Model();
 
-        NodeList theElements = aDocument.getElementsByTagName(CONFIGURATION);
+        NodeList theElements = aDocument.getElementsByTagName(MODEL);
+        for (int i = 0; i < theElements.getLength(); i++) {
+            Element theElement = (Element) theElements.item(i);
+            String theVersion = theElement.getAttribute(VERSION);
+            if (!CURRENT_VERSION.equals(theVersion)) {
+                throw new RuntimeException("Unsupported version of model : " + theVersion);
+            }
+        }
+
+        theElements = aDocument.getElementsByTagName(CONFIGURATION);
         for (int i = 0; i < theElements.getLength(); i++) {
             Element theElement = (Element) theElements.item(i);
 
@@ -127,6 +146,7 @@ public class XMLModelSerializer extends XMLSerializer {
         XMLDomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLTableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLRelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        XMLViewSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLCommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
         XMLSubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
 

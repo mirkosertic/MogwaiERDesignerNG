@@ -17,12 +17,13 @@
  */
 package de.erdesignerng.model.serializer.xml;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
@@ -45,9 +46,14 @@ public class XMLIndexSerializer extends XMLSerializer {
         serializeProperties(aDocument, theIndexElement, aIndex);
 
         // Attribute
-        for (Attribute theAttribute : aIndex.getAttributes()) {
+        for (IndexExpression theExpression : aIndex.getExpressions()) {
             Element theAttributeElement = addElement(aDocument, theIndexElement, INDEXATTRIBUTE);
-            theAttributeElement.setAttribute(ATTRIBUTEREFID, theAttribute.getSystemId());
+            theAttributeElement.setAttribute(ID, theExpression.getSystemId());
+            if (!StringUtils.isEmpty(theExpression.getExpression())) {
+                theAttributeElement.setAttribute(ATTRIBUTEEXPRESSION, theExpression.getExpression());
+            } else {
+                theAttributeElement.setAttribute(ATTRIBUTEREFID, theExpression.getAttributeRef().getSystemId());
+            }
         }
 
     }
@@ -69,8 +75,15 @@ public class XMLIndexSerializer extends XMLSerializer {
 
                 Element theAttributeElement = (Element) theAttributes.item(k);
 
+                IndexExpression theExpression = new IndexExpression();
+                theExpression.setSystemId(theAttributeElement.getAttribute(ID));
                 String theAttributeRefId = theAttributeElement.getAttribute(ATTRIBUTEREFID);
-                theIndex.getAttributes().add(aTable.getAttributes().findBySystemId(theAttributeRefId));
+                if (!StringUtils.isEmpty(theAttributeRefId)) {
+                    theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeRefId));
+                } else {
+                    theExpression.setExpression(theAttributeElement.getAttribute(ATTRIBUTEEXPRESSION));
+                }
+                theIndex.getExpressions().add(theExpression);
             }
 
             aTable.getIndexes().add(theIndex);

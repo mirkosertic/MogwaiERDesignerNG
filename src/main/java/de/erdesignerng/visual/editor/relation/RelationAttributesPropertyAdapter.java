@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Relation;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
@@ -50,9 +51,9 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
         Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
         Attribute[] theAssigned;
         if (thePrimaryKey != null) {
-            theAssigned = new Attribute[thePrimaryKey.getAttributes().size()];
-            for (int count = 0; count < thePrimaryKey.getAttributes().size(); count++) {
-                theAssigned[count] = theRelation.getMapping().get(thePrimaryKey.getAttributes().get(count));
+            theAssigned = new Attribute[thePrimaryKey.getExpressions().size()];
+            for (int count = 0; count < thePrimaryKey.getExpressions().size(); count++) {
+                theAssigned[count] = theRelation.getMapping().get(thePrimaryKey.getExpressions().get(count));
             }
         } else {
             theAssigned = new Attribute[0];
@@ -78,10 +79,10 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 
         theRelation.getMapping().clear();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            Attribute thePKAttribute = (Attribute) theTableModel.getValueAt(i, 0);
+            IndexExpression theIndexExpression = (IndexExpression) theTableModel.getValueAt(i, 0);
             Attribute theAssignedAttribute = (Attribute) theTableModel.getValueAt(i, 1);
 
-            theRelation.getMapping().put(thePKAttribute, theAssignedAttribute);
+            theRelation.getMapping().put(theIndexExpression, theAssignedAttribute);
         }
 
     }

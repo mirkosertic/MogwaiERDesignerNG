@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.ListOrderedMap;
@@ -24,7 +26,7 @@ import org.apache.commons.collections.map.ListOrderedMap;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class Relation extends OwnedModelItem<Model> implements ModelItemClonable<Relation> {
 
@@ -36,7 +38,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     private Table exportingTable;
 
-    private Map<Attribute, Attribute> mapping = new ListOrderedMap();
+    private Map<IndexExpression, Attribute> mapping = new ListOrderedMap();
 
     private CascadeType onDelete = CascadeType.CASCADE;
 
@@ -51,7 +53,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     /**
      * @param end
-     *            the end to set
+     *                the end to set
      */
     public void setExportingTable(Table end) {
         exportingTable = end;
@@ -66,7 +68,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     /**
      * @param start
-     *            the start to set
+     *                the start to set
      */
     public void setImportingTable(Table start) {
         importingTable = start;
@@ -75,7 +77,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
     /**
      * @return the mapping
      */
-    public Map<Attribute, Attribute> getMapping() {
+    public Map<IndexExpression, Attribute> getMapping() {
         return mapping;
     }
 
@@ -105,8 +107,8 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
         theClone.setExportingTable(getExportingTable());
         theClone.setOnDelete(getOnDelete());
         theClone.setOnUpdate(getOnUpdate());
-        for (Attribute theAttribute : getMapping().keySet()) {
-            theClone.getMapping().put(theAttribute, getMapping().get(theAttribute));
+        for (IndexExpression theExpression : getMapping().keySet()) {
+            theClone.getMapping().put(theExpression, getMapping().get(theExpression));
         }
         return theClone;
     }
@@ -117,20 +119,9 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
         setExportingTable(aValue.getExportingTable());
         setOnDelete(aValue.getOnDelete());
         setOnUpdate(aValue.getOnUpdate());
-        for (Attribute theAttribute : aValue.getMapping().keySet()) {
-            mapping.put(theAttribute, aValue.getMapping().get(theAttribute));
+        for (IndexExpression theExpression : aValue.getMapping().keySet()) {
+            mapping.put(theExpression, aValue.getMapping().get(theExpression));
         }
-    }
-    
-    public Attribute findKeyAttributeByName(String aName) {
-        
-        for (Attribute theAttribute : getMapping().keySet()) {
-            if (theAttribute.getName().equals(aName)) {
-                return theAttribute;
-            }
-        }
-        
-        return null;
     }
 
     public boolean isModified(Relation aRelation, boolean aUseName) {
@@ -144,32 +135,23 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
             return true;
         }
 
-        if (aUseName) {
-            for (Attribute thePK : getMapping().keySet()) {
-                Attribute theFK = getMapping().get(thePK);
-                
-                Attribute thePKR = aRelation.findKeyAttributeByName(thePK.getName());
-                if (thePKR == null) {
+        List<Attribute> theMyAttributes = new ArrayList<Attribute>(mapping.values());
+        List<Attribute> theOtherAttributes = new ArrayList<Attribute>(aRelation.getMapping().values());
+        if (theMyAttributes.size() != theOtherAttributes.size()) {
+            return true;
+        }
+        for (int i = 0; i < theMyAttributes.size(); i++) {
+            if (aUseName) {
+                if (!theMyAttributes.get(i).getName().equals(theOtherAttributes.get(i).getName())) {
                     return true;
                 }
-                Attribute theFKR = aRelation.getMapping().get(thePKR);
-                if (theFKR == null) {
+            } else {
+                if (!theMyAttributes.get(i).equals(theOtherAttributes.get(i))) {
                     return true;
                 }
-                if (!theFK.getName().equals(theFKR.getName())) {
-                    return true;
-                }
-            }
-        } else {
-            for (Attribute thePK : getMapping().keySet()) {
-                Attribute theFK = getMapping().get(thePK);
-                Attribute theForeignFK = aRelation.getMapping().get(thePK);
-                if (!theFK.equals(theForeignFK)) {
-                    return true;
-                }
-
             }
         }
+
         return false;
     }
 }

@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:27 $
  * @param <T>
  *            the type
  */

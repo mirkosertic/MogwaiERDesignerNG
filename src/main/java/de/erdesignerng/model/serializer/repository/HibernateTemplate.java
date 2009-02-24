@@ -39,7 +39,7 @@ import de.erdesignerng.model.serializer.repository.entities.TableEntity;
  * Template class for hibernate operations. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public abstract class HibernateTemplate {
     

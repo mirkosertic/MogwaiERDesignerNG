@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class RelationList extends ModelItemVector<Relation> {
 
@@ -59,9 +59,13 @@ public class RelationList extends ModelItemVector<Relation> {
      */
     public boolean isAttributeInUse(Attribute aAttribute) {
         for (Relation theRelation : this) {
-            Map<Attribute, Attribute> theMap = theRelation.getMapping();
-            if (theMap.containsKey(aAttribute)) {
-                return true;
+            Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
+            for (IndexExpression theExpression : theMap.keySet()) {
+                if (theExpression.getAttributeRef() != null) {
+                    if (theExpression.getAttributeRef().equals(aAttribute)) {
+                        return true;
+                    }
+                }
             }
             if (theMap.containsValue(aAttribute)) {
                 return true;
@@ -70,9 +74,15 @@ public class RelationList extends ModelItemVector<Relation> {
         return false;
     }
 
+    /**
+     * Test if an attribute is a foreign key attribute. 
+     * 
+     * @param aAttribute the attribute
+     * @return true if yes, else false
+     */
     public boolean isForeignKeyAttribute(Attribute aAttribute) {
         for (Relation theRelation : this) {
-            Map<Attribute, Attribute> theMap = theRelation.getMapping();
+            Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
             if (theMap.containsValue(aAttribute)) {
                 return true;
             }
@@ -103,7 +113,7 @@ public class RelationList extends ModelItemVector<Relation> {
     public List<Relation> getForeignKeysFor(Table aTable) {
         List<Relation> theResult = new ArrayList<Relation>();
         for (Relation theRelation : this) {
-            if (theRelation.getImportingTable().getSystemId().equals(aTable.getSystemId())) {
+            if (theRelation.getImportingTable().equals(aTable)) {
                 theResult.add(theRelation);
             }
         }
@@ -113,7 +123,7 @@ public class RelationList extends ModelItemVector<Relation> {
     public List<Relation> getExportedKeysFor(Table aTable) {
         List<Relation> theResult = new ArrayList<Relation>();
         for (Relation theRelation : this) {
-            if (theRelation.getExportingTable().getSystemId().equals(aTable.getSystemId())) {
+            if (theRelation.getExportingTable().equals(aTable)) {
                 theResult.add(theRelation);
             }
         }

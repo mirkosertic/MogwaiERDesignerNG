@@ -49,7 +49,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class ViewCellView extends VertexView {
 

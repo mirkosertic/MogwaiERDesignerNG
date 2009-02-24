@@ -39,7 +39,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class MigrationScriptEditor extends BaseEditor {
 
