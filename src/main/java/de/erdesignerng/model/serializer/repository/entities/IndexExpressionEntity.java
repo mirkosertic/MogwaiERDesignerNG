@@ -15,26 +15,32 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mysql;
+package de.erdesignerng.model.serializer.repository.entities;
 
-import de.erdesignerng.dialect.mysql.MySQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the MySQL SQL Generator. 
+ * Entity for indexes.
  * 
- * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @author msertic
  */
-public class MySQLDialectTest extends AbstractDialectTestCase {
+public class IndexExpressionEntity extends ModelEntity {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    private String attributeId;
+    private String expression;
 
-        dialect = new MySQLDialect();
-        textDataType = dialect.getDataTypes().findByName("VARCHAR");
-        intDataType = dialect.getDataTypes().findByName("INTEGER");
-        basePath = "/de/erdesignerng/test/sql/mysql/";
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getAttributeId() {
+        return attributeId;
+    }
+
+    public void setAttributeId(String attributeId) {
+        this.attributeId = attributeId;
     }
 }

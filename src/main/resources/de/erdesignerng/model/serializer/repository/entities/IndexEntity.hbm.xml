@@ -24,10 +24,14 @@
 		
 		<property name="type" not-null="true"/>
 		
-		<list name="attributes" cascade="all-delete-orphan" table="mogrep_indexes_attr">
-			<key column="indexid" foreign-key="mogrep_indexes_attr_fk1"/>
+		<list name="expressions" cascade="all-delete-orphan" table="mogrep_indexes_expression">
+			<key column="indexid" foreign-key="mogrep_indexes_expression_fk1"/>
 			<list-index column="listindex" />
-			<element column="attributeid" type="string" not-null="true"/>
+			<composite-element class="IndexExpressionEntity">
+				<property name="systemId" not-null="true"/>
+				<property name="expression" not-null="false"/>
+				<property name="attributeId" not-null="false"/>
+			</composite-element>
 		</list>
 
 	</class>

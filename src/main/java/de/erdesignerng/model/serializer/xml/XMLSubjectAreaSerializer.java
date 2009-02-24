@@ -28,10 +28,11 @@ import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class XMLSubjectAreaSerializer extends XMLSerializer {
 
@@ -42,6 +43,8 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
     public static final String ITEM = "Item";
 
     public static final String TABLEREFID = "tablerefid";
+    
+    public static final String VIEWREFID = "viewrefid";
 
     public static final String COMMENTREFID = "commentrefid";
 
@@ -56,17 +59,18 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
         theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
 
         for (Table theTable : aArea.getTables()) {
-
             Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
             theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
+        }
 
+        for (View theView : aArea.getViews()) {
+            Element theViewElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+            theViewElement.setAttribute(VIEWREFID, theView.getSystemId());
         }
 
         for (Comment theComment : aArea.getComments()) {
-
             Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
             theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
-
         }
     }
 
@@ -86,6 +90,7 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
 
                 Element theItemElement = (Element) theTables.item(j);
                 String theTableId = theItemElement.getAttribute(TABLEREFID);
+                String theViewId = theItemElement.getAttribute(VIEWREFID);
                 String theCommentId = theItemElement.getAttribute(COMMENTREFID);
 
                 if (!StringUtils.isEmpty(theTableId)) {
@@ -96,7 +101,16 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
 
                     theSubjectArea.getTables().add(theTable);
                 }
-                
+
+                if (!StringUtils.isEmpty(theViewId)) {
+                    View theView = aModel.getViews().findBySystemId(theViewId);
+                    if (theView == null) {
+                        throw new IllegalArgumentException("Cannot find view with id " + theTableId);
+                    }
+
+                    theSubjectArea.getViews().add(theView);
+                }
+
                 if (!StringUtils.isEmpty(theCommentId)) {
                     Comment theComment = aModel.getComments().findBySystemId(theCommentId);
                     if (theComment == null) {
@@ -109,6 +123,5 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
 
             aModel.getSubjectAreas().add(theSubjectArea);
         }
-
     }
 }

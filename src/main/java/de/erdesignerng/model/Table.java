@@ -23,7 +23,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-09-23 18:13:28 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
 
@@ -161,7 +161,7 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     public boolean hasPrimaryKey() {
         Index theIndex = getPrimarykey();
         if (theIndex != null) {
-            return theIndex.getAttributes().size() > 0;
+            return theIndex.getExpressions().size() > 0;
         }
         return false;
     }

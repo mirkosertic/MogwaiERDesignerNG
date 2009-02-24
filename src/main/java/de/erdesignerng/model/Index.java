@@ -20,20 +20,20 @@ package de.erdesignerng.model;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class Index extends OwnedModelItem<Table> implements ModelItemClonable<Index> {
 
     private IndexType indexType = IndexType.UNIQUE;
 
-    private AttributeList attributes = new AttributeList();
+    private IndexExpressionList expressions = new IndexExpressionList();
 
-    public AttributeList getAttributes() {
-        return attributes;
+    public IndexExpressionList getExpressions() {
+        return expressions;
     }
 
-    public void setAttributes(AttributeList aAttributes) {
-        attributes = aAttributes;
+    public void setExpressions(IndexExpressionList expressions) {
+        this.expressions = expressions;
     }
 
     public IndexType getIndexType() {
@@ -42,6 +42,25 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
 
     public void setIndexType(IndexType aIndexType) {
         indexType = aIndexType;
+    }
+
+    /**
+     * Test if this index contains an attribute.
+     * 
+     * @param aAttribute
+     *                the attribute
+     * @return true if yes, else false
+     */
+    public boolean containsAttribute(Attribute aAttribute) {
+        for (IndexExpression theExpression : expressions) {
+            Attribute theRefAttribute = theExpression.getAttributeRef();
+            if (theRefAttribute != null) {
+                if (aAttribute.getSystemId().equals(theRefAttribute.getSystemId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -55,8 +74,8 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
         theIndex.setName(getName());
         theIndex.setIndexType(getIndexType());
 
-        for (Attribute theAttribute : attributes) {
-            theIndex.getAttributes().add(theAttribute.clone());
+        for (IndexExpression theExpression : expressions) {
+            theIndex.getExpressions().add(theExpression.clone());
         }
         return theIndex;
     }
@@ -66,15 +85,10 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
         setIndexType(aValue.getIndexType());
         setOwner(aValue.getOwner());
 
-        attributes.clear();
+        expressions.clear();
 
-        for (Attribute theAttribute : aValue.getAttributes()) {
-            Attribute theFound = getOwner().getAttributes().findBySystemId(theAttribute.getSystemId());
-            if (theFound != null) {
-                attributes.add(theFound);
-            } else {
-                throw new Exception("Cannot find attribute " + theAttribute.getName());
-            }
+        for (IndexExpression theAttribute : aValue.getExpressions()) {
+            expressions.add(theAttribute);
         }
     }
 
@@ -88,29 +102,25 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
             return true;
         }
 
-        if (aUseName) {
-            for (Attribute theAttribute : getAttributes()) {
-                if (aIndex.getAttributes().findByName(theAttribute.getName()) == null) {
-                    return true;
-                }
-            }
+        if (expressions.size() != aIndex.getExpressions().size()) {
+            return true;
+        }
 
-            for (Attribute theAttribute : aIndex.getAttributes()) {
-                if (getAttributes().findByName(theAttribute.getName()) == null) {
-                    return true;
-                }
-            }
-        } else {
-            for (Attribute theAttribute : getAttributes()) {
-                if (aIndex.getAttributes().findBySystemId(theAttribute.getSystemId()) == null) {
-                    return true;
-                }
-            }
+        for (int i = 0; i < expressions.size(); i++) {
+            IndexExpression theMyExpression = expressions.get(i);
+            IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
 
-            for (Attribute theAttribute : aIndex.getAttributes()) {
-                if (getAttributes().findBySystemId(theAttribute.getSystemId()) == null) {
-                    return true;
-                }
+            if (theMyExpression.isModified(theOtherExpression, aUseName)) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+            IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
+            IndexExpression theMyExpression = expressions.get(i);
+
+            if (theMyExpression.isModified(theOtherExpression, aUseName)) {
+                return true;
             }
         }
 

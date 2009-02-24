@@ -43,7 +43,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * Base test class for all sql generators. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 12:03:53 $
+ * @version $Date: 2009-02-24 19:36:27 $
  */
 public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl {
 
@@ -76,8 +76,8 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         thePK2Attribute.setDefaultValue("42");
         theTable.addAttribute(aModel, thePK2Attribute);
 
-        thePrimaryKey.getAttributes().add(thePK1Attribute);
-        thePrimaryKey.getAttributes().add(thePK2Attribute);
+        thePrimaryKey.getExpressions().addExpressionFor(thePK1Attribute);
+        thePrimaryKey.getExpressions().addExpressionFor(thePK2Attribute);
 
         if (aWithIndexes) {
             theTable.addIndex(aModel, thePrimaryKey);
@@ -102,7 +102,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         Index theNonUniqueIndex = new Index();
         theNonUniqueIndex.setName(aName + "_IDX1");
         theNonUniqueIndex.setIndexType(IndexType.NONUNIQUE);
-        theNonUniqueIndex.getAttributes().add(theAt2);
+        theNonUniqueIndex.getExpressions().addExpressionFor(theAt2);
 
         if (aWithIndexes) {
             theTable.addIndex(aModel, theNonUniqueIndex);
@@ -119,7 +119,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         Index theUniqueIndex = new Index();
         theUniqueIndex.setName(aName + "_IDX2");
         theUniqueIndex.setIndexType(IndexType.UNIQUE);
-        theUniqueIndex.getAttributes().add(theAt3);
+        theUniqueIndex.getExpressions().addExpressionFor(theAt3);
         if (aWithIndexes) {
             theTable.addIndex(aModel, theUniqueIndex);
         }
@@ -327,9 +327,11 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theRelation.setName("REL_1");
         theRelation.setOnDelete(CascadeType.CASCADE);
         theRelation.setOnUpdate(CascadeType.CASCADE);
-        theRelation.getMapping().put(theExporting.getAttributes().findByName("PK1"),
+        
+        Index theExportingPrimaryKey = theExporting.getPrimarykey();
+        theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK1"),
                 theImporting.getAttributes().findByName("PK1"));
-        theRelation.getMapping().put(theExporting.getAttributes().findByName("PK2"),
+        theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK2"),
                 theImporting.getAttributes().findByName("PK2"));
 
         HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
@@ -367,9 +369,11 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theRelation.setName("REL_1");
         theRelation.setOnDelete(CascadeType.CASCADE);
         theRelation.setOnUpdate(CascadeType.CASCADE);
-        theRelation.getMapping().put(theExporting.getAttributes().findByName("PK1"),
+        
+        Index theExportingPrimaryKey = theExporting.getPrimarykey();
+        theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK1"),
                 theImporting.getAttributes().findByName("PK1"));
-        theRelation.getMapping().put(theExporting.getAttributes().findByName("PK2"),
+        theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK2"),
                 theImporting.getAttributes().findByName("PK2"));
 
         theModel.addRelation(theRelation);
@@ -498,9 +502,11 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theRelation.setName("REL_1");
         theRelation.setOnDelete(CascadeType.CASCADE);
         theRelation.setOnUpdate(CascadeType.CASCADE);
-        theRelation.getMapping().put(theExporting.getAttributes().findByName("PK1"),
+        
+        Index theExportingPrimaryKey = theExporting.getPrimarykey();
+        theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK1"),
                 theImporting.getAttributes().findByName("PK1"));
-        theRelation.getMapping().put(theExporting.getAttributes().findByName("PK2"),
+        theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK2"),
                 theImporting.getAttributes().findByName("PK2"));
 
         // Modify the model here

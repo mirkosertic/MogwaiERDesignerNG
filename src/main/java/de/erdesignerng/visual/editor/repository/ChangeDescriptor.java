@@ -26,11 +26,9 @@ import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
  * A change descriptor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class ChangeDescriptor {
-
-    private static final DateFormat FORMAT = new SimpleDateFormat();
 
     private ChangeEntity change;
     private int index;
@@ -42,7 +40,8 @@ public class ChangeDescriptor {
 
     @Override
     public String toString() {
-        return "#" + index + " " + change.getCreationUser() + "@" + FORMAT.format(change.getCreationDate());
+        DateFormat theFormat = new SimpleDateFormat();
+        return "#" + index + " " + change.getCreationUser() + "@" + theFormat.format(change.getCreationDate());
     }
 
     public ChangeEntity getChange() {

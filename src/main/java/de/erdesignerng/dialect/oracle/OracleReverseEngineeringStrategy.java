@@ -36,7 +36,7 @@ import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<OracleDialect> {
 
@@ -113,9 +113,7 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
             found = true;
             String theColumnExpression = theResult.getString("COLUMN_EXPRESSION");
 
-            // seems to be a function
-            System.out.println("Found function based column " + aColumnName + " for " + aTable.getName() + " index "
-                    + aIndex.getName() + " pos " + aPosition + " with expression " + theColumnExpression);
+            aIndex.getExpressions().addExpressionFor(theColumnExpression);
         }
         theResult.close();
         theStatement.close();

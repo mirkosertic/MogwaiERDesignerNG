@@ -42,7 +42,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>				
-				<xs:element name="Tables">
+				<xs:element name="Tables" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>The list of Tables defined for this model</xs:documentation>
 					</xs:annotation>
@@ -101,7 +101,9 @@
 															<xs:documentation>Definition of an index attribute</xs:documentation>
 														</xs:annotation>
 														<xs:complexType>
-															<xs:attribute name="attributerefid" use="required"/>
+															<xs:attribute name="id" use="required"/>
+															<xs:attribute name="attributerefid"/>
+															<xs:attribute name="expression"/>
 														</xs:complexType>
 													</xs:element>
 												</xs:sequence>
@@ -118,7 +120,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Relations">
+				<xs:element name="Relations" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Definition of relations</xs:documentation>
 					</xs:annotation>
@@ -137,7 +139,7 @@
 												<xs:documentation>A mapping element</xs:documentation>
 											</xs:annotation>
 											<xs:complexType>
-												<xs:attribute name="exportingattributerefid" use="required"/>
+												<xs:attribute name="exportingexpressionrefid" use="required"/>
 												<xs:attribute name="importingattributerefid" use="required"/>
 											</xs:complexType>
 										</xs:element>
@@ -153,8 +155,30 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				
-				<xs:element name="Subjectareas" minOccurs="0" maxOccurs="1">
+				<xs:element name="Views" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Definition of views</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="View">
+								<xs:annotation>
+									<xs:documentation>A view</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element name="Comment" type="CommentType" minOccurs="0"/>
+										<xs:element name="Sql" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="id" use="required"/>
+									<xs:attribute name="name" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>				
+				<xs:element name="Subjectareas" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Definition of subject areas</xs:documentation>
 					</xs:annotation>
@@ -172,6 +196,7 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:attribute name="tablerefid"/>
+												<xs:attribute name="viewrefid"/>
 												<xs:attribute name="commentrefid"/>
 											</xs:complexType>
 										</xs:element>
@@ -185,7 +210,7 @@
 					</xs:complexType>
 				</xs:element>
 				
-				<xs:element name="Comments" minOccurs="0" maxOccurs="1">
+				<xs:element name="Comments" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Definition of comments</xs:documentation>
 					</xs:annotation>
@@ -209,7 +234,7 @@
 				</xs:element>				
 				
 			</xs:sequence>
-			<xs:attribute name="version" type="xs:string"/>
+			<xs:attribute name="version" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="PropertyType">

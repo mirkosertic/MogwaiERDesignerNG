@@ -21,44 +21,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
+import de.mogwai.common.client.looks.components.DefaultList;
+import de.mogwai.common.client.looks.components.list.DefaultListModel;
 import de.mogwai.common.i18n.ResourceHelper;
 
 public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 
     private ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
-    
-    public IndexAttributesPropertyAdapter(DefaultCheckBoxList aComponent, String aPropertyName) {
+
+    public IndexAttributesPropertyAdapter(DefaultList aComponent, String aPropertyName) {
         super(aComponent, aPropertyName);
     }
 
     @Override
     public void model2view(Object aModel, String aPropertyName) {
 
-        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+        DefaultList theComponent = (DefaultList) getComponent()[0];
 
         Index theIndex = (Index) aModel;
-        theComponent.setSelectedItems(theIndex.getAttributes());
+        DefaultListModel theModel = theComponent.getModel();
+        theModel.clear();
+        for (IndexExpression theExpression : theIndex.getExpressions()) {
+            theModel.add(theExpression);
+        }
     }
 
     @Override
     public void view2model(Object aModel, String aPropertyName) {
-        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+        DefaultList theComponent = (DefaultList) getComponent()[0];
 
         Index theIndex = (Index) aModel;
-        theIndex.getAttributes().clear();
-        theIndex.getAttributes().addAll(theComponent.getSelectedItems());
+        theIndex.getExpressions().clear();
+        DefaultListModel<IndexExpression> theModel = theComponent.getModel();
+        for (int i = 0; i < theModel.getSize(); i++) {
+            theIndex.getExpressions().add(theModel.get(i));
+        }
 
     }
-    
+
     @Override
     public List<ValidationError> validate() {
         List<ValidationError> theResult = new ArrayList<ValidationError>();
-        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
-        if (theComponent.getSelectedItems().size() == 0) {
+        DefaultList theComponent = (DefaultList) getComponent()[0];
+        if (theComponent.getModel().getSize() == 0) {
             theResult.add(new ValidationError(this, helper.getText(BindingBundle.MISSINGREQUIREDFIELD)));
         }
         if (theResult.size() > 0) {

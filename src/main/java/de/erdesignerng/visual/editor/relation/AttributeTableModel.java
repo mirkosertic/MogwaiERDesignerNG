@@ -25,7 +25,7 @@ import de.erdesignerng.model.Index;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-05-24 17:00:47 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class AttributeTableModel implements TableModel {
 
@@ -62,14 +62,14 @@ public class AttributeTableModel implements TableModel {
     }
 
     public int getRowCount() {
-        return primaryKey.getAttributes().size();
+        return primaryKey.getExpressions().size();
     }
 
     public Object getValueAt(int aRow, int aColumn) {
         if (aColumn == 1) {
             return assignedAttributes[aRow];
         } else {
-            return primaryKey.getAttributes().get(aRow);
+            return primaryKey.getExpressions().get(aRow);
         }
     }
 

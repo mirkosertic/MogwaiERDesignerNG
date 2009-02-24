@@ -24,6 +24,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
@@ -34,7 +35,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  * @param <T>
  *                the dialect
  */
@@ -123,14 +124,18 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append(escapeTableName(aTable.getName()));
         theStatement.append(" (");
 
-        for (int i = 0; i < aIndex.getAttributes().size(); i++) {
-            Attribute theAttribute = aIndex.getAttributes().get(i);
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+            IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
             if (i > 0) {
                 theStatement.append(",");
             }
 
-            theStatement.append(theAttribute.getName());
+            if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
+                theStatement.append(theIndexExpression.getExpression());
+            } else {
+                theStatement.append(theIndexExpression.getAttributeRef().getName());
+            }
         }
 
         theStatement.append(")");
@@ -169,11 +174,15 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("(");
 
         first = true;
-        for (Attribute theAttribute : aRelation.getMapping().keySet()) {
+        for (IndexExpression theExpression : aRelation.getMapping().keySet()) {
             if (!first) {
                 theStatement.append(",");
             }
-            theStatement.append(theAttribute.getName());
+            if (!StringUtils.isEmpty(theExpression.getExpression())) {
+                theStatement.append(theExpression.getExpression());
+            } else {
+                theStatement.append(theExpression.getAttributeRef().getName());
+            }
             first = false;
         }
 
@@ -396,11 +405,16 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append(aIndex.getName());
         theStatement.append(" PRIMARY KEY(");
 
-        for (int i = 0; i < aIndex.getAttributes().size(); i++) {
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
             if (i > 0) {
                 theStatement.append(",");
             }
-            theStatement.append(aIndex.getAttributes().get(i).getName());
+            IndexExpression theExpression = aIndex.getExpressions().get(i);
+            if (!StringUtils.isEmpty(theExpression.getExpression())) {
+                theStatement.append(theExpression.getExpression());
+            } else {
+                theStatement.append(theExpression.getAttributeRef().getName());
+            }
         }
         theStatement.append(")");
         theResult.add(new Statement(theStatement.toString()));

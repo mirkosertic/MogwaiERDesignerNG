@@ -23,6 +23,8 @@ import org.hibernate.Session;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
@@ -78,7 +80,7 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
         aDestination.setOnDelete(cascadeTypeToInt(aSource.getOnDelete()));
 
         aDestination.getMapping().clear();
-        for (Map.Entry<Attribute, Attribute> theEntry : aSource.getMapping().entrySet()) {
+        for (Map.Entry<IndexExpression, Attribute> theEntry : aSource.getMapping().entrySet()) {
             StringKeyValuePair theMappingEntry = new StringKeyValuePair();
             theMappingEntry.setKey(theEntry.getKey().getSystemId());
             theMappingEntry.setValue(theEntry.getValue().getSystemId());
@@ -92,19 +94,23 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
         aDestination.setOnUpdate(intToCascadeType(aSource.getOnUpdate()));
         aDestination.setOnDelete(intToCascadeType(aSource.getOnDelete()));
 
+        
         aDestination.getMapping().clear();
+        Index thePrimaryKey = aDestination.getExportingTable().getPrimarykey();
+        
         for (StringKeyValuePair theEntry : aSource.getMapping()) {
-            Attribute theAt1 = aDestination.getExportingTable().getAttributes().findBySystemId(theEntry.getKey());
-            Attribute theAt2 = aDestination.getImportingTable().getAttributes().findBySystemId(theEntry.getValue());
-            if (theAt1 == null) {
-                throw new RuntimeException("Cannot find attribute" + theEntry.getKey());
+            IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theEntry.getKey());
+            if (theExpression == null) {
+                throw new RuntimeException("Cannot find index expression" + theEntry.getKey());
             }
 
-            if (theAt2 == null) {
+            Attribute theImportingAttribute = aDestination.getImportingTable().getAttributes().findBySystemId(theEntry.getValue());
+
+            if (theImportingAttribute == null) {
                 throw new RuntimeException("Cannot find attribute" + theEntry.getValue());
             }
 
-            aDestination.getMapping().put(theAt1, theAt2);
+            aDestination.getMapping().put(theExpression, theImportingAttribute);
         }
     }
 

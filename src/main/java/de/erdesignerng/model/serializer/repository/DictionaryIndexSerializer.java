@@ -22,14 +22,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.repository.entities.IndexEntity;
+import de.erdesignerng.model.serializer.repository.entities.IndexExpressionEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 
 /**
@@ -64,9 +67,15 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
             aDestination.setType(TYPE_UNDEFINED);
         }
 
-        aDestination.getAttributes().clear();
-        for (Attribute theAttribute : aSource.getAttributes()) {
-            aDestination.getAttributes().add(theAttribute.getSystemId());
+        aDestination.getExpressions().clear();
+        for (IndexExpression theIndexExpression : aSource.getExpressions()) {
+            IndexExpressionEntity theEntity = new IndexExpressionEntity();
+            theEntity.setExpression(theIndexExpression.getExpression());
+            Attribute theRefAttribute = theIndexExpression.getAttributeRef();
+            if (theRefAttribute != null) {
+                theEntity.setAttributeId(theRefAttribute.getSystemId());
+            }
+            aDestination.getExpressions().add(theEntity);
         }
     }
 
@@ -85,9 +94,15 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
             throw new RuntimeException("Invalid index type : " + aSource.getType());
         }
 
-        aDestination.getAttributes().clear();
-        for (String theAttributeId : aSource.getAttributes()) {
-            aDestination.getAttributes().add(aTable.getAttributes().findBySystemId(theAttributeId));
+        aDestination.getExpressions().clear();
+        for (IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
+            IndexExpression theExpression = new IndexExpression();
+            theExpression.setExpression(theExpressionEntity.getExpression());
+            String theAttributeId = theExpressionEntity.getAttributeId();
+            if (!StringUtils.isEmpty(theAttributeId)) {
+                theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeId));
+            }
+            aDestination.getExpressions().add(theExpression);
         }
     }
 
@@ -122,7 +137,6 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
                 aTableEntity.getIndexes().add(theEntity);
             }
         }
-
     }
 
     public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
