@@ -40,7 +40,9 @@ public class XMLSerializer {
 
     public static final String FALSE = "false";
     
-    public static final String ATTRIBUTEREFID = "attributerefid";    
+    public static final String ATTRIBUTEREFID = "attributerefid";
+    
+    public static final String ATTRIBUTEEXPRESSION = "expression";
     
     public static final String DATATYPE = "datatype";
 

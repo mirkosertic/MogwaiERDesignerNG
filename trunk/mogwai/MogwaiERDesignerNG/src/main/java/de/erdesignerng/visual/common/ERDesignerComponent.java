@@ -148,7 +148,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-13 18:47:14 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -1926,10 +1926,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         SubjectArea theArea = (SubjectArea) aCell.getUserObject();
         theArea.getTables().clear();
+        theArea.getViews().clear();
         theArea.getComments().clear();
         for (Object theObject : aCell.getChildren()) {
             if (theObject instanceof TableCell) {
                 theArea.getTables().add((Table) ((TableCell) theObject).getUserObject());
+            }
+            if (theObject instanceof ViewCell) {
+                theArea.getViews().add((View) ((ViewCell) theObject).getUserObject());
             }
             if (theObject instanceof CommentCell) {
                 theArea.getComments().add((Comment) ((CommentCell) theObject).getUserObject());

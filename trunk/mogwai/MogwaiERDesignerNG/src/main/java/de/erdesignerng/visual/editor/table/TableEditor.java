@@ -35,6 +35,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
@@ -45,7 +46,6 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxListModel;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
@@ -53,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-15 16:59:32 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -310,7 +310,7 @@ public class TableEditor extends BaseEditor {
 
         if (theValue != null) {
             DataType theDataType = theValue.getDatatype();
-            
+
             boolean isNew = !attributeListModel.contains(theValue);
 
             editingView.getNewButton().setEnabled(true);
@@ -374,7 +374,7 @@ public class TableEditor extends BaseEditor {
             indexBindingInfo.setEnabled(false);
         }
 
-        DefaultCheckBoxListModel theAttModel = editingView.getIndexFieldList().getModel();
+        DefaultListModel theAttModel = editingView.getIndexFieldList().getModel();
         theAttModel.clear();
 
         for (int i = 0; i < attributeListModel.getSize(); i++) {
@@ -470,8 +470,11 @@ public class TableEditor extends BaseEditor {
                 knownIndexValues.put(theModel.getSystemId(), theModel);
             }
 
-            theModel.getAttributes().clear();
-            theModel.getAttributes().addAll(editingView.getIndexFieldList().getSelectedItems());
+            theModel.getExpressions().clear();
+            DefaultListModel<IndexExpression> theListModel = editingView.getIndexFieldList().getModel();
+            for (int i = 0; i < theListModel.getSize(); i++) {
+                theModel.getExpressions().add(theListModel.get(i));
+            }
 
             updateIndexEditFields();
         }
@@ -577,7 +580,7 @@ public class TableEditor extends BaseEditor {
         for (int i = 0; i < indexListModel.getSize(); i++) {
             Index theIndex = (Index) indexListModel.get(i);
             if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
-                return theIndex.getAttributes().contains(aAttribute);
+                return theIndex.containsAttribute(aAttribute);
             }
         }
         return false;

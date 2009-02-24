@@ -29,7 +29,7 @@ public class IndexEntity extends ModelEntity {
 
     private int type;
     
-    private List<String> attributes = new ArrayList<String>();
+    private List<IndexExpressionEntity> expressions = new ArrayList<IndexExpressionEntity>();
 
     /**
      * @return the type
@@ -45,17 +45,11 @@ public class IndexEntity extends ModelEntity {
         this.type = type;
     }
 
-    /**
-     * @return the attributes
-     */
-    public List<String> getAttributes() {
-        return attributes;
+    public List<IndexExpressionEntity> getExpressions() {
+        return expressions;
     }
 
-    /**
-     * @param attributes the attributes to set
-     */
-    public void setAttributes(List<String> attributes) {
-        this.attributes = attributes;
+    public void setExpressions(List<IndexExpressionEntity> expressions) {
+        this.expressions = expressions;
     }
 }

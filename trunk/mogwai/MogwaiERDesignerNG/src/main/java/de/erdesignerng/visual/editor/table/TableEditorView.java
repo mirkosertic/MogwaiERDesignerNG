@@ -6,10 +6,9 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.IndexExpression;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
@@ -24,7 +23,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-11 20:27:53 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -84,7 +83,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultRadioButton primaryKeyIndex;
 
-    private DefaultCheckBoxList<Attribute> indexAttributesList;
+    private DefaultList<IndexExpression> indexAttributesList;
 
     private DefaultButton updateIndexButton;
 
@@ -645,10 +644,10 @@ public class TableEditorView extends DefaultPanel {
      * 
      * @return the initialized component
      */
-    public DefaultCheckBoxList<Attribute> getIndexFieldList() {
+    public DefaultList<IndexExpression> getIndexFieldList() {
 
         if (indexAttributesList == null) {
-            indexAttributesList = new DefaultCheckBoxList<Attribute>();
+            indexAttributesList = new DefaultList<IndexExpression>();
         }
 
         return indexAttributesList;

@@ -1,26 +1,8 @@
-/**
- * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- */
 package de.erdesignerng.plugins.sqleonardo;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.RowIdLifetime;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +13,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 
@@ -221,12 +201,13 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_PK_NAME);
 
         // Check only for tables, views do not have a primary key
-        Table theTable = ermodel.getTables().findByName(aTable);
+
+        /*Table theTable = ermodel.getTables().findByName(aTable);
         if (theTable != null) {
             Index theIndex = theTable.getPrimarykey();
             if (theIndex != null) {
                 short theNumber = 1;
-                for (Attribute theAttribute : theIndex.getAttributes()) {
+                for (Attribute  : theIndex.getExpressions()) {
                     Map<String, Object> theRow = new HashMap<String, Object>();
                     theRow.put(COLUMN_TABLE_NAME, theTable.getName());
                     theRow.put(COLUMN_COLUMN_NAME, theAttribute.getName());
@@ -234,7 +215,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
                     theRow.put(COLUMN_KEY_SEQ, theNumber++);
                 }
             }
-        }
+        }*/
 
         return new ERResultSet(theRowInfo);
     }
@@ -257,7 +238,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_PK_NAME);
         theRowInfo.addField(COLUMN_DEFERRABILITY);
 
-        Table theTable = ermodel.getTables().findByName(aTable);
+        /*Table theTable = ermodel.getTables().findByName(aTable);
         if (theTable != null) {
             for (Relation theRelation : ermodel.getRelations().getForeignKeysFor(theTable)) {
 
@@ -275,7 +256,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
                     theRowInfo.addRow(theRow);
                 }
             }
-        }
+        }*/
 
         return new ERResultSet(theRowInfo);
     }
@@ -298,7 +279,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_PK_NAME);
         theRowInfo.addField(COLUMN_DEFERRABILITY);
 
-        Table theTable = ermodel.getTables().findByName(aTable);
+        /*Table theTable = ermodel.getTables().findByName(aTable);
         if (theTable != null) {
             for (Relation theRelation : ermodel.getRelations().getExportedKeysFor(theTable)) {
 
@@ -316,11 +297,8 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
                     theRowInfo.addRow(theRow);
                 }
             }
-        }
+        }*/
         
-        /*
-         * TODO used: 2,3,4,6,7,8,12
-         */
         return new ERResultSet(theRowInfo);
     }
 
@@ -953,41 +931,5 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
 
     public boolean usesLocalFiles() throws SQLException {
         return true;
-    }
-
-    public boolean autoCommitFailureClosesAllResultSets() throws SQLException {
-        return false;
-    }
-
-    public ResultSet getClientInfoProperties() throws SQLException {
-        return null;
-    }
-
-    public ResultSet getFunctionColumns(String arg0, String arg1, String arg2, String arg3) throws SQLException {
-        return null;
-    }
-
-    public ResultSet getFunctions(String arg0, String arg1, String arg2) throws SQLException {
-        return null;
-    }
-
-    public RowIdLifetime getRowIdLifetime() throws SQLException {
-        return null;
-    }
-
-    public ResultSet getSchemas(String arg0, String arg1) throws SQLException {
-        return null;
-    }
-
-    public boolean supportsStoredFunctionsUsingCallSyntax() throws SQLException {
-        return false;
-    }
-
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return false;
-    }
-
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return null;
     }
 }

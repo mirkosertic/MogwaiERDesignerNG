@@ -55,7 +55,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:21:15 $
+ * @version $Date: 2009-02-24 19:36:28 $
  */
 public class TableCellView extends VertexView {
 
@@ -192,7 +192,7 @@ public class TableCellView extends VertexView {
 
                 boolean isPrimaryKey = false;
                 if (thePrimaryKey != null) {
-                    isPrimaryKey = thePrimaryKey.getAttributes().contains(theAttribute);
+                    isPrimaryKey = thePrimaryKey.containsAttribute(theAttribute);
                 }
 
                 if (isPrimaryKey) {
@@ -309,7 +309,7 @@ public class TableCellView extends VertexView {
 
                 boolean isPrimaryKey = false;
                 if (thePrimaryKey != null) {
-                    isPrimaryKey = thePrimaryKey.getAttributes().contains(theAttribute);
+                    isPrimaryKey = thePrimaryKey.containsAttribute(theAttribute);
                 }
 
                 if (isPrimaryKey) {

@@ -23,6 +23,8 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
@@ -41,8 +43,8 @@ public class XMLRelationSerializer extends XMLSerializer {
 
     public static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
 
-    public static final String EXPORTINGATTRIBUTEREFID = "exportingattributerefid";
-
+    public static final String EXPORTINGEXPRESSIONREFID = "exportingexpressionrefid";
+    
     public static final String ONDELETE = "ondelete";
 
     public static final String ONUPDATE = "onupdate";
@@ -63,12 +65,12 @@ public class XMLRelationSerializer extends XMLSerializer {
         serializeCommentElement(aDocument, theRelationElement, aRelation);
 
         // Mapping
-        for (Attribute theKey : aRelation.getMapping().keySet()) {
+        for (IndexExpression theKey : aRelation.getMapping().keySet()) {
             Attribute theValue = aRelation.getMapping().get(theKey);
 
             Element theMapping = addElement(aDocument, theRelationElement, MAPPING);
-            theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theKey.getSystemId());
-            theMapping.setAttribute(EXPORTINGATTRIBUTEREFID, theValue.getSystemId());
+            theMapping.setAttribute(EXPORTINGEXPRESSIONREFID, theKey.getSystemId());
+            theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theValue.getSystemId());
         }
         
     }
@@ -83,6 +85,7 @@ public class XMLRelationSerializer extends XMLSerializer {
             Relation theRelation = new Relation();
             theRelation.setOwner(aModel);
             deserializeProperties(theElement, theRelation);
+            deserializeCommentElement(theElement, theRelation);
 
             theRelation.setOnDelete(CascadeType.fromType(theElement.getAttribute(ONDELETE)));
             theRelation.setOnUpdate(CascadeType.fromType(theElement.getAttribute(ONUPDATE)));
@@ -102,25 +105,26 @@ public class XMLRelationSerializer extends XMLSerializer {
 
             theRelation.setExportingTable(theTempTable);
 
+            Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
+            
             // Parse the mapping
             NodeList theMappings = theElement.getElementsByTagName(MAPPING);
             for (int j = 0; j < theMappings.getLength(); j++) {
                 Element theAttributeElement = (Element) theMappings.item(j);
 
-                String theStartId = theAttributeElement.getAttribute(IMPORTINGATTRIBUTEREFID);
-                String theEndId = theAttributeElement.getAttribute(EXPORTINGATTRIBUTEREFID);
+                String theImportingAttributeId = theAttributeElement.getAttribute(IMPORTINGATTRIBUTEREFID);
+                String theExportingExpressionId = theAttributeElement.getAttribute(EXPORTINGEXPRESSIONREFID);
 
-                Attribute theStartAttribute = aModel.getTables().findAttributeBySystemId(theStartId);
-                if (theStartAttribute == null) {
-                    throw new IllegalArgumentException("Cannot find attribute with id " + theStartId);
+                Attribute theImportingAttribute = aModel.getTables().findAttributeBySystemId(theImportingAttributeId);
+                if (theImportingAttribute == null) {
+                    throw new IllegalArgumentException("Cannot find attribute with id " + theImportingAttributeId);
                 }
 
-                Attribute theEndAttribute = aModel.getTables().findAttributeBySystemId(theEndId);
-                if (theEndAttribute == null) {
-                    throw new IllegalArgumentException("Cannot find attribute with id " + theEndId);
+                IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theExportingExpressionId);
+                if (theExpression == null) {
+                    throw new IllegalArgumentException("Cannot find expression with id " + theExportingExpressionId);
                 }
-
-                theRelation.getMapping().put(theStartAttribute, theEndAttribute);
+                theRelation.getMapping().put(theExpression, theImportingAttribute);
             }
 
             aModel.getRelations().add(theRelation);

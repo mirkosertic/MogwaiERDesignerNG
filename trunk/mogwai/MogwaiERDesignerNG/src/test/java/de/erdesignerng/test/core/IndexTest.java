@@ -15,26 +15,26 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.mysql;
+package de.erdesignerng.test.core;
 
-import de.erdesignerng.dialect.mysql.MySQLDialect;
-import de.erdesignerng.test.sql.AbstractDialectTestCase;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
+import junit.framework.TestCase;
 
-/**
- * Test for the MySQL SQL Generator. 
- * 
- * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
- */
-public class MySQLDialectTest extends AbstractDialectTestCase {
+public class IndexTest extends TestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        dialect = new MySQLDialect();
-        textDataType = dialect.getDataTypes().findByName("VARCHAR");
-        intDataType = dialect.getDataTypes().findByName("INTEGER");
-        basePath = "/de/erdesignerng/test/sql/mysql/";
+    public void testModified() {
+        Attribute theAttribute = new Attribute();
+        theAttribute.setName("TEST");
+        
+        Index theIndex = new Index();
+        theIndex.setName("TESTINDEX");
+        theIndex.setIndexType(IndexType.UNIQUE);
+        theIndex.getExpressions().addExpressionFor(theAttribute);
+        
+        Index theCloneIndex = theIndex.clone();
+        assertTrue(theIndex.isModified(theCloneIndex, true) == false);
+        assertTrue(theIndex.isModified(theCloneIndex, false) == false);
     }
 }
