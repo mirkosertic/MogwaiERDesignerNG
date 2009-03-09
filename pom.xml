@@ -4,7 +4,7 @@
 	<groupId>net.sourceforge.mogwai</groupId>
 	<artifactId>mogwai-erdesignerng</artifactId>
 	<name>MogwaiERDesignerNG</name>
-	<version>1.6</version>
+	<version>1.7-SNAPSHOT</version>
 	<description>
 		Mogwai ER-Designer is an entity relationship design tool.
 	</description>
