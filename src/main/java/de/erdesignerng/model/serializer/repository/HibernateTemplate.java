@@ -34,12 +34,13 @@ import de.erdesignerng.model.serializer.repository.entities.RelationEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
+import de.erdesignerng.model.serializer.repository.entities.ViewEntity;
 
 /**
  * Template class for hibernate operations. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:30 $
  */
 public abstract class HibernateTemplate {
     
@@ -62,6 +63,7 @@ public abstract class HibernateTemplate {
         theConfiguration.addClass(SubjectAreaEntity.class);
         theConfiguration.addClass(RepositoryEntity.class);
         theConfiguration.addClass(ChangeEntity.class);
+        theConfiguration.addClass(ViewEntity.class);
         theConfiguration.setProperty(Environment.DIALECT, aHibernateDialectClass.getName());
         theConfiguration.setProperty(Environment.HBM2DDL_AUTO, "update");
         theConfiguration.setProperty(Environment.CONNECTION_PROVIDER, ThreadbasedConnectionProvider.class.getName());

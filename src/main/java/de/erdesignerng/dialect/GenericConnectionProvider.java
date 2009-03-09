@@ -25,7 +25,7 @@ import de.erdesignerng.util.ApplicationPreferences;
  * Implementation of a generic ConnectionProvider. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:30 $
  */
 public class GenericConnectionProvider implements ConnectionProvider {
     

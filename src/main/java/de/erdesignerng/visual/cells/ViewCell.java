@@ -32,7 +32,7 @@ import de.erdesignerng.model.View;
  * A table cell.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:27 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public class ViewCell extends DefaultGraphCell implements ModelCell<View> {
 

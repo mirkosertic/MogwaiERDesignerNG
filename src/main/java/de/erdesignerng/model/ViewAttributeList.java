@@ -22,7 +22,7 @@ package de.erdesignerng.model;
  * A list of view attributes. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public class ViewAttributeList extends ModelItemVector<ViewAttribute> {
 

@@ -50,7 +50,7 @@ import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public final class ModelIOUtilities {
 
@@ -138,6 +138,8 @@ public final class ModelIOUtilities {
      * 
      * @param aDesc
      *                the element descriptor
+     * @param aDialect
+     *                the dialect used to communicate with the repository
      * @param aConnection
      *                the connection
      * @param aModel
@@ -148,10 +150,10 @@ public final class ModelIOUtilities {
      * @throws Exception
      *                 will be thrown in case of an exception
      */
-    public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Connection aConnection,
-            Model aModel, ApplicationPreferences aPreferences) throws Exception {
+    public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Dialect aDialect,
+            Connection aConnection, Model aModel, ApplicationPreferences aPreferences) throws Exception {
 
-        Class theDialectClass = aModel.getDialect().getHibernateDialectClass();
+        Class theDialectClass = aDialect.getHibernateDialectClass();
         aDesc = DictionaryModelSerializer.SERIALIZER.serialize(aDesc, aModel, aConnection, theDialectClass);
 
         return aDesc;

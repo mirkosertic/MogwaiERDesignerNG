@@ -37,7 +37,7 @@ import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:30 $
  */
 public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MySQLDialect> {
 
@@ -97,7 +97,7 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -120,13 +120,19 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {
-        PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
+        PreparedStatement theStatement = aConnection
+                .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
         theStatement.setString(1, aViewEntry.getTableName());
         ResultSet theResult = null;
         try {
             theResult = theStatement.executeQuery();
             while (theResult.next()) {
-                return theResult.getString("VIEW_DEFINITION");
+                String theViewDefinition = theResult.getString("VIEW_DEFINITION");
+                int p = theViewDefinition.indexOf("*/");
+                if (p > 0) {
+                    theViewDefinition = theViewDefinition.substring(p + 2);
+                }
+                return theViewDefinition;
             }
             return null;
         } finally {
@@ -135,5 +141,5 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
             }
             theStatement.close();
         }
-    }    
+    }
 }

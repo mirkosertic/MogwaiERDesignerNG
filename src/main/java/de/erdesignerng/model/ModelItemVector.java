@@ -21,7 +21,7 @@ import java.util.Vector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-12 19:11:45 $
+ * @version $Date: 2009-03-09 19:07:29 $
  * @param <T>
  *                the type
  */
@@ -86,7 +86,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
         }
         return null;
     }
-
+    
     /**
      * Delete an attribute by a given name.
      * 

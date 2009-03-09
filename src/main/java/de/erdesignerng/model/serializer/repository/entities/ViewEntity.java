@@ -15,25 +15,23 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.tools;
+package de.erdesignerng.model.serializer.repository.entities;
 
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-
-import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
- * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * Entity for a view.
+ * 
+ * @author msertic
  */
-public class ViewTool extends BaseTool {
+public class ViewEntity extends ModelEntity {
 
-    public ViewTool(ERDesignerGraph aGraph) {
-        super(aGraph);
+    private String sqlstatement;
+
+    public String getSqlstatement() {
+        return sqlstatement;
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        graph.commandNewView(new Point2D.Double(e.getX(), e.getY()));
+    public void setSqlstatement(String sqlstatement) {
+        this.sqlstatement = sqlstatement;
     }
 }
