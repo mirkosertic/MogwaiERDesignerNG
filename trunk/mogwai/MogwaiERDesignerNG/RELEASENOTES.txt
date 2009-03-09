@@ -143,4 +143,5 @@ Release 1.7
 * Bug Fixing 2615849 [ERDesignerNG] Wrong dialect is used to communicate with rep
 * Bug Fixing 2504309 [ERDesignerNG] ERdesigner 1.6: problems on exit
 * Bug Fixing 2675509 [ERDesignerNG] Oracle RE of indexes fails
+* Bug Fixing 2616079 [ERDesignerNG] OnUpdate=Cascade not persisted
 
