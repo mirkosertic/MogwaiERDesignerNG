@@ -21,18 +21,20 @@ import java.io.Serializable;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public abstract class ModelItem implements Serializable {
 
     public static final String PROPERTY_LOCATION = "LOCATION";
-
+    
     private String systemId = ModelUtilities.createSystemIdFor(this);
 
     private String name;
+    
+    private String originalName;
 
     private String comment;
-
+    
     private ModelProperties properties = new ModelProperties();
 
     /**
@@ -148,5 +150,13 @@ public abstract class ModelItem implements Serializable {
             aValue2 = "";
         }
         return !aValue1.equals(aValue2);
-    }    
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
 }

@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-02 14:20:18 $
+ * @version $Date: 2009-03-09 19:07:31 $
  */
 public class OracleDialect extends SQL92Dialect {
 
@@ -50,6 +50,12 @@ public class OracleDialect extends SQL92Dialect {
         registerType(new OracleDataType("NCLOB", "", java.sql.Types.CLOB));
         registerType(new OracleDataType("XMLTYPE", "", java.sql.Types.OTHER));
         registerType(new OracleDataType("ROWID", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("SDO_GEOMETRY", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("SDO_GTYPE", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("SDO_SRID", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("SDO_POINT", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("SDO_ELEM_INFO", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("SDO_ORDINATES", "", java.sql.Types.OTHER));
         
         seal();        
     }

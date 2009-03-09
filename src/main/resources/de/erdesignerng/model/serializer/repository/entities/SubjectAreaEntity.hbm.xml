@@ -30,6 +30,12 @@
 			<element column="tableid" type="string" not-null="true"/>
 		</list>
 
+		<list name="views" cascade="all-delete-orphan" table="mogrep_sa_views">
+			<key column="indexid" foreign-key="mogrep_sa_views_fk1" />
+			<list-index column="listindex" />
+			<element column="viewid" type="string" not-null="true"/>
+		</list>
+
 		<list name="comments" cascade="all-delete-orphan" table="mogrep_sa_comments">
 			<key column="indexid" foreign-key="mogrep_sa_comments_fk1"/>
 			<list-index column="listindex" />

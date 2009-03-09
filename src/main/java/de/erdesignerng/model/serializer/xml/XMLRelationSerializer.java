@@ -60,7 +60,7 @@ public class XMLRelationSerializer extends XMLSerializer {
         theRelationElement.setAttribute(EXPORTINGTABLEREFID, aRelation.getExportingTable().getSystemId());
 
         theRelationElement.setAttribute(ONDELETE, aRelation.getOnDelete().getType());
-        theRelationElement.setAttribute(ONUPDATE, aRelation.getOnDelete().getType());
+        theRelationElement.setAttribute(ONUPDATE, aRelation.getOnUpdate().getType());
 
         serializeCommentElement(aDocument, theRelationElement, aRelation);
 
@@ -129,6 +129,5 @@ public class XMLRelationSerializer extends XMLSerializer {
 
             aModel.getRelations().add(theRelation);
         }
-        
     }
 }

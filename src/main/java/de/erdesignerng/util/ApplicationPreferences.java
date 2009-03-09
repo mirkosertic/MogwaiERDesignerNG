@@ -35,7 +35,7 @@ import org.apache.commons.lang.StringUtils;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:27 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public class ApplicationPreferences {
 

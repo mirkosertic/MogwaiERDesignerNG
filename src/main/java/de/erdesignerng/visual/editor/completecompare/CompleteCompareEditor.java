@@ -35,6 +35,8 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.RelationList;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.TableList;
+import de.erdesignerng.model.View;
+import de.erdesignerng.model.ViewList;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
@@ -42,7 +44,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2009-03-09 19:07:30 $
  */
 public class CompleteCompareEditor extends BaseEditor {
 
@@ -188,6 +190,68 @@ public class CompleteCompareEditor extends BaseEditor {
             generateRelationsForTable(theRelationsModelSideNode, theRelationsDBSideNode, theTableFromModel,
                     theTableFromDB, theAllRelations, databaseModel, currentModel);
 
+        }
+        
+        ViewList theAllViews = new ViewList();
+        theAllViews.addAll(currentModel.getViews());
+
+        for (View theView : databaseModel.getViews()) {
+            if (theAllViews.findByName(theView.getName()) == null) {
+                theAllViews.add(theView);
+            }
+        }
+
+        for (View theView : theAllViews) {
+
+            String theViewName = theView.getName();
+
+            DefaultMutableTreeNode theModelSideTableNode = null;
+            DefaultMutableTreeNode theDBSideTableNode = null;
+
+            View theViewFromModel = currentModel.getViews().findByName(theViewName);
+            View theViewFromDB = databaseModel.getViews().findByName(theViewName);
+
+            // Add it to both sides
+            if (theViewFromModel != null) {
+                
+                if (theViewFromModel.isModified(theView)) {
+                    // View was redifined
+                    theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(this, theViewName));
+                    theModelSideRootNode.add(theModelSideTableNode);
+                } else {
+                    // View exists in model
+                    theModelSideTableNode = new DefaultMutableTreeNode(theViewName);
+                    theModelSideRootNode.add(theModelSideTableNode);
+                }
+
+            } else {
+
+                // Entity does not exist in model
+                theModelSideTableNode = new DefaultMutableTreeNode(new MissingViewInfo(this, theViewName));
+                theModelSideRootNode.add(theModelSideTableNode);
+
+            }
+
+            if (theViewFromDB != null) {
+                
+                if (theViewFromDB.isModified(theView)) {
+                    // View was redifined
+                    theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(this, theViewName));
+                    theModelSideRootNode.add(theModelSideTableNode);
+                    
+                } else {
+                    // View exists in db
+                    theDBSideTableNode = new DefaultMutableTreeNode(theViewName);
+                    theDBSideRootNode.add(theDBSideTableNode);
+                }
+
+            } else {
+
+                // Entity does not exists in db
+                theDBSideTableNode = new DefaultMutableTreeNode(new MissingViewInfo(this, theViewName));
+                theDBSideRootNode.add(theDBSideTableNode);
+
+            }
         }
 
         editingView.getCurrentModelView().setModel(new DefaultTreeModel(theModelSideRootNode));

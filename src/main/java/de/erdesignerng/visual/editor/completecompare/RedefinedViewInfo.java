@@ -15,25 +15,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.tools;
+package de.erdesignerng.visual.editor.completecompare;
 
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-
-import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.ERDesignerBundle;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  */
-public class ViewTool extends BaseTool {
+public class RedefinedViewInfo extends RedefinedInfo {
 
-    public ViewTool(ERDesignerGraph aGraph) {
-        super(aGraph);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        graph.commandNewView(new Point2D.Double(e.getX(), e.getY()));
+    public RedefinedViewInfo(CompleteCompareEditor aEditor, String aWhat) {
+        super(aEditor, ERDesignerBundle.REDEFINED, aWhat);
     }
 }

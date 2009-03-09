@@ -38,6 +38,8 @@ public class RepositoryEntity extends ModelEntity {
 
     private List<CommentEntity> comments = new ArrayList<CommentEntity>();
 
+    private List<ViewEntity> views = new ArrayList<ViewEntity>();
+
     private List<SubjectAreaEntity> subjectareas = new ArrayList<SubjectAreaEntity>();
 
     private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
@@ -145,6 +147,14 @@ public class RepositoryEntity extends ModelEntity {
      */
     public void setDialect(String dialect) {
         this.dialect = dialect;
+    }
+    
+    public List<ViewEntity> getViews() {
+        return views;
+    }
+
+    public void setViews(List<ViewEntity> views) {
+        this.views = views;
     }
 
     /**

@@ -26,6 +26,7 @@ import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
@@ -53,6 +54,11 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
             aDestination.getComments().add(theComment.getSystemId());
         }
 
+        aDestination.getViews().clear();
+        for (View theView : aSource.getViews()) {
+            aDestination.getComments().add(theView.getSystemId());
+        }
+
     }
 
     protected void copyExtendedAttributes(SubjectAreaEntity aSource, SubjectArea aDestination, Model aModel) {
@@ -67,6 +73,11 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         aDestination.getComments().clear();
         for (String theComment : aSource.getComments()) {
             aDestination.getComments().add(aModel.getComments().findBySystemId(theComment));
+        }
+        
+        aDestination.getViews().clear();
+        for (String theView : aSource.getViews()) {
+            aDestination.getViews().add(aModel.getViews().findBySystemId(theView));
         }
     }
 

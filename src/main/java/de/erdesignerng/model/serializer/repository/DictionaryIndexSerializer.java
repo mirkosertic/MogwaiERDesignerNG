@@ -71,6 +71,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
         for (IndexExpression theIndexExpression : aSource.getExpressions()) {
             IndexExpressionEntity theEntity = new IndexExpressionEntity();
             theEntity.setExpression(theIndexExpression.getExpression());
+            theEntity.setSystemId(theIndexExpression.getSystemId());
             Attribute theRefAttribute = theIndexExpression.getAttributeRef();
             if (theRefAttribute != null) {
                 theEntity.setAttributeId(theRefAttribute.getSystemId());
@@ -98,6 +99,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
         for (IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
             IndexExpression theExpression = new IndexExpression();
             theExpression.setExpression(theExpressionEntity.getExpression());
+            theExpression.setSystemId(theExpressionEntity.getSystemId());
             String theAttributeId = theExpressionEntity.getAttributeId();
             if (!StringUtils.isEmpty(theAttributeId)) {
                 theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeId));

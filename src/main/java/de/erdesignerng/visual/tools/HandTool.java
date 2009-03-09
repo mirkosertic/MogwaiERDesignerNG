@@ -40,7 +40,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:30 $
  */
 public class HandTool extends BaseTool {
 
