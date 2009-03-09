@@ -29,7 +29,7 @@ import de.erdesignerng.modificationtracker.VetoException;
  * Base class for all SQL generators.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:30 $
  */
 public abstract class SQLGenerator<T extends Dialect> {
 
@@ -97,11 +97,21 @@ public abstract class SQLGenerator<T extends Dialect> {
 
     public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
 
+    /**
+     * Create the DDL script for the whole model. 
+     * 
+     * @param aModel the model
+     * @return the lists of statements
+     * @throws VetoException can be thrown if someone has a veto on execution
+     */
     public StatementList createCreateAllObjects(Model aModel) throws VetoException {
 
         StatementList theResult = new StatementList();
         for (Table theTable : aModel.getTables()) {
             theResult.addAll(createAddTableStatement(theTable));
+        }
+        for (View theView : aModel.getViews()) {
+            theResult.addAll(createAddViewStatement(theView));
         }
         for (Relation theRelation : aModel.getRelations()) {
             theResult.addAll(createAddRelationStatement(theRelation));

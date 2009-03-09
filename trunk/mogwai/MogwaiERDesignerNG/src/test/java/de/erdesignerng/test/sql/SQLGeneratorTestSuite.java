@@ -29,7 +29,7 @@ import junit.framework.TestSuite;
  * Testsuite for all SQL Generators.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:26 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public class SQLGeneratorTestSuite extends TestSuite {
 

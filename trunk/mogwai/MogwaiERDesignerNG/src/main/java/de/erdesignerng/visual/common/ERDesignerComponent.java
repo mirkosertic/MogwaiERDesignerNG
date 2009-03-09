@@ -148,7 +148,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  * This is the heart of the system.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
@@ -276,7 +276,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction domainsAction;
 
     private DefaultAction entityAction;
-    
+
     private DefaultAction viewAction;
 
     private JToggleButton entityButton;
@@ -298,7 +298,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction commentAction;
 
     private JToggleButton commentButton;
-    
+
     private JToggleButton viewButton;
 
     private DefaultAction layoutAction;
@@ -966,7 +966,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             graph.doLayout();
         }
     }
-    
+
     protected void commandAddView(Point2D aPoint) {
 
         // if (model.getDialect() == null) {
@@ -975,7 +975,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         // ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
         // return;
         // }
-        
+
         View theView = new View();
         ViewEditor theEditor = new ViewEditor(model, scrollPane);
         theEditor.initializeFor(theView);
@@ -1004,7 +1004,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             graph.doLayout();
         }
-    }    
+    }
 
     protected void commandClasspath() {
         ClasspathEditor theEditor = new ClasspathEditor(scrollPane, preferences);
@@ -1439,7 +1439,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
 
-                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theConnection, model, preferences);
+                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
+                            model, preferences);
 
                     setupViewFor(theDesc);
                     worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));

@@ -32,6 +32,8 @@ public class SubjectAreaEntity extends ModelEntity {
     private List<String> tables = new ArrayList<String>();
 
     private List<String> comments = new ArrayList<String>();
+    
+    private List<String> views = new ArrayList<String>();
 
     /**
      * @return the color
@@ -73,5 +75,13 @@ public class SubjectAreaEntity extends ModelEntity {
      */
     public void setComments(List<String> comments) {
         this.comments = comments;
+    }
+
+    public List<String> getViews() {
+        return views;
+    }
+
+    public void setViews(List<String> views) {
+        this.views = views;
     }
 }

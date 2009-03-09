@@ -23,7 +23,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:29 $
  */
 public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
     
@@ -89,5 +89,18 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
      */
     public void setAttributes(ViewAttributeList attributes) {
         this.attributes = attributes;
+    }
+
+    /**
+     * Test if the view was modified(compare it with another view). 
+     * 
+     * @param aView the view to test against with
+     * @return true if it was modified, else false
+     */
+    public boolean isModified(View aView) {
+        if (!sql.equals(aView.getSql())) {
+            return true;
+        }
+        return false;
     }
 }

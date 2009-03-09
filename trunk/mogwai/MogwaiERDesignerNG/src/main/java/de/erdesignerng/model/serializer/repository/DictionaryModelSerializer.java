@@ -79,6 +79,8 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
                 DictionaryTableSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
 
+                DictionaryViewSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
+
                 DictionaryRelationSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
 
                 DictionaryCommentSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
@@ -135,6 +137,8 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
 
                 DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
+
+                DictionaryViewSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
 
                 DictionaryRelationSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
 

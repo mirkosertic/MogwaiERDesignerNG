@@ -1,3 +1,20 @@
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 package de.erdesignerng.plugins.sqleonardo;
 
 import java.io.InputStream;
@@ -8,11 +25,14 @@ import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
+import java.sql.NClob;
 import java.sql.Ref;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+import java.sql.SQLXML;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -165,20 +185,12 @@ public class ERResultSet implements ResultSet {
     }
 
     // Not used methods
-    
+
     public Statement getStatement() throws SQLException {
         throw new NotImplementedException();
     }
-    
+
     public ResultSetMetaData getMetaData() throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public Object getObject(int i, Map map) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public Object getObject(String colName, Map map) throws SQLException {
         throw new NotImplementedException();
     }
 
@@ -583,6 +595,214 @@ public class ERResultSet implements ResultSet {
     }
 
     public void updateTimestamp(String columnName, Timestamp x) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public int getHoldability() throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public Reader getNCharacterStream(int arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public Reader getNCharacterStream(String arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public NClob getNClob(int arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public NClob getNClob(String arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public String getNString(int arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public String getNString(String arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public Object getObject(int arg0, Map<String, Class<?>> arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public RowId getRowId(int arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public RowId getRowId(String arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public SQLXML getSQLXML(int arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public SQLXML getSQLXML(String arg0) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public boolean isClosed() throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateAsciiStream(int arg0, InputStream arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateAsciiStream(String arg0, InputStream arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateAsciiStream(int arg0, InputStream arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateAsciiStream(String arg0, InputStream arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBinaryStream(int arg0, InputStream arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBinaryStream(String arg0, InputStream arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBinaryStream(int arg0, InputStream arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBinaryStream(String arg0, InputStream arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBlob(int arg0, InputStream arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBlob(String arg0, InputStream arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBlob(int arg0, InputStream arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateBlob(String arg0, InputStream arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateCharacterStream(int arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateCharacterStream(String arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateClob(int arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateClob(String arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateClob(int arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateClob(String arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNCharacterStream(int arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNCharacterStream(String arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNClob(int arg0, NClob arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNClob(String arg0, NClob arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNClob(int arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNClob(String arg0, Reader arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNClob(int arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNClob(String arg0, Reader arg1, long arg2) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNString(int arg0, String arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateNString(String arg0, String arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateRowId(int arg0, RowId arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateRowId(String arg0, RowId arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateSQLXML(int arg0, SQLXML arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public void updateSQLXML(String arg0, SQLXML arg1) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    public <T> T unwrap(Class<T> iface) throws SQLException {
         throw new NotImplementedException();
     }
 }

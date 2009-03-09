@@ -35,6 +35,12 @@
 			<one-to-many class="TableEntity"/>
 		</list>
 
+		<list name="views" cascade="all-delete-orphan">
+			<key column="repid" not-null="true" foreign-key="mogrep_views_fk1"/>
+			<list-index column="listindex"/>
+			<one-to-many class="ViewEntity"/>
+		</list>
+
 		<list name="relations" cascade="all-delete-orphan">
 			<key column="repid" not-null="true" foreign-key="mogrep_relations_fk1"/>
 			<list-index column="listindex"/>

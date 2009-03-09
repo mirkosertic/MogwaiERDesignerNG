@@ -34,7 +34,7 @@ public class IndexTest extends TestCase {
         theIndex.getExpressions().addExpressionFor(theAttribute);
         
         Index theCloneIndex = theIndex.clone();
-        assertTrue(theIndex.isModified(theCloneIndex, true) == false);
-        assertTrue(theIndex.isModified(theCloneIndex, false) == false);
+        assertTrue(!theIndex.isModified(theCloneIndex, true));
+        assertTrue(!theIndex.isModified(theCloneIndex, false));
     }
 }

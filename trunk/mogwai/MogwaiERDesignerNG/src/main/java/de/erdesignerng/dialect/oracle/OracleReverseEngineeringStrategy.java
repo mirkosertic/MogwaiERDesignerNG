@@ -36,7 +36,7 @@ import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:31 $
  */
 public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<OracleDialect> {
 
@@ -73,6 +73,14 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         // Check for recycle bin tables
         return (!aTableName.startsWith("BIN$")) && (aTableName.indexOf("/") < 0);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isValidView(String aViewName, String aTableType) {
+        return aViewName.indexOf("/") < 0 && aViewName.indexOf("==") < 0;
+    }
 
     /**
      * {@inheritDoc}
@@ -104,8 +112,8 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         Connection theConnection = aMetaData.getConnection();
         PreparedStatement theStatement = theConnection
                 .prepareStatement("SELECT * FROM USER_IND_EXPRESSIONS WHERE INDEX_NAME = ? AND TABLE_NAME = ? AND COLUMN_POSITION = ?");
-        theStatement.setString(1, aIndex.getName());
-        theStatement.setString(2, aTable.getName());
+        theStatement.setString(1, aIndex.getOriginalName());
+        theStatement.setString(2, aTable.getOriginalName());
         theStatement.setShort(3, aPosition);
         ResultSet theResult = theStatement.executeQuery();
         boolean found = false;

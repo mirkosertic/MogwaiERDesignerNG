@@ -40,7 +40,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-02-24 19:36:28 $
+ * @version $Date: 2009-03-09 19:07:30 $
  * @param <T>
  *                the dialect
  */
@@ -112,6 +112,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             View theView = new View();
 
             theView.setName(dialect.getCastType().cast(aViewEntry.getTableName()));
+            theView.setOriginalName(aViewEntry.getTableName());
 
             if (!StringUtils.isEmpty(theViewRemarks)) {
                 theView.setComment(theViewRemarks);
@@ -129,7 +130,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             try {
                 aModel.addView(theView);
             } catch (Exception e) {
-                throw new ReverseEngineeringException(e.getMessage());
+                throw new ReverseEngineeringException(e.getMessage(), e);
             }
 
         }
@@ -171,6 +172,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             Table theTable = new Table();
 
             theTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
+            theTable.setOriginalName(aTableEntry.getTableName());
 
             if (!StringUtils.isEmpty(theTableRemarks)) {
                 theTable.setComment(theTableRemarks);
@@ -233,7 +235,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 try {
                     theTable.addAttribute(aModel, theAttribute);
                 } catch (Exception e) {
-                    throw new ReverseEngineeringException(e.getMessage());
+                    throw new ReverseEngineeringException(e.getMessage(), e);
                 }
             }
             theColumnsResultSet.close();
@@ -252,7 +254,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             try {
                 aModel.addTable(theTable);
             } catch (Exception e) {
-                throw new ReverseEngineeringException(e.getMessage());
+                throw new ReverseEngineeringException(e.getMessage(), e);
             }
 
         }
@@ -274,6 +276,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 thePrimaryKeyIndex = new Index();
                 thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
                 thePrimaryKeyIndex.setName(convertIndexNameFor(aTable, thePKName));
+                thePrimaryKeyIndex.setOriginalName(thePKName);
                 if (StringUtils.isEmpty(thePrimaryKeyIndex.getName())) {
                     // Assume the default name is TABLE_NAME+"_FK"
                     thePrimaryKeyIndex.setName(aTableEntry.getTableName() + "_FK");
@@ -282,7 +285,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 try {
                     aTable.addIndex(aModel, thePrimaryKeyIndex);
                 } catch (Exception e) {
-                    throw new ReverseEngineeringException(e.getMessage());
+                    throw new ReverseEngineeringException(e.getMessage(), e);
                 }
             }
 
@@ -305,17 +308,21 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     protected void reverseEngineerIndexes(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
             Table aTable, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
 
-        ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), aTableEntry.getCatalogName(),
+        ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(),
                 aTableEntry.getTableName(), false, true);
         Index theIndex = null;
         while (theIndexResults.next()) {
 
             String theIndexName = convertIndexNameFor(aTable, theIndexResults.getString("INDEX_NAME"));
-            if ((theIndexName != null) && ((theIndex == null) || (!theIndex.getName().equals(theIndexName)))) {
+            
+            if ((theIndexName != null) && ((theIndex == null) || (!theIndex.getOriginalName().equals(theIndexName)))) {
+                
+                String theNewIndexName = dialect.getCastType().cast(theIndexName);
 
-                if (aTable.getIndexes().findByName(theIndexName) == null) {
+                if (aTable.getIndexes().findByName(theNewIndexName) == null) {
                     theIndex = new Index();
-                    theIndex.setName(theIndexName);
+                    theIndex.setName(theNewIndexName);
+                    theIndex.setOriginalName(theIndexName);
 
                     boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
                     if (isNonUnique) {
@@ -330,7 +337,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                         aTable.addIndex(aModel, theIndex);
                     } catch (Exception e) {
                         throw new ReverseEngineeringException("Cannot add index " + theIndexName + " in table "
-                                + aTable.getName() + " : " + e.getMessage());
+                                + aTable.getName() + " : " + e.getMessage(), e);
                     }
                 } else {
                     theIndex = null;
@@ -428,6 +435,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         }
 
         int theSysCounter = 0;
+        
+        List<Relation> theNewRelations = new ArrayList<Relation>();
 
         for (Table theTable : aModel.getTables()) {
 
@@ -437,7 +446,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
             // Foreign keys
             Relation theRelation = null;
-            ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, theTable.getName());
+            ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, theTable.getOriginalName());
             while (theForeignKeys.next()) {
                 String theFKName = theForeignKeys.getString("FK_NAME");
 
@@ -471,7 +480,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                         if (addNew) {
 
                             theRelation = new Relation();
-                            theRelation.setName(theRelationName);
+                            theRelation.setName(dialect.getCastType().cast(theRelationName));
+                            theRelation.setOriginalName(theRelationName);
 
                             theRelation.setExportingTable(theExportingTable);
                             theRelation.setImportingTable(theTable);
@@ -494,19 +504,15 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                                 theRelation.setOnDelete(CascadeType.NOTHING);
                             }
 
-                            try {
-                                aModel.addRelation(theRelation);
-                            } catch (Exception e) {
-                                throw new ReverseEngineeringException(e.getMessage());
-                            }
+                            theNewRelations.add(theRelation);
                         }
                     }
                 }
 
                 if ((theRelation != null) && (theRelation.getImportingTable() != null)
                         && (theRelation.getExportingTable() != null)) {
-                    String thePKColumnName = theForeignKeys.getString("PKCOLUMN_NAME");
-                    String theFKColumnName = theForeignKeys.getString("FKCOLUMN_NAME");
+                    String thePKColumnName = dialect.getCastType().cast(theForeignKeys.getString("PKCOLUMN_NAME"));
+                    String theFKColumnName = dialect.getCastType().cast(theForeignKeys.getString("FKCOLUMN_NAME"));
 
                     Attribute theExportingAttribute = theRelation.getExportingTable().getAttributes().findByName(
                             dialect.getCastType().cast(thePKColumnName));
@@ -527,7 +533,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     }
 
                     Attribute theImportingAttribute = theRelation.getImportingTable().getAttributes().findByName(
-                            dialect.getCastType().cast(theFKColumnName));
+                            theFKColumnName);
                     if (theImportingAttribute == null) {
                         throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table "
                                 + theRelation.getImportingTable().getName());
@@ -537,6 +543,14 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 }
             }
             theForeignKeys.close();
+        }
+        
+        try {
+            for (Relation theRelation : theNewRelations) {
+                aModel.addRelation(theRelation);
+            }
+        } catch (Exception e) {
+            throw new ReverseEngineeringException(e.getMessage(), e);
         }
     }
 
