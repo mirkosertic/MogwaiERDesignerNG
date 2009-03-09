@@ -141,4 +141,5 @@ Release 1.7
 * Bug Fixing 2513135 [ERDesignerNG] Oracle complete compare fails with date colum
 * Bug Fixing 2675526 [ERDesignerNG] Generation of migration script not possible
 * Bug Fixing 2615849 [ERDesignerNG] Wrong dialect is used to communicate with rep
+* Bug Fixing 2504309 [ERDesignerNG] ERdesigner 1.6: problems on exit
 
