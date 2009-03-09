@@ -139,4 +139,5 @@ Release 1.6
 Release 1.7
 
 * Bug Fixing 2513135 [ERDesignerNG] Oracle complete compare fails with date colum
+* Bug Fixing 2675526 [ERDesignerNG] Generation of migration script not possible
 
