@@ -151,3 +151,4 @@ Release 1.7
 * Bug Fixing 2675559 [ERDesignerNG] Clipping labels
 * Implemented FR 2581994 [ERDesignerNG] Support for function based indexes
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
+* Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs
