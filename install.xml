@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <installation version="1.0">
 	<info>
-		<appname>Mogwai ERDesignerNG</appname>
-		<appversion>1.6</appversion>
+		<appname>@name@</appname>
+		<appversion>@version@</appversion>
 		<url>http://mogwai.sourceforge.net</url>
+		<javaversion>1.6</javaversion>
+    	<requiresjdk>no</requiresjdk>
+    	<run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
 	</info>
 	<guiprefs width="640" height="480" resizable="no">
 		<modifier key="useButtonIcons" value="no" />
@@ -23,8 +26,8 @@
 	</locale>
 	<resources>
 		<res id="LicencePanel.licence" src="LICENSE_MOGWAI.txt" />
-		<res src="installer_shortcutspec.xml" id="shortcutSpec.xml"/>
-		<res src="installer_unix_shortcutspec.xml" id="Unix_shortcutSpec.xml"/>
+		<res src="install_shortcutspec.xml" id="shortcutSpec.xml"/>
+		<res src="install_unix_shortcutspec.xml" id="Unix_shortcutSpec.xml"/>
 	</resources>
 	<panels>
 		<panel classname="HelloPanel" />
@@ -44,7 +47,6 @@
 			<file src="run.bat" targetdir="$INSTALL_PATH"/>
 			<file src="run.sh" targetdir="$INSTALL_PATH" os="unix" />
 			<file src="run.sh" targetdir="$INSTALL_PATH" os="mac" />
-			<file src="dist" targetdir="$INSTALL_PATH" />
 			<file src="lib" targetdir="$INSTALL_PATH" />
 			<executable os="unix" targetfile="$INSTALL_PATH/run.sh"
 				stage="never" />

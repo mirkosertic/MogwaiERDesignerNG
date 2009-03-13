@@ -49,7 +49,7 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ViewCellView extends VertexView {
 
@@ -227,6 +227,11 @@ public class ViewCellView extends VertexView {
 
             if (theYOffset > theMaxY) {
                 theMaxY = theYOffset;
+            }
+            
+            // TODO [mirkosertic] This should be the default size if there are no attributes
+            if (theMaxY < 50) {
+                theMaxY = 50;
             }
 
             return new Dimension(theMaxX, theMaxY);

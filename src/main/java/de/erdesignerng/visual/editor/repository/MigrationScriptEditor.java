@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.repository;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 
 import javax.swing.DefaultComboBoxModel;
@@ -32,30 +31,14 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class MigrationScriptEditor extends BaseEditor {
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandGenerateChangeLog();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private MigrationScriptView view = new MigrationScriptView();
 
@@ -110,7 +93,8 @@ public class MigrationScriptEditor extends BaseEditor {
     public void applyValues() throws Exception {
     }
 
-    private void commandGenerateChangeLog() {
+    @Override
+    protected void commandOk() {
 
         if (bindingInfo.validate().size() == 0) {
             bindingInfo.view2model();

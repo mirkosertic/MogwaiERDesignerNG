@@ -24,10 +24,10 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
@@ -35,7 +35,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:31 $
+ * @version $Date: 2009-03-13 15:40:33 $
  * @param <T>
  *                the dialect
  */

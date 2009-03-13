@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 18:44:57 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> , LayoutProvider {
 
@@ -162,7 +162,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
             return true;
         }
 
-        if (!datatype.equals(aAttribute.getDatatype())) {
+        if (!getPhysicalDeclaration().equals(aAttribute.getPhysicalDeclaration())) {
             return true;
         }
 

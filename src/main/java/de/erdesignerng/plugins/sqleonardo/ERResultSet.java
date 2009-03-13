@@ -610,14 +610,6 @@ public class ERResultSet implements ResultSet {
         throw new NotImplementedException();
     }
 
-    public NClob getNClob(int arg0) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public NClob getNClob(String arg0) throws SQLException {
-        throw new NotImplementedException();
-    }
-
     public String getNString(int arg0) throws SQLException {
         throw new NotImplementedException();
     }
@@ -631,22 +623,6 @@ public class ERResultSet implements ResultSet {
     }
 
     public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public RowId getRowId(int arg0) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public RowId getRowId(String arg0) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public SQLXML getSQLXML(int arg0) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public SQLXML getSQLXML(String arg0) throws SQLException {
         throw new NotImplementedException();
     }
 
@@ -750,14 +726,6 @@ public class ERResultSet implements ResultSet {
         throw new NotImplementedException();
     }
 
-    public void updateNClob(int arg0, NClob arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public void updateNClob(String arg0, NClob arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
     public void updateNClob(int arg0, Reader arg1) throws SQLException {
         throw new NotImplementedException();
     }
@@ -782,27 +750,71 @@ public class ERResultSet implements ResultSet {
         throw new NotImplementedException();
     }
 
-    public void updateRowId(int arg0, RowId arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public void updateRowId(String arg0, RowId arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public void updateSQLXML(int arg0, SQLXML arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
-    public void updateSQLXML(String arg0, SQLXML arg1) throws SQLException {
-        throw new NotImplementedException();
-    }
-
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         throw new NotImplementedException();
     }
 
     public <T> T unwrap(Class<T> iface) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public NClob getNClob(int columnIndex) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public NClob getNClob(String columnLabel) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RowId getRowId(int columnIndex) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RowId getRowId(String columnLabel) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public SQLXML getSQLXML(int columnIndex) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public SQLXML getSQLXML(String columnLabel) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateNClob(int columnIndex, NClob clob) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateNClob(String columnLabel, NClob clob) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateRowId(int columnIndex, RowId x) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateRowId(String columnLabel, RowId x) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateSQLXML(int columnIndex, SQLXML xmlObject) throws SQLException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateSQLXML(String columnLabel, SQLXML xmlObject) throws SQLException {
         throw new NotImplementedException();
     }
 }

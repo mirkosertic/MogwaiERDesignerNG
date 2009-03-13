@@ -42,7 +42,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
@@ -56,20 +56,6 @@ public class ReverseEngineerEditor extends BaseEditor {
     private ApplicationPreferences preferences;
 
     private DefaultListModel<SchemaEntry> schemaList;
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -133,7 +119,8 @@ public class ReverseEngineerEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    private void commandOk() {
+    @Override
+    protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
             Object[] theSelectesValues = editingView.getSchemaList().getSelectedValues();
             if (((theSelectesValues == null) || (theSelectesValues.length == 0))

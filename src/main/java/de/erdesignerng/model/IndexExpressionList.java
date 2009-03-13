@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model;
 
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+
 public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 
     /**
@@ -42,8 +44,14 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
      * 
      * @param aAttribute the attribute
      * @return the created IndexExpression
+     * @throws ElementAlreadyExistsException is thrown is the attribute is already part of this index
      */
-    public IndexExpression addExpressionFor(Attribute aAttribute) {
+    public IndexExpression addExpressionFor(Attribute aAttribute) throws ElementAlreadyExistsException {
+        for (IndexExpression theExpression : this) {
+            if (aAttribute.equals(theExpression.getAttributeRef())) {
+                throw new ElementAlreadyExistsException("The attribute is already part of this index");
+            }
+        }
         IndexExpression theExpression = new IndexExpression();
         theExpression.setAttributeRef(aAttribute);
         add(theExpression);

@@ -36,7 +36,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 17:32:43 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class DomainEditorView extends DefaultPanel {
 
@@ -131,7 +131,7 @@ public class DomainEditorView extends DefaultPanel {
             attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.DOMAINS);
 
             String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
+            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             attributesTab.setLayout(layout);

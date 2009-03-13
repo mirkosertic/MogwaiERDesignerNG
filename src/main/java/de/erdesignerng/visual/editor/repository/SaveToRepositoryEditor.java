@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.repository;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -30,30 +29,14 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor to save models to a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-17 19:00:00 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class SaveToRepositoryEditor extends BaseEditor {
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private SaveToRepositoryView view = new SaveToRepositoryView() {
       
@@ -141,7 +124,8 @@ public class SaveToRepositoryEditor extends BaseEditor {
         }
     }
 
-    private void commandClose() {
+    @Override
+    protected void commandOk() {
         
         if (view.getNewEntryButton().isSelected()) {
             if (bindingInfo1.validate().size() == 0) {

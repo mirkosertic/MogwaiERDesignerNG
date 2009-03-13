@@ -33,13 +33,11 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<taskdef
-									classname="de.mogwai.common.i18n.XMLResourceBundleTask"
+								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask"
 									name="XMLResourceBundle" />
 
-								<XMLResourceBundle
-									dest="src/main/resources" defaultLanguage="en"
-									src="src/main/java">
+								<XMLResourceBundle dest="src/main/resources"
+									defaultLanguage="en" src="src/main/java">
 									<fileset dir="src/main/resources">
 										<include name="erdesigner.xml" />
 									</fileset>
@@ -58,16 +56,111 @@
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>assembly-dist.xml</descriptor>
-						<descriptor>
-							assembly-squirrelplugin.xml
-						</descriptor>
-					</descriptors>
-				</configuration>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<id>create-staging-area</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="${staging.dir}">
+									<fileset dir="${basedir}">
+										<include name="*.sh" />
+										<include name="*.bat" />
+										<include name="*.txt" />
+									</fileset>
+								</copy>
+								<copy  todir="${staging.dir}">
+									<fileset dir="${basedir}">
+										<include name="install*.xml" />
+									</fileset>
+									<filterset>
+										<filter token="version" value="${project.version}"/>
+										<filter token="name" value="${project.name}"/>
+									</filterset>
+								</copy>
+								<copy todir="${staging.dir}/src">
+									<fileset dir="${basedir}/src">
+										<include name="**/*.java" />
+										<include name="**/*.xml" />
+										<include name="**/*.xsd" />
+										<include name="**/*.properties" />
+										<include name="**/*.png" />
+										<include name="**/*.gif" />
+										<include name="**/*.jpg" />
+										<include name="**/*.mxm" />
+										<include name="**/*.sql" />
+									</fileset>
+								</copy>
+								<copy todir="${staging.dir}/userdoc">
+									<fileset dir="${basedir}/doc">
+										<include name="**/*.pdf" />
+									</fileset>
+								</copy>
+								<copy todir="${staging.dir}/javadoc">
+									<fileset dir="${basedir}/target/site/apidocs" />
+								</copy>
+								<copy todir="${staging.dir}/lib">
+									<fileset dir="${basedir}/target">
+										<include name="${project.artifactId}-${project.version}.jar" />
+									</fileset>
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.0</version>
+				<executions>
+					<execution>
+						<id>standard-installer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeGroupIds>org.codehaus.izpack</excludeGroupIds>
+							<outputDirectory>${staging.dir}/lib</outputDirectory>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.izpack</groupId>
+				<artifactId>izpack-maven-plugin</artifactId>
+				<version>1.0-alpha-4</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.izpack</groupId>
+						<artifactId>izpack-standalone-compiler</artifactId>
+						<version>${your.standalone-compiler.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<izpackBasedir>${staging.dir}</izpackBasedir>
+					<customPanelDirectory>${staging.dir}</customPanelDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>standard-installer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>izpack</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -86,7 +179,7 @@
 		<dependency>
 			<groupId>net.sourceforge.mogwai</groupId>
 			<artifactId>mogwai-looks</artifactId>
-			<version>1.6</version>
+			<version>1.7</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -199,5 +292,18 @@
 			<version>1.8.0.7</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.izpack</groupId>
+			<artifactId>izpack-standalone-compiler</artifactId>
+			<version>${your.standalone-compiler.version}</version>
+			<optional>true</optional>
+		</dependency>
+
 	</dependencies>
+
+	<properties>
+		<staging.dir>${project.build.directory}/staging</staging.dir>
+		<your.standalone-compiler.version>4.2.1</your.standalone-compiler.version>
+	</properties>
+
 </project>

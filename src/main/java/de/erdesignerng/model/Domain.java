@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.DataType;
  * A Domain. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 14:36:54 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class Domain extends DataType implements LayoutProvider , Cloneable {
 
@@ -58,7 +58,7 @@ public class Domain extends DataType implements LayoutProvider , Cloneable {
      */
     @Override
     public boolean supportsFraction() {
-        return false;
+        return attribute.getDatatype().supportsFraction();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Domain extends DataType implements LayoutProvider , Cloneable {
      */
     @Override
     public boolean supportsScale() {
-        return false;
+        return attribute.getDatatype().supportsScale();
     }
 
     /**
@@ -74,7 +74,7 @@ public class Domain extends DataType implements LayoutProvider , Cloneable {
      */
     @Override
     public boolean supportsSize() {
-        return false;
+        return attribute.getDatatype().supportsSize();
     }
     
     /**
@@ -130,6 +130,11 @@ public class Domain extends DataType implements LayoutProvider , Cloneable {
         return getName();
     }
     
+    @Override
+    public String createTypeDefinitionFor(Attribute aAttribute) {
+        return attribute.getPhysicalDeclaration();
+    }
+
     /**
      * {@inheritDoc}
      */

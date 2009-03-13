@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.repository;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.List;
 
@@ -31,30 +30,14 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor to load models from a repository.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 16:13:38 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class LoadFromRepositoryEditor extends BaseEditor {
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private LoadFromRepositoryView view = new LoadFromRepositoryView();
 
@@ -102,7 +85,8 @@ public class LoadFromRepositoryEditor extends BaseEditor {
     public void applyValues() throws Exception {
     }
 
-    private void commandClose() {
+    @Override
+    protected void commandOk() {
 
         if (bindingInfo.validate().size() == 0) {
             

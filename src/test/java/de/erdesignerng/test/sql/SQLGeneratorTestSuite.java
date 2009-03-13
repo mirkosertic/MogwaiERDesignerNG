@@ -17,19 +17,19 @@
  */
 package de.erdesignerng.test.sql;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import de.erdesignerng.test.sql.mssql.MSSQLDialectTest;
 import de.erdesignerng.test.sql.mysql.MySQLDialectTest;
 import de.erdesignerng.test.sql.mysqlinnodb.MySQLInnoDBDialectTest;
 import de.erdesignerng.test.sql.oracle.OracleDialectTest;
 import de.erdesignerng.test.sql.postgres.PostgresDialectTest;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * Testsuite for all SQL Generators.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:29 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class SQLGeneratorTestSuite extends TestSuite {
 

@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.visual.editor.preferences;
 
-import java.awt.event.ActionEvent;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.ERDesignerGraph;
@@ -26,30 +24,14 @@ import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:58 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class PreferencesEditor extends BaseEditor {
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private PreferencesEditorView view;
 
@@ -88,7 +70,8 @@ public class PreferencesEditor extends BaseEditor {
     public void applyValues() throws Exception {
     }
 
-    private void commandClose() {
+    @Override
+    protected void commandOk() {
         if (view.getPreferences().applyValues(preferences)) {
             setModalResult(DialogConstants.MODAL_RESULT_OK);
             component.refreshPreferences(preferences);
