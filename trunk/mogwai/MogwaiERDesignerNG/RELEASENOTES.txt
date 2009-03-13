@@ -138,6 +138,7 @@ Release 1.6
 
 Release 1.7
 
+* Improved UI response during long time tasks like reverse engineering and complete compare
 * Added support for automatic IZPack installers
 * Improved handling of recently used files and last database connections
 * Improved complete compare functionality for indexes
