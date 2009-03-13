@@ -53,7 +53,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class TableEditor extends BaseEditor {
 
@@ -67,6 +67,10 @@ public class TableEditor extends BaseEditor {
 
     private BindingInfo<Index> indexBindingInfo = new BindingInfo<Index>();
 
+    private BindingInfo<IndexValueModel> indexExpressionBindingInfo = new BindingInfo<IndexValueModel>();
+
+    private BindingInfo<IndexValueModel> indexExpressionBindingInfo2 = new BindingInfo<IndexValueModel>();
+
     private DefaultListModel attributeListModel;
 
     private DefaultListModel indexListModel;
@@ -78,20 +82,6 @@ public class TableEditor extends BaseEditor {
     private List<Attribute> removedAttributes = new ArrayList<Attribute>();
 
     private List<Index> removedIndexes = new ArrayList<Index>();
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -134,6 +124,27 @@ public class TableEditor extends BaseEditor {
             commandUpdateIndex();
         }
     }, this, ERDesignerBundle.UPDATE);
+
+    private DefaultAction addIndexAttribute = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandAddIndexAttribute();
+        }
+    }, this, ERDesignerBundle.NEWONLYICON);
+
+    private DefaultAction addIndexExpression = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandAddIndexExpression();
+        }
+    }, this, ERDesignerBundle.NEWONLYICON);
+
+    private DefaultAction removeIndexElement = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandRemoveIndexElement();
+        }
+    }, this, ERDesignerBundle.DELETEONLYICON);
 
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
@@ -186,6 +197,12 @@ public class TableEditor extends BaseEditor {
         indexBindingInfo.addBinding("indexType", theAdapter);
         indexBindingInfo.configure();
 
+        indexExpressionBindingInfo.addBinding("expression", editingView.getIndexExpression(), true);
+        indexExpressionBindingInfo.configure();
+
+        indexExpressionBindingInfo2.addBinding("attribute", editingView.getIndexAttribute(), true);
+        indexExpressionBindingInfo2.configure();
+
         UIInitializer.getInstance().initialize(this);
     }
 
@@ -222,6 +239,37 @@ public class TableEditor extends BaseEditor {
             }
         });
 
+        editingView.getIndexFieldList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+
+            public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+                commandIndexFieldListValueChanged(e);
+            }
+        });
+
+        editingView.getAddIndexAttribute().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateIndexStatusFields();
+            }
+
+        });
+
+        editingView.getAddIndexExpression().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateIndexStatusFields();
+            }
+
+        });
+
+        editingView.getRemoveFromIndexButton().setAction(removeIndexElement);
+        editingView.getAddAttributeToIndexButton().setAction(addIndexAttribute);
+        editingView.getAddExpressionToIndexButton().setAction(addIndexExpression);
+
+        removeIndexElement.setEnabled(false);
+        
         setContentPane(editingView);
 
         pack();
@@ -253,7 +301,8 @@ public class TableEditor extends BaseEditor {
         updateAttributeEditFields();
     }
 
-    private void commandOk() {
+    @Override
+    protected void commandOk() {
         if (tableBindingInfo.validate().size() == 0) {
             if (attributeListModel.getSize() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
@@ -374,17 +423,42 @@ public class TableEditor extends BaseEditor {
             indexBindingInfo.setEnabled(false);
         }
 
-        DefaultListModel theAttModel = editingView.getIndexFieldList().getModel();
-        theAttModel.clear();
-
+        DefaultComboBoxModel theAttModel = new DefaultComboBoxModel();
         for (int i = 0; i < attributeListModel.getSize(); i++) {
-            theAttModel.add(attributeListModel.get(i));
+            theAttModel.addElement(attributeListModel.get(i));
         }
+        editingView.getIndexAttribute().setModel(theAttModel);
+
+        updateIndexStatusFields();
 
         indexBindingInfo.model2view();
 
         editingView.getIndexList().invalidate();
         editingView.getIndexList().setSelectedValue(indexBindingInfo.getDefaultModel(), true);
+    }
+
+    private void updateIndexStatusFields() {
+
+        boolean theCurrentIndexSelected = indexBindingInfo.getDefaultModel() != null;
+        editingView.getAddIndexAttribute().setEnabled(theCurrentIndexSelected);
+        editingView.getAddIndexExpression().setEnabled(theCurrentIndexSelected);
+
+        boolean theEnabled = editingView.getAddIndexAttribute().isSelected() && theCurrentIndexSelected;
+        editingView.getIndexAttribute().setEnabled(theEnabled);
+        editingView.getAddAttributeToIndexButton().setEnabled(theEnabled);
+        if (theEnabled) {
+            indexExpressionBindingInfo2.setDefaultModel(new IndexValueModel());
+            indexExpressionBindingInfo2.model2view();
+        }
+
+        theEnabled = editingView.getAddIndexExpression().isSelected() && theCurrentIndexSelected;
+        editingView.getIndexExpression().setEnabled(theEnabled);
+        editingView.getAddExpressionToIndexButton().setEnabled(theEnabled);
+        if (theEnabled) {
+            indexExpressionBindingInfo.setDefaultModel(new IndexValueModel());
+            indexExpressionBindingInfo.model2view();
+        }
+
     }
 
     private void commandAttributeListValueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -395,7 +469,10 @@ public class TableEditor extends BaseEditor {
         }
 
         updateAttributeEditFields();
+    }
 
+    private void commandIndexFieldListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+        removeIndexElement.setEnabled(editingView.getIndexFieldList().getSelectedValue() != null);
     }
 
     private void commandIndexListValueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -406,24 +483,33 @@ public class TableEditor extends BaseEditor {
         }
 
         updateIndexEditFields();
-
     }
 
     private void commandDeleteAttribute(java.awt.event.ActionEvent aEvent) {
 
         Attribute theAttribute = attributeBindingInfo.getDefaultModel();
 
-        if (!model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
+        if (model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
 
-            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-                knownAttributeValues.remove(theAttribute.getSystemId());
-                attributeListModel.remove(theAttribute);
-
-                removedAttributes.add(theAttribute);
-            }
-        } else {
             MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                     ERDesignerBundle.ATTRIBUTEISUSEDINFOREIGNKEYS));
+
+            return;
+        }
+        
+        if (isUsedInIndex(theAttribute)) {
+
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                    ERDesignerBundle.ATTRIBUTEISUSEDININDEX));
+
+            return;
+        }
+
+        if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+            knownAttributeValues.remove(theAttribute.getSystemId());
+            attributeListModel.remove(theAttribute);
+
+            removedAttributes.add(theAttribute);
         }
     }
 
@@ -453,7 +539,7 @@ public class TableEditor extends BaseEditor {
         List<ValidationError> theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
             indexBindingInfo.view2model();
-
+            
             if (theModel.getIndexType().equals(IndexType.PRIMARYKEY)) {
                 for (int i = 0; i < indexListModel.getSize(); i++) {
                     Index theIndex = (Index) indexListModel.get(i);
@@ -465,20 +551,80 @@ public class TableEditor extends BaseEditor {
                 }
             }
 
-            if (!indexListModel.contains(theModel)) {
-                indexListModel.add(theModel);
-                knownIndexValues.put(theModel.getSystemId(), theModel);
-            }
-
             theModel.getExpressions().clear();
             DefaultListModel<IndexExpression> theListModel = editingView.getIndexFieldList().getModel();
             for (int i = 0; i < theListModel.getSize(); i++) {
                 theModel.getExpressions().add(theListModel.get(i));
             }
+            
+            if (theModel.getExpressions().size() == 0) {
+                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                        ERDesignerBundle.ANINDEXMUSTHAVEATLEASTONEELEMENT));
+                return;
+            }
+            
+            if (!indexListModel.contains(theModel)) {
+                indexListModel.add(theModel);
+                knownIndexValues.put(theModel.getSystemId(), theModel);
+            }
 
             updateIndexEditFields();
         }
 
+    }
+
+    private void commandAddIndexExpression() {
+        if (indexExpressionBindingInfo.validate().size() == 0 && indexBindingInfo.validate().size() == 0) {
+
+            indexBindingInfo.view2model();
+
+            indexExpressionBindingInfo.view2model();
+            IndexValueModel theValue = indexExpressionBindingInfo.getDefaultModel();
+
+            Index theCurrentModel = indexBindingInfo.getDefaultModel();
+
+            theCurrentModel.getExpressions().addExpressionFor(theValue.getExpression());
+
+            indexBindingInfo.model2view();
+        }
+    }
+
+    private void commandAddIndexAttribute() {
+        if (indexExpressionBindingInfo2.validate().size() == 0 && indexBindingInfo.validate().size() == 0) {
+
+            indexBindingInfo.view2model();
+
+            indexExpressionBindingInfo2.view2model();
+            IndexValueModel theValue = indexExpressionBindingInfo2.getDefaultModel();
+
+            Index theCurrentModel = indexBindingInfo.getDefaultModel();
+
+            try {
+                theCurrentModel.getExpressions().addExpressionFor(theValue.getAttribute());
+
+                indexBindingInfo.model2view();
+            } catch (ElementAlreadyExistsException e) {
+                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                        ERDesignerBundle.ATTRIBUTEALREADYPARTOFINDEX));
+            }
+        }
+    }
+
+    private void commandRemoveIndexElement() {
+        if (indexBindingInfo.validate().size() == 0) {
+
+            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+
+                indexBindingInfo.view2model();
+
+                Index theCurrentModel = indexBindingInfo.getDefaultModel();
+                theCurrentModel.getExpressions().remove(editingView.getIndexFieldList().getSelectedValue());
+
+                indexBindingInfo.model2view();
+
+                removeIndexElement.setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -576,11 +722,21 @@ public class TableEditor extends BaseEditor {
         }
     }
 
-    public boolean isPrimaryKey(Attribute aAttribute) {
+    boolean isPrimaryKey(Attribute aAttribute) {
         for (int i = 0; i < indexListModel.getSize(); i++) {
             Index theIndex = (Index) indexListModel.get(i);
             if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
                 return theIndex.containsAttribute(aAttribute);
+            }
+        }
+        return false;
+    }
+    
+    private boolean isUsedInIndex(Attribute aAttribute) {
+        for (int i = 0; i < indexListModel.getSize(); i++) {
+            Index theIndex = (Index) indexListModel.get(i);
+            if (theIndex.containsAttribute(aAttribute)) {
+                return true;
             }
         }
         return false;

@@ -45,7 +45,7 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * The domain editor.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-14 18:17:15 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class DomainEditor extends BaseEditor {
 
@@ -58,20 +58,6 @@ public class DomainEditor extends BaseEditor {
     private DefaultListModel domainListModel;
 
     private List<Domain> removedDomains = new ArrayList<Domain>();
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -151,10 +137,6 @@ public class DomainEditor extends BaseEditor {
         setContentPane(editingView);
 
         pack();
-    }
-
-    private void commandOk() {
-        setModalResult(MODAL_RESULT_OK);
     }
 
     private void commandUpdateDomain(java.awt.event.ActionEvent evt) {

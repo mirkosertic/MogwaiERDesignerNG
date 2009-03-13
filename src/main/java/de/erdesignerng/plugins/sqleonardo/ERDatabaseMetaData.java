@@ -967,10 +967,6 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         return null;
     }
 
-    public RowIdLifetime getRowIdLifetime() throws SQLException {
-        return null;
-    }
-
     public ResultSet getSchemas(String arg0, String arg1) throws SQLException {
         return null;
     }
@@ -984,6 +980,11 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
     }
 
     public <T> T unwrap(Class<T> iface) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public RowIdLifetime getRowIdLifetime() throws SQLException {
         return null;
     }
 }

@@ -25,16 +25,16 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:34 $
  */
 public class XMLModelSerializer extends XMLSerializer {
 

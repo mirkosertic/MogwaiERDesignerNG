@@ -18,15 +18,22 @@
 package de.erdesignerng.visual.editor;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.components.DefaultDialog;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-02-07 20:04:23 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
@@ -36,13 +43,27 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
     protected Component parent;
 
+    protected DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandOk();
+        }
+    }, this, ERDesignerBundle.OK);
+
+    protected DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.CANCEL);
+
     /**
      * Initialize.
      * 
      * @param aParent
-     *            the parent Frame
+     *                the parent Frame
      * @param aTitle
-     *            the title
+     *                the title
      */
     public BaseEditor(Component aParent, String aTitle) {
         super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
@@ -55,9 +76,14 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
      */
     private void initialize() {
         setSize(300, 200);
-        setContentPane(getJContentPane());
+        
+        JPanel theContentPane = getJContentPane();
+
+        setContentPane(theContentPane);
         setResizable(false);
         setModal(true);
+        
+        cancelAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
     }
 
     /**
@@ -77,7 +103,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
      * Set the dialogs modal result and hide it.
      * 
      * @param aModalResult
-     *            the modal result.
+     *                the modal result.
      */
     public void setModalResult(int aModalResult) {
         modalResult = aModalResult;
@@ -88,23 +114,38 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
         modalResult = DialogConstants.MODAL_RESULT_CANCEL;
         pack();
         setVisible(true);
-        
-        //Dimension theSize = getSize();
-        //System.out.println("setPreferredSize(new Dimension("+theSize.width+","+theSize.height+"));");
-        //System.out.println("setMinimumSize(new Dimension("+theSize.width+","+theSize.height+"));");        
+
+        // Dimension theSize = getSize();
+        // System.out.println("setPreferredSize(new
+        // Dimension("+theSize.width+","+theSize.height+"));");
+        // System.out.println("setMinimumSize(new
+        // Dimension("+theSize.width+","+theSize.height+"));");
         return modalResult;
     }
 
     public abstract void applyValues() throws Exception;
 
+    /**
+     * Is called by the default cancel action.
+     */
     protected void commandCancel() {
-
         setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
     }
-    
+
+    /**
+     * is called by the default ok action.
+     */
+    protected void commandOk() {
+        setModalResult(DialogConstants.MODAL_RESULT_OK);
+    }
+
+    /**
+     * Log a fatal error using the default exception dialogue. 
+     * 
+     * @param e the exception to log
+     */
     protected void logFatalError(Exception e) {
         ExceptionEditor theEditor = new ExceptionEditor(this, e);
         theEditor.showModal();
     }
-
 }

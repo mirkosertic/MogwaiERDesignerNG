@@ -26,7 +26,7 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * Editor for the database connection.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-16 14:22:01 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class RepositoryConnectionEditor extends BaseEditor {
 
@@ -36,20 +36,6 @@ public class RepositoryConnectionEditor extends BaseEditor {
             commandTest();
         }
     }, this, ERDesignerBundle.TEST);
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 

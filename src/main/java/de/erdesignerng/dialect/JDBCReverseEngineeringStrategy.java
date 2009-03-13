@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
@@ -40,7 +41,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  * @param <T>
  *                the dialect
  */
@@ -220,7 +221,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     isNullable = true;
                     break;
                 default:
-                    // TODO [mse] What should happen here?
+                    // TODO [mirkosertic] What should happen here?
                 }
 
                 theAttribute.setDatatype(theDataType);
@@ -295,7 +296,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                         + aTable.getName());
             }
 
-            thePrimaryKeyIndex.getExpressions().addExpressionFor(theIndexAttribute);
+            try {
+                thePrimaryKeyIndex.getExpressions().addExpressionFor(theIndexAttribute);
+            } catch (ElementAlreadyExistsException e) {
+                throw new ReverseEngineeringException("Error adding index attribute", e);
+            }
 
         }
         thePrimaryKeyResultSet.close();
@@ -399,7 +404,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             }
 
         } else {
-            aIndex.getExpressions().addExpressionFor(theIndexAttribute);
+            try {
+                aIndex.getExpressions().addExpressionFor(theIndexAttribute);
+            } catch (ElementAlreadyExistsException e) {
+                throw new ReverseEngineeringException("Error adding index attribute", e);
+            }
         }
     }
 

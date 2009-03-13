@@ -66,15 +66,7 @@ public class IndexAttributesPropertyAdapter extends PropertyAdapter {
     @Override
     public List<ValidationError> validate() {
         List<ValidationError> theResult = new ArrayList<ValidationError>();
-        DefaultList theComponent = (DefaultList) getComponent()[0];
-        if (theComponent.getModel().getSize() == 0) {
-            theResult.add(new ValidationError(this, helper.getText(BindingBundle.MISSINGREQUIREDFIELD)));
-        }
-        if (theResult.size() > 0) {
-            markInvalid(theResult);
-        } else {
-            markValid();
-        }
+        markValid();
         return theResult;
     }
 }

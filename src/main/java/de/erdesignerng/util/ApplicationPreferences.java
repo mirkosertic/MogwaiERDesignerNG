@@ -35,7 +35,7 @@ import org.apache.commons.lang.StringUtils;
  * Class for handling application preferences, LRUfiles and so on.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:29 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ApplicationPreferences {
 
@@ -88,7 +88,7 @@ public class ApplicationPreferences {
         for (String theName : theNames) {
             if (theName.startsWith(LRUPREFIX)) {
                 File theFile = new File(preferences.get(theName, ""));
-                if (theFile.exists()) {
+                if ((theFile.exists()) && (!recentlyUsedFiles.contains(theFile))) {
                     recentlyUsedFiles.add(theFile);
                 }
             }
@@ -122,7 +122,9 @@ public class ApplicationPreferences {
 
                 ConnectionDescriptor theConnection = new ConnectionDescriptor(theAlias, theDialect, theURL, theUser,
                         theDriver, thePass);
-                recentlyUsedConnections.add(theConnection);
+                if (!recentlyUsedConnections.contains(theConnection)) {
+                    recentlyUsedConnections.add(theConnection);
+                }
             }
         }
 
@@ -209,6 +211,9 @@ public class ApplicationPreferences {
         String[] theNames = preferences.childrenNames();
         for (String theName : theNames) {
             if (theName.startsWith(LRUPREFIX)) {
+                preferences.remove(theName);
+            }
+            if (theName.startsWith(LRCPREFIX)) {
                 preferences.remove(theName);
             }
             if (theName.startsWith(CLASSPATHPREFIX)) {

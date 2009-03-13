@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.reverseengineer;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 
 import javax.swing.ListSelectionModel;
 
@@ -29,12 +28,10 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultCheckBoxListModel;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-03-02 13:44:51 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class TablesSelectEditor extends BaseEditor {
 
@@ -44,20 +41,6 @@ public class TablesSelectEditor extends BaseEditor {
     private TablesSelectEditorView editingView;
 
     private DefaultCheckBoxListModel<TableEntry> tableList;
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     /**
      * Create a table selection editor.
@@ -102,7 +85,8 @@ public class TablesSelectEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    private void commandOk() {
+    @Override
+    protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
             bindingInfo.view2model();
             setModalResult(MODAL_RESULT_OK);

@@ -36,7 +36,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
@@ -65,9 +65,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                         cell = theTemp;
                     }
                 }
-                if (focus == null) {
+                //if (focus == null) {
                     focus = cell;
-                }
+                //}
                 completeEditing();
                 boolean isForceMarquee = isForceMarqueeEvent(e);
                 boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());

@@ -31,7 +31,7 @@ import de.mogwai.common.i18n.ResourceHelper;
  * The preferences dialog for Squirrel.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:49:00 $
+ * @version $Date: 2009-03-13 15:40:34 $
  */
 public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
@@ -57,7 +57,7 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
     public void applyChanges() {
         if (!panel.applyValues(preferences)) {
             plugin.refreshPreferences();
-            //TODO [rarf] How to prevent it from closing if validation fails?
+            //TODO [mirkosertic] How to prevent it from closing if validation fails?
         }
     }
 

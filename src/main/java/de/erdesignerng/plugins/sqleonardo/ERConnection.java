@@ -193,14 +193,6 @@ public class ERConnection implements Connection {
         return null;
     }
 
-    public NClob createNClob() throws SQLException {
-        return null;
-    }
-
-    public SQLXML createSQLXML() throws SQLException {
-        return null;
-    }
-
     public Struct createStruct(String arg0, Object[] arg1) throws SQLException {
         return null;
     }
@@ -217,12 +209,6 @@ public class ERConnection implements Connection {
         return false;
     }
 
-    public void setClientInfo(Properties arg0) throws SQLClientInfoException {
-    }
-
-    public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException {
-    }
-
     public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException {
     }
 
@@ -232,5 +218,23 @@ public class ERConnection implements Connection {
 
     public <T> T unwrap(Class<T> arg0) throws SQLException {
         return null;
+    }
+
+    @Override
+    public NClob createNClob() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public SQLXML createSQLXML() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+    }
+
+    @Override
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
     }
 }

@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.relation;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.CascadeType;
@@ -28,12 +27,10 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class RelationEditor extends BaseEditor {
 
@@ -42,20 +39,6 @@ public class RelationEditor extends BaseEditor {
     private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
 
     private RelationEditorView editingView;
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     /**
      * Create a relation editor.
@@ -113,7 +96,8 @@ public class RelationEditor extends BaseEditor {
         bindingInfo.model2view();
     }
 
-    private void commandOk() {
+    @Override
+    protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
             setModalResult(MODAL_RESULT_OK);
         }

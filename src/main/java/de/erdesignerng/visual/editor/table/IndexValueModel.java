@@ -15,27 +15,29 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.core;
+package de.erdesignerng.visual.editor.table;
 
-import junit.framework.TestCase;
-import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexType;
 
-public class IndexTest extends TestCase {
+public class IndexValueModel {
 
-    public void testModified() throws ElementAlreadyExistsException {
-        Attribute theAttribute = new Attribute();
-        theAttribute.setName("TEST");
-        
-        Index theIndex = new Index();
-        theIndex.setName("TESTINDEX");
-        theIndex.setIndexType(IndexType.UNIQUE);
-        theIndex.getExpressions().addExpressionFor(theAttribute);
-        
-        Index theCloneIndex = theIndex.clone();
-        assertTrue(!theIndex.isModified(theCloneIndex, true));
-        assertTrue(!theIndex.isModified(theCloneIndex, false));
+    private String expression;
+
+    private Attribute attribute;
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public Attribute getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(Attribute attribute) {
+        this.attribute = attribute;
     }
 }

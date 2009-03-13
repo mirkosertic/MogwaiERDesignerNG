@@ -23,14 +23,14 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2008-11-15 19:12:36 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
