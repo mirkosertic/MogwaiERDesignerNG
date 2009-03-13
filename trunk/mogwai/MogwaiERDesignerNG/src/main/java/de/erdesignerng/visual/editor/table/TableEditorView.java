@@ -23,7 +23,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class TableEditorView extends DefaultPanel {
 
@@ -105,6 +105,20 @@ public class TableEditorView extends DefaultPanel {
     
     private DefaultTextField defaultValue = new DefaultTextField();
     
+    private DefaultComboBox indexAttribute = new DefaultComboBox();
+    
+    private DefaultTextField indexExpression = new DefaultTextField();
+    
+    private DefaultRadioButton addIndexAttribute = new DefaultRadioButton(ERDesignerBundle.ATTRIBUTE);
+    
+    private DefaultRadioButton addIndexExpression = new DefaultRadioButton(ERDesignerBundle.EXPRESSION);
+    
+    private DefaultButton addExpressionToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
+    
+    private DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
+    
+    private DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
+    
     /**
      * Constructor.
      */
@@ -132,6 +146,9 @@ public class TableEditorView extends DefaultPanel {
         this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
         buildGroups();
+        
+        getAddIndexAttribute().setSelected(true);
+        getRemoveFromIndexButton().setEnabled(false);
     }
 
     /**
@@ -193,7 +210,7 @@ public class TableEditorView extends DefaultPanel {
             attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
 
             String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
+            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             attributesTab.setLayout(layout);
@@ -463,7 +480,7 @@ public class TableEditorView extends DefaultPanel {
             indexesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.INDEXES);
 
             String rowDef = "2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,25dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,60dlu:grow,2dlu";
+            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             indexesTab.setLayout(layout);
@@ -552,8 +569,8 @@ public class TableEditorView extends DefaultPanel {
         if (indexGeneralTab == null) {
             indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
 
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
-            String rowDef = "2dlu,p,2dlu,fill:20dlu:grow,2dlu,p,2dlu,p,2dlu,p,2dlu,p,8dlu";            
+            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu,20dlu,2dlu";
+            String rowDef = "2dlu,p,2dlu,fill:20dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";            
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             indexGeneralTab.setLayout(layout);
@@ -561,11 +578,23 @@ public class TableEditorView extends DefaultPanel {
             CellConstraints cons = new CellConstraints();
 
             indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
-            indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 1, 1));
-            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 3, 1));
-            indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 8, 1, 1));            
-            indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 10, 1, 1));
-            indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 12, 1, 1));
+            indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 3, 1));
+            
+            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 5, 1));
+            
+            indexGeneralTab.add(getRemoveFromIndexButton(), cons.xy(6, 6));
+            
+            indexGeneralTab.add(getAddIndexAttribute(), cons.xy(2, 8));
+            indexGeneralTab.add(getIndexAttribute(), cons.xy(4, 8));
+            indexGeneralTab.add(getAddAttributeToIndexButton(), cons.xy(6, 8));
+
+            indexGeneralTab.add(getAddIndexExpression(), cons.xy(2, 10));
+            indexGeneralTab.add(getIndexExpression(), cons.xy(4, 10));
+            indexGeneralTab.add(getAddExpressionToIndexButton(), cons.xy(6, 10));
+            
+            indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 12, 3, 1));            
+            indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 14, 3, 1));
+            indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 16, 3, 1));
             indexGeneralTab.setName("IndexGeneralTab");
         }
 
@@ -745,6 +774,10 @@ public class TableEditorView extends DefaultPanel {
         theGroup.add(getPrimaryIndex());
         theGroup.add(getUniqueIndex());
         theGroup.add(getNotUniqueIndex());
+        
+        ButtonGroup theGroup2 = new ButtonGroup();
+        theGroup2.add(getAddIndexAttribute());
+        theGroup2.add(getAddIndexExpression());
     }
 
     /**
@@ -803,5 +836,86 @@ public class TableEditorView extends DefaultPanel {
      */
     public DefaultSpinner getSizeSpinner() {
         return sizeSpinner;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>indexAttribute</code> zurück.
+     * 
+     * @return Wert des Attributs indexAttribute.
+     */
+    public DefaultComboBox getIndexAttribute() {
+        return indexAttribute;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>addIndexAttribute</code> zurück.
+     * 
+     * @return Wert des Attributs addIndexAttribute.
+     */
+    public DefaultRadioButton getAddIndexAttribute() {
+        return addIndexAttribute;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>addIndexExpression</code> zurück.
+     * 
+     * @return Wert des Attributs addIndexExpression.
+     */
+    public DefaultRadioButton getAddIndexExpression() {
+        return addIndexExpression;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>addExpressionToIndexButton</code> zurück.
+     * 
+     * @return Wert des Attributs addExpressionToIndexButton.
+     */
+    public DefaultButton getAddExpressionToIndexButton() {
+        return addExpressionToIndexButton;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>addExpressionToIndexButton</code>.
+     * 
+     * @param addExpressionToIndexButton Wert für das Attribut addExpressionToIndexButton.
+     */
+    public void setAddExpressionToIndexButton(DefaultButton addExpressionToIndexButton) {
+        this.addExpressionToIndexButton = addExpressionToIndexButton;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>addAttributeToIndexButton</code> zurück.
+     * 
+     * @return Wert des Attributs addAttributeToIndexButton.
+     */
+    public DefaultButton getAddAttributeToIndexButton() {
+        return addAttributeToIndexButton;
+    }
+
+    /**
+     * Setzt den Wert des Attributs <code>addAttributeToIndexButton</code>.
+     * 
+     * @param addAttributeToIndexButton Wert für das Attribut addAttributeToIndexButton.
+     */
+    public void setAddAttributeToIndexButton(DefaultButton addAttributeToIndexButton) {
+        this.addAttributeToIndexButton = addAttributeToIndexButton;
+    }
+
+    /**
+     * Gibt den Wert des Attributs <code>indexExpression</code> zurück.
+     * 
+     * @return Wert des Attributs indexExpression.
+     */
+    public DefaultTextField getIndexExpression() {
+        return indexExpression;
+    }
+    
+    /**
+     * Gibt den Wert des Attributs <code>removeFromIndexButton</code> zurück.
+     * 
+     * @return Wert des Attributs removeFromIndexButton.
+     */
+    public DefaultButton getRemoveFromIndexButton() {
+        return removeFromIndexButton;
     }
 }

@@ -17,7 +17,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ViewEditorView extends DefaultPanel {
 
@@ -42,6 +42,8 @@ public class ViewEditorView extends DefaultPanel {
      */
     public ViewEditorView() {
         initialize();
+        
+        QueryBuilder.useAlwaysQuote = false;
     }
 
     /**

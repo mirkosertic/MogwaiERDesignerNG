@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.completecompare;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -39,21 +38,12 @@ import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewList;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class CompleteCompareEditor extends BaseEditor {
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.OK);
 
     private CompleteCompareEditorView editingView;
 
@@ -628,10 +618,6 @@ public class CompleteCompareEditor extends BaseEditor {
 
             }
         }
-    }
-
-    private void commandClose() {
-        setModalResult(MODAL_RESULT_OK);
     }
 
     private void initialize() {

@@ -18,8 +18,9 @@
 package de.erdesignerng.visual.editor.view;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
+
+import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -30,18 +31,14 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.plugins.sqleonardo.ERConnection;
-import de.erdesignerng.plugins.sqleonardo.SQLParser;
-import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ViewEditor extends BaseEditor {
 
@@ -51,22 +48,8 @@ public class ViewEditor extends BaseEditor {
 
     private BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
 
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
-
     public ViewEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.ENTITYEDITOR);
+        super(aParent, ERDesignerBundle.VIEWEDITOR);
 
         initialize();
 
@@ -105,6 +88,8 @@ public class ViewEditor extends BaseEditor {
 
         editingView.getEntityName().setName(aView.getName());
         if (!StringUtils.isEmpty(aView.getSql())) {
+            
+            System.out.println("Entering for SQL "+aView.getSql());
             try {
                 editingView.getBuilder().setQueryModel(SQLParser.toQueryModel(aView.getSql()));
             } catch (IOException e) {
@@ -113,10 +98,11 @@ public class ViewEditor extends BaseEditor {
         }
     }
 
-    private void commandOk() {
+    @Override
+    protected void commandOk() {
         if (viewBindingInfo.validate().size() == 0) {
-
-            try {
+            
+            /*try {
 
                 // Test if every expression has an assigned alias
                 SQLUtils.updateViewAttributesFromQueryModel(new View(), editingView.getBuilder().getQueryModel());
@@ -125,7 +111,9 @@ public class ViewEditor extends BaseEditor {
             } catch (Exception e) {
                 // Handle error here
                 e.printStackTrace();
-            }
+            }*/
+            
+            setModalResult(MODAL_RESULT_OK);
         }
     }
 
@@ -139,27 +127,22 @@ public class ViewEditor extends BaseEditor {
 
         theView.getAttributes().clear();
 
-        try {
+        /*try {
             SQLUtils.updateViewAttributesFromQueryModel(new View(), editingView.getBuilder().getQueryModel());
         } catch (Exception e) {
             // This exception is checked in commandOk before
-        }
+        }*/
 
         theView.setSql(editingView.getBuilder().getQueryModel().toString(true));
         System.out.println("Current SQL : " + theView.getSql());
 
+        viewBindingInfo.view2model();
+        
         if (!model.getViews().contains(theView)) {
-
-            viewBindingInfo.view2model();
 
             model.addView(theView);
 
         } else {
-            // The table exists already in the model
-            View theTempTable = new View();
-
-            viewBindingInfo.setDefaultModel(theTempTable);
-            viewBindingInfo.view2model();
 
             model.changeView(theView);
         }

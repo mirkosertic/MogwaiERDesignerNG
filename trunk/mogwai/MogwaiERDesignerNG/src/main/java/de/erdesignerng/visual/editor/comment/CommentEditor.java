@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.comment;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Comment;
@@ -26,14 +25,12 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * Editor for comments.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:59 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class CommentEditor extends BaseEditor {
 
@@ -42,20 +39,6 @@ public class CommentEditor extends BaseEditor {
     private CommentEditorView editingView;
     
     private Model model;
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     /**
      * Create a relation editor.
@@ -98,7 +81,8 @@ public class CommentEditor extends BaseEditor {
         bindingInfo.model2view();
     }
 
-    private void commandOk() {
+    @Override
+    protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
             setModalResult(MODAL_RESULT_OK);
         }

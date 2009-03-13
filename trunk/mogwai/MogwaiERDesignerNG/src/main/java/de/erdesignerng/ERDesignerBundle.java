@@ -63,6 +63,8 @@ public interface ERDesignerBundle {
   String ENTITY = "ENTITY";
   /** . */
   String RELATION = "RELATION";
+  /** . */
+  String VIEWTOOL = "VIEWTOOL";
   /** Zoom. */
   String ZOOM = "ZOOM";
   /** Driver classpath configuration. */
@@ -141,7 +143,7 @@ public interface ERDesignerBundle {
   String UP = "UP";
   /** . */
   String DOWN = "DOWN";
-  /** Entity name. */
+  /** Name. */
   String ENTITYNAME = "ENTITYNAME";
   /** Default. */
   String DEFAULT = "DEFAULT";
@@ -351,4 +353,20 @@ public interface ERDesignerBundle {
   String FROMVERSION = "FROMVERSION";
   /** To version. */
   String TOVERSION = "TOVERSION";
+  /** Attribute. */
+  String ATTRIBUTE = "ATTRIBUTE";
+  /** Expression. */
+  String EXPRESSION = "EXPRESSION";
+  /** . */
+  String NEWONLYICON = "NEWONLYICON";
+  /** This attribute is already part of this index. */
+  String ATTRIBUTEALREADYPARTOFINDEX = "ATTRIBUTEALREADYPARTOFINDEX";
+  /** . */
+  String DELETEONLYICON = "DELETEONLYICON";
+  /** This attribute is part of an index. */
+  String ATTRIBUTEISUSEDININDEX = "ATTRIBUTEISUSEDININDEX";
+  /** An index must include at least one expression or attribute!. */
+  String ANINDEXMUSTHAVEATLEASTONEELEMENT = "ANINDEXMUSTHAVEATLEASTONEELEMENT";
+  /** Edit view. */
+  String VIEWEDITOR = "VIEWEDITOR";
 }

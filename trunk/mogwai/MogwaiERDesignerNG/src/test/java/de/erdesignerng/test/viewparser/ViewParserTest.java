@@ -3,7 +3,6 @@ package de.erdesignerng.test.viewparser;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 

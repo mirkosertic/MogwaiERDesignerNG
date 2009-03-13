@@ -120,6 +120,9 @@
 		<Entry id="RELATION">
 			<Icon>/de/erdesignerng/icons/relation1.gif</Icon>
 		</Entry>
+		<Entry id="VIEWTOOL">
+			<Icon>/de/erdesignerng/icons/view.gif</Icon>
+		</Entry>
 		<Entry id="ZOOM">
 			<Text lang="de">Vergrösserung</Text>		
 			<Text lang="en">Zoom</Text>					
@@ -278,8 +281,8 @@
 			<Icon>/de/erdesignerng/icons/arrow_down.png</Icon>
 		</Entry>
 		<Entry id="ENTITYNAME">
-			<Text lang="de">Name der Entität</Text>		
-			<Text lang="en">Entity name</Text>					
+			<Text lang="de">Name</Text>		
+			<Text lang="en">Name</Text>					
 		</Entry>
 		<Entry id="DEFAULT">
 			<Text lang="de">Default</Text>		
@@ -310,7 +313,7 @@
 			<Text lang="en">Attributes</Text>					
 		</Entry>
 		<Entry id="INDEXES">
-			<Text lang="de">Indizes</Text>		
+			<Text lang="de">Indexe</Text>		
 			<Text lang="en">Indexes</Text>					
 		</Entry>
 		<Entry id="DATABASEDEFAULT">
@@ -525,7 +528,8 @@
 		</Entry>
 		<Entry id="COMPLETECOMPARE">
 			<Text lang="de">Vergleichen mit Datenbank...</Text>		
-			<Text lang="en">Compare with database...</Text>					
+			<Text lang="en">Compare with database...</Text>
+			<Icon>/de/erdesignerng/icons/compare_view.gif</Icon>					
 		</Entry>
 		<Entry id="MODEL">
 			<Text lang="de">Modell</Text>		
@@ -698,6 +702,36 @@
 		<Entry id="TOVERSION">
 			<Text lang="de">Zielversion</Text>		
 			<Text lang="en">To version</Text>					
+		</Entry>
+		<Entry id="ATTRIBUTE">
+			<Text lang="de">Attribut</Text>		
+			<Text lang="en">Attribute</Text>					
+		</Entry>
+		<Entry id="EXPRESSION">
+			<Text lang="de">Ausdruck</Text>		
+			<Text lang="en">Expression</Text>					
+		</Entry>
+		<Entry id="NEWONLYICON">
+			<Icon>/de/erdesignerng/icons/new.png</Icon>
+		</Entry>
+		<Entry id="ATTRIBUTEALREADYPARTOFINDEX">
+			<Text lang="de">Dieses Attribut ist bereits Teil des Indexes</Text>		
+			<Text lang="en">This attribute is already part of this index</Text>					
+		</Entry>
+		<Entry id="DELETEONLYICON">
+			<Icon>/de/erdesignerng/icons/delete.png</Icon>
+		</Entry>
+		<Entry id="ATTRIBUTEISUSEDININDEX">
+			<Text lang="de">Dieses Attribut ist Teil eines Indexes</Text>		
+			<Text lang="en">This attribute is part of an index</Text>					
+		</Entry>
+		<Entry id="ANINDEXMUSTHAVEATLEASTONEELEMENT">
+			<Text lang="de">Ein Index muss mindestens einen Ausdruck oder ein Attribut umfassen!</Text>		
+			<Text lang="en">An index must include at least one expression or attribute!</Text>					
+		</Entry>
+		<Entry id="VIEWEDITOR">
+			<Text lang="de">View editieren</Text>		
+			<Text lang="en">Edit view</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

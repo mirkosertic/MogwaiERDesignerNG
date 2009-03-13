@@ -19,16 +19,18 @@ package de.erdesignerng.visual.editor.classpath;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -38,23 +40,9 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  * Editor for the class path entries.
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2008-06-13 16:48:57 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ClasspathEditor extends BaseEditor {
-
-    private DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    private DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
 
     private DefaultAction addAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -98,6 +86,8 @@ public class ClasspathEditor extends BaseEditor {
         view.getCancelButton().setAction(cancelAction);
         view.getAddButton().setAction(addAction);
         view.getRemoveButton().setAction(removeAction);
+        
+        view.getCancelButton().registerKeyboardAction(cancelAction, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         setContentPane(view);
         setResizable(false);
@@ -121,11 +111,6 @@ public class ClasspathEditor extends BaseEditor {
         for (int i = 0; i < theModel.getSize(); i++) {
             theFiles.add((File) theModel.get(i));
         }
-    }
-
-    private void commandClose() {
-
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
     }
 
     protected void commandFolderAdd() {

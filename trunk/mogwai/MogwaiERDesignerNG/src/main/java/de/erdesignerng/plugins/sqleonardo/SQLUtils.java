@@ -17,23 +17,25 @@
  */
 package de.erdesignerng.plugins.sqleonardo;
 
-import org.apache.commons.lang.StringUtils;
-
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.QueryExpression;
 import nickyb.sqleonardo.querybuilder.syntax.QuerySpecification;
+import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 import nickyb.sqleonardo.querybuilder.syntax.QueryTokens.Column;
 import nickyb.sqleonardo.querybuilder.syntax.QueryTokens.DefaultExpression;
 import nickyb.sqleonardo.querybuilder.syntax.QueryTokens._Expression;
+
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttribute;
 import de.erdesignerng.model.ViewAttributeList;
 
 /**
- * TODO [rarf] - Beschreibung der Klasse einfügen. 
+ * Common SQL Utilities. 
  * 
  * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @version $Date: 2009-03-13 15:40:33 $
  */
 public class SQLUtils {
     
