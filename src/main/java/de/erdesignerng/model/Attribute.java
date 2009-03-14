@@ -23,7 +23,7 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> , LayoutProvider {
+public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
 
     private DataType datatype;
 
@@ -40,18 +40,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     private String extra;
     
-    /**
-     * Get the layout provider. 
-     * 
-     * @return the physical layout provider
-     */
-    public LayoutProvider getLayoutProvider() {
-        if (datatype instanceof LayoutProvider) {
-            return (LayoutProvider) datatype;
-        }
-        return this;
-    }
-
     /**
      * @return the nullable
      */
@@ -245,6 +233,9 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
      * {@inheritDoc}
      */
     public String getLogicalDeclaration() {
+        if (datatype.isDomain()) {
+            return datatype.getName();
+        }
         return getPhysicalDeclaration();
     }
 }

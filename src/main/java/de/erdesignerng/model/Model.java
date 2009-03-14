@@ -21,10 +21,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 
-import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -512,7 +512,7 @@ public class Model implements OwnedModelItemVerifier {
      */
     public DataTypeList getDomainDataTypes() {
         DataTypeList theResult = new DataTypeList();
-        theResult.add(DataType.UNDEFINED);
+        theResult.add(GenericDataTypeImpl.UNDEFINED);
         if (dialect != null) {
             theResult.addAll(dialect.getDataTypes());
         }

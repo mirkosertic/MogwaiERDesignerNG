@@ -43,7 +43,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
         boolean theHasAutoIncrement = false;
         for (Attribute theAttribute : aTable.getAttributes()) {
-            String theExtra = theAttribute.getLayoutProvider().getExtra();
+            String theExtra = theAttribute.getExtra();
             if (theExtra != null) {
                 if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
                     theHasAutoIncrement = true;
@@ -83,7 +83,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         
         boolean theHasAutoIncrement = false;
         for (Attribute theAttribute : aTable.getAttributes()) {
-            String theExtra = theAttribute.getLayoutProvider().getExtra();
+            String theExtra = theAttribute.getExtra();
             if (theExtra != null) {
                 if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
                     theHasAutoIncrement = true;
@@ -121,10 +121,10 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theStatement.append(" ");
         theStatement.append(aNewName);
         theStatement.append(" ");
-        theStatement.append(aExistantAttribute.getLayoutProvider().getPhysicalDeclaration());
+        theStatement.append(aExistantAttribute.getPhysicalDeclaration());
         theStatement.append(" ");
 
-        boolean isNullable = aExistantAttribute.getLayoutProvider().isNullable();
+        boolean isNullable = aExistantAttribute.isNullable();
 
         if (!isNullable) {
             theStatement.append("NOT NULL");
@@ -171,6 +171,4 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
                 + " DROP FOREIGN KEY " + aRelation.getName()));
         return theResult;
     }
-    
-    
 }

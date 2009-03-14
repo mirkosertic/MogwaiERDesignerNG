@@ -208,15 +208,15 @@ public class TableCellView extends VertexView {
                     theString += " : ";
 
                     if (physicalLayout) {
-                        theString += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+                        theString += theAttribute.getPhysicalDeclaration();
 
                         if (theAttribute.getExtra() != null) {
                             theString += " ";
-                            theString += theAttribute.getLayoutProvider().getExtra();
+                            theString += theAttribute.getExtra();
                         }
 
                     } else {
-                        theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
+                        theString += theAttribute.getLogicalDeclaration();
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -255,14 +255,14 @@ public class TableCellView extends VertexView {
                             theString += " : ";
 
                             if (physicalLayout) {
-                                theString += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+                                theString += theAttribute.getPhysicalDeclaration();
 
                                 if (theAttribute.getExtra() != null) {
                                     theString += " ";
                                     theString += theAttribute.getExtra();
                                 }
                             } else {
-                                theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
+                                theString += theAttribute.getLogicalDeclaration();
                             }
                             if (isFK) {
                                 theString += " (FK)";
@@ -320,14 +320,14 @@ public class TableCellView extends VertexView {
                     theText += " : ";
 
                     if (physicalLayout) {
-                        theText += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+                        theText += theAttribute.getPhysicalDeclaration();
 
                         if (theAttribute.getExtra() != null) {
                             theText += " ";
-                            theText += theAttribute.getLayoutProvider().getExtra();
+                            theText += theAttribute.getExtra();
                         }
                     } else {
-                        theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
+                        theText += theAttribute.getLogicalDeclaration();
                     }
 
                     if (theAttribute.isForeignKey()) {
@@ -352,14 +352,14 @@ public class TableCellView extends VertexView {
                         theText += " : ";
 
                         if (physicalLayout) {
-                            theText += theAttribute.getLayoutProvider().getPhysicalDeclaration();
+                            theText += theAttribute.getPhysicalDeclaration();
 
                             if (theAttribute.getExtra() != null) {
                                 theText += " ";
-                                theText += theAttribute.getLayoutProvider().getExtra();
+                                theText += theAttribute.getExtra();
                             }
                         } else {
-                            theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
+                            theText += theAttribute.getLogicalDeclaration();
                         }
 
                         if (theAttribute.isForeignKey()) {

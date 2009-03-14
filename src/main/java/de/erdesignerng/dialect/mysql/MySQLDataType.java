@@ -17,9 +17,14 @@
  */
 package de.erdesignerng.dialect.mysql;
 
-import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 
-public class MySQLDataType extends DataType {
+/**
+ * A MySQL DataType.
+ *  
+ * @author msertic
+ */
+public class MySQLDataType extends GenericDataTypeImpl {
 
     public MySQLDataType(String aName, String aDefinition, int aSQLType) {
         super(aName, aDefinition, aSQLType);

@@ -151,6 +151,7 @@ Release 1.7
 * Bug Fixing 2675551 [ERDesignerNG] DB model comparison does not work
 * Bug Fixing 2675559 [ERDesignerNG] Clipping labels
 * Bug Fixing 2686597 [ERDesignerNG] Used domains are deletable
+* Bug Fixing 2686630 [ERDesignerNG] Default value not setable
 * Implemented FR 2581994 [ERDesignerNG] Support for function based indexes
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
 * Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs

@@ -469,7 +469,7 @@
 			<Text lang="en">Size</Text>					
 		</Entry>
 		<Entry id="FRACTION">
-			<Text lang="de">Nachkommastellen</Text>		
+			<Text lang="de">NK-Stellen</Text>		
 			<Text lang="en">Fraction</Text>					
 		</Entry>
 		<Entry id="SCALE">

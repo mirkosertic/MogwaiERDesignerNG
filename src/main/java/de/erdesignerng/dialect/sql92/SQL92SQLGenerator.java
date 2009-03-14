@@ -27,7 +27,6 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
@@ -53,11 +52,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     protected String createAttributeDataDefinition(Attribute aAttribute, boolean aIgnoreDefault) {
 
-        LayoutProvider theProvider = aAttribute.getLayoutProvider();
-
         StringBuilder theBuilder = new StringBuilder();
-        theBuilder.append(theProvider.getPhysicalDeclaration());
-        boolean isNullable = theProvider.isNullable();
+        theBuilder.append(aAttribute.getPhysicalDeclaration());
+        boolean isNullable = aAttribute.isNullable();
 
         if (!isNullable) {
             theBuilder.append(" NOT NULL");
@@ -71,7 +68,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             }
         }
 
-        String theExtra = theProvider.getExtra();
+        String theExtra = aAttribute.getExtra();
         if (!StringUtils.isEmpty(theExtra)) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);

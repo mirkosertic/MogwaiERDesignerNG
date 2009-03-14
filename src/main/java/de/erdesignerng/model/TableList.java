@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model;
 
-import sun.awt.windows.ThemeReader;
 
 /**
  * @author $Author: mirkosertic $
