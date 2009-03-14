@@ -31,7 +31,7 @@ public class DataTypeTest extends TestCase {
         DialectFactory theFactory = DialectFactory.getInstance();
         for (Dialect theDialect : theFactory.getSupportedDialects()) {
             for (DataType theDataType : theDialect.getDataTypes()) {
-                assertTrue(theDataType.isDomain() == false);
+                assertTrue(!theDataType.isDomain());
             }
         }
     }

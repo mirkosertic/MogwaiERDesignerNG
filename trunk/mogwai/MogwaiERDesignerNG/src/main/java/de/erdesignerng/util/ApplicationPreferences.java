@@ -17,6 +17,9 @@
  */
 package de.erdesignerng.util;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,9 +28,13 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+
+import javax.swing.JFrame;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -51,6 +58,16 @@ public class ApplicationPreferences {
 
     private static final String GRIDSIZE = "gridsize";
 
+    private static final String WINDOWSTATEPREFIX = "windowstate_";
+
+    private static final String WINDOWXPREFIX = "windowx_";
+
+    private static final String WINDOWYPREFIX = "windowy_";
+
+    private static final String WINDOWWIDTHPREFIX = "windowswidth_";
+
+    private static final String WINDOWHEIGHTPREFIX = "windowheight_";
+
     private int size;
 
     private List<File> recentlyUsedFiles = new ArrayList<File>();
@@ -66,6 +83,8 @@ public class ApplicationPreferences {
     private int gridSize;
 
     private ConnectionDescriptor repositoryConnection;
+
+    private Map<String, String> windowDefinitions = new HashMap<String, String>();
 
     private static ApplicationPreferences me;
 
@@ -86,6 +105,11 @@ public class ApplicationPreferences {
         preferences = Preferences.userNodeForPackage(ApplicationPreferences.class);
         List<String> theNames = Arrays.asList(preferences.keys());
         for (String theName : theNames) {
+
+            // Locate the window defaults here
+            if (theName.startsWith("window")) {
+                windowDefinitions.put(theName, preferences.get(theName, null));
+            }
             if (theName.startsWith(LRUPREFIX)) {
                 File theFile = new File(preferences.get(theName, ""));
                 if ((theFile.exists()) && (!recentlyUsedFiles.contains(theFile))) {
@@ -255,6 +279,10 @@ public class ApplicationPreferences {
             preferences.put(RPCPREFIX + "PASS", repositoryConnection.getPassword());
         }
 
+        for (Map.Entry<String, String> theWindowEntry : windowDefinitions.entrySet()) {
+            preferences.put(theWindowEntry.getKey(), theWindowEntry.getValue());
+        }
+
         preferences.flush();
     }
 
@@ -305,5 +333,55 @@ public class ApplicationPreferences {
      */
     public void setRepositoryConnection(ConnectionDescriptor repositoryConnection) {
         this.repositoryConnection = repositoryConnection;
+    }
+
+    /**
+     * Update the last position of a window.
+     * 
+     * @param aAlias
+     *                the alias of the window
+     * @param aFrame
+     *                the window
+     */
+    public void updateWindowDefinition(String aAlias, JFrame aFrame) {
+        windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, "" + aFrame.getExtendedState());
+        Point theLocation = aFrame.getLocation();
+        windowDefinitions.put(WINDOWXPREFIX + aAlias, "" + theLocation.x);
+        windowDefinitions.put(WINDOWYPREFIX + aAlias, "" + theLocation.y);
+        Dimension theSize = aFrame.getSize();
+        windowDefinitions.put(WINDOWWIDTHPREFIX + aAlias, "" + theSize.width);
+        windowDefinitions.put(WINDOWHEIGHTPREFIX + aAlias, "" + theSize.height);
+    }
+
+    /**
+     * Set the current window state as stored by updateWindowDefinition.
+     * 
+     * @param aAlias
+     *                the alias of the window
+     * @param aFrame
+     *                the window
+     */
+    public void setWindowState(String aAlias, JFrame aFrame) {
+
+        if (windowDefinitions.containsKey(WINDOWSTATEPREFIX + aAlias)) {
+            try {
+                aFrame.setExtendedState(Integer.parseInt(windowDefinitions.get(WINDOWSTATEPREFIX + aAlias)));
+                int x = Integer.parseInt(windowDefinitions.get(WINDOWXPREFIX + aAlias));
+                int y = Integer.parseInt(windowDefinitions.get(WINDOWYPREFIX + aAlias));
+                int width = Integer.parseInt(windowDefinitions.get(WINDOWWIDTHPREFIX + aAlias));
+                int height = Integer.parseInt(windowDefinitions.get(WINDOWHEIGHTPREFIX + aAlias));
+
+                // Only set the size and location if its within the available
+                // screen resolution
+                Dimension theCurrentScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                if (x < theCurrentScreenSize.width && y < theCurrentScreenSize.height) {
+                    aFrame.setLocation(x, y);
+                    aFrame.setSize(width, height);
+                }
+
+            } catch (Exception e) {
+                aFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+        }
     }
 }
