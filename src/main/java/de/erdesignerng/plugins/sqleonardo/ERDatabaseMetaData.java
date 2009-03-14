@@ -112,6 +112,9 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
 
     /**
      * if ERDesignerNG does not use Schemas leave return null.
+     * 
+     * @return by default NULL
+     * @throws SQLException Is thrown in case of an error
      */
     public String getSchemaTerm() throws SQLException {
         return null;
@@ -119,6 +122,9 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
 
     /**
      * if ERDesignerNG does not use Schemas leave return null.
+     * 
+     * @return by default NULL
+     * @throws SQLException Is thrown in case of an error 
      */
     public ResultSet getSchemas() throws SQLException {
         return null;

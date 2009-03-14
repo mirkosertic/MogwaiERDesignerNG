@@ -88,8 +88,8 @@ public class ViewEditor extends BaseEditor {
 
         editingView.getEntityName().setName(aView.getName());
         if (!StringUtils.isEmpty(aView.getSql())) {
-            
-            System.out.println("Entering for SQL "+aView.getSql());
+
+            System.out.println("Entering for SQL " + aView.getSql());
             try {
                 editingView.getBuilder().setQueryModel(SQLParser.toQueryModel(aView.getSql()));
             } catch (IOException e) {
@@ -101,18 +101,17 @@ public class ViewEditor extends BaseEditor {
     @Override
     protected void commandOk() {
         if (viewBindingInfo.validate().size() == 0) {
-            
-            /*try {
 
-                // Test if every expression has an assigned alias
-                SQLUtils.updateViewAttributesFromQueryModel(new View(), editingView.getBuilder().getQueryModel());
+            /*
+             * try {
+             *  // Test if every expression has an assigned alias
+             * SQLUtils.updateViewAttributesFromQueryModel(new View(),
+             * editingView.getBuilder().getQueryModel());
+             * 
+             * setModalResult(MODAL_RESULT_OK); } catch (Exception e) { //
+             * Handle error here e.printStackTrace(); }
+             */
 
-                setModalResult(MODAL_RESULT_OK);
-            } catch (Exception e) {
-                // Handle error here
-                e.printStackTrace();
-            }*/
-            
             setModalResult(MODAL_RESULT_OK);
         }
     }
@@ -127,17 +126,17 @@ public class ViewEditor extends BaseEditor {
 
         theView.getAttributes().clear();
 
-        /*try {
-            SQLUtils.updateViewAttributesFromQueryModel(new View(), editingView.getBuilder().getQueryModel());
-        } catch (Exception e) {
-            // This exception is checked in commandOk before
-        }*/
+        /*
+         * try { SQLUtils.updateViewAttributesFromQueryModel(new View(),
+         * editingView.getBuilder().getQueryModel()); } catch (Exception e) { //
+         * This exception is checked in commandOk before }
+         */
 
         theView.setSql(editingView.getBuilder().getQueryModel().toString(true));
         System.out.println("Current SQL : " + theView.getSql());
 
         viewBindingInfo.view2model();
-        
+
         if (!model.getViews().contains(theView)) {
 
             model.addView(theView);
