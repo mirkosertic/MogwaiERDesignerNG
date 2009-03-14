@@ -153,6 +153,7 @@ Release 1.7
 * Bug Fixing 2686597 [ERDesignerNG] Used domains are deletable
 * Bug Fixing 2686630 [ERDesignerNG] Default value not setable
 * Bug Fixing 2686882 [ERDesignerNG] Domains not initialized
+* Bug Fixing 2686627 [ERDesignerNG]  'NOT NULL' ist not generated
 * Implemented FR 2581994 [ERDesignerNG] Support for function based indexes
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
 * Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs
