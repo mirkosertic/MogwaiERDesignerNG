@@ -91,10 +91,10 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
-        theStatement.append(aNewAttribute.getLayoutProvider().getPhysicalDeclaration());
+        theStatement.append(aNewAttribute.getPhysicalDeclaration());
         theStatement.append(" ");
 
-        boolean isNullable = aNewAttribute.getLayoutProvider().isNullable();
+        boolean isNullable = aNewAttribute.isNullable();
 
         if (!isNullable) {
             theStatement.append("NOT NULL");

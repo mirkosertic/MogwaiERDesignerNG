@@ -39,19 +39,19 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
     protected void copyBaseAttributes(Domain aSource, DomainEntity aDestination) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
-        aDestination.setDatatype(aSource.getAttribute().getDatatype().getName());
-        aDestination.setSize(aSource.getAttribute().getSize());
-        aDestination.setFraction(aSource.getAttribute().getFraction());
-        aDestination.setScale(aSource.getAttribute().getScale());
+        aDestination.setDatatype(aSource.getConcreteType().getName());
+        aDestination.setSize(aSource.getSize());
+        aDestination.setFraction(aSource.getFraction());
+        aDestination.setScale(aSource.getScale());
     }
     
     protected void copyBaseAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
-        aDestination.getAttribute().setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
-        aDestination.getAttribute().setSize(aSource.getSize());
-        aDestination.getAttribute().setFraction(aSource.getFraction());
-        aDestination.getAttribute().setScale(aSource.getScale());
+        aDestination.setConcreteType(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+        aDestination.setSize(aSource.getSize());
+        aDestination.setFraction(aSource.getFraction());
+        aDestination.setScale(aSource.getScale());
     }
     
     public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {

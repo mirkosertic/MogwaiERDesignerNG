@@ -17,9 +17,14 @@
  */
 package de.erdesignerng.dialect.db2;
 
-import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 
-public class DB2DataType extends DataType {
+/**
+ * A DB2 DataType.
+ * 
+ * @author msertic
+ */
+public class DB2DataType extends GenericDataTypeImpl {
 
     public DB2DataType(String aName, String aDefinition, int aJdbcType) {
         super(aName, aDefinition, aJdbcType);

@@ -44,7 +44,7 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
     protected void copyExtendedAttributes(Attribute aSource, AttributeEntity aDestination) {
         aDestination.setDatatype(null);
         aDestination.setDomain(null);
-        if (!(aSource.getDatatype() instanceof Domain)) {
+        if (!(aSource.getDatatype().isDomain())) {
             aDestination.setDatatype(aSource.getDatatype().getName());
         } else {
             Domain theDomain = (Domain) aSource.getDatatype();

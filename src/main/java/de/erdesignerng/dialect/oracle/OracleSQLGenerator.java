@@ -24,7 +24,6 @@ import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
-import de.erdesignerng.model.LayoutProvider;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
@@ -44,11 +43,9 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
     @Override
     protected String createAttributeDataDefinition(Attribute aAttribute) {
         
-        LayoutProvider theInfoProvider = aAttribute.getLayoutProvider();
-        
         StringBuilder theBuilder = new StringBuilder();
-        theBuilder.append(theInfoProvider.getPhysicalDeclaration());
-        boolean isNullable = theInfoProvider.isNullable();
+        theBuilder.append(aAttribute.getPhysicalDeclaration());
+        boolean isNullable = aAttribute.isNullable();
 
         String theDefault = aAttribute.getDefaultValue();        
         boolean hasDefault = false;
@@ -65,7 +62,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
             theBuilder.append(theDefault);
         }
         
-        String theExtra = theInfoProvider.getExtra();
+        String theExtra = aAttribute.getExtra();
         if (!StringUtils.isEmpty(theExtra)) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);

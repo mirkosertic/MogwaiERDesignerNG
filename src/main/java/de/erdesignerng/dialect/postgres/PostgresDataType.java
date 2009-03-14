@@ -17,9 +17,14 @@
  */
 package de.erdesignerng.dialect.postgres;
 
-import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 
-public class PostgresDataType extends DataType {
+/**
+ * A DataType for PostgreSQL.
+ * 
+ * @author msertic
+ */
+public class PostgresDataType extends GenericDataTypeImpl {
 
     public PostgresDataType(String aName, String aDefinition, int aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);
