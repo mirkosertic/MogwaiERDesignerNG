@@ -369,4 +369,6 @@ public interface ERDesignerBundle {
   String ANINDEXMUSTHAVEATLEASTONEELEMENT = "ANINDEXMUSTHAVEATLEASTONEELEMENT";
   /** Edit view. */
   String VIEWEDITOR = "VIEWEDITOR";
+  /** The domain is still in use by table {0}. */
+  String DOMAINISINUSEBYTABLE = "DOMAINISINUSEBYTABLE";
 }

@@ -733,5 +733,9 @@
 			<Text lang="de">View editieren</Text>		
 			<Text lang="en">Edit view</Text>					
 		</Entry>
+		<Entry id="DOMAINISINUSEBYTABLE">
+			<Text lang="de">Die Domäne wird noch in Tabelle {0} benutzt</Text>		
+			<Text lang="en">The domain is still in use by table {0}</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

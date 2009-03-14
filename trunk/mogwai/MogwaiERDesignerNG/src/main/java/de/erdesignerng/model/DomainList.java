@@ -41,5 +41,21 @@ public class DomainList extends Vector<Domain> implements ModelList<Domain> {
         }
         return null;
     }
+    
+    /**
+     * Find a domain by a given name.
+     * 
+     * @param aName
+     *                the name
+     * @return the found element
+     */
+    public Domain findByName(String aName) {
+        for (Domain theElement : this) {
+            if (aName.equals(theElement.getName())) {
+                return theElement;
+            }
+        }
+        return null;
+    }    
 
 }
