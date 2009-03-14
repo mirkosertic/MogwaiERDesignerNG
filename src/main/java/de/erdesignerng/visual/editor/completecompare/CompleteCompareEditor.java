@@ -281,7 +281,7 @@ public class CompleteCompareEditor extends BaseEditor {
 
                     if (theAttributeFromDB != null) {
 
-                        if (theAttributeFromModel.isModified(theAttributeFromDB)) {
+                        if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
                             // Compute the difference
 
                             String theDiffInfo = theAttributeFromModel.getPhysicalDeclaration();
@@ -338,7 +338,7 @@ public class CompleteCompareEditor extends BaseEditor {
 
                     if (theAttributeFromModel != null) {
 
-                        if (theAttributeFromModel.isModified(theAttributeFromDB)) {
+                        if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
 
                             String diffInfo = theAttributeFromDB.getPhysicalDeclaration();
 

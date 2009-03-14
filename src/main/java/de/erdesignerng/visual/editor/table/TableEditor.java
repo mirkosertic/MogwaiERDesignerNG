@@ -689,7 +689,7 @@ public class TableEditor extends BaseEditor {
                         if (theExistantAttribute.isRenamed(theAttribute)) {
                             model.renameAttribute(theExistantAttribute, theAttribute.getName());
                         } else {
-                            if (theExistantAttribute.isModified(theAttribute)) {
+                            if (theExistantAttribute.isModified(theAttribute, false)) {
                                 model.changeAttribute(theExistantAttribute, theAttribute);
                             }
                         }
