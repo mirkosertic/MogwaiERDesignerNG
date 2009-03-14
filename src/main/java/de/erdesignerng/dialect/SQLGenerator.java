@@ -30,6 +30,7 @@ import de.erdesignerng.modificationtracker.VetoException;
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
+ * @param <T> the dialect
  */
 public abstract class SQLGenerator<T extends Dialect> {
 

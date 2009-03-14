@@ -96,7 +96,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         boolean isDefinedModel = aModel.getDomains().size() > 0 || aModel.getTables().size() > 0;
         if (isDefinedModel) {
             // If there are domains or tables already defined, the dialect cannot be changed
-            view.getDialect().setEnabled(false);;
+            view.getDialect().setEnabled(false);
         }
     }
 

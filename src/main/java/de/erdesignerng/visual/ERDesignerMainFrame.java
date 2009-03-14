@@ -19,7 +19,6 @@ package de.erdesignerng.visual;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.prefs.BackingStoreException;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
@@ -41,18 +40,24 @@ import de.mogwai.common.i18n.ResourceHelper;
  */
 public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
 
+    private static final String WINDOW_ALIAS = "ERDesignerMainFrame";
+
     private ERDesignerComponent component;
+
+    private ApplicationPreferences preferences = ApplicationPreferences.getInstance();
 
     public ERDesignerMainFrame() {
         super(ERDesignerBundle.TITLE);
         initialize();
 
         setSize(800, 600);
+        setExtendedState(MAXIMIZED_BOTH);
 
         addWindowListener(new WindowAdapter() {
 
             @Override
             public void windowClosing(WindowEvent e) {
+                preferences.updateWindowDefinition(WINDOW_ALIAS, ERDesignerMainFrame.this);
                 component.savePreferences();
             }
         });
@@ -67,8 +72,9 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     private void initialize() {
-        component = new ERDesignerComponent(ApplicationPreferences.getInstance(), this);
+        component = new ERDesignerComponent(preferences, this);
         getDefaultFrameContent().setDetailComponent(component.getDetailComponent());
+
     }
 
     public void initTitle() {
@@ -86,7 +92,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
             theTitle.append(" - ").append(aFile);
         }
 
-        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo(); 
+        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
         setTitle(getResourceHelper().getText(getResourceBundleID()) + " " + theVersion + " " + theTitle);
     }
 
@@ -130,12 +136,16 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     public void exitApplication() {
-        try {
-            ApplicationPreferences.getInstance().store();
-        } catch (BackingStoreException e) {
-            notifyAboutException(e);
-        }
-
+        component.savePreferences();
         System.exit(0);
+    }
+
+    @Override
+    public void setVisible(boolean aVisible) {
+        super.setVisible(aVisible);
+        
+        if (aVisible) {
+            preferences.setWindowState(WINDOW_ALIAS, this);
+        }
     }
 }

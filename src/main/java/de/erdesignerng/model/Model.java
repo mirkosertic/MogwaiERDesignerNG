@@ -87,6 +87,7 @@ public class Model implements OwnedModelItemVerifier {
 
         if (dialect != null) {
             ModelUtilities.checkNameAndExistance(tables, aTable, dialect);
+            ModelUtilities.checkNameAndExistance(views, aTable, dialect);
 
             for (Attribute theAttribute : aTable.getAttributes()) {
                 theAttribute.setName(dialect.checkName(theAttribute.getName()));
@@ -465,9 +466,9 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aView
      *                the view
-     * @throws VetoException 
-     * @throws ElementAlreadyExistsException 
-     * @throws ElementInvalidNameException 
+     * @throws VetoException  is thrown if someone has a veto to add the view
+     * @throws ElementAlreadyExistsException is thrown if there is already 
+     * @throws ElementInvalidNameException  is thrown if the name is invalid
      */
     public void addView(View aView) throws VetoException, ElementInvalidNameException, ElementAlreadyExistsException {
         
@@ -475,6 +476,7 @@ public class Model implements OwnedModelItemVerifier {
 
         if (dialect != null) {
             ModelUtilities.checkNameAndExistance(tables, aView, dialect);
+            ModelUtilities.checkNameAndExistance(views, aView, dialect);
         }
 
         aView.setOwner(this);
@@ -486,7 +488,7 @@ public class Model implements OwnedModelItemVerifier {
      * 
      * @param aView
      *                a view
-     * @throws VetoException 
+     * @throws VetoException is thrown is someone has a veto to remove the view 
      */
     public void removeView(View aView) throws VetoException {
         
@@ -523,7 +525,7 @@ public class Model implements OwnedModelItemVerifier {
      * Mark a view as changed. 
      * 
      * @param aView the view
-     * @throws VetoException 
+     * @throws VetoException  is thrown if someone has a veto to change the view
      */
     public void changeView(View aView) throws VetoException {
         modificationTracker.changeView(aView);

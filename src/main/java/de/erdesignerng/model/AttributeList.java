@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * A list of attributes.
- *  
+ * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-15 19:22:43 $
  */
@@ -32,14 +32,15 @@ public class AttributeList extends ModelItemVector<Attribute> {
     /**
      * Test if a domain is in use.
      * 
-     * @param aDomain the domain
+     * @param aDomain
+     *                the domain
      * @return true if yes, else false
      */
     public boolean isDomainInUse(Domain aDomain) {
         for (Attribute theAttribute : this) {
             DataType theType = theAttribute.getDatatype();
             if (theType.isDomain()) {
-                if (aDomain.getSystemId().equals(((Domain)theType).getSystemId())) {
+                if (aDomain.getSystemId().equals(((Domain) theType).getSystemId())) {
                     return true;
                 }
             }
