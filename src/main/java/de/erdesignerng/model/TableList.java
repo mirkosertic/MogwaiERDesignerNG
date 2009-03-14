@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model;
 
+import sun.awt.windows.ThemeReader;
+
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-02-01 21:05:35 $
@@ -41,4 +43,19 @@ public class TableList extends ModelItemVector<Table> {
         }
         return null;
     }
+    
+    /**
+     * Test if the domain is in use by a table.
+     * 
+     * @param aDomain the domain
+     * @return the using table or null if the domain is not in use
+     */
+    public Table checkIfUsedByTable(Domain aDomain) {
+        for (Table theTable : this) {
+            if (theTable.getAttributes().isDomainInUse(aDomain)) {
+                return theTable;
+            }
+        }
+        return null;
+    }    
 }

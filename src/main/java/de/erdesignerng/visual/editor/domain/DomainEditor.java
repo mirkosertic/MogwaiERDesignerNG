@@ -31,6 +31,7 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -106,7 +107,7 @@ public class DomainEditor extends BaseEditor {
         model = aModel;
 
         domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
-        domainBindingInfo.addBinding("attribute.datatype", editingView.getDataType());        
+        domainBindingInfo.addBinding("attribute.datatype", editingView.getDataType());
         domainBindingInfo.addBinding("attribute.size", editingView.getSizeSpinner());
         domainBindingInfo.addBinding("attribute.fraction", editingView.getFractionSpinner());
         domainBindingInfo.addBinding("attribute.scale", editingView.getScaleSpinner());
@@ -210,10 +211,16 @@ public class DomainEditor extends BaseEditor {
     private void commandDeleteDomain(java.awt.event.ActionEvent aEvent) {
 
         Domain theDomain = domainBindingInfo.getDefaultModel();
+        Table theTable = model.getTables().checkIfUsedByTable(theDomain);
+        if (theTable == null) {
 
-        if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-            domainListModel.remove(theDomain);
-            removedDomains.add(theDomain);
+            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+                domainListModel.remove(theDomain);
+                removedDomains.add(theDomain);
+            }
+        } else {
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+                    ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
         }
     }
 

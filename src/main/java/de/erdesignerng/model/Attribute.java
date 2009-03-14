@@ -156,14 +156,20 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         setOwner(aValue.getOwner());
     }
 
-    public boolean isModified(Attribute aAttribute) {
+    public boolean isModified(Attribute aAttribute, boolean aUseConcreteDataType) {
 
         if (!getName().equals(aAttribute.getName())) {
             return true;
         }
 
-        if (!getPhysicalDeclaration().equals(aAttribute.getPhysicalDeclaration())) {
-            return true;
+        if (aUseConcreteDataType) {
+            if (!getPhysicalDeclaration().equals(aAttribute.getPhysicalDeclaration())) {
+                return true;
+            }
+        } else {
+            if (!getDatatype().getName().equals(aAttribute.getDatatype().getName())) {
+                return true;
+            }
         }
 
         if (datatype.supportsSize()) {
