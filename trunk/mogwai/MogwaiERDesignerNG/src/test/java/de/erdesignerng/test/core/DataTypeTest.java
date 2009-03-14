@@ -15,25 +15,24 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.dialect;
+package de.erdesignerng.test.core;
 
-import java.io.Serializable;
+import junit.framework.TestCase;
+import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.DialectFactory;
 
-import de.erdesignerng.model.Attribute;
+public class DataTypeTest extends TestCase {
 
-public interface DataType extends Comparable<DataType>, Serializable {
-
-    String getName();
-    
-    boolean isDomain();
-
-    boolean supportsSize();
-
-    boolean supportsFraction();
-
-    boolean supportsScale();
-
-    boolean isJDBCStringType();
-
-    String createTypeDefinitionFor(Attribute aAttribute);
+    /**
+     * Test if every build in type is not a domain.
+     */
+    public void testDialectsForValidDataTypes() {
+        DialectFactory theFactory = DialectFactory.getInstance();
+        for (Dialect theDialect : theFactory.getSupportedDialects()) {
+            for (DataType theDataType : theDialect.getDataTypes()) {
+                assertTrue(theDataType.isDomain() == false);
+            }
+        }
+    }
 }

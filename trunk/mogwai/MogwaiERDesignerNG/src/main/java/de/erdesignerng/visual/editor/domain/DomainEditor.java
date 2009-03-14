@@ -107,10 +107,10 @@ public class DomainEditor extends BaseEditor {
         model = aModel;
 
         domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
-        domainBindingInfo.addBinding("attribute.datatype", editingView.getDataType());
-        domainBindingInfo.addBinding("attribute.size", editingView.getSizeSpinner());
-        domainBindingInfo.addBinding("attribute.fraction", editingView.getFractionSpinner());
-        domainBindingInfo.addBinding("attribute.scale", editingView.getScaleSpinner());
+        domainBindingInfo.addBinding("concreteType", editingView.getDataType());
+        domainBindingInfo.addBinding("size", editingView.getSizeSpinner());
+        domainBindingInfo.addBinding("fraction", editingView.getFractionSpinner());
+        domainBindingInfo.addBinding("scale", editingView.getScaleSpinner());
         domainBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
@@ -172,7 +172,7 @@ public class DomainEditor extends BaseEditor {
         Domain theValue = domainBindingInfo.getDefaultModel();
 
         if (theValue != null) {
-            DataType theDataType = theValue.getAttribute().getDatatype();
+            DataType theDataType = theValue.getConcreteType();
 
             boolean isNew = !domainListModel.contains(theValue);
 

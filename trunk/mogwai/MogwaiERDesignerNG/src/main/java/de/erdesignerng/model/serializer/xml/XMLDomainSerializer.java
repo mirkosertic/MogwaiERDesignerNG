@@ -43,10 +43,10 @@ public class XMLDomainSerializer extends XMLSerializer {
         theDomainElement.setAttribute(ID, aDomain.getSystemId());
         theDomainElement.setAttribute(NAME, aDomain.getName());
 
-        theDomainElement.setAttribute(DATATYPE, aDomain.getAttribute().getDatatype().getName());
-        theDomainElement.setAttribute(SIZE, "" + aDomain.getAttribute().getSize());
-        theDomainElement.setAttribute(FRACTION, "" + aDomain.getAttribute().getFraction());
-        theDomainElement.setAttribute(SCALE, "" + aDomain.getAttribute().getScale());
+        theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
+        theDomainElement.setAttribute(SIZE, "" + aDomain.getSize());
+        theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
+        theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {
@@ -58,11 +58,11 @@ public class XMLDomainSerializer extends XMLSerializer {
             Domain theTable = new Domain();
             theTable.setSystemId(theElement.getAttribute(ID));
             theTable.setName(theElement.getAttribute(NAME));
-            theTable.getAttribute().setDatatype(
+            theTable.setConcreteType(
                     aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
-            theTable.getAttribute().setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
-            theTable.getAttribute().setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
-            theTable.getAttribute().setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
+            theTable.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
+            theTable.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
+            theTable.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
 
             aModel.getDomains().add(theTable);
         }

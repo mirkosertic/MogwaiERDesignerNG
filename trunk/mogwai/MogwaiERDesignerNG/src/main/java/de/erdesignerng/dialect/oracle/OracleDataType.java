@@ -17,9 +17,14 @@
  */
 package de.erdesignerng.dialect.oracle;
 
-import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 
-public class OracleDataType extends DataType {
+/**
+ * An Oracle DataType.
+ * 
+ * @author msertic
+ */
+public class OracleDataType extends GenericDataTypeImpl {
 
     public OracleDataType(String aName, String aDefinition, int aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);

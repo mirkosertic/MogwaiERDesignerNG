@@ -17,9 +17,14 @@
  */
 package de.erdesignerng.dialect.mssql;
 
-import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 
-public class MSSQLDataType extends DataType {
+/**
+ * A MSSQL DataType.
+ * 
+ * @author msertic
+ */
+public class MSSQLDataType extends GenericDataTypeImpl {
 
     public MSSQLDataType(String aName, String aDefinition, int aJdbcType) {
         super(aName, aDefinition, aJdbcType);

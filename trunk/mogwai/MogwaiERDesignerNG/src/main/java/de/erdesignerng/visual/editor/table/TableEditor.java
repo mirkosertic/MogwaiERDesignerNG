@@ -33,7 +33,6 @@ import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
@@ -343,9 +342,9 @@ public class TableEditor extends BaseEditor {
 
     private void setSpinnerState(DataType aValue) {
         if (aValue != null) {
-            editingView.getSizeSpinner().setEnabled(aValue.supportsSize());
-            editingView.getFractionSpinner().setEnabled(aValue.supportsFraction());
-            editingView.getScaleSpinner().setEnabled(aValue.supportsScale());
+            editingView.getSizeSpinner().setEnabled(aValue.supportsSize() && !aValue.isDomain());
+            editingView.getFractionSpinner().setEnabled(aValue.supportsFraction() && !aValue.isDomain());
+            editingView.getScaleSpinner().setEnabled(aValue.supportsScale() && !aValue.isDomain());
         } else {
             editingView.getSizeSpinner().setEnabled(false);
             editingView.getFractionSpinner().setEnabled(false);
@@ -366,10 +365,9 @@ public class TableEditor extends BaseEditor {
             editingView.getDeleteButton().setEnabled(!isNew);
             editingView.getAttributeName().setEnabled(true);
             editingView.getNullable().setEnabled(true);
-            editingView.getDefault().setEnabled(!(theDataType instanceof Domain));
+            editingView.getDefault().setEnabled(true);
             if (model.getDialect() != null) {
-                editingView.getExtra().setEnabled(
-                        model.getDialect().isSupportsColumnExtra() && !(theDataType instanceof Domain));
+                editingView.getExtra().setEnabled(model.getDialect().isSupportsColumnExtra());
             } else {
                 editingView.getExtra().setEnabled(false);
             }
