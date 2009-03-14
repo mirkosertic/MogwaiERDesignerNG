@@ -92,6 +92,12 @@ public class DatabaseConnectionEditor extends BaseEditor {
         bindingInfo.configure();
 
         bindingInfo.model2view();
+        
+        boolean isDefinedModel = aModel.getDomains().size() > 0 || aModel.getTables().size() > 0;
+        if (isDefinedModel) {
+            // If there are domains or tables already defined, the dialect cannot be changed
+            view.getDialect().setEnabled(false);;
+        }
     }
 
     private void initialize() {
