@@ -50,10 +50,12 @@ public class HandTool extends BaseTool {
 
     @Override
     public boolean isForceMarqueeEvent(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
+        
+        if (SwingUtilities.isRightMouseButton(e) && !e.isAltDown()) {
             return true;
         }
-        return super.isForceMarqueeEvent(e);
+        
+        return false;
     }
 
     @Override
@@ -65,10 +67,10 @@ public class HandTool extends BaseTool {
             if ((theCells != null) && (theCells.length > 0)) {
                 DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theCells);
                 menu.show(graph, e.getX(), e.getY());
+                return;
             }
-        } else {
-            super.mousePressed(e);
         }
+        super.mousePressed(e);        
     }
 
     public DefaultPopupMenu createPopupMenu(Point aPoint, final Object[] aCells) {
@@ -84,7 +86,8 @@ public class HandTool extends BaseTool {
                     try {
                         graph.commandDeleteCells(aCells);
                     } catch (VetoException ex) {
-                        displayErrorMessage(getResourceHelper().getFormattedText(ERDesignerBundle.CANNOTDELETEMODELITEM, ex.getMessage()));
+                        displayErrorMessage(getResourceHelper().getFormattedText(
+                                ERDesignerBundle.CANNOTDELETEMODELITEM, ex.getMessage()));
                     }
                 }
             }
