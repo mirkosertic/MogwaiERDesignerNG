@@ -33,7 +33,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
+import de.erdesignerng.model.serializer.xml17.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**
