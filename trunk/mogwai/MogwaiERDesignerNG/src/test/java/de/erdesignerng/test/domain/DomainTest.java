@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.xml17.XMLModelSerializer;
+import de.erdesignerng.model.serializer.xml20.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**

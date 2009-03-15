@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.io.xml17;
+package de.erdesignerng.test.io.xml20;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -33,7 +33,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.xml17.XMLModelSerializer;
+import de.erdesignerng.model.serializer.xml20.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**
@@ -44,7 +44,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  */
 public class XML17IOTest extends BaseERDesignerTestCaseImpl {
 
-    public void testLoadXML17Model() throws ParserConfigurationException, SAXException, IOException, TransformerException {
+    public void testLoadXML20Model() throws ParserConfigurationException, SAXException, IOException, TransformerException {
         
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();

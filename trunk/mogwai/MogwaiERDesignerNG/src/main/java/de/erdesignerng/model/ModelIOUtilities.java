@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.model.serializer.xml17.Model17XMLPersister;
+import de.erdesignerng.model.serializer.xml20.Model20XMLPersister;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
@@ -79,13 +79,13 @@ public final class ModelIOUtilities {
 
     public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
         
-        Model17XMLPersister thePersister = new Model17XMLPersister(this);
+        Model20XMLPersister thePersister = new Model20XMLPersister(this);
         return thePersister.deserializeModelFromXML(aInputStream);
     }
 
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
         
-        Model17XMLPersister thePersister = new Model17XMLPersister(this);
+        Model20XMLPersister thePersister = new Model20XMLPersister(this);
         thePersister.serializeModelToXML(aModel, aStream);
     }
 
