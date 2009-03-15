@@ -158,3 +158,4 @@ Release 1.7
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
 * Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs
 * Implemented FR 2686903 [ERDesignerNG] Store main window size
+* Implemented FR 2675574 [ERDesignerNG] Resizable dialog windows

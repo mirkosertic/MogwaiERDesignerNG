@@ -54,7 +54,7 @@ public class CompleteCompareEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "8dlu,fill:250dlu,8dlu,p,2dlu";
+        String rowDef = "8dlu,fill:250dlu:grow,8dlu,p,2dlu";
         String colDef = "2dlu,fill:60dlu,2dlu:grow,fill:60dlu,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
@@ -79,19 +79,19 @@ public class CompleteCompareEditorView extends JPanel {
             contentPanel = new JPanel();
 
             String rowDef = "2dlu,p,2dlu,fill:200dlu:grow,2dlu";
-            String colDef = "fill:180dlu,2dlu:grow,fill:180dlu";
+            String colDef = "fill:180dlu:grow,2dlu,fill:180dlu:grow";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             contentPanel.setLayout(layout);
 
             CellConstraints cons = new CellConstraints();
 
-            contentPanel.add(new DefaultSeparator(ERDesignerBundle.MODEL), cons.xywh(
-                    1, 2, 1, 1));
+            contentPanel.add(new DefaultSeparator(ERDesignerBundle.MODEL), cons.xy(
+                    1, 2));
             contentPanel.add(new DefaultSeparator(ERDesignerBundle.DATABASE), cons.xywh(3, 2,
                     1, 1));
-            contentPanel.add(getCurrentModelView().getScrollPane(), cons.xywh(1, 4, 1, 1));
-            contentPanel.add(getDatabaseView().getScrollPane(), cons.xywh(3, 4, 1, 1));
+            contentPanel.add(getCurrentModelView().getScrollPane(), cons.xy(1, 4));
+            contentPanel.add(getDatabaseView().getScrollPane(), cons.xy(3, 4));
         }
 
         return contentPanel;
