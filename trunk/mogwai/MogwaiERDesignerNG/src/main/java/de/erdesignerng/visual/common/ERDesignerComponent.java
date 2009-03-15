@@ -107,6 +107,7 @@ import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
+import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
@@ -266,6 +267,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction reverseEngineerAction;
 
     private DefaultAction completeCompareAction;
+    
+    private DefaultAction convertModelAction;
 
     private DefaultAction saveAsAction;
     
@@ -568,6 +571,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.COMPLETECOMPARE);
 
+        convertModelAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent e) {
+                commandConvertModel();
+            }
+
+        }, this, ERDesignerBundle.CONVERTMODEL);
+
         createMigrationScriptAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -688,8 +699,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(generateChangelog));
         theDBMenu.addSeparator();
-
         theDBMenu.add(new DefaultMenuItem(completeCompareAction));
+        theDBMenu.addSeparator();
+        theDBMenu.add(new DefaultMenuItem(convertModelAction));
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
@@ -1930,6 +1942,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             if (theObject instanceof CommentCell) {
                 theArea.getComments().add((Comment) ((CommentCell) theObject).getUserObject());
             }
+        }
+    }
+    
+    protected void commandConvertModel() {
+        if (model.getDialect() == null) {
+            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
+                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+            return;
+        }
+
+        ConvertModelEditor theEditor = new ConvertModelEditor(model, scrollPane);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            //TODO [mirkosertic] Implement model conversion
         }
     }
 

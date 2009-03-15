@@ -373,4 +373,14 @@ public interface ERDesignerBundle {
   String VIEWEDITOR = "VIEWEDITOR";
   /** The domain is still in use by table {0}. */
   String DOMAINISINUSEBYTABLE = "DOMAINISINUSEBYTABLE";
+  /** Convert model.... */
+  String CONVERTMODEL = "CONVERTMODEL";
+  /** Target dialect. */
+  String TARGETDIALECT = "TARGETDIALECT";
+  /** Datatype mapping. */
+  String DATATYPEMAPPING = "DATATYPEMAPPING";
+  /** Current datatype. */
+  String CURRENTDATATYPE = "CURRENTDATATYPE";
+  /** Will be assigned to. */
+  String TARGETDATATYPE = "TARGETDATATYPE";
 }
