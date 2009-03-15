@@ -39,7 +39,7 @@ import org.xml.sax.SAXParseException;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
-import de.erdesignerng.model.serializer.xml17.XMLModelSerializer;
+import de.erdesignerng.model.serializer.xml20.XMLModelSerializer;
 
 /**
  * Persister for model version 1.0.
