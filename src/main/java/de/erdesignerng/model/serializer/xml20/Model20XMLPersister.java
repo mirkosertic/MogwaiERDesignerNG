@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer.xml17;
+package de.erdesignerng.model.serializer.xml20;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,11 +44,11 @@ import de.erdesignerng.model.ModelIOUtilities;
  * Persister for model version 1.7.
  * @author mirkosertic
  */
-public class Model17XMLPersister {
+public class Model20XMLPersister {
 
     private ModelIOUtilities utils;
         
-    public Model17XMLPersister(ModelIOUtilities aUtils) {
+    public Model20XMLPersister(ModelIOUtilities aUtils) {
         utils = aUtils;
     }
     
