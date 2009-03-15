@@ -15,8 +15,10 @@ public interface ERDesignerBundle {
   String RECENTLYUSEDFILES = "RECENTLYUSEDFILES";
   /** New model. */
   String NEWMODEL = "NEWMODEL";
-  /** Save model.... */
+  /** Save model. */
   String SAVEMODEL = "SAVEMODEL";
+  /** Save model as.... */
+  String SAVEMODELAS = "SAVEMODELAS";
   /** Save model to repository.... */
   String SAVEMODELTODB = "SAVEMODELTODB";
   /** Load model from repository.... */

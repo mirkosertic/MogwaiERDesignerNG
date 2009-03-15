@@ -18,8 +18,13 @@
 			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODEL">
-			<Text lang="de">Modell speichern...</Text>		
-			<Text lang="en">Save model...</Text>					
+			<Text lang="de">Modell speichern</Text>		
+			<Text lang="en">Save model</Text>					
+			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
+		</Entry>
+		<Entry id="SAVEMODELAS">
+			<Text lang="de">Modell speichern als...</Text>		
+			<Text lang="en">Save model as...</Text>					
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODELTODB">
