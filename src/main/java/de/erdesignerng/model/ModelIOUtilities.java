@@ -21,31 +21,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 
-import org.w3c.dom.Document;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.model.serializer.xml.XMLModelSerializer;
+import de.erdesignerng.model.serializer.xml17.Model17XMLPersister;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
@@ -75,62 +64,29 @@ public final class ModelIOUtilities {
         }
         return me;
     }
+    
+    public DocumentBuilderFactory getDocumentBuilderFactory() {
+        return documentBuilderFactory;
+    }
+
+    public DocumentBuilder getDocumentBuilder() {
+        return documentBuilder;
+    }
+
+    public TransformerFactory getTransformerFactory() {
+        return transformerFactory;
+    }
 
     public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
-        Document theDocument = documentBuilder.parse(aInputStream);
-        aInputStream.close();
-
-        final List<SAXParseException> theExceptions = new ArrayList<SAXParseException>();
-
-        // Validate the document
-        SchemaFactory theSchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-        // hook up org.xml.sax.ErrorHandler implementation.
-        theSchemaFactory.setErrorHandler(new ErrorHandler() {
-
-            public void error(SAXParseException aException) throws SAXException {
-                theExceptions.add(aException);
-            }
-
-            public void fatalError(SAXParseException aException) throws SAXException {
-                theExceptions.add(aException);
-            }
-
-            public void warning(SAXParseException aException) throws SAXException {
-                theExceptions.add(aException);
-            }
-        });
-
-        // get the custom xsd schema describing the required format for my XML
-        // files.
-        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource("/erdesignerschema.xsd"));
-
-        // Create a Validator capable of validating XML files according to my
-        // custom schema.
-        Validator validator = theSchema.newValidator();
-
-        // parse the XML DOM tree againts the stricter XSD schema
-        validator.validate(new DOMSource(theDocument));
-
-        if (theExceptions.size() > 0) {
-            for (SAXParseException theException : theExceptions) {
-                System.out.println(theException.getMessage());
-            }
-            throw new IOException("Failed to validate document against schema");
-        }
-
-        return XMLModelSerializer.SERIALIZER.deserializeFrom(theDocument);
+        
+        Model17XMLPersister thePersister = new Model17XMLPersister(this);
+        return thePersister.deserializeModelFromXML(aInputStream);
     }
 
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
-        Document theDocument = documentBuilder.newDocument();
-
-        XMLModelSerializer.SERIALIZER.serialize(aModel, theDocument);
-
-        Transformer theTransformer = transformerFactory.newTransformer();
-        theTransformer.transform(new DOMSource(theDocument), new StreamResult(aStream));
-
-        aStream.close();
+        
+        Model17XMLPersister thePersister = new Model17XMLPersister(this);
+        thePersister.serializeModelToXML(aModel, aStream);
     }
 
     /**
