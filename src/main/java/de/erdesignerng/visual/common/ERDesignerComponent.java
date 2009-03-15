@@ -20,6 +20,7 @@ package de.erdesignerng.visual.common;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -45,6 +46,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
@@ -265,6 +267,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction completeCompareAction;
 
+    private DefaultAction saveAsAction;
+    
     private DefaultAction saveAction;
 
     private DefaultAction saveToRepository;
@@ -340,7 +344,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.PREFERENCES);
-
+        
         saveAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -348,6 +352,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.SAVEMODEL);
+        saveAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+
+        saveAsAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+                commandSaveFileAs();
+            }
+
+        }, this, ERDesignerBundle.SAVEMODELAS);
 
         saveToRepository = new DefaultAction(new ActionEventProcessor() {
 
@@ -576,7 +589,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         theFileMenu.add(newAction);
         theFileMenu.addSeparator();
-        theFileMenu.add(saveAction);
+        JMenuItem theItem = theFileMenu.add(saveAction);
+        KeyStroke theStroke = (KeyStroke) saveAction.getValue(DefaultAction.HOTKEY_KEY);
+        if (theStroke != null) {
+            theItem.setAccelerator(theStroke);
+            scrollPane.registerKeyboardAction(saveAction, theStroke, JComponent.WHEN_IN_FOCUSED_WINDOW);            
+        }
+
+        theFileMenu.add(saveAsAction);
         theFileMenu.add(loadAction);
 
         theFileMenu.addSeparator();
@@ -818,7 +838,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.add(newAction);
         theToolBar.addSeparator();
         theToolBar.add(loadAction);
-        theToolBar.add(saveAction);
+        theToolBar.add(saveAsAction);
         theToolBar.addSeparator();
         theToolBar.add(zoomBox);
         theToolBar.addSeparator();
@@ -1285,10 +1305,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Save the current model to file.
      */
-    protected void commandSaveFile() {
-
-        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        Date theNow = new Date();
+    protected void commandSaveFileAs() {
 
         ModelFileFilter theFiler = new ModelFileFilter();
 
@@ -1299,69 +1316,88 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (theChooser.showSaveDialog(scrollPane) == JFileChooser.APPROVE_OPTION) {
 
             File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
-            FileOutputStream theStream = null;
-            PrintWriter theWriter = null;
-            try {
+            commandSaveModelToFile(theFile);
 
-                if (theFile.exists()) {
-                    File theBakFile = new File(theFile.toString() + "_" + theFormat.format(theNow));
-                    theFile.renameTo(theBakFile);
-                }
+        }
+    }
 
-                theStream = new FileOutputStream(theFile);
+    /**
+     * Save the current model to the current file. If the current file is unknown, a saveas action is performed. 
+     */
+    protected void commandSaveFile() {
+        if (currentEditingFile != null) {
+            commandSaveModelToFile(currentEditingFile);
+        } else {
+            commandSaveFileAs();
+        }
+    }
 
-                ModelIOUtilities.getInstance().serializeModelToXML(model, theStream);
+    private void commandSaveModelToFile(File aFile) {
+        
+        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date theNow = new Date();
 
-                worldConnector.initTitle();
+        FileOutputStream theStream = null;
+        PrintWriter theWriter = null;
+        try {
 
-                preferences.addRecentlyUsedFile(theFile);
+            if (aFile.exists()) {
+                File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
+                aFile.renameTo(theBakFile);
+            }
 
-                updateRecentlyUsedMenuEntries();
+            theStream = new FileOutputStream(aFile);
 
-                if (model.getModificationTracker() instanceof HistoryModificationTracker) {
-                    HistoryModificationTracker theTracker = (HistoryModificationTracker) model.getModificationTracker();
-                    StatementList theStatements = theTracker.getNotSavedStatements();
-                    if (theStatements.size() > 0) {
-                        StringBuilder theFileName = new StringBuilder(theFile.toString());
-                        int p = theFileName.lastIndexOf(".");
-                        if (p > 0) {
+            ModelIOUtilities.getInstance().serializeModelToXML(model, theStream);
 
-                            SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
+            worldConnector.initTitle();
 
-                            theFileName = new StringBuilder(theFileName.substring(0, p));
+            preferences.addRecentlyUsedFile(aFile);
 
-                            theFileName.insert(p, "_" + theFormat.format(theNow));
-                            theFileName.append(".sql");
+            updateRecentlyUsedMenuEntries();
 
-                            theWriter = new PrintWriter(new File(theFileName.toString()));
-                            for (Statement theStatement : theStatements) {
-                                theWriter.print(theStatement.getSql());
-                                theWriter.println(theGenerator.createScriptStatementSeparator());
-                                theStatement.setSaved(true);
+            if (model.getModificationTracker() instanceof HistoryModificationTracker) {
+                HistoryModificationTracker theTracker = (HistoryModificationTracker) model.getModificationTracker();
+                StatementList theStatements = theTracker.getNotSavedStatements();
+                if (theStatements.size() > 0) {
+                    StringBuilder theFileName = new StringBuilder(aFile.toString());
+                    int p = theFileName.lastIndexOf(".");
+                    if (p > 0) {
 
-                            }
+                        SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
+
+                        theFileName = new StringBuilder(theFileName.substring(0, p));
+
+                        theFileName.insert(p, "_" + theFormat.format(theNow));
+                        theFileName.append(".sql");
+
+                        theWriter = new PrintWriter(new File(theFileName.toString()));
+                        for (Statement theStatement : theStatements) {
+                            theWriter.print(theStatement.getSql());
+                            theWriter.println(theGenerator.createScriptStatementSeparator());
+                            theStatement.setSaved(true);
+
                         }
                     }
                 }
-
-                setupViewFor(theFile);
-                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
-
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            } finally {
-                if (theStream != null) {
-                    try {
-                        theStream.close();
-                    } catch (IOException e) {
-                        // Ignore this exception
-                    }
-                }
-                if (theWriter != null) {
-                    theWriter.close();
-                }
             }
 
+            setupViewFor(aFile);
+            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        } finally {
+            if (theStream != null) {
+                try {
+                    theStream.close();
+                } catch (IOException e) {
+                    // Ignore this exception
+                }
+            }
+            if (theWriter != null) {
+                theWriter.close();
+            }
         }
     }
 
