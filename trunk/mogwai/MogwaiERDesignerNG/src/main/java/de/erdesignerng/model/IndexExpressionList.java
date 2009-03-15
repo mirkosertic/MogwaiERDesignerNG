@@ -40,6 +40,22 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
     }
 
     /**
+     * Find an index expression by is referred attribute. 
+     * 
+     * @param aAttribute the attribute
+     * @return the expression or null if nothing was found
+     */
+    public IndexExpression findByAttribute(Attribute aAttribute) {
+        for (IndexExpression theExpression : this) {
+            if (aAttribute.equals(theExpression.getAttributeRef())) {
+                return theExpression;
+            }
+        }
+        return null;
+    }
+    
+
+    /**
      * Add an expression for an attribute to the list. 
      * 
      * @param aAttribute the attribute
