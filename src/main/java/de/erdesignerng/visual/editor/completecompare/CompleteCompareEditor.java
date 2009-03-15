@@ -36,6 +36,7 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.TableList;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewList;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 
@@ -50,14 +51,17 @@ public class CompleteCompareEditor extends BaseEditor {
     private Model currentModel;
 
     private Model databaseModel;
+    
+    private ApplicationPreferences preferences;
 
-    public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel) {
+    public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel, ApplicationPreferences aPreferences) {
         super(aParent, ERDesignerBundle.COMPLETECOMPARE);
-
-        initialize();
 
         currentModel = aCurrentModel;
         databaseModel = aDatabaseModel;
+        preferences = aPreferences;
+        
+        initialize();
 
         TreeCellRenderer theRenderer = new CompareTreeCellRenderer();
 
@@ -632,6 +636,18 @@ public class CompleteCompareEditor extends BaseEditor {
         modelScroll.getHorizontalScrollBar().setModel(dbScroll.getHorizontalScrollBar().getModel());
 
         setContentPane(editingView);
+        setResizable(true);
+        
+        pack();
+        
+        setMinimumSize(getSize());
+        preferences.setWindowSize(getClass().getSimpleName(), this);
+    }
+    
+    @Override
+    protected void commandOk() {
+        preferences.updateWindowSize(getClass().getSimpleName(), this);
+        super.commandOk();
     }
 
     /**

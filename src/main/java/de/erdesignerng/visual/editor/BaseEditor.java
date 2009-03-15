@@ -112,14 +112,8 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
     public int showModal() {
         modalResult = DialogConstants.MODAL_RESULT_CANCEL;
-        pack();
         setVisible(true);
 
-        // Dimension theSize = getSize();
-        // System.out.println("setPreferredSize(new
-        // Dimension("+theSize.width+","+theSize.height+"));");
-        // System.out.println("setMinimumSize(new
-        // Dimension("+theSize.width+","+theSize.height+"));");
         return modalResult;
     }
 

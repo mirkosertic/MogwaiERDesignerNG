@@ -27,6 +27,8 @@ import de.erdesignerng.dialect.ConnectionProvider;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
+import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -48,11 +50,18 @@ public class MigrationScriptEditor extends BaseEditor {
     private RepositoryEntity repositoryEntity;
 
     private ConnectionProvider connectionProvider;
+    
+    private ApplicationPreferences preferences;
+    
+    private ERDesignerWorldConnector worldConnector;
 
     public MigrationScriptEditor(Component aParent, RepositoryEntity aRepositoryEntity,
-            ConnectionProvider aConnectionProvider) {
+            ConnectionProvider aConnectionProvider, ApplicationPreferences aPreferences, ERDesignerWorldConnector aWorldConnector) {
         super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
+        preferences = aPreferences;
+        worldConnector = aWorldConnector;
+        
         initialize();
 
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
@@ -108,7 +117,7 @@ public class MigrationScriptEditor extends BaseEditor {
             StatementList theStatements = repositoryEntity.createChangeLog(theModel.getSourceChange().getChange(),
                     theModel.getDestinationChange().getChange());
 
-            SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile);
+            SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile, preferences, worldConnector);
             theEditor.showModal();
         }
     }
