@@ -1441,7 +1441,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             MigrationScriptEditor theEditor = new MigrationScriptEditor(scrollPane, theEntity,
                     new GenericConnectionProvider(theConnection, theDialect.createSQLGenerator()
-                            .createScriptStatementSeparator()));
+                            .createScriptStatementSeparator()), preferences, worldConnector);
 
             theEditor.showModal();
 
@@ -1516,7 +1516,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
-     *            the entry descriptor
+     *                the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
 
@@ -1530,7 +1530,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from file.
      * 
      * @param aFile
-     *            the file
+     *                the file
      */
     protected void setupViewFor(File aFile) {
 
@@ -1555,7 +1555,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing tool.
      * 
      * @param aTool
-     *            the tool
+     *                the tool
      */
     protected void commandSetTool(ToolEnum aTool) {
         if (aTool.equals(ToolEnum.HAND)) {
@@ -1635,7 +1635,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
             StatementList theStatements = theGenerator.createCreateAllObjects(model);
             SQLEditor theEditor = new SQLEditor(scrollPane, new ModelBasedConnectionProvider(model), theStatements,
-                    currentEditingFile, "schema.sql");
+                    currentEditingFile, "schema.sql", preferences, worldConnector);
             theEditor.showModal();
         } catch (VetoException e) {
             worldConnector.notifyAboutException(e);
@@ -1656,7 +1656,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         StatementList theStatements = ((HistoryModificationTracker) model.getModificationTracker()).getStatements();
         SQLEditor theEditor = new SQLEditor(scrollPane, new ModelBasedConnectionProvider(model), theStatements,
-                currentEditingFile, generateChangelogSQLFileName());
+                currentEditingFile, generateChangelogSQLFileName(), preferences, worldConnector);
         theEditor.showModal();
     }
 
@@ -1668,7 +1668,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing model.
      * 
      * @param aModel
-     *            the model
+     *                the model
      */
     public void setModel(Model aModel) {
         model = aModel;
@@ -1793,7 +1793,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Add a new comment to the model.
      * 
      * @param aLocation
-     *            the location
+     *                the location
      */
     protected void commandAddComment(Point2D aLocation) {
         Comment theComment = new Comment();
@@ -1945,7 +1945,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                         addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
                         CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, aResultModel,
-                                theDatabaseModel);
+                                theDatabaseModel, preferences);
                         theCompare.showModal();
                     }
 
@@ -1968,7 +1968,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *            true if comments shall be displayed, else false
+     *                true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
@@ -1979,7 +1979,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *            true if comments shall be displayed, else false
+     *                true if comments shall be displayed, else false
      */
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
@@ -1991,7 +1991,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * The preferences where changed, so they need to be reloaded.
      * 
      * @param aPreferences
-     *            the preferences
+     *                the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
@@ -2002,7 +2002,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display level.
      * 
      * @param aLevel
-     *            the level
+     *                the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -2013,7 +2013,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display order.
      * 
      * @param aOrder
-     *            the display order
+     *                the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);

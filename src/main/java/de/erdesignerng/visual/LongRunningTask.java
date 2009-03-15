@@ -57,9 +57,7 @@ public abstract class LongRunningTask<T> extends Thread {
 
             @Override
             protected void process(List<String> aChunks) {
-                for (String theChunk : aChunks) {
-                    connector.setStatusText(theChunk);
-                }
+                handleProcess(aChunks);
             }
         };
         worker.execute();
@@ -73,6 +71,12 @@ public abstract class LongRunningTask<T> extends Thread {
             } catch (Exception e) {
                 connector.notifyAboutException(e);
             }
+        }
+    }
+    
+    public void handleProcess(List<String> aChunks) {
+        for (String theChunk : aChunks) {
+            connector.setStatusText(theChunk);
         }
     }
     

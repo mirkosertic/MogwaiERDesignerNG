@@ -20,6 +20,7 @@ package de.erdesignerng.util;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -340,17 +341,13 @@ public class ApplicationPreferences {
      * 
      * @param aAlias
      *                the alias of the window
-     * @param aFrame
+     * @param aWindow
      *                the window
      */
-    public void updateWindowDefinition(String aAlias, JFrame aFrame) {
-        windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, "" + aFrame.getExtendedState());
-        Point theLocation = aFrame.getLocation();
-        windowDefinitions.put(WINDOWXPREFIX + aAlias, "" + theLocation.x);
-        windowDefinitions.put(WINDOWYPREFIX + aAlias, "" + theLocation.y);
-        Dimension theSize = aFrame.getSize();
-        windowDefinitions.put(WINDOWWIDTHPREFIX + aAlias, "" + theSize.width);
-        windowDefinitions.put(WINDOWHEIGHTPREFIX + aAlias, "" + theSize.height);
+    public void updateWindowDefinition(String aAlias, JFrame aWindow) {
+        windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, "" + aWindow.getExtendedState());
+        updateWindowLocation(aAlias, aWindow);
+        updateWindowSize(aAlias, aWindow);
     }
 
     /**
@@ -366,22 +363,53 @@ public class ApplicationPreferences {
         if (windowDefinitions.containsKey(WINDOWSTATEPREFIX + aAlias)) {
             try {
                 aFrame.setExtendedState(Integer.parseInt(windowDefinitions.get(WINDOWSTATEPREFIX + aAlias)));
-                int x = Integer.parseInt(windowDefinitions.get(WINDOWXPREFIX + aAlias));
-                int y = Integer.parseInt(windowDefinitions.get(WINDOWYPREFIX + aAlias));
-                int width = Integer.parseInt(windowDefinitions.get(WINDOWWIDTHPREFIX + aAlias));
-                int height = Integer.parseInt(windowDefinitions.get(WINDOWHEIGHTPREFIX + aAlias));
-
-                // Only set the size and location if its within the available
-                // screen resolution
-                Dimension theCurrentScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                if (x < theCurrentScreenSize.width && y < theCurrentScreenSize.height) {
-                    aFrame.setLocation(x, y);
-                    aFrame.setSize(width, height);
-                }
+                setWindowLocation(aAlias, aFrame);
+                setWindowSize(aAlias, aFrame);
 
             } catch (Exception e) {
                 aFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
+        }
+    }
+
+    public void updateWindowLocation(String aAlias, Window aWindow) {
+        Point theLocation = aWindow.getLocation();
+        windowDefinitions.put(WINDOWXPREFIX + aAlias, "" + theLocation.x);
+        windowDefinitions.put(WINDOWYPREFIX + aAlias, "" + theLocation.y);
+    }
+
+    public void updateWindowSize(String aAlias, Window aWindow) {
+        Dimension theSize = aWindow.getSize().getSize();
+        windowDefinitions.put(WINDOWWIDTHPREFIX + aAlias, "" + theSize.width);
+        windowDefinitions.put(WINDOWHEIGHTPREFIX + aAlias, "" + theSize.height);
+    }
+
+    public void setWindowSize(String aAlias, Window aWindow) {
+        try {
+            int width = Integer.parseInt(windowDefinitions.get(WINDOWWIDTHPREFIX + aAlias));
+            int height = Integer.parseInt(windowDefinitions.get(WINDOWHEIGHTPREFIX + aAlias));
+
+            aWindow.setSize(width, height);
+        } catch (Exception e) {
+            // If no old size is known, an Exception is thrown
+            // This can be ignored
+        }
+    }
+
+    public void setWindowLocation(String aAlias, Window aWindow) {
+        try {
+            int x = Integer.parseInt(windowDefinitions.get(WINDOWXPREFIX + aAlias));
+            int y = Integer.parseInt(windowDefinitions.get(WINDOWYPREFIX + aAlias));
+
+            // Only set the size and location if its within the available
+            // screen resolution
+            Dimension theCurrentScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            if (x < theCurrentScreenSize.width && y < theCurrentScreenSize.height) {
+                aWindow.setLocation(x, y);
+            }
+        } catch (Exception e) {
+            // If no old location is known, an Exception is thrown
+            // This can be ignored
         }
     }
 }
