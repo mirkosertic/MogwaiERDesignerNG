@@ -742,5 +742,25 @@
 			<Text lang="de">Die Domäne wird noch in Tabelle {0} benutzt</Text>		
 			<Text lang="en">The domain is still in use by table {0}</Text>					
 		</Entry>
+		<Entry id="CONVERTMODEL">
+			<Text lang="de">Modell konvertieren...</Text>		
+			<Text lang="en">Convert model...</Text>					
+		</Entry>
+		<Entry id="TARGETDIALECT">
+			<Text lang="de">Ziel Dialekt</Text>		
+			<Text lang="en">Target dialect</Text>					
+		</Entry>
+		<Entry id="DATATYPEMAPPING">
+			<Text lang="de">Zuordnung der Datentypen</Text>		
+			<Text lang="en">Datatype mapping</Text>					
+		</Entry>
+		<Entry id="CURRENTDATATYPE">
+			<Text lang="de">Aktueller Datentyp</Text>		
+			<Text lang="en">Current datatype</Text>					
+		</Entry>
+		<Entry id="TARGETDATATYPE">
+			<Text lang="de">wird zugeordnet zu</Text>		
+			<Text lang="en">Will be assigned to</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
