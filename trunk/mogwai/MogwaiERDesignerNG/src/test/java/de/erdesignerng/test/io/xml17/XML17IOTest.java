@@ -42,7 +42,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-14 21:10:04 $
  */
-public class XMLIOTest extends BaseERDesignerTestCaseImpl {
+public class XML17IOTest extends BaseERDesignerTestCaseImpl {
 
     public void testLoadXML17Model() throws ParserConfigurationException, SAXException, IOException, TransformerException {
         
