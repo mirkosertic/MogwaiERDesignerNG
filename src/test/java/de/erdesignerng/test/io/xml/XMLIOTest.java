@@ -44,7 +44,8 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  */
 public class XMLIOTest extends BaseERDesignerTestCaseImpl {
 
-    public void testLoadXMLModel() throws ParserConfigurationException, SAXException, IOException, TransformerException {
+    public void testLoadXML17Model() throws ParserConfigurationException, SAXException, IOException, TransformerException {
+        
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
         Document theDoc = theBuilder.parse(getClass().getResourceAsStream("examplemodel.mxm"));
