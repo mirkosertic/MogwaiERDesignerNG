@@ -2013,8 +2013,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     public void handleResult(Model aResultModel) {
                         addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, aResultModel,
-                                theDatabaseModel, preferences);
+                        CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model,
+                                aResultModel, preferences);
                         theCompare.showModal();
                     }
 
