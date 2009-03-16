@@ -57,7 +57,7 @@ public class RelationEditor extends BaseEditor {
 
         bindingInfo.addBinding("name", editingView.getRelationName(), true);
         bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(),
-                null));
+                null, getResourceHelper()));
 
         RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
         theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());

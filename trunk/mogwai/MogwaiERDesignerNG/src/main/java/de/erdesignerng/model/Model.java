@@ -19,8 +19,10 @@ package de.erdesignerng.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Collections;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
@@ -73,13 +75,13 @@ public class Model implements OwnedModelItemVerifier {
      * Add a table to the database model.
      * 
      * @param aTable
-     *                the table
+     *            the table
      * @throws ElementAlreadyExistsException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ElementInvalidNameException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws VetoException
-     *                 if there is a veto for doing this
+     *             if there is a veto for doing this
      */
     public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
@@ -102,13 +104,13 @@ public class Model implements OwnedModelItemVerifier {
      * Add a relation to the database model.
      * 
      * @param aRelation
-     *                the table
+     *            the table
      * @throws ElementAlreadyExistsException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ElementInvalidNameException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws VetoException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
@@ -181,16 +183,16 @@ public class Model implements OwnedModelItemVerifier {
      * Create a JDBC database connection.
      * 
      * @param aPreferences
-     *                the preferences
+     *            the preferences
      * @return the database connection
      * @throws ClassNotFoundException
-     *                 is thrown in case of an exception
+     *             is thrown in case of an exception
      * @throws InstantiationException
-     *                 is thrown in case of an exception
+     *             is thrown in case of an exception
      * @throws IllegalAccessException
-     *                 is thrown in case of an exception
+     *             is thrown in case of an exception
      * @throws SQLException
-     *                 is thrown in case of an exception
+     *             is thrown in case of an exception
      */
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
@@ -209,10 +211,10 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a table from the model.
      * 
      * @param aTable
-     *                the table
+     *            the table
      * @throws VetoException
-     *                 will be thrown if the modificationtracker has a veto for
-     *                 completing this operation
+     *             will be thrown if the modificationtracker has a veto for
+     *             completing this operation
      */
     public void removeTable(Table aTable) throws VetoException {
 
@@ -228,10 +230,10 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a relation from the model.
      * 
      * @param aRelation
-     *                the relation
+     *            the relation
      * @throws VetoException
-     *                 will be thrown if the modificationtracker has a veto for
-     *                 completing this operation
+     *             will be thrown if the modificationtracker has a veto for
+     *             completing this operation
      */
     public void removeRelation(Relation aRelation) throws VetoException {
 
@@ -323,7 +325,7 @@ public class Model implements OwnedModelItemVerifier {
 
     /**
      * @param modificationTracker
-     *                the modificationTracker to set
+     *            the modificationTracker to set
      */
     public void setModificationTracker(ModelModificationTracker modificationTracker) {
         this.modificationTracker = modificationTracker;
@@ -333,7 +335,7 @@ public class Model implements OwnedModelItemVerifier {
      * Add a new subject area.
      * 
      * @param aArea
-     *                the area
+     *            the area
      */
     public void addSubjectArea(SubjectArea aArea) {
         subjectAreas.add(aArea);
@@ -343,7 +345,7 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a subject area.
      * 
      * @param aArea
-     *                the area
+     *            the area
      */
     public void removeSubjectArea(SubjectArea aArea) {
         subjectAreas.remove(aArea);
@@ -372,7 +374,7 @@ public class Model implements OwnedModelItemVerifier {
      * Initialize the model with a defined connection.
      * 
      * @param aConnection
-     *                the connection
+     *            the connection
      */
     public void initializeWith(ConnectionDescriptor aConnection) {
         setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
@@ -396,7 +398,7 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a comment from the model.
      * 
      * @param aComment
-     *                the comment
+     *            the comment
      */
     public void removeComment(Comment aComment) {
         comments.remove(aComment);
@@ -407,7 +409,7 @@ public class Model implements OwnedModelItemVerifier {
      * Add a comment to the model.
      * 
      * @param aComment
-     *                the comment
+     *            the comment
      */
     public void addComment(Comment aComment) {
         aComment.setOwner(this);
@@ -445,7 +447,7 @@ public class Model implements OwnedModelItemVerifier {
      * Add a domain to the model.
      * 
      * @param aDomain
-     *                the domain
+     *            the domain
      */
     public void addDomain(Domain aDomain) {
         domains.add(aDomain);
@@ -455,7 +457,7 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a domain from the model.
      * 
      * @param aDomain
-     *                a domain
+     *            a domain
      */
     public void removeDomain(Domain aDomain) {
         domains.remove(aDomain);
@@ -465,13 +467,16 @@ public class Model implements OwnedModelItemVerifier {
      * Add a view to the model.
      * 
      * @param aView
-     *                the view
-     * @throws VetoException  is thrown if someone has a veto to add the view
-     * @throws ElementAlreadyExistsException is thrown if there is already 
-     * @throws ElementInvalidNameException  is thrown if the name is invalid
+     *            the view
+     * @throws VetoException
+     *             is thrown if someone has a veto to add the view
+     * @throws ElementAlreadyExistsException
+     *             is thrown if there is already
+     * @throws ElementInvalidNameException
+     *             is thrown if the name is invalid
      */
     public void addView(View aView) throws VetoException, ElementInvalidNameException, ElementAlreadyExistsException {
-        
+
         modificationTracker.addView(aView);
 
         if (dialect != null) {
@@ -487,17 +492,18 @@ public class Model implements OwnedModelItemVerifier {
      * Remove a view from the model.
      * 
      * @param aView
-     *                a view
-     * @throws VetoException is thrown is someone has a veto to remove the view 
+     *            a view
+     * @throws VetoException
+     *             is thrown is someone has a veto to remove the view
      */
     public void removeView(View aView) throws VetoException {
-        
+
         modificationTracker.removeView(aView);
 
         views.remove(aView);
         subjectAreas.removeView(aView);
     }
-    
+
     /**
      * Gibt den Wert des Attributs <code>views</code> zurück.
      * 
@@ -522,12 +528,35 @@ public class Model implements OwnedModelItemVerifier {
     }
 
     /**
-     * Mark a view as changed. 
+     * Mark a view as changed.
      * 
-     * @param aView the view
-     * @throws VetoException  is thrown if someone has a veto to change the view
+     * @param aView
+     *            the view
+     * @throws VetoException
+     *             is thrown if someone has a veto to change the view
      */
     public void changeView(View aView) throws VetoException {
         modificationTracker.changeView(aView);
+    }
+
+    /**
+     * Get the list of used datatypes.
+     * 
+     * @return the list of datatypes.
+     */
+    public DataTypeList getUsedDataTypes() {
+        DataTypeList theResult = new DataTypeList();
+        theResult.addAll(getDomains());
+
+        for (Table theTable : tables) {
+            for (Attribute theAttribute : theTable.getAttributes()) {
+                DataType theType = theAttribute.getDatatype();
+                if (!theResult.contains(theType)) {
+                    theResult.add(theType);
+                }
+            }
+        }
+
+        return theResult;
     }
 }

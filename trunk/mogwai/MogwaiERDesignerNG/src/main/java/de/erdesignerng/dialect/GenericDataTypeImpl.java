@@ -266,4 +266,9 @@ public class GenericDataTypeImpl implements DataType {
     public boolean isDomain() {
         return false;
     }
+
+    @Override
+    public int getJDBCType() {
+        return jdbcType;
+    }
 }

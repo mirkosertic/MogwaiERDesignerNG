@@ -218,4 +218,14 @@ public class Domain implements DataType, Cloneable {
     public String toString() {
         return name;
     }
+
+    @Override
+    public int getJDBCType() {
+        return concreteType.getJDBCType();
+    }
+
+    @Override
+    public boolean isIdentity() {
+        return concreteType.isIdentity();
+    }
 }

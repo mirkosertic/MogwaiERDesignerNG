@@ -15,19 +15,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.relation;
+package de.erdesignerng.visual.editor.convertmodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.Relation;
+import org.apache.commons.beanutils.BeanComparator;
+
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.ConversionInfos;
+import de.erdesignerng.dialect.DataType;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
@@ -35,13 +37,13 @@ import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultTable;
 import de.mogwai.common.i18n.ResourceHelper;
 
-public class RelationAttributesPropertyAdapter extends PropertyAdapter {
+public class ConvertPropertyAdapter extends PropertyAdapter {
 
     private static final ResourceHelper BINDINGHELPER = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
-    
+
     private ResourceHelper helper;
 
-    public RelationAttributesPropertyAdapter(JComponent aComponent, String aPropertyName, ResourceHelper aHelper) {
+    public ConvertPropertyAdapter(JComponent aComponent, String aPropertyName, ResourceHelper aHelper) {
         super(aComponent, aPropertyName);
         helper = aHelper;
     }
@@ -49,54 +51,54 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
     @Override
     public void model2view(Object aModel, String aPropertyName) {
 
-        Relation theRelation = (Relation) aModel;
+        ConversionInfos theInfos = (ConversionInfos) aModel;
 
-        Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
-        Attribute[] theAssigned;
-        if (thePrimaryKey != null) {
-            theAssigned = new Attribute[thePrimaryKey.getExpressions().size()];
-            for (int count = 0; count < thePrimaryKey.getExpressions().size(); count++) {
-                theAssigned[count] = theRelation.getMapping().get(thePrimaryKey.getExpressions().get(count));
-            }
-        } else {
-            theAssigned = new Attribute[0];
+        String theCurrentTypeName = helper.getText(ERDesignerBundle.CURRENTDATATYPE);
+        String theTargetTypeName = helper.getText(ERDesignerBundle.TARGETDATATYPE);
+
+        DataType[] theTargetTypes = new DataType[theInfos.getTypeMapping().keySet().size()];
+
+        List<DataType> theCurrentTypes = new ArrayList<DataType>();
+        theCurrentTypes.addAll(theInfos.getTypeMapping().keySet());
+
+        Collections.sort(theCurrentTypes, new BeanComparator("name"));
+        for (int i = 0; i < theCurrentTypes.size(); i++) {
+            theTargetTypes[i] = theInfos.getTypeMapping().get(theCurrentTypes.get(i));
         }
-        AttributeTableModel theTableModel = new AttributeTableModel(theRelation.getExportingTable().getName(),
-                theRelation.getImportingTable().getName(), thePrimaryKey, theAssigned);
 
         DefaultTable theTable = (DefaultTable) getComponent()[0];
-        theTable.setModel(theTableModel);
-        theTable.getTableHeader().setReorderingAllowed(false);
+        ConversionTableModel theModel = new ConversionTableModel(theCurrentTypeName, theTargetTypeName,
+                theCurrentTypes, theTargetTypes);
+        theTable.setModel(theModel);
 
-        DefaultComboBox theAttributes = new DefaultComboBox();
-        theAttributes.setModel(new DefaultComboBoxModel(theRelation.getImportingTable().getAttributes()));
-        theTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
+        DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
+        theTargetTypesEditor.setModel(new DefaultComboBoxModel(theInfos.getTargetDialect().getDataTypes().toArray(
+                new DataType[0])));
+        theTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theTargetTypesEditor));
     }
 
     @Override
     public void view2model(Object aModel, String aPropertyName) {
-
-        Relation theRelation = (Relation) aModel;
+        ConversionInfos theConversionInfos = (ConversionInfos) aModel;
         DefaultTable theTable = (DefaultTable) getComponent()[0];
-        AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
+        ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
 
-        theRelation.getMapping().clear();
+        theConversionInfos.getTypeMapping().clear();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            IndexExpression theIndexExpression = (IndexExpression) theTableModel.getValueAt(i, 0);
-            Attribute theAssignedAttribute = (Attribute) theTableModel.getValueAt(i, 1);
+            DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
+            DataType theTargetType = (DataType) theTableModel.getValueAt(i, 1);
 
-            theRelation.getMapping().put(theIndexExpression, theAssignedAttribute);
+            theConversionInfos.getTypeMapping().put(theSourceType, theTargetType);
         }
-
     }
 
     @Override
     public List<ValidationError> validate() {
         DefaultTable theTable = (DefaultTable) getComponent()[0];
         List<ValidationError> theErrors = new ArrayList<ValidationError>();
-        AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
+        ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            Attribute theAssignedAttribute = (Attribute) theTableModel.getValueAt(i, 1);
+            DataType theAssignedAttribute = (DataType) theTableModel.getValueAt(i, 1);
             if (theAssignedAttribute == null) {
                 theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
             }

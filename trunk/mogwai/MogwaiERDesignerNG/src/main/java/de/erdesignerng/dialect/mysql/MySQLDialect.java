@@ -63,7 +63,7 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(new MySQLDataType("LONG VARBINARY", "", java.sql.Types.LONGVARBINARY));
         registerType(new MySQLDataType("MEDIUMBLOB", "", java.sql.Types.LONGVARBINARY));
         registerType(new MySQLDataType("LONGBLOB", "", java.sql.Types.LONGVARBINARY));
-        registerType(new MySQLDataType("BLOB", "", java.sql.Types.LONGVARBINARY));
+        registerType(new MySQLDataType("BLOB", "", java.sql.Types.BLOB));
         registerType(new MySQLDataType("TINYBLOB", "", java.sql.Types.LONGVARBINARY));
         registerType(new MySQLDataType("VARBINARY", "$size", java.sql.Types.VARBINARY));
         registerType(new MySQLDataType("BINARY", "$size", java.sql.Types.BINARY));

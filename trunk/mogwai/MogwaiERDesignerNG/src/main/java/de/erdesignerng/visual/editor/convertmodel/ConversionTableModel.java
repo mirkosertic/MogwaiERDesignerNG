@@ -17,11 +17,12 @@
  */
 package de.erdesignerng.visual.editor.convertmodel;
 
+import java.util.List;
+
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
+import de.erdesignerng.dialect.DataType;
 
 /**
  * @author $Author: mirkosertic $
@@ -29,20 +30,20 @@ import de.erdesignerng.model.Index;
  */
 public class ConversionTableModel implements TableModel {
 
-    private Index primaryKey;
+    private List<DataType> dataTypes;
 
-    private Attribute[] assignedAttributes;
+    private DataType[] targetTypes;
 
-    private String primaryKeyTableName;
+    private String sourceName;
 
-    private String assignedTableName;
+    private String targetName;
 
-    public ConversionTableModel(String aPrimaryEntityName, String aSecondaryEntityName, Index aPrimaryKey,
-            Attribute[] aSecondaryKey) {
-        primaryKey = aPrimaryKey;
-        assignedAttributes = aSecondaryKey;
-        primaryKeyTableName = aPrimaryEntityName;
-        assignedTableName = aSecondaryEntityName;
+    public ConversionTableModel(String aSourceName, String aTargetName, List<DataType> aDataTypes,
+            DataType[] aTargetTypes) {
+        sourceName = aSourceName;
+        targetName = aTargetName;
+        dataTypes = aDataTypes;
+        targetTypes = aTargetTypes;
     }
 
     public Class<Object> getColumnClass(int aColumn) {
@@ -55,21 +56,21 @@ public class ConversionTableModel implements TableModel {
 
     public String getColumnName(int aColumn) {
         if (aColumn == 0) {
-            return primaryKeyTableName;
+            return sourceName;
         } else {
-            return assignedTableName;
+            return targetName;
         }
     }
 
     public int getRowCount() {
-        return primaryKey.getExpressions().size();
+        return dataTypes.size();
     }
 
     public Object getValueAt(int aRow, int aColumn) {
         if (aColumn == 1) {
-            return assignedAttributes[aRow];
+            return targetTypes[aRow];
         } else {
-            return primaryKey.getExpressions().get(aRow);
+            return dataTypes.get(aRow);
         }
     }
 
@@ -78,7 +79,7 @@ public class ConversionTableModel implements TableModel {
     }
 
     public void setValueAt(Object aValue, int aRow, int aColumn) {
-        assignedAttributes[aRow] = (Attribute) aValue;
+        targetTypes[aRow] = (DataType) aValue;
     }
 
     public void addTableModelListener(TableModelListener l) {

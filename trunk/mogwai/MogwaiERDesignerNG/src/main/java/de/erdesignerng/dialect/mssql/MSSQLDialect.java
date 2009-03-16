@@ -65,7 +65,7 @@ public class MSSQLDialect extends SQL92Dialect {
         registerType(new MSSQLDataType("smalldatetime", "", java.sql.Types.TIMESTAMP));
         registerType(new MSSQLDataType("image", "", java.sql.Types.BLOB));
         registerType(new MSSQLDataType("ntext", "", java.sql.Types.CLOB));
-        registerType(new MSSQLDataType("xml", "", java.sql.Types.CLOB));
+        registerType(new MSSQLDataType("xml", "", java.sql.Types.SQLXML));
         registerType(new MSSQLDataType("text", "", java.sql.Types.CLOB));
         
         seal();
