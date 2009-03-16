@@ -44,9 +44,9 @@ public abstract class Dialect {
     private boolean supportsOnUpdate = true;
 
     private boolean supportsOnDelete = true;
-    
+
     private boolean generatesManagedConnection = false;
-    
+
     private boolean supportsColumnExtra = false;
 
     private NameCastType castType;
@@ -283,15 +283,16 @@ public abstract class Dialect {
     }
 
     /**
-     * @param supportsColumnExtra the supportsColumnExtra to set
+     * @param supportsColumnExtra
+     *            the supportsColumnExtra to set
      */
     public void setSupportsColumnExtra(boolean supportsColumnExtra) {
         this.supportsColumnExtra = supportsColumnExtra;
     }
-    
+
     /**
      * Get the separator chars for strings ( how they are escaped in SQL ).
-     *  
+     * 
      * @return the separator chars
      */
     public String getStringSeparatorChars() {
@@ -304,4 +305,22 @@ public abstract class Dialect {
      * @return the class
      */
     public abstract Class getHibernateDialectClass();
+
+    /**
+     * Find the closest matching type for a given foreign datatype.
+     * 
+     * The matching is done by JDBC Type.
+     * 
+     * @param aDataType
+     *            the datatype
+     * @return the matching datatype or null if no match was found
+     */
+    public DataType findClosestMatchingTypeFor(DataType aDataType) {
+        for (DataType theType : dataTypes) {
+            if (theType.getJDBCType() == aDataType.getJDBCType()) {
+                return theType;
+            }
+        }
+        return null;
+    }
 }

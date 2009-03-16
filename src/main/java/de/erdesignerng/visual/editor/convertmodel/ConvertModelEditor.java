@@ -18,10 +18,17 @@
 package de.erdesignerng.visual.editor.convertmodel;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.ConversionInfos;
+import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -34,7 +41,7 @@ public class ConvertModelEditor extends BaseEditor {
 
     private Model model;
 
-    private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
+    private BindingInfo<ConversionInfos> bindingInfo = new BindingInfo<ConversionInfos>(new ConversionInfos());
 
     private ConvertModelEditorView editingView;
 
@@ -53,9 +60,51 @@ public class ConvertModelEditor extends BaseEditor {
 
         model = aModel;
 
-        bindingInfo.addBinding("name", editingView.getTargetDataType(), true);
+        DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
+        DialectFactory theFactory = DialectFactory.getInstance();
+
+        for (Dialect theDialect : theFactory.getSupportedDialects()) {
+            if (!theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())) {
+                theDialectModel.addElement(theDialect);
+            }
+        }
+        editingView.getTargetDialect().setModel(theDialectModel);
+        bindingInfo.getDefaultModel().setTargetDialect((Dialect) theDialectModel.getElementAt(0));
+
+        editingView.getTargetDialect().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initializeMappingModelFor((Dialect) editingView.getTargetDialect().getSelectedItem());
+                bindingInfo.model2view();
+            }
+
+        });
+
+        bindingInfo.addBinding("targetDialect", editingView.getTargetDialect(), true);
+        bindingInfo.addBinding("typeMapping",
+                new ConvertPropertyAdapter(editingView.getMappingTable(), null, getResourceHelper()));
 
         bindingInfo.configure();
+        bindingInfo.model2view();
+    }
+
+    /**
+     * Initialize the current mapping model for a target dialect.
+     * 
+     * @param aDialect
+     *            the target dialect
+     */
+    private void initializeMappingModelFor(Dialect aDialect) {
+
+        ConversionInfos theInfos = bindingInfo.getDefaultModel();
+        theInfos.setTargetDialect(aDialect);
+        theInfos.getTypeMapping().clear();
+        
+        // Try to map the types
+        for (DataType theCurrentType : model.getUsedDataTypes()) {
+            theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));
+        }
     }
 
     /**
@@ -75,11 +124,6 @@ public class ConvertModelEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    public void initializeFor(Relation aRelation) {
-        bindingInfo.setDefaultModel(aRelation);
-        bindingInfo.model2view();
-    }
-
     @Override
     protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
@@ -92,22 +136,5 @@ public class ConvertModelEditor extends BaseEditor {
      */
     @Override
     public void applyValues() throws Exception {
-        Relation theRelation = bindingInfo.getDefaultModel();
-
-        if (!model.getRelations().contains(theRelation)) {
-
-            bindingInfo.view2model();
-            model.addRelation(theRelation);
-
-        } else {
-
-            Relation theTempRelation = theRelation.clone();
-            bindingInfo.setDefaultModel(theTempRelation);
-            bindingInfo.view2model();
-
-            if (theRelation.isModified(theTempRelation, false)) {
-                model.changeRelation(theRelation, theTempRelation);
-            }
-        }
     }
 }
