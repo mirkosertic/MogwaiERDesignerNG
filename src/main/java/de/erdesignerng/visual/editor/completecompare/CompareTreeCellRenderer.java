@@ -24,6 +24,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import de.erdesignerng.model.utils.MissingInfo;
+import de.erdesignerng.model.utils.RedefinedInfo;
 import de.erdesignerng.visual.IconFactory;
 
 /**

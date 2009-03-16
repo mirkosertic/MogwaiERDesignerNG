@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.visual.editor.comment;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -25,7 +24,6 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultFrame;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultSeparator;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
