@@ -61,7 +61,7 @@ public class ConvertModelEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:200dlu,8dlu,p,2dlu";
+        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
         String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);

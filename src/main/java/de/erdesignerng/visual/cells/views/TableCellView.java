@@ -81,11 +81,11 @@ public class TableCellView extends VertexView {
 
         private Table table;
 
-        private boolean roundedRect = false;
+        private boolean roundedRect;
 
         private boolean selected;
 
-        private boolean includeComments = false;
+        private boolean includeComments;
 
         private boolean physicalLayout = true;
 

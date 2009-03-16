@@ -37,8 +37,8 @@ public class GenericDataTypeImpl implements DataType {
     public static final String FRACTION_TOKEN = "$fraction";
 
     public static final String SCALE_TOKEN = "$scale";
-    
-    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "" , Types.OTHER);
+
+    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER);
 
     private static final int PRIME = 31;
 
@@ -46,19 +46,19 @@ public class GenericDataTypeImpl implements DataType {
 
     protected String pattern;
 
-    protected int jdbcType;
+    protected int[] jdbcType;
 
     protected boolean identity;
 
     protected int maxOccoursPerTable = -1;
 
-    private boolean supportsSize = false;
+    private boolean supportsSize;
 
-    private boolean supportsFraction = false;
+    private boolean supportsFraction;
 
-    private boolean supportsScale = false;
+    private boolean supportsScale;
 
-    protected GenericDataTypeImpl(String aName, String aDefinition, int aJdbcType) {
+    protected GenericDataTypeImpl(String aName, String aDefinition, int... aJdbcType) {
         name = aName;
         pattern = aDefinition;
         jdbcType = aJdbcType;
@@ -98,9 +98,10 @@ public class GenericDataTypeImpl implements DataType {
     public String getName() {
         return name;
     }
-    
+
     /**
-     * @param name the name to set
+     * @param name
+     *            the name to set
      */
     public void setName(String name) {
         this.name = name;
@@ -252,14 +253,15 @@ public class GenericDataTypeImpl implements DataType {
      * @return true if it is a string type, else false
      */
     public boolean isJDBCStringType() {
-        switch (jdbcType) {
-        case Types.CHAR:
-        case Types.LONGVARCHAR:
-        case Types.VARCHAR:
-            return true;
-        default:
-            return false;
+        for (int theType : jdbcType) {
+            switch (theType) {
+            case Types.CHAR:
+            case Types.LONGVARCHAR:
+            case Types.VARCHAR:
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
@@ -268,7 +270,7 @@ public class GenericDataTypeImpl implements DataType {
     }
 
     @Override
-    public int getJDBCType() {
+    public int[] getJDBCType() {
         return jdbcType;
     }
 }

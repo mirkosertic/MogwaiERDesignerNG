@@ -39,7 +39,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
     private int modalResult;
 
-    private javax.swing.JPanel jContentPane = null;
+    private javax.swing.JPanel jContentPane;
 
     protected Component parent;
 

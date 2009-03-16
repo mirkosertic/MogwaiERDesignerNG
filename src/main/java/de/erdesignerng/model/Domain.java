@@ -220,7 +220,7 @@ public class Domain implements DataType, Cloneable {
     }
 
     @Override
-    public int getJDBCType() {
+    public int[] getJDBCType() {
         return concreteType.getJDBCType();
     }
 

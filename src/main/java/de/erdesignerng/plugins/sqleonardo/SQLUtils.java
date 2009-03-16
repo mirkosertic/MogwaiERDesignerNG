@@ -37,7 +37,10 @@ import de.erdesignerng.model.ViewAttributeList;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class SQLUtils {
+public final class SQLUtils {
+    
+    private SQLUtils() {
+    }
     
     public static void updateViewAttributesFromSQL(View aView, String aStatement) throws Exception {
         

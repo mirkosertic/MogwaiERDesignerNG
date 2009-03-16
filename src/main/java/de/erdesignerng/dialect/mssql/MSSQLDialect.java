@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect.mssql;
 
+import java.sql.Types;
+
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -34,40 +36,40 @@ public class MSSQLDialect extends SQL92Dialect {
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
 
-        registerType(new MSSQLDataType("bit", "", java.sql.Types.BIT));
-        registerType(new MSSQLDataType("tinyint", "", java.sql.Types.TINYINT));
-        registerType(new MSSQLDataType("tinyint identity", "", java.sql.Types.TINYINT, true));
-        registerType(new MSSQLDataType("bigint", "", java.sql.Types.BIGINT));
-        registerType(new MSSQLDataType("bigint identity", "", java.sql.Types.BIGINT, true));
-        registerType(new MSSQLDataType("varbinary", "$size", java.sql.Types.VARBINARY));
-        registerType(new MSSQLDataType("binary", "$size", java.sql.Types.BINARY));
-        registerType(new MSSQLDataType("timestamp", "", java.sql.Types.BINARY));
-        registerType(new MSSQLDataType("char", "$size", java.sql.Types.CHAR));
-        registerType(new MSSQLDataType("nchar", "$size", java.sql.Types.CHAR));
-        registerType(new MSSQLDataType("uniqueidentifier", "", java.sql.Types.CHAR));
-        registerType(new MSSQLDataType("numeric", "$size,$fraction", java.sql.Types.NUMERIC));
-        registerType(new MSSQLDataType("numeric() identity", "$size,$fraction", java.sql.Types.NUMERIC, true));
-        registerType(new MSSQLDataType("decimal", "$size,$fraction", java.sql.Types.DECIMAL));
-        registerType(new MSSQLDataType("money", "", java.sql.Types.DECIMAL));
-        registerType(new MSSQLDataType("smallmoney", "", java.sql.Types.DECIMAL));
-        registerType(new MSSQLDataType("decimal() identity", "$size,$fraction", java.sql.Types.DECIMAL, true));
-        registerType(new MSSQLDataType("int", "", java.sql.Types.INTEGER));
-        registerType(new MSSQLDataType("int identity", "", java.sql.Types.INTEGER, true));
-        registerType(new MSSQLDataType("smallint", "", java.sql.Types.SMALLINT));
-        registerType(new MSSQLDataType("smallint identity", "", java.sql.Types.SMALLINT, true));
-        registerType(new MSSQLDataType("real", "", java.sql.Types.REAL));
-        registerType(new MSSQLDataType("float", "", java.sql.Types.DOUBLE));
-        registerType(new MSSQLDataType("varchar", "$size", java.sql.Types.VARCHAR));
-        registerType(new MSSQLDataType("nvarchar", "$size", java.sql.Types.VARCHAR));
-        registerType(new MSSQLDataType("sysname", "", java.sql.Types.VARCHAR));
-        registerType(new MSSQLDataType("sql_variant", "", java.sql.Types.VARCHAR));
-        registerType(new MSSQLDataType("datetime", "", java.sql.Types.TIMESTAMP));
-        registerType(new MSSQLDataType("smalldatetime", "", java.sql.Types.TIMESTAMP));
-        registerType(new MSSQLDataType("image", "", java.sql.Types.BLOB));
-        registerType(new MSSQLDataType("ntext", "", java.sql.Types.CLOB));
-        registerType(new MSSQLDataType("xml", "", java.sql.Types.SQLXML));
-        registerType(new MSSQLDataType("text", "", java.sql.Types.CLOB));
-        
+        registerType(new MSSQLDataType("bit", "", Types.BIT, Types.BOOLEAN));
+        registerType(new MSSQLDataType("tinyint", "", Types.TINYINT));
+        registerType(new MSSQLDataType("tinyint identity", "", true, Types.TINYINT));
+        registerType(new MSSQLDataType("bigint", "", Types.BIGINT));
+        registerType(new MSSQLDataType("bigint identity", "", true, Types.BIGINT));
+        registerType(new MSSQLDataType("varbinary", "$size", Types.VARBINARY));
+        registerType(new MSSQLDataType("binary", "$size", Types.BINARY, Types.LONGVARBINARY));
+        registerType(new MSSQLDataType("timestamp", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
+        registerType(new MSSQLDataType("char", "$size", Types.CHAR));
+        registerType(new MSSQLDataType("nchar", "$size", Types.CHAR));
+        registerType(new MSSQLDataType("uniqueidentifier", "", Types.CHAR));
+        registerType(new MSSQLDataType("numeric", "$size,$fraction", Types.NUMERIC));
+        registerType(new MSSQLDataType("numeric() identity", "$size,$fraction", true, Types.NUMERIC));
+        registerType(new MSSQLDataType("decimal", "$size,$fraction", Types.DECIMAL));
+        registerType(new MSSQLDataType("money", "", Types.DECIMAL));
+        registerType(new MSSQLDataType("smallmoney", "", Types.DECIMAL));
+        registerType(new MSSQLDataType("decimal() identity", "$size,$fraction", true, Types.DECIMAL));
+        registerType(new MSSQLDataType("int", "", Types.INTEGER));
+        registerType(new MSSQLDataType("int identity", "", true, Types.INTEGER));
+        registerType(new MSSQLDataType("smallint", "", Types.SMALLINT));
+        registerType(new MSSQLDataType("smallint identity", "", true, Types.SMALLINT));
+        registerType(new MSSQLDataType("real", "", Types.REAL));
+        registerType(new MSSQLDataType("float", "", Types.DOUBLE, Types.FLOAT));
+        registerType(new MSSQLDataType("varchar", "$size", Types.VARCHAR));
+        registerType(new MSSQLDataType("nvarchar", "$size", Types.VARCHAR));
+        registerType(new MSSQLDataType("sysname", "", Types.VARCHAR));
+        registerType(new MSSQLDataType("sql_variant", "", Types.VARCHAR));
+        registerType(new MSSQLDataType("datetime", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
+        registerType(new MSSQLDataType("smalldatetime", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
+        registerType(new MSSQLDataType("image", "", Types.BLOB));
+        registerType(new MSSQLDataType("ntext", "", Types.CLOB, Types.LONGVARCHAR));
+        registerType(new MSSQLDataType("xml", "", Types.SQLXML));
+        registerType(new MSSQLDataType("text", "", Types.CLOB));
+
         seal();
     }
 
@@ -110,7 +112,7 @@ public class MSSQLDialect extends SQL92Dialect {
     public MSSQLSQLGenerator createSQLGenerator() {
         return new MSSQLSQLGenerator(this);
     }
-    
+
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.SQLServerDialect.class;
