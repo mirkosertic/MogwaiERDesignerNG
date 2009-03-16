@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect.mysql;
 
+import java.sql.Types;
+
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -35,53 +37,54 @@ public class MySQLDialect extends SQL92Dialect {
         setSupportsColumnExtra(true);
 
         // Other
-        registerType(new MySQLDataType("BIT", "$size", java.sql.Types.BIT));
-        registerType(new MySQLDataType("BOOL", "", java.sql.Types.BIT));
+        registerType(new MySQLDataType("BIT", "$size", Types.BIT));
+        registerType(new MySQLDataType("BOOL", "", Types.BIT, Types.BOOLEAN));
         
         // Numeric
-        registerType(new MySQLDataType("TINYINT", "", java.sql.Types.TINYINT));
-        registerType(new MySQLDataType("TINYINT UNSIGNED", "", java.sql.Types.TINYINT));
-        registerType(new MySQLDataType("BIGINT", "", java.sql.Types.BIGINT));
-        registerType(new MySQLDataType("BIGINT UNSIGNED", "", java.sql.Types.BIGINT));
-        registerType(new MySQLDataType("NUMERIC", "$size,$fraction", java.sql.Types.NUMERIC));
-        registerType(new MySQLDataType("DECIMAL", "$size,$fraction", java.sql.Types.DECIMAL));
-        registerType(new MySQLDataType("DECIMAL UNSIGNED", "$size,$fraction", java.sql.Types.DECIMAL));
-        registerType(new MySQLDataType("INTEGER", "", java.sql.Types.INTEGER));
-        registerType(new MySQLDataType("INTEGER UNSIGNED", "", java.sql.Types.INTEGER));
-        registerType(new MySQLDataType("INT", "", java.sql.Types.INTEGER));
-        registerType(new MySQLDataType("INT UNSIGNED", "", java.sql.Types.INTEGER));
-        registerType(new MySQLDataType("MEDIUMINT", "", java.sql.Types.INTEGER));
-        registerType(new MySQLDataType("MEDIUMINT UNSIGNED", "", java.sql.Types.INTEGER));
-        registerType(new MySQLDataType("SMALLINT", "", java.sql.Types.SMALLINT));
-        registerType(new MySQLDataType("SMALLINT UNSIGNED", "", java.sql.Types.SMALLINT));
-        registerType(new MySQLDataType("FLOAT", "$size,$fraction", java.sql.Types.REAL));
-        registerType(new MySQLDataType("DOUBLE", "$size,$fraction", java.sql.Types.DOUBLE));
-        registerType(new MySQLDataType("DOUBLE PRECISION", "$size,$fraction", java.sql.Types.DOUBLE));
-        registerType(new MySQLDataType("REAL", "$size,$fraction", java.sql.Types.DOUBLE));
+        registerType(new MySQLDataType("TINYINT", "", Types.TINYINT));
+        registerType(new MySQLDataType("TINYINT UNSIGNED", "", Types.TINYINT));
+        registerType(new MySQLDataType("BIGINT", "", Types.BIGINT));
+        registerType(new MySQLDataType("BIGINT UNSIGNED", "", Types.BIGINT));
+        registerType(new MySQLDataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
+        registerType(new MySQLDataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
+        registerType(new MySQLDataType("DECIMAL UNSIGNED", "$size,$fraction", Types.DECIMAL));
+        registerType(new MySQLDataType("INTEGER", "", Types.INTEGER));
+        registerType(new MySQLDataType("INTEGER UNSIGNED", "", Types.INTEGER));
+        registerType(new MySQLDataType("INT", "", Types.INTEGER));
+        registerType(new MySQLDataType("INT UNSIGNED", "", Types.INTEGER));
+        registerType(new MySQLDataType("MEDIUMINT", "", Types.INTEGER));
+        registerType(new MySQLDataType("MEDIUMINT UNSIGNED", "", Types.INTEGER));
+        registerType(new MySQLDataType("SMALLINT", "", Types.SMALLINT));
+        registerType(new MySQLDataType("SMALLINT UNSIGNED", "", Types.SMALLINT));
+        registerType(new MySQLDataType("FLOAT", "$size,$fraction", Types.REAL, Types.FLOAT));
+        registerType(new MySQLDataType("DOUBLE", "$size,$fraction", Types.DOUBLE));
+        registerType(new MySQLDataType("DOUBLE PRECISION", "$size,$fraction", Types.DOUBLE));
+        registerType(new MySQLDataType("REAL", "$size,$fraction", Types.DOUBLE));
         
         // Blob
-        registerType(new MySQLDataType("LONG VARBINARY", "", java.sql.Types.LONGVARBINARY));
-        registerType(new MySQLDataType("MEDIUMBLOB", "", java.sql.Types.LONGVARBINARY));
-        registerType(new MySQLDataType("LONGBLOB", "", java.sql.Types.LONGVARBINARY));
-        registerType(new MySQLDataType("BLOB", "", java.sql.Types.BLOB));
-        registerType(new MySQLDataType("TINYBLOB", "", java.sql.Types.LONGVARBINARY));
-        registerType(new MySQLDataType("VARBINARY", "$size", java.sql.Types.VARBINARY));
-        registerType(new MySQLDataType("BINARY", "$size", java.sql.Types.BINARY));
+        registerType(new MySQLDataType("LONG VARBINARY", "", Types.LONGVARBINARY));
+        registerType(new MySQLDataType("MEDIUMBLOB", "", Types.LONGVARBINARY));
+        registerType(new MySQLDataType("LONGBLOB", "", Types.LONGVARBINARY));
+        registerType(new MySQLDataType("BLOB", "", Types.BLOB));
+        registerType(new MySQLDataType("CLOB", "", Types.CLOB, Types.SQLXML));
+        registerType(new MySQLDataType("TINYBLOB", "", Types.LONGVARBINARY));
+        registerType(new MySQLDataType("VARBINARY", "$size", Types.VARBINARY));
+        registerType(new MySQLDataType("BINARY", "$size", Types.BINARY));
         
         // Text
-        registerType(new MySQLDataType("LONG VARCHAR", "", java.sql.Types.LONGVARCHAR));
-        registerType(new MySQLDataType("MEDIUMTEXT", "", java.sql.Types.LONGVARCHAR));
-        registerType(new MySQLDataType("LONGTEXT", "", java.sql.Types.LONGVARCHAR));
-        registerType(new MySQLDataType("TEXT", "", java.sql.Types.LONGVARCHAR));
-        registerType(new MySQLDataType("TINYTEXT", "", java.sql.Types.LONGVARCHAR));
-        registerType(new MySQLDataType("CHAR", "$size", java.sql.Types.CHAR));
-        registerType(new MySQLDataType("VARCHAR", "$size", java.sql.Types.VARCHAR));
+        registerType(new MySQLDataType("LONG VARCHAR", "", Types.LONGVARCHAR));
+        registerType(new MySQLDataType("MEDIUMTEXT", "", Types.LONGVARCHAR));
+        registerType(new MySQLDataType("LONGTEXT", "", Types.LONGVARCHAR));
+        registerType(new MySQLDataType("TEXT", "", Types.LONGVARCHAR));
+        registerType(new MySQLDataType("TINYTEXT", "", Types.LONGVARCHAR));
+        registerType(new MySQLDataType("CHAR", "$size", Types.CHAR));
+        registerType(new MySQLDataType("VARCHAR", "$size", Types.VARCHAR));
         
         // Date and time
-        registerType(new MySQLDataType("DATE", "", java.sql.Types.DATE));
-        registerType(new MySQLDataType("TIME", "", java.sql.Types.TIME));
-        registerType(new MySQLDataType("DATETIME", "", java.sql.Types.TIMESTAMP));
-        registerType(new MySQLDataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
+        registerType(new MySQLDataType("DATE", "", Types.DATE));
+        registerType(new MySQLDataType("TIME", "", Types.TIME));
+        registerType(new MySQLDataType("DATETIME", "", Types.TIMESTAMP));
+        registerType(new MySQLDataType("TIMESTAMP", "", Types.TIMESTAMP));
         
         seal();        
     }

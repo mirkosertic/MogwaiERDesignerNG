@@ -26,7 +26,7 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class MySQLDataType extends GenericDataTypeImpl {
 
-    public MySQLDataType(String aName, String aDefinition, int aSQLType) {
+    public MySQLDataType(String aName, String aDefinition, int... aSQLType) {
         super(aName, aDefinition, aSQLType);
     }
 }

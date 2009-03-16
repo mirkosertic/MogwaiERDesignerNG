@@ -26,11 +26,11 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class MSSQLDataType extends GenericDataTypeImpl {
 
-    public MSSQLDataType(String aName, String aDefinition, int aJdbcType) {
+    public MSSQLDataType(String aName, String aDefinition, int... aJdbcType) {
         super(aName, aDefinition, aJdbcType);
     }
-    
-    public MSSQLDataType(String aName, String aDefinition, int aJdbcType, boolean aIdentity) {
+
+    public MSSQLDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
         super(aName, aDefinition, aJdbcType);
         identity = aIdentity;
         if (aIdentity) {

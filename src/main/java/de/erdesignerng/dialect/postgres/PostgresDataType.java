@@ -26,11 +26,11 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class PostgresDataType extends GenericDataTypeImpl {
 
-    public PostgresDataType(String aName, String aDefinition, int aJdbcDataType) {
+    public PostgresDataType(String aName, String aDefinition, int... aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);
     }
 
-    public PostgresDataType(String aName, String aDefinition, int aJdbcDataType, boolean aIdentity) {
+    public PostgresDataType(String aName, String aDefinition, boolean aIdentity, int aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);
 
         identity = aIdentity;
