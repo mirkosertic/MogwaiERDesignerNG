@@ -1954,7 +1954,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         ConvertModelEditor theEditor = new ConvertModelEditor(model, scrollPane);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            //TODO [mirkosertic] Implement model conversion
+            try {
+                theEditor.applyValues();
+                
+                setModel(model);
+                
+                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
         }
     }
 

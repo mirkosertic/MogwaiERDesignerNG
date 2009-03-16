@@ -383,4 +383,6 @@ public interface ERDesignerBundle {
   String CURRENTDATATYPE = "CURRENTDATATYPE";
   /** Will be assigned to. */
   String TARGETDATATYPE = "TARGETDATATYPE";
+  /** Model converted. */
+  String MODELCONVERTED = "MODELCONVERTED";
 }
