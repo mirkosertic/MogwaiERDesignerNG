@@ -762,5 +762,9 @@
 			<Text lang="de">wird zugeordnet zu</Text>		
 			<Text lang="en">Will be assigned to</Text>					
 		</Entry>
+		<Entry id="MODELCONVERTED">
+			<Text lang="de">Datenmodell erfolgreich konvertiert</Text>		
+			<Text lang="en">Model converted</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

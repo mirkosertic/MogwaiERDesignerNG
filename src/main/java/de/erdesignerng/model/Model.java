@@ -22,6 +22,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 
+import sun.security.acl.WorldGroupImpl;
+
+import de.erdesignerng.dialect.ConversionInfos;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
@@ -558,5 +561,41 @@ public class Model implements OwnedModelItemVerifier {
         }
 
         return theResult;
+    }
+
+    /**
+     * Convert the model using defined convertioninfos.
+     * 
+     * @param aConversionInfo the conversioninfo.
+     */
+    public void convert(ConversionInfos aConversionInfo) {
+        Dialect theNewDialect = aConversionInfo.getTargetDialect();
+        
+        // Update the dialect
+        setDialect(theNewDialect);
+        
+        // Update the database connection
+        getProperties().setProperty(PROPERTY_DRIVER, theNewDialect.getDriverClassName());
+        getProperties().setProperty(PROPERTY_URL, theNewDialect.getDriverURLTemplate());
+        getProperties().setProperty(PROPERTY_USER, "");
+        getProperties().setProperty(PROPERTY_PASSWORD, "");
+        getProperties().setProperty(PROPERTY_ALIAS, "");
+        
+        // Convert the domains
+        for (Domain theDomain : getDomains()) {
+            theDomain.setConcreteType(aConversionInfo.getTypeMapping().get(theDomain));
+        }
+        
+        // Convert the attributes
+        for (Table theTable : tables) {
+            for (Attribute theAttribute : theTable.getAttributes()) {
+                DataType theType = theAttribute.getDatatype();
+                
+                // Never convert domains, only concrete types !
+                if (!theType.isDomain()) {
+                    theAttribute.setDatatype(aConversionInfo.getTypeMapping().get(theType));
+                }
+            }
+        }
     }
 }
