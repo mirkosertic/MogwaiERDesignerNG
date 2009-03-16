@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer.xml10;
+package de.erdesignerng.model.serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,25 +24,7 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.ModelItem;
 
-public class XMLSerializer {
-
-    public static final String ID = "id";
-
-    public static final String NAME = "name";
-
-    public static final String VALUE = "value";
-
-    public static final String PROPERTY = "Property";
-
-    public static final String COMMENT = "Comment";
-
-    public static final String TRUE = "true";
-
-    public static final String FALSE = "false";
-    
-    public static final String ATTRIBUTEREFID = "attributerefid";    
-    
-    public static final String DATATYPE = "datatype";
+public class XMLSerializer implements CommonXMLElementsAndAttributes {
 
     protected Element addElement(Document aDocument, Node aNode, String aElementName) {
         Element theElement = aDocument.createElement(aElementName);

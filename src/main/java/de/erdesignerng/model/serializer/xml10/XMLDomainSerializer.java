@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLDomainSerializer extends XMLSerializer {
 

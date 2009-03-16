@@ -28,6 +28,7 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLRelationSerializer extends XMLSerializer {
     

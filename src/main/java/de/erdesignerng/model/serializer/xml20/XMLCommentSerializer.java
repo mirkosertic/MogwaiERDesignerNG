@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 /**
  * @author $Author: mirkosertic $
