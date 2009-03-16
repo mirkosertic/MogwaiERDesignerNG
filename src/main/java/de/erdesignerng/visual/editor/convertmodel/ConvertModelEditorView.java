@@ -39,7 +39,7 @@ public class ConvertModelEditorView extends JPanel {
 
     private DefaultLabel component1;
 
-    private DefaultComboBox targetDataType;
+    private DefaultComboBox targetDialect;
 
     private DefaultTable mappingTable;
 
@@ -71,7 +71,7 @@ public class ConvertModelEditorView extends JPanel {
 
         add(getComponent1(), cons.xywh(2, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.TARGETDIALECT), cons.xywh(2, 2, 3, 1));
-        add(getTargetDataType(), cons.xywh(4, 4, 1, 1));
+        add(getTargetDialect(), cons.xywh(4, 4, 1, 1));
         add(new DefaultSeparator(ERDesignerBundle.DATATYPEMAPPING), cons.xywh(2, 6, 3, 1));
         add(new JScrollPane(getMappingTable()), cons.xywh(2, 8, 3, 1));
 
@@ -97,13 +97,13 @@ public class ConvertModelEditorView extends JPanel {
      * 
      * @return the initialized component
      */
-    public DefaultComboBox getTargetDataType() {
+    public DefaultComboBox getTargetDialect() {
 
-        if (targetDataType == null) {
-            targetDataType = new DefaultComboBox();
+        if (targetDialect == null) {
+            targetDialect = new DefaultComboBox();
         }
 
-        return targetDataType;
+        return targetDialect;
     }
 
     /**

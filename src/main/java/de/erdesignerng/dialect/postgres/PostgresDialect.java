@@ -67,7 +67,7 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(new PostgresDataType("bigint", "", java.sql.Types.BIGINT));
         registerType(new PostgresDataType("real", "", java.sql.Types.REAL));
         registerType(new PostgresDataType("double precision", "", java.sql.Types.DOUBLE));
-        registerType(new PostgresDataType("xml", "", java.sql.Types.OTHER));
+        registerType(new PostgresDataType("xml", "", java.sql.Types.SQLXML));
 
         seal();
     }

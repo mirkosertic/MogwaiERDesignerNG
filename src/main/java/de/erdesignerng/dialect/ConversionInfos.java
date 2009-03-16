@@ -17,27 +17,34 @@
  */
 package de.erdesignerng.dialect;
 
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-import de.erdesignerng.model.Attribute;
 
-public interface DataType extends Comparable<DataType>, Serializable {
+/**
+ * Informations to do a model conversion.
+ * 
+ * @author $Author$
+ */
+public class ConversionInfos {
 
-    String getName();
-    
-    boolean isDomain();
+    private Dialect targetDialect;
 
-    boolean supportsSize();
+    private Map<DataType, DataType> typeMapping = new HashMap<DataType, DataType>();
 
-    boolean supportsFraction();
+    public Dialect getTargetDialect() {
+        return targetDialect;
+    }
 
-    boolean supportsScale();
+    public void setTargetDialect(Dialect targetDialect) {
+        this.targetDialect = targetDialect;
+    }
 
-    boolean isJDBCStringType();
+    public Map<DataType, DataType> getTypeMapping() {
+        return typeMapping;
+    }
 
-    String createTypeDefinitionFor(Attribute aAttribute);
-    
-    boolean isIdentity();
-    
-    int getJDBCType();
+    public void setTypeMapping(Map<DataType, DataType> typeMapping) {
+        this.typeMapping = typeMapping;
+    }
 }

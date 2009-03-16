@@ -48,7 +48,7 @@ public class OracleDialect extends SQL92Dialect {
         registerType(new OracleDataType("BLOB", "", java.sql.Types.BLOB));
         registerType(new OracleDataType("CLOB", "", java.sql.Types.CLOB));
         registerType(new OracleDataType("NCLOB", "", java.sql.Types.CLOB));
-        registerType(new OracleDataType("XMLTYPE", "", java.sql.Types.OTHER));
+        registerType(new OracleDataType("XMLTYPE", "", java.sql.Types.SQLXML));
         registerType(new OracleDataType("ROWID", "", java.sql.Types.OTHER));
         registerType(new OracleDataType("SDO_GEOMETRY", "", java.sql.Types.OTHER));
         registerType(new OracleDataType("SDO_GTYPE", "", java.sql.Types.OTHER));
