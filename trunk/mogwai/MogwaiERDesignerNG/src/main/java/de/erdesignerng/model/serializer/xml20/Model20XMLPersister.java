@@ -43,7 +43,7 @@ import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
 
 /**
- * Persister for model version 1.7.
+ * Persister for model version 2.0.
  * 
  * @author mirkosertic
  */
