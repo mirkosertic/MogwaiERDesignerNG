@@ -15,21 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.completecompare;
+package de.erdesignerng.model.utils;
 
 
-public class Info {
+
+public class MissingInfo extends Info {
     
-    private CompleteCompareEditor editor;
-    private String what;
-
-    protected Info(CompleteCompareEditor aEditor, String aKey, String aWhat) {
-        editor = aEditor;
-        what = editor.getResourceHelper().getFormattedText(aKey, aWhat);
-    }
-
-    @Override
-    public String toString() {
-        return what;
+    protected MissingInfo(String aKey, String aWhat) {
+        super(aKey, aWhat);
     }
 }

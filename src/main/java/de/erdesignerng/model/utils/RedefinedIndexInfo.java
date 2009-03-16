@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.completecompare;
+package de.erdesignerng.model.utils;
 
 import de.erdesignerng.ERDesignerBundle;
 
@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class RedefinedIndexInfo extends RedefinedInfo {
 
-    public RedefinedIndexInfo(CompleteCompareEditor aEditor, String aWhat) {
-        super(aEditor, ERDesignerBundle.REDEFINED, aWhat);
+    public RedefinedIndexInfo(String aWhat) {
+        super(ERDesignerBundle.REDEFINED, aWhat);
     }
 }

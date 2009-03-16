@@ -15,17 +15,23 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.completecompare;
+package de.erdesignerng.model.utils;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.mogwai.common.i18n.ResourceHelper;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
- */
-public class RedefinedViewInfo extends RedefinedInfo {
 
-    public RedefinedViewInfo(CompleteCompareEditor aEditor, String aWhat) {
-        super(aEditor, ERDesignerBundle.REDEFINED, aWhat);
+public class Info {
+    
+    private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    private String what;
+
+    protected Info(String aKey, String aWhat) {
+        what = HELPER.getFormattedText(aKey, aWhat);
+    }
+
+    @Override
+    public String toString() {
+        return what;
     }
 }

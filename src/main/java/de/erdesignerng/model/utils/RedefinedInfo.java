@@ -15,17 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.completecompare;
+package de.erdesignerng.model.utils;
 
-import de.erdesignerng.ERDesignerBundle;
 
-/**
- * @author $Author: mirkosertic $
- * @version $Date: 2008-02-11 18:01:03 $
- */
-public class RedefinedAttributeInfo extends RedefinedInfo {
 
-    public RedefinedAttributeInfo(CompleteCompareEditor aEditor, String aWhat) {
-        super(aEditor, ERDesignerBundle.REDEFINED, aWhat);
+public class RedefinedInfo extends Info {
+    
+    protected RedefinedInfo(String aKey, String aWhat) {
+        super(aKey, aWhat);
     }
 }
