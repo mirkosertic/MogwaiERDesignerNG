@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLAttributeSerializer extends XMLSerializer {
 

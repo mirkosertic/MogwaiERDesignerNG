@@ -38,6 +38,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Class for handling application preferences, LRUfiles and so on.
@@ -46,6 +47,8 @@ import org.apache.commons.lang.StringUtils;
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ApplicationPreferences {
+
+    private static final Logger LOGGER = Logger.getLogger(ApplicationPreferences.class);
 
     private static final String LRUPREFIX = "file_";
 
@@ -95,7 +98,7 @@ public class ApplicationPreferences {
             try {
                 me = new ApplicationPreferences(20);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("Error loading preferences", e);
             }
         }
         return me;
@@ -164,7 +167,7 @@ public class ApplicationPreferences {
      * Add a file to the recently used LRUfiles list.
      * 
      * @param aFile
-     *                the file to add
+     *            the file to add
      */
     public void addRecentlyUsedFile(File aFile) {
 
@@ -183,7 +186,7 @@ public class ApplicationPreferences {
      * Add a last used connection to the list.
      * 
      * @param aConnection
-     *                the connection
+     *            the connection
      */
     public void addRecentlyUsedConnection(ConnectionDescriptor aConnection) {
         if (!recentlyUsedConnections.contains(aConnection)) {
@@ -219,7 +222,7 @@ public class ApplicationPreferences {
 
     /**
      * @param gridSize
-     *                the gridSize to set
+     *            the gridSize to set
      */
     public void setGridSize(int gridSize) {
         this.gridSize = gridSize;
@@ -229,7 +232,7 @@ public class ApplicationPreferences {
      * Save the preferences.
      * 
      * @throws BackingStoreException
-     *                 is thrown if the operation fails
+     *             is thrown if the operation fails
      */
     public void store() throws BackingStoreException {
 
@@ -315,7 +318,7 @@ public class ApplicationPreferences {
 
     /**
      * @param dotPath
-     *                the dotPath to set
+     *            the dotPath to set
      */
     public void setDotPath(String dotPath) {
         this.dotPath = dotPath;
@@ -330,7 +333,7 @@ public class ApplicationPreferences {
 
     /**
      * @param repositoryConnection
-     *                the repositoryConnection to set
+     *            the repositoryConnection to set
      */
     public void setRepositoryConnection(ConnectionDescriptor repositoryConnection) {
         this.repositoryConnection = repositoryConnection;
@@ -340,9 +343,9 @@ public class ApplicationPreferences {
      * Update the last position of a window.
      * 
      * @param aAlias
-     *                the alias of the window
+     *            the alias of the window
      * @param aWindow
-     *                the window
+     *            the window
      */
     public void updateWindowDefinition(String aAlias, JFrame aWindow) {
         windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, "" + aWindow.getExtendedState());
@@ -354,9 +357,9 @@ public class ApplicationPreferences {
      * Set the current window state as stored by updateWindowDefinition.
      * 
      * @param aAlias
-     *                the alias of the window
+     *            the alias of the window
      * @param aFrame
-     *                the window
+     *            the window
      */
     public void setWindowState(String aAlias, JFrame aFrame) {
 

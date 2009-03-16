@@ -31,18 +31,16 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:34 $
  */
-public class XMLModelSerializer extends XMLSerializer {
+public class XMLModelSerializer extends XMLSerializer implements CommonXMLElementsAndAttributes {
 
     public static final XMLModelSerializer SERIALIZER = new XMLModelSerializer();
-
-    protected static final String MODEL = "Model";
-
-    protected static final String VERSION = "version";
 
     protected static final String CONFIGURATION = "Configuration";
 

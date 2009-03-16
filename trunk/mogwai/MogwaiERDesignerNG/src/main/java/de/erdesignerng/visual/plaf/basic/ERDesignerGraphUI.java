@@ -25,6 +25,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
@@ -39,6 +40,8 @@ import de.erdesignerng.visual.editor.DialogConstants;
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
+    
+    private static final Logger LOGGER = Logger.getLogger(ERDesignerGraphUI.class);
 
     private ERDesignerComponent erdesigner;
 
@@ -160,7 +163,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                     try {
                         graph.setSelectionCell(cell);
                     } catch (Exception e) {
-                        System.err.println("Editing exception: " + e);
+                        LOGGER.error("Error setting selection cell", e);
                     }
                     stopEditingInCompleteEditing = true;
                 }

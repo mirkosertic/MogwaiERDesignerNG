@@ -174,12 +174,4 @@ public class ConvertModelEditorView extends JPanel {
 
         return cancelButton;
     }
-
-    public static void main(String[] args) {
-        JFrame theFrame = new JFrame();
-        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        theFrame.setContentPane(new ConvertModelEditorView());
-        theFrame.pack();
-        theFrame.setVisible(true);
-    }
 }

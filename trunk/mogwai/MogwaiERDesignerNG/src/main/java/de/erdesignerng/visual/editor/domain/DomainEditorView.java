@@ -380,12 +380,4 @@ public class DomainEditorView extends DefaultPanel {
     public DefaultSpinner getSizeSpinner() {
         return sizeSpinner;
     }
-    
-    public static void main(String[] args) {
-        JFrame theFrame = new JFrame();
-        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        theFrame.setContentPane(new DomainEditorView());
-        theFrame.pack();
-        theFrame.setVisible(true);
-    }
 }
