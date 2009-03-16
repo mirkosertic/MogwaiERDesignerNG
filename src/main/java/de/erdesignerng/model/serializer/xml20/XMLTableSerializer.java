@@ -25,6 +25,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLTableSerializer extends XMLSerializer {
     

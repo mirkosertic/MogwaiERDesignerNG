@@ -162,14 +162,4 @@ public class CommentEditorView extends JPanel {
      */
     private void buildGroups() {
     }
-    
-    public static void main(String[] args) {
-        
-        DefaultFrame theFrame = new DefaultFrame(ERDesignerBundle.BUNDLE_NAME);
-        theFrame.setContentPane(new CommentEditorView());
-        theFrame.pack();
-        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        theFrame.setVisible(true);
-    }
-
 }

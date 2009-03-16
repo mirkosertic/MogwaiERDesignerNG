@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.log4j.Logger;
+
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -36,6 +38,8 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ExceptionEditor extends BaseEditor {
+    
+    private static final Logger LOGGER = Logger.getLogger(ExceptionEditor.class);
 
     private ExceptionEditorView view = new ExceptionEditorView();
     
@@ -49,7 +53,7 @@ public class ExceptionEditor extends BaseEditor {
     public ExceptionEditor(Component aParent, Exception aException) {
         super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
 
-        aException.printStackTrace();
+        LOGGER.error("Exception", aException);
         
         initialize();
 

@@ -30,18 +30,16 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008/11/15 14:36:54 $
  */
-public class XMLModelSerializer extends XMLSerializer {
+public class XMLModelSerializer extends XMLSerializer implements CommonXMLElementsAndAttributes {
 
     public static final XMLModelSerializer SERIALIZER = new XMLModelSerializer();
-
-    protected static final String MODEL = "Model";
-
-    protected static final String VERSION = "version";
 
     protected static final String CONFIGURATION = "Configuration";
 
@@ -58,11 +56,13 @@ public class XMLModelSerializer extends XMLSerializer {
     protected static final String SUBJECTAREAS = "Subjectareas";
 
     protected static final String COMMENTS = "Comments";
+    
+    protected static final String CURRENT_VERSION = "1.0";
 
     public void serialize(Model aModel, Document aDocument) {
 
         Element theRootElement = addElement(aDocument, aDocument, MODEL);
-        theRootElement.setAttribute(VERSION, "1.0");
+        theRootElement.setAttribute(VERSION, CURRENT_VERSION);
 
         Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
 

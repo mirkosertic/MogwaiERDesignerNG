@@ -658,20 +658,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return theList;
     }
 
-    public void getDataTypes(Connection aConnection) throws SQLException {
-        DatabaseMetaData theMetaData = aConnection.getMetaData();
-        ResultSet theResult = theMetaData.getTypeInfo();
-        while (theResult.next()) {
-            String theTypeName = theResult.getString("TYPE_NAME");
-            String thePrefix = theResult.getString("LITERAL_PREFIX");
-            String theSuffix = theResult.getString("LITERAL_SUFFIX");
-            String theCreateParams = theResult.getString("CREATE_PARAMS");
-
-            System.out.println("registerType(\"" + theTypeName + "\",\"" + thePrefix + "\",\"" + theSuffix + "\",\""
-                    + theCreateParams + "\");");
-        }
-    }
-
     protected List<TableEntry> getTablesForSchemaEntry(Connection aConnection, SchemaEntry aEntry) throws SQLException {
 
         List<TableEntry> theResult = new ArrayList<TableEntry>();

@@ -29,6 +29,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 /**
  * @author $Author: mirkosertic $

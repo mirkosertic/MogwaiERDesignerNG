@@ -29,11 +29,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.xml10.Model10XMLPersister;
 import de.erdesignerng.model.serializer.xml20.Model20XMLPersister;
 import de.erdesignerng.util.ApplicationPreferences;
 
@@ -64,7 +66,7 @@ public final class ModelIOUtilities {
         }
         return me;
     }
-    
+
     public DocumentBuilderFactory getDocumentBuilderFactory() {
         return documentBuilderFactory;
     }
@@ -78,13 +80,37 @@ public final class ModelIOUtilities {
     }
 
     public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
-        
-        Model20XMLPersister thePersister = new Model20XMLPersister(this);
-        return thePersister.deserializeModelFromXML(aInputStream);
+
+        try {
+            Document theDocument = documentBuilder.parse(aInputStream);
+            if (Model20XMLPersister.supportsDocument(theDocument)) {
+                Model20XMLPersister thePersister = new Model20XMLPersister(this);
+                return thePersister.deserializeModelFromXML(theDocument);
+            }
+            if (Model10XMLPersister.supportsDocument(theDocument)) {
+                Model10XMLPersister thePersister = new Model10XMLPersister(this);
+                return thePersister.deserializeModelFromXML(theDocument);
+            }
+
+            // This should never happen
+            throw new IOException("Invalid document version");
+        } finally {
+            if (aInputStream != null) {
+                aInputStream.close();
+            }
+        }
     }
 
+    /**
+     * Serialize a model to XML output.
+     * 
+     * @param aModel the model
+     * @param aStream the output stream
+     * @throws TransformerException will be thrown in case of an error
+     * @throws IOException will be thrown in case of an error
+     */
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
-        
+
         Model20XMLPersister thePersister = new Model20XMLPersister(this);
         thePersister.serializeModelToXML(aModel, aStream);
     }
@@ -93,18 +119,18 @@ public final class ModelIOUtilities {
      * Save a model to a repository.
      * 
      * @param aDesc
-     *                the element descriptor
+     *            the element descriptor
      * @param aDialect
-     *                the dialect used to communicate with the repository
+     *            the dialect used to communicate with the repository
      * @param aConnection
-     *                the connection
+     *            the connection
      * @param aModel
-     *                the model
+     *            the model
      * @param aPreferences
-     *                the preferences
+     *            the preferences
      * @return the descriptor
      * @throws Exception
-     *                 will be thrown in case of an exception
+     *             will be thrown in case of an exception
      */
     public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Dialect aDialect,
             Connection aConnection, Model aModel, ApplicationPreferences aPreferences) throws Exception {
@@ -119,16 +145,16 @@ public final class ModelIOUtilities {
      * Deserialize a model from a repository.
      * 
      * @param aDescriptor
-     *                the descriptor for the repository entity
+     *            the descriptor for the repository entity
      * @param aDialect
-     *                the repository dialect
+     *            the repository dialect
      * @param aConnection
-     *                the repository connection
+     *            the repository connection
      * @param aPreferences
-     *                the preferences
+     *            the preferences
      * @return the loaded model
      * @throws Exception
-     *                 will be thrown in case of an exception
+     *             will be thrown in case of an exception
      */
     public Model deserializeModelfromRepository(RepositoryEntryDesciptor aDescriptor, Dialect aDialect,
             Connection aConnection, ApplicationPreferences aPreferences) throws Exception {
@@ -141,12 +167,12 @@ public final class ModelIOUtilities {
      * Get the available repository descriptors.
      * 
      * @param aDialect
-     *                the dialect
+     *            the dialect
      * @param aConnection
-     *                the connection
+     *            the connection
      * @return the list of descriptors
      * @throws Exception
-     *                 will be thrown in case of an exception
+     *             will be thrown in case of an exception
      */
     public List<RepositoryEntryDesciptor> getRepositoryEntries(Dialect aDialect, Connection aConnection)
             throws Exception {

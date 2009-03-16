@@ -18,7 +18,6 @@
 package de.erdesignerng.model.serializer.xml20;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,25 +32,44 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
+import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
 
 /**
  * Persister for model version 1.7.
+ * 
  * @author mirkosertic
  */
-public class Model20XMLPersister {
+public class Model20XMLPersister implements CommonXMLElementsAndAttributes {
 
     private ModelIOUtilities utils;
-        
+
+    /**
+     * Test if the persister supports a document version.
+     *  
+     * @param aDocument the document
+     * @return true if yes, else false
+     */
+    public static boolean supportsDocument(Document aDocument) {
+        NodeList theNodes = aDocument.getElementsByTagName(MODEL);
+        if (theNodes.getLength() != 1) {
+            return false;
+        }
+        Element theDocumentElement = (Element) theNodes.item(0);
+        return XMLModelSerializer.CURRENT_VERSION.equals(theDocumentElement.getAttribute(VERSION));
+    }
+
     public Model20XMLPersister(ModelIOUtilities aUtils) {
         utils = aUtils;
     }
-    
+
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws IOException, TransformerException {
         Document theDocument = utils.getDocumentBuilder().newDocument();
 
@@ -61,12 +79,10 @@ public class Model20XMLPersister {
         theTransformer.transform(new DOMSource(theDocument), new StreamResult(aStream));
 
         aStream.close();
-        
+
     }
-    
-    public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
-        Document theDocument = utils.getDocumentBuilder().parse(aInputStream);
-        aInputStream.close();
+
+    public Model deserializeModelFromXML(Document aDocument) throws SAXException, IOException {
 
         final List<SAXParseException> theExceptions = new ArrayList<SAXParseException>();
 
@@ -98,15 +114,14 @@ public class Model20XMLPersister {
         Validator validator = theSchema.newValidator();
 
         // parse the XML DOM tree againts the stricter XSD schema
-        validator.validate(new DOMSource(theDocument));
+        validator.validate(new DOMSource(aDocument));
 
         if (theExceptions.size() > 0) {
             for (SAXParseException theException : theExceptions) {
-                System.out.println(theException.getMessage());
+                throw new IOException("Failed to validate document against schema", theException);
             }
-            throw new IOException("Failed to validate document against schema");
         }
 
-        return XMLModelSerializer.SERIALIZER.deserializeFrom(theDocument);
-    }    
+        return XMLModelSerializer.SERIALIZER.deserializeFrom(aDocument);
+    }
 }

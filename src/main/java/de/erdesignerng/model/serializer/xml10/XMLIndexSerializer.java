@@ -26,6 +26,7 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLIndexSerializer extends XMLSerializer {
     

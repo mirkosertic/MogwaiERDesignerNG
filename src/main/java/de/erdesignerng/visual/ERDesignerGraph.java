@@ -22,6 +22,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
@@ -55,6 +56,8 @@ import de.erdesignerng.visual.tools.BaseTool;
  */
 public abstract class ERDesignerGraph extends JGraph {
 
+    private static final Logger LOGGER = Logger.getLogger(ERDesignerGraph.class);
+    
     private Model model;
 
     private boolean displayComments;
@@ -257,7 +260,7 @@ public abstract class ERDesignerGraph extends JGraph {
                 theEditor.applyValues();
                 getGraphLayoutCache().insert(theEdge);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("Error adding new relation", e);
             }
         }
     }
