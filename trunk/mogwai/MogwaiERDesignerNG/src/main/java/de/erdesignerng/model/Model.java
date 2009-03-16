@@ -19,10 +19,7 @@ package de.erdesignerng.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Collections;
-
-import sun.security.acl.WorldGroupImpl;
 
 import de.erdesignerng.dialect.ConversionInfos;
 import de.erdesignerng.dialect.DataType;

@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.visual.editor.domain;
 
-import javax.swing.JFrame;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 

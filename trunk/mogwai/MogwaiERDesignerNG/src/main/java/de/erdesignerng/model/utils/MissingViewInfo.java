@@ -15,12 +15,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.completecompare;
+package de.erdesignerng.model.utils;
 
+import de.erdesignerng.ERDesignerBundle;
 
-public class MissingInfo extends Info {
-    
-    protected MissingInfo(CompleteCompareEditor aEditor, String aKey, String aWhat) {
-        super(aEditor, aKey, aWhat);
+/**
+ * @author $Author: mirkosertic $
+ * @version $Date: 2009-03-09 19:07:30 $
+ */
+public class MissingViewInfo extends MissingInfo {
+
+    public MissingViewInfo(String aWhat) {
+        super(ERDesignerBundle.MISSINGENTITY, aWhat);
     }
 }

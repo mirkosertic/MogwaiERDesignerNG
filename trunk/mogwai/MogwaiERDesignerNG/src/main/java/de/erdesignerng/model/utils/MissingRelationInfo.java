@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.completecompare;
+package de.erdesignerng.model.utils;
 
 import de.erdesignerng.ERDesignerBundle;
 
@@ -23,9 +23,9 @@ import de.erdesignerng.ERDesignerBundle;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-02-11 18:01:03 $
  */
-public class MissingAttributeInfo extends MissingInfo {
+public class MissingRelationInfo extends MissingInfo {
 
-    public MissingAttributeInfo(CompleteCompareEditor aEditor, String aWhat) {
-        super(aEditor, ERDesignerBundle.MISSINGATTRIBUTE, aWhat);
+    public MissingRelationInfo(String aWhat) {
+        super(ERDesignerBundle.MISSINGRELATION, aWhat);
     }
 }
