@@ -45,9 +45,9 @@ public abstract class Dialect {
 
     private boolean supportsOnDelete = true;
 
-    private boolean generatesManagedConnection = false;
+    private boolean generatesManagedConnection;
 
-    private boolean supportsColumnExtra = false;
+    private boolean supportsColumnExtra;
 
     private NameCastType castType;
 
@@ -316,9 +316,13 @@ public abstract class Dialect {
      * @return the matching datatype or null if no match was found
      */
     public DataType findClosestMatchingTypeFor(DataType aDataType) {
-        for (DataType theType : dataTypes) {
-            if (theType.getJDBCType() == aDataType.getJDBCType()) {
-                return theType;
+        for (int theCurrentJDBCType : aDataType.getJDBCType()) {
+            for (DataType theType : dataTypes) {
+                for (int theJDBCType : theType.getJDBCType()) {
+                    if (theJDBCType == theCurrentJDBCType) {
+                        return theType;
+                    }
+                }
             }
         }
         return null;

@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect.oracle;
 
+import java.sql.Types;
+
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -34,30 +36,31 @@ public class OracleDialect extends SQL92Dialect {
         setCastType(NameCastType.UPPERCASE);
         setSupportsOnUpdate(false);
 
-        registerType(new OracleDataType("LONG RAW", "", java.sql.Types.LONGVARBINARY, 1));
-        registerType(new OracleDataType("RAW", "$size", java.sql.Types.VARBINARY, 1));
-        registerType(new OracleDataType("LONG", "", java.sql.Types.LONGVARCHAR, 1));
-        registerType(new OracleDataType("CHAR", "$size", java.sql.Types.CHAR));
-        registerType(new OracleDataType("NUMBER", "$size,$fraction", java.sql.Types.NUMERIC));
-        registerType(new OracleDataType("FLOAT", "", java.sql.Types.FLOAT));
-        registerType(new OracleDataType("REAL", "", java.sql.Types.REAL));
-        registerType(new OracleDataType("VARCHAR2", "$size", java.sql.Types.VARCHAR));
-        registerType(new OracleDataType("NVARCHAR2", "$size", java.sql.Types.VARCHAR));
-        registerType(new OracleDataType("DATE", "", java.sql.Types.DATE));
-        registerType(new OracleDataType("TIMESTAMP", "", java.sql.Types.TIMESTAMP));
-        registerType(new OracleDataType("BLOB", "", java.sql.Types.BLOB));
-        registerType(new OracleDataType("CLOB", "", java.sql.Types.CLOB));
-        registerType(new OracleDataType("NCLOB", "", java.sql.Types.CLOB));
-        registerType(new OracleDataType("XMLTYPE", "", java.sql.Types.SQLXML));
-        registerType(new OracleDataType("ROWID", "", java.sql.Types.OTHER));
-        registerType(new OracleDataType("SDO_GEOMETRY", "", java.sql.Types.OTHER));
-        registerType(new OracleDataType("SDO_GTYPE", "", java.sql.Types.OTHER));
-        registerType(new OracleDataType("SDO_SRID", "", java.sql.Types.OTHER));
-        registerType(new OracleDataType("SDO_POINT", "", java.sql.Types.OTHER));
-        registerType(new OracleDataType("SDO_ELEM_INFO", "", java.sql.Types.OTHER));
-        registerType(new OracleDataType("SDO_ORDINATES", "", java.sql.Types.OTHER));
-        
-        seal();        
+        registerType(new OracleDataType("LONG RAW", "", true, Types.LONGVARBINARY));
+        registerType(new OracleDataType("RAW", "$size", true, Types.VARBINARY, Types.BINARY));
+        registerType(new OracleDataType("LONG", "", true, Types.LONGVARCHAR));
+        registerType(new OracleDataType("CHAR", "$size", Types.CHAR));
+        registerType(new OracleDataType("NUMBER", "$size,$fraction", Types.NUMERIC, Types.INTEGER, Types.BIGINT,
+                Types.DECIMAL, Types.DOUBLE, Types.SMALLINT, Types.BIT, Types.TINYINT, Types.BOOLEAN));
+        registerType(new OracleDataType("FLOAT", "", Types.FLOAT));
+        registerType(new OracleDataType("REAL", "", Types.REAL));
+        registerType(new OracleDataType("VARCHAR2", "$size", Types.VARCHAR));
+        registerType(new OracleDataType("NVARCHAR2", "$size", Types.VARCHAR));
+        registerType(new OracleDataType("DATE", "", Types.DATE));
+        registerType(new OracleDataType("TIMESTAMP", "", Types.TIMESTAMP, Types.TIME));
+        registerType(new OracleDataType("BLOB", "", Types.BLOB));
+        registerType(new OracleDataType("CLOB", "", Types.CLOB));
+        registerType(new OracleDataType("NCLOB", "", Types.CLOB));
+        registerType(new OracleDataType("XMLTYPE", "", Types.SQLXML));
+        registerType(new OracleDataType("ROWID", "", Types.OTHER));
+        registerType(new OracleDataType("SDO_GEOMETRY", "", Types.OTHER));
+        registerType(new OracleDataType("SDO_GTYPE", "", Types.OTHER));
+        registerType(new OracleDataType("SDO_SRID", "", Types.OTHER));
+        registerType(new OracleDataType("SDO_POINT", "", Types.OTHER));
+        registerType(new OracleDataType("SDO_ELEM_INFO", "", Types.OTHER));
+        registerType(new OracleDataType("SDO_ORDINATES", "", Types.OTHER));
+
+        seal();
     }
 
     /**
@@ -96,7 +99,7 @@ public class OracleDialect extends SQL92Dialect {
     public OracleSQLGenerator createSQLGenerator() {
         return new OracleSQLGenerator(this);
     }
-    
+
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.Oracle8iDialect.class;

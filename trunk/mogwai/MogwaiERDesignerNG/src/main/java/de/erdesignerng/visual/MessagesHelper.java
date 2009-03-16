@@ -24,7 +24,10 @@ import javax.swing.JOptionPane;
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.i18n.ResourceHelper;
 
-public class MessagesHelper {
+public final class MessagesHelper {
+    
+    private MessagesHelper() {
+    }
 
     public static ResourceHelper getResourceHelper() {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
