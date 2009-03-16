@@ -107,7 +107,7 @@ public class Model20XMLPersister implements CommonXMLElementsAndAttributes {
 
         // get the custom xsd schema describing the required format for my XML
         // files.
-        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource("/erdesignerschema_1.7.xsd"));
+        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource("/erdesignerschema_2.0.xsd"));
 
         // Create a Validator capable of validating XML files according to my
         // custom schema.
