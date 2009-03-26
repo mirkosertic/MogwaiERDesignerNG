@@ -51,6 +51,8 @@ public class RelationEditorView extends JPanel {
     private DefaultRadioButton onDeleteCascade;
 
     private DefaultRadioButton onDeleteSetNull;
+    
+    private DefaultRadioButton onDeleteRestrict;
 
     private JPanel onUpdateContainer;
 
@@ -59,6 +61,8 @@ public class RelationEditorView extends JPanel {
     private DefaultRadioButton onUpdateCascade;
 
     private DefaultRadioButton onUpdateSetNull;
+    
+    private DefaultRadioButton onUpdateRestrict;
 
     private JPanel component8;
 
@@ -154,7 +158,7 @@ public class RelationEditorView extends JPanel {
         if (onDeleteContainer == null) {
             onDeleteContainer = new JPanel();
 
-            String rowDef = "p,2dlu,p,2dlu,p";
+            String rowDef = "p,2dlu,p,2dlu,p,2dlu,p";
             String colDef = "50dlu:grow";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -164,7 +168,8 @@ public class RelationEditorView extends JPanel {
 
             onDeleteContainer.add(getOnDeleteCascadeNothing(), cons.xywh(1, 1, 1, 1));
             onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(1, 3, 1, 1));
-            onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(1, 5, 1, 1));
+            onDeleteContainer.add(getOnDeleteRestrict(), cons.xywh(1, 5, 1, 1));
+            onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(1, 7, 1, 1));
             onDeleteContainer.setName("Component_7");
         }
 
@@ -176,7 +181,7 @@ public class RelationEditorView extends JPanel {
         if (onUpdateContainer == null) {
             onUpdateContainer = new JPanel();
 
-            String rowDef = "p,2dlu,p,2dlu,p";
+            String rowDef = "p,2dlu,p,2dlu,p,2dlu,p";
             String colDef = "50dlu:grow";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -186,7 +191,8 @@ public class RelationEditorView extends JPanel {
 
             onUpdateContainer.add(getOnUpdateCascadeNothing(), cons.xywh(1, 1, 1, 1));
             onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(1, 3, 1, 1));
-            onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(1, 5, 1, 1));
+            onUpdateContainer.add(getOnUpdateRestrict(), cons.xywh(1, 5, 1, 1));
+            onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(1, 7, 1, 1));
             onUpdateContainer.setName("Component_7");
         }
 
@@ -219,6 +225,15 @@ public class RelationEditorView extends JPanel {
         }
 
         return onDeleteCascade;
+    }
+
+    public javax.swing.JRadioButton getOnDeleteRestrict() {
+
+        if (onDeleteRestrict == null) {
+            onDeleteRestrict = new DefaultRadioButton(ERDesignerBundle.RESTRICT);
+        }
+
+        return onDeleteRestrict;
     }
 
     /**
@@ -261,6 +276,15 @@ public class RelationEditorView extends JPanel {
         }
 
         return onUpdateCascade;
+    }
+
+    public javax.swing.JRadioButton getOnUpdateRestrict() {
+
+        if (onUpdateRestrict == null) {
+            onUpdateRestrict = new DefaultRadioButton(ERDesignerBundle.RESTRICT);
+        }
+
+        return onUpdateRestrict;
     }
 
     /**
@@ -340,12 +364,13 @@ public class RelationEditorView extends JPanel {
         theGroup1.add(getOnDeleteCascadeNothing());
         theGroup1.add(getOnDeleteCascade());
         theGroup1.add(getOnDeleteSetNull());
+        theGroup1.add(getOnDeleteRestrict());
 
         ButtonGroup theGroup2 = new ButtonGroup();
         theGroup2.add(getOnUpdateCascadeNothing());
         theGroup2.add(getOnUpdateCascade());
         theGroup2.add(getOnUpdateSetNull());
-
+        theGroup2.add(getOnUpdateRestrict());
     }
 
     /**
