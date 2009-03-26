@@ -163,3 +163,4 @@ Release 1.7
 * Implemented FR 1889667 [ERDesignerNG] Allow editing of Edge Waypoints ( right click + ALT )
 * Implemented FR 2686546 [ERDesignerNG] Save vs. Save As
 * Implemented FR 2169348 [ERDesignerNG] Allow switching of database/dialect to generated mult. ddls
+* Implemented FR 2690714 [ERDesignerNG] Add relation constraint RESTRICT
