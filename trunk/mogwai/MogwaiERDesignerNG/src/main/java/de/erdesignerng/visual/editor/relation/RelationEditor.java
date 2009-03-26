@@ -63,12 +63,14 @@ public class RelationEditor extends BaseEditor {
         theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
         theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView.getOnDeleteCascade());
         theOnDeleteAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnDeleteSetNull());
+        theOnDeleteAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnDeleteRestrict());
         bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
 
         RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
         theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView.getOnUpdateCascadeNothing());
         theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView.getOnUpdateCascade());
         theOnUpdateAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnUpdateSetNull());
+        theOnUpdateAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnUpdateRestrict());
         bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
 
         bindingInfo.configure();

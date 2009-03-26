@@ -190,6 +190,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             case CASCADE:
                 theStatement.append(" ON DELETE CASCADE");
                 break;
+            case RESTRICT:
+                theStatement.append(" ON DELETE RESTRICT");
+                break;
             case NOTHING:
                 theStatement.append(" ON DELETE NO ACTION");
                 break;
@@ -204,6 +207,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             switch (aRelation.getOnUpdate()) {
             case CASCADE:
                 theStatement.append(" ON UPDATE CASCADE");
+                break;
+            case RESTRICT:
+                theStatement.append(" ON UPDATE RESTRICT");
                 break;
             case NOTHING:
                 theStatement.append(" ON UPDATE NO ACTION");

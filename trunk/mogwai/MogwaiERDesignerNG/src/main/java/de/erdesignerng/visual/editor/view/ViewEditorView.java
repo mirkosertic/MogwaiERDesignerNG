@@ -42,8 +42,6 @@ public class ViewEditorView extends DefaultPanel {
      */
     public ViewEditorView() {
         initialize();
-        
-        QueryBuilder.useAlwaysQuote = false;
     }
 
     /**

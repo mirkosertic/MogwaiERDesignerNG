@@ -23,7 +23,7 @@ package de.erdesignerng.model;
  * @version $Date: 2008-01-15 19:22:43 $
  */
 public enum CascadeType {
-    NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull");
+    NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull"), RESTRICT("restrict");
 
     private String type;
 
@@ -44,6 +44,9 @@ public enum CascadeType {
         }
         if (SET_NULL.getType().equals(aType)) {
             return SET_NULL;
+        }
+        if (RESTRICT.getType().equals(aType)) {
+            return RESTRICT;
         }
         throw new IllegalArgumentException("Invalid type " + aType);
     }
