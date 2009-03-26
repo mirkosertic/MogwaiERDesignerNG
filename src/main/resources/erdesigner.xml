@@ -766,5 +766,9 @@
 			<Text lang="de">Datenmodell erfolgreich konvertiert</Text>		
 			<Text lang="en">Model converted</Text>					
 		</Entry>
+		<Entry id="RESTRICT">
+			<Text lang="de">RESTRICT</Text>		
+			<Text lang="en">RESTRICT</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
