@@ -47,6 +47,14 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
 
     public abstract List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException;
 
+    /**
+     * Convert a JDBC Cascade Type to the Mogwai CascadeType.
+     * 
+     * Default is CASCADE.
+     * 
+     * @param aValue the JDBC type
+     * @return the CascadeType
+     */
     protected CascadeType getCascadeType(int aValue) {
         switch (aValue) {
         case DatabaseMetaData.importedKeyNoAction:
@@ -55,6 +63,8 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
             return CascadeType.SET_NULL;
         case DatabaseMetaData.importedKeyCascade:
             return CascadeType.CASCADE;
+        case DatabaseMetaData.importedKeyRestrict:
+            return CascadeType.RESTRICT;
         default:
             return CascadeType.CASCADE;
         }

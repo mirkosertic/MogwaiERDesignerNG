@@ -132,7 +132,7 @@ public class ViewEditor extends BaseEditor {
          * This exception is checked in commandOk before }
          */
 
-        theView.setSql(editingView.getBuilder().getQueryModel().toString(true));
+        theView.setSql(editingView.getBuilder().getQueryModel().toString(false));
         System.out.println("Current SQL : " + theView.getSql());
 
         viewBindingInfo.view2model();

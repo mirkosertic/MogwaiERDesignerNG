@@ -385,4 +385,6 @@ public interface ERDesignerBundle {
   String TARGETDATATYPE = "TARGETDATATYPE";
   /** Model converted. */
   String MODELCONVERTED = "MODELCONVERTED";
+  /** RESTRICT. */
+  String RESTRICT = "RESTRICT";
 }
