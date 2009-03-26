@@ -909,6 +909,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 TableCell theCell = new TableCell(theTable);
                 theCell.transferPropertiesToAttributes(theTable);
 
+                Object theTargetCell = graph.getFirstCellForLocation(aPoint.getX(), aPoint.getY());
+                if (theTargetCell instanceof SubjectAreaCell) {
+                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+                    theArea.getTables().add(theTable);
+                    
+                    theSACell.add(theCell);
+                }
+                
                 GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
                         -1, -1));
 
@@ -920,6 +929,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 worldConnector.notifyAboutException(e);
             }
 
+            
             graph.doLayout();
         }
     }
@@ -946,6 +956,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 ViewCell theCell = new ViewCell(theView);
                 theCell.transferPropertiesToAttributes(theView);
+
+                Object theTargetCell = graph.getFirstCellForLocation(aPoint.getX(), aPoint.getY());
+                if (theTargetCell instanceof SubjectAreaCell) {
+                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+                    theArea.getViews().add(theView);
+                    
+                    theSACell.add(theCell);
+                }
 
                 GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
                         -1, -1));
@@ -1858,6 +1877,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 CommentCell theCell = new CommentCell(theComment);
                 theCell.transferPropertiesToAttributes(theComment);
+                
+                Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
+                if (theTargetCell instanceof SubjectAreaCell) {
+                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+                    theArea.getComments().add(theComment);
+                    
+                    theSACell.add(theCell);
+                }
 
                 GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aLocation.getX(), aLocation
                         .getY(), -1, -1));
