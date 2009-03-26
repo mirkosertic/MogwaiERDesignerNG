@@ -2,7 +2,18 @@ package de.erdesignerng.test.view;
 
 import java.io.IOException;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelIOUtilities;
+import de.erdesignerng.plugins.sqleonardo.ERConnection;
+
 import junit.framework.TestCase;
+import nickyb.sqleonardo.querybuilder.QueryBuilder;
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.QueryTokens;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
@@ -42,4 +53,23 @@ public class SQLeonardoTest extends TestCase {
         theColumn = (Column) theExpressions[3];
         assertTrue("FIELD4".equals(theColumn.getAlias()));
     }    
+    
+    public void testWithQueryBuilder1() throws SAXException, IOException, ParserConfigurationException {
+        
+        String theQuery = "SELECT TABLE1.TB1_AT1 AS TABLE1_TB1_AT1, TABLE2.TB2_AT2 AS TABLE2_TB2_AT2, TABLE1.TB1_AT3 AS TABLE1_TB1_AT3 FROM TABLE1";
+        QueryModel theQueryModel = SQLParser.toQueryModel(theQuery);
+        System.out.println(theQueryModel.toString(false));
+        
+        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(getClass().getResourceAsStream("examplemodel.mxm"));
+        QueryBuilder theBuilder = new QueryBuilder();
+        QueryBuilder.autoJoin=false;
+        theBuilder.setConnection(new ERConnection(theModel));
+        theBuilder.setQueryModel(theQueryModel);
+        
+        JDialog theBuilderWindow = new JDialog();
+        theBuilderWindow.setContentPane(theBuilder);
+        
+        String theNewSQL = theBuilder.getQueryModel().toString(false);
+        System.out.println(theNewSQL);
+    }
 }
