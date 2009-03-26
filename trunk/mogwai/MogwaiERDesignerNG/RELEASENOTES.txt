@@ -155,6 +155,7 @@ Release 1.7
 * Bug Fixing 2686882 [ERDesignerNG] Domains not initialized
 * Bug Fixing 2686627 [ERDesignerNG]  'NOT NULL' ist not generated
 * Bug Fixing 2675535 [ERDesignerNG] Not possible to edit relations in subject area
+* Bug Fixing 2292224 [ERDesignerNG] Comments cannot be added to Subject Areas
 * Implemented FR 2581994 [ERDesignerNG] Support for function based indexes
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
 * Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs
