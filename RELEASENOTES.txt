@@ -166,3 +166,4 @@ Release 1.7
 * Implemented FR 2169348 [ERDesignerNG] Allow switching of database/dialect to generated mult. ddls
 * Implemented FR 2690714 [ERDesignerNG] Add relation constraint RESTRICT
 * Implemented FR 2714523 [ERDesignerNG] prompt for password before db operation
+* Implemented FR 2504332 [ERDesignerNG] better comments display

@@ -116,7 +116,7 @@ public class CommentCellView extends VertexView {
             Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
             textarea.setText(theComment.getComment());
             selected = aSelected;
-            visible = theGraph.isDisplayComments();
+            visible = true;
 
             return this;
         }
