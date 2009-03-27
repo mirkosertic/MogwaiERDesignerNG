@@ -12,7 +12,7 @@ import de.erdesignerng.util.ConnectionDescriptor;
 public class DatabaseConnectionDatamodel {
 
     private String alias;
-    
+
     private Dialect dialect;
 
     private String driver;
@@ -22,6 +22,8 @@ public class DatabaseConnectionDatamodel {
     private String user;
 
     private String password;
+
+    private boolean promptForPassword;
 
     public Dialect getDialect() {
         return dialect;
@@ -71,10 +73,19 @@ public class DatabaseConnectionDatamodel {
     }
 
     /**
-     * @param alias the alias to set
+     * @param alias
+     *                the alias to set
      */
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public boolean isPromptForPassword() {
+        return promptForPassword;
+    }
+
+    public void setPromptForPassword(boolean promptForPassword) {
+        this.promptForPassword = promptForPassword;
     }
 
     /**
@@ -83,6 +94,7 @@ public class DatabaseConnectionDatamodel {
      * @return a connection descriptor
      */
     public ConnectionDescriptor createConnectionDescriptor() {
-        return new ConnectionDescriptor(alias, dialect.getUniqueName(), url, user, driver, password);
+        return new ConnectionDescriptor(alias, dialect.getUniqueName(), url, user, driver, password, promptForPassword);
     }
+
 }

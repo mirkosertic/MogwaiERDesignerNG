@@ -770,5 +770,13 @@
 			<Text lang="de">RESTRICT</Text>		
 			<Text lang="en">RESTRICT</Text>					
 		</Entry>
+		<Entry id="PROMPTFORPASSWORD">
+			<Text lang="de">Kennwort vor Verbindungsaufbau erfragen</Text>		
+			<Text lang="en">Prompt for password before connection establishment</Text>					
+		</Entry>
+		<Entry id="PLEASEENTERDATABASEPASSWORD">
+			<Text lang="de">Bitte geben Sie das Datenbankkennwort ein</Text>		
+			<Text lang="en">Please enter the database password</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

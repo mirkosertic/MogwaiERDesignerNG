@@ -138,7 +138,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
             try {
 
                 Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
-                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword());
+                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword(), false);
 
                 DatabaseMetaData theMeta = theConnection.getMetaData();
 

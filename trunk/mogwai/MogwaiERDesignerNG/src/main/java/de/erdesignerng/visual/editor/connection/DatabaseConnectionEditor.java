@@ -80,6 +80,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         theDescriptor.setUrl(aConnection.getUrl());
         theDescriptor.setUser(aConnection.getUsername());
         theDescriptor.setPassword(aConnection.getPassword());
+        theDescriptor.setPromptForPassword(aConnection.isPromptForPassword());
 
         bindingInfo.setDefaultModel(theDescriptor);
         bindingInfo.addBinding("alias", view.getAlias(), true);
@@ -88,6 +89,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         bindingInfo.addBinding("url", view.getUrl(), true);
         bindingInfo.addBinding("user", view.getUser(), true);
         bindingInfo.addBinding("password", view.getPassword());
+        bindingInfo.addBinding("promptForPassword", view.getPromptForPassword());
 
         bindingInfo.configure();
 
@@ -128,6 +130,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
         model.getProperties().setProperty(Model.PROPERTY_URL, theDescriptor.getUrl());
         model.getProperties().setProperty(Model.PROPERTY_USER, theDescriptor.getUser());
         model.getProperties().setProperty(Model.PROPERTY_PASSWORD, theDescriptor.getPassword());
+        model.getProperties().setProperty(Model.PROPERTY_PROMPTFORPASSWORD, theDescriptor.isPromptForPassword());
     }
 
     @Override
@@ -154,7 +157,10 @@ public class DatabaseConnectionEditor extends BaseEditor {
             try {
 
                 Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
-                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword());
+                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword(), theModel.isPromptForPassword());
+                if (theConnection == null) {
+                    return;
+                }
 
                 DatabaseMetaData theMeta = theConnection.getMetaData();
 
