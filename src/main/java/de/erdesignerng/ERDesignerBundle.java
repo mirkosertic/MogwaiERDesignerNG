@@ -387,4 +387,8 @@ public interface ERDesignerBundle {
   String MODELCONVERTED = "MODELCONVERTED";
   /** RESTRICT. */
   String RESTRICT = "RESTRICT";
+  /** Prompt for password before connection establishment. */
+  String PROMPTFORPASSWORD = "PROMPTFORPASSWORD";
+  /** Please enter the database password. */
+  String PLEASEENTERDATABASEPASSWORD = "PLEASEENTERDATABASEPASSWORD";
 }

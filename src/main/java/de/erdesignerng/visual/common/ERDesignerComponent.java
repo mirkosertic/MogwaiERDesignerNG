@@ -1267,6 +1267,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
 
                 final Connection theConnection = model.createConnection(preferences);
+                if (theConnection == null) {
+                    return;
+                }
                 final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
                 final Model theTempModel = model;
 
@@ -1449,7 +1452,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword());
+                    theRepositoryConnection.getPassword(), false);
 
             List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
                     theConnection);
@@ -1501,7 +1504,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword());
+                    theRepositoryConnection.getPassword(), false);
 
             RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER.getRepositoryEntity(theDialect
                     .getHibernateDialectClass(), theConnection, currentRepositoryEntry);
@@ -1542,7 +1545,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword());
+                    theRepositoryConnection.getPassword(), false);
 
             List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
                     theConnection);
@@ -2006,6 +2009,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             try {
                 final Connection theConnection = model.createConnection(preferences);
+                if (theConnection == null) {
+                    return;
+                }
                 final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 

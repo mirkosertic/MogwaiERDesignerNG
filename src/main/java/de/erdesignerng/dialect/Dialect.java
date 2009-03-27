@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 
+import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 /**
@@ -62,7 +63,7 @@ public abstract class Dialect {
 
     /**
      * @param aCaseSensitive
-     *            the caseSensitive to set
+     *                the caseSensitive to set
      */
     public void setCaseSensitive(boolean aCaseSensitive) {
         caseSensitive = aCaseSensitive;
@@ -77,7 +78,7 @@ public abstract class Dialect {
 
     /**
      * @param aMaxObjectNameLength
-     *            the maxObjectNameLength to set
+     *                the maxObjectNameLength to set
      */
     public void setMaxObjectNameLength(int aMaxObjectNameLength) {
         maxObjectNameLength = aMaxObjectNameLength;
@@ -92,7 +93,7 @@ public abstract class Dialect {
 
     /**
      * @param aSpacesAllowedInObjectNames
-     *            the spacesAllowedInObjectNames to set
+     *                the spacesAllowedInObjectNames to set
      */
     public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
         spacesAllowedInObjectNames = aSpacesAllowedInObjectNames;
@@ -102,10 +103,10 @@ public abstract class Dialect {
      * Check the name of an element and return the converted name.
      * 
      * @param aName
-     *            the name
+     *                the name
      * @return the converted name
      * @throws ElementInvalidNameException
-     *             will be thrown if the name is invalid
+     *                 will be thrown if the name is invalid
      */
     public String checkName(String aName) throws ElementInvalidNameException {
         if (StringUtils.isEmpty(aName)) {
@@ -135,7 +136,7 @@ public abstract class Dialect {
 
     /**
      * @param aNullablePrimaryKeyAllowed
-     *            the nullablePrimaryKeyAllowed to set
+     *                the nullablePrimaryKeyAllowed to set
      */
     public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
         nullablePrimaryKeyAllowed = aNullablePrimaryKeyAllowed;
@@ -150,7 +151,7 @@ public abstract class Dialect {
 
     /**
      * @param aCastType
-     *            the castType to set
+     *                the castType to set
      */
     public void setCastType(NameCastType aCastType) {
         castType = aCastType;
@@ -181,30 +182,39 @@ public abstract class Dialect {
      * Create a connection to a database.
      * 
      * @param aClassLoader
-     *            the classloader
+     *                the classloader
      * @param aDriver
-     *            the name of the driver
+     *                the name of the driver
      * @param aUrl
-     *            the url
+     *                the url
      * @param aUser
-     *            the user
+     *                the user
      * @param aPassword
-     *            the password
+     *                the password
+     * @param aPromptForPassword
+     *                shall be prompted for the password
      * @return the connection
      * @throws ClassNotFoundException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws InstantiationException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws IllegalAccessException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws SQLException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
-            String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-            SQLException {
+            String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, SQLException {
         Class<Driver> theDriverClass = (Class<Driver>) aClassLoader.loadClass(aDriver);
         Driver theDriver = (Driver) theDriverClass.newInstance();
+
+        if (aPromptForPassword) {
+            aPassword = DialogUtils.promptForPassword();
+            if (aPassword == null) {
+                return null;
+            }
+        }
 
         Properties theProperties = new Properties();
         theProperties.put("user", aUser);
@@ -233,7 +243,7 @@ public abstract class Dialect {
 
     /**
      * @param supportsOnDelete
-     *            the supportsOnDelete to set
+     *                the supportsOnDelete to set
      */
     public void setSupportsOnDelete(boolean supportsOnDelete) {
         this.supportsOnDelete = supportsOnDelete;
@@ -248,7 +258,7 @@ public abstract class Dialect {
 
     /**
      * @param supportsOnUpdate
-     *            the supportsOnUpdate to set
+     *                the supportsOnUpdate to set
      */
     public void setSupportsOnUpdate(boolean supportsOnUpdate) {
         this.supportsOnUpdate = supportsOnUpdate;
@@ -284,7 +294,7 @@ public abstract class Dialect {
 
     /**
      * @param supportsColumnExtra
-     *            the supportsColumnExtra to set
+     *                the supportsColumnExtra to set
      */
     public void setSupportsColumnExtra(boolean supportsColumnExtra) {
         this.supportsColumnExtra = supportsColumnExtra;
@@ -312,7 +322,7 @@ public abstract class Dialect {
      * The matching is done by JDBC Type.
      * 
      * @param aDataType
-     *            the datatype
+     *                the datatype
      * @return the matching datatype or null if no match was found
      */
     public DataType findClosestMatchingTypeFor(DataType aDataType) {

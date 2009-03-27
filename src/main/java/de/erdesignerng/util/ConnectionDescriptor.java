@@ -38,15 +38,18 @@ public class ConnectionDescriptor {
     private String driver;
 
     private String password;
+    
+    private boolean promptForPassword;
 
     public ConnectionDescriptor(String aAlias, String aDialect, String aURL, String aUserName, String aDriver,
-            String aPassword) {
+            String aPassword, boolean aPromptForPassword) {
         alias = aAlias;
         dialect = aDialect;
         url = aURL;
         username = aUserName;
         driver = aDriver;
         password = aPassword;
+        promptForPassword = aPromptForPassword;
     }
 
     /**
@@ -89,6 +92,14 @@ public class ConnectionDescriptor {
      */
     public String getAlias() {
         return alias;
+    }
+    
+    public boolean isPromptForPassword() {
+        return promptForPassword;
+    }
+
+    public void setPromptForPassword(boolean promptForPassword) {
+        this.promptForPassword = promptForPassword;
     }
 
     @Override

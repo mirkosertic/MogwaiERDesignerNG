@@ -141,6 +141,9 @@ public class ReverseEngineerEditor extends BaseEditor {
             Connection theConnection = null;
             try {
                 theConnection = model.createConnection(preferences);
+                if (theConnection == null) {
+                    return;
+                }
 
                 schemaList.clear();
 

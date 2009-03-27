@@ -32,6 +32,7 @@ public class ViewTool extends BaseTool {
         super(aGraph);
     }
     
+    @Override
     public boolean isForceMarqueeEvent(MouseEvent event) {
         return true;
     }       

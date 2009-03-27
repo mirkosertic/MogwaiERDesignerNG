@@ -28,6 +28,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.JDBCDialect;
 import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
@@ -46,6 +47,8 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
     private DefaultTextField user = new DefaultTextField();
 
     private DefaultTextField password = new DefaultTextField();
+    
+    private DefaultCheckBox promptForPassword = new DefaultCheckBox(ERDesignerBundle.PROMPTFORPASSWORD);
 
     private DefaultButton testButton = new DefaultButton();
 
@@ -60,7 +63,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
     private void initialize() {
 
         String theColDef = "2dlu,p,2dlu,fill:150dlu:grow,2";
-        String theRowDef = "2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,10dlu,p,2dlu";
+        String theRowDef = "2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,10dlu,p,2dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
@@ -84,6 +87,8 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         add(new DefaultLabel(ERDesignerBundle.PASSWORD), cons.xy(2, 12));
         add(password, cons.xy(4, 12));
+
+        add(promptForPassword, cons.xyw(2, 14, 3));
 
         JPanel thePanel = new JPanel();
 
@@ -110,7 +115,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         });
 
-        add(thePanel, cons.xyw(2, 14, 3));
+        add(thePanel, cons.xyw(2, 16, 3));
     }
 
     public DefaultComboBox getDialect() {
@@ -162,5 +167,9 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
      */
     public DefaultTextField getAlias() {
         return alias;
+    }
+
+    public DefaultCheckBox getPromptForPassword() {
+        return promptForPassword;
     }
 }
