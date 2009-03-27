@@ -47,7 +47,7 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         return session.getSQLConnection().getConnection();
     }
 

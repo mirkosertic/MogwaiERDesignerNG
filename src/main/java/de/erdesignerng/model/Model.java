@@ -52,6 +52,8 @@ public class Model implements OwnedModelItemVerifier {
     public static final String PROPERTY_USER = "USER";
 
     public static final String PROPERTY_PASSWORD = "PASSWORD";
+    
+    public static final String PROPERTY_PROMPTFORPASSWORD = "PROMPTFORPASSWORD";
 
     private TableList tables = new TableList();
 
@@ -196,9 +198,10 @@ public class Model implements OwnedModelItemVerifier {
      */
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
+        
         Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
-                properties.getProperty(Model.PROPERTY_DRIVER), properties.getProperty(Model.PROPERTY_URL),
-                properties.getProperty(Model.PROPERTY_USER), properties.getProperty(Model.PROPERTY_PASSWORD));
+                properties.getProperty(PROPERTY_DRIVER), properties.getProperty(PROPERTY_URL),
+                properties.getProperty(PROPERTY_USER), properties.getProperty(PROPERTY_PASSWORD), properties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
         return theConnection;
     }
 
@@ -367,7 +370,7 @@ public class Model implements OwnedModelItemVerifier {
         String theDialectName = dialect != null ? dialect.getUniqueName() : null;
         return new ConnectionDescriptor(getProperties().getProperty(PROPERTY_ALIAS), theDialectName, getProperties()
                 .getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER), getProperties().getProperty(
-                PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD));
+                PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD), getProperties().getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
     }
 
     /**
@@ -383,6 +386,7 @@ public class Model implements OwnedModelItemVerifier {
         getProperties().setProperty(PROPERTY_USER, aConnection.getUsername());
         getProperties().setProperty(PROPERTY_PASSWORD, aConnection.getPassword());
         getProperties().setProperty(PROPERTY_URL, aConnection.getUrl());
+        getProperties().setProperty(PROPERTY_PROMPTFORPASSWORD, aConnection.isPromptForPassword());
     }
 
     /**

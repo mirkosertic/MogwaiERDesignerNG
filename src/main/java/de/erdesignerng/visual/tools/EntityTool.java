@@ -32,6 +32,7 @@ public class EntityTool extends BaseTool {
         super(aGraph);
     }
     
+    @Override
     public boolean isForceMarqueeEvent(MouseEvent event) {
         return true;
     }       
