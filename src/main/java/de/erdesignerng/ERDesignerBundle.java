@@ -399,4 +399,12 @@ public interface ERDesignerBundle {
   String SHOWALL = "SHOWALL";
   /** Hide all. */
   String HIDEALL = "HIDEALL";
+  /** Create database documentation. */
+  String CREATEDBDOCUMENTATION = "CREATEDBDOCUMENTATION";
+  /** Writing model information.... */
+  String DOCSTEP1 = "DOCSTEP1";
+  /** Generating report.... */
+  String DOCSTEP2 = "DOCSTEP2";
+  /** Documentation done. */
+  String DOCSTEP3 = "DOCSTEP3";
 }
