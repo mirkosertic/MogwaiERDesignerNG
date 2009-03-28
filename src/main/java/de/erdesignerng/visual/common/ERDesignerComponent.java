@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.ButtonGroup;
@@ -50,16 +49,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JRQuery;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.swing.JRViewer;
 
-import org.apache.commons.lang.StringUtils;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
@@ -99,6 +91,7 @@ import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
+import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.ERDesignerGraph;
@@ -1120,10 +1113,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Generate a documentation for the current model from a JasperReports
      * template.
      * 
-     * @param aTemplateName
+     * @param aJRXMLFile
      *                the name of the template
      */
-    protected void createDocumentation(String aTemplateName) {
+    protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
@@ -1144,29 +1137,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theUtils.serializeModelToXML(model, theOutputStream);
                 theOutputStream.close();
 
-                String theTemplate = "reports/ExampleDoc/MogwaiDatabaseReport";
-                String theTemplateName = theTemplate + ".jasper";
-                String theTemplateDesignName = theTemplate + ".jrxml";
-
                 aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
 
-                JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theTemplateDesignName));
-                JRQuery theQuery = theDesign.getQuery();
-                String theQueryText = null;
-
-                if (theQuery != null) {
-                    theQueryText = theQuery.getText();
-                }
-                if (StringUtils.isEmpty(theQueryText)) {
-                    throw new RuntimeException("Cannot extract query from Jasper template");
-                }
-                
-                Map<Object, Object> theParams = new HashMap<Object, Object>();
-                theParams.put(JRParameter.REPORT_LOCALE, Locale.getDefault());
-
-                JRXmlDataSource theDataSource = new JRXmlDataSource(theTempFile, theQueryText);
-                JasperPrint thePrint = JasperFillManager.fillReport(new FileInputStream(theTemplateName),
-                        theParams, theDataSource);
+                JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, aJRXMLFile);
 
                 aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
 
@@ -1197,19 +1170,29 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void updateDocumentationMenu() {
         documentationMenu.removeAll();
-        JMenuItem theItem = new JMenuItem();
-        theItem.setText("Test");
-        theItem.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createDocumentation("lala");
+        File theReportsFile = preferences.getReportsDirectory();
+        try {
+            Map<File, String> theReports = JasperUtils.findReportsInDirectory(theReportsFile);
+            for (Map.Entry<File, String> theEntry : theReports.entrySet()) {
+
+                final File theJRXMLFile = theEntry.getKey();
+                JMenuItem theItem = new JMenuItem();
+                theItem.setText(theEntry.getValue());
+                theItem.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        commandGenerateDocumentation(theJRXMLFile);
+                    }
+
+                });
+
+                documentationMenu.add(theItem);
             }
-
-        });
-
-        documentationMenu.add(theItem);
-
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        }
         UIInitializer.getInstance().initialize(documentationMenu);
     }
 
@@ -2438,4 +2421,5 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     public void commandNotifyAboutEdit() {
         updateSubjectAreasMenu();
     }
+
 }
