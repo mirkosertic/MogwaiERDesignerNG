@@ -44,12 +44,14 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
     public static final String ITEM = "Item";
 
     public static final String TABLEREFID = "tablerefid";
-    
+
     public static final String VIEWREFID = "viewrefid";
 
     public static final String COMMENTREFID = "commentrefid";
 
     public static final String COLOR = "color";
+
+    public static final String VISIBLE = "visible";
 
     public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
 
@@ -58,6 +60,7 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
         // Basisdaten des Modelelementes speichern
         serializeProperties(aDocument, theSubjectAreaElement, aArea);
         theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
+        setBooleanAttribute(theSubjectAreaElement, VISIBLE, aArea.isVisible());
 
         for (Table theTable : aArea.getTables()) {
             Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
@@ -85,6 +88,9 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
             deserializeProperties(theElement, theSubjectArea);
 
             theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
+            if (theElement.hasAttribute(VISIBLE)) {
+                theSubjectArea.setVisible(TRUE.equals(theElement.getAttribute(VISIBLE)));
+            }
 
             NodeList theTables = theElement.getElementsByTagName(ITEM);
             for (int j = 0; j < theTables.getLength(); j++) {
