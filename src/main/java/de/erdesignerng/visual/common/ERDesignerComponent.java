@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -1014,6 +1015,67 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
+     * Show all subject areas.
+     */
+    protected void commandShowAllSubjectAreas() {
+        for (SubjectArea theArea : model.getSubjectAreas()) {
+            commandShowSubjectArea(theArea);
+        }
+    }
+
+    /**
+     * Hide all subject areas.
+     */
+    protected void commandHideAllSubjectAreas() {
+        for (SubjectArea theArea : model.getSubjectAreas()) {
+            commandHideSubjectArea(theArea);
+        }
+    }
+
+    /**
+     * Hide a specific subject area.
+     * 
+     * @param aArea
+     *                the area
+     */
+    protected void commandHideSubjectArea(SubjectArea aArea) {
+        for (Object theItem : layoutCache.getVisibleSet()) {
+            if (theItem instanceof SubjectAreaCell) {
+                SubjectAreaCell theCell = (SubjectAreaCell) theItem;
+                if (theCell.getUserObject().equals(aArea)) {
+                    aArea.setVisible(false);
+
+                    Object[] theCellObjects = new Object[] { theCell };
+                    layoutCache.hideCells(theCellObjects, true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Show a specific subject area.
+     * 
+     * @param aArea
+     *                the subject area to show
+     */
+    protected void commandShowSubjectArea(SubjectArea aArea) {
+        for (CellView theView : layoutCache.getHiddenCellViews()) {
+            Object theItem = theView.getCell();
+            if (theItem instanceof SubjectAreaCell) {
+                SubjectAreaCell theCell = (SubjectAreaCell) theItem;
+                if (theCell.getUserObject().equals(aArea)) {
+                    aArea.setVisible(true);
+
+                    Object[] theCellObjects = new Object[] { theCell };
+                    
+                    // TODO [mirkosertic] restore old position here
+                    layoutCache.showCells(theCellObjects, true);
+                }
+            }
+        }
+    }
+
+    /**
      * Update the subject area menu.
      */
     protected void updateSubjectAreasMenu() {
@@ -1021,12 +1083,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         subjectAreas.add(new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
+                commandShowAllSubjectAreas();
             }
 
         }, this, ERDesignerBundle.SHOWALL));
         subjectAreas.add(new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
+                commandHideAllSubjectAreas();
             }
 
         }, this, ERDesignerBundle.HIDEALL));
@@ -1035,9 +1099,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             subjectAreas.addSeparator();
 
             for (SubjectArea theArea : model.getSubjectAreas()) {
-                JCheckBoxMenuItem theItem = new JCheckBoxMenuItem();
+                final JCheckBoxMenuItem theItem = new JCheckBoxMenuItem();
                 theItem.setText(theArea.getName());
                 theItem.setState(theArea.isVisible());
+                final SubjectArea theFinalArea = theArea;
+                theItem.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (theItem.getState()) {
+                            commandShowSubjectArea(theFinalArea);
+                        } else {
+                            commandHideSubjectArea(theFinalArea);
+                        }
+                    }
+
+                });
 
                 subjectAreas.add(theItem);
             }
@@ -1926,10 +2003,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 SubjectAreaCell theSA = (SubjectAreaCell) theCell;
                 SubjectArea theArea = (SubjectArea) theSA.getUserObject();
 
-                theArea.setVisible(false);
-                Object[] theCellObjects = new Object[] { theSA };
-
-                layoutCache.hideCells(theCellObjects, true);
+                commandHideSubjectArea(theArea);
             }
         }
 
