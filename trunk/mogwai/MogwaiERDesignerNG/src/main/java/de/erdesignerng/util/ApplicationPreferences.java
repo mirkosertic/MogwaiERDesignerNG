@@ -422,4 +422,13 @@ public class ApplicationPreferences {
             // This can be ignored
         }
     }
+
+    /**
+     * Get the directory where the report templates are located.
+     * 
+     * @return the directory
+     */
+    public File getReportsDirectory() {
+        return new File("reports");
+    }
 }
