@@ -778,5 +778,21 @@
 			<Text lang="de">Bitte geben Sie das Datenbankkennwort ein</Text>		
 			<Text lang="en">Please enter the database password</Text>					
 		</Entry>
+		<Entry id="HIDE">
+			<Text lang="de">Verbergen</Text>		
+			<Text lang="en">Hide</Text>					
+		</Entry>
+		<Entry id="MENUSUBJECTAREAS">
+			<Text lang="de">Subject Areas</Text>		
+			<Text lang="en">Subject areas</Text>					
+		</Entry>
+		<Entry id="SHOWALL">
+			<Text lang="de">Alle anzeigen</Text>		
+			<Text lang="en">Show all</Text>					
+		</Entry>
+		<Entry id="HIDEALL">
+			<Text lang="de">Alle verbergen</Text>		
+			<Text lang="en">Hide all</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
