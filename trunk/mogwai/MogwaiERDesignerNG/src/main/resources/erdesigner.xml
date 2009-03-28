@@ -794,5 +794,21 @@
 			<Text lang="de">Alle verbergen</Text>		
 			<Text lang="en">Hide all</Text>					
 		</Entry>
+		<Entry id="CREATEDBDOCUMENTATION">
+			<Text lang="de">Datenbankdokumentation erstellen</Text>		
+			<Text lang="en">Create database documentation</Text>					
+		</Entry>
+		<Entry id="DOCSTEP1">
+			<Text lang="de">Schreiben der Modellinformationen...</Text>		
+			<Text lang="en">Writing model information...</Text>					
+		</Entry>
+		<Entry id="DOCSTEP2">
+			<Text lang="de">Generierung des Reports...</Text>		
+			<Text lang="en">Generating report...</Text>					
+		</Entry>
+		<Entry id="DOCSTEP3">
+			<Text lang="de">Dokumentation erstellt</Text>		
+			<Text lang="en">Documentation done</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

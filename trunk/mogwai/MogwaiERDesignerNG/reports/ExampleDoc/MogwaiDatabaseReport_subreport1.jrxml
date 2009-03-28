@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MogwaiDatabaseReport_subreport1" pageWidth="526" pageHeight="802" columnWidth="526" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<queryString language="xPath">
+		<![CDATA[//Attribute]]>
+	</queryString>
+	<field name="datatype" class="java.lang.String">
+		<fieldDescription><![CDATA[@datatype]]></fieldDescription>
+	</field>
+	<field name="defaultvalue" class="java.lang.String">
+		<fieldDescription><![CDATA[@defaultvalue]]></fieldDescription>
+	</field>
+	<field name="extra" class="java.lang.String">
+		<fieldDescription><![CDATA[@extra]]></fieldDescription>
+	</field>
+	<field name="fraction" class="java.lang.String">
+		<fieldDescription><![CDATA[@fraction]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.String">
+		<fieldDescription><![CDATA[@id]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[@name]]></fieldDescription>
+	</field>
+	<field name="nullable" class="java.lang.String">
+		<fieldDescription><![CDATA[@nullable]]></fieldDescription>
+	</field>
+	<field name="scale" class="java.lang.String">
+		<fieldDescription><![CDATA[@scale]]></fieldDescription>
+	</field>
+	<field name="size" class="java.lang.String">
+		<fieldDescription><![CDATA[@size]]></fieldDescription>
+	</field>
+	<field name="Comment" class="java.lang.String">
+		<fieldDescription><![CDATA[Comment]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="91" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[Attributename]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="0" width="88" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[DataType]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="0" width="39" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Size]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="218" y="0" width="46" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fraction]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="0" width="33" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Scale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="0" width="47" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Nullable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="0" width="82" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[Default]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="426" y="0" width="100" height="20"/>
+				<box topPadding="3" leftPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[Comment]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="91" height="20"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="0" width="88" height="20"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{datatype}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="179" y="0" width="39" height="20" isRemoveLineWhenBlank="true"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{size}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="218" y="0" width="46" height="20" isRemoveLineWhenBlank="true"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fraction}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="264" y="0" width="33" height="20" isRemoveLineWhenBlank="true"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{scale}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="297" y="0" width="47" height="20" isRemoveLineWhenBlank="true"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nullable}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="344" y="0" width="82" height="20"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{defaultvalue}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="426" y="0" width="100" height="20"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Comment}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
