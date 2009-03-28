@@ -43,6 +43,7 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
     protected void copyExtendedAttributes(SubjectArea aSource, SubjectAreaEntity aDestination) {
 
         aDestination.setColor(aSource.getColor().getRGB());
+        aDestination.setVisible(aSource.isVisible());
 
         aDestination.getTables().clear();
         for (Table theTable : aSource.getTables()) {
@@ -64,6 +65,9 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
     protected void copyExtendedAttributes(SubjectAreaEntity aSource, SubjectArea aDestination, Model aModel) {
 
         aDestination.setColor(new Color(aSource.getColor()));
+        if (aSource.getVisible() != null) {
+            aDestination.setVisible(aSource.getVisible());
+        }
 
         aDestination.getTables().clear();
         for (String theTable : aSource.getTables()) {
