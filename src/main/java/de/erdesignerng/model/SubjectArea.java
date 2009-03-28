@@ -35,6 +35,8 @@ public class SubjectArea extends ModelItem {
     
     private CommentList comments = new CommentList();
     
+    private boolean visible = true;
+    
     public SubjectArea() {
         setName("Subject Area");
         setColor(Color.lightGray);
@@ -111,5 +113,19 @@ public class SubjectArea extends ModelItem {
      */
     public void setViews(ViewList views) {
         this.views = views;
+    }
+
+    /**
+     * @return the visible
+     */
+    public boolean isVisible() {
+        return visible;
+    }
+
+    /**
+     * @param visible the visible to set
+     */
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

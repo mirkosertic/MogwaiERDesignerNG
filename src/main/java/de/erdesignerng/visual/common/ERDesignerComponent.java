@@ -41,6 +41,7 @@ import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -94,6 +95,7 @@ import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.CommentCell;
+import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
@@ -254,6 +256,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu storedConnections;
 
+    private DefaultMenu subjectAreas;
+
     private Model model;
 
     private DefaultAction newAction;
@@ -267,11 +271,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction reverseEngineerAction;
 
     private DefaultAction completeCompareAction;
-    
+
     private DefaultAction convertModelAction;
 
     private DefaultAction saveAsAction;
-    
+
     private DefaultAction saveAction;
 
     private DefaultAction saveToRepository;
@@ -347,7 +351,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.PREFERENCES);
-        
+
         saveAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -604,7 +608,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         KeyStroke theStroke = (KeyStroke) saveAction.getValue(DefaultAction.HOTKEY_KEY);
         if (theStroke != null) {
             theItem.setAccelerator(theStroke);
-            scrollPane.registerKeyboardAction(saveAction, theStroke, JComponent.WHEN_IN_FOCUSED_WINDOW);            
+            scrollPane.registerKeyboardAction(saveAction, theStroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
         }
 
         theFileMenu.add(saveAsAction);
@@ -825,6 +829,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         UIInitializer.getInstance().initialize(theDisplayOrderMenu);
 
+        subjectAreas = new DefaultMenu(this, ERDesignerBundle.MENUSUBJECTAREAS);
+
+        UIInitializer.getInstance().initialize(subjectAreas);
+        theViewMenu.add(subjectAreas);
+
         theViewMenu.addSeparator();
 
         theViewMenu.add(new DefaultMenuItem(zoomInAction));
@@ -914,10 +923,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
                     SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
                     theArea.getTables().add(theTable);
-                    
+
                     theSACell.add(theCell);
                 }
-                
+
                 GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
                         -1, -1));
 
@@ -929,7 +938,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 worldConnector.notifyAboutException(e);
             }
 
-            
             graph.doLayout();
         }
     }
@@ -962,7 +970,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
                     SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
                     theArea.getViews().add(theView);
-                    
+
                     theSACell.add(theCell);
                 }
 
@@ -1003,6 +1011,39 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         }
 
+    }
+
+    /**
+     * Update the subject area menu.
+     */
+    protected void updateSubjectAreasMenu() {
+        subjectAreas.removeAll();
+        subjectAreas.add(new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+            }
+
+        }, this, ERDesignerBundle.SHOWALL));
+        subjectAreas.add(new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+            }
+
+        }, this, ERDesignerBundle.HIDEALL));
+
+        if (model.getSubjectAreas().size() > 0) {
+            subjectAreas.addSeparator();
+
+            for (SubjectArea theArea : model.getSubjectAreas()) {
+                JCheckBoxMenuItem theItem = new JCheckBoxMenuItem();
+                theItem.setText(theArea.getName());
+                theItem.setState(theArea.isVisible());
+
+                subjectAreas.add(theItem);
+            }
+        }
+
+        UIInitializer.getInstance().initialize(subjectAreas);
     }
 
     protected void updateRecentlyUsedMenuEntries() {
@@ -1356,7 +1397,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Save the current model to the current file. If the current file is unknown, a saveas action is performed. 
+     * Save the current model to the current file. If the current file is
+     * unknown, a saveas action is performed.
      */
     protected void commandSaveFile() {
         if (currentEditingFile != null) {
@@ -1367,7 +1409,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     private void commandSaveModelToFile(File aFile) {
-        
+
         DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Date theNow = new Date();
 
@@ -1744,7 +1786,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         model = aModel;
 
         graphModel = new DefaultGraphModel();
-        layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory());
+        layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
         layoutCache.setAutoSizeOnValueChange(true);
 
         graphModel.addGraphModelListener(new ERDesignerGraphModelListener());
@@ -1773,6 +1815,17 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             @Override
             public void commandNewView(Point2D aLocation) {
                 ERDesignerComponent.this.commandAddView(aLocation);
+            }
+
+            @Override
+            public void commandHideCells(List<HideableCell> cellsToHide) {
+                ERDesignerComponent.this.commandHideCells(cellsToHide);
+            }
+
+            @Override
+            public void commandAddToNewSubjectArea(List<ModelCell> aCells) {
+                super.commandAddToNewSubjectArea(aCells);
+                updateSubjectAreasMenu();
             }
         };
         graph.setUI(new ERDesignerGraphUI(this));
@@ -1857,6 +1910,30 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
         commandSetTool(ToolEnum.HAND);
+
+        updateSubjectAreasMenu();
+    }
+
+    /**
+     * Hide a list of specific cells.
+     * 
+     * @param aCellsToHide
+     *                the cells to hide
+     */
+    protected void commandHideCells(List<HideableCell> aCellsToHide) {
+        for (HideableCell theCell : aCellsToHide) {
+            if (theCell instanceof SubjectAreaCell) {
+                SubjectAreaCell theSA = (SubjectAreaCell) theCell;
+                SubjectArea theArea = (SubjectArea) theSA.getUserObject();
+
+                theArea.setVisible(false);
+                Object[] theCellObjects = new Object[] { theSA };
+
+                layoutCache.hideCells(theCellObjects, true);
+            }
+        }
+
+        updateSubjectAreasMenu();
     }
 
     /**
@@ -1880,13 +1957,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 CommentCell theCell = new CommentCell(theComment);
                 theCell.transferPropertiesToAttributes(theComment);
-                
+
                 Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
                 if (theTargetCell instanceof SubjectAreaCell) {
                     SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
                     SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
                     theArea.getComments().add(theComment);
-                    
+
                     theSACell.add(theCell);
                 }
 
@@ -1955,6 +2032,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandRemoveSubjectArea(SubjectAreaCell aCell) {
         graph.getGraphLayoutCache().remove(new Object[] { aCell });
         model.removeSubjectArea((SubjectArea) aCell.getUserObject());
+
+        updateSubjectAreasMenu();
     }
 
     protected void commandUpdateSubjectArea(SubjectAreaCell aCell) {
@@ -1974,8 +2053,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theArea.getComments().add((Comment) ((CommentCell) theObject).getUserObject());
             }
         }
+
+        updateSubjectAreasMenu();
     }
-    
+
     protected void commandConvertModel() {
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
@@ -1987,9 +2068,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                
+
                 setModel(model);
-                
+
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
@@ -2047,8 +2128,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     public void handleResult(Model aResultModel) {
                         addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model,
-                                aResultModel, preferences);
+                        CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, aResultModel,
+                                preferences);
                         theCompare.showModal();
                     }
 
@@ -2133,5 +2214,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         graph.getGraphLayoutCache().reload();
         graph.invalidate();
         graph.repaint();
+    }
+
+    /**
+     * Hook method. Will be called if a cell was successfully edited.
+     */
+    public void commandNotifyAboutEdit() {
+        updateSubjectAreasMenu();
     }
 }

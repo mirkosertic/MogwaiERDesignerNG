@@ -39,6 +39,7 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.cells.CommentCell;
+import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
@@ -302,4 +303,11 @@ public abstract class ERDesignerGraph extends JGraph {
         addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
         super.repaint();
     }
+
+    /**
+     * Hide a list of specific cells.
+     * 
+     * @param aCellsToHide the cells to hide
+     */
+    public abstract void commandHideCells(List<HideableCell> aCellsToHide);
 }

@@ -30,7 +30,7 @@ import de.erdesignerng.model.SubjectArea;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:59 $
  */
-public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<SubjectArea> {
+public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<SubjectArea> , HideableCell {
 
     public SubjectAreaCell(SubjectArea aArea) {
         super(aArea);
