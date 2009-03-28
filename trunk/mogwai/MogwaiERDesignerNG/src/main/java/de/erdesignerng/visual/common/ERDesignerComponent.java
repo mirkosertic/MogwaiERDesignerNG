@@ -2004,6 +2004,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             layoutCache.insertGroup(theSubjectAreaCell, theTableCells.toArray());
             layoutCache.toBack(new Object[] { theSubjectAreaCell });
+            
+            if (!theSubjectArea.isVisible()) {
+                commandHideSubjectArea(theSubjectArea);
+            }
 
         }
 
