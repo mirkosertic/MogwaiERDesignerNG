@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.ButtonGroup;
@@ -49,6 +50,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JRQuery;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.swing.JRViewer;
+
+import org.apache.commons.lang.StringUtils;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
@@ -136,6 +147,7 @@ import de.erdesignerng.visual.tools.ViewTool;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultDialog;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.components.DefaultToggleButton;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
@@ -293,6 +305,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction zoomOutAction;
 
     private DefaultAction preferencesAction;
+
+    private DefaultMenu documentationMenu;
 
     private DefaultAction generateSQL;
 
@@ -706,6 +720,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.add(new DefaultMenuItem(completeCompareAction));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(convertModelAction));
+        theDBMenu.addSeparator();
+
+        documentationMenu = new DefaultMenu(this, ERDesignerBundle.CREATEDBDOCUMENTATION);
+        theDBMenu.add(documentationMenu);
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
@@ -889,6 +907,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         worldConnector.initTitle();
 
         updateRecentlyUsedMenuEntries();
+        updateDocumentationMenu();
 
         setupViewForNothing();
 
@@ -1095,6 +1114,103 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         }
+    }
+
+    /**
+     * Generate a documentation for the current model from a JasperReports
+     * template.
+     * 
+     * @param aTemplateName
+     *                the name of the template
+     */
+    protected void createDocumentation(String aTemplateName) {
+
+        if (model.getDialect() == null) {
+            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
+                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+            return;
+        }
+
+        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(worldConnector) {
+
+            @Override
+            public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
+
+                aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
+
+                ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
+                File theTempFile = File.createTempFile("mogwai", ".mxm");
+                FileOutputStream theOutputStream = new FileOutputStream(theTempFile);
+                theUtils.serializeModelToXML(model, theOutputStream);
+                theOutputStream.close();
+
+                String theTemplate = "reports/ExampleDoc/MogwaiDatabaseReport";
+                String theTemplateName = theTemplate + ".jasper";
+                String theTemplateDesignName = theTemplate + ".jrxml";
+
+                aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
+
+                JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theTemplateDesignName));
+                JRQuery theQuery = theDesign.getQuery();
+                String theQueryText = null;
+
+                if (theQuery != null) {
+                    theQueryText = theQuery.getText();
+                }
+                if (StringUtils.isEmpty(theQueryText)) {
+                    throw new RuntimeException("Cannot extract query from Jasper template");
+                }
+                
+                Map<Object, Object> theParams = new HashMap<Object, Object>();
+                theParams.put(JRParameter.REPORT_LOCALE, Locale.getDefault());
+
+                JRXmlDataSource theDataSource = new JRXmlDataSource(theTempFile, theQueryText);
+                JasperPrint thePrint = JasperFillManager.fillReport(new FileInputStream(theTemplateName),
+                        theParams, theDataSource);
+
+                aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
+
+                return thePrint;
+            }
+
+            @Override
+            public void handleResult(JasperPrint aResult) {
+
+                JRViewer theViewer = new JRViewer(aResult);
+
+                DefaultDialog theResult = new DefaultDialog(scrollPane, getResourceHelper(),
+                        ERDesignerBundle.CREATEDBDOCUMENTATION);
+                theResult.setContentPane(theViewer);
+                theResult.setMinimumSize(new Dimension(640, 480));
+                theResult.pack();
+                theViewer.setFitPageZoomRatio();
+
+                theResult.setVisible(true);
+            }
+
+        };
+        theTask.start();
+    }
+
+    /**
+     * Update the create documentation menu.
+     */
+    protected void updateDocumentationMenu() {
+        documentationMenu.removeAll();
+        JMenuItem theItem = new JMenuItem();
+        theItem.setText("Test");
+        theItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createDocumentation("lala");
+            }
+
+        });
+
+        documentationMenu.add(theItem);
+
+        UIInitializer.getInstance().initialize(documentationMenu);
     }
 
     /**
@@ -2004,7 +2120,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             layoutCache.insertGroup(theSubjectAreaCell, theTableCells.toArray());
             layoutCache.toBack(new Object[] { theSubjectAreaCell });
-            
+
             if (!theSubjectArea.isVisible()) {
                 commandHideSubjectArea(theSubjectArea);
             }
