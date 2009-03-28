@@ -23,6 +23,7 @@
 		<property name="comment" not-null="false" type="text"/>		
 		
 		<property name="color" not-null="true"/>
+		<property name="visible" not-null="false"/>
 		
 		<list name="tables" cascade="all-delete-orphan" table="mogrep_sa_tables">
 			<key column="indexid" foreign-key="mogrep_sa_tables_fk1" />

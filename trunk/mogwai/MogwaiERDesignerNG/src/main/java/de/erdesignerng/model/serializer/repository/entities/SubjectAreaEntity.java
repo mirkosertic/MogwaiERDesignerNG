@@ -29,6 +29,8 @@ public class SubjectAreaEntity extends ModelEntity {
 
     private int color;
     
+    private Boolean visible;
+    
     private List<String> tables = new ArrayList<String>();
 
     private List<String> comments = new ArrayList<String>();
@@ -83,5 +85,19 @@ public class SubjectAreaEntity extends ModelEntity {
 
     public void setViews(List<String> views) {
         this.views = views;
+    }
+
+    /**
+     * @return the visible
+     */
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    /**
+     * @param visible the visible to set
+     */
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 }
