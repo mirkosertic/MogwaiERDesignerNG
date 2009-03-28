@@ -1058,17 +1058,40 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      *                the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
-        for (CellView theView : layoutCache.getHiddenCellViews()) {
-            Object theItem = theView.getCell();
+        for (CellView theCellView : layoutCache.getHiddenCellViews()) {
+            Object theItem = theCellView.getCell();
             if (theItem instanceof SubjectAreaCell) {
                 SubjectAreaCell theCell = (SubjectAreaCell) theItem;
                 if (theCell.getUserObject().equals(aArea)) {
                     aArea.setVisible(true);
 
-                    Object[] theCellObjects = new Object[] { theCell };
-                    
-                    // TODO [mirkosertic] restore old position here
+                    Object[] theCellObjects = DefaultGraphModel.getDescendants(graphModel, new Object[] { theCell })
+                            .toArray();
+
                     layoutCache.showCells(theCellObjects, true);
+                    for (Object theSingleCell : theCellObjects) {
+                        if (theSingleCell instanceof TableCell) {
+                            TableCell theTableCell = (TableCell) theSingleCell;
+                            Table theTable = (Table) theTableCell.getUserObject();
+
+                            theTableCell.transferPropertiesToAttributes(theTable);
+                            layoutCache.edit(new Object[] { theTableCell }, theTableCell.getAttributes());
+                        }
+                        if (theSingleCell instanceof ViewCell) {
+                            ViewCell theViewCell = (ViewCell) theSingleCell;
+                            View theView = (View) theViewCell.getUserObject();
+
+                            theViewCell.transferPropertiesToAttributes(theView);
+                            layoutCache.edit(new Object[] { theViewCell }, theViewCell.getAttributes());
+                        }
+                        if (theSingleCell instanceof CommentCell) {
+                            CommentCell theCommentCell = (CommentCell) theSingleCell;
+                            Comment theComment = (Comment) theCommentCell.getUserObject();
+
+                            theCommentCell.transferPropertiesToAttributes(theComment);
+                            layoutCache.edit(new Object[] { theCommentCell }, theCommentCell.getAttributes());
+                        }
+                    }
                 }
             }
         }
