@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
@@ -96,6 +97,8 @@ public class HandTool extends BaseTool {
         theMenu.add(theDeleteItem);
 
         final List<ModelCell> theTableCells = new ArrayList<ModelCell>();
+        final List<HideableCell> theHideableCells = new ArrayList<HideableCell>();
+
         for (Object theCell : aCells) {
             if (theCell instanceof TableCell) {
                 TableCell theTableCell = (TableCell) theCell;
@@ -109,6 +112,10 @@ public class HandTool extends BaseTool {
                     theTableCells.add(theViewCell);
                 }
             }
+            if (theCell instanceof HideableCell) {
+                HideableCell theHideable = (HideableCell) theCell;
+                theHideableCells.add(theHideable);
+            }
         }
 
         if (theTableCells.size() > 0) {
@@ -121,6 +128,22 @@ public class HandTool extends BaseTool {
 
                 public void actionPerformed(ActionEvent e) {
                     graph.commandAddToNewSubjectArea(theTableCells);
+                }
+            });
+
+            theMenu.add(theAddItem);
+        }
+        
+        if (theHideableCells.size() > 0) {
+            theMenu.addSeparator();
+
+            DefaultAction theHideAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+                    ERDesignerBundle.HIDE);
+            DefaultMenuItem theAddItem = new DefaultMenuItem(theHideAction);
+            theHideAction.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    graph.commandHideCells(theHideableCells);
                 }
             });
 

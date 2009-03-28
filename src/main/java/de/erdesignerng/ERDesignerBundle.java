@@ -391,4 +391,12 @@ public interface ERDesignerBundle {
   String PROMPTFORPASSWORD = "PROMPTFORPASSWORD";
   /** Please enter the database password. */
   String PLEASEENTERDATABASEPASSWORD = "PLEASEENTERDATABASEPASSWORD";
+  /** Hide. */
+  String HIDE = "HIDE";
+  /** Subject areas. */
+  String MENUSUBJECTAREAS = "MENUSUBJECTAREAS";
+  /** Show all. */
+  String SHOWALL = "SHOWALL";
+  /** Hide all. */
+  String HIDEALL = "HIDEALL";
 }

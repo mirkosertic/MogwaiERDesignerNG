@@ -191,6 +191,8 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
                     try {
                         theDialog.applyValues();
+                        
+                        erdesigner.commandNotifyAboutEdit();
                     } catch (Exception e1) {
                         erdesigner.getWorldConnector().notifyAboutException(e1);
                     }
