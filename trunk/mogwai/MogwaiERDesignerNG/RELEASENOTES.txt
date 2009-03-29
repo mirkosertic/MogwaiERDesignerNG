@@ -6,6 +6,10 @@ Requirements
 
 * Java 6 Runtime ( SDK not required )
 
+  At least update# 10 is required on non Windows platforms,
+  as in prior versions there is a problem with application 
+  preferences and the JAXP API.
+
 License
 
 This software uses or is based on the following libraries:
