@@ -95,7 +95,7 @@
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/userdoc">
-									<fileset dir="${basedir}/doc">
+									<fileset dir="${basedir}/userdoc">
 										<include name="**/*.pdf"/>
 									</fileset>
 								</copy>
