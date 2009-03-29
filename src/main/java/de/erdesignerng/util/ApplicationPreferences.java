@@ -438,7 +438,7 @@ public class ApplicationPreferences {
      * @return the file
      */
     public File getOnlineHelpPDFFile() {
-        File theDocFile = new File("doc");
+        File theDocFile = new File("userdoc");
         return new File(theDocFile, "Mogwai ERDesigner NG.pdf");
     }
 }
