@@ -407,4 +407,8 @@ public interface ERDesignerBundle {
   String DOCSTEP2 = "DOCSTEP2";
   /** Documentation done. */
   String DOCSTEP3 = "DOCSTEP3";
+  /** Help.... */
+  String HELP = "HELP";
+  /** Online help. */
+  String ONLINEHELP = "ONLINEHELP";
 }

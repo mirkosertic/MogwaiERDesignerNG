@@ -431,4 +431,14 @@ public class ApplicationPreferences {
     public File getReportsDirectory() {
         return new File("reports");
     }
+
+    /**
+     * Get the online help pdf file.
+     * 
+     * @return the file
+     */
+    public File getOnlineHelpPDFFile() {
+        File theDocFile = new File("doc");
+        return new File(theDocFile, "Mogwai ERDesigner NG.pdf");
+    }
 }
