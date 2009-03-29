@@ -170,3 +170,4 @@ Release 1.7
 * Implemented FR 2504332 [ERDesignerNG] better comments display
 * Implemented FR 2711884 [ERDesignerNG] Add support for hidden relationships
 * Implemented FR 2686547 [ERDesignerNG] Export to HTML
+* Implemented FR 2220184 [ERDesignerNG] Make documentation available as JavaHelp

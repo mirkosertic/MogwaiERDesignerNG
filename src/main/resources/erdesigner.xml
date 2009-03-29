@@ -810,5 +810,13 @@
 			<Text lang="de">Dokumentation erstellt</Text>		
 			<Text lang="en">Documentation done</Text>					
 		</Entry>
+		<Entry id="HELP">
+			<Text lang="de">Hilfe...</Text>		
+			<Text lang="en">Help...</Text>					
+		</Entry>
+		<Entry id="ONLINEHELP">
+			<Text lang="de">Onlinehilfe</Text>		
+			<Text lang="en">Online help</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

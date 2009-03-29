@@ -127,6 +127,7 @@ import de.erdesignerng.visual.editor.view.ViewEditor;
 import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
 import de.erdesignerng.visual.export.SVGExporter;
+import de.erdesignerng.visual.help.PDFViewer;
 import de.erdesignerng.visual.layout.Layouter;
 import de.erdesignerng.visual.layout.LayouterFactory;
 import de.erdesignerng.visual.layout.SizeableLayouter;
@@ -330,6 +331,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction displayDescendingOrderAction;
 
     private DefaultAction createMigrationScriptAction;
+
+    private DefaultAction helpAction;
 
     private DefaultMenu repositoryUtilsMenu;
 
@@ -598,6 +601,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
+        helpAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+                commandShowHelp();
+            }
+
+        }, this, ERDesignerBundle.HELP);
+
         lruMenu = new DefaultMenu(lruAction);
 
         DefaultAction theStoredConnectionsAction = new DefaultAction(this, ERDesignerBundle.STOREDDBCONNECTION);
@@ -849,6 +860,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         theViewMenu.add(new DefaultMenuItem(zoomInAction));
         theViewMenu.add(new DefaultMenuItem(zoomOutAction));
+
+        theViewMenu.addSeparator();
+        theViewMenu.add(new DefaultMenuItem(helpAction));
 
         DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
         theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
@@ -1954,6 +1968,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected String generateChangelogSQLFileName() {
         return "changelog.sql";
+    }
+
+    /**
+     * Display the application help screen.
+     */
+    protected void commandShowHelp() {
+        PDFViewer theViewer = new PDFViewer(scrollPane, true, getResourceHelper().getText(ERDesignerBundle.ONLINEHELP));
+        try {
+            theViewer.setMinimumSize(new Dimension(640, 480));
+            theViewer.openFile(preferences.getOnlineHelpPDFFile());
+        } catch (Exception e) {
+            worldConnector.notifyAboutException(e);
+        }
     }
 
     protected void commandGenerateChangelogSQL() {
