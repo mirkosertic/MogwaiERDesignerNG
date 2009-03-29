@@ -48,12 +48,13 @@
 			<file src="run.sh" targetdir="$INSTALL_PATH" os="unix" />
 			<file src="run.sh" targetdir="$INSTALL_PATH" os="mac" />
 			<file src="lib" targetdir="$INSTALL_PATH" />
+			<file src="reports" targetdir="$INSTALL_PATH" />
 			<executable os="unix" targetfile="$INSTALL_PATH/run.sh"
 				stage="never" />
 			<executable os="mac" targetfile="$INSTALL_PATH/run.sh"
 				stage="never" />
 		</pack>
-		<pack name="Docs" required="no" preselected="yes">
+		<pack name="Docs" required="yes" preselected="yes">
 			<description>The documentation</description>
 			<file src="userdoc" targetdir="$INSTALL_PATH" />
 			<file src="javadoc" targetdir="$INSTALL_PATH" />
