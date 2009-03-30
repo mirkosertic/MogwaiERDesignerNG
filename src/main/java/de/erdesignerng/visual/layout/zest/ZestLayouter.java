@@ -28,6 +28,7 @@ import org.eclipse.zest.layouts.progress.ProgressEvent;
 import org.eclipse.zest.layouts.progress.ProgressListener;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
@@ -81,8 +82,8 @@ public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter
             } else if (!theModel.isEdge(cell)) {
 
                 CellView theCellView = theLayoutCache.getMapping(cell, true);
-                TableCell theCell = (TableCell) theCellView.getCell();
-                Rectangle2D theBounds = GraphConstants.getBounds(((TableCell) theCellView.getCell()).getAttributes());
+                DefaultGraphCell theCell = (DefaultGraphCell) theCellView.getCell();
+                Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
 
                 ERDesignerZestLayoutEntity theEntity = new ERDesignerZestLayoutEntity();
                 theEntity.setCell(theCell);
@@ -141,7 +142,7 @@ public class ZestLayouter<T extends LayoutAlgorithm> implements SizeableLayouter
         }
 
         for (ERDesignerZestLayoutEntity theEntity : theEntities) {
-            TableCell theCell = theEntity.getCell();
+            DefaultGraphCell theCell = theEntity.getCell();
             double theX = theEntity.getXInLayout();
             double theY = theEntity.getYInLayout();
             double theWidth = theEntity.getWidthInLayout();
