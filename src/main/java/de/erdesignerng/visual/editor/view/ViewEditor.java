@@ -20,6 +20,8 @@ package de.erdesignerng.visual.editor.view;
 import java.awt.Component;
 import java.io.IOException;
 
+import nickyb.sqleonardo.querybuilder.QueryBuilder;
+import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
 import org.apache.commons.lang.StringUtils;
@@ -55,6 +57,7 @@ public class ViewEditor extends BaseEditor {
 
         // Connection initialisieren
         editingView.getBuilder().setConnection(new ERConnection(aModel));
+        QueryBuilder.autoJoin = false;
 
         model = aModel;
 
@@ -89,9 +92,12 @@ public class ViewEditor extends BaseEditor {
         editingView.getEntityName().setName(aView.getName());
         if (!StringUtils.isEmpty(aView.getSql())) {
 
-            System.out.println("Entering for SQL " + aView.getSql());
+            String theSQL = aView.getSql();
+            
+            System.out.println("Entering for SQL " + theSQL);
             try {
-                editingView.getBuilder().setQueryModel(SQLParser.toQueryModel(aView.getSql()));
+                QueryModel theModel = SQLParser.toQueryModel(theSQL);
+                editingView.getBuilder().setQueryModel(theModel);
             } catch (IOException e) {
                 logFatalError(e);
             }

@@ -31,7 +31,10 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 
@@ -225,21 +228,20 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_PK_NAME);
 
         // Check only for tables, views do not have a primary key
-
-        /*Table theTable = ermodel.getTables().findByName(aTable);
+        Table theTable = ermodel.getTables().findByName(aTable);
         if (theTable != null) {
             Index theIndex = theTable.getPrimarykey();
             if (theIndex != null) {
                 short theNumber = 1;
-                for (Attribute  : theIndex.getExpressions()) {
+                for (IndexExpression theExpression  : theIndex.getExpressions()) {
                     Map<String, Object> theRow = new HashMap<String, Object>();
                     theRow.put(COLUMN_TABLE_NAME, theTable.getName());
-                    theRow.put(COLUMN_COLUMN_NAME, theAttribute.getName());
+                    theRow.put(COLUMN_COLUMN_NAME, theExpression.getAttributeRef().getName());
                     theRow.put(COLUMN_PK_NAME, theIndex.getName());
                     theRow.put(COLUMN_KEY_SEQ, theNumber++);
                 }
             }
-        }*/
+        }
 
         return new ERResultSet(theRowInfo);
     }
@@ -262,12 +264,12 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_PK_NAME);
         theRowInfo.addField(COLUMN_DEFERRABILITY);
 
-        /*Table theTable = ermodel.getTables().findByName(aTable);
+        Table theTable = ermodel.getTables().findByName(aTable);
         if (theTable != null) {
             for (Relation theRelation : ermodel.getRelations().getForeignKeysFor(theTable)) {
 
                 Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
-                for (Attribute theAttribute : thePrimaryKey.getAttributes()) {
+                for (IndexExpression theAttribute : thePrimaryKey.getExpressions()) {
 
                     Map<String, Object> theRow = new HashMap<String, Object>();
                     theRow.put(COLUMN_PKTABLE_NAME, theRelation.getExportingTable().getName());
@@ -280,7 +282,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
                     theRowInfo.addRow(theRow);
                 }
             }
-        }*/
+        }
 
         return new ERResultSet(theRowInfo);
     }
