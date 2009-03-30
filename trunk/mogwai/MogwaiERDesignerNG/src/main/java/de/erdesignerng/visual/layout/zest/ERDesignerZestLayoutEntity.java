@@ -19,8 +19,7 @@ package de.erdesignerng.visual.layout.zest;
 
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
-
-import de.erdesignerng.visual.cells.TableCell;
+import org.jgraph.graph.DefaultGraphCell;
 
 public class ERDesignerZestLayoutEntity implements LayoutEntity {
 
@@ -34,7 +33,7 @@ public class ERDesignerZestLayoutEntity implements LayoutEntity {
 
     private Object layoutInformation;
     
-    private TableCell cell;
+    private DefaultGraphCell cell;
     
     private Object graphData;
 
@@ -133,14 +132,14 @@ public class ERDesignerZestLayoutEntity implements LayoutEntity {
     /**
      * @return the cellView
      */
-    public TableCell getCell() {
+    public DefaultGraphCell getCell() {
         return cell;
     }
 
     /**
      * @param cellView the cellView to set
      */
-    public void setCell(TableCell cellView) {
+    public void setCell(DefaultGraphCell cellView) {
         this.cell = cellView;
     }
 

@@ -25,6 +25,7 @@ import java.util.HashSet;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
@@ -74,10 +75,9 @@ public abstract class JungLayouter implements SizeableLayouter {
             if (theModel.isPort(cell)) {
                 continue;
             } else if (!theModel.isEdge(cell)) {
-
+                
                 CellView theCellView = theLayoutCache.getMapping(cell, true);
-                TableCell theCell = (TableCell) theCellView.getCell();
-                //Rectangle2D theBounds = GraphConstants.getBounds(((TableCell) theCellView.getCell()).getAttributes());
+                DefaultGraphCell theCell = (DefaultGraphCell) theCellView.getCell();
 
                 Vertex theVertex = theGraph.addVertex(new DirectedSparseVertex());
                 ERDesignerJungLayoutEntity theEntity = new ERDesignerJungLayoutEntity(theVertex, theCell);
@@ -133,7 +133,7 @@ public abstract class JungLayouter implements SizeableLayouter {
 
         for (ERDesignerJungLayoutEntity theEntity : theTables) {
 
-            TableCell theCell = theEntity.getCell();
+            DefaultGraphCell theCell = theEntity.getCell();
             Point2D thePoint = theLayout.getLocation(theEntity.getVertex());
 
             Rectangle2D theOldDimensions = GraphConstants.getBounds(theCell.getAttributes());
