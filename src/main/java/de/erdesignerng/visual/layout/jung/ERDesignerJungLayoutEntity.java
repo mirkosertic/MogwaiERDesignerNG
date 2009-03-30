@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.visual.layout.jung;
 
+import org.jgraph.graph.DefaultGraphCell;
+
 import de.erdesignerng.visual.cells.TableCell;
 import edu.uci.ics.jung.graph.Vertex;
 
@@ -24,9 +26,9 @@ public class ERDesignerJungLayoutEntity  {
 
     private Vertex vertex;
     
-    private TableCell cell;
+    private DefaultGraphCell cell;
     
-    public ERDesignerJungLayoutEntity(Vertex aVertex, TableCell aCell) {
+    public ERDesignerJungLayoutEntity(Vertex aVertex, DefaultGraphCell aCell) {
         vertex = aVertex;
         cell = aCell;
     }
@@ -34,7 +36,7 @@ public class ERDesignerJungLayoutEntity  {
     /**
      * @return the cell
      */
-    public TableCell getCell() {
+    public DefaultGraphCell getCell() {
         return cell;
     }
 
