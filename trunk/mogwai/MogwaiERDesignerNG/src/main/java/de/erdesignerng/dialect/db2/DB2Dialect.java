@@ -19,6 +19,7 @@ package de.erdesignerng.dialect.db2;
 
 import java.sql.Types;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -36,22 +37,22 @@ public class DB2Dialect extends SQL92Dialect {
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
 
-        registerType(new DB2DataType("VARCHAR() FOR BIT DATA", "$size", Types.VARBINARY));
-        registerType(new DB2DataType("CHAR() FOR BIT DATA", "$size", Types.BINARY, Types.BIT));
-        registerType(new DB2DataType("CHAR", "$size", Types.CHAR));
-        registerType(new DB2DataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
-        registerType(new DB2DataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
-        registerType(new DB2DataType("BIGINT", "", Types.BIGINT));
-        registerType(new DB2DataType("BLOB", "", Types.BLOB, Types.LONGVARBINARY));
-        registerType(new DB2DataType("CLOB", "", Types.CLOB, Types.SQLXML, Types.LONGVARCHAR));
-        registerType(new DB2DataType("INTEGER", "", Types.INTEGER));
-        registerType(new DB2DataType("SMALLINT", "", Types.SMALLINT, Types.TINYINT, Types.BOOLEAN));
-        registerType(new DB2DataType("REAL", "", Types.FLOAT, Types.REAL));
-        registerType(new DB2DataType("FLOAT", "$size", Types.DOUBLE));
-        registerType(new DB2DataType("VARCHAR", "$size", Types.VARCHAR));
-        registerType(new DB2DataType("DATE", "", Types.DATE));
-        registerType(new DB2DataType("TIME", "", Types.TIME));
-        registerType(new DB2DataType("TIMESTAMP", "", Types.TIMESTAMP));
+        registerType(createDataType("VARCHAR() FOR BIT DATA", "$size", Types.VARBINARY));
+        registerType(createDataType("CHAR() FOR BIT DATA", "$size", Types.BINARY, Types.BIT));
+        registerType(createDataType("CHAR", "$size", Types.CHAR));
+        registerType(createDataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
+        registerType(createDataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
+        registerType(createDataType("BIGINT", "", Types.BIGINT));
+        registerType(createDataType("BLOB", "", Types.BLOB, Types.LONGVARBINARY));
+        registerType(createDataType("CLOB", "", Types.CLOB, Types.SQLXML, Types.LONGVARCHAR));
+        registerType(createDataType("INTEGER", "", Types.INTEGER));
+        registerType(createDataType("SMALLINT", "", Types.SMALLINT, Types.TINYINT, Types.BOOLEAN));
+        registerType(createDataType("REAL", "", Types.FLOAT, Types.REAL));
+        registerType(createDataType("FLOAT", "$size", Types.DOUBLE));
+        registerType(createDataType("VARCHAR", "$size", Types.VARCHAR));
+        registerType(createDataType("DATE", "", Types.DATE));
+        registerType(createDataType("TIME", "", Types.TIME));
+        registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP));
 
         seal();
     }
@@ -99,5 +100,15 @@ public class DB2Dialect extends SQL92Dialect {
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.DB2Dialect.class;
+    }
+
+    @Override
+    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+        return new DB2DataType(aName, aDefinition, aJdbcType);
+    }
+
+    @Override
+    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+        return new DB2DataType(aName, aDefinition, aIdentity, aJdbcType);
     }
 }
