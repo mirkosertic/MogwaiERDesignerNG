@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.NameCastType;
@@ -164,5 +165,15 @@ public class SquirrelDialect extends Dialect {
     @Override
     public Class getHibernateDialectClass() {
         return dialect.getHibernateDialectClass();
+    }
+
+    @Override
+    public DataType createDataType(String name, String definition, int... jdbcType) {
+        return dialect.createDataType(name, definition, jdbcType);
+    }
+
+    @Override
+    public DataType createDataType(String name, String definition, boolean identity, int... jdbcType) {
+        return dialect.createDataType(name, definition, identity, jdbcType);        
     }
 }
