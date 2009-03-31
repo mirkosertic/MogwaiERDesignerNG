@@ -19,6 +19,7 @@ package de.erdesignerng.dialect.mysql;
 
 import java.sql.Types;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -37,54 +38,54 @@ public class MySQLDialect extends SQL92Dialect {
         setSupportsColumnExtra(true);
 
         // Other
-        registerType(new MySQLDataType("BIT", "$size", Types.BIT));
-        registerType(new MySQLDataType("BOOL", "", Types.BIT, Types.BOOLEAN));
+        registerType(createDataType("BIT", "$size", Types.BIT));
+        registerType(createDataType("BOOL", "", Types.BIT, Types.BOOLEAN));
         
         // Numeric
-        registerType(new MySQLDataType("TINYINT", "", Types.TINYINT));
-        registerType(new MySQLDataType("TINYINT UNSIGNED", "", Types.TINYINT));
-        registerType(new MySQLDataType("BIGINT", "", Types.BIGINT));
-        registerType(new MySQLDataType("BIGINT UNSIGNED", "", Types.BIGINT));
-        registerType(new MySQLDataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
-        registerType(new MySQLDataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
-        registerType(new MySQLDataType("DECIMAL UNSIGNED", "$size,$fraction", Types.DECIMAL));
-        registerType(new MySQLDataType("INTEGER", "", Types.INTEGER));
-        registerType(new MySQLDataType("INTEGER UNSIGNED", "", Types.INTEGER));
-        registerType(new MySQLDataType("INT", "", Types.INTEGER));
-        registerType(new MySQLDataType("INT UNSIGNED", "", Types.INTEGER));
-        registerType(new MySQLDataType("MEDIUMINT", "", Types.INTEGER));
-        registerType(new MySQLDataType("MEDIUMINT UNSIGNED", "", Types.INTEGER));
-        registerType(new MySQLDataType("SMALLINT", "", Types.SMALLINT));
-        registerType(new MySQLDataType("SMALLINT UNSIGNED", "", Types.SMALLINT));
-        registerType(new MySQLDataType("FLOAT", "$size,$fraction", Types.REAL, Types.FLOAT));
-        registerType(new MySQLDataType("DOUBLE", "$size,$fraction", Types.DOUBLE));
-        registerType(new MySQLDataType("DOUBLE PRECISION", "$size,$fraction", Types.DOUBLE));
-        registerType(new MySQLDataType("REAL", "$size,$fraction", Types.DOUBLE));
+        registerType(createDataType("TINYINT", "", Types.TINYINT));
+        registerType(createDataType("TINYINT UNSIGNED", "", Types.TINYINT));
+        registerType(createDataType("BIGINT", "", Types.BIGINT));
+        registerType(createDataType("BIGINT UNSIGNED", "", Types.BIGINT));
+        registerType(createDataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
+        registerType(createDataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
+        registerType(createDataType("DECIMAL UNSIGNED", "$size,$fraction", Types.DECIMAL));
+        registerType(createDataType("INTEGER", "", Types.INTEGER));
+        registerType(createDataType("INTEGER UNSIGNED", "", Types.INTEGER));
+        registerType(createDataType("INT", "", Types.INTEGER));
+        registerType(createDataType("INT UNSIGNED", "", Types.INTEGER));
+        registerType(createDataType("MEDIUMINT", "", Types.INTEGER));
+        registerType(createDataType("MEDIUMINT UNSIGNED", "", Types.INTEGER));
+        registerType(createDataType("SMALLINT", "", Types.SMALLINT));
+        registerType(createDataType("SMALLINT UNSIGNED", "", Types.SMALLINT));
+        registerType(createDataType("FLOAT", "$size,$fraction", Types.REAL, Types.FLOAT));
+        registerType(createDataType("DOUBLE", "$size,$fraction", Types.DOUBLE));
+        registerType(createDataType("DOUBLE PRECISION", "$size,$fraction", Types.DOUBLE));
+        registerType(createDataType("REAL", "$size,$fraction", Types.DOUBLE));
         
         // Blob
-        registerType(new MySQLDataType("LONG VARBINARY", "", Types.LONGVARBINARY));
-        registerType(new MySQLDataType("MEDIUMBLOB", "", Types.LONGVARBINARY));
-        registerType(new MySQLDataType("LONGBLOB", "", Types.LONGVARBINARY));
-        registerType(new MySQLDataType("BLOB", "", Types.BLOB));
-        registerType(new MySQLDataType("CLOB", "", Types.CLOB, Types.SQLXML));
-        registerType(new MySQLDataType("TINYBLOB", "", Types.LONGVARBINARY));
-        registerType(new MySQLDataType("VARBINARY", "$size", Types.VARBINARY));
-        registerType(new MySQLDataType("BINARY", "$size", Types.BINARY));
+        registerType(createDataType("LONG VARBINARY", "", Types.LONGVARBINARY));
+        registerType(createDataType("MEDIUMBLOB", "", Types.LONGVARBINARY));
+        registerType(createDataType("LONGBLOB", "", Types.LONGVARBINARY));
+        registerType(createDataType("BLOB", "", Types.BLOB));
+        registerType(createDataType("CLOB", "", Types.CLOB, Types.SQLXML));
+        registerType(createDataType("TINYBLOB", "", Types.LONGVARBINARY));
+        registerType(createDataType("VARBINARY", "$size", Types.VARBINARY));
+        registerType(createDataType("BINARY", "$size", Types.BINARY));
         
         // Text
-        registerType(new MySQLDataType("LONG VARCHAR", "", Types.LONGVARCHAR));
-        registerType(new MySQLDataType("MEDIUMTEXT", "", Types.LONGVARCHAR));
-        registerType(new MySQLDataType("LONGTEXT", "", Types.LONGVARCHAR));
-        registerType(new MySQLDataType("TEXT", "", Types.LONGVARCHAR));
-        registerType(new MySQLDataType("TINYTEXT", "", Types.LONGVARCHAR));
-        registerType(new MySQLDataType("CHAR", "$size", Types.CHAR));
-        registerType(new MySQLDataType("VARCHAR", "$size", Types.VARCHAR));
+        registerType(createDataType("LONG VARCHAR", "", Types.LONGVARCHAR));
+        registerType(createDataType("MEDIUMTEXT", "", Types.LONGVARCHAR));
+        registerType(createDataType("LONGTEXT", "", Types.LONGVARCHAR));
+        registerType(createDataType("TEXT", "", Types.LONGVARCHAR));
+        registerType(createDataType("TINYTEXT", "", Types.LONGVARCHAR));
+        registerType(createDataType("CHAR", "$size", Types.CHAR));
+        registerType(createDataType("VARCHAR", "$size", Types.VARCHAR));
         
         // Date and time
-        registerType(new MySQLDataType("DATE", "", Types.DATE));
-        registerType(new MySQLDataType("TIME", "", Types.TIME));
-        registerType(new MySQLDataType("DATETIME", "", Types.TIMESTAMP));
-        registerType(new MySQLDataType("TIMESTAMP", "", Types.TIMESTAMP));
+        registerType(createDataType("DATE", "", Types.DATE));
+        registerType(createDataType("TIME", "", Types.TIME));
+        registerType(createDataType("DATETIME", "", Types.TIMESTAMP));
+        registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP));
         
         seal();        
     }
@@ -141,4 +142,15 @@ public class MySQLDialect extends SQL92Dialect {
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.MySQLDialect.class;
     }
+    
+    @Override
+    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+        return new MySQLDataType(aName, aDefinition, aJdbcType);
+    }
+
+    @Override
+    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+        return new MySQLDataType(aName, aDefinition, aIdentity, aJdbcType);
+    }
+    
 }
