@@ -23,11 +23,8 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -38,6 +35,7 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.model.serializer.xml10.Model10XMLPersister;
 import de.erdesignerng.model.serializer.xml20.Model20XMLPersister;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.XMLUtils;
 
 /**
  * @author $Author: mirkosertic $
@@ -47,16 +45,10 @@ public final class ModelIOUtilities {
 
     private static ModelIOUtilities me;
 
-    private DocumentBuilderFactory documentBuilderFactory;
-
-    private DocumentBuilder documentBuilder;
-
-    private TransformerFactory transformerFactory;
+    private XMLUtils xmlUtils;
 
     private ModelIOUtilities() throws ParserConfigurationException {
-        documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        transformerFactory = TransformerFactory.newInstance();
+        xmlUtils = XMLUtils.getInstance();
     }
 
     public static ModelIOUtilities getInstance() throws ParserConfigurationException {
@@ -66,23 +58,15 @@ public final class ModelIOUtilities {
         }
         return me;
     }
-
-    public DocumentBuilderFactory getDocumentBuilderFactory() {
-        return documentBuilderFactory;
-    }
-
-    public DocumentBuilder getDocumentBuilder() {
-        return documentBuilder;
-    }
-
-    public TransformerFactory getTransformerFactory() {
-        return transformerFactory;
+    
+    public XMLUtils getXmlUtils() {
+        return xmlUtils;
     }
 
     public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
 
         try {
-            Document theDocument = documentBuilder.parse(aInputStream);
+            Document theDocument = xmlUtils.getDocumentBuilder().parse(aInputStream);
             if (Model20XMLPersister.supportsDocument(theDocument)) {
                 Model20XMLPersister thePersister = new Model20XMLPersister(this);
                 return thePersister.deserializeModelFromXML(theDocument);

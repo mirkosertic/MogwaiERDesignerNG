@@ -30,7 +30,7 @@ import de.erdesignerng.model.Attribute;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-15 10:57:04 $
  */
-public class GenericDataTypeImpl implements DataType {
+public abstract class GenericDataTypeImpl implements DataType {
 
     public static final String SIZE_TOKEN = "$size";
 
@@ -38,7 +38,8 @@ public class GenericDataTypeImpl implements DataType {
 
     public static final String SCALE_TOKEN = "$scale";
 
-    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER);
+    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {
+    };
 
     private static final int PRIME = 31;
 
@@ -272,5 +273,10 @@ public class GenericDataTypeImpl implements DataType {
     @Override
     public int[] getJDBCType() {
         return jdbcType;
+    }
+
+    @Override
+    public String getDefinition() {
+        return pattern;
     }
 }

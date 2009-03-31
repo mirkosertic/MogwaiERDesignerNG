@@ -228,4 +228,9 @@ public class Domain implements DataType, Cloneable {
     public boolean isIdentity() {
         return concreteType.isIdentity();
     }
+
+    @Override
+    public String getDefinition() {
+        return concreteType.getDefinition();
+    }
 }
