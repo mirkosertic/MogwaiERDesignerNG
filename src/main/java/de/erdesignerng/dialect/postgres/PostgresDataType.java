@@ -30,7 +30,7 @@ public class PostgresDataType extends GenericDataTypeImpl {
         super(aName, aDefinition, aJdbcDataType);
     }
 
-    public PostgresDataType(String aName, String aDefinition, boolean aIdentity, int aJdbcDataType) {
+    public PostgresDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcDataType) {
         super(aName, aDefinition, aJdbcDataType);
 
         identity = aIdentity;
