@@ -40,4 +40,6 @@ public interface DataType extends Comparable<DataType>, Serializable {
     boolean isIdentity();
     
     int[] getJDBCType();
+    
+    String getDefinition();
 }

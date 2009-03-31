@@ -17,9 +17,16 @@
  */
 package de.erdesignerng.visual;
 
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
+import org.xml.sax.SAXException;
+
+import de.erdesignerng.dialect.DataTypeIO;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
@@ -34,10 +41,12 @@ public final class ERDesigner {
     }
 
     public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
-            ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+            ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, TransformerException, IOException, ParserConfigurationException, SAXException {
 
         DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
         theScreen.setVisible(true);
+        
+        DataTypeIO.getInstance().loadUserTypes();
         
         ERDesignerMainFrame frame = new ERDesignerMainFrame();
         frame.setModel(frame.createNewModel());

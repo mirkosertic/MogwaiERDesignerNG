@@ -18,9 +18,7 @@
 package de.erdesignerng.dialect;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Driver;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Properties;
@@ -226,26 +224,7 @@ public abstract class Dialect {
         theProperties.put("password", aPassword);
         Connection theConnection = theDriver.connect(aUrl, theProperties);
 
-        updateDataTypesFromConnection(theConnection);
-
         return theConnection;
-    }
-
-    public void updateDataTypesFromConnection(Connection aConnection) throws SQLException {
-        DatabaseMetaData theMetaData = aConnection.getMetaData();
-        ResultSet theTypes = theMetaData.getTypeInfo();
-        while (theTypes.next()) {
-            String theTypeName = theTypes.getString("TYPE_NAME");
-            int theJDBCType = theTypes.getInt("DATA_TYPE");
-
-            DataType theType = getDataTypes().findByName(theTypeName);
-            if (theType == null) {
-                LOGGER.warn("Unknown datatype: " + theTypeName + " adding it to the list");
-
-                getDataTypes().add(createDataType(theTypeName, "", theJDBCType));
-            }
-        }
-        theTypes.close();
     }
 
     public boolean supportsSchemaInformation() {
