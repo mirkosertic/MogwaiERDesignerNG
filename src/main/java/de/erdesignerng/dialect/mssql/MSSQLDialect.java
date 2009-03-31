@@ -19,6 +19,7 @@ package de.erdesignerng.dialect.mssql;
 
 import java.sql.Types;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -36,39 +37,39 @@ public class MSSQLDialect extends SQL92Dialect {
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
 
-        registerType(new MSSQLDataType("bit", "", Types.BIT, Types.BOOLEAN));
-        registerType(new MSSQLDataType("tinyint", "", Types.TINYINT));
-        registerType(new MSSQLDataType("tinyint identity", "", true, Types.TINYINT));
-        registerType(new MSSQLDataType("bigint", "", Types.BIGINT));
-        registerType(new MSSQLDataType("bigint identity", "", true, Types.BIGINT));
-        registerType(new MSSQLDataType("varbinary", "$size", Types.VARBINARY));
-        registerType(new MSSQLDataType("binary", "$size", Types.BINARY, Types.LONGVARBINARY));
-        registerType(new MSSQLDataType("timestamp", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
-        registerType(new MSSQLDataType("char", "$size", Types.CHAR));
-        registerType(new MSSQLDataType("nchar", "$size", Types.CHAR));
-        registerType(new MSSQLDataType("uniqueidentifier", "", Types.CHAR));
-        registerType(new MSSQLDataType("numeric", "$size,$fraction", Types.NUMERIC));
-        registerType(new MSSQLDataType("numeric() identity", "$size,$fraction", true, Types.NUMERIC));
-        registerType(new MSSQLDataType("decimal", "$size,$fraction", Types.DECIMAL));
-        registerType(new MSSQLDataType("money", "", Types.DECIMAL));
-        registerType(new MSSQLDataType("smallmoney", "", Types.DECIMAL));
-        registerType(new MSSQLDataType("decimal() identity", "$size,$fraction", true, Types.DECIMAL));
-        registerType(new MSSQLDataType("int", "", Types.INTEGER));
-        registerType(new MSSQLDataType("int identity", "", true, Types.INTEGER));
-        registerType(new MSSQLDataType("smallint", "", Types.SMALLINT));
-        registerType(new MSSQLDataType("smallint identity", "", true, Types.SMALLINT));
-        registerType(new MSSQLDataType("real", "", Types.REAL));
-        registerType(new MSSQLDataType("float", "", Types.DOUBLE, Types.FLOAT));
-        registerType(new MSSQLDataType("varchar", "$size", Types.VARCHAR));
-        registerType(new MSSQLDataType("nvarchar", "$size", Types.VARCHAR));
-        registerType(new MSSQLDataType("sysname", "", Types.VARCHAR));
-        registerType(new MSSQLDataType("sql_variant", "", Types.VARCHAR));
-        registerType(new MSSQLDataType("datetime", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
-        registerType(new MSSQLDataType("smalldatetime", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
-        registerType(new MSSQLDataType("image", "", Types.BLOB));
-        registerType(new MSSQLDataType("ntext", "", Types.CLOB, Types.LONGVARCHAR));
-        registerType(new MSSQLDataType("xml", "", Types.SQLXML));
-        registerType(new MSSQLDataType("text", "", Types.CLOB));
+        registerType(createDataType("bit", "", Types.BIT, Types.BOOLEAN));
+        registerType(createDataType("tinyint", "", Types.TINYINT));
+        registerType(createDataType("tinyint identity", "", true, Types.TINYINT));
+        registerType(createDataType("bigint", "", Types.BIGINT));
+        registerType(createDataType("bigint identity", "", true, Types.BIGINT));
+        registerType(createDataType("varbinary", "$size", Types.VARBINARY));
+        registerType(createDataType("binary", "$size", Types.BINARY, Types.LONGVARBINARY));
+        registerType(createDataType("timestamp", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
+        registerType(createDataType("char", "$size", Types.CHAR));
+        registerType(createDataType("nchar", "$size", Types.CHAR));
+        registerType(createDataType("uniqueidentifier", "", Types.CHAR));
+        registerType(createDataType("numeric", "$size,$fraction", Types.NUMERIC));
+        registerType(createDataType("numeric() identity", "$size,$fraction", true, Types.NUMERIC));
+        registerType(createDataType("decimal", "$size,$fraction", Types.DECIMAL));
+        registerType(createDataType("money", "", Types.DECIMAL));
+        registerType(createDataType("smallmoney", "", Types.DECIMAL));
+        registerType(createDataType("decimal() identity", "$size,$fraction", true, Types.DECIMAL));
+        registerType(createDataType("int", "", Types.INTEGER));
+        registerType(createDataType("int identity", "", true, Types.INTEGER));
+        registerType(createDataType("smallint", "", Types.SMALLINT));
+        registerType(createDataType("smallint identity", "", true, Types.SMALLINT));
+        registerType(createDataType("real", "", Types.REAL));
+        registerType(createDataType("float", "", Types.DOUBLE, Types.FLOAT));
+        registerType(createDataType("varchar", "$size", Types.VARCHAR));
+        registerType(createDataType("nvarchar", "$size", Types.VARCHAR));
+        registerType(createDataType("sysname", "", Types.VARCHAR));
+        registerType(createDataType("sql_variant", "", Types.VARCHAR));
+        registerType(createDataType("datetime", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
+        registerType(createDataType("smalldatetime", "", Types.TIMESTAMP, Types.DATE, Types.TIME));
+        registerType(createDataType("image", "", Types.BLOB));
+        registerType(createDataType("ntext", "", Types.CLOB, Types.LONGVARCHAR));
+        registerType(createDataType("xml", "", Types.SQLXML));
+        registerType(createDataType("text", "", Types.CLOB));
 
         seal();
     }
@@ -116,5 +117,15 @@ public class MSSQLDialect extends SQL92Dialect {
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.SQLServerDialect.class;
+    }
+    
+    @Override
+    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+        return new MSSQLDataType(aName, aDefinition, aJdbcType);
+    }
+
+    @Override
+    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+        return new MSSQLDataType(aName, aDefinition, aIdentity, aJdbcType);
     }
 }
