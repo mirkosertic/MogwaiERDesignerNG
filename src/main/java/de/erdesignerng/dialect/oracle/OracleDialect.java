@@ -19,6 +19,7 @@ package de.erdesignerng.dialect.oracle;
 
 import java.sql.Types;
 
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -36,29 +37,29 @@ public class OracleDialect extends SQL92Dialect {
         setCastType(NameCastType.UPPERCASE);
         setSupportsOnUpdate(false);
 
-        registerType(new OracleDataType("LONG RAW", "", true, Types.LONGVARBINARY));
-        registerType(new OracleDataType("RAW", "$size", true, Types.VARBINARY, Types.BINARY));
-        registerType(new OracleDataType("LONG", "", true, Types.LONGVARCHAR));
-        registerType(new OracleDataType("CHAR", "$size", Types.CHAR));
-        registerType(new OracleDataType("NUMBER", "$size,$fraction", Types.NUMERIC, Types.INTEGER, Types.BIGINT,
+        registerType(createDataType("LONG RAW", "", true, Types.LONGVARBINARY));
+        registerType(createDataType("RAW", "$size", true, Types.VARBINARY, Types.BINARY));
+        registerType(createDataType("LONG", "", true, Types.LONGVARCHAR));
+        registerType(createDataType("CHAR", "$size", Types.CHAR));
+        registerType(createDataType("NUMBER", "$size,$fraction", Types.NUMERIC, Types.INTEGER, Types.BIGINT,
                 Types.DECIMAL, Types.DOUBLE, Types.SMALLINT, Types.BIT, Types.TINYINT, Types.BOOLEAN));
-        registerType(new OracleDataType("FLOAT", "", Types.FLOAT));
-        registerType(new OracleDataType("REAL", "", Types.REAL));
-        registerType(new OracleDataType("VARCHAR2", "$size", Types.VARCHAR));
-        registerType(new OracleDataType("NVARCHAR2", "$size", Types.VARCHAR));
-        registerType(new OracleDataType("DATE", "", Types.DATE));
-        registerType(new OracleDataType("TIMESTAMP", "", Types.TIMESTAMP, Types.TIME));
-        registerType(new OracleDataType("BLOB", "", Types.BLOB));
-        registerType(new OracleDataType("CLOB", "", Types.CLOB));
-        registerType(new OracleDataType("NCLOB", "", Types.CLOB));
-        registerType(new OracleDataType("XMLTYPE", "", Types.SQLXML));
-        registerType(new OracleDataType("ROWID", "", Types.OTHER));
-        registerType(new OracleDataType("SDO_GEOMETRY", "", Types.OTHER));
-        registerType(new OracleDataType("SDO_GTYPE", "", Types.OTHER));
-        registerType(new OracleDataType("SDO_SRID", "", Types.OTHER));
-        registerType(new OracleDataType("SDO_POINT", "", Types.OTHER));
-        registerType(new OracleDataType("SDO_ELEM_INFO", "", Types.OTHER));
-        registerType(new OracleDataType("SDO_ORDINATES", "", Types.OTHER));
+        registerType(createDataType("FLOAT", "", Types.FLOAT));
+        registerType(createDataType("REAL", "", Types.REAL));
+        registerType(createDataType("VARCHAR2", "$size", Types.VARCHAR));
+        registerType(createDataType("NVARCHAR2", "$size", Types.VARCHAR));
+        registerType(createDataType("DATE", "", Types.DATE));
+        registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP, Types.TIME));
+        registerType(createDataType("BLOB", "", Types.BLOB));
+        registerType(createDataType("CLOB", "", Types.CLOB));
+        registerType(createDataType("NCLOB", "", Types.CLOB));
+        registerType(createDataType("XMLTYPE", "", Types.SQLXML));
+        registerType(createDataType("ROWID", "", Types.OTHER));
+        registerType(createDataType("SDO_GEOMETRY", "", Types.OTHER));
+        registerType(createDataType("SDO_GTYPE", "", Types.OTHER));
+        registerType(createDataType("SDO_SRID", "", Types.OTHER));
+        registerType(createDataType("SDO_POINT", "", Types.OTHER));
+        registerType(createDataType("SDO_ELEM_INFO", "", Types.OTHER));
+        registerType(createDataType("SDO_ORDINATES", "", Types.OTHER));
 
         seal();
     }
@@ -103,5 +104,15 @@ public class OracleDialect extends SQL92Dialect {
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.Oracle8iDialect.class;
+    }
+    
+    @Override
+    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+        return new OracleDataType(aName, aDefinition, aJdbcType);
+    }
+
+    @Override
+    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+        return new OracleDataType(aName, aDefinition, aIdentity, aJdbcType);
     }
 }
