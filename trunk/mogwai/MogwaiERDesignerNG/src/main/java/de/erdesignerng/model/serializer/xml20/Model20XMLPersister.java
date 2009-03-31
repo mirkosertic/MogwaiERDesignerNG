@@ -71,11 +71,11 @@ public class Model20XMLPersister implements CommonXMLElementsAndAttributes {
     }
 
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws IOException, TransformerException {
-        Document theDocument = utils.getDocumentBuilder().newDocument();
+        Document theDocument = utils.getXmlUtils().getDocumentBuilder().newDocument();
 
         XMLModelSerializer.SERIALIZER.serialize(aModel, theDocument);
 
-        Transformer theTransformer = utils.getTransformerFactory().newTransformer();
+        Transformer theTransformer = utils.getXmlUtils().getTransformerFactory().newTransformer();
         theTransformer.transform(new DOMSource(theDocument), new StreamResult(aStream));
 
         aStream.close();
