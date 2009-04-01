@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -62,6 +65,8 @@ public final class DataTypeIO {
 
     private static final String DIALECT = "dialect";
 
+    private static final String OTHER = "OTHER";
+
     private static DataTypeIO me;
 
     private XMLUtils xmlUtils;
@@ -77,7 +82,28 @@ public final class DataTypeIO {
         xmlUtils = XMLUtils.getInstance();
     }
 
-    public void loadUserTypes() throws TransformerException, IOException, SAXException {
+    private static String jdbcTypeToString(int aType) throws IllegalArgumentException, IllegalAccessException {
+        for (Field theField : Types.class.getFields()) {
+            int theValue = theField.getInt(Types.class);
+            if (theValue == aType) {
+                return theField.getName();
+            }
+        }
+        return OTHER;
+    }
+
+    private static int stringToJdbcType(String aType) throws IllegalArgumentException, IllegalAccessException {
+        for (Field theField : Types.class.getFields()) {
+            int theValue = theField.getInt(Types.class);
+            if (aType.equals(theField.getName())) {
+                return theValue;
+            }
+        }
+        return Types.OTHER;
+    }
+
+    public void loadUserTypes() throws TransformerException, IOException, SAXException, DOMException,
+            IllegalArgumentException, IllegalAccessException {
         DialectFactory theFactory = DialectFactory.getInstance();
 
         File theDataTypesDirectory = new File("dataTypes");
@@ -112,7 +138,7 @@ public final class DataTypeIO {
     }
 
     private void deserializeDataTypesFrom(Dialect aDialect, InputStream aStream) throws TransformerException,
-            IOException, SAXException {
+            IOException, SAXException, IllegalArgumentException, IllegalAccessException {
         Document theDocument = xmlUtils.getDocumentBuilder().parse(aStream);
         NodeList theNodes = theDocument.getElementsByTagName(DATATYPE);
         for (int i = 0; i < theNodes.getLength(); i++) {
@@ -125,7 +151,7 @@ public final class DataTypeIO {
             NodeList theTypesNode = theDataType.getElementsByTagName(JDBCTYPE);
             for (int j = 0; j < theTypesNode.getLength(); j++) {
                 Element theJdbcElement = (Element) theTypesNode.item(j);
-                theJDBCTypes.add(Integer.parseInt(theJdbcElement.getAttribute(VALUE)));
+                theJDBCTypes.add(stringToJdbcType(theJdbcElement.getAttribute(VALUE)));
             }
 
             int[] theTypes = new int[theJDBCTypes.size()];
@@ -146,7 +172,8 @@ public final class DataTypeIO {
         }
     }
 
-    private void serializeDataTypesFor(Dialect aDialect, OutputStream aStream) throws TransformerException, IOException {
+    private void serializeDataTypesFor(Dialect aDialect, OutputStream aStream) throws TransformerException,
+            IOException, DOMException, IllegalArgumentException, IllegalAccessException {
         Document theDocument = xmlUtils.getDocumentBuilder().newDocument();
         Element theRootElement = theDocument.createElement(DATATYPES);
         theRootElement.setAttribute(DIALECT, aDialect.getUniqueName());
@@ -158,7 +185,7 @@ public final class DataTypeIO {
             theTypeElement.setAttribute(DEFINITION, theDataType.getDefinition());
             for (int theJdbcType : theDataType.getJDBCType()) {
                 Element theJdbcElement = theDocument.createElement(JDBCTYPE);
-                theJdbcElement.setAttribute(VALUE, Integer.toString(theJdbcType));
+                theJdbcElement.setAttribute(VALUE, jdbcTypeToString(theJdbcType));
                 theTypeElement.appendChild(theJdbcElement);
             }
             theRootElement.appendChild(theTypeElement);
