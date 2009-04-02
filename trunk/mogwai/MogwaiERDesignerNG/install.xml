@@ -1,8 +1,13 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="iso-8859-15" standalone="yes"?>
 <installation version="1.0">
 	<info>
 		<appname>@name@</appname>
 		<appversion>@version@</appversion>
+		<authors>
+			<author name="Mirko Sertic" email="mirkosertic@users.sourceforge.net"/>
+			<author name="Elton Xia" email="eltonxia@users.sourceforge.net"/>
+			<author name="Owenm" email="owenm2001@users.sourceforge.net"/> 
+		</authors>
 		<url>http://mogwai.sourceforge.net</url>
 		<javaversion>1.6</javaversion>
     	<requiresjdk>no</requiresjdk>
