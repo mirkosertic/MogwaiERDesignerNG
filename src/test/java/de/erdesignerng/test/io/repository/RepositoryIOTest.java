@@ -55,30 +55,32 @@ public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
         Connection theConnection = null;
         try {
             theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:aname", "sa", "");
-            
+
             Class theHibernateDialect = org.hibernate.dialect.HSQLDialect.class;
-            
+
             RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
             theDesc.setName("Dummy");
-            
-            theDesc = DictionaryModelSerializer.SERIALIZER.serialize(theDesc, theModel, theConnection, theHibernateDialect);
-            
-            Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theDesc, theConnection, theHibernateDialect);
+
+            theDesc = DictionaryModelSerializer.SERIALIZER.serialize(theDesc, theModel, theConnection,
+                    theHibernateDialect);
+
+            Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theDesc, theConnection,
+                    theHibernateDialect);
 
             Document theEmptyDoc = theBuilder.newDocument();
             XMLModelSerializer.SERIALIZER.serialize(theNewModel, theEmptyDoc);
-            
+
             StringWriter theStringWriter = new StringWriter();
-            
+
             TransformerFactory theTransformerFactory = TransformerFactory.newInstance();
             Transformer theTransformer = theTransformerFactory.newTransformer();
             theTransformer.transform(new DOMSource(theEmptyDoc), new StreamResult(theStringWriter));
-            
+
             String theOriginalFile = readResourceFile("examplemodel.mxm");
             String theNewFile = theStringWriter.toString();
-            
+
             assertTrue(theOriginalFile.equals(theNewFile));
-            
+
         } finally {
             if (theConnection != null) {
                 theConnection.close();
