@@ -72,7 +72,7 @@ public class ClasspathEditorView extends JPanel {
         thePanel.add(cancelButton, cons.xy(3, 1));
         cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xyw(2, 7, 3));
+        add(thePanel, cons.xywh(2, 7, 3, 1));
 
         classpath.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }

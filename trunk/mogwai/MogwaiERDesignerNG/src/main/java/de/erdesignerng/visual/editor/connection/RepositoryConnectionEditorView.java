@@ -105,7 +105,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
 
         });
 
-        add(thePanel, cons.xyw(2, 12, 3));
+        add(thePanel, cons.xywh(2, 12, 3, 1));
     }
 
     public DefaultComboBox getDialect() {

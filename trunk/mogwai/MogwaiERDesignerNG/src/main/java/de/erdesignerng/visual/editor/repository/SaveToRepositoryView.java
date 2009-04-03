@@ -91,7 +91,7 @@ public class SaveToRepositoryView extends JPanel {
         thePanel.add(cancelButton, cons.xy(3, 1));
         cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xyw(2, 13, 5));
+        add(thePanel, cons.xywh(2, 13, 5, 1));
 
         existingNameBox.addActionListener(new ActionListener() {
 
