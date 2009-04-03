@@ -88,7 +88,6 @@ public abstract class HibernateTemplate {
         Thread theCurrentThread = Thread.currentThread();
         ClassLoader theClassLoader = theCurrentThread.getContextClassLoader();
         ClassLoader theMogwaiClassLoader = HibernateTemplate.class.getClassLoader();
-        ClassLoader theHibernateClassLoader = Configuration.class.getClassLoader();
         
         boolean overrideClassLoader = !theClassLoader.equals(theMogwaiClassLoader);
         if (overrideClassLoader) {
@@ -99,11 +98,6 @@ public abstract class HibernateTemplate {
             
             theSession = createSession(connection, dialectClass);
         
-            if (overrideClassLoader) {
-                theCurrentThread.setContextClassLoader(null);
-                theClassLoader = null;
-            }
-            
             theTx = theSession.beginTransaction();
             
             Object theResult = doInSession(theSession);
