@@ -75,7 +75,7 @@ public class MigrationScriptView extends JPanel {
         thePanel.add(cancelButton, cons.xy(3, 1));
         cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xyw(2, 6, 3));
+        add(thePanel, cons.xywh(2, 6, 3, 1));
         
     }
 
