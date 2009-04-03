@@ -70,7 +70,7 @@ public class LoadFromRepositoryView extends JPanel {
         thePanel.add(cancelButton, cons.xy(3, 1));
         cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xyw(2, 4, 3));
+        add(thePanel, cons.xywh(2, 4, 3, 1));
     }
 
     /**

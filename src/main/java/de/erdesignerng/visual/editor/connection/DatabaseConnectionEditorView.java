@@ -88,7 +88,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         add(new DefaultLabel(ERDesignerBundle.PASSWORD), cons.xy(2, 12));
         add(password, cons.xy(4, 12));
 
-        add(promptForPassword, cons.xyw(2, 14, 3));
+        add(promptForPassword, cons.xywh(2, 14, 3, 1));
 
         JPanel thePanel = new JPanel();
 
@@ -115,7 +115,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         });
 
-        add(thePanel, cons.xyw(2, 16, 3));
+        add(thePanel, cons.xywh(2, 16, 3, 1));
     }
 
     public DefaultComboBox getDialect() {
