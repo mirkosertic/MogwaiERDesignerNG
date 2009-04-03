@@ -46,7 +46,7 @@ import de.erdesignerng.modificationtracker.ModelModificationTracker;
 public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
-
+    
     public RepositoryEntryDesciptor serialize(final RepositoryEntryDesciptor aDesc, final Model aModel,
             Connection aConnection, Class aHibernateDialectClass) throws Exception {
 

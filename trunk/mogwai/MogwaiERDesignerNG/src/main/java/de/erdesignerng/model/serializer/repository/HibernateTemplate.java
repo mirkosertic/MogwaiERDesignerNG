@@ -88,6 +88,7 @@ public abstract class HibernateTemplate {
         Thread theCurrentThread = Thread.currentThread();
         ClassLoader theClassLoader = theCurrentThread.getContextClassLoader();
         ClassLoader theMogwaiClassLoader = HibernateTemplate.class.getClassLoader();
+        ClassLoader theHibernateClassLoader = Configuration.class.getClassLoader();
         
         boolean overrideClassLoader = !theClassLoader.equals(theMogwaiClassLoader);
         if (overrideClassLoader) {
