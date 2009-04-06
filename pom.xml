@@ -34,13 +34,11 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask"
-									name="XMLResourceBundle" />
+								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"/>
 
-								<XMLResourceBundle dest="src/main/resources"
-									defaultLanguage="en" src="src/main/java">
+								<XMLResourceBundle dest="src/main/resources" defaultLanguage="en" src="src/main/java">
 									<fileset dir="src/main/resources">
-										<include name="erdesigner.xml" />
+										<include name="erdesigner.xml"/>
 									</fileset>
 								</XMLResourceBundle>
 							</tasks>
@@ -70,50 +68,50 @@
 							<tasks>
 								<copy todir="${staging.dir}">
 									<fileset dir="${basedir}">
-										<include name="*.sh" />
-										<include name="*.bat" />
-										<include name="*.txt" />
+										<include name="*.sh"/>
+										<include name="*.bat"/>
+										<include name="*.txt"/>
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}">
 									<fileset dir="${basedir}">
-										<include name="install*.xml" />
+										<include name="install*.xml"/>
 									</fileset>
 									<filterset>
-										<filter token="version" value="${project.version}" />
-										<filter token="name" value="${project.name}" />
+										<filter token="version" value="${project.version}"/>
+										<filter token="name" value="${project.name}"/>
 									</filterset>
 								</copy>
 								<copy todir="${staging.dir}/src">
 									<fileset dir="${basedir}/src">
-										<include name="**/*.java" />
-										<include name="**/*.xml" />
-										<include name="**/*.xsd" />
-										<include name="**/*.properties" />
-										<include name="**/*.png" />
-										<include name="**/*.gif" />
-										<include name="**/*.jpg" />
-										<include name="**/*.mxm" />
-										<include name="**/*.sql" />
+										<include name="**/*.java"/>
+										<include name="**/*.xml"/>
+										<include name="**/*.xsd"/>
+										<include name="**/*.properties"/>
+										<include name="**/*.png"/>
+										<include name="**/*.gif"/>
+										<include name="**/*.jpg"/>
+										<include name="**/*.mxm"/>
+										<include name="**/*.sql"/>
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/userdoc">
 									<fileset dir="${basedir}/userdoc">
-										<include name="**/*.pdf" />
+										<include name="**/*.pdf"/>
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/reports">
 									<fileset dir="${basedir}/reports">
-										<include name="**/*.jasper" />
-										<include name="**/*.jrxml" />
+										<include name="**/*.jasper"/>
+										<include name="**/*.jrxml"/>
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/javadoc">
-									<fileset dir="${basedir}/target/site/apidocs" />
+									<fileset dir="${basedir}/target/site/apidocs"/>
 								</copy>
 								<copy todir="${staging.dir}/lib">
 									<fileset dir="${basedir}/target">
-										<include name="${project.artifactId}-${project.version}.jar" />
+										<include name="${project.artifactId}-${project.version}.jar"/>
 									</fileset>
 								</copy>
 							</tasks>
@@ -320,7 +318,12 @@
 			<artifactId>xalan</artifactId>
 			<version>2.7.1</version>
 		</dependency>
-	</dependencies>
+	  <dependency>
+      <groupId>net.sourceforge</groupId>
+      <artifactId>sqleonardo</artifactId>
+      <version>2009.02</version>
+    </dependency>
+  </dependencies>
 
 	<properties>
 		<staging.dir>${project.build.directory}/staging
