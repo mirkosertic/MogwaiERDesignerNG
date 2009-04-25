@@ -71,6 +71,7 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
         DefaultComboBox theAttributes = new DefaultComboBox();
         theAttributes.setModel(new DefaultComboBoxModel(theRelation.getImportingTable().getAttributes()));
         theTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
+        theTable.setRowHeight((int) theAttributes.getPreferredSize().getHeight());
     }
 
     @Override
