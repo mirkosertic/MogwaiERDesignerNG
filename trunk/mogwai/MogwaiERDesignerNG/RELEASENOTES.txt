@@ -27,7 +27,7 @@ This software uses or is based on the following libraries:
   
  Thanks to the following contributors
  
-  Thomas Breitkreuz for his report templates and many goot feature requests
+  Thomas Breitkreuz for his report templates and many good feature requests
 
 Release 1.0
 
