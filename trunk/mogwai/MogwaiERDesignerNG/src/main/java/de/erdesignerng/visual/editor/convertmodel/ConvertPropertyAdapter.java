@@ -75,6 +75,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
         theTargetTypesEditor.setModel(new DefaultComboBoxModel(theInfos.getTargetDialect().getDataTypes().toArray(
                 new DataType[0])));
         theTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theTargetTypesEditor));
+        theTable.setRowHeight((int) theTargetTypesEditor.getPreferredSize().getHeight());        
     }
 
     @Override
