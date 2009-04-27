@@ -5,7 +5,7 @@
 	<style name="FieldContent" isDefault="false" vAlign="Middle" fontSize="10"/>
 	<style name="FieldContent_Center" isDefault="false" style="FieldContent" hAlign="Center"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/tb/Desktop/MogwaiReport/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:/source/workspace/MogwaiERDesignerNG/reports/ThomasBreitkreuz/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="MainDataSource" class="java.lang.Object" isForPrompting="false"/>
 	<field name="RefId" class="java.lang.String">

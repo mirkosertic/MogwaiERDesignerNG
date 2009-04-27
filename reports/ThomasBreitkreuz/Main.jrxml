@@ -5,7 +5,7 @@
 	<style name="Heading_Table" isDefault="false" style="Heading" hAlign="Left" fontSize="14" isBold="true"/>
 	<style name="Heading_FieldList" isDefault="false" style="Heading" hAlign="Left" fontSize="14" isItalic="true"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/tb/Desktop/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:/source/workspace/MogwaiERDesignerNG/reports/ThomasBreitkreuz/"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="xPath">
 		<![CDATA[/Model/Tables/Table]]>
