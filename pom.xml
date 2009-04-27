@@ -11,13 +11,12 @@
 	<parent>
 		<groupId>net.sourceforge.mogwai</groupId>
 		<artifactId>mogwai-masterpom</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<repositories>
 		<repository>
-			<id>mogwai-internal-site</id>
-			<url>http://mogwai.sourceforge.net/repository/maven2
-			</url>
+			<id>mogwai-repository</id>
+			<url>http://mogwai.sourceforge.net/repository/maven2</url>
 		</repository>
 	</repositories>
 	<build>
@@ -34,11 +33,15 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask" name="XMLResourceBundle"/>
+								<taskdef
+									classname="de.mogwai.common.i18n.XMLResourceBundleTask"
+									name="XMLResourceBundle" />
 
-								<XMLResourceBundle dest="src/main/resources" defaultLanguage="en" src="src/main/java">
+								<XMLResourceBundle
+									dest="src/main/resources" defaultLanguage="en"
+									src="src/main/java">
 									<fileset dir="src/main/resources">
-										<include name="erdesigner.xml"/>
+										<include name="erdesigner.xml" />
 									</fileset>
 								</XMLResourceBundle>
 							</tasks>
@@ -68,50 +71,54 @@
 							<tasks>
 								<copy todir="${staging.dir}">
 									<fileset dir="${basedir}">
-										<include name="*.sh"/>
-										<include name="*.bat"/>
-										<include name="*.txt"/>
+										<include name="*.sh" />
+										<include name="*.bat" />
+										<include name="*.txt" />
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}">
 									<fileset dir="${basedir}">
-										<include name="install*.xml"/>
+										<include name="install*.xml" />
 									</fileset>
 									<filterset>
-										<filter token="version" value="${project.version}"/>
-										<filter token="name" value="${project.name}"/>
+										<filter token="version"
+											value="${project.version}" />
+										<filter token="name"
+											value="${project.name}" />
 									</filterset>
 								</copy>
 								<copy todir="${staging.dir}/src">
 									<fileset dir="${basedir}/src">
-										<include name="**/*.java"/>
-										<include name="**/*.xml"/>
-										<include name="**/*.xsd"/>
-										<include name="**/*.properties"/>
-										<include name="**/*.png"/>
-										<include name="**/*.gif"/>
-										<include name="**/*.jpg"/>
-										<include name="**/*.mxm"/>
-										<include name="**/*.sql"/>
+										<include name="**/*.java" />
+										<include name="**/*.xml" />
+										<include name="**/*.xsd" />
+										<include name="**/*.properties" />
+										<include name="**/*.png" />
+										<include name="**/*.gif" />
+										<include name="**/*.jpg" />
+										<include name="**/*.mxm" />
+										<include name="**/*.sql" />
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/userdoc">
 									<fileset dir="${basedir}/userdoc">
-										<include name="**/*.pdf"/>
+										<include name="**/*.pdf" />
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/reports">
 									<fileset dir="${basedir}/reports">
-										<include name="**/*.jasper"/>
-										<include name="**/*.jrxml"/>
+										<include name="**/*.jasper" />
+										<include name="**/*.jrxml" />
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/javadoc">
-									<fileset dir="${basedir}/target/site/apidocs"/>
+									<fileset
+										dir="${basedir}/target/site/apidocs" />
 								</copy>
 								<copy todir="${staging.dir}/lib">
 									<fileset dir="${basedir}/target">
-										<include name="${project.artifactId}-${project.version}.jar"/>
+										<include
+											name="${project.artifactId}-${project.version}.jar" />
 									</fileset>
 								</copy>
 							</tasks>
@@ -122,8 +129,7 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin
-				</artifactId>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.0</version>
 				<executions>
 					<execution>
@@ -133,8 +139,12 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<excludeGroupIds>org.codehaus.izpack</excludeGroupIds>
-							<outputDirectory>${staging.dir}/lib</outputDirectory>
+							<excludeGroupIds>
+								org.codehaus.izpack
+							</excludeGroupIds>
+							<outputDirectory>
+								${staging.dir}/lib
+							</outputDirectory>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
@@ -148,13 +158,19 @@
 				<dependencies>
 					<dependency>
 						<groupId>org.codehaus.izpack</groupId>
-						<artifactId>izpack-standalone-compiler</artifactId>
-						<version>${your.standalone-compiler.version}</version>
+						<artifactId>
+							izpack-standalone-compiler
+						</artifactId>
+						<version>
+							${your.standalone-compiler.version}
+						</version>
 					</dependency>
 				</dependencies>
 				<configuration>
 					<izpackBasedir>${staging.dir}</izpackBasedir>
-					<customPanelDirectory>${staging.dir}</customPanelDirectory>
+					<customPanelDirectory>
+						${staging.dir}
+					</customPanelDirectory>
 					<descriptorEncoding>UTF-8</descriptorEncoding>
 				</configuration>
 				<executions>
@@ -301,10 +317,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.izpack</groupId>
-			<artifactId>izpack-standalone-compiler
-			</artifactId>
-			<version>${your.standalone-compiler.version}
-			</version>
+			<artifactId>izpack-standalone-compiler</artifactId>
+			<version>${your.standalone-compiler.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -318,17 +332,17 @@
 			<artifactId>xalan</artifactId>
 			<version>2.7.1</version>
 		</dependency>
-	  <dependency>
-      <groupId>net.sourceforge</groupId>
-      <artifactId>sqleonardo</artifactId>
-      <version>2009.02</version>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>net.sourceforge</groupId>
+			<artifactId>sqleonardo</artifactId>
+			<version>2009.02</version>
+		</dependency>
+	</dependencies>
 
 	<properties>
-		<staging.dir>${project.build.directory}/staging
-		</staging.dir>
-		<your.standalone-compiler.version>4.2.1
+		<staging.dir>${project.build.directory}/staging</staging.dir>
+		<your.standalone-compiler.version>
+			4.2.1
 		</your.standalone-compiler.version>
 	</properties>
 
