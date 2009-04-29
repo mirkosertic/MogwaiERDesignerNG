@@ -33,23 +33,18 @@
 			<staticText>
 				<reportElement style="Heading" x="0" y="0" width="165" height="20"/>
 				<textElement/>
-				<text><![CDATA[Field]]></text>
+				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Heading" x="165" y="0" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Type]]></text>
 			</staticText>
-			<staticText>
-				<reportElement style="Heading_Center" x="330" y="0" width="67" height="20"/>
-				<textElement/>
-				<text><![CDATA[Nullable]]></text>
-			</staticText>
 			<line>
 				<reportElement x="330" y="3" width="1" height="17"/>
 			</line>
 			<line>
-				<reportElement x="0" y="20" width="397" height="1"/>
+				<reportElement x="0" y="20" width="331" height="1"/>
 			</line>
 			<line>
 				<reportElement x="165" y="3" width="1" height="17"/>

@@ -5,7 +5,7 @@
 	<style name="FieldContent" isDefault="false" vAlign="Middle" fontSize="10"/>
 	<style name="FieldContent_Center" isDefault="false" style="FieldContent" hAlign="Center"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:/source/workspace/MogwaiERDesignerNG/reports/ThomasBreitkreuz/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="MainDataSource" class="java.lang.Object" isForPrompting="false"/>
 	<field name="Name" class="java.lang.String">
@@ -15,7 +15,7 @@
 		<fieldDescription><![CDATA[@indextype]]></fieldDescription>
 	</field>
 	<detail>
-		<band height="43">
+		<band height="37">
 			<textField>
 				<reportElement style="Heading" x="0" y="0" width="595" height="20"/>
 				<textElement/>
@@ -23,11 +23,11 @@
 			</textField>
 			<subreport>
 				<reportElement positionType="Float" x="23" y="20" width="460" height="14"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="MainDataSource">
 					<subreportParameterExpression><![CDATA[$P{MainDataSource}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("/Index/Indexattribute")]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Main_IndexAttributes.jasper"]]></subreportExpression>
