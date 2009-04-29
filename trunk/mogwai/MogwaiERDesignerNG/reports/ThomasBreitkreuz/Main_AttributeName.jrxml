@@ -12,9 +12,9 @@
 		<fieldDescription><![CDATA[@name]]></fieldDescription>
 	</field>
 	<detail>
-		<band height="17">
-			<textField>
-				<reportElement style="FieldContent" positionType="Float" x="0" y="0" width="300" height="14"/>
+		<band height="3">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="FieldContent" positionType="Float" x="0" y="0" width="300" height="0" isRemoveLineWhenBlank="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{Name}]]></textFieldExpression>
 			</textField>

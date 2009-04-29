@@ -5,7 +5,7 @@
 	<style name="FieldContent" isDefault="false" vAlign="Middle" fontSize="10"/>
 	<style name="FieldContent_Center" isDefault="false" style="FieldContent" hAlign="Center"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:/source/workspace/MogwaiERDesignerNG/reports/ThomasBreitkreuz/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="MainDataSource" class="java.lang.Object" isForPrompting="false"/>
 	<field name="RefId" class="java.lang.String">
@@ -24,9 +24,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="13">
+		<band height="2">
 			<subreport>
-				<reportElement positionType="Float" x="0" y="0" width="265" height="11"/>
+				<reportElement positionType="Float" x="0" y="0" width="265" height="0"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>

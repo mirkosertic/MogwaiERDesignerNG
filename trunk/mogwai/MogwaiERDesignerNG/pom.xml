@@ -171,7 +171,7 @@
 					<customPanelDirectory>
 						${staging.dir}
 					</customPanelDirectory>
-					<descriptorEncoding>UTF-8</descriptorEncoding>
+					<descriptorEncoding>ISO8859-1</descriptorEncoding>
 				</configuration>
 				<executions>
 					<execution>

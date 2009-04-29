@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Tables" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<style name="Heading" isDefault="false" vAlign="Middle"/>
+	<style name="Heading_Table" isDefault="false" style="Heading" hAlign="Left" fontSize="14" isBold="true"/>
+	<style name="Heading_FieldList" isDefault="false" style="Heading" hAlign="Left" fontSize="14" isItalic="true"/>
+	<style name="Comment" isDefault="false" hAlign="Left" vAlign="Middle" fontSize="10" isItalic="true"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="Name" class="java.lang.String">
+		<fieldDescription><![CDATA[@name]]></fieldDescription>
+	</field>
+	<field name="Comment" class="java.lang.String">
+		<fieldDescription><![CDATA[Comment]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<detail>
+		<band height="150">
+			<textField>
+				<reportElement style="Heading_Table" x="0" y="0" width="555" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Tablename: " + $F{Name}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="false">
+				<reportElement x="19" y="77" width="536" height="16"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("/Table/Attribute")]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Main_Attributes.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="143" width="100" height="1"/>
+			</break>
+			<line>
+				<reportElement x="0" y="20" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Heading_FieldList" x="0" y="57" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Field List]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Heading_FieldList" positionType="Float" x="0" y="107" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Index List]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="19" y="127" width="536" height="16"/>
+				<subreportParameter name="MainDataSource">
+					<subreportParameterExpression><![CDATA[$P{REPORT_DATA_SOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("/Table/Index")]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Main_Indexes.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Comment" x="0" y="32" width="555" height="14" isRemoveLineWhenBlank="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Comment}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
