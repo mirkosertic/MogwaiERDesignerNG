@@ -9,55 +9,55 @@ public interface ERDesignerBundle {
 
   /** . */
   String TITLE = "TITLE";
-  /** File. */
+  /** \u0046\u0069\u006c\u0065. */
   String FILE = "FILE";
-  /** Recently used files. */
+  /** \u0052\u0065\u0063\u0065\u006e\u0074\u006c\u0079\u0020\u0075\u0073\u0065\u0064\u0020\u0066\u0069\u006c\u0065\u0073. */
   String RECENTLYUSEDFILES = "RECENTLYUSEDFILES";
-  /** New model. */
+  /** \u004e\u0065\u0077\u0020\u006d\u006f\u0064\u0065\u006c. */
   String NEWMODEL = "NEWMODEL";
-  /** Save model. */
+  /** \u0053\u0061\u0076\u0065\u0020\u006d\u006f\u0064\u0065\u006c. */
   String SAVEMODEL = "SAVEMODEL";
-  /** Save model as.... */
+  /** \u0053\u0061\u0076\u0065\u0020\u006d\u006f\u0064\u0065\u006c\u0020\u0061\u0073\u002e\u002e\u002e. */
   String SAVEMODELAS = "SAVEMODELAS";
-  /** Save model to repository.... */
+  /** \u0053\u0061\u0076\u0065\u0020\u006d\u006f\u0064\u0065\u006c\u0020\u0074\u006f\u0020\u0072\u0065\u0070\u006f\u0073\u0069\u0074\u006f\u0072\u0079\u002e\u002e\u002e. */
   String SAVEMODELTODB = "SAVEMODELTODB";
-  /** Load model from repository.... */
+  /** \u004c\u006f\u0061\u0064\u0020\u006d\u006f\u0064\u0065\u006c\u0020\u0066\u0072\u006f\u006d\u0020\u0072\u0065\u0070\u006f\u0073\u0069\u0074\u006f\u0072\u0079\u002e\u002e\u002e. */
   String LOADMODELFROMDB = "LOADMODELFROMDB";
-  /** Load model.... */
+  /** \u004c\u006f\u0061\u0064\u0020\u006d\u006f\u0064\u0065\u006c\u002e\u002e\u002e. */
   String LOADMODEL = "LOADMODEL";
-  /** Exit. */
+  /** \u0045\u0078\u0069\u0074. */
   String EXITPROGRAM = "EXITPROGRAM";
-  /** Export. */
+  /** \u0045\u0078\u0070\u006f\u0072\u0074. */
   String EXPORT = "EXPORT";
-  /** as SVG. */
+  /** \u0061\u0073\u0020\u0053\u0056\u0047. */
   String ASSVG = "ASSVG";
-  /** as PNG. */
+  /** \u0061\u0073\u0020\u0050\u004e\u0047. */
   String ASPNG = "ASPNG";
-  /** as JPEG. */
+  /** \u0061\u0073\u0020\u004a\u0050\u0045\u0047. */
   String ASJPEG = "ASJPEG";
-  /** as BMP. */
+  /** \u0061\u0073\u0020\u0042\u004d\u0050. */
   String ASBMP = "ASBMP";
-  /** Database. */
+  /** \u0044\u0061\u0074\u0061\u0062\u0061\u0073\u0065. */
   String DATABASE = "DATABASE";
-  /** Classpath.... */
+  /** \u0043\u006c\u0061\u0073\u0073\u0070\u0061\u0074\u0068\u002e\u002e\u002e. */
   String CLASSPATH = "CLASSPATH";
-  /** DB - Connection.... */
+  /** \u0044\u0042\u0020\u002d\u0020\u0043\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u002e\u002e\u002e. */
   String DBCONNECTION = "DBCONNECTION";
-  /** Repository connection.... */
+  /** \u0052\u0065\u0070\u006f\u0073\u0069\u0074\u006f\u0072\u0079\u0020\u0063\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u002e\u002e\u002e. */
   String REPOSITORYCONNECTION = "REPOSITORYCONNECTION";
-  /** Last DB - Connections. */
+  /** \u004c\u0061\u0073\u0074\u0020\u0044\u0042\u0020\u002d\u0020\u0043\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u0073. */
   String STOREDDBCONNECTION = "STOREDDBCONNECTION";
-  /** Reverse engineer.... */
+  /** \u0052\u0065\u0076\u0065\u0072\u0073\u0065\u0020\u0065\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u002e\u002e\u002e. */
   String REVERSEENGINEER = "REVERSEENGINEER";
-  /** Domains.... */
+  /** \u0044\u006f\u006d\u0061\u0069\u006e\u0073\u002e\u002e\u002e. */
   String DOMAINS = "DOMAINS";
-  /** Default values.... */
+  /** \u0044\u0065\u0066\u0061\u0075\u006c\u0074\u0020\u0076\u0061\u006c\u0075\u0065\u0073\u002e\u002e\u002e. */
   String DEFAULTVALUES = "DEFAULTVALUES";
-  /** View. */
+  /** \u0056\u0069\u0065\u0077. */
   String VIEW = "VIEW";
-  /** Zoom in. */
+  /** \u005a\u006f\u006f\u006d\u0020\u0069\u006e. */
   String ZOOMIN = "ZOOMIN";
-  /** Zoom out. */
+  /** \u005a\u006f\u006f\u006d\u0020\u006f\u0075\u0074. */
   String ZOOMOUT = "ZOOMOUT";
   /** . */
   String HAND = "HAND";
@@ -67,75 +67,75 @@ public interface ERDesignerBundle {
   String RELATION = "RELATION";
   /** . */
   String VIEWTOOL = "VIEWTOOL";
-  /** Zoom. */
+  /** \u005a\u006f\u006f\u006d. */
   String ZOOM = "ZOOM";
-  /** Driver classpath configuration. */
+  /** \u0044\u0072\u0069\u0076\u0065\u0072\u0020\u0063\u006c\u0061\u0073\u0073\u0070\u0061\u0074\u0068\u0020\u0063\u006f\u006e\u0066\u0069\u0067\u0075\u0072\u0061\u0074\u0069\u006f\u006e. */
   String CLASSPATHCONFIGURATION = "CLASSPATHCONFIGURATION";
-  /** Database connection configuration. */
+  /** \u0044\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u0020\u0063\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u0020\u0063\u006f\u006e\u0066\u0069\u0067\u0075\u0072\u0061\u0074\u0069\u006f\u006e. */
   String CONNECTIONCONFIGURATION = "CONNECTIONCONFIGURATION";
-  /** Edit entity. */
+  /** \u0045\u0064\u0069\u0074\u0020\u0065\u006e\u0074\u0069\u0074\u0079. */
   String ENTITYEDITOR = "ENTITYEDITOR";
-  /** Edit relation. */
+  /** \u0045\u0064\u0069\u0074\u0020\u0072\u0065\u006c\u0061\u0074\u0069\u006f\u006e. */
   String RELATIONEDITOR = "RELATIONEDITOR";
-  /** Layout. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074. */
   String LAYOUT = "LAYOUT";
-  /** Layout by Graphviz. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0062\u0079\u0020\u0047\u0072\u0061\u0070\u0068\u0076\u0069\u007a. */
   String LAYOUTBYGRAPHVIZ = "LAYOUTBYGRAPHVIZ";
-  /** Layout by RadialLayout (Experimental). */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0062\u0079\u0020\u0052\u0061\u0064\u0069\u0061\u006c\u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0028\u0045\u0078\u0070\u0065\u0072\u0069\u006d\u0065\u006e\u0074\u0061\u006c\u0029. */
   String LAYOUTBYRADIAL = "LAYOUTBYRADIAL";
-  /** Layout by SpringLayout (Experimental. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0062\u0079\u0020\u0053\u0070\u0072\u0069\u006e\u0067\u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0028\u0045\u0078\u0070\u0065\u0072\u0069\u006d\u0065\u006e\u0074\u0061\u006c. */
   String LAYOUTBYSPRING = "LAYOUTBYSPRING";
-  /** Layout by GridLayout (Experimental. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0062\u0079\u0020\u0047\u0072\u0069\u0064\u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0028\u0045\u0078\u0070\u0065\u0072\u0069\u006d\u0065\u006e\u0074\u0061\u006c. */
   String LAYOUTBYGRID = "LAYOUTBYGRID";
-  /** Layout by TreeLayout (Experimental. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0062\u0079\u0020\u0054\u0072\u0065\u0065\u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0028\u0045\u0078\u0070\u0065\u0072\u0069\u006d\u0065\u006e\u0074\u0061\u006c. */
   String LAYOUTBYTREE = "LAYOUTBYTREE";
-  /** Layout by FRLayout (Experimental. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0062\u0079\u0020\u0046\u0052\u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0028\u0045\u0078\u0070\u0065\u0072\u0069\u006d\u0065\u006e\u0074\u0061\u006c. */
   String LAYOUTBYFR = "LAYOUTBYFR";
-  /** Name. */
+  /** \u004e\u0061\u006d\u0065. */
   String NAME = "NAME";
-  /** Declaration. */
+  /** \u0044\u0065\u0063\u006c\u0061\u0072\u0061\u0074\u0069\u006f\u006e. */
   String DECLRATATION = "DECLRATATION";
-  /** Java type. */
+  /** \u004a\u0061\u0076\u0061\u0020\u0074\u0079\u0070\u0065. */
   String JAVATYPE = "JAVATYPE";
-  /** Sequenzed. */
+  /** \u0053\u0065\u0071\u0075\u0065\u006e\u007a\u0065\u0064. */
   String SEQUENCED = "SEQUENCED";
-  /** Domain properties. */
+  /** \u0044\u006f\u006d\u0061\u0069\u006e\u0020\u0070\u0072\u006f\u0070\u0065\u0072\u0074\u0069\u0065\u0073. */
   String DOMAINPROPERTIES = "DOMAINPROPERTIES";
-  /** The attribute is part of a foreign key relation. */
+  /** \u0054\u0068\u0065\u0020\u0061\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0020\u0069\u0073\u0020\u0070\u0061\u0072\u0074\u0020\u006f\u0066\u0020\u0061\u0020\u0066\u006f\u0072\u0065\u0069\u0067\u006e\u0020\u006b\u0065\u0079\u0020\u0072\u0065\u006c\u0061\u0074\u0069\u006f\u006e. */
   String ATTRIBUTEISUSEDINFOREIGNKEYS = "ATTRIBUTEISUSEDINFOREIGNKEYS";
-  /** Information. */
+  /** \u0049\u006e\u0066\u006f\u0072\u006d\u0061\u0074\u0069\u006f\u006e. */
   String INFORMATION = "INFORMATION";
-  /** Error. */
+  /** \u0045\u0072\u0072\u006f\u0072. */
   String ERROR = "ERROR";
-  /** Question. */
+  /** \u0051\u0075\u0065\u0073\u0074\u0069\u006f\u006e. */
   String QUESTION = "QUESTION";
-  /** Do you really want to delete this element?. */
+  /** \u0044\u006f\u0020\u0079\u006f\u0075\u0020\u0072\u0065\u0061\u006c\u006c\u0079\u0020\u0077\u0061\u006e\u0074\u0020\u0074\u006f\u0020\u0064\u0065\u006c\u0065\u0074\u0065\u0020\u0074\u0068\u0069\u0073\u0020\u0065\u006c\u0065\u006d\u0065\u006e\u0074\u003f. */
   String DOYOUREALLYWANTTODELETE = "DOYOUREALLYWANTTODELETE";
-  /** The connection seems to be ok. */
+  /** \u0054\u0068\u0065\u0020\u0063\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u0020\u0073\u0065\u0065\u006d\u0073\u0020\u0074\u006f\u0020\u0062\u0065\u0020\u006f\u006b. */
   String CONNECTIONSEEMSTOBEOK = "CONNECTIONSEEMSTOBEOK";
-  /** New. */
+  /** \u004e\u0065\u0077. */
   String NEW = "NEW";
-  /** Delete. */
+  /** \u0044\u0065\u006c\u0065\u0074\u0065. */
   String DELETE = "DELETE";
-  /** Update. */
+  /** \u0055\u0070\u0064\u0061\u0074\u0065. */
   String UPDATE = "UPDATE";
-  /** Ok. */
+  /** \u004f\u006b. */
   String OK = "OK";
-  /** Cancel. */
+  /** \u0043\u0061\u006e\u0063\u0065\u006c. */
   String CANCEL = "CANCEL";
-  /** Test. */
+  /** \u0054\u0065\u0073\u0074. */
   String TEST = "TEST";
-  /** Dialect. */
+  /** \u0044\u0069\u0061\u006c\u0065\u0063\u0074. */
   String DIALECT = "DIALECT";
-  /** Driver. */
+  /** \u0044\u0072\u0069\u0076\u0065\u0072. */
   String JDBCDRIVER = "JDBCDRIVER";
-  /** JDBC-URL. */
+  /** \u004a\u0044\u0042\u0043\u002d\u0055\u0052\u004c. */
   String JDBCURL = "JDBCURL";
-  /** User. */
+  /** \u0055\u0073\u0065\u0072. */
   String USER = "USER";
-  /** Password. */
+  /** \u0050\u0061\u0073\u0073\u0077\u006f\u0072\u0064. */
   String PASSWORD = "PASSWORD";
-  /** Default value properties. */
+  /** \u0044\u0065\u0066\u0061\u0075\u006c\u0074\u0020\u0076\u0061\u006c\u0075\u0065\u0020\u0070\u0072\u006f\u0070\u0065\u0072\u0074\u0069\u0065\u0073. */
   String DEFAULTVALUEPROPERTIES = "DEFAULTVALUEPROPERTIES";
   /** . */
   String ADDFOLDER = "ADDFOLDER";
@@ -145,270 +145,270 @@ public interface ERDesignerBundle {
   String UP = "UP";
   /** . */
   String DOWN = "DOWN";
-  /** Name. */
+  /** \u004e\u0061\u006d\u0065. */
   String ENTITYNAME = "ENTITYNAME";
-  /** Default. */
+  /** \u0044\u0065\u0066\u0061\u0075\u006c\u0074. */
   String DEFAULT = "DEFAULT";
-  /** Is NULLABLE. */
+  /** \u0049\u0073\u0020\u004e\u0055\u004c\u004c\u0041\u0042\u004c\u0045. */
   String NULLABLE = "NULLABLE";
-  /** Is primary key. */
+  /** \u0049\u0073\u0020\u0070\u0072\u0069\u006d\u0061\u0072\u0079\u0020\u006b\u0065\u0079. */
   String PRIMARYKEY = "PRIMARYKEY";
-  /** General. */
+  /** \u0047\u0065\u006e\u0065\u0072\u0061\u006c. */
   String GENERAL = "GENERAL";
-  /** Options. */
+  /** \u004f\u0070\u0074\u0069\u006f\u006e\u0073. */
   String OPTIONS = "OPTIONS";
-  /** Comments. */
+  /** \u0043\u006f\u006d\u006d\u0065\u006e\u0074\u0073. */
   String COMMENTS = "COMMENTS";
-  /** Attributes. */
+  /** \u0041\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0073. */
   String ATTRIBUTES = "ATTRIBUTES";
-  /** Indexes. */
+  /** \u0049\u006e\u0064\u0065\u0078\u0065\u0073. */
   String INDEXES = "INDEXES";
-  /** Nothing. */
+  /** \u004e\u006f\u0074\u0068\u0069\u006e\u0067. */
   String DATABASEDEFAULT = "DATABASEDEFAULT";
-  /** CASCADE. */
+  /** \u0043\u0041\u0053\u0043\u0041\u0044\u0045. */
   String CASCADE = "CASCADE";
-  /** SET NULL. */
+  /** \u0053\u0045\u0054\u0020\u004e\u0055\u004c\u004c. */
   String SETNULL = "SETNULL";
-  /** Relation name. */
+  /** \u0052\u0065\u006c\u0061\u0074\u0069\u006f\u006e\u0020\u006e\u0061\u006d\u0065. */
   String RELATIONNAME = "RELATIONNAME";
-  /** All in one file.... */
+  /** \u0041\u006c\u006c\u0020\u0069\u006e\u0020\u006f\u006e\u0065\u0020\u0066\u0069\u006c\u0065\u002e\u002e\u002e. */
   String ALLINONEFILE = "ALLINONEFILE";
-  /** One file per table.... */
+  /** \u004f\u006e\u0065\u0020\u0066\u0069\u006c\u0065\u0020\u0070\u0065\u0072\u0020\u0074\u0061\u0062\u006c\u0065\u002e\u002e\u002e. */
   String ONEFILEPERTABLE = "ONEFILEPERTABLE";
-  /** The element is in use and cannot be deleted. */
+  /** \u0054\u0068\u0065\u0020\u0065\u006c\u0065\u006d\u0065\u006e\u0074\u0020\u0069\u0073\u0020\u0069\u006e\u0020\u0075\u0073\u0065\u0020\u0061\u006e\u0064\u0020\u0063\u0061\u006e\u006e\u006f\u0074\u0020\u0062\u0065\u0020\u0064\u0065\u006c\u0065\u0074\u0065\u0064. */
   String ELEMENTINUSE = "ELEMENTINUSE";
-  /** Logical view(domains). */
+  /** \u004c\u006f\u0067\u0069\u0063\u0061\u006c\u0020\u0076\u0069\u0065\u0077\u0028\u0064\u006f\u006d\u0061\u0069\u006e\u0073\u0029. */
   String LOGICALVIEW = "LOGICALVIEW";
-  /** Physical view(declarations). */
+  /** \u0050\u0068\u0079\u0073\u0069\u0063\u0061\u006c\u0020\u0076\u0069\u0065\u0077\u0028\u0064\u0065\u0063\u006c\u0061\u0072\u0061\u0074\u0069\u006f\u006e\u0073\u0029. */
   String PHYSICALVIEW = "PHYSICALVIEW";
-  /** Table generation. */
+  /** \u0054\u0061\u0062\u006c\u0065\u0020\u0067\u0065\u006e\u0065\u0072\u0061\u0074\u0069\u006f\u006e. */
   String TABLEGENERATION = "TABLEGENERATION";
-  /** Domain generation. */
+  /** \u0044\u006f\u006d\u0061\u0069\u006e\u0020\u0067\u0065\u006e\u0065\u0072\u0061\u0074\u0069\u006f\u006e. */
   String DOMAINGENERATION = "DOMAINGENERATION";
-  /** Default generation. */
+  /** \u0044\u0065\u0066\u0061\u0075\u006c\u0074\u0020\u0067\u0065\u006e\u0065\u0072\u0061\u0074\u0069\u006f\u006e. */
   String DEFAULTVALUEENERATION = "DEFAULTVALUEENERATION";
-  /** You have to select at least one schema. */
+  /** \u0059\u006f\u0075\u0020\u0068\u0061\u0076\u0065\u0020\u0074\u006f\u0020\u0073\u0065\u006c\u0065\u0063\u0074\u0020\u0061\u0074\u0020\u006c\u0065\u0061\u0073\u0074\u0020\u006f\u006e\u0065\u0020\u0073\u0063\u0068\u0065\u006d\u0061. */
   String CHOOSEONESCHEMA = "CHOOSEONESCHEMA";
-  /** Standard. */
+  /** \u0053\u0074\u0061\u006e\u0064\u0061\u0072\u0064. */
   String STANDART = "STANDART";
-  /** Reverse engineering of schema {0}. */
+  /** \u0052\u0065\u0076\u0065\u0072\u0073\u0065\u0020\u0065\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u0069\u006e\u0067\u0020\u006f\u0066\u0020\u0073\u0063\u0068\u0065\u006d\u0061\u0020\u007b\u0030\u007d. */
   String ENGINEERINGSCHEMA = "ENGINEERINGSCHEMA";
-  /** Reverse engineering of table {0}. */
+  /** \u0052\u0065\u0076\u0065\u0072\u0073\u0065\u0020\u0065\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u0069\u006e\u0067\u0020\u006f\u0066\u0020\u0074\u0061\u0062\u006c\u0065\u0020\u007b\u0030\u007d. */
   String ENGINEERINGTABLE = "ENGINEERINGTABLE";
-  /** Reverse engineering of index {0}. */
+  /** \u0052\u0065\u0076\u0065\u0072\u0073\u0065\u0020\u0065\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u0069\u006e\u0067\u0020\u006f\u0066\u0020\u0069\u006e\u0064\u0065\u0078\u0020\u007b\u0030\u007d. */
   String ENGINEERINGINDEX = "ENGINEERINGINDEX";
-  /** Index {0} is ignored. */
+  /** \u0049\u006e\u0064\u0065\u0078\u0020\u007b\u0030\u007d\u0020\u0069\u0073\u0020\u0069\u0067\u006e\u006f\u0072\u0065\u0064. */
   String SKIPINDEX = "SKIPINDEX";
-  /** Reverse engineering of relations for table {0}. */
+  /** \u0052\u0065\u0076\u0065\u0072\u0073\u0065\u0020\u0065\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u0069\u006e\u0067\u0020\u006f\u0066\u0020\u0072\u0065\u006c\u0061\u0074\u0069\u006f\u006e\u0073\u0020\u0066\u006f\u0072\u0020\u0074\u0061\u0062\u006c\u0065\u0020\u007b\u0030\u007d. */
   String ENGINEERINGRELATION = "ENGINEERINGRELATION";
-  /** Reverse engineering finished. */
+  /** \u0052\u0065\u0076\u0065\u0072\u0073\u0065\u0020\u0065\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u0069\u006e\u0067\u0020\u0066\u0069\u006e\u0069\u0073\u0068\u0065\u0064. */
   String ENGINEERINGFINISHED = "ENGINEERINGFINISHED";
-  /** Relation properties. */
+  /** \u0052\u0065\u006c\u0061\u0074\u0069\u006f\u006e\u0020\u0070\u0072\u006f\u0070\u0065\u0072\u0074\u0069\u0065\u0073. */
   String RELATIONPROPERTIES = "RELATIONPROPERTIES";
-  /** Attribute mapping. */
+  /** \u0041\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0020\u006d\u0061\u0070\u0070\u0069\u006e\u0067. */
   String ATTRIBUTEMAPPING = "ATTRIBUTEMAPPING";
-  /** Handling of ON DELETE. */
+  /** \u0048\u0061\u006e\u0064\u006c\u0069\u006e\u0067\u0020\u006f\u0066\u0020\u004f\u004e\u0020\u0044\u0045\u004c\u0045\u0054\u0045. */
   String ONDELETEHANDLING = "ONDELETEHANDLING";
-  /** Handling of ON UPDATE. */
+  /** \u0048\u0061\u006e\u0064\u006c\u0069\u006e\u0067\u0020\u006f\u0066\u0020\u004f\u004e\u0020\u0055\u0050\u0044\u0041\u0054\u0045. */
   String ONUPDATEHANDLING = "ONUPDATEHANDLING";
-  /** Schema options. */
+  /** \u0053\u0063\u0068\u0065\u006d\u0061\u0020\u006f\u0070\u0074\u0069\u006f\u006e\u0073. */
   String SCHEMAOPTIONS = "SCHEMAOPTIONS";
-  /** Engineering options. */
+  /** \u0045\u006e\u0067\u0069\u006e\u0065\u0065\u0072\u0069\u006e\u0067\u0020\u006f\u0070\u0074\u0069\u006f\u006e\u0073. */
   String ENGINEERINGOPTIONS = "ENGINEERINGOPTIONS";
-  /** Index is unique. */
+  /** \u0049\u006e\u0064\u0065\u0078\u0020\u0069\u0073\u0020\u0075\u006e\u0069\u0071\u0075\u0065. */
   String INDEXISUNIQUE = "INDEXISUNIQUE";
-  /** Index is not unique. */
+  /** \u0049\u006e\u0064\u0065\u0078\u0020\u0069\u0073\u0020\u006e\u006f\u0074\u0020\u0075\u006e\u0069\u0071\u0075\u0065. */
   String INDEXISNOTUNIQUE = "INDEXISNOTUNIQUE";
-  /** Index is primary key. */
+  /** \u0049\u006e\u0064\u0065\u0078\u0020\u0069\u0073\u0020\u0070\u0072\u0069\u006d\u0061\u0072\u0079\u0020\u006b\u0065\u0079. */
   String INDEXISPRIMARY = "INDEXISPRIMARY";
-  /** There is already a primary key. */
+  /** \u0054\u0068\u0065\u0072\u0065\u0020\u0069\u0073\u0020\u0061\u006c\u0072\u0065\u0061\u0064\u0079\u0020\u0061\u0020\u0070\u0072\u0069\u006d\u0061\u0072\u0079\u0020\u006b\u0065\u0079. */
   String THEREISALREADYAPRIMARYKEY = "THEREISALREADYAPRIMARYKEY";
-  /** Preferences.... */
+  /** \u0050\u0072\u0065\u0066\u0065\u0072\u0065\u006e\u0063\u0065\u0073\u002e\u002e\u002e. */
   String PREFERENCES = "PREFERENCES";
-  /** Path to DOT. */
+  /** \u0050\u0061\u0074\u0068\u0020\u0074\u006f\u0020\u0044\u004f\u0054. */
   String DOTPATH = "DOTPATH";
-  /** Error loading file. */
+  /** \u0045\u0072\u0072\u006f\u0072\u0020\u006c\u006f\u0061\u0064\u0069\u006e\u0067\u0020\u0066\u0069\u006c\u0065. */
   String ERRORLOADINGFILE = "ERRORLOADINGFILE";
-  /** File loaded. */
+  /** \u0046\u0069\u006c\u0065\u0020\u006c\u006f\u0061\u0064\u0065\u0064. */
   String FILELOADED = "FILELOADED";
-  /** File saved. */
+  /** \u0046\u0069\u006c\u0065\u0020\u0073\u0061\u0076\u0065\u0064. */
   String FILESAVED = "FILESAVED";
-  /** New model created. */
+  /** \u004e\u0065\u0077\u0020\u006d\u006f\u0064\u0065\u006c\u0020\u0063\u0072\u0065\u0061\u0074\u0065\u0064. */
   String NEWMODELCREATED = "NEWMODELCREATED";
-  /** Please define a database connection prior to using this operation!. */
+  /** \u0050\u006c\u0065\u0061\u0073\u0065\u0020\u0064\u0065\u0066\u0069\u006e\u0065\u0020\u0061\u0020\u0064\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u0020\u0063\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u0020\u0070\u0072\u0069\u006f\u0072\u0020\u0074\u006f\u0020\u0075\u0073\u0069\u006e\u0067\u0020\u0074\u0068\u0069\u0073\u0020\u006f\u0070\u0065\u0072\u0061\u0074\u0069\u006f\u006e\u0021. */
   String PLEASEDEFINEADATABASECONNECTIONFIRST = "PLEASEDEFINEADATABASECONNECTIONFIRST";
-  /** Size. */
+  /** \u0053\u0069\u007a\u0065. */
   String SIZE = "SIZE";
-  /** Fraction. */
+  /** \u0046\u0072\u0061\u0063\u0074\u0069\u006f\u006e. */
   String FRACTION = "FRACTION";
-  /** Scale. */
+  /** \u0053\u0063\u0061\u006c\u0065. */
   String SCALE = "SCALE";
-  /** Datatype. */
+  /** \u0044\u0061\u0074\u0061\u0074\u0079\u0070\u0065. */
   String DATATYPE = "DATATYPE";
-  /** An Index must contain at least one attribute!. */
+  /** \u0041\u006e\u0020\u0049\u006e\u0064\u0065\u0078\u0020\u006d\u0075\u0073\u0074\u0020\u0063\u006f\u006e\u0074\u0061\u0069\u006e\u0020\u0061\u0074\u0020\u006c\u0065\u0061\u0073\u0074\u0020\u006f\u006e\u0065\u0020\u0061\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0021. */
   String INDEXMUSTHAVEATLEASTONEATTRIBUTE = "INDEXMUSTHAVEATLEASTONEATTRIBUTE";
-  /** Create DDL for model.... */
+  /** \u0043\u0072\u0065\u0061\u0074\u0065\u0020\u0044\u0044\u004c\u0020\u0066\u006f\u0072\u0020\u006d\u006f\u0064\u0065\u006c\u002e\u002e\u002e. */
   String GENERATECREATEDBDDL = "GENERATECREATEDBDDL";
-  /** Execute. */
+  /** \u0045\u0078\u0065\u0063\u0075\u0074\u0065. */
   String EXECUTESCRIPT = "EXECUTESCRIPT";
-  /** Save to file. */
+  /** \u0053\u0061\u0076\u0065\u0020\u0074\u006f\u0020\u0066\u0069\u006c\u0065. */
   String SAVESCRIPTTOFILE = "SAVESCRIPTTOFILE";
-  /** SQL Window. */
+  /** \u0053\u0051\u004c\u0020\u0057\u0069\u006e\u0064\u006f\u0077. */
   String SQLWINDOW = "SQLWINDOW";
-  /** Exception ( Stacktrace ). */
+  /** \u0045\u0078\u0063\u0065\u0070\u0074\u0069\u006f\u006e\u0020\u0028\u0020\u0053\u0074\u0061\u0063\u006b\u0074\u0072\u0061\u0063\u0065\u0020\u0029. */
   String EXCEPTIONWINDOW = "EXCEPTIONWINDOW";
-  /** Close. */
+  /** \u0043\u006c\u006f\u0073\u0065. */
   String CLOSE = "CLOSE";
-  /** Current database changes.... */
+  /** \u0043\u0075\u0072\u0072\u0065\u006e\u0074\u0020\u0064\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u0020\u0063\u0068\u0061\u006e\u0067\u0065\u0073\u002e\u002e\u002e. */
   String GENERATECHANGELOG = "GENERATECHANGELOG";
-  /** A table must have contain least one attribute!. */
+  /** \u0041\u0020\u0074\u0061\u0062\u006c\u0065\u0020\u006d\u0075\u0073\u0074\u0020\u0068\u0061\u0076\u0065\u0020\u0063\u006f\u006e\u0074\u0061\u0069\u006e\u0020\u006c\u0065\u0061\u0073\u0074\u0020\u006f\u006e\u0065\u0020\u0061\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0021. */
   String TABLEMUSTHAVEATLEASTONEATTRIBUTE = "TABLEMUSTHAVEATLEASTONEATTRIBUTE";
-  /** The database dialect is not supported!. */
+  /** \u0054\u0068\u0065\u0020\u0064\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u0020\u0064\u0069\u0061\u006c\u0065\u0063\u0074\u0020\u0069\u0073\u0020\u006e\u006f\u0074\u0020\u0073\u0075\u0070\u0070\u006f\u0072\u0074\u0065\u0064\u0021. */
   String DIALECTISNOTSUPPORTED = "DIALECTISNOTSUPPORTED";
-  /** Extra. */
+  /** \u0045\u0078\u0074\u0072\u0061. */
   String EXTRA = "EXTRA";
-  /** Compare with database.... */
+  /** \u0043\u006f\u006d\u0070\u0061\u0072\u0065\u0020\u0077\u0069\u0074\u0068\u0020\u0064\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u002e\u002e\u002e. */
   String COMPLETECOMPARE = "COMPLETECOMPARE";
-  /** Model. */
+  /** \u004d\u006f\u0064\u0065\u006c. */
   String MODEL = "MODEL";
-  /** Entity {0} is missing. */
+  /** \u0045\u006e\u0074\u0069\u0074\u0079\u0020\u007b\u0030\u007d\u0020\u0069\u0073\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067. */
   String MISSINGENTITY = "MISSINGENTITY";
-  /** Attribute {0} is missing. */
+  /** \u0041\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0020\u007b\u0030\u007d\u0020\u0069\u0073\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067. */
   String MISSINGATTRIBUTE = "MISSINGATTRIBUTE";
-  /** Redefined {0}. */
+  /** \u0052\u0065\u0064\u0065\u0066\u0069\u006e\u0065\u0064\u0020\u007b\u0030\u007d. */
   String REDEFINED = "REDEFINED";
-  /** Index {0} is missing. */
+  /** \u0049\u006e\u0064\u0065\u0078\u0020\u007b\u0030\u007d\u0020\u0069\u0073\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067. */
   String MISSINGINDEX = "MISSINGINDEX";
-  /** Relation {0} is missing. */
+  /** \u0052\u0065\u006c\u0061\u0074\u0069\u006f\u006e\u0020\u007b\u0030\u007d\u0020\u0069\u0073\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067. */
   String MISSINGRELATION = "MISSINGRELATION";
-  /** Layout finished. */
+  /** \u004c\u0061\u0079\u006f\u0075\u0074\u0020\u0066\u0069\u006e\u0069\u0073\u0068\u0065\u0064. */
   String LAYOUTFINISHED = "LAYOUTFINISHED";
-  /** Please enter the layout size in pixels. */
+  /** \u0050\u006c\u0065\u0061\u0073\u0065\u0020\u0065\u006e\u0074\u0065\u0072\u0020\u0074\u0068\u0065\u0020\u006c\u0061\u0079\u006f\u0075\u0074\u0020\u0073\u0069\u007a\u0065\u0020\u0069\u006e\u0020\u0070\u0069\u0078\u0065\u006c\u0073. */
   String INPUTLAYOUTSIZE = "INPUTLAYOUTSIZE";
-  /** The specified size is invalid. */
+  /** \u0054\u0068\u0065\u0020\u0073\u0070\u0065\u0063\u0069\u0066\u0069\u0065\u0064\u0020\u0073\u0069\u007a\u0065\u0020\u0069\u0073\u0020\u0069\u006e\u0076\u0061\u006c\u0069\u0064. */
   String INVALIDSIZESPECIFIED = "INVALIDSIZESPECIFIED";
-  /** Relations ( Foreign keys ). */
+  /** \u0052\u0065\u006c\u0061\u0074\u0069\u006f\u006e\u0073\u0020\u0028\u0020\u0046\u006f\u0072\u0065\u0069\u0067\u006e\u0020\u006b\u0065\u0079\u0073\u0020\u0029. */
   String RELATIONS = "RELATIONS";
-  /** Table selection. */
+  /** \u0054\u0061\u0062\u006c\u0065\u0020\u0073\u0065\u006c\u0065\u0063\u0074\u0069\u006f\u006e. */
   String TABLESELECTION = "TABLESELECTION";
-  /** Add to new subject area. */
+  /** \u0041\u0064\u0064\u0020\u0074\u006f\u0020\u006e\u0065\u0077\u0020\u0073\u0075\u0062\u006a\u0065\u0063\u0074\u0020\u0061\u0072\u0065\u0061. */
   String ADDTONEWSUBJECTAREA = "ADDTONEWSUBJECTAREA";
-  /** Subject area properties. */
+  /** \u0053\u0075\u0062\u006a\u0065\u0063\u0074\u0020\u0061\u0072\u0065\u0061\u0020\u0070\u0072\u006f\u0070\u0065\u0072\u0074\u0069\u0065\u0073. */
   String SUBJECTAREAPROPERTIES = "SUBJECTAREAPROPERTIES";
-  /** Edit subject area. */
+  /** \u0045\u0064\u0069\u0074\u0020\u0073\u0075\u0062\u006a\u0065\u0063\u0074\u0020\u0061\u0072\u0065\u0061. */
   String SUBJECTAREAEDITOR = "SUBJECTAREAEDITOR";
-  /** Color. */
+  /** \u0043\u006f\u006c\u006f\u0072. */
   String COLOR = "COLOR";
-  /** Models with subject areas are not supported by this operation. */
+  /** \u004d\u006f\u0064\u0065\u006c\u0073\u0020\u0077\u0069\u0074\u0068\u0020\u0073\u0075\u0062\u006a\u0065\u0063\u0074\u0020\u0061\u0072\u0065\u0061\u0073\u0020\u0061\u0072\u0065\u0020\u006e\u006f\u0074\u0020\u0073\u0075\u0070\u0070\u006f\u0072\u0074\u0065\u0064\u0020\u0062\u0079\u0020\u0074\u0068\u0069\u0073\u0020\u006f\u0070\u0065\u0072\u0061\u0074\u0069\u006f\u006e. */
   String MODELSWITHSUBJECTAREASARENOTSUPPORTED = "MODELSWITHSUBJECTAREASARENOTSUPPORTED";
-  /** Display element comments. */
+  /** \u0044\u0069\u0073\u0070\u006c\u0061\u0079\u0020\u0065\u006c\u0065\u006d\u0065\u006e\u0074\u0020\u0063\u006f\u006d\u006d\u0065\u006e\u0074\u0073. */
   String DISPLAYCOMMENTS = "DISPLAYCOMMENTS";
-  /** Display grid. */
+  /** \u0044\u0069\u0073\u0070\u006c\u0061\u0079\u0020\u0067\u0072\u0069\u0064. */
   String DISPLAYGRID = "DISPLAYGRID";
-  /** Editor grid size (px). */
+  /** \u0045\u0064\u0069\u0074\u006f\u0072\u0020\u0067\u0072\u0069\u0064\u0020\u0073\u0069\u007a\u0065\u0020\u0028\u0070\u0078\u0029. */
   String EDITORGRIDSIZE = "EDITORGRIDSIZE";
-  /** Edit comment. */
+  /** \u0045\u0064\u0069\u0074\u0020\u0063\u006f\u006d\u006d\u0065\u006e\u0074. */
   String COMMENTEDITOR = "COMMENTEDITOR";
-  /** Comment properties. */
+  /** \u0043\u006f\u006d\u006d\u0065\u006e\u0074\u0020\u0070\u0072\u006f\u0070\u0065\u0072\u0074\u0069\u0065\u0073. */
   String COMMENTPROPERTIES = "COMMENTPROPERTIES";
-  /** Domain editor.... */
+  /** \u0044\u006f\u006d\u0061\u0069\u006e\u0020\u0065\u0064\u0069\u0074\u006f\u0072\u002e\u002e\u002e. */
   String DOMAINEDITOR = "DOMAINEDITOR";
   /** . */
   String COMMENT = "COMMENT";
-  /** The exporting table needs to have a primary key. */
+  /** \u0054\u0068\u0065\u0020\u0065\u0078\u0070\u006f\u0072\u0074\u0069\u006e\u0067\u0020\u0074\u0061\u0062\u006c\u0065\u0020\u006e\u0065\u0065\u0064\u0073\u0020\u0074\u006f\u0020\u0068\u0061\u0076\u0065\u0020\u0061\u0020\u0070\u0072\u0069\u006d\u0061\u0072\u0079\u0020\u006b\u0065\u0079. */
   String EXPORTINGTABLENEEDSPRIMARYKEY = "EXPORTINGTABLENEEDSPRIMARYKEY";
-  /** Cannot delete element from model : {0}. */
+  /** \u0043\u0061\u006e\u006e\u006f\u0074\u0020\u0064\u0065\u006c\u0065\u0074\u0065\u0020\u0065\u006c\u0065\u006d\u0065\u006e\u0074\u0020\u0066\u0072\u006f\u006d\u0020\u006d\u006f\u0064\u0065\u006c\u0020\u003a\u0020\u007b\u0030\u007d. */
   String CANNOTDELETEMODELITEM = "CANNOTDELETEMODELITEM";
-  /** Display level. */
+  /** \u0044\u0069\u0073\u0070\u006c\u0061\u0079\u0020\u006c\u0065\u0076\u0065\u006c. */
   String DISPLAYLEVEL = "DISPLAYLEVEL";
-  /** All. */
+  /** \u0041\u006c\u006c. */
   String DISPLAYALL = "DISPLAYALL";
-  /** Primary keys only. */
+  /** \u0050\u0072\u0069\u006d\u0061\u0072\u0079\u0020\u006b\u0065\u0079\u0073\u0020\u006f\u006e\u006c\u0079. */
   String DISPLAYPRIMARYKEY = "DISPLAYPRIMARYKEY";
-  /** Primary and foreign keys. */
+  /** \u0050\u0072\u0069\u006d\u0061\u0072\u0079\u0020\u0061\u006e\u0064\u0020\u0066\u006f\u0072\u0065\u0069\u0067\u006e\u0020\u006b\u0065\u0079\u0073. */
   String DISPLAYPRIMARYKEYANDFOREIGNKEY = "DISPLAYPRIMARYKEYANDFOREIGNKEY";
-  /** Natural order. */
+  /** \u004e\u0061\u0074\u0075\u0072\u0061\u006c\u0020\u006f\u0072\u0064\u0065\u0072. */
   String DISPLAYNATURALORDER = "DISPLAYNATURALORDER";
-  /** Ascending order. */
+  /** \u0041\u0073\u0063\u0065\u006e\u0064\u0069\u006e\u0067\u0020\u006f\u0072\u0064\u0065\u0072. */
   String DISPLAYASCENDING = "DISPLAYASCENDING";
-  /** Descending order. */
+  /** \u0044\u0065\u0073\u0063\u0065\u006e\u0064\u0069\u006e\u0067\u0020\u006f\u0072\u0064\u0065\u0072. */
   String DISPLAYDESCENDING = "DISPLAYDESCENDING";
-  /** Attribute order. */
+  /** \u0041\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0020\u006f\u0072\u0064\u0065\u0072. */
   String DISPLAYORDER = "DISPLAYORDER";
-  /** Alias. */
+  /** \u0041\u006c\u0069\u0061\u0073. */
   String ALIAS = "ALIAS";
-  /** Create new entry. */
+  /** \u0043\u0072\u0065\u0061\u0074\u0065\u0020\u006e\u0065\u0077\u0020\u0065\u006e\u0074\u0072\u0079. */
   String CREATENEWENTRY = "CREATENEWENTRY";
-  /** Overwrite existing entry. */
+  /** \u004f\u0076\u0065\u0072\u0077\u0072\u0069\u0074\u0065\u0020\u0065\u0078\u0069\u0073\u0074\u0069\u006e\u0067\u0020\u0065\u006e\u0074\u0072\u0079. */
   String OVERWRITEEXISTINGENTRY = "OVERWRITEEXISTINGENTRY";
-  /** Delete entry. */
+  /** \u0044\u0065\u006c\u0065\u0074\u0065\u0020\u0065\u006e\u0074\u0072\u0079. */
   String DELETEENTRY = "DELETEENTRY";
-  /** New name. */
+  /** \u004e\u0065\u0077\u0020\u006e\u0061\u006d\u0065. */
   String NEWNAME = "NEWNAME";
-  /** An exception occoured while connecting to the repository. */
+  /** \u0041\u006e\u0020\u0065\u0078\u0063\u0065\u0070\u0074\u0069\u006f\u006e\u0020\u006f\u0063\u0063\u006f\u0075\u0072\u0065\u0064\u0020\u0077\u0068\u0069\u006c\u0065\u0020\u0063\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006e\u0067\u0020\u0074\u006f\u0020\u0074\u0068\u0065\u0020\u0072\u0065\u0070\u006f\u0073\u0069\u0074\u006f\u0072\u0079. */
   String ERRORINREPOSITORYCONNECTION = "ERRORINREPOSITORYCONNECTION";
-  /** Repository utilities.... */
+  /** \u0052\u0065\u0070\u006f\u0073\u0069\u0074\u006f\u0072\u0079\u0020\u0075\u0074\u0069\u006c\u0069\u0074\u0069\u0065\u0073\u002e\u002e\u002e. */
   String REPOSITORYUTILS = "REPOSITORYUTILS";
-  /** Create migration script.... */
+  /** \u0043\u0072\u0065\u0061\u0074\u0065\u0020\u006d\u0069\u0067\u0072\u0061\u0074\u0069\u006f\u006e\u0020\u0073\u0063\u0072\u0069\u0070\u0074\u002e\u002e\u002e. */
   String CREATEMIGRATIONSCRIPT = "CREATEMIGRATIONSCRIPT";
-  /** From version. */
+  /** \u0046\u0072\u006f\u006d\u0020\u0076\u0065\u0072\u0073\u0069\u006f\u006e. */
   String FROMVERSION = "FROMVERSION";
-  /** To version. */
+  /** \u0054\u006f\u0020\u0076\u0065\u0072\u0073\u0069\u006f\u006e. */
   String TOVERSION = "TOVERSION";
-  /** Attribute. */
+  /** \u0041\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065. */
   String ATTRIBUTE = "ATTRIBUTE";
-  /** Expression. */
+  /** \u0045\u0078\u0070\u0072\u0065\u0073\u0073\u0069\u006f\u006e. */
   String EXPRESSION = "EXPRESSION";
   /** . */
   String NEWONLYICON = "NEWONLYICON";
-  /** This attribute is already part of this index. */
+  /** \u0054\u0068\u0069\u0073\u0020\u0061\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0020\u0069\u0073\u0020\u0061\u006c\u0072\u0065\u0061\u0064\u0079\u0020\u0070\u0061\u0072\u0074\u0020\u006f\u0066\u0020\u0074\u0068\u0069\u0073\u0020\u0069\u006e\u0064\u0065\u0078. */
   String ATTRIBUTEALREADYPARTOFINDEX = "ATTRIBUTEALREADYPARTOFINDEX";
   /** . */
   String DELETEONLYICON = "DELETEONLYICON";
-  /** This attribute is part of an index. */
+  /** \u0054\u0068\u0069\u0073\u0020\u0061\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0020\u0069\u0073\u0020\u0070\u0061\u0072\u0074\u0020\u006f\u0066\u0020\u0061\u006e\u0020\u0069\u006e\u0064\u0065\u0078. */
   String ATTRIBUTEISUSEDININDEX = "ATTRIBUTEISUSEDININDEX";
-  /** An index must include at least one expression or attribute!. */
+  /** \u0041\u006e\u0020\u0069\u006e\u0064\u0065\u0078\u0020\u006d\u0075\u0073\u0074\u0020\u0069\u006e\u0063\u006c\u0075\u0064\u0065\u0020\u0061\u0074\u0020\u006c\u0065\u0061\u0073\u0074\u0020\u006f\u006e\u0065\u0020\u0065\u0078\u0070\u0072\u0065\u0073\u0073\u0069\u006f\u006e\u0020\u006f\u0072\u0020\u0061\u0074\u0074\u0072\u0069\u0062\u0075\u0074\u0065\u0021. */
   String ANINDEXMUSTHAVEATLEASTONEELEMENT = "ANINDEXMUSTHAVEATLEASTONEELEMENT";
-  /** Edit view. */
+  /** \u0045\u0064\u0069\u0074\u0020\u0076\u0069\u0065\u0077. */
   String VIEWEDITOR = "VIEWEDITOR";
-  /** The domain is still in use by table {0}. */
+  /** \u0054\u0068\u0065\u0020\u0064\u006f\u006d\u0061\u0069\u006e\u0020\u0069\u0073\u0020\u0073\u0074\u0069\u006c\u006c\u0020\u0069\u006e\u0020\u0075\u0073\u0065\u0020\u0062\u0079\u0020\u0074\u0061\u0062\u006c\u0065\u0020\u007b\u0030\u007d. */
   String DOMAINISINUSEBYTABLE = "DOMAINISINUSEBYTABLE";
-  /** Convert model.... */
+  /** \u0043\u006f\u006e\u0076\u0065\u0072\u0074\u0020\u006d\u006f\u0064\u0065\u006c\u002e\u002e\u002e. */
   String CONVERTMODEL = "CONVERTMODEL";
-  /** Target dialect. */
+  /** \u0054\u0061\u0072\u0067\u0065\u0074\u0020\u0064\u0069\u0061\u006c\u0065\u0063\u0074. */
   String TARGETDIALECT = "TARGETDIALECT";
-  /** Datatype mapping. */
+  /** \u0044\u0061\u0074\u0061\u0074\u0079\u0070\u0065\u0020\u006d\u0061\u0070\u0070\u0069\u006e\u0067. */
   String DATATYPEMAPPING = "DATATYPEMAPPING";
-  /** Current datatype. */
+  /** \u0043\u0075\u0072\u0072\u0065\u006e\u0074\u0020\u0064\u0061\u0074\u0061\u0074\u0079\u0070\u0065. */
   String CURRENTDATATYPE = "CURRENTDATATYPE";
-  /** Will be assigned to. */
+  /** \u0057\u0069\u006c\u006c\u0020\u0062\u0065\u0020\u0061\u0073\u0073\u0069\u0067\u006e\u0065\u0064\u0020\u0074\u006f. */
   String TARGETDATATYPE = "TARGETDATATYPE";
-  /** Model converted. */
+  /** \u004d\u006f\u0064\u0065\u006c\u0020\u0063\u006f\u006e\u0076\u0065\u0072\u0074\u0065\u0064. */
   String MODELCONVERTED = "MODELCONVERTED";
-  /** RESTRICT. */
+  /** \u0052\u0045\u0053\u0054\u0052\u0049\u0043\u0054. */
   String RESTRICT = "RESTRICT";
-  /** Prompt for password before connection establishment. */
+  /** \u0050\u0072\u006f\u006d\u0070\u0074\u0020\u0066\u006f\u0072\u0020\u0070\u0061\u0073\u0073\u0077\u006f\u0072\u0064\u0020\u0062\u0065\u0066\u006f\u0072\u0065\u0020\u0063\u006f\u006e\u006e\u0065\u0063\u0074\u0069\u006f\u006e\u0020\u0065\u0073\u0074\u0061\u0062\u006c\u0069\u0073\u0068\u006d\u0065\u006e\u0074. */
   String PROMPTFORPASSWORD = "PROMPTFORPASSWORD";
-  /** Please enter the database password. */
+  /** \u0050\u006c\u0065\u0061\u0073\u0065\u0020\u0065\u006e\u0074\u0065\u0072\u0020\u0074\u0068\u0065\u0020\u0064\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u0020\u0070\u0061\u0073\u0073\u0077\u006f\u0072\u0064. */
   String PLEASEENTERDATABASEPASSWORD = "PLEASEENTERDATABASEPASSWORD";
-  /** Hide. */
+  /** \u0048\u0069\u0064\u0065. */
   String HIDE = "HIDE";
-  /** Subject areas. */
+  /** \u0053\u0075\u0062\u006a\u0065\u0063\u0074\u0020\u0061\u0072\u0065\u0061\u0073. */
   String MENUSUBJECTAREAS = "MENUSUBJECTAREAS";
-  /** Show all. */
+  /** \u0053\u0068\u006f\u0077\u0020\u0061\u006c\u006c. */
   String SHOWALL = "SHOWALL";
-  /** Hide all. */
+  /** \u0048\u0069\u0064\u0065\u0020\u0061\u006c\u006c. */
   String HIDEALL = "HIDEALL";
-  /** Create database documentation. */
+  /** \u0043\u0072\u0065\u0061\u0074\u0065\u0020\u0064\u0061\u0074\u0061\u0062\u0061\u0073\u0065\u0020\u0064\u006f\u0063\u0075\u006d\u0065\u006e\u0074\u0061\u0074\u0069\u006f\u006e. */
   String CREATEDBDOCUMENTATION = "CREATEDBDOCUMENTATION";
-  /** Writing model information.... */
+  /** \u0057\u0072\u0069\u0074\u0069\u006e\u0067\u0020\u006d\u006f\u0064\u0065\u006c\u0020\u0069\u006e\u0066\u006f\u0072\u006d\u0061\u0074\u0069\u006f\u006e\u002e\u002e\u002e. */
   String DOCSTEP1 = "DOCSTEP1";
-  /** Generating report.... */
+  /** \u0047\u0065\u006e\u0065\u0072\u0061\u0074\u0069\u006e\u0067\u0020\u0072\u0065\u0070\u006f\u0072\u0074\u002e\u002e\u002e. */
   String DOCSTEP2 = "DOCSTEP2";
-  /** Documentation done. */
+  /** \u0044\u006f\u0063\u0075\u006d\u0065\u006e\u0074\u0061\u0074\u0069\u006f\u006e\u0020\u0064\u006f\u006e\u0065. */
   String DOCSTEP3 = "DOCSTEP3";
-  /** Help.... */
+  /** \u0048\u0065\u006c\u0070\u002e\u002e\u002e. */
   String HELP = "HELP";
-  /** Online help. */
+  /** \u004f\u006e\u006c\u0069\u006e\u0065\u0020\u0068\u0065\u006c\u0070. */
   String ONLINEHELP = "ONLINEHELP";
 }
