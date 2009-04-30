@@ -39,7 +39,7 @@
 
 								<XMLResourceBundle
 									dest="src/main/resources" defaultLanguage="en"
-									src="src/main/java">
+									src="src/main/java" encoding="ISO8859_1" javaEncoding="ISO8859_1">
 									<fileset dir="src/main/resources">
 										<include name="erdesigner.xml" />
 									</fileset>
@@ -52,7 +52,7 @@
 					<dependency>
 						<groupId>net.sourceforge.mogwai</groupId>
 						<artifactId>mogwai-i18n</artifactId>
-						<version>2.10</version>
+						<version>2.11</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -195,7 +195,7 @@
 		<dependency>
 			<groupId>net.sourceforge.mogwai</groupId>
 			<artifactId>mogwai-i18n</artifactId>
-			<version>2.10</version>
+			<version>2.11</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
