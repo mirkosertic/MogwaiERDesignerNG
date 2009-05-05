@@ -168,6 +168,7 @@ Release 1.7
 * Bug Fixing 2675535 [ERDesignerNG] Not possible to edit relations in subject area
 * Bug Fixing 2292224 [ERDesignerNG] Comments cannot be added to Subject Areas
 * Bug Fixing 2735418 [ERDesignerNG] Table content is clipped
+* Bug Fixing 2735413 [ERDesignerNG] German umlauts corrupted
 * Implemented FR 2581994 [ERDesignerNG] Support for function based indexes
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
 * Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs
