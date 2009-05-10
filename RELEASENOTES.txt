@@ -27,7 +27,7 @@ This software uses or is based on the following libraries:
   
  Thanks to the following contributors
  
-  Thomas Breitkreuz for his report templates and many good feature requests
+  Thomas Breitkreuz for his H2 dialect, report templates and many good feature requests
 
 Release 1.0
 
@@ -151,6 +151,7 @@ Release 1.7
 * Improved UI response during long time tasks like reverse engineering and complete compare
 * Added support for automatic IZPack installers
 * Improved handling of recently used files and last database connections
+* Added support for H2 (Thanks to Thomas Breitkreuz)
 * Improved complete compare functionality for indexes
 * If there is a duplicate relation name during reverse engineering, a new unique name is generated
 * Bug Fixing 2513135 [ERDesignerNG] Oracle complete compare fails with date colum
