@@ -165,4 +165,18 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
         }
         return false;
     }
+
+    /**
+     * Test if the attribute is part of the primary key-
+     * 
+     * @param aAttribute the attribute
+     * @return true if yes, else false
+     */
+    public boolean isPrimaryKey(Attribute aAttribute) {
+        Index thePrimaryKey = getPrimarykey();
+        if (thePrimaryKey != null) {
+            return thePrimaryKey.containsAttribute(aAttribute);
+        }
+        return false;
+    }
 }
