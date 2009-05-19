@@ -154,6 +154,7 @@ Release 1.7
 * Added support for H2 (Thanks to Thomas Breitkreuz)
 * Improved complete compare functionality for indexes
 * If there is a duplicate relation name during reverse engineering, a new unique name is generated
+* Added support to Export model to OpenXava
 * Bug Fixing 2513135 [ERDesignerNG] Oracle complete compare fails with date colum
 * Bug Fixing 2675526 [ERDesignerNG] Generation of migration script not possible
 * Bug Fixing 2615849 [ERDesignerNG] Wrong dialect is used to communicate with rep

@@ -115,6 +115,7 @@ import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
+import de.erdesignerng.visual.editor.openxavaexport.OpenXavaExportEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
 import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
@@ -335,6 +336,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction helpAction;
 
     private DefaultMenu repositoryUtilsMenu;
+    
+    private DefaultAction exportOpenXavaAction;
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
@@ -608,6 +611,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.HELP);
+        
+        exportOpenXavaAction = new DefaultAction(new ActionEventProcessor() {
+
+            public void processActionEvent(ActionEvent aEvent) {
+                commandExportToOpenXava();
+            }
+
+        }, this, ERDesignerBundle.OPENXAVAEXPORT);
+
 
         lruMenu = new DefaultMenu(lruAction);
 
@@ -676,11 +688,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
         }
-
+        
         DefaultMenu theSVGExportMenu = new DefaultMenu(exportSVGAction);
 
         theExportMenu.add(theSVGExportMenu);
         addExportEntries(theSVGExportMenu, new SVGExporter());
+        
+        theExportMenu.add(new DefaultMenuItem(exportOpenXavaAction));
 
         UIInitializer.getInstance().initialize(theExportMenu);
 
@@ -1982,7 +1996,25 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             worldConnector.notifyAboutException(e);
         }
     }
+    
+    /**
+     * Run the OpenXava Exporter.
+     */
+    protected void commandExportToOpenXava() {
+        OpenXavaExportEditor theEditor = new OpenXavaExportEditor(model, scrollPane);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
+        }
+    }
 
+
+    /**
+     * Show the DDL changelog.
+     */
     protected void commandGenerateChangelogSQL() {
 
         if (model.getDialect() == null) {

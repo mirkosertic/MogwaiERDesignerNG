@@ -18,16 +18,10 @@
 package de.erdesignerng.visual.editor.openxavaexport;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.ConversionInfos;
-import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.generator.openxava.OpenXavaOptions;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -41,7 +35,7 @@ public class OpenXavaExportEditor extends BaseEditor {
 
     private Model model;
 
-    private BindingInfo<ConversionInfos> bindingInfo = new BindingInfo<ConversionInfos>(new ConversionInfos());
+    private BindingInfo<OpenXavaOptions> bindingInfo = new BindingInfo<OpenXavaOptions>(new OpenXavaOptions());
 
     private OpenXavaExportEditorView editingView;
 
@@ -54,36 +48,16 @@ public class OpenXavaExportEditor extends BaseEditor {
      *            the parent container
      */
     public OpenXavaExportEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.CONVERTMODEL);
+        super(aParent, ERDesignerBundle.OPENXAVAEXPORT);
 
         initialize();
 
         model = aModel;
 
-        DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
-        DialectFactory theFactory = DialectFactory.getInstance();
-
-        for (Dialect theDialect : theFactory.getSupportedDialects()) {
-            if (!theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())) {
-                theDialectModel.addElement(theDialect);
-            }
-        }
-        editingView.getTargetDialect().setModel(theDialectModel);
-        bindingInfo.getDefaultModel().setTargetDialect((Dialect) theDialectModel.getElementAt(0));
-
-        editingView.getTargetDialect().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                initializeMappingModelFor((Dialect) editingView.getTargetDialect().getSelectedItem());
-                bindingInfo.model2view();
-            }
-
-        });
-
-        bindingInfo.addBinding("targetDialect", editingView.getTargetDialect(), true);
-        bindingInfo.addBinding("typeMapping",
-                new ConvertPropertyAdapter(editingView.getMappingTable(), null, getResourceHelper()));
+        bindingInfo.addBinding("srcDirectory", editingView.getSrcDirectory(), true);
+        bindingInfo.addBinding("packageName", editingView.getPackageName(), true);
+//        bindingInfo.addBinding("typeMapping",
+  //              new ConvertPropertyAdapter(editingView.getMappingTable(), null, getResourceHelper()));
 
         bindingInfo.configure();
         bindingInfo.model2view();
@@ -97,14 +71,14 @@ public class OpenXavaExportEditor extends BaseEditor {
      */
     private void initializeMappingModelFor(Dialect aDialect) {
 
-        ConversionInfos theInfos = bindingInfo.getDefaultModel();
+/*        ConversionInfos theInfos = bindingInfo.getDefaultModel();
         theInfos.setTargetDialect(aDialect);
         theInfos.getTypeMapping().clear();
         
         // Try to map the types
         for (DataType theCurrentType : model.getUsedDataTypes()) {
             theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));
-        }
+        }*/
     }
 
     /**
@@ -136,6 +110,5 @@ public class OpenXavaExportEditor extends BaseEditor {
      */
     @Override
     public void applyValues() throws Exception {
-        model.convert(bindingInfo.getDefaultModel());
     }
 }

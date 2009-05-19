@@ -17,12 +17,13 @@
  */
 package de.erdesignerng.test.generator;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import junit.framework.TestCase;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -31,7 +32,6 @@ import de.erdesignerng.generator.openxava.OpenXavaGenerator;
 import de.erdesignerng.generator.openxava.OpenXavaOptions;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.xml10.XMLModelSerializer;
-import junit.framework.TestCase;
 
 public class OpenXavaGeneratorTest extends TestCase {
 
@@ -42,10 +42,11 @@ public class OpenXavaGeneratorTest extends TestCase {
         Model theModel = XMLModelSerializer.SERIALIZER.deserializeFrom(theDoc);
         
         OpenXavaOptions theOptions = new OpenXavaOptions();
-        File theTargetFile = new File("C:\\temp\\ox\\openxava-3.1.2\\workspace\\Management\\src");
+        theOptions.setSrcDirectory("C:\\temp\\ox\\openxava-3.1.2\\workspace\\Management\\src");
+        theOptions.setPackageName("de.powerstaff");
         
         OpenXavaGenerator theGenerator = new OpenXavaGenerator();
-        theGenerator.generate(theModel, "de.powerstaff", theOptions, theTargetFile);
+        theGenerator.generate(theModel, theOptions);
         
     }
 }
