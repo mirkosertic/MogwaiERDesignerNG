@@ -61,6 +61,20 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         return false;
     }
 
+    /**
+     * Test if this attribute is part of a primary key.
+     * 
+     * @return true if yes, else false
+     */
+    public boolean isPrimaryKey() {
+        Table theOwner = getOwner();
+        if (theOwner != null) {
+            return theOwner.isPrimaryKey(this);
+        }
+
+        return false;
+    }
+
     public String getDefaultValue() {
         return defaultValue;
     }
