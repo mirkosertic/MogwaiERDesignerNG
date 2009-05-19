@@ -818,5 +818,9 @@
 			<Text lang="de">Onlinehilfe</Text>		
 			<Text lang="en">Online help</Text>					
 		</Entry>
+		<Entry id="STEREOTYPE">
+			<Text lang="de">Stereotyp</Text>		
+			<Text lang="en">Stereotype</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
