@@ -28,6 +28,10 @@ import de.erdesignerng.dialect.DataType;
 public class OpenXavaOptions {
 
     private Map<Integer, String> typeMapping = new HashMap<Integer, String>();
+    
+    private String srcDirectory;
+    
+    private String packageName;
 
     public OpenXavaOptions() {
         typeMapping.put(Types.DATE, "java.util.Date");
@@ -61,5 +65,33 @@ public class OpenXavaOptions {
 
     public void setTypeMapping(Map<Integer, String> typeMapping) {
         this.typeMapping = typeMapping;
+    }
+
+    /**
+     * @return the srcDirectory
+     */
+    public String getSrcDirectory() {
+        return srcDirectory;
+    }
+
+    /**
+     * @param srcDirectory the srcDirectory to set
+     */
+    public void setSrcDirectory(String srcDirectory) {
+        this.srcDirectory = srcDirectory;
+    }
+
+    /**
+     * @return the packageName
+     */
+    public String getPackageName() {
+        return packageName;
+    }
+
+    /**
+     * @param packageName the packageName to set
+     */
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

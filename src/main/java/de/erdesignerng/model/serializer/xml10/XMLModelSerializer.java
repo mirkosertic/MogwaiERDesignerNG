@@ -25,9 +25,9 @@ import org.w3c.dom.NodeList;
 
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
