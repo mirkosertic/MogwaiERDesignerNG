@@ -39,7 +39,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 
 /**
  * @author $Author: mirkosertic $

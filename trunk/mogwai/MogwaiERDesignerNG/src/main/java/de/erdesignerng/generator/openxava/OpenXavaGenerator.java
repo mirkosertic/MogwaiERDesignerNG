@@ -50,12 +50,14 @@ public class OpenXavaGenerator {
     public OpenXavaGenerator() {
     }
 
-    public void generate(Model aModel, String aPackageName, OpenXavaOptions aOptions, File aDirectory)
+    public void generate(Model aModel, OpenXavaOptions aOptions)
             throws IOException {
-
-        File theTargetDirectory = aDirectory;
-        if (!StringUtils.isEmpty(aPackageName)) {
-            theTargetDirectory = new File(aDirectory, aPackageName.replace('.', File.separatorChar));
+        
+        String thePackageName = aOptions.getPackageName();
+        
+        File theTargetDirectory = new File(aOptions.getSrcDirectory());
+        if (!StringUtils.isEmpty(thePackageName)) {
+            theTargetDirectory = new File(theTargetDirectory, thePackageName.replace('.', File.separatorChar));
         }
 
         if (theTargetDirectory.exists()) {
@@ -81,8 +83,8 @@ public class OpenXavaGenerator {
                 PrintWriter theWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(theTargetFile),
                         JAVA_ENCODING));
 
-                if (!StringUtils.isEmpty(aPackageName)) {
-                    theWriter.println("package " + aPackageName + ";");
+                if (!StringUtils.isEmpty(thePackageName)) {
+                    theWriter.println("package " + thePackageName + ";");
                     theWriter.println();
                 }
 

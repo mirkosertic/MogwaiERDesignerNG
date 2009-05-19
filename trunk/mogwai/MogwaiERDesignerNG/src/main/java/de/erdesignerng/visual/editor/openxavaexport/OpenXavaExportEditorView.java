@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.editor.openxavaexport;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -25,10 +26,10 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultSeparator;
 import de.mogwai.common.client.looks.components.DefaultTable;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 /**
  * @author $Author: mirkosertic $
@@ -38,15 +39,19 @@ public class OpenXavaExportEditorView extends JPanel {
 
     private DefaultLabel component1;
 
-    private DefaultComboBox targetDialect;
+    private DefaultTextField srcDirectory;
+    
+    private DefaultTextField packageName;
 
     private DefaultTable mappingTable;
 
     private JPanel component8;
 
     private DefaultButton okButton;
-
+    
     private DefaultButton cancelButton;
+    
+    private DefaultButton searchDirectoryButton;
 
     /**
      * Constructor.
@@ -60,49 +65,24 @@ public class OpenXavaExportEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
-        String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu";
+        String rowDef = "2dlu,p,8dlu,p,2dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
+        String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu,30dlu,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
 
         CellConstraints cons = new CellConstraints();
 
-        add(getComponent1(), cons.xywh(2, 4, 1, 1));
-        add(new DefaultSeparator(ERDesignerBundle.TARGETDIALECT), cons.xywh(2, 2, 3, 1));
-        add(getTargetDialect(), cons.xywh(4, 4, 1, 1));
-        add(new DefaultSeparator(ERDesignerBundle.DATATYPEMAPPING), cons.xywh(2, 6, 3, 1));
-        add(new JScrollPane(getMappingTable()), cons.xywh(2, 8, 3, 1));
+        add(new DefaultSeparator(ERDesignerBundle.TARGET), cons.xywh(2, 2, 5, 1));
+        add(new DefaultLabel(ERDesignerBundle.SRCDIRECTORY), cons.xywh(2, 4, 1, 1));
+        add(getSrcDirectory(), cons.xywh(4, 4, 1, 1));
+        add(getSearchDirectoryButton(), cons.xywh(6, 4, 1, 1));
+        add(new DefaultLabel(ERDesignerBundle.PACKAGENAME), cons.xywh(2, 6, 1, 1));
+        add(getPackageName(), cons.xywh(4, 6, 3, 1));
+        add(new DefaultSeparator(ERDesignerBundle.DATATYPEMAPPING), cons.xywh(2, 8, 5, 1));
+        add(new JScrollPane(getMappingTable()), cons.xywh(2, 10, 5, 1));
 
-        add(getComponent8(), cons.xywh(2, 10, 3, 1));
-    }
-
-    /**
-     * Getter method for component Component_1.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JLabel getComponent1() {
-
-        if (component1 == null) {
-            component1 = new DefaultLabel(ERDesignerBundle.DIALECT);
-        }
-
-        return component1;
-    }
-
-    /**
-     * Getter method for component TargetDataType.
-     * 
-     * @return the initialized component
-     */
-    public DefaultComboBox getTargetDialect() {
-
-        if (targetDialect == null) {
-            targetDialect = new DefaultComboBox();
-        }
-
-        return targetDialect;
+        add(getComponent8(), cons.xywh(2, 12, 5, 1));
     }
 
     /**
@@ -172,5 +152,43 @@ public class OpenXavaExportEditorView extends JPanel {
         }
 
         return cancelButton;
+    }
+
+    /**
+     * @return the srcDirectory
+     */
+    public DefaultTextField getSrcDirectory() {
+        if (srcDirectory == null) {
+            srcDirectory = new DefaultTextField();
+        }
+        return srcDirectory;
+    }
+
+    /**
+     * @return the packageName
+     */
+    public DefaultTextField getPackageName() {
+        if (packageName == null) {
+            packageName = new DefaultTextField();
+        }
+        return packageName;
+    }
+
+    /**
+     * @return the searchDirectoryButton
+     */
+    public DefaultButton getSearchDirectoryButton() {
+        if (searchDirectoryButton == null) {
+            searchDirectoryButton = new DefaultButton("...");
+        }
+        return searchDirectoryButton;
+    }
+    
+    public static void main(String args[]) {
+        JFrame theFrame = new JFrame();
+        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        theFrame.setContentPane(new OpenXavaExportEditorView());
+        theFrame.pack();
+        theFrame.show();
     }
 }

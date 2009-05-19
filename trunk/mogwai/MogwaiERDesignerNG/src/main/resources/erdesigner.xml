@@ -822,5 +822,21 @@
 			<Text lang="de">Stereotyp</Text>		
 			<Text lang="en">Stereotype</Text>					
 		</Entry>
+		<Entry id="TARGET">
+			<Text lang="de">Ziel</Text>		
+			<Text lang="en">Target</Text>					
+		</Entry>
+		<Entry id="SRCDIRECTORY">
+			<Text lang="de">SRC-Verzeichnis</Text>		
+			<Text lang="en">Src directory</Text>					
+		</Entry>
+		<Entry id="PACKAGENAME">
+			<Text lang="de">Package</Text>		
+			<Text lang="en">Package</Text>					
+		</Entry>
+		<Entry id="OPENXAVAEXPORT">
+			<Text lang="de">OpenXava Export...</Text>		
+			<Text lang="en">OpenXava Export...</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
