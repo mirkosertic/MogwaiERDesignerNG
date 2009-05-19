@@ -55,4 +55,11 @@ public class OpenXavaOptions {
         return theType;
     }
 
+    public Map<Integer, String> getTypeMapping() {
+        return typeMapping;
+    }
+
+    public void setTypeMapping(Map<Integer, String> typeMapping) {
+        this.typeMapping = typeMapping;
+    }
 }
