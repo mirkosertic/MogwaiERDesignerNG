@@ -411,4 +411,6 @@ public interface ERDesignerBundle {
   String HELP = "HELP";
   /** \u004f\u006e\u006c\u0069\u006e\u0065\u0020\u0068\u0065\u006c\u0070. */
   String ONLINEHELP = "ONLINEHELP";
+  /** \u0053\u0074\u0065\u0072\u0065\u006f\u0074\u0079\u0070\u0065. */
+  String STEREOTYPE = "STEREOTYPE";
 }
