@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.generator.openxava;
 
-import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,16 +26,17 @@ import de.erdesignerng.dialect.DataType;
 
 public class OpenXavaOptions {
 
-    private Map<Integer, String> typeMapping = new HashMap<Integer, String>();
-    
+    public static final String[] SUPPORTED_STEREOTYPES = new String[] { "MONEY", "IMAGE", "MEMO", "LABEL",
+            "BOLD_LABEL", "TIME", "DATETIME", "IMAGE_GELLERY", "ZEROS_FILLED", "HTML_TEXT", "IMAGE_LABEL", "EMAIL",
+            "TELEPHONE", "WEBURL", "IP", "ISBN", "CREDIT_CARD", "EMAIL_LIST" };
+
+    private Map<DataType, OpenXavaTypeMap> typeMapping = new HashMap<DataType, OpenXavaTypeMap>();
+
     private String srcDirectory;
-    
+
     private String packageName;
 
     public OpenXavaOptions() {
-        typeMapping.put(Types.DATE, "java.util.Date");
-        typeMapping.put(Types.TIME, "java.util.Date");
-        typeMapping.put(Types.TIMESTAMP, "java.sql.Timestamp");
     }
 
     public String createTableName(String aName) {
@@ -52,18 +52,19 @@ public class OpenXavaOptions {
     }
 
     public String createJavaType(DataType aDatatype) {
-        String theType = typeMapping.get(aDatatype.getJDBCType()[0]);
-        if (StringUtils.isEmpty(theType)) {
-            theType = "String";
+        OpenXavaTypeMap theType = typeMapping.get(aDatatype);
+        String theJavaType = "String";
+        if (theType != null) {
+            theJavaType = theType.getJavaType();
         }
-        return theType;
+        return theJavaType;
     }
 
-    public Map<Integer, String> getTypeMapping() {
+    public Map<DataType, OpenXavaTypeMap> getTypeMapping() {
         return typeMapping;
     }
 
-    public void setTypeMapping(Map<Integer, String> typeMapping) {
+    public void setTypeMapping(Map<DataType, OpenXavaTypeMap> typeMapping) {
         this.typeMapping = typeMapping;
     }
 
@@ -75,7 +76,8 @@ public class OpenXavaOptions {
     }
 
     /**
-     * @param srcDirectory the srcDirectory to set
+     * @param srcDirectory
+     *            the srcDirectory to set
      */
     public void setSrcDirectory(String srcDirectory) {
         this.srcDirectory = srcDirectory;
@@ -89,7 +91,8 @@ public class OpenXavaOptions {
     }
 
     /**
-     * @param packageName the packageName to set
+     * @param packageName
+     *            the packageName to set
      */
     public void setPackageName(String packageName) {
         this.packageName = packageName;
