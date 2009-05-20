@@ -28,8 +28,9 @@ import javax.swing.JComponent;
 import org.apache.commons.beanutils.BeanComparator;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.ConversionInfos;
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.generator.openxava.OpenXavaOptions;
+import de.erdesignerng.generator.openxava.OpenXavaTypeMap;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
@@ -51,21 +52,25 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
     @Override
     public void model2view(Object aModel, String aPropertyName) {
 
-        ConversionInfos theInfos = (ConversionInfos) aModel;
+        OpenXavaOptions theOptions = (OpenXavaOptions) aModel;
 
         String theCurrentTypeName = helper.getText(ERDesignerBundle.CURRENTDATATYPE);
         String theTargetTypeName = helper.getText(ERDesignerBundle.TARGETDATATYPE);
         String theStereoTypeName = helper.getText(ERDesignerBundle.STEREOTYPE);
 
-        String[] theTargetTypes = new String[theInfos.getTypeMapping().keySet().size()];
-        String[] theStereoTypes = new String[theInfos.getTypeMapping().keySet().size()];
+        String[] theTargetTypes = new String[theOptions.getTypeMapping().keySet().size()];
+        String[] theStereoTypes = new String[theOptions.getTypeMapping().keySet().size()];
 
         List<DataType> theCurrentTypes = new ArrayList<DataType>();
-        theCurrentTypes.addAll(theInfos.getTypeMapping().keySet());
+        theCurrentTypes.addAll(theOptions.getTypeMapping().keySet());
 
         Collections.sort(theCurrentTypes, new BeanComparator("name"));
-        for (int i = 0; i < theCurrentTypes.size(); i++) {
-            theTargetTypes[i] = "String";
+        int theRow = 0;
+        for (DataType theType : theCurrentTypes) {
+            OpenXavaTypeMap theMap = theOptions.getTypeMapping().get(theType);
+            theTargetTypes[theRow] = theMap.getJavaType();
+            theStereoTypes[theRow] = theMap.getStereoType();
+            theRow++;
         }
 
         DefaultTable theTable = (DefaultTable) getComponent()[0];
@@ -74,24 +79,28 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
         theTable.setModel(theModel);
 
         DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
-        theTargetTypesEditor.setModel(new DefaultComboBoxModel(theInfos.getTargetDialect().getDataTypes().toArray(
-                new DataType[0])));
-        theTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theTargetTypesEditor));
+        theTargetTypesEditor.setModel(new DefaultComboBoxModel(OpenXavaOptions.SUPPORTED_STEREOTYPES));
+        theTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(theTargetTypesEditor));
         theTable.setRowHeight((int) theTargetTypesEditor.getPreferredSize().getHeight());
     }
 
     @Override
     public void view2model(Object aModel, String aPropertyName) {
-        ConversionInfos theConversionInfos = (ConversionInfos) aModel;
+        OpenXavaOptions theConversionInfos = (OpenXavaOptions) aModel;
         DefaultTable theTable = (DefaultTable) getComponent()[0];
         OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
 
         theConversionInfos.getTypeMapping().clear();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
             DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
-            DataType theTargetType = (DataType) theTableModel.getValueAt(i, 1);
+            String theJavaType = (String) theTableModel.getValueAt(i, 1);
+            String theStereoType = (String) theTableModel.getValueAt(i, 2);
+            
+            OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
+            theMapping.setJavaType(theJavaType);
+            theMapping.setStereoType(theStereoType);
 
-            theConversionInfos.getTypeMapping().put(theSourceType, theTargetType);
+            theConversionInfos.getTypeMapping().put(theSourceType, theMapping);
         }
     }
 
@@ -101,11 +110,10 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
         List<ValidationError> theErrors = new ArrayList<ValidationError>();
         OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
-            for (int col = 1; col <= 2; col++) {
-                String theAssignedAttribute = (String) theTableModel.getValueAt(i, col);
-                if (theAssignedAttribute == null) {
-                    theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
-                }
+            // A Datatype mapping must be there, the other things are optional
+            String theAssignedAttribute = (String) theTableModel.getValueAt(i, 1);
+            if (theAssignedAttribute == null) {
+                theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
             }
         }
 
