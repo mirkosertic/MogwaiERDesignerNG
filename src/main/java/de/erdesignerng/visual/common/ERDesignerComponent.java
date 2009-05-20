@@ -2005,6 +2005,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
+                
+                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.OPENXAVAEXPORTOK));
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }

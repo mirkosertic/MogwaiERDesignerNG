@@ -838,5 +838,13 @@
 			<Text lang="de">OpenXava Export...</Text>		
 			<Text lang="en">OpenXava Export...</Text>					
 		</Entry>
+		<Entry id="OPEN">
+			<Text lang="de">Öffnen...</Text>		
+			<Text lang="en">Open...</Text>					
+		</Entry>
+		<Entry id="OPENXAVAEXPORTOK">
+			<Text lang="de">Die OpenXava Dateien wurden erfolgreich generiert!</Text>		
+			<Text lang="en">The OpenXava files were sucsessfully generated!</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

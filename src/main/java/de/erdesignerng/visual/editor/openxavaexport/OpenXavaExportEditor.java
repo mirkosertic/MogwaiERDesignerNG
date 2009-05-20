@@ -18,14 +18,26 @@
 package de.erdesignerng.visual.editor.openxavaexport;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.Map;
+
+import javax.swing.JFileChooser;
+
+import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.generator.GeneratorUtils;
+import de.erdesignerng.generator.openxava.OpenXavaGenerator;
 import de.erdesignerng.generator.openxava.OpenXavaOptions;
+import de.erdesignerng.generator.openxava.OpenXavaTypeMap;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
@@ -33,11 +45,26 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class OpenXavaExportEditor extends BaseEditor {
 
+    private static final String OX_STYPE_ = "OX_STYPE_";
+
+    private static final String OX_TYPE_ = "OX_TYPE_";
+
+    private static final String OX_PACKAGE = "OX_PACKAGE";
+
+    private static final String OX_SRCDIR = "OX_SRCDIR";
+
     private Model model;
 
     private BindingInfo<OpenXavaOptions> bindingInfo = new BindingInfo<OpenXavaOptions>(new OpenXavaOptions());
 
     private OpenXavaExportEditorView editingView;
+
+    protected DefaultAction chooseSrcDirectoryAction = new DefaultAction(new ActionEventProcessor() {
+
+        public void processActionEvent(ActionEvent e) {
+            commandChooseSrcDirectory();
+        }
+    }, this, ERDesignerBundle.FILE);
 
     /**
      * Create a relation editor.
@@ -56,8 +83,10 @@ public class OpenXavaExportEditor extends BaseEditor {
 
         bindingInfo.addBinding("srcDirectory", editingView.getSrcDirectory(), true);
         bindingInfo.addBinding("packageName", editingView.getPackageName(), true);
-//        bindingInfo.addBinding("typeMapping",
-  //              new ConvertPropertyAdapter(editingView.getMappingTable(), null, getResourceHelper()));
+
+        initializeMappingModelFor(aModel);
+        bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
+                getResourceHelper()));
 
         bindingInfo.configure();
         bindingInfo.model2view();
@@ -69,16 +98,25 @@ public class OpenXavaExportEditor extends BaseEditor {
      * @param aDialect
      *            the target dialect
      */
-    private void initializeMappingModelFor(Dialect aDialect) {
+    private void initializeMappingModelFor(Model aModel) {
 
-/*        ConversionInfos theInfos = bindingInfo.getDefaultModel();
-        theInfos.setTargetDialect(aDialect);
-        theInfos.getTypeMapping().clear();
+        OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
         
-        // Try to map the types
-        for (DataType theCurrentType : model.getUsedDataTypes()) {
-            theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));
-        }*/
+        theOptions.setSrcDirectory(aModel.getProperties().getProperty(OX_SRCDIR));
+        theOptions.setPackageName(aModel.getProperties().getProperty(OX_PACKAGE));
+
+        for (DataType theType : aModel.getUsedDataTypes()) {
+            OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
+            String theJavaType = aModel.getProperties().getProperty(OX_TYPE_ + theType.getName());
+            String theStereoType = aModel.getProperties().getProperty(OX_STYPE_ + theType.getName());
+            if (StringUtils.isEmpty(theJavaType)) {
+                theJavaType = GeneratorUtils.findClosestJavaTypeFor(theType);
+            }
+            theMapping.setJavaType(theJavaType);
+            theMapping.setStereoType(theStereoType);
+
+            theOptions.getTypeMapping().put(theType, theMapping);
+        }
     }
 
     /**
@@ -89,6 +127,7 @@ public class OpenXavaExportEditor extends BaseEditor {
         editingView = new OpenXavaExportEditorView();
         editingView.getOKButton().setAction(okAction);
         editingView.getCancelButton().setAction(cancelAction);
+        editingView.getSearchDirectoryButton().setAction(chooseSrcDirectoryAction);
 
         setContentPane(editingView);
         setResizable(false);
@@ -98,9 +137,34 @@ public class OpenXavaExportEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
+    private void commandChooseSrcDirectory() {
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File theBaseDirectory = theChooser.getSelectedFile();
+            editingView.getSrcDirectory().setText(theBaseDirectory.toString());
+        }
+    }
+
     @Override
     protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
+
+            bindingInfo.view2model();
+
+            OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
+
+            model.getProperties().setProperty(OX_SRCDIR, theOptions.getSrcDirectory());
+            model.getProperties().setProperty(OX_PACKAGE, theOptions.getPackageName());
+            
+            for (Map.Entry<DataType, OpenXavaTypeMap> theEntry : theOptions.getTypeMapping().entrySet()) {
+
+                model.getProperties().setProperty(OX_TYPE_ + theEntry.getKey().getName(),
+                        theEntry.getValue().getJavaType());
+                model.getProperties().setProperty(OX_STYPE_ + theEntry.getKey().getName(),
+                        theEntry.getValue().getStereoType());
+
+            }
             setModalResult(MODAL_RESULT_OK);
         }
     }
@@ -110,5 +174,9 @@ public class OpenXavaExportEditor extends BaseEditor {
      */
     @Override
     public void applyValues() throws Exception {
+        OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
+
+        OpenXavaGenerator theGenerator = new OpenXavaGenerator();
+        theGenerator.generate(model, theOptions);
     }
 }

@@ -50,11 +50,10 @@ public class OpenXavaGenerator {
     public OpenXavaGenerator() {
     }
 
-    public void generate(Model aModel, OpenXavaOptions aOptions)
-            throws IOException {
-        
+    public void generate(Model aModel, OpenXavaOptions aOptions) throws IOException {
+
         String thePackageName = aOptions.getPackageName();
-        
+
         File theTargetDirectory = new File(aOptions.getSrcDirectory());
         if (!StringUtils.isEmpty(thePackageName)) {
             theTargetDirectory = new File(theTargetDirectory, thePackageName.replace('.', File.separatorChar));
@@ -142,7 +141,10 @@ public class OpenXavaGenerator {
                 }
 
                 DataType theDataType = theAttribute.getDatatype();
-                String theJavaType = aOptions.createJavaType(theDataType);
+                OpenXavaTypeMap theMap = aOptions.getTypeMapping().get(theDataType);
+
+                String theJavaType = theMap.getJavaType();
+                String theStereoType = theMap.getStereoType();
 
                 String theColDef = "name=\"" + theAttribute.getName() + "\"";
                 if (theDataType.supportsSize()) {
@@ -161,29 +163,17 @@ public class OpenXavaGenerator {
                     theColDef += ",nullable=true";
                 }
                 theWriter.println("     @Column(" + theColDef + ")");
+                if (!StringUtils.isEmpty(theStereoType)) {
+                    theWriter.println("     @Stereotype(\"" + theStereoType + "\")");
+                }
                 theWriter.println("     private " + theJavaType + " " + theFieldName + ";");
                 theWriter.println();
             }
         }
 
         // Generate the associations
-        /*
-         * for (Relation theRelation :
-         * aModel.getRelations().getForeignKeysFor(theTable)) { Table
-         * theExportingTable = theRelation.getExportingTable();
-         * 
-         * String theFKFieldName =
-         * aOptions.createFieldName(theExportingTable.getName()); String
-         * theFKTableClassName =
-         * aOptions.createTableName(theExportingTable.getName());
-         * 
-         * theWriter.println("     @ManyToOne"); theWriter.println("     " +
-         * theFKTableClassName + " " + theFKFieldName + ";");
-         * theWriter.println(); }
-         */
-
         List<Relation> theRelations = new ArrayList<Relation>();
-        
+
         for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
 
             if (theRelation.getMapping().size() == 1
@@ -196,10 +186,10 @@ public class OpenXavaGenerator {
                 theWriter.println("     // Relation " + theRelation.getName() + " " + theRelation.getExportingTable()
                         + " -> " + theRelation.getImportingTable());
                 theWriter.println("     @OneToMany");
-                theWriter.println("     private Set<" + theImpTableClassName + "> " + theImpFieldName + " = new HashSet<"
-                        + theImpTableClassName + ">();");
+                theWriter.println("     private Set<" + theImpTableClassName + "> " + theImpFieldName
+                        + " = new HashSet<" + theImpTableClassName + ">();");
                 theWriter.println();
-                
+
                 theRelations.add(theRelation);
             } else {
                 LOGGER.warn("Ignoring relation " + theRelation.getName()
