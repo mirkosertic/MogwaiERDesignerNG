@@ -130,8 +130,8 @@ public final class OpenXavaASTHelper {
             }
         }
         if (theAnnotation == null) {
-            MarkerAnnotationExpr theExpression = new MarkerAnnotationExpr(ASTHelper.createNameExpr(aName));
-            addAnnotationTo(aDecl, theExpression);
+            theAnnotation = new MarkerAnnotationExpr(ASTHelper.createNameExpr(aName));
+            addAnnotationTo(aDecl, theAnnotation);
         }
 
         return theAnnotation;
@@ -152,9 +152,9 @@ public final class OpenXavaASTHelper {
             }
         }
         if (theAnnotation == null) {
-            SingleMemberAnnotationExpr theExpression = new SingleMemberAnnotationExpr(ASTHelper.createNameExpr(aName),
+            theAnnotation = new SingleMemberAnnotationExpr(ASTHelper.createNameExpr(aName),
                     aExpression);
-            addAnnotationTo(aDecl, theExpression);
+            addAnnotationTo(aDecl, theAnnotation);
         } else {
             theAnnotation.setMemberValue(aExpression);
         }
@@ -184,8 +184,8 @@ public final class OpenXavaASTHelper {
             }
         }
         if (theAnnotation == null) {
-            NormalAnnotationExpr theExpression = new NormalAnnotationExpr(ASTHelper.createNameExpr(aName), aValues);
-            addAnnotationTo(aDecl, theExpression);
+            theAnnotation = new NormalAnnotationExpr(ASTHelper.createNameExpr(aName), aValues);
+            addAnnotationTo(aDecl, theAnnotation);
         } else {
             theAnnotation.setPairs(aValues);
         }
