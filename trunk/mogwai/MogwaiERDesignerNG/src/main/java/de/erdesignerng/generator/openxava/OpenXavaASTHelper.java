@@ -90,6 +90,32 @@ public final class OpenXavaASTHelper {
         }
     }
 
+    public static boolean hasAnnotation(String aName, BodyDeclaration aDecl) {
+        if (aDecl.getAnnotations() != null) {
+            for (AnnotationExpr theExpression : aDecl.getAnnotations()) {
+                if (theExpression instanceof MarkerAnnotationExpr) {
+                    MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
+                    if (theMarker.getName().getName().equals(aName)) {
+                        return true;
+                    }
+                }
+                if (theExpression instanceof NormalAnnotationExpr) {
+                    NormalAnnotationExpr theAnnotation = (NormalAnnotationExpr) theExpression;
+                    if (theAnnotation.getName().getName().equals(aName)) {
+                        return true;
+                    }
+                }
+                if (theExpression instanceof SingleMemberAnnotationExpr) {
+                    SingleMemberAnnotationExpr theAnnotation = (SingleMemberAnnotationExpr) theExpression;
+                    if (theAnnotation.getName().getName().equals(aName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static MarkerAnnotationExpr addMarkerAnnotationTo(String aName, BodyDeclaration aDecl) {
 
         MarkerAnnotationExpr theAnnotation = null;
@@ -135,6 +161,13 @@ public final class OpenXavaASTHelper {
 
         return theAnnotation;
     }
+    
+    public static NormalAnnotationExpr overwriteNormalAnnotation(String aName, List<MemberValuePair> aValues,
+            BodyDeclaration aDecl) {
+        removeAnnotatiomFrom(aName, aDecl);
+        return addNormalAnnotationTo(aName, aValues, aDecl);
+    }
+
 
     public static NormalAnnotationExpr addNormalAnnotationTo(String aName, List<MemberValuePair> aValues,
             BodyDeclaration aDecl) {

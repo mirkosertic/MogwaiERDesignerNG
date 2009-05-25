@@ -23,6 +23,7 @@ import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
+import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
@@ -40,6 +41,7 @@ import japa.parser.ast.stmt.BlockStmt;
 import japa.parser.ast.stmt.ReturnStmt;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.type.Type;
+import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -152,7 +154,20 @@ public class OpenXavaGenerator {
             throw new RuntimeException("Cannot find main type");
         }
 
-        List<FieldDeclaration> theFields = new ArrayList<FieldDeclaration>();
+        // Check the fields
+        theType.accept(new VoidVisitorAdapter() {
+
+            @Override
+            public void visit(final FieldDeclaration aField, final Object aArg) {
+                ClassOrInterfaceDeclaration theClass = (ClassOrInterfaceDeclaration) aArg;
+                if (aField.getVariables().size() != 1) {
+                    throw new RuntimeException("Cannot parse Java Type : " + theClass.getName()
+                            + ". Please make sure to declare only one field per statement!");
+                }
+            }
+        }, theType);
+
+        List<FieldDeclaration> thePersistentFields = new ArrayList<FieldDeclaration>();
 
         OpenXavaASTHelper.addMarkerAnnotationTo("Entity", theType);
 
@@ -164,8 +179,9 @@ public class OpenXavaGenerator {
                 DataType theDataType = theAttribute.getDatatype();
                 OpenXavaTypeMap theMap = aOptions.getTypeMapping().get(theDataType);
 
-                String theJavaType = aOptions.getJavaType(theDataType, theAttribute.isNullable(), theAttribute.isPrimaryKey());
-                
+                String theJavaType = aOptions.getJavaType(theDataType, theAttribute.isNullable(), theAttribute
+                        .isPrimaryKey());
+
                 String theStereoType = theMap.getStereoType();
 
                 FieldDeclaration theDecl = OpenXavaASTHelper.findFieldDeclaration(theFieldName, theType);
@@ -177,7 +193,7 @@ public class OpenXavaGenerator {
                     theDecl.setType(new ClassOrInterfaceType(theJavaType));
                 }
 
-                theFields.add(theDecl);
+                thePersistentFields.add(theDecl);
 
                 if (theAttribute.isPrimaryKey()) {
                     OpenXavaASTHelper.addMarkerAnnotationTo("Id", theDecl);
@@ -190,7 +206,8 @@ public class OpenXavaGenerator {
                     OpenXavaASTHelper.removeAnnotatiomFrom("Required", theDecl);
                 }
                 if (!StringUtils.isEmpty(theStereoType)) {
-                    OpenXavaASTHelper.addSingleMemberAnnotationTo("Stereotype", new StringLiteralExpr(theStereoType), theDecl);
+                    OpenXavaASTHelper.addSingleMemberAnnotationTo("Stereotype", new StringLiteralExpr(theStereoType),
+                            theDecl);
                 } else {
                     OpenXavaASTHelper.removeAnnotatiomFrom("Stereotype", theDecl);
                 }
@@ -210,12 +227,12 @@ public class OpenXavaGenerator {
                     theValues.add(new MemberValuePair("scale", new IntegerLiteralExpr(Integer.toString(theAttribute
                             .getScale()))));
                 }
-                if (!theAttribute.isNullable()) {
+                if (!theAttribute.isNullable() && !theAttribute.isPrimaryKey()) {
                     theValues.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
                 } else {
                     theValues.add(new MemberValuePair("nullable", new BooleanLiteralExpr(true)));
                 }
-                OpenXavaASTHelper.addNormalAnnotationTo("Column", theValues, theDecl);
+                OpenXavaASTHelper.overwriteNormalAnnotation("Column", theValues, theDecl);
             }
         }
 
@@ -245,7 +262,7 @@ public class OpenXavaGenerator {
                     theDecl.setType(theRelationType);
                 }
 
-                theFields.add(theDecl);
+                thePersistentFields.add(theDecl);
 
                 OpenXavaASTHelper.addMarkerAnnotationTo("OneToMany", theDecl);
             } else {
@@ -254,7 +271,52 @@ public class OpenXavaGenerator {
             }
         }
 
-        for (FieldDeclaration theField : theFields) {
+        if (theType.getMembers() != null) {
+
+            List<FieldDeclaration> theFieldsToRemove = new ArrayList<FieldDeclaration>();
+
+            for (BodyDeclaration theDecl : theType.getMembers()) {
+                if (theDecl instanceof FieldDeclaration) {
+
+                    FieldDeclaration theField = (FieldDeclaration) theDecl;
+
+                    // Test if the field is marked as persistent and is not a
+                    // persistent attribute
+                    if (OpenXavaASTHelper.hasAnnotation("Column", theDecl) && !thePersistentFields.contains(theField)) {
+                        theFieldsToRemove.add(theField);
+                    }
+                }
+            }
+            theType.getMembers().removeAll(theFieldsToRemove);
+
+            // Remove the getter and setter for the removed fields
+            List<MethodDeclaration> theMethodsToRemove = new ArrayList<MethodDeclaration>();
+            for (FieldDeclaration theField : theFieldsToRemove) {
+
+                String theName = theField.getVariables().get(0).getId().getName();
+                String thePropertyName = aOptions.createPropertyName(theName);
+
+                boolean isBoolean = "boolean".equals(theField.getType().toString());
+
+                String theMethodName = "set" + thePropertyName;
+                MethodDeclaration theMethod = OpenXavaASTHelper.findMethodDeclaration(theMethodName, theType);
+                if (theMethod != null) {
+                    theMethodsToRemove.add(theMethod);
+                }
+                if (isBoolean) {
+                    theMethodName = "is" + thePropertyName;
+                } else {
+                    theMethodName = "get" + thePropertyName;
+                }
+                theMethod = OpenXavaASTHelper.findMethodDeclaration(theMethodName, theType);
+                if (theMethod != null) {
+                    theMethodsToRemove.add(theMethod);
+                }
+            }
+            theType.getMembers().removeAll(theMethodsToRemove);
+        }
+
+        for (FieldDeclaration theField : thePersistentFields) {
 
             String theName = theField.getVariables().get(0).getId().getName();
             String thePropertyName = aOptions.createPropertyName(theName);
@@ -268,11 +330,12 @@ public class OpenXavaGenerator {
                 List<Parameter> theParams = new ArrayList<Parameter>();
                 theParams.add(ASTHelper.createParameter(theField.getType(), "aValue"));
                 theSetMethod.setParameters(theParams);
-                
+
                 BlockStmt theBlock = new BlockStmt();
-                ASTHelper.addStmt(theBlock, new AssignExpr(new NameExpr(theName), new NameExpr("aValue"), Operator.assign));
+                ASTHelper.addStmt(theBlock, new AssignExpr(new NameExpr(theName), new NameExpr("aValue"),
+                        Operator.assign));
                 theSetMethod.setBody(theBlock);
-                
+
                 ASTHelper.addMember(theType, theSetMethod);
             } else {
                 List<Parameter> theParams = new ArrayList<Parameter>();
@@ -288,11 +351,11 @@ public class OpenXavaGenerator {
             MethodDeclaration theGetMethod = OpenXavaASTHelper.findMethodDeclaration(theMethodName, theType);
             if (theGetMethod == null) {
                 theGetMethod = new MethodDeclaration(ModifierSet.PUBLIC, theField.getType(), theMethodName);
-                
+
                 BlockStmt theBlock = new BlockStmt();
-                ASTHelper.addStmt(theBlock, new ReturnStmt(new NameExpr(theName)));                
+                ASTHelper.addStmt(theBlock, new ReturnStmt(new NameExpr(theName)));
                 theGetMethod.setBody(theBlock);
-                
+
                 ASTHelper.addMember(theType, theGetMethod);
             } else {
                 theGetMethod.setType(theField.getType());
