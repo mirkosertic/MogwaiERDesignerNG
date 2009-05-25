@@ -51,11 +51,28 @@ public class OpenXavaOptions {
         return StringUtils.capitalize(aName.toLowerCase());
     }
 
-    public String createJavaType(DataType aDatatype) {
+    public String getJavaType(DataType aDatatype, boolean aNullable, boolean aPrimarykey) {
         OpenXavaTypeMap theType = typeMapping.get(aDatatype);
         String theJavaType = "String";
         if (theType != null) {
             theJavaType = theType.getJavaType();
+        }
+        if (!aNullable && !aPrimarykey) {
+            if ("Integer".equals(theJavaType)) {
+                theJavaType = "int";
+            }
+            if ("Long".equals(theJavaType)) {
+                theJavaType = "long";
+            }
+            if ("Short".equals(theJavaType)) {
+                theJavaType = "short";
+            }
+            if ("Double".equals(theJavaType)) {
+                theJavaType = "double";
+            }
+            if ("Boolean".equals(theJavaType)) {
+                theJavaType = "boolean";
+            }
         }
         return theJavaType;
     }
