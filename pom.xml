@@ -341,6 +341,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code.javaparser</groupId>
+			<artifactId>javaparser</artifactId>
+			<version>1.0.7</version>
+		</dependency>
 	</dependencies>
 
 	<properties>

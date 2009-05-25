@@ -17,17 +17,40 @@
  */
 package de.erdesignerng.generator.openxava;
 
+import japa.parser.ASTHelper;
+import japa.parser.JavaParser;
+import japa.parser.ParseException;
+import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.PackageDeclaration;
+import japa.parser.ast.body.BodyDeclaration;
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.FieldDeclaration;
+import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.body.ModifierSet;
+import japa.parser.ast.body.TypeDeclaration;
+import japa.parser.ast.body.VariableDeclarator;
+import japa.parser.ast.expr.AnnotationExpr;
+import japa.parser.ast.expr.BooleanLiteralExpr;
+import japa.parser.ast.expr.Expression;
+import japa.parser.ast.expr.IntegerLiteralExpr;
+import japa.parser.ast.expr.MarkerAnnotationExpr;
+import japa.parser.ast.expr.MemberValuePair;
+import japa.parser.ast.expr.NormalAnnotationExpr;
+import japa.parser.ast.expr.SingleMemberAnnotationExpr;
+import japa.parser.ast.expr.StringLiteralExpr;
+import japa.parser.ast.type.ClassOrInterfaceType;
+import japa.parser.ast.type.Type;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -41,13 +64,38 @@ public class OpenXavaGenerator {
 
     private static final String JAVA_ENCODING = "UTF-8";
 
-    private static final String START_MARKER = "//START_OF_GENERATED_CODE";
-
-    private static final String END_MARKER = "//END_OF_GENERATED_CODE";
-
     private static final Logger LOGGER = Logger.getLogger(OpenXavaGenerator.class);
 
     public OpenXavaGenerator() {
+    }
+
+    private CompilationUnit createNewCompilationUnit(String aPackageName, String aMainTypeName) throws IOException {
+        CompilationUnit theUnit = new CompilationUnit();
+        if (!StringUtils.isEmpty(aPackageName)) {
+            theUnit.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(aPackageName)));
+        }
+        List<ImportDeclaration> theImports = new ArrayList<ImportDeclaration>();
+        theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("java.util"), false, true));
+        theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("javax.persistence"), false, true));
+        theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("org.openxava.annotations"), false, true));
+        theUnit.setImports(theImports);
+        ClassOrInterfaceDeclaration theType = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC, false, aMainTypeName);
+        ASTHelper.addTypeDeclaration(theUnit, theType);
+        return theUnit;
+    }
+
+    private CompilationUnit createCompilationUnitFromFile(File aFile) throws IOException {
+        FileInputStream theStream = null;
+        try {
+            theStream = new FileInputStream(aFile);
+            return JavaParser.parse(theStream);
+        } catch (ParseException e) {
+            throw new IOException(e);
+        } finally {
+            if (theStream != null) {
+                theStream.close();
+            }
+        }
     }
 
     public void generate(Model aModel, OpenXavaOptions aOptions) throws IOException {
@@ -71,74 +119,48 @@ public class OpenXavaGenerator {
 
             LOGGER.info("Processing generated code for " + theTableClassName);
 
-            StringWriter theStringWriter = new StringWriter();
-            createGeneratedCode(aModel, aOptions, theTable, new PrintWriter(theStringWriter));
-
             File theTargetFile = new File(theTargetDirectory, theTableClassName + ".java");
+            CompilationUnit theUnit = null;
             if (!theTargetFile.exists()) {
 
                 LOGGER.info("Creating new file for " + theTableClassName + " at " + theTargetFile);
 
-                PrintWriter theWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(theTargetFile),
-                        JAVA_ENCODING));
-
-                if (!StringUtils.isEmpty(thePackageName)) {
-                    theWriter.println("package " + thePackageName + ";");
-                    theWriter.println();
-                }
-
-                theWriter.println("import java.util.*;");
-                theWriter.println("import javax.persistence.*;");
-                theWriter.println("import org.openxava.annotations.*;");
-                theWriter.println("");
-                theWriter.println("@Entity(name=\"" + theTable.getName() + "\")");
-                theWriter.println("public class " + theTableClassName + " {");
-
-                theWriter.println("     " + START_MARKER);
-                theWriter.print(theStringWriter.toString());
-                theWriter.println("     " + END_MARKER);
-
-                theWriter.println("}");
-                theWriter.close();
+                theUnit = createNewCompilationUnit(thePackageName, theTableClassName);
             } else {
-
-                LOGGER.info("Updating file for " + theTableClassName + " at " + theTargetFile);
-
-                String theCurrentFile = IOUtils.toString(new FileReader(theTargetFile));
-                int p = theCurrentFile.indexOf(START_MARKER);
-                if (p < 0) {
-                    throw new RuntimeException("Cannot find start marker for generated code in " + theTargetFile);
-                }
-                int p2 = theCurrentFile.indexOf(END_MARKER);
-                if (p2 < 0) {
-                    throw new RuntimeException("Cannot find end marker for generated code in " + theTargetFile);
-                }
-                StringWriter theTemp = new StringWriter();
-
-                PrintWriter theTempWriter = new PrintWriter(theTemp);
-                theTempWriter.println(theCurrentFile.substring(0, p + START_MARKER.length()));
-                theTempWriter.print(theStringWriter.toString());
-                theTempWriter.print("     ");
-                theTempWriter.print(theCurrentFile.substring(p2));
-                theTempWriter.close();
-
-                PrintWriter theWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(theTargetFile),
-                        JAVA_ENCODING));
-                theWriter.print(theTemp.toString());
-                theWriter.close();
+                theUnit = createCompilationUnitFromFile(theTargetFile);
             }
+
+            updateCompilationUnit(aModel, aOptions, theTable, theUnit);
+
+            PrintWriter theWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(theTargetFile),
+                    JAVA_ENCODING));
+            theWriter.print(theUnit.toString());
+            theWriter.close();
         }
     }
 
-    private void createGeneratedCode(Model aModel, OpenXavaOptions aOptions, Table theTable, PrintWriter theWriter) {
-        for (Attribute theAttribute : theTable.getAttributes()) {
+    private void updateCompilationUnit(Model aModel, OpenXavaOptions aOptions, Table aTable, CompilationUnit aUnit) {
+
+        ClassOrInterfaceDeclaration theType = null;
+        for (TypeDeclaration theDecl : aUnit.getTypes()) {
+            if (theDecl instanceof ClassOrInterfaceDeclaration) {
+                theType = (ClassOrInterfaceDeclaration) theDecl;
+                break;
+            }
+        }
+
+        if (theType == null) {
+            throw new RuntimeException("Cannot find main type");
+        }
+        
+        List<FieldDeclaration> theFields = new ArrayList<FieldDeclaration>();
+        
+        addMarkerAnnotationTo("Entity", theType);
+
+        for (Attribute theAttribute : aTable.getAttributes()) {
 
             String theFieldName = aOptions.createFieldName(theAttribute.getName());
             if (!theAttribute.isForeignKey()) {
-
-                if (theAttribute.isPrimaryKey()) {
-                    theWriter.println("     @Id");
-                }
 
                 DataType theDataType = theAttribute.getDatatype();
                 OpenXavaTypeMap theMap = aOptions.getTypeMapping().get(theDataType);
@@ -146,35 +168,65 @@ public class OpenXavaGenerator {
                 String theJavaType = theMap.getJavaType();
                 String theStereoType = theMap.getStereoType();
 
-                String theColDef = "name=\"" + theAttribute.getName() + "\"";
-                if (theDataType.supportsSize()) {
-                    theColDef += ",length=" + theAttribute.getSize();
+                FieldDeclaration theDecl = findFieldDeclaration(theFieldName, theType);
+                if (theDecl == null) {
+                    theDecl = ASTHelper.createFieldDeclaration(ModifierSet.PRIVATE, new ClassOrInterfaceType(
+                            theJavaType), theFieldName);
+                    if (theType.getMembers() != null) {
+                        theType.getMembers().add(theDecl);
+                    } else {
+                        List<BodyDeclaration> theMembers = new ArrayList<BodyDeclaration>();
+                        theMembers.add(theDecl);
+                        theType.setMembers(theMembers);
+                    }
+                } else {
+                    theDecl.setType(new ClassOrInterfaceType(theJavaType));
                 }
-                if (theDataType.supportsFraction()) {
-                    theColDef += ",precision=" + theAttribute.getFraction();
-                }
-                if (theDataType.supportsScale()) {
-                    theColDef += ",scale=" + theAttribute.getScale();
+                
+                theFields.add(theDecl);
+
+                if (theAttribute.isPrimaryKey()) {
+                    addMarkerAnnotationTo("Id", theDecl);
+                } else {
+                    removeAnnotatiomFrom("Id", theDecl);
                 }
                 if (!theAttribute.isNullable()) {
-                    theWriter.println("     @Required");
-                    theColDef += ",nullable=false";
+                    addMarkerAnnotationTo("Required", theDecl);
                 } else {
-                    theColDef += ",nullable=true";
+                    removeAnnotatiomFrom("Required", theDecl);
                 }
-                theWriter.println("     @Column(" + theColDef + ")");
                 if (!StringUtils.isEmpty(theStereoType)) {
-                    theWriter.println("     @Stereotype(\"" + theStereoType + "\")");
+                    addSingleMemberAnnotationTo("Stereotype", new StringLiteralExpr(theStereoType), theDecl);
+                } else {
+                    removeAnnotatiomFrom("Stereotype", theDecl);
                 }
-                theWriter.println("     private " + theJavaType + " " + theFieldName + ";");
-                theWriter.println();
+
+                List<MemberValuePair> theValues = new ArrayList<MemberValuePair>();
+                theValues.add(new MemberValuePair("name", new StringLiteralExpr(theAttribute.getName())));
+
+                if (theDataType.supportsSize()) {
+                    theValues.add(new MemberValuePair("length", new IntegerLiteralExpr(Integer.toString(theAttribute
+                            .getSize()))));
+                }
+                if (theDataType.supportsFraction()) {
+                    theValues.add(new MemberValuePair("precision", new IntegerLiteralExpr(Integer.toString(theAttribute
+                            .getFraction()))));
+                }
+                if (theDataType.supportsScale()) {
+                    theValues.add(new MemberValuePair("scale", new IntegerLiteralExpr(Integer.toString(theAttribute
+                            .getScale()))));
+                }
+                if (!theAttribute.isNullable()) {
+                    theValues.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
+                } else {
+                    theValues.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
+                }
+                addNormalAnnotationTo("Column", theValues, theDecl);
             }
         }
 
         // Generate the associations
-        List<Relation> theRelations = new ArrayList<Relation>();
-
-        for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
+        for (Relation theRelation : aModel.getRelations().getExportedKeysFor(aTable)) {
 
             if (theRelation.getMapping().size() == 1
                     && !theRelation.getExportingTable().equals(theRelation.getImportingTable())) {
@@ -183,64 +235,198 @@ public class OpenXavaGenerator {
                 String theImpFieldName = aOptions.createFieldName(theImportingTable.getName());
                 String theImpTableClassName = aOptions.createTableName(theImportingTable.getName());
 
-                theWriter.println("     // Relation " + theRelation.getName() + " " + theRelation.getExportingTable()
-                        + " -> " + theRelation.getImportingTable());
-                theWriter.println("     @OneToMany");
-                theWriter.println("     private Set<" + theImpTableClassName + "> " + theImpFieldName
-                        + " = new HashSet<" + theImpTableClassName + ">();");
-                theWriter.println();
+                FieldDeclaration theDecl = findFieldDeclaration(theImpFieldName, theType);
+                if (theDecl == null) {
+                    ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
+                    List<Type> theTypeArgs = new ArrayList<Type>();
+                    theTypeArgs.add(new ClassOrInterfaceType(theImpTableClassName));
+                    theRelationType.setTypeArgs(theTypeArgs);
+                    theDecl = ASTHelper.createFieldDeclaration(ModifierSet.PRIVATE, theRelationType, theImpFieldName);
+                    if (theType.getMembers() != null) {
+                        theType.getMembers().add(theDecl);
+                    } else {
+                        List<BodyDeclaration> theMembers = new ArrayList<BodyDeclaration>();
+                        theMembers.add(theDecl);
+                        theType.setMembers(theMembers);
+                    }
+                } else {
+                    ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
+                    List<Type> theTypeArgs = new ArrayList<Type>();
+                    theTypeArgs.add(new ClassOrInterfaceType(theImpTableClassName));
+                    theRelationType.setTypeArgs(theTypeArgs);
+                    theDecl.setType(theRelationType);
+                }
+                
+                theFields.add(theDecl);
 
-                theRelations.add(theRelation);
+                addMarkerAnnotationTo("OneToMany", theDecl);
             } else {
                 LOGGER.warn("Ignoring relation " + theRelation.getName()
                         + " is there are either more than one mapping attribute or it is a self reference");
             }
         }
+        
+        for (FieldDeclaration theField : theFields) {
+            
+            String theName = theField.getVariables().get(0).getId().getName();
+            String thePropertyName = aOptions.createPropertyName(theName);
+            
+            boolean isBoolean = "boolean".equals(theField.getType().toString());
+            
+            MethodDeclaration theSetMethod = findMethodDeclaration("set"+thePropertyName, theType);
+            if (theSetMethod == null) {
+                //TODO: Generate code here
+            }
+            
+            MethodDeclaration theGetMethod = null;
+            if (isBoolean) {
+                theGetMethod = findMethodDeclaration("is"+thePropertyName, theType);
+            } else {
+                theGetMethod = findMethodDeclaration("get"+thePropertyName, theType);
+            }
+            
+            if (theGetMethod == null) {
+                // TODO: Generate code here
+            }
+            
+        }
+    }
 
-        // Generate the getter and setter
-        for (Attribute theAttribute : theTable.getAttributes()) {
-
-            String theFieldName = aOptions.createFieldName(theAttribute.getName());
-            String theAttributeName = aOptions.createPropertyName(theAttribute.getName());
-
-            if (!theAttribute.isForeignKey()) {
-
-                String theJavaType = aOptions.createJavaType(theAttribute.getDatatype());
-                theWriter.println("     public void set" + theAttributeName + "(" + theJavaType + " aValue) {");
-                theWriter.println("         " + theFieldName + "=aValue;");
-                theWriter.println("     }");
-                theWriter.println();
-
-                String theGetPrefix = "get";
-                if ("boolean".equals(theJavaType)) {
-                    theGetPrefix = "is";
+    private MethodDeclaration findMethodDeclaration(String aName, ClassOrInterfaceDeclaration aType) {
+        if (aType.getMembers() != null) {
+            for (BodyDeclaration theBody : aType.getMembers()) {
+                if (theBody instanceof MethodDeclaration) {
+                    MethodDeclaration theMethod = (MethodDeclaration) theBody;
+                    if (theMethod.getName().equals(aName)) {
+                        return theMethod;
+                    }
                 }
-                theWriter.println("     public " + theJavaType + " " + theGetPrefix + theAttributeName + "() {");
-                theWriter.println("         return " + theFieldName + ";");
-                theWriter.println("     }");
-                theWriter.println();
-
             }
         }
+        return null;
+    }
 
-        for (Relation theRelation : theRelations) {
-
-            Table theImportingTable = theRelation.getImportingTable();
-
-            String theImpFieldName = aOptions.createFieldName(theImportingTable.getName());
-            String theImpAttributeName = aOptions.createPropertyName(theImportingTable.getName());
-            String theImpTableClassName = aOptions.createTableName(theImportingTable.getName());
-
-            theWriter.println("     public Set<" + theImpTableClassName + "> get" + theImpAttributeName + "() {");
-            theWriter.println("         return " + theImpFieldName + ";");
-            theWriter.println("     }");
-            theWriter.println();
-
-            theWriter.println("     public void set" + theImpAttributeName + "(Set<" + theImpTableClassName
-                    + "> aValue) {");
-            theWriter.println("         " + theImpFieldName + " = aValue;");
-            theWriter.println("     }");
-            theWriter.println();
+    private void addAnnotationTo(BodyDeclaration aDecl, AnnotationExpr aAnnotation) {
+        if (aDecl.getAnnotations() != null) {
+            aDecl.getAnnotations().add(aAnnotation);
+        } else {
+            List<AnnotationExpr> theExpressions = new ArrayList<AnnotationExpr>();
+            theExpressions.add(aAnnotation);
+            aDecl.setAnnotations(theExpressions);
         }
+    }
+
+    private void removeAnnotatiomFrom(String aName, BodyDeclaration aDecl) {
+        if (aDecl.getAnnotations() != null) {
+            for (AnnotationExpr theExpression : aDecl.getAnnotations()) {
+                if (theExpression instanceof MarkerAnnotationExpr) {
+                    MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
+                    if (theMarker.getName().getName().equals(aName)) {
+                        aDecl.getAnnotations().remove(theMarker);
+                        return;
+                    }
+                }
+                if (theExpression instanceof NormalAnnotationExpr) {
+                    NormalAnnotationExpr theAnnotation = (NormalAnnotationExpr) theExpression;
+                    if (theAnnotation.getName().getName().equals(aName)) {
+                        aDecl.getAnnotations().remove(theAnnotation);
+                        return;
+                    }
+                }
+                if (theExpression instanceof SingleMemberAnnotationExpr) {
+                    SingleMemberAnnotationExpr theAnnotation = (SingleMemberAnnotationExpr) theExpression;
+                    if (theAnnotation.getName().getName().equals(aName)) {
+                        aDecl.getAnnotations().remove(theAnnotation);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private MarkerAnnotationExpr addMarkerAnnotationTo(String aName, BodyDeclaration aDecl) {
+
+        MarkerAnnotationExpr theAnnotation = null;
+        if (aDecl.getAnnotations() != null) {
+            for (AnnotationExpr theExpression : aDecl.getAnnotations()) {
+                if (theExpression instanceof MarkerAnnotationExpr) {
+                    MarkerAnnotationExpr theMarker = (MarkerAnnotationExpr) theExpression;
+                    if (theMarker.getName().getName().equals(aName)) {
+                        theAnnotation = theMarker;
+                    }
+                }
+            }
+        }
+        if (theAnnotation == null) {
+            MarkerAnnotationExpr theExpression = new MarkerAnnotationExpr(ASTHelper.createNameExpr(aName));
+            addAnnotationTo(aDecl, theExpression);
+        }
+
+        return theAnnotation;
+    }
+
+    private SingleMemberAnnotationExpr addSingleMemberAnnotationTo(String aName, Expression aExpression,
+            BodyDeclaration aDecl) {
+
+        SingleMemberAnnotationExpr theAnnotation = null;
+        if (aDecl.getAnnotations() != null) {
+            for (AnnotationExpr theExpression : aDecl.getAnnotations()) {
+                if (theExpression instanceof SingleMemberAnnotationExpr) {
+                    SingleMemberAnnotationExpr theMarker = (SingleMemberAnnotationExpr) theExpression;
+                    if (theMarker.getName().getName().equals(aName)) {
+                        theAnnotation = theMarker;
+                    }
+                }
+            }
+        }
+        if (theAnnotation == null) {
+            SingleMemberAnnotationExpr theExpression = new SingleMemberAnnotationExpr(ASTHelper.createNameExpr(aName),
+                    aExpression);
+            addAnnotationTo(aDecl, theExpression);
+        } else {
+            theAnnotation.setMemberValue(aExpression);
+        }
+
+        return theAnnotation;
+    }
+
+    private NormalAnnotationExpr addNormalAnnotationTo(String aName, List<MemberValuePair> aValues,
+            BodyDeclaration aDecl) {
+
+        NormalAnnotationExpr theAnnotation = null;
+        if (aDecl.getAnnotations() != null) {
+            for (AnnotationExpr theExpression : aDecl.getAnnotations()) {
+                if (theExpression instanceof NormalAnnotationExpr) {
+                    NormalAnnotationExpr theMarker = (NormalAnnotationExpr) theExpression;
+                    if (theMarker.getName().getName().equals(aName)) {
+                        theAnnotation = theMarker;
+                    }
+                }
+            }
+        }
+        if (theAnnotation == null) {
+            NormalAnnotationExpr theExpression = new NormalAnnotationExpr(ASTHelper.createNameExpr(aName), aValues);
+            addAnnotationTo(aDecl, theExpression);
+        } else {
+            theAnnotation.setPairs(aValues);
+        }
+
+        return theAnnotation;
+    }
+    
+    private FieldDeclaration findFieldDeclaration(String aFieldName, ClassOrInterfaceDeclaration aType) {
+        if (aType.getMembers() != null) {
+            for (BodyDeclaration theBody : aType.getMembers()) {
+                if (theBody instanceof FieldDeclaration) {
+                    FieldDeclaration theField = (FieldDeclaration) theBody;
+                    for (VariableDeclarator theDecl : theField.getVariables()) {
+                        if (aFieldName.equals(theDecl.getId().getName())) {
+                            return theField;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
