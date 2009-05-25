@@ -25,28 +25,29 @@
       </includes>
     </fileSet>   
 	<fileSet>
-      <directory>doc</directory>
+      <directory>plugins/mogwai</directory>
       <outputDirectory>userdoc</outputDirectory>
       <includes>
         <include>*.pdf</include>
       </includes>
     </fileSet>    
 	<fileSet>
-      <directory>src</directory>
-      <outputDirectory>src</outputDirectory>
-    </fileSet>    
-	<fileSet>
       <directory>target</directory>
       <outputDirectory>plugins</outputDirectory>
       <includes>
-        <include>*.jar</include>
+        <include>*${project.artifactId}-${project.version}.jar</include>
       </includes>
     </fileSet>    
   </fileSets>
   <dependencySets>
     <dependencySet>
-      <outputDirectory>lib</outputDirectory>
+      <outputDirectory>plugins/mogwai/lib</outputDirectory>
       <scope>runtime</scope>
+       <excludes>
+        <exclude>net.sourceforge.mogwai:mogwai-smartstart</exclude>
+        <exclude>net.sourceforge.mogwai:mogwai-erdesignerng</exclude>
+        <exclude>org.codehaus.izpack:izpack-standalone-compiler</exclude>
+      </excludes>
     </dependencySet>
   </dependencySets>  
 </assembly>
