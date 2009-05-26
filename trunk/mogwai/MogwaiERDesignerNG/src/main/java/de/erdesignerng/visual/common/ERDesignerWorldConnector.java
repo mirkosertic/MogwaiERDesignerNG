@@ -43,6 +43,8 @@ public interface ERDesignerWorldConnector {
     
     boolean supportsPreferences();
     
+    boolean supportsRepositories();
+    
     Model createNewModel();
     
     void initializeLoadedModel(Model aModel);
