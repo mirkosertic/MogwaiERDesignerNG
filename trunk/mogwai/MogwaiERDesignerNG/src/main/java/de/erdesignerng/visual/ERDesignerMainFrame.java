@@ -44,10 +44,13 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     private ERDesignerComponent component;
 
-    private ApplicationPreferences preferences = ApplicationPreferences.getInstance();
+    private ApplicationPreferences preferences;
 
-    public ERDesignerMainFrame() {
+    public ERDesignerMainFrame(ApplicationPreferences aPreferences) {
         super(ERDesignerBundle.TITLE);
+        
+        preferences = aPreferences;
+        
         initialize();
 
         setSize(800, 600);
