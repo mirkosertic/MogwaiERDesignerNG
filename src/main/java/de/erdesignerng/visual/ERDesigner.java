@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 import de.erdesignerng.dialect.DataTypeIO;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
@@ -46,9 +47,10 @@ public final class ERDesigner {
         DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
         theScreen.setVisible(true);
         
-        DataTypeIO.getInstance().loadUserTypes();
+        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
+        DataTypeIO.getInstance().loadUserTypes(thePreferences);
         
-        ERDesignerMainFrame frame = new ERDesignerMainFrame();
+        ERDesignerMainFrame frame = new ERDesignerMainFrame(thePreferences);
         frame.setModel(frame.createNewModel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         

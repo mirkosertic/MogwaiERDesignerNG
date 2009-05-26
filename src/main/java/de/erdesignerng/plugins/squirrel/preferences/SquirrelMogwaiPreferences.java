@@ -22,7 +22,7 @@ import java.awt.Component;
 import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPlugin;
+import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginDelegate;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.preferences.PreferencesPanel;
 import de.mogwai.common.i18n.ResourceHelper;
@@ -39,9 +39,9 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
     
     private ApplicationPreferences preferences;
     
-    private SquirrelMogwaiPlugin plugin;
+    private SquirrelMogwaiPluginDelegate plugin;
     
-    public SquirrelMogwaiPreferences(SquirrelMogwaiPlugin aPlugin, ApplicationPreferences aPreferences) {
+    public SquirrelMogwaiPreferences(SquirrelMogwaiPluginDelegate aPlugin, ApplicationPreferences aPreferences) {
         preferences = aPreferences;
         plugin = aPlugin;
         panel = new PreferencesPanel();

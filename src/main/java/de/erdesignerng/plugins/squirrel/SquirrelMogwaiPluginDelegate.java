@@ -35,6 +35,7 @@ import net.sourceforge.squirrel_sql.client.session.IObjectTreeAPI;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
+import de.erdesignerng.dialect.DataTypeIO;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.plugins.squirrel.action.StartMogwaiAction;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
@@ -48,7 +49,7 @@ import de.mogwai.common.client.looks.UIInitializer;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-15 14:21:15 $
  */
-public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
+public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
 
     private Hashtable<IIdentifier, SquirrelMogwaiController[]> controllersBySessionID = new Hashtable<IIdentifier, SquirrelMogwaiController[]>();
 
@@ -57,6 +58,9 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     private ApplicationPreferences preferences;
 
     private SquirrelMogwaiPreferences preferencesPanel;
+    
+    public SquirrelMogwaiPluginDelegate() {
+    }
 
     /**
      * {@inheritDoc}
@@ -116,19 +120,29 @@ public class SquirrelMogwaiPlugin extends DefaultSessionPlugin {
     @Override
     public synchronized void initialize() throws PluginException {
         super.initialize();
-
+        
+        try {
+            // Initialize the application base directory
+            ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
+            thePreferences.setBaseDir(getPluginAppSettingsFolder());
+            
+            DataTypeIO.getInstance().loadUserTypes(thePreferences);
+        } catch (Exception e) {
+            throw new PluginException(e);
+        }
+        
         // Initialize Mogwai Looks
         UIConfiguration theConfig = new UIConfiguration();
         theConfig.setApplyConfiguration(false);
         UIInitializer.getInstance(theConfig);
-
-        IApplication theApplication = getApplication();
 
         resources = new SquirrelMogwaiPluginResources(this);
         preferences = ApplicationPreferences.getInstance();
 
         preferencesPanel = new SquirrelMogwaiPreferences(this, preferences);
 
+        IApplication theApplication = getApplication();
+        
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }

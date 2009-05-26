@@ -90,6 +90,8 @@ public class ApplicationPreferences {
 
     private Map<String, String> windowDefinitions = new HashMap<String, String>();
 
+    private File baseDir;
+
     private static ApplicationPreferences me;
 
     public static ApplicationPreferences getInstance() {
@@ -173,7 +175,7 @@ public class ApplicationPreferences {
      * Add a file to the recently used LRUfiles list.
      * 
      * @param aFile
-     *                the file to add
+     *            the file to add
      */
     public void addRecentlyUsedFile(File aFile) {
 
@@ -192,7 +194,7 @@ public class ApplicationPreferences {
      * Add a last used connection to the list.
      * 
      * @param aConnection
-     *                the connection
+     *            the connection
      */
     public void addRecentlyUsedConnection(ConnectionDescriptor aConnection) {
         if (!recentlyUsedConnections.contains(aConnection)) {
@@ -228,7 +230,7 @@ public class ApplicationPreferences {
 
     /**
      * @param gridSize
-     *                the gridSize to set
+     *            the gridSize to set
      */
     public void setGridSize(int gridSize) {
         this.gridSize = gridSize;
@@ -238,7 +240,7 @@ public class ApplicationPreferences {
      * Save the preferences.
      * 
      * @throws BackingStoreException
-     *                 is thrown if the operation fails
+     *             is thrown if the operation fails
      */
     public void store() throws BackingStoreException {
 
@@ -325,7 +327,7 @@ public class ApplicationPreferences {
 
     /**
      * @param dotPath
-     *                the dotPath to set
+     *            the dotPath to set
      */
     public void setDotPath(String dotPath) {
         this.dotPath = dotPath;
@@ -340,7 +342,7 @@ public class ApplicationPreferences {
 
     /**
      * @param repositoryConnection
-     *                the repositoryConnection to set
+     *            the repositoryConnection to set
      */
     public void setRepositoryConnection(ConnectionDescriptor repositoryConnection) {
         this.repositoryConnection = repositoryConnection;
@@ -350,9 +352,9 @@ public class ApplicationPreferences {
      * Update the last position of a window.
      * 
      * @param aAlias
-     *                the alias of the window
+     *            the alias of the window
      * @param aWindow
-     *                the window
+     *            the window
      */
     public void updateWindowDefinition(String aAlias, JFrame aWindow) {
         windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, "" + aWindow.getExtendedState());
@@ -364,9 +366,9 @@ public class ApplicationPreferences {
      * Set the current window state as stored by updateWindowDefinition.
      * 
      * @param aAlias
-     *                the alias of the window
+     *            the alias of the window
      * @param aFrame
-     *                the window
+     *            the window
      */
     public void setWindowState(String aAlias, JFrame aFrame) {
 
@@ -424,12 +426,43 @@ public class ApplicationPreferences {
     }
 
     /**
+     * @return the baseDir
+     */
+    public File getBaseDir() {
+        return baseDir;
+    }
+
+    /**
+     * @param baseDir
+     *            the baseDir to set
+     */
+    public void setBaseDir(File baseDir) {
+        this.baseDir = baseDir;
+    }
+    
+    public File getRelativeFile(String aName) {
+        if (baseDir != null) {
+            return new File(baseDir, aName);
+        }
+        return new File(aName);
+    }
+
+    /**
      * Get the directory where the report templates are located.
      * 
      * @return the directory
      */
     public File getReportsDirectory() {
-        return new File("reports");
+        return getRelativeFile("reports");
+    }
+
+    /**
+     * Get the directory where the datatype configuration is located.
+     * 
+     * @return the directory
+     */
+    public File getDatatypeConfigDirectory() {
+        return getRelativeFile("dataTypes");
     }
 
     /**
@@ -438,7 +471,7 @@ public class ApplicationPreferences {
      * @return the file
      */
     public File getOnlineHelpPDFFile() {
-        File theDocFile = new File("userdoc");
+        File theDocFile = getRelativeFile("userdoc");
         return new File(theDocFile, "Mogwai ERDesigner NG.pdf");
     }
 }

@@ -28,12 +28,13 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.db2.DB2Dialect;
+import de.erdesignerng.dialect.h2.H2Dialect;
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
 import de.erdesignerng.dialect.oracle.OracleDialect;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiController;
-import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPlugin;
+import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginDelegate;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginResources;
 import de.mogwai.common.i18n.ResourceHelper;
 
@@ -45,10 +46,10 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
 
     protected ISession session;
 
-    protected final SquirrelMogwaiPlugin plugin;
+    protected final SquirrelMogwaiPluginDelegate plugin;
 
     public StartMogwaiAction(IApplication aApplication, SquirrelMogwaiPluginResources aResources,
-            SquirrelMogwaiPlugin aPlugin) {
+            SquirrelMogwaiPluginDelegate aPlugin) {
         super(aApplication, aResources);
         plugin = aPlugin;
     }
@@ -71,6 +72,9 @@ public class StartMogwaiAction extends SquirrelAction implements ISessionAction 
         }
         if (DialectFactory.isDB2(aSession.getMetaData())) {
             return new DB2Dialect();
+        }
+        if (DialectFactory.isH2(aSession.getMetaData())) {
+            return new H2Dialect();
         }
         return null;
     }
