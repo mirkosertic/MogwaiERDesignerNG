@@ -80,6 +80,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     }
 
+    @Override
     public void initTitle() {
         initTitle(null);
     }
@@ -88,6 +89,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         return getDefaultFrameContent().getToolbar();
     }
 
+    @Override    
     public void initTitle(String aFile) {
 
         StringBuffer theTitle = new StringBuffer();
@@ -99,6 +101,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         setTitle(getResourceHelper().getText(getResourceBundleID()) + " " + theVersion + " " + theTitle);
     }
 
+    @Override    
     public void setStatusText(String aMessage) {
         getDefaultFrameContent().getStatusBar().setText(aMessage);
     }
@@ -107,32 +110,39 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         component.setModel(aModel);
     }
 
+    @Override    
     public boolean supportsClasspathEditor() {
         return true;
     }
 
+    @Override    
     public boolean supportsConnectionEditor() {
         return true;
     }
 
+    @Override    
     public boolean supportsExitApplication() {
         return true;
     }
 
+    @Override    
     public Model createNewModel() {
         Model theModel = new Model();
         theModel.setModificationTracker(new HistoryModificationTracker(theModel));
         return theModel;
     }
 
+    @Override    
     public boolean supportsPreferences() {
         return true;
     }
 
+    @Override    
     public void initializeLoadedModel(Model aModel) {
         aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 
+    @Override    
     public void notifyAboutException(Exception aException) {
         ExceptionEditor theEditor = new ExceptionEditor(this, aException);
         theEditor.showModal();
@@ -150,5 +160,10 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         if (aVisible) {
             preferences.setWindowState(WINDOW_ALIAS, this);
         }
+    }
+
+    @Override
+    public boolean supportsRepositories() {
+        return true;
     }
 }

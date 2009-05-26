@@ -644,28 +644,30 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.add(new DefaultMenuItem(saveAsAction));
         theFileMenu.add(new DefaultMenuItem(loadAction));
 
-        theFileMenu.addSeparator();
-        theFileMenu.add(new DefaultMenuItem(repositoryConnectionAction));
-        theFileMenu.add(new DefaultMenuItem(saveToRepository));
+        if (worldConnector.supportsRepositories()) {
+            theFileMenu.addSeparator();
+            theFileMenu.add(new DefaultMenuItem(repositoryConnectionAction));
+            theFileMenu.add(new DefaultMenuItem(saveToRepository));
 
-        DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(new DefaultAction(new ActionEventProcessor() {
+            DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(new DefaultAction(new ActionEventProcessor() {
 
-            public void processActionEvent(ActionEvent e) {
-                commandOpenFromRepository();
-            }
+                public void processActionEvent(ActionEvent e) {
+                    commandOpenFromRepository();
+                }
 
-        }, this, ERDesignerBundle.LOADMODELFROMDB));
+            }, this, ERDesignerBundle.LOADMODELFROMDB));
 
-        theFileMenu.add(theLoadFromDBMenu);
+            theFileMenu.add(theLoadFromDBMenu);
 
-        repositoryUtilsMenu = new DefaultMenu(this, ERDesignerBundle.REPOSITORYUTILS);
-        repositoryUtilsMenu.add(new DefaultMenuItem(createMigrationScriptAction));
+            repositoryUtilsMenu = new DefaultMenu(this, ERDesignerBundle.REPOSITORYUTILS);
+            repositoryUtilsMenu.add(new DefaultMenuItem(createMigrationScriptAction));
 
-        UIInitializer.getInstance().initialize(repositoryUtilsMenu);
+            UIInitializer.getInstance().initialize(repositoryUtilsMenu);
 
-        theFileMenu.add(repositoryUtilsMenu);
+            theFileMenu.add(repositoryUtilsMenu);
 
-        theFileMenu.addSeparator();
+            theFileMenu.addSeparator();
+        }
 
         DefaultMenu theExportMenu = new DefaultMenu(exportAction);
 
@@ -1075,7 +1077,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a specific subject area.
      * 
      * @param aArea
-     *            the area
+     *                the area
      */
     protected void commandHideSubjectArea(SubjectArea aArea) {
         for (Object theItem : layoutCache.getVisibleSet()) {
@@ -1095,7 +1097,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Show a specific subject area.
      * 
      * @param aArea
-     *            the subject area to show
+     *                the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
         for (CellView theCellView : layoutCache.getHiddenCellViews()) {
@@ -1142,7 +1144,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * template.
      * 
      * @param aJRXMLFile
-     *            the name of the template
+     *                the name of the template
      */
     protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
@@ -1854,28 +1856,32 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
-     *            the entry descriptor
+     *                the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
 
         currentEditingFile = null;
         currentRepositoryEntry = aDescriptor;
         worldConnector.initTitle(aDescriptor.getName());
-        repositoryUtilsMenu.setEnabled(true);
+        if (worldConnector.supportsRepositories()) {
+            repositoryUtilsMenu.setEnabled(true);
+        }
     }
 
     /**
      * Setup the view for a model loaded from file.
      * 
      * @param aFile
-     *            the file
+     *                the file
      */
     protected void setupViewFor(File aFile) {
 
         currentEditingFile = aFile;
         currentRepositoryEntry = null;
         worldConnector.initTitle(aFile.toString());
-        repositoryUtilsMenu.setEnabled(false);
+        if (worldConnector.supportsRepositories()) {
+            repositoryUtilsMenu.setEnabled(false);
+        }
     }
 
     /**
@@ -1885,7 +1891,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         currentEditingFile = null;
         currentRepositoryEntry = null;
-        repositoryUtilsMenu.setEnabled(false);
+        if (worldConnector.supportsRepositories()) {
+            repositoryUtilsMenu.setEnabled(false);
+        }
         worldConnector.initTitle();
     }
 
@@ -1893,7 +1901,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing tool.
      * 
      * @param aTool
-     *            the tool
+     *                the tool
      */
     protected void commandSetTool(ToolEnum aTool) {
         if (aTool.equals(ToolEnum.HAND)) {
@@ -2038,7 +2046,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing model.
      * 
      * @param aModel
-     *            the model
+     *                the model
      */
     public void setModel(Model aModel) {
         model = aModel;
@@ -2180,7 +2188,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a list of specific cells.
      * 
      * @param aCellsToHide
-     *            the cells to hide
+     *                the cells to hide
      */
     protected void commandHideCells(List<HideableCell> aCellsToHide) {
         for (HideableCell theCell : aCellsToHide) {
@@ -2199,7 +2207,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Add a new comment to the model.
      * 
      * @param aLocation
-     *            the location
+     *                the location
      */
     protected void commandAddComment(Point2D aLocation) {
         Comment theComment = new Comment();
@@ -2411,7 +2419,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *            true if comments shall be displayed, else false
+     *                true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
@@ -2422,7 +2430,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *            true if comments shall be displayed, else false
+     *                true if comments shall be displayed, else false
      */
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
@@ -2434,7 +2442,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * The preferences where changed, so they need to be reloaded.
      * 
      * @param aPreferences
-     *            the preferences
+     *                the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
@@ -2445,7 +2453,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display level.
      * 
      * @param aLevel
-     *            the level
+     *                the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -2456,7 +2464,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display order.
      * 
      * @param aOrder
-     *            the display order
+     *                the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);
