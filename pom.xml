@@ -142,6 +142,9 @@
 							<excludeGroupIds>
 								org.codehaus.izpack
 							</excludeGroupIds>
+							<excludeArtifactIds>
+								mogwai-squirrelplugin
+							</excludeArtifactIds>
 							<outputDirectory>
 								${staging.dir}/lib
 							</outputDirectory>
@@ -219,6 +222,12 @@
 			<artifactId>mogwai-smartstart</artifactId>
 			<version>1.0</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.mogwai</groupId>
+			<artifactId>mogwai-squirrelplugin</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>jgoodies</groupId>

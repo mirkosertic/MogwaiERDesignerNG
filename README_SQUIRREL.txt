@@ -4,28 +4,13 @@
      
 Requirements
 
-This Plugin has been tested with SquirrelSQL 2.6.8 and higher    
+This Plugin has been tested with SquirrelSQL 3.0.1    
      
 Installation
 
 Copy the contents of the plugin directory of the distribution
 to the plugins directory of your squirrel installation, including
 all jars and other files and directories
-
-Copy the contents of the lib directory of the distribution
-to the lib directory of your squirrel installation, including
-all jars and other files and directories
-
-If you are using the full installation of Squirrel, there may
-be some .jar files already existing in the lib directory, but with
-a different version:
-
-form*.jar
-hibernate*.jar
-commons-*.jar
-
-In such a case, please do not copy these files from the
-Mogwai plugin package, and use the existing ones.
 
 Usage
 
@@ -45,5 +30,6 @@ with the newer version!
 Have fun!
 
 For problems and comments, please use the issue tracker hosted at
-http://sourceforge.net/projects/mogwai. Thank you for using Mogwai
-ERDesigner
+http://sourceforge.net/projects/mogwai. 
+
+Thank you for using Mogwai ERDesignerNG

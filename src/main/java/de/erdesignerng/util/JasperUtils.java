@@ -44,6 +44,7 @@ public final class JasperUtils {
     }
 
     private static void findReports(Map<File, String> aReportMap, File aDirectory) throws JRException {
+        Thread.currentThread().setContextClassLoader(JasperUtils.class.getClassLoader());
         for (File theFile : aDirectory.listFiles()) {
             String theName = theFile.getName();
             if (theName.endsWith(".jrxml") && (theName.indexOf("_") < 0)) {

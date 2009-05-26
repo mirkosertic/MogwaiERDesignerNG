@@ -43,6 +43,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.XMLUtils;
 
 public final class DataTypeIO {
@@ -102,11 +103,11 @@ public final class DataTypeIO {
         return Types.OTHER;
     }
 
-    public void loadUserTypes() throws TransformerException, IOException, SAXException, DOMException,
+    public void loadUserTypes(ApplicationPreferences aPreferences) throws TransformerException, IOException, SAXException, DOMException,
             IllegalArgumentException, IllegalAccessException {
         DialectFactory theFactory = DialectFactory.getInstance();
-
-        File theDataTypesDirectory = new File("dataTypes");
+        
+        File theDataTypesDirectory = aPreferences.getDatatypeConfigDirectory();
         theDataTypesDirectory.mkdirs();
 
         for (Dialect theDialect : theFactory.getSupportedDialects()) {

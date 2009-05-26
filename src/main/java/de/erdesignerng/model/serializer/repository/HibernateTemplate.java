@@ -86,16 +86,12 @@ public abstract class HibernateTemplate {
         Transaction theTx = null;
 
         Thread theCurrentThread = Thread.currentThread();
-        ClassLoader theClassLoader = theCurrentThread.getContextClassLoader();
-        ClassLoader theMogwaiClassLoader = HibernateTemplate.class.getClassLoader();
-        
-        boolean overrideClassLoader = !theClassLoader.equals(theMogwaiClassLoader);
-        if (overrideClassLoader) {
-            theCurrentThread.setContextClassLoader(HibernateTemplate.class.getClassLoader());
-        }
+
+        ClassLoader theLoader = HibernateTemplate.class.getClassLoader();
+        theCurrentThread.setContextClassLoader(theLoader);
         
         try {
-            
+
             theSession = createSession(connection, dialectClass);
         
             theTx = theSession.beginTransaction();
@@ -119,10 +115,6 @@ public abstract class HibernateTemplate {
             }
 
             ThreadbasedConnectionProvider.cleanup();
-            
-            if (theClassLoader != null && overrideClassLoader) {
-                theCurrentThread.setContextClassLoader(null);
-            }
         }            
     }
 }

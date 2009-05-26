@@ -29,13 +29,13 @@ public class SquirrelMogwaiController {
 
     private ISession session;
 
-    private SquirrelMogwaiPlugin plugin;
+    private SquirrelMogwaiPluginDelegate plugin;
 
     private SquirrelMogwaiTabSheet tabsheet;
 
     private SquirrelDialect dialect;
 
-    public SquirrelMogwaiController(SquirrelDialect aDialect, ISession aSession, SquirrelMogwaiPlugin aPlugin) {
+    public SquirrelMogwaiController(SquirrelDialect aDialect, ISession aSession, SquirrelMogwaiPluginDelegate aPlugin) {
         session = aSession;
         plugin = aPlugin;
         dialect = aDialect;
@@ -57,7 +57,7 @@ public class SquirrelMogwaiController {
         session.showErrorMessage(aException);
     }
 
-    public SquirrelMogwaiPlugin getPlugin() {
+    public SquirrelMogwaiPluginDelegate getPlugin() {
         return plugin;
     }
 
