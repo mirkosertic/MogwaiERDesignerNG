@@ -88,6 +88,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         return content.getToolbar();
     }
 
+    @Override    
     public void initTitle(String aFile) {
         StringBuffer theTitle = new StringBuffer();
         if (aFile != null) {
@@ -98,6 +99,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         
     }
 
+    @Override    
     public void initTitle() {
         initTitle(null);
     }
@@ -107,18 +109,22 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         controller.getSession().showMessage(aMessage);
     }
 
+    @Override    
     public boolean supportsClasspathEditor() {
         return false;
     }
 
+    @Override    
     public boolean supportsConnectionEditor() {
         return false;
     }
 
+    @Override    
     public boolean supportsExitApplication() {
         return false;
     }
 
+    @Override    
     public Model createNewModel() {
         Model theModel = new Model();
         theModel.setDialect(controller.getDialect());
@@ -140,15 +146,18 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         component.commandReverseEngineer();
     }
 
+    @Override    
     public boolean supportsPreferences() {
         return false;
     }
 
+    @Override    
     public void initializeLoadedModel(Model aModel) {
         aModel.setDialect(controller.getDialect());
         aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 
+    @Override    
     public void notifyAboutException(Exception aException) {
         controller.notifyAboutException(aException);
     }
@@ -164,5 +173,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         component.refreshPreferences(aPreferences);
+    }
+
+    @Override
+    public boolean supportsRepositories() {
+        return false;
     }
 }
