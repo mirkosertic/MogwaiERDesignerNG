@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanComparator;
 
 import de.erdesignerng.dialect.db2.DB2Dialect;
+import de.erdesignerng.dialect.h2.H2Dialect;
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
@@ -54,6 +55,7 @@ public final class DialectFactory {
             me.registerDialect(new MySQLInnoDBDialect());
             me.registerDialect(new OracleDialect());
             me.registerDialect(new PostgresDialect());
+            me.registerDialect(new H2Dialect());
         }
         return me;
     }
