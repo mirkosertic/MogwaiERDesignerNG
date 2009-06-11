@@ -43,7 +43,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable) + " DROP CONSTRAINT "
+        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP CONSTRAINT "
                 + aRelation.getName()));
         return theResult;
     }
@@ -55,7 +55,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + escapeTableName(aTable) + "' , '"
+        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '"
                 + aNewName + "'"));
         return theResult;
 
@@ -87,7 +87,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(theTable) + " ALTER COLUMN ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(theTable) + " ALTER COLUMN ");
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");

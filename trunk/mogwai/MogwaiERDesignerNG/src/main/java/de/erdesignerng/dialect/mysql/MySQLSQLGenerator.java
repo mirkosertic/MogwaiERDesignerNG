@@ -66,7 +66,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(aTable) + " RENAME TO ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(aTable) + " RENAME TO ");
 
         theStatement.append(aNewName);
 
@@ -97,7 +97,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(aTable) + " DROP PRIMARY KEY");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(aTable) + " DROP PRIMARY KEY");
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -115,7 +115,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(theTable) + " CHANGE ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(theTable) + " CHANGE ");
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
@@ -147,7 +147,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(theTable) + " MODIFY ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(theTable) + " MODIFY ");
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");
@@ -167,8 +167,8 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable)
-                + " DROP FOREIGN KEY " + escapeRelationName(aRelation)));
+        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable)
+                + " DROP FOREIGN KEY " + createUniqueRelationName(aRelation)));
         return theResult;
     }
 }

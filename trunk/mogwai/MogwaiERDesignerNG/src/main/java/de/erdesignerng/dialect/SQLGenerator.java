@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
@@ -30,7 +32,8 @@ import de.erdesignerng.modificationtracker.VetoException;
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
- * @param <T> the dialect
+ * @param <T>
+ *            the dialect
  */
 public abstract class SQLGenerator<T extends Dialect> {
 
@@ -51,22 +54,33 @@ public abstract class SQLGenerator<T extends Dialect> {
         return dialect;
     }
 
-    protected String escapeTableName(Table aTable) {
+    protected String getSchemaSeparator() {
+        return ".";
+    }
+
+    protected String createUniqueTableName(Table aTable) {
+        String theSchema = aTable.getSchema();
+        if (!StringUtils.isEmpty(theSchema)) {
+            return theSchema + getSchemaSeparator() + aTable.getName();
+        }
         return aTable.getName();
     }
 
-    protected String escapeViewName(View aView) {
+    protected String createUniqueViewName(View aView) {
+        String theSchema = aView.getSchema();
+        if (!StringUtils.isEmpty(theSchema)) {
+            return theSchema + getSchemaSeparator() + aView.getName();
+        }
         return aView.getName();
     }
 
-    protected String escapeColumnName(String aColumnName) {
-        return aColumnName;
-    }
-    
-    protected String escapeRelationName(Relation aRelation) {
-        return aRelation.getName();
+    protected String createUniqueColumnName(Attribute aAttribute) {
+        return aAttribute.getName();
     }
 
+    protected String createUniqueRelationName(Relation aRelation) {
+        return aRelation.getName();
+    }
 
     public abstract StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException;
 
@@ -108,11 +122,13 @@ public abstract class SQLGenerator<T extends Dialect> {
     public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
 
     /**
-     * Create the DDL script for the whole model. 
+     * Create the DDL script for the whole model.
      * 
-     * @param aModel the model
+     * @param aModel
+     *            the model
      * @return the lists of statements
-     * @throws VetoException can be thrown if someone has a veto on execution
+     * @throws VetoException
+     *             can be thrown if someone has a veto on execution
      */
     public StatementList createCreateAllObjects(Model aModel) throws VetoException {
 
