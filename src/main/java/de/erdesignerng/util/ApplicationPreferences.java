@@ -439,7 +439,7 @@ public class ApplicationPreferences {
     public void setBaseDir(File baseDir) {
         this.baseDir = baseDir;
     }
-    
+
     public File getRelativeFile(String aName) {
         if (baseDir != null) {
             return new File(baseDir, aName);
@@ -462,7 +462,13 @@ public class ApplicationPreferences {
      * @return the directory
      */
     public File getDatatypeConfigDirectory() {
-        return getRelativeFile("dataTypes");
+        String theUserHome = System.getProperty("user.home");
+        if (StringUtils.isEmpty(theUserHome)) {
+            return getRelativeFile("dataTypes");
+        }
+        File theUserHomeFile = new File(theUserHome);
+        File theMogwaiHome = new File(theUserHomeFile, ".mogwai");
+        return new File(theMogwaiHome, "dataTypes");
     }
 
     /**
