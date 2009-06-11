@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -118,5 +120,13 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
      */
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+    
+    @Override
+    public String getUniqueName() {
+        if (!StringUtils.isEmpty(schema)) {
+            return schema + "." + getName();
+        }
+        return super.getUniqueName();
     }
 }

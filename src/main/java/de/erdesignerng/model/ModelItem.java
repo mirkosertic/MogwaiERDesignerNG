@@ -159,4 +159,12 @@ public abstract class ModelItem implements Serializable {
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
+    
+    /**
+     * Get the unique name of the model item.
+     * @return the name
+     */
+    public String getUniqueName() {
+        return getName();
+    }
 }

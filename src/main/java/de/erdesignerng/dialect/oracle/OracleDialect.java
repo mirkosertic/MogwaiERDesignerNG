@@ -32,7 +32,7 @@ public class OracleDialect extends SQL92Dialect {
     public OracleDialect() {
         setSpacesAllowedInObjectNames(false);
         setCaseSensitive(false);
-        setMaxObjectNameLength(32);
+        setMaxObjectNameLength(64);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
         setSupportsOnUpdate(false);

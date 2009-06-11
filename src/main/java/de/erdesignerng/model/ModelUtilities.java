@@ -80,7 +80,7 @@ public final class ModelUtilities {
             aItem.setName(aDialect.checkName(aItem.getName()));
         }
 
-        checkExistance(aVector, aItem.getName(), aDialect);
+        checkExistance(aVector, aItem.getUniqueName(), aDialect);
     }
 
     /**
