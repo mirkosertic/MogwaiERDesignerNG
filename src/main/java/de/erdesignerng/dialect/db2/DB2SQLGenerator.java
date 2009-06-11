@@ -43,8 +43,8 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable.getName()) + " DROP CONSTRAINT "
-                + aRelation.getName()));
+        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable) + " DROP CONSTRAINT "
+                + escapeRelationName(aRelation)));
         return theResult;
     }
 
@@ -55,8 +55,8 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + escapeTableName(aTable.getName()) + "' , '"
-                + escapeTableName(aNewName) + "'"));
+        theResult.add(new Statement("EXEC sp_rename '" + escapeTableName(aTable) + "' , '"
+                + aNewName + "'"));
         return theResult;
 
     }
@@ -71,7 +71,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + theTable.getName() + "." + aExistantAttribute.getName()
+        theResult.add(new Statement("EXEC sp_rename '" + escapeTableName(theTable) + "." + aExistantAttribute.getName()
                 + "' , '" + aNewName + "' , 'COLUMN'"));
         return theResult;
     }
@@ -87,7 +87,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(theTable.getName()) + " ALTER COLUMN ");
+        theStatement.append("ALTER TABLE " + escapeTableName(theTable) + " ALTER COLUMN ");
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");

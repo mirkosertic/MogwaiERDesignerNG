@@ -115,6 +115,7 @@
 									</xs:sequence>
 									<xs:attribute name="id" use="required"/>
 									<xs:attribute name="name" use="required"/>
+									<xs:attribute name="schema" use="optional"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -173,6 +174,7 @@
 									</xs:sequence>
 									<xs:attribute name="id" use="required"/>
 									<xs:attribute name="name" use="required"/>
+									<xs:attribute name="schema" use="optional"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>

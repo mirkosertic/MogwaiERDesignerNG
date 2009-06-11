@@ -30,6 +30,8 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     private AttributeList attributes = new AttributeList();
 
     private IndexList indexes = new IndexList();
+    
+    private String schema;
 
     /**
      * Add an attribute to the table.
@@ -178,5 +180,19 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
             return thePrimaryKey.containsAttribute(aAttribute);
         }
         return false;
+    }
+
+    /**
+     * @return the schema
+     */
+    public String getSchema() {
+        return schema;
+    }
+
+    /**
+     * @param schema the schema to set
+     */
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 }

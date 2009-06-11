@@ -31,7 +31,9 @@ public class XMLTableSerializer extends XMLSerializer {
     
     public static final XMLTableSerializer SERIALIZER = new XMLTableSerializer();
     
-    public static final String TABLE = "Table";    
+    public static final String TABLE = "Table";
+    
+    public static final String SCHEMA = "schema";  
 
     public void serialize(Table aTable, Document aDocument, Element aRootElement) {
         Element theTableElement = addElement(aDocument, aRootElement, TABLE);
@@ -39,6 +41,8 @@ public class XMLTableSerializer extends XMLSerializer {
         // Basisdaten des Modelelementes speichern
         serializeProperties(aDocument, theTableElement, aTable);
         serializeCommentElement(aDocument, theTableElement, aTable);
+        
+        theTableElement.setAttribute(SCHEMA, aTable.getSchema());
 
         // Attribute serialisieren
         for (Attribute theAttribute : aTable.getAttributes()) {
@@ -59,9 +63,11 @@ public class XMLTableSerializer extends XMLSerializer {
 
             Table theTable = new Table();
             theTable.setOwner(aModel);
-            deserializeProperties(theElement, theTable);
 
+            deserializeProperties(theElement, theTable);
             deserializeCommentElement(theElement, theTable);
+            
+            theTable.setSchema(theElement.getAttribute(SCHEMA));
             
             XMLAttributeSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
             XMLIndexSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
