@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -30,20 +32,20 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     private AttributeList attributes = new AttributeList();
 
     private IndexList indexes = new IndexList();
-    
+
     private String schema;
 
     /**
      * Add an attribute to the table.
      * 
      * @param aModel
-     *                the model
+     *            the model
      * @param aAttribute
-     *                the table
+     *            the table
      * @throws ElementAlreadyExistsException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ElementInvalidNameException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
             ElementInvalidNameException {
@@ -58,13 +60,13 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
      * Add an index to the table.
      * 
      * @param aModel
-     *                the model
+     *            the model
      * @param aIndex
-     *                the table
+     *            the table
      * @throws ElementAlreadyExistsException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ElementInvalidNameException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
@@ -171,7 +173,8 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     /**
      * Test if the attribute is part of the primary key-
      * 
-     * @param aAttribute the attribute
+     * @param aAttribute
+     *            the attribute
      * @return true if yes, else false
      */
     public boolean isPrimaryKey(Attribute aAttribute) {
@@ -190,9 +193,18 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     }
 
     /**
-     * @param schema the schema to set
+     * @param schema
+     *            the schema to set
      */
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    @Override
+    public String getUniqueName() {
+        if (!StringUtils.isEmpty(schema)) {
+            return schema + "." + getName();
+        }
+        return super.getUniqueName();
     }
 }

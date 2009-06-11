@@ -481,10 +481,22 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     theOldFKName = theFKName;
 
                     String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
+                    String thePKTableSchema = theForeignKeys.getString("PKTABLE_SCHEM");
+
                     String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
                     String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
 
-                    Table theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
+                    Table theExportingTable = null;
+                    switch (aOptions.getTableNaming()) {
+                    case INCLUDE_SCHEMA:
+                        theExportingTable = aModel.getTables().findByNameAndSchema(
+                                dialect.getCastType().cast(thePKTableName), thePKTableSchema);
+                    case STANDARD:
+                        theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
+                        break;
+                    default:
+                        throw new RuntimeException("Naming not supported : " + aOptions.getTableNaming());
+                    }
                     if (theExportingTable != null) {
 
                         // The relation is only added to the model

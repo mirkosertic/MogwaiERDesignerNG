@@ -118,13 +118,7 @@ public class TableCellView extends VertexView {
         }
 
         protected String getConvertedName(ModelItem aItem) {
-            String theText = aItem.getName();
-            if (aItem instanceof Table) {
-                String theSchema = ((Table) aItem).getSchema();
-                if (!StringUtils.isEmpty(theSchema)) {
-                    theText = theSchema + "." + aItem.getName();
-                }
-            }
+            String theText = aItem.getUniqueName();
             if (includeComments) {
                 if (!StringUtils.isEmpty(aItem.getComment())) {
                     theText += " (" + aItem.getComment() + ")";

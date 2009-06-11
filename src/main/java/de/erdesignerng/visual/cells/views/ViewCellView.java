@@ -78,6 +78,8 @@ public class ViewCellView extends VertexView {
         private View view;
 
         private boolean selected;
+        
+        private boolean includeComments;
 
         private DisplayOrder displayOrder;
 
@@ -96,11 +98,10 @@ public class ViewCellView extends VertexView {
         }
 
         protected String getConvertedName(ModelItem aItem) {
-            String theText = aItem.getName();
-            if (aItem instanceof View) {
-                String theSchema = ((View) aItem).getSchema();
-                if (!StringUtils.isEmpty(theSchema)) {
-                    theText = theSchema + "." + aItem.getName();
+            String theText = aItem.getUniqueName();
+            if (includeComments) {
+                if (!StringUtils.isEmpty(aItem.getComment())) {
+                    theText += " (" + aItem.getComment() + ")";
                 }
             }
             return theText;
@@ -261,6 +262,7 @@ public class ViewCellView extends VertexView {
 
             ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
             displayOrder = theGraph.getDisplayOrder();
+            includeComments = theGraph.isDisplayComments();
 
             return this;
         }
