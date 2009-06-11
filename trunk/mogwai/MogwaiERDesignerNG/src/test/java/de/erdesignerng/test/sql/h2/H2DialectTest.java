@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.h2.H2Dialect;
 import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
+ * Test for the H2 SQL Generator. 
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
