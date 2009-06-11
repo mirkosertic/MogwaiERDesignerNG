@@ -118,6 +118,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
             theView.setName(dialect.getCastType().cast(aViewEntry.getTableName()));
             theView.setOriginalName(aViewEntry.getTableName());
+            switch (aOptions.getTableNaming()) {
+            case INCLUDE_SCHEMA:
+                theView.setSchema(aViewEntry.getSchemaName());
+                break;
+            default:
+            }
 
             if (!StringUtils.isEmpty(theViewRemarks)) {
                 theView.setComment(theViewRemarks);
@@ -161,7 +167,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * @throws ReverseEngineeringException
      *             is thrown in case of an error
      */
-    protected void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
+    protected final void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
 
@@ -179,6 +185,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
             theTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
             theTable.setOriginalName(aTableEntry.getTableName());
+            switch (aOptions.getTableNaming()) {
+            case INCLUDE_SCHEMA:
+                theTable.setSchema(aTableEntry.getSchemaName());
+                break;
+            default:
+            }
 
             if (!StringUtils.isEmpty(theTableRemarks)) {
                 theTable.setComment(theTableRemarks);

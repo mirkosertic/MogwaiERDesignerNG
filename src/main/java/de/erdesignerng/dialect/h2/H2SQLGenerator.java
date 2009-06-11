@@ -61,7 +61,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(escapeTableName(aTable));
         theStatement.append(" RENAME TO ");
 
         theStatement.append(aNewName);
@@ -83,7 +83,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(theTable.getName()));
+        theStatement.append(escapeTableName(theTable));
         theStatement.append(" ALTER COLUMN ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" RENAME TO ");
@@ -108,7 +108,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(theTable.getName()));
+        theStatement.append(escapeTableName(theTable));
         theStatement.append(" ALTER COLUMN ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");

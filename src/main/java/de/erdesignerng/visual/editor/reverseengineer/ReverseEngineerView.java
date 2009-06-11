@@ -19,6 +19,7 @@ package de.erdesignerng.visual.editor.reverseengineer;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -117,6 +118,7 @@ public class ReverseEngineerView extends JPanel {
 
         if (schemaList == null) {
             schemaList = new DefaultList();
+            schemaList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         }
 
         return schemaList;

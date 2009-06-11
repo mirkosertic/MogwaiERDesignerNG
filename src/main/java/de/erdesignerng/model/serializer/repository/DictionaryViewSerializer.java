@@ -51,6 +51,7 @@ public class DictionaryViewSerializer extends DictionaryBaseSerializer {
             copyBaseAttributes(theView, theExisting);
             
             theExisting.setSqlstatement(theView.getSql());
+            theExisting.setSchema(theView.getSchema());
 
             if (!existing) {
                 aDictionary.getViews().add(theExisting);
@@ -67,6 +68,7 @@ public class DictionaryViewSerializer extends DictionaryBaseSerializer {
             copyBaseAttributes(theViewEntity, theView);
             
             theView.setSql(theViewEntity.getSqlstatement());
+            theView.setSchema(theViewEntity.getSchema());
 
             aModel.getViews().add(theView);
         }

@@ -30,6 +30,8 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
     private String sql;
     
     private ViewAttributeList attributes = new ViewAttributeList();
+    
+    private String schema;
 
     /**
      * {@inheritDoc}
@@ -102,5 +104,19 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return the schema
+     */
+    public String getSchema() {
+        return schema;
+    }
+
+    /**
+     * @param schema the schema to set
+     */
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 }

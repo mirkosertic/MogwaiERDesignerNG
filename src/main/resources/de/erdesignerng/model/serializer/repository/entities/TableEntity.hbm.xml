@@ -45,5 +45,7 @@
 			</composite-element>
 		</list>
 		
+		<property name="schema" not-null="false" />		
+		
 	</class>
 </hibernate-mapping>
