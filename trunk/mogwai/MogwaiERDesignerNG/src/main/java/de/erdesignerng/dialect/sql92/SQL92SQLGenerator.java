@@ -93,7 +93,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(aTable.getName()) + " ADD ");
+        theStatement.append("ALTER TABLE " + escapeTableName(aTable) + " ADD ");
         theStatement.append(createCompleteAttributeDefinition(aAttribute));
 
         theResult.add(new Statement(theStatement.toString()));
@@ -118,7 +118,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("INDEX ");
         theStatement.append(aIndex.getName());
         theStatement.append(" ON ");
-        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(escapeTableName(aTable));
         theStatement.append(" (");
 
         for (int i = 0; i < aIndex.getExpressions().size(); i++) {
@@ -152,9 +152,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
-        theStatement.append(escapeTableName(theImportingTable.getName()));
+        theStatement.append(escapeTableName(theImportingTable));
         theStatement.append(" ADD CONSTRAINT ");
-        theStatement.append(aRelation.getName());
+        theStatement.append(escapeRelationName(aRelation));
         theStatement.append(" FOREIGN KEY (");
 
         boolean first = true;
@@ -272,7 +272,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute)
             throws VetoException {
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(aTable.getName()) + " DROP COLUMN "
+        theResult.add(new Statement("ALTER TABLE " + escapeTableName(aTable) + " DROP COLUMN "
                 + aAttribute.getName()));
         return theResult;
     }
@@ -288,7 +288,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("DROP INDEX ");
         theStatement.append(aIndex.getName());
         theStatement.append(" ON ");
-        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(escapeTableName(aTable));
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -304,8 +304,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable.getName()) + " DROP CONSTRAINT "
-                + aRelation.getName()));
+        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable) + " DROP CONSTRAINT "
+                + escapeRelationName(aRelation)));
         return theResult;
     }
 
@@ -315,7 +315,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     @Override
     public StatementList createRemoveTableStatement(Table aTable) throws VetoException {
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("DROP TABLE " + escapeTableName(aTable.getName())));
+        theResult.add(new Statement("DROP TABLE " + escapeTableName(aTable)));
         return theResult;
     }
 
@@ -336,7 +336,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE TABLE " + escapeTableName(aTable.getName()) + " ("
+        theStatement.append("CREATE TABLE " + escapeTableName(aTable) + " ("
                 + PlattformConfig.getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute theAttribute = aTable.getAttributes().get(i);
@@ -387,7 +387,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement
-                .append("ALTER TABLE " + escapeTableName(aTable.getName()) + " DROP CONSTRAINT " + aIndex.getName());
+                .append("ALTER TABLE " + escapeTableName(aTable) + " DROP CONSTRAINT " + aIndex.getName());
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -403,7 +403,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
 
-        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(escapeTableName(aTable));
         theStatement.append(" ADD CONSTRAINT ");
         theStatement.append(aIndex.getName());
         theStatement.append(" PRIMARY KEY(");
@@ -442,7 +442,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
         theStatement.append("CREATE VIEW ");
-        theStatement.append(escapeTableName(aView.getName()));
+        theStatement.append(escapeViewName(aView));
         theStatement.append(" AS ");
         theStatement.append(aView.getSql());
         theResult.add(new Statement(theStatement.toString()));
@@ -468,7 +468,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
         theStatement.append("DROP VIEW ");
-        theStatement.append(escapeTableName(aView.getName()));
+        theStatement.append(escapeViewName(aView));
         theResult.add(new Statement(theStatement.toString()));
         return theResult;
     }

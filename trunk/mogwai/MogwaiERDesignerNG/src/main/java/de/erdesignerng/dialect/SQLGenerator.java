@@ -51,13 +51,22 @@ public abstract class SQLGenerator<T extends Dialect> {
         return dialect;
     }
 
-    protected String escapeTableName(String aTableName) {
-        return aTableName;
+    protected String escapeTableName(Table aTable) {
+        return aTable.getName();
+    }
+
+    protected String escapeViewName(View aView) {
+        return aView.getName();
     }
 
     protected String escapeColumnName(String aColumnName) {
         return aColumnName;
     }
+    
+    protected String escapeRelationName(Relation aRelation) {
+        return aRelation.getName();
+    }
+
 
     public abstract StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException;
 

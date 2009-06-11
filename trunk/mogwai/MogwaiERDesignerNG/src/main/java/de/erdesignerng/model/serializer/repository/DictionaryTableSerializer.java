@@ -49,6 +49,8 @@ public class DictionaryTableSerializer extends DictionaryBaseSerializer {
             }
 
             copyBaseAttributes(theTable, theExisting);
+            
+            theExisting.setSchema(theTable.getSchema());
 
             DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
 
@@ -67,6 +69,8 @@ public class DictionaryTableSerializer extends DictionaryBaseSerializer {
             theTable.setOwner(aModel);
             
             copyBaseAttributes(theTableEntity, theTable);
+            
+            theTable.setSchema(theTableEntity.getSchema());
 
             DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
 

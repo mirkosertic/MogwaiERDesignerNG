@@ -61,7 +61,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(aTable.getName()));
+        theStatement.append(escapeTableName(aTable));
         theStatement.append(" RENAME TO ");
 
         theStatement.append(aNewName);
@@ -83,7 +83,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(theTable.getName()));
+        theStatement.append(escapeTableName(theTable));
         theStatement.append(" RENAME COLUMN ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" TO ");
@@ -108,7 +108,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(theTable.getName()));
+        theStatement.append(escapeTableName(theTable));
         theStatement.append(" ALTER ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" TYPE ");
@@ -119,7 +119,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(theTable.getName()));
+        theStatement.append(escapeTableName(theTable));
         theStatement.append(" ALTER ");
         theStatement.append(aExistantAttribute.getName());
 

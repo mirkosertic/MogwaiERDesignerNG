@@ -23,7 +23,8 @@
 
 		<property name="name" not-null="true" />
 		<property name="comment" not-null="false" type="text"/>		
-
 		<property name="sqlstatement" not-null="true" type="text"/>		
+		
+		<property name="schema" not-null="false" />
 	</class>
 </hibernate-mapping>
