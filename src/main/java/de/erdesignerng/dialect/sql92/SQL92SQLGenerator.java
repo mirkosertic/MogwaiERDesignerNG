@@ -36,7 +36,7 @@ import de.erdesignerng.modificationtracker.VetoException;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  * @param <T>
- *                the dialect
+ *            the dialect
  */
 public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
@@ -79,7 +79,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
     protected String createCompleteAttributeDefinition(Attribute aAttribute) {
         StringBuilder theBuilder = new StringBuilder();
-        theBuilder.append(aAttribute.getName());
+        theBuilder.append(createUniqueColumnName(aAttribute));
         theBuilder.append(" ");
         theBuilder.append(createAttributeDataDefinition(aAttribute));
         return theBuilder.toString();
@@ -93,7 +93,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(aTable) + " ADD ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(aTable) + " ADD ");
         theStatement.append(createCompleteAttributeDefinition(aAttribute));
 
         theResult.add(new Statement(theStatement.toString()));
@@ -118,7 +118,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("INDEX ");
         theStatement.append(aIndex.getName());
         theStatement.append(" ON ");
-        theStatement.append(escapeTableName(aTable));
+        theStatement.append(createUniqueTableName(aTable));
         theStatement.append(" (");
 
         for (int i = 0; i < aIndex.getExpressions().size(); i++) {
@@ -152,9 +152,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
-        theStatement.append(escapeTableName(theImportingTable));
+        theStatement.append(createUniqueTableName(theImportingTable));
         theStatement.append(" ADD CONSTRAINT ");
-        theStatement.append(escapeRelationName(aRelation));
+        theStatement.append(createUniqueRelationName(aRelation));
         theStatement.append(" FOREIGN KEY (");
 
         boolean first = true;
@@ -167,7 +167,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
 
         theStatement.append(") REFERENCES ");
-        theStatement.append(theExportingTable.getName());
+        theStatement.append(createUniqueTableName(theExportingTable));
         theStatement.append("(");
 
         first = true;
@@ -272,7 +272,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute)
             throws VetoException {
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(aTable) + " DROP COLUMN "
+        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(aTable) + " DROP COLUMN "
                 + aAttribute.getName()));
         return theResult;
     }
@@ -288,7 +288,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("DROP INDEX ");
         theStatement.append(aIndex.getName());
         theStatement.append(" ON ");
-        theStatement.append(escapeTableName(aTable));
+        theStatement.append(createUniqueTableName(aTable));
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -304,8 +304,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable) + " DROP CONSTRAINT "
-                + escapeRelationName(aRelation)));
+        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP CONSTRAINT "
+                + createUniqueRelationName(aRelation)));
         return theResult;
     }
 
@@ -315,7 +315,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     @Override
     public StatementList createRemoveTableStatement(Table aTable) throws VetoException {
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("DROP TABLE " + escapeTableName(aTable)));
+        theResult.add(new Statement("DROP TABLE " + createUniqueTableName(aTable)));
         return theResult;
     }
 
@@ -336,8 +336,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE TABLE " + escapeTableName(aTable) + " ("
-                + PlattformConfig.getLineSeparator());
+        theStatement
+                .append("CREATE TABLE " + createUniqueTableName(aTable) + " (" + PlattformConfig.getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute theAttribute = aTable.getAttributes().get(i);
 
@@ -386,8 +386,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement
-                .append("ALTER TABLE " + escapeTableName(aTable) + " DROP CONSTRAINT " + aIndex.getName());
+        theStatement.append("ALTER TABLE " + createUniqueTableName(aTable) + " DROP CONSTRAINT " + aIndex.getName());
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -403,7 +402,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder("ALTER TABLE ");
 
-        theStatement.append(escapeTableName(aTable));
+        theStatement.append(createUniqueTableName(aTable));
         theStatement.append(" ADD CONSTRAINT ");
         theStatement.append(aIndex.getName());
         theStatement.append(" PRIMARY KEY(");
@@ -442,7 +441,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
         theStatement.append("CREATE VIEW ");
-        theStatement.append(escapeViewName(aView));
+        theStatement.append(createUniqueViewName(aView));
         theStatement.append(" AS ");
         theStatement.append(aView.getSql());
         theResult.add(new Statement(theStatement.toString()));
@@ -468,7 +467,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
         theStatement.append("DROP VIEW ");
-        theStatement.append(escapeViewName(aView));
+        theStatement.append(createUniqueViewName(aView));
         theResult.add(new Statement(theStatement.toString()));
         return theResult;
     }

@@ -846,5 +846,9 @@
 			<Text lang="de">Die OpenXava Dateien wurden erfolgreich generiert!</Text>		
 			<Text lang="en">The OpenXava files were sucsessfully generated!</Text>					
 		</Entry>
+		<Entry id="INCLUDESCHEMAINNAME">
+			<Text lang="de">Schema berücksichtigen</Text>		
+			<Text lang="en">Respect database schema</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
