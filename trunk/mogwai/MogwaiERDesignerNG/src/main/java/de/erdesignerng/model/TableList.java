@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model;
 
+import de.erdesignerng.dialect.ReverseEngineeringOptions;
 
 /**
  * @author $Author: mirkosertic $
@@ -42,11 +43,12 @@ public class TableList extends ModelItemVector<Table> {
         }
         return null;
     }
-    
+
     /**
      * Test if the domain is in use by a table.
      * 
-     * @param aDomain the domain
+     * @param aDomain
+     *            the domain
      * @return the using table or null if the domain is not in use
      */
     public Table checkIfUsedByTable(Domain aDomain) {
@@ -56,5 +58,23 @@ public class TableList extends ModelItemVector<Table> {
             }
         }
         return null;
-    }    
+    }
+
+    /**
+     * Find a table by name and schema.
+     * 
+     * @param aName
+     *            the name of the table
+     * @param aSchemaName
+     *            the schema of the table
+     * @return the table or null if nothing was found
+     */
+    public Table findByNameAndSchema(String aName, String aSchemaName) {
+        for (Table theElement : this) {
+            if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
+                return theElement;
+            }
+        }
+        return null;
+    }
 }

@@ -48,21 +48,21 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
     /**
      * Check if a named element already exists in this list.
      * 
-     * @param aName
+     * @param aUniqueName
      *                the name of the element
      * @param aCaseSensitive
      *                true if checking is case sensitive, else false
      * 
      * @return true if it exists, else false.
      */
-    public boolean elementExists(String aName, boolean aCaseSensitive) {
+    public boolean elementExists(String aUniqueName, boolean aCaseSensitive) {
         for (T theElement : this) {
             if (aCaseSensitive) {
-                if (aName.equals(theElement.getName())) {
+                if (aUniqueName.equals(theElement.getUniqueName())) {
                     return true;
                 }
             } else {
-                if (aName.toLowerCase().equals(theElement.getName().toLowerCase())) {
+                if (aUniqueName.toLowerCase().equals(theElement.getUniqueName().toLowerCase())) {
                     return true;
                 }
             }
