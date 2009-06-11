@@ -81,7 +81,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(aTable));
+        theStatement.append(createUniqueTableName(aTable));
         theStatement.append(" RENAME TO ");
 
         theStatement.append(aNewName);
@@ -103,7 +103,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("ALTER TABLE ");
-        theStatement.append(escapeTableName(theTable));
+        theStatement.append(createUniqueTableName(theTable));
         theStatement.append(" RENAME COLUMN ");
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" TO ");
@@ -141,7 +141,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(theTable) + " MODIFY ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(theTable) + " MODIFY ");
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");

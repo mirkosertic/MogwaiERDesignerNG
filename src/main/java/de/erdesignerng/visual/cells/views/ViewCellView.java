@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.CellViewRenderer;
@@ -39,6 +40,7 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttribute;
 import de.erdesignerng.visual.DisplayOrder;
@@ -95,6 +97,12 @@ public class ViewCellView extends VertexView {
 
         protected String getConvertedName(ModelItem aItem) {
             String theText = aItem.getName();
+            if (aItem instanceof View) {
+                String theSchema = ((View) aItem).getSchema();
+                if (!StringUtils.isEmpty(theSchema)) {
+                    theText = theSchema + "." + aItem.getName();
+                }
+            }
             return theText;
         }
 
@@ -163,10 +171,11 @@ public class ViewCellView extends VertexView {
                     theString = getConvertedName(theAttribute);
 
                     /**
-                    theString += " : ";
-
-                    theString += theAttribute.getLayoutProvider().getLogicalDeclaration();
-                    */
+                     * theString += " : ";
+                     * 
+                     * theString +=
+                     * theAttribute.getLayoutProvider().getLogicalDeclaration();
+                     */
 
                     aGraphics.setColor(Color.black);
 
@@ -203,12 +212,13 @@ public class ViewCellView extends VertexView {
             for (ViewAttribute theAttribute : theAllAttributes) {
 
                 String theText = getConvertedName(theAttribute);
-                
-                /*
-                theText += " : ";
 
-                theText += theAttribute.getLayoutProvider().getLogicalDeclaration();
-                */
+                /*
+                 * theText += " : ";
+                 * 
+                 * theText +=
+                 * theAttribute.getLayoutProvider().getLogicalDeclaration();
+                 */
 
                 theLength = theMetrics.stringWidth(theText);
                 if (theLength + theXTextOffset > theMaxX) {
@@ -228,8 +238,9 @@ public class ViewCellView extends VertexView {
             if (theYOffset > theMaxY) {
                 theMaxY = theYOffset;
             }
-            
-            // TODO [mirkosertic] This should be the default size if there are no attributes
+
+            // TODO [mirkosertic] This should be the default size if there are
+            // no attributes
             if (theMaxY < 50) {
                 theMaxY = 50;
             }

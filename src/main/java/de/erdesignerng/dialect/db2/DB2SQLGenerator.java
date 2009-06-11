@@ -43,8 +43,8 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + escapeTableName(theImportingTable) + " DROP CONSTRAINT "
-                + escapeRelationName(aRelation)));
+        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP CONSTRAINT "
+                + createUniqueRelationName(aRelation)));
         return theResult;
     }
 
@@ -55,7 +55,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + escapeTableName(aTable) + "' , '"
+        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '"
                 + aNewName + "'"));
         return theResult;
 
@@ -71,7 +71,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + escapeTableName(theTable) + "." + aExistantAttribute.getName()
+        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(theTable) + "." + aExistantAttribute.getName()
                 + "' , '" + aNewName + "' , 'COLUMN'"));
         return theResult;
     }
@@ -87,7 +87,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE " + escapeTableName(theTable) + " ALTER COLUMN ");
+        theStatement.append("ALTER TABLE " + createUniqueTableName(theTable) + " ALTER COLUMN ");
 
         theStatement.append(aExistantAttribute.getName());
         theStatement.append(" ");

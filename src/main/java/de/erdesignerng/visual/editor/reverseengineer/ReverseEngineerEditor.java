@@ -85,6 +85,8 @@ public class ReverseEngineerEditor extends BaseEditor {
 
         theModel.getTableOptions().add(
                 new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper().getText(ERDesignerBundle.STANDART)));
+        theModel.getTableOptions().add(
+                new NameValuePair(TableNamingEnum.INCLUDE_SCHEMA, getResourceHelper().getText(ERDesignerBundle.INCLUDESCHEMAINNAME)));
 
         bindingInfo.addBinding("tableGenerator", editingView.getNaming(), true);
         bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(editingView.getNaming()));
