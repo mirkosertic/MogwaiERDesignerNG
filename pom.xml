@@ -39,7 +39,8 @@
 
 								<XMLResourceBundle
 									dest="src/main/resources" defaultLanguage="en"
-									src="src/main/java" encoding="ISO8859_1" javaEncoding="ISO8859_1">
+									src="src/main/java" encoding="ISO8859_1"
+									javaEncoding="ISO8859_1">
 									<fileset dir="src/main/resources">
 										<include name="erdesigner.xml" />
 									</fileset>
@@ -186,17 +187,21 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
-		        <artifactId>maven-assembly-plugin</artifactId>
-		        <configuration>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
 					<descriptors>
-            			<descriptor>assembly-squirrelplugin.xml</descriptor>
-            			<descriptor>assembly-eclipseplugin.xml</descriptor>
+						<descriptor>
+							assembly-squirrelplugin.xml
+						</descriptor>
+						<descriptor>
+							assembly-eclipseplugin.xml
+						</descriptor>
 					</descriptors>
-        		</configuration>
+				</configuration>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -372,8 +377,14 @@
 			<artifactId>javaparser</artifactId>
 			<version>1.0.7</version>
 		</dependency>
+		<dependency>
+			<groupId>pgsql</groupId>
+			<artifactId>pgsqljdbc3</artifactId>
+			<version>8.3</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-	
+
 	<properties>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
 		<your.standalone-compiler.version>
