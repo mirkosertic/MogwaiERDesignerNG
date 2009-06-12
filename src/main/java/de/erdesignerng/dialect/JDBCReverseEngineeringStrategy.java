@@ -615,7 +615,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * @return the l
      */
     protected String[] getReverseEngineeringTableTypes() {
-        return new String[] { TABLE_TABLE_TYPE };
+        return new String[] { TABLE_TABLE_TYPE, VIEW_TABLE_TYPE };
     }
 
     /**
@@ -626,7 +626,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * @return true if yes, else false
      */
     protected boolean isTableTypeView(String aTableType) {
-        return false;
+        return VIEW_TABLE_TYPE.equals(aTableType);
     }
 
     /**
