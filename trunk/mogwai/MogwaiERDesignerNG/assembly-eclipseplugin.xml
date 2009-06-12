@@ -10,36 +10,36 @@
 			<includes>
 				<include>*.txt</include>
 			</includes>
-			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7/</outputDirectory>
+			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7-SNAPSHOT/</outputDirectory>
 		</fileSet>
 		<fileSet>
 			<directory>src/eclipseplugin/resources</directory>
-			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7/</outputDirectory>
+			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7-SNAPSHOT/</outputDirectory>
 			<includes>
 				<include>**/*.*</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7/</outputDirectory>
+			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7-SNAPSHOT/</outputDirectory>
 			<includes>
 				<include>RELEASENOTES.txt</include>
 			</includes>
 		</fileSet>
 		<fileSet>
 			<directory>userdoc</directory>
-			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7/userdoc</outputDirectory>
+			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7-SNAPSHOT/userdoc</outputDirectory>
 			<includes>
 				<include>*.pdf</include>
 			</includes>
 		</fileSet>
 		<fileSet>
 			<directory>reports</directory>
-			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7/reports</outputDirectory>
+			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7-SNAPSHOT/reports</outputDirectory>
 		</fileSet>
 	</fileSets>
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7/lib</outputDirectory>
+			<outputDirectory>eclipse/plugins/net.sourceforge.mogwaierdesigner-1.7-SNAPSHOT/lib</outputDirectory>
 			<scope>runtime</scope>
 			<excludes>
 				<exclude>net.sourceforge.mogwai:mogwai-smartstart</exclude>

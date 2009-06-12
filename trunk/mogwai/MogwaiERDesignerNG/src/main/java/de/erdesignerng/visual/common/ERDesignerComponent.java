@@ -627,7 +627,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(ERDesignerBundle.FILE);
         if (worldConnector.supportsPreferences()) {
-            theFileMenu.add(preferencesAction);
+            theFileMenu.add(new DefaultMenuItem(preferencesAction));
             theFileMenu.addSeparator();
         }
 
