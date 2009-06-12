@@ -197,6 +197,7 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             assertTrue(theAttribute.getFraction() == 5);
 
             Index thePK = theTable.getPrimarykey();
+            assertTrue("PK1".equals(thePK.getName()));
             assertTrue(thePK != null);
             assertTrue(thePK.getExpressions().findByAttributeName("TB1_1") != null);
 
