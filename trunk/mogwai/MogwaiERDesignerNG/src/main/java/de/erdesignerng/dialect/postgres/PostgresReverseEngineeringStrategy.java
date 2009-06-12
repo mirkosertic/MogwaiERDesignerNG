@@ -66,14 +66,6 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
      * {@inheritDoc}
      */
     @Override
-    protected String[] getReverseEngineeringTableTypes() {
-        return new String[] { TABLE_TABLE_TYPE, VIEW_TABLE_TYPE };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected boolean isTableTypeView(String aTableType) {
         return VIEW_TABLE_TYPE.equals(aTableType);
     }
