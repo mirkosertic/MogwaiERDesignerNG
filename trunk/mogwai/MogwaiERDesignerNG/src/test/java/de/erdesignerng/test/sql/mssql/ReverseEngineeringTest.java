@@ -15,18 +15,22 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.test.sql.postgres;
+package de.erdesignerng.test.sql.mssql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
+import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
@@ -46,106 +50,99 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
  */
 public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
-    public void testReverseEngineerPostgreSQL() throws Exception {
+    public void testReverseEngineerMSSQL() throws Exception {
 
-        Class.forName("org.postgresql.Driver").newInstance();
+        Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/master", "sa", "");
 
-            // 
             Statement theStatement = theConnection.createStatement();
             try {
-                theStatement.execute("DROP SCHEMA schemaa CASCADE");
+                theStatement.execute("drop database mogwai");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            try {
-                theStatement.execute("DROP SCHEMA schemab CASCADE");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+            theStatement.execute("create database mogwai");
+            theConnection.close();
+            
+            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/mogwai", "sa", "");
 
             loadSQL(theConnection, "db.sql");
 
-            Dialect theDialect = new PostgresDialect();
-            ReverseEngineeringStrategy<PostgresDialect> theST = theDialect.getReverseEngineeringStrategy();
+            Dialect theDialect = new MSSQLDialect();
+            ReverseEngineeringStrategy<MSSQLDialect> theST = theDialect.getReverseEngineeringStrategy();
 
             Model theModel = new Model();
             theModel.setDialect(theDialect);
             theModel.setModificationTracker(new HistoryModificationTracker(theModel));
 
+            List<SchemaEntry> theAllSchemas = theST.getSchemaEntries(theConnection);
+            
+            List<SchemaEntry> theSchemas = new ArrayList<SchemaEntry>();
+            for (SchemaEntry theEntry : theAllSchemas) {
+                System.out.println(theEntry.getSchemaName());
+                
+                // Only dbo schemas
+                if ("dbo".equals(theEntry.getSchemaName())) {
+                    theSchemas.add(theEntry);
+                }
+            }
+            
             ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-            theOptions.setTableNaming(TableNamingEnum.INCLUDE_SCHEMA);
+            theOptions.setTableNaming(TableNamingEnum.STANDARD);
             theOptions.getTableEntries().addAll(
-                    theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
+                    theST.getTablesForSchemas(theConnection, theSchemas));
 
             theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
                     new EmptyReverseEngineeringNotifier());
 
             // Implement Unit Tests here
-            Table theTable = theModel.getTables().findByNameAndSchema("table1", "schemaa");
+            Table theTable = theModel.getTables().findByName("Table1");
             assertTrue(theTable != null);
-            assertTrue("Tablecomment".equals(theTable.getComment()));
-            Attribute theAttribute = theTable.getAttributes().findByName("tb1_1");
+            Attribute theAttribute = theTable.getAttributes().findByName("tb2_1");
             assertTrue(theAttribute != null);
             assertTrue(theAttribute.isNullable() == false);
             assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
             assertTrue(theAttribute.getSize() == 20);
-            assertTrue("Columncomment".equals(theAttribute.getComment()));
-            theAttribute = theTable.getAttributes().findByName("tb1_2");
+            theAttribute = theTable.getAttributes().findByName("tb2_2");
             assertTrue(theAttribute != null);
             assertTrue(theAttribute.isNullable());
             assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
             assertTrue(theAttribute.getSize() == 100);
-            theAttribute = theTable.getAttributes().findByName("tb1_3");
+            theAttribute = theTable.getAttributes().findByName("tb2_3");
             assertTrue(theAttribute != null);
             assertTrue(theAttribute.isNullable() == false);
-            assertTrue(theAttribute.getDatatype().getName().equals("numeric"));
+            assertTrue(theAttribute.getDatatype().getName().equals("decimal"));
             assertTrue(theAttribute.getSize() == 20);
             assertTrue(theAttribute.getFraction() == 5);
 
-            Index thePK = theTable.getPrimarykey();
-            assertTrue("pk1".equals(thePK.getName()));
-            assertTrue(thePK != null);
-            assertTrue(thePK.getExpressions().findByAttributeName("tb1_1") != null);
-
-            theTable = theModel.getTables().findByNameAndSchema("table1", "schemab");
+            theTable = theModel.getTables().findByName("Table2");
             assertTrue(theTable != null);
-            theAttribute = theTable.getAttributes().findByName("tb2_1");
+            theAttribute = theTable.getAttributes().findByName("tb3_1");
             assertTrue(theAttribute != null);
-            theAttribute = theTable.getAttributes().findByName("tb2_2");
+            theAttribute = theTable.getAttributes().findByName("tb3_2");
             assertTrue(theAttribute != null);
-            theAttribute = theTable.getAttributes().findByName("tb2_3");
+            theAttribute = theTable.getAttributes().findByName("tb3_3");
             assertTrue(theAttribute != null);
+            
+            Index thePK = theTable.getPrimarykey();
+            assertTrue(thePK != null);
+            assertTrue(thePK.getExpressions().findByAttributeName("tb3_1") != null);
 
-            View theView = theModel.getViews().findByNameAndSchema("view1", "schemab");
+            View theView = theModel.getViews().findByName("View1");
             assertTrue(theView != null);
-
-            theView = theModel.getViews().findByNameAndSchema("view1", "schemaa");
-            assertTrue(theView == null);
-
-            theTable = theModel.getTables().findByNameAndSchema("table2", "schemab");
-            Index theIndex = theTable.getIndexes().findByName("tabl22_idx3");
-            assertTrue(theIndex != null);
-            assertTrue(theIndex.getExpressions().size() == 1);
-            assertTrue(theIndex.getExpressions().findByAttributeName("tb3_2") == null);
-            assertTrue("upper((tb3_2)::text)".equals(theIndex.getExpressions().get(0).getExpression()));
-
-            assertTrue(theModel.getRelations().size() == 1);
-
-            Relation theRelation = theModel.getRelations().findByName("fk1");
+            
+            Relation theRelation = theModel.getRelations().findByName("FK1");
             assertTrue(theRelation != null);
-            assertTrue("table1".equals(theRelation.getImportingTable().getName()));
-            assertTrue("schemab".equals(theRelation.getImportingTable().getSchema()));
-
-            assertTrue("table1".equals(theRelation.getExportingTable().getName()));
-            assertTrue("schemaa".equals(theRelation.getExportingTable().getSchema()));
+            assertTrue("Table1".equals(theRelation.getImportingTable().getName()));
+            assertTrue("Table2".equals(theRelation.getExportingTable().getName()));
 
             assertTrue(theRelation.getMapping().size() == 1);
             Map.Entry<IndexExpression, Attribute> theEntry = theRelation.getMapping().entrySet().iterator().next();
             assertTrue("tb2_1".equals(theEntry.getValue().getName()));
-            assertTrue("tb1_1".equals(theEntry.getKey().getAttributeRef().getName()));
+            assertTrue("tb3_1".equals(theEntry.getKey().getAttributeRef().getName()));
 
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
@@ -154,6 +151,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             
             String theReference = readResourceFile("result.sql");
             assertTrue(theResult.equals(theReference));
+            
         } finally {
             if (theConnection != null) {
                 theConnection.close();

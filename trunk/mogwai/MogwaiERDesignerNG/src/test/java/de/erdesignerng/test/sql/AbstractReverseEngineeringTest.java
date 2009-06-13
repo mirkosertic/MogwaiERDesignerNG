@@ -131,4 +131,14 @@ public class AbstractReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
 
         theReader.close();
     }
+    
+    protected void loadSingleSQL(Connection aConnection, String aResource) throws IOException, SQLException {
+        
+        String theSQL = readResourceFile(aResource);
+        
+        Statement theStatement = aConnection.createStatement();
+        theStatement.execute(theSQL);
+        theStatement.close();
+    }
+
 }

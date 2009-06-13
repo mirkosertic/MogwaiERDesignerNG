@@ -17,8 +17,10 @@
  */
 package de.erdesignerng.test.sql.h2;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -113,6 +115,22 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             String theReference = readResourceFile("result.sql");
             assertTrue(theResult.equals(theReference));
 
+        } finally {
+            if (theConnection != null) {
+
+                theConnection.createStatement().execute("SHUTDOWN");
+                theConnection.close();
+            }
+        }
+    }
+    
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+        Class.forName("org.hsqldb.jdbcDriver").newInstance();
+        Connection theConnection = null;
+        try {
+            theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:cname", "sa", "");
+
+            loadSingleSQL(theConnection, "result.sql");
         } finally {
             if (theConnection != null) {
 
