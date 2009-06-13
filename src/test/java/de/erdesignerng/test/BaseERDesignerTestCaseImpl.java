@@ -23,11 +23,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import junit.framework.TestCase;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
-
-import junit.framework.TestCase;
 
 public class BaseERDesignerTestCaseImpl extends TestCase {
 

@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -101,7 +102,7 @@ public class AbstractReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             return false;
         }
     };
-    
+
     public class EmptyReverseEngineeringNotifier implements ReverseEngineeringNotifier {
 
         @Override
@@ -131,13 +132,19 @@ public class AbstractReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
 
         theReader.close();
     }
-    
+
     protected void loadSingleSQL(Connection aConnection, String aResource) throws IOException, SQLException {
-        
+
         String theSQL = readResourceFile(aResource);
-        
+
         Statement theStatement = aConnection.createStatement();
-        theStatement.execute(theSQL);
+        StringTokenizer theST = new StringTokenizer(theSQL, ";");
+        while (theST.hasMoreTokens()) {
+            String theSingleSQL = theST.nextToken();
+            if (!StringUtils.isEmpty(theSingleSQL)) {
+                theStatement.execute(theSingleSQL);
+            }
+        }
         theStatement.close();
     }
 
