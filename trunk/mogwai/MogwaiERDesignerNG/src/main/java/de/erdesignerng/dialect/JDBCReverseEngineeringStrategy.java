@@ -38,6 +38,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
@@ -130,12 +131,13 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             }
 
             String theStatement = reverseEngineerViewSQL(aViewEntry, aConnection, theView);
-            /*
-             * try { SQLUtils.updateViewAttributesFromSQL(theView,
-             * theStatement); } catch (Exception e) { throw new
-             * ReverseEngineeringException("Problem reading view definition",
-             * e); }
-             */
+
+            try {
+                SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
+            } catch (Exception e) {
+                throw new ReverseEngineeringException("Problem reading view definition", e);
+            }
+
             theView.setSql(theStatement);
 
             // We are done here

@@ -33,6 +33,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.plugins.sqleonardo.ERConnection;
+import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -93,7 +94,7 @@ public class ViewEditor extends BaseEditor {
         if (!StringUtils.isEmpty(aView.getSql())) {
 
             String theSQL = aView.getSql();
-            
+
             System.out.println("Entering for SQL " + theSQL);
             try {
                 QueryModel theModel = SQLParser.toQueryModel(theSQL);
@@ -108,17 +109,14 @@ public class ViewEditor extends BaseEditor {
     protected void commandOk() {
         if (viewBindingInfo.validate().size() == 0) {
 
-            /*
-             * try {
-             *  // Test if every expression has an assigned alias
-             * SQLUtils.updateViewAttributesFromQueryModel(new View(),
-             * editingView.getBuilder().getQueryModel());
-             * 
-             * setModalResult(MODAL_RESULT_OK); } catch (Exception e) { //
-             * Handle error here e.printStackTrace(); }
-             */
+            try {
+                // Test if every expression has an assigned alias
+                SQLUtils.updateViewAttributesFromQueryModel(new View(), editingView.getBuilder().getQueryModel());
 
-            setModalResult(MODAL_RESULT_OK);
+                setModalResult(MODAL_RESULT_OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -132,11 +130,11 @@ public class ViewEditor extends BaseEditor {
 
         theView.getAttributes().clear();
 
-        /*
-         * try { SQLUtils.updateViewAttributesFromQueryModel(new View(),
-         * editingView.getBuilder().getQueryModel()); } catch (Exception e) { //
-         * This exception is checked in commandOk before }
-         */
+        try {
+            SQLUtils.updateViewAttributesFromQueryModel(theView, editingView.getBuilder().getQueryModel());
+        } catch (Exception e) {
+            // This exception is checked in commandOk before
+        }
 
         viewBindingInfo.view2model();
 
