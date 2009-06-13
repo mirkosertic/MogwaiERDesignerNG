@@ -19,5 +19,5 @@ CREATE TABLE schemab.table2 (
     tb3_3 numeric(20,5) NOT NULL
 );
 CREATE INDEX tabl22_idx3 ON schemab.table2 (upper((tb3_2)::text));
-CREATE VIEW schemab.view1 AS SELECT table1.tb2_1, table1.tb2_2, table1.tb2_3 FROM schemab.table1;;
+CREATE VIEW schemab.view1 AS SELECT table1.tb2_1, table1.tb2_2, table1.tb2_3 FROM schemab.table1;
 ALTER TABLE schemab.table1 ADD CONSTRAINT fk1 FOREIGN KEY (tb2_1) REFERENCES schemaa.table1(tb1_1) ON DELETE NO ACTION ON UPDATE NO ACTION;
