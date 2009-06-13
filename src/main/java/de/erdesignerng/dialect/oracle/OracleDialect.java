@@ -36,6 +36,7 @@ public class OracleDialect extends SQL92Dialect {
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.UPPERCASE);
         setSupportsOnUpdate(false);
+        setSuppressONALLIfNOACTION(true);
 
         registerType(createDataType("LONG RAW", "", true, Types.LONGVARBINARY));
         registerType(createDataType("RAW", "$size", true, Types.VARBINARY, Types.BINARY));
