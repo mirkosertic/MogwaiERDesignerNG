@@ -484,7 +484,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
         // Foreign keys
         Relation theNewRelation = null;
-        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry.getTableName());
+        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry
+                .getTableName());
         while (theForeignKeys.next()) {
             String theFKName = theForeignKeys.getString("FK_NAME");
 
