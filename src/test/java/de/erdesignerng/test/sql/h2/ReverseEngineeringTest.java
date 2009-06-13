@@ -23,6 +23,7 @@ import java.sql.DriverManager;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
+import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.h2.H2Dialect;
 import de.erdesignerng.model.Attribute;
@@ -103,6 +104,14 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
             theView = theModel.getViews().findByNameAndSchema("VIEW1", "SCHEMAA");
             assertTrue(theView == null);
+            
+            SQLGenerator theGenerator = theDialect.createSQLGenerator();
+            String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
+
+            System.out.println(theResult);
+            
+            String theReference = readResourceFile("result.sql");
+            assertTrue(theResult.equals(theReference));
 
         } finally {
             if (theConnection != null) {
