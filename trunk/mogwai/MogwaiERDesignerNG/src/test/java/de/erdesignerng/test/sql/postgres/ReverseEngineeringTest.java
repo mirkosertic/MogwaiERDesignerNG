@@ -17,8 +17,10 @@
  */
 package de.erdesignerng.test.sql.postgres;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
@@ -46,25 +48,32 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
  */
 public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
+    @Override
+    protected void setUp() throws Exception {
+        Class.forName("org.postgresql.Driver").newInstance();
+
+        Connection theConnection = null;
+        theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
+
+        // 
+        Statement theStatement = theConnection.createStatement();
+        try {
+            theStatement.execute("DROP SCHEMA schemaa CASCADE");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            theStatement.execute("DROP SCHEMA schemab CASCADE");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void testReverseEngineerPostgreSQL() throws Exception {
 
-        Class.forName("org.postgresql.Driver").newInstance();
         Connection theConnection = null;
         try {
             theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
-
-            // 
-            Statement theStatement = theConnection.createStatement();
-            try {
-                theStatement.execute("DROP SCHEMA schemaa CASCADE");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                theStatement.execute("DROP SCHEMA schemab CASCADE");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             loadSQL(theConnection, "db.sql");
 
@@ -151,7 +160,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             System.out.println(theResult);
-            
+
             String theReference = readResourceFile("result.sql");
             assertTrue(theResult.equals(theReference));
         } finally {
@@ -160,4 +169,19 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             }
         }
     }
+    
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+        Connection theConnection = null;
+        try {
+            theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
+
+            loadSingleSQL(theConnection, "result.sql");
+        } finally {
+            if (theConnection != null) {
+
+                theConnection.close();
+            }
+        }
+    }
+
 }
