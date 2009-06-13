@@ -25,6 +25,8 @@ import java.util.Map;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
+import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.model.Attribute;
@@ -146,6 +148,13 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             assertTrue("tb2_1".equals(theEntry.getValue().getName()));
             assertTrue("tb1_1".equals(theEntry.getKey().getAttributeRef().getName()));
 
+            SQLGenerator theGenerator = theDialect.createSQLGenerator();
+            String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
+
+            System.out.println(theResult);
+            
+            String theReference = readResourceFile("result.sql");
+            assertTrue(theResult.equals(theReference));
         } finally {
             if (theConnection != null) {
                 theConnection.close();

@@ -18,13 +18,10 @@
 package de.erdesignerng.test.sql;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.SQLGenerator;
-import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -126,17 +123,6 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         return theTable;
     }
 
-    protected String statementListToString(StatementList aStatements, SQLGenerator aGenerator) {
-        StringWriter theStringWriter = new StringWriter();
-        PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
-        for (Statement theStatement : aStatements) {
-            thePrintWriter.print(theStatement.getSql());
-            thePrintWriter.println(aGenerator.createScriptStatementSeparator());
-        }
-        thePrintWriter.flush();
-        return theStringWriter.toString().trim();
-    }
-    
     public void testCreateTableWithPKAndIndex() throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException, IOException {
 
