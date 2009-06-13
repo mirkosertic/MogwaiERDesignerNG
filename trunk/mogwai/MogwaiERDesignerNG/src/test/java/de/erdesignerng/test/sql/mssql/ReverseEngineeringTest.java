@@ -17,8 +17,10 @@
  */
 package de.erdesignerng.test.sql.mssql;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,6 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
-import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
@@ -50,23 +51,29 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
  */
 public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
-    public void testReverseEngineerMSSQL() throws Exception {
+    @Override
+    protected void setUp() throws Exception {
 
         Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
         Connection theConnection = null;
+
+        theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/master", "sa", "");
+
+        Statement theStatement = theConnection.createStatement();
         try {
-            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/master", "sa", "");
+            theStatement.execute("drop database mogwai");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            Statement theStatement = theConnection.createStatement();
-            try {
-                theStatement.execute("drop database mogwai");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        theStatement.execute("create database mogwai");
+        theConnection.close();
+    }
 
-            theStatement.execute("create database mogwai");
-            theConnection.close();
-            
+    public void testReverseEngineerMSSQL() throws Exception {
+
+        Connection theConnection = null;
+        try {
             theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/mogwai", "sa", "");
 
             loadSQL(theConnection, "db.sql");
@@ -79,21 +86,20 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             theModel.setModificationTracker(new HistoryModificationTracker(theModel));
 
             List<SchemaEntry> theAllSchemas = theST.getSchemaEntries(theConnection);
-            
+
             List<SchemaEntry> theSchemas = new ArrayList<SchemaEntry>();
             for (SchemaEntry theEntry : theAllSchemas) {
                 System.out.println(theEntry.getSchemaName());
-                
+
                 // Only dbo schemas
                 if ("dbo".equals(theEntry.getSchemaName())) {
                     theSchemas.add(theEntry);
                 }
             }
-            
+
             ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
             theOptions.setTableNaming(TableNamingEnum.STANDARD);
-            theOptions.getTableEntries().addAll(
-                    theST.getTablesForSchemas(theConnection, theSchemas));
+            theOptions.getTableEntries().addAll(theST.getTablesForSchemas(theConnection, theSchemas));
 
             theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
                     new EmptyReverseEngineeringNotifier());
@@ -126,14 +132,14 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             assertTrue(theAttribute != null);
             theAttribute = theTable.getAttributes().findByName("tb3_3");
             assertTrue(theAttribute != null);
-            
+
             Index thePK = theTable.getPrimarykey();
             assertTrue(thePK != null);
             assertTrue(thePK.getExpressions().findByAttributeName("tb3_1") != null);
 
             View theView = theModel.getViews().findByName("View1");
             assertTrue(theView != null);
-            
+
             Relation theRelation = theModel.getRelations().findByName("FK1");
             assertTrue(theRelation != null);
             assertTrue("Table1".equals(theRelation.getImportingTable().getName()));
@@ -148,14 +154,29 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             System.out.println(theResult);
-            
+
             String theReference = readResourceFile("result.sql");
             assertTrue(theResult.equals(theReference));
-            
+
         } finally {
             if (theConnection != null) {
                 theConnection.close();
             }
         }
     }
+    
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+        Connection theConnection = null;
+        try {
+            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/mogwai", "sa", "");
+
+            loadSingleSQL(theConnection, "result.sql");
+        } finally {
+            if (theConnection != null) {
+
+                theConnection.close();
+            }
+        }
+    }
+
 }
