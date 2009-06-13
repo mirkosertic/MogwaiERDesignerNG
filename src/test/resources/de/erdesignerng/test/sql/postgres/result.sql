@@ -1,3 +1,5 @@
+CREATE SCHEMA schemaa;
+CREATE SCHEMA schemab;
 CREATE TABLE schemaa.table1 (
     tb1_1 varchar(20) NOT NULL,
     tb1_2 varchar(100) DEFAULT 'Test'::character varying,
