@@ -18,6 +18,7 @@
 package de.erdesignerng.dialect.mssql;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.View;
 
 /**
@@ -75,5 +77,16 @@ public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
             }
             theStatement.close();
         }
+    }
+
+    @Override
+    protected CascadeType getCascadeType(int aValue) {
+        switch (aValue) {
+        case DatabaseMetaData.importedKeyRestrict:
+            // Restrict is not supported my MSSQL
+            aValue = DatabaseMetaData.importedKeyNoAction;
+            break;
+        }
+        return super.getCascadeType(aValue);
     }
 }
