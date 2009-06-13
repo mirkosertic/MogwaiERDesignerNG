@@ -35,7 +35,7 @@ public class MSSQLDialect extends SQL92Dialect {
         setCaseSensitive(false);
         setMaxObjectNameLength(128);
         setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.UPPERCASE);
+        setCastType(NameCastType.NOTHING);
 
         registerType(createDataType("bit", "", Types.BIT, Types.BOOLEAN));
         registerType(createDataType("tinyint", "", Types.TINYINT));

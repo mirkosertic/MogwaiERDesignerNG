@@ -19,7 +19,11 @@ package de.erdesignerng.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.dialect.ConversionInfos;
 import de.erdesignerng.dialect.DataType;
@@ -598,5 +602,30 @@ public class Model implements OwnedModelItemVerifier {
                 }
             }
         }
+    }
+
+    /**
+     * Get a list of used schemas in the model.
+     * @return the list of schemas.
+     */
+    public List<String> getUsedSchemas() {
+        List<String> theResult = new ArrayList<String>();
+        for (Table theTable : tables) {
+            String theSchema = theTable.getSchema();
+            if (!StringUtils.isEmpty(theSchema)) {
+                if (!theResult.contains(theSchema)) {
+                    theResult.add(theSchema);
+                }
+            }
+        }
+        for (View theView : views) {
+            String theSchema = theView.getSchema();
+            if (!StringUtils.isEmpty(theSchema)) {
+                if (!theResult.contains(theSchema)) {
+                    theResult.add(theSchema);
+                }
+            }
+        }
+        return theResult;
     }
 }

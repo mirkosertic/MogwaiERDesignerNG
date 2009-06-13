@@ -125,5 +125,16 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }        
+    }
+    
+    @Override
+    public StatementList createAddSchemaStatement(String aSchema) throws VetoException {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+        theStatement.append("CREATE SCHEMA ");
+        theStatement.append(createUniqueSchemaName(aSchema));
+        theStatement.append(" authorization DBA");
+        theResult.add(new Statement(theStatement.toString()));
+        return theResult;
+    }
 }
