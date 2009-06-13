@@ -37,7 +37,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -83,7 +82,7 @@ public final class DataTypeIO {
         xmlUtils = XMLUtils.getInstance();
     }
 
-    private static String jdbcTypeToString(int aType) throws IllegalArgumentException, IllegalAccessException {
+    private static String jdbcTypeToString(int aType) throws IllegalAccessException {
         for (Field theField : Types.class.getFields()) {
             int theValue = theField.getInt(Types.class);
             if (theValue == aType) {
@@ -93,7 +92,7 @@ public final class DataTypeIO {
         return OTHER;
     }
 
-    private static int stringToJdbcType(String aType) throws IllegalArgumentException, IllegalAccessException {
+    private static int stringToJdbcType(String aType) throws IllegalAccessException {
         for (Field theField : Types.class.getFields()) {
             int theValue = theField.getInt(Types.class);
             if (aType.equals(theField.getName())) {
@@ -103,8 +102,7 @@ public final class DataTypeIO {
         return Types.OTHER;
     }
 
-    public void loadUserTypes(ApplicationPreferences aPreferences) throws TransformerException, IOException, SAXException, DOMException,
-            IllegalArgumentException, IllegalAccessException {
+    public void loadUserTypes(ApplicationPreferences aPreferences) throws TransformerException, IOException, SAXException, IllegalAccessException {
         DialectFactory theFactory = DialectFactory.getInstance();
         
         File theDataTypesDirectory = aPreferences.getDatatypeConfigDirectory();
@@ -174,7 +172,7 @@ public final class DataTypeIO {
     }
 
     private void serializeDataTypesFor(Dialect aDialect, OutputStream aStream) throws TransformerException,
-            IOException, DOMException, IllegalArgumentException, IllegalAccessException {
+            IOException, IllegalAccessException {
         Document theDocument = xmlUtils.getDocumentBuilder().newDocument();
         Element theRootElement = theDocument.createElement(DATATYPES);
         theRootElement.setAttribute(DIALECT, aDialect.getUniqueName());

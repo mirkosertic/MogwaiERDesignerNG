@@ -89,6 +89,7 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
@@ -2124,6 +2125,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         for (View theView : model.getViews()) {
+
+            try {
+                SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             ViewCell theCell = new ViewCell(theView);
             theCell.transferPropertiesToAttributes(theView);
 
