@@ -83,7 +83,7 @@ public class MSSQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
     protected CascadeType getCascadeType(int aValue) {
         switch (aValue) {
         case DatabaseMetaData.importedKeyRestrict:
-            // Restrict is not supported my MSSQL
+            // Restrict is not supported my this db
             aValue = DatabaseMetaData.importedKeyNoAction;
             break;
         }
