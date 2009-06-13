@@ -40,7 +40,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     public PostgresReverseEngineeringStrategy(PostgresDialect aDialect) {
         super(aDialect);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -60,8 +60,8 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         return theList;
-    }    
-    
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -91,6 +91,10 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                         theViewDefinition = theViewDefinition.substring(p + 4);
                     }
                 }
+
+                if (theViewDefinition.endsWith(";")) {
+                    theViewDefinition = theViewDefinition.substring(0, theViewDefinition.length() - 1);
+                }
                 return theViewDefinition;
             }
             return null;
@@ -100,5 +104,5 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             }
             theStatement.close();
         }
-    }    
+    }
 }

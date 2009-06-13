@@ -41,46 +41,85 @@ import de.erdesignerng.model.View;
 public class ERDatabaseMetaData implements DatabaseMetaData {
 
     private static final String COLUMN_DEFERRABILITY = "DEFERRABILITY";
+
     private static final String COLUMN_FK_NAME = "FK_NAME";
+
     private static final String COLUMN_DELETE_RULE = "DELETE_RULE";
+
     private static final String COLUMN_UPDATE_RULE = "UPDATE_RULE";
+
     private static final String COLUMN_FKCOLUMN_NAME = "FKCOLUMN_NAME";
+
     private static final String COLUMN_FKTABLE_NAME = "FKTABLE_NAME";
+
     private static final String COLUMN_FKTABLE_SCHEM = "FKTABLE_SCHEM";
+
     private static final String COLUMN_FKTABLE_CAT = "FKTABLE_CAT";
+
     private static final String COLUMN_PKCOLUMN_NAME = "PKCOLUMN_NAME";
+
     private static final String COLUMN_PKTABLE_NAME = "PKTABLE_NAME";
+
     private static final String COLUMN_PKTABLE_SCHEM = "PKTABLE_SCHEM";
+
     private static final String COLUMN_PKTABLE_CAT = "PKTABLE_CAT";
+
     private static final String COLUMN_PK_NAME = "PK_NAME";
+
     private static final String COLUMN_KEY_SEQ = "KEY_SEQ";
+
     private static final String COLUMN_SOURCE_DATA_TYPE = "SOURCE_DATA_TYPE";
+
     private static final String COLUMN_SCOPE_TABLE = "SCOPE_TABLE";
+
     private static final String COLUMN_SCOPE_SCHEMA = "SCOPE_SCHEMA";
+
     private static final String COLUMN_SCOPE_CATALOG = "SCOPE_CATALOG";
+
     private static final String COLUMN_IS_NULLABLE = "IS_NULLABLE";
+
     private static final String COLUMN_ORDINAL_POSITION = "ORDINAL_POSITION";
+
     private static final String COLUMN_CHAR_OCTET_LENGTH = "CHAR_OCTET_LENGTH";
+
     private static final String COLUMN_SQL_DATETIME_SUB = "SQL_DATETIME_SUB";
+
     private static final String COLUMN_SQL_DATA_TYPE = "SQL_DATA_TYPE";
+
     private static final String COLUMN_COLUMN_DEF = "COLUMN_DEF";
+
     private static final String COLUMN_NULLABLE = "NULLABLE";
+
     private static final String COLUMN_NUM_PREC_RADIX = "NUM_PREC_RADIX";
+
     private static final String COLUMN_DECIMAL_DIGITS = "DECIMAL_DIGITS";
+
     private static final String COLUMN_BUFFER_LENGTH = "BUFFER_LENGTH";
+
     private static final String COLUMN_COLUMN_SIZE = "COLUMN_SIZE";
+
     private static final String COLUMN_TYPE_NAME = "TYPE_NAME";
+
     private static final String COLUMN_DATA_TYPE = "DATA_TYPE";
+
     private static final String COLUMN_COLUMN_NAME = "COLUMN_NAME";
+
     private static final String COLUMN_REMARKS = "REMARKS";
+
     private static final String COLUMN_TABLE_NAME = "TABLE_NAME";
+
     private static final String COLUMN_TABLE_SCHEM = "TABLE_SCHEM";
+
     private static final String COLUMN_TABLE_CAT = "TABLE_CAT";
+
     private static final String COLUMN_TABLE_TYPE = "TABLE_TYPE";
+
     private static final String VIEW_TABLE_TYPE = "View";
+
     private static final String ENTITY_TABLE_TYPE = "Entity";
 
     private ERConnection connection;
+
     private Model ermodel;
 
     protected ERDatabaseMetaData(ERConnection connection, Model ermodel) {
@@ -117,7 +156,8 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
      * if ERDesignerNG does not use Schemas leave return null.
      * 
      * @return by default NULL
-     * @throws SQLException Is thrown in case of an error
+     * @throws SQLException
+     *                 Is thrown in case of an error
      */
     public String getSchemaTerm() throws SQLException {
         return null;
@@ -127,7 +167,8 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
      * if ERDesignerNG does not use Schemas leave return null.
      * 
      * @return by default NULL
-     * @throws SQLException Is thrown in case of an error 
+     * @throws SQLException
+     *                 Is thrown in case of an error
      */
     public ResultSet getSchemas() throws SQLException {
         return null;
@@ -144,20 +185,47 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
 
         if ((aTypes == null) || (ArrayUtils.contains(aTypes, ENTITY_TABLE_TYPE))) {
             for (Table theTable : ermodel.getTables()) {
-                Map<String, Object> theRow = new HashMap<String, Object>();
-                theRow.put(COLUMN_TABLE_NAME, theTable.getName());
-                theRow.put(COLUMN_TABLE_TYPE, ENTITY_TABLE_TYPE);
-                theRow.put(COLUMN_REMARKS, theTable.getComment());
-                theRowInfo.addRow(theRow);
+
+                boolean theAdd = true;
+                if (!StringUtils.isEmpty(theTable.getSchema())) {
+                    if ((aSchemaPattern != null) && (!"%".equals(aSchemaPattern))) {
+                        theAdd &= theTable.getSchema().equalsIgnoreCase(aSchemaPattern);
+                    }
+                }
+                if ((aTableNamePattern != null) && (!"%".equals(aTableNamePattern))) {
+                    theAdd &= theTable.getName().equalsIgnoreCase(aTableNamePattern);
+                }
+
+                if (theAdd) {
+                    Map<String, Object> theRow = new HashMap<String, Object>();
+                    theRow.put(COLUMN_TABLE_NAME, theTable.getName());
+                    theRow.put(COLUMN_TABLE_TYPE, ENTITY_TABLE_TYPE);
+                    theRow.put(COLUMN_REMARKS, theTable.getComment());
+                    theRowInfo.addRow(theRow);
+                }
             }
         }
         if ((aTypes == null) || (ArrayUtils.contains(aTypes, VIEW_TABLE_TYPE))) {
             for (View theView : ermodel.getViews()) {
-                Map<String, Object> theRow = new HashMap<String, Object>();
-                theRow.put(COLUMN_TABLE_NAME, theView.getName());
-                theRow.put(COLUMN_TABLE_TYPE, VIEW_TABLE_TYPE);
-                theRow.put(COLUMN_REMARKS, theView.getComment());
-                theRowInfo.addRow(theRow);
+
+                boolean theAdd = true;
+                if (!StringUtils.isEmpty(theView.getSchema())) {
+                    if ((aSchemaPattern != null) && (!"%".equals(aSchemaPattern))) {
+                        theAdd &= theView.getSchema().equalsIgnoreCase(aSchemaPattern);
+                    }
+                }
+                if ((aTableNamePattern != null) && (!"%".equals(aTableNamePattern))) {
+                    theAdd &= theView.getName().equalsIgnoreCase(aTableNamePattern);
+                }
+
+                if (theAdd) {
+
+                    Map<String, Object> theRow = new HashMap<String, Object>();
+                    theRow.put(COLUMN_TABLE_NAME, theView.getName());
+                    theRow.put(COLUMN_TABLE_TYPE, VIEW_TABLE_TYPE);
+                    theRow.put(COLUMN_REMARKS, theView.getComment());
+                    theRowInfo.addRow(theRow);
+                }
             }
         }
 
@@ -190,7 +258,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_SCOPE_SCHEMA);
         theRowInfo.addField(COLUMN_SCOPE_TABLE);
         theRowInfo.addField(COLUMN_SOURCE_DATA_TYPE);
-        
+
         List<Table> theTables = new ArrayList<Table>();
         if (StringUtils.isEmpty(tableNamePattern)) {
             theTables.addAll(ermodel.getTables());
@@ -233,7 +301,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
             Index theIndex = theTable.getPrimarykey();
             if (theIndex != null) {
                 short theNumber = 1;
-                for (IndexExpression theExpression  : theIndex.getExpressions()) {
+                for (IndexExpression theExpression : theIndex.getExpressions()) {
                     Map<String, Object> theRow = new HashMap<String, Object>();
                     theRow.put(COLUMN_TABLE_NAME, theTable.getName());
                     theRow.put(COLUMN_COLUMN_NAME, theExpression.getAttributeRef().getName());
@@ -305,26 +373,29 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_PK_NAME);
         theRowInfo.addField(COLUMN_DEFERRABILITY);
 
-        /*Table theTable = ermodel.getTables().findByName(aTable);
-        if (theTable != null) {
-            for (Relation theRelation : ermodel.getRelations().getExportedKeysFor(theTable)) {
+        /*
+         * Table theTable = ermodel.getTables().findByName(aTable); if (theTable !=
+         * null) { for (Relation theRelation :
+         * ermodel.getRelations().getExportedKeysFor(theTable)) {
+         * 
+         * Index thePrimaryKey =
+         * theRelation.getExportingTable().getPrimarykey(); for (Attribute
+         * theAttribute : thePrimaryKey.getAttributes()) {
+         * 
+         * Map<String, Object> theRow = new HashMap<String, Object>();
+         * theRow.put(COLUMN_PKTABLE_NAME,
+         * theRelation.getExportingTable().getName());
+         * theRow.put(COLUMN_PKCOLUMN_NAME, theAttribute.getName());
+         * theRow.put(COLUMN_FKTABLE_NAME,
+         * theRelation.getImportingTable().getName());
+         * theRow.put(COLUMN_FKCOLUMN_NAME,
+         * theRelation.getMapping().get(theAttribute).getName());
+         * theRow.put(COLUMN_FK_NAME, theRelation.getName());
+         * theRow.put(COLUMN_PK_NAME, thePrimaryKey.getName());
+         * 
+         * theRowInfo.addRow(theRow); } } }
+         */
 
-                Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
-                for (Attribute theAttribute : thePrimaryKey.getAttributes()) {
-
-                    Map<String, Object> theRow = new HashMap<String, Object>();
-                    theRow.put(COLUMN_PKTABLE_NAME, theRelation.getExportingTable().getName());
-                    theRow.put(COLUMN_PKCOLUMN_NAME, theAttribute.getName());
-                    theRow.put(COLUMN_FKTABLE_NAME, theRelation.getImportingTable().getName());
-                    theRow.put(COLUMN_FKCOLUMN_NAME, theRelation.getMapping().get(theAttribute).getName());
-                    theRow.put(COLUMN_FK_NAME, theRelation.getName());
-                    theRow.put(COLUMN_PK_NAME, thePrimaryKey.getName());
-
-                    theRowInfo.addRow(theRow);
-                }
-            }
-        }*/
-        
         return new ERResultSet(theRowInfo);
     }
 
