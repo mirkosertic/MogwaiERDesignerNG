@@ -30,6 +30,7 @@ import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
@@ -160,5 +161,16 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
             }
             theStatement.close();
         }
+    }
+    
+    @Override
+    protected CascadeType getCascadeType(int aValue) {
+        switch (aValue) {
+        case DatabaseMetaData.importedKeyRestrict:
+            // Restrict is not supported my this db
+            aValue = DatabaseMetaData.importedKeyNoAction;
+            break;
+        }
+        return super.getCascadeType(aValue);
     }
 }

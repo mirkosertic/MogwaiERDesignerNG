@@ -194,7 +194,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                 theStatement.append(" ON DELETE RESTRICT");
                 break;
             case NOTHING:
-                theStatement.append(" ON DELETE NO ACTION");
+                if (!getDialect().isSuppressONALLIfNOACTION()) {
+                    theStatement.append(" ON DELETE NO ACTION");
+                }
                 break;
             case SET_NULL:
                 theStatement.append(" ON DELETE SET NULL");
@@ -212,7 +214,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                 theStatement.append(" ON UPDATE RESTRICT");
                 break;
             case NOTHING:
-                theStatement.append(" ON UPDATE NO ACTION");
+                if (!getDialect().isSuppressONALLIfNOACTION()) {
+                    theStatement.append(" ON UPDATE NO ACTION");
+                }
                 break;
             case SET_NULL:
                 theStatement.append(" ON UPDATE SET NULL");
