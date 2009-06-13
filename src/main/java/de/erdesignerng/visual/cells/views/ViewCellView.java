@@ -40,7 +40,6 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttribute;
 import de.erdesignerng.visual.DisplayOrder;

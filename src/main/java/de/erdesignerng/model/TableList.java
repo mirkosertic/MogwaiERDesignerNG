@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model;
 
-import de.erdesignerng.dialect.ReverseEngineeringOptions;
 
 /**
  * @author $Author: mirkosertic $

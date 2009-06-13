@@ -17,29 +17,25 @@
  */
 package de.erdesignerng.test.sql.postgres;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-
-import org.hsqldb.lib.StringUtil;
+import java.util.Map;
 
 import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.h2.H2Dialect;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
-import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.mogwai.common.client.looks.components.DefaultToolbar;
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
 
 /**
  * Test for XML based model io.
@@ -47,7 +43,7 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
+public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
     public void testReverseEngineerPostgreSQL() throws Exception {
 
@@ -55,7 +51,7 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
         Connection theConnection = null;
         try {
             theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
-            
+
             // 
             Statement theStatement = theConnection.createStatement();
             try {
@@ -68,22 +64,8 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-            BufferedReader theReader = new BufferedReader(new InputStreamReader(getClass()
-                    .getResourceAsStream("db.sql")));
-            while (theReader.ready()) {
-                String theLine = theReader.readLine();
-                if (!StringUtil.isEmpty(theLine)) {
-                    theLine = theLine.trim();
-                }
-                if (!StringUtil.isEmpty(theLine)) {
-                    System.out.println(theLine);
-                    theStatement.execute(theLine);
-                }
-            }
-            theStatement.close();
 
-            theReader.close();
+            loadSQL(theConnection, "db.sql");
 
             Dialect theDialect = new H2Dialect();
             ReverseEngineeringStrategy<H2Dialect> theST = theDialect.getReverseEngineeringStrategy();
@@ -97,82 +79,8 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             theOptions.getTableEntries().addAll(
                     theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
 
-            theST.updateModelFromConnection(theModel, new ERDesignerWorldConnector() {
-
-                @Override
-                public Model createNewModel() {
-                    Model theNewModel = new Model();
-                    theNewModel.setModificationTracker(new HistoryModificationTracker(theNewModel));
-                    return theNewModel;
-                }
-
-                @Override
-                public void exitApplication() {
-                }
-
-                @Override
-                public DefaultToolbar getToolBar() {
-                    return null;
-                }
-
-                @Override
-                public void initTitle(String file) {
-                }
-
-                @Override
-                public void initTitle() {
-                }
-
-                @Override
-                public void initializeLoadedModel(Model model) {
-                    model.setModificationTracker(new HistoryModificationTracker(model));
-                }
-
-                @Override
-                public void notifyAboutException(Exception exception) {
-                    throw new RuntimeException(exception);
-
-                }
-
-                @Override
-                public void setStatusText(String theMessage) {
-                }
-
-                @Override
-                public boolean supportsClasspathEditor() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsConnectionEditor() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsExitApplication() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsPreferences() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsRepositories() {
-                    return false;
-                }
-            }, theConnection, theOptions, new ReverseEngineeringNotifier() {
-
-                @Override
-                public void notifyMessage(String resourceKey, String... values) {
-                    if (values != null) {
-                        for (String aValue : values) {
-                            System.out.println(aValue);
-                        }
-                    }
-                }
-            });
+            theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
+                    new EmptyReverseEngineeringNotifier());
 
             // Implement Unit Tests here
             Table theTable = theModel.getTables().findByNameAndSchema("TABLE1", "schemaa");
@@ -209,12 +117,34 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             assertTrue(theAttribute != null);
             theAttribute = theTable.getAttributes().findByName("TB2_3");
             assertTrue(theAttribute != null);
-            
-            View theView = theModel.getViews().findByNameAndSchema("VIEW1","schemab");
+
+            View theView = theModel.getViews().findByNameAndSchema("VIEW1", "schemab");
             assertTrue(theView != null);
 
-            theView = theModel.getViews().findByNameAndSchema("VIEW1","schemaa");
+            theView = theModel.getViews().findByNameAndSchema("VIEW1", "schemaa");
             assertTrue(theView == null);
+
+            theTable = theModel.getTables().findByNameAndSchema("TABLE2", "schemab");
+            Index theIndex = theTable.getIndexes().findByName("TABL22_IDX3");
+            assertTrue(theIndex != null);
+            assertTrue(theIndex.getExpressions().size() == 1);
+            assertTrue(theIndex.getExpressions().findByAttributeName("TB3_2") == null);
+            assertTrue("upper((tb3_2)::text)".equals(theIndex.getExpressions().get(0).getExpression()));
+
+            assertTrue(theModel.getRelations().size() == 1);
+
+            Relation theRelation = theModel.getRelations().findByName("FK1");
+            assertTrue(theRelation != null);
+            assertTrue("TABLE1".equals(theRelation.getImportingTable().getName()));
+            assertTrue("schemab".equals(theRelation.getImportingTable().getSchema()));
+
+            assertTrue("TABLE1".equals(theRelation.getExportingTable().getName()));
+            assertTrue("schemaa".equals(theRelation.getExportingTable().getSchema()));
+
+            assertTrue(theRelation.getMapping().size() == 1);
+            Map.Entry<IndexExpression, Attribute> theEntry = theRelation.getMapping().entrySet().iterator().next();
+            assertTrue("TB2_1".equals(theEntry.getValue().getName()));
+            assertTrue("TB1_1".equals(theEntry.getKey().getAttributeRef().getName()));
 
         } finally {
             if (theConnection != null) {

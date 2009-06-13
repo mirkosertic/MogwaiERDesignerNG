@@ -17,16 +17,10 @@
  */
 package de.erdesignerng.test.sql.h2;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
-
-import org.hsqldb.lib.StringUtil;
 
 import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.TableNamingEnum;
@@ -37,9 +31,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
-import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.mogwai.common.client.looks.components.DefaultToolbar;
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
 
 /**
  * Test for XML based model io.
@@ -47,7 +39,7 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
+public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
     public void testReverseEngineerH2() throws Exception {
 
@@ -56,22 +48,7 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
         try {
             theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:bname", "sa", "");
 
-            Statement theStatement = theConnection.createStatement();
-            BufferedReader theReader = new BufferedReader(new InputStreamReader(getClass()
-                    .getResourceAsStream("db.sql")));
-            while (theReader.ready()) {
-                String theLine = theReader.readLine();
-                if (!StringUtil.isEmpty(theLine)) {
-                    theLine = theLine.trim();
-                }
-                if (!StringUtil.isEmpty(theLine)) {
-                    System.out.println(theLine);
-                    theStatement.execute(theLine);
-                }
-            }
-            theStatement.close();
-
-            theReader.close();
+            loadSQL(theConnection, "db.sql");
 
             Dialect theDialect = new H2Dialect();
             ReverseEngineeringStrategy<H2Dialect> theST = theDialect.getReverseEngineeringStrategy();
@@ -85,82 +62,8 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             theOptions.getTableEntries().addAll(
                     theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
 
-            theST.updateModelFromConnection(theModel, new ERDesignerWorldConnector() {
-
-                @Override
-                public Model createNewModel() {
-                    Model theNewModel = new Model();
-                    theNewModel.setModificationTracker(new HistoryModificationTracker(theNewModel));
-                    return theNewModel;
-                }
-
-                @Override
-                public void exitApplication() {
-                }
-
-                @Override
-                public DefaultToolbar getToolBar() {
-                    return null;
-                }
-
-                @Override
-                public void initTitle(String file) {
-                }
-
-                @Override
-                public void initTitle() {
-                }
-
-                @Override
-                public void initializeLoadedModel(Model model) {
-                    model.setModificationTracker(new HistoryModificationTracker(model));
-                }
-
-                @Override
-                public void notifyAboutException(Exception exception) {
-                    throw new RuntimeException(exception);
-
-                }
-
-                @Override
-                public void setStatusText(String theMessage) {
-                }
-
-                @Override
-                public boolean supportsClasspathEditor() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsConnectionEditor() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsExitApplication() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsPreferences() {
-                    return false;
-                }
-
-                @Override
-                public boolean supportsRepositories() {
-                    return false;
-                }
-            }, theConnection, theOptions, new ReverseEngineeringNotifier() {
-
-                @Override
-                public void notifyMessage(String resourceKey, String... values) {
-                    if (values != null) {
-                        for (String aValue : values) {
-                            System.out.println(aValue);
-                        }
-                    }
-                }
-            });
+            theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
+                    new EmptyReverseEngineeringNotifier());
 
             // Implement Unit Tests here
             Table theTable = theModel.getTables().findByNameAndSchema("TABLE1", "SCHEMAA");
@@ -194,11 +97,11 @@ public class ReverseEngineeringTest extends BaseERDesignerTestCaseImpl {
             assertTrue(theAttribute != null);
             theAttribute = theTable.getAttributes().findByName("TB2_3");
             assertTrue(theAttribute != null);
-            
-            View theView = theModel.getViews().findByNameAndSchema("VIEW1","SCHEMAB");
+
+            View theView = theModel.getViews().findByNameAndSchema("VIEW1", "SCHEMAB");
             assertTrue(theView != null);
 
-            theView = theModel.getViews().findByNameAndSchema("VIEW1","SCHEMAA");
+            theView = theModel.getViews().findByNameAndSchema("VIEW1", "SCHEMAA");
             assertTrue(theView == null);
 
         } finally {
