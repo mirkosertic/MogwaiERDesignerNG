@@ -17,8 +17,10 @@
  */
 package de.erdesignerng.test.sql.mysql;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
@@ -46,31 +48,35 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
  */
 public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
-    public void testReverseEngineerMySQL() throws Exception {
-
+    @Override
+    protected void setUp() throws Exception {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         Connection theConnection = null;
+        theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mysql", "root", "root");
+
+        Statement theStatement = theConnection.createStatement();
         try {
-            theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mysql", "root", "root");
-            
-            Statement theStatement = theConnection.createStatement();
-            try {
-                theStatement.execute("DROP USER mogwai");
-                theStatement.execute("DROP DATABASE mogwai");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            try {
-                theStatement.execute("CREATE DATABASE MOGWAI");
-                theStatement.execute("CREATE USER mogwai IDENTIFIED BY 'mogwai'");
-                theStatement.execute("GRANT ALL ON MOGWAI.* TO mogwai");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            
-            theConnection.close();
-            
+            theStatement.execute("DROP USER mogwai");
+            theStatement.execute("DROP DATABASE mogwai");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            theStatement.execute("CREATE DATABASE MOGWAI");
+            theStatement.execute("CREATE USER mogwai IDENTIFIED BY 'mogwai'");
+            theStatement.execute("GRANT ALL ON MOGWAI.* TO mogwai");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        theConnection.close();
+    }
+
+    public void testReverseEngineerMySQL() throws Exception {
+
+        Connection theConnection = null;
+        try {
             theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mogwai", "mogwai", "mogwai");
 
             loadSQL(theConnection, "db.sql");
@@ -118,14 +124,14 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             assertTrue(theAttribute != null);
             theAttribute = theTable.getAttributes().findByName("tb3_3");
             assertTrue(theAttribute != null);
-            
+
             Index thePK = theTable.getPrimarykey();
             assertTrue(thePK != null);
             assertTrue(thePK.getExpressions().findByAttributeName("tb3_1") != null);
 
             View theView = theModel.getViews().findByName("view1");
             assertTrue(theView != null);
-            
+
             Relation theRelation = theModel.getRelations().findByName("FK1");
             assertTrue(theRelation != null);
             assertTrue("table1".equals(theRelation.getImportingTable().getName()));
@@ -140,10 +146,24 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             System.out.println(theResult);
-            
+
             String theReference = readResourceFile("result.sql");
             assertTrue(theResult.equals(theReference));
 
+        } finally {
+            if (theConnection != null) {
+
+                theConnection.close();
+            }
+        }
+    }
+    
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+        Connection theConnection = null;
+        try {
+            theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mogwai", "mogwai", "mogwai");
+
+            loadSingleSQL(theConnection, "result.sql");
         } finally {
             if (theConnection != null) {
 
