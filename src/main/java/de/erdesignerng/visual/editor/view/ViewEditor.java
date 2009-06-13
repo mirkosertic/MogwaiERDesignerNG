@@ -90,7 +90,6 @@ public class ViewEditor extends BaseEditor {
         viewBindingInfo.setDefaultModel(aView);
         viewBindingInfo.model2view();
 
-        editingView.getEntityName().setName(aView.getName());
         if (!StringUtils.isEmpty(aView.getSql())) {
 
             String theSQL = aView.getSql();
