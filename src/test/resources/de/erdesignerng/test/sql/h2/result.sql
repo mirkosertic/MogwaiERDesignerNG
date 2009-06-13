@@ -1,3 +1,5 @@
+CREATE SCHEMA SCHEMAA authorization DBA;
+CREATE SCHEMA SCHEMAB authorization DBA;
 CREATE TABLE SCHEMAA.TABLE1 (
     TB1_1 varchar(20) NOT NULL,
     TB1_2 varchar(100) DEFAULT 'Test',

@@ -471,4 +471,14 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theResult.add(new Statement(theStatement.toString()));
         return theResult;
     }
+
+    @Override
+    public StatementList createAddSchemaStatement(String aSchema) throws VetoException {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+        theStatement.append("CREATE SCHEMA ");
+        theStatement.append(createUniqueSchemaName(aSchema));
+        theResult.add(new Statement(theStatement.toString()));
+        return theResult;
+    }
 }

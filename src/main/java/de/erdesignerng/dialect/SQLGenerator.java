@@ -17,6 +17,10 @@
  */
 package de.erdesignerng.dialect;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.model.Attribute;
@@ -33,7 +37,7 @@ import de.erdesignerng.modificationtracker.VetoException;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  * @param <T>
- *            the dialect
+ *                the dialect
  */
 public abstract class SQLGenerator<T extends Dialect> {
 
@@ -72,6 +76,10 @@ public abstract class SQLGenerator<T extends Dialect> {
             return theSchema + getSchemaSeparator() + aView.getName();
         }
         return aView.getName();
+    }
+
+    protected String createUniqueSchemaName(String aSchema) {
+        return aSchema;
     }
 
     protected String createUniqueColumnName(Attribute aAttribute) {
@@ -125,14 +133,19 @@ public abstract class SQLGenerator<T extends Dialect> {
      * Create the DDL script for the whole model.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @return the lists of statements
      * @throws VetoException
-     *             can be thrown if someone has a veto on execution
+     *                 can be thrown if someone has a veto on execution
      */
     public StatementList createCreateAllObjects(Model aModel) throws VetoException {
 
         StatementList theResult = new StatementList();
+
+        List<String> theSchemas = aModel.getUsedSchemas();
+        for (String theSchema : theSchemas) {
+            theResult.addAll(createAddSchemaStatement(theSchema));
+        }
         for (Table theTable : aModel.getTables()) {
             theResult.addAll(createAddTableStatement(theTable));
         }
@@ -155,4 +168,6 @@ public abstract class SQLGenerator<T extends Dialect> {
     public abstract StatementList createChangeViewStatement(View aView) throws VetoException;
 
     public abstract StatementList createDropViewStatement(View aView) throws VetoException;
+
+    public abstract StatementList createAddSchemaStatement(String aSchema) throws VetoException;
 }
