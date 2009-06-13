@@ -9,4 +9,4 @@ create index Tabl11_idx2 on schemab.Table1 (tb2_3)
 comment on table schemaa.Table1 is 'Tablecomment'
 comment on column schemaa.Table1.tb1_1 is 'Columncomment'
 create index Tabl22_idx3 on schemab.Table2 (upper(tb3_2))
-alter table schemab.Table1 add constraint FK1 foreign key (tb2_1) references schemaa.Table1(tb1_1) on delete no action on update no action;
+alter table schemab.Table1 add constraint FK1 foreign key (tb2_1) references schemaa.Table1(tb1_1) on delete no action on update no action
