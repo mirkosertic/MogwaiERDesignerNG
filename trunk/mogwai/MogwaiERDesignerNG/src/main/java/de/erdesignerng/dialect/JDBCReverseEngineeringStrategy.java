@@ -44,7 +44,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  * @param <T>
- *            the dialect
+ *                the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
 
@@ -66,16 +66,16 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse engineerer the sql statement for a view.
      * 
      * @param aViewEntry
-     *            die view entry
+     *                die view entry
      * @param aConnection
-     *            the connection
+     *                the connection
      * @param aView
-     *            the view
+     *                the view
      * @return the sql statement
      * @throws SQLException
-     *             is thrown in case of an exception
+     *                 is thrown in case of an exception
      * @throws ReverseEngineeringException
-     *             is thrown in case of an exception
+     *                 is thrown in case of an exception
      */
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {
@@ -86,19 +86,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse enginner an existing view.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aOptions
-     *            the options
+     *                the options
      * @param aNotifier
-     *            the notifier
+     *                the notifier
      * @param aViewEntry
-     *            the table
+     *                the table
      * @param aConnection
-     *            the connection
+     *                the connection
      * @throws SQLException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ReverseEngineeringException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     protected void reverseEngineerView(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aViewEntry, Connection aConnection) throws SQLException,
@@ -153,19 +153,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse enginner an existing table.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aOptions
-     *            the options
+     *                the options
      * @param aNotifier
-     *            the notifier
+     *                the notifier
      * @param aTableEntry
-     *            the table
+     *                the table
      * @param aConnection
-     *            the connection
+     *                the connection
      * @throws SQLException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ReverseEngineeringException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     protected final void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
@@ -384,25 +384,26 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse engineer an attribute within an index.
      * 
      * @param aMetaData
-     *            the database meta data
+     *                the database meta data
      * @param aTableEntry
-     *            the current table entry
+     *                the current table entry
      * @param aTable
-     *            the table
+     *                the table
      * @param aNotifier
-     *            the notifier
+     *                the notifier
      * @param aIndex
-     *            the current index
+     *                the current index
      * @param aColumnName
-     *            the column name
+     *                the column name
      * @param aPosition
-     *            the column position
+     *                the column position
      * @param aASCorDESC
-     *            "A" = Ascending, "D" = Descending, NULL = sort not supported
+     *                "A" = Ascending, "D" = Descending, NULL = sort not
+     *                supported
      * @throws SQLException
-     *             in case of an error
+     *                 in case of an error
      * @throws ReverseEngineeringException
-     *             in case of an error
+     *                 in case of an error
      */
     protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable,
             ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aASCorDESC)
@@ -410,16 +411,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         Attribute theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(aColumnName));
         if (theIndexAttribute == null) {
 
-            // The index is corrupt or
-            // It is a oracle function based index
-            // Should be overridden in
-            if (aTable.getIndexes().contains(aIndex)) {
-
-                aNotifier.notifyMessage(ERDesignerBundle.SKIPINDEX, aIndex.getName());
-                aTable.getIndexes().remove(aIndex);
-            }
+            // It seems to be a function based index
+            aIndex.getExpressions().addExpressionFor(aColumnName);
 
         } else {
+
+            // It is a column based index
             try {
                 aIndex.getExpressions().addExpressionFor(theIndexAttribute);
             } catch (ElementAlreadyExistsException e) {
@@ -429,159 +426,174 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
     }
 
     /**
-     * Reverse engineer relations.
+     * Reverse engineer relations for a table.
      * 
      * @param aModel
-     *            the model
+     *                the model
      * @param aOptions
-     *            the options
+     *                the options
      * @param aNotifier
-     *            the notifier
-     * @param aEntry
-     *            the schema entry
+     *                the notifier
+     * @param aTableEntry
+     *                the tsble entry
      * @param aConnection
-     *            the connection
+     *                the connection
      * @throws SQLException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      * @throws ReverseEngineeringException
-     *             is thrown in case of an error
+     *                 is thrown in case of an error
      */
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, SchemaEntry aEntry, Connection aConnection) throws SQLException,
+            ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
 
         String theSchemaName = null;
         String theCatalogName = null;
-        if (aEntry != null) {
-            theSchemaName = aEntry.getSchemaName();
-            theCatalogName = aEntry.getCatalogName();
+        if (aTableEntry != null) {
+            theSchemaName = aTableEntry.getSchemaName();
+            theCatalogName = aTableEntry.getCatalogName();
         }
 
         int theSysCounter = 0;
 
         List<Relation> theNewRelations = new ArrayList<Relation>();
 
-        for (Table theTable : aModel.getTables()) {
+        String theImportingTableName = aModel.getDialect().getCastType().cast(aTableEntry.getTableName());
+        aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theImportingTableName);
 
-            aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theTable.getName());
+        Table theImportingTable = null;
 
-            String theOldFKName = null;
+        switch (aOptions.getTableNaming()) {
+        case STANDARD:
+            theImportingTable = aModel.getTables().findByName(theImportingTableName);
+            break;
+        case INCLUDE_SCHEMA:
+            theImportingTable = aModel.getTables().findByNameAndSchema(theImportingTableName,
+                    aTableEntry.getSchemaName());
+            break;
+        default:
+            throw new RuntimeException("Not supported naming type");
+        }
+        if (theImportingTable == null) {
+            throw new ReverseEngineeringException("Cannot find table in model : " + theImportingTableName);
+        }
 
-            // Foreign keys
-            Relation theRelation = null;
-            ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, theTable
-                    .getOriginalName());
-            while (theForeignKeys.next()) {
-                String theFKName = theForeignKeys.getString("FK_NAME");
+        String theOldFKName = null;
 
-                if ((theRelation == null) || (!theFKName.equals(theOldFKName))) {
+        // Foreign keys
+        Relation theNewRelation = null;
+        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry.getTableName());
+        while (theForeignKeys.next()) {
+            String theFKName = theForeignKeys.getString("FK_NAME");
 
-                    theOldFKName = theFKName;
+            if ((theNewRelation == null) || (!theFKName.equals(theOldFKName))) {
 
-                    String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
-                    String thePKTableSchema = theForeignKeys.getString("PKTABLE_SCHEM");
+                theOldFKName = theFKName;
 
-                    String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
-                    String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
+                String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
+                String thePKTableSchema = theForeignKeys.getString("PKTABLE_SCHEM");
 
-                    Table theExportingTable = null;
-                    switch (aOptions.getTableNaming()) {
-                    case INCLUDE_SCHEMA:
-                        theExportingTable = aModel.getTables().findByNameAndSchema(
-                                dialect.getCastType().cast(thePKTableName), thePKTableSchema);
-                    case STANDARD:
-                        theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
-                        break;
-                    default:
-                        throw new RuntimeException("Naming not supported : " + aOptions.getTableNaming());
-                    }
-                    if (theExportingTable != null) {
+                String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
+                String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
 
-                        // The relation is only added to the model
-                        // if the exporting table is also part of the model
-                        String theRelationName = dialect.getCastType().cast(theFKName);
-                        theRelation = aModel.getRelations().findByName(theRelationName);
-
-                        boolean addNew = false;
-                        if (theRelation == null) {
-                            addNew = true;
-                        } else {
-                            if (!theRelation.getExportingTable().equals(theExportingTable)
-                                    || !theRelation.getImportingTable().equals(theTable)) {
-                                theRelationName = "ERRELSYS_" + theSysCounter++;
-                                addNew = true;
-                            }
-                        }
-
-                        if (addNew) {
-
-                            theRelation = new Relation();
-                            theRelation.setName(dialect.getCastType().cast(theRelationName));
-                            theRelation.setOriginalName(theRelationName);
-
-                            theRelation.setExportingTable(theExportingTable);
-                            theRelation.setImportingTable(theTable);
-
-                            if (theUpdateRule != null) {
-                                int theType = Integer.parseInt(theUpdateRule);
-
-                                theRelation.setOnUpdate(getCascadeType(theType));
-                            } else {
-
-                                theRelation.setOnUpdate(CascadeType.NOTHING);
-                            }
-
-                            if (theDeleteRule != null) {
-                                int theType = Integer.parseInt(theDeleteRule);
-
-                                theRelation.setOnDelete(getCascadeType(theType));
-                            } else {
-
-                                theRelation.setOnDelete(CascadeType.NOTHING);
-                            }
-
-                            theNewRelations.add(theRelation);
-                        }
-                    }
+                Table theExportingTable = null;
+                switch (aOptions.getTableNaming()) {
+                case INCLUDE_SCHEMA:
+                    theExportingTable = aModel.getTables().findByNameAndSchema(
+                            dialect.getCastType().cast(thePKTableName), thePKTableSchema);
+                    break;
+                case STANDARD:
+                    theExportingTable = aModel.getTables().findByName(dialect.getCastType().cast(thePKTableName));
+                    break;
+                default:
+                    throw new RuntimeException("Naming not supported : " + aOptions.getTableNaming());
                 }
+                if (theExportingTable != null) {
 
-                if ((theRelation != null) && (theRelation.getImportingTable() != null)
-                        && (theRelation.getExportingTable() != null)) {
-                    String thePKColumnName = dialect.getCastType().cast(theForeignKeys.getString("PKCOLUMN_NAME"));
-                    String theFKColumnName = dialect.getCastType().cast(theForeignKeys.getString("FKCOLUMN_NAME"));
+                    // The relation is only added to the model
+                    // if the exporting table is also part of the model
+                    String theRelationName = dialect.getCastType().cast(theFKName);
+                    theNewRelation = aModel.getRelations().findByName(theRelationName);
 
-                    Attribute theExportingAttribute = theRelation.getExportingTable().getAttributes().findByName(
-                            dialect.getCastType().cast(thePKColumnName));
-                    if (theExportingAttribute == null) {
-                        throw new ReverseEngineeringException("Cannot find column " + thePKColumnName + " in table "
-                                + theRelation.getExportingTable().getName());
+                    boolean addNew = false;
+                    if (theNewRelation == null) {
+                        addNew = true;
+                    } else {
+                        if (!theNewRelation.getExportingTable().equals(theExportingTable)
+                                || !theNewRelation.getImportingTable().equals(theImportingTable)) {
+                            theRelationName = "ERRELSYS_" + theSysCounter++;
+                            addNew = true;
+                        }
                     }
 
-                    Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
-                    if (thePrimaryKey == null) {
-                        throw new ReverseEngineeringException("Table " + theRelation.getExportingTable().getName()
-                                + " does not have a primary key");
-                    }
-                    IndexExpression theExpression = thePrimaryKey.getExpressions().findByAttributeName(thePKColumnName);
-                    if (theExpression == null) {
-                        throw new RuntimeException("Cannot find attribute " + thePKColumnName
-                                + " in primary key for table " + theRelation.getExportingTable().getName());
-                    }
+                    if (addNew) {
 
-                    Attribute theImportingAttribute = theRelation.getImportingTable().getAttributes().findByName(
-                            theFKColumnName);
-                    if (theImportingAttribute == null) {
-                        throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table "
-                                + theRelation.getImportingTable().getName());
-                    }
+                        theNewRelation = new Relation();
+                        theNewRelation.setName(dialect.getCastType().cast(theRelationName));
+                        theNewRelation.setOriginalName(theRelationName);
 
-                    theRelation.getMapping().put(theExpression, theImportingAttribute);
+                        theNewRelation.setExportingTable(theExportingTable);
+                        theNewRelation.setImportingTable(theImportingTable);
+
+                        if (theUpdateRule != null) {
+                            int theType = Integer.parseInt(theUpdateRule);
+
+                            theNewRelation.setOnUpdate(getCascadeType(theType));
+                        } else {
+
+                            theNewRelation.setOnUpdate(CascadeType.NOTHING);
+                        }
+
+                        if (theDeleteRule != null) {
+                            int theType = Integer.parseInt(theDeleteRule);
+
+                            theNewRelation.setOnDelete(getCascadeType(theType));
+                        } else {
+
+                            theNewRelation.setOnDelete(CascadeType.NOTHING);
+                        }
+
+                        theNewRelations.add(theNewRelation);
+                    }
                 }
             }
-            theForeignKeys.close();
+
+            if ((theNewRelation != null) && (theNewRelation.getImportingTable() != null)
+                    && (theNewRelation.getExportingTable() != null)) {
+                String thePKColumnName = dialect.getCastType().cast(theForeignKeys.getString("PKCOLUMN_NAME"));
+                String theFKColumnName = dialect.getCastType().cast(theForeignKeys.getString("FKCOLUMN_NAME"));
+
+                Attribute theExportingAttribute = theNewRelation.getExportingTable().getAttributes().findByName(
+                        dialect.getCastType().cast(thePKColumnName));
+                if (theExportingAttribute == null) {
+                    throw new ReverseEngineeringException("Cannot find column " + thePKColumnName + " in table "
+                            + theNewRelation.getExportingTable().getName());
+                }
+
+                Index thePrimaryKey = theNewRelation.getExportingTable().getPrimarykey();
+                if (thePrimaryKey == null) {
+                    throw new ReverseEngineeringException("Table " + theNewRelation.getExportingTable().getName()
+                            + " does not have a primary key");
+                }
+                IndexExpression theExpression = thePrimaryKey.getExpressions().findByAttributeName(thePKColumnName);
+                if (theExpression == null) {
+                    throw new RuntimeException("Cannot find attribute " + thePKColumnName
+                            + " in primary key for table " + theNewRelation.getExportingTable().getName());
+                }
+
+                Attribute theImportingAttribute = theNewRelation.getImportingTable().getAttributes().findByName(
+                        theFKColumnName);
+                if (theImportingAttribute == null) {
+                    throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table "
+                            + theNewRelation.getImportingTable().getName());
+                }
+
+                theNewRelation.getMapping().put(theExpression, theImportingAttribute);
+            }
         }
+        theForeignKeys.close();
 
         try {
             for (Relation theRelation : theNewRelations) {
@@ -622,7 +634,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Test if a table type is a view.
      * 
      * @param aTableType
-     *            the table type
+     *                the table type
      * @return true if yes, else false
      */
     protected boolean isTableTypeView(String aTableType) {
@@ -633,9 +645,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Check if the table is a valid table for reverse engineering.
      * 
      * @param aTableName
-     *            the table name
+     *                the table name
      * @param aTableType
-     *            the table type
+     *                the table type
      * @return true if the table is valid, else false
      */
     protected boolean isValidTable(String aTableName, String aTableType) {
@@ -646,9 +658,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Check if the table is a valid view for reverse engineering.
      * 
      * @param aTableName
-     *            the table name
+     *                the table name
      * @param aTableType
-     *            the table type
+     *                the table type
      * @return true if the table is valid, else false
      */
     protected boolean isValidView(String aTableName, String aTableType) {
@@ -671,12 +683,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             }
         }
 
-        if (dialect.supportsSchemaInformation()) {
-            for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
-                reverseEngineerRelations(aModel, aOptions, aNotifier, theEntry, aConnection);
+        for (TableEntry theTableEntry : aOptions.getTableEntries()) {
+            // Reverse engineer only relations for tables, not for views!
+            if (TABLE_TABLE_TYPE.equals(theTableEntry.getTableType())) {
+                reverseEngineerRelations(aModel, aOptions, aNotifier, theTableEntry, aConnection);
             }
-        } else {
-            reverseEngineerRelations(aModel, aOptions, aNotifier, null, aConnection);
         }
 
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
