@@ -183,5 +183,4 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             }
         }
     }
-
 }
