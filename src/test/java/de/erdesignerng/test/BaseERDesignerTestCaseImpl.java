@@ -23,6 +23,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.Statement;
+import de.erdesignerng.dialect.StatementList;
+
 import junit.framework.TestCase;
 
 public class BaseERDesignerTestCaseImpl extends TestCase {
@@ -41,5 +45,16 @@ public class BaseERDesignerTestCaseImpl extends TestCase {
         thePrintWriter.flush();
         return theStringWriter.toString().trim();
 
+    }
+    
+    protected String statementListToString(StatementList aStatements, SQLGenerator aGenerator) {
+        StringWriter theStringWriter = new StringWriter();
+        PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
+        for (Statement theStatement : aStatements) {
+            thePrintWriter.print(theStatement.getSql());
+            thePrintWriter.println(aGenerator.createScriptStatementSeparator());
+        }
+        thePrintWriter.flush();
+        return theStringWriter.toString().trim();
     }
 }
