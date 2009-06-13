@@ -365,7 +365,7 @@
 		<dependency>
 			<groupId>net.sourceforge</groupId>
 			<artifactId>sqleonardo</artifactId>
-			<version>2009.02</version>
+			<version>2009.03</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
