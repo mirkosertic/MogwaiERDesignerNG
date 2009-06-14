@@ -1,6 +1,9 @@
 package de.erdesignerng.test.view;
 
 import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +22,7 @@ import org.xml.sax.SAXException;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.plugins.sqleonardo.ERConnection;
+import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 
 public class SQLeonardoTest extends TestCase {
 
@@ -53,7 +57,7 @@ public class SQLeonardoTest extends TestCase {
         theColumn = (Column) theExpressions[3];
         assertTrue("FIELD4".equals(theColumn.getAlias()));
     }
-    
+
     public void testTableAliasing() throws IOException {
         String theSQL = "SELECT TABLE2.TB2_AT1 AS TABLE2_TB2_AT1, TABLE4.TB4_AT1 AS TABLE4_TB4_AT1, TABLE4.TB4_AT2 AS TABLE4_TB4_AT2 FROM TABLE4 TABLE4, TABLE2 TABLE2";
         QueryModel theModel = SQLParser.toQueryModel(theSQL);
@@ -67,7 +71,7 @@ public class SQLeonardoTest extends TestCase {
         _TableReference[] theReferences = theModel.getQueryExpression().getQuerySpecification().getFromClause();
         assertTrue(theReferences.length == 1);
     }
-    
+
     public void testWithQueryBuilder1() throws SAXException, IOException, ParserConfigurationException {
 
         String theQuery = "SELECT TABLE1.TB1_AT1 AS TABLE1_TB1_AT1, TABLE2.TB2_AT2 AS TABLE2_TB2_AT2, TABLE1.TB1_AT3 AS TABLE1_TB1_AT3 FROM TABLE1";
@@ -86,5 +90,10 @@ public class SQLeonardoTest extends TestCase {
 
         String theNewSQL = theBuilder.getQueryModel().toString(false);
         System.out.println(theNewSQL);
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        System.out.println(SQLParser.toQueryModel("SELECT 'Mirko' AS TEST,TABLE2.TB2_AT1 AS TABLE2_TB2_AT1, TABLE2.TB2_AT2 AS TABLE2_TB2_AT2 FROM TABLE2 TABLE2"));
     }
 }

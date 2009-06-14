@@ -96,7 +96,9 @@ public class ViewEditor extends BaseEditor {
 
             System.out.println("Entering for SQL " + theSQL);
             try {
+ 
                 QueryModel theModel = SQLParser.toQueryModel(theSQL);
+
                 editingView.getBuilder().setQueryModel(theModel);
             } catch (IOException e) {
                 logFatalError(e);
