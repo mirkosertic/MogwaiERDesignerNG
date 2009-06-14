@@ -17,13 +17,7 @@
  */
 package de.erdesignerng.plugins.sqleonardo;
 
-import nickyb.sqleonardo.querybuilder.QueryModel;
-import nickyb.sqleonardo.querybuilder.syntax.QueryExpression;
-import nickyb.sqleonardo.querybuilder.syntax.QuerySpecification;
-import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
-import nickyb.sqleonardo.querybuilder.syntax.QueryTokens.Column;
-import nickyb.sqleonardo.querybuilder.syntax.QueryTokens.DefaultExpression;
-import nickyb.sqleonardo.querybuilder.syntax.QueryTokens._Expression;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -32,54 +26,66 @@ import de.erdesignerng.model.ViewAttribute;
 import de.erdesignerng.model.ViewAttributeList;
 
 /**
- * Common SQL Utilities. 
+ * Common SQL Utilities.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public final class SQLUtils {
-    
+
+    private static final String SELECT_CLAUSE = "SELECT";
+
+    private static final String FROM_CLAUSE = "FROM";
+
+    private static final String AS_CLAUSE = " AS ";
+
     private SQLUtils() {
     }
-    
-    public static void updateViewAttributesFromSQL(View aView, String aStatement) throws Exception {
-        
-        QueryModel theModel = SQLParser.toQueryModel(aStatement);
 
-        updateViewAttributesFromQueryModel(aView, theModel);
-    }
-    
-    public static void updateViewAttributesFromQueryModel(View aView, QueryModel aQueryModel) throws Exception {
-        
+    public static void updateViewAttributesFromSQL(View aView, String aStatement) throws Exception {
+
         ViewAttributeList theList = aView.getAttributes();
         theList.clear();
-        
-        QueryExpression theExpression = aQueryModel.getQueryExpression();
-        QuerySpecification theSpec = theExpression.getQuerySpecification();
-        for (_Expression theSelectExpression : theSpec.getSelectList()) {
+
+        if (StringUtils.isEmpty(aStatement)) {
+            throw new Exception("The SQL must not be empty");
+        }
+        String theUppserSQL = aStatement.toUpperCase();
+
+        int theSelectStart = theUppserSQL.indexOf(SELECT_CLAUSE);
+        int theFromStart = theUppserSQL.indexOf(FROM_CLAUSE);
+
+        if (theSelectStart < 0) {
+            throw new Exception("The SQL must contain the SELECT keyword");
+        }
+        if (theFromStart < 0) {
+            throw new Exception("The SQL must contain the FROM keyword");
+        }
+        if (theSelectStart > theFromStart) {
+            throw new Exception("Syntax error");
+        }
+
+        String theSelectFields = aStatement.substring(theSelectStart + SELECT_CLAUSE.length(), theFromStart).trim();
+        if (StringUtils.isEmpty(theSelectFields)) {
+            throw new Exception("No fields are selected");
+        }
+
+        // TODO: Implement better parsing here
+        StringTokenizer theST = new StringTokenizer(theSelectFields, ",");
+        while (theST.hasMoreTokens()) {
+            String theToken = theST.nextToken();
+            int p = theToken.toUpperCase().indexOf(AS_CLAUSE);
+
+            String theExpression = theToken;
+            if (p > 0) {
+                theExpression = theToken.substring(p + AS_CLAUSE.length()).trim();
+            }
+            
+            theExpression = theExpression.trim();
+
             ViewAttribute theAttribute = new ViewAttribute();
-            if (theSelectExpression instanceof Column) {
-                Column theColumn = (Column) theSelectExpression;
-                String theAlias = theColumn.getAlias();
-                if (StringUtils.isEmpty(theAlias)) {
-                    theAttribute.setName(theColumn.getName());
-                } else {
-                    theAttribute.setName(theAlias);
-                }
-            }
-            if (theSelectExpression instanceof DefaultExpression) {
-                DefaultExpression theDefaultExpression = (DefaultExpression) theSelectExpression;
-                theAttribute.setName(theDefaultExpression.getAlias());
-            }
-
-            if (StringUtils.isEmpty(theAttribute.getName())) {
-                throw new Exception("Not every expression/column has an alias");
-            }
-
-            if (theList.elementExists(theAttribute.getName(), false)) {
-                throw new Exception("Duplicate name is used : " + theAttribute.getName());
-            }
+            theAttribute.setName(theExpression);
             theList.add(theAttribute);
         }
-    }    
+    }
 }

@@ -1,7 +1,5 @@
 package de.erdesignerng.visual.editor.view;
 
-import nickyb.sqleonardo.querybuilder.QueryBuilder;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -34,8 +32,8 @@ public class ViewEditorView extends DefaultPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
-    
-    private QueryBuilder builder = new QueryBuilder();
+
+    private DefaultTextArea sqlText = new DefaultTextArea();
 
     /**
      * Constructor.
@@ -102,7 +100,7 @@ public class ViewEditorView extends DefaultPanel {
 
         if (mainTabbedPane == null) {
             mainTabbedPane = new DefaultTabbedPane();
-            mainTabbedPane.addTab("Querydesigner", builder);
+            mainTabbedPane.addTab("SQL", sqlText);
             mainTabbedPane.addTab(null, getTableCommentsTab());
             mainTabbedPane.setName("MainTabbedPane");
             mainTabbedPane.setSelectedIndex(0);
@@ -181,11 +179,9 @@ public class ViewEditorView extends DefaultPanel {
     }
 
     /**
-     * Gibt den Wert des Attributs <code>builder</code> zurück.
-     * 
-     * @return Wert des Attributs builder.
+     * @return the sqlText
      */
-    public QueryBuilder getBuilder() {
-        return builder;
+    public DefaultTextArea getSqlText() {
+        return sqlText;
     }
 }
