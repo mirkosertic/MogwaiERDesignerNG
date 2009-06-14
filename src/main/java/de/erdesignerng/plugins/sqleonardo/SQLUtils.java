@@ -33,9 +33,9 @@ import de.erdesignerng.model.ViewAttributeList;
  */
 public final class SQLUtils {
 
-    private static final String SELECT_CLAUSE = "SELECT";
+    private static final String SELECT_CLAUSE = "SELECT ";
 
-    private static final String FROM_CLAUSE = "FROM";
+    private static final String FROM_CLAUSE = " FROM ";
 
     private static final String AS_CLAUSE = " AS ";
 
