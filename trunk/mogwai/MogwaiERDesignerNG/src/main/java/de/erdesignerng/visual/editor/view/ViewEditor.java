@@ -18,13 +18,6 @@
 package de.erdesignerng.visual.editor.view;
 
 import java.awt.Component;
-import java.io.IOException;
-
-import nickyb.sqleonardo.querybuilder.QueryBuilder;
-import nickyb.sqleonardo.querybuilder.QueryModel;
-import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
-
-import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
@@ -32,7 +25,6 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
-import de.erdesignerng.plugins.sqleonardo.ERConnection;
 import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -57,12 +49,11 @@ public class ViewEditor extends BaseEditor {
         initialize();
 
         // Connection initialisieren
-        editingView.getBuilder().setConnection(new ERConnection(aModel));
-        QueryBuilder.autoJoin = false;
 
         model = aModel;
 
         viewBindingInfo.addBinding("name", editingView.getEntityName(), true);
+        viewBindingInfo.addBinding("sql", editingView.getSqlText(), true);
         viewBindingInfo.addBinding("comment", editingView.getEntityComment());
         viewBindingInfo.configure();
 
@@ -80,8 +71,6 @@ public class ViewEditor extends BaseEditor {
 
         setContentPane(editingView);
 
-        UIInitializer.getInstance().initialize(editingView.getBuilder());
-
         pack();
     }
 
@@ -89,21 +78,6 @@ public class ViewEditor extends BaseEditor {
 
         viewBindingInfo.setDefaultModel(aView);
         viewBindingInfo.model2view();
-
-        if (!StringUtils.isEmpty(aView.getSql())) {
-
-            String theSQL = aView.getSql();
-
-            System.out.println("Entering for SQL " + theSQL);
-            try {
- 
-                QueryModel theModel = SQLParser.toQueryModel(theSQL);
-
-                editingView.getBuilder().setQueryModel(theModel);
-            } catch (IOException e) {
-                logFatalError(e);
-            }
-        }
     }
 
     @Override
@@ -112,7 +86,7 @@ public class ViewEditor extends BaseEditor {
 
             try {
                 // Test if every expression has an assigned alias
-                SQLUtils.updateViewAttributesFromQueryModel(new View(), editingView.getBuilder().getQueryModel());
+                SQLUtils.updateViewAttributesFromSQL(new View(), editingView.getSqlText().getText());
 
                 setModalResult(MODAL_RESULT_OK);
             } catch (Exception e) {
@@ -129,18 +103,15 @@ public class ViewEditor extends BaseEditor {
 
         View theView = viewBindingInfo.getDefaultModel();
 
+        viewBindingInfo.view2model();
+        
         theView.getAttributes().clear();
 
         try {
-            SQLUtils.updateViewAttributesFromQueryModel(theView, editingView.getBuilder().getQueryModel());
+            SQLUtils.updateViewAttributesFromSQL(theView, editingView.getSqlText().getText());
         } catch (Exception e) {
             // This exception is checked in commandOk before
         }
-
-        viewBindingInfo.view2model();
-
-        theView.setSql(editingView.getBuilder().getQueryModel().toString(false));
-        System.out.println("Current SQL : " + theView.getSql());
 
         if (!model.getViews().contains(theView)) {
 
