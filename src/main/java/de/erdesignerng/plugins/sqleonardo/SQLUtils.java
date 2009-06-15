@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.plugins.sqleonardo;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.model.View;
@@ -42,6 +40,22 @@ public final class SQLUtils {
     private SQLUtils() {
     }
 
+    private static void addViewAttribute(String aExpression, View aView) {
+        int p = aExpression.toUpperCase().indexOf(AS_CLAUSE);
+        if (p > 0) {
+            aExpression = aExpression.substring(p + AS_CLAUSE.length()).trim();
+        } else {
+            p = aExpression.lastIndexOf(' ');
+            if (p > 0) {
+                aExpression = aExpression.substring(p + 1).trim();
+            }
+        }
+        ViewAttribute theAttribute = new ViewAttribute();
+        theAttribute.setName(aExpression);
+
+        aView.getAttributes().add(theAttribute);
+    }
+
     public static void updateViewAttributesFromSQL(View aView, String aStatement) throws Exception {
 
         ViewAttributeList theList = aView.getAttributes();
@@ -50,42 +64,85 @@ public final class SQLUtils {
         if (StringUtils.isEmpty(aStatement)) {
             throw new Exception("The SQL must not be empty");
         }
+
+        // Remove line breaks and other special characters
+        aStatement = aStatement.replace('\t', ' ');
+        aStatement = aStatement.replace('\n', ' ');
+        aStatement = aStatement.replace('\f', ' ');
+        aStatement = aStatement.replace('\r', ' ');
+
         String theUppserSQL = aStatement.toUpperCase();
 
         int theSelectStart = theUppserSQL.indexOf(SELECT_CLAUSE);
         int theFromStart = theUppserSQL.indexOf(FROM_CLAUSE);
 
         if (theSelectStart < 0) {
-            throw new Exception("The SQL must contain the SELECT keyword");
+            throw new Exception("The SQL must contain the SELECT keyword : " + aStatement);
         }
         if (theFromStart < 0) {
-            throw new Exception("The SQL must contain the FROM keyword");
+            throw new Exception("The SQL must contain the FROM keyword : " + aStatement);
         }
         if (theSelectStart > theFromStart) {
-            throw new Exception("Syntax error");
+            throw new Exception("Syntax error : " + aStatement);
         }
 
         String theSelectFields = aStatement.substring(theSelectStart + SELECT_CLAUSE.length(), theFromStart).trim();
         if (StringUtils.isEmpty(theSelectFields)) {
-            throw new Exception("No fields are selected");
+            throw new Exception("No fields are selected : " + aStatement);
         }
 
-        // TODO: Implement better parsing here
-        StringTokenizer theST = new StringTokenizer(theSelectFields, ",");
-        while (theST.hasMoreTokens()) {
-            String theToken = theST.nextToken();
-            int p = theToken.toUpperCase().indexOf(AS_CLAUSE);
+        String theCurrentToken = "";
+        int p = 0;
+        int bracesCounter = 0;
+        boolean inString = false;
+        while (p < theSelectFields.length()) {
 
-            String theExpression = theToken;
-            if (p > 0) {
-                theExpression = theToken.substring(p + AS_CLAUSE.length()).trim();
+            char theCurrentChar = theSelectFields.charAt(p);
+            switch (theCurrentChar) {
+            case '(':
+                if (!inString) {
+                    bracesCounter++;
+                    theCurrentToken += theCurrentChar;
+                } else {
+                    theCurrentToken += theCurrentChar;
+                }
+                break;
+            case ')':
+                if (!inString) {
+                    bracesCounter--;
+                } else {
+                    theCurrentToken += theCurrentChar;
+                }
+                theCurrentToken += theCurrentChar;
+                break;
+            case '\"':
+                inString = !inString;
+                theCurrentToken += theCurrentChar;
+                break;
+            case '\'':
+                inString = !inString;
+                theCurrentToken += theCurrentChar;
+                break;
+            case ',':
+
+                if (bracesCounter == 0 && !inString) {
+                    addViewAttribute(theCurrentToken.trim(), aView);
+                    theCurrentToken = "";
+                } else {
+                    theCurrentToken += theCurrentChar;
+                }
+                break;
+            default:
+                theCurrentToken += theCurrentChar;
+                break;
             }
-            
-            theExpression = theExpression.trim();
 
-            ViewAttribute theAttribute = new ViewAttribute();
-            theAttribute.setName(theExpression);
-            theList.add(theAttribute);
+            p++;
+        }
+
+        theCurrentToken = theCurrentToken.trim();
+        if (!StringUtils.isEmpty(theCurrentToken)) {
+            addViewAttribute(theCurrentToken, aView);
         }
     }
 }

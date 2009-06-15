@@ -132,7 +132,7 @@ public class ViewCellView extends VertexView {
 
             fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight - theYOffset - 5);
 
-            aGraphics.setColor(new Color(255, 255, 212));
+            aGraphics.setColor(new Color(212, 255, 255));
 
             fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
@@ -170,13 +170,6 @@ public class ViewCellView extends VertexView {
 
                     theString = getConvertedName(theAttribute);
 
-                    /**
-                     * theString += " : ";
-                     * 
-                     * theString +=
-                     * theAttribute.getLayoutProvider().getLogicalDeclaration();
-                     */
-
                     aGraphics.setColor(Color.black);
 
                     aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
@@ -213,13 +206,6 @@ public class ViewCellView extends VertexView {
 
                 String theText = getConvertedName(theAttribute);
 
-                /*
-                 * theText += " : ";
-                 * 
-                 * theText +=
-                 * theAttribute.getLayoutProvider().getLogicalDeclaration();
-                 */
-
                 theLength = theMetrics.stringWidth(theText);
                 if (theLength + theXTextOffset > theMaxX) {
                     theMaxX = theLength + theXTextOffset;
@@ -237,12 +223,6 @@ public class ViewCellView extends VertexView {
 
             if (theYOffset > theMaxY) {
                 theMaxY = theYOffset;
-            }
-
-            // TODO [mirkosertic] This should be the default size if there are
-            // no attributes
-            if (theMaxY < 50) {
-                theMaxY = 50;
             }
 
             return new Dimension(theMaxX, theMaxY);
