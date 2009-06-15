@@ -1,11 +1,11 @@
 package de.erdesignerng.test.view;
 
-import junit.framework.TestCase;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttributeList;
 import de.erdesignerng.plugins.sqleonardo.SQLUtils;
+import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
-public class ParserTest extends TestCase {
+public class ParserTest extends BaseERDesignerTestCaseImpl {
 
     public void testParseSingleExpression() throws Exception {
         View theView = new View();
@@ -77,7 +77,7 @@ public class ParserTest extends TestCase {
 
         }
     }
-    
+
     public void testSyntaxError4() throws Exception {
         View theView = new View();
         String theStatement = "from name1";
@@ -89,7 +89,7 @@ public class ParserTest extends TestCase {
 
         }
     }
-    
+
     public void testSyntaxError5() throws Exception {
         View theView = new View();
         String theStatement = "select from table1";
@@ -101,4 +101,29 @@ public class ParserTest extends TestCase {
 
         }
     }
+
+    public void testComplexQuery1() throws Exception {
+        View theView = new View();
+        String theStatement = readResourceFile("query1.sql");
+
+        SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
+
+        assertTrue(theView.getAttributes().size() == 35);
+        assertTrue("\"FirstName\"".equals(theView.getAttributes().get(0).getName()));
+        assertTrue("\"UnitKey\"".equals(theView.getAttributes().get(2).getName()));
+    }
+    
+    public void testComplexQuery2() throws Exception {
+        View theView = new View();
+        String theStatement = readResourceFile("query2.sql");
+
+        System.out.println(theStatement);
+        
+        SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
+
+        assertTrue(theView.getAttributes().size() == 39);
+        assertTrue("\"UnitKey\"".equals(theView.getAttributes().get(0).getName()));
+        assertTrue("\"Echinococcosis/hydatidosis\"".equals(theView.getAttributes().get(1).getName()));
+    }
+    
 }
