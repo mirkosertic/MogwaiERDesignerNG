@@ -45,7 +45,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  * @param <T>
- *                the dialect
+ *            the dialect
  */
 public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
 
@@ -67,16 +67,16 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse engineerer the sql statement for a view.
      * 
      * @param aViewEntry
-     *                die view entry
+     *            die view entry
      * @param aConnection
-     *                the connection
+     *            the connection
      * @param aView
-     *                the view
+     *            the view
      * @return the sql statement
      * @throws SQLException
-     *                 is thrown in case of an exception
+     *             is thrown in case of an exception
      * @throws ReverseEngineeringException
-     *                 is thrown in case of an exception
+     *             is thrown in case of an exception
      */
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {
@@ -87,19 +87,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse enginner an existing view.
      * 
      * @param aModel
-     *                the model
+     *            the model
      * @param aOptions
-     *                the options
+     *            the options
      * @param aNotifier
-     *                the notifier
+     *            the notifier
      * @param aViewEntry
-     *                the table
+     *            the table
      * @param aConnection
-     *                the connection
+     *            the connection
      * @throws SQLException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ReverseEngineeringException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     protected void reverseEngineerView(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aViewEntry, Connection aConnection) throws SQLException,
@@ -135,7 +135,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             try {
                 SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
             } catch (Exception e) {
-                throw new ReverseEngineeringException("Problem reading view definition", e);
+                LOGGER.warn("View " + theView.getName() + " has a strange SQL : " + theStatement);
             }
 
             theView.setSql(theStatement);
@@ -155,19 +155,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse enginner an existing table.
      * 
      * @param aModel
-     *                the model
+     *            the model
      * @param aOptions
-     *                the options
+     *            the options
      * @param aNotifier
-     *                the notifier
+     *            the notifier
      * @param aTableEntry
-     *                the table
+     *            the table
      * @param aConnection
-     *                the connection
+     *            the connection
      * @throws SQLException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ReverseEngineeringException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     protected final void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
@@ -386,26 +386,25 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse engineer an attribute within an index.
      * 
      * @param aMetaData
-     *                the database meta data
+     *            the database meta data
      * @param aTableEntry
-     *                the current table entry
+     *            the current table entry
      * @param aTable
-     *                the table
+     *            the table
      * @param aNotifier
-     *                the notifier
+     *            the notifier
      * @param aIndex
-     *                the current index
+     *            the current index
      * @param aColumnName
-     *                the column name
+     *            the column name
      * @param aPosition
-     *                the column position
+     *            the column position
      * @param aASCorDESC
-     *                "A" = Ascending, "D" = Descending, NULL = sort not
-     *                supported
+     *            "A" = Ascending, "D" = Descending, NULL = sort not supported
      * @throws SQLException
-     *                 in case of an error
+     *             in case of an error
      * @throws ReverseEngineeringException
-     *                 in case of an error
+     *             in case of an error
      */
     protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable,
             ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aASCorDESC)
@@ -431,19 +430,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Reverse engineer relations for a table.
      * 
      * @param aModel
-     *                the model
+     *            the model
      * @param aOptions
-     *                the options
+     *            the options
      * @param aNotifier
-     *                the notifier
+     *            the notifier
      * @param aTableEntry
-     *                the tsble entry
+     *            the tsble entry
      * @param aConnection
-     *                the connection
+     *            the connection
      * @throws SQLException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ReverseEngineeringException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
@@ -637,7 +636,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Test if a table type is a view.
      * 
      * @param aTableType
-     *                the table type
+     *            the table type
      * @return true if yes, else false
      */
     protected boolean isTableTypeView(String aTableType) {
@@ -648,9 +647,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Check if the table is a valid table for reverse engineering.
      * 
      * @param aTableName
-     *                the table name
+     *            the table name
      * @param aTableType
-     *                the table type
+     *            the table type
      * @return true if the table is valid, else false
      */
     protected boolean isValidTable(String aTableName, String aTableType) {
@@ -661,9 +660,9 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
      * Check if the table is a valid view for reverse engineering.
      * 
      * @param aTableName
-     *                the table name
+     *            the table name
      * @param aTableType
-     *                the table type
+     *            the table type
      * @return true if the table is valid, else false
      */
     protected boolean isValidView(String aTableName, String aTableType) {

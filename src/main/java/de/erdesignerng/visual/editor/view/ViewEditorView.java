@@ -100,7 +100,7 @@ public class ViewEditorView extends DefaultPanel {
 
         if (mainTabbedPane == null) {
             mainTabbedPane = new DefaultTabbedPane();
-            mainTabbedPane.addTab("SQL", sqlText);
+            mainTabbedPane.addTab("SQL", new DefaultScrollPane(sqlText));
             mainTabbedPane.addTab(null, getTableCommentsTab());
             mainTabbedPane.setName("MainTabbedPane");
             mainTabbedPane.setSelectedIndex(0);
