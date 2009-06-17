@@ -4,36 +4,48 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
-import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
 import de.mogwai.layout.graph.Element;
 
 public class VertexCellElement extends Element {
 
-    private DefaultGraphCell cell;
+    private CellView view;
 
-    public VertexCellElement(DefaultGraphCell aCell) {
-        cell = aCell;
+    public VertexCellElement(CellView aView) {
+        view = aView;
+    }
+    
+    public CellView getView() {
+        return view;
+    }
+
+    public GraphCell getCell() {
+        return (GraphCell) view.getCell();
     }
 
     @Override
     public Point getLocation() {
 
-        Rectangle2D theBounds = GraphConstants.getBounds(cell.getAttributes());
+        GraphCell theCell = getCell();
+        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
         return new Point((int) theBounds.getX(), (int) theBounds.getY());
     }
 
     @Override
     public Dimension getSize() {
-        Rectangle2D theBounds = GraphConstants.getBounds(cell.getAttributes());
+        GraphCell theCell = getCell();
+        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
         return new Dimension((int) theBounds.getWidth(), (int) theBounds.getHeight());
     }
 
     @Override
     public void setLocation(Point aLocation) {
-        Rectangle2D theBounds = GraphConstants.getBounds(cell.getAttributes());
+        GraphCell theCell = getCell();
+        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
         theBounds.setRect(aLocation.x, aLocation.y, theBounds.getWidth(), theBounds.getHeight());
-        GraphConstants.setBounds(cell.getAttributes(), theBounds);
+        GraphConstants.setBounds(theCell.getAttributes(), theBounds);
     }
 }

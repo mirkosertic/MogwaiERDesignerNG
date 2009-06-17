@@ -44,9 +44,6 @@ public final class ERDesigner {
     public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
             ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, TransformerException, IOException, ParserConfigurationException, SAXException {
 
-        // Disable D3D rendering pipeline
-        System.setProperty("sun.java2d.d3d", "false");
-        
         DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
         theScreen.setVisible(true);
         
