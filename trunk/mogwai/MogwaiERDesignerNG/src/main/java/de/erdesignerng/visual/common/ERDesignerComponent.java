@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -48,6 +49,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
@@ -107,7 +109,9 @@ import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
+import de.erdesignerng.visual.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.cells.views.TableCellView;
+import de.erdesignerng.visual.cells.views.ViewCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
@@ -154,6 +158,9 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+import de.mogwai.layout.ElectricSpringLayout;
+import de.mogwai.layout.graph.Element;
+import de.mogwai.layout.graph.Spring;
 
 /**
  * The ERDesigner Editing Component.
@@ -342,10 +349,111 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
+    private boolean loading;
+
+    private ElectricSpringLayout layout = new ElectricSpringLayout() {
+
+        private List<Element> elements = new ArrayList<Element>();
+
+        private List<Spring> springs = new ArrayList<Spring>();
+
+        @Override
+        public void preEvolveLayout() {
+            super.preEvolveLayout();
+
+            elements.clear();
+            springs.clear();
+
+            if (model == null || graph == null) {
+                return;
+            }
+
+            Map<ModelItem, Element> theTables = new HashMap<ModelItem, Element>();
+
+            for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
+
+                if (theView instanceof TableCellView || theView instanceof ViewCellView) {
+
+                    DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+
+                    Element theElement = new VertexCellElement(theCell);
+                    elements.add(theElement);
+
+                    theTables.put((ModelItem) theCell.getUserObject(), theElement);
+                }
+            }
+
+            for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
+
+                if (theView instanceof RelationEdgeView) {
+
+                    RelationEdgeView theRelationView = (RelationEdgeView) theView;
+                    RelationEdge theCell = (RelationEdge) theRelationView.getCell();
+                    Relation theRelation = (Relation) theCell.getUserObject();
+
+                    Spring theSpring = new Spring(theTables.get(theRelation.getExportingTable()), theTables
+                            .get(theRelation.getImportingTable()));
+                    springs.add(theSpring);
+                }
+            }
+
+        }
+
+        @Override
+        public void postEvolveLayout() {
+            super.postEvolveLayout();
+
+            System.out.println("Graph origin is at " + minx + " " + miny);
+
+            for (Element theElement : elements) {
+                Point theLocation = theElement.getLocation();
+
+                theLocation.x -= minx+20;
+                theLocation.y -= miny+20;
+            }
+        }
+
+        @Override
+        public List<Element> getElements() {
+            return elements;
+        }
+
+        @Override
+        public List<Spring> getSprings() {
+            return springs;
+        }
+    };
+
     public ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
         preferences = aPreferences;
         initActions();
+
+        Thread theRunner = new Thread() {
+
+            @Override
+            public void run() {
+                while (!interrupted()) {
+                    try {
+                        SwingUtilities.invokeAndWait(new Runnable() {
+                            public void run() {
+                                if (!loading) {
+                                    layout.evolveLayout();
+                                    if (graph != null) {
+                                        repaintGraph();
+                                    }
+                                }
+                            }
+                        });
+
+                        sleep(40);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        theRunner.start();
     }
 
     protected void initActions() {
@@ -1078,7 +1186,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a specific subject area.
      * 
      * @param aArea
-     *                the area
+     *            the area
      */
     protected void commandHideSubjectArea(SubjectArea aArea) {
         for (Object theItem : layoutCache.getVisibleSet()) {
@@ -1098,7 +1206,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Show a specific subject area.
      * 
      * @param aArea
-     *                the subject area to show
+     *            the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
         for (CellView theCellView : layoutCache.getHiddenCellViews()) {
@@ -1145,7 +1253,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * template.
      * 
      * @param aJRXMLFile
-     *                the name of the template
+     *            the name of the template
      */
     protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
@@ -1857,7 +1965,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
-     *                the entry descriptor
+     *            the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
 
@@ -1873,7 +1981,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from file.
      * 
      * @param aFile
-     *                the file
+     *            the file
      */
     protected void setupViewFor(File aFile) {
 
@@ -1902,7 +2010,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing tool.
      * 
      * @param aTool
-     *                the tool
+     *            the tool
      */
     protected void commandSetTool(ToolEnum aTool) {
         if (aTool.equals(ToolEnum.HAND)) {
@@ -1950,6 +2058,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void commandSetZoom(ZoomInfo aZoomInfo) {
         graph.setScale(aZoomInfo.getValue());
         zoomBox.setSelectedItem(aZoomInfo);
+
+        repaintGraph();
     }
 
     protected void commandZoomIn() {
@@ -2047,9 +2157,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing model.
      * 
      * @param aModel
-     *                the model
+     *            the model
      */
     public void setModel(Model aModel) {
+
+        loading = true;
+
         model = aModel;
 
         graphModel = new DefaultGraphModel();
@@ -2190,13 +2303,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         commandSetTool(ToolEnum.HAND);
 
         updateSubjectAreasMenu();
+
+        loading = false;
     }
 
     /**
      * Hide a list of specific cells.
      * 
      * @param aCellsToHide
-     *                the cells to hide
+     *            the cells to hide
      */
     protected void commandHideCells(List<HideableCell> aCellsToHide) {
         for (HideableCell theCell : aCellsToHide) {
@@ -2215,7 +2330,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Add a new comment to the model.
      * 
      * @param aLocation
-     *                the location
+     *            the location
      */
     protected void commandAddComment(Point2D aLocation) {
         Comment theComment = new Comment();
@@ -2427,7 +2542,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *                true if comments shall be displayed, else false
+     *            true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
@@ -2438,7 +2553,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *                true if comments shall be displayed, else false
+     *            true if comments shall be displayed, else false
      */
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
@@ -2450,7 +2565,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * The preferences where changed, so they need to be reloaded.
      * 
      * @param aPreferences
-     *                the preferences
+     *            the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
@@ -2461,7 +2576,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display level.
      * 
      * @param aLevel
-     *                the level
+     *            the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -2472,7 +2587,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display order.
      * 
      * @param aOrder
-     *                the display order
+     *            the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);
@@ -2486,7 +2601,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         for (CellView theView : layoutCache.getCellViews()) {
             graph.updateAutoSize(theView);
         }
-        graph.getGraphLayoutCache().reload();
+        layoutCache.reload();
+        layoutCache.update(layoutCache.getAllViews());
+
+        graph.addOffscreenDirty(new Rectangle2D.Double(0, 0, scrollPane.getWidth(), scrollPane.getHeight()));
+
         graph.invalidate();
         graph.repaint();
     }

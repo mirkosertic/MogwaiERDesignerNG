@@ -330,9 +330,8 @@ public class TableCellView extends VertexView {
                         theText += theAttribute.getLogicalDeclaration();
                     }
 
-                    if (theAttribute.isForeignKey()) {
-                        theText += " (FK)";
-                    }
+                    // Assume the text is a foreign key...
+                    theText += " (FK)";
 
                     theLength = theMetrics.stringWidth(theText);
                     if (theLength + theXTextOffset > theMaxX) {
@@ -362,9 +361,7 @@ public class TableCellView extends VertexView {
                             theText += theAttribute.getLogicalDeclaration();
                         }
 
-                        if (theAttribute.isForeignKey()) {
-                            theText += " (FK)";
-                        }
+                        theText += " (FK)";
 
                         theLength = theMetrics.stringWidth(theText);
                         if (theLength + theXTextOffset > theMaxX) {
