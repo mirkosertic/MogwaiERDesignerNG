@@ -64,6 +64,8 @@ public abstract class ERDesignerGraph extends JGraph {
     private boolean displayComments;
 
     private boolean physicalLayout;
+    
+    private boolean dragging;
 
     private DisplayLevel displayLevel = DisplayLevel.ALL;
     
@@ -293,6 +295,20 @@ public abstract class ERDesignerGraph extends JGraph {
      */
     public void setDisplayOrder(DisplayOrder displayOrder) {
         this.displayOrder = displayOrder;
+    }
+    
+    /**
+     * @return the dragging
+     */
+    public boolean isDragging() {
+        return dragging;
+    }
+
+    /**
+     * @param dragging the dragging to set
+     */
+    public void setDragging(boolean dragging) {
+        this.dragging = dragging;
     }
 
     /**

@@ -33,7 +33,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 public abstract class BaseTool extends BasicMarqueeHandler {
 
     protected ERDesignerGraph graph;
-
+    
     public BaseTool(ERDesignerGraph aGraph) {
         graph = aGraph;
     }
@@ -51,6 +51,5 @@ public abstract class BaseTool extends BasicMarqueeHandler {
         String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
         String theMessage = getResourceHelper().getText(aMessageKey);
         return JOptionPane.showConfirmDialog(SwingUtilities.getRoot(graph), theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-
     }
 }

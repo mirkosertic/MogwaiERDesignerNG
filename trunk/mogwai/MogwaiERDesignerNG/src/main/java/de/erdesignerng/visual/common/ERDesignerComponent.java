@@ -37,8 +37,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -57,6 +59,7 @@ import net.sf.jasperreports.swing.JRViewer;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
+import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -110,6 +113,7 @@ import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
+import de.erdesignerng.visual.cells.views.CommentCellView;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.cells.views.ViewCellView;
@@ -139,6 +143,7 @@ import de.erdesignerng.visual.layout.Layouter;
 import de.erdesignerng.visual.layout.LayouterFactory;
 import de.erdesignerng.visual.layout.SizeableLayouter;
 import de.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
+import de.erdesignerng.visual.tools.BaseTool;
 import de.erdesignerng.visual.tools.CommentTool;
 import de.erdesignerng.visual.tools.EntityTool;
 import de.erdesignerng.visual.tools.HandTool;
@@ -351,7 +356,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
     private boolean loading;
-
+    
     private ElectricSpringLayout<VertexCellElement> layout = new ElectricSpringLayout<VertexCellElement>() {
 
         private List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
@@ -368,19 +373,46 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             if (model == null || graph == null) {
                 return;
             }
+            
+            if (graph.isDragging()) {
+                return;
+            }
+
+            Set<ModelItem> theElementsToIgnore = new HashSet<ModelItem>();
+            BaseTool theTool = (BaseTool) graph.getMarqueeHandler();
+            if (graph.isDragging()) {
+                for (Object theCell : graph.getSelectionCells()) {
+                    if (theCell instanceof TableCell) {
+                        TableCell theTableCell = (TableCell) theCell;
+                        theElementsToIgnore.add((ModelItem) theTableCell.getUserObject());
+                    }
+                    if (theCell instanceof ViewCell) {
+                        ViewCell theViewCell = (ViewCell) theCell;
+                        theElementsToIgnore.add((ModelItem) theViewCell.getUserObject());
+                    }
+                    if (theCell instanceof CommentCell) {
+                        CommentCell theCommentCell = (CommentCell) theCell;
+                        theElementsToIgnore.add((ModelItem) theCommentCell.getUserObject());
+                    }
+                }
+            }
 
             Map<ModelItem, Element> theTables = new HashMap<ModelItem, Element>();
 
             for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
 
-                if (theView instanceof TableCellView || theView instanceof ViewCellView) {
+                if (theView instanceof TableCellView || theView instanceof ViewCellView
+                        || theView instanceof CommentCellView) {
 
                     DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
 
                     VertexCellElement theElement = new VertexCellElement(theView);
-                    elements.add(theElement);
 
-                    theTables.put((ModelItem) theCell.getUserObject(), theElement);
+                    ModelItem theModelItem = (ModelItem) theCell.getUserObject();
+                    if (!theElementsToIgnore.contains(theModelItem)) {
+                        theTables.put(theModelItem, theElement);
+                        elements.add(theElement);
+                    }
                 }
             }
 
@@ -392,9 +424,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     RelationEdge theCell = (RelationEdge) theRelationView.getCell();
                     Relation theRelation = (Relation) theCell.getUserObject();
 
-                    Spring theSpring = new Spring(theTables.get(theRelation.getExportingTable()), theTables
-                            .get(theRelation.getImportingTable()));
-                    springs.add(theSpring);
+                    if (!theElementsToIgnore.contains(theRelation.getExportingTable())
+                            && (!theElementsToIgnore.contains(theRelation.getImportingTable()))) {
+                        Spring theSpring = new Spring(theTables.get(theRelation.getExportingTable()), theTables
+                                .get(theRelation.getImportingTable()));
+                        springs.add(theSpring);
+                    }
                 }
             }
 
@@ -427,7 +462,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
 
             if (graph != null) {
-                
+
                 Map<GraphCell, Map> theNestedMap = new HashMap<GraphCell, Map>();
 
                 HashMap theAttributes = new HashMap();
@@ -462,7 +497,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                             }
                         });
 
-                        sleep(40);
+                        sleep(80);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1202,7 +1237,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a specific subject area.
      * 
      * @param aArea
-     *            the area
+     *                the area
      */
     protected void commandHideSubjectArea(SubjectArea aArea) {
         for (Object theItem : layoutCache.getVisibleSet()) {
@@ -1222,7 +1257,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Show a specific subject area.
      * 
      * @param aArea
-     *            the subject area to show
+     *                the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
         for (CellView theCellView : layoutCache.getHiddenCellViews()) {
@@ -1269,7 +1304,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * template.
      * 
      * @param aJRXMLFile
-     *            the name of the template
+     *                the name of the template
      */
     protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
@@ -1981,7 +2016,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
-     *            the entry descriptor
+     *                the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
 
@@ -1997,7 +2032,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from file.
      * 
      * @param aFile
-     *            the file
+     *                the file
      */
     protected void setupViewFor(File aFile) {
 
@@ -2026,7 +2061,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing tool.
      * 
      * @param aTool
-     *            the tool
+     *                the tool
      */
     protected void commandSetTool(ToolEnum aTool) {
         if (aTool.equals(ToolEnum.HAND)) {
@@ -2173,7 +2208,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing model.
      * 
      * @param aModel
-     *            the model
+     *                the model
      */
     public void setModel(Model aModel) {
 
@@ -2327,7 +2362,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a list of specific cells.
      * 
      * @param aCellsToHide
-     *            the cells to hide
+     *                the cells to hide
      */
     protected void commandHideCells(List<HideableCell> aCellsToHide) {
         for (HideableCell theCell : aCellsToHide) {
@@ -2346,7 +2381,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Add a new comment to the model.
      * 
      * @param aLocation
-     *            the location
+     *                the location
      */
     protected void commandAddComment(Point2D aLocation) {
         Comment theComment = new Comment();
@@ -2558,7 +2593,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *            true if comments shall be displayed, else false
+     *                true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
@@ -2569,7 +2604,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *            true if comments shall be displayed, else false
+     *                true if comments shall be displayed, else false
      */
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
@@ -2581,7 +2616,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * The preferences where changed, so they need to be reloaded.
      * 
      * @param aPreferences
-     *            the preferences
+     *                the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
@@ -2592,7 +2627,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display level.
      * 
      * @param aLevel
-     *            the level
+     *                the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -2603,7 +2638,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display order.
      * 
      * @param aOrder
-     *            the display order
+     *                the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);
