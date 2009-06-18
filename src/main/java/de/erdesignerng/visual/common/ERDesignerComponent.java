@@ -497,7 +497,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                             }
                         });
 
-                        sleep(80);
+                        sleep(40);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
