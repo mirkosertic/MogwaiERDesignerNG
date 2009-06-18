@@ -405,17 +405,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             super.postEvolveLayout();
 
             /*
-             * List<VertexCellElement> theEvolvedElements =
-             * getEvolvedElements(); if (theEvolvedElements.size() > 0) { } else {
-             * System.out.println("Nothing to do"); }
+             * for (Element theElement : elements) { Point theLocation =
+             * theElement.getLocation();
+             * 
+             * theLocation.x -= minx + 20; theLocation.y -= miny + 20; }
              */
-
-            for (Element theElement : elements) {
-                Point theLocation = theElement.getLocation();
-
-                theLocation.x -= minx + 20;
-                theLocation.y -= miny + 20;
-            }
 
         }
 
@@ -427,6 +421,25 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         @Override
         public List<Spring> getSprings() {
             return springs;
+        }
+
+        @Override
+        public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
+
+            if (graph != null) {
+                
+                Map<GraphCell, Map> theNestedMap = new HashMap<GraphCell, Map>();
+
+                HashMap theAttributes = new HashMap();
+                Rectangle2D theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
+                theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
+                        theBounds.getHeight());
+                GraphConstants.setBounds(theAttributes, theBounds);
+
+                theNestedMap.put(aElement.getCell(), theAttributes);
+
+                graph.getGraphLayoutCache().edit(theNestedMap, null, null, null);
+            }
         }
     };
 
@@ -443,23 +456,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     try {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             public void run() {
-                                loading = true;
                                 if (!loading) {
                                     layout.evolveLayout();
-
-                                    Map<GraphCell, Map> theNestedMap = new HashMap<GraphCell, Map>();
-                                    for (VertexCellElement theElement : layout.getEvolvedElements()) {
-
-                                        HashMap theAttributes = new HashMap();
-                                        Rectangle2D theBounds = GraphConstants.getBounds(theElement.getCell()
-                                                .getAttributes());
-                                        GraphConstants.setBounds(theAttributes, theBounds);
-
-                                        theNestedMap.put(theElement.getCell(), theAttributes);
-                                    }
-                                    if (graph != null) {
-                                        graph.getGraphLayoutCache().edit(theNestedMap, null, null, null);
-                                    }
                                 }
                             }
                         });
@@ -1204,7 +1202,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a specific subject area.
      * 
      * @param aArea
-     *                the area
+     *            the area
      */
     protected void commandHideSubjectArea(SubjectArea aArea) {
         for (Object theItem : layoutCache.getVisibleSet()) {
@@ -1224,7 +1222,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Show a specific subject area.
      * 
      * @param aArea
-     *                the subject area to show
+     *            the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
         for (CellView theCellView : layoutCache.getHiddenCellViews()) {
@@ -1271,7 +1269,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * template.
      * 
      * @param aJRXMLFile
-     *                the name of the template
+     *            the name of the template
      */
     protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
@@ -1983,7 +1981,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
-     *                the entry descriptor
+     *            the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
 
@@ -1999,7 +1997,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from file.
      * 
      * @param aFile
-     *                the file
+     *            the file
      */
     protected void setupViewFor(File aFile) {
 
@@ -2028,7 +2026,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing tool.
      * 
      * @param aTool
-     *                the tool
+     *            the tool
      */
     protected void commandSetTool(ToolEnum aTool) {
         if (aTool.equals(ToolEnum.HAND)) {
@@ -2175,7 +2173,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing model.
      * 
      * @param aModel
-     *                the model
+     *            the model
      */
     public void setModel(Model aModel) {
 
@@ -2329,7 +2327,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a list of specific cells.
      * 
      * @param aCellsToHide
-     *                the cells to hide
+     *            the cells to hide
      */
     protected void commandHideCells(List<HideableCell> aCellsToHide) {
         for (HideableCell theCell : aCellsToHide) {
@@ -2348,7 +2346,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Add a new comment to the model.
      * 
      * @param aLocation
-     *                the location
+     *            the location
      */
     protected void commandAddComment(Point2D aLocation) {
         Comment theComment = new Comment();
@@ -2560,7 +2558,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *                true if comments shall be displayed, else false
+     *            true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
@@ -2571,7 +2569,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *                true if comments shall be displayed, else false
+     *            true if comments shall be displayed, else false
      */
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
@@ -2583,7 +2581,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * The preferences where changed, so they need to be reloaded.
      * 
      * @param aPreferences
-     *                the preferences
+     *            the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
@@ -2594,7 +2592,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display level.
      * 
      * @param aLevel
-     *                the level
+     *            the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -2605,7 +2603,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display order.
      * 
      * @param aOrder
-     *                the display order
+     *            the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);
