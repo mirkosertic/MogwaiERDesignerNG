@@ -31,6 +31,7 @@ import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
+import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -104,6 +105,23 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                     handler = marquee;
                 }
             }
+        }
+        
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            super.mouseDragged(e);
+            
+            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+            theGraph.setDragging(true);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            super.mouseReleased(e);
+            
+            
+            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+            theGraph.setDragging(false);
         }
 
         @Override
