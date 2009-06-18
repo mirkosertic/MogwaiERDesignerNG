@@ -40,12 +40,4 @@ public class VertexCellElement extends Element {
         Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
         return new Dimension((int) theBounds.getWidth(), (int) theBounds.getHeight());
     }
-
-    @Override
-    public void setLocation(Point aLocation) {
-        GraphCell theCell = getCell();
-        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
-        theBounds.setRect(aLocation.x, aLocation.y, theBounds.getWidth(), theBounds.getHeight());
-        GraphConstants.setBounds(theCell.getAttributes(), theBounds);
-    }
 }
