@@ -242,12 +242,6 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.mogwai</groupId>
-			<artifactId>mogwai-squirrelplugin</artifactId>
-			<version>1.0.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>jgoodies</groupId>
 			<artifactId>forms</artifactId>
 			<version>1.2.1</version>
@@ -301,20 +295,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.zest</groupId>
-			<artifactId>layout</artifactId>
-			<version>1.1.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>jung</groupId>
-			<artifactId>jung</artifactId>
-			<version>1.7.6</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
