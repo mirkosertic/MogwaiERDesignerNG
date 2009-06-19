@@ -17,12 +17,6 @@
  */
 package de.erdesignerng.visual.editor.preferences;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.JFileChooser;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -30,23 +24,14 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultSpinner;
-import de.mogwai.common.client.looks.components.DefaultTextField;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class PreferencesPanel extends DefaultPanel implements ResourceHelperProvider {
 
-    private DefaultButton searchDotButton = new DefaultButton();
-
-    private DefaultTextField dotPath = new DefaultTextField();
-
-    private DefaultAction okAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ADDFOLDER);
-    
     private DefaultSpinner gridSize = new DefaultSpinner();
     
     private BindingInfo<ApplicationPreferences> bindinginfo;
@@ -60,30 +45,17 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         String theColDef = "2dlu,p,2dlu,p:grow,2dlu,20dlu,2";
         String theRowDef = "2dlu,p,2dlu,p,50dlu";
 
-        searchDotButton.setAction(okAction);
-        okAction.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                commandSelectDOTDir();
-            }
-        });
-
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
 
         CellConstraints cons = new CellConstraints();
 
-        add(new DefaultLabel(ERDesignerBundle.DOTPATH), cons.xy(2, 2));
-        add(dotPath, cons.xy(4, 2));
-        add(searchDotButton, cons.xy(6, 2));
-
-        add(new DefaultLabel(ERDesignerBundle.EDITORGRIDSIZE), cons.xy(2, 4));
-        add(gridSize, cons.xywh(4, 4 , 3, 1));
+        add(new DefaultLabel(ERDesignerBundle.EDITORGRIDSIZE), cons.xy(2, 2));
+        add(gridSize, cons.xywh(4, 2 , 3, 1));
 
         UIInitializer.getInstance().initialize(this);
         
         bindinginfo = new BindingInfo<ApplicationPreferences>();
-        bindinginfo.addBinding("dotPath", dotPath);
         bindinginfo.addBinding("gridSize", gridSize, true);        
         
         bindinginfo.configure();
@@ -119,19 +91,5 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
 
     public ResourceHelper getResourceHelper() {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
-
-    private void commandSelectDOTDir() {
-        
-        JFileChooser theChooser = new JFileChooser();
-        String theDotDir = dotPath.getText();
-        if (theDotDir != null) {
-            theChooser.setCurrentDirectory(new File(theDotDir));
-        }
-        if (theChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File theFile = theChooser.getSelectedFile();
-            
-            dotPath.setText(theFile.toString());
-        }        
     }
 }

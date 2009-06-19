@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.common;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -59,7 +58,6 @@ import net.sf.jasperreports.swing.JRViewer;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
-import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -139,9 +137,6 @@ import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
 import de.erdesignerng.visual.export.SVGExporter;
 import de.erdesignerng.visual.help.PDFViewer;
-import de.erdesignerng.visual.layout.Layouter;
-import de.erdesignerng.visual.layout.LayouterFactory;
-import de.erdesignerng.visual.layout.SizeableLayouter;
 import de.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
 import de.erdesignerng.visual.tools.BaseTool;
 import de.erdesignerng.visual.tools.CommentTool;
@@ -151,6 +146,7 @@ import de.erdesignerng.visual.tools.RelationTool;
 import de.erdesignerng.visual.tools.ToolEnum;
 import de.erdesignerng.visual.tools.ViewTool;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultDialog;
@@ -253,21 +249,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private JToggleButton viewButton;
 
-    private DefaultAction layoutAction;
-
     private GraphLayoutCache layoutCache;
-
-    private DefaultAction layoutgraphvizAction;
-
-    private DefaultAction layoutradialAction;
-
-    private DefaultAction layoutspringAction;
-
-    private DefaultAction layoutgridAction;
-
-    private DefaultAction layouttreeAction;
-
-    private DefaultAction layoutfrAction;
 
     private DefaultAction loadAction;
 
@@ -356,7 +338,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
     private boolean loading;
-    
+
     private ElectricSpringLayout<VertexCellElement> layout = new ElectricSpringLayout<VertexCellElement>() {
 
         private List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
@@ -373,7 +355,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             if (model == null || graph == null) {
                 return;
             }
-            
+
             if (graph.isDragging()) {
                 return;
             }
@@ -439,13 +421,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         public void postEvolveLayout() {
             super.postEvolveLayout();
 
-            /*
-             * for (Element theElement : elements) { Point theLocation =
-             * theElement.getLocation();
-             * 
-             * theLocation.x -= minx + 20; theLocation.y -= miny + 20; }
-             */
-
+            // Move graph origin to 20,20
+            if (minx < 20 || miny < 20) {
+                for (VertexCellElement theElement : elements) {
+                    evolvePosition(theElement, -minx + 20, -miny + 20);
+                }
+            }
         }
 
         @Override
@@ -478,7 +459,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     };
 
-    public ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
+    public ERDesignerComponent(ApplicationPreferences aPreferences, final ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
         preferences = aPreferences;
         initActions();
@@ -491,7 +472,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     try {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             public void run() {
-                                if (!loading) {
+                                if (!loading && preferences.isIntelligentLayout()) {
                                     layout.evolveLayout();
                                 }
                             }
@@ -499,7 +480,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                         sleep(40);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        aConnector.notifyAboutException(e);
                     }
                 }
             }
@@ -567,54 +548,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         lruAction = new DefaultAction(this, ERDesignerBundle.RECENTLYUSEDFILES);
 
-        layoutgraphvizAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLayout(LayouterFactory.getInstance().createGraphvizLayouter());
-            }
-
-        }, this, ERDesignerBundle.LAYOUTBYGRAPHVIZ);
-
-        layoutradialAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLayout(LayouterFactory.getInstance().createRadialLayouter());
-            }
-
-        }, this, ERDesignerBundle.LAYOUTBYRADIAL);
-
-        layoutspringAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLayout(LayouterFactory.getInstance().createSpringLayouter());
-            }
-
-        }, this, ERDesignerBundle.LAYOUTBYSPRING);
-
-        layoutgridAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLayout(LayouterFactory.getInstance().createGridLayouter());
-            }
-
-        }, this, ERDesignerBundle.LAYOUTBYGRID);
-
-        layouttreeAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLayout(LayouterFactory.getInstance().createTreeLayouter());
-            }
-
-        }, this, ERDesignerBundle.LAYOUTBYTREE);
-
-        layoutfrAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandLayout(LayouterFactory.getInstance().createFRLayouter());
-            }
-
-        }, this, ERDesignerBundle.LAYOUTBYFR);
-
         loadAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
@@ -638,8 +571,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }, this, ERDesignerBundle.COMMENT);
-
-        layoutAction = new DefaultAction(this, ERDesignerBundle.LAYOUT);
 
         exportSVGAction = new DefaultAction(this, ERDesignerBundle.ASSVG);
 
@@ -907,17 +838,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
-        DefaultMenu theLayoutMenu = new DefaultMenu(layoutAction);
-        theLayoutMenu.add(new DefaultMenuItem(layoutgraphvizAction));
-        theLayoutMenu.add(new DefaultMenuItem(layoutradialAction));
-        theLayoutMenu.add(new DefaultMenuItem(layoutspringAction));
-        theLayoutMenu.add(new DefaultMenuItem(layouttreeAction));
-        theLayoutMenu.add(new DefaultMenuItem(layoutgridAction));
-        theLayoutMenu.add(new DefaultMenuItem(layoutfrAction));
-
-        theViewMenu.add(theLayoutMenu);
-        theViewMenu.addSeparator();
-
         displayCommentsAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
@@ -1087,6 +1007,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.add(commentButton);
         theToolBar.add(viewButton);
 
+        final DefaultCheckBox theCheckbox = new DefaultCheckBox(ERDesignerBundle.INTELLIGENTLAYOUT);
+        theCheckbox.setSelected(preferences.isIntelligentLayout());
+        theCheckbox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                preferences.setIntelligentLayout(theCheckbox.isSelected());
+            }
+
+        });
+
+        theToolBar.addSeparator();
+        theToolBar.add(theCheckbox);
+
         worldConnector.initTitle();
 
         updateRecentlyUsedMenuEntries();
@@ -1237,7 +1171,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a specific subject area.
      * 
      * @param aArea
-     *                the area
+     *            the area
      */
     protected void commandHideSubjectArea(SubjectArea aArea) {
         for (Object theItem : layoutCache.getVisibleSet()) {
@@ -1257,7 +1191,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Show a specific subject area.
      * 
      * @param aArea
-     *                the subject area to show
+     *            the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
         for (CellView theCellView : layoutCache.getHiddenCellViews()) {
@@ -1304,7 +1238,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * template.
      * 
      * @param aJRXMLFile
-     *                the name of the template
+     *            the name of the template
      */
     protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
@@ -1578,44 +1512,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
 
-        }
-    }
-
-    protected void commandLayout(Layouter aLayouter) {
-
-        if (model.getSubjectAreas().size() > 0) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.MODELSWITHSUBJECTAREASARENOTSUPPORTED));
-            return;
-        }
-
-        if (aLayouter instanceof SizeableLayouter) {
-            SizeableLayouter theLayouter = (SizeableLayouter) aLayouter;
-
-            String theSize = MessagesHelper.askForInput(scrollPane, ERDesignerBundle.INPUTLAYOUTSIZE, "1000,1000");
-            if (theSize == null) {
-                return;
-            }
-
-            try {
-
-                int p = theSize.indexOf(",");
-                int theWidth = Integer.parseInt(theSize.substring(0, p));
-                int theHeight = Integer.parseInt(theSize.substring(p + 1));
-
-                theLayouter.setSize(new Dimension(theWidth, theHeight));
-            } catch (Exception e) {
-                MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
-                        ERDesignerBundle.INVALIDSIZESPECIFIED));
-                return;
-            }
-        }
-
-        try {
-            aLayouter.applyLayout(preferences, graph, graph.getRoots());
-            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.LAYOUTFINISHED));
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
         }
     }
 
@@ -2016,7 +1912,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
-     *                the entry descriptor
+     *            the entry descriptor
      */
     protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
 
@@ -2032,7 +1928,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Setup the view for a model loaded from file.
      * 
      * @param aFile
-     *                the file
+     *            the file
      */
     protected void setupViewFor(File aFile) {
 
@@ -2061,7 +1957,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing tool.
      * 
      * @param aTool
-     *                the tool
+     *            the tool
      */
     protected void commandSetTool(ToolEnum aTool) {
         if (aTool.equals(ToolEnum.HAND)) {
@@ -2208,7 +2104,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current editing model.
      * 
      * @param aModel
-     *                the model
+     *            the model
      */
     public void setModel(Model aModel) {
 
@@ -2362,7 +2258,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Hide a list of specific cells.
      * 
      * @param aCellsToHide
-     *                the cells to hide
+     *            the cells to hide
      */
     protected void commandHideCells(List<HideableCell> aCellsToHide) {
         for (HideableCell theCell : aCellsToHide) {
@@ -2381,7 +2277,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Add a new comment to the model.
      * 
      * @param aLocation
-     *                the location
+     *            the location
      */
     protected void commandAddComment(Point2D aLocation) {
         Comment theComment = new Comment();
@@ -2593,7 +2489,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *                true if comments shall be displayed, else false
+     *            true if comments shall be displayed, else false
      */
     protected void commandSetDisplayCommentsState(boolean aState) {
         graph.setDisplayComments(aState);
@@ -2604,7 +2500,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Toggle the include comments view state.
      * 
      * @param aState
-     *                true if comments shall be displayed, else false
+     *            true if comments shall be displayed, else false
      */
     protected void commandSetDisplayGridState(boolean aState) {
         graph.setGridEnabled(aState);
@@ -2616,7 +2512,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * The preferences where changed, so they need to be reloaded.
      * 
      * @param aPreferences
-     *                the preferences
+     *            the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         graph.setGridSize(aPreferences.getGridSize());
@@ -2627,7 +2523,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display level.
      * 
      * @param aLevel
-     *                the level
+     *            the level
      */
     protected void commandSetDisplayLevel(DisplayLevel aLevel) {
         graph.setDisplayLevel(aLevel);
@@ -2638,7 +2534,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Set the current display order.
      * 
      * @param aOrder
-     *                the display order
+     *            the display order
      */
     protected void commandSetDisplayOrder(DisplayOrder aOrder) {
         graph.setDisplayOrder(aOrder);
@@ -2667,5 +2563,4 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     public void commandNotifyAboutEdit() {
         updateSubjectAreasMenu();
     }
-
 }
