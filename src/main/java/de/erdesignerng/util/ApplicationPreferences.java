@@ -52,8 +52,6 @@ public class ApplicationPreferences {
 
     private static final String LRUPREFIX = "file_";
 
-    private static final String DOT_PATH = "DOT_PATH";
-
     private static final String CLASSPATHPREFIX = "classpath_";
 
     private static final String LRCPREFIX = "lrc_";
@@ -72,6 +70,8 @@ public class ApplicationPreferences {
 
     private static final String WINDOWHEIGHTPREFIX = "windowheight_";
 
+    private static final String INTELLIGENTLAYOUT = "intelligentlayout_";
+
     private int size;
 
     private List<File> recentlyUsedFiles = new ArrayList<File>();
@@ -82,8 +82,6 @@ public class ApplicationPreferences {
 
     private Preferences preferences;
 
-    private String dotPath;
-
     private int gridSize;
 
     private ConnectionDescriptor repositoryConnection;
@@ -91,6 +89,8 @@ public class ApplicationPreferences {
     private Map<String, String> windowDefinitions = new HashMap<String, String>();
 
     private File baseDir;
+
+    private boolean intelligentLayout = true;
 
     private static ApplicationPreferences me;
 
@@ -166,9 +166,7 @@ public class ApplicationPreferences {
 
         size = aSize;
         gridSize = preferences.getInt(GRIDSIZE, 10);
-
-        dotPath = preferences.get(DOT_PATH, "");
-
+        intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
     }
 
     /**
@@ -281,8 +279,8 @@ public class ApplicationPreferences {
             preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i).toString());
         }
 
-        preferences.put(DOT_PATH, dotPath);
         preferences.putInt(GRIDSIZE, gridSize);
+        preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
 
         if (repositoryConnection != null) {
             preferences.put(RPCPREFIX + "DIALECT", repositoryConnection.getDialect());
@@ -316,21 +314,6 @@ public class ApplicationPreferences {
                 return new URLClassLoader(theUrls, Thread.currentThread().getContextClassLoader());
             }
         });
-    }
-
-    /**
-     * @return the dotPath
-     */
-    public String getDotPath() {
-        return dotPath;
-    }
-
-    /**
-     * @param dotPath
-     *            the dotPath to set
-     */
-    public void setDotPath(String dotPath) {
-        this.dotPath = dotPath;
     }
 
     /**
@@ -438,6 +421,21 @@ public class ApplicationPreferences {
      */
     public void setBaseDir(File baseDir) {
         this.baseDir = baseDir;
+    }
+
+    /**
+     * @return the intelligentLayout
+     */
+    public boolean isIntelligentLayout() {
+        return intelligentLayout;
+    }
+
+    /**
+     * @param intelligentLayout
+     *            the intelligentLayout to set
+     */
+    public void setIntelligentLayout(boolean intelligentLayout) {
+        this.intelligentLayout = intelligentLayout;
     }
 
     public File getRelativeFile(String aName) {

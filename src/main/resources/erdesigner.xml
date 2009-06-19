@@ -148,34 +148,6 @@
 			<Text lang="de">Relation editieren</Text>		
 			<Text lang="en">Edit relation</Text>					
 		</Entry>
-		<Entry id="LAYOUT">
-			<Text lang="de">Layout</Text>		
-			<Text lang="en">Layout</Text>					
-		</Entry>
-		<Entry id="LAYOUTBYGRAPHVIZ">
-			<Text lang="de">Layout durch GraphViz</Text>		
-			<Text lang="en">Layout by Graphviz</Text>					
-		</Entry>
-		<Entry id="LAYOUTBYRADIAL">
-			<Text lang="de">Layout durch RadialLayout ( Experimentell )</Text>		
-			<Text lang="en">Layout by RadialLayout (Experimental)</Text>					
-		</Entry>
-		<Entry id="LAYOUTBYSPRING">
-			<Text lang="de">Layout durch SpringLayout ( Experimentell )</Text>		
-			<Text lang="en">Layout by SpringLayout (Experimental</Text>					
-		</Entry>
-		<Entry id="LAYOUTBYGRID">
-			<Text lang="de">Layout durch GridLayout ( Experimentell )</Text>		
-			<Text lang="en">Layout by GridLayout (Experimental</Text>					
-		</Entry>
-		<Entry id="LAYOUTBYTREE">
-			<Text lang="de">Layout durch TreeLayout ( Experimentell )</Text>		
-			<Text lang="en">Layout by TreeLayout (Experimental</Text>					
-		</Entry>
-		<Entry id="LAYOUTBYFR">
-			<Text lang="de">Layout durch FRLayout ( Experimentell )</Text>		
-			<Text lang="en">Layout by FRLayout (Experimental</Text>					
-		</Entry>
 		<Entry id="NAME">
 			<Text lang="de">Name</Text>		
 			<Text lang="en">Name</Text>					
@@ -444,10 +416,6 @@
 		<Entry id="PREFERENCES">
 			<Text lang="de">Voreinstellungen...</Text>		
 			<Text lang="en">Preferences...</Text>					
-		</Entry>
-		<Entry id="DOTPATH">
-			<Text lang="de">Pfad zu DOT</Text>		
-			<Text lang="en">Path to DOT</Text>					
 		</Entry>
 		<Entry id="ERRORLOADINGFILE">
 			<Text lang="de">Fehler beim Laden der Datei</Text>		
@@ -849,6 +817,10 @@
 		<Entry id="INCLUDESCHEMAINNAME">
 			<Text lang="de">Schema berücksichtigen</Text>		
 			<Text lang="en">Respect database schema</Text>					
+		</Entry>
+		<Entry id="INTELLIGENTLAYOUT">
+			<Text lang="de">Intelligent Layout</Text>		
+			<Text lang="en">Intelligent layout</Text>					
 		</Entry>
 	</Bundle>
 </Resource>
