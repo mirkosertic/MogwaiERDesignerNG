@@ -58,6 +58,7 @@ import net.sf.jasperreports.swing.JRViewer;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
+import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -462,7 +463,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
 			if (graph != null) {
 
-				HashMap theAttributes = new HashMap();
+				AttributeMap theAttributes = new AttributeMap();
 				Rectangle2D theBounds = GraphConstants.getBounds(aElement
 						.getCell().getAttributes());
 
@@ -472,7 +473,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 						.getHeight());
 				GraphConstants.setBounds(theAttributes, theBounds);
 
-				HashMap theNested = new HashMap();
+				AttributeMap theNested = new AttributeMap();
 				theNested.put(aElement.getCell(), theAttributes);
 			
 				graph.getGraphLayoutCache().edit(theNested, null, null, null);
