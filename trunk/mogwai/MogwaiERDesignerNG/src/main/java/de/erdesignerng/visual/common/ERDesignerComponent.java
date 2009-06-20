@@ -396,8 +396,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 					DefaultGraphCell theCell = (DefaultGraphCell) theView
 							.getCell();
 
-					VertexCellElement theElement = new VertexCellElement(
-							theView);
+					VertexCellElement theElement = new VertexCellElement(theCell);
 
 					ModelItem theModelItem = (ModelItem) theCell
 							.getUserObject();
@@ -445,16 +444,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 					evolvePosition(theElement, -minx + 20, -miny + 20);
 				}
 			}
-
-			if (positionEnhanced || getEvolvedElements().size() > 0) {
-				
-				// Repaint the whole graph
-				graph.getGraphLayoutCache().reload();
-
-				graph.addOffscreenDirty(graph
-						.fromScreen(graph.getVisibleRect()));
-				graph.repaint();
-			}
 		}
 
 		@Override
@@ -483,8 +472,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 						.getHeight());
 				GraphConstants.setBounds(theAttributes, theBounds);
 
-				aElement.getView().changeAttributes(
-						graph.getGraphLayoutCache(), theAttributes);
+				HashMap theNested = new HashMap();
+				theNested.put(aElement.getCell(), theAttributes);
+			
+				graph.getGraphLayoutCache().edit(theNested, null, null, null);
+				
+				// DO inplace editing?
+				//CellView theView = graph.getGraphLayoutCache().getMapping(aElement.getCell(),false);
+				//theView.changeAttributes(
+				//		graph.getGraphLayoutCache(), theAttributes);
 			}
 		}
 	};
