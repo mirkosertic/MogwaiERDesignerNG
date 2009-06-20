@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
-import org.jgraph.graph.CellView;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
@@ -12,18 +11,14 @@ import de.mogwai.layout.graph.Element;
 
 public class VertexCellElement extends Element {
 
-    private CellView view;
-
-    public VertexCellElement(CellView aView) {
-        view = aView;
+	private GraphCell cell;
+	
+    public VertexCellElement(GraphCell aCell) {
+        cell = aCell;
     }
     
-    public CellView getView() {
-        return view;
-    }
-
     public GraphCell getCell() {
-        return (GraphCell) view.getCell();
+        return cell;
     }
 
     @Override
