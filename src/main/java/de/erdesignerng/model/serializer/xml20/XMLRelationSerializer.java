@@ -31,13 +31,13 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLRelationSerializer extends XMLSerializer {
-    
+
     public static final XMLRelationSerializer SERIALIZER = new XMLRelationSerializer();
-    
+
     public static final String RELATION = "Relation";
 
     public static final String MAPPING = "Mapping";
-    
+
     public static final String IMPORTINGTABLEREFID = "importingtablerefid";
 
     public static final String EXPORTINGTABLEREFID = "exportingtablerefid";
@@ -45,7 +45,7 @@ public class XMLRelationSerializer extends XMLSerializer {
     public static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
 
     public static final String EXPORTINGEXPRESSIONREFID = "exportingexpressionrefid";
-    
+
     public static final String ONDELETE = "ondelete";
 
     public static final String ONUPDATE = "onupdate";
@@ -73,7 +73,7 @@ public class XMLRelationSerializer extends XMLSerializer {
             theMapping.setAttribute(EXPORTINGEXPRESSIONREFID, theKey.getSystemId());
             theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theValue.getSystemId());
         }
-        
+
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {
@@ -107,7 +107,7 @@ public class XMLRelationSerializer extends XMLSerializer {
             theRelation.setExportingTable(theTempTable);
 
             Index thePrimaryKey = theRelation.getExportingTable().getPrimarykey();
-            
+
             // Parse the mapping
             NodeList theMappings = theElement.getElementsByTagName(MAPPING);
             for (int j = 0; j < theMappings.getLength(); j++) {

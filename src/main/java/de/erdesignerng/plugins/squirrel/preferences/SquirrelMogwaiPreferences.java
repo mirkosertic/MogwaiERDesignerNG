@@ -36,17 +36,17 @@ import de.mogwai.common.i18n.ResourceHelper;
 public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
     private PreferencesPanel panel;
-    
+
     private ApplicationPreferences preferences;
-    
+
     private SquirrelMogwaiPluginDelegate plugin;
-    
+
     public SquirrelMogwaiPreferences(SquirrelMogwaiPluginDelegate aPlugin, ApplicationPreferences aPreferences) {
         preferences = aPreferences;
         plugin = aPlugin;
         panel = new PreferencesPanel();
     }
-    
+
     public void initialize(IApplication aApplication) {
         panel.initValues(preferences);
     }
@@ -57,7 +57,8 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
     public void applyChanges() {
         if (!panel.applyValues(preferences)) {
             plugin.refreshPreferences();
-            //TODO [mirkosertic] How to prevent it from closing if validation fails?
+            // TODO [mirkosertic] How to prevent it from closing if validation
+            // fails?
         }
     }
 

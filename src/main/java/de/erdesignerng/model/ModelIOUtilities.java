@@ -58,7 +58,7 @@ public final class ModelIOUtilities {
         }
         return me;
     }
-    
+
     public XMLUtils getXmlUtils() {
         return xmlUtils;
     }
@@ -88,10 +88,14 @@ public final class ModelIOUtilities {
     /**
      * Serialize a model to XML output.
      * 
-     * @param aModel the model
-     * @param aStream the output stream
-     * @throws TransformerException will be thrown in case of an error
-     * @throws IOException will be thrown in case of an error
+     * @param aModel
+     *            the model
+     * @param aStream
+     *            the output stream
+     * @throws TransformerException
+     *             will be thrown in case of an error
+     * @throws IOException
+     *             will be thrown in case of an error
      */
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
 

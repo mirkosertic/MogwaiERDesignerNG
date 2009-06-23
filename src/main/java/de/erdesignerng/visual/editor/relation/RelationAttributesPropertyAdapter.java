@@ -38,7 +38,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 
     private static final ResourceHelper BINDINGHELPER = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
-    
+
     private ResourceHelper helper;
 
     public RelationAttributesPropertyAdapter(JComponent aComponent, String aPropertyName, ResourceHelper aHelper) {

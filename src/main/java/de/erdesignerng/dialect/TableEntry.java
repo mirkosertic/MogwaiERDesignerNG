@@ -9,6 +9,7 @@ package de.erdesignerng.dialect;
 public class TableEntry extends SchemaEntry {
 
     private String tableName;
+
     private String tableType;
 
     public TableEntry(String aCatalogName, String aSchemaName, String aTableName, String aTableType) {
@@ -26,7 +27,7 @@ public class TableEntry extends SchemaEntry {
 
     /**
      * @param tableName
-     *                the tableName to set
+     *            the tableName to set
      */
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -45,7 +46,7 @@ public class TableEntry extends SchemaEntry {
      * Setzt den Wert des Attributs <code>tableType</code>.
      * 
      * @param tableType
-     *                Wert für das Attribut tableType.
+     *            Wert für das Attribut tableType.
      */
     public void setTableType(String tableType) {
         this.tableType = tableType;

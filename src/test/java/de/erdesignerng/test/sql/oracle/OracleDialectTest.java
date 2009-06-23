@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.oracle.OracleDialect;
 import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the Oracle SQL Generator. 
+ * Test for the Oracle SQL Generator.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $

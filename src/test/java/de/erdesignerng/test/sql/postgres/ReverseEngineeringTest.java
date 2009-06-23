@@ -169,8 +169,9 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             }
         }
     }
-    
-    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
             theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");

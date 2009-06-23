@@ -34,7 +34,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
     public H2SQLGenerator(H2Dialect aDialect) {
         super(aDialect);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -49,7 +49,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }   
+    }
 
     /**
      * {@inheritDoc}
@@ -69,16 +69,17 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }  
-    
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
-        
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
+            throws VetoException {
+
         Table theTable = aExistantAttribute.getOwner();
-        
+
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -93,14 +94,14 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 
         return theResult;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {
-        
+
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
@@ -121,12 +122,12 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         } else {
             theStatement.append(" NULL");
         }
-        
+
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
     }
-    
+
     @Override
     public StatementList createAddSchemaStatement(String aSchema) throws VetoException {
         StatementList theResult = new StatementList();

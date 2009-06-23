@@ -23,7 +23,7 @@ package de.erdesignerng.model.serializer.repository.entities;
 public class StringKeyValuePair {
 
     private String key;
-    
+
     private String value;
 
     /**
@@ -34,7 +34,8 @@ public class StringKeyValuePair {
     }
 
     /**
-     * @param key the key to set
+     * @param key
+     *            the key to set
      */
     public void setKey(String key) {
         this.key = key;
@@ -48,7 +49,8 @@ public class StringKeyValuePair {
     }
 
     /**
-     * @param value the value to set
+     * @param value
+     *            the value to set
      */
     public void setValue(String value) {
         this.value = value;

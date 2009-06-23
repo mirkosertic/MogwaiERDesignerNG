@@ -31,6 +31,7 @@ import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 public class ChangeDescriptor {
 
     private ChangeEntity change;
+
     private int index;
 
     public ChangeDescriptor(ChangeEntity aChange, int aIndex) {
@@ -47,7 +48,7 @@ public class ChangeDescriptor {
     public ChangeEntity getChange() {
         return change;
     }
-    
+
     public int getIndex() {
         return index;
     }

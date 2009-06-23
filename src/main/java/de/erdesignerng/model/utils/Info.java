@@ -20,10 +20,10 @@ package de.erdesignerng.model.utils;
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.i18n.ResourceHelper;
 
-
 public class Info {
-    
+
     private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+
     private String what;
 
     protected Info(String aKey, String aWhat) {

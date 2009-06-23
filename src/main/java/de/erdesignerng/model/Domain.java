@@ -51,7 +51,7 @@ public class Domain implements DataType, Cloneable {
 
     /**
      * @param name
-     *                the name to set
+     *            the name to set
      */
     public void setName(String name) {
         this.name = name;
@@ -66,7 +66,7 @@ public class Domain implements DataType, Cloneable {
 
     /**
      * @param systemId
-     *                the systemId to set
+     *            the systemId to set
      */
     public void setSystemId(String systemId) {
         this.systemId = systemId;
@@ -81,7 +81,7 @@ public class Domain implements DataType, Cloneable {
 
     /**
      * @param size
-     *                the size to set
+     *            the size to set
      */
     public void setSize(int size) {
         this.size = size;
@@ -96,7 +96,7 @@ public class Domain implements DataType, Cloneable {
 
     /**
      * @param fraction
-     *                the fraction to set
+     *            the fraction to set
      */
     public void setFraction(int fraction) {
         this.fraction = fraction;
@@ -111,7 +111,7 @@ public class Domain implements DataType, Cloneable {
 
     /**
      * @param scale
-     *                the scale to set
+     *            the scale to set
      */
     public void setScale(int scale) {
         this.scale = scale;
@@ -126,7 +126,7 @@ public class Domain implements DataType, Cloneable {
 
     /**
      * @param concreteType
-     *                the concreteType to set
+     *            the concreteType to set
      */
     public void setConcreteType(DataType concreteType) {
         this.concreteType = concreteType;
@@ -175,7 +175,7 @@ public class Domain implements DataType, Cloneable {
      * Restore the data from a clone.
      * 
      * @param aValue
-     *                the clone
+     *            the clone
      */
     public void restoreFrom(Domain aValue) {
         setName(aValue.getName());
@@ -210,7 +210,7 @@ public class Domain implements DataType, Cloneable {
     public int compareTo(DataType o) {
         return name.compareTo(o.getName());
     }
-    
+
     /**
      * {@inheritDoc}
      */

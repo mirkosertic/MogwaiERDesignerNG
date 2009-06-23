@@ -39,7 +39,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     private String defaultValue;
 
     private String extra;
-    
+
     /**
      * @return the nullable
      */
@@ -220,16 +220,17 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     /**
      * @param extra
-     *                the extra to set
+     *            the extra to set
      */
     public void setExtra(String extra) {
         this.extra = extra;
     }
 
     /**
-     * Test if the attribute was renamed. 
+     * Test if the attribute was renamed.
      * 
-     * @param aAttribute the new attribute
+     * @param aAttribute
+     *            the new attribute
      * @return true if it was renamed, else false
      */
     public boolean isRenamed(Attribute aAttribute) {

@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model;
 
-
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-02-01 21:05:35 $

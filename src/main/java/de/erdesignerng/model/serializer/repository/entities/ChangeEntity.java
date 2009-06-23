@@ -35,7 +35,8 @@ public class ChangeEntity extends ModelEntity {
     }
 
     /**
-     * @param statements the statements to set
+     * @param statements
+     *            the statements to set
      */
     public void setStatements(List<String> statements) {
         this.statements = statements;

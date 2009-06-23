@@ -37,21 +37,22 @@ import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 import de.erdesignerng.model.serializer.repository.entities.ViewEntity;
 
 /**
- * Template class for hibernate operations. 
+ * Template class for hibernate operations.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  */
 public abstract class HibernateTemplate {
-    
+
     private Class dialectClass;
+
     private Connection connection;
-    
+
     public HibernateTemplate(Class aDialectClass, Connection aConnection) {
         dialectClass = aDialectClass;
         connection = aConnection;
     }
-    
+
     protected Configuration createConfiguration(Class aHibernateDialectClass) {
         Configuration theConfiguration = new Configuration();
         theConfiguration.addClass(DomainEntity.class);
@@ -76,10 +77,10 @@ public abstract class HibernateTemplate {
         SessionFactory theSessionFactory = theConfiguration.buildSessionFactory();
 
         return theSessionFactory.openSession(aConnection, AuditInterceptor.INSTANCE);
-    }    
-    
+    }
+
     public abstract Object doInSession(Session aSession);
-    
+
     public Object execute() throws Exception {
         ThreadbasedConnectionProvider.initializeForThread(connection);
         Session theSession = null;
@@ -89,17 +90,17 @@ public abstract class HibernateTemplate {
 
         ClassLoader theLoader = HibernateTemplate.class.getClassLoader();
         theCurrentThread.setContextClassLoader(theLoader);
-        
+
         try {
 
             theSession = createSession(connection, dialectClass);
-        
+
             theTx = theSession.beginTransaction();
-            
+
             Object theResult = doInSession(theSession);
 
             theTx.commit();
-            
+
             return theResult;
 
         } catch (Exception e) {
@@ -115,6 +116,6 @@ public abstract class HibernateTemplate {
             }
 
             ThreadbasedConnectionProvider.cleanup();
-        }            
+        }
     }
 }

@@ -20,7 +20,6 @@ package de.erdesignerng.dialect;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Informations to do a model conversion.
  * 

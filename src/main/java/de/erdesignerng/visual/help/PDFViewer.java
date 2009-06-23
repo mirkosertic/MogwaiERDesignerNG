@@ -156,7 +156,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * utility method to get an icon from the resources of this class
      * 
      * @param name
-     *                the name of the icon
+     *            the name of the icon
      * @return the icon, or null if the icon wasn't found.
      */
     public Icon getIcon(String name) {
@@ -309,7 +309,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * panel.
      * 
      * @param useThumbs
-     *                true if the thumb panel should exist, false if not.
+     *            true if the thumb panel should exist, false if not.
      */
     public PDFViewer(Component aParent, boolean useThumbs, String aTitle) {
         super(WindowHelper.findRootFrame(aParent), aTitle);
@@ -456,7 +456,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * presenter.
      * 
      * @param pagenum
-     *                the page to display
+     *            the page to display
      */
     public void gotoPage(int pagenum) {
         if (pagenum < 0) {
@@ -471,7 +471,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * Changes the displayed page.
      * 
      * @param pagenum
-     *                the page to display
+     *            the page to display
      */
     public void forceGotoPage(int pagenum) {
         if (pagenum <= 0) {
@@ -523,7 +523,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
          * Creates a new PagePreparer to prepare the page after the current one.
          * 
          * @param waitforPage
-         *                the current page number, 0 based
+         *            the current page number, 0 based
          */
         public PagePreparer(int waitforPage) {
             setDaemon(true);
@@ -630,12 +630,11 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * </p>
      * 
      * <p>
-     * <b>Note:</b> Mapping the file locks the file until the PDFFile is
-     * closed.
+     * <b>Note:</b> Mapping the file locks the file until the PDFFile is closed.
      * </p>
      * 
      * @param file
-     *                the file to open
+     *            the file to open
      * @throws IOException
      */
     public void openFile(File file) throws IOException {
@@ -662,7 +661,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * </p>
      * 
      * @param file
-     *                the file to open
+     *            the file to open
      */
     public void openFileUnMapped(File file) throws IOException {
         DataInputStream istr = null;
@@ -822,7 +821,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * Open a local file, given a string filename
      * 
      * @param name
-     *                the name of the file to open
+     *            the name of the file to open
      */
     public void doOpen(String name) {
         try {
@@ -959,9 +958,9 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * Enter full screen mode
      * 
      * @param force
-     *                true if the user should be prompted for a screen to use in
-     *                a multiple-monitor setup. If false, the user will only be
-     *                prompted once.
+     *            true if the user should be prompted for a screen to use in a
+     *            multiple-monitor setup. If false, the user will only be
+     *            prompted once.
      */
     public void doFullScreen(boolean force) {
         setFullScreenMode(fullScreen == null, force);
@@ -1049,10 +1048,10 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * Starts or ends full screen mode.
      * 
      * @param full
-     *                true to enter full screen mode, false to leave
+     *            true to enter full screen mode, false to leave
      * @param force
-     *                true if the user should be prompted for a screen to use
-     *                the second time full screen mode is entered.
+     *            true if the user should be prompted for a screen to use the
+     *            second time full screen mode is entered.
      */
     public void setFullScreenMode(boolean full, boolean force) {
         // curpage= -1;
@@ -1204,7 +1203,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
             }
         }
     }
-    
+
     @Override
     public void setVisible(boolean bStatus) {
         if (bStatus) {

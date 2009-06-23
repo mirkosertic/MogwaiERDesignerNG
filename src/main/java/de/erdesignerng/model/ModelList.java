@@ -21,8 +21,9 @@ package de.erdesignerng.model;
  * Interface for all sorts of lists in the model.
  * 
  * @author msertic
- *
- * @param <T> the list element type
+ * 
+ * @param <T>
+ *            the list element type
  */
 public interface ModelList<T> {
 

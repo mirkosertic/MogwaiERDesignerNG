@@ -33,11 +33,11 @@ public class CommentTool extends BaseTool {
     public CommentTool(ERDesignerGraph aGraph) {
         super(aGraph);
     }
-    
+
     @Override
     public boolean isForceMarqueeEvent(MouseEvent event) {
         return true;
-    }       
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {

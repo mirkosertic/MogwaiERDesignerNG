@@ -29,14 +29,14 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLIndexSerializer extends XMLSerializer {
-    
+
     public static final XMLIndexSerializer SERIALIZER = new XMLIndexSerializer();
-    
+
     public static final String INDEX = "Index";
 
     public static final String INDEXTYPE = "indextype";
-    
-    public static final String INDEXATTRIBUTE = "Indexattribute";    
+
+    public static final String INDEXATTRIBUTE = "Indexattribute";
 
     public void serialize(Index aIndex, Document aDocument, Element aRootElement) {
         Element theIndexElement = addElement(aDocument, aRootElement, INDEX);

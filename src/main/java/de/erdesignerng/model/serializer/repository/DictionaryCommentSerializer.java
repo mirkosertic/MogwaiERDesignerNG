@@ -38,8 +38,9 @@ public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
 
     public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity.getComments());
-        
+        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity
+                .getComments());
+
         for (Comment theComment : aModel.getComments()) {
             boolean existing = true;
             CommentEntity theExisting = (CommentEntity) theComments.get(theComment.getSystemId());
@@ -61,7 +62,7 @@ public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
 
             Comment theComment = new Comment();
             theComment.setOwner(aModel);
-            
+
             copyBaseAttributes(theCommentEntity, theComment);
 
             aModel.getComments().add(theComment);

@@ -46,7 +46,7 @@ import de.erdesignerng.modificationtracker.ModelModificationTracker;
 public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
-    
+
     public RepositoryEntryDesciptor serialize(final RepositoryEntryDesciptor aDesc, final Model aModel,
             Connection aConnection, Class aHibernateDialectClass) throws Exception {
 
@@ -156,12 +156,12 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
      * Get the available repository entries.
      * 
      * @param aDialectClass
-     *                the hibernate dialect class
+     *            the hibernate dialect class
      * @param aConnection
-     *                the jdbc connection
+     *            the jdbc connection
      * @return list of entries
      * @throws Exception
-     *                 will be thrown in case of an exception
+     *             will be thrown in case of an exception
      */
     public List<RepositoryEntryDesciptor> getRepositoryEntries(Class aDialectClass, Connection aConnection)
             throws Exception {
@@ -192,14 +192,14 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
      * Read a specific repository entity.
      * 
      * @param aHibernateDialectClass
-     *                the hibernate dialect class
+     *            the hibernate dialect class
      * @param aConnection
-     *                the connection
+     *            the connection
      * @param aCurrentRepositoryEntry
-     *                the repository descriptor
+     *            the repository descriptor
      * @return the entity
      * @throws Exception
-     *                 will be thrown in case of an error
+     *             will be thrown in case of an error
      */
     public RepositoryEntity getRepositoryEntity(Class aHibernateDialectClass, Connection aConnection,
             final RepositoryEntryDesciptor aCurrentRepositoryEntry) throws Exception {

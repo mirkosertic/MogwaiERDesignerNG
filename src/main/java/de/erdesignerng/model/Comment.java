@@ -18,18 +18,18 @@
 package de.erdesignerng.model;
 
 /**
- * A model comment. 
+ * A model comment.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:57 $
  */
 public class Comment extends OwnedModelItem<Model> {
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return getComment();
-    }    
+    }
 }

@@ -38,7 +38,7 @@ public class CommentCell extends DefaultGraphCell implements ModelCell<Comment> 
     public CommentCell(Comment aTable) {
         super(aTable);
 
-        GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));        
+        GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
         GraphConstants.setOpaque(getAttributes(), false);
         GraphConstants.setAutoSize(getAttributes(), true);
         GraphConstants.setResize(getAttributes(), true);
@@ -64,7 +64,8 @@ public class CommentCell extends DefaultGraphCell implements ModelCell<Comment> 
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
                 ModelItem.PROPERTY_LOCATION));
         if (thePoint != null) {
-            GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), 100, 100));
+            GraphConstants.setBounds(getAttributes(),
+                    new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), 100, 100));
         }
     }
 }

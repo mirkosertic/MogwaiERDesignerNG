@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the MySQL SQL Generator. 
+ * Test for the MySQL SQL Generator.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:31 $

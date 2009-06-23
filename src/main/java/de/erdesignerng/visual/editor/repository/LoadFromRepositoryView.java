@@ -29,13 +29,13 @@ import de.mogwai.common.client.looks.components.DefaultLabel;
 
 /**
  * View for the save to dictionary dialog.
- *  
+ * 
  * @author msertic
  */
 public class LoadFromRepositoryView extends JPanel {
 
     private DefaultComboBox existingNameBox = new DefaultComboBox();
-    
+
     private DefaultButton okButton = new DefaultButton();
 
     private DefaultButton cancelButton = new DefaultButton();

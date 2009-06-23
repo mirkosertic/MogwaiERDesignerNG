@@ -56,7 +56,7 @@ public class XMLModelSerializer extends XMLSerializer implements CommonXMLElemen
     protected static final String SUBJECTAREAS = "Subjectareas";
 
     protected static final String COMMENTS = "Comments";
-    
+
     protected static final String CURRENT_VERSION = "1.0";
 
     public void serialize(Model aModel, Document aDocument) {

@@ -22,14 +22,15 @@ import java.sql.Connection;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
- * Implementation of a generic ConnectionProvider. 
+ * Implementation of a generic ConnectionProvider.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  */
 public class GenericConnectionProvider implements ConnectionProvider {
-    
+
     private Connection connection;
+
     private String statementSeparator;
 
     public GenericConnectionProvider(Connection aConnection, String aStatementSeparator) {

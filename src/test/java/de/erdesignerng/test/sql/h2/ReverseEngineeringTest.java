@@ -106,12 +106,12 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
 
             theView = theModel.getViews().findByNameAndSchema("VIEW1", "SCHEMAA");
             assertTrue(theView == null);
-            
+
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             System.out.println(theResult);
-            
+
             String theReference = readResourceFile("result.sql");
             assertTrue(theResult.equals(theReference));
 
@@ -123,8 +123,9 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             }
         }
     }
-    
-    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, SQLException, IOException {
         Class.forName("org.hsqldb.jdbcDriver").newInstance();
         Connection theConnection = null;
         try {

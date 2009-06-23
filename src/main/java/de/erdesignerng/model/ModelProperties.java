@@ -25,7 +25,7 @@ public class ModelProperties implements Serializable {
     public void setProperty(String aName, String aValue) {
         properties.put(aName, aValue);
     }
-    
+
     public void setProperty(String aName, boolean aValue) {
         properties.put(aName, Boolean.toString(aValue));
     }

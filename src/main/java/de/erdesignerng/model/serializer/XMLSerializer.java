@@ -83,5 +83,5 @@ public class XMLSerializer implements CommonXMLElementsAndAttributes {
 
             aModelItem.getProperties().setProperty(theElement.getAttribute(NAME), theElement.getAttribute(VALUE));
         }
-    }    
+    }
 }

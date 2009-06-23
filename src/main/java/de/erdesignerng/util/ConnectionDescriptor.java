@@ -38,7 +38,7 @@ public class ConnectionDescriptor {
     private String driver;
 
     private String password;
-    
+
     private boolean promptForPassword;
 
     public ConnectionDescriptor(String aAlias, String aDialect, String aURL, String aUserName, String aDriver,
@@ -86,14 +86,14 @@ public class ConnectionDescriptor {
     public String getPassword() {
         return password;
     }
-    
+
     /**
      * @return the alias
      */
     public String getAlias() {
         return alias;
     }
-    
+
     public boolean isPromptForPassword() {
         return promptForPassword;
     }

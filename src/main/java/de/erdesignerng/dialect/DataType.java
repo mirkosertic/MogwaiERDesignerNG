@@ -24,7 +24,7 @@ import de.erdesignerng.model.Attribute;
 public interface DataType extends Comparable<DataType>, Serializable {
 
     String getName();
-    
+
     boolean isDomain();
 
     boolean supportsSize();
@@ -36,10 +36,10 @@ public interface DataType extends Comparable<DataType>, Serializable {
     boolean isJDBCStringType();
 
     String createTypeDefinitionFor(Attribute aAttribute);
-    
+
     boolean isIdentity();
-    
+
     int[] getJDBCType();
-    
+
     String getDefinition();
 }

@@ -77,7 +77,7 @@ public class ViewCellView extends VertexView {
         private View view;
 
         private boolean selected;
-        
+
         private boolean includeComments;
 
         private DisplayOrder displayOrder;

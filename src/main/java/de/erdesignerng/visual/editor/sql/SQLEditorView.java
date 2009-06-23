@@ -60,7 +60,7 @@ public class SQLEditorView extends JPanel {
      * @return the initialized component
      */
     public DefaultList getSqlList() {
-        
+
         if (sqlList == null) {
             sqlList = new DefaultList();
             sqlList.setName("sqllist");
@@ -90,7 +90,7 @@ public class SQLEditorView extends JPanel {
             buttonPanel.add(getDeleteButton(), cons.xywh(1, 1, 1, 1));
             buttonPanel.add(getExecuteButton(), cons.xywh(3, 1, 1, 1));
             buttonPanel.add(getSaveToFileButton(), cons.xywh(5, 1, 1, 1));
-            buttonPanel.add(getCloseButton(), cons.xywh(1, 3, 1, 1));            
+            buttonPanel.add(getCloseButton(), cons.xywh(1, 3, 1, 1));
             buttonPanel.setName("buttonpanel");
         }
 
@@ -130,7 +130,7 @@ public class SQLEditorView extends JPanel {
 
         return executeButton;
     }
-    
+
     /**
      * Getter method for component deleteButton.
      * 
@@ -147,7 +147,6 @@ public class SQLEditorView extends JPanel {
 
         return deleteButton;
     }
-    
 
     /**
      * Getter method for component saveToFileButton.

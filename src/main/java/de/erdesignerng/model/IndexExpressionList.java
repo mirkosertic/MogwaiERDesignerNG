@@ -22,9 +22,10 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 
     /**
-     * Find an index expression by attribute name. 
+     * Find an index expression by attribute name.
      * 
-     * @param aAttributeName the name of the attribute
+     * @param aAttributeName
+     *            the name of the attribute
      * @return the expression or null if nothing was found
      */
     public IndexExpression findByAttributeName(String aAttributeName) {
@@ -40,9 +41,10 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
     }
 
     /**
-     * Find an index expression by is referred attribute. 
+     * Find an index expression by is referred attribute.
      * 
-     * @param aAttribute the attribute
+     * @param aAttribute
+     *            the attribute
      * @return the expression or null if nothing was found
      */
     public IndexExpression findByAttribute(Attribute aAttribute) {
@@ -53,14 +55,15 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
         }
         return null;
     }
-    
 
     /**
-     * Add an expression for an attribute to the list. 
+     * Add an expression for an attribute to the list.
      * 
-     * @param aAttribute the attribute
+     * @param aAttribute
+     *            the attribute
      * @return the created IndexExpression
-     * @throws ElementAlreadyExistsException is thrown is the attribute is already part of this index
+     * @throws ElementAlreadyExistsException
+     *             is thrown is the attribute is already part of this index
      */
     public IndexExpression addExpressionFor(Attribute aAttribute) throws ElementAlreadyExistsException {
         for (IndexExpression theExpression : this) {
@@ -75,9 +78,10 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
     }
 
     /**
-     * Add an expression for an attribute to the list. 
+     * Add an expression for an attribute to the list.
      * 
-     * @param aColumnExpression the expression
+     * @param aColumnExpression
+     *            the expression
      * @return the created IndexExpression
      */
     public IndexExpression addExpressionFor(String aColumnExpression) {

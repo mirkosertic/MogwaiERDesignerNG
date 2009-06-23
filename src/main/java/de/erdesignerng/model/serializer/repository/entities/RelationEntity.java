@@ -46,7 +46,7 @@ public class RelationEntity extends ModelEntity {
 
     /**
      * @param importingTable
-     *                the importingTable to set
+     *            the importingTable to set
      */
     public void setImportingTable(String importingTable) {
         this.importingTable = importingTable;
@@ -61,7 +61,7 @@ public class RelationEntity extends ModelEntity {
 
     /**
      * @param exportingTable
-     *                the exportingTable to set
+     *            the exportingTable to set
      */
     public void setExportingTable(String exportingTable) {
         this.exportingTable = exportingTable;
@@ -76,7 +76,7 @@ public class RelationEntity extends ModelEntity {
 
     /**
      * @param onDelete
-     *                the onDelete to set
+     *            the onDelete to set
      */
     public void setOnDelete(int onDelete) {
         this.onDelete = onDelete;
@@ -91,7 +91,7 @@ public class RelationEntity extends ModelEntity {
 
     /**
      * @param onUpdate
-     *                the onUpdate to set
+     *            the onUpdate to set
      */
     public void setOnUpdate(int onUpdate) {
         this.onUpdate = onUpdate;
@@ -105,7 +105,8 @@ public class RelationEntity extends ModelEntity {
     }
 
     /**
-     * @param mapping the mapping to set
+     * @param mapping
+     *            the mapping to set
      */
     public void setMapping(List<StringKeyValuePair> mapping) {
         this.mapping = mapping;

@@ -34,7 +34,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 public class TableEntryPropertyAdapter extends PropertyAdapter {
 
     private ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
-    
+
     public TableEntryPropertyAdapter(DefaultCheckBoxList aComponent, String aPropertyName) {
         super(aComponent, aPropertyName);
     }
@@ -57,7 +57,7 @@ public class TableEntryPropertyAdapter extends PropertyAdapter {
         theIndex.getTableEntries().addAll(theComponent.getSelectedItems());
 
     }
-    
+
     @Override
     public List<ValidationError> validate() {
         List<ValidationError> theResult = new ArrayList<ValidationError>();

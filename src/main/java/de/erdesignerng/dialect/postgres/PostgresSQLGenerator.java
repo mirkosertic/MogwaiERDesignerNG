@@ -34,7 +34,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
     public PostgresSQLGenerator(PostgresDialect aDialect) {
         super(aDialect);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -49,7 +49,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }   
+    }
 
     /**
      * {@inheritDoc}
@@ -69,16 +69,17 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }  
-    
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
-        
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
+            throws VetoException {
+
         Table theTable = aExistantAttribute.getOwner();
-        
+
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -93,14 +94,14 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
         return theResult;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {
-        
+
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
@@ -132,5 +133,5 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
         }
 
         return theResult;
-    }        
+    }
 }

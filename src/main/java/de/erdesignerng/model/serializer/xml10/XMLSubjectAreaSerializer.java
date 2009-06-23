@@ -97,7 +97,7 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
 
                     theSubjectArea.getTables().add(theTable);
                 }
-                
+
                 if (!StringUtils.isEmpty(theCommentId)) {
                     Comment theComment = aModel.getComments().findBySystemId(theCommentId);
                     if (theComment == null) {

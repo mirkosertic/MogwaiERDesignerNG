@@ -37,12 +37,12 @@ public final class MavenPropertiesLocator {
      * Get the pom properties for a defined artifact.
      * 
      * @param aGroupId
-     *                the groupid
+     *            the groupid
      * @param aArtifactId
-     *                the artifactid
+     *            the artifactid
      * @return the properties
      * @throws IOException
-     *                 will be thrown in case of an error
+     *             will be thrown in case of an error
      */
     public static Properties locatePropertiesFor(String aGroupId, String aArtifactId) throws IOException {
 
@@ -58,12 +58,12 @@ public final class MavenPropertiesLocator {
      * Get the version info for a defined artifact.
      * 
      * @param aGroupId
-     *                the group id
+     *            the group id
      * @param aArtifactId
-     *                the artifactid
+     *            the artifactid
      * @return the version info
      * @throws IOException
-     *                 will be thrown in case of an error
+     *             will be thrown in case of an error
      */
     public static String getVersionFor(String aGroupId, String aArtifactId) throws IOException {
         Properties theProperties = locatePropertiesFor(aGroupId, aArtifactId);

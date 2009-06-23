@@ -28,7 +28,7 @@ import java.util.List;
 public class IndexEntity extends ModelEntity {
 
     private int type;
-    
+
     private List<IndexExpressionEntity> expressions = new ArrayList<IndexExpressionEntity>();
 
     /**
@@ -39,7 +39,8 @@ public class IndexEntity extends ModelEntity {
     }
 
     /**
-     * @param type the type to set
+     * @param type
+     *            the type to set
      */
     public void setType(int type) {
         this.type = type;

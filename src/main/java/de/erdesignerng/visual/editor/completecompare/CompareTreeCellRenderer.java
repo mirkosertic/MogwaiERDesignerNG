@@ -44,31 +44,31 @@ public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
     }
 
     @Override
-    public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean selected,
-            boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    
+    public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean selected, boolean expanded,
+            boolean leaf, int row, boolean hasFocus) {
+
         DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
-    
+
         setLeafIcon(leaf ? matchingIcon : null);
         setOpenIcon(leaf ? matchingIcon : null);
         setClosedIcon(leaf ? matchingIcon : null);
-    
+
         if (theNode.getUserObject() instanceof MissingInfo) {
-    
+
             setLeafIcon(missingIcon);
             setOpenIcon(missingIcon);
             setClosedIcon(missingIcon);
-    
+
         }
-    
+
         if (theNode.getUserObject() instanceof RedefinedInfo) {
-    
+
             setLeafIcon(missingIcon);
             setOpenIcon(missingIcon);
             setClosedIcon(missingIcon);
-    
+
         }
-    
+
         return super.getTreeCellRendererComponent(aTree, aValue, selected, expanded, leaf, row, hasFocus);
     }
 }

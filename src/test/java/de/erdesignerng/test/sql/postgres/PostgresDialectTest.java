@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the PostgreSQL SQL Generator. 
+ * Test for the PostgreSQL SQL Generator.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:31 $

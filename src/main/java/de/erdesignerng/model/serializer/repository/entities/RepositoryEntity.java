@@ -53,7 +53,7 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param domains
-     *                the domains to set
+     *            the domains to set
      */
     public void setDomains(List<DomainEntity> domains) {
         this.domains = domains;
@@ -68,7 +68,7 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param tables
-     *                the tables to set
+     *            the tables to set
      */
     public void setTables(List<TableEntity> tables) {
         this.tables = tables;
@@ -83,7 +83,7 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param relations
-     *                the relations to set
+     *            the relations to set
      */
     public void setRelations(List<RelationEntity> relations) {
         this.relations = relations;
@@ -98,7 +98,7 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param comments
-     *                the comments to set
+     *            the comments to set
      */
     public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
@@ -113,7 +113,7 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param subjectareas
-     *                the subjectareas to set
+     *            the subjectareas to set
      */
     public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
         this.subjectareas = subjectareas;
@@ -128,7 +128,7 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param changes
-     *                the changes to set
+     *            the changes to set
      */
     public void setChanges(List<ChangeEntity> changes) {
         this.changes = changes;
@@ -143,12 +143,12 @@ public class RepositoryEntity extends ModelEntity {
 
     /**
      * @param dialect
-     *                the dialect to set
+     *            the dialect to set
      */
     public void setDialect(String dialect) {
         this.dialect = dialect;
     }
-    
+
     public List<ViewEntity> getViews() {
         return views;
     }
@@ -161,9 +161,9 @@ public class RepositoryEntity extends ModelEntity {
      * Create a changelog.
      * 
      * @param aSource
-     *                the source change ( included )
+     *            the source change ( included )
      * @param aDestination
-     *                the destination change ( included )
+     *            the destination change ( included )
      * @return the statements
      */
     public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {

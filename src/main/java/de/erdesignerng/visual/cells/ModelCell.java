@@ -27,9 +27,9 @@ import java.util.Map;
  *            the type
  */
 public interface ModelCell<T> {
-    
+
     /**
-     * Get the user object assigned to the cell. 
+     * Get the user object assigned to the cell.
      * 
      * @return the user object
      */

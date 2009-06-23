@@ -42,12 +42,14 @@ public class LoadFromRepositoryEditor extends BaseEditor {
     private LoadFromRepositoryView view = new LoadFromRepositoryView();
 
     private ApplicationPreferences preferences;
-    
-    private Connection connection;
-    
-    private BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(new LoadFromRepositoryDataModel());
 
-    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection, List<RepositoryEntryDesciptor> aEntries) {
+    private Connection connection;
+
+    private BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
+            new LoadFromRepositoryDataModel());
+
+    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection,
+            List<RepositoryEntryDesciptor> aEntries) {
         super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
@@ -55,9 +57,9 @@ public class LoadFromRepositoryEditor extends BaseEditor {
             theModel.addElement(theEntry);
         }
         view.getExistingNameBox().setModel(theModel);
-        
+
         initialize();
-        
+
         bindingInfo.addBinding("entry", view.getExistingNameBox(), true);
         bindingInfo.configure();
 
@@ -66,7 +68,7 @@ public class LoadFromRepositoryEditor extends BaseEditor {
     }
 
     private void initialize() {
-        
+
         view.getOkButton().setAction(okAction);
         view.getCancelButton().setAction(cancelAction);
 
@@ -89,13 +91,13 @@ public class LoadFromRepositoryEditor extends BaseEditor {
     protected void commandOk() {
 
         if (bindingInfo.validate().size() == 0) {
-            
+
             bindingInfo.view2model();
-            
+
             setModalResult(DialogConstants.MODAL_RESULT_OK);
         }
     }
- 
+
     /**
      * Get the data model.
      * 

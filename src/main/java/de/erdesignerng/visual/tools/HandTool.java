@@ -51,11 +51,11 @@ public class HandTool extends BaseTool {
 
     @Override
     public boolean isForceMarqueeEvent(MouseEvent e) {
-        
+
         if (SwingUtilities.isRightMouseButton(e) && !e.isAltDown()) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -71,7 +71,7 @@ public class HandTool extends BaseTool {
                 return;
             }
         }
-        super.mousePressed(e);        
+        super.mousePressed(e);
     }
 
     public DefaultPopupMenu createPopupMenu(Point aPoint, final Object[] aCells) {
@@ -133,12 +133,11 @@ public class HandTool extends BaseTool {
 
             theMenu.add(theAddItem);
         }
-        
+
         if (theHideableCells.size() > 0) {
             theMenu.addSeparator();
 
-            DefaultAction theHideAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
-                    ERDesignerBundle.HIDE);
+            DefaultAction theHideAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
             DefaultMenuItem theAddItem = new DefaultMenuItem(theHideAction);
             theHideAction.addActionListener(new ActionListener() {
 

@@ -121,7 +121,7 @@ public class PostgresDialect extends SQL92Dialect {
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.PostgreSQLDialect.class;
     }
-    
+
     @Override
     public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
         return new PostgresDataType(aName, aDefinition, aJdbcType);
@@ -130,5 +130,5 @@ public class PostgresDialect extends SQL92Dialect {
     @Override
     public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
         return new PostgresDataType(aName, aDefinition, aIdentity, aJdbcType);
-    }    
+    }
 }

@@ -53,8 +53,9 @@ public class Model20XMLPersister implements CommonXMLElementsAndAttributes {
 
     /**
      * Test if the persister supports a document version.
-     *  
-     * @param aDocument the document
+     * 
+     * @param aDocument
+     *            the document
      * @return true if yes, else false
      */
     public static boolean supportsDocument(Document aDocument) {

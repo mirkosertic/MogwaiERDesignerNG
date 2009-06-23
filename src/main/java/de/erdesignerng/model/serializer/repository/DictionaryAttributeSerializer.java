@@ -40,7 +40,7 @@ import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryAttributeSerializer SERIALIZER = new DictionaryAttributeSerializer();
-    
+
     protected void copyExtendedAttributes(Attribute aSource, AttributeEntity aDestination) {
         aDestination.setDatatype(null);
         aDestination.setDomain(null);
@@ -57,9 +57,9 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
         aDestination.setDefaultValue(aSource.getDefaultValue());
         aDestination.setExtra(aSource.getExtra());
     }
-    
+
     protected void copyExtendedAttributes(AttributeEntity aSource, Attribute aDestination, Model aModel) {
-        
+
         if (!StringUtils.isEmpty(aSource.getDomain())) {
             aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomain()));
         } else {
@@ -71,12 +71,12 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
         aDestination.setNullable(aSource.isNullable());
         aDestination.setDefaultValue(aSource.getDefaultValue());
         aDestination.setExtra(aSource.getExtra());
-    }    
-    
+    }
+
     public void serialize(Table aTable, TableEntity aTableEntity, Session aSession) {
 
         Set<AttributeEntity> theRemovedAttributes = new HashSet<AttributeEntity>();
-        
+
         Map<String, AttributeEntity> theAttributes = new HashMap<String, AttributeEntity>();
         for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
             Attribute theAttribute = aTable.getAttributes().findBySystemId(theAttributeEntity.getSystemId());
@@ -86,9 +86,9 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
                 theAttributes.put(theAttributeEntity.getSystemId(), theAttributeEntity);
             }
         }
-        
+
         aTableEntity.getAttributes().removeAll(theRemovedAttributes);
-        
+
         for (Attribute theAttribute : aTable.getAttributes()) {
             boolean existing = true;
             AttributeEntity theEntity = theAttributes.get(theAttribute.getSystemId());
@@ -96,25 +96,25 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
                 theEntity = new AttributeEntity();
                 existing = false;
             }
-            
+
             copyBaseAttributes(theAttribute, theEntity);
             copyExtendedAttributes(theAttribute, theEntity);
-            
+
             if (!existing) {
                 aTableEntity.getAttributes().add(theEntity);
             }
         }
-        
+
     }
 
     public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
         for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
-            
+
             Attribute theAttribute = new Attribute();
-            
+
             copyBaseAttributes(theAttributeEntity, theAttribute);
             copyExtendedAttributes(theAttributeEntity, theAttribute, aModel);
-            
+
             theAttribute.setOwner(aTable);
             aTable.getAttributes().add(theAttribute);
         }

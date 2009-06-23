@@ -94,17 +94,17 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
         aDestination.setOnUpdate(intToCascadeType(aSource.getOnUpdate()));
         aDestination.setOnDelete(intToCascadeType(aSource.getOnDelete()));
 
-        
         aDestination.getMapping().clear();
         Index thePrimaryKey = aDestination.getExportingTable().getPrimarykey();
-        
+
         for (StringKeyValuePair theEntry : aSource.getMapping()) {
             IndexExpression theExpression = thePrimaryKey.getExpressions().findBySystemId(theEntry.getKey());
             if (theExpression == null) {
                 throw new RuntimeException("Cannot find index expression" + theEntry.getKey());
             }
 
-            Attribute theImportingAttribute = aDestination.getImportingTable().getAttributes().findBySystemId(theEntry.getValue());
+            Attribute theImportingAttribute = aDestination.getImportingTable().getAttributes().findBySystemId(
+                    theEntry.getValue());
 
             if (theImportingAttribute == null) {
                 throw new RuntimeException("Cannot find attribute" + theEntry.getValue());
@@ -116,7 +116,8 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 
     public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionary) {
 
-        Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), aDictionary.getRelations()); 
+        Map<String, ModelEntity> theRelations = deletedRemovedInstances(aModel.getRelations(), aDictionary
+                .getRelations());
 
         for (Relation theRelation : aModel.getRelations()) {
             boolean existing = true;

@@ -30,7 +30,7 @@ import de.erdesignerng.model.View;
 public class HistoryModificationTracker implements ModelModificationTracker {
 
     private Model model;
-    
+
     private StatementList statements = new StatementList();
 
     public HistoryModificationTracker(Model aModel) {

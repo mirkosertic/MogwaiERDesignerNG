@@ -106,7 +106,7 @@ public class OracleDialect extends SQL92Dialect {
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.Oracle8iDialect.class;
     }
-    
+
     @Override
     public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
         return new OracleDataType(aName, aDefinition, aJdbcType);

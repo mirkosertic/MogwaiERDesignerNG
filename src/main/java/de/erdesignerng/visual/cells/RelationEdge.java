@@ -45,7 +45,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         GraphConstants.setLineBegin(getAttributes(), GraphConstants.ARROW_DIAMOND);
         GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
         GraphConstants.setBendable(getAttributes(), true);
-        
+
         setSource(aImporting.getChildAt(0));
         setTarget(aExporting.getChildAt(0));
     }

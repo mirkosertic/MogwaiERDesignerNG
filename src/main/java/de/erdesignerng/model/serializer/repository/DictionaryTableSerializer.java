@@ -39,7 +39,7 @@ public class DictionaryTableSerializer extends DictionaryBaseSerializer {
     public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionary) {
 
         Map<String, ModelEntity> theTables = deletedRemovedInstances(aModel.getTables(), aDictionary.getTables());
-        
+
         for (Table theTable : aModel.getTables()) {
             boolean existing = true;
             TableEntity theExisting = (TableEntity) theTables.get(theTable.getSystemId());
@@ -49,7 +49,7 @@ public class DictionaryTableSerializer extends DictionaryBaseSerializer {
             }
 
             copyBaseAttributes(theTable, theExisting);
-            
+
             theExisting.setSchema(theTable.getSchema());
 
             DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
@@ -67,9 +67,9 @@ public class DictionaryTableSerializer extends DictionaryBaseSerializer {
 
             Table theTable = new Table();
             theTable.setOwner(aModel);
-            
+
             copyBaseAttributes(theTableEntity, theTable);
-            
+
             theTable.setSchema(theTableEntity.getSchema());
 
             DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);

@@ -20,7 +20,7 @@ package de.erdesignerng.generator.openxava;
 public class OpenXavaTypeMap {
 
     private String javaType;
-    
+
     private String stereoType;
 
     public String getJavaType() {

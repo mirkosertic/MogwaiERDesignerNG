@@ -37,32 +37,33 @@ import de.erdesignerng.model.serializer.xml10.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**
- * Test for XML based model io. 
+ * Test for XML based model io.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-14 21:10:04 $
  */
 public class XML10IOTest extends BaseERDesignerTestCaseImpl {
 
-    public void testLoadXML10Model() throws ParserConfigurationException, SAXException, IOException, TransformerException {
-        
+    public void testLoadXML10Model() throws ParserConfigurationException, SAXException, IOException,
+            TransformerException {
+
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
         Document theDoc = theBuilder.parse(getClass().getResourceAsStream("examplemodel.mxm"));
         Model theModel = XMLModelSerializer.SERIALIZER.deserializeFrom(theDoc);
-        
+
         Document theEmptyDoc = theBuilder.newDocument();
         XMLModelSerializer.SERIALIZER.serialize(theModel, theEmptyDoc);
-        
+
         StringWriter theStringWriter = new StringWriter();
-        
+
         TransformerFactory theTransformerFactory = TransformerFactory.newInstance();
         Transformer theTransformer = theTransformerFactory.newTransformer();
         theTransformer.transform(new DOMSource(theEmptyDoc), new StreamResult(theStringWriter));
 
         String theOriginalFile = readResourceFile("examplemodel.mxm");
         String theNewFile = theStringWriter.toString();
-        
+
         assertTrue(theOriginalFile.equals(theNewFile));
     }
 }

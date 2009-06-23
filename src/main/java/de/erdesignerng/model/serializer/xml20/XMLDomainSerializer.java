@@ -59,8 +59,7 @@ public class XMLDomainSerializer extends XMLSerializer {
             Domain theTable = new Domain();
             theTable.setSystemId(theElement.getAttribute(ID));
             theTable.setName(theElement.getAttribute(NAME));
-            theTable.setConcreteType(
-                    aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
+            theTable.setConcreteType(aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
             theTable.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
             theTable.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
             theTable.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));

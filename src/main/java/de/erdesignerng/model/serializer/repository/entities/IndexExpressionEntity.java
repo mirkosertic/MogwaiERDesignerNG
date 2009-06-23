@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
-
 /**
  * Entity for indexes.
  * 
@@ -26,6 +25,7 @@ package de.erdesignerng.model.serializer.repository.entities;
 public class IndexExpressionEntity extends ModelEntity {
 
     private String attributeId;
+
     private String expression;
 
     public String getExpression() {

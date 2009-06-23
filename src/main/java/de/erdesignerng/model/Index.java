@@ -48,7 +48,7 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
      * Test if this index contains an attribute.
      * 
      * @param aAttribute
-     *                the attribute
+     *            the attribute
      * @return true if yes, else false
      */
     public boolean containsAttribute(Attribute aAttribute) {

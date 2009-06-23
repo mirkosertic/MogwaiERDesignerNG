@@ -50,27 +50,28 @@ public class MigrationScriptEditor extends BaseEditor {
     private RepositoryEntity repositoryEntity;
 
     private ConnectionProvider connectionProvider;
-    
+
     private ApplicationPreferences preferences;
-    
+
     private ERDesignerWorldConnector worldConnector;
 
     public MigrationScriptEditor(Component aParent, RepositoryEntity aRepositoryEntity,
-            ConnectionProvider aConnectionProvider, ApplicationPreferences aPreferences, ERDesignerWorldConnector aWorldConnector) {
+            ConnectionProvider aConnectionProvider, ApplicationPreferences aPreferences,
+            ERDesignerWorldConnector aWorldConnector) {
         super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
         preferences = aPreferences;
         worldConnector = aWorldConnector;
-        
+
         initialize();
 
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-        DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();        
+        DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();
         for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
             theModel.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
             theModel2.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
         }
-        
+
         view.getSourceVersion().setModel(theModel);
         view.getDestinationVersion().setModel(theModel2);
 
@@ -117,7 +118,8 @@ public class MigrationScriptEditor extends BaseEditor {
             StatementList theStatements = repositoryEntity.createChangeLog(theModel.getSourceChange().getChange(),
                     theModel.getDestinationChange().getChange());
 
-            SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile, preferences, worldConnector);
+            SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile,
+                    preferences, worldConnector);
             theEditor.showModal();
         }
     }

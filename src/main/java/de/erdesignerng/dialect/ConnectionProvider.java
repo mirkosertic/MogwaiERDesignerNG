@@ -29,23 +29,25 @@ import de.erdesignerng.util.ApplicationPreferences;
 public interface ConnectionProvider {
 
     /**
-     * Create a connection. 
+     * Create a connection.
      * 
-     * @param aPreferences the preferences
+     * @param aPreferences
+     *            the preferences
      * @return a connection
-     * @throws Exception will be thrown in case of an error
+     * @throws Exception
+     *             will be thrown in case of an error
      */
     Connection createConnection(ApplicationPreferences aPreferences) throws Exception;
-    
+
     /**
-     * Test, of the created connection is managed. 
+     * Test, of the created connection is managed.
      * 
      * @return true if managed, else false
      */
     boolean generatesManagedConnection();
-    
+
     /**
-     * Get the script statement separator. 
+     * Get the script statement separator.
      * 
      * @return the separator
      */
