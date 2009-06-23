@@ -55,8 +55,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '"
-                + aNewName + "'"));
+        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
         return theResult;
 
     }

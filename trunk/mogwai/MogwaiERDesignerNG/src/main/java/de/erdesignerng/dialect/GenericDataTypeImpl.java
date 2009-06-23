@@ -102,7 +102,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 
     /**
      * @param name
-     *                the name to set
+     *            the name to set
      */
     public void setName(String name) {
         this.name = name;

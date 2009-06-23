@@ -36,13 +36,13 @@ public final class ModelUtilities {
      * Check existance in a list.
      * 
      * @param aVector
-     *                the list
+     *            the list
      * @param aName
-     *                the name
+     *            the name
      * @param aDialect
-     *                the dialect
+     *            the dialect
      * @throws ElementAlreadyExistsException
-     *                 is thrown if name exists
+     *             is thrown if name exists
      */
     public static void checkExistance(ModelItemVector aVector, String aName, Dialect aDialect)
             throws ElementAlreadyExistsException {
@@ -63,15 +63,15 @@ public final class ModelUtilities {
      * Check the name of an item and its existance in a list.
      * 
      * @param aVector
-     *                the list
+     *            the list
      * @param aItem
-     *                the item
+     *            the item
      * @param aDialect
-     *                the dialect
+     *            the dialect
      * @throws ElementInvalidNameException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      * @throws ElementAlreadyExistsException
-     *                 is thrown in case of an error
+     *             is thrown in case of an error
      */
     public static void checkNameAndExistance(ModelItemVector aVector, OwnedModelItem aItem, Dialect aDialect)
             throws ElementInvalidNameException, ElementAlreadyExistsException {
@@ -87,7 +87,7 @@ public final class ModelUtilities {
      * Find the model properties.
      * 
      * @param aItem
-     *                the item to start searching at
+     *            the item to start searching at
      * @return the found model history.
      */
     public static Dialect getModelProperties(OwnedModelItem aItem) {
@@ -108,7 +108,7 @@ public final class ModelUtilities {
      * Create a unique system id.
      * 
      * @param aObject
-     *                the object the id shall be created for
+     *            the object the id shall be created for
      * @return the newly created id
      */
     public static String createSystemIdFor(Object aObject) {

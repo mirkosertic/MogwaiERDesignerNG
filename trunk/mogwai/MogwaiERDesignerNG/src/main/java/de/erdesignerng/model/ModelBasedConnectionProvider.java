@@ -23,15 +23,15 @@ import de.erdesignerng.dialect.ConnectionProvider;
 import de.erdesignerng.util.ApplicationPreferences;
 
 /**
- * Implementation of a connection provider. 
+ * Implementation of a connection provider.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
 public class ModelBasedConnectionProvider implements ConnectionProvider {
-    
+
     private Model model;
-    
+
     public ModelBasedConnectionProvider(Model aModel) {
         model = aModel;
     }

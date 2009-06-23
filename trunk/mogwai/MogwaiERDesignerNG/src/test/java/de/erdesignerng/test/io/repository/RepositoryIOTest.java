@@ -83,7 +83,7 @@ public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
 
         } finally {
             if (theConnection != null) {
-                
+
                 theConnection.createStatement().execute("SHUTDOWN");
                 theConnection.close();
             }

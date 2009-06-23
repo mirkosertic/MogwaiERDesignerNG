@@ -65,15 +65,15 @@ public class DomainEditorView extends DefaultPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
-    
+
     private DefaultComboBox dataType = new DefaultComboBox();
-    
+
     private DefaultSpinner sizeSpinner = new DefaultSpinner();
-    
+
     private DefaultSpinner fractionSpinner = new DefaultSpinner();
-    
+
     private DefaultSpinner scaleSpinner = new DefaultSpinner();
-    
+
     /**
      * Constructor.
      */
@@ -238,7 +238,7 @@ public class DomainEditorView extends DefaultPanel {
             attributesGeneralTab.add(getFractionSpinner(), cons.xywh(4, 8, 1, 1));
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
             attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
-            
+
             attributesGeneralTab.setName("AttributesGeneralTab");
         }
 

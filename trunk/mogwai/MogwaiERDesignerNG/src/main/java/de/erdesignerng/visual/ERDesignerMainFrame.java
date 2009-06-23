@@ -48,9 +48,9 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     public ERDesignerMainFrame(ApplicationPreferences aPreferences) {
         super(ERDesignerBundle.TITLE);
-        
+
         preferences = aPreferences;
-        
+
         initialize();
 
         setSize(800, 600);
@@ -89,7 +89,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         return getDefaultFrameContent().getToolbar();
     }
 
-    @Override    
+    @Override
     public void initTitle(String aFile) {
 
         StringBuffer theTitle = new StringBuffer();
@@ -101,7 +101,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         setTitle(getResourceHelper().getText(getResourceBundleID()) + " " + theVersion + " " + theTitle);
     }
 
-    @Override    
+    @Override
     public void setStatusText(String aMessage) {
         getDefaultFrameContent().getStatusBar().setText(aMessage);
     }
@@ -110,39 +110,39 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         component.setModel(aModel);
     }
 
-    @Override    
+    @Override
     public boolean supportsClasspathEditor() {
         return true;
     }
 
-    @Override    
+    @Override
     public boolean supportsConnectionEditor() {
         return true;
     }
 
-    @Override    
+    @Override
     public boolean supportsExitApplication() {
         return true;
     }
 
-    @Override    
+    @Override
     public Model createNewModel() {
         Model theModel = new Model();
         theModel.setModificationTracker(new HistoryModificationTracker(theModel));
         return theModel;
     }
 
-    @Override    
+    @Override
     public boolean supportsPreferences() {
         return true;
     }
 
-    @Override    
+    @Override
     public void initializeLoadedModel(Model aModel) {
         aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 
-    @Override    
+    @Override
     public void notifyAboutException(Exception aException) {
         ExceptionEditor theEditor = new ExceptionEditor(this, aException);
         theEditor.showModal();
@@ -156,7 +156,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     @Override
     public void setVisible(boolean aVisible) {
         super.setVisible(aVisible);
-        
+
         if (aVisible) {
             preferences.setWindowState(WINDOW_ALIAS, this);
         }

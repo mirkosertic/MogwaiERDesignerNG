@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
-
 /**
  * Entity for a view.
  * 
@@ -26,6 +25,7 @@ package de.erdesignerng.model.serializer.repository.entities;
 public class ViewEntity extends ModelEntity {
 
     private String sqlstatement;
+
     private String schema;
 
     public String getSqlstatement() {
@@ -44,7 +44,8 @@ public class ViewEntity extends ModelEntity {
     }
 
     /**
-     * @param schema the schema to set
+     * @param schema
+     *            the schema to set
      */
     public void setSchema(String schema) {
         this.schema = schema;

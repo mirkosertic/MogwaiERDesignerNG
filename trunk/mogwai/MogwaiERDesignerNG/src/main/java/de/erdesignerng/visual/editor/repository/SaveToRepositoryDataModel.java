@@ -40,7 +40,7 @@ public class SaveToRepositoryDataModel {
 
     /**
      * @param nameForNewEntry
-     *                the nameForNewEntry to set
+     *            the nameForNewEntry to set
      */
     public void setNameForNewEntry(String nameForNewEntry) {
         this.nameForNewEntry = nameForNewEntry;
@@ -55,7 +55,7 @@ public class SaveToRepositoryDataModel {
 
     /**
      * @param existingEntry
-     *                the existingEntry to set
+     *            the existingEntry to set
      */
     public void setExistingEntry(RepositoryEntryDesciptor existingEntry) {
         this.existingEntry = existingEntry;
@@ -70,7 +70,7 @@ public class SaveToRepositoryDataModel {
 
     /**
      * @param nameForExistantEntry
-     *                the nameForExistantEntry to set
+     *            the nameForExistantEntry to set
      */
     public void setNameForExistantEntry(String nameForExistantEntry) {
         this.nameForExistantEntry = nameForExistantEntry;

@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
-
 /**
  * Entity for attributes.
  * 
@@ -26,7 +25,7 @@ package de.erdesignerng.model.serializer.repository.entities;
 public class AttributeEntity extends ModelEntity {
 
     private String datatype;
-    
+
     private String domain;
 
     private int size;
@@ -49,7 +48,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param datatype the datatype to set
+     * @param datatype
+     *            the datatype to set
      */
     public void setDatatype(String datatype) {
         this.datatype = datatype;
@@ -63,7 +63,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param domain the domain to set
+     * @param domain
+     *            the domain to set
      */
     public void setDomain(String domain) {
         this.domain = domain;
@@ -77,7 +78,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param size the size to set
+     * @param size
+     *            the size to set
      */
     public void setSize(int size) {
         this.size = size;
@@ -91,7 +93,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param fraction the fraction to set
+     * @param fraction
+     *            the fraction to set
      */
     public void setFraction(int fraction) {
         this.fraction = fraction;
@@ -105,7 +108,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param scale the scale to set
+     * @param scale
+     *            the scale to set
      */
     public void setScale(int scale) {
         this.scale = scale;
@@ -119,7 +123,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param nullable the nullable to set
+     * @param nullable
+     *            the nullable to set
      */
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
@@ -133,7 +138,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param defaultValue the defaultValue to set
+     * @param defaultValue
+     *            the defaultValue to set
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
@@ -147,7 +153,8 @@ public class AttributeEntity extends ModelEntity {
     }
 
     /**
-     * @param extra the extra to set
+     * @param extra
+     *            the extra to set
      */
     public void setExtra(String extra) {
         this.extra = extra;

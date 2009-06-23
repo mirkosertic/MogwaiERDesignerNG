@@ -31,11 +31,11 @@ public class ViewTool extends BaseTool {
     public ViewTool(ERDesignerGraph aGraph) {
         super(aGraph);
     }
-    
+
     @Override
     public boolean isForceMarqueeEvent(MouseEvent event) {
         return true;
-    }       
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {

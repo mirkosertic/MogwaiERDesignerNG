@@ -27,7 +27,7 @@ public final class DialogUtils {
 
     private DialogUtils() {
     }
-    
+
     public static String promptForPassword() {
 
         String theMesssage = HELPER.getText(ERDesignerBundle.PLEASEENTERDATABASEPASSWORD);

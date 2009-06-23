@@ -68,15 +68,16 @@ public class SquirrelMogwaiController {
     public SquirrelDialect getDialect() {
         return dialect;
     }
-    
+
     public ISession getSession() {
         return session;
     }
 
     /**
-     * The preferences were changed, so they need to be reconfigured. 
+     * The preferences were changed, so they need to be reconfigured.
      * 
-     * @param aPreferences the preferences
+     * @param aPreferences
+     *            the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         tabsheet.refreshPreferences(aPreferences);

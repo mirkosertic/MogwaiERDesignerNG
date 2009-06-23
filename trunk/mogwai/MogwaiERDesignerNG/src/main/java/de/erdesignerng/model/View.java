@@ -28,11 +28,11 @@ import de.erdesignerng.exception.ElementInvalidNameException;
  * @version $Date: 2009-03-09 19:07:29 $
  */
 public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
-    
+
     private String sql;
-    
+
     private ViewAttributeList attributes = new ViewAttributeList();
-    
+
     private String schema;
 
     /**
@@ -71,7 +71,8 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
     /**
      * Setzt den Wert des Attributs <code>sql</code>.
      * 
-     * @param sql Wert für das Attribut sql.
+     * @param sql
+     *            Wert für das Attribut sql.
      */
     public void setSql(String sql) {
         this.sql = sql;
@@ -89,16 +90,18 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
     /**
      * Setzt den Wert des Attributs <code>attributes</code>.
      * 
-     * @param attributes Wert für das Attribut attributes.
+     * @param attributes
+     *            Wert für das Attribut attributes.
      */
     public void setAttributes(ViewAttributeList attributes) {
         this.attributes = attributes;
     }
 
     /**
-     * Test if the view was modified(compare it with another view). 
+     * Test if the view was modified(compare it with another view).
      * 
-     * @param aView the view to test against with
+     * @param aView
+     *            the view to test against with
      * @return true if it was modified, else false
      */
     public boolean isModified(View aView) {
@@ -116,12 +119,13 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
     }
 
     /**
-     * @param schema the schema to set
+     * @param schema
+     *            the schema to set
      */
     public void setSchema(String schema) {
         this.schema = schema;
     }
-    
+
     @Override
     public String getUniqueName() {
         if (!StringUtils.isEmpty(schema)) {

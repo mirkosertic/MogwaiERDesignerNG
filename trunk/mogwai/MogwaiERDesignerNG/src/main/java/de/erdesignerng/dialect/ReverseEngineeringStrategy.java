@@ -41,9 +41,9 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
         dialect = aDialect;
     }
 
-    public abstract void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection,
-            ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
-            ReverseEngineeringException;
+    public abstract void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector,
+            Connection aConnection, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier)
+            throws SQLException, ReverseEngineeringException;
 
     public abstract List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException;
 
@@ -52,7 +52,8 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
      * 
      * Default is CASCADE.
      * 
-     * @param aValue the JDBC type
+     * @param aValue
+     *            the JDBC type
      * @return the CascadeType
      */
     protected CascadeType getCascadeType(int aValue) {
@@ -74,5 +75,6 @@ public abstract class ReverseEngineeringStrategy<T extends Dialect> {
         return aTypeName;
     }
 
-    public abstract List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries) throws SQLException;
+    public abstract List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries)
+            throws SQLException;
 }

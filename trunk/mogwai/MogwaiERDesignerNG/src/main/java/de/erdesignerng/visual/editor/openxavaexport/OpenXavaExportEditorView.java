@@ -40,7 +40,7 @@ public class OpenXavaExportEditorView extends JPanel {
     private DefaultLabel component1;
 
     private DefaultTextField srcDirectory;
-    
+
     private DefaultTextField packageName;
 
     private DefaultTable mappingTable;
@@ -48,9 +48,9 @@ public class OpenXavaExportEditorView extends JPanel {
     private JPanel component8;
 
     private DefaultButton okButton;
-    
+
     private DefaultButton cancelButton;
-    
+
     private DefaultButton searchDirectoryButton;
 
     /**
@@ -183,7 +183,7 @@ public class OpenXavaExportEditorView extends JPanel {
         }
         return searchDirectoryButton;
     }
-    
+
     public static void main(String args[]) {
         JFrame theFrame = new JFrame();
         theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -55,8 +55,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '"
-                + aNewName + "'"));
+        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
         return theResult;
 
     }
@@ -71,8 +70,8 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(theTable) + "." + aExistantAttribute.getName()
-                + "' , '" + aNewName + "' , 'COLUMN'"));
+        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(theTable) + "."
+                + aExistantAttribute.getName() + "' , '" + aNewName + "' , 'COLUMN'"));
         return theResult;
     }
 

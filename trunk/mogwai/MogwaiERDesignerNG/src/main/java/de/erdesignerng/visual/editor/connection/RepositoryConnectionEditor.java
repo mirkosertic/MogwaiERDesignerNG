@@ -67,7 +67,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
         view.getDialect().setModel(theModel);
 
         DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
-        
+
         ConnectionDescriptor theConnection = aPreferences.getRepositoryConnection();
         if (theConnection != null) {
             if (theConnection.getDialect() != null) {
@@ -170,7 +170,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
                 theDescriptor.setUrl(aDialect.getDriverURLTemplate());
                 theDescriptor.setDialect(aDialect);
             }
-            
+
             bindingInfo.model2view();
         }
     }

@@ -25,7 +25,7 @@ public final class GeneratorUtils {
 
     private GeneratorUtils() {
     }
-    
+
     public static String findClosestJavaTypeFor(DataType aType) {
         return findClosestJavaTypeFor(aType, true);
     }

@@ -19,13 +19,13 @@ package de.erdesignerng.model.serializer.repository;
 
 /**
  * Descriptor for repositoy entries.
- *  
+ * 
  * @author msertic
  */
 public class RepositoryEntryDesciptor {
 
     private Long id;
-    
+
     private String name;
 
     /**
@@ -36,7 +36,8 @@ public class RepositoryEntryDesciptor {
     }
 
     /**
-     * @param id the id to set
+     * @param id
+     *            the id to set
      */
     public void setId(Long id) {
         this.id = id;
@@ -50,12 +51,13 @@ public class RepositoryEntryDesciptor {
     }
 
     /**
-     * @param name the name to set
+     * @param name
+     *            the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     @Override
     public String toString() {
         return name;

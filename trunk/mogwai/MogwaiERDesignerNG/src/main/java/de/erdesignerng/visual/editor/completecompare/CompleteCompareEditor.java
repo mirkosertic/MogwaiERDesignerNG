@@ -42,16 +42,17 @@ public class CompleteCompareEditor extends BaseEditor {
     private Model currentModel;
 
     private Model databaseModel;
-    
+
     private ApplicationPreferences preferences;
 
-    public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel, ApplicationPreferences aPreferences) {
+    public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel,
+            ApplicationPreferences aPreferences) {
         super(aParent, ERDesignerBundle.COMPLETECOMPARE);
 
         currentModel = aCurrentModel;
         databaseModel = aDatabaseModel;
         preferences = aPreferences;
-        
+
         initialize();
 
         TreeCellRenderer theRenderer = new CompareTreeCellRenderer();
@@ -66,10 +67,9 @@ public class CompleteCompareEditor extends BaseEditor {
     }
 
     private void refreshView() {
-        
+
         ModelComparator theComparator = new ModelComparator();
         ModelCompareResult theResult = theComparator.compareModels(currentModel, databaseModel);
-
 
         editingView.getCurrentModelView().setModel(new DefaultTreeModel(theResult.getModelRootNode()));
         editingView.getDatabaseView().setModel(new DefaultTreeModel(theResult.getDbRootNode()));
@@ -85,7 +85,6 @@ public class CompleteCompareEditor extends BaseEditor {
         }
     }
 
-
     private void initialize() {
 
         editingView = new CompleteCompareEditorView();
@@ -99,13 +98,13 @@ public class CompleteCompareEditor extends BaseEditor {
 
         setContentPane(editingView);
         setResizable(true);
-        
+
         pack();
-        
+
         setMinimumSize(getSize());
         preferences.setWindowSize(getClass().getSimpleName(), this);
     }
-    
+
     @Override
     protected void commandOk() {
         preferences.updateWindowSize(getClass().getSimpleName(), this);

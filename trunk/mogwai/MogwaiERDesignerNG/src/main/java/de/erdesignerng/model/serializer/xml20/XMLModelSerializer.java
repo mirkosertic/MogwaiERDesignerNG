@@ -53,7 +53,7 @@ public class XMLModelSerializer extends XMLSerializer implements CommonXMLElemen
     protected static final String TABLES = "Tables";
 
     protected static final String RELATIONS = "Relations";
-    
+
     protected static final String VIEWS = "Views";
 
     protected static final String SUBJECTAREAS = "Subjectareas";

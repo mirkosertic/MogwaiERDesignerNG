@@ -30,15 +30,15 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
 public class SquirrelDialect extends Dialect {
-    
+
     private Dialect dialect;
-    
+
     private ISession session;
-    
+
     public SquirrelDialect(Dialect aDialect, ISession aSession) {
         dialect = aDialect;
         session = aSession;
-        
+
         setGeneratesManagedConnection(true);
     }
 
@@ -48,7 +48,9 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
+            String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, SQLException {
         return session.getSQLConnection().getConnection();
     }
 
@@ -174,6 +176,6 @@ public class SquirrelDialect extends Dialect {
 
     @Override
     public DataType createDataType(String name, String definition, boolean identity, int... jdbcType) {
-        return dialect.createDataType(name, definition, identity, jdbcType);        
+        return dialect.createDataType(name, definition, identity, jdbcType);
     }
 }

@@ -157,7 +157,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
      * 
      * @return by default NULL
      * @throws SQLException
-     *                 Is thrown in case of an error
+     *             Is thrown in case of an error
      */
     public String getSchemaTerm() throws SQLException {
         return null;
@@ -168,7 +168,7 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
      * 
      * @return by default NULL
      * @throws SQLException
-     *                 Is thrown in case of an error
+     *             Is thrown in case of an error
      */
     public ResultSet getSchemas() throws SQLException {
         return null;
@@ -374,8 +374,8 @@ public class ERDatabaseMetaData implements DatabaseMetaData {
         theRowInfo.addField(COLUMN_DEFERRABILITY);
 
         /*
-         * Table theTable = ermodel.getTables().findByName(aTable); if (theTable !=
-         * null) { for (Relation theRelation :
+         * Table theTable = ermodel.getTables().findByName(aTable); if (theTable
+         * != null) { for (Relation theRelation :
          * ermodel.getRelations().getExportedKeysFor(theTable)) {
          * 
          * Index thePrimaryKey =

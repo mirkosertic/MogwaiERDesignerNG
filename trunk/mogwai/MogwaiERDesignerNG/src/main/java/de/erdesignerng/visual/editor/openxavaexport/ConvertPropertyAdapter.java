@@ -95,7 +95,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
             DataType theSourceType = (DataType) theTableModel.getValueAt(i, 0);
             String theJavaType = (String) theTableModel.getValueAt(i, 1);
             String theStereoType = (String) theTableModel.getValueAt(i, 2);
-            
+
             OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
             theMapping.setJavaType(theJavaType);
             theMapping.setStereoType(theStereoType);

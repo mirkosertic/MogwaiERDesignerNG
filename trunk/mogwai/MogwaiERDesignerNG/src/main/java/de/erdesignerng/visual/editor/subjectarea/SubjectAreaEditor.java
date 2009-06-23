@@ -69,9 +69,9 @@ public class SubjectAreaEditor extends BaseEditor {
     }
 
     public void initializeFor(SubjectArea aArea) {
-        
+
         editingView.getColorPanel().setBackground(aArea.getColor());
-        
+
         bindingInfo.setDefaultModel(aArea);
         bindingInfo.model2view();
     }
@@ -79,7 +79,7 @@ public class SubjectAreaEditor extends BaseEditor {
     @Override
     protected void commandOk() {
         if (bindingInfo.validate().size() == 0) {
-            
+
             SubjectArea theArea = bindingInfo.getDefaultModel();
             theArea.setColor(editingView.getColorPanel().getBackground());
             setModalResult(MODAL_RESULT_OK);

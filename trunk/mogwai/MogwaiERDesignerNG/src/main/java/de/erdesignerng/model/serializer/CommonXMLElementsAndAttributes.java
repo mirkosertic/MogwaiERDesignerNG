@@ -22,7 +22,7 @@ public interface CommonXMLElementsAndAttributes {
     String MODEL = "Model";
 
     String VERSION = "version";
-    
+
     String ID = "id";
 
     String NAME = "name";
@@ -36,8 +36,8 @@ public interface CommonXMLElementsAndAttributes {
     String TRUE = "true";
 
     String FALSE = "false";
-    
+
     String ATTRIBUTEREFID = "attributerefid";
-    
+
     String DATATYPE = "datatype";
 }

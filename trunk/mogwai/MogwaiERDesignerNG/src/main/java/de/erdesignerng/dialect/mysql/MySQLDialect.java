@@ -40,7 +40,7 @@ public class MySQLDialect extends SQL92Dialect {
         // Other
         registerType(createDataType("BIT", "$size", Types.BIT));
         registerType(createDataType("BOOL", "", Types.BIT, Types.BOOLEAN));
-        
+
         // Numeric
         registerType(createDataType("TINYINT", "", Types.TINYINT));
         registerType(createDataType("TINYINT UNSIGNED", "", Types.TINYINT));
@@ -61,7 +61,7 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(createDataType("DOUBLE", "$size,$fraction", Types.DOUBLE));
         registerType(createDataType("DOUBLE PRECISION", "$size,$fraction", Types.DOUBLE));
         registerType(createDataType("REAL", "$size,$fraction", Types.DOUBLE));
-        
+
         // Blob
         registerType(createDataType("LONG VARBINARY", "", Types.LONGVARBINARY));
         registerType(createDataType("MEDIUMBLOB", "", Types.LONGVARBINARY));
@@ -71,7 +71,7 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(createDataType("TINYBLOB", "", Types.LONGVARBINARY));
         registerType(createDataType("VARBINARY", "$size", Types.VARBINARY));
         registerType(createDataType("BINARY", "$size", Types.BINARY));
-        
+
         // Text
         registerType(createDataType("LONG VARCHAR", "", Types.LONGVARCHAR));
         registerType(createDataType("MEDIUMTEXT", "", Types.LONGVARCHAR));
@@ -80,14 +80,14 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(createDataType("TINYTEXT", "", Types.LONGVARCHAR));
         registerType(createDataType("CHAR", "$size", Types.CHAR));
         registerType(createDataType("VARCHAR", "$size", Types.VARCHAR));
-        
+
         // Date and time
         registerType(createDataType("DATE", "", Types.DATE));
         registerType(createDataType("TIME", "", Types.TIME));
         registerType(createDataType("DATETIME", "", Types.TIMESTAMP));
         registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP));
-        
-        seal();        
+
+        seal();
     }
 
     /**
@@ -137,12 +137,12 @@ public class MySQLDialect extends SQL92Dialect {
     public MySQLSQLGenerator createSQLGenerator() {
         return new MySQLSQLGenerator(this);
     }
-    
+
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.MySQLDialect.class;
     }
-    
+
     @Override
     public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
         return new MySQLDataType(aName, aDefinition, aJdbcType);
@@ -152,5 +152,5 @@ public class MySQLDialect extends SQL92Dialect {
     public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
         return new MySQLDataType(aName, aDefinition, aIdentity, aJdbcType);
     }
-    
+
 }

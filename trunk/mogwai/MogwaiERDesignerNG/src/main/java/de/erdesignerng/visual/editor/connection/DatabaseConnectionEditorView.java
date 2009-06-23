@@ -37,7 +37,7 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
 public class DatabaseConnectionEditorView extends DefaultPanel {
 
     private DefaultTextField alias = new DefaultTextField();
-    
+
     private DefaultComboBox dialect = new DefaultComboBox();
 
     private DefaultTextField driver = new DefaultTextField();
@@ -47,7 +47,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
     private DefaultTextField user = new DefaultTextField();
 
     private DefaultTextField password = new DefaultTextField();
-    
+
     private DefaultCheckBox promptForPassword = new DefaultCheckBox(ERDesignerBundle.PROMPTFORPASSWORD);
 
     private DefaultButton testButton = new DefaultButton();
@@ -72,10 +72,10 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
         add(new DefaultLabel(ERDesignerBundle.DIALECT), cons.xy(2, 2));
         add(dialect, cons.xy(4, 2));
-        
+
         add(new DefaultLabel(ERDesignerBundle.ALIAS), cons.xy(2, 4));
         add(alias, cons.xy(4, 4));
-        
+
         add(new DefaultLabel(ERDesignerBundle.JDBCDRIVER), cons.xy(2, 6));
         add(driver, cons.xy(4, 6));
 

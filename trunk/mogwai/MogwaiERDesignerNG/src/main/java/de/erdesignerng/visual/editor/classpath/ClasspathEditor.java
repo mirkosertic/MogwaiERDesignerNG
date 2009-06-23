@@ -86,8 +86,9 @@ public class ClasspathEditor extends BaseEditor {
         view.getCancelButton().setAction(cancelAction);
         view.getAddButton().setAction(addAction);
         view.getRemoveButton().setAction(removeAction);
-        
-        view.getCancelButton().registerKeyboardAction(cancelAction, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        view.getCancelButton().registerKeyboardAction(cancelAction, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         setContentPane(view);
         setResizable(false);

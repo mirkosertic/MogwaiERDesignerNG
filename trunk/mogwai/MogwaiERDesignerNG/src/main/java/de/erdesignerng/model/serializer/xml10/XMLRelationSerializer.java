@@ -30,13 +30,13 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLRelationSerializer extends XMLSerializer {
-    
+
     public static final XMLRelationSerializer SERIALIZER = new XMLRelationSerializer();
-    
+
     public static final String RELATION = "Relation";
 
     public static final String MAPPING = "Mapping";
-    
+
     public static final String IMPORTINGTABLEREFID = "importingtablerefid";
 
     public static final String EXPORTINGTABLEREFID = "exportingtablerefid";
@@ -72,7 +72,7 @@ public class XMLRelationSerializer extends XMLSerializer {
             theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theKey.getAttributeRef().getSystemId());
             theMapping.setAttribute(EXPORTINGATTRIBUTEREFID, theValue.getSystemId());
         }
-        
+
     }
 
     public void deserializeFrom(Model aModel, Document aDocument) {
@@ -121,8 +121,9 @@ public class XMLRelationSerializer extends XMLSerializer {
                 if (theEndAttribute == null) {
                     throw new IllegalArgumentException("Cannot find attribute with id " + theEndId);
                 }
-                
-                IndexExpression theExpression = theRelation.getExportingTable().getPrimarykey().getExpressions().findByAttribute(theStartAttribute);
+
+                IndexExpression theExpression = theRelation.getExportingTable().getPrimarykey().getExpressions()
+                        .findByAttribute(theStartAttribute);
 
                 theRelation.getMapping().put(theExpression, theEndAttribute);
             }

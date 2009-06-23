@@ -33,7 +33,7 @@ public class AttributeList extends ModelItemVector<Attribute> {
      * Test if a domain is in use.
      * 
      * @param aDomain
-     *                the domain
+     *            the domain
      * @return true if yes, else false
      */
     public boolean isDomainInUse(Domain aDomain) {

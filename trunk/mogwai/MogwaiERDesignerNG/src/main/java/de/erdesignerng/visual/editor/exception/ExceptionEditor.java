@@ -38,35 +38,35 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ExceptionEditor extends BaseEditor {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ExceptionEditor.class);
 
     private ExceptionEditorView view = new ExceptionEditorView();
-    
+
     private DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandClose();
         }
-    }, this, ERDesignerBundle.CLOSE);    
+    }, this, ERDesignerBundle.CLOSE);
 
     public ExceptionEditor(Component aParent, Exception aException) {
         super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
 
         LOGGER.error("Exception", aException);
-        
+
         initialize();
 
         StringWriter theWriter = new StringWriter();
         PrintWriter thePrintWriter = new PrintWriter(theWriter);
         aException.printStackTrace(thePrintWriter);
         thePrintWriter.flush();
-        
+
         view.getExceptionText().setText(theWriter.toString());
     }
 
     private void initialize() {
-        
+
         view.getCloseButton().setAction(closeAction);
 
         setContentPane(view);

@@ -118,7 +118,7 @@ public class MSSQLDialect extends SQL92Dialect {
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.SQLServerDialect.class;
     }
-    
+
     @Override
     public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
         return new MSSQLDataType(aName, aDefinition, aJdbcType);

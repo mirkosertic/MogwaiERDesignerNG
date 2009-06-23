@@ -58,7 +58,7 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
     private ApplicationPreferences preferences;
 
     private SquirrelMogwaiPreferences preferencesPanel;
-    
+
     public SquirrelMogwaiPluginDelegate() {
     }
 
@@ -120,17 +120,17 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
     @Override
     public synchronized void initialize() throws PluginException {
         super.initialize();
-        
+
         try {
             // Initialize the application base directory
             ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
             thePreferences.setBaseDir(getPluginAppSettingsFolder());
-            
+
             DataTypeIO.getInstance().loadUserTypes(thePreferences);
         } catch (Exception e) {
             throw new PluginException(e);
         }
-        
+
         // Initialize Mogwai Looks
         UIConfiguration theConfig = new UIConfiguration();
         theConfig.setApplyConfiguration(false);
@@ -142,7 +142,7 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
         preferencesPanel = new SquirrelMogwaiPreferences(this, preferences);
 
         IApplication theApplication = getApplication();
-        
+
         ActionCollection theActionCollection = theApplication.getActionCollection();
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }
@@ -244,7 +244,8 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
     }
 
     /**
-     * The preferences were changed, so they need to be published to all controllers. 
+     * The preferences were changed, so they need to be published to all
+     * controllers.
      */
     public void refreshPreferences() {
         for (SquirrelMogwaiController[] theControllers : controllersBySessionID.values()) {

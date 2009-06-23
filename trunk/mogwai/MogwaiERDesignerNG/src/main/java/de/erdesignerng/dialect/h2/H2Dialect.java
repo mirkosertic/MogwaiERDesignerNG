@@ -110,7 +110,7 @@ public class H2Dialect extends SQL92Dialect {
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.H2Dialect.class;
     }
-    
+
     @Override
     public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
         return new H2DataType(aName, aDefinition, aJdbcType);
@@ -119,5 +119,5 @@ public class H2Dialect extends SQL92Dialect {
     @Override
     public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
         return new H2DataType(aName, aDefinition, anIdentity, aJdbcType);
-    }    
+    }
 }

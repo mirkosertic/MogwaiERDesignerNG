@@ -91,7 +91,7 @@ public class OpenXavaExportTableModel implements TableModel {
     }
 
     public void setValueAt(Object aValue, int aRow, int aColumn) {
-        switch(aColumn) {
+        switch (aColumn) {
         case 1:
             targetTypes[aRow] = (String) aValue;
             break;

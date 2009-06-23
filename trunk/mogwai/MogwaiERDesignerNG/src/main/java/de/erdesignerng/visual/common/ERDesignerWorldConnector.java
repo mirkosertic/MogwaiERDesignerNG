@@ -32,24 +32,24 @@ public interface ERDesignerWorldConnector {
     void initTitle();
 
     void setStatusText(String theMessage);
-    
+
     DefaultToolbar getToolBar();
-    
+
     boolean supportsExitApplication();
-    
+
     boolean supportsClasspathEditor();
-    
+
     boolean supportsConnectionEditor();
-    
+
     boolean supportsPreferences();
-    
+
     boolean supportsRepositories();
-    
+
     Model createNewModel();
-    
+
     void initializeLoadedModel(Model aModel);
-    
+
     void notifyAboutException(Exception aException);
-    
+
     void exitApplication();
 }

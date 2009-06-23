@@ -26,15 +26,15 @@ import org.hibernate.connection.ConnectionProvider;
 public class ThreadbasedConnectionProvider implements ConnectionProvider {
 
     private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>();
-    
+
     public static void initializeForThread(Connection aConnection) {
         CONNECTION.set(aConnection);
     }
-    
+
     public static void cleanup() {
         CONNECTION.set(null);
     }
-    
+
     public void close() {
     }
 

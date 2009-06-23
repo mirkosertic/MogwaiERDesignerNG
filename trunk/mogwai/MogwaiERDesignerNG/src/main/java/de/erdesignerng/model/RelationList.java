@@ -75,9 +75,10 @@ public class RelationList extends ModelItemVector<Relation> {
     }
 
     /**
-     * Test if an attribute is a foreign key attribute. 
+     * Test if an attribute is a foreign key attribute.
      * 
-     * @param aAttribute the attribute
+     * @param aAttribute
+     *            the attribute
      * @return true if yes, else false
      */
     public boolean isForeignKeyAttribute(Attribute aAttribute) {

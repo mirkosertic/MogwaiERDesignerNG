@@ -45,7 +45,7 @@ public class BaseERDesignerTestCaseImpl extends TestCase {
         return theStringWriter.toString().trim();
 
     }
-    
+
     protected String statementListToString(StatementList aStatements, SQLGenerator aGenerator) {
         StringWriter theStringWriter = new StringWriter();
         PrintWriter thePrintWriter = new PrintWriter(theStringWriter);

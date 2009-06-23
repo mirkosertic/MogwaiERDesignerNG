@@ -74,7 +74,7 @@ public class DatabaseConnectionDatamodel {
 
     /**
      * @param alias
-     *                the alias to set
+     *            the alias to set
      */
     public void setAlias(String alias) {
         this.alias = alias;

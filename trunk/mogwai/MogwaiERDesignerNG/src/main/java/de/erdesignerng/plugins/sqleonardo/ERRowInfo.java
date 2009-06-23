@@ -8,10 +8,13 @@ import java.util.Map;
 public class ERRowInfo {
 
     private List<String> columns = new ArrayList<String>();
+
     private List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
     private int currentRowNum = -1;
 
     private Iterator<Map<String, Object>> iterator;
+
     private Map<String, Object> currentRow;
 
     public ERRowInfo() {

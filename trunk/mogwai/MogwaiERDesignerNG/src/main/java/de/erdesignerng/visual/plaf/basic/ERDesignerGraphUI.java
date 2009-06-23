@@ -41,7 +41,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ERDesignerGraphUI.class);
 
     private ERDesignerComponent erdesigner;
@@ -69,9 +69,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                         cell = theTemp;
                     }
                 }
-                //if (focus == null) {
-                    focus = cell;
-                //}
+                // if (focus == null) {
+                focus = cell;
+                // }
                 completeEditing();
                 boolean isForceMarquee = isForceMarqueeEvent(e);
                 boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());
@@ -106,11 +106,11 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 }
             }
         }
-        
+
         @Override
         public void mouseDragged(MouseEvent e) {
             super.mouseDragged(e);
-            
+
             ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(true);
         }
@@ -118,8 +118,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         @Override
         public void mouseReleased(MouseEvent e) {
             super.mouseReleased(e);
-            
-            
+
             ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(false);
         }
@@ -209,7 +208,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
                     try {
                         theDialog.applyValues();
-                        
+
                         erdesigner.commandNotifyAboutEdit();
                     } catch (Exception e1) {
                         erdesigner.getWorldConnector().notifyAboutException(e1);

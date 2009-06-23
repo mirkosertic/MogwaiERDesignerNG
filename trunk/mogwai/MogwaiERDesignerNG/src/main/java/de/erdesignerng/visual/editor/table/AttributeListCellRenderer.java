@@ -50,11 +50,11 @@ public class AttributeListCellRenderer implements ListCellRenderer {
     private static ImageIcon keyIcon = IconFactory.getKeyIcon();
 
     private TableEditor editor;
-    
+
     public AttributeListCellRenderer(TableEditor aEditor) {
-        
+
         editor = aEditor;
-        
+
         panel = new JPanel(new BorderLayout());
         labelPanel = new JPanel(new BorderLayout());
 
@@ -89,9 +89,8 @@ public class AttributeListCellRenderer implements ListCellRenderer {
 
         label.setForeground(Color.black);
 
-        
         boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
-        
+
         if (isPrimaryKey || theAttribute.isForeignKey()) {
             label.setForeground(Color.red);
         }

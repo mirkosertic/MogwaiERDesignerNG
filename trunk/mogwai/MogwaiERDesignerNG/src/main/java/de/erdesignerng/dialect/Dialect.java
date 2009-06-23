@@ -52,7 +52,7 @@ public abstract class Dialect {
     private boolean generatesManagedConnection;
 
     private boolean supportsColumnExtra;
-    
+
     private boolean suppressONALLIfNOACTION = false;
 
     private NameCastType castType;
@@ -304,7 +304,7 @@ public abstract class Dialect {
     public void setSupportsColumnExtra(boolean supportsColumnExtra) {
         this.supportsColumnExtra = supportsColumnExtra;
     }
-    
+
     /**
      * @return the suppressONALLIfNOACTION
      */
@@ -313,7 +313,8 @@ public abstract class Dialect {
     }
 
     /**
-     * @param suppressONALLIfNOACTION the suppressONALLIfNOACTION to set
+     * @param suppressONALLIfNOACTION
+     *            the suppressONALLIfNOACTION to set
      */
     public void setSuppressONALLIfNOACTION(boolean suppressONALLIfNOACTION) {
         this.suppressONALLIfNOACTION = suppressONALLIfNOACTION;

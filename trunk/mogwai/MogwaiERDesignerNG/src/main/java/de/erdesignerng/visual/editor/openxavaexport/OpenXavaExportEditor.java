@@ -101,7 +101,7 @@ public class OpenXavaExportEditor extends BaseEditor {
     private void initializeMappingModelFor(Model aModel) {
 
         OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
-        
+
         theOptions.setSrcDirectory(aModel.getProperties().getProperty(OX_SRCDIR));
         theOptions.setPackageName(aModel.getProperties().getProperty(OX_PACKAGE));
 
@@ -156,7 +156,7 @@ public class OpenXavaExportEditor extends BaseEditor {
 
             model.getProperties().setProperty(OX_SRCDIR, theOptions.getSrcDirectory());
             model.getProperties().setProperty(OX_PACKAGE, theOptions.getPackageName());
-            
+
             for (Map.Entry<DataType, OpenXavaTypeMap> theEntry : theOptions.getTypeMapping().entrySet()) {
 
                 model.getProperties().setProperty(OX_TYPE_ + theEntry.getKey().getName(),

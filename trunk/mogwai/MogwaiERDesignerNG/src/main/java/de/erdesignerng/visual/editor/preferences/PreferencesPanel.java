@@ -33,7 +33,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 public class PreferencesPanel extends DefaultPanel implements ResourceHelperProvider {
 
     private DefaultSpinner gridSize = new DefaultSpinner();
-    
+
     private BindingInfo<ApplicationPreferences> bindinginfo;
 
     public PreferencesPanel() {
@@ -51,37 +51,39 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         CellConstraints cons = new CellConstraints();
 
         add(new DefaultLabel(ERDesignerBundle.EDITORGRIDSIZE), cons.xy(2, 2));
-        add(gridSize, cons.xywh(4, 2 , 3, 1));
+        add(gridSize, cons.xywh(4, 2, 3, 1));
 
         UIInitializer.getInstance().initialize(this);
-        
+
         bindinginfo = new BindingInfo<ApplicationPreferences>();
-        bindinginfo.addBinding("gridSize", gridSize, true);        
-        
+        bindinginfo.addBinding("gridSize", gridSize, true);
+
         bindinginfo.configure();
     }
-    
+
     /**
      * Initialize the view with values from the preferences.
      * 
-     * @param aPreferences the preferences
+     * @param aPreferences
+     *            the preferences
      */
     public void initValues(ApplicationPreferences aPreferences) {
         bindinginfo.setDefaultModel(aPreferences);
         bindinginfo.model2view();
     }
-    
+
     /**
-     * Apply the current view values to the preferences after validation.
-     * if validation fails, no changes are made.
-     *  
-     * @param aPreferences the preferences
+     * Apply the current view values to the preferences after validation. if
+     * validation fails, no changes are made.
+     * 
+     * @param aPreferences
+     *            the preferences
      * @return true if validation is ok, else false
      */
     public boolean applyValues(ApplicationPreferences aPreferences) {
-        
+
         bindinginfo.setDefaultModel(aPreferences);
-        
+
         if (bindinginfo.validate().size() == 0) {
             bindinginfo.view2model();
             return true;

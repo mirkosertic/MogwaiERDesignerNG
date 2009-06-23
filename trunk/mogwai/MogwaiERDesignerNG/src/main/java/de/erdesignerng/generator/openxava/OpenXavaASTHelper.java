@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class OpenXavaASTHelper {
-    
+
     private OpenXavaASTHelper() {
     }
 
@@ -152,8 +152,7 @@ public final class OpenXavaASTHelper {
             }
         }
         if (theAnnotation == null) {
-            theAnnotation = new SingleMemberAnnotationExpr(ASTHelper.createNameExpr(aName),
-                    aExpression);
+            theAnnotation = new SingleMemberAnnotationExpr(ASTHelper.createNameExpr(aName), aExpression);
             addAnnotationTo(aDecl, theAnnotation);
         } else {
             theAnnotation.setMemberValue(aExpression);
@@ -161,13 +160,12 @@ public final class OpenXavaASTHelper {
 
         return theAnnotation;
     }
-    
+
     public static NormalAnnotationExpr overwriteNormalAnnotation(String aName, List<MemberValuePair> aValues,
             BodyDeclaration aDecl) {
         removeAnnotatiomFrom(aName, aDecl);
         return addNormalAnnotationTo(aName, aValues, aDecl);
     }
-
 
     public static NormalAnnotationExpr addNormalAnnotationTo(String aName, List<MemberValuePair> aValues,
             BodyDeclaration aDecl) {

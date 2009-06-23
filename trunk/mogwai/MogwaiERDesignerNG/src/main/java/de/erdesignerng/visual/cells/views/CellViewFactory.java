@@ -54,7 +54,7 @@ public class CellViewFactory extends DefaultCellViewFactory {
         if (aVertex instanceof ViewCell) {
             return new ViewCellView((ViewCell) aVertex);
         }
-        
+
         return super.createVertexView(aVertex);
     }
 

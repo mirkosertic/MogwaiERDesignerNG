@@ -268,7 +268,7 @@ public class TableEditor extends BaseEditor {
         editingView.getAddExpressionToIndexButton().setAction(addIndexExpression);
 
         removeIndexElement.setEnabled(false);
-        
+
         setContentPane(editingView);
 
         pack();
@@ -494,7 +494,7 @@ public class TableEditor extends BaseEditor {
 
             return;
         }
-        
+
         if (isUsedInIndex(theAttribute)) {
 
             MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
@@ -537,7 +537,7 @@ public class TableEditor extends BaseEditor {
         List<ValidationError> theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
             indexBindingInfo.view2model();
-            
+
             if (theModel.getIndexType().equals(IndexType.PRIMARYKEY)) {
                 for (int i = 0; i < indexListModel.getSize(); i++) {
                     Index theIndex = (Index) indexListModel.get(i);
@@ -554,13 +554,13 @@ public class TableEditor extends BaseEditor {
             for (int i = 0; i < theListModel.getSize(); i++) {
                 theModel.getExpressions().add(theListModel.get(i));
             }
-            
+
             if (theModel.getExpressions().size() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.ANINDEXMUSTHAVEATLEASTONEELEMENT));
                 return;
             }
-            
+
             if (!indexListModel.contains(theModel)) {
                 indexListModel.add(theModel);
                 knownIndexValues.put(theModel.getSystemId(), theModel);
@@ -729,7 +729,7 @@ public class TableEditor extends BaseEditor {
         }
         return false;
     }
-    
+
     private boolean isUsedInIndex(Attribute aAttribute) {
         for (int i = 0; i < indexListModel.getSize(); i++) {
             Index theIndex = (Index) indexListModel.get(i);

@@ -82,8 +82,8 @@ public class ConvertModelEditor extends BaseEditor {
         });
 
         bindingInfo.addBinding("targetDialect", editingView.getTargetDialect(), true);
-        bindingInfo.addBinding("typeMapping",
-                new ConvertPropertyAdapter(editingView.getMappingTable(), null, getResourceHelper()));
+        bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
+                getResourceHelper()));
 
         bindingInfo.configure();
         bindingInfo.model2view();
@@ -100,7 +100,7 @@ public class ConvertModelEditor extends BaseEditor {
         ConversionInfos theInfos = bindingInfo.getDefaultModel();
         theInfos.setTargetDialect(aDialect);
         theInfos.getTypeMapping().clear();
-        
+
         // Try to map the types
         for (DataType theCurrentType : model.getUsedDataTypes()) {
             theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));

@@ -31,19 +31,20 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
      * 
      * If a subject area has no tables, it is removed from the model.
      * 
-     * @param aTable the table
+     * @param aTable
+     *            the table
      */
     public void removeTable(Table aTable) {
-        
+
         List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
-        
+
         for (SubjectArea theArea : this) {
             theArea.getTables().remove(aTable);
             if (theArea.isEmpty()) {
                 theRemovedAreas.add(theArea);
             }
         }
-        
+
         removeAll(theRemovedAreas);
     }
 
@@ -52,18 +53,19 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
      * 
      * If a subject area is emopty, if will be removed completly
      * 
-     * @param aComment the comment
+     * @param aComment
+     *            the comment
      */
     public void removeComment(Comment aComment) {
         List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
-        
+
         for (SubjectArea theArea : this) {
             theArea.getComments().remove(aComment);
             if (theArea.isEmpty()) {
                 theRemovedAreas.add(theArea);
             }
         }
-        
+
         removeAll(theRemovedAreas);
     }
 
@@ -72,18 +74,19 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
      * 
      * If a subject area has no tables, it is removed from the model.
      * 
-     * @param aView the view
-     */    
+     * @param aView
+     *            the view
+     */
     public void removeView(View aView) {
         List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
-        
+
         for (SubjectArea theArea : this) {
             theArea.getViews().remove(aView);
             if (theArea.isEmpty()) {
                 theRemovedAreas.add(theArea);
             }
         }
-        
+
         removeAll(theRemovedAreas);
     }
 }

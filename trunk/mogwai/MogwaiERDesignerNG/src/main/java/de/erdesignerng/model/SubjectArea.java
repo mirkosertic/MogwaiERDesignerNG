@@ -26,17 +26,17 @@ import java.awt.Color;
  * @version $Date: 2009-03-09 19:07:29 $
  */
 public class SubjectArea extends ModelItem {
-    
+
     private Color color;
-    
+
     private TableList tables = new TableList();
-    
+
     private ViewList views = new ViewList();
-    
+
     private CommentList comments = new CommentList();
-    
+
     private boolean visible = true;
-    
+
     public SubjectArea() {
         setName("Subject Area");
         setColor(Color.lightGray);
@@ -50,7 +50,8 @@ public class SubjectArea extends ModelItem {
     }
 
     /**
-     * @param color the color to set
+     * @param color
+     *            the color to set
      */
     public void setColor(Color color) {
         this.color = color;
@@ -64,7 +65,8 @@ public class SubjectArea extends ModelItem {
     }
 
     /**
-     * @param tables the tables to set
+     * @param tables
+     *            the tables to set
      */
     public void setTables(TableList tables) {
         this.tables = tables;
@@ -82,14 +84,15 @@ public class SubjectArea extends ModelItem {
     /**
      * Setzt den Wert des Attributs <code>comments</code>.
      * 
-     * @param comments Wert für das Attribut comments.
+     * @param comments
+     *            Wert für das Attribut comments.
      */
     public void setComments(CommentList comments) {
         this.comments = comments;
     }
-    
+
     /**
-     * Test, if this subject area contains any item. 
+     * Test, if this subject area contains any item.
      * 
      * @return true if it is empty, else false
      */
@@ -109,7 +112,8 @@ public class SubjectArea extends ModelItem {
     /**
      * Setzt den Wert des Attributs <code>views</code>.
      * 
-     * @param views Wert für das Attribut views.
+     * @param views
+     *            Wert für das Attribut views.
      */
     public void setViews(ViewList views) {
         this.views = views;
@@ -123,7 +127,8 @@ public class SubjectArea extends ModelItem {
     }
 
     /**
-     * @param visible the visible to set
+     * @param visible
+     *            the visible to set
      */
     public void setVisible(boolean visible) {
         this.visible = visible;

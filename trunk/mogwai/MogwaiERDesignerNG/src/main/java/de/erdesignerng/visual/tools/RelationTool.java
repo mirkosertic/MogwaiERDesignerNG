@@ -44,11 +44,11 @@ import de.erdesignerng.visual.cells.TableCell;
 public class RelationTool extends BaseTool {
 
     protected Point2D start;
-    
+
     protected Point2D current;
 
     protected PortView port;
-    
+
     protected PortView firstPort;
 
     public RelationTool(ERDesignerGraph aGraph) {

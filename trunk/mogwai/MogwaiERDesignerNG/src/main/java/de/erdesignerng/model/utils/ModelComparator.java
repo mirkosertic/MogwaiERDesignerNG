@@ -41,12 +41,14 @@ import de.mogwai.common.i18n.ResourceHelper;
 public class ModelComparator {
 
     private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    
+
     /**
      * Compare two models.
      * 
-     * @param aCurrentModel the current model
-     * @param aDatabaseModel the database model
+     * @param aCurrentModel
+     *            the current model
+     * @param aDatabaseModel
+     *            the database model
      * @return the compare result
      */
     public ModelCompareResult compareModels(Model aCurrentModel, Model aDatabaseModel) {

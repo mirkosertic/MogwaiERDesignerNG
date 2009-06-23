@@ -44,7 +44,7 @@ public class ExceptionEditorView extends JPanel {
      */
     public ExceptionEditorView() {
         initialize();
-        
+
         exceptionText.setEditable(false);
     }
 

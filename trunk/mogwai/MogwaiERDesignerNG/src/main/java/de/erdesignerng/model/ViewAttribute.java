@@ -18,7 +18,7 @@
 package de.erdesignerng.model;
 
 /**
- * An Attribute within a view. 
+ * An Attribute within a view.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
