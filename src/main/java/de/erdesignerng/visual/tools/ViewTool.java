@@ -39,6 +39,6 @@ public class ViewTool extends BaseTool {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        graph.commandNewView(new Point2D.Double(e.getX(), e.getY()));
+        graph.commandNewView(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
     }
 }

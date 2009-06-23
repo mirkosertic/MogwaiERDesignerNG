@@ -34,7 +34,7 @@ import de.erdesignerng.model.View;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class ViewCell extends DefaultGraphCell implements ModelCell<View> {
+public class ViewCell extends DefaultGraphCell implements ModelCellWithPosition<View> {
 
     public ViewCell(View aTable) {
         super(aTable);
