@@ -20,11 +20,11 @@ package de.erdesignerng.dialect;
 public class Statement {
 
     private String sql;
-    
+
     private boolean executed;
-    
+
     private boolean saved;
-    
+
     public Statement(String aSQL) {
         sql = aSQL;
     }
@@ -44,7 +44,8 @@ public class Statement {
     }
 
     /**
-     * @param executed the executed to set
+     * @param executed
+     *            the executed to set
      */
     public void setExecuted(boolean executed) {
         this.executed = executed;
@@ -58,14 +59,16 @@ public class Statement {
     }
 
     /**
-     * @param saved the saved to set
+     * @param saved
+     *            the saved to set
      */
     public void setSaved(boolean saved) {
         this.saved = saved;
     }
 
     /**
-     * @param sql the sql to set
+     * @param sql
+     *            the sql to set
      */
     public void setSql(String sql) {
         this.sql = sql;

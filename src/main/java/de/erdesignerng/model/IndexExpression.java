@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 public class IndexExpression extends ModelItem implements ModelItemClonable<IndexExpression> {
 
     private String expression;
+
     private Attribute attributeRef;
 
     /**
@@ -37,7 +38,7 @@ public class IndexExpression extends ModelItem implements ModelItemClonable<Inde
      * Setzt den Wert des Attributs <code>expression</code>.
      * 
      * @param expression
-     *                Wert für das Attribut expression.
+     *            Wert für das Attribut expression.
      */
     public void setExpression(String expression) {
         this.expression = expression;
@@ -56,7 +57,7 @@ public class IndexExpression extends ModelItem implements ModelItemClonable<Inde
      * Setzt den Wert des Attributs <code>attributeRef</code>.
      * 
      * @param attributeRef
-     *                Wert für das Attribut attributeRef.
+     *            Wert für das Attribut attributeRef.
      */
     public void setAttributeRef(Attribute attributeRef) {
         this.attributeRef = attributeRef;
@@ -96,10 +97,10 @@ public class IndexExpression extends ModelItem implements ModelItemClonable<Inde
      * Test if this expression is not equals to another expression.
      * 
      * @param aExpression
-     *                the other expression
+     *            the other expression
      * @param aUseName
-     *                true if attribtue check shall be done by name, not by
-     *                system id
+     *            true if attribtue check shall be done by name, not by system
+     *            id
      * @return true if they are not equals
      */
     public boolean isModified(IndexExpression aExpression, boolean aUseName) {

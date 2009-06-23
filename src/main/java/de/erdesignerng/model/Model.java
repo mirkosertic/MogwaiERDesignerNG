@@ -56,7 +56,7 @@ public class Model implements OwnedModelItemVerifier {
     public static final String PROPERTY_USER = "USER";
 
     public static final String PROPERTY_PASSWORD = "PASSWORD";
-    
+
     public static final String PROPERTY_PROMPTFORPASSWORD = "PROMPTFORPASSWORD";
 
     private TableList tables = new TableList();
@@ -202,10 +202,11 @@ public class Model implements OwnedModelItemVerifier {
      */
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
-        
+
         Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
                 properties.getProperty(PROPERTY_DRIVER), properties.getProperty(PROPERTY_URL),
-                properties.getProperty(PROPERTY_USER), properties.getProperty(PROPERTY_PASSWORD), properties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
+                properties.getProperty(PROPERTY_USER), properties.getProperty(PROPERTY_PASSWORD),
+                properties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
         return theConnection;
     }
 
@@ -374,7 +375,8 @@ public class Model implements OwnedModelItemVerifier {
         String theDialectName = dialect != null ? dialect.getUniqueName() : null;
         return new ConnectionDescriptor(getProperties().getProperty(PROPERTY_ALIAS), theDialectName, getProperties()
                 .getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER), getProperties().getProperty(
-                PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD), getProperties().getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
+                PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD), getProperties().getBooleanProperty(
+                PROPERTY_PROMPTFORPASSWORD, false));
     }
 
     /**
@@ -571,31 +573,32 @@ public class Model implements OwnedModelItemVerifier {
     /**
      * Convert the model using defined convertioninfos.
      * 
-     * @param aConversionInfo the conversioninfo.
+     * @param aConversionInfo
+     *            the conversioninfo.
      */
     public void convert(ConversionInfos aConversionInfo) {
         Dialect theNewDialect = aConversionInfo.getTargetDialect();
-        
+
         // Update the dialect
         setDialect(theNewDialect);
-        
+
         // Update the database connection
         getProperties().setProperty(PROPERTY_DRIVER, theNewDialect.getDriverClassName());
         getProperties().setProperty(PROPERTY_URL, theNewDialect.getDriverURLTemplate());
         getProperties().setProperty(PROPERTY_USER, "");
         getProperties().setProperty(PROPERTY_PASSWORD, "");
         getProperties().setProperty(PROPERTY_ALIAS, "");
-        
+
         // Convert the domains
         for (Domain theDomain : getDomains()) {
             theDomain.setConcreteType(aConversionInfo.getTypeMapping().get(theDomain));
         }
-        
+
         // Convert the attributes
         for (Table theTable : tables) {
             for (Attribute theAttribute : theTable.getAttributes()) {
                 DataType theType = theAttribute.getDatatype();
-                
+
                 // Never convert domains, only concrete types !
                 if (!theType.isDomain()) {
                     theAttribute.setDatatype(aConversionInfo.getTypeMapping().get(theType));
@@ -606,6 +609,7 @@ public class Model implements OwnedModelItemVerifier {
 
     /**
      * Get a list of used schemas in the model.
+     * 
      * @return the list of schemas.
      */
     public List<String> getUsedSchemas() {

@@ -26,11 +26,11 @@ import java.util.List;
  * @author msertic
  */
 public class TableEntity extends ModelEntity {
-    
+
     private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
 
     private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
-    
+
     private String schema;
 
     /**
@@ -41,7 +41,8 @@ public class TableEntity extends ModelEntity {
     }
 
     /**
-     * @param attributes the attributes to set
+     * @param attributes
+     *            the attributes to set
      */
     public void setAttributes(List<AttributeEntity> attributes) {
         this.attributes = attributes;
@@ -55,7 +56,8 @@ public class TableEntity extends ModelEntity {
     }
 
     /**
-     * @param indexes the indexes to set
+     * @param indexes
+     *            the indexes to set
      */
     public void setIndexes(List<IndexEntity> indexes) {
         this.indexes = indexes;
@@ -69,7 +71,8 @@ public class TableEntity extends ModelEntity {
     }
 
     /**
-     * @param schema the schema to set
+     * @param schema
+     *            the schema to set
      */
     public void setSchema(String schema) {
         this.schema = schema;

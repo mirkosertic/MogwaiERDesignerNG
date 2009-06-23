@@ -39,26 +39,28 @@ import de.mogwai.common.client.looks.UIInitializer;
 public class SaveToRepositoryEditor extends BaseEditor {
 
     private SaveToRepositoryView view = new SaveToRepositoryView() {
-      
+
         @Override
         public void commandChangeRepositoryEntry() {
             SaveToRepositoryEditor.this.commandChangeRepositoryEntry();
         }
-        
+
     };
 
     private BindingInfo<SaveToRepositoryDataModel> bindingInfo1;
+
     private BindingInfo<SaveToRepositoryDataModel> bindingInfo2;
 
-    public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDesciptor> aEntries, RepositoryEntryDesciptor aCurrentEntry) {
+    public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDesciptor> aEntries,
+            RepositoryEntryDesciptor aCurrentEntry) {
         super(aParent, ERDesignerBundle.SAVEMODELTODB);
 
         initialize();
-        
+
         SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
         bindingInfo1 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
         bindingInfo2 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
-        
+
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
         for (RepositoryEntryDesciptor theEntry : aEntries) {
             theModel.addElement(theEntry);
@@ -68,7 +70,7 @@ public class SaveToRepositoryEditor extends BaseEditor {
             theBindModel.setExistingEntry((RepositoryEntryDesciptor) theModel.getElementAt(0));
             theBindModel.setNameForExistantEntry(theBindModel.getExistingEntry().getName());
         }
-        
+
         if (aCurrentEntry == null) {
             view.getNewEntryButton().setSelected(true);
         } else {
@@ -76,24 +78,23 @@ public class SaveToRepositoryEditor extends BaseEditor {
             theBindModel.setExistingEntry(aCurrentEntry);
             theBindModel.setNameForExistantEntry(aCurrentEntry.getName());
         }
-        
-        
+
         bindingInfo1.addBinding("nameForNewEntry", view.getNewNameField(), true);
         bindingInfo1.configure();
 
         bindingInfo2.addBinding("existingEntry", view.getExistingNameBox(), true);
         bindingInfo2.addBinding("nameForExistantEntry", view.getExistingNameField(), true);
         bindingInfo2.configure();
-        
+
         bindingInfo2.model2view();
     }
 
     private void initialize() {
-        
+
         ButtonGroup theGroup = new ButtonGroup();
         theGroup.add(view.getExistingEntryButton());
         theGroup.add(view.getNewEntryButton());
-        
+
         view.getExistingEntryButton().setSelected(true);
 
         view.getOkButton().setAction(okAction);
@@ -113,7 +114,7 @@ public class SaveToRepositoryEditor extends BaseEditor {
     @Override
     public void applyValues() throws Exception {
     }
-    
+
     private void commandChangeRepositoryEntry() {
         RepositoryEntryDesciptor theDesc = (RepositoryEntryDesciptor) view.getExistingNameBox().getSelectedItem();
         if (theDesc != null) {
@@ -126,7 +127,7 @@ public class SaveToRepositoryEditor extends BaseEditor {
 
     @Override
     protected void commandOk() {
-        
+
         if (view.getNewEntryButton().isSelected()) {
             if (bindingInfo1.validate().size() == 0) {
                 bindingInfo1.view2model();
@@ -143,18 +144,18 @@ public class SaveToRepositoryEditor extends BaseEditor {
     }
 
     /**
-     * Create a repository descriptor for the selected entry. 
+     * Create a repository descriptor for the selected entry.
      * 
      * @return the descriptor
      */
     public RepositoryEntryDesciptor getRepositoryDescriptor() {
-        
+
         SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
-        
+
         if (view.getNewEntryButton().isSelected()) {
             RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
             theDesc.setName(theModel.getNameForNewEntry());
-            return theDesc;            
+            return theDesc;
         }
 
         RepositoryEntryDesciptor theDesc = theModel.getExistingEntry();

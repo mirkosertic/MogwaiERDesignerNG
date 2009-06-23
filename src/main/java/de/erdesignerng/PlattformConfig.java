@@ -23,11 +23,11 @@ package de.erdesignerng;
  * @author msertic
  */
 public final class PlattformConfig {
-    
+
     private PlattformConfig() {
     }
 
     public static String getLineSeparator() {
-        return System.getProperty("line.separator"); 
+        return System.getProperty("line.separator");
     }
 }

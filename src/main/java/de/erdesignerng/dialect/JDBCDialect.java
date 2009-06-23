@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.dialect;
 
-
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-31 16:14:37 $

@@ -36,23 +36,23 @@ import de.mogwai.common.i18n.ResourceHelper;
 public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesignerWorldConnector {
 
     private ERDesignerComponent component;
-    
+
     private ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    
+
     private DefaultFrameContent content = new DefaultFrameContent();
-    
+
     private ResourceProviderPanel panel = new ResourceProviderPanel();
-    
+
     private String title;
-    
+
     private SquirrelMogwaiController controller;
-    
+
     public SquirrelMogwaiTabSheet(SquirrelMogwaiController aController) {
-    
+
         controller = aController;
-        
+
         component = new ERDesignerComponent(ApplicationPreferences.getInstance(), this);
-        
+
         content.setDetailComponent(component.getDetailComponent());
         panel.setContent(content);
 
@@ -88,7 +88,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         return content.getToolbar();
     }
 
-    @Override    
+    @Override
     public void initTitle(String aFile) {
         StringBuffer theTitle = new StringBuffer();
         if (aFile != null) {
@@ -96,10 +96,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         }
 
         title = helper.getText(ERDesignerBundle.TITLE) + theTitle;
-        
+
     }
 
-    @Override    
+    @Override
     public void initTitle() {
         initTitle(null);
     }
@@ -109,22 +109,22 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         controller.getSession().showMessage(aMessage);
     }
 
-    @Override    
+    @Override
     public boolean supportsClasspathEditor() {
         return false;
     }
 
-    @Override    
+    @Override
     public boolean supportsConnectionEditor() {
         return false;
     }
 
-    @Override    
+    @Override
     public boolean supportsExitApplication() {
         return false;
     }
 
-    @Override    
+    @Override
     public Model createNewModel() {
         Model theModel = new Model();
         theModel.setDialect(controller.getDialect());
@@ -138,7 +138,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     @Override
     public void sessionEnding(ISession aSession) {
         super.sessionEnding(aSession);
-        
+
         component.savePreferences();
     }
 
@@ -146,18 +146,18 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         component.commandReverseEngineer();
     }
 
-    @Override    
+    @Override
     public boolean supportsPreferences() {
         return false;
     }
 
-    @Override    
+    @Override
     public void initializeLoadedModel(Model aModel) {
         aModel.setDialect(controller.getDialect());
         aModel.setModificationTracker(new HistoryModificationTracker(aModel));
     }
 
-    @Override    
+    @Override
     public void notifyAboutException(Exception aException) {
         controller.notifyAboutException(aException);
     }
@@ -167,9 +167,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     /**
-     * The preferences were changed, so they need to be reloaded. 
+     * The preferences were changed, so they need to be reloaded.
      * 
-     * @param aPreferences the preferences
+     * @param aPreferences
+     *            the preferences
      */
     public void refreshPreferences(ApplicationPreferences aPreferences) {
         component.refreshPreferences(aPreferences);

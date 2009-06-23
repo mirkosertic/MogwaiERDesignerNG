@@ -31,12 +31,12 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  * @version $Date: 2008-01-19 15:25:31 $
  */
 public class ERDesignerToolbarEntry extends DefaultButton {
-    
+
     private DefaultPopupMenu menu = new DefaultPopupMenu();
-    
+
     public ERDesignerToolbarEntry(String aId) {
         super(aId);
-        
+
         addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -44,11 +44,11 @@ public class ERDesignerToolbarEntry extends DefaultButton {
             }
         });
     }
-    
+
     public DefaultPopupMenu getMenu() {
         return menu;
     }
-    
+
     public void add(JMenuItem aItem) {
         menu.add(aItem);
     }

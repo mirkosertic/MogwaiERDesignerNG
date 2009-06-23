@@ -78,7 +78,7 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         for (String theComment : aSource.getComments()) {
             aDestination.getComments().add(aModel.getComments().findBySystemId(theComment));
         }
-        
+
         aDestination.getViews().clear();
         for (String theView : aSource.getViews()) {
             aDestination.getViews().add(aModel.getViews().findBySystemId(theView));

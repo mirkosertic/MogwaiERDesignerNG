@@ -19,10 +19,9 @@ package de.erdesignerng.dialect;
 
 import java.util.Vector;
 
-
 /**
  * A list of datatypes.
- *  
+ * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-15 17:53:55 $
  */
@@ -30,8 +29,9 @@ public class DataTypeList extends Vector<DataType> {
 
     /**
      * Find a datatype by its name.
-     *  
-     * @param aName the name of the datatype
+     * 
+     * @param aName
+     *            the name of the datatype
      * @return the datatype or null if nothing was found
      */
     public DataType findByName(String aName) {

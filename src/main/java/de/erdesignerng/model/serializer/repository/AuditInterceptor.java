@@ -29,13 +29,13 @@ import org.hibernate.type.Type;
  * @author msertic
  */
 public class AuditInterceptor extends EmptyInterceptor {
-    
+
     public static final AuditInterceptor INSTANCE = new AuditInterceptor();
 
     protected String getCurrentUserId() {
         return System.getProperty("user.name");
     }
-    
+
     @Override
     public boolean onSave(Object aEntity, Serializable aID, Object[] aStates, String[] aPropertyNames, Type[] aTypes) {
 

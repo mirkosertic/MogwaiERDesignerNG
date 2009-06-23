@@ -94,10 +94,11 @@ public class DatabaseConnectionEditor extends BaseEditor {
         bindingInfo.configure();
 
         bindingInfo.model2view();
-        
+
         boolean isDefinedModel = aModel.getDomains().size() > 0 || aModel.getTables().size() > 0;
         if (isDefinedModel) {
-            // If there are domains or tables already defined, the dialect cannot be changed
+            // If there are domains or tables already defined, the dialect
+            // cannot be changed
             view.getDialect().setEnabled(false);
         }
     }
@@ -157,7 +158,8 @@ public class DatabaseConnectionEditor extends BaseEditor {
             try {
 
                 Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
-                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword(), theModel.isPromptForPassword());
+                        .getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword(), theModel
+                        .isPromptForPassword());
                 if (theConnection == null) {
                     return;
                 }
@@ -192,7 +194,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
                 theDescriptor.setUrl(aDialect.getDriverURLTemplate());
                 theDescriptor.setDialect(aDialect);
             }
-            
+
             bindingInfo.model2view();
         }
     }

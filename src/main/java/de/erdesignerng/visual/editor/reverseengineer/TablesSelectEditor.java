@@ -59,8 +59,7 @@ public class TablesSelectEditor extends BaseEditor {
         tableList = editingView.getTableList().getModel();
         tableList.addAll(aOptions.getTableEntries());
 
-        bindingInfo.addBinding("tableEntries", new TableEntryPropertyAdapter(editingView.getTableList(),
-                null));
+        bindingInfo.addBinding("tableEntries", new TableEntryPropertyAdapter(editingView.getTableList(), null));
 
         bindingInfo.configure();
         bindingInfo.model2view();
@@ -81,7 +80,7 @@ public class TablesSelectEditor extends BaseEditor {
         setResizable(false);
 
         pack();
-        
+
         UIInitializer.getInstance().initialize(this);
     }
 

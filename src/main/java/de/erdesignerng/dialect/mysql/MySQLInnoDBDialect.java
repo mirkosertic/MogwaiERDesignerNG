@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.dialect.mysql;
 
-
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-02 14:20:18 $
@@ -25,8 +24,8 @@ package de.erdesignerng.dialect.mysql;
 public class MySQLInnoDBDialect extends MySQLDialect {
 
     public MySQLInnoDBDialect() {
-        
-        seal();        
+
+        seal();
     }
 
     /**
@@ -44,7 +43,7 @@ public class MySQLInnoDBDialect extends MySQLDialect {
     public MySQLInnoDBSQLGenerator createSQLGenerator() {
         return new MySQLInnoDBSQLGenerator(this);
     }
-    
+
     @Override
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.MySQLInnoDBDialect.class;

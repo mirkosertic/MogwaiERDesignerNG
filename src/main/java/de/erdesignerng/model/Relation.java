@@ -53,7 +53,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     /**
      * @param end
-     *                the end to set
+     *            the end to set
      */
     public void setExportingTable(Table end) {
         exportingTable = end;
@@ -68,7 +68,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     /**
      * @param start
-     *                the start to set
+     *            the start to set
      */
     public void setImportingTable(Table start) {
         importingTable = start;

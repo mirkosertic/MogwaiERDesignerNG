@@ -104,7 +104,7 @@ public class ViewEditor extends BaseEditor {
         View theView = viewBindingInfo.getDefaultModel();
 
         viewBindingInfo.view2model();
-        
+
         theView.getAttributes().clear();
 
         try {

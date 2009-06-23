@@ -51,7 +51,7 @@ public class RelationEditorView extends JPanel {
     private DefaultRadioButton onDeleteCascade;
 
     private DefaultRadioButton onDeleteSetNull;
-    
+
     private DefaultRadioButton onDeleteRestrict;
 
     private JPanel onUpdateContainer;
@@ -61,7 +61,7 @@ public class RelationEditorView extends JPanel {
     private DefaultRadioButton onUpdateCascade;
 
     private DefaultRadioButton onUpdateSetNull;
-    
+
     private DefaultRadioButton onUpdateRestrict;
 
     private JPanel component8;

@@ -42,35 +42,35 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
      */
     @Override
     protected String createAttributeDataDefinition(Attribute aAttribute) {
-        
+
         StringBuilder theBuilder = new StringBuilder();
         theBuilder.append(aAttribute.getPhysicalDeclaration());
         boolean isNullable = aAttribute.isNullable();
 
-        String theDefault = aAttribute.getDefaultValue();        
+        String theDefault = aAttribute.getDefaultValue();
         boolean hasDefault = false;
         if (!StringUtils.isEmpty(theDefault)) {
             hasDefault = true;
         }
-        
+
         if ((!isNullable) && (!hasDefault)) {
             theBuilder.append(" NOT NULL");
         }
-        
+
         if (hasDefault) {
             theBuilder.append(" DEFAULT ");
             theBuilder.append(theDefault);
         }
-        
+
         String theExtra = aAttribute.getExtra();
         if (!StringUtils.isEmpty(theExtra)) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);
         }
-        
+
         return theBuilder.toString();
-    }    
-    
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -95,10 +95,11 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
      * {@inheritDoc}
      */
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) throws VetoException {
-        
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
+            throws VetoException {
+
         Table theTable = aExistantAttribute.getOwner();
-        
+
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -128,8 +129,8 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    } 
-    
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -150,5 +151,5 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }    
+    }
 }

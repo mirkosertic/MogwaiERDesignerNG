@@ -24,28 +24,28 @@ import javax.swing.SwingWorker;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 public abstract class LongRunningTask<T> extends Thread {
-    
+
     private ERDesignerWorldConnector connector;
-    
+
     private SwingWorker<T, String> worker;
-    
+
     public interface MessagePublisher {
-        
+
         void publishMessage(String aMessage);
     }
-    
+
     protected abstract class MySwingWorker<T> extends SwingWorker<T, String> implements MessagePublisher {
 
         @Override
         public void publishMessage(String aMessage) {
-            publish(new String[] {aMessage});
+            publish(new String[] { aMessage });
         }
     }
-    
+
     public LongRunningTask(ERDesignerWorldConnector aConnector) {
         connector = aConnector;
     }
-    
+
     @Override
     public void run() {
         worker = new MySwingWorker<T>() {
@@ -73,17 +73,17 @@ public abstract class LongRunningTask<T> extends Thread {
             }
         }
     }
-    
+
     public void handleProcess(List<String> aChunks) {
         for (String theChunk : aChunks) {
             connector.setStatusText(theChunk);
         }
     }
-    
+
     public abstract T doWork(MessagePublisher aMessagePublisher) throws Exception;
-    
+
     public abstract void handleResult(T aResult);
-    
+
     public void cleanup() throws Exception {
     }
 }

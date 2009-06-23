@@ -50,13 +50,13 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
                 }
             }
         }
-        
+
         if (theHasAutoIncrement) {
             return new StatementList();
         }
         return super.createAddPrimaryKeyToTable(aTable, aIndex);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -80,7 +80,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
      */
     @Override
     public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
-        
+
         boolean theHasAutoIncrement = false;
         for (Attribute theAttribute : aTable.getAttributes()) {
             String theExtra = theAttribute.getExtra();
@@ -93,7 +93,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         if (theHasAutoIncrement) {
             return new StatementList();
         }
-        
+
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -135,7 +135,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         return theResult;
 
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -156,8 +156,8 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;
-    }  
-    
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -167,8 +167,8 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable)
-                + " DROP FOREIGN KEY " + createUniqueRelationName(aRelation)));
+        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP FOREIGN KEY "
+                + createUniqueRelationName(aRelation)));
         return theResult;
     }
 }

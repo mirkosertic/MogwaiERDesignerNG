@@ -22,8 +22,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class ModelCompareResult {
 
     private DefaultMutableTreeNode modelRootNode;
+
     private DefaultMutableTreeNode dbRootNode;
-    
+
     public ModelCompareResult(DefaultMutableTreeNode aModelRootNode, DefaultMutableTreeNode aDBRootNode) {
         modelRootNode = aModelRootNode;
         dbRootNode = aDBRootNode;

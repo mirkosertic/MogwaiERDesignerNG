@@ -32,13 +32,13 @@ import de.erdesignerng.model.serializer.xml20.XMLModelSerializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**
- * Testcases for domain handling. 
+ * Testcases for domain handling.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-14 21:10:04 $
  */
 public class DomainTest extends BaseERDesignerTestCaseImpl {
-    
+
     public void testIfDomainsAreDomains() throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
@@ -47,13 +47,13 @@ public class DomainTest extends BaseERDesignerTestCaseImpl {
 
         Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
         assertTrue(theNotUsedDom.isDomain());
-        
+
         Domain theUsedDom = theModel.getDomains().findByName("DOM1");
         assertTrue(theUsedDom.isDomain());
     }
 
     public void testDomainInUsage() throws ParserConfigurationException, SAXException, IOException {
-        
+
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
         Document theDoc = theBuilder.parse(getClass().getResourceAsStream("modelwithdomains.mxm"));
@@ -62,10 +62,10 @@ public class DomainTest extends BaseERDesignerTestCaseImpl {
         Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
         assertTrue(theNotUsedDom != null);
         assertTrue(theModel.getTables().checkIfUsedByTable(theNotUsedDom) == null);
-        
+
         Domain theUsedDom = theModel.getDomains().findByName("DOM1");
         assertTrue(theUsedDom != null);
         assertTrue(theModel.getTables().checkIfUsedByTable(theUsedDom) != null);
-        
+
     }
 }

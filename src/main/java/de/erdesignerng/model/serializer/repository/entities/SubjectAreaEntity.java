@@ -28,13 +28,13 @@ import java.util.List;
 public class SubjectAreaEntity extends ModelEntity {
 
     private int color;
-    
+
     private Boolean visible;
-    
+
     private List<String> tables = new ArrayList<String>();
 
     private List<String> comments = new ArrayList<String>();
-    
+
     private List<String> views = new ArrayList<String>();
 
     /**
@@ -45,7 +45,8 @@ public class SubjectAreaEntity extends ModelEntity {
     }
 
     /**
-     * @param color the color to set
+     * @param color
+     *            the color to set
      */
     public void setColor(int color) {
         this.color = color;
@@ -59,7 +60,8 @@ public class SubjectAreaEntity extends ModelEntity {
     }
 
     /**
-     * @param tables the tables to set
+     * @param tables
+     *            the tables to set
      */
     public void setTables(List<String> tables) {
         this.tables = tables;
@@ -73,7 +75,8 @@ public class SubjectAreaEntity extends ModelEntity {
     }
 
     /**
-     * @param comments the comments to set
+     * @param comments
+     *            the comments to set
      */
     public void setComments(List<String> comments) {
         this.comments = comments;
@@ -95,7 +98,8 @@ public class SubjectAreaEntity extends ModelEntity {
     }
 
     /**
-     * @param visible the visible to set
+     * @param visible
+     *            the visible to set
      */
     public void setVisible(Boolean visible) {
         this.visible = visible;

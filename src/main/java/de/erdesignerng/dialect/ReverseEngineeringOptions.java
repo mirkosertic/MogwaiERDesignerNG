@@ -29,9 +29,9 @@ public class ReverseEngineeringOptions {
     private TableNamingEnum tableNaming;
 
     private List<SchemaEntry> schemaEntries = new ArrayList<SchemaEntry>();
-    
+
     private List<TableEntry> tableEntries = new ArrayList<TableEntry>();
-    
+
     /**
      * @return the tableNaming
      */
@@ -82,7 +82,8 @@ public class ReverseEngineeringOptions {
     }
 
     /**
-     * @param tableNames the tableNames to set
+     * @param tableNames
+     *            the tableNames to set
      */
     public void setTableEntries(List<TableEntry> tableNames) {
         this.tableEntries = tableNames;

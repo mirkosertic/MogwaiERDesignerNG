@@ -45,11 +45,11 @@ public final class DialectFactory {
 
     private DialectFactory() {
     }
-    
+
     public static synchronized DialectFactory getInstance() {
         if (me == null) {
             me = new DialectFactory();
-            me.registerDialect(new DB2Dialect());        
+            me.registerDialect(new DB2Dialect());
             me.registerDialect(new MSSQLDialect());
             me.registerDialect(new MySQLDialect());
             me.registerDialect(new MySQLInnoDBDialect());

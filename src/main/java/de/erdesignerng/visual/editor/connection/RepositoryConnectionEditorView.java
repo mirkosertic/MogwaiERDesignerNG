@@ -67,7 +67,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
 
         add(new DefaultLabel(ERDesignerBundle.DIALECT), cons.xy(2, 2));
         add(dialect, cons.xy(4, 2));
-        
+
         add(new DefaultLabel(ERDesignerBundle.JDBCDRIVER), cons.xy(2, 4));
         add(driver, cons.xy(4, 4));
 

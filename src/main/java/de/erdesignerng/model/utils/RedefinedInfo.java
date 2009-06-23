@@ -17,10 +17,8 @@
  */
 package de.erdesignerng.model.utils;
 
-
-
 public class RedefinedInfo extends Info {
-    
+
     protected RedefinedInfo(String aKey, String aWhat) {
         super(aKey, aWhat);
     }

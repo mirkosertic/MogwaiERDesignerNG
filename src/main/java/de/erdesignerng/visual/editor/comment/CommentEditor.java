@@ -37,13 +37,14 @@ public class CommentEditor extends BaseEditor {
     private BindingInfo<Comment> bindingInfo = new BindingInfo<Comment>();
 
     private CommentEditorView editingView;
-    
+
     private Model model;
 
     /**
      * Create a relation editor.
      * 
-     * @param aModel the db model
+     * @param aModel
+     *            the db model
      * @param aParent
      *            the parent container
      */
@@ -51,7 +52,7 @@ public class CommentEditor extends BaseEditor {
         super(aParent, ERDesignerBundle.COMMENTEDITOR);
 
         initialize();
-        
+
         model = aModel;
 
         bindingInfo.addBinding("comment", editingView.getComment(), true);
@@ -76,7 +77,7 @@ public class CommentEditor extends BaseEditor {
     }
 
     public void initializeFor(Comment aArea) {
-        
+
         bindingInfo.setDefaultModel(aArea);
         bindingInfo.model2view();
     }
@@ -93,9 +94,9 @@ public class CommentEditor extends BaseEditor {
      */
     @Override
     public void applyValues() throws Exception {
-        
+
         Comment theComment = bindingInfo.getDefaultModel();
-        
+
         bindingInfo.view2model();
         if (!model.getComments().contains(theComment)) {
             model.addComment(theComment);

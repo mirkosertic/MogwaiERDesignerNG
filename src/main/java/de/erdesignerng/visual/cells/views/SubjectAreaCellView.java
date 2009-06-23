@@ -55,7 +55,7 @@ public class SubjectAreaCellView extends VertexView {
     public CellViewRenderer getRenderer() {
         return renderer;
     }
-    
+
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
         private SubjectArea subjectArea;

@@ -112,18 +112,18 @@ public class ParserTest extends BaseERDesignerTestCaseImpl {
         assertTrue("\"FirstName\"".equals(theView.getAttributes().get(0).getName()));
         assertTrue("\"UnitKey\"".equals(theView.getAttributes().get(2).getName()));
     }
-    
+
     public void testComplexQuery2() throws Exception {
         View theView = new View();
         String theStatement = readResourceFile("query2.sql");
 
         System.out.println(theStatement);
-        
+
         SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
 
         assertTrue(theView.getAttributes().size() == 39);
         assertTrue("\"UnitKey\"".equals(theView.getAttributes().get(0).getName()));
         assertTrue("\"Echinococcosis/hydatidosis\"".equals(theView.getAttributes().get(1).getName()));
     }
-    
+
 }

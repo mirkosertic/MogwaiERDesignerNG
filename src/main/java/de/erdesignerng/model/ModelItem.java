@@ -26,15 +26,15 @@ import java.io.Serializable;
 public abstract class ModelItem implements Serializable {
 
     public static final String PROPERTY_LOCATION = "LOCATION";
-    
+
     private String systemId = ModelUtilities.createSystemIdFor(this);
 
     private String name;
-    
+
     private String originalName;
 
     private String comment;
-    
+
     private ModelProperties properties = new ModelProperties();
 
     /**
@@ -94,17 +94,17 @@ public abstract class ModelItem implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
+
     public boolean isRenamed(String aName) {
         if (name == null) {
             return aName != null;
         }
         return !name.equals(aName);
     }
-    
+
     public boolean isCommentChanged(String aComment) {
         return isStringModified(comment, aComment);
-    }    
+    }
 
     /**
      * {@inheritDoc}
@@ -141,7 +141,7 @@ public abstract class ModelItem implements Serializable {
         }
         return true;
     }
-    
+
     protected boolean isStringModified(String aValue1, String aValue2) {
         if (aValue1 == null) {
             aValue1 = "";
@@ -159,9 +159,10 @@ public abstract class ModelItem implements Serializable {
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
-    
+
     /**
      * Get the unique name of the model item.
+     * 
      * @return the name
      */
     public String getUniqueName() {

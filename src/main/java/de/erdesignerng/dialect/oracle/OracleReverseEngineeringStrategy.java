@@ -74,7 +74,7 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         // Check for recycle bin tables
         return (!aTableName.startsWith("BIN$")) && (aTableName.indexOf("/") < 0);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -162,7 +162,7 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
             theStatement.close();
         }
     }
-    
+
     @Override
     protected CascadeType getCascadeType(int aValue) {
         switch (aValue) {

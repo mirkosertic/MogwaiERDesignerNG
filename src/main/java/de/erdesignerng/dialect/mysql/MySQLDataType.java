@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
 
 /**
  * A MySQL DataType.
- *  
+ * 
  * @author msertic
  */
 public class MySQLDataType extends GenericDataTypeImpl {
@@ -29,7 +29,7 @@ public class MySQLDataType extends GenericDataTypeImpl {
     public MySQLDataType(String aName, String aDefinition, int... aSQLType) {
         super(aName, aDefinition, aSQLType);
     }
-    
+
     public MySQLDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
         super(aName, aDefinition, aJdbcType);
         identity = aIdentity;

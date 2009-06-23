@@ -157,8 +157,9 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
             }
         }
     }
-    
-    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IOException {
+
+    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
             theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mogwai", "mogwai", "mogwai");

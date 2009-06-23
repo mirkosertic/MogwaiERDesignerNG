@@ -37,7 +37,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**
- * Base test class for all sql generators. 
+ * Base test class for all sql generators.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
@@ -45,9 +45,12 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl {
 
     protected Dialect dialect;
+
     protected DataType textDataType;
+
     protected DataType intDataType;
-    protected String basePath;    
+
+    protected String basePath;
 
     protected Table createReferenceTable(Model aModel, String aName, boolean aWithIndexes)
             throws ElementAlreadyExistsException, ElementInvalidNameException {
@@ -142,7 +145,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         String theStatements = statementListToString(theStatementList, theGenerator);
         String theReference = readResourceFile(basePath + "testCreateTableWithPKAndIndex.sql");
 
-        //System.out.println(theStatements);
+        // System.out.println(theStatements);
         assertTrue(theStatements.equals(theReference));
     }
 
@@ -313,7 +316,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theRelation.setName("REL_1");
         theRelation.setOnDelete(CascadeType.CASCADE);
         theRelation.setOnUpdate(CascadeType.CASCADE);
-        
+
         Index theExportingPrimaryKey = theExporting.getPrimarykey();
         theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK1"),
                 theImporting.getAttributes().findByName("PK1"));
@@ -355,7 +358,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theRelation.setName("REL_1");
         theRelation.setOnDelete(CascadeType.CASCADE);
         theRelation.setOnUpdate(CascadeType.CASCADE);
-        
+
         Index theExportingPrimaryKey = theExporting.getPrimarykey();
         theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK1"),
                 theImporting.getAttributes().findByName("PK1"));
@@ -488,7 +491,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theRelation.setName("REL_1");
         theRelation.setOnDelete(CascadeType.CASCADE);
         theRelation.setOnUpdate(CascadeType.CASCADE);
-        
+
         Index theExportingPrimaryKey = theExporting.getPrimarykey();
         theRelation.getMapping().put(theExportingPrimaryKey.getExpressions().findByAttributeName("PK1"),
                 theImporting.getAttributes().findByName("PK1"));

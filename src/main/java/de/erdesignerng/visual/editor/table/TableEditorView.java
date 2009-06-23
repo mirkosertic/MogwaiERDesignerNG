@@ -74,7 +74,7 @@ public class TableEditorView extends DefaultPanel {
     private DefaultLabel label1;
 
     private DefaultTextField indexName;
-    
+
     private DefaultTextField extra;
 
     private DefaultRadioButton uniqueIndex;
@@ -94,31 +94,31 @@ public class TableEditorView extends DefaultPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
-    
+
     private DefaultComboBox dataType = new DefaultComboBox();
-    
+
     private DefaultSpinner sizeSpinner = new DefaultSpinner();
-    
+
     private DefaultSpinner fractionSpinner = new DefaultSpinner();
-    
+
     private DefaultSpinner scaleSpinner = new DefaultSpinner();
-    
+
     private DefaultTextField defaultValue = new DefaultTextField();
-    
+
     private DefaultComboBox indexAttribute = new DefaultComboBox();
-    
+
     private DefaultTextField indexExpression = new DefaultTextField();
-    
+
     private DefaultRadioButton addIndexAttribute = new DefaultRadioButton(ERDesignerBundle.ATTRIBUTE);
-    
+
     private DefaultRadioButton addIndexExpression = new DefaultRadioButton(ERDesignerBundle.EXPRESSION);
-    
+
     private DefaultButton addExpressionToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
-    
+
     private DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
-    
+
     private DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
-    
+
     /**
      * Constructor.
      */
@@ -146,7 +146,7 @@ public class TableEditorView extends DefaultPanel {
         this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
         buildGroups();
-        
+
         getAddIndexAttribute().setSelected(true);
         getRemoveFromIndexButton().setEnabled(false);
     }
@@ -320,14 +320,13 @@ public class TableEditorView extends DefaultPanel {
             attributesGeneralTab.add(getFractionSpinner(), cons.xywh(4, 8, 1, 1));
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
             attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
-            
+
             attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
-            
+
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DEFAULT), cons.xywh(2, 14, 1, 1));
             attributesGeneralTab.add(getDefault(), cons.xywh(4, 14, 1, 1));
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.EXTRA), cons.xywh(2, 16, 1, 1));
             attributesGeneralTab.add(getExtra(), cons.xywh(4, 16, 1, 1));
-            
 
             attributesGeneralTab.setName("AttributesGeneralTab");
         }
@@ -405,7 +404,7 @@ public class TableEditorView extends DefaultPanel {
 
         return defaultValue;
     }
-    
+
     public DefaultTextField getExtra() {
 
         if (extra == null) {
@@ -413,7 +412,7 @@ public class TableEditorView extends DefaultPanel {
         }
 
         return extra;
-    }    
+    }
 
     /**
      * Getter method for component AttributeCommentTab.
@@ -570,7 +569,7 @@ public class TableEditorView extends DefaultPanel {
             indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
 
             String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu,20dlu,2dlu";
-            String rowDef = "2dlu,p,2dlu,fill:20dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";            
+            String rowDef = "2dlu,p,2dlu,fill:20dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             indexGeneralTab.setLayout(layout);
@@ -579,11 +578,11 @@ public class TableEditorView extends DefaultPanel {
 
             indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
             indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 3, 1));
-            
+
             indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 5, 1));
-            
+
             indexGeneralTab.add(getRemoveFromIndexButton(), cons.xy(6, 6));
-            
+
             indexGeneralTab.add(getAddIndexAttribute(), cons.xy(2, 8));
             indexGeneralTab.add(getIndexAttribute(), cons.xy(4, 8));
             indexGeneralTab.add(getAddAttributeToIndexButton(), cons.xy(6, 8));
@@ -591,8 +590,8 @@ public class TableEditorView extends DefaultPanel {
             indexGeneralTab.add(getAddIndexExpression(), cons.xy(2, 10));
             indexGeneralTab.add(getIndexExpression(), cons.xy(4, 10));
             indexGeneralTab.add(getAddExpressionToIndexButton(), cons.xy(6, 10));
-            
-            indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 12, 3, 1));            
+
+            indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 12, 3, 1));
             indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 14, 3, 1));
             indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 16, 3, 1));
             indexGeneralTab.setName("IndexGeneralTab");
@@ -653,7 +652,6 @@ public class TableEditorView extends DefaultPanel {
         return primaryKeyIndex;
     }
 
-    
     /**
      * Getter method for component NotUniqueIndex.
      * 
@@ -774,7 +772,7 @@ public class TableEditorView extends DefaultPanel {
         theGroup.add(getPrimaryIndex());
         theGroup.add(getUniqueIndex());
         theGroup.add(getNotUniqueIndex());
-        
+
         ButtonGroup theGroup2 = new ButtonGroup();
         theGroup2.add(getAddIndexAttribute());
         theGroup2.add(getAddIndexExpression());
@@ -866,7 +864,8 @@ public class TableEditorView extends DefaultPanel {
     }
 
     /**
-     * Gibt den Wert des Attributs <code>addExpressionToIndexButton</code> zurück.
+     * Gibt den Wert des Attributs <code>addExpressionToIndexButton</code>
+     * zurück.
      * 
      * @return Wert des Attributs addExpressionToIndexButton.
      */
@@ -877,14 +876,16 @@ public class TableEditorView extends DefaultPanel {
     /**
      * Setzt den Wert des Attributs <code>addExpressionToIndexButton</code>.
      * 
-     * @param addExpressionToIndexButton Wert für das Attribut addExpressionToIndexButton.
+     * @param addExpressionToIndexButton
+     *            Wert für das Attribut addExpressionToIndexButton.
      */
     public void setAddExpressionToIndexButton(DefaultButton addExpressionToIndexButton) {
         this.addExpressionToIndexButton = addExpressionToIndexButton;
     }
 
     /**
-     * Gibt den Wert des Attributs <code>addAttributeToIndexButton</code> zurück.
+     * Gibt den Wert des Attributs <code>addAttributeToIndexButton</code>
+     * zurück.
      * 
      * @return Wert des Attributs addAttributeToIndexButton.
      */
@@ -895,7 +896,8 @@ public class TableEditorView extends DefaultPanel {
     /**
      * Setzt den Wert des Attributs <code>addAttributeToIndexButton</code>.
      * 
-     * @param addAttributeToIndexButton Wert für das Attribut addAttributeToIndexButton.
+     * @param addAttributeToIndexButton
+     *            Wert für das Attribut addAttributeToIndexButton.
      */
     public void setAddAttributeToIndexButton(DefaultButton addAttributeToIndexButton) {
         this.addAttributeToIndexButton = addAttributeToIndexButton;
@@ -909,7 +911,7 @@ public class TableEditorView extends DefaultPanel {
     public DefaultTextField getIndexExpression() {
         return indexExpression;
     }
-    
+
     /**
      * Gibt den Wert des Attributs <code>removeFromIndexButton</code> zurück.
      * 

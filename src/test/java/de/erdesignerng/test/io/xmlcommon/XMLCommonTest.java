@@ -31,7 +31,7 @@ public class XMLCommonTest extends BaseERDesignerTestCaseImpl {
     public void testLoadModelVersion10() throws SAXException, IOException, ParserConfigurationException {
         ModelIOUtilities.getInstance().deserializeModelFromXML(getClass().getResourceAsStream("examplemodel10.mxm"));
     }
-    
+
     public void testLoadModelVersion20() throws SAXException, IOException, ParserConfigurationException {
         ModelIOUtilities.getInstance().deserializeModelFromXML(getClass().getResourceAsStream("examplemodel20.mxm"));
     }

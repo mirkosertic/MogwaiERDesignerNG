@@ -36,7 +36,8 @@ public class LoadFromRepositoryDataModel {
     }
 
     /**
-     * @param entry the entry to set
+     * @param entry
+     *            the entry to set
      */
     public void setEntry(RepositoryEntryDesciptor entry) {
         this.entry = entry;

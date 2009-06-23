@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.test.sql.AbstractDialectTestCase;
 
 /**
- * Test for the Microsoft SQL Server SQL Generator. 
+ * Test for the Microsoft SQL Server SQL Generator.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $

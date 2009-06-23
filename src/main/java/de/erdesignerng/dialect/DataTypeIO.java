@@ -102,9 +102,10 @@ public final class DataTypeIO {
         return Types.OTHER;
     }
 
-    public void loadUserTypes(ApplicationPreferences aPreferences) throws TransformerException, IOException, SAXException, IllegalAccessException {
+    public void loadUserTypes(ApplicationPreferences aPreferences) throws TransformerException, IOException,
+            SAXException, IllegalAccessException {
         DialectFactory theFactory = DialectFactory.getInstance();
-        
+
         File theDataTypesDirectory = aPreferences.getDatatypeConfigDirectory();
         theDataTypesDirectory.mkdirs();
 

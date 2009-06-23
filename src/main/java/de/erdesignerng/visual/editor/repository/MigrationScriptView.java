@@ -29,7 +29,7 @@ import de.mogwai.common.client.looks.components.DefaultLabel;
 
 /**
  * View for the migration script dialog.
- *  
+ * 
  * @author msertic
  */
 public class MigrationScriptView extends JPanel {
@@ -39,7 +39,7 @@ public class MigrationScriptView extends JPanel {
     private DefaultComboBox destinationVersion = new DefaultComboBox();
 
     private DefaultButton okButton = new DefaultButton();
-    
+
     private DefaultButton cancelButton = new DefaultButton();
 
     public MigrationScriptView() {
@@ -76,7 +76,7 @@ public class MigrationScriptView extends JPanel {
         cancelButton.setText("Cancel");
 
         add(thePanel, cons.xywh(2, 6, 3, 1));
-        
+
     }
 
     /**

@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
-
 /**
  * Entity for comments.
  * 
  * @author msertic
  */
 public class CommentEntity extends ModelEntity {
-    
+
 }

@@ -36,10 +36,11 @@ public class PreferencesEditor extends BaseEditor {
     private PreferencesEditorView view;
 
     private ApplicationPreferences preferences;
-    
+
     private ERDesignerComponent component;
 
-    public PreferencesEditor(ERDesignerGraph aParent, ApplicationPreferences aPreferences, ERDesignerComponent aComponent) {
+    public PreferencesEditor(ERDesignerGraph aParent, ApplicationPreferences aPreferences,
+            ERDesignerComponent aComponent) {
         super(aParent, ERDesignerBundle.PREFERENCES);
 
         view = new PreferencesEditorView(aPreferences);

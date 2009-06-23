@@ -41,8 +41,8 @@ public class CommentEditorView extends JPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
-    
-    private JPanel component8;    
+
+    private JPanel component8;
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ public class CommentEditorView extends JPanel {
         add(getComment().getScrollPane(), cons.xywh(4, 4, 1, 1));
 
         add(getComponent8(), cons.xywh(2, 6, 3, 1));
-        
+
         buildGroups();
     }
 
@@ -128,7 +128,7 @@ public class CommentEditorView extends JPanel {
 
         return cancelButton;
     }
-    
+
     /**
      * Getter method for component Component_8.
      * 
@@ -153,7 +153,7 @@ public class CommentEditorView extends JPanel {
         }
 
         return component8;
-    }    
+    }
 
     /**
      * Initialize method.

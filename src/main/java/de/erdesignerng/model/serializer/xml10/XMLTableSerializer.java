@@ -28,10 +28,10 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.XMLSerializer;
 
 public class XMLTableSerializer extends XMLSerializer {
-    
+
     public static final XMLTableSerializer SERIALIZER = new XMLTableSerializer();
-    
-    public static final String TABLE = "Table";    
+
+    public static final String TABLE = "Table";
 
     public void serialize(Table aTable, Document aDocument, Element aRootElement) {
         Element theTableElement = addElement(aDocument, aRootElement, TABLE);
@@ -62,12 +62,12 @@ public class XMLTableSerializer extends XMLSerializer {
             deserializeProperties(theElement, theTable);
 
             deserializeCommentElement(theElement, theTable);
-            
+
             XMLAttributeSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
             XMLIndexSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
 
             aModel.getTables().add(theTable);
         }
-        
+
     }
 }

@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.i18n.ResourceHelper;
 
 public final class MessagesHelper {
-    
+
     private MessagesHelper() {
     }
 

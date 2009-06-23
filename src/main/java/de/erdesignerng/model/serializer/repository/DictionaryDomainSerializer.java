@@ -44,7 +44,7 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         aDestination.setFraction(aSource.getFraction());
         aDestination.setScale(aSource.getScale());
     }
-    
+
     protected void copyBaseAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
         aDestination.setSystemId(aSource.getSystemId());
         aDestination.setName(aSource.getName());
@@ -53,10 +53,11 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         aDestination.setFraction(aSource.getFraction());
         aDestination.setScale(aSource.getScale());
     }
-    
+
     public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getDomains());
+        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity
+                .getDomains());
 
         for (Domain theDomain : aModel.getDomains()) {
             boolean existing = true;
@@ -67,7 +68,7 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
             }
 
             copyBaseAttributes(theDomain, theExisting);
-            
+
             if (!existing) {
                 aDictionaryEntity.getDomains().add(theExisting);
             }
@@ -76,10 +77,10 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
 
     public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
         for (DomainEntity theEntity : aRepositoryEntity.getDomains()) {
-            
+
             Domain theDomain = new Domain();
             copyBaseAttributes(theEntity, theDomain, aModel);
-            
+
             aModel.getDomains().add(theDomain);
         }
     }

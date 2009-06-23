@@ -18,7 +18,7 @@
 package de.erdesignerng.model;
 
 /**
- * A list of comments. 
+ * A list of comments.
  * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:57 $
