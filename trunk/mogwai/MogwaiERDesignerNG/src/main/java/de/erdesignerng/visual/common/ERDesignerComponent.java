@@ -106,6 +106,7 @@ import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
+import de.erdesignerng.visual.cells.ModelCellWithPosition;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
@@ -183,6 +184,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             Object[] theChangedObjects = theChange.getChanged();
             Map theChangedAttributes = theChange.getPreviousAttributes();
+
             if (theChangedAttributes != null) {
                 for (Object theChangedObject : theChangedObjects) {
                     Map theAttributes = (Map) theChangedAttributes.get(theChangedObject);
@@ -206,7 +208,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }
             }
-
+            repaintGraph();
         }
     }
 
@@ -358,21 +360,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             Set<ModelItem> theElementsToIgnore = new HashSet<ModelItem>();
             if (graph.isDragging()) {
                 for (Object theCell : graph.getSelectionCells()) {
-                    if (theCell instanceof TableCell) {
-                        TableCell theTableCell = (TableCell) theCell;
+                    if (theCell instanceof ModelCellWithPosition) {
+                        ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
                         theElementsToIgnore.add((ModelItem) theTableCell.getUserObject());
-                    }
-                    if (theCell instanceof ViewCell) {
-                        ViewCell theViewCell = (ViewCell) theCell;
-                        theElementsToIgnore.add((ModelItem) theViewCell.getUserObject());
-                    }
-                    if (theCell instanceof CommentCell) {
-                        CommentCell theCommentCell = (CommentCell) theCell;
-                        theElementsToIgnore.add((ModelItem) theCommentCell.getUserObject());
                     }
                     if (theCell instanceof SubjectAreaCell) {
                         for (Object theChildCell : ((SubjectAreaCell) theCell).getChildren()) {
-                            if ((theCell instanceof TableCell) || (theCell instanceof CommentCell) || (theCell instanceof ViewCell)) {
+                            if (theCell instanceof ModelCellWithPosition) {
                                 DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
                                 theElementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
                             }
@@ -392,7 +386,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     ModelItem theModelItem = (ModelItem) theCell.getUserObject();
                     if (!theElementsToIgnore.contains(theModelItem)) {
-                        
+
                         VertexCellElement theElement = new VertexCellElement(theView);
 
                         theTables.put(theModelItem, theElement);
@@ -426,7 +420,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             super.postEvolveLayout();
 
             boolean positionEnhanced = false;
-            
+
             List<Element> theElements = new ArrayList<Element>(getEvolvedElements());
 
             // Move graph origin to 20,20
@@ -436,13 +430,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 for (VertexCellElement theElement : elements) {
                     evolvePosition(theElement, -minx + 20, -miny + 20);
-                    
+
                     if (!theElements.contains(theElement)) {
                         theElements.add(theElement);
                     }
                 }
             }
-            
+
             // Repaint the edges
             for (Element theElement : theElements) {
                 for (Spring<CellView> theSpring : springs) {
@@ -483,9 +477,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
                         theBounds.getHeight());
                 GraphConstants.setBounds(theAttributes, theBounds);
-                
+
                 aElement.getView().changeAttributes(graph.getGraphLayoutCache(), theAttributes);
-                ((ModelCell) aElement.getCell()).transferAttributesToProperties(theAttributes);                
+                ((ModelCell) aElement.getCell()).transferAttributesToProperties(aElement.getCell().getAttributes());
             }
         }
     };
@@ -2584,8 +2578,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         layoutCache.update(layoutCache.getAllViews());
 
         graph.addOffscreenDirty(new Rectangle2D.Double(0, 0, scrollPane.getWidth(), scrollPane.getHeight()));
-
-        graph.invalidate();
         graph.repaint();
     }
 

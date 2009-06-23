@@ -39,6 +39,6 @@ public class EntityTool extends BaseTool {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        graph.commandNewTable(new Point2D.Double(e.getX(), e.getY()));
+        graph.commandNewTable(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
     }
 }

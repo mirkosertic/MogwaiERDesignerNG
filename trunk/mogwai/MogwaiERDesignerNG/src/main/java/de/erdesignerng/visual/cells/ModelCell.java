@@ -19,6 +19,8 @@ package de.erdesignerng.visual.cells;
 
 import java.util.Map;
 
+import org.jgraph.graph.GraphCell;
+
 /**
  * 
  * @author $Author: mirkosertic $
@@ -26,7 +28,7 @@ import java.util.Map;
  * @param <T>
  *            the type
  */
-public interface ModelCell<T> {
+public interface ModelCell<T> extends GraphCell {
 
     /**
      * Get the user object assigned to the cell.
