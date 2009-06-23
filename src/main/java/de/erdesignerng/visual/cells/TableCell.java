@@ -34,7 +34,7 @@ import de.erdesignerng.model.Table;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:59 $
  */
-public class TableCell extends DefaultGraphCell implements ModelCell<Table> {
+public class TableCell extends DefaultGraphCell implements ModelCellWithPosition<Table> {
 
     public TableCell(Table aTable) {
         super(aTable);

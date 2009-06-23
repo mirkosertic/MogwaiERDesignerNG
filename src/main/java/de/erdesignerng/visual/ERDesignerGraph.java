@@ -73,7 +73,6 @@ public abstract class ERDesignerGraph extends JGraph {
 
     public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
-        // setPortsVisible(true);
         model = aDBModel;
 
         setMoveIntoGroups(true);
