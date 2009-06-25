@@ -471,11 +471,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             if (graph != null) {
 
-                AttributeMap theAttributes = new AttributeMap();
+                Map theAttributes = new HashMap();
                 Rectangle2D theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
 
-                theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
-                        theBounds.getHeight());
+                theBounds.setRect(theBounds.getX() + movementX, theBounds.getY()+movementY, theBounds.getWidth(), theBounds.getHeight());
                 GraphConstants.setBounds(theAttributes, theBounds);
 
                 aElement.getView().changeAttributes(graph.getGraphLayoutCache(), theAttributes);
@@ -1040,6 +1039,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             @Override
             public void actionPerformed(ActionEvent e) {
                 preferences.setIntelligentLayout(theCheckbox.isSelected());
+                if (!theCheckbox.isSelected()) {
+                    // Due to an unknown fact, the whole graphlayoutcache needs to be rebuilt
+                    // to make this working.
+                    fillGraph(model);
+                }
             }
 
         });
@@ -2197,11 +2201,30 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         scrollPane.getViewport().removeAll();
         scrollPane.getViewport().add(graph);
 
+        fillGraph(aModel);
+
+        commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
+        commandSetTool(ToolEnum.HAND);
+
+        updateSubjectAreasMenu();
+
+        loading = false;
+    }
+
+    private void fillGraph(Model aModel) {
+        
+        graphModel = new DefaultGraphModel();
+        layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
+        layoutCache.setAutoSizeOnValueChange(true);
+
+        graph.setModel(graphModel);
+        graph.setGraphLayoutCache(layoutCache);
+        
         Map<Table, TableCell> theModelTableCells = new HashMap<Table, TableCell>();
         Map<View, ViewCell> theModelViewCells = new HashMap<View, ViewCell>();
         Map<Comment, CommentCell> theModelCommentCells = new HashMap<Comment, CommentCell>();
 
-        for (Table theTable : model.getTables()) {
+        for (Table theTable : aModel.getTables()) {
             TableCell theCell = new TableCell(theTable);
             theCell.transferPropertiesToAttributes(theTable);
 
@@ -2210,7 +2233,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theModelTableCells.put(theTable, theCell);
         }
 
-        for (View theView : model.getViews()) {
+        for (View theView : aModel.getViews()) {
 
             try {
                 SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
@@ -2226,7 +2249,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theModelViewCells.put(theView, theCell);
         }
 
-        for (Comment theComment : model.getComments()) {
+        for (Comment theComment : aModel.getComments()) {
             CommentCell theCell = new CommentCell(theComment);
             theCell.transferPropertiesToAttributes(theComment);
 
@@ -2235,7 +2258,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theModelCommentCells.put(theComment, theCell);
         }
 
-        for (Relation theRelation : model.getRelations()) {
+        for (Relation theRelation : aModel.getRelations()) {
 
             TableCell theImportingCell = theModelTableCells.get(theRelation.getImportingTable());
             TableCell theExportingCell = theModelTableCells.get(theRelation.getExportingTable());
@@ -2246,7 +2269,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             layoutCache.insert(theCell);
         }
 
-        for (SubjectArea theSubjectArea : model.getSubjectAreas()) {
+        for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
 
             SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theSubjectArea);
             List<ModelCell> theTableCells = new ArrayList<ModelCell>();
@@ -2271,13 +2294,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }
-
-        commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
-        commandSetTool(ToolEnum.HAND);
-
-        updateSubjectAreasMenu();
-
-        loading = false;
     }
 
     /**
