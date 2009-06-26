@@ -512,8 +512,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
         };
         
-        // Disabled until intelligent layout is working properly
-        // theRunner.start();
+        theRunner.start();
     }
 
     protected void initActions() {
@@ -1046,15 +1045,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     // Due to an unknown fact, the whole graphlayoutcache needs
                     // to be rebuilt
                     // to make this working.
-                    fillGraph(model);
+                    try {
+                        loading = true;
+                        
+                        fillGraph(model);
+                    } finally {
+                        loading = false;
+                    }
                 }
             }
 
         });
 
-        // Disabled until intelligent layout is working properly
-        // theToolBar.addSeparator();
-        // theToolBar.add(theCheckbox);
+         theToolBar.addSeparator();
+         theToolBar.add(theCheckbox);
 
         worldConnector.initTitle();
 
@@ -1626,6 +1630,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             try {
 
+                loading = true;
+                
                 final Connection theConnection = model.createConnection(preferences);
                 if (theConnection == null) {
                     return;
@@ -1691,6 +1697,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
+            } finally {
+                loading = false;
             }
 
         }

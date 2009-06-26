@@ -819,8 +819,8 @@
 			<Text lang="en">Respect database schema</Text>					
 		</Entry>
 		<Entry id="INTELLIGENTLAYOUT">
-			<Text lang="de">Intelligent Layout</Text>		
-			<Text lang="en">Intelligent layout</Text>					
+			<Text lang="de">Intelligent Layout (BETA)</Text>		
+			<Text lang="en">Intelligent layout (BETA)</Text>					
 		</Entry>
 	</Bundle>
 </Resource>
