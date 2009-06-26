@@ -474,7 +474,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 Map theAttributes = new HashMap();
                 Rectangle2D theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
 
-                theBounds.setRect(theBounds.getX() + movementX, theBounds.getY()+movementY, theBounds.getWidth(), theBounds.getHeight());
+                theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
+                        theBounds.getHeight());
                 GraphConstants.setBounds(theAttributes, theBounds);
 
                 aElement.getView().changeAttributes(graph.getGraphLayoutCache(), theAttributes);
@@ -510,7 +511,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         };
-        theRunner.start();
+        
+        // Disabled until intelligent layout is working properly
+        // theRunner.start();
     }
 
     protected void initActions() {
@@ -1040,7 +1043,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             public void actionPerformed(ActionEvent e) {
                 preferences.setIntelligentLayout(theCheckbox.isSelected());
                 if (!theCheckbox.isSelected()) {
-                    // Due to an unknown fact, the whole graphlayoutcache needs to be rebuilt
+                    // Due to an unknown fact, the whole graphlayoutcache needs
+                    // to be rebuilt
                     // to make this working.
                     fillGraph(model);
                 }
@@ -1048,8 +1052,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         });
 
-        theToolBar.addSeparator();
-        theToolBar.add(theCheckbox);
+        // Disabled until intelligent layout is working properly
+        // theToolBar.addSeparator();
+        // theToolBar.add(theCheckbox);
 
         worldConnector.initTitle();
 
@@ -2140,86 +2145,89 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         loading = true;
 
-        model = aModel;
+        try {
+            model = aModel;
 
-        graphModel = new DefaultGraphModel();
-        layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
-        layoutCache.setAutoSizeOnValueChange(true);
+            graphModel = new DefaultGraphModel();
+            layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
+            layoutCache.setAutoSizeOnValueChange(true);
 
-        graphModel.addGraphModelListener(new ERDesignerGraphModelListener());
+            graphModel.addGraphModelListener(new ERDesignerGraphModelListener());
 
-        graph = new ERDesignerGraph(model, graphModel, layoutCache) {
+            graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void commandNewTable(Point2D aLocation) {
-                ERDesignerComponent.this.commandAddTable(aLocation);
-            }
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void commandNewTable(Point2D aLocation) {
+                    ERDesignerComponent.this.commandAddTable(aLocation);
+                }
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void commandNewComment(Point2D aLocation) {
-                ERDesignerComponent.this.commandAddComment(aLocation);
-            }
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void commandNewComment(Point2D aLocation) {
+                    ERDesignerComponent.this.commandAddComment(aLocation);
+                }
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void commandNewView(Point2D aLocation) {
-                ERDesignerComponent.this.commandAddView(aLocation);
-            }
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void commandNewView(Point2D aLocation) {
+                    ERDesignerComponent.this.commandAddView(aLocation);
+                }
 
-            @Override
-            public void commandHideCells(List<HideableCell> cellsToHide) {
-                ERDesignerComponent.this.commandHideCells(cellsToHide);
-            }
+                @Override
+                public void commandHideCells(List<HideableCell> cellsToHide) {
+                    ERDesignerComponent.this.commandHideCells(cellsToHide);
+                }
 
-            @Override
-            public void commandAddToNewSubjectArea(List<ModelCell> aCells) {
-                super.commandAddToNewSubjectArea(aCells);
-                updateSubjectAreasMenu();
-            }
-        };
-        graph.setUI(new ERDesignerGraphUI(this));
+                @Override
+                public void commandAddToNewSubjectArea(List<ModelCell> aCells) {
+                    super.commandAddToNewSubjectArea(aCells);
+                    updateSubjectAreasMenu();
+                }
+            };
+            graph.setUI(new ERDesignerGraphUI(this));
 
-        displayAllMenuItem.setSelected(true);
-        displayNaturalOrderMenuItem.setSelected(true);
-        displayCommentsMenuItem.setSelected(true);
+            displayAllMenuItem.setSelected(true);
+            displayNaturalOrderMenuItem.setSelected(true);
+            displayCommentsMenuItem.setSelected(true);
 
-        commandSetDisplayGridState(displayGridMenuItem.isSelected());
-        commandSetDisplayCommentsState(true);
-        commandSetDisplayLevel(DisplayLevel.ALL);
-        commandSetDisplayOrder(DisplayOrder.NATURAL);
+            commandSetDisplayGridState(displayGridMenuItem.isSelected());
+            commandSetDisplayCommentsState(true);
+            commandSetDisplayLevel(DisplayLevel.ALL);
+            commandSetDisplayOrder(DisplayOrder.NATURAL);
 
-        refreshPreferences(preferences);
+            scrollPane.getViewport().removeAll();
+            scrollPane.getViewport().add(graph);
 
-        scrollPane.getViewport().removeAll();
-        scrollPane.getViewport().add(graph);
+            refreshPreferences(preferences);
 
-        fillGraph(aModel);
+            fillGraph(aModel);
+        } finally {
 
-        commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
-        commandSetTool(ToolEnum.HAND);
+            commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
+            commandSetTool(ToolEnum.HAND);
 
-        updateSubjectAreasMenu();
+            updateSubjectAreasMenu();
 
-        loading = false;
+            loading = false;
+        }
     }
 
     private void fillGraph(Model aModel) {
-        
+
         graphModel = new DefaultGraphModel();
         layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
         layoutCache.setAutoSizeOnValueChange(true);
 
         graph.setModel(graphModel);
         graph.setGraphLayoutCache(layoutCache);
-        
+
         Map<Table, TableCell> theModelTableCells = new HashMap<Table, TableCell>();
         Map<View, ViewCell> theModelViewCells = new HashMap<View, ViewCell>();
         Map<Comment, CommentCell> theModelCommentCells = new HashMap<Comment, CommentCell>();
