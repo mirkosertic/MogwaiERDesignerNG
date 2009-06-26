@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: net.sourceforge.mogwaierdesigner
 Bundle-SymbolicName: MogwaiERDesignerNG; singleton:=true
-Bundle-Version: 1.7
+Bundle-Version: 2.0
 Bundle-ClassPath: .,
  lib/mogwai-eclipseplugin-1.0.0.jar,
  lib/ant-1.6.5.jar,
@@ -42,7 +42,7 @@ Bundle-ClassPath: .,
  lib/jta-1.1.jar,
  lib/log4j-1.2.14.jar,
  lib/mogwai-databinding-1.4.jar,
- lib/mogwai-erdesignerng-1.7-SNAPSHOT.jar,
+ lib/mogwai-erdesignerng-2.0.jar,
  lib/mogwai-i18n-2.12.jar,
  lib/mogwai-layout-1.1-SNAPSHOT.jar,
  lib/mogwai-looks-1.7.jar,
