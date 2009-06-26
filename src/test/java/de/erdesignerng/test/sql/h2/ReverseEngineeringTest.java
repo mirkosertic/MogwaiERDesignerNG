@@ -34,7 +34,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 /**
  * Test for XML based model io.
@@ -42,7 +42,7 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTest;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends AbstractReverseEngineeringTest {
+public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
     public void testReverseEngineerH2() throws Exception {
 
