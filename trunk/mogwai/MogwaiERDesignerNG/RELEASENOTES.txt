@@ -146,7 +146,7 @@ Release 1.6
 * Bug Fixing 2215889 [ERDesignerNG] Exception when using MySQL BIT Type
 * Applied patch 2124875 [ERDesignerNG] Add Postgres data types
 
-Release 1.7
+Release 2.0
 
 * Improved UI response during long time tasks like reverse engineering and complete compare
 * Added support for automatic IZPack installers
