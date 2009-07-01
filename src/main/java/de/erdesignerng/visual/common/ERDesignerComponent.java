@@ -858,10 +858,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.add(new DefaultMenuItem(completeCompareAction));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(convertModelAction));
-        theDBMenu.addSeparator();
 
-        documentationMenu = new DefaultMenu(this, ERDesignerBundle.CREATEDBDOCUMENTATION);
-        theDBMenu.add(documentationMenu);
+        if (worldConnector.supportsReporting()) {
+            documentationMenu = new DefaultMenu(this, ERDesignerBundle.CREATEDBDOCUMENTATION);
+            theDBMenu.addSeparator();
+            theDBMenu.add(documentationMenu);
+            
+            updateDocumentationMenu();
+        }
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
@@ -984,8 +988,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(new DefaultMenuItem(zoomInAction));
         theViewMenu.add(new DefaultMenuItem(zoomOutAction));
 
-        theViewMenu.addSeparator();
-        theViewMenu.add(new DefaultMenuItem(helpAction));
+        if (worldConnector.supportsHelp()) {
+            theViewMenu.addSeparator();
+            theViewMenu.add(new DefaultMenuItem(helpAction));
+        }
 
         DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
         theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
@@ -1063,7 +1069,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         worldConnector.initTitle();
 
         updateRecentlyUsedMenuEntries();
-        updateDocumentationMenu();
 
         setupViewForNothing();
 

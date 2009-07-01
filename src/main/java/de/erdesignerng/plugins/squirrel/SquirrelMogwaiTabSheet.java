@@ -180,4 +180,14 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     public boolean supportsRepositories() {
         return false;
     }
+
+    @Override
+    public boolean supportsHelp() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsReporting() {
+        return true;
+    }
 }
