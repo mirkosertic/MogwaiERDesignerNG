@@ -44,6 +44,10 @@ public interface ERDesignerWorldConnector {
     boolean supportsPreferences();
 
     boolean supportsRepositories();
+    
+    boolean supportsHelp();
+    
+    boolean supportsReporting();
 
     Model createNewModel();
 

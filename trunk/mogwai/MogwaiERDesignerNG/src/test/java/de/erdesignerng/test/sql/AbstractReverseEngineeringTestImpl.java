@@ -101,6 +101,16 @@ public class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseIm
         public boolean supportsRepositories() {
             return false;
         }
+
+        @Override
+        public boolean supportsHelp() {
+            return false;
+        }
+
+        @Override
+        public boolean supportsReporting() {
+            return false;
+        }
     };
 
     public class EmptyReverseEngineeringNotifier implements ReverseEngineeringNotifier {
