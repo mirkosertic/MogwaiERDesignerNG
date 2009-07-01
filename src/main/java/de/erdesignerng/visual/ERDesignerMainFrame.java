@@ -166,4 +166,14 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     public boolean supportsRepositories() {
         return true;
     }
+
+    @Override
+    public boolean supportsHelp() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsReporting() {
+        return true;
+    }
 }
