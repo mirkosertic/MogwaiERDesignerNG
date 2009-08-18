@@ -22,16 +22,20 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
+import org.jgraph.graph.AbstractCellView;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.visual.cells.ModelCell;
+import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -121,6 +125,10 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
             ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(false);
+
+            if (focus.getCell() instanceof ModelCell) {
+                ((ModelCell)focus.getCell()).transferAttributesToProperties(focus.getAllAttributes());
+            }
         }
 
         @Override
