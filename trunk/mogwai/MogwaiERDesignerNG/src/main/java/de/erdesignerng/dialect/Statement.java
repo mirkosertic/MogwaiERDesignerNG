@@ -73,4 +73,9 @@ public class Statement {
     public void setSql(String sql) {
         this.sql = sql;
     }
+    
+    @Override
+    public String toString() {
+        return sql;
+    }
 }
