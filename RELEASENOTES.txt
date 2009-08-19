@@ -194,3 +194,4 @@ Release 2.0
 Release 2.0.1
 
 * Bug Fixing 2836568 [ERDesignerNG] Mogwai ERD Screen Layout
+* Bug Fixing 2837689 [ERDesignerNG] DDL codes can't be copied to clipboard
