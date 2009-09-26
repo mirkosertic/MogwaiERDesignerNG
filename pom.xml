@@ -16,7 +16,8 @@
 	<repositories>
 		<repository>
 			<id>mogwai-repository</id>
-			<url>http://mogwai.sourceforge.net/repository/maven2</url>
+			<url>http://mogwai.sourceforge.net/repository/maven2
+			</url>
 		</repository>
 	</repositories>
 	<build>
@@ -33,13 +34,11 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<taskdef
-									classname="de.mogwai.common.i18n.XMLResourceBundleTask"
+								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask"
 									name="XMLResourceBundle" />
 
-								<XMLResourceBundle
-									dest="src/main/resources" defaultLanguage="en"
-									src="src/main/java" encoding="ISO8859_1"
+								<XMLResourceBundle dest="src/main/resources"
+									defaultLanguage="en" src="src/main/java" encoding="ISO8859_1"
 									javaEncoding="ISO8859_1">
 									<fileset dir="src/main/resources">
 										<include name="erdesigner.xml" />
@@ -82,10 +81,8 @@
 										<include name="install*.xml" />
 									</fileset>
 									<filterset>
-										<filter token="version"
-											value="${project.version}" />
-										<filter token="name"
-											value="${project.name}" />
+										<filter token="version" value="${project.version}" />
+										<filter token="name" value="${project.name}" />
 									</filterset>
 								</copy>
 								<copy todir="${staging.dir}/src">
@@ -113,13 +110,11 @@
 									</fileset>
 								</copy>
 								<copy todir="${staging.dir}/javadoc">
-									<fileset
-										dir="${basedir}/target/site/apidocs" />
+									<fileset dir="${basedir}/target/site/apidocs" />
 								</copy>
 								<copy todir="${staging.dir}/lib">
 									<fileset dir="${basedir}/target">
-										<include
-											name="${project.artifactId}-${project.version}.jar" />
+										<include name="${project.artifactId}-${project.version}.jar" />
 									</fileset>
 								</copy>
 							</tasks>
@@ -130,7 +125,8 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
+				<artifactId>maven-dependency-plugin
+				</artifactId>
 				<version>2.0</version>
 				<executions>
 					<execution>
@@ -196,6 +192,20 @@
 							assembly-squirrelplugin.xml
 						</descriptor>
 					</descriptors>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>mogwai.test.db.server.name</name>
+							<value>${mogwai.test.db.server.name}</value>
+						</property>
+					</systemProperties>
 				</configuration>
 			</plugin>
 
@@ -334,8 +344,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.izpack</groupId>
-			<artifactId>izpack-standalone-compiler</artifactId>
-			<version>${your.standalone-compiler.version}</version>
+			<artifactId>izpack-standalone-compiler
+			</artifactId>
+			<version>${your.standalone-compiler.version}
+			</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -354,7 +366,8 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.code.javaparser</groupId>
+			<groupId>com.google.code.javaparser
+			</groupId>
 			<artifactId>javaparser</artifactId>
 			<version>1.0.7</version>
 		</dependency>
@@ -385,10 +398,9 @@
 	</dependencies>
 
 	<properties>
+		<mogwai.test.db.server.name>192.168.0.162</mogwai.test.db.server.name>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
-		<your.standalone-compiler.version>
-			4.2.1
-		</your.standalone-compiler.version>
+		<your.standalone-compiler.version>4.2.1</your.standalone-compiler.version>
 	</properties>
 
 </project>
