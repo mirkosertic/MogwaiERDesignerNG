@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.visual.editor.domain;
 
+import javax.swing.ListSelectionModel;
+
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -160,6 +162,7 @@ public class DomainEditorView extends DefaultPanel {
 
         if (domainList == null) {
             domainList = new DefaultList();
+            domainList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
 
         return domainList;
