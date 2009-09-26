@@ -126,7 +126,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
             ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(false);
 
-            if (focus.getCell() instanceof ModelCell) {
+            if (focus != null && focus.getCell() instanceof ModelCell) {
                 ((ModelCell)focus.getCell()).transferAttributesToProperties(focus.getAllAttributes());
             }
         }

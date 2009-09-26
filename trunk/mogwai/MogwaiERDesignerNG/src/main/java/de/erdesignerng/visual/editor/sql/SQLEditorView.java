@@ -2,6 +2,7 @@ package de.erdesignerng.visual.editor.sql;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -63,7 +64,7 @@ public class SQLEditorView extends JPanel {
 
         if (sqlList == null) {
             sqlList = new DefaultList();
-            sqlList.setName("sqllist");
+            sqlList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
 
         return sqlList;
