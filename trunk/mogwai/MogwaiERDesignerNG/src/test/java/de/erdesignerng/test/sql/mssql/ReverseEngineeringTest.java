@@ -57,7 +57,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
         Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
         Connection theConnection = null;
 
-        theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/master", "sa", "");
+        theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/master",
+                "sa", "Mirko123!");
 
         Statement theStatement = theConnection.createStatement();
         try {
@@ -74,7 +75,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/mogwai", "sa", "");
+            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+getDBServerName()+":1433/mogwai", "sa", "Mirko123!");
 
             loadSQL(theConnection, "db.sql");
 
@@ -169,7 +170,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/mogwai", "sa", "");
+            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+getDBServerName()+":1433/mogwai", "sa", "Mirko123!");
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {

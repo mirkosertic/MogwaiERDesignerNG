@@ -55,7 +55,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
     protected void setUp() throws Exception {
         Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
         Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE", "sys as sysdba", "sys");
+        theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
+                "sys as sysdba", "sys");
 
         Statement theStatement = theConnection.createStatement();
         try {
@@ -78,7 +79,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
+                    "mogwai", "mogwai");
 
             loadSQL(theConnection, "db.sql");
 
@@ -174,7 +176,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
+                    "mogwai", "mogwai");
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {

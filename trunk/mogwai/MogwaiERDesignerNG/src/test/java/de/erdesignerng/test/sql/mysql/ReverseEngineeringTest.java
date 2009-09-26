@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -52,7 +54,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
     protected void setUp() throws Exception {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mysql", "root", "root");
+        theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mysql", "root", "root");
 
         Statement theStatement = theConnection.createStatement();
         try {
@@ -77,7 +79,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mogwai", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
+                    "mogwai");
 
             loadSQL(theConnection, "db.sql");
 
@@ -145,9 +148,13 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
-            System.out.println(theResult);
-
+            System.out.println("Reference");
             String theReference = readResourceFile("result.sql");
+            System.out.println(theReference);
+            System.out.println("Result");
+            System.out.println(theResult);
+            System.out.println("Difference");
+            System.out.println(StringUtils.difference(theReference, theResult));
             assertTrue(theResult.equals(theReference));
 
         } finally {
@@ -162,7 +169,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/mogwai", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
+                    "mogwai");
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {
