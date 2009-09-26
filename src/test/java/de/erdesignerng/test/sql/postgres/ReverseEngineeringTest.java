@@ -53,7 +53,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
         Class.forName("org.postgresql.Driver").newInstance();
 
         Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
+        theConnection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
+                "mogwai", "mogwai");
 
         // 
         Statement theStatement = theConnection.createStatement();
@@ -73,7 +74,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
+                    "mogwai", "mogwai");
 
             loadSQL(theConnection, "db.sql");
 
@@ -174,7 +176,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mogwai", "mogwai", "mogwai");
+            theConnection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
+                    "mogwai", "mogwai");
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {
