@@ -129,6 +129,12 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             assertTrue(theAttribute.getDatatype().getName().equals("NUMBER"));
             assertTrue(theAttribute.getSize() == 20);
             assertTrue(theAttribute.getFraction() == 5);
+            theAttribute = theTable.getAttributes().findByName("TB2_4");
+            assertTrue(theAttribute != null);
+            assertTrue(theAttribute.isNullable() == true);
+            assertTrue(theAttribute.getDatatype().getName().equals("NUMBER"));
+            assertTrue(theAttribute.getSize() == 9);
+            assertTrue(theAttribute.getFraction() == 0);
 
             theTable = theModel.getTables().findByName("TABLE2");
             assertTrue(theTable != null);
