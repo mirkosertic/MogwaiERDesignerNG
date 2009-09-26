@@ -2149,6 +2149,28 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
+     * Factory Method to create a new graph model and initialize it with the required listener.
+     * 
+     * @return the newly created graphmodel
+     */
+    protected GraphModel createNewGraphModel() {
+        GraphModel theModel = new DefaultGraphModel();
+        theModel.addGraphModelListener(new ERDesignerGraphModelListener());
+        return theModel;
+    }
+    
+    /**
+     * Factiry Method for the graph layout cacne.
+     * 
+     * @return the newly created graph layout cache
+     */
+    protected GraphLayoutCache createNewGraphlayoutCache() {
+        GraphLayoutCache theCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
+        theCache.setAutoSizeOnValueChange(true);
+        return theCache;
+    }
+    
+    /**
      * Set the current editing model.
      * 
      * @param aModel
@@ -2161,11 +2183,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         try {
             model = aModel;
 
-            graphModel = new DefaultGraphModel();
-            layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
-            layoutCache.setAutoSizeOnValueChange(true);
-
-            graphModel.addGraphModelListener(new ERDesignerGraphModelListener());
+            graphModel = createNewGraphModel();
+            layoutCache = createNewGraphlayoutCache();
 
             graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
@@ -2234,9 +2253,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private void fillGraph(Model aModel) {
 
-        graphModel = new DefaultGraphModel();
-        layoutCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
-        layoutCache.setAutoSizeOnValueChange(true);
+        graphModel = createNewGraphModel();
+        layoutCache = createNewGraphlayoutCache();
 
         graph.setModel(graphModel);
         graph.setGraphLayoutCache(layoutCache);
