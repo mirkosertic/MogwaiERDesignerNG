@@ -1,6 +1,7 @@
 package de.erdesignerng.visual.editor.table;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ListSelectionModel;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -241,6 +242,7 @@ public class TableEditorView extends DefaultPanel {
 
         if (attributeList == null) {
             attributeList = new DefaultList();
+            attributeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
 
         return attributeList;
@@ -507,7 +509,7 @@ public class TableEditorView extends DefaultPanel {
 
         if (indexList == null) {
             indexList = new DefaultList();
-            indexList.setName("IndexList");
+            indexList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
 
         return indexList;
@@ -675,6 +677,7 @@ public class TableEditorView extends DefaultPanel {
 
         if (indexAttributesList == null) {
             indexAttributesList = new DefaultList<IndexExpression>();
+            indexAttributesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
 
         return indexAttributesList;

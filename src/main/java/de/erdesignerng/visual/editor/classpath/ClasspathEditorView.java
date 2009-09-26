@@ -44,7 +44,15 @@ public class ClasspathEditorView extends JPanel {
     public ClasspathEditorView() {
         initialize();
     }
-
+    
+    public DefaultList getClassPath() {
+        if (classpath == null) {
+            classpath = new DefaultList();
+            classpath.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }
+        return classpath;
+    }
+    
     private void initialize() {
 
         String theColDef = "2dlu,fill:150dlu:grow,2dlu,p,2dlu";
@@ -55,7 +63,7 @@ public class ClasspathEditorView extends JPanel {
 
         CellConstraints cons = new CellConstraints();
 
-        add(new JScrollPane(classpath), cons.xywh(2, 2, 1, 4));
+        add(new JScrollPane(getClassPath()), cons.xywh(2, 2, 1, 4));
         add(addButton, cons.xy(4, 3));
         add(removeButton, cons.xy(4, 5));
 
