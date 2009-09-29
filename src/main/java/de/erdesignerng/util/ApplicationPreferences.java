@@ -171,7 +171,7 @@ public class ApplicationPreferences {
         size = aSize;
         gridSize = preferences.getInt(GRIDSIZE, 10);
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
-        automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "{0}_{1}");
+        automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
     }
 
     /**
