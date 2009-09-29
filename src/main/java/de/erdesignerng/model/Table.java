@@ -180,7 +180,7 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
     public boolean isPrimaryKey(Attribute aAttribute) {
         Index thePrimaryKey = getPrimarykey();
         if (thePrimaryKey != null) {
-            return thePrimaryKey.containsAttribute(aAttribute);
+            return thePrimaryKey.getExpressions().findByAttribute(aAttribute) != null;
         }
         return false;
     }

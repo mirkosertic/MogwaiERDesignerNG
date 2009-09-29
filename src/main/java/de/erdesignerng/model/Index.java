@@ -45,25 +45,6 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
     }
 
     /**
-     * Test if this index contains an attribute.
-     * 
-     * @param aAttribute
-     *            the attribute
-     * @return true if yes, else false
-     */
-    public boolean containsAttribute(Attribute aAttribute) {
-        for (IndexExpression theExpression : expressions) {
-            Attribute theRefAttribute = theExpression.getAttributeRef();
-            if (theRefAttribute != null) {
-                if (aAttribute.getSystemId().equals(theRefAttribute.getSystemId())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

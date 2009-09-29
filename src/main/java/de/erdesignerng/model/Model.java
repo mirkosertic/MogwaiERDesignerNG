@@ -249,7 +249,23 @@ public class Model implements OwnedModelItemVerifier {
         relations.remove(aRelation);
     }
 
-    public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException {
+    public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException, ElementAlreadyExistsException, ElementInvalidNameException {
+        
+        for (Index theIndex : aTable.getIndexes()) {
+            if (theIndex.getExpressions().findByAttribute(aAttribute) != null) {
+                if (theIndex.getExpressions().size() == 1) {
+                    // The index shall be dropped
+                    removeIndex(aTable, theIndex);
+                } else {
+                    // The index must be modified                    
+                    removeIndex(aTable, theIndex);
+                    
+                    theIndex.getExpressions().removeAttribute(aAttribute);
+                    
+                    addIndexToTable(aTable, theIndex);
+                }
+            }
+        }
 
         modificationTracker.removeAttributeFromTable(aTable, aAttribute);
         aTable.getAttributes().removeById(aAttribute.getSystemId());

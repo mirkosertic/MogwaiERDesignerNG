@@ -51,9 +51,9 @@ public final class MessagesHelper {
         JOptionPane.showMessageDialog(aParent, aMessage, theInfoText, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static boolean displayQuestionMessage(Component aParent, String aMessageKey) {
+    public static boolean displayQuestionMessage(Component aParent, String aMessageKey, Object... aReplacementValues) {
         String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
-        String theMessage = getResourceHelper().getText(aMessageKey);
+        String theMessage = getResourceHelper().getFormattedText(aMessageKey, aReplacementValues);
         return JOptionPane.showConfirmDialog(aParent, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
     }
