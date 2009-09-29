@@ -35,6 +35,7 @@ import org.jgraph.graph.PortView;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.TableCell;
 
 /**
@@ -174,7 +175,8 @@ public class RelationTool extends BaseTool {
             if (theTargetTable.hasPrimaryKey()) {
                 graph.commandNewRelation(theSourceCell, theTargetCell);
             } else {
-                displayErrorMessage(getResourceHelper().getText(ERDesignerBundle.EXPORTINGTABLENEEDSPRIMARYKEY));
+                MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
+                        ERDesignerBundle.EXPORTINGTABLENEEDSPRIMARYKEY));
             }
         }
     }
