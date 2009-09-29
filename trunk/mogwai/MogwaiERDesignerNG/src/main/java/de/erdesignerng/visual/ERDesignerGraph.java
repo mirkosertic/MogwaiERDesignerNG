@@ -21,6 +21,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -31,6 +32,9 @@ import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Index;
@@ -106,8 +110,31 @@ public abstract class ERDesignerGraph extends JGraph {
                 if (theSingleCell instanceof RelationEdge) {
                     RelationEdge theEdge = (RelationEdge) theSingleCell;
 
-                    getDBModel().removeRelation((Relation) theEdge.getUserObject());
+                    Relation theRelation = (Relation) theEdge.getUserObject();
+
+                    getDBModel().removeRelation(theRelation);
                     theModel.remove(new Object[] { theEdge });
+
+                    for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
+                        Attribute theImportingAttribute = theEntry.getValue();
+
+                        if (!(theImportingAttribute.isForeignKey() || theImportingAttribute.isPrimaryKey())) {
+                            // Only atributes not used in foreign keys or primary keys can
+                            // be dropped, as other things might corrupt the database if the
+                            // update script is run against a filled database
+                            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DELETENOTUSEDATTRIBUTES,
+                                    theImportingAttribute.getName(), theImportingAttribute.getOwner().getName())) {
+                                try {
+                                    getDBModel().removeAttributeFromTable(theRelation.getImportingTable(),
+                                            theImportingAttribute);
+                                } catch (ElementInvalidNameException e) {
+                                    throw new VetoException("Cannot recreate existing index", e);
+                                } catch (ElementAlreadyExistsException e) {
+                                    throw new VetoException("Cannot recreate existing index", e);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (theSingleCell instanceof CommentCell) {
