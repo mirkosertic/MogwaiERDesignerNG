@@ -18,9 +18,12 @@
 package de.erdesignerng.visual.editor.relation;
 
 import java.awt.Component;
+import java.util.Map;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -115,6 +118,16 @@ public class RelationEditor extends BaseEditor {
         if (!model.getRelations().contains(theRelation)) {
 
             bindingInfo.view2model();
+            
+            // Try to detect if there were foreign key suggestions used
+            for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
+                Attribute theAttribute = theEntry.getValue();
+                if (theAttribute.getOwner() == null) {
+                    // A suggested foreign key was used, so add it to the table
+                    model.addAttributeToTable(theRelation.getImportingTable(), theAttribute);
+                }
+            }
+            
             model.addRelation(theRelation);
 
         } else {

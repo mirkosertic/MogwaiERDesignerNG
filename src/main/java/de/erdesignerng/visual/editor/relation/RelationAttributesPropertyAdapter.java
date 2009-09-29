@@ -19,6 +19,7 @@ package de.erdesignerng.visual.editor.relation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
@@ -69,7 +70,17 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
         theTable.getTableHeader().setReorderingAllowed(false);
 
         DefaultComboBox theAttributes = new DefaultComboBox();
-        theAttributes.setModel(new DefaultComboBoxModel(theRelation.getImportingTable().getAttributes()));
+        Vector<Attribute> theElements = new Vector<Attribute>(theRelation.getImportingTable().getAttributes());
+        DefaultComboBoxModel theModel = new DefaultComboBoxModel(theElements);
+        
+        // This is for for the foreign key suggestions
+        for (Attribute theAttribute : theAssigned) {
+            if (theModel.getIndexOf(theAttribute) < 0) {
+                theModel.addElement(theAttribute);
+            }
+        }
+        theAttributes.setModel(theModel);
+
         theTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(theAttributes));
         theTable.setRowHeight((int) theAttributes.getPreferredSize().getHeight());
     }

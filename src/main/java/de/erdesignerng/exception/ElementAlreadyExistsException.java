@@ -28,6 +28,7 @@ public class ElementAlreadyExistsException extends ModelException {
     private final String elementName;
 
     public ElementAlreadyExistsException(String aElementName) {
+        super(aElementName);
         elementName = aElementName;
     }
 
