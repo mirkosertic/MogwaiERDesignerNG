@@ -71,13 +71,15 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         if (thePoints != null) {
             StringBuffer theBuffer = new StringBuffer();
             for (Object thePoint : thePoints) {
-                Point2D theDoublePoint = (Point2D) thePoint;
+                if (thePoint instanceof Point2D) {
+                    Point2D theDoublePoint = (Point2D) thePoint;
 
-                if (theBuffer.length() > 0) {
-                    theBuffer.append(",");
+                    if (theBuffer.length() > 0) {
+                        theBuffer.append(",");
+                    }
+
+                    theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
                 }
-
-                theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
             }
 
             String thePointBuffer = theBuffer.toString();
