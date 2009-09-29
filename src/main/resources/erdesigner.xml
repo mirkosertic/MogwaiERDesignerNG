@@ -826,5 +826,9 @@
 			<Text lang="de">Wollen Sie das nicht mehr benötigte Attribut {0} in Tabelle {1} löschen?</Text>		
 			<Text lang="en">Do you want to delete the no longer used attribute {0} of table {1}?</Text>					
 		</Entry>
+		<Entry id="AUTOMATICRELATIONATTRIBUTEPATTERN">
+			<Text lang="de">Namensgebung neue Attribute in Relationen</Text>		
+			<Text lang="en">Name of new Attributes in Relations</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

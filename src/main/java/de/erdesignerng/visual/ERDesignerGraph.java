@@ -19,6 +19,7 @@ package de.erdesignerng.visual;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
@@ -119,8 +121,10 @@ public abstract class ERDesignerGraph extends JGraph {
                         Attribute theImportingAttribute = theEntry.getValue();
 
                         if (!(theImportingAttribute.isForeignKey() || theImportingAttribute.isPrimaryKey())) {
-                            // Only atributes not used in foreign keys or primary keys can
-                            // be dropped, as other things might corrupt the database if the
+                            // Only atributes not used in foreign keys or
+                            // primary keys can
+                            // be dropped, as other things might corrupt the
+                            // database if the
                             // update script is run against a filled database
                             if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DELETENOTUSEDATTRIBUTES,
                                     theImportingAttribute.getName(), theImportingAttribute.getOwner().getName())) {
@@ -286,13 +290,15 @@ public abstract class ERDesignerGraph extends JGraph {
         theRelation.setImportingTable(theSourceTable);
         theRelation.setExportingTable(theTargetTable);
 
+        String thePattern = ApplicationPreferences.getInstance().getAutomaticRelationAttributePattern();
+        String theTargetTableName = model.getDialect().getCastType().cast(theTargetTable.getName());
+
         // Create the foreign key suggestions
         Index thePrimaryKey = theTargetTable.getPrimarykey();
         for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
             Attribute theAttribute = theExpression.getAttributeRef();
             if (theAttribute != null) {
-                String theNewname = model.getDialect().getCastType().cast(
-                        theTargetTable.getName() + "_" + theAttribute.getName());
+                String theNewname = MessageFormat.format(thePattern, theTargetTableName, theAttribute.getName());
                 Attribute theNewAttribute = theSourceTable.getAttributes().findByName(theNewname);
                 if (theNewAttribute == null) {
                     theNewAttribute = theAttribute.clone();
