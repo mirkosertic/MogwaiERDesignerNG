@@ -27,12 +27,15 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultSpinner;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class PreferencesPanel extends DefaultPanel implements ResourceHelperProvider {
 
     private DefaultSpinner gridSize = new DefaultSpinner();
+    
+    private DefaultTextField automaticRelationAttributePattern = new DefaultTextField();
 
     private BindingInfo<ApplicationPreferences> bindinginfo;
 
@@ -53,10 +56,14 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         add(new DefaultLabel(ERDesignerBundle.EDITORGRIDSIZE), cons.xy(2, 2));
         add(gridSize, cons.xywh(4, 2, 3, 1));
 
+        add(new DefaultLabel(ERDesignerBundle.AUTOMATICRELATIONATTRIBUTEPATTERN), cons.xy(2, 4));
+        add(automaticRelationAttributePattern, cons.xywh(4, 4, 3, 1));
+
         UIInitializer.getInstance().initialize(this);
 
         bindinginfo = new BindingInfo<ApplicationPreferences>();
         bindinginfo.addBinding("gridSize", gridSize, true);
+        bindinginfo.addBinding("automaticRelationAttributePattern", automaticRelationAttributePattern, true);        
 
         bindinginfo.configure();
     }

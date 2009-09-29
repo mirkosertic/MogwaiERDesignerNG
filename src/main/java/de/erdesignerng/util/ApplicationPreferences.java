@@ -59,6 +59,8 @@ public class ApplicationPreferences {
     private static final String RPCPREFIX = "rpc_";
 
     private static final String GRIDSIZE = "gridsize";
+    
+    private static final String AUTOMATICRELATIONATTRIBUTEPATTERN = "automaticrelationattributepattern";
 
     private static final String WINDOWSTATEPREFIX = "windowstate_";
 
@@ -91,6 +93,8 @@ public class ApplicationPreferences {
     private File baseDir;
 
     private boolean intelligentLayout = true;
+    
+    private String automaticRelationAttributePattern;
 
     private static ApplicationPreferences me;
 
@@ -167,6 +171,7 @@ public class ApplicationPreferences {
         size = aSize;
         gridSize = preferences.getInt(GRIDSIZE, 10);
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
+        automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "{0}_{1}");
     }
 
     /**
@@ -280,6 +285,7 @@ public class ApplicationPreferences {
         }
 
         preferences.putInt(GRIDSIZE, gridSize);
+        preferences.put(AUTOMATICRELATIONATTRIBUTEPATTERN, automaticRelationAttributePattern);
         preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
 
         if (repositoryConnection != null) {
@@ -477,5 +483,13 @@ public class ApplicationPreferences {
     public File getOnlineHelpPDFFile() {
         File theDocFile = getRelativeFile("userdoc");
         return new File(theDocFile, "Mogwai ERDesigner NG.pdf");
+    }
+
+    public String getAutomaticRelationAttributePattern() {
+        return automaticRelationAttributePattern;
+    }
+
+    public void setAutomaticRelationAttributePattern(String automaticRelationAttributePattern) {
+        this.automaticRelationAttributePattern = automaticRelationAttributePattern;
     }
 }
