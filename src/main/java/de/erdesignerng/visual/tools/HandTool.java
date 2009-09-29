@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.ERDesignerGraph;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.TableCell;
@@ -83,11 +84,11 @@ public class HandTool extends BaseTool {
         theDeleteAction.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                if (displayQuestionMessage(ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+                if (MessagesHelper.displayQuestionMessage(graph, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
                     try {
                         graph.commandDeleteCells(aCells);
                     } catch (VetoException ex) {
-                        displayErrorMessage(getResourceHelper().getFormattedText(
+                        MessagesHelper.displayErrorMessage(graph, getResourceHelper().getFormattedText(
                                 ERDesignerBundle.CANNOTDELETEMODELITEM, ex.getMessage()));
                     }
                 }

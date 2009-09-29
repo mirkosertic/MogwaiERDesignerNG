@@ -31,8 +31,12 @@ import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
@@ -255,8 +259,27 @@ public abstract class ERDesignerGraph extends JGraph {
         theRelation.setImportingTable(theSourceTable);
         theRelation.setExportingTable(theTargetTable);
 
+        // Create the foreign key suggestions
+        Index thePrimaryKey = theTargetTable.getPrimarykey();
+        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
+            Attribute theAttribute = theExpression.getAttributeRef();
+            if (theAttribute != null) {
+                String theNewname = model.getDialect().getCastType().cast(
+                        theTargetTable.getName() + "_" + theAttribute.getName());
+                Attribute theNewAttribute = theSourceTable.getAttributes().findByName(theNewname);
+                if (theNewAttribute == null) {
+                    theNewAttribute = theAttribute.clone();
+                    theNewAttribute.setSystemId(ModelUtilities.createSystemIdFor(theNewAttribute));
+                    theNewAttribute.setOwner(null);
+                    theNewAttribute.setName(theNewname);
+                }
+                theRelation.getMapping().put(theExpression, theNewAttribute);
+            }
+        }
+
         RelationEditor theEditor = new RelationEditor(theSourceTable.getOwner(), this);
         theEditor.initializeFor(theRelation);
+
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
             RelationEdge theEdge = new RelationEdge(theRelation, (TableCell) theSourceCell, (TableCell) theTargetCell);
