@@ -190,12 +190,7 @@ public class TableCellView extends VertexView {
             // Draw the attributes
             for (Attribute theAttribute : theTempList) {
 
-                boolean isPrimaryKey = false;
-                if (thePrimaryKey != null) {
-                    isPrimaryKey = thePrimaryKey.containsAttribute(theAttribute);
-                }
-
-                if (isPrimaryKey) {
+                if (theAttribute.isPrimaryKey()) {
 
                     hasPrimaryKey = true;
 
@@ -307,12 +302,7 @@ public class TableCellView extends VertexView {
 
             for (Attribute theAttribute : table.getAttributes()) {
 
-                boolean isPrimaryKey = false;
-                if (thePrimaryKey != null) {
-                    isPrimaryKey = thePrimaryKey.containsAttribute(theAttribute);
-                }
-
-                if (isPrimaryKey) {
+                if (theAttribute.isPrimaryKey()) {
 
                     theAllAttributes.remove(theAttribute);
 

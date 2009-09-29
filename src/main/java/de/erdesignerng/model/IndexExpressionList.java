@@ -90,4 +90,16 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
         add(theExpression);
         return theExpression;
     }
+
+    /**
+     * Remove an attribute from the expression list.
+     * 
+     * @param aAttribute the attribute to remove
+     */
+    public void removeAttribute(Attribute aAttribute) {
+        IndexExpression theExpression = findByAttribute(aAttribute);
+        if (theExpression != null) {
+            remove(theExpression);
+        }
+    }
 }

@@ -19,9 +19,7 @@ This software uses or is based on the following libraries:
   JGraph ( www.jgraph.com )  
   JGoodies ( www.jgoodies.com )
   JasperReports ( http://jasperforge.org )  
-  JUNG ( jung.sourceforge.net )    
   SQuirreL ( squirrel-sql.sourceforge.net )    
-  Eclipse ZEST ( www.eclise.org )
   Some stuff from java.net ( https://www.dev.java.net )  
   ... Many more ...
   

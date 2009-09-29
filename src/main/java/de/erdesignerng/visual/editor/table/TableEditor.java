@@ -724,7 +724,7 @@ public class TableEditor extends BaseEditor {
         for (int i = 0; i < indexListModel.getSize(); i++) {
             Index theIndex = (Index) indexListModel.get(i);
             if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
-                return theIndex.containsAttribute(aAttribute);
+                return theIndex.getExpressions().findByAttribute(aAttribute) != null;
             }
         }
         return false;
@@ -733,7 +733,7 @@ public class TableEditor extends BaseEditor {
     private boolean isUsedInIndex(Attribute aAttribute) {
         for (int i = 0; i < indexListModel.getSize(); i++) {
             Index theIndex = (Index) indexListModel.get(i);
-            if (theIndex.containsAttribute(aAttribute)) {
+            if (theIndex.getExpressions().findByAttribute(aAttribute) != null) {
                 return true;
             }
         }
