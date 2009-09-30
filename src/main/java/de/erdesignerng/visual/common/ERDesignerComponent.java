@@ -1229,6 +1229,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         }
+        updateSubjectAreasMenu();        
     }
 
     /**
@@ -1275,6 +1276,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         }
+        updateSubjectAreasMenu();        
     }
 
     /**
