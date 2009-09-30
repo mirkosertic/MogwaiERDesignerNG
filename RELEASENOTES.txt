@@ -200,3 +200,4 @@ Release 2.0.2
 * Bug Fixing 2836980 [ERDesignerNG] error onmultiple fields selection on entities
 * Bug Fixing 2858806 [ERDesignerNG] Subject area positioning / deletion issues
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
+* Bug Fixing Subject Areas menu was not updated when hiding areas within the editor using the context menu
