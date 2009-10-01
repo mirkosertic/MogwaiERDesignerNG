@@ -2,8 +2,8 @@ package de.erdesignerng.test.view;
 
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttributeList;
-import de.erdesignerng.plugins.sqleonardo.SQLUtils;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
+import de.erdesignerng.util.SQLUtils;
 
 public class ParserTest extends BaseERDesignerTestCaseImpl {
 
