@@ -25,7 +25,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
-import de.erdesignerng.plugins.sqleonardo.SQLUtils;
+import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;

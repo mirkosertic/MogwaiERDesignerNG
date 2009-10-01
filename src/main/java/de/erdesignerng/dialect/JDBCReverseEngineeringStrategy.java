@@ -38,7 +38,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.plugins.sqleonardo.SQLUtils;
+import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 /**
