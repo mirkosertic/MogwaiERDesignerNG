@@ -53,6 +53,8 @@ public class PreferencesEditor extends BaseEditor {
 
     private void initialize() {
 
+        UIInitializer.getInstance().initialize(this);
+        
         view.getOkButton().setAction(okAction);
         view.getCancelButton().setAction(cancelAction);
 
@@ -60,8 +62,6 @@ public class PreferencesEditor extends BaseEditor {
         setResizable(false);
 
         pack();
-
-        UIInitializer.getInstance().initialize(this);
     }
 
     /**
