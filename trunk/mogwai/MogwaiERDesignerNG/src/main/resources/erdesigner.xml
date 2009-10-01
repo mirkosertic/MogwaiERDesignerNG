@@ -830,5 +830,13 @@
 			<Text lang="de">Namensgebung neue Attribute in Relationen</Text>		
 			<Text lang="en">Name of new Attributes in Relations</Text>					
 		</Entry>
+		<Entry id="DEFAULTFORONDELETE">
+			<Text lang="de">Voreinstelling für ONDELETE</Text>		
+			<Text lang="en">Default for ONDELETE</Text>					
+		</Entry>
+		<Entry id="DEFAULTFORONUPDATE">
+			<Text lang="de">Voreinstelling für ONUPDATE</Text>		
+			<Text lang="en">Default for ONUPDATE</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

@@ -2188,7 +2188,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             graphModel = createNewGraphModel();
             layoutCache = createNewGraphlayoutCache();
 
-            graph = new ERDesignerGraph(model, graphModel, layoutCache) {
+            graph = new ERDesignerGraph(preferences ,model, graphModel, layoutCache) {
 
                 /**
                  * {@inheritDoc}

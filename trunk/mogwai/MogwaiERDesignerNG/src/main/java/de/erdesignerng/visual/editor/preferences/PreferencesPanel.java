@@ -17,13 +17,17 @@
  */
 package de.erdesignerng.visual.editor.preferences;
 
+import javax.swing.DefaultComboBoxModel;
+
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultSpinner;
@@ -36,6 +40,10 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
     private DefaultSpinner gridSize = new DefaultSpinner();
     
     private DefaultTextField automaticRelationAttributePattern = new DefaultTextField();
+    
+    private DefaultComboBox onDeleteDefault = new DefaultComboBox();
+    
+    private DefaultComboBox onUpdateDefault = new DefaultComboBox();
 
     private BindingInfo<ApplicationPreferences> bindinginfo;
 
@@ -46,7 +54,7 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
     private void initialize() {
 
         String theColDef = "2dlu,p,2dlu,p:grow,2dlu,20dlu,2";
-        String theRowDef = "2dlu,p,2dlu,p,50dlu";
+        String theRowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,50dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
@@ -58,12 +66,30 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
 
         add(new DefaultLabel(ERDesignerBundle.AUTOMATICRELATIONATTRIBUTEPATTERN), cons.xy(2, 4));
         add(automaticRelationAttributePattern, cons.xywh(4, 4, 3, 1));
+        
+        DefaultComboBoxModel theDefaultOnUpdateModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel theDefaultOnDeleteModel = new DefaultComboBoxModel();
+        for (CascadeType theType : CascadeType.values()) {
+            theDefaultOnUpdateModel.addElement(theType);
+            theDefaultOnDeleteModel.addElement(theType);
+        }
+        
+
+        add(new DefaultLabel(ERDesignerBundle.DEFAULTFORONDELETE), cons.xy(2, 6));
+        add(onDeleteDefault, cons.xywh(4, 6, 3, 1));
+        onDeleteDefault.setModel(theDefaultOnDeleteModel);
+
+        add(new DefaultLabel(ERDesignerBundle.DEFAULTFORONUPDATE), cons.xy(2, 8));
+        add(onUpdateDefault, cons.xywh(4, 8, 3, 1));
+        onUpdateDefault.setModel(theDefaultOnUpdateModel);
 
         UIInitializer.getInstance().initialize(this);
 
         bindinginfo = new BindingInfo<ApplicationPreferences>();
         bindinginfo.addBinding("gridSize", gridSize, true);
-        bindinginfo.addBinding("automaticRelationAttributePattern", automaticRelationAttributePattern, true);        
+        bindinginfo.addBinding("automaticRelationAttributePattern", automaticRelationAttributePattern, true);
+        bindinginfo.addBinding("onUpdateDefault", onUpdateDefault, true);
+        bindinginfo.addBinding("onDeleteDefault", onDeleteDefault, true);
 
         bindinginfo.configure();
     }

@@ -40,6 +40,8 @@ import javax.swing.JFrame;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import de.erdesignerng.model.CascadeType;
+
 /**
  * Class for handling application preferences, LRUfiles and so on.
  * 
@@ -61,6 +63,10 @@ public class ApplicationPreferences {
     private static final String GRIDSIZE = "gridsize";
     
     private static final String AUTOMATICRELATIONATTRIBUTEPATTERN = "automaticrelationattributepattern";
+    
+    private static final String ONUPDATEDEFAULT="onupdatedefault";
+    
+    private static final String ONDELETEDEFAULT="onupdatedefault";
 
     private static final String WINDOWSTATEPREFIX = "windowstate_";
 
@@ -95,6 +101,10 @@ public class ApplicationPreferences {
     private boolean intelligentLayout = true;
     
     private String automaticRelationAttributePattern;
+    
+    private CascadeType onUpdateDefault;
+    
+    private CascadeType onDeleteDefault;
 
     private static ApplicationPreferences me;
 
@@ -172,6 +182,9 @@ public class ApplicationPreferences {
         gridSize = preferences.getInt(GRIDSIZE, 10);
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
         automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
+        
+        onUpdateDefault = CascadeType.fromType(preferences.get(ONUPDATEDEFAULT, CascadeType.NOTHING.getType()));
+        onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT, CascadeType.NOTHING.getType()));
     }
 
     /**
@@ -287,6 +300,8 @@ public class ApplicationPreferences {
         preferences.putInt(GRIDSIZE, gridSize);
         preferences.put(AUTOMATICRELATIONATTRIBUTEPATTERN, automaticRelationAttributePattern);
         preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
+        preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
+        preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
 
         if (repositoryConnection != null) {
             preferences.put(RPCPREFIX + "DIALECT", repositoryConnection.getDialect());
@@ -491,5 +506,21 @@ public class ApplicationPreferences {
 
     public void setAutomaticRelationAttributePattern(String automaticRelationAttributePattern) {
         this.automaticRelationAttributePattern = automaticRelationAttributePattern;
+    }
+
+    public CascadeType getOnUpdateDefault() {
+        return onUpdateDefault;
+    }
+
+    public void setOnUpdateDefault(CascadeType onUpdateDefault) {
+        this.onUpdateDefault = onUpdateDefault;
+    }
+
+    public CascadeType getOnDeleteDefault() {
+        return onDeleteDefault;
+    }
+
+    public void setOnDeleteDefault(CascadeType onDeleteDefault) {
+        this.onDeleteDefault = onDeleteDefault;
     }
 }
