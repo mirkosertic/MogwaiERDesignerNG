@@ -233,4 +233,9 @@ public class Domain implements DataType, Cloneable {
     public String getDefinition() {
         return concreteType.getDefinition();
     }
+
+    @Override
+    public boolean supportsExtra() {
+        return concreteType.supportsExtra();
+    }
 }

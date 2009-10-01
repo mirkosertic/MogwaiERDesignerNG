@@ -32,6 +32,8 @@ public interface DataType extends Comparable<DataType>, Serializable {
     boolean supportsFraction();
 
     boolean supportsScale();
+    
+    boolean supportsExtra();
 
     boolean isJDBCStringType();
 

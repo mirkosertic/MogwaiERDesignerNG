@@ -75,11 +75,18 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         Statement theStatement = aConnection.createStatement();
         ResultSet theResult = theStatement.executeQuery("DESCRIBE " + aEntry.getTableName());
         while (theResult.next()) {
+            String theType = theResult.getString("Type");
             String theColumnName = theResult.getString("Field");
             if (aAttribute.getName().equals(theColumnName)) {
                 String theExtra = theResult.getString("Extra");
                 if ("AUTO_INCREMENT".equalsIgnoreCase(theExtra)) {
                     aAttribute.setExtra("AUTO_INCREMENT PRIMARY KEY");
+                }
+                if (theType.toLowerCase().startsWith("enum") || theType.toLowerCase().startsWith("set")) {
+                    int p = theType.indexOf("(");
+                    int p2 = theType.lastIndexOf(")");
+                    theExtra = theType.substring(p + 1, p2);
+                    aAttribute.setExtra(theExtra);
                 }
             }
         }

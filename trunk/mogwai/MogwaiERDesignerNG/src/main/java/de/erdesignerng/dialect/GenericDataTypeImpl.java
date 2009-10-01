@@ -37,6 +37,8 @@ public abstract class GenericDataTypeImpl implements DataType {
     public static final String FRACTION_TOKEN = "$fraction";
 
     public static final String SCALE_TOKEN = "$scale";
+    
+    public static final String EXTRA_TOKEN = "$extra";
 
     public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {
     };
@@ -58,6 +60,8 @@ public abstract class GenericDataTypeImpl implements DataType {
     private boolean supportsFraction;
 
     private boolean supportsScale;
+    
+    private boolean supportsExtra;
 
     protected GenericDataTypeImpl(String aName, String aDefinition, int... aJdbcType) {
         name = aName;
@@ -75,7 +79,11 @@ public abstract class GenericDataTypeImpl implements DataType {
                     if (SCALE_TOKEN.equals(theToken)) {
                         supportsScale = true;
                     } else {
-                        throw new IllegalArgumentException("Invalid Token : " + theToken);
+                        if (EXTRA_TOKEN.equals(theToken)) {
+                            supportsExtra = true;
+                        } else {
+                            throw new IllegalArgumentException("Invalid Token : " + theToken);
+                        }
                     }
                 }
             }
@@ -108,12 +116,13 @@ public abstract class GenericDataTypeImpl implements DataType {
         this.name = name;
     }
 
-    protected String patternToType(Attribute aDomain) {
+    protected String patternToType(Attribute aAttribute) {
 
         Map<String, String> theMapping = new HashMap<String, String>();
-        theMapping.put(SIZE_TOKEN, "" + aDomain.getSize());
-        theMapping.put(FRACTION_TOKEN, "" + aDomain.getFraction());
-        theMapping.put(SCALE_TOKEN, "" + aDomain.getScale());
+        theMapping.put(SIZE_TOKEN, "" + aAttribute.getSize());
+        theMapping.put(FRACTION_TOKEN, "" + aAttribute.getFraction());
+        theMapping.put(SCALE_TOKEN, "" + aAttribute.getScale());
+        theMapping.put(EXTRA_TOKEN, "" + aAttribute.getExtra());
 
         StringBuilder theResult = new StringBuilder();
         StringTokenizer theSt = new StringTokenizer(pattern, ",");
@@ -166,9 +175,6 @@ public abstract class GenericDataTypeImpl implements DataType {
         return name + "(" + theAppend + ")";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return name;
@@ -178,39 +184,28 @@ public abstract class GenericDataTypeImpl implements DataType {
         return name.compareTo(aType.getName());
     }
 
-    /**
-     * @return the identity
-     */
     public boolean isIdentity() {
         return identity;
     }
 
-    /**
-     * @return the maxOccoursPerTable
-     */
     public int getMaxOccoursPerTable() {
         return maxOccoursPerTable;
     }
 
-    /**
-     * @return the supportsPrecision
-     */
     public boolean supportsFraction() {
         return supportsFraction;
     }
 
-    /**
-     * @return the supportsScale
-     */
     public boolean supportsScale() {
         return supportsScale;
     }
 
-    /**
-     * @return the supportsSize
-     */
     public boolean supportsSize() {
         return supportsSize;
+    }
+    
+    public boolean supportsExtra() {
+        return supportsExtra;
     }
 
     /**
