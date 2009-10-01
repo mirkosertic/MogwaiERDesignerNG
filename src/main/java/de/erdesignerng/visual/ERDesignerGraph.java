@@ -80,10 +80,13 @@ public abstract class ERDesignerGraph extends JGraph {
     private DisplayLevel displayLevel = DisplayLevel.ALL;
 
     private DisplayOrder displayOrder = DisplayOrder.NATURAL;
+    
+    private ApplicationPreferences preferences;
 
-    public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
+    public ERDesignerGraph(ApplicationPreferences aPreferences, Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
         model = aDBModel;
+        preferences = aPreferences;
 
         setMoveIntoGroups(true);
         setMoveOutOfGroups(true);
@@ -289,8 +292,10 @@ public abstract class ERDesignerGraph extends JGraph {
         Relation theRelation = new Relation();
         theRelation.setImportingTable(theSourceTable);
         theRelation.setExportingTable(theTargetTable);
+        theRelation.setOnUpdate(preferences.getOnUpdateDefault());
+        theRelation.setOnDelete(preferences.getOnDeleteDefault());
 
-        String thePattern = ApplicationPreferences.getInstance().getAutomaticRelationAttributePattern();
+        String thePattern = preferences.getAutomaticRelationAttributePattern();
         String theTargetTableName = model.getDialect().getCastType().cast(theTargetTable.getName());
 
         // Create the foreign key suggestions
