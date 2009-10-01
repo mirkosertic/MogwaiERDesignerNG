@@ -69,7 +69,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
 
         String theExtra = aAttribute.getExtra();
-        if (!StringUtils.isEmpty(theExtra)) {
+        if (!StringUtils.isEmpty(theExtra) && !aAttribute.getDatatype().supportsExtra()) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);
         }
