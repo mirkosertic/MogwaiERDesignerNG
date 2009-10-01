@@ -63,7 +63,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
         }
 
         String theExtra = aAttribute.getExtra();
-        if (!StringUtils.isEmpty(theExtra)) {
+        if (!StringUtils.isEmpty(theExtra) && !aAttribute.getDatatype().supportsExtra()) {
             theBuilder.append(" ");
             theBuilder.append(theExtra);
         }

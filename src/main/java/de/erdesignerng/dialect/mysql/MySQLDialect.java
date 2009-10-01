@@ -86,6 +86,10 @@ public class MySQLDialect extends SQL92Dialect {
         registerType(createDataType("TIME", "", Types.TIME));
         registerType(createDataType("DATETIME", "", Types.TIMESTAMP));
         registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP));
+        
+        // Enums and sets
+        registerType(createDataType("ENUM", "$extra", Types.VARCHAR));
+        registerType(createDataType("SET", "$extra", Types.VARCHAR));        
 
         seal();
     }
