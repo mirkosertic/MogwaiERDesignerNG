@@ -514,7 +514,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         
         theRunner.start();
     }
-
+    
     protected void initActions() {
 
         reverseEngineerAction = new DefaultAction(new ActionEventProcessor() {

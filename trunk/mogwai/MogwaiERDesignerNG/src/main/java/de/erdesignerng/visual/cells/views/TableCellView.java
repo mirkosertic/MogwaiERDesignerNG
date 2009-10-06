@@ -42,7 +42,6 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.DisplayLevel;
@@ -132,8 +131,6 @@ public class TableCellView extends VertexView {
          */
         @Override
         public void paint(Graphics aGraphics) {
-
-            Index thePrimaryKey = table.getPrimarykey();
 
             Dimension theSize = getSize();
             int theWidth = theSize.width;
@@ -279,8 +276,6 @@ public class TableCellView extends VertexView {
          */
         @Override
         public Dimension getPreferredSize() {
-
-            Index thePrimaryKey = table.getPrimarykey();
 
             int theMaxX = 150;
             int theMaxY = 8;

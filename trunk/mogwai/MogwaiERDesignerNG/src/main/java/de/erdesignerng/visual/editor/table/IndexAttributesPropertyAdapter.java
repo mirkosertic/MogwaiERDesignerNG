@@ -22,16 +22,12 @@ import java.util.List;
 
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
-import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.components.DefaultList;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
-import de.mogwai.common.i18n.ResourceHelper;
 
 public class IndexAttributesPropertyAdapter extends PropertyAdapter {
-
-    private ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
     public IndexAttributesPropertyAdapter(DefaultList aComponent, String aPropertyName) {
         super(aComponent, aPropertyName);

@@ -39,6 +39,9 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     private String defaultValue;
 
     private String extra;
+    
+    // Cache for the physical declaration of this attribute
+    private String physicalDeclaration;
 
     /**
      * @return the nullable
@@ -80,11 +83,17 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+        synchronized(this) {
+            this.defaultValue = defaultValue;
+            physicalDeclaration = null;
+        }
     }
 
     public void setNullable(boolean nullable) {
-        this.nullable = nullable;
+        synchronized(this) {
+            this.nullable = nullable;
+            physicalDeclaration = null;
+        }
     }
 
     public DataType getDatatype() {
@@ -92,7 +101,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setDatatype(DataType datatype) {
-        this.datatype = datatype;
+        synchronized (this) {
+            this.datatype = datatype;
+            physicalDeclaration = null;
+        }
     }
 
     public int getFraction() {
@@ -100,7 +112,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setFraction(int fraction) {
-        this.fraction = fraction;
+        synchronized (this) {
+            this.fraction = fraction;
+            physicalDeclaration = null;
+        }
     }
 
     public int getScale() {
@@ -108,13 +123,16 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setScale(int scale) {
-        if (scale == 0) {
-            // Scale can either be 2 or 10.
-            // Setting to 10 if 0 fixes a bug from
-            // adding new attributes
-            scale = 10;
+        synchronized (this) {
+            if (scale == 0) {
+                // Scale can either be 2 or 10.
+                // Setting to 10 if 0 fixes a bug from
+                // adding new attributes
+                scale = 10;
+            }
+            this.scale = scale;
+            physicalDeclaration = null;
         }
-        this.scale = scale;
     }
 
     public int getSize() {
@@ -122,7 +140,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setSize(int size) {
-        this.size = size;
+        synchronized (this) {
+            this.size = size;
+            physicalDeclaration = null;
+        }
     }
 
     /**
@@ -223,7 +244,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
      *            the extra to set
      */
     public void setExtra(String extra) {
-        this.extra = extra;
+        synchronized (this) {
+            this.extra = extra;
+            physicalDeclaration = null;
+        }
     }
 
     /**
@@ -237,16 +261,16 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         return !getName().equals(aAttribute.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getPhysicalDeclaration() {
-        return datatype.createTypeDefinitionFor(this);
+        synchronized (this) {
+            if (physicalDeclaration != null) {
+                return physicalDeclaration;
+            }
+            physicalDeclaration = datatype.createTypeDefinitionFor(this);
+            return physicalDeclaration;
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getLogicalDeclaration() {
         if (datatype.isDomain()) {
             return datatype.getName();
