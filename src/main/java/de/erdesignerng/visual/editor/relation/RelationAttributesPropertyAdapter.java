@@ -40,11 +40,8 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 
     private static final ResourceHelper BINDINGHELPER = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
-    private ResourceHelper helper;
-
     public RelationAttributesPropertyAdapter(JComponent aComponent, String aPropertyName, ResourceHelper aHelper) {
         super(aComponent, aPropertyName);
-        helper = aHelper;
     }
 
     @Override

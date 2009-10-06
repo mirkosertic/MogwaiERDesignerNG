@@ -34,7 +34,6 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.model.Comment;
-import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
 
@@ -109,8 +108,6 @@ public class CommentCellView extends VertexView {
         @Override
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
-
-            ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
 
             CommentCellView theView = (CommentCellView) aView;
             Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();

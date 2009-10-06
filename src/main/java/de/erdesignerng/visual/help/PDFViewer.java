@@ -825,7 +825,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      */
     public void doOpen(String name) {
         try {
-            URL url = new URL(name);
             openFile(new URL(name));
         } catch (IOException ioe) {
             try {
