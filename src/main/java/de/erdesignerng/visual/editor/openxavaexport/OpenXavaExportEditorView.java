@@ -183,12 +183,4 @@ public class OpenXavaExportEditorView extends JPanel {
         }
         return searchDirectoryButton;
     }
-
-    public static void main(String args[]) {
-        JFrame theFrame = new JFrame();
-        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        theFrame.setContentPane(new OpenXavaExportEditorView());
-        theFrame.pack();
-        theFrame.show();
-    }
 }
