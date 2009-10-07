@@ -449,7 +449,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         @Override
         public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
 
-            if (graph != null) {
+            if (graph != null && movementX != 0 && movementY != 0) {
 
                 Rectangle2D theBounds;
                 Map theAttributes = modelModifications.get(aElement.getCell());
