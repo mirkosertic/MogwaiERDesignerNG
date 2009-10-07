@@ -19,29 +19,39 @@ package de.erdesignerng.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class DependencyInfo {
 
-    private Map<Table, List<Dependency>> dependencies = new HashMap<Table, List<Dependency>>();
+    private Map<ModelItem, List<Dependency>> dependencies = new HashMap<ModelItem, List<Dependency>>();
 
-    public void addDependencyFor(Table aTable, Dependency aDependency) {
-        register(aTable).add(aDependency);
+    public void addDependencyFor(ModelItem aItem, Dependency aDependency) {
+        register(aItem).add(aDependency);
     }
 
-    public List<Dependency> register(Table aTable) {
-        List<Dependency> theList = dependencies.get(aTable);
+    public List<Dependency> register(ModelItem aItem) {
+        List<Dependency> theList = dependencies.get(aItem);
         if (theList == null) {
             theList = new ArrayList<Dependency>();
-            dependencies.put(aTable, theList);
+            dependencies.put(aItem, theList);
         }
         return theList;
     }
+    
+    public List<ModelItem> getItemsWithoutDependencies() {
+        List<ModelItem> theResult = new ArrayList<ModelItem>();
+        for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {
+            if (theEntry.getValue().size() == 0) {
+                theResult.add(theEntry.getKey());
+            }
+        }
+        return theResult;
+    }
 
-    public List<Table> getRootTables() {
-        List<Table> theRootTables = new ArrayList<Table>();
-        for (Map.Entry<Table, List<Dependency>> theEntry : dependencies.entrySet()) {
+    public List<ModelItem> getRootTables() {
+        List<ModelItem> theRootTables = new ArrayList<ModelItem>();
+        for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {
             boolean dependsOn = false;
             for (Dependency theDependency : theEntry.getValue()) {
                 if (theDependency.getType() == Dependency.DependencyType.DEPENDSON) {

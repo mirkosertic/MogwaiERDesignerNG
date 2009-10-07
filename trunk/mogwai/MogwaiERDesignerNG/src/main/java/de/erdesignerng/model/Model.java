@@ -655,6 +655,9 @@ public class Model implements OwnedModelItemVerifier {
         for (Table theTable : tables) {
             theInfo.register(theTable);
         }
+        for (View theView : views) {
+            theInfo.register(theView);
+        }
         for (Relation theRelation : relations) {
             theInfo.addDependencyFor(theRelation.getImportingTable(), new Dependency(Dependency.DependencyType.DEPENDSON, theRelation.getExportingTable()));
             theInfo.addDependencyFor(theRelation.getExportingTable(), new Dependency(Dependency.DependencyType.ISREQUIREDBY, theRelation.getImportingTable()));            
