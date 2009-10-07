@@ -18,6 +18,7 @@
 package de.erdesignerng.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,9 @@ import java.util.Map;
 public class RelationList extends ModelItemVector<Relation> {
 
     private static final long serialVersionUID = 330168987165235683L;
+
+    // Just a cache for all foreign keys in the model
+    private Map<Attribute, Boolean> foreignKeyCache = new HashMap<Attribute, Boolean>();
 
     /**
      * Check if a table is used by any of the defined relations.
@@ -82,13 +86,24 @@ public class RelationList extends ModelItemVector<Relation> {
      * @return true if yes, else false
      */
     public boolean isForeignKeyAttribute(Attribute aAttribute) {
+        
+        Boolean theResult = foreignKeyCache.get(aAttribute);
+        if (theResult != null) {
+            return theResult;
+        }
+        
+        theResult = false;
         for (Relation theRelation : this) {
             Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
             if (theMap.containsValue(aAttribute)) {
-                return true;
+                theResult=true;
+                break;
             }
         }
-        return false;
+        
+        foreignKeyCache.put(aAttribute, theResult);
+
+        return theResult;
     }
 
     /**
@@ -109,6 +124,7 @@ public class RelationList extends ModelItemVector<Relation> {
             }
         }
         removeAll(theRelationsToRemove);
+        foreignKeyCache.clear();
     }
 
     public List<Relation> getForeignKeysFor(Table aTable) {
@@ -131,4 +147,19 @@ public class RelationList extends ModelItemVector<Relation> {
         return theResult;
     }
 
+    @Override
+    public synchronized boolean add(Relation e) {
+        foreignKeyCache.clear();
+        return super.add(e);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        foreignKeyCache.clear();
+        return super.remove(o);
+    }
+
+    public void clearCache() {
+        foreignKeyCache.clear();
+    }
 }

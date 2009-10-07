@@ -76,7 +76,7 @@ public class Model implements OwnedModelItemVerifier {
     private ModelProperties properties = new ModelProperties();
 
     private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
-
+    
     /**
      * Add a table to the database model.
      * 
@@ -339,19 +339,14 @@ public class Model implements OwnedModelItemVerifier {
 
         modificationTracker.changeRelation(aRelation, aTempRelation);
         aRelation.restoreFrom(aTempRelation);
+
+        relations.clearCache();
     }
 
-    /**
-     * @return the modificationTracker
-     */
     public ModelModificationTracker getModificationTracker() {
         return modificationTracker;
     }
 
-    /**
-     * @param modificationTracker
-     *            the modificationTracker to set
-     */
     public void setModificationTracker(ModelModificationTracker modificationTracker) {
         this.modificationTracker = modificationTracker;
     }
