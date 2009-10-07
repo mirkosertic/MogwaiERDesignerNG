@@ -207,7 +207,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }
             }
-            repaintGraph();
         }
     }
 
@@ -346,6 +345,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         private List<Spring> springs = new ArrayList<Spring>();
 
         private Map<Object, Map> modelModifications = new HashMap<Object, Map>();
+        
+        Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
 
         @Override
         public void preEvolveLayout() {
@@ -359,24 +360,24 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 return;
             }
 
-            Set<ModelItem> theElementsToIgnore = new HashSet<ModelItem>();
+            elementsToIgnore.clear();
             if (graph.isDragging()) {
                 for (Object theCell : graph.getSelectionCells()) {
                     if (theCell instanceof ModelCellWithPosition) {
                         ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
-                        theElementsToIgnore.add((ModelItem) theTableCell.getUserObject());
+                        elementsToIgnore.add((ModelItem) theTableCell.getUserObject());
                     }
                     if (theCell instanceof SubjectAreaCell) {
                         for (Object theChildCell : ((SubjectAreaCell) theCell).getChildren()) {
                             if (theCell instanceof ModelCellWithPosition) {
                                 DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
-                                theElementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
+                                elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
                             }
                         }
                     }
                 }
             }
-
+            
             Map<ModelItem, Element> theTables = new HashMap<ModelItem, Element>();
 
             for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
@@ -387,7 +388,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
 
                     ModelItem theModelItem = (ModelItem) theCell.getUserObject();
-                    if (!theElementsToIgnore.contains(theModelItem)) {
+                    if (!elementsToIgnore.contains(theModelItem)) {
 
                         VertexCellElement theElement = new VertexCellElement(theView);
 
@@ -405,8 +406,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     RelationEdge theCell = (RelationEdge) theRelationView.getCell();
                     Relation theRelation = (Relation) theCell.getUserObject();
 
-                    if (!theElementsToIgnore.contains(theRelation.getExportingTable())
-                            && (!theElementsToIgnore.contains(theRelation.getImportingTable()))) {
+                    if (!elementsToIgnore.contains(theRelation.getExportingTable())
+                            && (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
                         Spring<CellView> theSpring = new Spring<CellView>(theTables
                                 .get(theRelation.getExportingTable()), theTables.get(theRelation.getImportingTable()),
                                 theView);
@@ -480,7 +481,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             public void run() {
                 while (!interrupted()) {
                     try {
-                        if (!loading && preferences.isIntelligentLayout()) {
+                        if (!loading && preferences.isIntelligentLayout() && graph != null && !graph.isDragging()) {
                             long theDuration = System.currentTimeMillis();
                             SwingUtilities.invokeAndWait(new Runnable() {
                                 public void run() {
