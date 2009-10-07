@@ -649,4 +649,21 @@ public class Model implements OwnedModelItemVerifier {
         }
         return theResult;
     }
+    
+    /**
+     * Create a dependency information object describing the model dependencies.
+     * 
+     * @return the information object
+     */
+    public DependencyInfo createDependencyInfo() {
+        DependencyInfo theInfo = new DependencyInfo();
+        for (Table theTable : tables) {
+            theInfo.register(theTable);
+        }
+        for (Relation theRelation : relations) {
+            theInfo.addDependencyFor(theRelation.getImportingTable(), new Dependency(Dependency.DependencyType.DEPENDSON, theRelation.getExportingTable()));
+            theInfo.addDependencyFor(theRelation.getExportingTable(), new Dependency(Dependency.DependencyType.ISREQUIREDBY, theRelation.getImportingTable()));            
+        }
+        return theInfo;
+    }
 }
