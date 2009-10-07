@@ -204,3 +204,4 @@ Release 2.0.2
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
 * Bug Fixing Subject Areas menu was not updated when hiding areas within the editor using the context menu
 * Bug Fixing Preferences Dialog required fields were not correctly highlighted
+* Performance tuning in Intelligent Layout functionality

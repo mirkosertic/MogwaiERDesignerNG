@@ -58,7 +58,6 @@ import net.sf.jasperreports.swing.JRViewer;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
-import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -346,12 +345,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         private List<Spring> springs = new ArrayList<Spring>();
 
+        private Map<Object, Map> modelModifications = new HashMap<Object, Map>();
+
         @Override
         public void preEvolveLayout() {
             super.preEvolveLayout();
 
             elements.clear();
             springs.clear();
+            modelModifications.clear();
 
             if (model == null || graph == null) {
                 return;
@@ -419,40 +421,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         public void postEvolveLayout() {
             super.postEvolveLayout();
 
-            boolean positionEnhanced = false;
-
-            List<Element> theElements = new ArrayList<Element>(getEvolvedElements());
-
             // Move graph origin to 20,20
             if (minx < 20 || miny < 20) {
 
-                positionEnhanced = true;
-
                 for (VertexCellElement theElement : elements) {
                     evolvePosition(theElement, -minx + 20, -miny + 20);
-
-                    if (!theElements.contains(theElement)) {
-                        theElements.add(theElement);
-                    }
                 }
             }
 
-            // Repaint the edges
-            for (Element theElement : theElements) {
-                for (Spring<CellView> theSpring : springs) {
-                    if (theSpring.affects(theElement)) {
-                        CellView theView = theSpring.getUserObject();
-                        theView.changeAttributes(graph.getGraphLayoutCache(), new AttributeMap());
-                    }
+            if (graph != null) {
+                if (modelModifications.size() > 0) {
+                    graph.getGraphLayoutCache().edit(modelModifications);
                 }
-            }
-
-            if (positionEnhanced || theElements.size() > 0) {
-                double theScale = graph.getScale();
-                Dimension theSize = graph.getSize();
-                graph.addOffscreenDirty(new Rectangle2D.Double(0, 0, theSize.getWidth() / theScale, theSize.getHeight()
-                        / theScale));
-                graph.repaint();
             }
         }
 
@@ -471,15 +451,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             if (graph != null) {
 
-                Map theAttributes = new HashMap();
-                Rectangle2D theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
+                Rectangle2D theBounds;
+                Map theAttributes = modelModifications.get(aElement.getCell());
+                if (theAttributes != null) {
+                    theBounds = GraphConstants.getBounds(theAttributes);
+                } else {
+                    theAttributes = new HashMap();
+                    theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
+                }
 
                 theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
                         theBounds.getHeight());
                 GraphConstants.setBounds(theAttributes, theBounds);
 
-                aElement.getView().changeAttributes(graph.getGraphLayoutCache(), theAttributes);
-                ((ModelCell) aElement.getCell()).transferAttributesToProperties(aElement.getCell().getAttributes());
+                modelModifications.put(aElement.getCell(), theAttributes);
             }
         }
     };
@@ -496,14 +481,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 while (!interrupted()) {
                     try {
                         if (!loading && preferences.isIntelligentLayout()) {
+                            long theDuration = System.currentTimeMillis();
                             SwingUtilities.invokeAndWait(new Runnable() {
                                 public void run() {
                                     layout.evolveLayout();
                                 }
                             });
-                            sleep(40);
+                            theDuration = System.currentTimeMillis() - theDuration;
+                            // Assume 20 Frames / Second animation speed
+                            long theDifference = (1000 - (theDuration * 20)) / 20;
+                            if (theDifference > 0) {
+                                sleep(theDifference);
+                            } else {
+                                sleep(40);
+                            }
                         } else {
-                            sleep(500);
+                            sleep(40);
                         }
                     } catch (Exception e) {
                         aConnector.notifyAboutException(e);
@@ -511,10 +504,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         };
-        
+
         theRunner.start();
     }
-    
+
     protected void initActions() {
 
         reverseEngineerAction = new DefaultAction(new ActionEventProcessor() {
@@ -863,7 +856,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             documentationMenu = new DefaultMenu(this, ERDesignerBundle.CREATEDBDOCUMENTATION);
             theDBMenu.addSeparator();
             theDBMenu.add(documentationMenu);
-            
+
             updateDocumentationMenu();
         }
 
@@ -1053,7 +1046,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     // to make this working.
                     try {
                         loading = true;
-                        
+
                         fillGraph(model);
                     } finally {
                         loading = false;
@@ -1063,8 +1056,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         });
 
-         theToolBar.addSeparator();
-         theToolBar.add(theCheckbox);
+        theToolBar.addSeparator();
+        theToolBar.add(theCheckbox);
 
         worldConnector.initTitle();
 
@@ -1229,7 +1222,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         }
-        updateSubjectAreasMenu();        
+        updateSubjectAreasMenu();
     }
 
     /**
@@ -1276,7 +1269,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         }
-        updateSubjectAreasMenu();        
+        updateSubjectAreasMenu();
     }
 
     /**
@@ -1638,7 +1631,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             try {
 
                 loading = true;
-                
+
                 final Connection theConnection = model.createConnection(preferences);
                 if (theConnection == null) {
                     return;
@@ -2151,7 +2144,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Factory Method to create a new graph model and initialize it with the required listener.
+     * Factory Method to create a new graph model and initialize it with the
+     * required listener.
      * 
      * @return the newly created graphmodel
      */
@@ -2160,7 +2154,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theModel.addGraphModelListener(new ERDesignerGraphModelListener());
         return theModel;
     }
-    
+
     /**
      * Factiry Method for the graph layout cacne.
      * 
@@ -2171,7 +2165,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theCache.setAutoSizeOnValueChange(true);
         return theCache;
     }
-    
+
     /**
      * Set the current editing model.
      * 
@@ -2188,7 +2182,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             graphModel = createNewGraphModel();
             layoutCache = createNewGraphlayoutCache();
 
-            graph = new ERDesignerGraph(preferences ,model, graphModel, layoutCache) {
+            graph = new ERDesignerGraph(preferences, model, graphModel, layoutCache) {
 
                 /**
                  * {@inheritDoc}
@@ -2242,6 +2236,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             refreshPreferences(preferences);
 
             fillGraph(aModel);
+
         } finally {
 
             commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
@@ -2253,7 +2248,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    private void fillGraph(Model aModel) {
+    private class GraphModelMappingInfo {
+        Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
+
+        Map<View, ViewCell> modelViewCells = new HashMap<View, ViewCell>();
+
+        Map<Comment, CommentCell> modelCommentCells = new HashMap<Comment, CommentCell>();
+    }
+
+    private GraphModelMappingInfo fillGraph(Model aModel) {
 
         graphModel = createNewGraphModel();
         layoutCache = createNewGraphlayoutCache();
@@ -2261,9 +2264,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         graph.setModel(graphModel);
         graph.setGraphLayoutCache(layoutCache);
 
-        Map<Table, TableCell> theModelTableCells = new HashMap<Table, TableCell>();
-        Map<View, ViewCell> theModelViewCells = new HashMap<View, ViewCell>();
-        Map<Comment, CommentCell> theModelCommentCells = new HashMap<Comment, CommentCell>();
+        GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
 
         for (Table theTable : aModel.getTables()) {
             TableCell theCell = new TableCell(theTable);
@@ -2271,7 +2272,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             layoutCache.insert(theCell);
 
-            theModelTableCells.put(theTable, theCell);
+            theInfo.modelTableCells.put(theTable, theCell);
         }
 
         for (View theView : aModel.getViews()) {
@@ -2287,7 +2288,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             layoutCache.insert(theCell);
 
-            theModelViewCells.put(theView, theCell);
+            theInfo.modelViewCells.put(theView, theCell);
         }
 
         for (Comment theComment : aModel.getComments()) {
@@ -2296,13 +2297,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             layoutCache.insert(theCell);
 
-            theModelCommentCells.put(theComment, theCell);
+            theInfo.modelCommentCells.put(theComment, theCell);
         }
 
         for (Relation theRelation : aModel.getRelations()) {
 
-            TableCell theImportingCell = theModelTableCells.get(theRelation.getImportingTable());
-            TableCell theExportingCell = theModelTableCells.get(theRelation.getExportingTable());
+            TableCell theImportingCell = theInfo.modelTableCells.get(theRelation.getImportingTable());
+            TableCell theExportingCell = theInfo.modelTableCells.get(theRelation.getExportingTable());
 
             RelationEdge theCell = new RelationEdge(theRelation, theImportingCell, theExportingCell);
             theCell.transferPropertiesToAttributes(theRelation);
@@ -2316,15 +2317,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             List<ModelCell> theTableCells = new ArrayList<ModelCell>();
 
             for (Table theTable : theSubjectArea.getTables()) {
-                theTableCells.add(theModelTableCells.get(theTable));
+                theTableCells.add(theInfo.modelTableCells.get(theTable));
             }
 
             for (View theView : theSubjectArea.getViews()) {
-                theTableCells.add(theModelViewCells.get(theView));
+                theTableCells.add(theInfo.modelViewCells.get(theView));
             }
 
             for (Comment theComment : theSubjectArea.getComments()) {
-                theTableCells.add(theModelCommentCells.get(theComment));
+                theTableCells.add(theInfo.modelCommentCells.get(theComment));
             }
 
             layoutCache.insertGroup(theSubjectAreaCell, theTableCells.toArray());
@@ -2335,6 +2336,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
         }
+
+        return theInfo;
     }
 
     /**
