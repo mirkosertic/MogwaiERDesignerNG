@@ -51,7 +51,7 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
     /**
      * Remove a comment from all subject areas.
      * 
-     * If a subject area is emopty, if will be removed completly
+     * If a subject area is emopty, it will be removed completly
      * 
      * @param aComment
      *            the comment
