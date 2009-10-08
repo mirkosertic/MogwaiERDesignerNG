@@ -330,7 +330,7 @@
 			<Text lang="en">Physical view(declarations)</Text>					
 		</Entry>
 		<Entry id="TABLEGENERATION">
-			<Text lang="de">Tablengenerierung</Text>		
+			<Text lang="de">Tabellengenerierung</Text>
 			<Text lang="en">Table generation</Text>					
 		</Entry>
 		<Entry id="DOMAINGENERATION">
