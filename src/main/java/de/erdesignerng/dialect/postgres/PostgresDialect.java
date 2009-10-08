@@ -74,6 +74,12 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("blob", "", Types.BLOB, Types.LONGVARBINARY));
         registerType(createDataType("clob", "", Types.CLOB, Types.LONGVARCHAR));
 
+        // Patch [ 2874576 ] Reverse-Engineering unterstuetzt INET Datentyp nicht
+        // TODO [dr-death] is VARCHAR the right type?
+        // inet can be 12 bytes long for IPv4 or 24 bytes long for IPv6
+        // @see http://www.postgresql.org/docs/7.4/interactive/datatype-net-types.html#DATATYPE-INET
+        registerType(createDataType("inet", "", Types.VARCHAR));
+
         seal();
     }
 
