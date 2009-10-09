@@ -605,6 +605,7 @@ public class TableEditor extends BaseEditor {
             theCurrentModel.getExpressions().addExpressionFor(theValue.getExpression());
 
             indexBindingInfo.model2view();
+            indexBindingInfo.markChanged();
         }
     }
 
@@ -622,6 +623,7 @@ public class TableEditor extends BaseEditor {
                 theCurrentModel.getExpressions().addExpressionFor(theValue.getAttribute());
 
                 indexBindingInfo.model2view();
+                indexBindingInfo.markChanged();
             } catch (ElementAlreadyExistsException e) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.ATTRIBUTEALREADYPARTOFINDEX));
@@ -640,6 +642,7 @@ public class TableEditor extends BaseEditor {
                 theCurrentModel.getExpressions().remove(editingView.getIndexFieldList().getSelectedValue());
 
                 indexBindingInfo.model2view();
+                indexBindingInfo.markChanged();
 
                 removeIndexElement.setEnabled(false);
             }
