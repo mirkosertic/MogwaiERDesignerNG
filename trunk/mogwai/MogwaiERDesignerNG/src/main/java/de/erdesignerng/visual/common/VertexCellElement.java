@@ -29,8 +29,6 @@ import de.mogwai.layout.graph.Element;
 
 public class VertexCellElement extends Element {
 
-    private Point location;
-
     private Dimension size;
 
     private CellView view;
@@ -56,12 +54,9 @@ public class VertexCellElement extends Element {
     @Override
     public Point getLocation() {
 
-        if (location == null) {
-            GraphCell theCell = getCell();
-            Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
-            location = new Point((int) theBounds.getX(), (int) theBounds.getY());
-        }
-        return location;
+        GraphCell theCell = getCell();
+        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+        return new Point((int) theBounds.getX(), (int) theBounds.getY());
     }
 
     @Override
