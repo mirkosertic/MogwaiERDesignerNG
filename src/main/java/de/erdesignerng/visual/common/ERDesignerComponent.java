@@ -160,7 +160,6 @@ import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 import de.mogwai.layout.ElectricSpringLayout;
-import de.mogwai.layout.graph.Element;
 import de.mogwai.layout.graph.Spring;
 
 /**
@@ -175,9 +174,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private class ERDesignerGraphModelListener implements GraphModelListener {
 
-        /**
-         * {@inheritDoc}
-         */
         public void graphChanged(GraphModelEvent aEvent) {
             GraphLayoutCacheChange theChange = aEvent.getChange();
 
@@ -338,14 +334,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private boolean loading;
 
-    private ElectricSpringLayout<VertexCellElement> layout = new ElectricSpringLayout<VertexCellElement>() {
+    private ElectricSpringLayout<VertexCellElement, CellView> layout = new ElectricSpringLayout<VertexCellElement, CellView>() {
 
         private List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
 
-        private List<Spring> springs = new ArrayList<Spring>();
+        private List<Spring<CellView, VertexCellElement>> springs = new ArrayList<Spring<CellView, VertexCellElement>>();
 
         private Map<Object, Map> modelModifications = new HashMap<Object, Map>();
-        
+
         Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
 
         @Override
@@ -377,8 +373,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }
             }
-            
-            Map<ModelItem, Element> theTables = new HashMap<ModelItem, Element>();
+
+            Map<ModelItem, VertexCellElement> theTables = new HashMap<ModelItem, VertexCellElement>();
 
             for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
 
@@ -408,9 +404,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     if (!elementsToIgnore.contains(theRelation.getExportingTable())
                             && (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
-                        Spring<CellView> theSpring = new Spring<CellView>(theTables
-                                .get(theRelation.getExportingTable()), theTables.get(theRelation.getImportingTable()),
-                                theView);
+                        Spring<CellView, VertexCellElement> theSpring = new Spring<CellView, VertexCellElement>(
+                                theTables.get(theRelation.getExportingTable()), theTables.get(theRelation
+                                        .getImportingTable()), theView);
                         springs.add(theSpring);
                     }
                 }
@@ -422,17 +418,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         public void postEvolveLayout() {
             super.postEvolveLayout();
 
-            // Move graph origin to 20,20
-            if (minx < 20 || miny < 20) {
+            if (getEvolvedElements().size() > 0) {
 
-                for (VertexCellElement theElement : elements) {
-                    evolvePosition(theElement, -minx + 20, -miny + 20);
+                // Move graph origin to 20,20
+                if (minx < 20 || miny < 20) {
+
+                    for (VertexCellElement theElement : elements) {
+                        evolvePosition(theElement, -minx + 20, -miny + 20);
+                    }
                 }
-            }
 
-            if (graph != null) {
-                if (modelModifications.size() > 0) {
-                    graph.getGraphLayoutCache().edit(modelModifications);
+                if (graph != null) {
+                    if (modelModifications.size() > 0) {
+                        graph.getGraphLayoutCache().edit(modelModifications);
+                    }
                 }
             }
         }
@@ -443,7 +442,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         @Override
-        public List<Spring> getSprings() {
+        public List<Spring<CellView, VertexCellElement>> getSprings() {
             return springs;
         }
 
@@ -483,14 +482,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     try {
                         if (!loading && preferences.isIntelligentLayout() && graph != null && !graph.isDragging()) {
                             long theDuration = System.currentTimeMillis();
+                            layout.preEvolveLayout();
+                            layout.evolveLayout();
                             SwingUtilities.invokeAndWait(new Runnable() {
                                 public void run() {
-                                    layout.evolveLayout();
+                                    layout.postEvolveLayout();
                                 }
                             });
                             theDuration = System.currentTimeMillis() - theDuration;
-                            // Assume 20 Frames / Second animation speed
-                            long theDifference = (1000 - (theDuration * 20)) / 20;
+                            // Assume 25 Frames / Second animation speed
+                            long theDifference = (1000 - (theDuration * 25)) / 25;
                             if (theDifference > 0) {
                                 sleep(theDifference);
                             } else {
