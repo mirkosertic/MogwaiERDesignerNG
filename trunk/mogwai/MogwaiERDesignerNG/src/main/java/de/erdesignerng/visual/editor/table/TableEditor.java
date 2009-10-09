@@ -85,7 +85,7 @@ public class TableEditor extends BaseEditor {
     private DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
-            commandNewAttribute(e);
+            commandNewAttribute();
         }
     }, this, ERDesignerBundle.NEW);
 
@@ -298,6 +298,8 @@ public class TableEditor extends BaseEditor {
         }
 
         updateAttributeEditFields();
+        
+        commandNewAttribute();
     }
 
     @Override
@@ -532,7 +534,7 @@ public class TableEditor extends BaseEditor {
         }
     }
 
-    private void commandNewAttribute(java.awt.event.ActionEvent evt) {
+    private void commandNewAttribute() {
         attributeBindingInfo.setDefaultModel(new Attribute());
         updateAttributeEditFields();
     }
