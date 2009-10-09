@@ -236,9 +236,6 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isEditing(JGraph graph) {
         return false;

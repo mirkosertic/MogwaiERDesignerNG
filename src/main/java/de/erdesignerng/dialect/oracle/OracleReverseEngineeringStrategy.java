@@ -45,9 +45,6 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
@@ -66,26 +63,17 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         return theList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean isValidTable(String aTableName, String aTableType) {
         // Check for recycle bin tables
         return (!aTableName.startsWith("BIN$")) && (aTableName.indexOf("/") < 0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean isValidView(String aViewName, String aTableType) {
         return aViewName.indexOf("/") < 0 && aViewName.indexOf("==") < 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String convertColumnTypeToRealType(String aTypeName) {
         int p = aTypeName.indexOf("(");
@@ -95,9 +83,6 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         return aTypeName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable,
             ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aAscOrDesc)
@@ -132,17 +117,11 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean isTableTypeView(String aTableType) {
         return VIEW_TABLE_TYPE.equals(aTableType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {

@@ -28,17 +28,11 @@ public class MySQLInnoDBDialect extends MySQLDialect {
         seal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUniqueName() {
         return "MySQLInnoDBDialect";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MySQLInnoDBSQLGenerator createSQLGenerator() {
         return new MySQLInnoDBSQLGenerator(this);

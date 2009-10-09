@@ -105,9 +105,6 @@ public class RepositoryConnectionEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
 

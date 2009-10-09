@@ -47,9 +47,6 @@ public class ViewCell extends DefaultGraphCell implements ModelCellWithPosition<
         addPort();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferAttributesToProperties(Map aAttributes) {
 
         View theTable = (View) getUserObject();
@@ -58,9 +55,6 @@ public class ViewCell extends DefaultGraphCell implements ModelCellWithPosition<
         theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferPropertiesToAttributes(View aObject) {
 
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(

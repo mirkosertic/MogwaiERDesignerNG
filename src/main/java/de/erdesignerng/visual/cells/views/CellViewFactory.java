@@ -37,9 +37,6 @@ import de.erdesignerng.visual.cells.ViewCell;
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected VertexView createVertexView(Object aVertex) {
         if (aVertex instanceof TableCell) {
@@ -58,9 +55,6 @@ public class CellViewFactory extends DefaultCellViewFactory {
         return super.createVertexView(aVertex);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected EdgeView createEdgeView(Object aObject) {
         if (aObject instanceof RelationEdge) {
@@ -69,9 +63,6 @@ public class CellViewFactory extends DefaultCellViewFactory {
         return super.createEdgeView(aObject);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected PortView createPortView(Object cell) {
         if (cell instanceof DefaultPort) {

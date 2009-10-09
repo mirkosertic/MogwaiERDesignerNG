@@ -111,9 +111,6 @@ public class CompleteCompareEditor extends BaseEditor {
         super.commandOk();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
     }

@@ -132,33 +132,21 @@ public class Domain implements DataType, Cloneable {
         this.concreteType = concreteType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean supportsFraction() {
         return concreteType.supportsFraction();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean supportsScale() {
         return concreteType.supportsScale();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean supportsSize() {
         return concreteType.supportsSize();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Domain clone() {
         Domain theDomain = new Domain();
@@ -211,9 +199,6 @@ public class Domain implements DataType, Cloneable {
         return name.compareTo(o.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return name;

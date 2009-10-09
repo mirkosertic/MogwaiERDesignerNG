@@ -35,21 +35,12 @@ public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifie
 
     private String schema;
 
-    /**
-     * {@inheritDoc}
-     */
     public void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void delete(ModelItem aSender) throws CannotDeleteException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String checkName(String aName) throws ElementInvalidNameException {
         Model theOwner = getOwner();
         if (theOwner != null) {

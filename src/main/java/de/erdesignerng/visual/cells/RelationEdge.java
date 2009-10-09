@@ -50,9 +50,6 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         setTarget(aExporting.getChildAt(0));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferAttributesToProperties(Map aAttributes) {
 
         Relation theRelation = (Relation) getUserObject();
@@ -88,9 +85,6 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferPropertiesToAttributes(Relation aObject) {
 
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(

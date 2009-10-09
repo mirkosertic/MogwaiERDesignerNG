@@ -95,9 +95,6 @@ public class ViewEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 

@@ -52,9 +52,6 @@ public class TableEntry extends SchemaEntry {
         this.tableType = tableType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         String theResult = super.toString();

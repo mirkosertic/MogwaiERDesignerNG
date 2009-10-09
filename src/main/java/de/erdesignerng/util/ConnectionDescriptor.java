@@ -172,9 +172,6 @@ public class ConnectionDescriptor {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         if (!StringUtils.isEmpty(alias)) {

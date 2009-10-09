@@ -126,23 +126,14 @@ public class HistoryModificationTracker implements ModelModificationTracker {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void addView(View aView) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createAddViewStatement(aView));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void changeView(View aView) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createChangeViewStatement(aView));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void removeView(View aView) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createDropViewStatement(aView));
     }

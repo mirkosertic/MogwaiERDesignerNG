@@ -97,9 +97,6 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
         onUpdate = aOnUpdate;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Relation clone() {
         Relation theClone = new Relation();

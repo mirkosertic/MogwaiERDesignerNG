@@ -302,6 +302,27 @@ public class TableEditor extends BaseEditor {
 
     @Override
     protected void commandOk() {
+        
+        if (attributeBindingInfo.isChanged()) {
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEATTRIBUTECHANGESFIRST));
+            return;
+        }
+        
+        if (editingView.getAddExpressionToIndexButton().isEnabled() && indexExpressionBindingInfo.isChanged()) {
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEINDEXCHANGESFIRST));
+            return;
+        }
+
+        if (editingView.getAddAttributeToIndexButton().isEnabled() && indexExpressionBindingInfo2.isChanged()) {
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEINDEXCHANGESFIRST));
+            return;
+        }
+
+        if (indexBindingInfo.isChanged()) {
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEINDEXCHANGESFIRST));
+            return;
+        }
+        
         if (tableBindingInfo.validate().size() == 0) {
             if (attributeListModel.getSize() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
@@ -625,9 +646,6 @@ public class TableEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 

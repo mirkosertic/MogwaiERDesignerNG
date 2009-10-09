@@ -44,9 +44,6 @@ public class Index extends OwnedModelItem<Table> implements ModelItemClonable<In
         indexType = aIndexType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Index clone() {
         Index theIndex = new Index();
