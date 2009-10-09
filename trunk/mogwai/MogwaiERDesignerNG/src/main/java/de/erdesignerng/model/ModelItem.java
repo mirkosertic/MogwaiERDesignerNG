@@ -79,9 +79,6 @@ public abstract class ModelItem implements Serializable {
         this.properties = properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return name;
@@ -106,9 +103,6 @@ public abstract class ModelItem implements Serializable {
         return isStringModified(comment, aComment);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         final int thePrime = 31;
@@ -117,9 +111,6 @@ public abstract class ModelItem implements Serializable {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

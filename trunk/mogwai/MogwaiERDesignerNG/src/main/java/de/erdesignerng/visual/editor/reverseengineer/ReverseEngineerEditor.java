@@ -191,9 +191,6 @@ public class ReverseEngineerEditor extends BaseEditor {
         return theOptions;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
     }

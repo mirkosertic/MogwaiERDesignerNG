@@ -98,9 +98,6 @@ public class ClasspathEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
 
@@ -146,5 +143,4 @@ public class ClasspathEditor extends BaseEditor {
             theModel.remove(theValue);
         }
     }
-
 }

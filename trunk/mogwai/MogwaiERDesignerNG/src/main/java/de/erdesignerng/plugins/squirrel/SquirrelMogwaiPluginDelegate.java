@@ -62,61 +62,37 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
     public SquirrelMogwaiPluginDelegate() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getInternalName() {
         return "mogwai";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getDescriptiveName() {
         return "Mogwai ERDesigner";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getVersion() {
         return MavenPropertiesLocator.getERDesignerVersionInfo();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getAuthor() {
         return "Mirko Sertic";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getChangeLogFileName() {
         return "RELEASENOTES.txt";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getHelpFileName() {
         return "readme.html";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLicenceFileName() {
         return "licence.txt";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void initialize() throws PluginException {
         super.initialize();
@@ -147,17 +123,11 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
         theActionCollection.add(new StartMogwaiAction(theApplication, resources, this));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IGlobalPreferencesPanel[] getGlobalPreferencePanels() {
         return new IGlobalPreferencesPanel[] { preferencesPanel };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unload() {
         try {
@@ -168,9 +138,6 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
         super.unload();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public PluginSessionCallback sessionStarted(final ISession session) {
 
         IObjectTreeAPI theAPI = session.getSessionInternalFrame().getObjectTreeAPI();
@@ -191,9 +158,6 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
         return ret;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void sessionEnding(ISession session) {
         SquirrelMogwaiController[] theControllers = controllersBySessionID.remove(session.getIdentifier());

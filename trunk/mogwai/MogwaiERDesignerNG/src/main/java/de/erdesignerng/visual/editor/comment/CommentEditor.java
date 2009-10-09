@@ -89,9 +89,6 @@ public class CommentEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
 

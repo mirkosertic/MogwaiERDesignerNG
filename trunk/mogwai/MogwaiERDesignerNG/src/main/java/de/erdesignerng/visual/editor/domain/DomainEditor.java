@@ -229,9 +229,6 @@ public class DomainEditor extends BaseEditor {
         updateDomainEditFields();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 

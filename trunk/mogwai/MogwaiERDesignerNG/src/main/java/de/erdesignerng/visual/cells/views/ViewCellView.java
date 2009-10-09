@@ -64,9 +64,6 @@ public class ViewCellView extends VertexView {
         super(aCell);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CellViewRenderer getRenderer() {
         return renderer;
@@ -106,9 +103,6 @@ public class ViewCellView extends VertexView {
             return theText;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void paint(Graphics aGraphics) {
 
@@ -178,9 +172,6 @@ public class ViewCellView extends VertexView {
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Dimension getPreferredSize() {
 
@@ -228,9 +219,6 @@ public class ViewCellView extends VertexView {
             return new Dimension(theMaxX, theMaxY);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
@@ -247,9 +235,6 @@ public class ViewCellView extends VertexView {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public GraphCellEditor getEditor() {
         return new CellEditorFactory();

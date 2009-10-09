@@ -46,8 +46,6 @@ public class ConvertModelEditor extends BaseEditor {
     private ConvertModelEditorView editingView;
 
     /**
-     * Create a relation editor.
-     * 
      * @param aModel
      *            the model
      * @param aParent
@@ -131,9 +129,6 @@ public class ConvertModelEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
         

@@ -146,9 +146,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Attribute clone() {
         Attribute theAttribute = new Attribute();

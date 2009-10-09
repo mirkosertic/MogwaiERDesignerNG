@@ -41,15 +41,9 @@ public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<Subje
         GraphConstants.setGroupOpaque(getAttributes(), true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferAttributesToProperties(Map aAttributes) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferPropertiesToAttributes(SubjectArea aObject) {
     }
 }

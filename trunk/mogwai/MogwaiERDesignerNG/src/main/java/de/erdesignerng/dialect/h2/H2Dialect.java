@@ -66,41 +66,26 @@ public class H2Dialect extends SQL92Dialect {
         seal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public H2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new H2ReverseEngineeringStrategy(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUniqueName() {
         return "H2Dialect";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverClassName() {
         return "org.h2.Driver";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:h2:<Path to database directory>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public H2SQLGenerator createSQLGenerator() {
         return new H2SQLGenerator(this);

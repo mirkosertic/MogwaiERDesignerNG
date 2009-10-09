@@ -838,5 +838,13 @@
 			<Text lang="de">Voreinstelling für ONUPDATE</Text>		
 			<Text lang="en">Default for ONUPDATE</Text>					
 		</Entry>
+		<Entry id="SAVEATTRIBUTECHANGESFIRST">
+			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>		
+			<Text lang="en">Please save your Attribute changes first!</Text>					
+		</Entry>
+		<Entry id="SAVEINDEXCHANGESFIRST">
+			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>		
+			<Text lang="en">Please save your Attribute changes first!</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

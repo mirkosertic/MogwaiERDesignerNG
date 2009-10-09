@@ -376,9 +376,6 @@ public abstract class ERDesignerGraph extends JGraph {
         this.dragging = dragging;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void repaint() {
         addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));

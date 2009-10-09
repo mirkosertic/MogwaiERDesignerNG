@@ -35,9 +35,6 @@ public class DefaultPortView extends PortView {
         super(aObject);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean intersects(JGraph aGraph, Rectangle2D aRect) {
         GraphCell theCell = (GraphCell) getParentView().getCell();

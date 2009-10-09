@@ -669,9 +669,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection,
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
@@ -695,9 +692,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
@@ -757,9 +751,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries)
             throws SQLException {

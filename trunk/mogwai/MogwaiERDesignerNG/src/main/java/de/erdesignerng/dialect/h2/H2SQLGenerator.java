@@ -35,9 +35,6 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
         StatementList theResult = new StatementList();
@@ -51,9 +48,6 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
@@ -71,9 +65,6 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
@@ -95,9 +86,6 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {

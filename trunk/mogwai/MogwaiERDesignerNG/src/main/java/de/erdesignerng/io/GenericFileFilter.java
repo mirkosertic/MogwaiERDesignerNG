@@ -37,9 +37,6 @@ public class GenericFileFilter extends FileFilter {
         description = aDescription;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept(File aFileName) {
         if (aFileName.isDirectory()) {
@@ -48,9 +45,6 @@ public class GenericFileFilter extends FileFilter {
         return aFileName.getName().toLowerCase().endsWith(extension);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription() {
         return description;

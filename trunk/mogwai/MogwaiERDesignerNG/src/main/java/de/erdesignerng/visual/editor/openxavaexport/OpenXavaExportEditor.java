@@ -169,9 +169,6 @@ public class OpenXavaExportEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
         OpenXavaOptions theOptions = bindingInfo.getDefaultModel();

@@ -48,9 +48,6 @@ public class SubjectAreaCellView extends VertexView {
         super(aCell);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CellViewRenderer getRenderer() {
         return renderer;
@@ -66,9 +63,6 @@ public class SubjectAreaCellView extends VertexView {
             setBackground(Color.white);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void paint(Graphics aGraphics) {
 
@@ -90,9 +84,6 @@ public class SubjectAreaCellView extends VertexView {
             aGraphics.drawString(subjectArea.getName(), 5, theYOffset);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
@@ -105,9 +96,6 @@ public class SubjectAreaCellView extends VertexView {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public GraphCellEditor getEditor() {
         return new CellEditorFactory();

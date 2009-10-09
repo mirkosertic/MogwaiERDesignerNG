@@ -45,9 +45,6 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String convertIndexNameFor(Table aTable, String aIndexName) {
         if ("PRIMARY".equals(aIndexName)) {
@@ -56,9 +53,6 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         return super.convertIndexNameFor(aTable, aIndexName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection) throws SQLException {
@@ -105,9 +99,6 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {

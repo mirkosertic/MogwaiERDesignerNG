@@ -94,49 +94,31 @@ public class MySQLDialect extends SQL92Dialect {
         seal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MySQLReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new MySQLReverseEngineeringStrategy(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUniqueName() {
         return "MySQLDialect";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverClassName() {
         return "com.mysql.jdbc.Driver";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:mysql://<host>/<db>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean supportsSchemaInformation() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MySQLSQLGenerator createSQLGenerator() {
         return new MySQLSQLGenerator(this);

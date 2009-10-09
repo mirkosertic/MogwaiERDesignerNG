@@ -41,9 +41,6 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
@@ -62,17 +59,11 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return theList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean isTableTypeView(String aTableType) {
         return VIEW_TABLE_TYPE.equals(aTableType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {

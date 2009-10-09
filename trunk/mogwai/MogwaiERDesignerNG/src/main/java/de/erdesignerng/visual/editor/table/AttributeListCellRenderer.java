@@ -78,9 +78,6 @@ public class AttributeListCellRenderer implements ListCellRenderer {
         labelPanel.setBackground(new Color(221, 221, 233));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
             boolean cellHasFocus) {
 
