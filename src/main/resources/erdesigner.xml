@@ -843,8 +843,8 @@
 			<Text lang="en">Please save your Attribute changes first!</Text>					
 		</Entry>
 		<Entry id="SAVEINDEXCHANGESFIRST">
-			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>		
-			<Text lang="en">Please save your Attribute changes first!</Text>					
+			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Index!</Text>		
+			<Text lang="en">Please save your Index changes first!</Text>					
 		</Entry>
 	</Bundle>
 </Resource>
