@@ -85,9 +85,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theBuilder.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute) throws VetoException {
         StatementList theResult = new StatementList();
@@ -101,9 +98,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) throws VetoException {
         StatementList theResult = new StatementList();
@@ -142,9 +136,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createAddRelationStatement(Relation aRelation) throws VetoException {
         Table theImportingTable = aRelation.getImportingTable();
@@ -230,9 +221,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeIndexStatement(Index aExistantIndex, Index aNewIndex) throws VetoException {
         StatementList theList = new StatementList();
@@ -250,9 +238,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation) throws VetoException {
         StatementList theList = new StatementList();
@@ -261,17 +246,11 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeTableCommentStatement(Table aTable, String aNewComment) throws VetoException {
         return EMPTY_STATEMENTLIST;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute)
             throws VetoException {
@@ -281,9 +260,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
         StatementList theResult = new StatementList();
@@ -299,9 +275,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
 
@@ -313,9 +286,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemoveTableStatement(Table aTable) throws VetoException {
         StatementList theResult = new StatementList();
@@ -323,17 +293,11 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
         return EMPTY_STATEMENTLIST;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createAddTableStatement(Table aTable) throws VetoException {
 
@@ -373,18 +337,12 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return "";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {
         return EMPTY_STATEMENTLIST;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
         StatementList theResult = new StatementList();
@@ -397,9 +355,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
 
@@ -428,18 +383,12 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
         return EMPTY_STATEMENTLIST;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createAddViewStatement(View aView) {
         StatementList theResult = new StatementList();
@@ -452,9 +401,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeViewStatement(View aView) {
         StatementList theResult = new StatementList();
@@ -463,9 +409,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createDropViewStatement(View aView) {
         StatementList theResult = new StatementList();

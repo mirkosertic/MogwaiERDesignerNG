@@ -65,25 +65,16 @@ public class OracleDialect extends SQL92Dialect {
         seal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public OracleReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new OracleReverseEngineeringStrategy(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUniqueName() {
         return "OracleDialect";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverClassName() {
         return "oracle.jdbc.driver.OracleDriver";
@@ -94,9 +85,6 @@ public class OracleDialect extends SQL92Dialect {
         return "jdbc:oracle:thin:@//<host>:<port>/<db>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public OracleSQLGenerator createSQLGenerator() {
         return new OracleSQLGenerator(this);

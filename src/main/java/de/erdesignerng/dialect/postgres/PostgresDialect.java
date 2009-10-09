@@ -83,41 +83,26 @@ public class PostgresDialect extends SQL92Dialect {
         seal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PostgresReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new PostgresReverseEngineeringStrategy(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUniqueName() {
         return "PostgresDialect";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverClassName() {
         return "org.postgresql.Driver";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:postgresql://<host>:<port>/<db>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PostgresSQLGenerator createSQLGenerator() {
         return new PostgresSQLGenerator(this);

@@ -171,9 +171,6 @@ public abstract class Dialect {
 
     public abstract String getUniqueName();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return getUniqueName();

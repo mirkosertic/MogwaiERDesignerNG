@@ -100,9 +100,6 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
         throw new IllegalArgumentException("Cannot create editor for " + aValue.getClass());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
 
@@ -112,9 +109,6 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
         return theEditor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isCellEditable(EventObject aEvent) {
         return true;

@@ -215,7 +215,7 @@
 		<dependency>
 			<groupId>net.sourceforge.mogwai</groupId>
 			<artifactId>mogwai-databinding</artifactId>
-			<version>1.4</version>
+			<version>1.5-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

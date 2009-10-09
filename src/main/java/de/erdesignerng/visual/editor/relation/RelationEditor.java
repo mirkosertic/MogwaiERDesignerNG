@@ -108,9 +108,6 @@ public class RelationEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
         Relation theRelation = bindingInfo.getDefaultModel();

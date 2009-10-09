@@ -41,9 +41,6 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
@@ -62,9 +59,6 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
         return theList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {

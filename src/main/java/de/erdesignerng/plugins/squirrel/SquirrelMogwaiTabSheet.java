@@ -61,9 +61,6 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         UIInitializer.getInstance().initialize(panel);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void refreshComponent() {
     }
@@ -132,9 +129,6 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         return theModel;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void sessionEnding(ISession aSession) {
         super.sessionEnding(aSession);

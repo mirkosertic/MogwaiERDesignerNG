@@ -2186,25 +2186,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             graph = new ERDesignerGraph(preferences, model, graphModel, layoutCache) {
 
-                /**
-                 * {@inheritDoc}
-                 */
                 @Override
                 public void commandNewTable(Point2D aLocation) {
                     ERDesignerComponent.this.commandAddTable(aLocation);
                 }
 
-                /**
-                 * {@inheritDoc}
-                 */
                 @Override
                 public void commandNewComment(Point2D aLocation) {
                     ERDesignerComponent.this.commandAddComment(aLocation);
                 }
 
-                /**
-                 * {@inheritDoc}
-                 */
                 @Override
                 public void commandNewView(Point2D aLocation) {
                     ERDesignerComponent.this.commandAddView(aLocation);

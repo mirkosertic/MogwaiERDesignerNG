@@ -64,9 +64,6 @@ public class PreferencesEditor extends BaseEditor {
         pack();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
     }

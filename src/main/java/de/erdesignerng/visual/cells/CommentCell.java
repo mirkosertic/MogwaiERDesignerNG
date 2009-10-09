@@ -45,9 +45,6 @@ public class CommentCell extends DefaultGraphCell implements ModelCellWithPositi
         GraphConstants.setEditable(getAttributes(), true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferAttributesToProperties(Map aAttributes) {
 
         Comment theComment = (Comment) getUserObject();
@@ -56,9 +53,6 @@ public class CommentCell extends DefaultGraphCell implements ModelCellWithPositi
         theComment.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferPropertiesToAttributes(Comment aObject) {
 
         Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(

@@ -108,9 +108,6 @@ public class SaveToRepositoryEditor extends BaseEditor {
         UIInitializer.getInstance().initialize(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
     }

@@ -208,9 +208,6 @@ public abstract class GenericDataTypeImpl implements DataType {
         return supportsExtra;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         int result = 1;
@@ -218,9 +215,6 @@ public abstract class GenericDataTypeImpl implements DataType {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

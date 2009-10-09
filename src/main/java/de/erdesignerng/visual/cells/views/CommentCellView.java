@@ -71,9 +71,6 @@ public class CommentCellView extends VertexView {
             textarea.setOpaque(false);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Dimension getPreferredSize() {
             if (visible) {
@@ -84,9 +81,6 @@ public class CommentCellView extends VertexView {
             return NULL_DIMENSION;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void paint(Graphics aGraphics) {
 
@@ -102,9 +96,6 @@ public class CommentCellView extends VertexView {
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
                 boolean aPreview) {
@@ -119,9 +110,6 @@ public class CommentCellView extends VertexView {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public GraphCellEditor getEditor() {
         return new CellEditorFactory();

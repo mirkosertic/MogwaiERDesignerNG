@@ -38,23 +38,14 @@ public class GenericConnectionProvider implements ConnectionProvider {
         statementSeparator = aStatementSeparator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Connection createConnection(ApplicationPreferences preferences) throws Exception {
         return connection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String createScriptStatementSeparator() {
         return statementSeparator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean generatesManagedConnection() {
         return true;
     }

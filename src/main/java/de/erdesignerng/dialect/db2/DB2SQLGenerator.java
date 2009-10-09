@@ -35,9 +35,6 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
         Table theImportingTable = aRelation.getImportingTable();
@@ -48,9 +45,6 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
 
@@ -60,9 +54,6 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
             throws VetoException {
@@ -75,9 +66,6 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
         return theResult;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
             throws VetoException {

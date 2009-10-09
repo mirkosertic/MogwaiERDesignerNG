@@ -66,9 +66,6 @@ public class ReverseEngineeringOptions {
         this.schemaEntries = schemaEntries;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return schemaEntries.toString();

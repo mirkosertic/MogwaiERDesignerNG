@@ -63,9 +63,6 @@ public class IndexExpression extends ModelItem implements ModelItemClonable<Inde
         this.attributeRef = attributeRef;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IndexExpression clone() {
         IndexExpression theClone = new IndexExpression();
@@ -77,9 +74,6 @@ public class IndexExpression extends ModelItem implements ModelItemClonable<Inde
         return theClone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void restoreFrom(IndexExpression aValue) throws Exception {
         expression = aValue.getExpression();
         setSystemId(aValue.getSystemId());
@@ -113,9 +107,6 @@ public class IndexExpression extends ModelItem implements ModelItemClonable<Inde
         return !attributeRef.equals(aExpression.getAttributeRef());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         if (!StringUtils.isEmpty(expression)) {

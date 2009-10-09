@@ -25,9 +25,6 @@ public class MySQLInnoDBSQLGenerator extends MySQLSQLGenerator {
         super(aDialect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String createCreateTableSuffix(Table aTable) {
         return " ENGINE=InnoDB";

@@ -74,41 +74,26 @@ public class MSSQLDialect extends SQL92Dialect {
         seal();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MSSQLReverseEngineeringStrategy getReverseEngineeringStrategy() {
         return new MSSQLReverseEngineeringStrategy(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUniqueName() {
         return "MSSQLDialect";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverClassName() {
         return "net.sourceforge.jtds.jdbc.Driver";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDriverURLTemplate() {
         return "jdbc:jtds:sqlserver://<host>/<db>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MSSQLSQLGenerator createSQLGenerator() {
         return new MSSQLSQLGenerator(this);

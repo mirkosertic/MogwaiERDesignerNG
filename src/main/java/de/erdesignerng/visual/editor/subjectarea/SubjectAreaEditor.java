@@ -86,9 +86,6 @@ public class SubjectAreaEditor extends BaseEditor {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void applyValues() throws Exception {
         bindingInfo.view2model();
