@@ -418,20 +418,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         public void postEvolveLayout() {
             super.postEvolveLayout();
 
-            if (getEvolvedElements().size() > 0) {
+            System.out.println("Applying changes " + modelModifications.size() + " " + minx + " " + miny);
 
-                // Move graph origin to 20,20
-                if (minx != 20 || miny != 20) {
+            // Move graph origin to 20,20
+            if (minx != 20 || miny != 20) {
 
-                    for (VertexCellElement theElement : elements) {
-                        evolvePosition(theElement, -minx + 20, -miny + 20);
-                    }
+                for (VertexCellElement theElement : elements) {
+                    evolvePosition(theElement, -minx + 20, -miny + 20);
                 }
+            }
 
-                if (graph != null) {
-                    if (modelModifications.size() > 0) {
-                        graph.getGraphLayoutCache().edit(modelModifications);
-                    }
+            if (graph != null) {
+                if (modelModifications.size() > 0) {
+
+                    graph.getGraphLayoutCache().edit(modelModifications);
                 }
             }
         }
@@ -449,7 +449,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         @Override
         public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
 
-            if (graph != null && movementX != 0 && movementY != 0) {
+            if (graph != null && (movementX != 0 || movementY != 0)) {
 
                 Rectangle2D theBounds;
                 Map theAttributes = modelModifications.get(aElement.getCell());
@@ -458,13 +458,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 } else {
                     theAttributes = new HashMap();
                     theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
+
+                    modelModifications.put(aElement.getCell(), theAttributes);
                 }
 
                 theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
                         theBounds.getHeight());
                 GraphConstants.setBounds(theAttributes, theBounds);
-
-                modelModifications.put(aElement.getCell(), theAttributes);
             }
         }
     };
