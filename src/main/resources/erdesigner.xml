@@ -842,9 +842,21 @@
 			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>		
 			<Text lang="en">Please save your Attribute changes first!</Text>					
 		</Entry>
+		<Entry id="NAMEINVALID">
+			<Text lang="de">Der eingebenene Elementname ist ungültig!</Text>		
+			<Text lang="en">The entered element name is invalid</Text>					
+		</Entry>
+		<Entry id="INDEXALREADYEXISTS">
+			<Text lang="de">Es existiert schon ein Index mit gleichem Namen!</Text>		
+			<Text lang="en">There is already an Index with the same name!</Text>					
+		</Entry>
 		<Entry id="SAVEINDEXCHANGESFIRST">
 			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Index!</Text>		
 			<Text lang="en">Please save your Index changes first!</Text>					
+		</Entry>
+		<Entry id="ATTRIBUTEALREADYEXISTS">
+			<Text lang="de">Es existiert schon ein Attribut mit gleichem Namen!</Text>		
+			<Text lang="en">There is already an Attribute with the same name!</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

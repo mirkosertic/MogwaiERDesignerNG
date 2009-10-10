@@ -30,6 +30,7 @@ import javax.swing.event.ChangeEvent;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
@@ -99,7 +100,7 @@ public class TableEditor extends BaseEditor {
     private DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
-            commandUpdateAttribute(e);
+            commandUpdateAttribute();
         }
     }, this, ERDesignerBundle.UPDATE);
 
@@ -298,37 +299,47 @@ public class TableEditor extends BaseEditor {
         }
 
         updateAttributeEditFields();
-        
+
         commandNewAttribute();
     }
 
     @Override
     protected void commandOk() {
-        
+
         if (attributeBindingInfo.isChanged()) {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEATTRIBUTECHANGESFIRST));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+                    ERDesignerBundle.SAVEATTRIBUTECHANGESFIRST));
             return;
         }
-        
+
         if (editingView.getAddExpressionToIndexButton().isEnabled() && indexExpressionBindingInfo.isChanged()) {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEINDEXCHANGESFIRST));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+                    ERDesignerBundle.SAVEINDEXCHANGESFIRST));
             return;
         }
 
         if (editingView.getAddAttributeToIndexButton().isEnabled() && indexExpressionBindingInfo2.isChanged()) {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEINDEXCHANGESFIRST));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+                    ERDesignerBundle.SAVEINDEXCHANGESFIRST));
             return;
         }
 
         if (indexBindingInfo.isChanged()) {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(ERDesignerBundle.SAVEINDEXCHANGESFIRST));
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+                    ERDesignerBundle.SAVEINDEXCHANGESFIRST));
             return;
         }
-        
+
         if (tableBindingInfo.validate().size() == 0) {
             if (attributeListModel.getSize() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.TABLEMUSTHAVEATLEASTONEATTRIBUTE));
+                return;
+            }
+            try {
+                model.checkName(editingView.getEntityName().getText());
+            } catch (ElementInvalidNameException e) {
+                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
                 return;
             }
             setModalResult(MODAL_RESULT_OK);
@@ -347,16 +358,35 @@ public class TableEditor extends BaseEditor {
         }
     }
 
-    private void commandUpdateAttribute(java.awt.event.ActionEvent evt) {
-        Attribute theModel = attributeBindingInfo.getDefaultModel();
+    private void commandUpdateAttribute() {
+        Attribute theAttribute = attributeBindingInfo.getDefaultModel();
         List<ValidationError> theValidationResult = attributeBindingInfo.validate();
         if (theValidationResult.size() == 0) {
+
+            Dialect theDialect = model.getDialect();
+            
+            for (int i = 0; i < attributeListModel.getSize(); i++) {
+                Attribute theTempAttribute = (Attribute) attributeListModel.get(i);
+                try {
+                    if (theDialect.checkName(theTempAttribute.getName()).equals(
+                            theDialect.checkName(editingView.getAttributeName().getText())) && !theTempAttribute.getSystemId().equals(theAttribute.getSystemId())) {
+                        MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                                ERDesignerBundle.ATTRIBUTEALREADYEXISTS));
+                        return;
+                    }
+                } catch (ElementInvalidNameException e) {
+                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                            ERDesignerBundle.NAMEINVALID));
+                    return;
+                }
+            }
+            
             attributeBindingInfo.view2model();
+            
+            if (!attributeListModel.contains(theAttribute)) {
 
-            if (!attributeListModel.contains(theModel)) {
-
-                attributeListModel.add(theModel);
-                knownAttributeValues.put(theModel.getSystemId(), theModel);
+                attributeListModel.add(theAttribute);
+                knownAttributeValues.put(theAttribute.getSystemId(), theAttribute);
             }
 
             updateAttributeEditFields();
@@ -556,15 +586,33 @@ public class TableEditor extends BaseEditor {
     }
 
     private void commandUpdateIndex() {
-        Index theModel = indexBindingInfo.getDefaultModel();
+        Index theIndex = indexBindingInfo.getDefaultModel();
         List<ValidationError> theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
+            
+            Dialect theDialect = model.getDialect();
+            for (int i = 0; i < indexListModel.getSize(); i++) {
+                Index theTempIndex = (Index) indexListModel.get(i);
+                try {
+                    if (theDialect.checkName(theTempIndex.getName()).equals(
+                            theDialect.checkName(editingView.getIndexName().getText())) && !theTempIndex.getSystemId().equals(theIndex.getSystemId())) {
+                        MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                                ERDesignerBundle.INDEXALREADYEXISTS));
+                        return;
+                    }
+                } catch (ElementInvalidNameException e) {
+                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
+                            ERDesignerBundle.NAMEINVALID));
+                    return;
+                }
+            }
+            
             indexBindingInfo.view2model();
 
-            if (theModel.getIndexType().equals(IndexType.PRIMARYKEY)) {
+            if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
                 for (int i = 0; i < indexListModel.getSize(); i++) {
-                    Index theIndex = (Index) indexListModel.get(i);
-                    if ((theIndex.getIndexType().equals(IndexType.PRIMARYKEY) && (!theModel.equals(theIndex)))) {
+                    Index theTempIndex = (Index) indexListModel.get(i);
+                    if ((theTempIndex.getIndexType().equals(IndexType.PRIMARYKEY) && (!theIndex.equals(theTempIndex)))) {
                         MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                                 ERDesignerBundle.THEREISALREADYAPRIMARYKEY));
                         return;
@@ -572,21 +620,22 @@ public class TableEditor extends BaseEditor {
                 }
             }
 
-            theModel.getExpressions().clear();
             DefaultListModel<IndexExpression> theListModel = editingView.getIndexFieldList().getModel();
-            for (int i = 0; i < theListModel.getSize(); i++) {
-                theModel.getExpressions().add(theListModel.get(i));
-            }
-
-            if (theModel.getExpressions().size() == 0) {
+            if (theListModel.getSize() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.ANINDEXMUSTHAVEATLEASTONEELEMENT));
                 return;
             }
 
-            if (!indexListModel.contains(theModel)) {
-                indexListModel.add(theModel);
-                knownIndexValues.put(theModel.getSystemId(), theModel);
+            if (!indexListModel.contains(theIndex)) {
+
+                indexListModel.add(theIndex);
+                knownIndexValues.put(theIndex.getSystemId(), theIndex);
+            }
+
+            theIndex.getExpressions().clear();
+            for (int i = 0; i < theListModel.getSize(); i++) {
+                theIndex.getExpressions().add(theListModel.get(i));
             }
 
             updateIndexEditFields();
