@@ -421,7 +421,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             if (getEvolvedElements().size() > 0) {
 
                 // Move graph origin to 20,20
-                if (minx < 20 || miny < 20) {
+                if (minx != 20 || miny != 20) {
 
                     for (VertexCellElement theElement : elements) {
                         evolvePosition(theElement, -minx + 20, -miny + 20);
