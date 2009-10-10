@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.components.DefaultDialog;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
