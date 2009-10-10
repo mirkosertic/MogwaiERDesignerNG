@@ -206,3 +206,4 @@ Release 2.0.2
 * Bug Fixing Preferences Dialog required fields were not correctly highlighted
 * Performance tuning in Intelligent Layout functionality
 * Implemented FR 2711878 [ERDesignerNG] edit entry dialog usability improvements
+* Implemented FR 2830914 [ERDesignerNG] Creating entities is overly complicated

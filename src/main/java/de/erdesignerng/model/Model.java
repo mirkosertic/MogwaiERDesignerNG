@@ -133,6 +133,9 @@ public class Model implements OwnedModelItemVerifier {
         if (aSender instanceof Table) {
             ModelUtilities.checkExistance(tables, aName, dialect);
         }
+        if (aSender instanceof View) {
+            ModelUtilities.checkExistance(views, aName, dialect);
+        }
     }
 
     public Dialect getDialect() {
