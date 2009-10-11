@@ -36,10 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -105,16 +103,12 @@ import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
-import de.erdesignerng.visual.cells.ModelCellWithPosition;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
-import de.erdesignerng.visual.cells.views.CommentCellView;
-import de.erdesignerng.visual.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.cells.views.TableCellView;
-import de.erdesignerng.visual.cells.views.ViewCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
@@ -159,8 +153,6 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import de.mogwai.layout.ElectricSpringLayout;
-import de.mogwai.layout.graph.Spring;
 
 /**
  * The ERDesigner Editing Component.
@@ -230,7 +222,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction exportSVGAction;
 
-    private ERDesignerGraph graph;
+    ERDesignerGraph graph;
 
     private GraphModel graphModel;
 
@@ -256,7 +248,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu subjectAreas;
 
-    private Model model;
+    Model model;
 
     private DefaultAction newAction;
 
@@ -334,144 +326,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private boolean loading;
 
-    private ElectricSpringLayout<VertexCellElement, CellView> layout = new ElectricSpringLayout<VertexCellElement, CellView>() {
-
-        private List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
-
-        private List<Spring<CellView, VertexCellElement>> springs = new ArrayList<Spring<CellView, VertexCellElement>>();
-
-        private Map<Object, Map> modelModifications = new HashMap<Object, Map>();
-
-        Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
-
-        @Override
-        public void preEvolveLayout() {
-            super.preEvolveLayout();
-
-            elements.clear();
-            springs.clear();
-            modelModifications.clear();
-
-            if (model == null || graph == null) {
-                return;
-            }
-
-            elementsToIgnore.clear();
-            if (graph.isDragging()) {
-                for (Object theCell : graph.getSelectionCells()) {
-                    if (theCell instanceof ModelCellWithPosition) {
-                        ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
-                        elementsToIgnore.add((ModelItem) theTableCell.getUserObject());
-                    }
-                    if (theCell instanceof SubjectAreaCell) {
-                        for (Object theChildCell : ((SubjectAreaCell) theCell).getChildren()) {
-                            if (theCell instanceof ModelCellWithPosition) {
-                                DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
-                                elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
-                            }
-                        }
-                    }
-                }
-            }
-
-            Map<ModelItem, VertexCellElement> theTables = new HashMap<ModelItem, VertexCellElement>();
-
-            for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
-
-                if (theView instanceof TableCellView || theView instanceof ViewCellView
-                        || theView instanceof CommentCellView) {
-
-                    DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
-
-                    ModelItem theModelItem = (ModelItem) theCell.getUserObject();
-                    if (!elementsToIgnore.contains(theModelItem)) {
-
-                        VertexCellElement theElement = new VertexCellElement(theView);
-
-                        theTables.put(theModelItem, theElement);
-                        elements.add(theElement);
-                    }
-                }
-            }
-
-            for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
-
-                if (theView instanceof RelationEdgeView) {
-
-                    RelationEdgeView theRelationView = (RelationEdgeView) theView;
-                    RelationEdge theCell = (RelationEdge) theRelationView.getCell();
-                    Relation theRelation = (Relation) theCell.getUserObject();
-
-                    if (!elementsToIgnore.contains(theRelation.getExportingTable())
-                            && (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
-                        Spring<CellView, VertexCellElement> theSpring = new Spring<CellView, VertexCellElement>(
-                                theTables.get(theRelation.getExportingTable()), theTables.get(theRelation
-                                        .getImportingTable()), theView);
-                        springs.add(theSpring);
-                    }
-                }
-            }
-
-        }
-
-        @Override
-        public void postEvolveLayout() {
-            super.postEvolveLayout();
-
-            System.out.println("Applying changes " + modelModifications.size() + " " + minx + " " + miny);
-
-            // Move graph origin to 20,20
-            if (minx != 20 || miny != 20) {
-
-                for (VertexCellElement theElement : elements) {
-                    evolvePosition(theElement, -minx + 20, -miny + 20);
-                }
-            }
-
-            if (graph != null) {
-                if (modelModifications.size() > 0) {
-
-                    graph.getGraphLayoutCache().edit(modelModifications);
-                }
-            }
-        }
-
-        @Override
-        public List<VertexCellElement> getElements() {
-            return elements;
-        }
-
-        @Override
-        public List<Spring<CellView, VertexCellElement>> getSprings() {
-            return springs;
-        }
-
-        @Override
-        public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
-
-            if (graph != null && (movementX != 0 || movementY != 0)) {
-
-                Rectangle2D theBounds;
-                Map theAttributes = modelModifications.get(aElement.getCell());
-                if (theAttributes != null) {
-                    theBounds = GraphConstants.getBounds(theAttributes);
-                } else {
-                    theAttributes = new HashMap();
-                    theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
-
-                    modelModifications.put(aElement.getCell(), theAttributes);
-                }
-
-                theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
-                        theBounds.getHeight());
-                GraphConstants.setBounds(theAttributes, theBounds);
-            }
-        }
-    };
+    private ERDesignerGraphLayout layout;
 
     public ERDesignerComponent(ApplicationPreferences aPreferences, final ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
         preferences = aPreferences;
+        layout = new ERDesignerGraphLayout(this);
+        
         initActions();
 
         Thread theRunner = new Thread() {
@@ -484,14 +345,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                             long theDuration = System.currentTimeMillis();
                             layout.preEvolveLayout();
                             layout.evolveLayout();
+
                             SwingUtilities.invokeAndWait(new Runnable() {
                                 public void run() {
                                     layout.postEvolveLayout();
                                 }
                             });
                             theDuration = System.currentTimeMillis() - theDuration;
-                            // Assume 25 Frames / Second animation speed
-                            long theDifference = (1000 - (theDuration * 25)) / 25;
+                            
+                            // Assume 30 Frames / Second animation speed
+                            long theDifference = (1000 - (theDuration * 30)) / 30;
                             if (theDifference > 0) {
                                 sleep(theDifference);
                             } else {
