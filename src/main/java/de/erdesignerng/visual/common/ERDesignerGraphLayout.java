@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
 import de.erdesignerng.model.ModelItem;
@@ -130,10 +131,60 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         super.postEvolveLayout();
 
         // Move graph origin to 20,20
-        //TODO:
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+
+        List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
+
+        for (CellView theView : component.graph.getGraphLayoutCache().getAllViews()) {
+
+            Object theObjectCell = theView.getCell();
+
+            if (theObjectCell instanceof ModelCellWithPosition) {
+                DefaultGraphCell theCell = (DefaultGraphCell) theObjectCell;
+
+                Map theAttributes = modelModifications.get(theCell);
+                if (theAttributes == null) {
+                    theAttributes = theCell.getAttributes();
+                }
+
+                Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
+                minX = (int) Math.min(minX, theBounds.getX());
+                minY = (int) Math.min(minY, theBounds.getY());
+
+                theCells.add(theCell);
+            }
+
+            if (theObjectCell instanceof SubjectAreaCell) {
+                for (Object theChildCell : ((SubjectAreaCell) theObjectCell).getChildren()) {
+                    if (theChildCell instanceof ModelCellWithPosition) {
+
+                        DefaultGraphCell theCell = (DefaultGraphCell) theChildCell;
+
+                        Map theAttributes = modelModifications.get(theCell);
+                        if (theAttributes == null) {
+                            theAttributes = theCell.getAttributes();
+                        }
+
+                        Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
+                        minX = (int) Math.min(minX, theBounds.getX());
+                        minY = (int) Math.min(minY, theBounds.getY());
+
+                        theCells.add(theCell);
+                    }
+                }
+            }
+        }
+
+        if (minX < 20 || minY < 20) {
+            int mx = minX < 20 ? 20 - minX : 0;
+            int my = minY < 20 ? 20 - minY : 0;
+            for (DefaultGraphCell theCell : theCells) {
+                evolvePosition(theCell, mx, my);
+            }
+        }
 
         if (modelModifications.size() > 0) {
-
             component.graph.getGraphLayoutCache().edit(modelModifications);
         }
     }
@@ -148,25 +199,28 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         return springs;
     }
 
-    @Override
-    public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
+    private void evolvePosition(GraphCell aCell, int movementX, int movementY) {
 
         if (movementX != 0 || movementY != 0) {
-
             Rectangle2D theBounds;
-            Map theAttributes = modelModifications.get(aElement.getCell());
+            Map theAttributes = modelModifications.get(aCell);
             if (theAttributes != null) {
                 theBounds = GraphConstants.getBounds(theAttributes);
             } else {
                 theAttributes = new HashMap();
-                theBounds = GraphConstants.getBounds(aElement.getCell().getAttributes());
+                theBounds = GraphConstants.getBounds(aCell.getAttributes());
 
-                modelModifications.put(aElement.getCell(), theAttributes);
+                modelModifications.put(aCell, theAttributes);
             }
 
             theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
                     theBounds.getHeight());
             GraphConstants.setBounds(theAttributes, theBounds);
         }
+    }
+
+    @Override
+    public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
+        evolvePosition(aElement.getCell(), movementX, movementY);
     }
 }

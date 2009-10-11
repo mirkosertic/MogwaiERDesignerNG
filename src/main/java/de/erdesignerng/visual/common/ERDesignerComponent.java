@@ -1438,6 +1438,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         FileInputStream theStream = null;
 
         try {
+            setIntelligentLayoutEnabled(false);
+
             theStream = new FileInputStream(aFile);
 
             Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
@@ -1465,6 +1467,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     // Ignore this exception
                 }
             }
+
+            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
 
@@ -1773,6 +1777,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
 
+            setIntelligentLayoutEnabled(false);
+
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword(), false);
@@ -1809,6 +1815,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     // Do nothing here
                 }
             }
+            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
 
