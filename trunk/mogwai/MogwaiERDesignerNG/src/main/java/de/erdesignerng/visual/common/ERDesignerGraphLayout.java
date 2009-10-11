@@ -55,15 +55,15 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
     Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
 
     @Override
-    public void preEvolveLayout() {
+    public boolean preEvolveLayout() {
         super.preEvolveLayout();
 
         elements.clear();
         springs.clear();
         modelModifications.clear();
 
-        if (component.model == null || component.graph == null) {
-            return;
+        if (component.graph == null) {
+            return false;
         }
 
         elementsToIgnore.clear();
@@ -89,7 +89,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
 
         for (CellView theView : component.graph.getGraphLayoutCache().getAllViews()) {
 
-            if (theView instanceof ModelCellWithPosition) {
+            if (theView.getCell() instanceof ModelCellWithPosition) {
 
                 DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
 
@@ -122,6 +122,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
             }
         }
 
+        return true;
     }
 
     @Override
@@ -136,11 +137,11 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
             }
         }
 
-        if (component.graph != null) {
-            if (modelModifications.size() > 0) {
+        System.out.println("Applying " + modelModifications.size());
 
-                component.graph.getGraphLayoutCache().edit(modelModifications);
-            }
+        if (modelModifications.size() > 0) {
+
+            component.graph.getGraphLayoutCache().edit(modelModifications);
         }
     }
 
