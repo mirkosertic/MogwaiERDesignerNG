@@ -52,7 +52,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
 
     private Map<Object, Map> modelModifications = new HashMap<Object, Map>();
 
-    Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
+    private Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
 
     @Override
     public boolean preEvolveLayout() {
@@ -130,14 +130,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         super.postEvolveLayout();
 
         // Move graph origin to 20,20
-        if (minx != 20 || miny != 20) {
-
-            for (VertexCellElement theElement : elements) {
-                evolvePosition(theElement, -minx + 20, -miny + 20);
-            }
-        }
-
-        System.out.println("Applying " + modelModifications.size());
+        //TODO:
 
         if (modelModifications.size() > 0) {
 
@@ -158,7 +151,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
     @Override
     public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
 
-        if (component.graph != null && (movementX != 0 || movementY != 0)) {
+        if (movementX != 0 || movementY != 0) {
 
             Rectangle2D theBounds;
             Map theAttributes = modelModifications.get(aElement.getCell());

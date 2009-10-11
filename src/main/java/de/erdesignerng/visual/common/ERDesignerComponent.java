@@ -1598,7 +1598,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         try {
 
             setIntelligentLayoutEnabled(false);
-            
+
             if (aFile.exists()) {
                 File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
                 aFile.renameTo(theBakFile);
@@ -1656,7 +1656,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             if (theWriter != null) {
                 theWriter.close();
             }
-            
+
             setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
@@ -1675,7 +1675,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         Connection theConnection = null;
         Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
-            
+
             setIntelligentLayoutEnabled(false);
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
@@ -1712,7 +1712,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     // Do nothing here
                 }
             }
-            
+
             setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
@@ -2502,10 +2502,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void setIntelligentLayoutEnabled(boolean aStatus) {
         if (!aStatus) {
-            layoutThread.interrupt();
-            while (layoutThread.getState() != Thread.State.TERMINATED) {
+            if (layoutThread != null) {
+                layoutThread.interrupt();
+                while (layoutThread.getState() != Thread.State.TERMINATED) {
+                }
             }
-            System.out.println("Thread terminated");
         } else {
             layoutThread = new LayoutThread();
             layoutThread.start();
