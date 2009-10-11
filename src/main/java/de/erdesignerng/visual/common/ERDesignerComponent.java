@@ -164,6 +164,40 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
+    private final class LayoutThread extends Thread {
+        @Override
+        public void run() {
+            while (!isInterrupted()) {
+                try {
+                    long theDuration = System.currentTimeMillis();
+
+                    if (layout.preEvolveLayout()) {
+                        layout.evolveLayout();
+
+                        SwingUtilities.invokeAndWait(new Runnable() {
+                            public void run() {
+                                layout.postEvolveLayout();
+                            }
+                        });
+                    }
+                    theDuration = System.currentTimeMillis() - theDuration;
+
+                    // Assume 30 Frames / Second animation speed
+                    long theDifference = (1000 - (theDuration * 30)) / 30;
+                    if (theDifference > 0) {
+                        sleep(theDifference);
+                    } else {
+                        sleep(40);
+                    }
+                } catch (InterruptedException e) {
+                    return;
+                } catch (Exception e) {
+                    worldConnector.notifyAboutException(e);
+                }
+            }
+        }
+    }
+
     private class ERDesignerGraphModelListener implements GraphModelListener {
 
         public void graphChanged(GraphModelEvent aEvent) {
@@ -222,7 +256,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction exportSVGAction;
 
-    ERDesignerGraph graph;
+    volatile ERDesignerGraph graph;
 
     private GraphModel graphModel;
 
@@ -248,7 +282,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu subjectAreas;
 
-    Model model;
+    volatile Model model;
 
     private DefaultAction newAction;
 
@@ -324,53 +358,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
-    private boolean loading;
-
     private ERDesignerGraphLayout layout;
+
+    private Thread layoutThread;
 
     public ERDesignerComponent(ApplicationPreferences aPreferences, final ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
         preferences = aPreferences;
         layout = new ERDesignerGraphLayout(this);
-        
+
         initActions();
 
-        Thread theRunner = new Thread() {
-
-            @Override
-            public void run() {
-                while (!interrupted()) {
-                    try {
-                        if (!loading && preferences.isIntelligentLayout() && graph != null && !graph.isDragging()) {
-                            long theDuration = System.currentTimeMillis();
-                            layout.preEvolveLayout();
-                            layout.evolveLayout();
-
-                            SwingUtilities.invokeAndWait(new Runnable() {
-                                public void run() {
-                                    layout.postEvolveLayout();
-                                }
-                            });
-                            theDuration = System.currentTimeMillis() - theDuration;
-                            
-                            // Assume 30 Frames / Second animation speed
-                            long theDifference = (1000 - (theDuration * 30)) / 30;
-                            if (theDifference > 0) {
-                                sleep(theDifference);
-                            } else {
-                                sleep(40);
-                            }
-                        } else {
-                            sleep(40);
-                        }
-                    } catch (Exception e) {
-                        aConnector.notifyAboutException(e);
-                    }
-                }
-            }
-        };
-
-        theRunner.start();
+        if (preferences.isIntelligentLayout()) {
+            setIntelligentLayoutEnabled(true);
+        }
     }
 
     protected void initActions() {
@@ -904,19 +905,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                preferences.setIntelligentLayout(theCheckbox.isSelected());
-                if (!theCheckbox.isSelected()) {
-                    // Due to an unknown fact, the whole graphlayoutcache needs
-                    // to be rebuilt
-                    // to make this working.
-                    try {
-                        loading = true;
-
-                        fillGraph(model);
-                    } finally {
-                        loading = false;
-                    }
-                }
+                setIntelligentLayoutEnabled(theCheckbox.isSelected());
             }
 
         });
@@ -1493,9 +1482,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-            try {
+            setIntelligentLayoutEnabled(false);
 
-                loading = true;
+            try {
 
                 final Connection theConnection = model.createConnection(preferences);
                 if (theConnection == null) {
@@ -1563,9 +1552,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             } finally {
-                loading = false;
+                setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
             }
-
         }
     }
 
@@ -1609,6 +1597,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         PrintWriter theWriter = null;
         try {
 
+            setIntelligentLayoutEnabled(false);
+            
             if (aFile.exists()) {
                 File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
                 aFile.renameTo(theBakFile);
@@ -1666,6 +1656,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             if (theWriter != null) {
                 theWriter.close();
             }
+            
+            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
 
@@ -1683,6 +1675,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         Connection theConnection = null;
         Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
+            
+            setIntelligentLayoutEnabled(false);
 
             theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
@@ -1718,6 +1712,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     // Do nothing here
                 }
             }
+            
+            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
 
@@ -2039,9 +2035,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     public void setModel(Model aModel) {
 
-        loading = true;
-
         try {
+            setIntelligentLayoutEnabled(false);
+
             model = aModel;
 
             graphModel = createNewGraphModel();
@@ -2100,7 +2096,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             updateSubjectAreasMenu();
 
-            loading = false;
+            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
 
@@ -2502,5 +2498,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     public void commandNotifyAboutEdit() {
         updateSubjectAreasMenu();
+    }
+
+    protected void setIntelligentLayoutEnabled(boolean aStatus) {
+        if (!aStatus) {
+            layoutThread.interrupt();
+            while (layoutThread.getState() != Thread.State.TERMINATED) {
+            }
+            System.out.println("Thread terminated");
+        } else {
+            layoutThread = new LayoutThread();
+            layoutThread.start();
+        }
+        preferences.setIntelligentLayout(aStatus);
     }
 }
