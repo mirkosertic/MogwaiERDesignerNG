@@ -59,6 +59,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
     private DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
 
+        @Override
         public void processActionEvent(ActionEvent e) {
             commandUpdate();
         }
@@ -98,6 +99,22 @@ public class ReverseEngineerEditor extends BaseEditor {
 
         bindingInfo.configure();
         bindingInfo.model2view();
+
+        //Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
+        if (model.getDialect().supportsSchemaInformation()) {
+            //initially show available schemas
+            commandUpdate();
+
+            //initially preselect first schema if possible
+            if (schemaList.getSize() > 0) {
+              editingView.getSchemaList().setSelectedIndex(0);
+            }
+        }
+
+        //initially preselect first table-generation item, if possible
+        if (editingView.getNaming().getModel().getSize() > 0){
+            editingView.getNaming().setSelectedItem(editingView.getNaming().getModel().getElementAt(0));
+        }
     }
 
     /**

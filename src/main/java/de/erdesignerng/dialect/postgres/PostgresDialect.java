@@ -30,8 +30,8 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 public class PostgresDialect extends SQL92Dialect {
 
     public PostgresDialect() {
-        setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(true);
+        setSpacesAllowedInObjectNames(true);
+        setCaseSensitive(false);
         setMaxObjectNameLength(255);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
@@ -75,10 +75,15 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("clob", "", Types.CLOB, Types.LONGVARCHAR));
 
         // Patch [ 2874576 ] Reverse-Engineering unterstuetzt INET Datentyp nicht
-        // TODO [dr-death] is VARCHAR the right type?
-        // inet can be 12 bytes long for IPv4 or 24 bytes long for IPv6
-        // @see http://www.postgresql.org/docs/7.4/interactive/datatype-net-types.html#DATATYPE-INET
-        registerType(createDataType("inet", "", Types.VARCHAR));
+        // @see http://www.postgresql.org/docs/8.4/interactive/datatype-net-types.html#DATATYPE-INET
+        registerType(createDataType("inet", "", Types.VARCHAR, Types.NVARCHAR));
+
+        // TODO [dr-death] add all missing datatypes according to
+        // @see http://www.postgresql.org/docs/8.4/interactive/datatype.html#DATATYPE-TABLE
+//        registerType(createDataType("_point", "", Types.OTHER));
+//        registerType(createDataType("point", "", Types.OTHER));
+//        registerType(createDataType("abstime", "", Types.OTHER));
+//        registerType(createDataType("_xml", "", Types.OTHER));
 
         seal();
     }
