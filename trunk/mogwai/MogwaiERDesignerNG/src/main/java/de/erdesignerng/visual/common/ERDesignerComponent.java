@@ -941,18 +941,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (theTableEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
-                TableCell theCell = new TableCell(theTable);
-                layoutCache.insert(theCell);
-                
-                //TODO: [rarf] Handle addition of new relation here
-
                 try {
                     theTableEditor.applyValues();
                 } catch (VetoException e) {
                     worldConnector.notifyAboutException(e);
+                    return;
                 }
 
-                theCell.transferPropertiesToAttributes(theTable);
+                TableCell theImportingCell = new TableCell(theTable);
+                theImportingCell.transferPropertiesToAttributes(theTable);
 
                 Object theTargetCell = graph.getFirstCellForLocation(aPoint.getX(), aPoint.getY());
                 if (theTargetCell instanceof SubjectAreaCell) {
@@ -960,15 +957,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
                     theArea.getTables().add(theTable);
 
-                    theSACell.add(theCell);
+                    theSACell.add(theImportingCell);
                 }
 
-                GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
-                        -1, -1));
+                GraphConstants.setBounds(theImportingCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint
+                        .getY(), -1, -1));
 
-                layoutCache.insert(theCell);
+                if (aExportingCell != null) {
 
-                theCell.transferAttributesToProperties(theCell.getAttributes());
+                    // If the user cancels the add relation dialog
+                    // the table is added, too
+                    commandAddRelation(theImportingCell, aExportingCell);
+                }
+                
+                layoutCache.insert(theImportingCell);
+
+                theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
 
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
