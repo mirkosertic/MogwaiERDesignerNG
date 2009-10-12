@@ -76,11 +76,15 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelBasedConnectionProvider;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
@@ -119,6 +123,7 @@ import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
 import de.erdesignerng.visual.editor.openxavaexport.OpenXavaExportEditor;
 import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
+import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
 import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
@@ -922,7 +927,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         UIInitializer.getInstance().initialize(scrollPane);
     }
 
-    protected void commandAddTable(Point2D aPoint) {
+    protected void commandAddTableAndOptionalConnector(Point2D aPoint, TableCell aExportingCell) {
 
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
@@ -931,18 +936,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         Table theTable = new Table();
-        TableEditor theEditor = new TableEditor(model, scrollPane);
-        theEditor.initializeFor(theTable);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+        TableEditor theTableEditor = new TableEditor(model, scrollPane);
+        theTableEditor.initializeFor(theTable);
+        if (theTableEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
 
+                TableCell theCell = new TableCell(theTable);
+                layoutCache.insert(theCell);
+                
+                //TODO: [rarf] Handle addition of new relation here
+
                 try {
-                    theEditor.applyValues();
+                    theTableEditor.applyValues();
                 } catch (VetoException e) {
                     worldConnector.notifyAboutException(e);
                 }
 
-                TableCell theCell = new TableCell(theTable);
                 theCell.transferPropertiesToAttributes(theTable);
 
                 Object theTargetCell = graph.getFirstCellForLocation(aPoint.getX(), aPoint.getY());
@@ -2054,7 +2063,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 @Override
                 public void commandNewTable(Point2D aLocation) {
-                    ERDesignerComponent.this.commandAddTable(aLocation);
+                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, null);
                 }
 
                 @Override
@@ -2077,7 +2086,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     super.commandAddToNewSubjectArea(aCells);
                     updateSubjectAreasMenu();
                 }
+
+                @Override
+                public void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell) {
+                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, aExportingTableCell);
+                }
+
+                @Override
+                public void commandNewRelation(TableCell aImportingCell, TableCell aExportingCell) {
+                    ERDesignerComponent.this.commandAddRelation(aImportingCell, aExportingCell);
+                }
             };
+
             graph.setUI(new ERDesignerGraphUI(this));
 
             displayAllMenuItem.setSelected(true);
@@ -2216,6 +2236,66 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         updateSubjectAreasMenu();
+    }
+
+    /**
+     * Add a relation to the model.
+     * 
+     * @param aImportingCell
+     * @param aExportingCell
+     */
+    protected boolean commandAddRelation(TableCell aImportingCell, TableCell aExportingCell) {
+        Table theImportingTable = (Table) aImportingCell.getUserObject();
+        Table theExportingTable = (Table) aExportingCell.getUserObject();
+
+        Relation theRelation = createPreparedRelationFor(theImportingTable, theExportingTable);
+
+        RelationEditor theEditor = new RelationEditor(theImportingTable.getOwner(), scrollPane);
+        theEditor.initializeFor(theRelation);
+
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+
+            RelationEdge theEdge = new RelationEdge(theRelation, aImportingCell, aExportingCell);
+
+            try {
+                theEditor.applyValues();
+                layoutCache.insert(theEdge);
+
+                return true;
+            } catch (Exception e) {
+                worldConnector.notifyAboutException(e);
+            }
+        }
+        return false;
+    }
+
+    private Relation createPreparedRelationFor(Table aSourceTable, Table aTargetTable) {
+        Relation theRelation = new Relation();
+        theRelation.setImportingTable(aSourceTable);
+        theRelation.setExportingTable(aTargetTable);
+        theRelation.setOnUpdate(preferences.getOnUpdateDefault());
+        theRelation.setOnDelete(preferences.getOnDeleteDefault());
+
+        String thePattern = preferences.getAutomaticRelationAttributePattern();
+        String theTargetTableName = model.getDialect().getCastType().cast(aTargetTable.getName());
+
+        // Create the foreign key suggestions
+        Index thePrimaryKey = aTargetTable.getPrimarykey();
+        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
+            Attribute theAttribute = theExpression.getAttributeRef();
+            if (theAttribute != null) {
+                String theNewname = MessageFormat.format(thePattern, theTargetTableName, theAttribute.getName());
+                Attribute theNewAttribute = aSourceTable.getAttributes().findByName(theNewname);
+                if (theNewAttribute == null) {
+                    theNewAttribute = theAttribute.clone();
+                    theNewAttribute.setSystemId(ModelUtilities.createSystemIdFor(theNewAttribute));
+                    theNewAttribute.setOwner(null);
+                    theNewAttribute.setName(theNewname);
+                }
+                theRelation.getMapping().put(theExpression, theNewAttribute);
+            }
+        }
+        return theRelation;
     }
 
     /**
@@ -2507,6 +2587,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         updateSubjectAreasMenu();
     }
 
+    /**
+     * Set the status of the intelligent layout functionality.
+     * 
+     * @param aStatus
+     *            true if enabled, else false
+     */
     protected void setIntelligentLayoutEnabled(boolean aStatus) {
         if (!aStatus) {
             if (layoutThread != null) {
