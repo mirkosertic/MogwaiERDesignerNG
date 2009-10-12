@@ -19,7 +19,6 @@ package de.erdesignerng.visual;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,6 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
@@ -38,10 +36,8 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
@@ -56,8 +52,6 @@ import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.RelationEdgeView;
-import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.tools.BaseTool;
 
 /**
@@ -80,10 +74,11 @@ public abstract class ERDesignerGraph extends JGraph {
     private DisplayLevel displayLevel = DisplayLevel.ALL;
 
     private DisplayOrder displayOrder = DisplayOrder.NATURAL;
-    
+
     private ApplicationPreferences preferences;
 
-    public ERDesignerGraph(ApplicationPreferences aPreferences, Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
+    public ERDesignerGraph(ApplicationPreferences aPreferences, Model aDBModel, GraphModel aModel,
+            GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
         model = aDBModel;
         preferences = aPreferences;
@@ -277,59 +272,12 @@ public abstract class ERDesignerGraph extends JGraph {
     public abstract void commandNewComment(Point2D aLocation);
 
     /**
-     * Add a new relation to the model.
+     * Add a relation to the model.
      * 
-     * @param theSourceCell
-     *            the source
-     * @param theTargetCell
-     *            the target
+     * @param aImportingCell
+     * @param aExportingCell
      */
-    public void commandNewRelation(GraphCell theSourceCell, GraphCell theTargetCell) {
-
-        Table theSourceTable = (Table) ((TableCell) theSourceCell).getUserObject();
-        Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
-
-        Relation theRelation = new Relation();
-        theRelation.setImportingTable(theSourceTable);
-        theRelation.setExportingTable(theTargetTable);
-        theRelation.setOnUpdate(preferences.getOnUpdateDefault());
-        theRelation.setOnDelete(preferences.getOnDeleteDefault());
-
-        String thePattern = preferences.getAutomaticRelationAttributePattern();
-        String theTargetTableName = model.getDialect().getCastType().cast(theTargetTable.getName());
-
-        // Create the foreign key suggestions
-        Index thePrimaryKey = theTargetTable.getPrimarykey();
-        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
-            Attribute theAttribute = theExpression.getAttributeRef();
-            if (theAttribute != null) {
-                String theNewname = MessageFormat.format(thePattern, theTargetTableName, theAttribute.getName());
-                Attribute theNewAttribute = theSourceTable.getAttributes().findByName(theNewname);
-                if (theNewAttribute == null) {
-                    theNewAttribute = theAttribute.clone();
-                    theNewAttribute.setSystemId(ModelUtilities.createSystemIdFor(theNewAttribute));
-                    theNewAttribute.setOwner(null);
-                    theNewAttribute.setName(theNewname);
-                }
-                theRelation.getMapping().put(theExpression, theNewAttribute);
-            }
-        }
-
-        RelationEditor theEditor = new RelationEditor(theSourceTable.getOwner(), this);
-        theEditor.initializeFor(theRelation);
-
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-            RelationEdge theEdge = new RelationEdge(theRelation, (TableCell) theSourceCell, (TableCell) theTargetCell);
-
-            try {
-                theEditor.applyValues();
-                getGraphLayoutCache().insert(theEdge);
-            } catch (Exception e) {
-                LOGGER.error("Error adding new relation", e);
-            }
-        }
-    }
+    public abstract void commandNewRelation(TableCell aImportingCell, TableCell aExportingCell);
 
     /**
      * @return the displayLevel
@@ -389,4 +337,14 @@ public abstract class ERDesignerGraph extends JGraph {
      *            the cells to hide
      */
     public abstract void commandHideCells(List<HideableCell> aCellsToHide);
+
+    /**
+     * Create a new table and add if to a new relation.
+     * 
+     * @param aLocation
+     *            the location where the table should be created
+     * @param aExportingTable
+     *            the exporting table cell
+     */
+    public abstract void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell);
 }
