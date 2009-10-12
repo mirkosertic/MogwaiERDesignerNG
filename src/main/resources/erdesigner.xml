@@ -141,8 +141,8 @@
 			<Text lang="en">Database connection configuration</Text>					
 		</Entry>
 		<Entry id="ENTITYEDITOR">
-			<Text lang="de">Entität editieren</Text>		
-			<Text lang="en">Edit entity</Text>					
+			<Text lang="de">Tabelle editieren</Text>		
+			<Text lang="en">Edit table</Text>					
 		</Entry>
 		<Entry id="RELATIONEDITOR">
 			<Text lang="de">Relation editieren</Text>		
@@ -510,7 +510,7 @@
 		</Entry>
 		<Entry id="MISSINGENTITY">
 			<Text lang="de">Tabelle {0} fehlt</Text>		
-			<Text lang="en">Entity {0} is missing</Text>					
+			<Text lang="en">Table {0} is missing</Text>					
 		</Entry>
 		<Entry id="MISSINGATTRIBUTE">
 			<Text lang="de">Attribut {0} fehlt</Text>		
@@ -857,6 +857,10 @@
 		<Entry id="ATTRIBUTEALREADYEXISTS">
 			<Text lang="de">Es existiert schon ein Attribut mit gleichem Namen!</Text>		
 			<Text lang="en">There is already an Attribute with the same name!</Text>					
+		</Entry>
+		<Entry id="CREATETABLEHERE">
+			<Text lang="de">Neue Tabelle hier erstellen und verbinden</Text>		
+			<Text lang="en">Create new Table here and connect it</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

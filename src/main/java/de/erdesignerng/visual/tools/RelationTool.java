@@ -20,6 +20,8 @@ package de.erdesignerng.visual.tools;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -37,6 +39,11 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.TableCell;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
+import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * @author $Author: mirkosertic $
@@ -127,6 +134,15 @@ public class RelationTool extends BaseTool {
             connect((Port) firstPort.getCell(), (Port) port.getCell());
             e.consume();
         } else {
+            if (firstPort != null) {
+                DefaultPort thePort = (DefaultPort) firstPort.getCell();
+                GraphCell theCell = (GraphCell) ((DefaultPort) thePort).getParent();
+                if (theCell instanceof TableCell) {
+                    DefaultPopupMenu menu = createPopupMenu(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())),
+                            (TableCell) theCell);
+                    menu.show(graph, e.getX(), e.getY());
+                }
+            }
             graph.repaint();
         }
         firstPort = null;
@@ -134,6 +150,27 @@ public class RelationTool extends BaseTool {
         start = null;
         current = null;
         super.mouseReleased(e);
+    }
+
+    private DefaultPopupMenu createPopupMenu(final Point2D aLocation, final TableCell aParentCell) {
+
+        DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+
+        DefaultAction theAddTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+                ERDesignerBundle.CREATETABLEHERE);
+        DefaultMenuItem theAddTableMenu = new DefaultMenuItem(theAddTableAction);
+        theAddTableAction.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                graph.commandNewTableAndRelation(aLocation, aParentCell);
+            }
+        });
+
+        theMenu.add(theAddTableMenu);
+
+        UIInitializer.getInstance().initialize(theMenu);
+
+        return theMenu;
     }
 
     @Override
@@ -173,12 +210,11 @@ public class RelationTool extends BaseTool {
 
             Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
             if (theTargetTable.hasPrimaryKey()) {
-                graph.commandNewRelation(theSourceCell, theTargetCell);
+                graph.commandNewRelation((TableCell) theSourceCell, (TableCell) theTargetCell);
             } else {
                 MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
                         ERDesignerBundle.EXPORTINGTABLENEEDSPRIMARYKEY));
             }
         }
     }
-
 }
