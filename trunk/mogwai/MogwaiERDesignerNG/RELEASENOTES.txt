@@ -26,6 +26,7 @@ This software uses or is based on the following libraries:
  Thanks to the following contributors
  
   Thomas Breitkreuz for his H2 dialect, report templates and many good feature requests
+  Thomas Winkler for testing, several bugfixes, usability enhancements and feature requests
 
 Release 1.0
 
@@ -204,6 +205,9 @@ Release 2.0.2
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
 * Bug Fixing Subject Areas menu was not updated when hiding areas within the editor using the context menu
 * Bug Fixing Preferences Dialog required fields were not correctly highlighted
+* Bug Fixing 2874576 [ERDesignerNG] Support PostgreSQL INET datatype
+* Fixed typo in Reverse-Engineer dialog (german)
 * Performance tuning in Intelligent Layout functionality
 * Implemented FR 2711878 [ERDesignerNG] edit entry dialog usability improvements
 * Implemented FR 2830914 [ERDesignerNG] Creating entities is overly complicated
+* Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
