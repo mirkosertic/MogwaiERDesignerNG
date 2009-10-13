@@ -345,6 +345,9 @@ public abstract class ERDesignerGraph extends JGraph {
      *            the location where the table should be created
      * @param aExportingTable
      *            the exporting table cell
+     * @param aNewTableIsChild
+     *            true, if the new table should be the child of the new relation
      */
-    public abstract void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell);
+    public abstract void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell,
+            boolean aNewTableIsChild);
 }
