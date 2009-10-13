@@ -927,7 +927,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         UIInitializer.getInstance().initialize(scrollPane);
     }
 
-    protected void commandAddTableAndOptionalConnector(Point2D aPoint, TableCell aExportingCell) {
+    protected void commandAddTableAndOptionalConnector(Point2D aPoint, TableCell aExportingCell,
+            boolean aNewTableIsChild) {
 
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
@@ -967,9 +968,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                     // If the user cancels the add relation dialog
                     // the table is added, too
-                    commandAddRelation(theImportingCell, aExportingCell);
+                    if (aNewTableIsChild) {
+                        commandAddRelation(theImportingCell, aExportingCell);
+                    } else {
+                        commandAddRelation(aExportingCell, theImportingCell);                        
+                    }
                 }
-                
+
                 layoutCache.insert(theImportingCell);
 
                 theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
@@ -2067,7 +2072,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 @Override
                 public void commandNewTable(Point2D aLocation) {
-                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, null);
+                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, null, false);
                 }
 
                 @Override
@@ -2092,8 +2097,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }
 
                 @Override
-                public void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell) {
-                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, aExportingTableCell);
+                public void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell,
+                        boolean aNewTableIsChild) {
+                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, aExportingTableCell,
+                            aNewTableIsChild);
                 }
 
                 @Override

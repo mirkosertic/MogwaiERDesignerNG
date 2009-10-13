@@ -156,17 +156,29 @@ public class RelationTool extends BaseTool {
 
         DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-        DefaultAction theAddTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
-                ERDesignerBundle.CREATETABLEHERE);
-        DefaultMenuItem theAddTableMenu = new DefaultMenuItem(theAddTableAction);
-        theAddTableAction.addActionListener(new ActionListener() {
+        DefaultAction theAddChildTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+                ERDesignerBundle.CREATECHILDTABLEHERE);
+        DefaultMenuItem theAddChildTableMenu = new DefaultMenuItem(theAddChildTableAction);
+        theAddChildTableAction.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                graph.commandNewTableAndRelation(aLocation, aParentCell);
+                graph.commandNewTableAndRelation(aLocation, aParentCell, true);
             }
         });
 
-        theMenu.add(theAddTableMenu);
+        theMenu.add(theAddChildTableMenu);
+
+        DefaultAction theAddParentTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
+                ERDesignerBundle.CREATEPARENTTABLEHERE);
+        DefaultMenuItem theAddParentTableMenu = new DefaultMenuItem(theAddParentTableAction);
+        theAddParentTableMenu.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                graph.commandNewTableAndRelation(aLocation, aParentCell, false);
+            }
+        });
+
+        theMenu.add(theAddParentTableMenu);
 
         UIInitializer.getInstance().initialize(theMenu);
 
