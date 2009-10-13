@@ -858,9 +858,13 @@
 			<Text lang="de">Es existiert schon ein Attribut mit gleichem Namen!</Text>		
 			<Text lang="en">There is already an Attribute with the same name!</Text>					
 		</Entry>
-		<Entry id="CREATETABLEHERE">
-			<Text lang="de">Neue Tabelle hier erstellen und verbinden</Text>		
-			<Text lang="en">Create new Table here and connect it</Text>					
+		<Entry id="CREATECHILDTABLEHERE">
+			<Text lang="de">Neue Kind Tabelle hier erstellen und verbinden</Text>		
+			<Text lang="en">Create new child Table here and connect it</Text>					
+		</Entry>
+		<Entry id="CREATEPARENTTABLEHERE">
+			<Text lang="de">Neue Eltern Tabelle hier erstellen und verbinden</Text>		
+			<Text lang="en">Create new parent Table here and connect it</Text>					
 		</Entry>
 	</Bundle>
 </Resource>
