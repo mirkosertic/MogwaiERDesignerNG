@@ -62,4 +62,14 @@ public class CommentCell extends DefaultGraphCell implements ModelCellWithPositi
                     new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), 100, 100));
         }
     }
+
+    @Override
+    public Rectangle2D getBounds() {
+        return GraphConstants.getBounds(getAttributes());
+    }
+
+    @Override
+    public void setBounds(Rectangle2D aBounds) {
+        GraphConstants.setBounds(getAttributes(), aBounds);
+    }
 }

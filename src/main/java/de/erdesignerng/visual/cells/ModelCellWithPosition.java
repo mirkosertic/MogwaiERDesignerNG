@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.visual.cells;
 
+import java.awt.geom.Rectangle2D;
+
 /**
  * Interface for model cells with a position.
  *
@@ -24,4 +26,7 @@ package de.erdesignerng.visual.cells;
  */
 public interface ModelCellWithPosition<T> extends ModelCell<T> {
 
+    Rectangle2D getBounds();
+    
+    void setBounds(Rectangle2D aBounds);
 }
