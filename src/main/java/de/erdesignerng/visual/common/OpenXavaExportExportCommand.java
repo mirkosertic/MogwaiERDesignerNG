@@ -28,7 +28,7 @@ public class OpenXavaExportExportCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         OpenXavaExportEditor theEditor = new OpenXavaExportEditor(component.model, component.scrollPane);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {

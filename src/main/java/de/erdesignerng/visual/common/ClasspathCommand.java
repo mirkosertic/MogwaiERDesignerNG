@@ -27,7 +27,7 @@ public class ClasspathCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         ClasspathEditor theEditor = new ClasspathEditor(component.scrollPane, component.preferences);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {

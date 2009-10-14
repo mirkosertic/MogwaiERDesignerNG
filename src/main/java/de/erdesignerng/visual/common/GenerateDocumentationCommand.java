@@ -39,7 +39,7 @@ public class GenerateDocumentationCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         if (!component.checkForValidConnection()) {
             return;
         }

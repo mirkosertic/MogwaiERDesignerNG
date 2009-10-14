@@ -44,7 +44,7 @@ public class ExportGraphicsCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         if (exportType.equals(ExportType.ONE_PER_FILE)) {
 
             JFileChooser theChooser = new JFileChooser();

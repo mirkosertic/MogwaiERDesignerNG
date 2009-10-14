@@ -39,7 +39,7 @@ public class OpenFromRepositoryCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         ConnectionDescriptor theRepositoryConnection = component.preferences.getRepositoryConnection();
         if (theRepositoryConnection == null) {
             MessagesHelper.displayErrorMessage(component.scrollPane, component.getResourceHelper().getText(
