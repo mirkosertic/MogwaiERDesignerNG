@@ -28,7 +28,7 @@ public class DBConnectionCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         execute(component.model.createConnectionHistoryEntry());
     }
     

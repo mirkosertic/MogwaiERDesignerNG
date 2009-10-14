@@ -30,7 +30,7 @@ public abstract class UICommand implements ActionEventProcessor , ActionListener
         component = aComponent;
     }
     
-    abstract void execute();
+    public abstract void execute();
 
     @Override
     public void processActionEvent(ActionEvent e) {
