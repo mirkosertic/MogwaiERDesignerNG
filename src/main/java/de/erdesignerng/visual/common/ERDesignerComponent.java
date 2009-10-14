@@ -50,14 +50,10 @@ import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.swing.JRViewer;
-
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
@@ -65,28 +61,22 @@ import org.jgraph.graph.GraphModel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.dialect.GenericConnectionProvider;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
-import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelBasedConnectionProvider;
 import de.erdesignerng.model.ModelIOUtilities;
-import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -97,7 +87,6 @@ import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.ExportType;
-import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.HideableCell;
@@ -107,19 +96,11 @@ import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
-import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
-import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
-import de.erdesignerng.visual.editor.domain.DomainEditor;
-import de.erdesignerng.visual.editor.openxavaexport.OpenXavaExportEditor;
-import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
-import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
-import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
-import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
 import de.erdesignerng.visual.export.Exporter;
@@ -137,7 +118,6 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultDialog;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.components.DefaultToggleButton;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
@@ -229,9 +209,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction classpathAction;
 
-    private File currentEditingFile;
+    File currentEditingFile;
 
-    private RepositoryEntryDesciptor currentRepositoryEntry;
+    RepositoryEntryDesciptor currentRepositoryEntry;
 
     private DefaultAction dbConnectionAction;
 
@@ -265,7 +245,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private JToggleButton viewButton;
 
-    private GraphLayoutCache layoutCache;
+    GraphLayoutCache layoutCache;
 
     private DefaultAction loadAction;
 
@@ -371,16 +351,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void initActions() {
 
-        reverseEngineerAction = new DefaultAction(new ReverseEngineerCommand(ERDesignerComponent.this), this,
+        reverseEngineerAction = new DefaultAction(new ReverseEngineerCommand(this), this,
                 ERDesignerBundle.REVERSEENGINEER);
 
-        preferencesAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandPreferences();
-            }
-
-        }, this, ERDesignerBundle.PREFERENCES);
+        preferencesAction = new DefaultAction(new PreferencesCommand(this), this, ERDesignerBundle.PREFERENCES);
 
         saveAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -476,11 +450,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.EXITPROGRAM);
 
-        classpathAction = new DefaultAction(new ClasspathCommand(ERDesignerComponent.this), this,
-                ERDesignerBundle.CLASSPATH);
+        classpathAction = new DefaultAction(new ClasspathCommand(this), this, ERDesignerBundle.CLASSPATH);
 
-        dbConnectionAction = new DefaultAction(new DBConnectionCommand(ERDesignerComponent.this), this,
-                ERDesignerBundle.DBCONNECTION);
+        dbConnectionAction = new DefaultAction(new DBConnectionCommand(this), this, ERDesignerBundle.DBCONNECTION);
 
         repositoryConnectionAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -490,13 +462,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.REPOSITORYCONNECTION);
 
-        domainsAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandEditDomains();
-            }
-
-        }, this, ERDesignerBundle.DOMAINEDITOR);
+        domainsAction = new DefaultAction(new EditDomainCommand(this), this, ERDesignerBundle.DOMAINEDITOR);
 
         zoomAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -521,40 +487,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.ZOOMOUT);
 
-        generateSQL = new DefaultAction(new ActionEventProcessor() {
+        generateSQL = new DefaultAction(new GenerateSQLCommand(this), this, ERDesignerBundle.GENERATECREATEDBDDL);
 
-            public void processActionEvent(ActionEvent e) {
-                commandGenerateSQL();
-            }
+        generateChangelog = new DefaultAction(new GenerateChangeLogSQLCommand(this), this,
+                ERDesignerBundle.GENERATECHANGELOG);
 
-        }, this, ERDesignerBundle.GENERATECREATEDBDDL);
-
-        generateChangelog = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandGenerateChangelogSQL();
-            }
-
-        }, this, ERDesignerBundle.GENERATECHANGELOG);
-
-        completeCompareAction = new DefaultAction(new CompleteCompareCommand(ERDesignerComponent.this), this,
+        completeCompareAction = new DefaultAction(new CompleteCompareCommand(this), this,
                 ERDesignerBundle.COMPLETECOMPARE);
 
-        convertModelAction = new DefaultAction(new ActionEventProcessor() {
+        convertModelAction = new DefaultAction(new ConvertModelCommand(this), this, ERDesignerBundle.CONVERTMODEL);
 
-            public void processActionEvent(ActionEvent e) {
-                commandConvertModel();
-            }
-
-        }, this, ERDesignerBundle.CONVERTMODEL);
-
-        createMigrationScriptAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandCreateMigrationScript();
-            }
-
-        }, this, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
+        createMigrationScriptAction = new DefaultAction(new GenerateMigrationScriptCommand(this), this,
+                ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
         helpAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -564,13 +508,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.HELP);
 
-        exportOpenXavaAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandExportToOpenXava();
-            }
-
-        }, this, ERDesignerBundle.OPENXAVAEXPORT);
+        exportOpenXavaAction = new DefaultAction(new OpenXavaExportExportCommand(this), this,
+                ERDesignerBundle.OPENXAVAEXPORT);
 
         lruMenu = new DefaultMenu(lruAction);
 
@@ -601,13 +540,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.add(new DefaultMenuItem(repositoryConnectionAction));
             theFileMenu.add(new DefaultMenuItem(saveToRepository));
 
-            DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(new DefaultAction(new ActionEventProcessor() {
-
-                public void processActionEvent(ActionEvent e) {
-                    commandOpenFromRepository();
-                }
-
-            }, this, ERDesignerBundle.LOADMODELFROMDB));
+            DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(new DefaultAction(new OpenFromRepositoryCommand(
+                    this), this, ERDesignerBundle.LOADMODELFROMDB));
 
             theFileMenu.add(theLoadFromDBMenu);
 
@@ -1009,18 +943,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected void commandPreferences() {
-        PreferencesEditor theEditor = new PreferencesEditor(graph, preferences, this);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-
-    }
-
     /**
      * Show all subject areas.
      */
@@ -1108,60 +1030,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Generate a documentation for the current model from a JasperReports
-     * template.
-     * 
-     * @param aJRXMLFile
-     *            the name of the template
-     */
-    protected void commandGenerateDocumentation(final File aJRXMLFile) {
-
-        if (!checkForValidConnection()) {
-            return;
-        }
-
-        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(worldConnector) {
-
-            @Override
-            public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
-
-                aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
-
-                ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
-                File theTempFile = File.createTempFile("mogwai", ".mxm");
-                FileOutputStream theOutputStream = new FileOutputStream(theTempFile);
-                theUtils.serializeModelToXML(model, theOutputStream);
-                theOutputStream.close();
-
-                aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
-
-                JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, aJRXMLFile);
-
-                aMessagePublisher.publishMessage(getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
-
-                return thePrint;
-            }
-
-            @Override
-            public void handleResult(JasperPrint aResult) {
-
-                JRViewer theViewer = new JRViewer(aResult);
-
-                DefaultDialog theResult = new DefaultDialog(scrollPane, getResourceHelper(),
-                        ERDesignerBundle.CREATEDBDOCUMENTATION);
-                theResult.setContentPane(theViewer);
-                theResult.setMinimumSize(new Dimension(640, 480));
-                theResult.pack();
-                theViewer.setFitPageZoomRatio();
-
-                theResult.setVisible(true);
-            }
-
-        };
-        theTask.start();
-    }
-
-    /**
      * Update the create documentation menu.
      */
     protected void updateDocumentationMenu() {
@@ -1175,14 +1043,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 final File theJRXMLFile = theEntry.getKey();
                 JMenuItem theItem = new JMenuItem();
                 theItem.setText(theEntry.getValue());
-                theItem.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        commandGenerateDocumentation(theJRXMLFile);
-                    }
-
-                });
+                theItem.addActionListener(new GenerateDocumentationCommand(this, theJRXMLFile));
 
                 documentationMenu.add(theItem);
             }
@@ -1302,68 +1163,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
-        }
-    }
-
-    /**
-     * Edit the domains.
-     */
-    protected void commandEditDomains() {
-        DomainEditor theEditor = new DomainEditor(model, scrollPane);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-    }
-
-    protected void commandExport(Exporter aExporter, ExportType aExportType) {
-
-        if (aExportType.equals(ExportType.ONE_PER_FILE)) {
-
-            JFileChooser theChooser = new JFileChooser();
-            theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (theChooser.showSaveDialog(scrollPane) == JFileChooser.APPROVE_OPTION) {
-                File theBaseDirectory = theChooser.getSelectedFile();
-
-                CellView[] theViews = layoutCache.getAllViews();
-                for (CellView theView : theViews) {
-                    if (theView instanceof TableCellView) {
-                        TableCellView theItemCellView = (TableCellView) theView;
-                        DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
-                        ModelItem theItem = (ModelItem) theItemCell.getUserObject();
-
-                        File theOutputFile = new File(theBaseDirectory, theItem.getName()
-                                + aExporter.getFileExtension());
-                        try {
-                            aExporter.exportToStream(theItemCellView.getRendererComponent(graph, false, false, false),
-                                    new FileOutputStream(theOutputFile));
-                        } catch (Exception e) {
-                            worldConnector.notifyAboutException(e);
-                        }
-                    }
-                }
-            }
-
-        } else {
-
-            JFileChooser theChooser = new JFileChooser();
-            GenericFileFilter theFilter = new GenericFileFilter(aExporter.getFileExtension(), aExporter
-                    .getFileExtension()
-                    + " File");
-            theChooser.setFileFilter(theFilter);
-            if (theChooser.showSaveDialog(scrollPane) == JFileChooser.APPROVE_OPTION) {
-
-                File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
-                try {
-                    aExporter.fullExportToStream(graph, new FileOutputStream(theFile));
-                } catch (Exception e) {
-                    worldConnector.notifyAboutException(e);
-                }
-            }
-
         }
     }
 
@@ -1592,104 +1391,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
-     * Create a migration script from repository.
-     */
-    protected void commandCreateMigrationScript() {
-
-        ConnectionDescriptor theRepositoryConnection = preferences.getRepositoryConnection();
-        if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
-                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
-            return;
-        }
-        Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
-        try {
-
-            theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
-                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword(), false);
-
-            RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER.getRepositoryEntity(theDialect
-                    .getHibernateDialectClass(), theConnection, currentRepositoryEntry);
-
-            MigrationScriptEditor theEditor = new MigrationScriptEditor(scrollPane, theEntity,
-                    new GenericConnectionProvider(theConnection, theDialect.createSQLGenerator()
-                            .createScriptStatementSeparator()), preferences, worldConnector);
-
-            theEditor.showModal();
-
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        } finally {
-            if (theConnection != null && !theDialect.generatesManagedConnection()) {
-                try {
-                    theConnection.close();
-                } catch (SQLException e) {
-                    // Do nothing here
-                }
-            }
-        }
-    }
-
-    /**
-     * Open the database model from an existing connection.
-     */
-    protected void commandOpenFromRepository() {
-
-        ConnectionDescriptor theRepositoryConnection = preferences.getRepositoryConnection();
-        if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
-                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
-            return;
-        }
-        Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
-        try {
-
-            setIntelligentLayoutEnabled(false);
-
-            theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
-                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword(), false);
-
-            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
-                    theConnection);
-
-            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(scrollPane, preferences, theConnection,
-                    theEntries);
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-                RepositoryEntryDesciptor theDescriptor = theEditor.getModel().getEntry();
-
-                Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor,
-                        theDialect, theConnection, preferences);
-                worldConnector.initializeLoadedModel(theModel);
-
-                setupViewFor(theDescriptor);
-                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
-
-                currentRepositoryEntry = theDescriptor;
-                currentEditingFile = null;
-
-                setModel(theModel);
-            }
-
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        } finally {
-            if (theConnection != null && !theDialect.generatesManagedConnection()) {
-                try {
-                    theConnection.close();
-                } catch (SQLException e) {
-                    // Do nothing here
-                }
-            }
-            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
-        }
-    }
-
-    /**
      * Setup the view for a model loaded from repository.
      * 
      * @param aDescriptor
@@ -1808,27 +1509,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    protected void commandGenerateSQL() {
-
-        if (!checkForValidConnection()) {
-            return;
-        }
-
-        try {
-            SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
-            StatementList theStatements = theGenerator.createCreateAllObjects(model);
-            SQLEditor theEditor = new SQLEditor(scrollPane, new ModelBasedConnectionProvider(model), theStatements,
-                    currentEditingFile, "schema.sql", preferences, worldConnector);
-            theEditor.showModal();
-        } catch (VetoException e) {
-            worldConnector.notifyAboutException(e);
-        }
-    }
-
-    protected String generateChangelogSQLFileName() {
-        return "changelog.sql";
-    }
-
     /**
      * Display the application help screen.
      */
@@ -1840,37 +1520,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }
-    }
-
-    /**
-     * Run the OpenXava Exporter.
-     */
-    protected void commandExportToOpenXava() {
-        OpenXavaExportEditor theEditor = new OpenXavaExportEditor(model, scrollPane);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-
-                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.OPENXAVAEXPORTOK));
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-    }
-
-    /**
-     * Show the DDL changelog.
-     */
-    protected void commandGenerateChangelogSQL() {
-
-        if (!checkForValidConnection()) {
-            return;
-        }
-
-        StatementList theStatements = ((HistoryModificationTracker) model.getModificationTracker()).getStatements();
-        SQLEditor theEditor = new SQLEditor(scrollPane, new ModelBasedConnectionProvider(model), theStatements,
-                currentEditingFile, generateChangelogSQLFileName(), preferences, worldConnector);
-        theEditor.showModal();
     }
 
     public ResourceHelper getResourceHelper() {
@@ -2206,23 +1855,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         DefaultAction theAllInOneAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
         DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
-        theAllInOneAction.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                commandExport(aExporter, ExportType.ALL_IN_ONE);
-            }
-        });
+        theAllInOneAction.addActionListener(new ExportGraphicsCommand(this, aExporter, ExportType.ALL_IN_ONE));
         aMenu.add(theAllInOneItem);
 
         DefaultAction theOnePerTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
                 ERDesignerBundle.ONEFILEPERTABLE);
         DefaultMenuItem theOnePerTable = new DefaultMenuItem(theOnePerTableAction);
-        theOnePerTableAction.addActionListener(new ActionListener() {
+        theOnePerTableAction.addActionListener(new ExportGraphicsCommand(this, aExporter, ExportType.ONE_PER_FILE));
 
-            public void actionPerformed(ActionEvent e) {
-                commandExport(aExporter, ExportType.ONE_PER_FILE);
-            }
-        });
         aMenu.add(theOnePerTable);
     }
 
@@ -2275,26 +1915,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         updateSubjectAreasMenu();
-    }
-
-    protected void commandConvertModel() {
-
-        if (!checkForValidConnection()) {
-            return;
-        }
-
-        ConvertModelEditor theEditor = new ConvertModelEditor(model, scrollPane);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-
-                setModel(model);
-
-                worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
     }
 
     /**

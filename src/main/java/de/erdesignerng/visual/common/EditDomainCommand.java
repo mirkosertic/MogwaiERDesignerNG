@@ -17,28 +17,24 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import de.erdesignerng.visual.editor.DialogConstants;
+import de.erdesignerng.visual.editor.domain.DomainEditor;
 
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+public class EditDomainCommand extends UICommand {
 
-public abstract class UICommand implements ActionEventProcessor , ActionListener {
-    
-    protected ERDesignerComponent component;
-
-    public UICommand(ERDesignerComponent aComponent) {
-        component = aComponent;
-    }
-    
-    abstract void execute();
-
-    @Override
-    public void processActionEvent(ActionEvent e) {
-        execute();
+    public EditDomainCommand(ERDesignerComponent component) {
+        super(component);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        execute();
+    void execute() {
+        DomainEditor theEditor = new DomainEditor(component.model, component.scrollPane);
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
+            } catch (Exception e) {
+                component.worldConnector.notifyAboutException(e);
+            }
+        }
     }
 }
