@@ -63,4 +63,14 @@ public class ViewCell extends DefaultGraphCell implements ModelCellWithPosition<
             GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), -1, -1));
         }
     }
+
+    @Override
+    public Rectangle2D getBounds() {
+        return GraphConstants.getBounds(getAttributes());
+    }
+
+    @Override
+    public void setBounds(Rectangle2D aBounds) {
+        GraphConstants.setBounds(getAttributes(), aBounds);
+    }
 }
