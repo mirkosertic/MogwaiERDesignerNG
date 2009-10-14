@@ -24,17 +24,8 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +35,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
@@ -59,25 +49,17 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.dialect.SQLGenerator;
-import de.erdesignerng.dialect.Statement;
-import de.erdesignerng.dialect.StatementList;
-import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
@@ -98,9 +80,7 @@ import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
-import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
-import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
 import de.erdesignerng.visual.export.Exporter;
@@ -356,30 +336,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         preferencesAction = new DefaultAction(new PreferencesCommand(this), this, ERDesignerBundle.PREFERENCES);
 
-        saveAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandSaveFile();
-            }
-
-        }, this, ERDesignerBundle.SAVEMODEL);
+        saveAction = new DefaultAction(new SaveToFileCommand(this), this, ERDesignerBundle.SAVEMODEL);
         saveAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
         saveAsAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
-                commandSaveFileAs();
+                new SaveToFileCommand(ERDesignerComponent.this).executeSaveFileAs();
             }
 
         }, this, ERDesignerBundle.SAVEMODELAS);
 
-        saveToRepository = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandSaveToRepository();
-            }
-
-        }, this, ERDesignerBundle.SAVEMODELTODB);
+        saveToRepository = new DefaultAction(new SaveToRepositoryCommand(this), this, ERDesignerBundle.SAVEMODELTODB);
 
         relationAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -398,13 +366,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         lruAction = new DefaultAction(this, ERDesignerBundle.RECENTLYUSEDFILES);
 
-        loadAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandOpenFromFile();
-            }
-
-        }, this, ERDesignerBundle.LOADMODEL);
+        loadAction = new DefaultAction(new OpenFromFileCommand(this), this, ERDesignerBundle.LOADMODEL);
 
         handAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -454,13 +416,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         dbConnectionAction = new DefaultAction(new DBConnectionCommand(this), this, ERDesignerBundle.DBCONNECTION);
 
-        repositoryConnectionAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandRepositoryConnection();
-            }
-
-        }, this, ERDesignerBundle.REPOSITORYCONNECTION);
+        repositoryConnectionAction = new DefaultAction(new RepositoryConnectionCommand(this), this,
+                ERDesignerBundle.REPOSITORYCONNECTION);
 
         domainsAction = new DefaultAction(new EditDomainCommand(this), this, ERDesignerBundle.DOMAINEDITOR);
 
@@ -1115,9 +1072,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theItem.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        commandOpenFromFile(theFile);
+                        new OpenFromFileCommand(ERDesignerComponent.this).execute(theFile);
                     }
-
                 });
 
                 lruMenu.add(theItem);
@@ -1152,20 +1108,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         updateRecentlyUsedMenuEntries();
     }
 
-    /**
-     * Edit the repository connection.
-     */
-    protected void commandRepositoryConnection() {
-        RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(scrollPane, preferences);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-    }
-
     protected void commandNew() {
 
         Model theModel = worldConnector.createNewModel();
@@ -1174,220 +1116,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         setupViewForNothing();
 
         worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.NEWMODELCREATED));
-    }
-
-    protected void commandOpenFromFile() {
-
-        ModelFileFilter theFiler = new ModelFileFilter();
-
-        JFileChooser theChooser = new JFileChooser();
-        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        theChooser.setFileFilter(theFiler);
-        if (theChooser.showOpenDialog(scrollPane) == JFileChooser.APPROVE_OPTION) {
-
-            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
-
-            commandOpenFromFile(theFile);
-        }
-    }
-
-    protected void commandOpenFromFile(File aFile) {
-
-        FileInputStream theStream = null;
-
-        try {
-            setIntelligentLayoutEnabled(false);
-
-            theStream = new FileInputStream(aFile);
-
-            Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
-            worldConnector.initializeLoadedModel(theModel);
-
-            setModel(theModel);
-
-            preferences.addRecentlyUsedFile(aFile);
-
-            addCurrentConnectionToConnectionHistory();
-
-            setupViewFor(aFile);
-            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILELOADED));
-
-        } catch (Exception e) {
-
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(ERDesignerBundle.ERRORLOADINGFILE));
-
-            worldConnector.notifyAboutException(e);
-        } finally {
-            if (theStream != null) {
-                try {
-                    theStream.close();
-                } catch (IOException e) {
-                    // Ignore this exception
-                }
-            }
-
-            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
-        }
-    }
-
-    /**
-     * Save the current model to file.
-     */
-    protected void commandSaveFileAs() {
-
-        ModelFileFilter theFiler = new ModelFileFilter();
-
-        JFileChooser theChooser = new JFileChooser();
-        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        theChooser.setFileFilter(theFiler);
-        theChooser.setSelectedFile(currentEditingFile);
-        if (theChooser.showSaveDialog(scrollPane) == JFileChooser.APPROVE_OPTION) {
-
-            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
-            commandSaveModelToFile(theFile);
-
-        }
-    }
-
-    /**
-     * Save the current model to the current file. If the current file is
-     * unknown, a saveas action is performed.
-     */
-    protected void commandSaveFile() {
-        if (currentEditingFile != null) {
-            commandSaveModelToFile(currentEditingFile);
-        } else {
-            commandSaveFileAs();
-        }
-    }
-
-    private void commandSaveModelToFile(File aFile) {
-
-        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        Date theNow = new Date();
-
-        FileOutputStream theStream = null;
-        PrintWriter theWriter = null;
-        try {
-
-            setIntelligentLayoutEnabled(false);
-
-            if (aFile.exists()) {
-                File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
-                aFile.renameTo(theBakFile);
-            }
-
-            theStream = new FileOutputStream(aFile);
-
-            ModelIOUtilities.getInstance().serializeModelToXML(model, theStream);
-
-            worldConnector.initTitle();
-
-            preferences.addRecentlyUsedFile(aFile);
-
-            updateRecentlyUsedMenuEntries();
-
-            if (model.getModificationTracker() instanceof HistoryModificationTracker) {
-                HistoryModificationTracker theTracker = (HistoryModificationTracker) model.getModificationTracker();
-                StatementList theStatements = theTracker.getNotSavedStatements();
-                if (theStatements.size() > 0) {
-                    StringBuilder theFileName = new StringBuilder(aFile.toString());
-                    int p = theFileName.lastIndexOf(".");
-                    if (p > 0) {
-
-                        SQLGenerator theGenerator = model.getDialect().createSQLGenerator();
-
-                        theFileName = new StringBuilder(theFileName.substring(0, p));
-
-                        theFileName.insert(p, "_" + theFormat.format(theNow));
-                        theFileName.append(".sql");
-
-                        theWriter = new PrintWriter(new File(theFileName.toString()));
-                        for (Statement theStatement : theStatements) {
-                            theWriter.print(theStatement.getSql());
-                            theWriter.println(theGenerator.createScriptStatementSeparator());
-                            theStatement.setSaved(true);
-
-                        }
-                    }
-                }
-            }
-
-            setupViewFor(aFile);
-            worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
-
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        } finally {
-            if (theStream != null) {
-                try {
-                    theStream.close();
-                } catch (IOException e) {
-                    // Ignore this exception
-                }
-            }
-            if (theWriter != null) {
-                theWriter.close();
-            }
-
-            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
-        }
-    }
-
-    /**
-     * Save the current model to a repository.
-     */
-    protected void commandSaveToRepository() {
-
-        ConnectionDescriptor theRepositoryConnection = preferences.getRepositoryConnection();
-        if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(scrollPane, getResourceHelper().getText(
-                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
-            return;
-        }
-        Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
-        try {
-
-            setIntelligentLayoutEnabled(false);
-
-            theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theRepositoryConnection
-                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword(), false);
-
-            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
-                    theConnection);
-
-            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(scrollPane, theEntries,
-                    currentRepositoryEntry);
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                try {
-
-                    RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
-
-                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
-                            model, preferences);
-
-                    setupViewFor(theDesc);
-                    worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.FILESAVED));
-
-                } catch (Exception e) {
-                    worldConnector.notifyAboutException(e);
-                }
-            }
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        } finally {
-            if (theConnection != null && !theDialect.generatesManagedConnection()) {
-                try {
-                    theConnection.close();
-                } catch (SQLException e) {
-                    // Do nothing here
-                }
-            }
-
-            setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
-        }
     }
 
     /**

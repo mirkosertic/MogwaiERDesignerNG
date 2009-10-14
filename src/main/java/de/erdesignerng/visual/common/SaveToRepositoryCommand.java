@@ -19,20 +19,21 @@ package de.erdesignerng.visual.common;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.dialect.GenericConnectionProvider;
-import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
+import de.erdesignerng.model.ModelIOUtilities;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
+import de.erdesignerng.visual.editor.DialogConstants;
+import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
 
-public class GenerateMigrationScriptCommand extends UICommand {
+public class SaveToRepositoryCommand extends UICommand {
 
-    public GenerateMigrationScriptCommand(ERDesignerComponent component) {
+    public SaveToRepositoryCommand(ERDesignerComponent component) {
         super(component);
     }
 
@@ -48,19 +49,33 @@ public class GenerateMigrationScriptCommand extends UICommand {
         Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
 
-            theConnection = theDialect.createConnection(component.preferences.createDriverClassLoader(), theRepositoryConnection
-                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword(), false);
+            component.setIntelligentLayoutEnabled(false);
 
-            RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER.getRepositoryEntity(theDialect
-                    .getHibernateDialectClass(), theConnection, component.currentRepositoryEntry);
+            theConnection = theDialect.createConnection(component.preferences.createDriverClassLoader(),
+                    theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
+                            .getUsername(), theRepositoryConnection.getPassword(), false);
 
-            MigrationScriptEditor theEditor = new MigrationScriptEditor(component.scrollPane, theEntity,
-                    new GenericConnectionProvider(theConnection, theDialect.createSQLGenerator()
-                            .createScriptStatementSeparator()), component.preferences, component.worldConnector);
+            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
+                    theConnection);
 
-            theEditor.showModal();
+            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(component.scrollPane, theEntries,
+                    component.currentRepositoryEntry);
+            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                try {
 
+                    RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
+
+                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
+                            component.model, component.preferences);
+
+                    component.setupViewFor(theDesc);
+                    component.worldConnector.setStatusText(component.getResourceHelper().getText(
+                            ERDesignerBundle.FILESAVED));
+
+                } catch (Exception e) {
+                    component.worldConnector.notifyAboutException(e);
+                }
+            }
         } catch (Exception e) {
             component.worldConnector.notifyAboutException(e);
         } finally {
@@ -71,7 +86,8 @@ public class GenerateMigrationScriptCommand extends UICommand {
                     // Do nothing here
                 }
             }
+
+            component.setIntelligentLayoutEnabled(component.preferences.isIntelligentLayout());
         }
-        
     }
 }

@@ -27,7 +27,7 @@ public class EditDomainCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         DomainEditor theEditor = new DomainEditor(component.model, component.scrollPane);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {

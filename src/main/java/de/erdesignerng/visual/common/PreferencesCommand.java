@@ -27,7 +27,7 @@ public class PreferencesCommand extends UICommand {
     }
 
     @Override
-    void execute() {
+    public void execute() {
         PreferencesEditor theEditor = new PreferencesEditor(component.graph, component.preferences, component);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
