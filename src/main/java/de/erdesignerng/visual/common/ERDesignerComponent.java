@@ -66,9 +66,6 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.GenericConnectionProvider;
-import de.erdesignerng.dialect.ReverseEngineeringNotifier;
-import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
@@ -112,10 +109,7 @@ import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
-import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
-import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
@@ -125,8 +119,6 @@ import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
 import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
-import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
-import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
@@ -289,7 +281,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction newAction;
 
-    private ApplicationPreferences preferences;
+    ApplicationPreferences preferences;
 
     private DefaultAction relationAction;
 
@@ -307,9 +299,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction saveToRepository;
 
-    private DefaultScrollPane scrollPane = new DefaultScrollPane();
+    DefaultScrollPane scrollPane = new DefaultScrollPane();
 
-    private ERDesignerWorldConnector worldConnector;
+    ERDesignerWorldConnector worldConnector;
 
     private DefaultAction zoomAction;
 
@@ -379,13 +371,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void initActions() {
 
-        reverseEngineerAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent aEvent) {
-                commandReverseEngineer();
-            }
-
-        }, this, ERDesignerBundle.REVERSEENGINEER);
+        reverseEngineerAction = new DefaultAction(new ReverseEngineerCommand(ERDesignerComponent.this), this,
+                ERDesignerBundle.REVERSEENGINEER);
 
         preferencesAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -489,21 +476,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.EXITPROGRAM);
 
-        classpathAction = new DefaultAction(new ActionEventProcessor() {
+        classpathAction = new DefaultAction(new ClasspathCommand(ERDesignerComponent.this), this,
+                ERDesignerBundle.CLASSPATH);
 
-            public void processActionEvent(ActionEvent e) {
-                commandClasspath();
-            }
-
-        }, this, ERDesignerBundle.CLASSPATH);
-
-        dbConnectionAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandDBConnection();
-            }
-
-        }, this, ERDesignerBundle.DBCONNECTION);
+        dbConnectionAction = new DefaultAction(new DBConnectionCommand(ERDesignerComponent.this), this,
+                ERDesignerBundle.DBCONNECTION);
 
         repositoryConnectionAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -560,13 +537,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.GENERATECHANGELOG);
 
-        completeCompareAction = new DefaultAction(new ActionEventProcessor() {
-
-            public void processActionEvent(ActionEvent e) {
-                commandCompleteCompare();
-            }
-
-        }, this, ERDesignerBundle.COMPLETECOMPARE);
+        completeCompareAction = new DefaultAction(new CompleteCompareCommand(ERDesignerComponent.this), this,
+                ERDesignerBundle.COMPLETECOMPARE);
 
         convertModelAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -925,12 +897,21 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         UIInitializer.getInstance().initialize(scrollPane);
     }
 
-    protected void commandAddTableAndOptionalConnector(Point2D aPoint, TableCell aExportingCell,
-            boolean aNewTableIsChild) {
+    protected boolean checkForValidConnection() {
 
         if (model.getDialect() == null) {
             MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
                     ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+            return false;
+        }
+
+        return true;
+    }
+
+    protected void commandAddTableAndOptionalConnector(Point2D aPoint, TableCell aExportingCell,
+            boolean aNewTableIsChild) {
+
+        if (!checkForValidConnection()) {
             return;
         }
 
@@ -986,9 +967,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandAddView(Point2D aPoint) {
 
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+        if (!checkForValidConnection()) {
             return;
         }
 
@@ -1028,18 +1007,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             graph.doLayout();
         }
-    }
-
-    protected void commandClasspath() {
-        ClasspathEditor theEditor = new ClasspathEditor(scrollPane, preferences);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-
     }
 
     protected void commandPreferences() {
@@ -1149,9 +1116,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandGenerateDocumentation(final File aJRXMLFile) {
 
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+        if (!checkForValidConnection()) {
             return;
         }
 
@@ -1303,9 +1268,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theItem1.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        commandDBConnection(theConnectionInfo);
+                        new DBConnectionCommand(ERDesignerComponent.this).execute(theConnectionInfo);
                     }
-
                 });
 
                 storedConnections.add(theItem1);
@@ -1325,25 +1289,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         preferences.addRecentlyUsedConnection(aConnection);
 
         updateRecentlyUsedMenuEntries();
-    }
-
-    /**
-     * Edit the database connection.
-     */
-    protected void commandDBConnection() {
-        commandDBConnection(model.createConnectionHistoryEntry());
-    }
-
-    protected void commandDBConnection(ConnectionDescriptor aConnection) {
-        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(scrollPane, model, preferences, aConnection);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-                addCurrentConnectionToConnectionHistory();
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
     }
 
     /**
@@ -1483,95 +1428,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             }
 
             setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
-        }
-    }
-
-    /**
-     * Reverse engineer a model from a database connection.
-     */
-    public void commandReverseEngineer() {
-
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
-            return;
-        }
-
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-            setIntelligentLayoutEnabled(false);
-
-            try {
-
-                final Connection theConnection = model.createConnection(preferences);
-                if (theConnection == null) {
-                    return;
-                }
-                final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
-                final Model theTempModel = model;
-
-                LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<ReverseEngineeringOptions>(
-                        worldConnector) {
-
-                    @Override
-                    public ReverseEngineeringOptions doWork(MessagePublisher aMessagePublisher) throws Exception {
-                        ReverseEngineeringOptions theOptions = theEditor.createREOptions();
-                        theOptions.getTableEntries().addAll(
-                                theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
-                        return theOptions;
-                    }
-
-                    @Override
-                    public void handleResult(final ReverseEngineeringOptions aResult) {
-                        TablesSelectEditor theTablesEditor = new TablesSelectEditor(aResult, scrollPane);
-                        if (theTablesEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-                            LongRunningTask<Model> theTask = new LongRunningTask<Model>(worldConnector) {
-
-                                @Override
-                                public Model doWork(final MessagePublisher aPublisher) throws Exception {
-                                    ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
-
-                                        public void notifyMessage(String aResourceKey, String... aValues) {
-                                            String theMessage = MessageFormat.format(getResourceHelper().getText(
-                                                    aResourceKey), (Object[]) aValues);
-                                            aPublisher.publishMessage(theMessage);
-                                        }
-
-                                    };
-
-                                    theStrategy.updateModelFromConnection(theTempModel, worldConnector, theConnection,
-                                            aResult, theNotifier);
-
-                                    return theTempModel;
-                                }
-
-                                @Override
-                                public void handleResult(Model aResultModel) {
-                                    setModel(aResultModel);
-                                }
-
-                                @Override
-                                public void cleanup() throws SQLException {
-                                    if (!model.getDialect().generatesManagedConnection()) {
-                                        theConnection.close();
-                                    }
-                                }
-
-                            };
-                            theTask.start();
-                        }
-                    }
-
-                };
-                theRETask.start();
-
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            } finally {
-                setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
-            }
         }
     }
 
@@ -1954,9 +1810,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void commandGenerateSQL() {
 
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+        if (!checkForValidConnection()) {
             return;
         }
 
@@ -2009,9 +1863,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandGenerateChangelogSQL() {
 
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+        if (!checkForValidConnection()) {
             return;
         }
 
@@ -2426,9 +2278,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void commandConvertModel() {
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+
+        if (!checkForValidConnection()) {
             return;
         }
 
@@ -2440,76 +2291,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 setModel(model);
 
                 worldConnector.setStatusText(getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-    }
-
-    protected void commandCompleteCompare() {
-        if (model.getDialect() == null) {
-            MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
-                    ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
-            return;
-        }
-
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(model, scrollPane, preferences);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-            try {
-                final Connection theConnection = model.createConnection(preferences);
-                if (theConnection == null) {
-                    return;
-                }
-                final ReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
-                final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
-
-                final Model theDatabaseModel = worldConnector.createNewModel();
-                theDatabaseModel.setDialect(model.getDialect());
-                theDatabaseModel.getProperties().copyFrom(model);
-
-                LongRunningTask<Model> theTask = new LongRunningTask<Model>(worldConnector) {
-
-                    @Override
-                    public Model doWork(final MessagePublisher aPublisher) throws Exception {
-                        theOptions.getTableEntries().addAll(
-                                theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
-
-                        ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
-
-                            public void notifyMessage(String aResourceKey, String... aValues) {
-                                String theMessage = MessageFormat.format(getResourceHelper().getText(aResourceKey),
-                                        (Object[]) aValues);
-                                aPublisher.publishMessage(theMessage);
-                            }
-
-                        };
-
-                        theStrategy.updateModelFromConnection(theDatabaseModel, worldConnector, theConnection,
-                                theOptions, theNotifier);
-
-                        return theDatabaseModel;
-
-                    }
-
-                    @Override
-                    public void handleResult(Model aResultModel) {
-                        addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
-
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(scrollPane, model, aResultModel,
-                                preferences);
-                        theCompare.showModal();
-                    }
-
-                    @Override
-                    public void cleanup() throws SQLException {
-                        if (!model.getDialect().generatesManagedConnection()) {
-                            theConnection.close();
-                        }
-                    }
-                };
-                theTask.start();
-
             } catch (Exception e) {
                 worldConnector.notifyAboutException(e);
             }
