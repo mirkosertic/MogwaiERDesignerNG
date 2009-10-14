@@ -27,6 +27,7 @@ import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+import de.erdesignerng.visual.common.ReverseEngineerCommand;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrameContent;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
@@ -137,7 +138,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     }
 
     public void startReverseEngineering() {
-        component.commandReverseEngineer();
+        new ReverseEngineerCommand(component).execute();
     }
 
     @Override
