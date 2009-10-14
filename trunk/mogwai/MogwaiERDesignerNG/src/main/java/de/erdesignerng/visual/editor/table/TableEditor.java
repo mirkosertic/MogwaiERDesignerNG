@@ -349,12 +349,10 @@ public class TableEditor extends BaseEditor {
     private void commandTabStateChange(ChangeEvent e) {
         int theIndex = editingView.getMainTabbedPane().getSelectedIndex();
         if (theIndex == 0) {
-            attributeBindingInfo.setDefaultModel(null);
-            updateAttributeEditFields();
+            commandNewAttribute();
         }
         if (theIndex == 1) {
-            indexBindingInfo.setDefaultModel(null);
-            updateIndexEditFields();
+            commandNewIndex();
         }
     }
 
@@ -489,7 +487,7 @@ public class TableEditor extends BaseEditor {
     }
 
     private void updateIndexStatusFields() {
-
+        
         boolean theCurrentIndexSelected = indexBindingInfo.getDefaultModel() != null;
         editingView.getAddIndexAttribute().setEnabled(theCurrentIndexSelected);
         editingView.getAddIndexExpression().setEnabled(theCurrentIndexSelected);
@@ -497,8 +495,11 @@ public class TableEditor extends BaseEditor {
         boolean theEnabled = editingView.getAddIndexAttribute().isSelected() && theCurrentIndexSelected;
         editingView.getIndexAttribute().setEnabled(theEnabled);
         editingView.getAddAttributeToIndexButton().setEnabled(theEnabled);
+
+        IndexValueModel theModel = new IndexValueModel();
+        
         if (theEnabled) {
-            indexExpressionBindingInfo2.setDefaultModel(new IndexValueModel());
+            indexExpressionBindingInfo2.setDefaultModel(theModel);
             indexExpressionBindingInfo2.model2view();
         }
 
@@ -506,7 +507,7 @@ public class TableEditor extends BaseEditor {
         editingView.getIndexExpression().setEnabled(theEnabled);
         editingView.getAddExpressionToIndexButton().setEnabled(theEnabled);
         if (theEnabled) {
-            indexExpressionBindingInfo.setDefaultModel(new IndexValueModel());
+            indexExpressionBindingInfo.setDefaultModel(theModel);
             indexExpressionBindingInfo.model2view();
         }
 
@@ -523,7 +524,10 @@ public class TableEditor extends BaseEditor {
     }
 
     private void commandIndexFieldListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+        
         removeIndexElement.setEnabled(editingView.getIndexFieldList().getSelectedValue() != null);
+        
+        updateIndexStatusFields();
     }
 
     private void commandIndexListValueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -567,6 +571,8 @@ public class TableEditor extends BaseEditor {
     private void commandNewAttribute() {
         attributeBindingInfo.setDefaultModel(new Attribute());
         updateAttributeEditFields();
+        
+        editingView.getAttributeList().clearSelection();
     }
 
     private void commandDeleteIndex() {
@@ -583,6 +589,8 @@ public class TableEditor extends BaseEditor {
     private void commandNewIndex() {
         indexBindingInfo.setDefaultModel(new Index());
         updateIndexEditFields();
+        
+        editingView.getIndexList().clearSelection();
     }
 
     private void commandUpdateIndex() {
