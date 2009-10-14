@@ -59,10 +59,8 @@ import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
-import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
-import org.jgraph.graph.VertexView;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
@@ -961,8 +959,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     theSACell.add(theImportingCell);
                 }
 
-                GraphConstants.setBounds(theImportingCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint
-                        .getY(), -1, -1));
+                theImportingCell.setBounds(new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), -1, -1));
 
                 if (aExportingCell != null) {
 
@@ -971,7 +968,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     if (aNewTableIsChild) {
                         commandAddRelation(theImportingCell, aExportingCell);
                     } else {
-                        commandAddRelation(aExportingCell, theImportingCell);                        
+                        commandAddRelation(aExportingCell, theImportingCell);
                     }
                 }
 
@@ -1019,8 +1016,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     theSACell.add(theCell);
                 }
 
-                GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aPoint.getX(), aPoint.getY(),
-                        -1, -1));
+                theCell.setBounds(new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), -1, -1));
 
                 layoutCache.insert(theCell);
 
@@ -1390,7 +1386,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 CellView[] theViews = layoutCache.getAllViews();
                 for (CellView theView : theViews) {
                     if (theView instanceof TableCellView) {
-                        VertexView theItemCellView = (VertexView) theView;
+                        TableCellView theItemCellView = (TableCellView) theView;
                         DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
                         ModelItem theItem = (ModelItem) theItemCell.getUserObject();
 
@@ -2340,8 +2336,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     theSACell.add(theCell);
                 }
 
-                GraphConstants.setBounds(theCell.getAttributes(), new Rectangle2D.Double(aLocation.getX(), aLocation
-                        .getY(), -1, -1));
+                theCell.setBounds(new Rectangle2D.Double(aLocation.getX(), aLocation.getY(), -1, -1));
 
                 layoutCache.insert(theCell);
 
