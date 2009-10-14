@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
@@ -43,7 +42,6 @@ import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
@@ -61,8 +59,6 @@ import de.erdesignerng.visual.tools.BaseTool;
  */
 public abstract class ERDesignerGraph extends JGraph {
 
-    private static final Logger LOGGER = Logger.getLogger(ERDesignerGraph.class);
-
     private Model model;
 
     private boolean displayComments;
@@ -75,13 +71,10 @@ public abstract class ERDesignerGraph extends JGraph {
 
     private DisplayOrder displayOrder = DisplayOrder.NATURAL;
 
-    private ApplicationPreferences preferences;
-
-    public ERDesignerGraph(ApplicationPreferences aPreferences, Model aDBModel, GraphModel aModel,
+    public ERDesignerGraph(Model aDBModel, GraphModel aModel,
             GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
         model = aDBModel;
-        preferences = aPreferences;
 
         setMoveIntoGroups(true);
         setMoveOutOfGroups(true);
