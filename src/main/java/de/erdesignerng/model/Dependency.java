@@ -21,7 +21,7 @@ public class Dependency {
 
     public static enum DependencyType {
         DEPENDSON, ISREQUIREDBY;
-    };
+    }
     
     private DependencyType type;
     private Table table;

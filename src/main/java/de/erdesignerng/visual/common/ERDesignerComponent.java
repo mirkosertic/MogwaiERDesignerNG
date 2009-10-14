@@ -1916,7 +1916,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             graphModel = createNewGraphModel();
             layoutCache = createNewGraphlayoutCache();
 
-            graph = new ERDesignerGraph(preferences, model, graphModel, layoutCache) {
+            graph = new ERDesignerGraph(model, graphModel, layoutCache) {
 
                 @Override
                 public void commandNewTable(Point2D aLocation) {

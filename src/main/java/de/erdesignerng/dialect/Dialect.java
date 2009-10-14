@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -34,8 +33,6 @@ import de.erdesignerng.exception.ElementInvalidNameException;
  * @version $Date: 2008-11-15 19:12:36 $
  */
 public abstract class Dialect {
-
-    private static final Logger LOGGER = Logger.getLogger(Dialect.class);
 
     private boolean caseSensitive;
 
@@ -209,7 +206,7 @@ public abstract class Dialect {
             String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException,
             IllegalAccessException, SQLException {
         Class<Driver> theDriverClass = (Class<Driver>) aClassLoader.loadClass(aDriver);
-        Driver theDriver = (Driver) theDriverClass.newInstance();
+        Driver theDriver = theDriverClass.newInstance();
 
         if (aPromptForPassword) {
             aPassword = DialogUtils.promptForPassword();
