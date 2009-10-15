@@ -20,6 +20,7 @@ package de.erdesignerng.dialect.postgres;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.GenericDataTypeImpl;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
@@ -50,18 +51,18 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("float8", "", Types.DOUBLE, Types.FLOAT));
         registerType(createDataType("money", "", Types.DOUBLE));
         registerType(createDataType("bpchar", "", Types.CHAR));
-        registerType(createDataType("varchar", "$size", Types.VARCHAR));
+        registerType(createDataType("varchar", "["+ GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
         registerType(createDataType("date", "", Types.DATE));
         registerType(createDataType("time", "", Types.TIME));
         registerType(createDataType("timestamp", "", Types.TIMESTAMP));
         registerType(createDataType("timestamptz", "", Types.TIMESTAMP));
         registerType(createDataType("timetz", "", Types.TIME));
         registerType(createDataType("bit", "", Types.BIT));
-        registerType(createDataType("numeric", "$size,$fraction", Types.NUMERIC, Types.DECIMAL));
+        registerType(createDataType("numeric", GenericDataTypeImpl.SIZE_TOKEN + "," + GenericDataTypeImpl.FRACTION_TOKEN, Types.NUMERIC, Types.DECIMAL));
 
         // Patch [ 2124875 ] Add Postgres data types
-        registerType(createDataType("char", "$size", Types.CHAR));
-        registerType(createDataType("character", "$size", Types.CHAR));
+        registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
+        registerType(createDataType("character", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
         registerType(createDataType("boolean", "", Types.BOOLEAN));
         registerType(createDataType("interval", "", Types.TIMESTAMP));
         registerType(createDataType("smallint", "", Types.SMALLINT));

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import de.erdesignerng.model.Attribute;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * An implementation of a DataType.
@@ -31,17 +32,15 @@ import de.erdesignerng.model.Attribute;
  * @version $Date: 2008-06-15 10:57:04 $
  */
 public abstract class GenericDataTypeImpl implements DataType {
-
     public static final String SIZE_TOKEN = "$size";
 
     public static final String FRACTION_TOKEN = "$fraction";
 
     public static final String SCALE_TOKEN = "$scale";
-    
+
     public static final String EXTRA_TOKEN = "$extra";
 
-    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {
-    };
+    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {};
 
     private static final int PRIME = 31;
 
@@ -60,7 +59,7 @@ public abstract class GenericDataTypeImpl implements DataType {
     private boolean supportsFraction;
 
     private boolean supportsScale;
-    
+
     private boolean supportsExtra;
 
     protected GenericDataTypeImpl(String aName, String aDefinition, int... aJdbcType) {
@@ -68,8 +67,13 @@ public abstract class GenericDataTypeImpl implements DataType {
         pattern = aDefinition;
         jdbcType = aJdbcType;
 
-        for (StringTokenizer theST = new StringTokenizer(aDefinition, ","); theST.hasMoreTokens();) {
+        for (StringTokenizer theST = new StringTokenizer(aDefinition.trim(), ","); theST.hasMoreTokens();) {
             String theToken = theST.nextToken();
+
+            //Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+            //to also match optional tokens
+            theToken = theToken.replace("[", "").replace("]", "");
+
             if (SIZE_TOKEN.equals(theToken)) {
                 supportsSize = true;
             } else {
@@ -91,7 +95,7 @@ public abstract class GenericDataTypeImpl implements DataType {
     }
 
     /**
-     * Gibt den Wert des Attributs <code>definition</code> zurück.
+     * Gibt den Wert des Attributs <code>definition</code> zurï¿½ck.
      * 
      * @return Wert des Attributs definition.
      */
@@ -100,7 +104,7 @@ public abstract class GenericDataTypeImpl implements DataType {
     }
 
     /**
-     * Gibt den Wert des Attributs <code>name</code> zurück.
+     * Gibt den Wert des Attributs <code>name</code> zurï¿½ck.
      * 
      * @return Wert des Attributs name.
      */
@@ -117,47 +121,37 @@ public abstract class GenericDataTypeImpl implements DataType {
     }
 
     protected String patternToType(Attribute aAttribute) {
-
         Map<String, String> theMapping = new HashMap<String, String>();
-        theMapping.put(SIZE_TOKEN, "" + aAttribute.getSize());
+        theMapping.put(SIZE_TOKEN, ((aAttribute.getSize()==null)?null:""+aAttribute.getSize()));
         theMapping.put(FRACTION_TOKEN, "" + aAttribute.getFraction());
         theMapping.put(SCALE_TOKEN, "" + aAttribute.getScale());
         theMapping.put(EXTRA_TOKEN, "" + aAttribute.getExtra());
 
-        StringBuilder theResult = new StringBuilder();
+        String theResult = "";
         StringTokenizer theSt = new StringTokenizer(pattern, ",");
+
         while (theSt.hasMoreTokens()) {
-            String theToken = theSt.nextToken();
             boolean isOptional = false;
+            String theToken = theSt.nextToken();
             if (theToken.startsWith("[")) {
                 isOptional = true;
-                theToken = theToken.substring(1, theToken.length());
+                theToken = theToken.replace("[", "").replace("]", "");
             }
 
             String theValue = theMapping.get(theToken);
-            if ((theValue == null) && (!isOptional)) {
-                throw new RuntimeException("No value for required token" + theToken);
-            }
-
-            if (isOptional) {
-                if ((theValue != null) && (theValue.length() > 0)) {
-                    if (theResult.length() > 0) {
-                        theResult.append(",");
-                    }
-                    theResult.append(theValue);
+            if (StringUtils.isEmpty(theValue)) {
+                if (!isOptional) {
+                    throw new RuntimeException("No value for required token " + theToken);
                 }
             } else {
-                if (theResult.length() > 0) {
-                    theResult.append(",");
-                }
-                theResult.append(theValue);
+                theResult = ((theResult.length() > 0)?",":"") + theValue.toString();
             }
         }
+
         return theResult.toString();
     }
 
     public String createTypeDefinitionFor(Attribute aAttribute) {
-
         if (pattern == null) {
             return name;
         }

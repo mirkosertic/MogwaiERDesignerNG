@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
@@ -183,19 +184,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
             String theTableRemarks = theTablesResultSet.getString("REMARKS");
 
-            Table theTable = new Table();
+            Table theNewTable = new Table();
 
-            theTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
-            theTable.setOriginalName(aTableEntry.getTableName());
+            theNewTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
+            theNewTable.setOriginalName(aTableEntry.getTableName());
             switch (aOptions.getTableNaming()) {
-            case INCLUDE_SCHEMA:
-                theTable.setSchema(aTableEntry.getSchemaName());
-                break;
-            default:
+                case INCLUDE_SCHEMA:
+                    theNewTable.setSchema(aTableEntry.getSchemaName());
+                    break;
+                default:
             }
 
             if (!StringUtils.isEmpty(theTableRemarks)) {
-                theTable.setComment(theTableRemarks);
+                theNewTable.setComment(theTableRemarks);
             }
 
             // Reverse engineer attributes
@@ -203,20 +204,55 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     .getSchemaName(), aTableEntry.getTableName(), null);
             while (theColumnsResultSet.next()) {
 
-                String theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
-                String theTypeName = theColumnsResultSet.getString("TYPE_NAME");
+                String theColumnName = null;
+                String theTypeName = null;
+                Integer theSize = null;
+                int theFraction = 0;
+                int theRadix = 0;
+                int theNullable = 0;
+                String theDefaultValue = null;
+                String theColumnRemarks = null;
 
-                int theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
-                int theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
-                int theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
+                try {
+                    theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
+                } catch (Exception e) {}
 
-                int theNullable = theColumnsResultSet.getInt("NULLABLE");
+                try {
+                    theTypeName = theColumnsResultSet.getString("TYPE_NAME");
+                } catch (Exception e) {}
 
-                String theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
-                if (!StringUtils.isEmpty(theDefaultValue)) {
-                    theDefaultValue = theDefaultValue.trim();
-                }
-                String theColumnRemarks = theColumnsResultSet.getString("REMARKS");
+                try {
+                    // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR ohne
+                    // Parameter definiert wurde, obwohl 1073741823 korrekt wäre
+                    if (dialect.getClass().equals(PostgresDialect.class) && theColumnsResultSet.getInt("COLUMN_SIZE") == Integer.MAX_VALUE) {
+                        theSize = null;
+                    } else {
+                        theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
+                    }
+                } catch (Exception e) {}
+
+                try {
+                    theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
+                } catch (Exception e) {}
+
+                try {
+                    theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
+                } catch (Exception e) {}
+
+                try {
+                    theNullable = theColumnsResultSet.getInt("NULLABLE");
+                } catch (Exception e) {}
+
+                try {
+                    theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
+                    if (!StringUtils.isEmpty(theDefaultValue)) {
+                        theDefaultValue = theDefaultValue.trim();
+                    }
+                } catch (Exception e) {}
+
+                try {
+                    theColumnRemarks = theColumnsResultSet.getString("REMARKS");
+                } catch (Exception e) {}
 
                 Attribute theAttribute = new Attribute();
 
@@ -253,7 +289,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 reverseEngineerAttribute(aModel, theAttribute, aOptions, aNotifier, aTableEntry, aConnection);
 
                 try {
-                    theTable.addAttribute(aModel, theAttribute);
+                    theNewTable.addAttribute(aModel, theAttribute);
                 } catch (Exception e) {
                     throw new ReverseEngineeringException(e.getMessage(), e);
                 }
@@ -261,18 +297,18 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             theColumnsResultSet.close();
 
             // Reverse engineer primary keys
-            reverseEngineerPrimaryKey(aModel, aTableEntry, theMetaData, theTable);
+            reverseEngineerPrimaryKey(aModel, aTableEntry, theMetaData, theNewTable);
 
             // Reverse engineer indexes
             try {
-                reverseEngineerIndexes(aModel, aTableEntry, theMetaData, theTable, aNotifier);
+                reverseEngineerIndexes(aModel, aTableEntry, theMetaData, theNewTable, aNotifier);
             } catch (SQLException e) {
                 // if there is an sql exception, just ignore it
             }
 
             // We are done here
             try {
-                aModel.addTable(theTable);
+                aModel.addTable(theNewTable);
             } catch (Exception e) {
                 throw new ReverseEngineeringException(e.getMessage(), e);
             }

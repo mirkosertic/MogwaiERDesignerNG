@@ -24,15 +24,15 @@ import de.erdesignerng.dialect.DataType;
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
+    public static int DEFAULT_SCALE = 10;
 
     private DataType datatype;
 
-    private int size;
+    private Integer size = null;
 
     private int fraction;
 
-    // Default scale is 10
-    private int scale = 10;
+    private int scale = DEFAULT_SCALE;
 
     private boolean nullable = true;
 
@@ -128,18 +128,18 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
                 // Scale can either be 2 or 10.
                 // Setting to 10 if 0 fixes a bug from
                 // adding new attributes
-                scale = 10;
+                scale = DEFAULT_SCALE;
             }
             this.scale = scale;
             physicalDeclaration = null;
         }
     }
 
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         synchronized (this) {
             this.size = size;
             physicalDeclaration = null;
