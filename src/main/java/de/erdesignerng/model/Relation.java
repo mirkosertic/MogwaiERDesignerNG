@@ -34,6 +34,8 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     public static final String PROPERTY_TEXT_OFFSET = "textoffset";
 
+    public static final String PROPERTY_LABEL_POSITION = "labelposition";
+
     private Table importingTable;
 
     private Table exportingTable;
