@@ -1416,7 +1416,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         for (Relation theRelation : aModel.getRelations()) {
-
             TableCell theImportingCell = theInfo.modelTableCells.get(theRelation.getImportingTable());
             TableCell theExportingCell = theInfo.modelTableCells.get(theRelation.getExportingTable());
 
@@ -1708,6 +1707,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         for (CellView theView : layoutCache.getCellViews()) {
             graph.updateAutoSize(theView);
         }
+
         layoutCache.reload();
         layoutCache.update(layoutCache.getAllViews());
 
