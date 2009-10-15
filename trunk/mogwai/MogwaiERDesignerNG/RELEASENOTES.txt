@@ -211,3 +211,4 @@ Release 2.0.2
 * Implemented FR 2711878 [ERDesignerNG] edit entry dialog usability improvements
 * Implemented FR 2830914 [ERDesignerNG] Creating entities is overly complicated
 * Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
+* Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
