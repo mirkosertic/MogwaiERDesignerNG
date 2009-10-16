@@ -17,9 +17,10 @@
  */
 package de.erdesignerng.visual.editor.preferences;
 
+import javax.swing.JComponent;
+
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -39,7 +40,7 @@ public class PreferencesEditor extends BaseEditor {
 
     private ERDesignerComponent component;
 
-    public PreferencesEditor(ERDesignerGraph aParent, ApplicationPreferences aPreferences,
+    public PreferencesEditor(JComponent aParent, ApplicationPreferences aPreferences,
             ERDesignerComponent aComponent) {
         super(aParent, ERDesignerBundle.PREFERENCES);
 
