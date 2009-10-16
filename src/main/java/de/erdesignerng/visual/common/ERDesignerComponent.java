@@ -24,7 +24,6 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,18 +48,13 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
@@ -78,11 +72,6 @@ import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.cells.views.CellViewFactory;
-import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.editor.comment.CommentEditor;
-import de.erdesignerng.visual.editor.relation.RelationEditor;
-import de.erdesignerng.visual.editor.table.TableEditor;
-import de.erdesignerng.visual.editor.view.ViewEditor;
 import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
 import de.erdesignerng.visual.export.SVGExporter;
@@ -187,49 +176,25 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    private DefaultAction classpathAction;
+    private ApplicationPreferences preferences;
 
     File currentEditingFile;
 
     RepositoryEntryDesciptor currentRepositoryEntry;
 
-    private DefaultAction dbConnectionAction;
-
-    private DefaultAction repositoryConnectionAction;
-
-    private DefaultAction domainsAction;
-
-    private DefaultAction entityAction;
-
-    private DefaultAction viewAction;
-
-    private JToggleButton entityButton;
-
-    private DefaultAction exitAction;
-
-    private DefaultAction exportAction;
-
-    private DefaultAction exportSVGAction;
+    private volatile Model model;
 
     volatile ERDesignerGraph graph;
 
-    private GraphModel graphModel;
-
-    private DefaultAction handAction;
-
     private JToggleButton handButton;
-
-    private DefaultAction commentAction;
 
     private JToggleButton commentButton;
 
+    private JToggleButton relationButton;
+
     private JToggleButton viewButton;
 
-    GraphLayoutCache layoutCache;
-
-    private DefaultAction loadAction;
-
-    private DefaultAction lruAction;
+    private JToggleButton entityButton;
 
     private DefaultMenu lruMenu;
 
@@ -237,79 +202,23 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu subjectAreas;
 
-    private volatile Model model;
-
-    private DefaultAction newAction;
-
-    private ApplicationPreferences preferences;
-
-    private DefaultAction relationAction;
-
-    private JToggleButton relationButton;
-
-    private DefaultAction reverseEngineerAction;
-
-    private DefaultAction completeCompareAction;
-
-    private DefaultAction convertModelAction;
-
-    private DefaultAction saveAsAction;
-
-    private DefaultAction saveAction;
-
-    private DefaultAction saveToRepository;
-
-    private DefaultScrollPane scrollPane = new DefaultScrollPane();
-
-    private ERDesignerWorldConnector worldConnector;
-
-    private DefaultAction zoomAction;
-
-    private DefaultComboBox zoomBox = new DefaultComboBox();
-
-    private DefaultAction zoomInAction;
-
-    private DefaultAction zoomOutAction;
-
-    private DefaultAction preferencesAction;
-
     private DefaultMenu documentationMenu;
 
-    private DefaultAction generateSQL;
-
-    private DefaultAction generateChangelog;
-
-    private DefaultAction displayCommentsAction;
-
     private DefaultCheckboxMenuItem displayCommentsMenuItem;
-
-    private DefaultAction displayGridAction;
 
     private DefaultCheckboxMenuItem displayGridMenuItem;
 
     private DefaultRadioButtonMenuItem displayAllMenuItem;
 
-    private DefaultAction displayAllAction;
-
-    private DefaultAction displayPKOnlyAction;
-
-    private DefaultAction displayPKAndFK;
-
     private DefaultRadioButtonMenuItem displayNaturalOrderMenuItem;
-
-    private DefaultAction displayNaturalOrderAction;
-
-    private DefaultAction displayAscendingOrderAction;
-
-    private DefaultAction displayDescendingOrderAction;
-
-    private DefaultAction createMigrationScriptAction;
-
-    private DefaultAction helpAction;
 
     private DefaultMenu repositoryUtilsMenu;
 
-    private DefaultAction exportOpenXavaAction;
+    private DefaultScrollPane scrollPane = new DefaultScrollPane();
+
+    private ERDesignerWorldConnector worldConnector;
+
+    private DefaultComboBox zoomBox = new DefaultComboBox();
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
@@ -331,15 +240,17 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     protected void initActions() {
 
-        reverseEngineerAction = new DefaultAction(new ReverseEngineerCommand(this), this,
+        DefaultAction theReverseEngineerAction = new DefaultAction(new ReverseEngineerCommand(this), this,
                 ERDesignerBundle.REVERSEENGINEER);
 
-        preferencesAction = new DefaultAction(new PreferencesCommand(this), this, ERDesignerBundle.PREFERENCES);
+        DefaultAction thePreferencesAction = new DefaultAction(new PreferencesCommand(this), this,
+                ERDesignerBundle.PREFERENCES);
 
-        saveAction = new DefaultAction(new SaveToFileCommand(this), this, ERDesignerBundle.SAVEMODEL);
-        saveAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        DefaultAction theSaveAction = new DefaultAction(new SaveToFileCommand(this), this, ERDesignerBundle.SAVEMODEL);
+        theSaveAction
+                .putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
-        saveAsAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theSaveAsAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
                 new SaveToFileCommand(ERDesignerComponent.this).executeSaveFileAs();
@@ -347,9 +258,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.SAVEMODELAS);
 
-        saveToRepository = new DefaultAction(new SaveToRepositoryCommand(this), this, ERDesignerBundle.SAVEMODELTODB);
+        DefaultAction theSaveToRepository = new DefaultAction(new SaveToRepositoryCommand(this), this,
+                ERDesignerBundle.SAVEMODELTODB);
 
-        relationAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theRelationAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetTool(ToolEnum.RELATION);
@@ -357,18 +269,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.RELATION);
 
-        newAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theNewAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandNew();
             }
         }, this, ERDesignerBundle.NEWMODEL);
 
-        lruAction = new DefaultAction(this, ERDesignerBundle.RECENTLYUSEDFILES);
+        DefaultAction theLruAction = new DefaultAction(this, ERDesignerBundle.RECENTLYUSEDFILES);
 
-        loadAction = new DefaultAction(new OpenFromFileCommand(this), this, ERDesignerBundle.LOADMODEL);
+        DefaultAction theLoadAction = new DefaultAction(new OpenFromFileCommand(this), this, ERDesignerBundle.LOADMODEL);
 
-        handAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theHandAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetTool(ToolEnum.HAND);
@@ -376,7 +288,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.HAND);
 
-        commentAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theCommentAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetTool(ToolEnum.COMMENT);
@@ -384,9 +296,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.COMMENT);
 
-        exportSVGAction = new DefaultAction(this, ERDesignerBundle.ASSVG);
+        DefaultAction theExportSVGAction = new DefaultAction(this, ERDesignerBundle.ASSVG);
 
-        entityAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theEntityAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetTool(ToolEnum.ENTITY);
@@ -394,7 +306,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.ENTITY);
 
-        viewAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theViewAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetTool(ToolEnum.VIEW);
@@ -402,9 +314,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.VIEWTOOL);
 
-        exportAction = new DefaultAction(this, ERDesignerBundle.EXPORT);
+        DefaultAction theExportAction = new DefaultAction(this, ERDesignerBundle.EXPORT);
 
-        exitAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theExitAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 worldConnector.exitApplication();
@@ -412,23 +324,26 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.EXITPROGRAM);
 
-        classpathAction = new DefaultAction(new ClasspathCommand(this), this, ERDesignerBundle.CLASSPATH);
+        DefaultAction theClasspathAction = new DefaultAction(new ClasspathCommand(this), this,
+                ERDesignerBundle.CLASSPATH);
 
-        dbConnectionAction = new DefaultAction(new DBConnectionCommand(this), this, ERDesignerBundle.DBCONNECTION);
+        DefaultAction theDBConnectionAction = new DefaultAction(new DBConnectionCommand(this), this,
+                ERDesignerBundle.DBCONNECTION);
 
-        repositoryConnectionAction = new DefaultAction(new RepositoryConnectionCommand(this), this,
+        DefaultAction theRepositoryConnectionAction = new DefaultAction(new RepositoryConnectionCommand(this), this,
                 ERDesignerBundle.REPOSITORYCONNECTION);
 
-        domainsAction = new DefaultAction(new EditDomainCommand(this), this, ERDesignerBundle.DOMAINEDITOR);
+        DefaultAction theDomainsAction = new DefaultAction(new EditDomainCommand(this), this,
+                ERDesignerBundle.DOMAINEDITOR);
 
-        zoomAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theZoomAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
                 commandSetZoom((ZoomInfo) ((JComboBox) aEvent.getSource()).getSelectedItem());
             }
         }, this, ERDesignerBundle.ZOOM);
 
-        zoomInAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theZoomInAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandZoomIn();
@@ -436,7 +351,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.ZOOMIN);
 
-        zoomOutAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theZoomOutAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandZoomOut();
@@ -444,20 +359,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.ZOOMOUT);
 
-        generateSQL = new DefaultAction(new GenerateSQLCommand(this), this, ERDesignerBundle.GENERATECREATEDBDDL);
+        DefaultAction theGenerateSQL = new DefaultAction(new GenerateSQLCommand(this), this,
+                ERDesignerBundle.GENERATECREATEDBDDL);
 
-        generateChangelog = new DefaultAction(new GenerateChangeLogSQLCommand(this), this,
+        DefaultAction theGenerateChangelog = new DefaultAction(new GenerateChangeLogSQLCommand(this), this,
                 ERDesignerBundle.GENERATECHANGELOG);
 
-        completeCompareAction = new DefaultAction(new CompleteCompareCommand(this), this,
+        DefaultAction theCompleteCompareAction = new DefaultAction(new CompleteCompareCommand(this), this,
                 ERDesignerBundle.COMPLETECOMPARE);
 
-        convertModelAction = new DefaultAction(new ConvertModelCommand(this), this, ERDesignerBundle.CONVERTMODEL);
+        DefaultAction theConvertModelAction = new DefaultAction(new ConvertModelCommand(this), this,
+                ERDesignerBundle.CONVERTMODEL);
 
-        createMigrationScriptAction = new DefaultAction(new GenerateMigrationScriptCommand(this), this,
-                ERDesignerBundle.CREATEMIGRATIONSCRIPT);
+        DefaultAction theCreateMigrationScriptAction = new DefaultAction(new GenerateMigrationScriptCommand(this),
+                this, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
-        helpAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theHelpAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent aEvent) {
                 commandShowHelp();
@@ -465,37 +382,37 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.HELP);
 
-        exportOpenXavaAction = new DefaultAction(new OpenXavaExportExportCommand(this), this,
+        DefaultAction theExportOpenXavaAction = new DefaultAction(new OpenXavaExportExportCommand(this), this,
                 ERDesignerBundle.OPENXAVAEXPORT);
 
-        lruMenu = new DefaultMenu(lruAction);
+        lruMenu = new DefaultMenu(theLruAction);
 
         DefaultAction theStoredConnectionsAction = new DefaultAction(this, ERDesignerBundle.STOREDDBCONNECTION);
         storedConnections = new DefaultMenu(theStoredConnectionsAction);
 
         ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(ERDesignerBundle.FILE);
         if (worldConnector.supportsPreferences()) {
-            theFileMenu.add(new DefaultMenuItem(preferencesAction));
+            theFileMenu.add(new DefaultMenuItem(thePreferencesAction));
             theFileMenu.addSeparator();
         }
 
-        theFileMenu.add(new DefaultMenuItem(newAction));
+        theFileMenu.add(new DefaultMenuItem(theNewAction));
         theFileMenu.addSeparator();
-        DefaultMenuItem theSaveItem = new DefaultMenuItem(saveAction);
+        DefaultMenuItem theSaveItem = new DefaultMenuItem(theSaveAction);
         theFileMenu.add(theSaveItem);
-        KeyStroke theStroke = (KeyStroke) saveAction.getValue(DefaultAction.HOTKEY_KEY);
+        KeyStroke theStroke = (KeyStroke) theSaveAction.getValue(DefaultAction.HOTKEY_KEY);
         if (theStroke != null) {
             theSaveItem.setAccelerator(theStroke);
-            scrollPane.registerKeyboardAction(saveAction, theStroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+            scrollPane.registerKeyboardAction(theSaveAction, theStroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
         }
 
-        theFileMenu.add(new DefaultMenuItem(saveAsAction));
-        theFileMenu.add(new DefaultMenuItem(loadAction));
+        theFileMenu.add(new DefaultMenuItem(theSaveAsAction));
+        theFileMenu.add(new DefaultMenuItem(theLoadAction));
 
         if (worldConnector.supportsRepositories()) {
             theFileMenu.addSeparator();
-            theFileMenu.add(new DefaultMenuItem(repositoryConnectionAction));
-            theFileMenu.add(new DefaultMenuItem(saveToRepository));
+            theFileMenu.add(new DefaultMenuItem(theRepositoryConnectionAction));
+            theFileMenu.add(new DefaultMenuItem(theSaveToRepository));
 
             DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(new DefaultAction(new OpenFromRepositoryCommand(
                     this), this, ERDesignerBundle.LOADMODELFROMDB));
@@ -503,7 +420,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.add(theLoadFromDBMenu);
 
             repositoryUtilsMenu = new DefaultMenu(this, ERDesignerBundle.REPOSITORYUTILS);
-            repositoryUtilsMenu.add(new DefaultMenuItem(createMigrationScriptAction));
+            repositoryUtilsMenu.add(new DefaultMenuItem(theCreateMigrationScriptAction));
 
             UIInitializer.getInstance().initialize(repositoryUtilsMenu);
 
@@ -512,7 +429,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.addSeparator();
         }
 
-        DefaultMenu theExportMenu = new DefaultMenu(exportAction);
+        DefaultMenu theExportMenu = new DefaultMenu(theExportAction);
 
         List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
         if (theSupportedFormats.contains("IMAGE/PNG")) {
@@ -534,12 +451,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
         }
 
-        DefaultMenu theSVGExportMenu = new DefaultMenu(exportSVGAction);
+        DefaultMenu theSVGExportMenu = new DefaultMenu(theExportSVGAction);
 
         theExportMenu.add(theSVGExportMenu);
         addExportEntries(theSVGExportMenu, new SVGExporter());
 
-        theExportMenu.add(new DefaultMenuItem(exportOpenXavaAction));
+        theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
 
         UIInitializer.getInstance().initialize(theExportMenu);
 
@@ -550,19 +467,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         if (worldConnector.supportsExitApplication()) {
             theFileMenu.addSeparator();
-            theFileMenu.add(new DefaultMenuItem(exitAction));
+            theFileMenu.add(new DefaultMenuItem(theExitAction));
         }
 
         ERDesignerToolbarEntry theDBMenu = new ERDesignerToolbarEntry(ERDesignerBundle.DATABASE);
 
         boolean addSeparator = false;
         if (worldConnector.supportsClasspathEditor()) {
-            theDBMenu.add(new DefaultMenuItem(classpathAction));
+            theDBMenu.add(new DefaultMenuItem(theClasspathAction));
             addSeparator = true;
         }
 
         if (worldConnector.supportsConnectionEditor()) {
-            theDBMenu.add(new DefaultMenuItem(dbConnectionAction));
+            theDBMenu.add(new DefaultMenuItem(theDBConnectionAction));
             theDBMenu.add(storedConnections);
             addSeparator = true;
         }
@@ -571,18 +488,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theDBMenu.addSeparator();
         }
 
-        theDBMenu.add(new DefaultMenuItem(domainsAction));
+        theDBMenu.add(new DefaultMenuItem(theDomainsAction));
         theDBMenu.addSeparator();
 
-        theDBMenu.add(new DefaultMenuItem(reverseEngineerAction));
+        theDBMenu.add(new DefaultMenuItem(theReverseEngineerAction));
         theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(generateSQL));
+        theDBMenu.add(new DefaultMenuItem(theGenerateSQL));
         theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(generateChangelog));
+        theDBMenu.add(new DefaultMenuItem(theGenerateChangelog));
         theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(completeCompareAction));
+        theDBMenu.add(new DefaultMenuItem(theCompleteCompareAction));
         theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(convertModelAction));
+        theDBMenu.add(new DefaultMenuItem(theConvertModelAction));
 
         if (worldConnector.supportsReporting()) {
             documentationMenu = new DefaultMenu(this, ERDesignerBundle.CREATEDBDOCUMENTATION);
@@ -594,7 +511,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(ERDesignerBundle.VIEW);
 
-        displayCommentsAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayCommentsAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e.getSource();
@@ -603,11 +520,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYCOMMENTS);
 
-        displayCommentsMenuItem = new DefaultCheckboxMenuItem(displayCommentsAction);
+        displayCommentsMenuItem = new DefaultCheckboxMenuItem(theDisplayCommentsAction);
         displayCommentsMenuItem.setSelected(true);
         theViewMenu.add(displayCommentsMenuItem);
 
-        displayGridAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayGridAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e.getSource();
@@ -616,13 +533,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYGRID);
 
-        displayGridMenuItem = new DefaultCheckboxMenuItem(displayGridAction);
+        displayGridMenuItem = new DefaultCheckboxMenuItem(theDisplayGridAction);
         theViewMenu.add(displayGridMenuItem);
 
         DefaultMenu theDisplayLevelMenu = new DefaultMenu(this, ERDesignerBundle.DISPLAYLEVEL);
         theViewMenu.add(theDisplayLevelMenu);
 
-        displayAllAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayAllAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetDisplayLevel(DisplayLevel.ALL);
@@ -630,7 +547,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYALL);
 
-        displayPKOnlyAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayPKOnlyAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY);
@@ -638,7 +555,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYPRIMARYKEY);
 
-        displayPKAndFK = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayPKAndFK = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS);
@@ -646,9 +563,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
 
-        displayAllMenuItem = new DefaultRadioButtonMenuItem(displayAllAction);
-        DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(displayPKOnlyAction);
-        DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(displayPKAndFK);
+        displayAllMenuItem = new DefaultRadioButtonMenuItem(theDisplayAllAction);
+        DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(theDisplayPKOnlyAction);
+        DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(theDisplayPKAndFK);
 
         ButtonGroup theDisplayLevelGroup = new ButtonGroup();
         theDisplayLevelGroup.add(displayAllMenuItem);
@@ -664,7 +581,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         DefaultMenu theDisplayOrderMenu = new DefaultMenu(this, ERDesignerBundle.DISPLAYORDER);
         theViewMenu.add(theDisplayOrderMenu);
 
-        displayNaturalOrderAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayNaturalOrderAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetDisplayOrder(DisplayOrder.NATURAL);
@@ -672,7 +589,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYNATURALORDER);
 
-        displayAscendingOrderAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayAscendingOrderAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetDisplayOrder(DisplayOrder.ASCENDING);
@@ -680,7 +597,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYASCENDING);
 
-        displayDescendingOrderAction = new DefaultAction(new ActionEventProcessor() {
+        DefaultAction theDisplayDescendingOrderAction = new DefaultAction(new ActionEventProcessor() {
 
             public void processActionEvent(ActionEvent e) {
                 commandSetDisplayOrder(DisplayOrder.DESCENDING);
@@ -688,9 +605,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         }, this, ERDesignerBundle.DISPLAYDESCENDING);
 
-        displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(displayNaturalOrderAction);
-        DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(displayAscendingOrderAction);
-        DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(displayDescendingOrderAction);
+        displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(theDisplayNaturalOrderAction);
+        DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(theDisplayAscendingOrderAction);
+        DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(theDisplayDescendingOrderAction);
 
         ButtonGroup theDisplayOrderGroup = new ButtonGroup();
         theDisplayOrderGroup.add(displayNaturalOrderMenuItem);
@@ -710,12 +627,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         theViewMenu.addSeparator();
 
-        theViewMenu.add(new DefaultMenuItem(zoomInAction));
-        theViewMenu.add(new DefaultMenuItem(zoomOutAction));
+        theViewMenu.add(new DefaultMenuItem(theZoomInAction));
+        theViewMenu.add(new DefaultMenuItem(theZoomOutAction));
 
         if (worldConnector.supportsHelp()) {
             theViewMenu.addSeparator();
-            theViewMenu.add(new DefaultMenuItem(helpAction));
+            theViewMenu.add(new DefaultMenuItem(theHelpAction));
         }
 
         DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
@@ -725,7 +642,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
         zoomBox.setPreferredSize(new Dimension(100, 21));
         zoomBox.setMaximumSize(new Dimension(100, 21));
-        zoomBox.setAction(zoomAction);
+        zoomBox.setAction(theZoomAction);
         zoomBox.setModel(theZoomModel);
 
         DefaultToolbar theToolBar = worldConnector.getToolBar();
@@ -735,22 +652,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.add(theViewMenu);
         theToolBar.addSeparator();
 
-        theToolBar.add(newAction);
+        theToolBar.add(theNewAction);
         theToolBar.addSeparator();
-        theToolBar.add(loadAction);
-        theToolBar.add(saveAsAction);
+        theToolBar.add(theLoadAction);
+        theToolBar.add(theSaveAsAction);
         theToolBar.addSeparator();
         theToolBar.add(zoomBox);
         theToolBar.addSeparator();
-        theToolBar.add(zoomInAction);
-        theToolBar.add(zoomOutAction);
+        theToolBar.add(theZoomInAction);
+        theToolBar.add(theZoomOutAction);
         theToolBar.addSeparator();
 
-        handButton = new DefaultToggleButton(handAction);
-        relationButton = new DefaultToggleButton(relationAction);
-        entityButton = new DefaultToggleButton(entityAction);
-        commentButton = new DefaultToggleButton(commentAction);
-        viewButton = new DefaultToggleButton(viewAction);
+        handButton = new DefaultToggleButton(theHandAction);
+        relationButton = new DefaultToggleButton(theRelationAction);
+        entityButton = new DefaultToggleButton(theEntityAction);
+        commentButton = new DefaultToggleButton(theCommentAction);
+        viewButton = new DefaultToggleButton(theViewAction);
 
         ButtonGroup theGroup = new ButtonGroup();
         theGroup.add(handButton);
@@ -799,107 +716,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         return true;
     }
 
-    protected void commandAddTableAndOptionalConnector(Point2D aPoint, TableCell aExportingCell,
-            boolean aNewTableIsChild) {
-
-        if (!checkForValidConnection()) {
-            return;
-        }
-
-        Table theTable = new Table();
-        TableEditor theTableEditor = new TableEditor(model, scrollPane);
-        theTableEditor.initializeFor(theTable);
-        if (theTableEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-
-                try {
-                    theTableEditor.applyValues();
-                } catch (VetoException e) {
-                    worldConnector.notifyAboutException(e);
-                    return;
-                }
-
-                TableCell theImportingCell = new TableCell(theTable);
-                theImportingCell.transferPropertiesToAttributes(theTable);
-
-                Object theTargetCell = graph.getFirstCellForLocation(aPoint.getX(), aPoint.getY());
-                if (theTargetCell instanceof SubjectAreaCell) {
-                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
-                    theArea.getTables().add(theTable);
-
-                    theSACell.add(theImportingCell);
-                }
-
-                theImportingCell.setBounds(new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), -1, -1));
-
-                if (aExportingCell != null) {
-
-                    // If the user cancels the add relation dialog
-                    // the table is added, too
-                    if (aNewTableIsChild) {
-                        commandAddRelation(theImportingCell, aExportingCell);
-                    } else {
-                        commandAddRelation(aExportingCell, theImportingCell);
-                    }
-                }
-
-                layoutCache.insert(theImportingCell);
-
-                theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
-
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-
-            graph.doLayout();
-        }
-    }
-
-    protected void commandAddView(Point2D aPoint) {
-
-        if (!checkForValidConnection()) {
-            return;
-        }
-
-        View theView = new View();
-        ViewEditor theEditor = new ViewEditor(model, scrollPane);
-        theEditor.initializeFor(theView);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-
-                try {
-                    theEditor.applyValues();
-                } catch (VetoException e) {
-                    worldConnector.notifyAboutException(e);
-                }
-
-                ViewCell theCell = new ViewCell(theView);
-                theCell.transferPropertiesToAttributes(theView);
-
-                Object theTargetCell = graph.getFirstCellForLocation(aPoint.getX(), aPoint.getY());
-                if (theTargetCell instanceof SubjectAreaCell) {
-                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
-                    theArea.getViews().add(theView);
-
-                    theSACell.add(theCell);
-                }
-
-                theCell.setBounds(new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), -1, -1));
-
-                layoutCache.insert(theCell);
-
-                theCell.transferAttributesToProperties(theCell.getAttributes());
-
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-
-            graph.doLayout();
-        }
-    }
-
     /**
      * Show all subject areas.
      */
@@ -925,14 +741,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      *            the area
      */
     protected void commandHideSubjectArea(SubjectArea aArea) {
-        for (Object theItem : layoutCache.getVisibleSet()) {
+        for (Object theItem : graph.getGraphLayoutCache().getVisibleSet()) {
             if (theItem instanceof SubjectAreaCell) {
                 SubjectAreaCell theCell = (SubjectAreaCell) theItem;
                 if (theCell.getUserObject().equals(aArea)) {
                     aArea.setVisible(false);
 
                     Object[] theCellObjects = new Object[] { theCell };
-                    layoutCache.hideCells(theCellObjects, true);
+                    graph.getGraphLayoutCache().hideCells(theCellObjects, true);
                 }
             }
         }
@@ -946,38 +762,40 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      *            the subject area to show
      */
     protected void commandShowSubjectArea(SubjectArea aArea) {
-        for (CellView theCellView : layoutCache.getHiddenCellViews()) {
+        for (CellView theCellView : graph.getGraphLayoutCache().getHiddenCellViews()) {
             Object theItem = theCellView.getCell();
             if (theItem instanceof SubjectAreaCell) {
                 SubjectAreaCell theCell = (SubjectAreaCell) theItem;
                 if (theCell.getUserObject().equals(aArea)) {
                     aArea.setVisible(true);
 
-                    Object[] theCellObjects = DefaultGraphModel.getDescendants(graphModel, new Object[] { theCell })
+                    Object[] theCellObjects = DefaultGraphModel.getDescendants(graph.getModel(), new Object[] { theCell })
                             .toArray();
 
-                    layoutCache.showCells(theCellObjects, true);
+                    graph.getGraphLayoutCache().showCells(theCellObjects, true);
                     for (Object theSingleCell : theCellObjects) {
                         if (theSingleCell instanceof TableCell) {
                             TableCell theTableCell = (TableCell) theSingleCell;
                             Table theTable = (Table) theTableCell.getUserObject();
 
                             theTableCell.transferPropertiesToAttributes(theTable);
-                            layoutCache.edit(new Object[] { theTableCell }, theTableCell.getAttributes());
+                            graph.getGraphLayoutCache().edit(new Object[] { theTableCell },
+                                    theTableCell.getAttributes());
                         }
                         if (theSingleCell instanceof ViewCell) {
                             ViewCell theViewCell = (ViewCell) theSingleCell;
                             View theView = (View) theViewCell.getUserObject();
 
                             theViewCell.transferPropertiesToAttributes(theView);
-                            layoutCache.edit(new Object[] { theViewCell }, theViewCell.getAttributes());
+                            graph.getGraphLayoutCache().edit(new Object[] { theViewCell }, theViewCell.getAttributes());
                         }
                         if (theSingleCell instanceof CommentCell) {
                             CommentCell theCommentCell = (CommentCell) theSingleCell;
                             Comment theComment = (Comment) theCommentCell.getUserObject();
 
                             theCommentCell.transferPropertiesToAttributes(theComment);
-                            layoutCache.edit(new Object[] { theCommentCell }, theCommentCell.getAttributes());
+                            graph.getGraphLayoutCache().edit(new Object[] { theCommentCell },
+                                    theCommentCell.getAttributes());
                         }
                     }
                 }
@@ -1260,19 +1078,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * 
      * @return the newly created graphmodel
      */
-    protected GraphModel createNewGraphModel() {
+    private GraphModel createNewGraphModel() {
         GraphModel theModel = new DefaultGraphModel();
         theModel.addGraphModelListener(new ERDesignerGraphModelListener());
         return theModel;
     }
 
     /**
-     * Factiry Method for the graph layout cacne.
-     * 
+     * Factory Method for the graph layout cacne.
+     *
+     * @param aModel the graph model
      * @return the newly created graph layout cache
      */
-    protected GraphLayoutCache createNewGraphlayoutCache() {
-        GraphLayoutCache theCache = new GraphLayoutCache(graphModel, new CellViewFactory(), true);
+    private GraphLayoutCache createNewGraphlayoutCache(GraphModel aModel) {
+        GraphLayoutCache theCache = new GraphLayoutCache(aModel, new CellViewFactory(), true);
         theCache.setAutoSizeOnValueChange(true);
         return theCache;
     }
@@ -1290,24 +1109,23 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             model = aModel;
 
-            graphModel = createNewGraphModel();
-            layoutCache = createNewGraphlayoutCache();
+            GraphModel theGraphModel = createNewGraphModel();
 
-            graph = new ERDesignerGraph(model, graphModel, layoutCache) {
+            graph = new ERDesignerGraph(model, theGraphModel, createNewGraphlayoutCache(theGraphModel)) {
 
                 @Override
                 public void commandNewTable(Point2D aLocation) {
-                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, null, false);
+                    new AddTableCommand(ERDesignerComponent.this, aLocation, null, false).execute();
                 }
 
                 @Override
                 public void commandNewComment(Point2D aLocation) {
-                    ERDesignerComponent.this.commandAddComment(aLocation);
+                    new AddCommentCommand(ERDesignerComponent.this, aLocation).execute();
                 }
 
                 @Override
                 public void commandNewView(Point2D aLocation) {
-                    ERDesignerComponent.this.commandAddView(aLocation);
+                    new AddViewCommand(ERDesignerComponent.this, aLocation).execute();
                 }
 
                 @Override
@@ -1324,13 +1142,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 @Override
                 public void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell,
                         boolean aNewTableIsChild) {
-                    ERDesignerComponent.this.commandAddTableAndOptionalConnector(aLocation, aExportingTableCell,
-                            aNewTableIsChild);
+                    new AddTableCommand(ERDesignerComponent.this, aLocation, aExportingTableCell, aNewTableIsChild)
+                            .execute();
                 }
 
                 @Override
                 public void commandNewRelation(TableCell aImportingCell, TableCell aExportingCell) {
-                    ERDesignerComponent.this.commandAddRelation(aImportingCell, aExportingCell);
+                    new AddRelationCommand(ERDesignerComponent.this, aImportingCell, aExportingCell).execute();
                 }
             };
 
@@ -1362,7 +1180,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
-    
+
     public Model getModel() {
         return model;
     }
@@ -1377,11 +1195,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private GraphModelMappingInfo fillGraph(Model aModel) {
 
-        graphModel = createNewGraphModel();
-        layoutCache = createNewGraphlayoutCache();
+        GraphModel theGraphModel = createNewGraphModel();
 
-        graph.setModel(graphModel);
-        graph.setGraphLayoutCache(layoutCache);
+        graph.setModel(theGraphModel);
+        graph.setGraphLayoutCache(createNewGraphlayoutCache(theGraphModel));
 
         GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
 
@@ -1389,7 +1206,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             TableCell theCell = new TableCell(theTable);
             theCell.transferPropertiesToAttributes(theTable);
 
-            layoutCache.insert(theCell);
+            graph.getGraphLayoutCache().insert(theCell);
 
             theInfo.modelTableCells.put(theTable, theCell);
         }
@@ -1405,7 +1222,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             ViewCell theCell = new ViewCell(theView);
             theCell.transferPropertiesToAttributes(theView);
 
-            layoutCache.insert(theCell);
+            graph.getGraphLayoutCache().insert(theCell);
 
             theInfo.modelViewCells.put(theView, theCell);
         }
@@ -1414,7 +1231,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             CommentCell theCell = new CommentCell(theComment);
             theCell.transferPropertiesToAttributes(theComment);
 
-            layoutCache.insert(theCell);
+            graph.getGraphLayoutCache().insert(theCell);
 
             theInfo.modelCommentCells.put(theComment, theCell);
         }
@@ -1427,7 +1244,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             RelationEdge theCell = new RelationEdge(theRelation, theImportingCell, theExportingCell);
             theCell.transferPropertiesToAttributes(theRelation);
 
-            layoutCache.insert(theCell);
+            graph.getGraphLayoutCache().insert(theCell);
         }
 
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
@@ -1447,8 +1264,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 theTableCells.add(theInfo.modelCommentCells.get(theComment));
             }
 
-            layoutCache.insertGroup(theSubjectAreaCell, theTableCells.toArray());
-            layoutCache.toBack(new Object[] { theSubjectAreaCell });
+            graph.getGraphLayoutCache().insertGroup(theSubjectAreaCell, theTableCells.toArray());
+            graph.getGraphLayoutCache().toBack(new Object[] { theSubjectAreaCell });
 
             if (!theSubjectArea.isVisible()) {
                 commandHideSubjectArea(theSubjectArea);
@@ -1476,111 +1293,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         updateSubjectAreasMenu();
-    }
-
-    /**
-     * Add a relation to the model.
-     * 
-     * @param aImportingCell
-     * @param aExportingCell
-     */
-    protected boolean commandAddRelation(TableCell aImportingCell, TableCell aExportingCell) {
-        Table theImportingTable = (Table) aImportingCell.getUserObject();
-        Table theExportingTable = (Table) aExportingCell.getUserObject();
-
-        Relation theRelation = createPreparedRelationFor(theImportingTable, theExportingTable);
-
-        RelationEditor theEditor = new RelationEditor(theImportingTable.getOwner(), scrollPane);
-        theEditor.initializeFor(theRelation);
-
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-            RelationEdge theEdge = new RelationEdge(theRelation, aImportingCell, aExportingCell);
-
-            try {
-                theEditor.applyValues();
-                layoutCache.insert(theEdge);
-
-                return true;
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-        }
-        return false;
-    }
-
-    private Relation createPreparedRelationFor(Table aSourceTable, Table aTargetTable) {
-        Relation theRelation = new Relation();
-        theRelation.setImportingTable(aSourceTable);
-        theRelation.setExportingTable(aTargetTable);
-        theRelation.setOnUpdate(preferences.getOnUpdateDefault());
-        theRelation.setOnDelete(preferences.getOnDeleteDefault());
-
-        String thePattern = preferences.getAutomaticRelationAttributePattern();
-        String theTargetTableName = model.getDialect().getCastType().cast(aTargetTable.getName());
-
-        // Create the foreign key suggestions
-        Index thePrimaryKey = aTargetTable.getPrimarykey();
-        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
-            Attribute theAttribute = theExpression.getAttributeRef();
-            if (theAttribute != null) {
-                String theNewname = MessageFormat.format(thePattern, theTargetTableName, theAttribute.getName());
-                Attribute theNewAttribute = aSourceTable.getAttributes().findByName(theNewname);
-                if (theNewAttribute == null) {
-                    theNewAttribute = theAttribute.clone();
-                    theNewAttribute.setSystemId(ModelUtilities.createSystemIdFor(theNewAttribute));
-                    theNewAttribute.setOwner(null);
-                    theNewAttribute.setName(theNewname);
-                }
-                theRelation.getMapping().put(theExpression, theNewAttribute);
-            }
-        }
-        return theRelation;
-    }
-
-    /**
-     * Add a new comment to the model.
-     * 
-     * @param aLocation
-     *            the location
-     */
-    protected void commandAddComment(Point2D aLocation) {
-        Comment theComment = new Comment();
-        CommentEditor theEditor = new CommentEditor(model, scrollPane);
-        theEditor.initializeFor(theComment);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-
-                try {
-                    theEditor.applyValues();
-                } catch (VetoException e) {
-                    worldConnector.notifyAboutException(e);
-                }
-
-                CommentCell theCell = new CommentCell(theComment);
-                theCell.transferPropertiesToAttributes(theComment);
-
-                Object theTargetCell = graph.getFirstCellForLocation(aLocation.getX(), aLocation.getY());
-                if (theTargetCell instanceof SubjectAreaCell) {
-                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
-                    theArea.getComments().add(theComment);
-
-                    theSACell.add(theCell);
-                }
-
-                theCell.setBounds(new Rectangle2D.Double(aLocation.getX(), aLocation.getY(), -1, -1));
-
-                layoutCache.insert(theCell);
-
-                theCell.transferAttributesToProperties(theCell.getAttributes());
-
-            } catch (Exception e) {
-                worldConnector.notifyAboutException(e);
-            }
-
-            graph.doLayout();
-        }
     }
 
     protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
@@ -1709,11 +1421,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Repaint the current graph.
      */
     protected void repaintGraph() {
-        for (CellView theView : layoutCache.getCellViews()) {
+        for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
             graph.updateAutoSize(theView);
         }
-        layoutCache.reload();
-        layoutCache.update(layoutCache.getAllViews());
+        graph.getGraphLayoutCache().reload();
+        graph.getGraphLayoutCache().update(graph.getGraphLayoutCache().getAllViews());
 
         graph.addOffscreenDirty(new Rectangle2D.Double(0, 0, scrollPane.getWidth(), scrollPane.getHeight()));
         graph.repaint();

@@ -52,7 +52,7 @@ public class ExportGraphicsCommand extends UICommand {
             if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
                 File theBaseDirectory = theChooser.getSelectedFile();
 
-                CellView[] theViews = component.layoutCache.getAllViews();
+                CellView[] theViews = component.graph.getGraphLayoutCache().getAllViews();
                 for (CellView theView : theViews) {
                     if (theView instanceof TableCellView) {
                         TableCellView theItemCellView = (TableCellView) theView;
