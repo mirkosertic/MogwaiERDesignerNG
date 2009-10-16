@@ -40,9 +40,9 @@ public class OpenFromRepositoryCommand extends UICommand {
 
     @Override
     public void execute() {
-        ConnectionDescriptor theRepositoryConnection = component.preferences.getRepositoryConnection();
+        ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
         if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(component.scrollPane, component.getResourceHelper().getText(
+            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
                     ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
             return;
         }
@@ -52,25 +52,25 @@ public class OpenFromRepositoryCommand extends UICommand {
 
             component.setIntelligentLayoutEnabled(false);
 
-            theConnection = theDialect.createConnection(component.preferences.createDriverClassLoader(), theRepositoryConnection
+            theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword(), false);
 
             List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
                     theConnection);
 
-            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(component.scrollPane, component.preferences, theConnection,
+            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(getDetailComponent(), getPreferences(), theConnection,
                     theEntries);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
                 RepositoryEntryDesciptor theDescriptor = theEditor.getModel().getEntry();
 
                 Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor,
-                        theDialect, theConnection, component.preferences);
-                component.worldConnector.initializeLoadedModel(theModel);
+                        theDialect, theConnection, getPreferences());
+                getWorldConnector().initializeLoadedModel(theModel);
 
                 component.setupViewFor(theDescriptor);
-                component.worldConnector.setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+                getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILELOADED));
 
                 component.currentRepositoryEntry = theDescriptor;
                 component.currentEditingFile = null;
@@ -79,7 +79,7 @@ public class OpenFromRepositoryCommand extends UICommand {
             }
 
         } catch (Exception e) {
-            component.worldConnector.notifyAboutException(e);
+            getWorldConnector().notifyAboutException(e);
         } finally {
             if (theConnection != null && !theDialect.generatesManagedConnection()) {
                 try {

@@ -49,7 +49,7 @@ public class ExportGraphicsCommand extends UICommand {
 
             JFileChooser theChooser = new JFileChooser();
             theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (theChooser.showSaveDialog(component.scrollPane) == JFileChooser.APPROVE_OPTION) {
+            if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
                 File theBaseDirectory = theChooser.getSelectedFile();
 
                 CellView[] theViews = component.layoutCache.getAllViews();
@@ -64,7 +64,7 @@ public class ExportGraphicsCommand extends UICommand {
                             exporter.exportToStream(theItemCellView.getRendererComponent(component.graph, false, false, false),
                                     new FileOutputStream(theOutputFile));
                         } catch (Exception e) {
-                            component.worldConnector.notifyAboutException(e);
+                            getWorldConnector().notifyAboutException(e);
                         }
                     }
                 }
@@ -77,13 +77,13 @@ public class ExportGraphicsCommand extends UICommand {
                     .getFileExtension()
                     + " File");
             theChooser.setFileFilter(theFilter);
-            if (theChooser.showSaveDialog(component.scrollPane) == JFileChooser.APPROVE_OPTION) {
+            if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
                 File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
                 try {
                     exporter.fullExportToStream(component.graph, new FileOutputStream(theFile));
                 } catch (Exception e) {
-                    component.worldConnector.notifyAboutException(e);
+                    getWorldConnector().notifyAboutException(e);
                 }
             }
 

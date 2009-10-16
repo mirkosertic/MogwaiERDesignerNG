@@ -29,17 +29,18 @@ public class DBConnectionCommand extends UICommand {
 
     @Override
     public void execute() {
-        execute(component.model.createConnectionHistoryEntry());
+        execute(component.getModel().createConnectionHistoryEntry());
     }
-    
+
     void execute(ConnectionDescriptor aConnection) {
-        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(component.scrollPane, component.model, component.preferences, aConnection);
+        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(getDetailComponent(), component.getModel(),
+                getPreferences(), aConnection);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
                 component.addCurrentConnectionToConnectionHistory();
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             }
         }
     }

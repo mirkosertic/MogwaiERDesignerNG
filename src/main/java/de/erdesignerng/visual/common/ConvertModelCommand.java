@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 
@@ -32,19 +33,20 @@ public class ConvertModelCommand extends UICommand {
         if (!component.checkForValidConnection()) {
             return;
         }
+        
+        Model theModel = component.getModel();
 
-        ConvertModelEditor theEditor = new ConvertModelEditor(component.model, component.scrollPane);
+        ConvertModelEditor theEditor = new ConvertModelEditor(theModel, getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
 
-                component.setModel(component.model);
+                component.setModel(theModel);
 
-                component.worldConnector.setStatusText(component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
+                getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             }
         }
     }
-
 }

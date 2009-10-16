@@ -28,12 +28,12 @@ public class EditDomainCommand extends UICommand {
 
     @Override
     public void execute() {
-        DomainEditor theEditor = new DomainEditor(component.model, component.scrollPane);
+        DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             }
         }
     }
