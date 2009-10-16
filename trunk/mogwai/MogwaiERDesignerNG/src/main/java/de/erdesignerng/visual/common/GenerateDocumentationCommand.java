@@ -44,7 +44,7 @@ public class GenerateDocumentationCommand extends UICommand {
             return;
         }
 
-        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(component.worldConnector) {
+        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(getWorldConnector()) {
 
             @Override
             public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
@@ -54,7 +54,7 @@ public class GenerateDocumentationCommand extends UICommand {
                 ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
                 File theTempFile = File.createTempFile("mogwai", ".mxm");
                 FileOutputStream theOutputStream = new FileOutputStream(theTempFile);
-                theUtils.serializeModelToXML(component.model, theOutputStream);
+                theUtils.serializeModelToXML(component.getModel(), theOutputStream);
                 theOutputStream.close();
 
                 aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
@@ -71,7 +71,7 @@ public class GenerateDocumentationCommand extends UICommand {
 
                 JRViewer theViewer = new JRViewer(aResult);
 
-                DefaultDialog theResult = new DefaultDialog(component.scrollPane, component.getResourceHelper(),
+                DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
                         ERDesignerBundle.CREATEDBDOCUMENTATION);
                 theResult.setContentPane(theViewer);
                 theResult.setMinimumSize(new Dimension(640, 480));

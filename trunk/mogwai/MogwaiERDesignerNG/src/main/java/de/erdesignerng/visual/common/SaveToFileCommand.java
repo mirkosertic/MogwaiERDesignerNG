@@ -32,6 +32,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.ModelFileFilter;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 
@@ -58,7 +59,7 @@ public class SaveToFileCommand extends UICommand {
         theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         theChooser.setFileFilter(theFiler);
         theChooser.setSelectedFile(component.currentEditingFile);
-        if (theChooser.showSaveDialog(component.scrollPane) == JFileChooser.APPROVE_OPTION) {
+        if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
             File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
             executeSaveToFile(theFile);
@@ -74,6 +75,8 @@ public class SaveToFileCommand extends UICommand {
         FileOutputStream theStream = null;
         PrintWriter theWriter = null;
         try {
+            
+            Model theModel = component.getModel();
 
             component.setIntelligentLayoutEnabled(false);
 
@@ -83,24 +86,24 @@ public class SaveToFileCommand extends UICommand {
             }
 
             theStream = new FileOutputStream(aFile);
+            
+            ModelIOUtilities.getInstance().serializeModelToXML(theModel, theStream);
 
-            ModelIOUtilities.getInstance().serializeModelToXML(component.model, theStream);
+            getWorldConnector().initTitle();
 
-            component.worldConnector.initTitle();
-
-            component.preferences.addRecentlyUsedFile(aFile);
+            getPreferences().addRecentlyUsedFile(aFile);
 
             component.updateRecentlyUsedMenuEntries();
 
-            if (component.model.getModificationTracker() instanceof HistoryModificationTracker) {
-                HistoryModificationTracker theTracker = (HistoryModificationTracker) component.model.getModificationTracker();
+            if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
+                HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel.getModificationTracker();
                 StatementList theStatements = theTracker.getNotSavedStatements();
                 if (theStatements.size() > 0) {
                     StringBuilder theFileName = new StringBuilder(aFile.toString());
                     int p = theFileName.lastIndexOf(".");
                     if (p > 0) {
 
-                        SQLGenerator theGenerator = component.model.getDialect().createSQLGenerator();
+                        SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
 
                         theFileName = new StringBuilder(theFileName.substring(0, p));
 
@@ -119,10 +122,10 @@ public class SaveToFileCommand extends UICommand {
             }
 
             component.setupViewFor(aFile);
-            component.worldConnector.setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+            getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
         } catch (Exception e) {
-            component.worldConnector.notifyAboutException(e);
+            getWorldConnector().notifyAboutException(e);
         } finally {
             if (theStream != null) {
                 try {
@@ -135,7 +138,7 @@ public class SaveToFileCommand extends UICommand {
                 theWriter.close();
             }
 
-            component.setIntelligentLayoutEnabled(component.preferences.isIntelligentLayout());
+            component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
         }
     }
 }

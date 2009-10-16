@@ -28,12 +28,12 @@ public class ClasspathCommand extends UICommand {
 
     @Override
     public void execute() {
-        ClasspathEditor theEditor = new ClasspathEditor(component.scrollPane, component.preferences);
+        ClasspathEditor theEditor = new ClasspathEditor(getDetailComponent(), getPreferences());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             }
         }
     }

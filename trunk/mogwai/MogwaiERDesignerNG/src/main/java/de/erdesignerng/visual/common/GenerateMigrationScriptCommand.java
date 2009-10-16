@@ -38,9 +38,9 @@ public class GenerateMigrationScriptCommand extends UICommand {
 
     @Override
     public void execute() {
-        ConnectionDescriptor theRepositoryConnection = component.preferences.getRepositoryConnection();
+        ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
         if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(component.scrollPane, component.getResourceHelper().getText(
+            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
                     ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
             return;
         }
@@ -48,21 +48,21 @@ public class GenerateMigrationScriptCommand extends UICommand {
         Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
         try {
 
-            theConnection = theDialect.createConnection(component.preferences.createDriverClassLoader(), theRepositoryConnection
+            theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(), theRepositoryConnection
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword(), false);
 
             RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER.getRepositoryEntity(theDialect
                     .getHibernateDialectClass(), theConnection, component.currentRepositoryEntry);
 
-            MigrationScriptEditor theEditor = new MigrationScriptEditor(component.scrollPane, theEntity,
+            MigrationScriptEditor theEditor = new MigrationScriptEditor(getDetailComponent(), theEntity,
                     new GenericConnectionProvider(theConnection, theDialect.createSQLGenerator()
-                            .createScriptStatementSeparator()), component.preferences, component.worldConnector);
+                            .createScriptStatementSeparator()), getPreferences(), getWorldConnector());
 
             theEditor.showModal();
 
         } catch (Exception e) {
-            component.worldConnector.notifyAboutException(e);
+            getWorldConnector().notifyAboutException(e);
         } finally {
             if (theConnection != null && !theDialect.generatesManagedConnection()) {
                 try {

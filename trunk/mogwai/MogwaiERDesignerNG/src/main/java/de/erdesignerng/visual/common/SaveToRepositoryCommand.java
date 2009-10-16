@@ -39,9 +39,9 @@ public class SaveToRepositoryCommand extends UICommand {
 
     @Override
     public void execute() {
-        ConnectionDescriptor theRepositoryConnection = component.preferences.getRepositoryConnection();
+        ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
         if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(component.scrollPane, component.getResourceHelper().getText(
+            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
                     ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
             return;
         }
@@ -51,33 +51,28 @@ public class SaveToRepositoryCommand extends UICommand {
 
             component.setIntelligentLayoutEnabled(false);
 
-            theConnection = theDialect.createConnection(component.preferences.createDriverClassLoader(),
+            theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(),
                     theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
                             .getUsername(), theRepositoryConnection.getPassword(), false);
 
             List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
                     theConnection);
 
-            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(component.scrollPane, theEntries,
+            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(getDetailComponent(), theEntries,
                     component.currentRepositoryEntry);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                try {
 
-                    RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
+                RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
 
-                    theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
-                            component.model, component.preferences);
+                theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
+                        component.getModel(), getPreferences());
 
-                    component.setupViewFor(theDesc);
-                    component.worldConnector.setStatusText(component.getResourceHelper().getText(
-                            ERDesignerBundle.FILESAVED));
+                component.setupViewFor(theDesc);
+                getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
-                } catch (Exception e) {
-                    component.worldConnector.notifyAboutException(e);
-                }
             }
         } catch (Exception e) {
-            component.worldConnector.notifyAboutException(e);
+            getWorldConnector().notifyAboutException(e);
         } finally {
             if (theConnection != null && !theDialect.generatesManagedConnection()) {
                 try {
@@ -87,7 +82,7 @@ public class SaveToRepositoryCommand extends UICommand {
                 }
             }
 
-            component.setIntelligentLayoutEnabled(component.preferences.isIntelligentLayout());
+            component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
         }
     }
 }
