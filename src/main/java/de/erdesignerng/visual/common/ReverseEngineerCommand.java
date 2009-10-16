@@ -42,22 +42,23 @@ public class ReverseEngineerCommand extends UICommand {
             return;
         }
         
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(component.model, component.scrollPane, component.preferences);
+        final Model theModel = component.getModel();
+        
+        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(), getPreferences());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
             component.setIntelligentLayoutEnabled(false);
 
             try {
 
-                final Connection theConnection = component.model.createConnection(component.preferences);
+                final Connection theConnection = theModel.createConnection(getPreferences());
                 if (theConnection == null) {
                     return;
                 }
-                final ReverseEngineeringStrategy theStrategy = component.model.getDialect().getReverseEngineeringStrategy();
-                final Model theTempModel = component.model;
+                final ReverseEngineeringStrategy theStrategy = theModel.getDialect().getReverseEngineeringStrategy();
 
                 LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<ReverseEngineeringOptions>(
-                        component.worldConnector) {
+                        getWorldConnector()) {
 
                     @Override
                     public ReverseEngineeringOptions doWork(MessagePublisher aMessagePublisher) throws Exception {
@@ -69,10 +70,10 @@ public class ReverseEngineerCommand extends UICommand {
 
                     @Override
                     public void handleResult(final ReverseEngineeringOptions aResult) {
-                        TablesSelectEditor theTablesEditor = new TablesSelectEditor(aResult, component.scrollPane);
+                        TablesSelectEditor theTablesEditor = new TablesSelectEditor(aResult, getDetailComponent());
                         if (theTablesEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                            LongRunningTask<Model> theTask = new LongRunningTask<Model>(component.worldConnector) {
+                            LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
 
                                 @Override
                                 public Model doWork(final MessagePublisher aPublisher) throws Exception {
@@ -86,10 +87,10 @@ public class ReverseEngineerCommand extends UICommand {
 
                                     };
 
-                                    theStrategy.updateModelFromConnection(theTempModel, component.worldConnector, theConnection,
+                                    theStrategy.updateModelFromConnection(theModel, getWorldConnector(), theConnection,
                                             aResult, theNotifier);
 
-                                    return theTempModel;
+                                    return theModel;
                                 }
 
                                 @Override
@@ -99,7 +100,7 @@ public class ReverseEngineerCommand extends UICommand {
 
                                 @Override
                                 public void cleanup() throws SQLException {
-                                    if (!component.model.getDialect().generatesManagedConnection()) {
+                                    if (!theModel.getDialect().generatesManagedConnection()) {
                                         theConnection.close();
                                     }
                                 }
@@ -113,9 +114,9 @@ public class ReverseEngineerCommand extends UICommand {
                 theRETask.start();
 
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             } finally {
-                component.setIntelligentLayoutEnabled(component.preferences.isIntelligentLayout());
+                component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
             }
         }
     }

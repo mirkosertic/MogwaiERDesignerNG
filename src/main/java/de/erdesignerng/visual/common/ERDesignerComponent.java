@@ -237,11 +237,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu subjectAreas;
 
-    volatile Model model;
+    private volatile Model model;
 
     private DefaultAction newAction;
 
-    ApplicationPreferences preferences;
+    private ApplicationPreferences preferences;
 
     private DefaultAction relationAction;
 
@@ -259,9 +259,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultAction saveToRepository;
 
-    DefaultScrollPane scrollPane = new DefaultScrollPane();
+    private DefaultScrollPane scrollPane = new DefaultScrollPane();
 
-    ERDesignerWorldConnector worldConnector;
+    private ERDesignerWorldConnector worldConnector;
 
     private DefaultAction zoomAction;
 
@@ -1362,6 +1362,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             setIntelligentLayoutEnabled(preferences.isIntelligentLayout());
         }
     }
+    
+    public Model getModel() {
+        return model;
+    }
 
     private class GraphModelMappingInfo {
         Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
@@ -1416,6 +1420,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         for (Relation theRelation : aModel.getRelations()) {
+
             TableCell theImportingCell = theInfo.modelTableCells.get(theRelation.getImportingTable());
             TableCell theExportingCell = theInfo.modelTableCells.get(theRelation.getExportingTable());
 
@@ -1707,7 +1712,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         for (CellView theView : layoutCache.getCellViews()) {
             graph.updateAutoSize(theView);
         }
-
         layoutCache.reload();
         layoutCache.update(layoutCache.getAllViews());
 

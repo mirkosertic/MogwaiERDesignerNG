@@ -20,14 +20,32 @@ package de.erdesignerng.visual.common;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
+
+import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 
 public abstract class UICommand implements ActionEventProcessor , ActionListener {
     
     protected ERDesignerComponent component;
-
+    
+    private ApplicationPreferences preferences;
+    
     public UICommand(ERDesignerComponent aComponent) {
         component = aComponent;
+        preferences = ApplicationPreferences.getInstance();
+    }
+    
+    protected ERDesignerWorldConnector getWorldConnector() {
+        return component.getWorldConnector();
+    }
+    
+    protected JComponent getDetailComponent() {
+        return component.getDetailComponent();
+    }
+    
+    protected ApplicationPreferences getPreferences() {
+        return preferences;
     }
     
     public abstract void execute();

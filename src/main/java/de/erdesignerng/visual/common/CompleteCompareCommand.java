@@ -42,24 +42,26 @@ public class CompleteCompareCommand extends UICommand {
             return;
         }
 
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(component.model, component.scrollPane,
-                component.preferences);
+        final Model theModel = component.getModel();
+        
+        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(),
+                getPreferences());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
             try {
-                final Connection theConnection = component.model.createConnection(component.preferences);
+                final Connection theConnection = theModel.createConnection(getPreferences());
                 if (theConnection == null) {
                     return;
                 }
-                final ReverseEngineeringStrategy theStrategy = component.model.getDialect()
+                final ReverseEngineeringStrategy theStrategy = theModel.getDialect()
                         .getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
-                final Model theDatabaseModel = component.worldConnector.createNewModel();
-                theDatabaseModel.setDialect(component.model.getDialect());
-                theDatabaseModel.getProperties().copyFrom(component.model);
+                final Model theDatabaseModel = getWorldConnector().createNewModel();
+                theDatabaseModel.setDialect(theModel.getDialect());
+                theDatabaseModel.getProperties().copyFrom(theModel);
 
-                LongRunningTask<Model> theTask = new LongRunningTask<Model>(component.worldConnector) {
+                LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
 
                     @Override
                     public Model doWork(final MessagePublisher aPublisher) throws Exception {
@@ -76,8 +78,8 @@ public class CompleteCompareCommand extends UICommand {
 
                         };
 
-                        theStrategy.updateModelFromConnection(theDatabaseModel, component.worldConnector,
-                                theConnection, theOptions, theNotifier);
+                        theStrategy.updateModelFromConnection(theDatabaseModel, getWorldConnector(), theConnection,
+                                theOptions, theNotifier);
 
                         return theDatabaseModel;
 
@@ -87,14 +89,14 @@ public class CompleteCompareCommand extends UICommand {
                     public void handleResult(Model aResultModel) {
                         component.addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(component.scrollPane,
-                                component.model, aResultModel, component.preferences);
+                        CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(),
+                                theModel, aResultModel, getPreferences());
                         theCompare.showModal();
                     }
 
                     @Override
                     public void cleanup() throws SQLException {
-                        if (!component.model.getDialect().generatesManagedConnection()) {
+                        if (!theModel.getDialect().generatesManagedConnection()) {
                             theConnection.close();
                         }
                     }
@@ -102,7 +104,7 @@ public class CompleteCompareCommand extends UICommand {
                 theTask.start();
 
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             }
         }
     }

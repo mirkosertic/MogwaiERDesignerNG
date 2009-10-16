@@ -28,12 +28,12 @@ public class PreferencesCommand extends UICommand {
 
     @Override
     public void execute() {
-        PreferencesEditor theEditor = new PreferencesEditor(component.graph, component.preferences, component);
+        PreferencesEditor theEditor = new PreferencesEditor(getDetailComponent(), getPreferences(), component);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
             } catch (Exception e) {
-                component.worldConnector.notifyAboutException(e);
+                getWorldConnector().notifyAboutException(e);
             }
         }
     }
