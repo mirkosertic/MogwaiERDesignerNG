@@ -23,16 +23,24 @@ package de.erdesignerng.model.serializer.repository.entities;
  * @author msertic
  */
 public class AttributeEntity extends ModelEntity {
+    /*
+     * TODO [mirkosertic] Unify de.erdesignerng.model.serializer.repository.entities.AttributeEntity
+     * and de.erdesignerng.model.Attribute to reduce redundancy and increase maintainability.
+     * Then only store de.erdesignerng.model.Attribute to hibernate.
+     * 
+     * Dito for similar classes.
+     */
+    public static int DEFAULT_SCALE = 10;
 
     private String datatype;
 
     private String domain;
 
-    private int size;
+    private Integer size = null;
 
     private int fraction;
 
-    private int scale = 10;
+    private int scale = DEFAULT_SCALE;
 
     private boolean nullable = true;
 
@@ -73,7 +81,7 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @return the size
      */
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
@@ -81,7 +89,7 @@ public class AttributeEntity extends ModelEntity {
      * @param size
      *            the size to set
      */
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
