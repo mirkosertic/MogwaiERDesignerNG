@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model.serializer.xml20;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -25,7 +26,6 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.XMLSerializer;
-import org.apache.commons.lang.StringUtils;
 
 public class XMLAttributeSerializer extends XMLSerializer {
 
@@ -54,8 +54,9 @@ public class XMLAttributeSerializer extends XMLSerializer {
 
         theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
 
-        //Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-        theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null)?aAttribute.getSize():""));
+        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+        // max-length wrong
+        theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null) ? aAttribute.getSize() : ""));
 
         theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
         theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
@@ -79,12 +80,16 @@ public class XMLAttributeSerializer extends XMLSerializer {
             deserializeProperties(theAttributeElement, theAttribute);
             deserializeCommentElement(theAttributeElement, theAttribute);
 
-            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(theAttributeElement.getAttribute(DATATYPE)));
+            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(
+                    theAttributeElement.getAttribute(DATATYPE)));
             theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
 
-            //Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+            // max-length wrong
             String theAttributeString = theAttributeElement.getAttribute(SIZE);
-            theAttribute.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString)))?null:Integer.parseInt(theAttributeString));
+            theAttribute
+                    .setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
+                            : Integer.parseInt(theAttributeString));
 
             theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));
             theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
