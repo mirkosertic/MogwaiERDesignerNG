@@ -48,6 +48,7 @@ import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
  * @author mirkosertic
  */
 public class Model10XMLPersister implements CommonXMLElementsAndAttributes {
+    private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_1.0.xsd";
 
     private ModelIOUtilities utils;
 
@@ -108,7 +109,7 @@ public class Model10XMLPersister implements CommonXMLElementsAndAttributes {
 
         // get the custom xsd schema describing the required format for my XML
         // files.
-        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource("/erdesignerschema_1.0.xsd"));
+        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource(XML_SCHEMA_DEFINITION));
 
         // Create a Validator capable of validating XML files according to my
         // custom schema.
