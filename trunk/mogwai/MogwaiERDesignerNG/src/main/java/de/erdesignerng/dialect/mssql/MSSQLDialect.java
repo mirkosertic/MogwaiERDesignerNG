@@ -70,6 +70,7 @@ public class MSSQLDialect extends SQL92Dialect {
         registerType(createDataType("ntext", "", Types.CLOB, Types.LONGVARCHAR));
         registerType(createDataType("xml", "", Types.SQLXML));
         registerType(createDataType("text", "", Types.CLOB));
+        registerType(createDataType("date", "", Types.DATE));
 
         seal();
     }
