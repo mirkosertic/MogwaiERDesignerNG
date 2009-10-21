@@ -61,9 +61,6 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         setTarget(aExporting.getChildAt(0));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferAttributesToProperties(Map aAttributes) {
         Relation theRelation = (Relation) getUserObject();
         String theLocation = "";
@@ -86,30 +83,39 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         List<Point2D> thePoints = GraphConstants.getPoints(aAttributes);
         if (thePoints != null) {
             StringBuffer theBuffer = new StringBuffer();
-            for (Point2D thePoint : thePoints) {
-                Point2D theDoublePoint = thePoint;
 
-                if (theBuffer.length() > 0) {
-                    theBuffer.append(",");
+            try {
+                for (Point2D thePoint : thePoints) {
+                    Point2D theDoublePoint = thePoint;
+
+                    if (theBuffer.length() > 0) {
+                        theBuffer.append(",");
+                    }
+
+                    theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
                 }
 
-                theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
+                String thePointBuffer = theBuffer.toString();
+                theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS, thePointBuffer);
+            } catch (ClassCastException e) {
+                // TODO mirkosertic The "for (..."-line throws a strange,
+                // reproducable ClassCastException when a label of a relation is dragged
+                // de.erdesignerng.visual.cells.views.DefaultPortView cannot be cast to java.awt.geom.Point2D
+                //
+                // This exception does not open the exception-message-window and
+                // instead silently occurs in console output.
+                //
+                // The app correctly continues to work as if nothing had happened.
             }
-
-            String thePointBuffer = theBuffer.toString();
-            theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS, thePointBuffer);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void transferPropertiesToAttributes(Relation aRelation) {
         Point2D thePoint = null;
 
         //PROPERTY_TEXT_OFFSET
         //skip processing of the offset-property, instead remove it from
-        //relation tobe compatible to earlier versions
+        //relation to be compatible to earlier versions
         thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(Relation.PROPERTY_TEXT_OFFSET));
         if (thePoint != null) {
             GraphConstants.setOffset(getAttributes(), thePoint);
