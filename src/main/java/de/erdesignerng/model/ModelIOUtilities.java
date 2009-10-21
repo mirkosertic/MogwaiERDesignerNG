@@ -34,6 +34,7 @@ import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 import de.erdesignerng.model.serializer.xml10.Model10XMLPersister;
 import de.erdesignerng.model.serializer.xml20.Model20XMLPersister;
+import de.erdesignerng.model.serializer.xml30.Model30XMLPersister;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.XMLUtils;
 
@@ -67,6 +68,10 @@ public final class ModelIOUtilities {
 
         try {
             Document theDocument = xmlUtils.getDocumentBuilder().parse(aInputStream);
+            if (Model30XMLPersister.supportsDocument(theDocument)) {
+                Model30XMLPersister thePersister = new Model30XMLPersister(this);
+                return thePersister.deserializeModelFromXML(theDocument);
+            }
             if (Model20XMLPersister.supportsDocument(theDocument)) {
                 Model20XMLPersister thePersister = new Model20XMLPersister(this);
                 return thePersister.deserializeModelFromXML(theDocument);
@@ -98,8 +103,7 @@ public final class ModelIOUtilities {
      *             will be thrown in case of an error
      */
     public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
-
-        Model20XMLPersister thePersister = new Model20XMLPersister(this);
+        Model30XMLPersister thePersister = new Model30XMLPersister(this);
         thePersister.serializeModelToXML(aModel, aStream);
     }
 
