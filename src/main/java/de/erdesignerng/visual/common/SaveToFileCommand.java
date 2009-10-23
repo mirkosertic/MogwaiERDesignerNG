@@ -18,8 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -72,7 +71,6 @@ public class SaveToFileCommand extends UICommand {
         DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Date theNow = new Date();
 
-        FileOutputStream theStream = null;
         PrintWriter theWriter = null;
         try {
             
@@ -85,9 +83,7 @@ public class SaveToFileCommand extends UICommand {
                 aFile.renameTo(theBakFile);
             }
 
-            theStream = new FileOutputStream(aFile);
-            
-            ModelIOUtilities.getInstance().serializeModelToXML(theModel, theStream);
+            ModelIOUtilities.getInstance().serializeModelToXML(theModel, new FileWriter(aFile));
 
             getWorldConnector().initTitle();
 
@@ -127,13 +123,6 @@ public class SaveToFileCommand extends UICommand {
         } catch (Exception e) {
             getWorldConnector().notifyAboutException(e);
         } finally {
-            if (theStream != null) {
-                try {
-                    theStream.close();
-                } catch (IOException e) {
-                    // Ignore this exception
-                }
-            }
             if (theWriter != null) {
                 theWriter.close();
             }

@@ -30,11 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -139,7 +135,7 @@ public final class DataTypeIO {
 
     private void deserializeDataTypesFrom(Dialect aDialect, InputStream aStream) throws TransformerException,
             IOException, SAXException, IllegalArgumentException, IllegalAccessException {
-        Document theDocument = xmlUtils.getDocumentBuilder().parse(aStream);
+        Document theDocument = xmlUtils.parse(aStream);
         NodeList theNodes = theDocument.getElementsByTagName(DATATYPE);
         for (int i = 0; i < theNodes.getLength(); i++) {
             Element theDataType = (Element) theNodes.item(i);
@@ -174,7 +170,7 @@ public final class DataTypeIO {
 
     private void serializeDataTypesFor(Dialect aDialect, OutputStream aStream) throws TransformerException,
             IOException, IllegalAccessException {
-        Document theDocument = xmlUtils.getDocumentBuilder().newDocument();
+        Document theDocument = xmlUtils.newDocument();
         Element theRootElement = theDocument.createElement(DATATYPES);
         theRootElement.setAttribute(DIALECT, aDialect.getUniqueName());
         theDocument.appendChild(theRootElement);
@@ -190,9 +186,7 @@ public final class DataTypeIO {
             }
             theRootElement.appendChild(theTypeElement);
         }
-        Transformer theTransformer = xmlUtils.getTransformerFactory().newTransformer();
-        theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        theTransformer
-                .transform(new DOMSource(theDocument), new StreamResult(new OutputStreamWriter(aStream, "UTF-8")));
+        
+        xmlUtils.transform(theDocument, new OutputStreamWriter(aStream, "UTF-8"));
     }
 }

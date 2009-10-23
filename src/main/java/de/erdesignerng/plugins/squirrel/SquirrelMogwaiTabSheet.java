@@ -25,8 +25,10 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.common.DockingHelper;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.common.ReverseEngineerCommand;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrameContent;
@@ -36,7 +38,11 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesignerWorldConnector {
 
+    private DockingHelper dockingHelper;
+    
     private ERDesignerComponent component;
+    
+    private OutlineComponent outline;
 
     private ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
@@ -51,10 +57,20 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     public SquirrelMogwaiTabSheet(SquirrelMogwaiController aController) {
 
         controller = aController;
+        
+        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
 
-        component = new ERDesignerComponent(ApplicationPreferences.getInstance(), this);
+        component = new ERDesignerComponent(thePreferences, this);
+        outline = new OutlineComponent();
+        
+        dockingHelper = new DockingHelper(thePreferences, component, outline);
+        try {
+            dockingHelper.initialize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        content.setDetailComponent(component.getDetailComponent());
+        content.setDetailComponent(dockingHelper.getRootWindow());
         panel.setContent(content);
 
         component.setModel(createNewModel());
@@ -134,6 +150,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     public void sessionEnding(ISession aSession) {
         super.sessionEnding(aSession);
 
+        dockingHelper.saveLayoutToPreferences();
         component.savePreferences();
     }
 
@@ -184,5 +201,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     @Override
     public boolean supportsReporting() {
         return true;
+    }
+
+    @Override
+    public OutlineComponent getOutlineComponent() {
+        return outline;
     }
 }

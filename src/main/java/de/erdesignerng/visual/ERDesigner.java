@@ -18,6 +18,7 @@
 package de.erdesignerng.visual;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -43,7 +44,8 @@ public final class ERDesigner {
 
     public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
             ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException,
-            TransformerException, IOException, ParserConfigurationException, SAXException {
+            TransformerException, IOException, ParserConfigurationException, SAXException, InterruptedException,
+            InvocationTargetException {
 
         // Disable D3D rendering pipeline
         System.setProperty("sun.java2d.d3d", "false");

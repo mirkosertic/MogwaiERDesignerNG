@@ -1169,6 +1169,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             refreshPreferences(preferences);
 
             fillGraph(aModel);
+            
+            worldConnector.getOutlineComponent().setModel(aModel);
 
         } finally {
 
