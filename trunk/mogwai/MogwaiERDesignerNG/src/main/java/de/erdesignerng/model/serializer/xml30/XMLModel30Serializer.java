@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer.xml20;
+package de.erdesignerng.model.serializer.xml30;
 
 import java.util.Map;
 
@@ -31,38 +31,25 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
-import de.erdesignerng.model.serializer.XMLSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
+import de.erdesignerng.util.XMLUtils;
 
 /**
- * @author $Author: mirkosertic $
- * @version $Date: 2009-03-13 15:40:34 $
+ * @author $Author: dr-death $
+ * @version $Date: 2009-10-21 10:00:00 $
  */
-public class XMLModelSerializer extends XMLSerializer implements CommonXMLElementsAndAttributes {
+public class XMLModel30Serializer extends AbstractXMLModelSerializer {
 
-    public static final XMLModelSerializer SERIALIZER = new XMLModelSerializer();
+    private static final String CURRENT_VERSION = "3.0";
+    
+    private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_3.0.xsd";
+    
+    public XMLModel30Serializer(XMLUtils utils) {
+        super(utils);
+    }
 
-    protected static final String CONFIGURATION = "Configuration";
-
-    protected static final String DIALECT = "dialect";
-
-    protected static final String DEFAULTVALUES = "Defaultvalues";
-
-    protected static final String DOMAINS = "Domains";
-
-    protected static final String TABLES = "Tables";
-
-    protected static final String RELATIONS = "Relations";
-
-    protected static final String VIEWS = "Views";
-
-    protected static final String SUBJECTAREAS = "Subjectareas";
-
-    protected static final String COMMENTS = "Comments";
-
-    protected static final String CURRENT_VERSION = "2.0";
-
-    public void serialize(Model aModel, Document aDocument) {
+    @Override
+    protected void serialize(Model aModel, Document aDocument) {
 
         Element theRootElement = addElement(aDocument, aDocument, MODEL);
         theRootElement.setAttribute(VERSION, CURRENT_VERSION);
@@ -110,7 +97,8 @@ public class XMLModelSerializer extends XMLSerializer implements CommonXMLElemen
         }
     }
 
-    public Model deserializeFrom(Document aDocument) {
+    @Override
+    protected Model deserializeFrom(Document aDocument) {
         Model theModel = new Model();
 
         NodeList theElements = aDocument.getElementsByTagName(MODEL);
@@ -149,5 +137,15 @@ public class XMLModelSerializer extends XMLSerializer implements CommonXMLElemen
         XMLSubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
 
         return theModel;
+    }
+
+    @Override
+    public String getSchemaResource() {
+        return XML_SCHEMA_DEFINITION;
+    }
+
+    @Override
+    public String getVersion() {
+        return CURRENT_VERSION;
     }
 }

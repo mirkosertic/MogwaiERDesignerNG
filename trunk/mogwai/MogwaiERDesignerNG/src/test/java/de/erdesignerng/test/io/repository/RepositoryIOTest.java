@@ -23,18 +23,16 @@ import java.sql.DriverManager;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.model.serializer.xml20.XMLModelSerializer;
+import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
+import de.erdesignerng.util.XMLUtils;
 
 /**
  * Test for XML based model io.
@@ -49,7 +47,9 @@ public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
         Document theDoc = theBuilder.parse(getClass().getResourceAsStream("examplemodel.mxm"));
 
-        Model theModel = XMLModelSerializer.SERIALIZER.deserializeFrom(theDoc);
+        AbstractXMLModelSerializer theSerializer = new XMLModel20Serializer(XMLUtils.getInstance());
+        
+        Model theModel = theSerializer.deserializeModelFromXML(theDoc);
 
         Class.forName("org.hsqldb.jdbcDriver").newInstance();
         Connection theConnection = null;
@@ -67,14 +67,8 @@ public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
             Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theDesc, theConnection,
                     theHibernateDialect);
 
-            Document theEmptyDoc = theBuilder.newDocument();
-            XMLModelSerializer.SERIALIZER.serialize(theNewModel, theEmptyDoc);
-
             StringWriter theStringWriter = new StringWriter();
-
-            TransformerFactory theTransformerFactory = TransformerFactory.newInstance();
-            Transformer theTransformer = theTransformerFactory.newTransformer();
-            theTransformer.transform(new DOMSource(theEmptyDoc), new StreamResult(theStringWriter));
+            theSerializer.serializeModelToXML(theNewModel, theStringWriter);
 
             String theOriginalFile = readResourceFile("examplemodel.mxm");
             String theNewFile = theStringWriter.toString();

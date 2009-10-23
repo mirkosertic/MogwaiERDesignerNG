@@ -19,16 +19,13 @@ package de.erdesignerng.test.domain;
 
 import java.io.IOException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.xml20.XMLModelSerializer;
+import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 /**
@@ -40,10 +37,9 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 public class DomainTest extends BaseERDesignerTestCaseImpl {
 
     public void testIfDomainsAreDomains() throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
-        Document theDoc = theBuilder.parse(getClass().getResourceAsStream("modelwithdomains.mxm"));
-        Model theModel = XMLModelSerializer.SERIALIZER.deserializeFrom(theDoc);
+
+        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
+                getClass().getResourceAsStream("modelwithdomains.mxm"));
 
         Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
         assertTrue(theNotUsedDom.isDomain());
@@ -54,10 +50,8 @@ public class DomainTest extends BaseERDesignerTestCaseImpl {
 
     public void testDomainInUsage() throws ParserConfigurationException, SAXException, IOException {
 
-        DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
-        Document theDoc = theBuilder.parse(getClass().getResourceAsStream("modelwithdomains.mxm"));
-        Model theModel = XMLModelSerializer.SERIALIZER.deserializeFrom(theDoc);
+        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
+                getClass().getResourceAsStream("modelwithdomains.mxm"));
 
         Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
         assertTrue(theNotUsedDom != null);
