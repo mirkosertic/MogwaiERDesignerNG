@@ -866,5 +866,13 @@
 			<Text lang="de">Neue Eltern Tabelle hier erstellen und verbinden</Text>		
 			<Text lang="en">Create new parent Table here and connect it</Text>					
 		</Entry>
+		<Entry id="EDITOR">
+			<Text lang="de">Editor</Text>		
+			<Text lang="en">Editor</Text>					
+		</Entry>
+		<Entry id="OUTLINE">
+			<Text lang="de">Outline</Text>		
+			<Text lang="en">Outline</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

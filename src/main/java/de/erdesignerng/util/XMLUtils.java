@@ -17,10 +17,22 @@
  */
 package de.erdesignerng.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * Utility class to deal with XML io.
@@ -51,15 +63,17 @@ public final class XMLUtils {
         return me;
     }
 
-    public DocumentBuilderFactory getDocumentBuilderFactory() {
-        return documentBuilderFactory;
+    public Document parse(InputStream aStream) throws SAXException, IOException {
+        return documentBuilder.parse(aStream);
     }
 
-    public DocumentBuilder getDocumentBuilder() {
-        return documentBuilder;
+    public Document newDocument() {
+        return documentBuilder.newDocument();
     }
 
-    public TransformerFactory getTransformerFactory() {
-        return transformerFactory;
+    public void transform(Document aDocument, Writer aWriter) throws TransformerException {
+        Transformer theTransformer = transformerFactory.newTransformer();
+        theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        theTransformer.transform(new DOMSource(aDocument), new StreamResult(aWriter));
     }
 }

@@ -61,7 +61,7 @@ public class ApplicationPreferences {
     private static final String RPCPREFIX = "rpc_";
 
     private static final String GRIDSIZE = "gridsize";
-    
+
     private static final String AUTOMATICRELATIONATTRIBUTEPATTERN = "automaticrelationattributepattern";
     
     private static final String ONUPDATEDEFAULT="onupdatedefault";
@@ -105,7 +105,7 @@ public class ApplicationPreferences {
     private CascadeType onUpdateDefault;
     
     private CascadeType onDeleteDefault;
-
+    
     private static ApplicationPreferences me;
 
     public static ApplicationPreferences getInstance() {
@@ -314,7 +314,7 @@ public class ApplicationPreferences {
         for (Map.Entry<String, String> theWindowEntry : windowDefinitions.entrySet()) {
             preferences.put(theWindowEntry.getKey(), theWindowEntry.getValue());
         }
-
+        
         preferences.flush();
     }
 

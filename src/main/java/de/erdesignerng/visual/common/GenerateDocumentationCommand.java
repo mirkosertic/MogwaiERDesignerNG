@@ -19,7 +19,7 @@ package de.erdesignerng.visual.common;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
@@ -53,9 +53,7 @@ public class GenerateDocumentationCommand extends UICommand {
 
                 ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
                 File theTempFile = File.createTempFile("mogwai", ".mxm");
-                FileOutputStream theOutputStream = new FileOutputStream(theTempFile);
-                theUtils.serializeModelToXML(component.getModel(), theOutputStream);
-                theOutputStream.close();
+                theUtils.serializeModelToXML(component.getModel(), new FileWriter(theTempFile));
 
                 aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
 

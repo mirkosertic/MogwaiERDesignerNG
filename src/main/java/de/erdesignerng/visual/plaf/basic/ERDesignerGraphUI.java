@@ -160,7 +160,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         @Override
         protected void postProcessSelection(MouseEvent e, Object cell, boolean wasSelected) {
         }
-    };
+    }
 
     @Override
     protected MouseListener createMouseListener() {

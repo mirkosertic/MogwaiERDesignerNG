@@ -25,8 +25,10 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.MavenPropertiesLocator;
+import de.erdesignerng.visual.common.DockingHelper;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
@@ -46,6 +48,10 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     private ApplicationPreferences preferences;
 
+    private OutlineComponent outlineComponent;
+    
+    private DockingHelper dockingHelper;
+
     public ERDesignerMainFrame(ApplicationPreferences aPreferences) {
         super(ERDesignerBundle.TITLE);
 
@@ -61,6 +67,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
             @Override
             public void windowClosing(WindowEvent e) {
                 preferences.updateWindowDefinition(WINDOW_ALIAS, ERDesignerMainFrame.this);
+                dockingHelper.saveLayoutToPreferences();
                 component.savePreferences();
             }
         });
@@ -76,8 +83,17 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     private void initialize() {
         component = new ERDesignerComponent(preferences, this);
-        getDefaultFrameContent().setDetailComponent(component.getDetailComponent());
+        outlineComponent = new OutlineComponent();
 
+        dockingHelper = new DockingHelper(preferences, component, outlineComponent);
+        
+        try {
+            dockingHelper.initialize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        getDefaultFrameContent().setDetailComponent(dockingHelper.getRootWindow());
     }
 
     @Override
@@ -175,5 +191,10 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     @Override
     public boolean supportsReporting() {
         return true;
+    }
+
+    @Override
+    public OutlineComponent getOutlineComponent() {
+        return outlineComponent;
     }
 }

@@ -19,8 +19,9 @@ package de.erdesignerng.model;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Writer;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,11 +31,12 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
-import de.erdesignerng.model.serializer.xml10.Model10XMLPersister;
-import de.erdesignerng.model.serializer.xml20.Model20XMLPersister;
-import de.erdesignerng.model.serializer.xml30.Model30XMLPersister;
+import de.erdesignerng.model.serializer.xml10.XMLModel10Serializer;
+import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
+import de.erdesignerng.model.serializer.xml30.XMLModel30Serializer;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.XMLUtils;
 
@@ -48,8 +50,13 @@ public final class ModelIOUtilities {
 
     private XMLUtils xmlUtils;
 
+    private List<AbstractXMLModelSerializer> knownSerializers = new ArrayList<AbstractXMLModelSerializer>();
+
     private ModelIOUtilities() throws ParserConfigurationException {
         xmlUtils = XMLUtils.getInstance();
+        knownSerializers.add(new XMLModel10Serializer(xmlUtils));
+        knownSerializers.add(new XMLModel20Serializer(xmlUtils));
+        knownSerializers.add(new XMLModel30Serializer(xmlUtils));
     }
 
     public static ModelIOUtilities getInstance() throws ParserConfigurationException {
@@ -67,18 +74,11 @@ public final class ModelIOUtilities {
     public Model deserializeModelFromXML(InputStream aInputStream) throws SAXException, IOException {
 
         try {
-            Document theDocument = xmlUtils.getDocumentBuilder().parse(aInputStream);
-            if (Model30XMLPersister.supportsDocument(theDocument)) {
-                Model30XMLPersister thePersister = new Model30XMLPersister(this);
-                return thePersister.deserializeModelFromXML(theDocument);
-            }
-            if (Model20XMLPersister.supportsDocument(theDocument)) {
-                Model20XMLPersister thePersister = new Model20XMLPersister(this);
-                return thePersister.deserializeModelFromXML(theDocument);
-            }
-            if (Model10XMLPersister.supportsDocument(theDocument)) {
-                Model10XMLPersister thePersister = new Model10XMLPersister(this);
-                return thePersister.deserializeModelFromXML(theDocument);
+            Document theDocument = xmlUtils.parse(aInputStream);
+            for (AbstractXMLModelSerializer theSerializer : knownSerializers) {
+                if (theSerializer.supportsDocument(theDocument)) {
+                    return theSerializer.deserializeModelFromXML(theDocument);
+                }
             }
 
             // This should never happen
@@ -95,16 +95,16 @@ public final class ModelIOUtilities {
      * 
      * @param aModel
      *            the model
-     * @param aStream
-     *            the output stream
+     * @param aWriter
+     *            the output writer
      * @throws TransformerException
      *             will be thrown in case of an error
      * @throws IOException
      *             will be thrown in case of an error
+     * @throws ParserConfigurationException 
      */
-    public void serializeModelToXML(Model aModel, OutputStream aStream) throws TransformerException, IOException {
-        Model30XMLPersister thePersister = new Model30XMLPersister(this);
-        thePersister.serializeModelToXML(aModel, aStream);
+    public void serializeModelToXML(Model aModel, Writer aWriter) throws TransformerException, IOException {
+        new XMLModel30Serializer(xmlUtils).serializeModelToXML(aModel, aWriter);
     }
 
     /**

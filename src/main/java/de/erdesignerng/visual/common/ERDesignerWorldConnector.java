@@ -34,7 +34,9 @@ public interface ERDesignerWorldConnector {
     void setStatusText(String theMessage);
 
     DefaultToolbar getToolBar();
-
+    
+    OutlineComponent getOutlineComponent();
+    
     boolean supportsExitApplication();
 
     boolean supportsClasspathEditor();

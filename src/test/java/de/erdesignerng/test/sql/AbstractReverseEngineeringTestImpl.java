@@ -32,6 +32,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+import de.erdesignerng.visual.common.OutlineComponent;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 
 public class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseImpl {
@@ -110,6 +111,11 @@ public class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseIm
         @Override
         public boolean supportsReporting() {
             return false;
+        }
+
+        @Override
+        public OutlineComponent getOutlineComponent() {
+            return new OutlineComponent();
         }
     };
 

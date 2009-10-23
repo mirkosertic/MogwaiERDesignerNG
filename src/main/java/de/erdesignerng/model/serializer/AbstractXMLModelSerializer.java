@@ -15,18 +15,16 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.model.serializer.xml10;
+package de.erdesignerng.model.serializer;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.XMLConstants;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
@@ -39,19 +37,32 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelIOUtilities;
-import de.erdesignerng.model.serializer.CommonXMLElementsAndAttributes;
+import de.erdesignerng.util.XMLUtils;
 
-/**
- * Persister for model version 1.0.
- * 
- * @author mirkosertic
- */
-public class Model10XMLPersister implements CommonXMLElementsAndAttributes {
-    private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_1.0.xsd";
+public abstract class AbstractXMLModelSerializer extends XMLSerializer {
 
-    private ModelIOUtilities utils;
+    protected static final String CONFIGURATION = "Configuration";
 
+    protected static final String DIALECT = "dialect";
+
+    protected static final String DOMAINS = "Domains";
+
+    protected static final String TABLES = "Tables";
+
+    protected static final String RELATIONS = "Relations";
+
+    protected static final String VIEWS = "Views";
+
+    protected static final String SUBJECTAREAS = "Subjectareas";
+
+    protected static final String COMMENTS = "Comments";
+    
+    private XMLUtils utils;
+    
+    protected AbstractXMLModelSerializer(XMLUtils aUtils) {
+        utils = aUtils;
+    }
+    
     /**
      * Test if the persister supports a document version.
      * 
@@ -59,32 +70,20 @@ public class Model10XMLPersister implements CommonXMLElementsAndAttributes {
      *            the document
      * @return true if yes, else false
      */
-    public static boolean supportsDocument(Document aDocument) {
+    public boolean supportsDocument(Document aDocument) {
         NodeList theNodes = aDocument.getElementsByTagName(MODEL);
         if (theNodes.getLength() != 1) {
             return false;
         }
         Element theDocumentElement = (Element) theNodes.item(0);
-        return XMLModelSerializer.CURRENT_VERSION.equals(theDocumentElement.getAttribute(VERSION));
-    }
-
-    public Model10XMLPersister(ModelIOUtilities aUtils) {
-        utils = aUtils;
-    }
-
-    public void serializeModelToXML(Model aModel, OutputStream aStream) throws IOException, TransformerException {
-        Document theDocument = utils.getXmlUtils().getDocumentBuilder().newDocument();
-
-        XMLModelSerializer.SERIALIZER.serialize(aModel, theDocument);
-
-        Transformer theTransformer = utils.getXmlUtils().getTransformerFactory().newTransformer();
-        theTransformer.transform(new DOMSource(theDocument), new StreamResult(aStream));
-
-        aStream.close();
-
+        return getVersion().equals(theDocumentElement.getAttribute(VERSION));
     }
 
     public Model deserializeModelFromXML(Document aDocument) throws SAXException, IOException {
+        
+        if (!supportsDocument(aDocument)) {
+            throw new IOException("Unsupported model version");
+        }
 
         final List<SAXParseException> theExceptions = new ArrayList<SAXParseException>();
 
@@ -109,7 +108,7 @@ public class Model10XMLPersister implements CommonXMLElementsAndAttributes {
 
         // get the custom xsd schema describing the required format for my XML
         // files.
-        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource(XML_SCHEMA_DEFINITION));
+        Schema theSchema = theSchemaFactory.newSchema(getClass().getResource(getSchemaResource()));
 
         // Create a Validator capable of validating XML files according to my
         // custom schema.
@@ -124,6 +123,25 @@ public class Model10XMLPersister implements CommonXMLElementsAndAttributes {
             }
         }
 
-        return XMLModelSerializer.SERIALIZER.deserializeFrom(aDocument);
+        return deserializeFrom(aDocument);
     }
+
+    public void serializeModelToXML(Model aModel, Writer aWriter) throws IOException, TransformerException {
+
+        Document theDocument = utils.newDocument();
+
+        serialize(aModel, theDocument);
+
+        utils.transform(theDocument, aWriter);
+
+        aWriter.close();
+    }
+    
+    protected abstract Model deserializeFrom(Document aDocument);
+    
+    protected abstract void serialize(Model aModel, Document aDocument);
+    
+    public abstract String getVersion();
+    
+    public abstract String getSchemaResource();
 }
