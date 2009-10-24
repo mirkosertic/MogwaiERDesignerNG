@@ -52,10 +52,7 @@ public class XMLAttributeSerializer extends XMLSerializer {
         serializeProperties(aDocument, theAttributeElement, aAttribute);
 
         theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
-
-        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-        // max-length wrong
-        theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null) ? aAttribute.getSize() : ""));
+        theAttributeElement.setAttribute(SIZE, "" + aAttribute.getSize());
         theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
         theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
         theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
@@ -78,8 +75,7 @@ public class XMLAttributeSerializer extends XMLSerializer {
             deserializeProperties(theAttributeElement, theAttribute);
             deserializeCommentElement(theAttributeElement, theAttribute);
 
-            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(
-                    theAttributeElement.getAttribute(DATATYPE)));
+            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(theAttributeElement.getAttribute(DATATYPE)));
             theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
             theAttribute.setSize(Integer.parseInt(theAttributeElement.getAttribute(SIZE)));
             theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));

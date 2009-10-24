@@ -97,6 +97,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
         List<DefaultGraphCell> theObjectsToRemove = new ArrayList<DefaultGraphCell>();
 
+        // TODO [mirkosertic] Is "Object" the right class?
         for (Object theSingleCell : aCells) {
 
             if (!theObjectsToRemove.contains(theSingleCell)) {
@@ -336,7 +337,7 @@ public abstract class ERDesignerGraph extends JGraph {
      * 
      * @param aLocation
      *            the location where the table should be created
-     * @param aExportingTable
+     * @param aExportingTableCell
      *            the exporting table cell
      * @param aNewTableIsChild
      *            true, if the new table should be the child of the new relation
