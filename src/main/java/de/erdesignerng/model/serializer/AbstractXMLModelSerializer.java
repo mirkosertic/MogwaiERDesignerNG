@@ -58,6 +58,20 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     protected static final String COMMENTS = "Comments";
 
+    private AbstractXMLAttributeSerializer xmlAttributeSerializer = null;
+
+    private AbstractXMLCommentSerializer xmlCommentSerializer = null;
+
+    private AbstractXMLDomainSerializer xmlDomainSerializer = null;
+
+    private AbstractXMLIndexSerializer xmlIndexSerializer = null;
+
+    private AbstractXMLRelationSerializer xmlRelationSerializer = null;
+
+    private AbstractXMLSubjectAreaSerializer xmlSubjectAreaSerializer = null;
+
+    private AbstractXMLTableSerializer xmlTableSerializer = null;
+
     private XMLUtils utils = null;
 
     protected AbstractXMLModelSerializer(XMLUtils aUtils) {
@@ -158,14 +172,60 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     protected abstract String getSchemaResource();
 
-    protected abstract AbstractXMLSubjectAreaSerializer getXMLSubjectAreaSerializer();
+    public AbstractXMLAttributeSerializer getXMLAttributeSerializer() {
+        return xmlAttributeSerializer;
+    }
 
-    protected abstract AbstractXMLCommentSerializer getXMLCommentSerializer();
+    protected AbstractXMLCommentSerializer getXMLCommentSerializer(){
+        return xmlCommentSerializer;
+    }
 
-    protected abstract AbstractXMLDomainSerializer getXMLDomainSerializer();
+    protected AbstractXMLDomainSerializer getXMLDomainSerializer(){
+        return xmlDomainSerializer;
+    }
 
-    protected abstract AbstractXMLRelationSerializer getXMLRelationSerializer();
+    public AbstractXMLIndexSerializer getXMLIndexSerializer() {
+        return xmlIndexSerializer;
+    }
 
-    protected abstract AbstractXMLTableSerializer getXMLTableSerializer();
+    protected AbstractXMLRelationSerializer getXMLRelationSerializer() {
+        return xmlRelationSerializer;
+    }
+
+    protected AbstractXMLSubjectAreaSerializer getXMLSubjectAreaSerializer() {
+        return xmlSubjectAreaSerializer;
+    }
+
+    protected AbstractXMLTableSerializer getXMLTableSerializer() {
+        return xmlTableSerializer;
+    }
+
+    protected void setXMLAttributeSerializer(AbstractXMLAttributeSerializer xmlAttributeSerializer) {
+        this.xmlAttributeSerializer = xmlAttributeSerializer;
+    }
+
+    protected void setXMLCommentSerializer(AbstractXMLCommentSerializer xmlCommentSerializer) {
+        this.xmlCommentSerializer = xmlCommentSerializer;
+    }
+
+    protected void setXMLDomainSerializer(AbstractXMLDomainSerializer xmlDomainSerializer) {
+        this.xmlDomainSerializer = xmlDomainSerializer;
+    }
+
+    protected void setXMLIndexSerializer(AbstractXMLIndexSerializer xmlIndexSerializer) {
+        this.xmlIndexSerializer = xmlIndexSerializer;
+    }
+
+    protected void setXMLRelationSerializer(AbstractXMLRelationSerializer xmlRelationSerializer) {
+        this.xmlRelationSerializer = xmlRelationSerializer;
+    }
+
+    protected void setXMLSubjectAreaSerializer(AbstractXMLSubjectAreaSerializer xmlSubjectAreaSerializer) {
+        this.xmlSubjectAreaSerializer = xmlSubjectAreaSerializer;
+    }
+
+    protected void setXMLTableSerializer(AbstractXMLTableSerializer xmlTableSerializer) {
+        this.xmlTableSerializer = xmlTableSerializer;
+    }
 
 }

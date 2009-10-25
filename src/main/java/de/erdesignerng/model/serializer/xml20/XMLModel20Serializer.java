@@ -31,9 +31,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 import de.erdesignerng.model.serializer.AbstractXMLViewSerializer;
 import de.erdesignerng.model.serializer.xml10.XMLModel10Serializer;
 import de.erdesignerng.util.XMLUtils;
@@ -48,23 +45,22 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
 
     private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_2.0.xsd";
 
-    private XMLRelationSerializer xmlRelationSerializer = null;
-
-    private XMLSubjectAreaSerializer xmlSubjectAreaSerializer = null;
-
-    private XMLTableSerializer xmlTableSerializer = null;
-
-    private XMLViewSerializer xmlViewSerializer = null;
+    private AbstractXMLViewSerializer xmlViewSerializer = null;
 
     public XMLModel20Serializer(XMLUtils utils) {
         super(utils);
+        setXMLIndexSerializer(new XMLIndexSerializer());
+        setXMLRelationSerializer(new XMLRelationSerializer());
+        setXMLSubjectAreaSerializer(new XMLSubjectAreaSerializer());
+        setXMLTableSerializer(new XMLTableSerializer(this));
+        setXMLViewSerializer(new XMLViewSerializer());
     }
 
     @Override
     protected void serialize(Model aModel, Document aDocument) {
 
         Element theRootElement = addElement(aDocument, aDocument, MODEL);
-        theRootElement.setAttribute(VERSION, CURRENT_VERSION);
+        theRootElement.setAttribute(VERSION, getVersion());
 
         Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
 
@@ -117,7 +113,7 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
         for (int i = 0; i < theElements.getLength(); i++) {
             Element theElement = (Element) theElements.item(i);
             String theVersion = theElement.getAttribute(VERSION);
-            if (!CURRENT_VERSION.equals(theVersion)) {
+            if (!getVersion().equals(theVersion)) {
                 throw new RuntimeException("Unsupported version of model : " + theVersion);
             }
         }
@@ -161,38 +157,12 @@ public class XMLModel20Serializer extends XMLModel10Serializer {
         return CURRENT_VERSION;
     }
 
-    @Override
-    protected AbstractXMLRelationSerializer getXMLRelationSerializer() {
-        if (xmlRelationSerializer == null) {
-            xmlRelationSerializer = new XMLRelationSerializer();
-        }
-
-        return xmlRelationSerializer;
-    }
-
-    @Override
-    protected AbstractXMLSubjectAreaSerializer getXMLSubjectAreaSerializer() {
-        if (xmlSubjectAreaSerializer == null) {
-            xmlSubjectAreaSerializer = new XMLSubjectAreaSerializer();
-        }
-
-        return xmlSubjectAreaSerializer;
-    }
-
-    @Override
-    protected AbstractXMLTableSerializer getXMLTableSerializer() {
-        if (xmlTableSerializer == null) {
-            xmlTableSerializer = new XMLTableSerializer();
-        }
-
-        return xmlTableSerializer;
-    }
-
     protected AbstractXMLViewSerializer getXMLViewSerializer() {
-        if (xmlViewSerializer == null) {
-            xmlViewSerializer = new XMLViewSerializer();
-        }
-
         return xmlViewSerializer;
     }
+
+    protected void setXMLViewSerializer(AbstractXMLViewSerializer xmlViewSerializer) {
+        this.xmlViewSerializer = xmlViewSerializer;
+    }
+
 }

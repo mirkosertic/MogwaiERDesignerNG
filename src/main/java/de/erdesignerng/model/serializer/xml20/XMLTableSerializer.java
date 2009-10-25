@@ -25,13 +25,15 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 
 public class XMLTableSerializer extends de.erdesignerng.model.serializer.xml10.XMLTableSerializer {
 
     protected static final String SCHEMA = "schema";
 
-    private XMLIndexSerializer xmlIndexSerializer = null;
+    public XMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+        super(xmlModelSerializer);
+    }
 
     @Override
     public void serialize(Table aTable, Document aDocument, Element aRootElement) {
@@ -45,12 +47,12 @@ public class XMLTableSerializer extends de.erdesignerng.model.serializer.xml10.X
 
         // Attribute serialisieren
         for (Attribute theAttribute : aTable.getAttributes()) {
-            getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
+            getXMLModelSerializer().getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
         }
 
         // Indexes serialisieren
         for (Index theIndex : aTable.getIndexes()) {
-            getXMLIndexSerializer().serialize(theIndex, aDocument, theTableElement);
+            getXMLModelSerializer().getXMLIndexSerializer().serialize(theIndex, aDocument, theTableElement);
         }
     }
 
@@ -69,20 +71,12 @@ public class XMLTableSerializer extends de.erdesignerng.model.serializer.xml10.X
 
             theTable.setSchema(theElement.getAttribute(SCHEMA));
 
-            getXMLAttributeSerializer().deserialize(aModel, theTable, aDocument, theElement);
-            getXMLIndexSerializer().deserialize(aModel, theTable, aDocument, theElement);
+            getXMLModelSerializer().getXMLAttributeSerializer().deserialize(aModel, theTable, aDocument, theElement);
+            getXMLModelSerializer().getXMLIndexSerializer().deserialize(aModel, theTable, aDocument, theElement);
 
             aModel.getTables().add(theTable);
         }
 
     }
 
-    @Override
-    protected AbstractXMLIndexSerializer getXMLIndexSerializer() {
-        if (xmlIndexSerializer == null) {
-            xmlIndexSerializer = new XMLIndexSerializer();
-        }
-
-        return xmlIndexSerializer;
-    }
 }
