@@ -416,8 +416,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     erdesignerComponent.setSelectedObject(theItem);
                 }
             });
+            
             aMenu.add(theEditItem);
-            aMenu.addSeparator();
         }
 
         if (theUserObject instanceof Table) {
@@ -427,6 +427,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITTABLE, theTable.getName()));
             theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theTable));
+            
             aMenu.add(theEditItem);
         }
         if (theUserObject instanceof View) {
@@ -436,6 +437,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITVIEW, theView.getName()));
             theEditItem.addActionListener(new EditViewCommand(erdesignerComponent, theView));
+            
             aMenu.add(theEditItem);
 
         }
@@ -447,6 +449,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITRELATION,
                     theRelation.getName()));
             theEditItem.addActionListener(new EditRelationCommand(erdesignerComponent, theRelation));
+            
             aMenu.add(theEditItem);
 
         }
@@ -457,7 +460,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITDOMAIN, theDomain.getName()));
             theEditItem.addActionListener(new EditDomainCommand(erdesignerComponent, theDomain));
-
+            
             aMenu.add(theEditItem);
 
         }
@@ -469,9 +472,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITATTRIBUTE, theAttribute.getName()));
             theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theAttribute.getOwner(), theAttribute));
-
+            
             aMenu.add(theEditItem);
-
         }
 
         if (theUserObject instanceof Index) {
@@ -481,7 +483,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITINDEX, theIndex.getName()));
             theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theIndex.getOwner(), theIndex));
-
+            
             aMenu.add(theEditItem);
 
         }
