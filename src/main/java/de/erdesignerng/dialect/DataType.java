@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 import de.erdesignerng.model.Attribute;
 
-public interface DataType extends Comparable<DataType>, Serializable {
+public interface DataType extends Serializable {
 
     String getName();
 

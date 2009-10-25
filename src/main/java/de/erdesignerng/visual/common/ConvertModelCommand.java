@@ -44,6 +44,7 @@ public class ConvertModelCommand extends UICommand {
                 component.setModel(theModel);
 
                 getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
+                
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

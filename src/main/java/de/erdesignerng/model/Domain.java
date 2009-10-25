@@ -27,8 +27,6 @@ import de.erdesignerng.dialect.DataType;
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain>, DataType {
 
-    private String systemId = ModelUtilities.createSystemIdFor(this);
-
     private int size;
 
     private int fraction;
@@ -37,43 +35,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
 
     private DataType concreteType;
 
-    private String name;
-
     public Domain() {
-    }
-
-    /**
-     * @return the name
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name
-     *            the name to set
-     */
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the systemId
-     */
-    @Override
-    public String getSystemId() {
-        return systemId;
-    }
-
-    /**
-     * @param systemId
-     *            the systemId to set
-     */
-    @Override
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
     }
 
     /**
@@ -154,8 +116,8 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     @Override
     public Domain clone() {
         Domain theDomain = new Domain();
-        theDomain.setSystemId(systemId);
-        theDomain.setName(name);
+        theDomain.setSystemId(getSystemId());
+        theDomain.setName(getName());
         theDomain.setConcreteType(concreteType);
         theDomain.setSize(size);
         theDomain.setFraction(fraction);
@@ -196,16 +158,6 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     @Override
     public boolean isJDBCStringType() {
         return concreteType.isJDBCStringType();
-    }
-
-    @Override
-    public int compareTo(DataType o) {
-        return name.compareTo(o.getName());
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 
     @Override

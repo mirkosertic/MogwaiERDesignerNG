@@ -57,89 +57,89 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  */
 public class TableEditor extends BaseEditor {
 
-    private Model model;
+    private final Model model;
 
     private TableEditorView editingView;
 
-    private BindingInfo<Table> tableBindingInfo = new BindingInfo<Table>();
+    private final BindingInfo<Table> tableBindingInfo = new BindingInfo<Table>();
 
-    private BindingInfo<Attribute> attributeBindingInfo = new BindingInfo<Attribute>();
+    private final BindingInfo<Attribute> attributeBindingInfo = new BindingInfo<Attribute>();
 
-    private BindingInfo<Index> indexBindingInfo = new BindingInfo<Index>();
+    private final BindingInfo<Index> indexBindingInfo = new BindingInfo<Index>();
 
-    private BindingInfo<IndexValueModel> indexExpressionBindingInfo = new BindingInfo<IndexValueModel>();
+    private final BindingInfo<IndexValueModel> indexExpressionBindingInfo = new BindingInfo<IndexValueModel>();
 
-    private BindingInfo<IndexValueModel> indexExpressionBindingInfo2 = new BindingInfo<IndexValueModel>();
+    private final BindingInfo<IndexValueModel> indexExpressionBindingInfo2 = new BindingInfo<IndexValueModel>();
 
-    private DefaultListModel attributeListModel;
+    private final DefaultListModel attributeListModel;
 
-    private DefaultListModel indexListModel;
+    private final DefaultListModel indexListModel;
 
-    private Map<String, Attribute> knownAttributeValues = new HashMap<String, Attribute>();
+    private final Map<String, Attribute> knownAttributeValues = new HashMap<String, Attribute>();
 
-    private Map<String, Index> knownIndexValues = new HashMap<String, Index>();
+    private final Map<String, Index> knownIndexValues = new HashMap<String, Index>();
 
-    private List<Attribute> removedAttributes = new ArrayList<Attribute>();
+    private final List<Attribute> removedAttributes = new ArrayList<Attribute>();
 
-    private List<Index> removedIndexes = new ArrayList<Index>();
+    private final List<Index> removedIndexes = new ArrayList<Index>();
 
-    private DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandNewAttribute();
         }
     }, this, ERDesignerBundle.NEW);
 
-    private DefaultAction deleteAttributeAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction deleteAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandDeleteAttribute(e);
         }
     }, this, ERDesignerBundle.DELETE);
 
-    private DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandUpdateAttribute();
         }
     }, this, ERDesignerBundle.UPDATE);
 
-    private DefaultAction newIndexAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction newIndexAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandNewIndex();
         }
     }, this, ERDesignerBundle.NEW);
 
-    private DefaultAction deleteIndexAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction deleteIndexAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandDeleteIndex();
         }
     }, this, ERDesignerBundle.DELETE);
 
-    private DefaultAction updateIndex = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction updateIndex = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandUpdateIndex();
         }
     }, this, ERDesignerBundle.UPDATE);
 
-    private DefaultAction addIndexAttribute = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction addIndexAttribute = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandAddIndexAttribute();
         }
     }, this, ERDesignerBundle.NEWONLYICON);
 
-    private DefaultAction addIndexExpression = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction addIndexExpression = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandAddIndexExpression();
         }
     }, this, ERDesignerBundle.NEWONLYICON);
 
-    private DefaultAction removeIndexElement = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction removeIndexElement = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandRemoveIndexElement();
@@ -820,5 +820,24 @@ public class TableEditor extends BaseEditor {
             }
         }
         return false;
+    }
+
+    /**
+     * Set the currently selected attribute.
+     * 
+     * @param aAttribute the attribute
+     */
+    public void setSelectedAttribute(Attribute aAttribute) {
+        editingView.getAttributeList().setSelectedValue(aAttribute, true);
+    }
+
+    /**
+     * Set the currently selected index.
+     * 
+     * @param aIndex the index
+     */
+    public void setSelectedIndex(Index aIndex) {
+        editingView.getMainTabbedPane().setSelectedIndex(1);
+        editingView.getIndexList().setSelectedValue(aIndex, true);
     }
 }

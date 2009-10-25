@@ -43,6 +43,7 @@ import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
@@ -50,6 +51,7 @@ import org.jgraph.graph.GraphModel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
@@ -176,7 +178,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    private ApplicationPreferences preferences;
+    private final ApplicationPreferences preferences;
 
     File currentEditingFile;
 
@@ -214,15 +216,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu repositoryUtilsMenu;
 
-    private DefaultScrollPane scrollPane = new DefaultScrollPane();
+    private final DefaultScrollPane scrollPane = new DefaultScrollPane();
 
-    private ERDesignerWorldConnector worldConnector;
+    private final ERDesignerWorldConnector worldConnector;
 
-    private DefaultComboBox zoomBox = new DefaultComboBox();
+    private final DefaultComboBox zoomBox = new DefaultComboBox();
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo("100%", 1);
 
-    private ERDesignerGraphLayout layout;
+    private final ERDesignerGraphLayout layout;
 
     private Thread layoutThread;
 
@@ -1180,7 +1182,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             fillGraph(aModel);
             
-            worldConnector.getOutlineComponent().setModel(aModel);
+            worldConnector.getOutlineComponent().setModel(aModel, true);
 
         } finally {
 
@@ -1432,7 +1434,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Repaint the current graph.
      */
-    protected void repaintGraph() {
+    public void repaintGraph() {
         for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
             graph.updateAutoSize(theView);
         }
@@ -1468,5 +1470,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             layoutThread.start();
         }
         preferences.setIntelligentLayout(aStatus);
+    }
+
+    /**
+     * Set the currently selected cell depending on its user object.
+     * 
+     * @param aItem the user object.
+     */
+    public void setSelectedObject(ModelItem aItem) {
+        for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
+           DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+           if (aItem.equals(theCell.getUserObject())) {
+               // We do have a match
+               graph.setSelectionCell(theCell);
+               graph.scrollCellToVisible(theCell);
+               return;
+           }
+        }
     }
 }
