@@ -154,10 +154,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
-            System.out.println(theResult);
-
             String theReference = readResourceFile("result.sql");
-            assertTrue(theResult.equals(theReference));
+            assertTrue(compareStrings(theResult, theReference));
 
         } finally {
             if (theConnection != null) {

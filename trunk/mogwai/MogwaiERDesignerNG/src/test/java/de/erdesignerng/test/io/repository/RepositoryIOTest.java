@@ -73,7 +73,7 @@ public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
             String theOriginalFile = readResourceFile("examplemodel.mxm");
             String theNewFile = theStringWriter.toString();
 
-            assertTrue(theOriginalFile.equals(theNewFile));
+            assertTrue(compareStrings(theOriginalFile, theNewFile));
 
         } finally {
             if (theConnection != null) {

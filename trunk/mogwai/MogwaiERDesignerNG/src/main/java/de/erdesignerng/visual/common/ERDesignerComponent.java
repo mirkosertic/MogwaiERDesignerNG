@@ -1150,6 +1150,16 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 public void commandNewRelation(TableCell aImportingCell, TableCell aExportingCell) {
                     new AddRelationCommand(ERDesignerComponent.this, aImportingCell, aExportingCell).execute();
                 }
+
+                @Override
+                public void commandLocateInOutline(Object object) {
+                    worldConnector.getOutlineComponent().locateObject(object);
+                }
+
+                @Override
+                public void refreshOutline() {
+                    worldConnector.getOutlineComponent().refresh(model, null);
+                }
             };
 
             graph.setUI(new ERDesignerGraphUI(this));

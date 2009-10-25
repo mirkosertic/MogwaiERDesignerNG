@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -28,9 +27,11 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
 
 public class XMLRelationSerializer extends AbstractXMLRelationSerializer {
 
+    @Override
     public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
         Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
 
@@ -56,6 +57,7 @@ public class XMLRelationSerializer extends AbstractXMLRelationSerializer {
         }
     }
 
+    @Override
     public void deserialize(Model aModel, Document aDocument) {
 
         // And finally, parse the relations

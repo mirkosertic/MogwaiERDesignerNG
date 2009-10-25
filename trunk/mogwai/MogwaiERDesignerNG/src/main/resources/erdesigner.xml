@@ -871,8 +871,12 @@
 			<Text lang="en">Editor</Text>					
 		</Entry>
 		<Entry id="OUTLINE">
-			<Text lang="de">Outline</Text>		
+			<Text lang="de">Modellübersicht</Text>		
 			<Text lang="en">Outline</Text>					
+		</Entry>
+		<Entry id="LOCATEINOUTLINE">
+			<Text lang="de">In Modellübersicht anzeigen</Text>		
+			<Text lang="en">Locate in Outline</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

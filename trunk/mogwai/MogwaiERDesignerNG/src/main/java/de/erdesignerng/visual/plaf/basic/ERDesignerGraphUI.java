@@ -215,6 +215,9 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                         theDialog.applyValues();
 
                         erdesigner.commandNotifyAboutEdit();
+                        
+                        DefaultGraphCell theCell = (DefaultGraphCell) cell;
+                        erdesigner.getWorldConnector().getOutlineComponent().refresh(erdesigner.getModel(), theCell.getUserObject());
                     } catch (Exception e1) {
                         erdesigner.getWorldConnector().notifyAboutException(e1);
                     }

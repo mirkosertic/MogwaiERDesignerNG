@@ -17,16 +17,17 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
 
 public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 
+    @Override
     public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
         Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
@@ -40,6 +41,7 @@ public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
         theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
     }
 
+    @Override
     public void deserialize(Model aModel, Document aDocument) {
         // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(DOMAIN);

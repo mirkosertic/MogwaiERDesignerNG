@@ -113,7 +113,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             System.out.println(theResult);
 
             String theReference = readResourceFile("result.sql");
-            assertTrue(theResult.equals(theReference));
+            
+            assertTrue(compareStrings(theResult, theReference));
 
         } finally {
             if (theConnection != null) {

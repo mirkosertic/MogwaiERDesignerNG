@@ -71,6 +71,8 @@ public class AddCommentCommand extends UICommand {
 
                 component.graph.doLayout();
                 
+                refreshOutline(null);
+                
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

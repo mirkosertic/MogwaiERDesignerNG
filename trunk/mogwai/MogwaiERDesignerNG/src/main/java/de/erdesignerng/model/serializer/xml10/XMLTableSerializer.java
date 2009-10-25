@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -27,6 +25,8 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
 import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 
 public class XMLTableSerializer extends AbstractXMLTableSerializer {
@@ -35,6 +35,7 @@ public class XMLTableSerializer extends AbstractXMLTableSerializer {
 
     private XMLIndexSerializer xmlIndexSerializer = null;
 
+    @Override
     public void serialize(Table aTable, Document aDocument, Element aRootElement) {
         Element theTableElement = addElement(aDocument, aRootElement, TABLE);
 
@@ -53,6 +54,7 @@ public class XMLTableSerializer extends AbstractXMLTableSerializer {
         }
     }
 
+    @Override
     public void deserialize(Model aModel, Document aDocument) {
         // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(TABLE);
