@@ -17,29 +17,28 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.util.ConnectionDescriptor;
-import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
+import de.erdesignerng.model.View;
+import de.erdesignerng.visual.editor.table.TableEditor;
+import de.erdesignerng.visual.editor.view.ViewEditor;
 
-public class DBConnectionCommand extends UICommand {
+public class EditViewCommand extends UICommand {
+    
+    private final View view;
 
-    public DBConnectionCommand(ERDesignerComponent aComponent) {
+    public EditViewCommand(ERDesignerComponent aComponent, View aTable) {
         super(aComponent);
+        view = aTable;
     }
 
     @Override
     public void execute() {
-        execute(component.getModel().createConnectionHistoryEntry());
-    }
-
-    public void execute(ConnectionDescriptor aConnection) {
-        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(getDetailComponent(), component.getModel(),
-                getPreferences(), aConnection);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+        ViewEditor theEditor = new ViewEditor(component.getModel(), component.getDetailComponent());
+        theEditor.initializeFor(view);
+        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                component.addCurrentConnectionToConnectionHistory();
                 
+                refreshDisplayOf(view);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

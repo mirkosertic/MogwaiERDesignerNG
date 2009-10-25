@@ -43,7 +43,7 @@ public class CompleteCompareCommand extends UICommand {
         }
 
         final Model theModel = component.getModel();
-        
+
         final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(),
                 getPreferences());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
@@ -53,8 +53,7 @@ public class CompleteCompareCommand extends UICommand {
                 if (theConnection == null) {
                     return;
                 }
-                final ReverseEngineeringStrategy theStrategy = theModel.getDialect()
-                        .getReverseEngineeringStrategy();
+                final ReverseEngineeringStrategy theStrategy = theModel.getDialect().getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
                 final Model theDatabaseModel = getWorldConnector().createNewModel();
@@ -89,8 +88,8 @@ public class CompleteCompareCommand extends UICommand {
                     public void handleResult(Model aResultModel) {
                         component.addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(),
-                                theModel, aResultModel, getPreferences());
+                        CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theModel,
+                                aResultModel, getPreferences());
                         theCompare.showModal();
                     }
 

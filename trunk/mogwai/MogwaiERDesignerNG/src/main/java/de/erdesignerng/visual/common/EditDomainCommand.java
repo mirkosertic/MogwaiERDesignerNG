@@ -17,23 +17,35 @@
  */
 package de.erdesignerng.visual.common;
 
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
 
 public class EditDomainCommand extends UICommand {
+    
+    private final Domain domain;
 
     public EditDomainCommand(ERDesignerComponent component) {
+        this(component, null);
+    }
+
+    public EditDomainCommand(ERDesignerComponent component, Domain aDomain) {
         super(component);
+        
+        domain = aDomain;
     }
 
     @Override
     public void execute() {
         DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
+        if (domain != null) {
+            theEditor.setSelectedDomain(domain);
+        }
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
                 
-                refreshOutline(null);
+                refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

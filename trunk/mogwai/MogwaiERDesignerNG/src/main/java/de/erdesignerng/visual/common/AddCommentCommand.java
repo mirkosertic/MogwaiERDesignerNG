@@ -30,7 +30,7 @@ import de.erdesignerng.visual.editor.comment.CommentEditor;
 
 public class AddCommentCommand extends UICommand {
     
-    private Point2D location;
+    private final Point2D location;
 
     public AddCommentCommand(ERDesignerComponent component,Point2D aLocation) {
         super(component);
@@ -71,7 +71,7 @@ public class AddCommentCommand extends UICommand {
 
                 component.graph.doLayout();
                 
-                refreshOutline(null);
+                refreshDisplayOf(null);
                 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

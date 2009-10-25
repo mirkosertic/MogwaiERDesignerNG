@@ -890,5 +890,33 @@
 			<Text lang="de">Domänen</Text>		
 			<Text lang="en">Domains</Text>					
 		</Entry>
+		<Entry id="EDITTABLE">
+			<Text lang="de">Tabelle {0} bearbeiten</Text>		
+			<Text lang="en">Edit Table {0}</Text>					
+		</Entry>
+		<Entry id="EDITVIEW">
+			<Text lang="de">View {0} bearbeiten</Text>		
+			<Text lang="en">Edit View {0}</Text>					
+		</Entry>
+		<Entry id="EDITRELATION">
+			<Text lang="de">Relation {0} bearbeiten</Text>		
+			<Text lang="en">Edit Relation {0}</Text>					
+		</Entry>
+		<Entry id="EDITDOMAIN">
+			<Text lang="de">Domäne {0} bearbeiten</Text>		
+			<Text lang="en">Edit Domain {0}</Text>					
+		</Entry>
+		<Entry id="EDITATTRIBUTE">
+			<Text lang="de">Attribut {0} bearbeiten</Text>		
+			<Text lang="en">Edit Attribute {0}</Text>					
+		</Entry>
+		<Entry id="EDITINDEX">
+			<Text lang="de">Index {0} bearbeiten</Text>		
+			<Text lang="en">Edit Index {0}</Text>					
+		</Entry>
+		<Entry id="SHOWELEMENTINDIAGRAM">
+			<Text lang="de">Zeige {0} im Diagramm</Text>		
+			<Text lang="en">Show {0} in Diagram</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

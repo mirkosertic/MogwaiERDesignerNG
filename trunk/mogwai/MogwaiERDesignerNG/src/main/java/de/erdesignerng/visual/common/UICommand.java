@@ -29,7 +29,7 @@ public abstract class UICommand implements ActionEventProcessor , ActionListener
     
     protected ERDesignerComponent component;
     
-    private ApplicationPreferences preferences;
+    private final ApplicationPreferences preferences;
     
     public UICommand(ERDesignerComponent aComponent) {
         component = aComponent;
@@ -59,8 +59,14 @@ public abstract class UICommand implements ActionEventProcessor , ActionListener
     public void actionPerformed(ActionEvent e) {
         execute();
     }
-    
-    public void refreshOutline(Object aChangedObject) {
+
+    /**
+     * Refresh the display of a specific object.
+     * 
+     * @param aChangedObject the object to update
+     */
+    public void refreshDisplayOf(Object aChangedObject) {
+        component.repaintGraph();
         component.getWorldConnector().getOutlineComponent().refresh(component.getModel(), aChangedObject);
     }
 }
