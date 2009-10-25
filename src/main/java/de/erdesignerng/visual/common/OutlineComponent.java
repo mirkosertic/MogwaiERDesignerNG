@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -33,12 +35,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -48,6 +53,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.lang.StringUtils;
 import org.jgraph.graph.DefaultGraphCell;
 
 import de.erdesignerng.ERDesignerBundle;
@@ -62,12 +68,54 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.visual.IconFactory;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 import de.mogwai.common.client.looks.components.DefaultTree;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class OutlineComponent extends JPanel implements ResourceHelperProvider {
+
+    private final class OutlineDisableFilterActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            filterField.setText("");
+            refresh(erdesignerComponent.getModel(), null);
+        }
+    }
+
+    private final class OutlineKeyAdapter extends KeyAdapter {
+
+        private final Timer timer = new Timer();
+
+        private TimerTask oldTask;
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            if (oldTask != null) {
+                oldTask.cancel();
+            }
+            oldTask = new TimerTask() {
+
+                @Override
+                public void run() {
+                    try {
+                        SwingUtilities.invokeAndWait(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                refresh(erdesignerComponent.getModel(), null);
+                            }
+                        });
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            timer.schedule(oldTask, 500);
+        }
+    }
 
     private final class OutlineTreeExpansionListener implements TreeExpansionListener {
         @Override
@@ -110,8 +158,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         private final DefaultLabel theLabel = new DefaultLabel();
 
         @Override
-        public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean aSelected,
-                boolean aExpanded, boolean aLeaf, int aRow, boolean hasFocus) {
+        public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean aSelected, boolean aExpanded,
+                boolean aLeaf, int aRow, boolean hasFocus) {
             theLabel.setColon(false);
             theLabel.setText("");
             theLabel.setOpaque(true);
@@ -193,6 +241,10 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
     private DefaultTree tree;
 
+    private DefaultTextField filterField;
+
+    private DefaultButton disableFilterButton;
+
     private final Map<Object, DefaultMutableTreeNode> userObjectMap = new HashMap<Object, DefaultMutableTreeNode>();
 
     private final Set<Object> expandedUserObjects = new HashSet<Object>();
@@ -217,7 +269,72 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         setLayout(new BorderLayout());
         add(tree.getScrollPane(), BorderLayout.CENTER);
 
+        filterField = new DefaultTextField();
+        filterField.addKeyListener(new OutlineKeyAdapter());
+        disableFilterButton = new DefaultButton();
+        disableFilterButton.setIcon(IconFactory.getCancelIcon());
+        disableFilterButton.setMaximumSize(new Dimension(21, 21));
+        disableFilterButton.setMinimumSize(new Dimension(21, 21));
+        disableFilterButton.setPreferredSize(new Dimension(21, 21));
+        disableFilterButton.addActionListener(new OutlineDisableFilterActionListener());
+
+        JPanel theFilterPanel = new JPanel();
+        theFilterPanel.setLayout(new BorderLayout());
+        theFilterPanel.add(filterField, BorderLayout.CENTER);
+        theFilterPanel.add(disableFilterButton, BorderLayout.EAST);
+
+        add(theFilterPanel, BorderLayout.NORTH);
+
         tree.addTreeExpansionListener(new OutlineTreeExpansionListener());
+    }
+
+    private boolean isVisible(ModelItem aItem) {
+        String thePartialString = filterField.getText().toLowerCase();
+        if (!StringUtils.isEmpty(thePartialString)) {
+
+            boolean theOverride = false;
+
+            if (aItem instanceof Table) {
+                Table theTable = (Table) aItem;
+                for (Attribute theAttribute : theTable.getAttributes()) {
+                    if (isVisible(theAttribute)) {
+                        theOverride = true;
+                    }
+                }
+                for (Index theIndex : theTable.getIndexes()) {
+                    if (isVisible(theIndex)) {
+                        theOverride = true;
+                    }
+                    for (IndexExpression theExpression : theIndex.getExpressions()) {
+                        if (isVisible(theExpression)) {
+                            theOverride = true;
+                        }
+                    }
+                }
+                
+                for (Relation theRelation : erdesignerComponent.getModel().getRelations().getForeignKeysFor(theTable)) {
+                    if (isVisible(theRelation)) {
+                        theOverride = true;
+                    }
+                }
+            }
+            
+            if (aItem instanceof Relation) {
+                Relation theRelation = (Relation) aItem;
+                for (Attribute theAttribute : theRelation.getMapping().values()) {
+                    if (isVisible(theAttribute)) {
+                        theOverride = true;
+                    }
+                }
+            }
+            
+            String theName = aItem.toString();
+
+            if (!StringUtils.isEmpty(theName)) {
+                return theName.toLowerCase().contains(thePartialString) || theOverride;
+            }
+        }
+        return true;
     }
 
     public void setModel(Model aModel, boolean aExpandAll) {
@@ -233,12 +350,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         Collections.sort(theDomains, new BeanComparator("name"));
         DefaultMutableTreeNode theDomainsNode = new DefaultMutableTreeNode(TreeGroupingElement.DOMAINS);
         for (Domain theDomain : theDomains) {
-            DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(theDomain);
-            theDomainsNode.add(theDomainNode);
+            if (isVisible(theDomain)) {
+                DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(theDomain);
+                theDomainsNode.add(theDomainNode);
 
-            userObjectMap.put(theDomain, theDomainNode);
+                userObjectMap.put(theDomain, theDomainNode);
 
-            updateDomainTreeNode(aModel, theDomain, theDomainNode);
+                updateDomainTreeNode(aModel, theDomain, theDomainNode);
+            }
         }
         theRoot.add(theDomainsNode);
 
@@ -249,12 +368,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
         DefaultMutableTreeNode theTablesNode = new DefaultMutableTreeNode(TreeGroupingElement.TABLES);
         for (Table theTable : theTables) {
-            DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(theTable);
-            theTablesNode.add(theTableNode);
+            if (isVisible(theTable)) {
+                DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(theTable);
+                theTablesNode.add(theTableNode);
 
-            userObjectMap.put(theTable, theTableNode);
+                userObjectMap.put(theTable, theTableNode);
 
-            updateTableTreeNode(aModel, theTable, theTableNode);
+                updateTableTreeNode(aModel, theTable, theTableNode);
+            }
         }
         theRoot.add(theTablesNode);
 
@@ -265,12 +386,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
         DefaultMutableTreeNode theViewsNode = new DefaultMutableTreeNode(TreeGroupingElement.VIEWS);
         for (View theView : theViews) {
-            DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(theView);
-            theViewsNode.add(theViewNode);
+            if (isVisible(theView)) {
+                DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(theView);
+                theViewsNode.add(theViewNode);
 
-            userObjectMap.put(theView, theViewNode);
+                userObjectMap.put(theView, theViewNode);
 
-            updateViewTreeNode(aModel, theView, theViewNode);
+                updateViewTreeNode(aModel, theView, theViewNode);
+            }
         }
         theRoot.add(theViewsNode);
 
@@ -296,37 +419,48 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         aTableNode.removeAllChildren();
 
         for (Attribute theAttribute : aTable.getAttributes()) {
-            DefaultMutableTreeNode theAttribtueNode = new DefaultMutableTreeNode(theAttribute);
-            aTableNode.add(theAttribtueNode);
+            if (isVisible(theAttribute)) {
+                DefaultMutableTreeNode theAttribtueNode = new DefaultMutableTreeNode(theAttribute);
+                aTableNode.add(theAttribtueNode);
 
-            userObjectMap.put(theAttribute, theAttribtueNode);
+                userObjectMap.put(theAttribute, theAttribtueNode);
+            }
         }
 
         for (Index theIndex : aTable.getIndexes()) {
-            DefaultMutableTreeNode theIndexNode = new DefaultMutableTreeNode(theIndex);
-            for (IndexExpression theExpression : theIndex.getExpressions()) {
-                DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(theExpression);
-                theIndexNode.add(theExpressionNode);
 
-                userObjectMap.put(theExpression, theExpressionNode);
+            if (isVisible(theIndex)) {
+                DefaultMutableTreeNode theIndexNode = new DefaultMutableTreeNode(theIndex);
+                aTableNode.add(theIndexNode);
+                userObjectMap.put(theIndex, theIndexNode);
+
+                for (IndexExpression theExpression : theIndex.getExpressions()) {
+                    if (isVisible(theExpression)) {
+                        DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(theExpression);
+                        theIndexNode.add(theExpressionNode);
+
+                        userObjectMap.put(theExpression, theExpressionNode);
+                    }
+                }
             }
-            aTableNode.add(theIndexNode);
-
-            userObjectMap.put(theIndex, theIndexNode);
         }
 
         for (Relation theRelation : aModel.getRelations().getForeignKeysFor(aTable)) {
-            DefaultMutableTreeNode theRelationNode = new DefaultMutableTreeNode(theRelation);
-            for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
-                DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theEntry.getValue());
-                theRelationNode.add(theAttributeNode);
+            if (isVisible(theRelation)) {
+                DefaultMutableTreeNode theRelationNode = new DefaultMutableTreeNode(theRelation);
+                aTableNode.add(theRelationNode);
 
-                userObjectMap.put(theEntry.getKey(), theAttributeNode);
+                userObjectMap.put(theRelation, theRelationNode);
+
+                for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
+                    if (isVisible(theEntry.getValue())) {
+                        DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theEntry.getValue());
+                        theRelationNode.add(theAttributeNode);
+
+                        userObjectMap.put(theEntry.getKey(), theAttributeNode);
+                    }
+                }
             }
-
-            aTableNode.add(theRelationNode);
-
-            userObjectMap.put(theRelation, theRelationNode);
         }
     }
 
@@ -361,11 +495,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         if (aModel != null) {
 
             TreePath theSelected = tree.getSelectionPath();
+
+            DefaultMutableTreeNode theSelectedNode = theSelected != null ? (DefaultMutableTreeNode) theSelected
+                    .getLastPathComponent() : null;
+
             Set<Object> theExpandedUserObjects = expandedUserObjects;
 
             setModel(aModel, false);
 
-            DefaultMutableTreeNode theSelectedNode = (DefaultMutableTreeNode) theSelected.getLastPathComponent();
             List<TreePath> thePathsToExpand = new ArrayList<TreePath>();
             TreePath theNewSelection = null;
 
@@ -376,8 +513,10 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                 if (theExpandedUserObjects.contains(theLastNew.getUserObject())) {
                     thePathsToExpand.add(thePath);
                 }
-                if (theLastNew.getUserObject().equals(theSelectedNode.getUserObject())) {
-                    theNewSelection = thePath;
+                if (theSelectedNode != null) {
+                    if (theLastNew.getUserObject().equals(theSelectedNode.getUserObject())) {
+                        theNewSelection = thePath;
+                    }
                 }
             }
 
@@ -416,7 +555,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     erdesignerComponent.setSelectedObject(theItem);
                 }
             });
-            
+
             aMenu.add(theEditItem);
         }
 
@@ -427,7 +566,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITTABLE, theTable.getName()));
             theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theTable));
-            
+
             aMenu.add(theEditItem);
         }
         if (theUserObject instanceof View) {
@@ -437,7 +576,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITVIEW, theView.getName()));
             theEditItem.addActionListener(new EditViewCommand(erdesignerComponent, theView));
-            
+
             aMenu.add(theEditItem);
 
         }
@@ -449,7 +588,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITRELATION,
                     theRelation.getName()));
             theEditItem.addActionListener(new EditRelationCommand(erdesignerComponent, theRelation));
-            
+
             aMenu.add(theEditItem);
 
         }
@@ -460,7 +599,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITDOMAIN, theDomain.getName()));
             theEditItem.addActionListener(new EditDomainCommand(erdesignerComponent, theDomain));
-            
+
             aMenu.add(theEditItem);
 
         }
@@ -470,9 +609,11 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             Attribute theAttribute = (Attribute) theUserObject;
 
             JMenuItem theEditItem = new JMenuItem();
-            theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITATTRIBUTE, theAttribute.getName()));
-            theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theAttribute.getOwner(), theAttribute));
-            
+            theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITATTRIBUTE,
+                    theAttribute.getName()));
+            theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theAttribute.getOwner(),
+                    theAttribute));
+
             aMenu.add(theEditItem);
         }
 
@@ -483,7 +624,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITINDEX, theIndex.getName()));
             theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theIndex.getOwner(), theIndex));
-            
+
             aMenu.add(theEditItem);
 
         }
