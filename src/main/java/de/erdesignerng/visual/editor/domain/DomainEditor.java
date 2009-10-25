@@ -35,6 +35,8 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
+import de.erdesignerng.visual.editor.NullsafeSpinnerEditor;
+import de.erdesignerng.visual.editor.NullsafeSpinnerModel;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -85,6 +87,9 @@ public class DomainEditor extends BaseEditor {
         super(aParent, ERDesignerBundle.DOMAINEDITOR);
         initialize();
 
+        editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
+        editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
+        
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
         for (DataType theType : aModel.getDomainDataTypes()) {
             theDataTypes.addElement(theType);
