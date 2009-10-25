@@ -42,6 +42,8 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
+import de.erdesignerng.visual.editor.NullsafeSpinnerEditor;
+import de.erdesignerng.visual.editor.NullsafeSpinnerModel;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
@@ -149,6 +151,9 @@ public class TableEditor extends BaseEditor {
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
+        
+        editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
+        editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
 
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
         for (DataType theType : aModel.getAvailableDataTypes()) {
@@ -179,9 +184,7 @@ public class TableEditor extends BaseEditor {
         attributeBindingInfo.addBinding("nullable", editingView.getNullable());
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
         attributeBindingInfo.addBinding("datatype", editingView.getDataType(), true);
-
-        //TODO [mirkosertic] Behandlung von Null Werten hier besser abfangen
-        //attributeBindingInfo.addBinding("size", editingView.getSizeSpinner(), true);
+        attributeBindingInfo.addBinding("size", editingView.getSizeSpinner());
         attributeBindingInfo.addBinding("fraction", editingView.getFractionSpinner(), true);
         attributeBindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
