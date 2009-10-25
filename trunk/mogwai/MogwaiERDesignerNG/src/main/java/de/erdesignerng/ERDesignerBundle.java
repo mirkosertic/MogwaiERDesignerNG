@@ -441,4 +441,10 @@ public interface ERDesignerBundle {
   String OUTLINE = "OUTLINE";
   /** \u004c\u006f\u0063\u0061\u0074\u0065\u0020\u0069\u006e\u0020\u004f\u0075\u0074\u006c\u0069\u006e\u0065. */
   String LOCATEINOUTLINE = "LOCATEINOUTLINE";
+  /** \u0054\u0061\u0062\u006c\u0065\u0073. */
+  String TABLES = "TABLES";
+  /** \u0056\u0069\u0065\u0077\u0073. */
+  String VIEWS = "VIEWS";
+  /** \u0044\u006f\u006d\u0061\u0069\u006e\u0073. */
+  String DOMAINSLIST = "DOMAINSLIST";
 }
