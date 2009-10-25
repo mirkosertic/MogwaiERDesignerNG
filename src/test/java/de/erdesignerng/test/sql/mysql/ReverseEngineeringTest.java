@@ -24,8 +24,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.ReverseEngineeringStrategy;
@@ -148,14 +146,9 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
-            System.out.println("Reference");
             String theReference = readResourceFile("result.sql");
-            System.out.println(theReference);
-            System.out.println("Result");
-            System.out.println(theResult);
-            System.out.println("Difference");
-            System.out.println(StringUtils.difference(theReference, theResult));
-            assertTrue(theResult.equals(theReference));
+
+            assertTrue(compareStrings(theResult, theReference));
 
         } finally {
             if (theConnection != null) {

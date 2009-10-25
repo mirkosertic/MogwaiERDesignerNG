@@ -59,6 +59,8 @@ public class AddRelationCommand extends UICommand {
             try {
                 theEditor.applyValues();
                 component.graph.getGraphLayoutCache().insert(theEdge);
+                
+                refreshOutline(null);
 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

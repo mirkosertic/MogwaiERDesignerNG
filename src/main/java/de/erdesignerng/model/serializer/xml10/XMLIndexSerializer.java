@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -27,9 +26,11 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
 
 public class XMLIndexSerializer extends AbstractXMLIndexSerializer {
 
+    @Override
     public void serialize(Index aIndex, Document aDocument, Element aRootElement) {
         Element theIndexElement = addElement(aDocument, aRootElement, INDEX);
 
@@ -45,6 +46,7 @@ public class XMLIndexSerializer extends AbstractXMLIndexSerializer {
 
     }
 
+    @Override
     public void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement) {
         // Parse the indexes
         NodeList theIndexes = aElement.getElementsByTagName(INDEX);

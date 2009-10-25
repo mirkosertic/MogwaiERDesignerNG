@@ -58,7 +58,7 @@ public class XML20IOTest extends BaseERDesignerTestCaseImpl {
         
         String theOriginalFile = readResourceFile("examplemodel.mxm");
         String theNewFile = theStringWriter.toString();
-
-        assertTrue(theOriginalFile.equals(theNewFile));
+        
+        assertTrue(compareStrings(theOriginalFile, theNewFile));
     }
 }

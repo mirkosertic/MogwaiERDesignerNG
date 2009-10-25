@@ -179,7 +179,9 @@ public class TableEditor extends BaseEditor {
         attributeBindingInfo.addBinding("nullable", editingView.getNullable());
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
         attributeBindingInfo.addBinding("datatype", editingView.getDataType(), true);
-        attributeBindingInfo.addBinding("size", editingView.getSizeSpinner(), true);
+
+        //TODO [mirkosertic] Behandlung von Null Werten hier besser abfangen
+        //attributeBindingInfo.addBinding("size", editingView.getSizeSpinner(), true);
         attributeBindingInfo.addBinding("fraction", editingView.getFractionSpinner(), true);
         attributeBindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
         attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
