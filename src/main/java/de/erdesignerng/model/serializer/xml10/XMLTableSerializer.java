@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
+import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -25,13 +27,13 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.XMLSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 
-public class XMLTableSerializer extends XMLSerializer {
+public class XMLTableSerializer extends AbstractXMLTableSerializer {
 
-    public static final XMLTableSerializer SERIALIZER = new XMLTableSerializer();
+    private XMLAttributeSerializer xmlAttributeSerializer = null;
 
-    public static final String TABLE = "Table";
+    private XMLIndexSerializer xmlIndexSerializer = null;
 
     public void serialize(Table aTable, Document aDocument, Element aRootElement) {
         Element theTableElement = addElement(aDocument, aRootElement, TABLE);
@@ -42,16 +44,16 @@ public class XMLTableSerializer extends XMLSerializer {
 
         // Attribute serialisieren
         for (Attribute theAttribute : aTable.getAttributes()) {
-            XMLAttributeSerializer.SERIALIZER.serialize(theAttribute, aDocument, theTableElement);
+            getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
         }
 
         // Indexes serialisieren
         for (Index theIndex : aTable.getIndexes()) {
-            XMLIndexSerializer.SERIALIZER.serialize(theIndex, aDocument, theTableElement);
+            getXMLIndexSerializer().serialize(theIndex, aDocument, theTableElement);
         }
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    public void deserialize(Model aModel, Document aDocument) {
         // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(TABLE);
         for (int i = 0; i < theElements.getLength(); i++) {
@@ -63,11 +65,29 @@ public class XMLTableSerializer extends XMLSerializer {
 
             deserializeCommentElement(theElement, theTable);
 
-            XMLAttributeSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
-            XMLIndexSerializer.SERIALIZER.deserializeFrom(aModel, theTable, aDocument, theElement);
+            getXMLAttributeSerializer().deserialize(aModel, theTable, aDocument, theElement);
+            getXMLIndexSerializer().deserialize(aModel, theTable, aDocument, theElement);
 
             aModel.getTables().add(theTable);
         }
 
+    }
+
+    @Override
+    protected AbstractXMLAttributeSerializer getXMLAttributeSerializer() {
+        if (xmlAttributeSerializer == null) {
+            xmlAttributeSerializer = new XMLAttributeSerializer();
+        }
+
+        return xmlAttributeSerializer;
+    }
+
+    @Override
+    protected AbstractXMLIndexSerializer getXMLIndexSerializer() {
+        if (xmlIndexSerializer == null) {
+            xmlIndexSerializer = new XMLIndexSerializer();
+        }
+
+        return xmlIndexSerializer;
     }
 }

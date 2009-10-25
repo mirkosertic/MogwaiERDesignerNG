@@ -28,28 +28,12 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.XMLSerializer;
 
-public class XMLRelationSerializer extends XMLSerializer {
+public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml10.XMLRelationSerializer {
 
-    public static final XMLRelationSerializer SERIALIZER = new XMLRelationSerializer();
+    protected static final String EXPORTINGEXPRESSIONREFID = "exportingexpressionrefid";
 
-    public static final String RELATION = "Relation";
-
-    public static final String MAPPING = "Mapping";
-
-    public static final String IMPORTINGTABLEREFID = "importingtablerefid";
-
-    public static final String EXPORTINGTABLEREFID = "exportingtablerefid";
-
-    public static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
-
-    public static final String EXPORTINGEXPRESSIONREFID = "exportingexpressionrefid";
-
-    public static final String ONDELETE = "ondelete";
-
-    public static final String ONUPDATE = "onupdate";
-
+    @Override
     public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
         Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
 
@@ -76,7 +60,8 @@ public class XMLRelationSerializer extends XMLSerializer {
 
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    @Override
+    public void deserialize(Model aModel, Document aDocument) {
 
         // And finally, parse the relations
         NodeList theElements = aDocument.getElementsByTagName(RELATION);

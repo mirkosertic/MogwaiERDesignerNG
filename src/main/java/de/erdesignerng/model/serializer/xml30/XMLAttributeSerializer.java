@@ -24,26 +24,10 @@ import org.w3c.dom.NodeList;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.XMLSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
 import org.apache.commons.lang.StringUtils;
 
-public class XMLAttributeSerializer extends XMLSerializer {
-
-    public static final XMLAttributeSerializer SERIALIZER = new XMLAttributeSerializer();
-
-    public static final String ATTRIBUTE = "Attribute";
-
-    public static final String SIZE = "size";
-
-    public static final String FRACTION = "fraction";
-
-    public static final String SCALE = "scale";
-
-    public static final String NULLABLE = "nullable";
-
-    public static final String DEFAULTVALUE = "defaultvalue";
-
-    public static final String EXTRA = "extra";
+public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 
     public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
 
@@ -67,7 +51,7 @@ public class XMLAttributeSerializer extends XMLSerializer {
         serializeCommentElement(aDocument, theAttributeElement, aAttribute);
     }
 
-    public void deserializeFrom(Model aModel, Table aTable, Document aDocument, Element aElement) {
+    public void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement) {
         // Parse the Attributes
         NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
         for (int j = 0; j < theAttributes.getLength(); j++) {

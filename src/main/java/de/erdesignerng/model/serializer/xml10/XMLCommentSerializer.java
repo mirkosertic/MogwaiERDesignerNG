@@ -17,23 +17,19 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
+import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.XMLSerializer;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008/11/02 14:20:18 $
  */
-public class XMLCommentSerializer extends XMLSerializer {
-
-    public static final XMLCommentSerializer SERIALIZER = new XMLCommentSerializer();
-
-    public static final String COMMENT = "ModelComment";
+public class XMLCommentSerializer extends AbstractXMLCommentSerializer {
 
     public void serialize(Comment aComment, Document aDocument, Element aRootElement) {
 
@@ -44,7 +40,7 @@ public class XMLCommentSerializer extends XMLSerializer {
         serializeCommentElement(aDocument, theSubjectAreaElement, aComment);
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    public void deserialize(Model aModel, Document aDocument) {
 
         NodeList theElements = aDocument.getElementsByTagName(COMMENT);
         for (int i = 0; i < theElements.getLength(); i++) {

@@ -31,19 +31,22 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
+import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
 import de.erdesignerng.util.XMLUtils;
 
 /**
  * @author $Author: dr-death $
  * @version $Date: 2009-10-21 10:00:00 $
  */
-public class XMLModel30Serializer extends AbstractXMLModelSerializer {
+public class XMLModel30Serializer extends XMLModel20Serializer {
 
     private static final String CURRENT_VERSION = "3.0";
-    
+
     private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_3.0.xsd";
-    
+
+    private XMLTableSerializer xmlTableSerializer = null;
+
     public XMLModel30Serializer(XMLUtils utils) {
         super(utils);
     }
@@ -68,37 +71,37 @@ public class XMLModel30Serializer extends AbstractXMLModelSerializer {
 
         Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
         for (Domain theTable : aModel.getDomains()) {
-            XMLDomainSerializer.SERIALIZER.serialize(theTable, aDocument, theDomainsElement);
+            getXMLDomainSerializer().serialize(theTable, aDocument, theDomainsElement);
         }
 
         Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
         for (Table theTable : aModel.getTables()) {
-            XMLTableSerializer.SERIALIZER.serialize(theTable, aDocument, theTablesElement);
+            getXMLTableSerializer().serialize(theTable, aDocument, theTablesElement);
         }
 
         Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
         for (Relation theRelation : aModel.getRelations()) {
-            XMLRelationSerializer.SERIALIZER.serialize(theRelation, aDocument, theRelationsElement);
+            getXMLRelationSerializer().serialize(theRelation, aDocument, theRelationsElement);
         }
 
         Element theViewsElement = addElement(aDocument, theRootElement, VIEWS);
         for (View theView : aModel.getViews()) {
-            XMLViewSerializer.SERIALIZER.serialize(theView, aDocument, theViewsElement);
+            getXMLViewSerializer().serialize(theView, aDocument, theViewsElement);
         }
 
         Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
-            XMLSubjectAreaSerializer.SERIALIZER.serialize(theSubjectArea, aDocument, theSubjectAreasElement);
+            getXMLSubjectAreaSerializer().serialize(theSubjectArea, aDocument, theSubjectAreasElement);
         }
 
         Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
         for (Comment theComment : aModel.getComments()) {
-            XMLCommentSerializer.SERIALIZER.serialize(theComment, aDocument, theCommentsElement);
+            getXMLCommentSerializer().serialize(theComment, aDocument, theCommentsElement);
         }
     }
 
     @Override
-    protected Model deserializeFrom(Document aDocument) {
+    protected Model deserialize(Document aDocument) {
         Model theModel = new Model();
 
         NodeList theElements = aDocument.getElementsByTagName(MODEL);
@@ -129,12 +132,12 @@ public class XMLModel30Serializer extends AbstractXMLModelSerializer {
             }
         }
 
-        XMLDomainSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        XMLTableSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        XMLRelationSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        XMLViewSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        XMLCommentSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
-        XMLSubjectAreaSerializer.SERIALIZER.deserializeFrom(theModel, aDocument);
+        getXMLDomainSerializer().deserialize(theModel, aDocument);
+        getXMLTableSerializer().deserialize(theModel, aDocument);
+        getXMLRelationSerializer().deserialize(theModel, aDocument);
+        getXMLViewSerializer().deserialize(theModel, aDocument);
+        getXMLCommentSerializer().deserialize(theModel, aDocument);
+        getXMLSubjectAreaSerializer().deserialize(theModel, aDocument);
 
         return theModel;
     }
@@ -147,5 +150,14 @@ public class XMLModel30Serializer extends AbstractXMLModelSerializer {
     @Override
     public String getVersion() {
         return CURRENT_VERSION;
+    }
+
+    @Override
+    protected AbstractXMLTableSerializer getXMLTableSerializer() {
+        if (xmlTableSerializer == null) {
+            xmlTableSerializer = new XMLTableSerializer();
+        }
+
+        return xmlTableSerializer;
     }
 }

@@ -25,7 +25,7 @@ import java.awt.Color;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class SubjectArea extends ModelItem {
+public class SubjectArea extends OwnedModelItem<Model> {
 
     private Color color;
 

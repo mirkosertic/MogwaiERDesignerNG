@@ -37,9 +37,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.OwnedModelItem;
 import de.erdesignerng.util.XMLUtils;
 
-public abstract class AbstractXMLModelSerializer extends XMLSerializer {
+public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerializer {
 
     protected static final String CONFIGURATION = "Configuration";
 
@@ -56,13 +57,13 @@ public abstract class AbstractXMLModelSerializer extends XMLSerializer {
     protected static final String SUBJECTAREAS = "Subjectareas";
 
     protected static final String COMMENTS = "Comments";
-    
-    private XMLUtils utils;
-    
+
+    private XMLUtils utils = null;
+
     protected AbstractXMLModelSerializer(XMLUtils aUtils) {
         utils = aUtils;
     }
-    
+
     /**
      * Test if the persister supports a document version.
      * 
@@ -80,7 +81,7 @@ public abstract class AbstractXMLModelSerializer extends XMLSerializer {
     }
 
     public Model deserializeModelFromXML(Document aDocument) throws SAXException, IOException {
-        
+
         if (!supportsDocument(aDocument)) {
             throw new IOException("Unsupported model version");
         }
@@ -90,7 +91,7 @@ public abstract class AbstractXMLModelSerializer extends XMLSerializer {
         // Validate the document
         SchemaFactory theSchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        // hook up org.xml.sax.ErrorHandler implementation.
+        // hook up org.XML.sax.ErrorHandler implementation.
         theSchemaFactory.setErrorHandler(new ErrorHandler() {
 
             public void error(SAXParseException aException) throws SAXException {
@@ -123,7 +124,7 @@ public abstract class AbstractXMLModelSerializer extends XMLSerializer {
             }
         }
 
-        return deserializeFrom(aDocument);
+        return deserialize(aDocument);
     }
 
     public void serializeModelToXML(Model aModel, Writer aWriter) throws IOException, TransformerException {
@@ -136,12 +137,35 @@ public abstract class AbstractXMLModelSerializer extends XMLSerializer {
 
         aWriter.close();
     }
-    
-    protected abstract Model deserializeFrom(Document aDocument);
-    
+
+    protected abstract Model deserialize(Document aDocument);
+
     protected abstract void serialize(Model aModel, Document aDocument);
-    
-    public abstract String getVersion();
-    
-    public abstract String getSchemaResource();
+
+    @Override
+    @Deprecated
+    public void serialize(OwnedModelItem aModelItem, Document aDocument, Element aRootElement) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    @Deprecated
+    public void deserialize(Model aModel, Document aDocument) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    protected abstract String getVersion();
+
+    protected abstract String getSchemaResource();
+
+    protected abstract AbstractXMLSubjectAreaSerializer getXMLSubjectAreaSerializer();
+
+    protected abstract AbstractXMLCommentSerializer getXMLCommentSerializer();
+
+    protected abstract AbstractXMLDomainSerializer getXMLDomainSerializer();
+
+    protected abstract AbstractXMLRelationSerializer getXMLRelationSerializer();
+
+    protected abstract AbstractXMLTableSerializer getXMLTableSerializer();
+
 }

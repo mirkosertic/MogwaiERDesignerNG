@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
+import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -27,27 +28,8 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.XMLSerializer;
 
-public class XMLRelationSerializer extends XMLSerializer {
-
-    public static final XMLRelationSerializer SERIALIZER = new XMLRelationSerializer();
-
-    public static final String RELATION = "Relation";
-
-    public static final String MAPPING = "Mapping";
-
-    public static final String IMPORTINGTABLEREFID = "importingtablerefid";
-
-    public static final String EXPORTINGTABLEREFID = "exportingtablerefid";
-
-    public static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
-
-    public static final String EXPORTINGATTRIBUTEREFID = "exportingattributerefid";
-
-    public static final String ONDELETE = "ondelete";
-
-    public static final String ONUPDATE = "onupdate";
+public class XMLRelationSerializer extends AbstractXMLRelationSerializer {
 
     public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
         Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
@@ -72,10 +54,9 @@ public class XMLRelationSerializer extends XMLSerializer {
             theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theKey.getAttributeRef().getSystemId());
             theMapping.setAttribute(EXPORTINGATTRIBUTEREFID, theValue.getSystemId());
         }
-
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    public void deserialize(Model aModel, Document aDocument) {
 
         // And finally, parse the relations
         NodeList theElements = aDocument.getElementsByTagName(RELATION);

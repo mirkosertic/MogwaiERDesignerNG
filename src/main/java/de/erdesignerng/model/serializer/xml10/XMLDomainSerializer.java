@@ -17,25 +17,15 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
+import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.XMLSerializer;
 
-public class XMLDomainSerializer extends XMLSerializer {
-
-    public static final XMLDomainSerializer SERIALIZER = new XMLDomainSerializer();
-
-    public static final String DOMAIN = "Domain";
-
-    public static final String SIZE = "size";
-
-    public static final String FRACTION = "fraction";
-
-    public static final String SCALE = "scale";
+public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 
     public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
         Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
@@ -50,7 +40,7 @@ public class XMLDomainSerializer extends XMLSerializer {
         theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    public void deserialize(Model aModel, Document aDocument) {
         // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
         for (int i = 0; i < theElements.getLength(); i++) {
