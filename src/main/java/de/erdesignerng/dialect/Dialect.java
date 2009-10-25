@@ -20,7 +20,6 @@ package de.erdesignerng.dialect;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
@@ -54,7 +53,7 @@ public abstract class Dialect {
 
     private NameCastType castType;
 
-    private DataTypeList dataTypes = new DataTypeList();
+    private final DataTypeList dataTypes = new DataTypeList();
 
     /**
      * @return the caseSensitive
@@ -273,7 +272,6 @@ public abstract class Dialect {
     }
 
     protected void seal() {
-        Collections.sort(dataTypes);
     }
 
     public boolean generatesManagedConnection() {

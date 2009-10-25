@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.dialect.ConversionInfos;
@@ -59,21 +60,21 @@ public class Model implements OwnedModelItemVerifier {
 
     public static final String PROPERTY_PROMPTFORPASSWORD = "PROMPTFORPASSWORD";
 
-    private TableList tables = new TableList();
+    private final TableList tables = new TableList();
 
-    private RelationList relations = new RelationList();
+    private final RelationList relations = new RelationList();
 
-    private SubjectAreaList subjectAreas = new SubjectAreaList();
+    private final SubjectAreaList subjectAreas = new SubjectAreaList();
 
-    private CommentList comments = new CommentList();
+    private final CommentList comments = new CommentList();
 
-    private DomainList domains = new DomainList();
+    private final DomainList domains = new DomainList();
 
-    private ViewList views = new ViewList();
+    private final ViewList views = new ViewList();
 
     private Dialect dialect;
 
-    private ModelProperties properties = new ModelProperties();
+    private final ModelProperties properties = new ModelProperties();
 
     private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
     
@@ -464,7 +465,7 @@ public class Model implements OwnedModelItemVerifier {
             theResult.addAll(dialect.getDataTypes());
         }
         theResult.addAll(domains);
-        Collections.sort(theResult);
+        Collections.sort(theResult, new BeanComparator("name"));
         return theResult;
     }
 

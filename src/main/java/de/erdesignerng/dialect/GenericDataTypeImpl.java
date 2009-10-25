@@ -175,10 +175,6 @@ public abstract class GenericDataTypeImpl implements DataType {
         return name;
     }
 
-    public int compareTo(DataType aType) {
-        return name.compareTo(aType.getName());
-    }
-
     public boolean isIdentity() {
         return identity;
     }

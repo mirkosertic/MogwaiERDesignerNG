@@ -46,7 +46,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     private ERDesignerComponent component;
 
-    private ApplicationPreferences preferences;
+    private final ApplicationPreferences preferences;
 
     private OutlineComponent outlineComponent;
     
@@ -83,7 +83,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     private void initialize() {
         component = new ERDesignerComponent(preferences, this);
-        outlineComponent = new OutlineComponent();
+        outlineComponent = new OutlineComponent(component);
 
         dockingHelper = new DockingHelper(preferences, component, outlineComponent);
         

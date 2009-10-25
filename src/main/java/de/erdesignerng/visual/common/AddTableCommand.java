@@ -30,11 +30,11 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class AddTableCommand extends UICommand {
 
-    private Point2D location;
+    private final Point2D location;
 
-    private TableCell exportingCell;
+    private final TableCell exportingCell;
 
-    private boolean newTableIsChild;
+    private final boolean newTableIsChild;
 
     public AddTableCommand(ERDesignerComponent component, Point2D aLocation, TableCell aExportingCell,
             boolean aNewTableIsChild) {
@@ -83,9 +83,9 @@ public class AddTableCommand extends UICommand {
                     // If the user cancels the add relation dialog
                     // the table is added, too
                     if (newTableIsChild) {
-                        new AddRelationCommand(component,theImportingCell, exportingCell).execute();
+                        new AddRelationCommand(component, theImportingCell, exportingCell).execute();
                     } else {
-                        new AddRelationCommand(component,exportingCell, theImportingCell).execute();
+                        new AddRelationCommand(component, exportingCell, theImportingCell).execute();
                     }
                 }
 
@@ -94,8 +94,8 @@ public class AddTableCommand extends UICommand {
                 theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
 
                 component.graph.doLayout();
-                
-                refreshOutline(null);
+
+                refreshDisplayOf(null);
 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

@@ -32,9 +32,9 @@ import de.erdesignerng.visual.editor.relation.RelationEditor;
 
 public class AddRelationCommand extends UICommand {
     
-    private TableCell exportingTable;
+    private final TableCell exportingTable;
     
-    private TableCell importingTable;
+    private final TableCell importingTable;
 
     public AddRelationCommand(ERDesignerComponent component,TableCell aImportingCell, TableCell aExportingCell) {
         super(component);
@@ -60,8 +60,7 @@ public class AddRelationCommand extends UICommand {
                 theEditor.applyValues();
                 component.graph.getGraphLayoutCache().insert(theEdge);
                 
-                refreshOutline(null);
-
+                refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

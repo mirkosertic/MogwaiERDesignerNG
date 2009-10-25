@@ -50,31 +50,31 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  */
 public class DomainEditor extends BaseEditor {
 
-    private Model model;
+    private final Model model;
 
     private DomainEditorView editingView;
 
-    private BindingInfo<Domain> domainBindingInfo = new BindingInfo<Domain>();
+    private final BindingInfo<Domain> domainBindingInfo = new BindingInfo<Domain>();
 
-    private DefaultListModel domainListModel;
+    private final DefaultListModel domainListModel;
 
-    private List<Domain> removedDomains = new ArrayList<Domain>();
+    private final List<Domain> removedDomains = new ArrayList<Domain>();
 
-    private DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandNewDomain(e);
         }
     }, this, ERDesignerBundle.NEW);
 
-    private DefaultAction deleteAttributeAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction deleteAttributeAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandDeleteDomain(e);
         }
     }, this, ERDesignerBundle.DELETE);
 
-    private DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandUpdateDomain(e);
@@ -246,5 +246,14 @@ public class DomainEditor extends BaseEditor {
                 theOriginalDomain.restoreFrom(theDomain);
             }
         }
+    }
+
+    /**
+     * Set the selected main.
+     * 
+     * @param aDomain the selected domain
+     */
+    public void setSelectedDomain(Domain aDomain) {
+        editingView.getDomainList().setSelectedValue(aDomain, true);
     }
 }

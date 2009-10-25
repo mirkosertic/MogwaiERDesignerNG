@@ -115,7 +115,7 @@ public class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseIm
 
         @Override
         public OutlineComponent getOutlineComponent() {
-            return new OutlineComponent();
+            return new OutlineComponent(null);
         }
     };
 

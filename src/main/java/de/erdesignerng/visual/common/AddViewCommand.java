@@ -30,7 +30,7 @@ import de.erdesignerng.visual.editor.view.ViewEditor;
 
 public class AddViewCommand extends UICommand {
 
-    private Point2D location;
+    private final Point2D location;
 
     public AddViewCommand(ERDesignerComponent component, Point2D aLocation) {
         super(component);
@@ -76,8 +76,7 @@ public class AddViewCommand extends UICommand {
 
                 component.graph.doLayout();
                 
-                refreshOutline(null);
-
+                refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
