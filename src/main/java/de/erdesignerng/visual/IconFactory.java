@@ -69,4 +69,7 @@ public final class IconFactory {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/index_small.gif"));
     }
 
+    public static ImageIcon getCancelIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/cancel.png"));
+    }
 }
