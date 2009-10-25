@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
+import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
 import java.awt.Color;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,25 +29,12 @@ import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.XMLSerializer;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008/11/02 14:20:18 $
  */
-public class XMLSubjectAreaSerializer extends XMLSerializer {
-
-    public static final XMLSubjectAreaSerializer SERIALIZER = new XMLSubjectAreaSerializer();
-
-    public static final String SUBJECTAREA = "Subjectarea";
-
-    public static final String ITEM = "Item";
-
-    public static final String TABLEREFID = "tablerefid";
-
-    public static final String COMMENTREFID = "commentrefid";
-
-    public static final String COLOR = "color";
+public class XMLSubjectAreaSerializer extends AbstractXMLSubjectAreaSerializer {
 
     public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
 
@@ -71,7 +59,7 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
         }
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    public void deserialize(Model aModel, Document aDocument) {
 
         NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
         for (int i = 0; i < theElements.getLength(); i++) {
