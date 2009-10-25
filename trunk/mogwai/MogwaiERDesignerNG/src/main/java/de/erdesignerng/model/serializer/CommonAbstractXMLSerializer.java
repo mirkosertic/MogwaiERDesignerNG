@@ -17,14 +17,16 @@
  */
 package de.erdesignerng.model.serializer;
 
+import de.erdesignerng.model.Model;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.OwnedModelItem;
 
-public class XMLSerializer implements CommonXMLElementsAndAttributes {
+public abstract class CommonAbstractXMLSerializer<T extends OwnedModelItem> implements CommonXMLElementsAndAttributes {
 
     protected Element addElement(Document aDocument, Node aNode, String aElementName) {
         Element theElement = aDocument.createElement(aElementName);
@@ -84,4 +86,8 @@ public class XMLSerializer implements CommonXMLElementsAndAttributes {
             aModelItem.getProperties().setProperty(theElement.getAttribute(NAME), theElement.getAttribute(VALUE));
         }
     }
+
+    public abstract void serialize(T aModelItem, Document aDocument, Element aRootElement);
+
+    public abstract void deserialize(Model aModel, Document aDocument);
 }

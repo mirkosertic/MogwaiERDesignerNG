@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class Domain implements DataType, Cloneable {
+public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain>, DataType {
 
     private String systemId = ModelUtilities.createSystemIdFor(this);
 
@@ -45,6 +45,7 @@ public class Domain implements DataType, Cloneable {
     /**
      * @return the name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -53,6 +54,7 @@ public class Domain implements DataType, Cloneable {
      * @param name
      *            the name to set
      */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -60,6 +62,7 @@ public class Domain implements DataType, Cloneable {
     /**
      * @return the systemId
      */
+    @Override
     public String getSystemId() {
         return systemId;
     }
@@ -68,6 +71,7 @@ public class Domain implements DataType, Cloneable {
      * @param systemId
      *            the systemId to set
      */
+    @Override
     public void setSystemId(String systemId) {
         this.systemId = systemId;
     }

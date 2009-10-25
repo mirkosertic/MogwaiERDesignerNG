@@ -27,20 +27,12 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.XMLSerializer;
 
-public class XMLIndexSerializer extends XMLSerializer {
+public class XMLIndexSerializer extends de.erdesignerng.model.serializer.xml10.XMLIndexSerializer {
 
-    public static final XMLIndexSerializer SERIALIZER = new XMLIndexSerializer();
+    protected static final String ATTRIBUTEEXPRESSION = "expression";
 
-    public static final String INDEX = "Index";
-
-    public static final String INDEXTYPE = "indextype";
-
-    public static final String INDEXATTRIBUTE = "Indexattribute";
-
-    public static final String ATTRIBUTEEXPRESSION = "expression";
-
+    @Override
     public void serialize(Index aIndex, Document aDocument, Element aRootElement) {
         Element theIndexElement = addElement(aDocument, aRootElement, INDEX);
 
@@ -61,7 +53,8 @@ public class XMLIndexSerializer extends XMLSerializer {
 
     }
 
-    public void deserializeFrom(Model aModel, Table aTable, Document aDocument, Element aElement) {
+    @Override
+    public void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement) {
         // Parse the indexes
         NodeList theIndexes = aElement.getElementsByTagName(INDEX);
         for (int j = 0; j < theIndexes.getLength(); j++) {

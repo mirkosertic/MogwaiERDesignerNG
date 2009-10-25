@@ -1,47 +1,34 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="de.erdesignerng.model.serializer.repository.entities"
-	default-lazy="false">
-
-	<class name="SubjectAreaEntity" table="mogrep_sa" select-before-update="true">
-
-		<id name="id" >
-			<generator class="native" />
-		</id>
-		<version name="version"/>
-		
-		<property name="systemId" not-null="true"/>		
-		
-		<property name="creationUser" not-null="true"/>
-		<property name="creationDate" not-null="true"/>
-		<property name="lastModificationUser" not-null="false"/>
-		<property name="lastModificationDate" not-null="false"/>
-
-		<property name="name" not-null="true"/>
-		<property name="comment" not-null="false" type="text"/>		
-		
-		<property name="color" not-null="true"/>
-		<property name="visible" not-null="false"/>
-		
-		<list name="tables" cascade="all-delete-orphan" table="mogrep_sa_tables">
-			<key column="indexid" foreign-key="mogrep_sa_tables_fk1" />
-			<list-index column="listindex" />
-			<element column="tableid" type="string" not-null="true"/>
-		</list>
-
-		<list name="views" cascade="all-delete-orphan" table="mogrep_sa_views">
-			<key column="indexid" foreign-key="mogrep_sa_views_fk1" />
-			<list-index column="listindex" />
-			<element column="viewid" type="string" not-null="true"/>
-		</list>
-
-		<list name="comments" cascade="all-delete-orphan" table="mogrep_sa_comments">
-			<key column="indexid" foreign-key="mogrep_sa_comments_fk1"/>
-			<list-index column="listindex" />
-			<element column="commentid" type="string" not-null="true"/>
-		</list>
-
-	</class>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false" package="de.erdesignerng.model.serializer.repository.entities">
+  <class name="SubjectAreaEntity" select-before-update="true" table="mogrep_sa">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <version name="version"/>
+    <property name="systemId" not-null="true"/>
+    <property name="creationUser" not-null="true"/>
+    <property name="creationDate" not-null="true"/>
+    <property name="lastModificationUser" not-null="false"/>
+    <property name="lastModificationDate" not-null="false"/>
+    <property name="name" not-null="true"/>
+    <property name="comment" not-null="false" type="text"/>
+    <property name="color" not-null="true"/>
+    <property name="visible" not-null="false"/>
+    <list cascade="all-delete-orphan" name="tables" table="mogrep_sa_tables">
+      <key column="indexid" foreign-key="mogrep_sa_tables_fk1"/>
+      <list-index column="listindex"/>
+      <element column="tableid" not-null="true" type="string"/>
+    </list>
+    <list cascade="all-delete-orphan" name="views" table="mogrep_sa_views">
+      <key column="indexid" foreign-key="mogrep_sa_views_fk1"/>
+      <list-index column="listindex"/>
+      <element column="viewid" not-null="true" type="string"/>
+    </list>
+    <list cascade="all-delete-orphan" name="comments" table="mogrep_sa_comments">
+      <key column="indexid" foreign-key="mogrep_sa_comments_fk1"/>
+      <list-index column="listindex"/>
+      <element column="commentid" not-null="true" type="string"/>
+    </list>
+  </class>
 </hibernate-mapping>

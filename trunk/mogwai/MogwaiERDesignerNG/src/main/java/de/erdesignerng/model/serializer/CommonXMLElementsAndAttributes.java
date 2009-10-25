@@ -19,25 +19,25 @@ package de.erdesignerng.model.serializer;
 
 public interface CommonXMLElementsAndAttributes {
 
-    String MODEL = "Model";
+    static final String MODEL = "Model";
 
-    String VERSION = "version";
+    static final String VERSION = "version";
 
-    String ID = "id";
+    static final String ID = "id";
 
-    String NAME = "name";
+    static final String NAME = "name";
 
-    String VALUE = "value";
+    static final String VALUE = "value";
 
-    String PROPERTY = "Property";
+    static final String PROPERTY = "Property";
 
-    String COMMENT = "Comment";
+    static final String COMMENT = "Comment";
 
-    String TRUE = "true";
+    static final String TRUE = "true";
 
-    String FALSE = "false";
+    static final String FALSE = "false";
 
-    String ATTRIBUTEREFID = "attributerefid";
+    static final String ATTRIBUTEREFID = "attributerefid";
 
-    String DATATYPE = "datatype";
+    static final String DATATYPE = "datatype";
 }

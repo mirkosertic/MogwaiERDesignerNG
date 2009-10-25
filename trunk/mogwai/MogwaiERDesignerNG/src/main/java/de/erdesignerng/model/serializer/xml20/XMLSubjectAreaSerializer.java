@@ -29,30 +29,19 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.XMLSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  */
-public class XMLSubjectAreaSerializer extends XMLSerializer {
+public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.xml10.XMLSubjectAreaSerializer {
 
-    public static final XMLSubjectAreaSerializer SERIALIZER = new XMLSubjectAreaSerializer();
+    protected static final String VIEWREFID = "viewrefid";
 
-    public static final String SUBJECTAREA = "Subjectarea";
+    protected static final String VISIBLE = "visible";
 
-    public static final String ITEM = "Item";
-
-    public static final String TABLEREFID = "tablerefid";
-
-    public static final String VIEWREFID = "viewrefid";
-
-    public static final String COMMENTREFID = "commentrefid";
-
-    public static final String COLOR = "color";
-
-    public static final String VISIBLE = "visible";
-
+    @Override
     public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
 
         Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
@@ -78,7 +67,8 @@ public class XMLSubjectAreaSerializer extends XMLSerializer {
         }
     }
 
-    public void deserializeFrom(Model aModel, Document aDocument) {
+    @Override
+    public void deserialize(Model aModel, Document aDocument) {
 
         NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
         for (int i = 0; i < theElements.getLength(); i++) {
