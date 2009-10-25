@@ -26,7 +26,13 @@ import de.erdesignerng.model.Table;
 public abstract class AbstractXMLTableSerializer extends CommonAbstractXMLSerializer<Table> {
     protected static final String TABLE = "Table";
 
-    protected abstract AbstractXMLAttributeSerializer getXMLAttributeSerializer();
+    private AbstractXMLModelSerializer xmlModelSerializer = null;
 
-    protected abstract AbstractXMLIndexSerializer getXMLIndexSerializer();
+    public AbstractXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+        this.xmlModelSerializer = xmlModelSerializer;
+    }
+
+    protected AbstractXMLModelSerializer getXMLModelSerializer() {
+        return xmlModelSerializer;
+    }
 }

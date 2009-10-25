@@ -17,6 +17,13 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
+import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 import java.util.Map;
 
 import org.w3c.dom.Document;
@@ -30,12 +37,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
 import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 import de.erdesignerng.util.XMLUtils;
 
 /**
@@ -48,16 +50,6 @@ public class XMLModel10Serializer extends AbstractXMLModelSerializer {
 
     private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_1.0.xsd";
 
-    private XMLCommentSerializer xmlCommentSerializer = null;
-
-    private XMLDomainSerializer xmlDomainSerializer = null;
-
-    private XMLRelationSerializer xmlRelationSerializer = null;
-
-    private XMLSubjectAreaSerializer xmlSubjectAreaSerializer = null;
-
-    private XMLTableSerializer xmlTableSerializer = null;
-
     public XMLModel10Serializer(XMLUtils utils) {
         super(utils);
     }
@@ -66,7 +58,7 @@ public class XMLModel10Serializer extends AbstractXMLModelSerializer {
     protected void serialize(Model aModel, Document aDocument) {
 
         Element theRootElement = addElement(aDocument, aDocument, MODEL);
-        theRootElement.setAttribute(VERSION, CURRENT_VERSION);
+        theRootElement.setAttribute(VERSION, getVersion());
 
         Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
 
@@ -149,47 +141,66 @@ public class XMLModel10Serializer extends AbstractXMLModelSerializer {
     }
 
     @Override
-    protected AbstractXMLCommentSerializer getXMLCommentSerializer() {
-        if (xmlCommentSerializer == null) {
-            xmlCommentSerializer = new XMLCommentSerializer();
+    public AbstractXMLAttributeSerializer getXMLAttributeSerializer() {
+        if (super.getXMLAttributeSerializer() == null) {
+            setXMLAttributeSerializer(new XMLAttributeSerializer());
         }
 
-        return xmlCommentSerializer;
+        return super.getXMLAttributeSerializer();
+    }
+
+    @Override
+    protected AbstractXMLCommentSerializer getXMLCommentSerializer() {
+        if (super.getXMLCommentSerializer() == null) {
+            setXMLCommentSerializer(new XMLCommentSerializer());
+        }
+
+        return super.getXMLCommentSerializer();
     }
 
     @Override
     protected AbstractXMLDomainSerializer getXMLDomainSerializer() {
-        if (xmlDomainSerializer == null) {
-            xmlDomainSerializer = new XMLDomainSerializer();
+        if (super.getXMLDomainSerializer() == null) {
+            setXMLDomainSerializer(new XMLDomainSerializer());
         }
 
-        return xmlDomainSerializer;
+        return super.getXMLDomainSerializer();
+    }
+
+    @Override
+    public AbstractXMLIndexSerializer getXMLIndexSerializer() {
+        if (super.getXMLIndexSerializer() == null) {
+            setXMLIndexSerializer(new XMLIndexSerializer());
+        }
+
+        return super.getXMLIndexSerializer();
     }
 
     @Override
     protected AbstractXMLRelationSerializer getXMLRelationSerializer() {
-        if (xmlRelationSerializer == null) {
-            xmlRelationSerializer = new XMLRelationSerializer();
+        if (super.getXMLRelationSerializer() == null) {
+            setXMLRelationSerializer(new XMLRelationSerializer());
         }
 
-        return xmlRelationSerializer;
+        return super.getXMLRelationSerializer();
     }
 
     @Override
     protected AbstractXMLSubjectAreaSerializer getXMLSubjectAreaSerializer() {
-        if (xmlSubjectAreaSerializer == null) {
-            xmlSubjectAreaSerializer = new XMLSubjectAreaSerializer();
+        if (super.getXMLSubjectAreaSerializer() == null) {
+            setXMLSubjectAreaSerializer(new XMLSubjectAreaSerializer());
         }
 
-        return xmlSubjectAreaSerializer;
+        return super.getXMLSubjectAreaSerializer();
     }
 
     @Override
     protected AbstractXMLTableSerializer getXMLTableSerializer() {
-        if (xmlTableSerializer == null) {
-            xmlTableSerializer = new XMLTableSerializer();
+        if (super.getXMLTableSerializer() == null) {
+            setXMLTableSerializer(new XMLTableSerializer(this));
         }
 
-        return xmlTableSerializer;
+        return super.getXMLTableSerializer();
     }
+
 }
