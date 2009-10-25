@@ -94,6 +94,8 @@ public class AddTableCommand extends UICommand {
                 theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
 
                 component.graph.doLayout();
+                
+                refreshOutline(null);
 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

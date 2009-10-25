@@ -179,6 +179,8 @@ public abstract class ERDesignerGraph extends JGraph {
         }
 
         theModel.remove(theObjectsToRemove.toArray());
+        
+        refreshOutline();
     }
 
     /**
@@ -344,4 +346,16 @@ public abstract class ERDesignerGraph extends JGraph {
      */
     public abstract void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell,
             boolean aNewTableIsChild);
+
+    /**
+     * Command to show a specific cell in the outline view.
+     * 
+     * @param aObject
+     */
+    public abstract void commandLocateInOutline(Object aObject);
+    
+    /**
+     * Update the outline.
+     */
+    public abstract void refreshOutline();
 }

@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model.serializer.xml30;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -25,10 +26,10 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
-import org.apache.commons.lang.StringUtils;
 
 public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 
+    @Override
     public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
 
         Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
@@ -47,10 +48,11 @@ public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
         theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
 
         setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
-
+ 
         serializeCommentElement(aDocument, theAttributeElement, aAttribute);
     }
 
+    @Override
     public void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement) {
         // Parse the Attributes
         NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);

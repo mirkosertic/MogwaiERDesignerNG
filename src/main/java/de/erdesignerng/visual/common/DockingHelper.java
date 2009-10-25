@@ -31,6 +31,7 @@ import net.infonode.docking.util.ViewMap;
 import net.infonode.util.Direction;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
@@ -98,52 +99,12 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
     }
 
     @Override
-    public void windowClosed(DockingWindow arg0) {
-        System.out.println("Closed");
-    }
-
-    @Override
-    public void windowDocked(DockingWindow arg0) {
-        System.out.println("Docked");
-    }
-
-    @Override
-    public void windowHidden(DockingWindow arg0) {
-        System.out.println("Hidden");
-    }
-
-    @Override
-    public void windowMaximized(DockingWindow arg0) {
-        System.out.println("Maximized");
-    }
-
-    @Override
-    public void windowMinimized(DockingWindow arg0) {
-        System.out.println("Minimized");
-    }
-
-    @Override
-    public void windowRemoved(DockingWindow arg0, DockingWindow arg1) {
-        System.out.println("Removed");
-    }
-
-    @Override
     public void windowRestored(DockingWindow aWindow) {
-        System.out.println("Restored");
+        UIInitializer.getInstance().initialize(rootWindow);
     }
 
     @Override
     public void windowAdded(DockingWindow arg0, DockingWindow arg1) {
-        System.out.println("Added");
-    }
-
-    @Override
-    public void windowShown(DockingWindow arg0) {
-        System.out.println("Shown");
-    }
-
-    @Override
-    public void windowUndocked(DockingWindow arg0) {
-        System.out.println("Undocked");
+        UIInitializer.getInstance().initialize(rootWindow);        
     }
 }

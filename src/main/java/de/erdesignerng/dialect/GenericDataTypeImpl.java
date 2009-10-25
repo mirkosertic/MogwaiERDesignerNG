@@ -22,8 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import de.erdesignerng.model.Attribute;
 import org.apache.commons.lang.StringUtils;
+
+import de.erdesignerng.model.Attribute;
 
 /**
  * An implementation of a DataType.
@@ -144,7 +145,7 @@ public abstract class GenericDataTypeImpl implements DataType {
                     throw new RuntimeException("No value for required token " + theToken);
                 }
             } else {
-                theResult = ((theResult.length() > 0)?",":"") + theValue.toString();
+                theResult+= ((theResult.length() > 0)?",":"") + theValue.toString();
             }
         }
 

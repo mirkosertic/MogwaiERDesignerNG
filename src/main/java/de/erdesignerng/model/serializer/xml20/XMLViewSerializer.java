@@ -17,16 +17,17 @@
  */
 package de.erdesignerng.model.serializer.xml20;
 
-import de.erdesignerng.model.serializer.AbstractXMLViewSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
+import de.erdesignerng.model.serializer.AbstractXMLViewSerializer;
 
 public class XMLViewSerializer extends AbstractXMLViewSerializer {
 
+    @Override
     public void serialize(View aView, Document aDocument, Element aRootElement) {
         Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
 
@@ -38,6 +39,7 @@ public class XMLViewSerializer extends AbstractXMLViewSerializer {
         theSQLElement.appendChild(aDocument.createTextNode(aView.getSql()));
     }
 
+    @Override
     public void deserialize(Model aModel, Document aDocument) {
 
         NodeList theElements = aDocument.getElementsByTagName(VIEW);

@@ -21,21 +21,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.apache.commons.beanutils.BeanComparator;
-
-import com.lowagie.text.Font;
+import org.jgraph.graph.DefaultGraphCell;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Attribute;
@@ -55,6 +60,8 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
     private DefaultTree tree;
+    private Map<Object, DefaultMutableTreeNode> userObjectMap = new HashMap<Object, DefaultMutableTreeNode>();
+    private List<Object> expandedUserObjects = new ArrayList<Object>();
 
     public OutlineComponent() {
         initialize();
@@ -90,7 +97,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
                     Object theUserObject = theNode.getUserObject();
 
-                    theLabel.setFont(theLabel.getFont().deriveFont(Font.NORMAL));
+                    theLabel.setFont(theLabel.getFont().deriveFont(Font.PLAIN));
 
                     if (theUserObject instanceof Table) {
                         theLabel.setIcon(IconFactory.getEntityIcon());
@@ -128,10 +135,28 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
         setLayout(new BorderLayout());
         add(tree.getScrollPane(), BorderLayout.CENTER);
+        
+        tree.addTreeExpansionListener(new TreeExpansionListener() {
+
+            @Override
+            public void treeCollapsed(TreeExpansionEvent aEvent) {
+                DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aEvent.getPath().getLastPathComponent();
+                expandedUserObjects.remove(theNode.getUserObject());
+            }
+
+            @Override
+            public void treeExpanded(TreeExpansionEvent aEvent) {
+                DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aEvent.getPath().getLastPathComponent();
+                expandedUserObjects.add(theNode.getUserObject());
+            }
+        });
     }
 
     public void setModel(Model aModel) {
 
+        userObjectMap.clear();
+        expandedUserObjects.clear();
+        
         DefaultMutableTreeNode theRoot = new DefaultMutableTreeNode(getResourceHelper().getFormattedText(ERDesignerBundle.MODEL));
 
         DefaultTreeModel theModel = new DefaultTreeModel(theRoot);
@@ -147,10 +172,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                 Table theTable = (Table) theItem;
                 DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(theTable);
                 theRoot.add(theTableNode);
+                
+                userObjectMap.put(theTable, theTableNode);
 
                 for (Attribute theAttribute : theTable.getAttributes()) {
                     DefaultMutableTreeNode theAttribtueNode = new DefaultMutableTreeNode(theAttribute);
                     theTableNode.add(theAttribtueNode);
+                    
+                    userObjectMap.put(theAttribute, theAttribtueNode);
                 }
 
                 for (Index theIndex : theTable.getIndexes()) {
@@ -158,8 +187,12 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     for (IndexExpression theExpression : theIndex.getExpressions()) {
                         DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(theExpression);
                         theIndexNode.add(theExpressionNode);
+                        
+                        userObjectMap.put(theExpression, theExpressionNode);
                     }
                     theTableNode.add(theIndexNode);
+                    
+                    userObjectMap.put(theIndex, theIndexNode);
                 }
 
                 for (Relation theRelation : aModel.getRelations().getForeignKeysFor(theTable)) {
@@ -167,9 +200,13 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
                         DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theEntry.getValue());
                         theRelationNode.add(theAttributeNode);
+                        
+                        userObjectMap.put(theEntry.getKey(), theAttributeNode);
                     }
 
                     theTableNode.add(theRelationNode);
+                    
+                    userObjectMap.put(theRelation, theRelationNode);
                 }
             }
 
@@ -177,6 +214,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                 View theView = (View) theItem;
                 DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(theView);
                 theRoot.add(theViewNode);
+                
+                userObjectMap.put(theItem, theViewNode);
             }
         }
 
@@ -190,5 +229,39 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
     @Override
     public ResourceHelper getResourceHelper() {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    }
+
+    /**
+     * Locate a specific object in the tree.
+     * 
+     * @param aObject the object to locate
+     */
+    public void locateObject(Object aObject) {
+        DefaultGraphCell theCell = (DefaultGraphCell) aObject;
+        DefaultMutableTreeNode theNode = userObjectMap.get(theCell.getUserObject());
+        if (theNode != null) {
+            TreeNode[] theNodes = theNode.getPath();
+            TreePath thePath = new TreePath(theNodes);
+            tree.setSelectionPath(thePath);
+            tree.scrollPathToVisible(thePath);
+            
+        }
+    }
+
+    /**
+     * Refresh the model tree as there were changes.
+     */
+    public void refresh(Model aModel, Object aElement) {
+        
+        if (aModel != null) {
+
+            TreePath theSelected = tree.getSelectionPath();
+            Map<Object, DefaultMutableTreeNode> theUserObjectMap = userObjectMap;
+            List<Object> theExpandedUserObjects = expandedUserObjects;
+            
+            setModel(aModel);
+            
+            //TODO [mirkosertic] Hier das selectionmodell und die expandierten knoten wiederherstellen
+        }
     }
 }

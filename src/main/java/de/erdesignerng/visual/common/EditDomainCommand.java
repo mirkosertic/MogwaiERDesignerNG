@@ -32,6 +32,8 @@ public class EditDomainCommand extends UICommand {
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
+                
+                refreshOutline(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
