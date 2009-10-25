@@ -878,5 +878,17 @@
 			<Text lang="de">In Modellübersicht anzeigen</Text>		
 			<Text lang="en">Locate in Outline</Text>					
 		</Entry>
+		<Entry id="TABLES">
+			<Text lang="de">Tabellen</Text>		
+			<Text lang="en">Tables</Text>					
+		</Entry>
+		<Entry id="VIEWS">
+			<Text lang="de">Views</Text>		
+			<Text lang="en">Views</Text>					
+		</Entry>
+		<Entry id="DOMAINSLIST">
+			<Text lang="de">Domänen</Text>		
+			<Text lang="en">Domains</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
