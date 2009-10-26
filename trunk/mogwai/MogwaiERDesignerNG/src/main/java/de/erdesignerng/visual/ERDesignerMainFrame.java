@@ -66,9 +66,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
             @Override
             public void windowClosing(WindowEvent e) {
-                preferences.updateWindowDefinition(WINDOW_ALIAS, ERDesignerMainFrame.this);
-                dockingHelper.saveLayoutToPreferences();
-                component.savePreferences();
+                exitApplication();
             }
         });
 
@@ -165,6 +163,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     public void exitApplication() {
+        preferences.updateWindowDefinition(WINDOW_ALIAS, ERDesignerMainFrame.this);
+        dockingHelper.saveLayoutToPreferences();
         component.savePreferences();
         System.exit(0);
     }

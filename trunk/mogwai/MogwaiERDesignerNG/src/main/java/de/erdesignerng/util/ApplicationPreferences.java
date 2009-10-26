@@ -63,10 +63,10 @@ public class ApplicationPreferences {
     private static final String GRIDSIZE = "gridsize";
 
     private static final String AUTOMATICRELATIONATTRIBUTEPATTERN = "automaticrelationattributepattern";
-    
-    private static final String ONUPDATEDEFAULT="onupdatedefault";
-    
-    private static final String ONDELETEDEFAULT="onupdatedefault";
+
+    private static final String ONUPDATEDEFAULT = "onupdatedefault";
+
+    private static final String ONDELETEDEFAULT = "onupdatedefault";
 
     private static final String WINDOWSTATEPREFIX = "windowstate_";
 
@@ -79,6 +79,8 @@ public class ApplicationPreferences {
     private static final String WINDOWHEIGHTPREFIX = "windowheight_";
 
     private static final String INTELLIGENTLAYOUT = "intelligentlayout_";
+
+    private static final String LAYOUT = "layout";
 
     private int size;
 
@@ -99,13 +101,15 @@ public class ApplicationPreferences {
     private File baseDir;
 
     private boolean intelligentLayout = true;
-    
+
     private String automaticRelationAttributePattern;
-    
+
     private CascadeType onUpdateDefault;
-    
+
     private CascadeType onDeleteDefault;
-    
+
+    private byte[] windowLayout;
+
     private static ApplicationPreferences me;
 
     public static ApplicationPreferences getInstance() {
@@ -182,7 +186,8 @@ public class ApplicationPreferences {
         gridSize = preferences.getInt(GRIDSIZE, 10);
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
         automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
-        
+        windowLayout = preferences.getByteArray(LAYOUT, new byte[0]);
+
         onUpdateDefault = CascadeType.fromType(preferences.get(ONUPDATEDEFAULT, CascadeType.NOTHING.getType()));
         onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT, CascadeType.NOTHING.getType()));
     }
@@ -302,6 +307,7 @@ public class ApplicationPreferences {
         preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
         preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
         preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
+        preferences.putByteArray(LAYOUT, windowLayout);
 
         if (repositoryConnection != null) {
             preferences.put(RPCPREFIX + "DIALECT", repositoryConnection.getDialect());
@@ -314,7 +320,7 @@ public class ApplicationPreferences {
         for (Map.Entry<String, String> theWindowEntry : windowDefinitions.entrySet()) {
             preferences.put(theWindowEntry.getKey(), theWindowEntry.getValue());
         }
-        
+
         preferences.flush();
     }
 
@@ -522,5 +528,13 @@ public class ApplicationPreferences {
 
     public void setOnDeleteDefault(CascadeType onDeleteDefault) {
         this.onDeleteDefault = onDeleteDefault;
+    }
+
+    public byte[] getWindowLayout() {
+        return windowLayout;
+    }
+
+    public void setWindowLayout(byte[] windowLayout) {
+        this.windowLayout = windowLayout;
     }
 }
