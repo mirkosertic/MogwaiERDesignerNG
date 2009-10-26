@@ -17,6 +17,11 @@
  */
 package de.erdesignerng.visual.common;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
@@ -29,6 +34,9 @@ import net.infonode.docking.View;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.ViewMap;
 import net.infonode.util.Direction;
+
+import org.apache.log4j.Logger;
+
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -36,6 +44,8 @@ import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class DockingHelper extends DockingWindowAdapter implements ResourceHelperProvider {
+
+    private static final Logger LOGGER = Logger.getLogger(DockingHelper.class);
 
     private ERDesignerComponent component;
 
@@ -72,8 +82,22 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
             @Override
             public void run() {
                 rootWindow = DockingUtil.createRootWindow(theViewMap, true);
-                SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theViews[1]);
-                rootWindow.setWindow(theSplitWindow);
+                byte[] windowLayout = preferences.getWindowLayout();
+                boolean layoutRestored = false;
+                if (windowLayout != null && windowLayout.length > 0) {
+                    try {
+                        rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(windowLayout)));
+                        layoutRestored = true;
+                        
+                        LOGGER.info("Workbench layout restored");
+                    } catch (Exception e) {
+                        LOGGER.error("Failed to restore window state", e);
+                    }
+                }
+                if (!layoutRestored) {
+                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theViews[1]);
+                    rootWindow.setWindow(theSplitWindow);
+                }
 
                 rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
                 rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(false);
@@ -90,7 +114,19 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
     }
 
     public void saveLayoutToPreferences() {
-        // TODO [mirkosertic]
+        ByteArrayOutputStream theBos = new ByteArrayOutputStream();
+        ObjectOutputStream theOs;
+        try {
+            theOs = new ObjectOutputStream(theBos);
+            rootWindow.write(theOs);
+            theOs.close();
+
+            preferences.setWindowLayout(theBos.toByteArray());
+            
+            LOGGER.info("Workbench layout saved. "+theBos.toByteArray().length);
+        } catch (IOException e) {
+            LOGGER.error("Failed to store window state", e);
+        }
     }
 
     @Override
@@ -105,6 +141,6 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
     @Override
     public void windowAdded(DockingWindow arg0, DockingWindow arg1) {
-        UIInitializer.getInstance().initialize(rootWindow);        
+        UIInitializer.getInstance().initialize(rootWindow);
     }
 }
