@@ -18,8 +18,6 @@
 package de.erdesignerng.visual.editor;
 
 import java.text.DecimalFormat;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
@@ -28,53 +26,14 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
-import sun.util.resources.LocaleData;
-/*
- * @see http://java.sun.com/products/jdk/faq/faq-sun-packages.html
- *
- * Why Developers Should Not Write Programs That Call 'sun' Packages
- *
- * <snip/>
- *
- * The sun.* packages are not part of the supported, public interface.
- * A Java program that directly calls into sun.* packages is not guaranteed to
- * work on all Java-compatible platforms. In fact, such a program is not
- * guaranteed to work even in future versions on the same platform.
- *
- * For these reasons, there is no documentation available for the sun.* classes.
- * Platform-independence is one of the great advantages of developing in the
- * Java programming language. Furthermore, Sun and our licensees of Java
- * technology are committed to maintaining backward compatibility of the APIs
- * for future versions of the Java platform. (Except for code that relies on
- * serious bugs that we later fix.) This means that once your program is
- * written, the class files will work in future releases.
- *
- * <snip/>
- *
- */
 
 //TODO [mirkosertic] handle setting the size to null here
 public class NullsafeSpinnerEditor extends DefaultEditor {
 
-    private static String getDefaultPattern(Locale locale) {
-        // Get the pattern for the default locale.
-        ResourceBundle rb = LocaleData.getNumberFormatData(locale);
-        String[] all = rb.getStringArray("NumberPatterns");
-        return all[0];
-    }
-
-    public NullsafeSpinnerEditor(JSpinner spinner, String decimalFormatPattern) {
-        this(spinner, new DecimalFormat(decimalFormatPattern));
-    }
-
     public NullsafeSpinnerEditor(JSpinner spinner) {
-        this(spinner, getDefaultPattern(spinner.getLocale()));
-    }
-
-    private NullsafeSpinnerEditor(JSpinner spinner, DecimalFormat format) {
         super(spinner);
 
-        NumberFormatter formatter = new NumberFormatter(format);
+        NumberFormatter formatter = new NumberFormatter(new DecimalFormat());
         DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
 
         JFormattedTextField ftf = getTextField();
