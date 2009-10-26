@@ -890,6 +890,10 @@
 			<Text lang="de">Domänen</Text>		
 			<Text lang="en">Domains</Text>					
 		</Entry>
+		<Entry id="SUBJECTAREALIST">
+			<Text lang="de">Subject Areas</Text>		
+			<Text lang="en">Subject Areas</Text>					
+		</Entry>
 		<Entry id="EDITTABLE">
 			<Text lang="de">Tabelle {0} bearbeiten</Text>		
 			<Text lang="en">Edit Table {0}</Text>					
@@ -913,6 +917,10 @@
 		<Entry id="EDITINDEX">
 			<Text lang="de">Index {0} bearbeiten</Text>		
 			<Text lang="en">Edit Index {0}</Text>					
+		</Entry>
+		<Entry id="EDITSUBJECTAREA">
+			<Text lang="de">Subject Area {0} bearbeiten</Text>		
+			<Text lang="en">Edit Subject Area {0}</Text>					
 		</Entry>
 		<Entry id="SHOWELEMENTINDIAGRAM">
 			<Text lang="de">Zeige {0} im Diagramm</Text>		
