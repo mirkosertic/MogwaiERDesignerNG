@@ -877,6 +877,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         UIInitializer.getInstance().initialize(subjectAreas);
+        
+        worldConnector.getOutlineComponent().refresh(model, null);
     }
 
     protected void updateRecentlyUsedMenuEntries() {

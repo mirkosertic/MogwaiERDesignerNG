@@ -64,6 +64,7 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.visual.IconFactory;
@@ -191,6 +192,9 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                 if (theUserObject instanceof Domain) {
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
                 }
+                if (theUserObject instanceof SubjectArea) {
+                    theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
+                }
                 if (theUserObject instanceof Relation) {
                     theLabel.setIcon(IconFactory.getRelationIcon());
                 }
@@ -224,6 +228,9 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     case VIEWS:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.VIEWS));
                         break;
+                    case SUBJECTAREAS:
+                        theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.SUBJECTAREALIST));
+                        break;
                     default:
                         throw new IllegalArgumentException("Unknown grouping element : " + aValue);
                     }
@@ -236,7 +243,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
     }
 
     private enum TreeGroupingElement {
-        MODEL, DOMAINS, TABLES, VIEWS
+        MODEL, DOMAINS, TABLES, VIEWS, SUBJECTAREAS
     }
 
     private DefaultTree tree;
@@ -311,14 +318,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                         }
                     }
                 }
-                
+
                 for (Relation theRelation : erdesignerComponent.getModel().getRelations().getForeignKeysFor(theTable)) {
                     if (isVisible(theRelation)) {
                         theOverride = true;
                     }
                 }
             }
-            
+
             if (aItem instanceof Relation) {
                 Relation theRelation = (Relation) aItem;
                 for (Attribute theAttribute : theRelation.getMapping().values()) {
@@ -327,7 +334,21 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     }
                 }
             }
-            
+
+            if (aItem instanceof SubjectArea) {
+                SubjectArea theArea = (SubjectArea) aItem;
+                for (Table theTable : theArea.getTables()) {
+                    if (isVisible(theTable)) {
+                        theOverride = true;
+                    }
+                }
+                for (View theView : theArea.getViews()) {
+                    if (isVisible(theView)) {
+                        theOverride = true;
+                    }
+                }
+            }
+
             String theName = aItem.toString();
 
             if (!StringUtils.isEmpty(theName)) {
@@ -348,44 +369,60 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         List<Domain> theDomains = new ArrayList<Domain>();
         theDomains.addAll(aModel.getDomains());
         Collections.sort(theDomains, new BeanComparator("name"));
-        DefaultMutableTreeNode theDomainsNode = new DefaultMutableTreeNode(TreeGroupingElement.DOMAINS);
-        for (Domain theDomain : theDomains) {
-            if (isVisible(theDomain)) {
-                DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(theDomain);
-                theDomainsNode.add(theDomainNode);
-
-                userObjectMap.put(theDomain, theDomainNode);
-
-                updateDomainTreeNode(aModel, theDomain, theDomainNode);
-            }
-        }
-        theRoot.add(theDomainsNode);
+        buildDomainsChilds(aModel, theRoot, theDomains);
 
         // Add the Tables
         List<Table> theTables = new ArrayList<Table>();
         theTables.addAll(aModel.getTables());
         Collections.sort(theTables, new BeanComparator("name"));
-
-        DefaultMutableTreeNode theTablesNode = new DefaultMutableTreeNode(TreeGroupingElement.TABLES);
-        for (Table theTable : theTables) {
-            if (isVisible(theTable)) {
-                DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(theTable);
-                theTablesNode.add(theTableNode);
-
-                userObjectMap.put(theTable, theTableNode);
-
-                updateTableTreeNode(aModel, theTable, theTableNode);
-            }
-        }
-        theRoot.add(theTablesNode);
+        buildTablesChilds(aModel, theRoot, theTables);
 
         // Add the Views
         List<View> theViews = new ArrayList<View>();
         theViews.addAll(aModel.getViews());
         Collections.sort(theTables, new BeanComparator("name"));
+        buildViewsChilds(aModel, theRoot, theViews);
 
+        // Add the subject areas
+        List<SubjectArea> theSAList = new ArrayList<SubjectArea>();
+        theSAList.addAll(aModel.getSubjectAreas());
+        Collections.sort(theSAList, new BeanComparator("name"));
+        buildSubjectAreasChilds(aModel, theRoot, theSAList);
+
+        tree.setModel(new DefaultTreeModel(theRoot));
+
+        for (int row = 0; row < tree.getRowCount(); row++) {
+            tree.expandRow(row);
+        }
+    }
+
+    private void buildSubjectAreasChilds(Model aModel, DefaultMutableTreeNode aParent, List<SubjectArea> aList) {
+        DefaultMutableTreeNode theSANode = new DefaultMutableTreeNode(TreeGroupingElement.SUBJECTAREAS);
+        for (SubjectArea theArea : aList) {
+            if (isVisible(theArea)) {
+                DefaultMutableTreeNode theAreaNode = new DefaultMutableTreeNode(theArea);
+                theSANode.add(theAreaNode);
+
+                userObjectMap.put(theArea, theAreaNode);
+
+                List<Table> theSATables = new ArrayList<Table>();
+                theSATables.addAll(theArea.getTables());
+                Collections.sort(theSATables, new BeanComparator("name"));
+                buildTablesChilds(aModel, theAreaNode, theSATables);
+
+                List<View> theSAViews = new ArrayList<View>();
+                theSAViews.addAll(aModel.getViews());
+                Collections.sort(theSAViews, new BeanComparator("name"));
+                buildViewsChilds(aModel, theAreaNode, theSAViews);
+
+            }
+        }
+        aParent.add(theSANode);
+    }
+
+    private void buildViewsChilds(Model aModel, DefaultMutableTreeNode aParent, List<View> aViews) {
         DefaultMutableTreeNode theViewsNode = new DefaultMutableTreeNode(TreeGroupingElement.VIEWS);
-        for (View theView : theViews) {
+        for (View theView : aViews) {
             if (isVisible(theView)) {
                 DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(theView);
                 theViewsNode.add(theViewNode);
@@ -395,13 +432,37 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                 updateViewTreeNode(aModel, theView, theViewNode);
             }
         }
-        theRoot.add(theViewsNode);
+        aParent.add(theViewsNode);
+    }
 
-        tree.setModel(new DefaultTreeModel(theRoot));
+    private void buildDomainsChilds(Model aModel, DefaultMutableTreeNode aParent, List<Domain> aDomainList) {
+        DefaultMutableTreeNode theDomainsNode = new DefaultMutableTreeNode(TreeGroupingElement.DOMAINS);
+        for (Domain theDomain : aDomainList) {
+            if (isVisible(theDomain)) {
+                DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(theDomain);
+                theDomainsNode.add(theDomainNode);
 
-        for (int row = 0; row < tree.getRowCount(); row++) {
-            tree.expandRow(row);
+                userObjectMap.put(theDomain, theDomainNode);
+
+                updateDomainTreeNode(aModel, theDomain, theDomainNode);
+            }
         }
+        aParent.add(theDomainsNode);
+    }
+
+    private void buildTablesChilds(Model aModel, DefaultMutableTreeNode aParentNode, List<Table> aTableList) {
+        DefaultMutableTreeNode theTablesNode = new DefaultMutableTreeNode(TreeGroupingElement.TABLES);
+        for (Table theTable : aTableList) {
+            if (isVisible(theTable)) {
+                DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(theTable);
+                theTablesNode.add(theTableNode);
+
+                userObjectMap.put(theTable, theTableNode);
+
+                updateTableTreeNode(aModel, theTable, theTableNode);
+            }
+        }
+        aParentNode.add(theTablesNode);
     }
 
     private void updateDomainTreeNode(Model aModel, Domain aDomain, DefaultMutableTreeNode aDomainNode) {
@@ -541,7 +602,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
     private void initializeActionsFor(DefaultMutableTreeNode aNode, JPopupMenu aMenu) {
 
         Object theUserObject = aNode.getUserObject();
-        if (theUserObject instanceof Table || theUserObject instanceof View || theUserObject instanceof Relation) {
+        if (theUserObject instanceof Table || theUserObject instanceof View || theUserObject instanceof Relation
+                || theUserObject instanceof SubjectArea) {
 
             final ModelItem theItem = (ModelItem) theUserObject;
 
@@ -603,7 +665,18 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             aMenu.add(theEditItem);
 
         }
+        if (theUserObject instanceof SubjectArea) {
 
+            SubjectArea theSubjectArea = (SubjectArea) theUserObject;
+
+            JMenuItem theEditItem = new JMenuItem();
+            theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITSUBJECTAREA,
+                    theSubjectArea.getName()));
+            theEditItem.addActionListener(new EditSubjectAreaCommand(erdesignerComponent, theSubjectArea));
+
+            aMenu.add(theEditItem);
+
+        }
         if (theUserObject instanceof Attribute) {
 
             Attribute theAttribute = (Attribute) theUserObject;
@@ -616,7 +689,6 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
             aMenu.add(theEditItem);
         }
-
         if (theUserObject instanceof Index) {
 
             Index theIndex = (Index) theUserObject;
