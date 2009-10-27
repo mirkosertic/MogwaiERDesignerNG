@@ -67,6 +67,6 @@ public abstract class UICommand implements ActionEventProcessor , ActionListener
      */
     public void refreshDisplayOf(Object aChangedObject) {
         component.repaintGraph();
-        component.getWorldConnector().getOutlineComponent().refresh(component.getModel(), aChangedObject);
+        OutlineComponent.getDefault().refresh(component.getModel(), aChangedObject);
     }
 }

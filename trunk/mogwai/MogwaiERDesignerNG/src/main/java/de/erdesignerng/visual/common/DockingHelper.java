@@ -47,35 +47,34 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
     private static final Logger LOGGER = Logger.getLogger(DockingHelper.class);
 
-    private ERDesignerComponent component;
-
-    private OutlineComponent outline;
-
     private RootWindow rootWindow;
 
     private ApplicationPreferences preferences;
 
-    public DockingHelper(ApplicationPreferences aPreferences, ERDesignerComponent aComponent, OutlineComponent aOutline) {
-        component = aComponent;
-        outline = aOutline;
+    public DockingHelper(ApplicationPreferences aPreferences) {
         preferences = aPreferences;
     }
 
     public void initialize() throws InterruptedException, InvocationTargetException {
 
         final ViewMap theViewMap = new ViewMap();
-        final View[] theViews = new View[2];
-        theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, component
+        final View[] theViews = new View[3];
+        theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, ERDesignerComponent.getDefault()
                 .getDetailComponent());
         theViews[0].getWindowProperties().setCloseEnabled(false);
         theViews[0].getWindowProperties().setUndockEnabled(false);
         theViews[0].getWindowProperties().setUndockOnDropEnabled(false);
-        theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, outline);
+        theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, OutlineComponent.getDefault());
         theViews[1].getWindowProperties().setCloseEnabled(false);
         theViews[1].getWindowProperties().setUndockEnabled(false);
         theViews[1].getWindowProperties().setUndockOnDropEnabled(false);
+        theViews[2] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.SQL), null, SQLComponent.getDefault());
+        theViews[2].getWindowProperties().setCloseEnabled(false);
+        theViews[2].getWindowProperties().setUndockEnabled(false);
+        theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
         theViewMap.addView(0, theViews[0]);
         theViewMap.addView(1, theViews[1]);
+        theViewMap.addView(2, theViews[2]);        
 
         SwingUtilities.invokeAndWait(new Runnable() {
 
@@ -94,8 +93,10 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
                         LOGGER.error("Failed to restore window state", e);
                     }
                 }
+
                 if (!layoutRestored) {
-                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theViews[1]);
+                    SplitWindow theRightWindow = new SplitWindow(false, 0.8f, theViews[1], theViews[2]);
+                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theRightWindow);
                     rootWindow.setWindow(theSplitWindow);
                 }
 
@@ -105,8 +106,9 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
         });
 
-        theViews[1].addListener(this);
         theViews[0].addListener(this);
+        theViews[1].addListener(this);
+        theViews[2].addListener(this);        
     }
 
     public RootWindow getRootWindow() {
@@ -123,7 +125,7 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
             preferences.setWindowLayout(theBos.toByteArray());
             
-            LOGGER.info("Workbench layout saved. "+theBos.toByteArray().length);
+            LOGGER.info("Workbench layout saved. ");
         } catch (IOException e) {
             LOGGER.error("Failed to store window state", e);
         }

@@ -34,6 +34,7 @@ import org.jgraph.plaf.basic.BasicGraphUI;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.common.ERDesignerComponent;
+import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 
@@ -217,7 +218,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                         erdesigner.commandNotifyAboutEdit();
                         
                         DefaultGraphCell theCell = (DefaultGraphCell) cell;
-                        erdesigner.getWorldConnector().getOutlineComponent().refresh(erdesigner.getModel(), theCell.getUserObject());
+                        OutlineComponent.getDefault().refresh(erdesigner.getModel(), theCell.getUserObject());
                     } catch (Exception e1) {
                         erdesigner.getWorldConnector().notifyAboutException(e1);
                     }

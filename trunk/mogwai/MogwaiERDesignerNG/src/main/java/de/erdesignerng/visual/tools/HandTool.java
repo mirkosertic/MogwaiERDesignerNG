@@ -32,7 +32,6 @@ import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.cells.HideableCell;
 import de.erdesignerng.visual.cells.ModelCell;
-import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -79,27 +78,6 @@ public class HandTool extends BaseTool {
     public DefaultPopupMenu createPopupMenu(Point aPoint, final Object[] aCells) {
 
         DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
-
-        if (aCells.length == 1) {
-
-            final Object theObject = aCells[0];
-
-            if (theObject instanceof TableCell || theObject instanceof ViewCell || theObject instanceof RelationEdge) {
-                DefaultAction theLocateInOutlineAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
-                        ERDesignerBundle.LOCATEINOUTLINE);
-                DefaultMenuItem theLocateItem = new DefaultMenuItem(theLocateInOutlineAction);
-                theLocateInOutlineAction.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        graph.commandLocateInOutline(theObject);
-                    }
-
-                });
-                theMenu.add(theLocateItem);
-                theMenu.addSeparator();
-            }
-        }
 
         DefaultAction theDeleteAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
         DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
