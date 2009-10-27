@@ -60,10 +60,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         
         ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
 
-        component = new ERDesignerComponent(thePreferences, this);
-        outline = new OutlineComponent(component);
+        component = ERDesignerComponent.initializeComponent(thePreferences, this);
+        outline = OutlineComponent.initializeComponent();
         
-        dockingHelper = new DockingHelper(thePreferences, component, outline);
+        dockingHelper = new DockingHelper(thePreferences);
         try {
             dockingHelper.initialize();
         } catch (Exception e) {
@@ -201,10 +201,5 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     @Override
     public boolean supportsReporting() {
         return true;
-    }
-
-    @Override
-    public OutlineComponent getOutlineComponent() {
-        return outline;
     }
 }

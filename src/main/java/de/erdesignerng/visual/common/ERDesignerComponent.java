@@ -39,8 +39,11 @@ import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
+import org.jgraph.event.GraphSelectionEvent;
+import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
@@ -110,6 +113,33 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
+    private final class ERDesignerGraphSelectionListener implements GraphSelectionListener {
+        @Override
+        public void valueChanged(GraphSelectionEvent aEvent) {
+            Object[] theCells = aEvent.getCells();
+            if (!ArrayUtils.isEmpty(theCells)) {
+                List<ModelItem> theItems = new ArrayList<ModelItem>();
+                for (Object theCell : theCells) {
+                    if (theCell instanceof DefaultGraphCell && aEvent.isAddedCell(theCell)) {
+                        DefaultGraphCell theGraphCell = (DefaultGraphCell) theCell;
+                        Object theUserObject = theGraphCell.getUserObject();
+                        if (theUserObject instanceof ModelItem) {
+                            theItems.add((ModelItem) theUserObject);
+                        }
+                    }
+                }
+                
+                SQLComponent.getDefault().displaySQLFor(theItems.toArray(new ModelItem[0]));
+                if (theItems.size() == 1) {
+                    OutlineComponent.getDefault().setSelectedItem(theItems.get(0));
+                }
+                
+            } else {
+                SQLComponent.getDefault().resetDisplay();
+            }
+        }
+    }
+
     private final class LayoutThread extends Thread {
         @Override
         public void run() {
@@ -174,6 +204,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                         }
                     }
                 }
+                graph.setSelectionCells(graph.getSelectionCells());
             }
         }
     }
@@ -227,8 +258,22 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private final ERDesignerGraphLayout layout;
 
     private Thread layoutThread;
+    
+    private static ERDesignerComponent DEFAULT;
+    
+    public static ERDesignerComponent initializeComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
+        DEFAULT = new ERDesignerComponent(aPreferences, aConnector);
+        return DEFAULT;
+    }
+    
+    public static ERDesignerComponent getDefault() {
+        if (DEFAULT == null) {
+            throw new RuntimeException("Component is not initialized");
+        }
+        return DEFAULT;
+    }
 
-    public ERDesignerComponent(ApplicationPreferences aPreferences, final ERDesignerWorldConnector aConnector) {
+    private ERDesignerComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
         preferences = aPreferences;
         layout = new ERDesignerGraphLayout(this);
@@ -878,7 +923,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         UIInitializer.getInstance().initialize(subjectAreas);
         
-        worldConnector.getOutlineComponent().refresh(model, null);
+        OutlineComponent.getDefault().refresh(model, null);
     }
 
     protected void updateRecentlyUsedMenuEntries() {
@@ -1157,16 +1202,19 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 @Override
                 public void commandLocateInOutline(Object object) {
-                    worldConnector.getOutlineComponent().locateObject(object);
+                    OutlineComponent.getDefault().locateObject(object);
                 }
 
                 @Override
                 public void refreshOutline() {
-                    worldConnector.getOutlineComponent().refresh(model, null);
+                    OutlineComponent.getDefault().refresh(model, null);
                 }
             };
 
             graph.setUI(new ERDesignerGraphUI(this));
+            graph.addGraphSelectionListener(new ERDesignerGraphSelectionListener());
+            
+            SQLComponent.getDefault().resetDisplay();
 
             displayAllMenuItem.setSelected(true);
             displayNaturalOrderMenuItem.setSelected(true);
@@ -1184,7 +1232,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             fillGraph(aModel);
             
-            worldConnector.getOutlineComponent().setModel(aModel, true);
+            OutlineComponent.getDefault().setModel(aModel, true);
 
         } finally {
 
