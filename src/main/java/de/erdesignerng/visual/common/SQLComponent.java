@@ -30,6 +30,8 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
@@ -89,14 +91,20 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
     public void displaySQLFor(ModelItem[] aModelItems) {
         try {
             resetDisplay();
-            
-            Dialect theDialect = ERDesignerComponent.getDefault().getModel().getDialect();
+
+            Model theModel = ERDesignerComponent.getDefault().getModel();
+            Dialect theDialect = theModel.getDialect();
             if (theDialect != null && !ArrayUtils.isEmpty(aModelItems)) {
                 StatementList theStatementList = new StatementList();
                 SQLGenerator theGenerator = theDialect.createSQLGenerator();
                 for (ModelItem aItem : aModelItems) {
                     if (aItem instanceof Table) {
-                        theStatementList.addAll(theGenerator.createAddTableStatement((Table) aItem));
+                        Table theTable = (Table) aItem;
+                        theStatementList.addAll(theGenerator.createAddTableStatement(theTable));
+                        for (Relation theRelation : theModel.getRelations().getForeignKeysFor(theTable)) {
+                            theStatementList.addAll(theGenerator.createAddRelationStatement(theRelation));
+
+                        }
                     }
                     if (aItem instanceof View) {
                         theStatementList.addAll(theGenerator.createAddViewStatement((View) aItem));
@@ -111,8 +119,13 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
                     }
                     if (aItem instanceof Index) {
                         Index theIndex = (Index) aItem;
-                        theStatementList.addAll(theGenerator.createAddIndexToTableStatement(theIndex.getOwner(),
-                                theIndex));
+                        if (theIndex.getIndexType() == IndexType.PRIMARYKEY) {
+                            theStatementList.addAll(theGenerator.createAddPrimaryKeyToTable(theIndex.getOwner(),
+                                    theIndex));
+                        } else {
+                            theStatementList.addAll(theGenerator.createAddIndexToTableStatement(theIndex.getOwner(),
+                                    theIndex));
+                        }
                     }
                 }
 
