@@ -35,8 +35,6 @@ public interface ERDesignerWorldConnector {
 
     DefaultToolbar getToolBar();
     
-    OutlineComponent getOutlineComponent();
-    
     boolean supportsExitApplication();
 
     boolean supportsClasspathEditor();

@@ -874,10 +874,6 @@
 			<Text lang="de">Modellübersicht</Text>		
 			<Text lang="en">Outline</Text>					
 		</Entry>
-		<Entry id="LOCATEINOUTLINE">
-			<Text lang="de">In Modellübersicht anzeigen</Text>		
-			<Text lang="en">Locate in Outline</Text>					
-		</Entry>
 		<Entry id="TABLES">
 			<Text lang="de">Tabellen</Text>		
 			<Text lang="en">Tables</Text>					
@@ -893,7 +889,7 @@
 		<Entry id="SUBJECTAREALIST">
 			<Text lang="de">Subject Areas</Text>		
 			<Text lang="en">Subject Areas</Text>					
-		</Entry>
+		</Entry>		
 		<Entry id="EDITTABLE">
 			<Text lang="de">Tabelle {0} bearbeiten</Text>		
 			<Text lang="en">Edit Table {0}</Text>					
@@ -921,10 +917,10 @@
 		<Entry id="EDITSUBJECTAREA">
 			<Text lang="de">Subject Area {0} bearbeiten</Text>		
 			<Text lang="en">Edit Subject Area {0}</Text>					
-		</Entry>
-		<Entry id="SHOWELEMENTINDIAGRAM">
-			<Text lang="de">Zeige {0} im Diagramm</Text>		
-			<Text lang="en">Show {0} in Diagram</Text>					
+		</Entry>		
+		<Entry id="SQL">
+			<Text lang="de">SQL</Text>		
+			<Text lang="en">SQL</Text>					
 		</Entry>
 	</Bundle>
 </Resource>

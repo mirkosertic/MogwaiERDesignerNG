@@ -29,6 +29,7 @@ import de.erdesignerng.visual.common.DockingHelper;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.common.OutlineComponent;
+import de.erdesignerng.visual.common.SQLComponent;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
@@ -48,8 +49,6 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
     private final ApplicationPreferences preferences;
 
-    private OutlineComponent outlineComponent;
-    
     private DockingHelper dockingHelper;
 
     public ERDesignerMainFrame(ApplicationPreferences aPreferences) {
@@ -80,10 +79,11 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     }
 
     private void initialize() {
-        component = new ERDesignerComponent(preferences, this);
-        outlineComponent = new OutlineComponent(component);
 
-        dockingHelper = new DockingHelper(preferences, component, outlineComponent);
+        component = ERDesignerComponent.initializeComponent(preferences, this);
+        OutlineComponent.initializeComponent();
+        SQLComponent.initializeComponent();
+        dockingHelper = new DockingHelper(preferences);
         
         try {
             dockingHelper.initialize();
@@ -191,10 +191,5 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
     @Override
     public boolean supportsReporting() {
         return true;
-    }
-
-    @Override
-    public OutlineComponent getOutlineComponent() {
-        return outlineComponent;
     }
 }

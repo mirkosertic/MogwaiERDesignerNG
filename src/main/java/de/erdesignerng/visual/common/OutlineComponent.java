@@ -46,6 +46,8 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
@@ -71,18 +73,38 @@ import de.erdesignerng.visual.IconFactory;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 import de.mogwai.common.client.looks.components.DefaultTree;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-public class OutlineComponent extends JPanel implements ResourceHelperProvider {
+public class OutlineComponent extends DefaultPanel implements ResourceHelperProvider {
+
+    private final class OutlineSelectionListener implements TreeSelectionListener {
+        @Override
+        public void valueChanged(TreeSelectionEvent aEvent) {
+            TreePath thePath = aEvent.getNewLeadSelectionPath();
+            if (thePath != null) {
+                DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) thePath.getLastPathComponent();
+                if (theNode != null) {
+                    Object theUserObject = theNode.getUserObject();
+                    if (theUserObject instanceof ModelItem) {
+                        SQLComponent.getDefault().displaySQLFor(new ModelItem[] {(ModelItem)theUserObject});
+                        ERDesignerComponent.getDefault().setSelectedObject((ModelItem) theUserObject);
+                    } else {
+                        SQLComponent.getDefault().resetDisplay();
+                    }
+                }
+            }
+        }
+    }
 
     private final class OutlineDisableFilterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             filterField.setText("");
-            refresh(erdesignerComponent.getModel(), null);
+            refresh(ERDesignerComponent.getDefault().getModel(), null);
         }
     }
 
@@ -106,7 +128,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
                             @Override
                             public void run() {
-                                refresh(erdesignerComponent.getModel(), null);
+                                refresh(ERDesignerComponent.getDefault().getModel(), null);
                             }
                         });
                     } catch (Exception e) {
@@ -194,7 +216,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                 }
                 if (theUserObject instanceof SubjectArea) {
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
-                }
+                }                
                 if (theUserObject instanceof Relation) {
                     theLabel.setIcon(IconFactory.getRelationIcon());
                 }
@@ -228,9 +250,9 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     case VIEWS:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.VIEWS));
                         break;
-                    case SUBJECTAREAS:
+                   case SUBJECTAREAS:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.SUBJECTAREALIST));
-                        break;
+                        break;                        
                     default:
                         throw new IllegalArgumentException("Unknown grouping element : " + aValue);
                     }
@@ -256,15 +278,25 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
     private final Set<Object> expandedUserObjects = new HashSet<Object>();
 
-    private final ERDesignerComponent erdesignerComponent;
+    private static OutlineComponent DEFAULT;
 
-    public OutlineComponent(ERDesignerComponent aComponent) {
-
-        erdesignerComponent = aComponent;
+    private OutlineComponent() {
 
         initialize();
 
         setPreferredSize(new Dimension(350, 100));
+    }
+    
+    public static OutlineComponent initializeComponent() {
+        DEFAULT = new OutlineComponent();
+        return DEFAULT;
+    }
+    
+    public static OutlineComponent getDefault() {
+        if (DEFAULT == null) {
+            throw new RuntimeException("Component is not initialized");
+        }
+        return DEFAULT;
     }
 
     private void initialize() {
@@ -272,6 +304,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
         tree = new DefaultTree();
         tree.setCellRenderer(new OutlineTreeCellRenderer());
         tree.addMouseListener(new OutlineMouseListener());
+        tree.addTreeSelectionListener(new OutlineSelectionListener());
 
         setLayout(new BorderLayout());
         add(tree.getScrollPane(), BorderLayout.CENTER);
@@ -318,14 +351,14 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                         }
                     }
                 }
-
-                for (Relation theRelation : erdesignerComponent.getModel().getRelations().getForeignKeysFor(theTable)) {
+                
+                for (Relation theRelation : ERDesignerComponent.getDefault().getModel().getRelations().getForeignKeysFor(theTable)) {
                     if (isVisible(theRelation)) {
                         theOverride = true;
                     }
                 }
             }
-
+            
             if (aItem instanceof Relation) {
                 Relation theRelation = (Relation) aItem;
                 for (Attribute theAttribute : theRelation.getMapping().values()) {
@@ -334,8 +367,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                     }
                 }
             }
-
-            if (aItem instanceof SubjectArea) {
+            
+	if (aItem instanceof SubjectArea) {
                 SubjectArea theArea = (SubjectArea) aItem;
                 for (Table theTable : theArea.getTables()) {
                     if (isVisible(theTable)) {
@@ -347,8 +380,8 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
                         theOverride = true;
                     }
                 }
-            }
-
+            }            
+            
             String theName = aItem.toString();
 
             if (!StringUtils.isEmpty(theName)) {
@@ -587,6 +620,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
             if (theNewSelection != null) {
                 tree.setSelectionPath(theNewSelection);
+                tree.scrollPathToVisible(theNewSelection);
             }
         }
     }
@@ -601,25 +635,9 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
      */
     private void initializeActionsFor(DefaultMutableTreeNode aNode, JPopupMenu aMenu) {
 
+        final ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
+        
         Object theUserObject = aNode.getUserObject();
-        if (theUserObject instanceof Table || theUserObject instanceof View || theUserObject instanceof Relation
-                || theUserObject instanceof SubjectArea) {
-
-            final ModelItem theItem = (ModelItem) theUserObject;
-
-            JMenuItem theEditItem = new JMenuItem();
-            theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.SHOWELEMENTINDIAGRAM,
-                    theItem.getName()));
-            theEditItem.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    erdesignerComponent.setSelectedObject(theItem);
-                }
-            });
-
-            aMenu.add(theEditItem);
-        }
 
         if (theUserObject instanceof Table) {
 
@@ -627,7 +645,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITTABLE, theTable.getName()));
-            theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theTable));
+            theEditItem.addActionListener(new EditTableCommand(theComponent, theTable));
 
             aMenu.add(theEditItem);
         }
@@ -637,7 +655,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITVIEW, theView.getName()));
-            theEditItem.addActionListener(new EditViewCommand(erdesignerComponent, theView));
+            theEditItem.addActionListener(new EditViewCommand(theComponent, theView));
 
             aMenu.add(theEditItem);
 
@@ -649,7 +667,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITRELATION,
                     theRelation.getName()));
-            theEditItem.addActionListener(new EditRelationCommand(erdesignerComponent, theRelation));
+            theEditItem.addActionListener(new EditRelationCommand(theComponent, theRelation));
 
             aMenu.add(theEditItem);
 
@@ -660,19 +678,17 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITDOMAIN, theDomain.getName()));
-            theEditItem.addActionListener(new EditDomainCommand(erdesignerComponent, theDomain));
+            theEditItem.addActionListener(new EditDomainCommand(theComponent, theDomain));
 
             aMenu.add(theEditItem);
 
         }
         if (theUserObject instanceof SubjectArea) {
-
             SubjectArea theSubjectArea = (SubjectArea) theUserObject;
-
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITSUBJECTAREA,
                     theSubjectArea.getName()));
-            theEditItem.addActionListener(new EditSubjectAreaCommand(erdesignerComponent, theSubjectArea));
+            theEditItem.addActionListener(new EditSubjectAreaCommand(theComponent, theSubjectArea));
 
             aMenu.add(theEditItem);
 
@@ -684,7 +700,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITATTRIBUTE,
                     theAttribute.getName()));
-            theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theAttribute.getOwner(),
+            theEditItem.addActionListener(new EditTableCommand(theComponent, theAttribute.getOwner(),
                     theAttribute));
 
             aMenu.add(theEditItem);
@@ -695,7 +711,7 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITINDEX, theIndex.getName()));
-            theEditItem.addActionListener(new EditTableCommand(erdesignerComponent, theIndex.getOwner(), theIndex));
+            theEditItem.addActionListener(new EditTableCommand(theComponent, theIndex.getOwner(), theIndex));
 
             aMenu.add(theEditItem);
 
@@ -703,6 +719,20 @@ public class OutlineComponent extends JPanel implements ResourceHelperProvider {
 
         if (aNode.getParent() != null) {
             initializeActionsFor((DefaultMutableTreeNode) aNode.getParent(), aMenu);
+        }
+    }
+
+    /**
+     * Set the currently selected item.
+     * 
+     * @param aSelection the selection
+     */
+    public void setSelectedItem(ModelItem aSelection) {
+        DefaultMutableTreeNode theNode = userObjectMap.get(aSelection);
+        if (theNode != null) {
+            TreePath thePath = new TreePath(theNode.getPath());
+            tree.setSelectionPath(thePath);
+            tree.scrollPathToVisible(thePath);
         }
     }
 }
