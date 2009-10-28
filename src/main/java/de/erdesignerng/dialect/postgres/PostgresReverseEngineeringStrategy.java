@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect.postgres;
 
+import de.erdesignerng.dialect.IntegerExtractor;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
+import de.erdesignerng.dialect.StringExtractor;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.View;
@@ -37,8 +39,29 @@ import de.erdesignerng.model.View;
  */
 public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<PostgresDialect> {
 
+    protected static final String VIEW_DEFINITION = "VIEW_DEFINITION";
+
+    private StringExtractor theViewDefinitionExtractor = new StringExtractor(VIEW_DEFINITION);
+
     public PostgresReverseEngineeringStrategy(PostgresDialect aDialect) {
         super(aDialect);
+        IntegerExtractor theSizeExtractor = new IntegerExtractor(SIZE) {
+
+            @Override
+            public Integer extractFrom(ResultSet aResultSet) throws SQLException {
+                    // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR ohne
+                    // Parameter definiert wurde, obwohl 1073741823 korrekt wäre
+                System.out.println("IT WORKS!!!!");
+                    if (aResultSet.getInt(getColumnLabel()) == Integer.MAX_VALUE) {
+                        return null;
+                    } else {
+                        return aResultSet.getInt(getColumnLabel());
+                    }
+            }
+
+        };
+
+        super.setSizeExtractor(theSizeExtractor);
     }
 
     @Override
@@ -50,7 +73,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         ResultSet theResult = theMetadata.getSchemas();
 
         while (theResult.next()) {
-            String theSchemaName = theResult.getString("TABLE_SCHEM");
+            String theSchemaName = getSchemaExtractor().extractFrom(theResult);
             String theCatalogName = null;
 
             theList.add(new SchemaEntry(theCatalogName, theSchemaName));
@@ -65,16 +88,14 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     }
 
     @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
-            throws SQLException, ReverseEngineeringException {
-        PreparedStatement theStatement = aConnection
-                .prepareStatement("SELECT * FROM information_schema.views WHERE table_name = ?");
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException, ReverseEngineeringException {
+        PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM information_schema.views WHERE table_name = ?");
         theStatement.setString(1, aViewEntry.getTableName());
         ResultSet theResult = null;
         try {
             theResult = theStatement.executeQuery();
             while (theResult.next()) {
-                String theViewDefinition = theResult.getString("view_definition");
+                String theViewDefinition = getViewDefinitionExtractor().extractFrom(theResult);
                 String theViewDefinitionLower = theViewDefinition.toLowerCase();
                 if (theViewDefinitionLower.startsWith("create view ")) {
                     int p = theViewDefinitionLower.indexOf(" as ");
@@ -96,4 +117,13 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             theStatement.close();
         }
     }
+
+    protected StringExtractor getViewDefinitionExtractor() {
+        return theViewDefinitionExtractor;
+    }
+
+    protected void setViewDefinitionExtractor(StringExtractor theUpdateRuleExtractor) {
+        this.theViewDefinitionExtractor = theUpdateRuleExtractor;
+    }
+
 }
