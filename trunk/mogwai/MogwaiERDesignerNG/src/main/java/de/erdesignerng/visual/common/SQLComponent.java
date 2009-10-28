@@ -50,7 +50,9 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
     private static SQLComponent DEFAULT;
 
     public static SQLComponent initializeComponent() {
-        DEFAULT = new SQLComponent();
+        if (DEFAULT == null) {
+            DEFAULT = new SQLComponent();
+        }
         return DEFAULT;
     }
 

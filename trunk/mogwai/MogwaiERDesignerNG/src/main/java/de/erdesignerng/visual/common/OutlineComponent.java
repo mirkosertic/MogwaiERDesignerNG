@@ -288,7 +288,9 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
     }
     
     public static OutlineComponent initializeComponent() {
-        DEFAULT = new OutlineComponent();
+        if (DEFAULT == null) {
+            DEFAULT = new OutlineComponent();
+        }
         return DEFAULT;
     }
     
