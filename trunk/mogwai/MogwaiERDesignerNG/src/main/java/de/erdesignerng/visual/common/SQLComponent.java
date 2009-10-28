@@ -57,9 +57,7 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
     }
 
     public static SQLComponent getDefault() {
-        if (DEFAULT == null) {
-            throw new RuntimeException("Component is not initialized");
-        }
+        initializeComponent();
         return DEFAULT;
     }
 
