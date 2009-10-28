@@ -30,6 +30,7 @@ import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.common.ReverseEngineerCommand;
+import de.erdesignerng.visual.common.SQLComponent;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrameContent;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
@@ -42,8 +43,6 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     
     private final ERDesignerComponent component;
     
-    private final OutlineComponent outline;
-
     private final ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
     private final DefaultFrameContent content = new DefaultFrameContent();
@@ -60,9 +59,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
         
         ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
 
+        OutlineComponent.initializeComponent();
+        SQLComponent.initializeComponent();
         component = ERDesignerComponent.initializeComponent(thePreferences, this);
-        outline = OutlineComponent.initializeComponent();
-        
+                
         dockingHelper = new DockingHelper(thePreferences);
         try {
             dockingHelper.initialize();
