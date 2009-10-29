@@ -74,9 +74,9 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
         theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
         theViewMap.addView(0, theViews[0]);
         theViewMap.addView(1, theViews[1]);
-        theViewMap.addView(2, theViews[2]);        
-
-        SwingUtilities.invokeAndWait(new Runnable() {
+        theViewMap.addView(2, theViews[2]);
+        
+        Runnable theRunnable =new Runnable() {
 
             @Override
             public void run() {
@@ -104,7 +104,15 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
                 rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(false);
             }
 
-        });
+        };
+
+        // The Docking initialization must be performed in the EDT. If we are not there,
+        // invoke it there, else invoke it directly
+        if (SwingUtilities.isEventDispatchThread()) {
+            theRunnable.run();
+        } else {
+            SwingUtilities.invokeAndWait(theRunnable);
+        }
 
         theViews[0].addListener(this);
         theViews[1].addListener(this);
