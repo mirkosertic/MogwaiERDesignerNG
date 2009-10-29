@@ -21,26 +21,6 @@
             <id>mogwai-repository</id>
             <url>http://mogwai.sourceforge.net/repository/maven2</url>
         </repository>
-        <repository>
-            <id>maven-repository-1</id>
-            <url>http://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>maven-repository-2</id>
-            <url>http://repo2.maven.org/maven2/</url>
-        </repository>
-         <repository>
-            <id>jboss-repository</id>
-            <url>http://repository.jboss.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>ideotechnologies-repository</id>
-            <url>http://sweetdev-ria.ideotechnologies.com/maven2/repository/</url>
-        </repository>
-        <repository>
-            <id>ibiblio-repository</id>
-            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
-        </repository>
     </repositories>
     <build>
         <defaultGoal>package</defaultGoal>
@@ -227,27 +207,19 @@
                     </systemProperties>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <showDeprecation>false</showDeprecation>
-                    <debug>true</debug>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <dependencies>
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-databinding</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-layout</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
