@@ -305,11 +305,13 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         tree.setCellRenderer(new OutlineTreeCellRenderer());
         tree.addMouseListener(new OutlineMouseListener());
         tree.addTreeSelectionListener(new OutlineSelectionListener());
+        tree.setModel(new DefaultTreeModel(new DefaultMutableTreeNode(TreeGroupingElement.MODEL)));
 
         setLayout(new BorderLayout());
         add(tree.getScrollPane(), BorderLayout.CENTER);
 
         filterField = new DefaultTextField();
+        filterField.setColumns(255);
         filterField.addKeyListener(new OutlineKeyAdapter());
         disableFilterButton = new DefaultButton();
         disableFilterButton.setIcon(IconFactory.getCancelIcon());
