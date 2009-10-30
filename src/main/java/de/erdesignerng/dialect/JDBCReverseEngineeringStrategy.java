@@ -52,6 +52,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
     private static final Logger LOGGER = Logger.getLogger(JDBCReverseEngineeringStrategy.class);
 
+    public static final String TABLE_TABLE_TYPE = "TABLE";
+
+    public static final String VIEW_TABLE_TYPE = "VIEW";
+
     protected JDBCReverseEngineeringStrategy(T aDialect) {
         super(aDialect);
     }
@@ -110,7 +114,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 aViewEntry.getTableName(), new String[] { aViewEntry.getTableType() });
         while (theViewsResultSet.next()) {
 
-            String theViewRemarks = getRemarksExtractor().extractFrom(theViewsResultSet);
+            String theViewRemarks = theViewsResultSet.getString("REMARKS");
 
             View theView = new View();
 
@@ -178,7 +182,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 aTableEntry.getTableName(), new String[] { aTableEntry.getTableType() });
         while (theTablesResultSet.next()) {
 
-            String theTableRemarks = getRemarksExtractor().extractFrom(theTablesResultSet);
+            String theTableRemarks = theTablesResultSet.getString("REMARKS");
 
             Table theNewTable = new Table();
 
@@ -210,38 +214,44 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 String theColumnRemarks = null;
 
                 try {
-                    theColumnName = getColumnNameExtractor().extractFrom(theColumnsResultSet);
+                    theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
                 } catch (Exception e) {}
 
                 try {
-                    theTypeName = getTypeNameExtractor().extractFrom(theColumnsResultSet);
+                    theTypeName = theColumnsResultSet.getString("TYPE_NAME");
                 } catch (Exception e) {}
 
                 try {
-                    theSize = getSizeExtractor().extractFrom(theColumnsResultSet);
+                    // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR ohne
+                    // Parameter definiert wurde, obwohl 1073741823 korrekt wäre
+                    if (dialect.getClass().equals(PostgresDialect.class) && theColumnsResultSet.getInt("COLUMN_SIZE") == Integer.MAX_VALUE) {
+                        theSize = null;
+                    } else {
+                        theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
+                    }
                 } catch (Exception e) {}
 
                 try {
-                    theFraction = getFractionExtractor().extractFrom(theColumnsResultSet);
+                    theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
                 } catch (Exception e) {}
 
                 try {
-                    theRadix = getRadixExtractor().extractFrom(theColumnsResultSet);
+                    theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
                 } catch (Exception e) {}
 
                 try {
-                    theNullable = getNullableExtractor().extractFrom(theColumnsResultSet);
+                    theNullable = theColumnsResultSet.getInt("NULLABLE");
                 } catch (Exception e) {}
 
                 try {
-                    theDefaultValue = getDefaultValueExtractor().extractFrom(theColumnsResultSet);
+                    theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
                     if (!StringUtils.isEmpty(theDefaultValue)) {
                         theDefaultValue = theDefaultValue.trim();
                     }
                 } catch (Exception e) {}
 
                 try {
-                    theColumnRemarks = getRemarksExtractor().extractFrom(theColumnsResultSet);
+                    theColumnRemarks = theColumnsResultSet.getString("REMARKS");
                 } catch (Exception e) {}
 
                 Attribute theAttribute = new Attribute();
@@ -315,8 +325,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         Index thePrimaryKeyIndex = null;
         while (thePrimaryKeyResultSet.next()) {
 
-            String thePKName = getPrimaryKeyExtractor().extractFrom(thePrimaryKeyResultSet);
-            String theColumnName = getColumnNameExtractor().extractFrom(thePrimaryKeyResultSet);
+            String thePKName = thePrimaryKeyResultSet.getString("PK_NAME");
+            String theColumnName = thePrimaryKeyResultSet.getString("COLUMN_NAME");
 
             if (thePrimaryKeyIndex == null) {
                 thePrimaryKeyIndex = new Index();
@@ -363,7 +373,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         Index theIndex = null;
         while (theIndexResults.next()) {
 
-            String theIndexName = convertIndexNameFor(aTable, getIndexNameExtractor().extractFrom(theIndexResults));
+            String theIndexName = convertIndexNameFor(aTable, theIndexResults.getString("INDEX_NAME"));
 
             if ((theIndexName != null) && ((theIndex == null) || (!theIndex.getOriginalName().equals(theIndexName)))) {
 
@@ -374,7 +384,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                     theIndex.setName(theNewIndexName);
                     theIndex.setOriginalName(theIndexName);
 
-                    boolean isNonUnique = getNonUniqueExtractor().extractFrom(theIndexResults);
+                    boolean isNonUnique = theIndexResults.getBoolean("NON_UNIQUE");
                     if (isNonUnique) {
                         theIndex.setIndexType(IndexType.NONUNIQUE);
                     } else {
@@ -395,10 +405,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
             }
 
             if (theIndex != null) {
-                short aPosition = getPositionExtractor().extractFrom(theIndexResults);
+                short aPosition = theIndexResults.getShort("ORDINAL_POSITION");
 
-                String theColumnName = getColumnNameExtractor().extractFrom(theIndexResults);
-                String theASCorDESC = getSortOrderExtractor().extractFrom(theIndexResults);
+                String theColumnName = theIndexResults.getString("COLUMN_NAME");
+                String theASCorDESC = theIndexResults.getString("ASC_OR_DESC");
 
                 reverseEngineerIndexAttribute(aMetaData, aTableEntry, aTable, aNotifier, theIndex, theColumnName,
                         aPosition, theASCorDESC);
@@ -514,17 +524,17 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry
                 .getTableName());
         while (theForeignKeys.next()) {
-            String theFKName = getForeignKeyExtractor().extractFrom(theForeignKeys);
+            String theFKName = theForeignKeys.getString("FK_NAME");
 
             if ((theNewRelation == null) || (!theFKName.equals(theOldFKName))) {
 
                 theOldFKName = theFKName;
 
-                String thePKTableName = getPrimaryTableExtractor().extractFrom(theForeignKeys);
-                String thePKTableSchema = getPrimarySchemaExtractor().extractFrom(theForeignKeys);
+                String thePKTableName = theForeignKeys.getString("PKTABLE_NAME");
+                String thePKTableSchema = theForeignKeys.getString("PKTABLE_SCHEM");
 
-                String theUpdateRule = getUpdateRuleExtractor().extractFrom(theForeignKeys);
-                String theDeleteRule = getDeleteRuleExtractor().extractFrom(theForeignKeys);
+                String theUpdateRule = theForeignKeys.getString("UPDATE_RULE");
+                String theDeleteRule = theForeignKeys.getString("DELETE_RULE");
 
                 Table theExportingTable = null;
                 switch (aOptions.getTableNaming()) {
@@ -588,9 +598,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 }
             }
 
-            if ((theNewRelation != null) && (theNewRelation.getImportingTable() != null) && (theNewRelation.getExportingTable() != null)) {
-                String thePKColumnName = dialect.getCastType().cast(getPrimaryColumnExtractor().extractFrom(theForeignKeys));
-                String theFKColumnName = dialect.getCastType().cast(getForeignColumnExtractor().extractFrom(theForeignKeys));
+            if ((theNewRelation != null) && (theNewRelation.getImportingTable() != null)
+                    && (theNewRelation.getExportingTable() != null)) {
+                String thePKColumnName = dialect.getCastType().cast(theForeignKeys.getString("PKCOLUMN_NAME"));
+                String theFKColumnName = dialect.getCastType().cast(theForeignKeys.getString("FKCOLUMN_NAME"));
 
                 Attribute theExportingAttribute = theNewRelation.getExportingTable().getAttributes().findByName(
                         dialect.getCastType().cast(thePKColumnName));
@@ -645,6 +656,27 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         } catch (Exception e) {
             throw new ReverseEngineeringException(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Get the list of available table types that shall be reverse engineered.
+     * Default is only "TABLE", but can be overridden by subclasses.
+     * 
+     * @return the l
+     */
+    protected String[] getReverseEngineeringTableTypes() {
+        return new String[] { TABLE_TABLE_TYPE, VIEW_TABLE_TYPE };
+    }
+
+    /**
+     * Test if a table type is a view.
+     * 
+     * @param aTableType
+     *            the table type
+     * @return true if yes, else false
+     */
+    protected boolean isTableTypeView(String aTableType) {
+        return VIEW_TABLE_TYPE.equals(aTableType);
     }
 
     /**
@@ -705,8 +737,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         ResultSet theResult = theMetadata.getSchemas();
 
         while (theResult.next()) {
-            String theSchemaName = getSchemaExtractor().extractFrom(theResult);
-            String theCatalogName = getCatalogExtractor().extractFrom(theResult);
+            String theSchemaName = theResult.getString("TABLE_SCHEM");
+            String theCatalogName = theResult.getString("TABLE_CATALOG");
 
             theList.add(new SchemaEntry(theCatalogName, theSchemaName));
         }
@@ -735,8 +767,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
 
         while (theTablesResultSet.next()) {
 
-            String theTableType = getTableTypeExtractor().extractFrom(theTablesResultSet);
-            String theTableName = getTableNameExtractor().extractFrom(theTablesResultSet);
+            String theTableType = theTablesResultSet.getString("TABLE_TYPE");
+            String theTableName = theTablesResultSet.getString("TABLE_NAME");
 
             if (isTableTypeView(theTableType)) {
                 if (isValidView(theTableName, theTableType)) {
