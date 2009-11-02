@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -26,6 +25,7 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 
 public class XMLTableSerializer extends AbstractXMLTableSerializer {

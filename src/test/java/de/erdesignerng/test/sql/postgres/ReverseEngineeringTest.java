@@ -25,8 +25,8 @@ import java.sql.Statement;
 import java.util.Map;
 
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
@@ -80,7 +80,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             loadSQL(theConnection, "db.sql");
 
             Dialect theDialect = new PostgresDialect();
-            ReverseEngineeringStrategy<PostgresDialect> theST = theDialect.getReverseEngineeringStrategy();
+            JDBCReverseEngineeringStrategy<PostgresDialect> theST = theDialect.getReverseEngineeringStrategy();
 
             Model theModel = new Model();
             theModel.setDialect(theDialect);

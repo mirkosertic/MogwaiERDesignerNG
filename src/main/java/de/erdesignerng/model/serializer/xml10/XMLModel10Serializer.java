@@ -17,13 +17,6 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 import java.util.Map;
 
 import org.w3c.dom.Document;
@@ -37,7 +30,14 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
 import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 import de.erdesignerng.util.XMLUtils;
 
 /**

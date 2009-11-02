@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
@@ -80,7 +80,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             loadSQL(theConnection, "db.sql");
 
             Dialect theDialect = new MSSQLDialect();
-            ReverseEngineeringStrategy<MSSQLDialect> theST = theDialect.getReverseEngineeringStrategy();
+            JDBCReverseEngineeringStrategy<MSSQLDialect> theST = theDialect.getReverseEngineeringStrategy();
 
             Model theModel = new Model();
             theModel.setDialect(theDialect);
