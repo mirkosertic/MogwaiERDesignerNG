@@ -24,8 +24,8 @@ import net.sourceforge.squirrel_sql.client.session.ISession;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
@@ -85,7 +85,7 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
+    public JDBCReverseEngineeringStrategy<Dialect> getReverseEngineeringStrategy() {
         return dialect.getReverseEngineeringStrategy();
     }
 

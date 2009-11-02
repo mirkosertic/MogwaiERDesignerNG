@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
@@ -48,18 +47,49 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
  * @param <T>
  *            the dialect
  */
-public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> extends ReverseEngineeringStrategy<T> {
+public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
     private static final Logger LOGGER = Logger.getLogger(JDBCReverseEngineeringStrategy.class);
 
     public static final String TABLE_TABLE_TYPE = "TABLE";
 
     public static final String VIEW_TABLE_TYPE = "VIEW";
-
+    
+    protected T dialect;
+    
     protected JDBCReverseEngineeringStrategy(T aDialect) {
-        super(aDialect);
+    	dialect = aDialect;
     }
 
+
+    /**
+     * Convert a JDBC Cascade Type to the Mogwai CascadeType.
+     * 
+     * Default is CASCADE.
+     * 
+     * @param aValue
+     *            the JDBC type
+     * @return the CascadeType
+     */
+    protected CascadeType getCascadeType(int aValue) {
+        switch (aValue) {
+        case DatabaseMetaData.importedKeyNoAction:
+            return CascadeType.NOTHING;
+        case DatabaseMetaData.importedKeySetNull:
+            return CascadeType.SET_NULL;
+        case DatabaseMetaData.importedKeyCascade:
+            return CascadeType.CASCADE;
+        case DatabaseMetaData.importedKeyRestrict:
+            return CascadeType.RESTRICT;
+        default:
+            return CascadeType.CASCADE;
+        }
+    }
+
+    protected String convertColumnTypeToRealType(String aTypeName) {
+        return aTypeName;
+    }
+    
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTable, Connection aConnection) throws SQLException {
     }
@@ -222,13 +252,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
                 } catch (Exception e) {}
 
                 try {
-                    // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR ohne
-                    // Parameter definiert wurde, obwohl 1073741823 korrekt wäre
-                    if (dialect.getClass().equals(PostgresDialect.class) && theColumnsResultSet.getInt("COLUMN_SIZE") == Integer.MAX_VALUE) {
-                        theSize = null;
-                    } else {
-                        theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
-                    }
+                	theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
                 } catch (Exception e) {}
 
                 try {
@@ -705,7 +729,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return true;
     }
 
-    @Override
     public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection,
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
             ReverseEngineeringException {
@@ -728,7 +751,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
     }
 
-    @Override
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
         List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
@@ -787,7 +809,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends JDBCDialect> exte
         return theResult;
     }
 
-    @Override
     public List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries)
             throws SQLException {
         List<TableEntry> theResult = new ArrayList<TableEntry>();
