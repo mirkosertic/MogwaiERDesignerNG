@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.dialect.sql92;
 
-import de.erdesignerng.dialect.JDBCDialect;
+import de.erdesignerng.dialect.Dialect;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-31 16:14:37 $
  */
-public abstract class SQL92Dialect extends JDBCDialect {
+public abstract class SQL92Dialect extends Dialect {
 }

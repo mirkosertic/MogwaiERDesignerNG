@@ -26,9 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.ReverseEngineeringNotifier;
+import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 
 /**
@@ -60,6 +64,22 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     }
 
     @Override
+	protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute,
+			ReverseEngineeringOptions aOptions,
+			ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry,
+			Connection aConnection) throws SQLException {
+
+		//TODO [mirkosertic] validate construct with unit test    	
+    	if (aAttribute.getDatatype().getName().equals("varchar")) {
+            // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR ohne
+            // Parameter definiert wurde, obwohl 1073741823 korrekt wäre
+    		if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
+    			aAttribute.setSize(null);
+    		}
+    	}
+	}
+
+	@Override
     protected boolean isTableTypeView(String aTableType) {
         return VIEW_TABLE_TYPE.equals(aTableType);
     }

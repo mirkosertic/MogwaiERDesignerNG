@@ -11,7 +11,6 @@ import javax.swing.DefaultComboBoxModel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.dialect.JDBCDialect;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
@@ -40,7 +39,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
     private RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 
         @Override
-        public void handleDialectChange(JDBCDialect aDialect) {
+        public void handleDialectChange(Dialect aDialect) {
             commandChangeDialect(aDialect);
         }
     };
@@ -157,7 +156,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
         }
     }
 
-    private void commandChangeDialect(JDBCDialect aDialect) {
+    private void commandChangeDialect(Dialect aDialect) {
 
         if (!bindingInfo.isBinding()) {
             DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();

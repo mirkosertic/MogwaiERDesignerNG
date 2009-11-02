@@ -17,11 +17,12 @@
  */
 package de.erdesignerng.model.serializer;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * @author $Author: dr-death $

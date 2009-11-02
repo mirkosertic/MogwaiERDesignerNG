@@ -21,9 +21,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.ReverseEngineeringStrategy;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -55,7 +55,7 @@ public class ReverseEngineerCommand extends UICommand {
                 if (theConnection == null) {
                     return;
                 }
-                final ReverseEngineeringStrategy theStrategy = theModel.getDialect().getReverseEngineeringStrategy();
+                final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect().getReverseEngineeringStrategy();
 
                 LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<ReverseEngineeringOptions>(
                         getWorldConnector()) {

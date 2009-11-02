@@ -163,7 +163,7 @@ public abstract class Dialect {
      * 
      * @return the reverse engineering strategy
      */
-    public abstract ReverseEngineeringStrategy getReverseEngineeringStrategy();
+    public abstract JDBCReverseEngineeringStrategy getReverseEngineeringStrategy();
 
     public abstract String getUniqueName();
 
