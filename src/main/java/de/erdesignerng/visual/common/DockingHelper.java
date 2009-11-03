@@ -80,6 +80,9 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
             @Override
             public void run() {
+                
+                Thread.currentThread().setContextClassLoader(DockingHelper.class.getClassLoader());
+                
                 rootWindow = DockingUtil.createRootWindow(theViewMap, true);
                 byte[] windowLayout = preferences.getWindowLayout();
                 boolean layoutRestored = false;
