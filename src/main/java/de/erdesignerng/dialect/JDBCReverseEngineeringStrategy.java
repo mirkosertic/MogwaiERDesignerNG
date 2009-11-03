@@ -358,8 +358,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                 thePrimaryKeyIndex.setName(convertIndexNameFor(aTable, thePKName));
                 thePrimaryKeyIndex.setOriginalName(thePKName);
                 if (StringUtils.isEmpty(thePrimaryKeyIndex.getName())) {
-                    // Assume the default name is TABLE_NAME+"_FK"
-                    thePrimaryKeyIndex.setName(aTableEntry.getTableName() + "_FK");
+                    // Assume the default name is TABLE_NAME+"_PK"
+                    thePrimaryKeyIndex.setName(aTableEntry.getTableName() + "_PK");
                 }
 
                 try {
