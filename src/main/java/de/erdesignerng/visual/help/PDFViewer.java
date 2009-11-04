@@ -38,20 +38,13 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -61,7 +54,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -74,9 +66,7 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.filechooser.FileFilter;
 
-import com.sun.pdfview.Flag;
 import com.sun.pdfview.FullScreenWindow;
 import com.sun.pdfview.OutlineNode;
 import com.sun.pdfview.PDFDestination;
@@ -140,17 +130,11 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
     /** true if the thumb panel should exist at all */
     boolean doThumb = true;
 
-    /** flag to indicate when a newly added document has been announced */
-    Flag docWaiter;
-
     /** a thread that pre-loads the next page for faster response */
     PagePreparer pagePrep;
 
     /** the window containing the pdf outline, or null if one doesn't exist */
     JDialog olf;
-
-    /** the document menu */
-    JMenu docMenu;
 
     /**
      * utility method to get an icon from the resources of this class
@@ -207,11 +191,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
     class ZoomAction extends AbstractAction {
 
         double zoomfactor = 1.0;
-
-        public ZoomAction(String name, double factor) {
-            super(name);
-            zoomfactor = factor;
-        }
 
         public ZoomAction(String name, Icon icon, double factor) {
             super(name, icon);
@@ -596,34 +575,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
     }
 
     /**
-     * open a URL to a PDF file. The file is read in and processed with an
-     * in-memory buffer.
-     * 
-     * @param url
-     * @throws java.io.IOException
-     */
-    public void openFile(URL url) throws IOException {
-        URLConnection urlConnection = url.openConnection();
-        int contentLength = urlConnection.getContentLength();
-        InputStream istr = urlConnection.getInputStream();
-        byte[] byteBuf = new byte[contentLength];
-        int offset = 0;
-        int read = 0;
-        while (read >= 0) {
-            read = istr.read(byteBuf, offset, contentLength - offset);
-            if (read > 0) {
-                offset += read;
-            }
-        }
-        if (offset != contentLength) {
-            throw new IOException("Could not read all of URL file.");
-        }
-        ByteBuffer buf = ByteBuffer.allocate(contentLength);
-        buf.put(byteBuf);
-        openPDFByteBuffer(buf, url.toString(), url.getFile());
-    }
-
-    /**
      * <p>
      * Open a specific pdf file. Creates a DocumentInfo from the file, and opens
      * that.
@@ -647,58 +598,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
         // now memory-map a byte-buffer
         ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
         openPDFByteBuffer(buf, file.getPath(), file.getName());
-    }
-
-    /**
-     * <p>
-     * Open a specific pdf file. Creates a DocumentInfo from the file, and opens
-     * that.
-     * </p>
-     * 
-     * <p>
-     * <b>Note:</b> By not memory mapping the file its contents are not locked
-     * down while PDFFile is open.
-     * </p>
-     * 
-     * @param file
-     *            the file to open
-     */
-    public void openFileUnMapped(File file) throws IOException {
-        DataInputStream istr = null;
-        try {
-            // load a pdf from a byte buffer
-            // avoid using a RandomAccessFile but fill a ByteBuffer directly
-            istr = new DataInputStream(new FileInputStream(file));
-            long len = file.length();
-            if (len > Integer.MAX_VALUE) {
-                throw new IOException("File too long to decode: " + file.getName());
-            }
-            int contentLength = (int) len;
-            byte[] byteBuf = new byte[contentLength];
-            int offset = 0;
-            int read = 0;
-            while (read >= 0) {
-                read = istr.read(byteBuf, offset, contentLength - offset);
-                if (read > 0) {
-                    offset += read;
-                }
-            }
-            ByteBuffer buf = ByteBuffer.allocate(contentLength);
-            buf.put(byteBuf);
-            openPDFByteBuffer(buf, file.getPath(), file.getName());
-        } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } finally {
-            if (istr != null) {
-                try {
-                    istr.close();
-                } catch (Exception e) {
-                    // ignore error on close
-                }
-            }
-        }
     }
 
     /**
@@ -771,68 +670,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      */
     public void openError(String message) {
         JOptionPane.showMessageDialog(split, message, "Error opening file", JOptionPane.ERROR_MESSAGE);
-    }
-
-    /**
-     * A file filter for PDF files.
-     */
-    FileFilter pdfFilter = new FileFilter() {
-
-        @Override
-        public boolean accept(File f) {
-            return f.isDirectory() || f.getName().endsWith(".pdf");
-        }
-
-        @Override
-        public String getDescription() {
-            return "Choose a PDF file";
-        }
-    };
-
-    private File prevDirChoice;
-
-    /**
-     * Ask the user for a PDF file to open from the local file system
-     */
-    public void doOpen() {
-        try {
-            JFileChooser fc = new JFileChooser();
-            fc.setCurrentDirectory(prevDirChoice);
-            fc.setFileFilter(pdfFilter);
-            fc.setMultiSelectionEnabled(false);
-            int returnVal = fc.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                try {
-                    prevDirChoice = fc.getSelectedFile();
-                    openFile(fc.getSelectedFile());
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(split, "Opening files from your local " + "disk is not available\nfrom the "
-                    + "Java Web Start version of this " + "program.\n", "Error opening directory",
-                    JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Open a local file, given a string filename
-     * 
-     * @param name
-     *            the name of the file to open
-     */
-    public void doOpen(String name) {
-        try {
-            openFile(new URL(name));
-        } catch (IOException ioe) {
-            try {
-                openFile(new File(name));
-            } catch (IOException ex) {
-                Logger.getLogger(PDFViewer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     /**
@@ -946,8 +783,8 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      */
     public void doThumbs(boolean show) {
         if (show) {
-            split.setDividerLocation((int) thumbs.getPreferredSize().width
-                    + (int) thumbscroll.getVerticalScrollBar().getWidth() + 4);
+            split.setDividerLocation(thumbs.getPreferredSize().width
+                    + thumbscroll.getVerticalScrollBar().getWidth() + 4);
         } else {
             split.setDividerLocation(0);
         }
