@@ -207,6 +207,7 @@ Release 2.5.0
 * Bug Fixing Preferences Dialog required fields were not correctly highlighted
 * Bug Fixing 2874576 [ERDesignerNG] Support PostgreSQL INET datatype
 * Bug Fixing 2882258 Reverse engineer not working on various DBMSs
+* Bug Fixing 2880450 [ERDesignerNG] existing data-type-xml is not updated by app
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
