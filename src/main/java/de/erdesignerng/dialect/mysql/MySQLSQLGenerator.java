@@ -24,7 +24,6 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
@@ -55,7 +54,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     }
 
     @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
 
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
@@ -70,7 +69,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     }
 
     @Override
-    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
+    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
 
         boolean theHasAutoIncrement = false;
         for (Attribute theAttribute : aTable.getAttributes()) {
@@ -96,8 +95,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     }
 
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
-            throws VetoException {
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
@@ -125,8 +123,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     }
 
     @Override
-    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
-            throws VetoException {
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();
@@ -144,7 +141,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
     }
 
     @Override
-    public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
+    public StatementList createRemoveRelationStatement(Relation aRelation) {
 
         Table theImportingTable = aRelation.getImportingTable();
 

@@ -21,7 +21,6 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelBasedConnectionProvider;
-import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 
 public class GenerateSQLCommand extends UICommand {
@@ -36,18 +35,12 @@ public class GenerateSQLCommand extends UICommand {
             return;
         }
 
-        try {
-            
-            Model theModel = component.getModel();
-            
-            SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
-            StatementList theStatements = theGenerator.createCreateAllObjects(theModel);
-            SQLEditor theEditor = new SQLEditor(getDetailComponent(),
-                    new ModelBasedConnectionProvider(theModel), theStatements, component.currentEditingFile,
-                    "schema.sql", getPreferences(), getWorldConnector());
-            theEditor.showModal();
-        } catch (VetoException e) {
-            getWorldConnector().notifyAboutException(e);
-        }
+        Model theModel = component.getModel();
+
+        SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
+        StatementList theStatements = theGenerator.createCreateAllObjects(theModel);
+        SQLEditor theEditor = new SQLEditor(getDetailComponent(), new ModelBasedConnectionProvider(theModel),
+                theStatements, component.currentEditingFile, "schema.sql", getPreferences(), getWorldConnector());
+        theEditor.showModal();
     }
 }

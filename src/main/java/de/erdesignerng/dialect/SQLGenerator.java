@@ -22,12 +22,12 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * Base class for all SQL generators.
@@ -41,7 +41,7 @@ public abstract class SQLGenerator<T extends Dialect> {
 
     public static final String TAB = "    ";
 
-    private T dialect;
+    private final T dialect;
 
     public SQLGenerator(T aDialect) {
         dialect = aDialect;
@@ -88,44 +88,41 @@ public abstract class SQLGenerator<T extends Dialect> {
         return aRelation.getName();
     }
 
-    public abstract StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException;
+    public abstract StatementList createRemoveRelationStatement(Relation aRelation);
 
-    public abstract StatementList createRemoveTableStatement(Table aTable) throws VetoException;
+    public abstract StatementList createRemoveTableStatement(Table aTable);
 
-    public abstract StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute)
-            throws VetoException;
+    public abstract StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute);
 
-    public abstract StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) throws VetoException;
+    public abstract StatementList createAddIndexToTableStatement(Table aTable, Index aIndex);
 
-    public abstract StatementList createAddRelationStatement(Relation aRelation) throws VetoException;
+    public abstract StatementList createAddRelationStatement(Relation aRelation);
 
-    public abstract StatementList createAddTableStatement(Table aTable) throws VetoException;
+    public abstract StatementList createAddTableStatement(Table aTable);
 
-    public abstract StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
-            throws VetoException;
+    public abstract StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute);
 
-    public abstract StatementList createChangeIndexStatement(Index aExistantIndex, Index aNewIndex)
-            throws VetoException;
+    public abstract StatementList createChangeIndexStatement(Index aExistantIndex, Index aNewIndex);
 
-    public abstract StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation)
-            throws VetoException;
+    public abstract StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation);
 
-    public abstract StatementList createChangeTableCommentStatement(Table aTable, String aNewComment)
-            throws VetoException;
+    public abstract StatementList createChangeTableCommentStatement(Table aTable, String aNewComment);
 
-    public abstract StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute)
-            throws VetoException;
+    public abstract StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute);
 
-    public abstract StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException;
+    public abstract StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex);
 
-    public abstract StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException;
+    public abstract StatementList createRenameTableStatement(Table aTable, String aNewName);
 
-    public abstract StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
-            throws VetoException;
+    public abstract StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName);
 
-    public abstract StatementList createRemovePrimaryKeyStatement(Table table, Index index) throws VetoException;
+    public abstract StatementList createRemovePrimaryKeyStatement(Table table, Index index);
 
     public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
+
+    public abstract StatementList createAddDomainStatement(Domain aDomain);
+    
+    public abstract StatementList createDropDomainStatement(Domain domain);
 
     /**
      * Create the DDL script for the whole model.
@@ -133,16 +130,17 @@ public abstract class SQLGenerator<T extends Dialect> {
      * @param aModel
      *            the model
      * @return the lists of statements
-     * @throws VetoException
-     *             can be thrown if someone has a veto on execution
      */
-    public StatementList createCreateAllObjects(Model aModel) throws VetoException {
+    public StatementList createCreateAllObjects(Model aModel) {
 
         StatementList theResult = new StatementList();
 
         List<String> theSchemas = aModel.getUsedSchemas();
         for (String theSchema : theSchemas) {
             theResult.addAll(createAddSchemaStatement(theSchema));
+        }
+        for (Domain theDomain : aModel.getDomains()) {
+            theResult.addAll(createAddDomainStatement(theDomain));
         }
         for (Table theTable : aModel.getTables()) {
             theResult.addAll(createAddTableStatement(theTable));
@@ -161,11 +159,11 @@ public abstract class SQLGenerator<T extends Dialect> {
         return ";";
     }
 
-    public abstract StatementList createAddViewStatement(View aView) throws VetoException;
+    public abstract StatementList createAddViewStatement(View aView);
 
-    public abstract StatementList createChangeViewStatement(View aView) throws VetoException;
+    public abstract StatementList createChangeViewStatement(View aView);
 
-    public abstract StatementList createDropViewStatement(View aView) throws VetoException;
+    public abstract StatementList createDropViewStatement(View aView);
 
-    public abstract StatementList createAddSchemaStatement(String aSchema) throws VetoException;
+    public abstract StatementList createAddSchemaStatement(String aSchema);
 }
