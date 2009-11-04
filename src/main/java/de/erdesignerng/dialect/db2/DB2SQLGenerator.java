@@ -23,7 +23,6 @@ import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
@@ -36,7 +35,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     }
 
     @Override
-    public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
+    public StatementList createRemoveRelationStatement(Relation aRelation) {
         Table theImportingTable = aRelation.getImportingTable();
 
         StatementList theResult = new StatementList();
@@ -46,7 +45,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     }
 
     @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
 
         StatementList theResult = new StatementList();
         theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
@@ -55,8 +54,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     }
 
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
-            throws VetoException {
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) {
 
         Table theTable = aExistantAttribute.getOwner();
 
@@ -67,8 +65,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
     }
 
     @Override
-    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
-            throws VetoException {
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();

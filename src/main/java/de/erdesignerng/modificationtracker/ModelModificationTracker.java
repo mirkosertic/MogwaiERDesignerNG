@@ -18,6 +18,7 @@
 package de.erdesignerng.modificationtracker;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
@@ -62,4 +63,8 @@ public interface ModelModificationTracker {
     void removeView(View aView) throws VetoException;
 
     void changeView(View aView) throws VetoException;
+
+    void addDomain(Domain aDomain) throws VetoException;
+
+    void removeDomain(Domain aDomain) throws VetoException;
 }

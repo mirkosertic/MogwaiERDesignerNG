@@ -25,7 +25,6 @@ import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
-import de.erdesignerng.modificationtracker.VetoException;
 
 /**
  * @author $Author: mirkosertic $
@@ -69,7 +68,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
     }
 
     @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
 
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
@@ -86,8 +85,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
     }
 
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
-            throws VetoException {
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) {
 
         Table theTable = aExistantAttribute.getOwner();
 
@@ -107,7 +105,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
     }
 
     @Override
-    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
+    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -120,8 +118,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
     }
 
     @Override
-    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
-            throws VetoException {
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) {
         Table theTable = aExistantAttribute.getOwner();
 
         StatementList theResult = new StatementList();

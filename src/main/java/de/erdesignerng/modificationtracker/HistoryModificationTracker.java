@@ -21,6 +21,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
@@ -29,9 +30,9 @@ import de.erdesignerng.model.View;
 
 public class HistoryModificationTracker implements ModelModificationTracker {
 
-    private Model model;
+    private final Model model;
 
-    private StatementList statements = new StatementList();
+    private final StatementList statements = new StatementList();
 
     public HistoryModificationTracker(Model aModel) {
         model = aModel;
@@ -136,5 +137,15 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 
     public void removeView(View aView) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createDropViewStatement(aView));
+    }
+
+    @Override
+    public void addDomain(Domain aDomain) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createAddDomainStatement(aDomain));
+    }
+
+    @Override
+    public void removeDomain(Domain aDomain) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createDropDomainStatement(aDomain));
     }
 }

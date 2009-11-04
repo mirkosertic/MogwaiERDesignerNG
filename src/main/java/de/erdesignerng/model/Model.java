@@ -434,8 +434,13 @@ public class Model extends ModelItem {
      * 
      * @param aDomain
      *            the domain
+     * @throws VetoException 
      */
-    public void addDomain(Domain aDomain) {
+    public void addDomain(Domain aDomain) throws VetoException {
+        
+        modificationTracker.addDomain(aDomain);
+        
+        aDomain.setOwner(this);
         domains.add(aDomain);
     }
 
@@ -444,8 +449,12 @@ public class Model extends ModelItem {
      * 
      * @param aDomain
      *            a domain
+     * @throws VetoException 
      */
-    public void removeDomain(Domain aDomain) {
+    public void removeDomain(Domain aDomain) throws VetoException {
+        
+        modificationTracker.removeDomain(aDomain);
+        
         domains.remove(aDomain);
     }
 
