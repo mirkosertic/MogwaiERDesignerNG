@@ -64,9 +64,6 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
     public void renameAttribute(Attribute aExistantAttribute, String aNewName) throws VetoException {
     }
 
-    public void renameRelation(Relation aRelation, String aNewName) throws VetoException {
-    }
-
     public void renameTable(Table aTable, String aNewName) throws VetoException {
     }
 

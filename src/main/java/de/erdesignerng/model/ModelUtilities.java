@@ -84,27 +84,6 @@ public final class ModelUtilities {
     }
 
     /**
-     * Find the model properties.
-     * 
-     * @param aItem
-     *            the item to start searching at
-     * @return the found model history.
-     */
-    public static Dialect getModelProperties(OwnedModelItem aItem) {
-
-        Object theOwner = aItem.getOwner();
-        if (theOwner instanceof Model) {
-            return ((Model) theOwner).getDialect();
-        }
-
-        if (theOwner instanceof OwnedModelItem) {
-            return getModelProperties((OwnedModelItem) theOwner);
-        }
-
-        return null;
-    }
-
-    /**
      * Create a unique system id.
      * 
      * @param aObject

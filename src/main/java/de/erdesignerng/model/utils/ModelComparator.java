@@ -489,7 +489,7 @@ public class ModelComparator {
                             String theDiffInfo = "";
 
                             // Differences in definition
-                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
                                     theRelationName + " " + theDiffInfo));
                             aModelSideTableNode.add(error);
 
@@ -510,7 +510,7 @@ public class ModelComparator {
 
                     // The entity is existant, but the attribute is
                     // missing
-                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theRelationName));
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
                     aModelSideTableNode.add(missing);
 
                 }
@@ -519,7 +519,7 @@ public class ModelComparator {
 
                 // The entity is not exising in the model, so every
                 // attribute is missing
-                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theRelationName));
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
                 aModelSideTableNode.add(missing);
 
             }
@@ -544,7 +544,7 @@ public class ModelComparator {
 
                             // Modified
                             // Differences in definition
-                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
                                     theRelationName + " " + diffInfo));
                             aDBSideTableNode.add(error);
 
@@ -563,7 +563,7 @@ public class ModelComparator {
 
                     // The entity is existant, but the attribute is
                     // missing
-                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theRelationName));
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
                     aDBSideTableNode.add(missing);
 
                 }
@@ -572,7 +572,7 @@ public class ModelComparator {
 
                 // The entity is not exising in the model, so every
                 // attribute is missing
-                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theRelationName));
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
                 aDBSideTableNode.add(missing);
 
             }

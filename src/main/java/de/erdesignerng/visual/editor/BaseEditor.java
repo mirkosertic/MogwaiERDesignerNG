@@ -41,8 +41,6 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
     private javax.swing.JPanel jContentPane;
 
-    protected Component parent;
-
     protected DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
@@ -68,7 +66,6 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
     public BaseEditor(Component aParent, String aTitle) {
         super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
         initialize();
-        parent = aParent;
     }
 
     /**
