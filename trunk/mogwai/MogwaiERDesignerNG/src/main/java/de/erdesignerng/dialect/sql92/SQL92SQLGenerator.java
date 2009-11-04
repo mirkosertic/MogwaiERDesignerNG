@@ -24,13 +24,14 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
+
 
 /**
  * @author $Author: mirkosertic $
@@ -86,7 +87,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute) throws VetoException {
+    public StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute) {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -99,7 +100,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) throws VetoException {
+    public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -137,7 +138,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createAddRelationStatement(Relation aRelation) throws VetoException {
+    public StatementList createAddRelationStatement(Relation aRelation) {
         Table theImportingTable = aRelation.getImportingTable();
         Table theExportingTable = aRelation.getExportingTable();
 
@@ -222,7 +223,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createChangeIndexStatement(Index aExistantIndex, Index aNewIndex) throws VetoException {
+    public StatementList createChangeIndexStatement(Index aExistantIndex, Index aNewIndex) {
         StatementList theList = new StatementList();
         Table theTable = aExistantIndex.getOwner();
         if (aExistantIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
@@ -239,7 +240,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation) throws VetoException {
+    public StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation) {
         StatementList theList = new StatementList();
         theList.addAll(createRemoveRelationStatement(aRelation));
         theList.addAll(createAddRelationStatement(aTempRelation));
@@ -247,13 +248,12 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createChangeTableCommentStatement(Table aTable, String aNewComment) throws VetoException {
+    public StatementList createChangeTableCommentStatement(Table aTable, String aNewComment) {
         return EMPTY_STATEMENTLIST;
     }
 
     @Override
-    public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute)
-            throws VetoException {
+    public StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute) {
         StatementList theResult = new StatementList();
         theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(aTable) + " DROP COLUMN "
                 + aAttribute.getName()));
@@ -261,7 +261,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) throws VetoException {
+    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -276,7 +276,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRemoveRelationStatement(Relation aRelation) throws VetoException {
+    public StatementList createRemoveRelationStatement(Relation aRelation) {
 
         Table theImportingTable = aRelation.getImportingTable();
 
@@ -287,19 +287,19 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRemoveTableStatement(Table aTable) throws VetoException {
+    public StatementList createRemoveTableStatement(Table aTable) {
         StatementList theResult = new StatementList();
         theResult.add(new Statement("DROP TABLE " + createUniqueTableName(aTable)));
         return theResult;
     }
 
     @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) throws VetoException {
+    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
         return EMPTY_STATEMENTLIST;
     }
 
     @Override
-    public StatementList createAddTableStatement(Table aTable) throws VetoException {
+    public StatementList createAddTableStatement(Table aTable) {
 
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
@@ -338,13 +338,12 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute)
-            throws VetoException {
+    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) {
         return EMPTY_STATEMENTLIST;
     }
 
     @Override
-    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) throws VetoException {
+    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
@@ -384,8 +383,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName)
-            throws VetoException {
+    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) {
         return EMPTY_STATEMENTLIST;
     }
 
@@ -420,12 +418,22 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createAddSchemaStatement(String aSchema) throws VetoException {
+    public StatementList createAddSchemaStatement(String aSchema) {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
         theStatement.append("CREATE SCHEMA ");
         theStatement.append(createUniqueSchemaName(aSchema));
         theResult.add(new Statement(theStatement.toString()));
         return theResult;
+    }
+
+    @Override
+    public StatementList createAddDomainStatement(Domain domain) {
+        return EMPTY_STATEMENTLIST;
+    }
+
+    @Override
+    public StatementList createDropDomainStatement(Domain domain) {
+        return EMPTY_STATEMENTLIST;
     }
 }
