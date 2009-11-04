@@ -29,6 +29,8 @@ import java.util.Properties;
  */
 public final class MavenPropertiesLocator {
 
+    public static final String CANNOT_IDENTIFY_VERSION = "Cannot identify version";
+
     private MavenPropertiesLocator() {
 
     }
@@ -76,7 +78,7 @@ public final class MavenPropertiesLocator {
      * @return the version info
      */
     public static String getERDesignerVersionInfo() {
-        String theVersion = "Cannot identify version";
+        String theVersion = CANNOT_IDENTIFY_VERSION;
         try {
             theVersion = getVersionFor("net.sourceforge.mogwai", "mogwai-erdesignerng");
         } catch (Exception e) {
