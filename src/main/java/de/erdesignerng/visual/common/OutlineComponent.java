@@ -30,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -90,7 +91,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 if (theNode != null) {
                     Object theUserObject = theNode.getUserObject();
                     if (theUserObject instanceof ModelItem) {
-                        SQLComponent.getDefault().displaySQLFor(new ModelItem[] {(ModelItem)theUserObject});
+                        SQLComponent.getDefault().displaySQLFor(new ModelItem[] { (ModelItem) theUserObject });
                         ERDesignerComponent.getDefault().setSelectedObject((ModelItem) theUserObject);
                     } else {
                         SQLComponent.getDefault().resetDisplay();
@@ -216,7 +217,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 }
                 if (theUserObject instanceof SubjectArea) {
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
-                }                
+                }
                 if (theUserObject instanceof Relation) {
                     theLabel.setIcon(IconFactory.getRelationIcon());
                 }
@@ -250,9 +251,15 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                     case VIEWS:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.VIEWS));
                         break;
-                   case SUBJECTAREAS:
+                    case SUBJECTAREAS:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.SUBJECTAREALIST));
-                        break;                        
+                        break;
+                    case RELATIONS:
+                        theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.RELATIONS));
+                        break;
+                    case INDEXES:
+                        theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.INDEXES));
+                        break;
                     default:
                         throw new IllegalArgumentException("Unknown grouping element : " + aValue);
                     }
@@ -265,7 +272,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
     }
 
     private enum TreeGroupingElement {
-        MODEL, DOMAINS, TABLES, VIEWS, SUBJECTAREAS
+        MODEL, DOMAINS, TABLES, VIEWS, SUBJECTAREAS, INDEXES, RELATIONS;
     }
 
     private DefaultTree tree;
@@ -286,17 +293,31 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
         setPreferredSize(new Dimension(350, 100));
     }
-    
+
     public static OutlineComponent initializeComponent() {
         if (DEFAULT == null) {
             DEFAULT = new OutlineComponent();
         }
         return DEFAULT;
     }
-    
+
     public static OutlineComponent getDefault() {
         initializeComponent();
         return DEFAULT;
+    }
+
+    /**
+     * Register a combination of an object and a treenode.
+     * 
+     * An object can only be registered once!
+     * 
+     * @param aObject
+     * @param aNode
+     */
+    private void registerUserObject(Object aObject, DefaultMutableTreeNode aNode) {
+        if (!userObjectMap.containsKey(aObject)) {
+            userObjectMap.put(aObject, aNode);
+        }
     }
 
     private void initialize() {
@@ -353,14 +374,15 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                         }
                     }
                 }
-                
-                for (Relation theRelation : ERDesignerComponent.getDefault().getModel().getRelations().getForeignKeysFor(theTable)) {
+
+                for (Relation theRelation : ERDesignerComponent.getDefault().getModel().getRelations()
+                        .getForeignKeysFor(theTable)) {
                     if (isVisible(theRelation)) {
                         theOverride = true;
                     }
                 }
             }
-            
+
             if (aItem instanceof Relation) {
                 Relation theRelation = (Relation) aItem;
                 for (Attribute theAttribute : theRelation.getMapping().values()) {
@@ -369,8 +391,8 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                     }
                 }
             }
-            
-	if (aItem instanceof SubjectArea) {
+
+            if (aItem instanceof SubjectArea) {
                 SubjectArea theArea = (SubjectArea) aItem;
                 for (Table theTable : theArea.getTables()) {
                     if (isVisible(theTable)) {
@@ -382,8 +404,8 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                         theOverride = true;
                     }
                 }
-            }            
-            
+            }
+
             String theName = aItem.toString();
 
             if (!StringUtils.isEmpty(theName)) {
@@ -399,29 +421,45 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         expandedUserObjects.clear();
 
         DefaultMutableTreeNode theRoot = new DefaultMutableTreeNode(TreeGroupingElement.MODEL);
+        
+        Comparator theComparator = new BeanComparator("name");
 
         // Add the domains
         List<Domain> theDomains = new ArrayList<Domain>();
         theDomains.addAll(aModel.getDomains());
-        Collections.sort(theDomains, new BeanComparator("name"));
+        Collections.sort(theDomains, theComparator);
         buildDomainsChilds(aModel, theRoot, theDomains);
 
         // Add the Tables
         List<Table> theTables = new ArrayList<Table>();
         theTables.addAll(aModel.getTables());
-        Collections.sort(theTables, new BeanComparator("name"));
+        Collections.sort(theTables, theComparator);
         buildTablesChilds(aModel, theRoot, theTables);
 
         // Add the Views
         List<View> theViews = new ArrayList<View>();
         theViews.addAll(aModel.getViews());
-        Collections.sort(theTables, new BeanComparator("name"));
+        Collections.sort(theTables, theComparator);
         buildViewsChilds(aModel, theRoot, theViews);
+        
+        // Add the Relations
+        List<Relation> theRelations = new ArrayList<Relation>();
+        theRelations.addAll(aModel.getRelations());
+        Collections.sort(theRelations, theComparator);
+        buildRelationChilds(theRoot, theRelations);
+        
+        // Add the Indexes
+        List<Index> theIndexes = new ArrayList<Index>();
+        for (Table theTable : aModel.getTables()) {
+            theIndexes.addAll(theTable.getIndexes());
+        }
+        Collections.sort(theIndexes, theComparator);
+        buildIndexChilds(theRoot, theIndexes);
 
         // Add the subject areas
         List<SubjectArea> theSAList = new ArrayList<SubjectArea>();
         theSAList.addAll(aModel.getSubjectAreas());
-        Collections.sort(theSAList, new BeanComparator("name"));
+        Collections.sort(theSAList, theComparator);
         buildSubjectAreasChilds(aModel, theRoot, theSAList);
 
         tree.setModel(new DefaultTreeModel(theRoot));
@@ -438,7 +476,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 DefaultMutableTreeNode theAreaNode = new DefaultMutableTreeNode(theArea);
                 theSANode.add(theAreaNode);
 
-                userObjectMap.put(theArea, theAreaNode);
+                registerUserObject(theArea, theAreaNode);
 
                 List<Table> theSATables = new ArrayList<Table>();
                 theSATables.addAll(theArea.getTables());
@@ -462,7 +500,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(theView);
                 theViewsNode.add(theViewNode);
 
-                userObjectMap.put(theView, theViewNode);
+                registerUserObject(theView, theViewNode);
 
                 updateViewTreeNode(aModel, theView, theViewNode);
             }
@@ -477,7 +515,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(theDomain);
                 theDomainsNode.add(theDomainNode);
 
-                userObjectMap.put(theDomain, theDomainNode);
+                registerUserObject(theDomain, theDomainNode);
 
                 updateDomainTreeNode(aModel, theDomain, theDomainNode);
             }
@@ -492,12 +530,63 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(theTable);
                 theTablesNode.add(theTableNode);
 
-                userObjectMap.put(theTable, theTableNode);
+                registerUserObject(theTable, theTableNode);
 
                 updateTableTreeNode(aModel, theTable, theTableNode);
             }
         }
         aParentNode.add(theTablesNode);
+    }
+    
+    private void buildRelationChilds(DefaultMutableTreeNode aParentNode, List<Relation> aRelationList) {
+        DefaultMutableTreeNode theRelationssNode = new DefaultMutableTreeNode(TreeGroupingElement.RELATIONS);
+        for (Relation theRelation : aRelationList) {
+            if (isVisible(theRelation)) {
+                createRelationTreeNode(theRelationssNode, theRelation);
+            }
+        }
+        aParentNode.add(theRelationssNode);
+    }
+
+    private void buildIndexChilds(DefaultMutableTreeNode aParentNode, List<Index> aIndexList) {
+        DefaultMutableTreeNode theIndexesNode = new DefaultMutableTreeNode(TreeGroupingElement.INDEXES);
+        for (Index theIndex : aIndexList) {
+            if (isVisible(theIndex)) {
+                createIndexTreeNode(theIndexesNode, theIndex);
+            }
+        }
+        aParentNode.add(theIndexesNode);
+    }
+
+    private void createIndexTreeNode(DefaultMutableTreeNode aParentNode, Index aIndex) {
+        DefaultMutableTreeNode theIndexNode = new DefaultMutableTreeNode(aIndex);
+        aParentNode.add(theIndexNode);
+        registerUserObject(aIndex, theIndexNode);
+
+        for (IndexExpression theExpression : aIndex.getExpressions()) {
+            if (isVisible(theExpression)) {
+                DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(theExpression);
+                theIndexNode.add(theExpressionNode);
+
+                registerUserObject(theExpression, theExpressionNode);
+            }
+        }
+    }
+
+    private void createRelationTreeNode(DefaultMutableTreeNode aParent, Relation aRelation) {
+        DefaultMutableTreeNode theRelationNode = new DefaultMutableTreeNode(aRelation);
+        aParent.add(theRelationNode);
+
+        registerUserObject(aRelation, theRelationNode);
+
+        for (Map.Entry<IndexExpression, Attribute> theEntry : aRelation.getMapping().entrySet()) {
+            if (isVisible(theEntry.getValue())) {
+                DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theEntry.getValue());
+                theRelationNode.add(theAttributeNode);
+
+                registerUserObject(theEntry.getKey(), theAttributeNode);
+            }
+        }
     }
 
     private void updateDomainTreeNode(Model aModel, Domain aDomain, DefaultMutableTreeNode aDomainNode) {
@@ -519,43 +608,20 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 DefaultMutableTreeNode theAttribtueNode = new DefaultMutableTreeNode(theAttribute);
                 aTableNode.add(theAttribtueNode);
 
-                userObjectMap.put(theAttribute, theAttribtueNode);
+                registerUserObject(theAttribute, theAttribtueNode);
             }
         }
 
         for (Index theIndex : aTable.getIndexes()) {
 
             if (isVisible(theIndex)) {
-                DefaultMutableTreeNode theIndexNode = new DefaultMutableTreeNode(theIndex);
-                aTableNode.add(theIndexNode);
-                userObjectMap.put(theIndex, theIndexNode);
-
-                for (IndexExpression theExpression : theIndex.getExpressions()) {
-                    if (isVisible(theExpression)) {
-                        DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(theExpression);
-                        theIndexNode.add(theExpressionNode);
-
-                        userObjectMap.put(theExpression, theExpressionNode);
-                    }
-                }
+                createIndexTreeNode(aTableNode, theIndex);
             }
         }
 
         for (Relation theRelation : aModel.getRelations().getForeignKeysFor(aTable)) {
             if (isVisible(theRelation)) {
-                DefaultMutableTreeNode theRelationNode = new DefaultMutableTreeNode(theRelation);
-                aTableNode.add(theRelationNode);
-
-                userObjectMap.put(theRelation, theRelationNode);
-
-                for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
-                    if (isVisible(theEntry.getValue())) {
-                        DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theEntry.getValue());
-                        theRelationNode.add(theAttributeNode);
-
-                        userObjectMap.put(theEntry.getKey(), theAttributeNode);
-                    }
-                }
+                createRelationTreeNode(aTableNode, theRelation);
             }
         }
     }
@@ -592,8 +658,12 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
             TreePath theSelected = tree.getSelectionPath();
 
+            DefaultMutableTreeNode theGroup = null;
             DefaultMutableTreeNode theSelectedNode = theSelected != null ? (DefaultMutableTreeNode) theSelected
                     .getLastPathComponent() : null;
+            if (theSelected != null && theSelected.getPathCount() > 1) {
+                theGroup = (DefaultMutableTreeNode) theSelected.getPath()[1];
+            }
 
             Set<Object> theExpandedUserObjects = expandedUserObjects;
 
@@ -610,6 +680,15 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                     thePathsToExpand.add(thePath);
                 }
                 if (theSelectedNode != null) {
+                    DefaultMutableTreeNode theLastGroup = null;
+                    if (thePath.getPathCount() > 1) {
+                        theLastGroup = (DefaultMutableTreeNode) thePath.getPath()[1];
+                    }
+                    if (theLastGroup != null && theGroup != null) {
+                        if (!theLastGroup.getUserObject().equals(theGroup.getUserObject())) {
+                            continue;
+                        }
+                    }
                     if (theLastNew.getUserObject().equals(theSelectedNode.getUserObject())) {
                         theNewSelection = thePath;
                     }
@@ -638,7 +717,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
     private void initializeActionsFor(DefaultMutableTreeNode aNode, JPopupMenu aMenu) {
 
         final ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
-        
+
         Object theUserObject = aNode.getUserObject();
 
         if (theUserObject instanceof Table) {
@@ -702,8 +781,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITATTRIBUTE,
                     theAttribute.getName()));
-            theEditItem.addActionListener(new EditTableCommand(theComponent, theAttribute.getOwner(),
-                    theAttribute));
+            theEditItem.addActionListener(new EditTableCommand(theComponent, theAttribute.getOwner(), theAttribute));
 
             aMenu.add(theEditItem);
         }
@@ -718,7 +796,6 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
             aMenu.add(theEditItem);
 
         }
-
         if (aNode.getParent() != null) {
             initializeActionsFor((DefaultMutableTreeNode) aNode.getParent(), aMenu);
         }
@@ -727,14 +804,27 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
     /**
      * Set the currently selected item.
      * 
-     * @param aSelection the selection
+     * @param aSelection
+     *            the selection
      */
     public void setSelectedItem(ModelItem aSelection) {
+        
+        TreePath theSelected = tree.getSelectionPath();
+        if (theSelected != null) {
+            DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) theSelected.getLastPathComponent();
+            if (theNode.getUserObject().equals(aSelection)) {
+                // The object is already selected, so keep the selection
+                return;
+            }
+        }
+
         DefaultMutableTreeNode theNode = userObjectMap.get(aSelection);
         if (theNode != null) {
             TreePath thePath = new TreePath(theNode.getPath());
             tree.setSelectionPath(thePath);
             tree.scrollPathToVisible(thePath);
+        } else {
+            tree.clearSelection();
         }
     }
 }
