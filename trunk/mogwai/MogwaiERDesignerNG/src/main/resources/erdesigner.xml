@@ -541,8 +541,8 @@
 			<Text lang="en">The specified size is invalid</Text>					
 		</Entry>		
 		<Entry id="RELATIONS">
-			<Text lang="de">Relationen ( Fremdschlüssel )</Text>		
-			<Text lang="en">Relations ( Foreign keys )</Text>					
+			<Text lang="de">Relationen</Text>		
+			<Text lang="en">Relations</Text>					
 		</Entry>		
 		<Entry id="TABLESELECTION">
 			<Text lang="de">Tabellenauswahl</Text>		
