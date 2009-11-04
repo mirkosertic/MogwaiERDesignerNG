@@ -206,6 +206,7 @@ Release 2.5.0
 * Bug Fixing Subject Areas menu was not updated when hiding areas within the editor using the context menu
 * Bug Fixing Preferences Dialog required fields were not correctly highlighted
 * Bug Fixing 2874576 [ERDesignerNG] Support PostgreSQL INET datatype
+* Bug Fixing 2882258 Reverse engineer not working on various DBMSs
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
