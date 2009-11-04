@@ -200,17 +200,18 @@ Release 2.5.0
 * Bug Fixing 2861394 [ERDesignerNG] Convert Datamodel Ignores Data Type Changes
 * Bug Fixing 2836980 [ERDesignerNG] error onmultiple fields selection on entities
 * Bug Fixing 2858806 [ERDesignerNG] Subject area positioning / deletion issues
+* Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
+* Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+* Bug Fixing 2882258 [ERDesignerNG] Reverse engineer not working on various DBMSs
+* Bug Fixing Subject Areas menu was not updated when hiding areas within the editor using the context menu
+* Bug Fixing Preferences Dialog required fields were not correctly highlighted
+* Bug Fixing 2874576 [ERDesignerNG] Support PostgreSQL INET datatype
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
 * Implemented FR 2883197 [ERDesignerNG] Add outline window to the editor
-* Bug Fixing Subject Areas menu was not updated when hiding areas within the editor using the context menu
-* Bug Fixing Preferences Dialog required fields were not correctly highlighted
-* Bug Fixing 2874576 [ERDesignerNG] Support PostgreSQL INET datatype
-* Fixed typo in Reverse-Engineer dialog (german)
-* Performance tuning in Intelligent Layout functionality
 * Implemented FR 2711878 [ERDesignerNG] edit entry dialog usability improvements
 * Implemented FR 2830914 [ERDesignerNG] Creating entities is overly complicated
-* Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
-* Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-* Bug Fixing 2882258 [ERDesignerNG] Reverse engineer not working on various DBMSs
+* Implemented FR 2883197 [ERDesignerNG] Add outline window to the editor
+* Fixed typo in Reverse-Engineer dialog (german)
+* Performance tuning in Intelligent Layout functionality
