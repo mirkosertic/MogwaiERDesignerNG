@@ -82,21 +82,21 @@ public class ApplicationPreferences {
 
     private static final String LAYOUT = "layout";
 
-    private int size;
+    private final int size;
 
-    private List<File> recentlyUsedFiles = new ArrayList<File>();
+    private final List<File> recentlyUsedFiles = new ArrayList<File>();
 
-    private List<File> classpathfiles = new ArrayList<File>();
+    private final List<File> classpathfiles = new ArrayList<File>();
 
-    private List<ConnectionDescriptor> recentlyUsedConnections = new ArrayList<ConnectionDescriptor>();
+    private final List<ConnectionDescriptor> recentlyUsedConnections = new ArrayList<ConnectionDescriptor>();
 
-    private Preferences preferences;
+    private final Preferences preferences;
 
     private int gridSize;
 
     private ConnectionDescriptor repositoryConnection;
 
-    private Map<String, String> windowDefinitions = new HashMap<String, String>();
+    private final Map<String, String> windowDefinitions = new HashMap<String, String>();
 
     private File baseDir;
 
@@ -492,8 +492,18 @@ public class ApplicationPreferences {
             return getRelativeFile("dataTypes");
         }
         File theUserHomeFile = new File(theUserHome);
+        
+        String theVersionNumber = MavenPropertiesLocator.getERDesignerVersionInfo();
+        if (theVersionNumber.equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
+            theVersionNumber = "development";
+        }
+        theVersionNumber = theVersionNumber.replace(".", "_");
+        theVersionNumber = theVersionNumber.replace(" ", "_");
+        theVersionNumber = theVersionNumber.replace("-", "_");
+        
         File theMogwaiHome = new File(theUserHomeFile, ".mogwai");
-        return new File(theMogwaiHome, "dataTypes");
+        File theVersionHome = new File(theMogwaiHome, theVersionNumber);
+        return new File(theVersionHome, "dataTypes");
     }
 
     /**
