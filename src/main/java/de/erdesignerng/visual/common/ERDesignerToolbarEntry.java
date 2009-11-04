@@ -24,7 +24,6 @@ import javax.swing.JMenuItem;
 
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
  * @author $Author: mirkosertic $
@@ -51,10 +50,6 @@ public class ERDesignerToolbarEntry extends DefaultButton {
 
     public void add(JMenuItem aItem) {
         menu.add(aItem);
-    }
-
-    public JMenuItem add(DefaultAction aAction) {
-        return menu.add(aAction);
     }
 
     public void addSeparator() {

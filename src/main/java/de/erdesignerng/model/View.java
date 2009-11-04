@@ -19,36 +19,17 @@ package de.erdesignerng.model;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.erdesignerng.exception.CannotDeleteException;
-import de.erdesignerng.exception.ElementAlreadyExistsException;
-import de.erdesignerng.exception.ElementInvalidNameException;
-
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class View extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
+public class View extends OwnedModelItem<Model> {
 
     private String sql;
 
     private ViewAttributeList attributes = new ViewAttributeList();
 
     private String schema;
-
-    public void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException {
-    }
-
-    public void delete(ModelItem aSender) throws CannotDeleteException {
-    }
-
-    public String checkName(String aName) throws ElementInvalidNameException {
-        Model theOwner = getOwner();
-        if (theOwner != null) {
-            return theOwner.checkName(aName);
-        }
-
-        return aName;
-    }
 
     /**
      * Gibt den Wert des Attributs <code>sql</code> zurück.

@@ -19,7 +19,6 @@ package de.erdesignerng.model;
 
 import org.apache.commons.lang.StringUtils;
 
-import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 
@@ -27,7 +26,7 @@ import de.erdesignerng.exception.ElementInvalidNameException;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifier {
+public class Table extends OwnedModelItem<Model> {
 
     private AttributeList attributes = new AttributeList();
 
@@ -74,54 +73,6 @@ public class Table extends OwnedModelItem<Model> implements OwnedModelItemVerifi
         aIndex.setOwner(this);
 
         indexes.add(aIndex);
-    }
-
-    public void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException {
-
-        Model theOwner = getOwner();
-
-        if (aSender instanceof Attribute) {
-            ModelUtilities.checkExistance(attributes, aName, theOwner.getDialect());
-        }
-        if (aSender instanceof Index) {
-            ModelUtilities.checkExistance(indexes, aName, theOwner.getDialect());
-        }
-
-    }
-
-    public void delete(ModelItem aSender) throws CannotDeleteException {
-
-        if (aSender instanceof Attribute) {
-            if (attributes.size() == 1) {
-                throw new CannotDeleteException("Table must have at least one attribute!");
-            }
-
-            Attribute theAttribute = (Attribute) aSender;
-            attributes.remove(theAttribute);
-
-            return;
-        }
-
-        if (aSender instanceof Index) {
-
-            Index theIndex = (Index) aSender;
-
-            indexes.remove(theIndex);
-
-            return;
-        }
-
-        throw new UnsupportedOperationException("Unknown element " + aSender);
-
-    }
-
-    public String checkName(String aName) throws ElementInvalidNameException {
-        Model theOwner = getOwner();
-        if (theOwner != null) {
-            return theOwner.checkName(aName);
-        }
-
-        return aName;
     }
 
     public AttributeList getAttributes() {

@@ -35,50 +35,6 @@ public class RelationList extends ModelItemVector<Relation> {
     private Map<Attribute, Boolean> foreignKeyCache = new HashMap<Attribute, Boolean>();
 
     /**
-     * Check if a table is used by any of the defined relations.
-     * 
-     * @param aTable
-     *            the table
-     * @return true it its used, else false
-     */
-    public boolean isTableInUse(Table aTable) {
-        for (Relation theRelation : this) {
-            if (theRelation.getImportingTable().equals(aTable)) {
-                return true;
-            }
-            if (theRelation.getExportingTable().equals(aTable)) {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    /**
-     * Check if an attribute is used by any of the defined relations.
-     * 
-     * @param aAttribute
-     *            the attribute
-     * @return true if its in use by a relation, else false
-     */
-    public boolean isAttributeInUse(Attribute aAttribute) {
-        for (Relation theRelation : this) {
-            Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
-            for (IndexExpression theExpression : theMap.keySet()) {
-                if (theExpression.getAttributeRef() != null) {
-                    if (theExpression.getAttributeRef().equals(aAttribute)) {
-                        return true;
-                    }
-                }
-            }
-            if (theMap.containsValue(aAttribute)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Test if an attribute is a foreign key attribute.
      * 
      * @param aAttribute

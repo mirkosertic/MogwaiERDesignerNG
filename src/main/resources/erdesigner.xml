@@ -98,10 +98,6 @@
 			<Text lang="de">Domänen...</Text>		
 			<Text lang="en">Domains...</Text>					
 		</Entry>
-		<Entry id="DEFAULTVALUES">
-			<Text lang="de">Defaultwerte...</Text>		
-			<Text lang="en">Default values...</Text>					
-		</Entry>
 		<Entry id="VIEW">
 			<Text lang="de">Ansicht</Text>		
 			<Text lang="en">View</Text>					
@@ -151,22 +147,6 @@
 		<Entry id="NAME">
 			<Text lang="de">Name</Text>		
 			<Text lang="en">Name</Text>					
-		</Entry>
-		<Entry id="DECLRATATION">
-			<Text lang="de">Deklaration</Text>		
-			<Text lang="en">Declaration</Text>					
-		</Entry>
-		<Entry id="JAVATYPE">
-			<Text lang="de">Java Typ</Text>		
-			<Text lang="en">Java type</Text>					
-		</Entry>
-		<Entry id="SEQUENCED">
-			<Text lang="de">Sequenziert</Text>		
-			<Text lang="en">Sequenzed</Text>					
-		</Entry>
-		<Entry id="DOMAINPROPERTIES">
-			<Text lang="de">Eigenschaften der Domäne</Text>		
-			<Text lang="en">Domain properties</Text>					
 		</Entry>
 		<Entry id="ATTRIBUTEISUSEDINFOREIGNKEYS">
 			<Text lang="de">Das Attribut ist Teil eines Fremdschlüssels</Text>		
@@ -241,21 +221,11 @@
 			<Text lang="de">Kennwort</Text>		
 			<Text lang="en">Password</Text>					
 		</Entry>
-		<Entry id="DEFAULTVALUEPROPERTIES">
-			<Text lang="de">Eigenschaften des Defaultwertes</Text>		
-			<Text lang="en">Default value properties</Text>					
-		</Entry>
 		<Entry id="ADDFOLDER">
 			<Icon>/de/erdesignerng/icons/folder_add.png</Icon>
 		</Entry>
 		<Entry id="REMOVEFOLDER">
 			<Icon>/de/erdesignerng/icons/folder_delete.png</Icon>
-		</Entry>
-		<Entry id="UP">
-			<Icon>/de/erdesignerng/icons/arrow_up.png</Icon>
-		</Entry>
-		<Entry id="DOWN">
-			<Icon>/de/erdesignerng/icons/arrow_down.png</Icon>
 		</Entry>
 		<Entry id="ENTITYNAME">
 			<Text lang="de">Name</Text>		
@@ -269,17 +239,9 @@
 			<Text lang="de">Ist NULLABLE</Text>		
 			<Text lang="en">Is NULLABLE</Text>					
 		</Entry>
-		<Entry id="PRIMARYKEY">
-			<Text lang="de">Ist Primärschlüssel</Text>		
-			<Text lang="en">Is primary key</Text>					
-		</Entry>
 		<Entry id="GENERAL">
 			<Text lang="de">Allgemeines</Text>		
 			<Text lang="en">General</Text>					
-		</Entry>
-		<Entry id="OPTIONS">
-			<Text lang="de">Optionen</Text>		
-			<Text lang="en">Options</Text>					
 		</Entry>
 		<Entry id="COMMENTS">
 			<Text lang="de">Kommentare</Text>		
@@ -317,29 +279,9 @@
 			<Text lang="de">Eine Datei pro Tabelle...</Text>		
 			<Text lang="en">One file per table...</Text>					
 		</Entry>
-		<Entry id="ELEMENTINUSE">
-			<Text lang="de">Das Element wird benutzt und kann daher nicht gelöscht werden</Text>		
-			<Text lang="en">The element is in use and cannot be deleted</Text>					
-		</Entry>
-		<Entry id="LOGICALVIEW">
-			<Text lang="de">Logische Ansicht(Domänen)</Text>		
-			<Text lang="en">Logical view(domains)</Text>					
-		</Entry>
-		<Entry id="PHYSICALVIEW">
-			<Text lang="de">Physische Ansicht(Deklarationen)</Text>		
-			<Text lang="en">Physical view(declarations)</Text>					
-		</Entry>
 		<Entry id="TABLEGENERATION">
 			<Text lang="de">Tabellengenerierung</Text>
 			<Text lang="en">Table generation</Text>					
-		</Entry>
-		<Entry id="DOMAINGENERATION">
-			<Text lang="de">Domänengenerierung</Text>		
-			<Text lang="en">Domain generation</Text>					
-		</Entry>
-		<Entry id="DEFAULTVALUEENERATION">
-			<Text lang="de">Defaultgenerierung</Text>		
-			<Text lang="en">Default generation</Text>					
 		</Entry>
 		<Entry id="CHOOSEONESCHEMA">
 			<Text lang="de">Sie müssen mindestens ein Schema auswählen</Text>		
@@ -349,10 +291,6 @@
 			<Text lang="de">Standard</Text>		
 			<Text lang="en">Standard</Text>					
 		</Entry>
-		<Entry id="ENGINEERINGSCHEMA">
-			<Text lang="de">Reverseengineering von Schema {0}</Text>		
-			<Text lang="en">Reverse engineering of schema {0}</Text>					
-		</Entry>
 		<Entry id="ENGINEERINGTABLE">
 			<Text lang="de">Reverseengineering von Tabelle {0}</Text>		
 			<Text lang="en">Reverse engineering of table {0}</Text>					
@@ -360,10 +298,6 @@
 		<Entry id="ENGINEERINGINDEX">
 			<Text lang="de">Reverseengineering von Index {0}</Text>		
 			<Text lang="en">Reverse engineering of index {0}</Text>					
-		</Entry>
-		<Entry id="SKIPINDEX">
-			<Text lang="de">Index {0} wird ignoriert</Text>		
-			<Text lang="en">Index {0} is ignored</Text>					
 		</Entry>
 		<Entry id="ENGINEERINGRELATION">
 			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>		
@@ -453,10 +387,6 @@
 			<Text lang="de">Datentyp</Text>		
 			<Text lang="en">Datatype</Text>					
 		</Entry>
-		<Entry id="INDEXMUSTHAVEATLEASTONEATTRIBUTE">
-			<Text lang="de">Ein Index muss mindestens ein Attribut beinhalten!</Text>		
-			<Text lang="en">An Index must contain at least one attribute!</Text>					
-		</Entry>
 		<Entry id="GENERATECREATEDBDDL">
 			<Text lang="de">DDL Generierung...</Text>		
 			<Text lang="en">Create DDL for model...</Text>					
@@ -528,18 +458,6 @@
 			<Text lang="de">Relation {0} fehlt</Text>		
 			<Text lang="en">Relation {0} is missing</Text>					
 		</Entry>
-		<Entry id="LAYOUTFINISHED">
-			<Text lang="de">Layout erstellt</Text>		
-			<Text lang="en">Layout finished</Text>					
-		</Entry>		
-		<Entry id="INPUTLAYOUTSIZE">
-			<Text lang="de">Bitte geben Sie die Grösse des Layoutes in Pixeln an</Text>		
-			<Text lang="en">Please enter the layout size in pixels</Text>					
-		</Entry>		
-		<Entry id="INVALIDSIZESPECIFIED">
-			<Text lang="de">Die Grössenangabe war ungültig</Text>		
-			<Text lang="en">The specified size is invalid</Text>					
-		</Entry>		
 		<Entry id="RELATIONS">
 			<Text lang="de">Relationen</Text>		
 			<Text lang="en">Relations</Text>					
@@ -564,10 +482,6 @@
 			<Text lang="de">Farbe</Text>		
 			<Text lang="en">Color</Text>					
 		</Entry>		
-		<Entry id="MODELSWITHSUBJECTAREASARENOTSUPPORTED">
-			<Text lang="de">Modelle mit Subject Areas werden von dieser Funktion nicht unterstützt.</Text>		
-			<Text lang="en">Models with subject areas are not supported by this operation</Text>					
-		</Entry>
 		<Entry id="DISPLAYCOMMENTS">
 			<Text lang="de">Elementkommentare anzeigen</Text>		
 			<Text lang="en">Display element comments</Text>					
@@ -646,11 +560,6 @@
 		<Entry id="OVERWRITEEXISTINGENTRY">
 			<Text lang="de">Existierenden Eintrag überschreiben</Text>		
 			<Text lang="en">Overwrite existing entry</Text>					
-		</Entry>
-		<Entry id="DELETEENTRY">
-			<Text lang="de">Eintrag löschen</Text>		
-			<Text lang="en">Delete entry</Text>
-			<Icon>/de/erdesignerng/icons/delete.png</Icon>
 		</Entry>
 		<Entry id="NEWNAME">
 			<Text lang="de">Neuer Name</Text>		
@@ -805,10 +714,6 @@
 		<Entry id="OPENXAVAEXPORT">
 			<Text lang="de">OpenXava Export...</Text>		
 			<Text lang="en">OpenXava Export...</Text>					
-		</Entry>
-		<Entry id="OPEN">
-			<Text lang="de">Öffnen...</Text>		
-			<Text lang="en">Open...</Text>					
 		</Entry>
 		<Entry id="OPENXAVAEXPORTOK">
 			<Text lang="de">Die OpenXava Dateien wurden erfolgreich generiert!</Text>		

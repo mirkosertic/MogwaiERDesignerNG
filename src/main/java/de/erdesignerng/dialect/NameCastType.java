@@ -22,7 +22,7 @@ package de.erdesignerng.dialect;
  * @version $Date: 2008-01-15 19:22:42 $
  */
 public enum NameCastType {
-    NOTHING(1), UPPERCASE(2), LOWERCASE(3);
+    NOTHING(1), UPPERCASE(2);
 
     private int mode;
 

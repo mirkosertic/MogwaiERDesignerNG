@@ -33,10 +33,6 @@ public final class IconFactory {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/key.gif"));
     }
 
-    public static ImageIcon getCommentIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/comment_add.gif"));
-    }
-
     public static ImageIcon getMissingIcon() {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/fatalerror_obj.gif"));
     }
