@@ -72,7 +72,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
     }
 
     /**
-     * Find an attribute by a given name.
+     * Find an element by a given name.
      * 
      * @param aName
      *            the name
@@ -88,17 +88,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
     }
 
     /**
-     * Delete an attribute by a given name.
-     * 
-     * @param aName
-     *            the name
-     */
-    public void removeByName(String aName) {
-        remove(findByName(aName));
-    }
-
-    /**
-     * Delete an attribute by a given id.
+     * Delete an element by a given id.
      * 
      * @param aSystemId
      *            the id

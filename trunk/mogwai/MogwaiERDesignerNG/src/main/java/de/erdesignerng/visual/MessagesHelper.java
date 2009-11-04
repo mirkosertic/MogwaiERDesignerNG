@@ -39,12 +39,6 @@ public final class MessagesHelper {
         JOptionPane.showMessageDialog(aParent, aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
     }
 
-    public static String askForInput(Component aParent, String aMessage, String aInitialValue) {
-
-        String theText = getResourceHelper().getText(aMessage);
-        return JOptionPane.showInputDialog(aParent, theText, aInitialValue);
-    }
-
     public static void displayInfoMessage(Component aParent, String aMessage) {
 
         String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);

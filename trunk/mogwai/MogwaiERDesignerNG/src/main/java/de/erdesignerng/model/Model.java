@@ -32,7 +32,6 @@ import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.GenericDataTypeImpl;
-import de.erdesignerng.exception.CannotDeleteException;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
@@ -46,7 +45,7 @@ import de.erdesignerng.util.ConnectionDescriptor;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class Model implements OwnedModelItemVerifier {
+public class Model extends ModelItem {
 
     public static final String PROPERTY_DRIVER = "DRIVER";
 
@@ -73,8 +72,6 @@ public class Model implements OwnedModelItemVerifier {
     private final ViewList views = new ViewList();
 
     private Dialect dialect;
-
-    private final ModelProperties properties = new ModelProperties();
 
     private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
     
@@ -130,47 +127,12 @@ public class Model implements OwnedModelItemVerifier {
         relations.add(aRelation);
     }
 
-    public void checkNameAlreadyExists(ModelItem aSender, String aName) throws ElementAlreadyExistsException {
-        if (aSender instanceof Table) {
-            ModelUtilities.checkExistance(tables, aName, dialect);
-        }
-        if (aSender instanceof View) {
-            ModelUtilities.checkExistance(views, aName, dialect);
-        }
-    }
-
     public Dialect getDialect() {
         return dialect;
     }
 
     public void setDialect(Dialect aDialect) {
         dialect = aDialect;
-    }
-
-    public void delete(ModelItem aSender) throws CannotDeleteException {
-        if (aSender instanceof Table) {
-
-            Table theTable = (Table) aSender;
-
-            if (relations.isTableInUse(theTable)) {
-                throw new CannotDeleteException("Table is used by relations!");
-            }
-
-            tables.remove(theTable);
-
-            return;
-        }
-
-        if (aSender instanceof Relation) {
-
-            Relation theRelation = (Relation) aSender;
-
-            relations.remove(theRelation);
-
-            return;
-        }
-
-        throw new UnsupportedOperationException("Unknown element " + aSender);
     }
 
     public String checkName(String aName) throws ElementInvalidNameException {
@@ -183,10 +145,6 @@ public class Model implements OwnedModelItemVerifier {
 
     public TableList getTables() {
         return tables;
-    }
-
-    public ModelProperties getProperties() {
-        return properties;
     }
 
     /**
@@ -207,10 +165,12 @@ public class Model implements OwnedModelItemVerifier {
     public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
 
+        ModelProperties theProperties = getProperties();
+        
         Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
-                properties.getProperty(PROPERTY_DRIVER), properties.getProperty(PROPERTY_URL),
-                properties.getProperty(PROPERTY_USER), properties.getProperty(PROPERTY_PASSWORD),
-                properties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
+                theProperties.getProperty(PROPERTY_DRIVER), theProperties.getProperty(PROPERTY_URL),
+                theProperties.getProperty(PROPERTY_USER), theProperties.getProperty(PROPERTY_PASSWORD),
+                theProperties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
         return theConnection;
     }
 
