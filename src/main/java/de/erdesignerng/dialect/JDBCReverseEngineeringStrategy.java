@@ -295,7 +295,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                     theAttribute.setComment(theColumnRemarks);
                 }
 
-                DataType theDataType = dialect.getDataTypes().findByName(convertColumnTypeToRealType(theTypeName));
+                // Search for the datatype in the domains and the dialect specific datatypes
+                DataType theDataType = aModel.getAvailableDataTypes().findByName(convertColumnTypeToRealType(theTypeName));
                 if (theDataType == null) {
                     throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for "
                             + aTableEntry.getTableName() + "." + theColumnName);

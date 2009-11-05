@@ -27,6 +27,7 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
@@ -518,6 +519,78 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         String theReference = readResourceFile(basePath + "testChangeRelation.sql");
 
         assertTrue(theStatements.equals(theReference));
-
     }
+    
+    public void testAddDomain() throws Exception {
+
+        if (!dialect.isSupportsDomains()) {
+            return;
+        }
+        
+        Model theModel = new Model();
+        theModel.setDialect(dialect);
+        
+        HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
+        theModel.setModificationTracker(theTracker);
+
+        Domain theDomain = new Domain();
+        theDomain.setName("DOMAIN1");
+        theDomain.setConcreteType(textDataType);
+        theDomain.setSize(200);
+        theModel.addDomain(theDomain);
+
+        theDomain = new Domain();
+        theDomain.setName("DOMAIN2");
+        theDomain.setConcreteType(intDataType);
+        theDomain.setSize(10);
+        theDomain.setFraction(5);
+        theModel.addDomain(theDomain);
+
+        SQLGenerator theGenerator = dialect.createSQLGenerator();
+        StatementList theStatementList = theTracker.getStatements();
+
+        String theStatements = statementListToString(theStatementList, theGenerator);
+
+        String theReference = readResourceFile(basePath + "testAddDomain.sql");
+
+        assertTrue(theStatements.equals(theReference));
+    }
+    
+    public void testDropDomain() throws Exception {
+
+        if (!dialect.isSupportsDomains()) {
+            return;
+        }
+        
+        Model theModel = new Model();
+        theModel.setDialect(dialect);
+        
+        Domain theDomain = new Domain();
+        theDomain.setName("DOMAIN1");
+        theDomain.setConcreteType(textDataType);
+        theDomain.setSize(200);
+        theModel.addDomain(theDomain);
+
+        theDomain = new Domain();
+        theDomain.setName("DOMAIN2");        
+        theDomain.setConcreteType(intDataType);
+        theDomain.setSize(10);
+        theDomain.setFraction(5);
+        theModel.addDomain(theDomain);
+        
+        HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
+        theModel.setModificationTracker(theTracker);
+
+        theModel.removeDomain(theModel.getDomains().findByName("DOMAIN1"));
+        theModel.removeDomain(theModel.getDomains().findByName("DOMAIN2"));
+
+        SQLGenerator theGenerator = dialect.createSQLGenerator();
+        StatementList theStatementList = theTracker.getStatements();
+
+        String theStatements = statementListToString(theStatementList, theGenerator);
+
+        String theReference = readResourceFile(basePath + "testDropDomain.sql");
+
+        assertTrue(theStatements.equals(theReference));
+    }    
 }
