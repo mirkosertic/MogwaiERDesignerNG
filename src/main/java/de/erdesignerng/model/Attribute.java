@@ -24,7 +24,8 @@ import de.erdesignerng.dialect.DataType;
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
-    public static int DEFAULT_SCALE = 10;
+    
+    public static final int DEFAULT_SCALE = 10;
 
     private DataType datatype;
 

@@ -36,6 +36,7 @@ public class PostgresDialect extends SQL92Dialect {
         setMaxObjectNameLength(255);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
+        setSupportsDomains(true);
 
         registerType(createDataType("bool", "", Types.BIT));
         registerType(createDataType("bytea", "", Types.BINARY, Types.VARBINARY));

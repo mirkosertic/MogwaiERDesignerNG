@@ -18,6 +18,7 @@ package de.erdesignerng.dialect;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
@@ -38,6 +40,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
@@ -54,13 +57,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     public static final String TABLE_TABLE_TYPE = "TABLE";
 
     public static final String VIEW_TABLE_TYPE = "VIEW";
-    
-    protected T dialect;
-    
-    protected JDBCReverseEngineeringStrategy(T aDialect) {
-    	dialect = aDialect;
-    }
 
+    protected T dialect;
+
+    protected JDBCReverseEngineeringStrategy(T aDialect) {
+        dialect = aDialect;
+    }
 
     /**
      * Convert a JDBC Cascade Type to the Mogwai CascadeType.
@@ -89,7 +91,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     protected String convertColumnTypeToRealType(String aTypeName) {
         return aTypeName;
     }
-    
+
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTable, Connection aConnection) throws SQLException {
     }
@@ -219,10 +221,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             theNewTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
             theNewTable.setOriginalName(aTableEntry.getTableName());
             switch (aOptions.getTableNaming()) {
-                case INCLUDE_SCHEMA:
-                    theNewTable.setSchema(aTableEntry.getSchemaName());
-                    break;
-                default:
+            case INCLUDE_SCHEMA:
+                theNewTable.setSchema(aTableEntry.getSchemaName());
+                break;
+            default:
             }
 
             if (!StringUtils.isEmpty(theTableRemarks)) {
@@ -245,38 +247,46 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
                 try {
                     theColumnName = theColumnsResultSet.getString("COLUMN_NAME");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
                     theTypeName = theColumnsResultSet.getString("TYPE_NAME");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
-                	theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
-                } catch (Exception e) {}
+                    theSize = theColumnsResultSet.getInt("COLUMN_SIZE");
+                } catch (Exception e) {
+                }
 
                 try {
                     theFraction = theColumnsResultSet.getInt("DECIMAL_DIGITS");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
                     theRadix = theColumnsResultSet.getInt("NUM_PREC_RADIX");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
                     theNullable = theColumnsResultSet.getInt("NULLABLE");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
                     theDefaultValue = theColumnsResultSet.getString("COLUMN_DEF");
                     if (!StringUtils.isEmpty(theDefaultValue)) {
                         theDefaultValue = theDefaultValue.trim();
                     }
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
                     theColumnRemarks = theColumnsResultSet.getString("REMARKS");
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 Attribute theAttribute = new Attribute();
 
@@ -733,6 +743,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
             ReverseEngineeringException {
 
+        if (aModel.getDialect().isSupportsDomains()) {
+            reverseEngineerDomains(aModel, aOptions, aNotifier, aConnection);
+        }
+
         for (TableEntry theTable : aOptions.getTableEntries()) {
             if (isTableTypeView(theTable.getTableType())) {
                 reverseEngineerView(aModel, aOptions, aNotifier, theTable, aConnection);
@@ -749,6 +763,60 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         }
 
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
+    }
+
+    /**
+     * Reverse engineer the domains.
+     * 
+     * @param aModel
+     * @param aOptions
+     * @param aNotifier
+     * @param aConnection
+     * @throws SQLException
+     * @throws ReverseEngineeringException
+     */
+    protected void reverseEngineerDomains(Model aModel, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException,
+            ReverseEngineeringException {
+        for (SchemaEntry theSchema : aOptions.getSchemaEntries()) {
+            PreparedStatement theStatement = aConnection
+                    .prepareStatement("SELECT * FROM information_schema.domains WHERE domain_schema = ? and domain_catalog = ?");
+            theStatement.setString(1, theSchema.getSchemaName());
+            theStatement.setString(2, theSchema.getCatalogName());
+            ResultSet theResult = theStatement.executeQuery();
+            while (theResult.next()) {
+                String theDomainName = theResult.getString("DOMAIN_NAME");
+                String theDataType = theResult.getString("DATATYPE");
+                Integer theSize = null;
+                try {
+                    theResult.getInt("NUMERIC_PRECISION");
+                } catch (Exception e) {
+                }
+                int theFraction = theResult.getInt("NUMERIC_PRECISION_RADIX");
+                int theScale = theResult.getInt("NUMERIC_SCALE");
+
+                DataType theType = aModel.getDialect().getDataTypes().findByName(theDataType);
+                if (theType != null) {
+                    Domain theDomain = new Domain();
+                    theDomain.setName(theDomainName);
+                    theDomain.setConcreteType(theType);
+                    theDomain.setSize(theSize);
+                    theDomain.setFraction(theFraction);
+                    theDomain.setScale(theScale);
+
+                    try {
+                        aModel.addDomain(theDomain);
+                    } catch (VetoException e) {
+                        throw new ReverseEngineeringException(e.getMessage(), e);
+                    }
+                } else {
+                    throw new ReverseEngineeringException("Unknown data type " + theDataType + " for domain "
+                            + theDomainName);
+                }
+            }
+            theResult.close();
+            theStatement.close();
+        }
     }
 
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {

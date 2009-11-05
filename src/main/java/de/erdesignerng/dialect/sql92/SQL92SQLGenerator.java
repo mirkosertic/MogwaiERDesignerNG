@@ -32,7 +32,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 
-
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
@@ -54,7 +53,11 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     protected String createAttributeDataDefinition(Attribute aAttribute, boolean aIgnoreDefault) {
 
         StringBuilder theBuilder = new StringBuilder();
-        theBuilder.append(aAttribute.getPhysicalDeclaration());
+        if (aAttribute.getDatatype().isDomain() && getDialect().isSupportsDomains()) {
+            theBuilder.append(aAttribute.getDatatype().getName());
+        } else {
+            theBuilder.append(aAttribute.getPhysicalDeclaration());
+        }
         boolean isNullable = aAttribute.isNullable();
 
         if (!isNullable) {
@@ -428,12 +431,30 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     }
 
     @Override
-    public StatementList createAddDomainStatement(Domain domain) {
+    public StatementList createAddDomainStatement(Domain aDomain) {
+        if (getDialect().isSupportsDomains()) {
+            StatementList theList = new StatementList();
+            StringBuilder theBuilder = new StringBuilder();
+            theBuilder.append("CREATE DOMAIN ");
+            theBuilder.append(aDomain.getName());
+            theBuilder.append(" ");
+            theBuilder.append(aDomain.createTypeDefinitionFor(new Attribute()));
+            theList.add(new Statement(theBuilder.toString()));
+            return theList;
+        }
         return EMPTY_STATEMENTLIST;
     }
 
     @Override
-    public StatementList createDropDomainStatement(Domain domain) {
+    public StatementList createDropDomainStatement(Domain aDomain) {
+        if (getDialect().isSupportsDomains()) {
+            StatementList theList = new StatementList();
+            StringBuilder theBuilder = new StringBuilder();
+            theBuilder.append("DROP DOMAIN ");
+            theBuilder.append(aDomain.getName());
+            theList.add(new Statement(theBuilder.toString()));
+            return theList;
+        }
         return EMPTY_STATEMENTLIST;
     }
 }
