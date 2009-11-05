@@ -28,6 +28,7 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.model.Attribute;
@@ -68,6 +69,12 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        try {
+            theStatement.execute("DROP domain testdomain");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void testReverseEngineerPostgreSQL() throws Exception {
@@ -88,6 +95,9 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
             ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
             theOptions.setTableNaming(TableNamingEnum.INCLUDE_SCHEMA);
+            theOptions.getSchemaEntries().add(new SchemaEntry("","public"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("","schemaa"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("","schemab"));
             theOptions.getTableEntries().addAll(
                     theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
 
@@ -101,8 +111,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             Attribute theAttribute = theTable.getAttributes().findByName("tb1_1");
             assertTrue(theAttribute != null);
             assertTrue(theAttribute.isNullable() == false);
-            assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
-            assertTrue(theAttribute.getSize() == 20);
+            assertTrue(theAttribute.getDatatype().getName().equals("testdomain"));
             assertTrue("Columncomment".equals(theAttribute.getComment()));
             theAttribute = theTable.getAttributes().findByName("tb1_2");
             assertTrue(theAttribute != null);
@@ -162,6 +171,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             String theReference = readResourceFile("result.sql");
+            
             assertTrue(compareStrings(theResult, theReference));
         } finally {
             if (theConnection != null) {
