@@ -130,7 +130,7 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
                     theStatementList.addAll(theGenerator.createAddDomainStatement(theDomain));
                 }
             }
-
+            
             if (theStatementList.size() > 0) {
                 StringWriter theWriter = new StringWriter();
                 PrintWriter thePW = new PrintWriter(theWriter);

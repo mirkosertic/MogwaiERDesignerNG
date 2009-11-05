@@ -27,7 +27,7 @@ import de.erdesignerng.dialect.DataType;
  */
 public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain>, DataType {
 
-    private int size;
+    private Integer size;
 
     private int fraction;
 
@@ -41,7 +41,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     /**
      * @return the size
      */
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
@@ -49,7 +49,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
      * @param size
      *            the size to set
      */
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 

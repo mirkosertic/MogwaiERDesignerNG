@@ -37,8 +37,8 @@ public class BaseERDesignerTestCaseImpl extends TestCase {
         aString1 = StringUtils.remove(aString1, (char)13);
         aString1 = StringUtils.remove(aString1, (char)10);
         
-        aString2 = StringUtils.remove(aString1, (char)13);
-        aString2 = StringUtils.remove(aString1, (char)10);
+        aString2 = StringUtils.remove(aString2, (char)13);
+        aString2 = StringUtils.remove(aString2, (char)10);
 
         return aString1.equals(aString2);
     }

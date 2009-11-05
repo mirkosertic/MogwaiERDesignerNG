@@ -30,7 +30,7 @@ public class AttributeEntity extends ModelEntity {
      * 
      * Dito for similar classes.
      */
-    public static int DEFAULT_SCALE = 10;
+    public static final int DEFAULT_SCALE = 10;
 
     private String datatype;
 
