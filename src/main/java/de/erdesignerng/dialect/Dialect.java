@@ -50,6 +50,8 @@ public abstract class Dialect {
     private boolean supportsColumnExtra;
 
     private boolean suppressONALLIfNOACTION = false;
+    
+    private boolean supportsDomains = false;
 
     private NameCastType castType;
 
@@ -348,6 +350,14 @@ public abstract class Dialect {
             }
         }
         return null;
+    }
+    
+    public boolean isSupportsDomains() {
+        return supportsDomains;
+    }
+
+    public void setSupportsDomains(boolean supportsDomains) {
+        this.supportsDomains = supportsDomains;
     }
 
     public abstract DataType createDataType(String aName, String aDefinition, int... aJdbcType);

@@ -40,7 +40,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemClonable
 
     private Table exportingTable;
 
-    private Map<IndexExpression, Attribute> mapping = new ListOrderedMap();
+    private final Map<IndexExpression, Attribute> mapping = new ListOrderedMap();
 
     private CascadeType onDelete = CascadeType.CASCADE;
 
