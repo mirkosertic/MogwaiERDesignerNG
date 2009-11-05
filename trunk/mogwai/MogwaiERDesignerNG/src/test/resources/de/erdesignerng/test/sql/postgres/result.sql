@@ -1,13 +1,14 @@
 CREATE SCHEMA schemaa;
 CREATE SCHEMA schemab;
+CREATE DOMAIN testdomain character varying(20);
 CREATE TABLE schemaa.table1 (
-    tb1_1 varchar(20) NOT NULL,
+    tb1_1 testdomain NOT NULL,
     tb1_2 varchar(100) DEFAULT 'Test'::character varying,
     tb1_3 numeric(20,5) NOT NULL
 );
 ALTER TABLE schemaa.table1 ADD CONSTRAINT pk1 PRIMARY KEY(tb1_1);
 CREATE TABLE schemab.table1 (
-    tb2_1 varchar(20) NOT NULL,
+    tb2_1 varchar NOT NULL,
     tb2_2 varchar(100) DEFAULT 'A'::character varying,
     tb2_3 numeric(20,5) NOT NULL
 );

@@ -42,5 +42,4 @@ public class DataTypeList extends Vector<DataType> {
         }
         return null;
     }
-
 }

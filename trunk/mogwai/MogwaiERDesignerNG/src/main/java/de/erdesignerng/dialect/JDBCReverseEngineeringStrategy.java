@@ -295,8 +295,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                     theAttribute.setComment(theColumnRemarks);
                 }
 
-                // Search for the datatype in the domains and the dialect specific datatypes
-                DataType theDataType = aModel.getAvailableDataTypes().findByName(convertColumnTypeToRealType(theTypeName));
+                // Search for the datatype in the domains and the dialect
+                // specific datatypes
+                DataType theDataType = aModel.getAvailableDataTypes().findByName(
+                        convertColumnTypeToRealType(theTypeName));
                 if (theDataType == null) {
                     throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for "
                             + aTableEntry.getTableName() + "." + theColumnName);
@@ -779,26 +781,44 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     protected void reverseEngineerDomains(Model aModel, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
-        for (SchemaEntry theSchema : aOptions.getSchemaEntries()) {
-            PreparedStatement theStatement = aConnection
-                    .prepareStatement("SELECT * FROM information_schema.domains WHERE domain_schema = ? and domain_catalog = ?");
-            theStatement.setString(1, theSchema.getSchemaName());
-            theStatement.setString(2, theSchema.getCatalogName());
+
+        PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM information_schema.domains where DOMAIN_SCHEMA = ?");
+        for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
+            theStatement.setString(1, theEntry.getSchemaName());
             ResultSet theResult = theStatement.executeQuery();
             while (theResult.next()) {
+                System.out.println("Catalog " + theResult.getString("DOMAIN_CATALOG"));
+                System.out.println("Schema " + theResult.getString("DOMAIN_SCHEMA"));
                 String theDomainName = theResult.getString("DOMAIN_NAME");
-                String theDataType = theResult.getString("DATATYPE");
+                String theDataType = theResult.getString("DATA_TYPE");
                 Integer theSize = null;
                 try {
-                    theResult.getInt("NUMERIC_PRECISION");
+                    Integer theTemp = theResult.getInt("NUMERIC_PRECISION");
+                    if (theTemp != null) {
+                        theSize = theTemp;
+                    }
                 } catch (Exception e) {
                 }
+                try {
+                    Integer theTemp = theResult.getInt("CHARACTER_MAXIMUM_LENGTH");
+                    if (theTemp != null) {
+                        theSize = theTemp;
+                    }
+                } catch (Exception e) {
+                }
+
                 int theFraction = theResult.getInt("NUMERIC_PRECISION_RADIX");
                 int theScale = theResult.getInt("NUMERIC_SCALE");
 
-                DataType theType = aModel.getDialect().getDataTypes().findByName(theDataType);
+                Domain theDomain = aModel.getDomains().findByName(theDomainName);
+                if (theDomain != null) {
+                    throw new ReverseEngineeringException("Duplicate domain found : " + theDomainName);
+                }
+
+                DataType theType = aModel.getDialect().getDataTypes().findByName(
+                        convertColumnTypeToRealType(theDataType));
                 if (theType != null) {
-                    Domain theDomain = new Domain();
+                    theDomain = new Domain();
                     theDomain.setName(theDomainName);
                     theDomain.setConcreteType(theType);
                     theDomain.setSize(theSize);
@@ -816,8 +836,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                 }
             }
             theResult.close();
-            theStatement.close();
         }
+        theStatement.close();
     }
 
     public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
