@@ -65,8 +65,7 @@ public class PostgresDialect extends SQL92Dialect {
         // Patch [ 2124875 ] Add Postgres data types
         registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
         registerType(createDataType("character", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
-        registerType(createDataType("character varying", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
-        registerType(createDataType("varchar", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));        
+        registerType(createDataType("character varying", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
         registerType(createDataType("boolean", "", Types.BOOLEAN));
         registerType(createDataType("interval", "", Types.TIMESTAMP));
         registerType(createDataType("smallint", "", Types.SMALLINT));
