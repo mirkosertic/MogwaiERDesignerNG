@@ -43,6 +43,7 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         aDestination.setSize(aSource.getSize());
         aDestination.setFraction(aSource.getFraction());
         aDestination.setScale(aSource.getScale());
+        aDestination.setNullable(aSource.isNullable());
     }
 
     protected void copyBaseAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
@@ -52,6 +53,7 @@ public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
         aDestination.setSize(aSource.getSize());
         aDestination.setFraction(aSource.getFraction());
         aDestination.setScale(aSource.getScale());
+        aDestination.setNullable(aSource.isNullable());
     }
 
     public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {

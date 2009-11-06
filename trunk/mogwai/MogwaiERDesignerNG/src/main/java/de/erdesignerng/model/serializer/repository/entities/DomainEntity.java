@@ -31,6 +31,8 @@ public class DomainEntity extends ModelEntity {
     private int fraction;
 
     private int scale;
+    
+    private boolean nullable;
 
     /**
      * @return the datatype
@@ -90,5 +92,13 @@ public class DomainEntity extends ModelEntity {
      */
     public void setScale(int scale) {
         this.scale = scale;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
     }
 }

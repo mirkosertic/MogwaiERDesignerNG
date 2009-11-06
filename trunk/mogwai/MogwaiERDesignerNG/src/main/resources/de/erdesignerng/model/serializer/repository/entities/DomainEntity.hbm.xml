@@ -17,5 +17,6 @@
     <property name="size" not-null="true"/>
     <property name="fraction" not-null="true"/>
     <property name="scale" not-null="true"/>
+    <property name="nullable" not-null="true"/>    
   </class>
 </hibernate-mapping>

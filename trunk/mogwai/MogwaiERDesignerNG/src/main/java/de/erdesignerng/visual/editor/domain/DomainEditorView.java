@@ -24,6 +24,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
@@ -68,13 +69,15 @@ public class DomainEditorView extends DefaultPanel {
 
     private DefaultButton cancelButton;
 
-    private DefaultComboBox dataType = new DefaultComboBox();
+    private final DefaultComboBox dataType = new DefaultComboBox();
 
-    private DefaultSpinner sizeSpinner = new DefaultSpinner();
+    private final DefaultSpinner sizeSpinner = new DefaultSpinner();
 
-    private DefaultSpinner fractionSpinner = new DefaultSpinner();
+    private final DefaultSpinner fractionSpinner = new DefaultSpinner();
 
-    private DefaultSpinner scaleSpinner = new DefaultSpinner();
+    private final DefaultSpinner scaleSpinner = new DefaultSpinner();
+    
+    private DefaultCheckBox nullable;
 
     /**
      * Constructor.
@@ -242,6 +245,7 @@ public class DomainEditorView extends DefaultPanel {
             attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
             attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
 
+            attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
             attributesGeneralTab.setName("AttributesGeneralTab");
         }
 
@@ -380,5 +384,19 @@ public class DomainEditorView extends DefaultPanel {
      */
     public DefaultSpinner getSizeSpinner() {
         return sizeSpinner;
+    }
+    
+    /**
+     * Getter method for component Required.
+     * 
+     * @return the initialized component
+     */
+    public javax.swing.JCheckBox getNullable() {
+
+        if (nullable == null) {
+            nullable = new DefaultCheckBox(ERDesignerBundle.NULLABLE);
+        }
+
+        return nullable;
     }
 }

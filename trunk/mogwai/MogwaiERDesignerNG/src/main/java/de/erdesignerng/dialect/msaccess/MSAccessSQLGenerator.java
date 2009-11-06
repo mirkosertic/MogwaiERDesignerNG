@@ -17,12 +17,7 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
-import de.erdesignerng.dialect.Statement;
-import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Table;
 
 /**
  * @author $Author: dr-death $
