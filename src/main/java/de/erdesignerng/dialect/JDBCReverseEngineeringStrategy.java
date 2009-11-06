@@ -787,8 +787,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             theStatement.setString(1, theEntry.getSchemaName());
             ResultSet theResult = theStatement.executeQuery();
             while (theResult.next()) {
-                System.out.println("Catalog " + theResult.getString("DOMAIN_CATALOG"));
-                System.out.println("Schema " + theResult.getString("DOMAIN_SCHEMA"));
                 String theDomainName = theResult.getString("DOMAIN_NAME");
                 String theDataType = theResult.getString("DATA_TYPE");
                 Integer theSize = null;
