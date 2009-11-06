@@ -34,6 +34,7 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
@@ -151,7 +152,7 @@ public class TableEditor extends BaseEditor {
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
-        
+
         editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
         editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
 
@@ -164,7 +165,11 @@ public class TableEditor extends BaseEditor {
         editingView.getDataType().addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                setSpinnerState((DataType) editingView.getDataType().getSelectedItem());
+                DataType theType = (DataType) editingView.getDataType().getSelectedItem();
+                setSpinnerState(theType);
+                if (theType != null && theType.isDomain()) {
+                    editingView.getNullable().setSelected(((Domain) theType).isNullable());
+                }
             }
 
         });
@@ -367,25 +372,25 @@ public class TableEditor extends BaseEditor {
         if (theValidationResult.size() == 0) {
 
             Dialect theDialect = model.getDialect();
-            
+
             for (int i = 0; i < attributeListModel.getSize(); i++) {
                 Attribute theTempAttribute = (Attribute) attributeListModel.get(i);
                 try {
                     if (theDialect.checkName(theTempAttribute.getName()).equals(
-                            theDialect.checkName(editingView.getAttributeName().getText())) && !theTempAttribute.getSystemId().equals(theAttribute.getSystemId())) {
+                            theDialect.checkName(editingView.getAttributeName().getText()))
+                            && !theTempAttribute.getSystemId().equals(theAttribute.getSystemId())) {
                         MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                                 ERDesignerBundle.ATTRIBUTEALREADYEXISTS));
                         return;
                     }
                 } catch (ElementInvalidNameException e) {
-                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
-                            ERDesignerBundle.NAMEINVALID));
+                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
                     return;
                 }
             }
-            
+
             attributeBindingInfo.view2model();
-            
+
             if (!attributeListModel.contains(theAttribute)) {
 
                 attributeListModel.add(theAttribute);
@@ -492,7 +497,7 @@ public class TableEditor extends BaseEditor {
     }
 
     private void updateIndexStatusFields() {
-        
+
         boolean theCurrentIndexSelected = indexBindingInfo.getDefaultModel() != null;
         editingView.getAddIndexAttribute().setEnabled(theCurrentIndexSelected);
         editingView.getAddIndexExpression().setEnabled(theCurrentIndexSelected);
@@ -502,7 +507,7 @@ public class TableEditor extends BaseEditor {
         editingView.getAddAttributeToIndexButton().setEnabled(theEnabled);
 
         IndexValueModel theModel = new IndexValueModel();
-        
+
         if (theEnabled) {
             indexExpressionBindingInfo2.setDefaultModel(theModel);
             indexExpressionBindingInfo2.model2view();
@@ -529,9 +534,9 @@ public class TableEditor extends BaseEditor {
     }
 
     private void commandIndexFieldListValueChanged(javax.swing.event.ListSelectionEvent evt) {
-        
+
         removeIndexElement.setEnabled(editingView.getIndexFieldList().getSelectedValue() != null);
-        
+
         updateIndexStatusFields();
     }
 
@@ -576,7 +581,7 @@ public class TableEditor extends BaseEditor {
     private void commandNewAttribute() {
         attributeBindingInfo.setDefaultModel(new Attribute());
         updateAttributeEditFields();
-        
+
         editingView.getAttributeList().clearSelection();
     }
 
@@ -594,7 +599,7 @@ public class TableEditor extends BaseEditor {
     private void commandNewIndex() {
         indexBindingInfo.setDefaultModel(new Index());
         updateIndexEditFields();
-        
+
         editingView.getIndexList().clearSelection();
     }
 
@@ -602,24 +607,24 @@ public class TableEditor extends BaseEditor {
         Index theIndex = indexBindingInfo.getDefaultModel();
         List<ValidationError> theValidationResult = indexBindingInfo.validate();
         if (theValidationResult.size() == 0) {
-            
+
             Dialect theDialect = model.getDialect();
             for (int i = 0; i < indexListModel.getSize(); i++) {
                 Index theTempIndex = (Index) indexListModel.get(i);
                 try {
                     if (theDialect.checkName(theTempIndex.getName()).equals(
-                            theDialect.checkName(editingView.getIndexName().getText())) && !theTempIndex.getSystemId().equals(theIndex.getSystemId())) {
+                            theDialect.checkName(editingView.getIndexName().getText()))
+                            && !theTempIndex.getSystemId().equals(theIndex.getSystemId())) {
                         MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                                 ERDesignerBundle.INDEXALREADYEXISTS));
                         return;
                     }
                 } catch (ElementInvalidNameException e) {
-                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
-                            ERDesignerBundle.NAMEINVALID));
+                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
                     return;
                 }
             }
-            
+
             indexBindingInfo.view2model();
 
             if (theIndex.getIndexType().equals(IndexType.PRIMARYKEY)) {
@@ -828,7 +833,8 @@ public class TableEditor extends BaseEditor {
     /**
      * Set the currently selected attribute.
      * 
-     * @param aAttribute the attribute
+     * @param aAttribute
+     *            the attribute
      */
     public void setSelectedAttribute(Attribute aAttribute) {
         editingView.getAttributeList().setSelectedValue(aAttribute, true);
@@ -837,7 +843,8 @@ public class TableEditor extends BaseEditor {
     /**
      * Set the currently selected index.
      * 
-     * @param aIndex the index
+     * @param aIndex
+     *            the index
      */
     public void setSelectedIndex(Index aIndex) {
         editingView.getMainTabbedPane().setSelectedIndex(1);
