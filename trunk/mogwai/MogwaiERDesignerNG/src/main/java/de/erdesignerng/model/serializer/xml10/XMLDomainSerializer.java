@@ -43,7 +43,6 @@ public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 
     @Override
     public void deserialize(Model aModel, Document aDocument) {
-        // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
         for (int i = 0; i < theElements.getLength(); i++) {
             Element theElement = (Element) theElements.item(i);
