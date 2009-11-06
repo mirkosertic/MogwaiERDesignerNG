@@ -101,7 +101,7 @@ public class ReverseEngineerEditor extends BaseEditor {
         bindingInfo.model2view();
 
         //Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
-        if (model.getDialect().supportsSchemaInformation()) {
+        if (model.getDialect().isSupportsSchemaInformation()) {
             //initially show available schemas
             commandUpdate();
 
@@ -128,8 +128,8 @@ public class ReverseEngineerEditor extends BaseEditor {
         editingView.getRefreshButton().setAction(updateAction);
         editingView.getSchemaList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        editingView.getSchemaList().setEnabled(model.getDialect().supportsSchemaInformation());
-        editingView.getRefreshButton().setEnabled(model.getDialect().supportsSchemaInformation());
+        editingView.getSchemaList().setEnabled(model.getDialect().isSupportsSchemaInformation());
+        editingView.getRefreshButton().setEnabled(model.getDialect().isSupportsSchemaInformation());
 
         setContentPane(editingView);
         setResizable(false);
@@ -144,7 +144,7 @@ public class ReverseEngineerEditor extends BaseEditor {
         if (bindingInfo.validate().size() == 0) {
             Object[] theSelectesValues = editingView.getSchemaList().getSelectedValues();
             if (((theSelectesValues == null) || (theSelectesValues.length == 0))
-                    && (model.getDialect().supportsSchemaInformation())) {
+                    && (model.getDialect().isSupportsSchemaInformation())) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
                 return;
             }
@@ -154,7 +154,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
     private void commandUpdate() {
 
-        if (model.getDialect().supportsSchemaInformation()) {
+        if (model.getDialect().isSupportsSchemaInformation()) {
 
             schemaList.clear();
 
@@ -199,7 +199,7 @@ public class ReverseEngineerEditor extends BaseEditor {
         ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
         theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
 
-        if (model.getDialect().supportsSchemaInformation()) {
+        if (model.getDialect().isSupportsSchemaInformation()) {
             for (Object theEntry : editingView.getSchemaList().getSelectedValues()) {
                 theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
             }

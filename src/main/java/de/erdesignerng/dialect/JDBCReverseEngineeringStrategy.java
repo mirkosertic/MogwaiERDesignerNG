@@ -902,7 +902,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             throws SQLException {
         List<TableEntry> theResult = new ArrayList<TableEntry>();
 
-        if (dialect.supportsSchemaInformation()) {
+        if (dialect.isSupportsSchemaInformation()) {
 
             for (SchemaEntry theEntry : aSchemaEntries) {
                 theResult.addAll(getTablesForSchemaEntry(aConnection, theEntry));

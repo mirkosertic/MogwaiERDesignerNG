@@ -53,6 +53,8 @@ public abstract class Dialect {
     
     private boolean supportsDomains = false;
 
+    private boolean supportsSchemaInformation = true;
+
     private NameCastType castType;
 
     private final DataTypeList dataTypes = new DataTypeList();
@@ -169,6 +171,10 @@ public abstract class Dialect {
 
     public abstract String getUniqueName();
 
+    public String getDefaultUserName() {
+        return "";
+    }
+
     @Override
     public String toString() {
         return getUniqueName();
@@ -224,8 +230,8 @@ public abstract class Dialect {
         return theConnection;
     }
 
-    public boolean supportsSchemaInformation() {
-        return true;
+    public boolean isSupportsSchemaInformation() {
+        return supportsSchemaInformation;
     }
 
     protected void registerType(DataType aType) {
@@ -358,6 +364,10 @@ public abstract class Dialect {
 
     public void setSupportsDomains(boolean supportsDomains) {
         this.supportsDomains = supportsDomains;
+    }
+
+    public void setSupportsSchemaInformation(boolean supportsSchemaInformation) {
+        this.supportsSchemaInformation = supportsSchemaInformation;
     }
 
     public abstract DataType createDataType(String aName, String aDefinition, int... aJdbcType);
