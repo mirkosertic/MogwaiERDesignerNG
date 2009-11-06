@@ -17,6 +17,10 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -25,9 +29,6 @@ import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
 
 /**
  * @author $Author: dr-death $

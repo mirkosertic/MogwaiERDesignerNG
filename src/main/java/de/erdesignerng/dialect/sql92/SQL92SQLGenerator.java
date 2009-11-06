@@ -439,6 +439,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             theBuilder.append(aDomain.getName());
             theBuilder.append(" ");
             theBuilder.append(aDomain.createTypeDefinitionFor(new Attribute()));
+            if (!aDomain.isNullable()) {
+                theBuilder.append(" NOT NULL");
+            }
             theList.add(new Statement(theBuilder.toString()));
             return theList;
         }

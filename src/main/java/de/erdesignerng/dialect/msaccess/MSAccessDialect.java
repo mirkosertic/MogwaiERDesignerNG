@@ -17,15 +17,16 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Types;
+
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Types;
 
 /**
  *

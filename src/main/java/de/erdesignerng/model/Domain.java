@@ -34,6 +34,8 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     private int scale = 10;
 
     private DataType concreteType;
+    
+    private boolean nullable = true;
 
     public Domain() {
     }
@@ -122,6 +124,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         theDomain.setSize(size);
         theDomain.setFraction(fraction);
         theDomain.setScale(scale);
+        theDomain.setNullable(nullable);
         return theDomain;
     }
 
@@ -138,6 +141,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         setSize(aValue.getSize());
         setFraction(aValue.getFraction());
         setScale(aValue.getScale());
+        setNullable(aValue.isNullable());
     }
 
     @Override
@@ -147,6 +151,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
         theTemp.setSize(size);
         theTemp.setFraction(fraction);
         theTemp.setScale(scale);
+        theTemp.setNullable(nullable);
         return concreteType.createTypeDefinitionFor(theTemp);
     }
 
@@ -178,5 +183,13 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     @Override
     public boolean supportsExtra() {
         return concreteType.supportsExtra();
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
     }
 }

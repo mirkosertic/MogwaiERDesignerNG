@@ -50,5 +50,4 @@ public enum CascadeType {
         }
         throw new IllegalArgumentException("Invalid type " + aType);
     }
-
 }

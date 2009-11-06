@@ -116,6 +116,7 @@ public class DomainEditor extends BaseEditor {
         domainBindingInfo.addBinding("size", editingView.getSizeSpinner());
         domainBindingInfo.addBinding("fraction", editingView.getFractionSpinner());
         domainBindingInfo.addBinding("scale", editingView.getScaleSpinner());
+        domainBindingInfo.addBinding("nullable", editingView.getNullable());
         domainBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
@@ -185,6 +186,7 @@ public class DomainEditor extends BaseEditor {
             editingView.getDeleteButton().setEnabled(!isNew);
             editingView.getDomainName().setEnabled(true);
             editingView.getDataType().setEnabled(true);
+            editingView.getNullable().setEnabled(true);
             setSpinnerState(theDataType);
 
         } else {
@@ -192,6 +194,7 @@ public class DomainEditor extends BaseEditor {
             editingView.getDeleteButton().setEnabled(false);
             editingView.getDomainName().setEnabled(false);
             editingView.getDataType().setEnabled(false);
+            editingView.getNullable().setEnabled(false);
             setSpinnerState(null);
         }
 
@@ -252,7 +255,7 @@ public class DomainEditor extends BaseEditor {
             }
         }
     }
-
+    
     /**
      * Set the selected main.
      * 
