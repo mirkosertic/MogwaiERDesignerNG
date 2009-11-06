@@ -29,8 +29,8 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 /**
- *
- * @author p000010
+ * @author $Author: dr-death $
+ * @version $Date: 2009-11-06 01:30:00 $
  */
 public class MSAccessDialect extends SQL92Dialect {
 
@@ -52,6 +52,7 @@ public class MSAccessDialect extends SQL92Dialect {
         setSupportsDomains(false);
         setSupportsSchemaInformation(false);
 
+        // @see http://msdn.microsoft.com/en-us/library/bb177899.aspx
         registerType(createDataType("integer", "", Types.INTEGER));       //LONG
         registerType(createDataType("varchar", "$size", Types.VARCHAR));  //TEXT
         registerType(createDataType("counter", "", true, Types.INTEGER)); //AUTOINCREMENT
@@ -59,9 +60,16 @@ public class MSAccessDialect extends SQL92Dialect {
         registerType(createDataType("byte", "", Types.TINYINT));          //BYTE
         registerType(createDataType("bit", "", Types.BOOLEAN));           //YESNO
         registerType(createDataType("longchar", "", Types.LONGNVARCHAR)); //MEMO
+        registerType(createDataType("smallint", "", Types.SMALLINT));     //INTEGER
+        registerType(createDataType("double", "", Types.DOUBLE));         //DOUBLE
+        registerType(createDataType("real", "", Types.REAL));             //SINGLE
+        registerType(createDataType("currency", "", Types.BIGINT));       //CURRENCY
+        registerType(createDataType("longbinary", "", Types.BLOB));       //OLE-Objekt
+        registerType(createDataType("decimal", "", Types.DECIMAL));       //DECIMAL
 
         seal();
-}
+
+    }
 
     @Override
     public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
@@ -70,7 +78,7 @@ public class MSAccessDialect extends SQL92Dialect {
 
     @Override
     public String getUniqueName() {
-        return "MSAccessDialect";
+        return "MSAccessDialect (experimental)";
     }
 
     @Override
@@ -85,7 +93,7 @@ public class MSAccessDialect extends SQL92Dialect {
 
     @Override
     public String getDriverURLTemplate() {
-        return "C:\\<db>.mdb";
+        return "C:\\<dbname.mdb>";
     }
 
     @Override
