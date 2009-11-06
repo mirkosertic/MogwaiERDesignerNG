@@ -188,6 +188,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
             if (aDialect != null) {
                 theDescriptor.setDriver(aDialect.getDriverClassName());
                 theDescriptor.setUrl(aDialect.getDriverURLTemplate());
+                theDescriptor.setUser(aDialect.getDefaultUserName());
                 theDescriptor.setDialect(aDialect);
             }
 

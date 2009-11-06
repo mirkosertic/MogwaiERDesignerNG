@@ -115,7 +115,7 @@ public class MySQLDialect extends SQL92Dialect {
     }
 
     @Override
-    public boolean supportsSchemaInformation() {
+    public boolean isSupportsSchemaInformation() {
         return false;
     }
 
