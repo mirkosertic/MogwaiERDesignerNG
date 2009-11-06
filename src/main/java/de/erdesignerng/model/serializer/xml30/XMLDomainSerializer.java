@@ -31,7 +31,7 @@ import de.erdesignerng.model.Model;
  */
 public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.XMLDomainSerializer {
 
-	protected static final String NULLABLE = "nullable";
+    protected static final String NULLABLE = "nullable";
 
     @Override
     public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
@@ -43,17 +43,17 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
 
         theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
 
-        //Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-        theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null)?aDomain.getSize():""));
+        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+        // max-length wrong
+        theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null) ? aDomain.getSize() : ""));
 
         theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
         theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
-		theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
+        theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
     }
 
     @Override
     public void deserialize(Model aModel, Document aDocument) {
-        // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
         for (int i = 0; i < theElements.getLength(); i++) {
             Element theDomainElement = (Element) theElements.item(i);
@@ -63,9 +63,11 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
             theDomain.setName(theDomainElement.getAttribute(NAME));
             theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
 
-            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+            // max-length wrong
             String theAttributeString = theDomainElement.getAttribute(SIZE);
-            theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString)))?null:Integer.parseInt(theAttributeString));
+            theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
+                    : Integer.parseInt(theAttributeString));
 
             theDomain.setFraction(Integer.parseInt(theDomainElement.getAttribute(FRACTION)));
             theDomain.setScale(Integer.parseInt(theDomainElement.getAttribute(SCALE)));
