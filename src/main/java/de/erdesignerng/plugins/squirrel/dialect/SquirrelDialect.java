@@ -155,8 +155,8 @@ public class SquirrelDialect extends Dialect {
     }
 
     @Override
-    public boolean supportsSchemaInformation() {
-        return dialect.supportsSchemaInformation();
+    public boolean isSupportsSchemaInformation() {
+        return dialect.isSupportsSchemaInformation();
     }
 
     @Override

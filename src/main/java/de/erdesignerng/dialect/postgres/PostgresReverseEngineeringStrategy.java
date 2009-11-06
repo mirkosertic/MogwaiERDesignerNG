@@ -77,11 +77,6 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     			aAttribute.setSize(null);
     		}
     	}
-	}
-
-	@Override
-    protected boolean isTableTypeView(String aTableType) {
-        return VIEW_TABLE_TYPE.equals(aTableType);
     }
 
     @Override
