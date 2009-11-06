@@ -33,6 +33,7 @@ public class XMLModel30Serializer extends XMLModel20Serializer {
     public XMLModel30Serializer(XMLUtils utils) {
         super(utils);
         setXMLAttributeSerializer(new XMLAttributeSerializer());
+        setXMLDomainSerializer(new XMLDomainSerializer());
     }
 
     @Override
