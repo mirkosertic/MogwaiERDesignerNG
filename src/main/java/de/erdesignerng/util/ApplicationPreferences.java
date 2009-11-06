@@ -38,6 +38,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 
 import de.erdesignerng.model.CascadeType;
@@ -487,11 +488,10 @@ public class ApplicationPreferences {
      * @return the directory
      */
     public File getDatatypeConfigDirectory() {
-        String theUserHome = System.getProperty("user.home");
-        if (StringUtils.isEmpty(theUserHome)) {
+        File theUserHomeFile = SystemUtils.getUserHome();
+        if (theUserHomeFile == null) {
             return getRelativeFile("dataTypes");
         }
-        File theUserHomeFile = new File(theUserHome);
         
         String theVersionNumber = MavenPropertiesLocator.getERDesignerVersionInfo();
         if (theVersionNumber.equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
