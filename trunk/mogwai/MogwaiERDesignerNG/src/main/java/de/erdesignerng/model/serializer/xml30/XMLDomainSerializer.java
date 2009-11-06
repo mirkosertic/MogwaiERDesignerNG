@@ -25,9 +25,13 @@ import org.w3c.dom.NodeList;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 
+/**
+ * @author $Author: dr-death $
+ * @version $Date: 2009-11-06 17:15:00 $
+ */
 public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.XMLDomainSerializer {
-    
-    protected static final String NULLABLE = "nullable";    
+
+	protected static final String NULLABLE = "nullable";
 
     @Override
     public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
@@ -38,10 +42,13 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
         theDomainElement.setAttribute(NAME, aDomain.getName());
 
         theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
-        theDomainElement.setAttribute(SIZE, "" + aDomain.getSize());
+
+        //Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+        theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null)?aDomain.getSize():""));
+
         theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
         theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
-        theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
+		theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
     }
 
     @Override
@@ -49,17 +56,21 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
         // Now, parse tables
         NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
         for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+            Element theDomainElement = (Element) theElements.item(i);
 
             Domain theDomain = new Domain();
-            theDomain.setSystemId(theElement.getAttribute(ID));
-            theDomain.setName(theElement.getAttribute(NAME));
-            theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
-            theDomain.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
-            theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
-            theDomain.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
-            
-            String theNullable = theElement.getAttribute(NULLABLE);
+            theDomain.setSystemId(theDomainElement.getAttribute(ID));
+            theDomain.setName(theDomainElement.getAttribute(NAME));
+            theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
+
+            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+            String theAttributeString = theDomainElement.getAttribute(SIZE);
+            theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString)))?null:Integer.parseInt(theAttributeString));
+
+            theDomain.setFraction(Integer.parseInt(theDomainElement.getAttribute(FRACTION)));
+            theDomain.setScale(Integer.parseInt(theDomainElement.getAttribute(SCALE)));
+
+            String theNullable = theDomainElement.getAttribute(NULLABLE);
             if (!StringUtils.isEmpty(theNullable)) {
                 theDomain.setNullable(Boolean.parseBoolean(theNullable));
             }
@@ -67,4 +78,5 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
             aModel.getDomains().add(theDomain);
         }
     }
+
 }

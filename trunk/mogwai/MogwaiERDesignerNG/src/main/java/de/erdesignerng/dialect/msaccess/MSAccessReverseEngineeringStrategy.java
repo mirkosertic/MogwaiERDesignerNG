@@ -36,14 +36,6 @@ import de.erdesignerng.model.View;
  */
 public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSAccessDialect>{
 
-    private static final int TABLE_FLAG_NONE = 0;
-
-    private static final int TABLE_FLAG_HIDDEN = 0;
-
-    private static final int TABLE_FLAG_SYSTEM = 0;
-
-    private static final int TABLE_FLAGS_ALL = (TABLE_FLAG_NONE | TABLE_FLAG_HIDDEN | TABLE_FLAG_SYSTEM);
-
     private static final int OBJECT_TYPE_TABLE = 1;
 
     private static final String TABLES = "Tables";
