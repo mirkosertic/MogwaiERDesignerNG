@@ -41,9 +41,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     private String extra;
     
-    // Cache for the physical declaration of this attribute
-    private String physicalDeclaration;
-
     /**
      * @return the nullable
      */
@@ -86,14 +83,12 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     public void setDefaultValue(String defaultValue) {
         synchronized(this) {
             this.defaultValue = defaultValue;
-            physicalDeclaration = null;
         }
     }
 
     public void setNullable(boolean nullable) {
         synchronized(this) {
             this.nullable = nullable;
-            physicalDeclaration = null;
         }
     }
 
@@ -104,7 +99,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     public void setDatatype(DataType datatype) {
         synchronized (this) {
             this.datatype = datatype;
-            physicalDeclaration = null;
         }
     }
 
@@ -115,7 +109,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     public void setFraction(int fraction) {
         synchronized (this) {
             this.fraction = fraction;
-            physicalDeclaration = null;
         }
     }
 
@@ -132,7 +125,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
                 scale = DEFAULT_SCALE;
             }
             this.scale = scale;
-            physicalDeclaration = null;
         }
     }
 
@@ -143,7 +135,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     public void setSize(Integer size) {
         synchronized (this) {
             this.size = size;
-            physicalDeclaration = null;
         }
     }
 
@@ -244,7 +235,6 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     public void setExtra(String extra) {
         synchronized (this) {
             this.extra = extra;
-            physicalDeclaration = null;
         }
     }
 
@@ -261,11 +251,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
 
     public String getPhysicalDeclaration() {
         synchronized (this) {
-            if (physicalDeclaration != null) {
-                return physicalDeclaration;
-            }
-            physicalDeclaration = datatype.createTypeDefinitionFor(this);
-            return physicalDeclaration;
+            return datatype.createTypeDefinitionFor(this);
         }
     }
 

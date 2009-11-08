@@ -59,11 +59,9 @@ import de.erdesignerng.visual.tools.BaseTool;
  */
 public abstract class ERDesignerGraph extends JGraph {
 
-    private Model model;
+    private final Model model;
 
     private boolean displayComments;
-
-    private boolean physicalLayout;
 
     private boolean dragging;
 
@@ -238,25 +236,6 @@ public abstract class ERDesignerGraph extends JGraph {
      */
     public void setDisplayComments(boolean displayComments) {
         this.displayComments = displayComments;
-    }
-
-    /**
-     * Gibt den Wert des Attributs <code>physicalLayout</code> zurück.
-     * 
-     * @return Wert des Attributs physicalLayout.
-     */
-    public boolean isPhysicalLayout() {
-        return physicalLayout;
-    }
-
-    /**
-     * Setzt den Wert des Attributs <code>physicalLayout</code>.
-     * 
-     * @param physicalLayout
-     *            Wert für das Attribut physicalLayout.
-     */
-    public void setPhysicalLayout(boolean physicalLayout) {
-        this.physicalLayout = physicalLayout;
     }
 
     /**
