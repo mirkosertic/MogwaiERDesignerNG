@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 
 /**
  * Datamodel for the save to repository dialog.
@@ -27,7 +27,7 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
 public class SaveToRepositoryDataModel {
     private String nameForNewEntry;
 
-    private RepositoryEntryDesciptor existingEntry;
+    private RepositoryEntryDescriptor existingEntry;
 
     private String nameForExistantEntry;
 
@@ -49,7 +49,7 @@ public class SaveToRepositoryDataModel {
     /**
      * @return the existingEntry
      */
-    public RepositoryEntryDesciptor getExistingEntry() {
+    public RepositoryEntryDescriptor getExistingEntry() {
         return existingEntry;
     }
 
@@ -57,7 +57,7 @@ public class SaveToRepositoryDataModel {
      * @param existingEntry
      *            the existingEntry to set
      */
-    public void setExistingEntry(RepositoryEntryDesciptor existingEntry) {
+    public void setExistingEntry(RepositoryEntryDescriptor existingEntry) {
         this.existingEntry = existingEntry;
     }
 

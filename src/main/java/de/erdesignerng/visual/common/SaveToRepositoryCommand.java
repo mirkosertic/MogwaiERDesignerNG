@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.ModelIOUtilities;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -55,14 +55,14 @@ public class SaveToRepositoryCommand extends UICommand {
                     theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
                             .getUsername(), theRepositoryConnection.getPassword(), false);
 
-            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
+            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
                     theConnection);
 
             SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(getDetailComponent(), theEntries,
                     component.currentRepositoryEntry);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                RepositoryEntryDesciptor theDesc = theEditor.getRepositoryDescriptor();
+                RepositoryEntryDescriptor theDesc = theEditor.getRepositoryDescriptor();
 
                 theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
                         component.getModel(), getPreferences());

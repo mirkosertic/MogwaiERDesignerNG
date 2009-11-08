@@ -30,14 +30,14 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  */
 public class DatabaseConnectionEditor extends BaseEditor {
 
-    private DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandTest();
         }
     }, this, ERDesignerBundle.TEST);
 
-    private DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
+    private final DatabaseConnectionEditorView view = new DatabaseConnectionEditorView() {
 
         @Override
         public void handleDialectChange(Dialect aDialect) {
@@ -45,11 +45,11 @@ public class DatabaseConnectionEditor extends BaseEditor {
         }
     };
 
-    private Model model;
+    private final Model model;
 
-    private ApplicationPreferences preferences;
+    private final ApplicationPreferences preferences;
 
-    private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
+    private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
     public DatabaseConnectionEditor(Component aParent, Model aModel, ApplicationPreferences aPreferences,
             ConnectionDescriptor aConnection) {
@@ -120,14 +120,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
     public void applyValues() throws Exception {
 
         DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
-
-        model.setDialect(theDescriptor.getDialect());
-        model.getProperties().setProperty(Model.PROPERTY_ALIAS, theDescriptor.getAlias());
-        model.getProperties().setProperty(Model.PROPERTY_DRIVER, theDescriptor.getDriver());
-        model.getProperties().setProperty(Model.PROPERTY_URL, theDescriptor.getUrl());
-        model.getProperties().setProperty(Model.PROPERTY_USER, theDescriptor.getUser());
-        model.getProperties().setProperty(Model.PROPERTY_PASSWORD, theDescriptor.getPassword());
-        model.getProperties().setProperty(Model.PROPERTY_PROMPTFORPASSWORD, theDescriptor.isPromptForPassword());
+        model.initializeWith(theDescriptor.createConnectionDescriptor());
     }
 
     @Override

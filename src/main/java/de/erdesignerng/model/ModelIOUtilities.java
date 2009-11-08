@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.model.serializer.xml10.XMLModel10Serializer;
 import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
 import de.erdesignerng.model.serializer.xml30.XMLModel30Serializer;
@@ -124,7 +124,7 @@ public final class ModelIOUtilities {
      * @throws Exception
      *             will be thrown in case of an exception
      */
-    public RepositoryEntryDesciptor serializeModelToDB(RepositoryEntryDesciptor aDesc, Dialect aDialect,
+    public RepositoryEntryDescriptor serializeModelToDB(RepositoryEntryDescriptor aDesc, Dialect aDialect,
             Connection aConnection, Model aModel, ApplicationPreferences aPreferences) throws Exception {
 
         Class theDialectClass = aDialect.getHibernateDialectClass();
@@ -148,7 +148,7 @@ public final class ModelIOUtilities {
      * @throws Exception
      *             will be thrown in case of an exception
      */
-    public Model deserializeModelfromRepository(RepositoryEntryDesciptor aDescriptor, Dialect aDialect,
+    public Model deserializeModelfromRepository(RepositoryEntryDescriptor aDescriptor, Dialect aDialect,
             Connection aConnection, ApplicationPreferences aPreferences) throws Exception {
 
         return DictionaryModelSerializer.SERIALIZER.deserialize(aDescriptor, aConnection, aDialect
@@ -166,7 +166,7 @@ public final class ModelIOUtilities {
      * @throws Exception
      *             will be thrown in case of an exception
      */
-    public List<RepositoryEntryDesciptor> getRepositoryEntries(Dialect aDialect, Connection aConnection)
+    public List<RepositoryEntryDescriptor> getRepositoryEntries(Dialect aDialect, Connection aConnection)
             throws Exception {
         return DictionaryModelSerializer.SERIALIZER.getRepositoryEntries(aDialect.getHibernateDialectClass(),
                 aConnection);

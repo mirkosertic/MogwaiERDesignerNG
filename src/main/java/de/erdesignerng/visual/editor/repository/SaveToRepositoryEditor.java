@@ -24,7 +24,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -51,8 +51,8 @@ public class SaveToRepositoryEditor extends BaseEditor {
 
     private BindingInfo<SaveToRepositoryDataModel> bindingInfo2;
 
-    public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDesciptor> aEntries,
-            RepositoryEntryDesciptor aCurrentEntry) {
+    public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDescriptor> aEntries,
+            RepositoryEntryDescriptor aCurrentEntry) {
         super(aParent, ERDesignerBundle.SAVEMODELTODB);
 
         initialize();
@@ -62,12 +62,12 @@ public class SaveToRepositoryEditor extends BaseEditor {
         bindingInfo2 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
 
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-        for (RepositoryEntryDesciptor theEntry : aEntries) {
+        for (RepositoryEntryDescriptor theEntry : aEntries) {
             theModel.addElement(theEntry);
         }
         view.getExistingNameBox().setModel(theModel);
         if (theModel.getSize() > 0) {
-            theBindModel.setExistingEntry((RepositoryEntryDesciptor) theModel.getElementAt(0));
+            theBindModel.setExistingEntry((RepositoryEntryDescriptor) theModel.getElementAt(0));
             theBindModel.setNameForExistantEntry(theBindModel.getExistingEntry().getName());
         }
 
@@ -113,7 +113,7 @@ public class SaveToRepositoryEditor extends BaseEditor {
     }
 
     private void commandChangeRepositoryEntry() {
-        RepositoryEntryDesciptor theDesc = (RepositoryEntryDesciptor) view.getExistingNameBox().getSelectedItem();
+        RepositoryEntryDescriptor theDesc = (RepositoryEntryDescriptor) view.getExistingNameBox().getSelectedItem();
         if (theDesc != null) {
             SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
             theModel.setExistingEntry(theDesc);
@@ -145,17 +145,17 @@ public class SaveToRepositoryEditor extends BaseEditor {
      * 
      * @return the descriptor
      */
-    public RepositoryEntryDesciptor getRepositoryDescriptor() {
+    public RepositoryEntryDescriptor getRepositoryDescriptor() {
 
         SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
 
         if (view.getNewEntryButton().isSelected()) {
-            RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
+            RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
             theDesc.setName(theModel.getNameForNewEntry());
             return theDesc;
         }
 
-        RepositoryEntryDesciptor theDesc = theModel.getExistingEntry();
+        RepositoryEntryDescriptor theDesc = theModel.getExistingEntry();
         theDesc.setName(theModel.getNameForExistantEntry());
         return theDesc;
     }

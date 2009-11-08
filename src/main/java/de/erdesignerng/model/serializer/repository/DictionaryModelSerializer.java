@@ -47,10 +47,10 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryModelSerializer SERIALIZER = new DictionaryModelSerializer();
 
-    public RepositoryEntryDesciptor serialize(final RepositoryEntryDesciptor aDesc, final Model aModel,
+    public RepositoryEntryDescriptor serialize(final RepositoryEntryDescriptor aDesc, final Model aModel,
             Connection aConnection, Class aHibernateDialectClass) throws Exception {
 
-        return (RepositoryEntryDesciptor) new HibernateTemplate(aHibernateDialectClass, aConnection) {
+        return (RepositoryEntryDescriptor) new HibernateTemplate(aHibernateDialectClass, aConnection) {
 
             @Override
             public Object doInSession(Session aSession) {
@@ -114,7 +114,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
         }.execute();
     }
 
-    public Model deserialize(final RepositoryEntryDesciptor aDescriptor, Connection aConnection,
+    public Model deserialize(final RepositoryEntryDescriptor aDescriptor, Connection aConnection,
             Class aHibernateDialectClass) throws Exception {
 
         return (Model) new HibernateTemplate(aHibernateDialectClass, aConnection) {
@@ -163,12 +163,12 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
      * @throws Exception
      *             will be thrown in case of an exception
      */
-    public List<RepositoryEntryDesciptor> getRepositoryEntries(Class aDialectClass, Connection aConnection)
+    public List<RepositoryEntryDescriptor> getRepositoryEntries(Class aDialectClass, Connection aConnection)
             throws Exception {
-        return (List<RepositoryEntryDesciptor>) new HibernateTemplate(aDialectClass, aConnection) {
+        return (List<RepositoryEntryDescriptor>) new HibernateTemplate(aDialectClass, aConnection) {
             @Override
             public Object doInSession(Session aSession) {
-                List<RepositoryEntryDesciptor> theResult = new ArrayList<RepositoryEntryDesciptor>();
+                List<RepositoryEntryDescriptor> theResult = new ArrayList<RepositoryEntryDescriptor>();
 
                 Criteria theCriteria = aSession.createCriteria(RepositoryEntity.class);
                 theCriteria.setProjection(Projections.projectionList().add(Projections.property("id")).add(
@@ -178,7 +178,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 for (Object theObject : theCriteria.list()) {
                     Object[] theArray = (Object[]) theObject;
 
-                    RepositoryEntryDesciptor theEntry = new RepositoryEntryDesciptor();
+                    RepositoryEntryDescriptor theEntry = new RepositoryEntryDescriptor();
                     theEntry.setId((Long) theArray[0]);
                     theEntry.setName((String) theArray[1]);
                     theResult.add(theEntry);
@@ -202,7 +202,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
      *             will be thrown in case of an error
      */
     public RepositoryEntity getRepositoryEntity(Class aHibernateDialectClass, Connection aConnection,
-            final RepositoryEntryDesciptor aCurrentRepositoryEntry) throws Exception {
+            final RepositoryEntryDescriptor aCurrentRepositoryEntry) throws Exception {
         return (RepositoryEntity) new HibernateTemplate(aHibernateDialectClass, aConnection) {
 
             @Override

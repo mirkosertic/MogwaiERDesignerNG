@@ -24,7 +24,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -49,11 +49,11 @@ public class LoadFromRepositoryEditor extends BaseEditor {
             new LoadFromRepositoryDataModel());
 
     public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection,
-            List<RepositoryEntryDesciptor> aEntries) {
+            List<RepositoryEntryDescriptor> aEntries) {
         super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
         DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-        for (RepositoryEntryDesciptor theEntry : aEntries) {
+        for (RepositoryEntryDescriptor theEntry : aEntries) {
             theModel.addElement(theEntry);
         }
         view.getExistingNameBox().setModel(theModel);
