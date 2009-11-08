@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -168,7 +169,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
                         JPopupMenu theMenu = new JPopupMenu();
 
-                        initializeActionsFor(theNode, theMenu);
+                        initializeActionsFor(theNode, theMenu, false);
 
                         UIInitializer.getInstance().initialize(theMenu);
                         theMenu.show(tree, e.getX(), e.getY());
@@ -421,7 +422,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         expandedUserObjects.clear();
 
         DefaultMutableTreeNode theRoot = new DefaultMutableTreeNode(TreeGroupingElement.MODEL);
-        
+
         Comparator theComparator = new BeanComparator("name");
 
         // Add the domains
@@ -441,13 +442,13 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         theViews.addAll(aModel.getViews());
         Collections.sort(theTables, theComparator);
         buildViewsChilds(aModel, theRoot, theViews);
-        
+
         // Add the Relations
         List<Relation> theRelations = new ArrayList<Relation>();
         theRelations.addAll(aModel.getRelations());
         Collections.sort(theRelations, theComparator);
         buildRelationChilds(theRoot, theRelations);
-        
+
         // Add the Indexes
         List<Index> theIndexes = new ArrayList<Index>();
         for (Table theTable : aModel.getTables()) {
@@ -464,9 +465,16 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
         tree.setModel(new DefaultTreeModel(theRoot));
 
+        // if (aExpandAll) {
         for (int row = 0; row < tree.getRowCount(); row++) {
-            tree.expandRow(row);
+            TreePath thePath = tree.getPathForRow(row);
+            DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) thePath.getLastPathComponent();
+            Object theUserObject = theNode.getUserObject();
+            if (theUserObject instanceof TreeGroupingElement) {
+                tree.expandRow(row);
+            }
         }
+        // }
     }
 
     private void buildSubjectAreasChilds(Model aModel, DefaultMutableTreeNode aParent, List<SubjectArea> aList) {
@@ -537,7 +545,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         }
         aParentNode.add(theTablesNode);
     }
-    
+
     private void buildRelationChilds(DefaultMutableTreeNode aParentNode, List<Relation> aRelationList) {
         DefaultMutableTreeNode theRelationssNode = new DefaultMutableTreeNode(TreeGroupingElement.RELATIONS);
         for (Relation theRelation : aRelationList) {
@@ -706,6 +714,22 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         }
     }
 
+    private void expandOrCollapseAllChildsOfNode(TreePath aParentPath, boolean aExpand) {
+        TreeNode node = (TreeNode) aParentPath.getLastPathComponent();
+        if (node.getChildCount() > 0) {
+            for (Enumeration en = node.children(); en.hasMoreElements();) {
+                TreeNode n = (TreeNode) en.nextElement();
+                TreePath path = aParentPath.pathByAddingChild(n);
+                expandOrCollapseAllChildsOfNode(path, aExpand);
+            }
+        }
+        if (aExpand) {
+            tree.expandPath(aParentPath);
+        } else {
+            tree.collapsePath(aParentPath);
+        }
+    }
+
     /**
      * Create the PopupMenu actions correlating to a specific treenode.
      * 
@@ -713,12 +737,37 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
      *            the node
      * @param aMenu
      *            the menu to add the actions to
+     * @param aRecursive
      */
-    private void initializeActionsFor(DefaultMutableTreeNode aNode, JPopupMenu aMenu) {
+    private void initializeActionsFor(final DefaultMutableTreeNode aNode, JPopupMenu aMenu, boolean aRecursive) {
 
         final ERDesignerComponent theComponent = ERDesignerComponent.getDefault();
 
         Object theUserObject = aNode.getUserObject();
+
+        if (!aRecursive) {
+            JMenuItem theExpandAllItem = new JMenuItem();
+            theExpandAllItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EXPANDALL));
+            theExpandAllItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    expandOrCollapseAllChildsOfNode(new TreePath(aNode.getPath()), true);
+                }
+            });
+            aMenu.add(theExpandAllItem);
+
+            JMenuItem theCollapseAllItem = new JMenuItem();
+            theCollapseAllItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.COLLAPSEALL));
+            theCollapseAllItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    expandOrCollapseAllChildsOfNode(new TreePath(aNode.getPath()), false);
+                }
+            });
+
+            aMenu.add(theCollapseAllItem);
+            aMenu.addSeparator();
+        }
 
         if (theUserObject instanceof Table) {
 
@@ -765,6 +814,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
         }
         if (theUserObject instanceof SubjectArea) {
+
             SubjectArea theSubjectArea = (SubjectArea) theUserObject;
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITSUBJECTAREA,
@@ -797,7 +847,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
         }
         if (aNode.getParent() != null) {
-            initializeActionsFor((DefaultMutableTreeNode) aNode.getParent(), aMenu);
+            initializeActionsFor((DefaultMutableTreeNode) aNode.getParent(), aMenu, true);
         }
     }
 
@@ -808,7 +858,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
      *            the selection
      */
     public void setSelectedItem(ModelItem aSelection) {
-        
+
         TreePath theSelected = tree.getSelectionPath();
         if (theSelected != null) {
             DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) theSelected.getLastPathComponent();

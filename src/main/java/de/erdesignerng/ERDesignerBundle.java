@@ -415,4 +415,8 @@ public interface ERDesignerBundle {
   String EDITSUBJECTAREA = "EDITSUBJECTAREA";
   /** \u0053\u0051\u004c. */
   String SQL = "SQL";
+  /** \u0045\u0078\u0070\u0061\u006e\u0064\u0020\u0061\u006c\u006c. */
+  String EXPANDALL = "EXPANDALL";
+  /** \u0043\u006f\u006c\u006c\u0061\u0070\u0073\u0065\u0020\u0061\u006c\u006c. */
+  String COLLAPSEALL = "COLLAPSEALL";
 }

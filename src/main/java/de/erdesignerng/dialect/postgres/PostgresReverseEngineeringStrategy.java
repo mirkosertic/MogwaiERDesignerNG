@@ -64,19 +64,17 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     }
 
     @Override
-	protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute,
-			ReverseEngineeringOptions aOptions,
-			ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry,
-			Connection aConnection) throws SQLException {
+    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException {
 
-		//TODO [mirkosertic] validate construct with unit test    	
-    	if (aAttribute.getDatatype().getName().equals("varchar")) {
-            // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR ohne
+        if (aAttribute.getDatatype().getName().equals("varchar")) {
+            // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR
+            // ohne
             // Parameter definiert wurde, obwohl 1073741823 korrekt wäre
-    		if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
-    			aAttribute.setSize(null);
-    		}
-    	}
+            if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
+                aAttribute.setSize(null);
+            }
+        }
     }
 
     @Override
@@ -90,17 +88,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             theResult = theStatement.executeQuery();
             while (theResult.next()) {
                 String theViewDefinition = theResult.getString("view_definition");
-                String theViewDefinitionLower = theViewDefinition.toLowerCase();
-                if (theViewDefinitionLower.startsWith("create view ")) {
-                    int p = theViewDefinitionLower.indexOf(" as ");
-                    if (p >= 0) {
-                        theViewDefinition = theViewDefinition.substring(p + 4);
-                    }
-                }
-
-                if (theViewDefinition.endsWith(";")) {
-                    theViewDefinition = theViewDefinition.substring(0, theViewDefinition.length() - 1);
-                }
+                theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
                 return theViewDefinition;
             }
             return null;

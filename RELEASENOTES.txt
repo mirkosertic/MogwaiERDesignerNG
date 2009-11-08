@@ -215,5 +215,6 @@ Release 2.5.0
 * Implemented FR 2711878 [ERDesignerNG] edit entry dialog usability improvements
 * Implemented FR 2830914 [ERDesignerNG] Creating entities is overly complicated
 * Implemented FR 2883197 [ERDesignerNG] Add outline window to the editor
+* Implemented FR 2893195 [ERDesignerNG] provide expand/collapse all children in outli
 * Fixed typo in Reverse-Engineer dialog (german)
 * Performance tuning in Intelligent Layout functionality

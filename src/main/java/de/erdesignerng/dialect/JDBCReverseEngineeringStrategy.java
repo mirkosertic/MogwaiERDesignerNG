@@ -912,4 +912,24 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
         return theResult;
     }
+    
+    protected String extractSelectDDLFromViewDefinition(String theViewDefinition) {
+        if (!StringUtils.isEmpty(theViewDefinition)) {
+            String theViewDefinitionLower = theViewDefinition.toLowerCase();
+            theViewDefinitionLower = theViewDefinitionLower.replace('\n', ' ');
+            theViewDefinitionLower = theViewDefinitionLower.replace('\r', ' ');
+            theViewDefinitionLower = theViewDefinitionLower.replace('\t', ' ');
+            
+            if (theViewDefinitionLower.startsWith("create view ")) {
+                int p = theViewDefinitionLower.indexOf(" as ");
+                if (p >= 0) {
+                    theViewDefinition = theViewDefinition.substring(p + 4).trim();
+                }
+            }
+            if (theViewDefinition.endsWith(";")) {
+                theViewDefinition = theViewDefinition.substring(0, theViewDefinition.length() - 1);
+            }
+        }
+        return theViewDefinition;
+    }
 }
