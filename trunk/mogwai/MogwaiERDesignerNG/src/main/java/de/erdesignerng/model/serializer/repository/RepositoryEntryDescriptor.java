@@ -22,7 +22,7 @@ package de.erdesignerng.model.serializer.repository;
  * 
  * @author msertic
  */
-public class RepositoryEntryDesciptor {
+public class RepositoryEntryDescriptor {
 
     private Long id;
 
@@ -82,7 +82,7 @@ public class RepositoryEntryDesciptor {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final RepositoryEntryDesciptor other = (RepositoryEntryDesciptor) obj;
+        final RepositoryEntryDescriptor other = (RepositoryEntryDescriptor) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

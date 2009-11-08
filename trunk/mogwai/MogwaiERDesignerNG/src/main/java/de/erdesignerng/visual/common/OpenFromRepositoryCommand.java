@@ -26,7 +26,7 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -56,14 +56,14 @@ public class OpenFromRepositoryCommand extends UICommand {
                     .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
                     theRepositoryConnection.getPassword(), false);
 
-            List<RepositoryEntryDesciptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
+            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
                     theConnection);
 
             LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(getDetailComponent(), getPreferences(), theConnection,
                     theEntries);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                RepositoryEntryDesciptor theDescriptor = theEditor.getModel().getEntry();
+                RepositoryEntryDescriptor theDescriptor = theEditor.getModel().getEntry();
 
                 Model theModel = ModelIOUtilities.getInstance().deserializeModelfromRepository(theDescriptor,
                         theDialect, theConnection, getPreferences());

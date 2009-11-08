@@ -59,7 +59,7 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
@@ -213,7 +213,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     File currentEditingFile;
 
-    RepositoryEntryDesciptor currentRepositoryEntry;
+    RepositoryEntryDescriptor currentRepositoryEntry;
 
     private volatile Model model;
 
@@ -991,7 +991,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * @param aDescriptor
      *            the entry descriptor
      */
-    protected void setupViewFor(RepositoryEntryDesciptor aDescriptor) {
+    protected void setupViewFor(RepositoryEntryDescriptor aDescriptor) {
 
         currentEditingFile = null;
         currentRepositoryEntry = aDescriptor;

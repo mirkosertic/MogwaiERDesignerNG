@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 
 /**
  * Datamodel for the load from repository dialog.
@@ -26,12 +26,12 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
  */
 public class LoadFromRepositoryDataModel {
 
-    private RepositoryEntryDesciptor entry;
+    private RepositoryEntryDescriptor entry;
 
     /**
      * @return the entry
      */
-    public RepositoryEntryDesciptor getEntry() {
+    public RepositoryEntryDescriptor getEntry() {
         return entry;
     }
 
@@ -39,7 +39,7 @@ public class LoadFromRepositoryDataModel {
      * @param entry
      *            the entry to set
      */
-    public void setEntry(RepositoryEntryDesciptor entry) {
+    public void setEntry(RepositoryEntryDescriptor entry) {
         this.entry = entry;
     }
 }
