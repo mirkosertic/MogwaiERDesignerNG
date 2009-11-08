@@ -71,13 +71,7 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
             theResult = theStatement.executeQuery();
             while (theResult.next()) {
                 String theViewDefinition = theResult.getString("VIEW_DEFINITION");
-                String theViewDefinitionLower = theViewDefinition.toLowerCase();
-                if (theViewDefinitionLower.startsWith("create view ")) {
-                    int p = theViewDefinitionLower.indexOf(" as ");
-                    if (p >= 0) {
-                        theViewDefinition = theViewDefinition.substring(p + 4);
-                    }
-                }
+                theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);                
                 return theViewDefinition;
             }
             return null;
