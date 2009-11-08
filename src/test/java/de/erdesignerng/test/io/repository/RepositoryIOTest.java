@@ -29,7 +29,7 @@ import org.w3c.dom.Document;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
-import de.erdesignerng.model.serializer.repository.RepositoryEntryDesciptor;
+import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 import de.erdesignerng.util.XMLUtils;
@@ -58,7 +58,7 @@ public class RepositoryIOTest extends BaseERDesignerTestCaseImpl {
 
             Class theHibernateDialect = org.hibernate.dialect.HSQLDialect.class;
 
-            RepositoryEntryDesciptor theDesc = new RepositoryEntryDesciptor();
+            RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
             theDesc.setName("Dummy");
 
             theDesc = DictionaryModelSerializer.SERIALIZER.serialize(theDesc, theModel, theConnection,
