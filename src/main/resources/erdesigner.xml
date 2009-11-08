@@ -827,5 +827,13 @@
 			<Text lang="de">SQL</Text>		
 			<Text lang="en">SQL</Text>					
 		</Entry>
+		<Entry id="EXPANDALL">
+			<Text lang="de">Alles expandieren</Text>		
+			<Text lang="en">Expand all</Text>					
+		</Entry>
+		<Entry id="COLLAPSEALL">
+			<Text lang="de">Alles zusammenklappen</Text>		
+			<Text lang="en">Collapse all</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
