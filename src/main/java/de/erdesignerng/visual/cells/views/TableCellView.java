@@ -83,8 +83,6 @@ public class TableCellView extends VertexView {
 
         private boolean includeComments;
 
-        private boolean physicalLayout = true;
-
         private DisplayLevel displayLevel;
 
         private DisplayOrder displayOrder;
@@ -193,17 +191,7 @@ public class TableCellView extends VertexView {
 
                     theString += " : ";
 
-                    if (physicalLayout) {
-                        theString += theAttribute.getPhysicalDeclaration();
-
-                        if (theAttribute.getExtra() != null) {
-                            theString += " ";
-                            theString += theAttribute.getExtra();
-                        }
-
-                    } else {
-                        theString += theAttribute.getLogicalDeclaration();
-                    }
+                    theString += theAttribute.getLogicalDeclaration();
 
                     if (theAttribute.isForeignKey()) {
                         theString += " (FK)";
@@ -240,16 +228,8 @@ public class TableCellView extends VertexView {
 
                             theString += " : ";
 
-                            if (physicalLayout) {
-                                theString += theAttribute.getPhysicalDeclaration();
+                            theString += theAttribute.getLogicalDeclaration();
 
-                                if (theAttribute.getExtra() != null) {
-                                    theString += " ";
-                                    theString += theAttribute.getExtra();
-                                }
-                            } else {
-                                theString += theAttribute.getLogicalDeclaration();
-                            }
                             if (isFK) {
                                 theString += " (FK)";
                             }
@@ -295,16 +275,7 @@ public class TableCellView extends VertexView {
                     String theText = getConvertedName(theAttribute);
                     theText += " : ";
 
-                    if (physicalLayout) {
-                        theText += theAttribute.getPhysicalDeclaration();
-
-                        if (theAttribute.getExtra() != null) {
-                            theText += " ";
-                            theText += theAttribute.getExtra();
-                        }
-                    } else {
-                        theText += theAttribute.getLogicalDeclaration();
-                    }
+                    theText += theAttribute.getLogicalDeclaration();
 
                     // Assume the text is a foreign key...
                     theText += " (FK)";
@@ -326,16 +297,7 @@ public class TableCellView extends VertexView {
                         String theText = getConvertedName(theAttribute);
                         theText += " : ";
 
-                        if (physicalLayout) {
-                            theText += theAttribute.getPhysicalDeclaration();
-
-                            if (theAttribute.getExtra() != null) {
-                                theText += " ";
-                                theText += theAttribute.getExtra();
-                            }
-                        } else {
-                            theText += theAttribute.getLogicalDeclaration();
-                        }
+                        theText += theAttribute.getLogicalDeclaration();
 
                         theText += " (FK)";
 
@@ -373,7 +335,6 @@ public class TableCellView extends VertexView {
 
             ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
             includeComments = theGraph.isDisplayComments();
-            physicalLayout = theGraph.isPhysicalLayout();
             displayLevel = theGraph.getDisplayLevel();
             displayOrder = theGraph.getDisplayOrder();
 
