@@ -336,7 +336,7 @@ public class ApplicationPreferences {
         final URL[] theUrls = new URL[classpathfiles.size()];
         for (int i = 0; i < classpathfiles.size(); i++) {
             try {
-                theUrls[i] = classpathfiles.get(i).toURL();
+                theUrls[i] = classpathfiles.get(i).toURI().toURL();
             } catch (MalformedURLException e) {
                 // This will never happen
             }

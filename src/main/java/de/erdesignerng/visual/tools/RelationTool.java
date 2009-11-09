@@ -136,7 +136,7 @@ public class RelationTool extends BaseTool {
         } else {
             if (firstPort != null) {
                 DefaultPort thePort = (DefaultPort) firstPort.getCell();
-                GraphCell theCell = (GraphCell) ((DefaultPort) thePort).getParent();
+                GraphCell theCell = (GraphCell) thePort.getParent();
                 if (theCell instanceof TableCell) {
                     DefaultPopupMenu menu = createPopupMenu(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())),
                             (TableCell) theCell);

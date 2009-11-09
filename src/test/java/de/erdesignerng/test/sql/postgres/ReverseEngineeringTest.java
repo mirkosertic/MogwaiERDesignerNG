@@ -126,8 +126,8 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             assertTrue(theAttribute.getFraction() == 5);
 
             Index thePK = theTable.getPrimarykey();
+            assertTrue(thePK != null);            
             assertTrue("pk1".equals(thePK.getName()));
-            assertTrue(thePK != null);
             assertTrue(thePK.getExpressions().findByAttributeName("tb1_1") != null);
 
             theTable = theModel.getTables().findByNameAndSchema("table1", "schemab");

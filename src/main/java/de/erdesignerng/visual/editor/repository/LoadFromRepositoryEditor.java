@@ -39,13 +39,9 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class LoadFromRepositoryEditor extends BaseEditor {
 
-    private LoadFromRepositoryView view = new LoadFromRepositoryView();
+    private final LoadFromRepositoryView view = new LoadFromRepositoryView();
 
-    private ApplicationPreferences preferences;
-
-    private Connection connection;
-
-    private BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
+    private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
             new LoadFromRepositoryDataModel());
 
     public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection,
@@ -62,9 +58,6 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 
         bindingInfo.addBinding("entry", view.getExistingNameBox(), true);
         bindingInfo.configure();
-
-        preferences = aPreferences;
-        connection = aConnection;
     }
 
     private void initialize() {

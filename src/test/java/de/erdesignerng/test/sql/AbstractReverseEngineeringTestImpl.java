@@ -111,7 +111,7 @@ public class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseIm
         public boolean supportsReporting() {
             return false;
         }
-    };
+    }
 
     public class EmptyReverseEngineeringNotifier implements ReverseEngineeringNotifier {
 

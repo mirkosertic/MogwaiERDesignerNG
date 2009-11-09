@@ -39,17 +39,17 @@ import de.erdesignerng.visual.IconFactory;
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 
-    private JPanel panel;
+    private final JPanel panel;
 
-    private JPanel labelPanel;
+    private final JPanel labelPanel;
 
-    private JLabel label;
+    private final JLabel label;
 
-    private JLabel keyLabel;
+    private final JLabel keyLabel;
 
     private static ImageIcon keyIcon = IconFactory.getKeyIcon();
 
-    private TableEditor editor;
+    private final TableEditor editor;
 
     public AttributeListCellRenderer(TableEditor aEditor) {
 
@@ -103,5 +103,4 @@ public class AttributeListCellRenderer implements ListCellRenderer {
 
         return panel;
     }
-
-};
+}
