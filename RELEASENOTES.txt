@@ -19,8 +19,8 @@ This software uses or is based on the following libraries:
   JGraph ( www.jgraph.com )  
   JGoodies ( www.jgoodies.com )
   JasperReports ( http://jasperforge.org )  
-  SQuirreL ( squirrel-sql.sourceforge.net )    
-  Some stuff from java.net ( https://www.dev.java.net )  
+  Some stuff from java.net ( https://www.dev.java.net )
+  InfoNode Docking Windows GPL Version ( http://www.infonode.net/index.html?idw )  
   ... Many more ...
   
  Thanks to the following contributors
