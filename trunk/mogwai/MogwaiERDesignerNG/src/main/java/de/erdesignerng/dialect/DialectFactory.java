@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.lang.SystemUtils;
 
 import de.erdesignerng.dialect.db2.DB2Dialect;
 import de.erdesignerng.dialect.h2.H2Dialect;
@@ -33,7 +34,6 @@ import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
 import de.erdesignerng.dialect.oracle.OracleDialect;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
-import org.apache.commons.lang.SystemUtils;
 
 /**
  * @author $Author: mirkosertic $
