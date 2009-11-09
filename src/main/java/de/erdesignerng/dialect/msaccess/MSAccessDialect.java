@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,6 +28,10 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import java.io.File;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author $Author: dr-death $
@@ -36,17 +41,36 @@ public class MSAccessDialect extends SQL92Dialect {
 
     @Override
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-//        path = "C:\\System.mdw";
-//        File workgroupFile = new File("de/erdesignerng/System.mdw");
-//;SystemDB=" + workgroupFile.getAbsoluteFile()
-        String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";";
-        return DriverManager.getConnection(database, aUser, aPassword);
+        File workgroupFile = null;
+        String systemDB = "";
+
+        try {
+            workgroupFile = new File(getClass().getResource("/de/erdesignerng/System.mdw").toURI());
+            systemDB = "SystemDB=" + workgroupFile.getAbsoluteFile() + ";";
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MSAccessDialect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
+        Connection connection = DriverManager.getConnection(database, aUser, aPassword);
+
+        // Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
+        // im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
+        // Um die Einstellungen der "echten" System.mdw in
+        // %HOMEDRIVE%%HOMEPATH%\Anwendungsdaten\Microsoft\Access\System.mdw
+        // nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
+        Statement statement = connection.createStatement();
+        statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
+        statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
+        statement.execute("GRANT SELECT ON TABLE MSysQueries TO " + aUser);
+
+        return connection;
     }
 
     public MSAccessDialect() {
         setSpacesAllowedInObjectNames(true);
         setCaseSensitive(false);
-        setMaxObjectNameLength(255);
+        setMaxObjectNameLength(64);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
         setSupportsDomains(false);
