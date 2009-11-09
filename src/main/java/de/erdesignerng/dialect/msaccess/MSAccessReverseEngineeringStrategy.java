@@ -211,10 +211,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException, ReverseEngineeringException {
         String theViewSQL = "";
 
-        QueryProperty theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
-        QueryProperty theFields  = getSQLInputFields(aConnection, aViewEntry.getTableName());
-        QueryProperty theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
-        QueryProperty theFrom    = getSQLFromExpression(aConnection, aViewEntry.getTableName());
+        QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
+        QueryFragment theFields  = getSQLInputFields(aConnection, aViewEntry.getTableName());
+        QueryFragment theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
+        QueryFragment theFrom    = getSQLFromExpression(aConnection, aViewEntry.getTableName());
 
         theViewSQL = merge(theCommand.getLeadingSQL(), theOptions.getLeadingSQL(), SPACE);
         theViewSQL = merge(theViewSQL, theFields.getLeadingSQL(), SPACE);
@@ -291,7 +291,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return theQueryProperties;
     }
 
-    private QueryProperty getSQLQuery(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLQuery(Connection aConnection, String aViewName) throws SQLException {
         int theType = QueryProperties.QueryType.SELECT;
         String theSQL = "";
         String theSQLStart = "";
@@ -349,11 +349,11 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         // TODO [dr-death] implement theSQLMid UNION
-        return new QueryProperty(theType, theSQLStart, theSQLEnd);
+        return new QueryFragment(theType, theSQLStart, theSQLEnd);
 
     }
 
-    private QueryProperty getSQLQueryOptions(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLQueryOptions(Connection aConnection, String aViewName) throws SQLException {
         int theType = QueryProperties.QueryOptions.DEFAULT;
         String theSQLStart = "";
         String theSQLEnd = "";
@@ -395,10 +395,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         // TODO [dr-death] implement "WITH OWNER ACCESS OPTION"
-        return new QueryProperty(theType, theSQLStart, theSQLEnd);
+        return new QueryFragment(theType, theSQLStart, theSQLEnd);
     }
 
-    private QueryProperty getSQLInputFields(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLInputFields(Connection aConnection, String aViewName) throws SQLException {
         int theType = QueryProperties.InputFields.DEFAULT;
         String theSQL = "";
         String theField = "";
@@ -415,10 +415,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             theProperties.close();
         }
 
-        return new QueryProperty(theType, theSQL);
+        return new QueryFragment(theType, theSQL);
     }
 
-    private QueryProperty getSQLFromExpression(Connection aConnection, String aViewName) throws SQLException {
+    private QueryFragment getSQLFromExpression(Connection aConnection, String aViewName) throws SQLException {
         int theType = 0;
         String theSQL = "";
         boolean hasJoins = false;
@@ -498,7 +498,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
         theSQL = merge(FROM, theSQL, SPACE);
 
-        return new QueryProperty(theType, theSQL);
+        return new QueryFragment(theType, theSQL);
     }
 
 }
