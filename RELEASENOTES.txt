@@ -219,6 +219,7 @@ Release 2.5.0
 * Implemented FR 2892962 [ERDesignerNG] support MSAccess databases (*.mdb)
 * Implemented FR 2893195 [ERDesignerNG] provide expand/collapse all children in outli
 * Implemented FR 2891900 [ERDesignerNG] export to *.svg - create *real* SVG-XML
+* Implemented FR 2893184 [ERDesignerNG] (de)select all function in tableselect dialog
 * Fixed typos in Reverse-Engineer dialog (german) and RelationEditor (german)
 * Performance tuning in Intelligent Layout functionality
 * Tables are now layed out like a grid after reverse engineering

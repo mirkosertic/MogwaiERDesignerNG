@@ -839,5 +839,17 @@
 			<Text lang="de">Gittergrösse nach Reverse Engineering</Text>		
 			<Text lang="en">Grid size after reverse engineering</Text>					
 		</Entry>
+		<Entry id="SELECTALL">
+			<Text lang="de">Alle auswählen</Text>		
+			<Text lang="en">Select all</Text>					
+		</Entry>
+		<Entry id="DESELECTALL">
+			<Text lang="de">Alle abwählen</Text>		
+			<Text lang="en">Deselect all</Text>					
+		</Entry>
+		<Entry id="INVERTSELECTION">
+			<Text lang="de">Auswahl umkehren</Text>		
+			<Text lang="en">Invert selection</Text>					
+		</Entry>
 	</Bundle>
 </Resource>
