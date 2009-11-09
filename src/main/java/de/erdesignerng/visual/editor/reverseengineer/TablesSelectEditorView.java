@@ -24,6 +24,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
+import de.mogwai.common.client.looks.components.DefaultPanel;
 
 /**
  * Visual class TablesSelectEditorView.
@@ -39,6 +40,12 @@ public class TablesSelectEditorView extends JPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
+
+    private final DefaultButton selectAll = new DefaultButton();
+
+    private final DefaultButton deselectAll = new DefaultButton();
+
+    private final DefaultButton invertSelection = new DefaultButton();
 
     /**
      * Constructor.
@@ -77,7 +84,7 @@ public class TablesSelectEditorView extends JPanel {
         if (contentPanel == null) {
             contentPanel = new JPanel();
 
-            String rowDef = "2dlu,fill:200dlu:grow,2dlu";
+            String rowDef = "2dlu,fill:200dlu:grow,2dlu,p,2dlu";
             String colDef = "fill:180dlu:grow";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
@@ -86,6 +93,15 @@ public class TablesSelectEditorView extends JPanel {
             CellConstraints cons = new CellConstraints();
 
             contentPanel.add(getTableList().getScrollPane(), cons.xywh(1, 2, 1, 1));
+
+            DefaultPanel thePanel = new DefaultPanel();
+            thePanel.setLayout(new FormLayout("fill:60dlu:grow,2dlu,fill:60dlu:grow", "p,2dlu,p"));
+            thePanel.add(selectAll, cons.xy(1, 1));
+            thePanel.add(deselectAll, cons.xy(3, 1));
+            thePanel.add(invertSelection, cons.xy(1, 3));
+
+            contentPanel.add(thePanel, cons.xywh(1, 4, 1, 1));
+
         }
 
         return contentPanel;
@@ -138,5 +154,17 @@ public class TablesSelectEditorView extends JPanel {
      */
     private void buildGroups() {
 
+    }
+
+    public DefaultButton getSelectAll() {
+        return selectAll;
+    }
+
+    public DefaultButton getDeselectAll() {
+        return deselectAll;
+    }
+
+    public DefaultButton getInvertSelection() {
+        return invertSelection;
     }
 }
