@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><Model version="3.0">
+<Configuration>
+<Property name="dialect" value="MySQLInnoDBDialect"/>
+<Property name="ALIAS" value=""/>
+<Property name="DRIVER" value="com.mysql.jdbc.Driver"/>
+<Property name="PASSWORD" value=""/>
+<Property name="URL" value="jdbc:mysql://&lt;host&gt;/&lt;db&gt;"/>
+<Property name="USER" value=""/>
+</Configuration>
+<Domains>
+<Domain datatype="BIT" fraction="0" id="848fe19f-93d4-4f04-8b81-b20a20949966" name="DOMAIN1" nullable="true" scale="10" size="8"/>
+</Domains>
+<Tables>
+<Table id="f7c0db65-0ece-4ae6-ab9a-7c1763da508a" name="TABLE1" schema="">
+<Property name="LOCATION" value="274:130"/>
+<Comment>Comment of Table 1</Comment>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="89dc0dbb-4997-47e6-818a-9421caeb0bd9" name="TB1_AT1" nullable="true" scale="10" size="0">
+<Comment>Comment of At1</Comment>
+</Attribute>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="dd0b3e9d-1965-44ca-8a95-8e7b727b308e" name="TB1_AT2" nullable="true" scale="10" size="0">
+<Comment>Comment of AT 2</Comment>
+</Attribute>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="5655bece-ea99-4b0e-8422-72192aa050cc" name="TB1_AT3" nullable="true" scale="10" size="0">
+<Comment>Comment of AT3</Comment>
+</Attribute>
+<Index id="3b34ed04-d0be-49ba-a737-2769b8daa962" indextype="PRIMARYKEY" name="TABLE1_PK">
+<Indexattribute attributerefid="89dc0dbb-4997-47e6-818a-9421caeb0bd9" id="3b036707-770d-4aee-8d0c-8ee3342aac8b"/>
+</Index>
+<Index id="e8d90cae-a0e3-441d-a07d-820d8ca4b97f" indextype="UNIQUE" name="TABLE1_IDX1">
+<Indexattribute attributerefid="dd0b3e9d-1965-44ca-8a95-8e7b727b308e" id="57d9597b-c86f-4c5f-b4be-215dde3e9402"/>
+</Index>
+<Index id="ef323aa8-44ea-49aa-924b-a2332fa7f12e" indextype="NONUNIQUE" name="TABLE1_IDX2">
+<Indexattribute attributerefid="5655bece-ea99-4b0e-8422-72192aa050cc" id="2165df59-a688-491b-89fc-aed72fe1567d"/>
+</Index>
+<Index id="e6a7c1b1-1739-4266-8b63-c58530abb550" indextype="UNIQUE" name="TABLE1_IDX3">
+<Indexattribute attributerefid="dd0b3e9d-1965-44ca-8a95-8e7b727b308e" id="dfe83cc1-22e2-401f-bfa8-09d45dae7380"/>
+<Indexattribute expression="UPPER(TB1_AT3)" id="012cab14-4610-423c-bdd6-7274b4218ce9"/>
+</Index>
+</Table>
+<Table id="dd36a167-9b62-40e8-b643-2ddd2edda09b" name="TABLE2" schema="">
+<Property name="LOCATION" value="751:227"/>
+<Comment/>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="d10a0027-d59c-4f77-a9cc-4c3a44bf0948" name="TB2_AT1" nullable="true" scale="10" size="0">
+<Comment/>
+</Attribute>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="f95d999d-dee6-4c53-8d85-f22472f31562" name="TB2_AT2" nullable="true" scale="10" size="0">
+<Comment/>
+</Attribute>
+<Index id="dda05e6b-1773-42a3-8fce-b9852b7b135d" indextype="PRIMARYKEY" name="TABLE1_PK">
+<Indexattribute attributerefid="d10a0027-d59c-4f77-a9cc-4c3a44bf0948" id="ec9efff1-ee31-4bb1-b259-b16b44fd4802"/>
+</Index>
+</Table>
+<Table id="a90c364b-96d0-444d-a3b5-3db2b1b7a85e" name="TABLE3" schema="">
+<Property name="LOCATION" value="560:383"/>
+<Comment/>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="2157ee17-199e-481f-9f57-d191c189e26a" name="TB3_AT1" nullable="true" scale="10" size="0">
+<Comment/>
+</Attribute>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="c8159eae-43e0-49b2-abaa-4cb686fe412f" name="TB3_AT2" nullable="true" scale="10" size="0">
+<Comment/>
+</Attribute>
+<Index id="eef0a3de-f581-423b-abce-636758a86b9a" indextype="PRIMARYKEY" name="TABLE3_PK">
+<Indexattribute attributerefid="2157ee17-199e-481f-9f57-d191c189e26a" id="db8204bc-3b0c-44d3-87b4-1de6c8971b96"/>
+</Index>
+</Table>
+<Table id="9135cf7e-e121-47a1-8d4b-63dc7af1cf9d" name="TABLE4" schema="">
+<Property name="LOCATION" value="196:406"/>
+<Comment/>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="df980165-1bfc-47ae-a649-9645ec14e74a" name="TB4_AT1" nullable="true" scale="10" size="0">
+<Comment/>
+</Attribute>
+<Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="19ee0b30-5049-4167-bf65-d55daa05af83" name="TB4_AT2" nullable="true" scale="10" size="0">
+<Comment/>
+</Attribute>
+<Index id="aadc10be-e926-448b-adcc-879ab5c214ff" indextype="PRIMARYKEY" name="TABLE4_PK">
+<Indexattribute attributerefid="df980165-1bfc-47ae-a649-9645ec14e74a" id="f5347b18-cf32-4320-bf8b-72060caa2cb3"/>
+</Index>
+</Table>
+</Tables>
+<Relations>
+<Relation exportingtablerefid="f7c0db65-0ece-4ae6-ab9a-7c1763da508a" id="b85a17fb-64b4-46db-8058-1c31fbc87014" importingtablerefid="dd36a167-9b62-40e8-b643-2ddd2edda09b" name="TABLE2_FK1" ondelete="setnull" onupdate="setnull">
+<Comment/>
+<Mapping exportingexpressionrefid="3b036707-770d-4aee-8d0c-8ee3342aac8b" importingattributerefid="f95d999d-dee6-4c53-8d85-f22472f31562"/>
+</Relation>
+<Relation exportingtablerefid="f7c0db65-0ece-4ae6-ab9a-7c1763da508a" id="2ba68cd2-a3ce-4fb1-97d3-02c02ed51fd1" importingtablerefid="a90c364b-96d0-444d-a3b5-3db2b1b7a85e" name="TABLE3_FK3" ondelete="cascade" onupdate="cascade">
+<Comment/>
+<Mapping exportingexpressionrefid="3b036707-770d-4aee-8d0c-8ee3342aac8b" importingattributerefid="c8159eae-43e0-49b2-abaa-4cb686fe412f"/>
+</Relation>
+<Relation exportingtablerefid="f7c0db65-0ece-4ae6-ab9a-7c1763da508a" id="2e31c57a-022c-4457-8714-abb46be8eb00" importingtablerefid="9135cf7e-e121-47a1-8d4b-63dc7af1cf9d" name="TABLE4_FK1" ondelete="nothing" onupdate="nothing">
+<Comment/>
+<Mapping exportingexpressionrefid="3b036707-770d-4aee-8d0c-8ee3342aac8b" importingattributerefid="19ee0b30-5049-4167-bf65-d55daa05af83"/>
+</Relation>
+</Relations>
+<Views>
+<View id="0056f37b-83c2-4426-83c5-a6f25ac59bb9" name="VIEW1">
+<Property name="LOCATION" value="84:75"/>
+<Comment/>
+<Sql>SELECT 1 FROM SYSDATE</Sql>
+</View>
+</Views>
+<Subjectareas>
+<Subjectarea color="-4144960" id="9dec6d2b-56eb-4a7b-9885-61897debd6e1" name="Subject Area" visible="true">
+<Item tablerefid="dd36a167-9b62-40e8-b643-2ddd2edda09b"/>
+</Subjectarea>
+</Subjectareas>
+<Comments/>
+</Model>

@@ -33,6 +33,7 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
@@ -204,7 +205,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testAddAttribute.sql");
 
@@ -232,12 +233,11 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testRenameTable.sql");
 
         assertTrue(theStatements.equals(theReference));
-
     }
 
     public void testDropIndex() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
@@ -261,7 +261,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testDropIndex.sql");
 
@@ -292,7 +292,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testChangeAttribute.sql");
 
@@ -334,7 +334,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testCreateRelation.sql");
 
@@ -378,7 +378,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testDropRelation.sql");
 
@@ -402,7 +402,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testDropAttribute.sql");
 
@@ -426,7 +426,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testDropTable.sql");
 
@@ -467,7 +467,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testChangeIndex.sql");
 
@@ -514,24 +514,59 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testChangeRelation.sql");
 
         assertTrue(theStatements.equals(theReference));
     }
-    
+
     public void testAddDomain() throws Exception {
 
         if (!dialect.isSupportsDomains()) {
             return;
         }
-        
+
         Model theModel = new Model();
         theModel.setDialect(dialect);
-        
+
         HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
         theModel.setModificationTracker(theTracker);
+
+        Domain theDomain = new Domain();
+        theDomain.setName("DOMAIN1");
+        theDomain.setConcreteType(textDataType);
+        theDomain.setSize(200);
+        theDomain.setNullable(false);
+        theModel.addDomain(theDomain);
+
+        theDomain = new Domain();
+        theDomain.setName("DOMAIN2");
+        theDomain.setConcreteType(intDataType);
+        theDomain.setSize(10);
+        theDomain.setFraction(5);
+        theDomain.setNullable(true);
+        theModel.addDomain(theDomain);
+
+        SQLGenerator theGenerator = dialect.createSQLGenerator();
+        StatementList theStatementList = theTracker.getStatements();
+
+        String theStatements = statementListToString(theStatementList, theGenerator);
+        System.out.println(theStatements);
+        
+        String theReference = readResourceFile(basePath + "testAddDomain.sql");
+
+        assertTrue(theStatements.equals(theReference));
+    }
+
+    public void testDropDomain() throws Exception {
+
+        if (!dialect.isSupportsDomains()) {
+            return;
+        }
+
+        Model theModel = new Model();
+        theModel.setDialect(dialect);
 
         Domain theDomain = new Domain();
         theDomain.setName("DOMAIN1");
@@ -546,38 +581,6 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theDomain.setFraction(5);
         theModel.addDomain(theDomain);
 
-        SQLGenerator theGenerator = dialect.createSQLGenerator();
-        StatementList theStatementList = theTracker.getStatements();
-
-        String theStatements = statementListToString(theStatementList, theGenerator);
-
-        String theReference = readResourceFile(basePath + "testAddDomain.sql");
-        
-        assertTrue(theStatements.equals(theReference));
-    }
-    
-    public void testDropDomain() throws Exception {
-
-        if (!dialect.isSupportsDomains()) {
-            return;
-        }
-        
-        Model theModel = new Model();
-        theModel.setDialect(dialect);
-        
-        Domain theDomain = new Domain();
-        theDomain.setName("DOMAIN1");
-        theDomain.setConcreteType(textDataType);
-        theDomain.setSize(200);
-        theModel.addDomain(theDomain);
-
-        theDomain = new Domain();
-        theDomain.setName("DOMAIN2");        
-        theDomain.setConcreteType(intDataType);
-        theDomain.setSize(10);
-        theDomain.setFraction(5);
-        theModel.addDomain(theDomain);
-        
         HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
         theModel.setModificationTracker(theTracker);
 
@@ -588,11 +591,64 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         StatementList theStatementList = theTracker.getStatements();
 
         String theStatements = statementListToString(theStatementList, theGenerator);
-        
         System.out.println(theStatements);
 
         String theReference = readResourceFile(basePath + "testDropDomain.sql");
 
         assertTrue(theStatements.equals(theReference));
-    }    
+    }
+
+    public void testAddView() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+            IOException {
+
+        Model theModel = new Model();
+        theModel.setDialect(dialect);
+
+        Table theExporting = createReferenceTable(theModel, "TESTTABLE1", true);
+
+        HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
+        theModel.setModificationTracker(theTracker);
+
+        View theView = new View();
+        theView.setName("TESTVIEW");
+        theView.setSql("select * from TESTTABLE1");
+        theModel.addView(theView);
+
+        SQLGenerator theGenerator = dialect.createSQLGenerator();
+        StatementList theStatementList = theTracker.getStatements();
+
+        String theStatements = statementListToString(theStatementList, theGenerator);
+        System.out.println(theStatements);
+
+        String theReference = readResourceFile(basePath + "testAddView.sql");
+
+        assertTrue(theStatements.equals(theReference));
+    }
+
+    public void testChangeView() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException,
+            IOException {
+
+        Model theModel = new Model();
+        theModel.setDialect(dialect);
+
+        Table theExporting = createReferenceTable(theModel, "TESTTABLE1", true);
+        View theView = new View();
+        theView.setName("TESTVIEW");
+        theView.setSql("select * from TESTTABLE1");
+
+        HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
+        theModel.setModificationTracker(theTracker);
+        
+        theModel.changeView(theView);
+
+        SQLGenerator theGenerator = dialect.createSQLGenerator();
+        StatementList theStatementList = theTracker.getStatements();
+
+        String theStatements = statementListToString(theStatementList, theGenerator);
+        System.out.println(theStatements);
+
+        String theReference = readResourceFile(basePath + "testChangeView.sql");
+
+        assertTrue(theStatements.equals(theReference));
+    }
 }
