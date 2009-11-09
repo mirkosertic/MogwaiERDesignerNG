@@ -30,17 +30,17 @@ import de.erdesignerng.dialect.DataType;
  */
 public class OpenXavaExportTableModel implements TableModel {
 
-    private List<DataType> dataTypes;
+    private final List<DataType> dataTypes;
 
-    private String[] targetTypes;
+    private final String[] targetTypes;
 
-    private String[] stereoTypes;
+    private final String[] stereoTypes;
 
-    private String sourceName;
+    private final String sourceName;
 
-    private String targetName;
+    private final String targetName;
 
-    private String stereoTypeName;
+    private final String stereoTypeName;
 
     public OpenXavaExportTableModel(String aSourceName, String aTargetName, String aStereoTypeName,
             List<DataType> aDataTypes, String[] aTargetTypes, String[] aStereoTypes) {
@@ -106,4 +106,4 @@ public class OpenXavaExportTableModel implements TableModel {
 
     public void removeTableModelListener(TableModelListener l) {
     }
-};
+}

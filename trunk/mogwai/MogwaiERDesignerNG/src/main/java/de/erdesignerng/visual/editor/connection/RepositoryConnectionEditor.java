@@ -29,14 +29,14 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  */
 public class RepositoryConnectionEditor extends BaseEditor {
 
-    private DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandTest();
         }
     }, this, ERDesignerBundle.TEST);
 
-    private RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
+    private final RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 
         @Override
         public void handleDialectChange(Dialect aDialect) {
@@ -44,9 +44,9 @@ public class RepositoryConnectionEditor extends BaseEditor {
         }
     };
 
-    private ApplicationPreferences preferences;
+    private final ApplicationPreferences preferences;
 
-    private BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
+    private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
     public RepositoryConnectionEditor(Component aParent, ApplicationPreferences aPreferences) {
         super(aParent, ERDesignerBundle.REPOSITORYCONNECTION);
@@ -111,7 +111,8 @@ public class RepositoryConnectionEditor extends BaseEditor {
         preferences.setRepositoryConnection(theDescriptor.createConnectionDescriptor());
     }
 
-    private void commandClose() {
+    @Override
+    protected void commandOk() {
 
         if (bindingInfo.validate().size() == 0) {
 

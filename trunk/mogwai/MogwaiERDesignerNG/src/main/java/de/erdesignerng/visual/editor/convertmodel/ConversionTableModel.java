@@ -30,13 +30,13 @@ import de.erdesignerng.dialect.DataType;
  */
 public class ConversionTableModel implements TableModel {
 
-    private List<DataType> dataTypes;
+    private final List<DataType> dataTypes;
 
-    private DataType[] targetTypes;
+    private final DataType[] targetTypes;
 
-    private String sourceName;
+    private final String sourceName;
 
-    private String targetName;
+    private final String targetName;
 
     public ConversionTableModel(String aSourceName, String aTargetName, List<DataType> aDataTypes,
             DataType[] aTargetTypes) {
@@ -57,9 +57,8 @@ public class ConversionTableModel implements TableModel {
     public String getColumnName(int aColumn) {
         if (aColumn == 0) {
             return sourceName;
-        } else {
-            return targetName;
         }
+        return targetName;
     }
 
     public int getRowCount() {
@@ -69,9 +68,8 @@ public class ConversionTableModel implements TableModel {
     public Object getValueAt(int aRow, int aColumn) {
         if (aColumn == 1) {
             return targetTypes[aRow];
-        } else {
-            return dataTypes.get(aRow);
         }
+        return dataTypes.get(aRow);
     }
 
     public boolean isCellEditable(int aRow, int aColumn) {
@@ -87,4 +85,4 @@ public class ConversionTableModel implements TableModel {
 
     public void removeTableModelListener(TableModelListener l) {
     }
-};
+}
