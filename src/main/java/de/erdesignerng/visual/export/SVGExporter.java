@@ -50,7 +50,11 @@ public class SVGExporter implements Exporter {
             theSvgGenerator.translate(-bounds.getX() + 10, -bounds.getY() + 0);
             RepaintManager theRepaintManager = RepaintManager.currentManager(aGraph);
             theRepaintManager.setDoubleBufferingEnabled(false);
+            boolean theDoubleBufferted = aGraph.isDoubleBuffered();
+            // Disable double buffering to allow Batik to render svg elements instead of images
+            aGraph.setDoubleBuffered(false);
             aGraph.paint(theSvgGenerator);
+            aGraph.setDoubleBuffered(theDoubleBufferted);
             Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
             theSvgGenerator.stream(theWriter, false);
             theRepaintManager.setDoubleBufferingEnabled(true);
