@@ -37,13 +37,15 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class PreferencesPanel extends DefaultPanel implements ResourceHelperProvider {
 
-    private DefaultSpinner gridSize = new DefaultSpinner();
+    private final DefaultSpinner gridSize = new DefaultSpinner();
     
-    private DefaultTextField automaticRelationAttributePattern = new DefaultTextField();
+    private final DefaultTextField automaticRelationAttributePattern = new DefaultTextField();
     
-    private DefaultComboBox onDeleteDefault = new DefaultComboBox();
+    private final DefaultComboBox onDeleteDefault = new DefaultComboBox();
     
-    private DefaultComboBox onUpdateDefault = new DefaultComboBox();
+    private final DefaultComboBox onUpdateDefault = new DefaultComboBox();
+    
+    private final DefaultSpinner gridWidth = new DefaultSpinner();
 
     private BindingInfo<ApplicationPreferences> bindinginfo;
 
@@ -54,7 +56,7 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
     private void initialize() {
 
         String theColDef = "2dlu,p,2dlu,p:grow,2dlu,20dlu,2";
-        String theRowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,50dlu";
+        String theRowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,50dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
         setLayout(theLayout);
@@ -82,6 +84,10 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         add(new DefaultLabel(ERDesignerBundle.DEFAULTFORONUPDATE), cons.xy(2, 8));
         add(onUpdateDefault, cons.xywh(4, 8, 3, 1));
         onUpdateDefault.setModel(theDefaultOnUpdateModel);
+        
+        add(new DefaultLabel(ERDesignerBundle.GRIDSIZEAFTERREVERSEENGINEERING), cons.xy(2, 10));
+        add(gridWidth, cons.xywh(4, 10, 3, 1));
+        
 
         UIInitializer.getInstance().initialize(this);
 
@@ -90,6 +96,7 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         bindinginfo.addBinding("automaticRelationAttributePattern", automaticRelationAttributePattern, true);
         bindinginfo.addBinding("onUpdateDefault", onUpdateDefault, true);
         bindinginfo.addBinding("onDeleteDefault", onDeleteDefault, true);
+        bindinginfo.addBinding("gridWidthAfterReverseEngineering", gridWidth, true);
 
         bindinginfo.configure();
     }

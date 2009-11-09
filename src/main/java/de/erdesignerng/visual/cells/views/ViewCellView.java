@@ -233,6 +233,16 @@ public class ViewCellView extends VertexView {
 
             return this;
         }
+
+        public Component getRendererComponent(View aView) {
+            view = aView;
+            selected = false;
+
+            displayOrder = DisplayOrder.NATURAL;
+            includeComments = false;
+
+            return this;
+        }
     }
 
     @Override
