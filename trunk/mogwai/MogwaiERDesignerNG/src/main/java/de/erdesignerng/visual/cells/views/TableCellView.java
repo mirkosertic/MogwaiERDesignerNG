@@ -340,6 +340,18 @@ public class TableCellView extends VertexView {
 
             return this;
         }
+        
+        public Component getRendererComponent(Table aTable) {
+
+            table = aTable;
+            selected = false;
+
+            includeComments = false;
+            displayLevel = DisplayLevel.ALL;
+            displayOrder = DisplayOrder.NATURAL;
+
+            return this;
+        }
     }
 
     @Override

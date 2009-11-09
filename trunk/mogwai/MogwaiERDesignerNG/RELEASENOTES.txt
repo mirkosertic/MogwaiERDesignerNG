@@ -220,3 +220,4 @@ Release 2.5.0
 * Implemented FR 2893195 [ERDesignerNG] provide expand/collapse all children in outli
 * Fixed typos in Reverse-Engineer dialog (german) and RelationEditor (german)
 * Performance tuning in Intelligent Layout functionality
+* Tables are now layed out like a grid after reverse engineering
