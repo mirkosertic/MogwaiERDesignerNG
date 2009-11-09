@@ -31,6 +31,6 @@
         <property column="propvalue" name="value" not-null="true"/>
       </composite-element>
     </list>
-    <property name="schema" not-null="false"/>
+    <property name="dbschema" not-null="false"/>
   </class>
 </hibernate-mapping>
