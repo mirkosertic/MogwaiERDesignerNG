@@ -36,8 +36,6 @@ import de.mogwai.common.client.looks.components.DefaultTextField;
  */
 public class OpenXavaExportEditorView extends JPanel {
 
-    private DefaultLabel component1;
-
     private DefaultTextField srcDirectory;
 
     private DefaultTextField packageName;

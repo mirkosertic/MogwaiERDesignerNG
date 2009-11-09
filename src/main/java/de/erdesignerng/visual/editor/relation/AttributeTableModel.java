@@ -29,13 +29,13 @@ import de.erdesignerng.model.Index;
  */
 public class AttributeTableModel implements TableModel {
 
-    private Index primaryKey;
+    private final Index primaryKey;
 
-    private Attribute[] assignedAttributes;
+    private final Attribute[] assignedAttributes;
 
-    private String primaryKeyTableName;
+    private final String primaryKeyTableName;
 
-    private String assignedTableName;
+    private final String assignedTableName;
 
     public AttributeTableModel(String aPrimaryEntityName, String aSecondaryEntityName, Index aPrimaryKey,
             Attribute[] aSecondaryKey) {
@@ -56,9 +56,8 @@ public class AttributeTableModel implements TableModel {
     public String getColumnName(int aColumn) {
         if (aColumn == 0) {
             return primaryKeyTableName;
-        } else {
-            return assignedTableName;
         }
+        return assignedTableName;
     }
 
     public int getRowCount() {
@@ -68,9 +67,8 @@ public class AttributeTableModel implements TableModel {
     public Object getValueAt(int aRow, int aColumn) {
         if (aColumn == 1) {
             return assignedAttributes[aRow];
-        } else {
-            return primaryKey.getExpressions().get(aRow);
         }
+        return primaryKey.getExpressions().get(aRow);
     }
 
     public boolean isCellEditable(int aRow, int aColumn) {
@@ -86,4 +84,4 @@ public class AttributeTableModel implements TableModel {
 
     public void removeTableModelListener(TableModelListener l) {
     }
-};
+}
