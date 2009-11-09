@@ -14,7 +14,7 @@
     <property name="name" not-null="true"/>
     <property name="comment" not-null="false" type="text"/>
     <property name="datatype" not-null="true"/>
-    <property name="size" not-null="true"/>
+    <property name="size" not-null="false"/>
     <property name="fraction" not-null="true"/>
     <property name="scale" not-null="true"/>
     <property name="nullable" not-null="true"/>
