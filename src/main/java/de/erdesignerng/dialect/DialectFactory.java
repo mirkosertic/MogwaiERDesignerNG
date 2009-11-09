@@ -33,6 +33,7 @@ import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLInnoDBDialect;
 import de.erdesignerng.dialect.oracle.OracleDialect;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
+import org.apache.commons.lang.SystemUtils;
 
 /**
  * @author $Author: mirkosertic $
@@ -57,7 +58,12 @@ public final class DialectFactory {
             me.registerDialect(new OracleDialect());
             me.registerDialect(new PostgresDialect());
             me.registerDialect(new H2Dialect());
-            me.registerDialect(new MSAccessDialect());
+
+            // provide MSAccessDialect only on Windows-Systems due to the
+            // requirement of the JET/ACE-Engine
+            if (SystemUtils.IS_OS_WINDOWS) {
+                me.registerDialect(new MSAccessDialect());
+            }
         }
 
         return me;

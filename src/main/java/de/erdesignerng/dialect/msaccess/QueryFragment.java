@@ -21,18 +21,18 @@ package de.erdesignerng.dialect.msaccess;
  * @author $Author: dr-death $
  * @version $Date: 2009-11-09 09:30:00 $
  */
-public class QueryProperty {
+public class QueryFragment {
     private Integer propertyType = null;
 
     private String leadingSQL = "";
 
     private String trailingSQL = "";
 
-    public QueryProperty(Integer propertyType, String leadingSQL) {
+    public QueryFragment(Integer propertyType, String leadingSQL) {
         this(propertyType, leadingSQL, "");
     }
 
-    public QueryProperty(Integer propertyType, String leadingSQL, String trailingSQL) {
+    public QueryFragment(Integer propertyType, String leadingSQL, String trailingSQL) {
         this.propertyType = propertyType;
         this.leadingSQL = leadingSQL;
         this.trailingSQL = trailingSQL;

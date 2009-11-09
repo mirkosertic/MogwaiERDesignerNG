@@ -34,6 +34,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Works only on Windows-based Systems due to the need of the JET/ACE-Engine.
+ * 
+ * JET 3 for MSAccess 95 (MSOffice 7
+ * JET 3.5 for MSAccess 97 (MSOffice 8)
+ * JET 4 for MSAccess 2000 to 2003 (MSOffice 9 to 11)
+ *
+ * ACE for MSAccess 2007+ (MSOffice 12)
+ *
+ * While the JET-Database-Engine comes with the Windows-OS, the new ACE-Engine
+ * comes with the installation of MSOffice 12 or by download from:
+ * http://www.microsoft.com/downloads/details.aspx?displaylang=de&FamilyID=7554f536-8c28-4598-9b72-ef94e038c891
+ *
  * @author $Author: dr-death $
  * @version $Date: 2009-11-06 01:30:00 $
  */
