@@ -14,6 +14,6 @@
     <property name="name" not-null="true"/>
     <property name="comment" not-null="false" type="text"/>
     <property name="sqlstatement" not-null="true" type="text"/>
-    <property name="dbschema" not-null="false"/>
+    <property name="schema" column="dbschema" not-null="false"/>
   </class>
 </hibernate-mapping>
