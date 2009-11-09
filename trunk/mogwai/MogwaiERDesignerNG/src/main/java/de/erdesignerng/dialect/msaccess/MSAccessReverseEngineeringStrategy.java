@@ -17,6 +17,9 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.modificationtracker.VetoException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -26,9 +29,15 @@ import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
+import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author $Author: dr-death $
@@ -129,7 +138,54 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     @Override
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
-        // TODO [dr-death] IMPLEMENT RevEngRels
+        String theQuery = "SELECT * " +
+                          "FROM MSysRelationships " +
+                          "WHERE (szReferencedObject = ?);";
+
+        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
+        theStatement.setString(1, aTableEntry.getTableName());
+
+        ResultSet theRelations = null;
+
+        try {
+            theRelations = theStatement.executeQuery();
+
+            while (theRelations.next()) {
+                Relation theNewRelation = new Relation();
+
+                theNewRelation.setName(theRelations.getString("szRelationship"));
+                theNewRelation.setExportingTable(aModel.getTables().findByName(theRelations.getString("szReferencedObject")));
+                theNewRelation.setImportingTable(aModel.getTables().findByName(theRelations.getString("szObject")));
+
+                Integer theNewRelationAttributes = theRelations.getInt("grbit");
+                if ((theNewRelationAttributes | RelationAttributeEnum.DB_RELATION_DELETE_CASCADE) == RelationAttributeEnum.DB_RELATION_DELETE_CASCADE) {
+                    theNewRelation.setOnDelete(CascadeType.CASCADE);
+                } else if ((theNewRelationAttributes | RelationAttributeEnum.DB_RELATION_DELETE_SET_NULL) == RelationAttributeEnum.DB_RELATION_DELETE_SET_NULL) {
+                    theNewRelation.setOnDelete(CascadeType.SET_NULL);
+                }
+
+                if ((theNewRelationAttributes | RelationAttributeEnum.DB_RELATION_UPDATE_CASCADE ) == RelationAttributeEnum.DB_RELATION_UPDATE_CASCADE) {
+                    theNewRelation.setOnUpdate(CascadeType.CASCADE);
+                }
+
+                try {
+                    aModel.addRelation(theNewRelation);
+                } catch (ElementAlreadyExistsException ex) {
+                    Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ElementInvalidNameException ex) {
+                    Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (VetoException ex) {
+                    Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        } finally {
+            if (theRelations != null) {
+                theRelations.close();
+            }
+            theStatement.close();
+        }
+
     }
 
 //    @Override
@@ -139,8 +195,183 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException, ReverseEngineeringException {
-        // TODO [dr-death] IMPLEMENT RevEngSQL
-        return "SELECT * FROM Tabelle1";
+        String theQuery = "SELECT MSysQueries.* " +
+                          "FROM MSysQueries LEFT JOIN MSysObjects ON MSysQueries.ObjectId = MSysObjects.Id " +
+                          "WHERE (MSysObjects.Name = ?) " +
+                          "ORDER BY MSysQueries.Attribute;";
+
+        String theViewSQL = "SELECT ";
+        int theQueryType = QueryProperties.QueryType.DEFAULT;
+        Short thePreviousAttribute = null;
+        Short theCurrentAttribute = null;
+
+        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
+        theStatement.setString(1, aViewEntry.getTableName());
+
+        ResultSet theQueryDetails = null;
+
+        try {
+            theQueryDetails = theStatement.executeQuery();
+
+            while (theQueryDetails.next()) {
+                thePreviousAttribute = theCurrentAttribute;
+                theCurrentAttribute = theQueryDetails.getShort("Attribute");
+                switch (theCurrentAttribute) {
+
+                    /*
+                     * CreationType
+                     */
+                    case QueryProperties.CreationType.ID:
+                        // Nothing to do here
+                        break;
+
+                    /*
+                     * QueryType
+                     */
+                    case QueryProperties.QueryType.ID:
+                        theQueryType = theQueryDetails.getInt("Flag");
+
+                        switch (theQueryType) {
+
+                            case QueryProperties.QueryType.SELECT:
+                                theViewSQL = "SELECT ";
+                                break;
+
+                            case QueryProperties.QueryType.SELECT_INTO:
+                                theViewSQL = "SELECT ";
+                                throw new UnsupportedOperationException("SELECT INTO not supportet yet.");
+
+                            case QueryProperties.QueryType.INSERT_INTO:
+                                theViewSQL = "INSERT INTO ";
+                                throw new UnsupportedOperationException("INSERT INTO not supportet yet.");
+
+                            case QueryProperties.QueryType.UPDATE:
+                                theViewSQL = "UPDATE ";
+                                throw new UnsupportedOperationException("UPDATE not supportet yet.");
+
+                            case QueryProperties.QueryType.TRANSFORM:
+                                theViewSQL = "TRANSFORM ";
+                                throw new UnsupportedOperationException("TRANSFORM not supportet yet.");
+
+                            case QueryProperties.QueryType.DDL:
+                                theViewSQL = theQueryDetails.getString("Expression");
+                                break;
+
+                            case QueryProperties.QueryType.PASS_THROUGH:
+                                throw new UnsupportedOperationException("PASS THROUGH not supportet yet.");
+
+                            case QueryProperties.QueryType.UNION:
+                                throw new UnsupportedOperationException("UNION not supportet yet.");
+
+                            default:
+                                theViewSQL = "SELECT ";
+
+                        }
+                        break;
+ 
+                    /*
+                     * QueryOptions
+                     */
+                    case QueryProperties.QueryOptions.ID:
+                        break;
+
+                    /*
+                     * SourceDatabase
+                     */
+                    case QueryProperties.SourceDatabase.ID:
+                        break;
+
+                    /*
+                     * InputTables
+                     */
+                    case QueryProperties.InputTables.ID:
+                        break;
+
+                    /*
+                     * InputExpressions
+                     */
+                    case QueryProperties.Rows.ID:
+                        if (QueryProperties.Rows.ID == thePreviousAttribute) {
+                            theViewSQL += ", ";
+                        }
+                        theViewSQL += theQueryDetails.getString("Expression");
+                        break;
+
+                    /*
+                     * JoinTypes
+                     */
+                    case QueryProperties.JoinTypes.ID:
+                        theViewSQL += "\nFROM " + theQueryDetails.getString("Name1") + " ";
+
+                        switch (theQueryDetails.getInt("Flag")) {
+                            case QueryProperties.JoinTypes.INNER_JOIN:
+                                theViewSQL += "INNER JOIN ";
+                                break;
+
+                            case QueryProperties.JoinTypes.LEFT_JOIN:
+                                theViewSQL += "LEFT JOIN ";
+                                break;
+
+                            case QueryProperties.JoinTypes.RIGHT_JOIN:
+                                theViewSQL += "RIGHT JOIN ";
+                                break;
+                        }
+
+                        theViewSQL += theQueryDetails.getString("Name2") + " " +
+                                      "ON " + theQueryDetails.getString("Expression");
+                        break;
+
+                    /*
+                     * WhereExpression
+                     */
+                    case QueryProperties.WhereExpression.ID:
+                        break;
+
+                    /*
+                     * GroupByExpression
+                     */
+                    case QueryProperties.GroupByExpression.ID:
+                        break;
+
+                    /*
+                     * HavingExpression
+                     */
+                    case QueryProperties.HavingExpression.ID:
+                        break;
+
+                    /*
+                     * ColumnOrder
+                     */
+                    case QueryProperties.ColumnOrder.ID:
+                        break;
+
+                    /*
+                     * EndOfDefinition
+                     */
+                    case QueryProperties.EndOfDefinition.ID:
+                        if (!theViewSQL.endsWith(";")) {
+                            theViewSQL += ";";
+                        }
+                        break;
+
+                    /*
+                     * unknown property
+                     */
+                    default:
+                        throw new UnsupportedOperationException("Unknown query property");
+
+                }
+
+            }
+
+        } finally {
+            if (theQueryDetails != null) {
+                theQueryDetails.close();
+            }
+            theStatement.close();
+        }
+
+        return theViewSQL;
     }
 
 //    @Override

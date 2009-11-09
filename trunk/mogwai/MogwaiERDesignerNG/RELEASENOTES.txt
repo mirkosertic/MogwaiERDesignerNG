@@ -26,7 +26,7 @@ This software uses or is based on the following libraries:
  Thanks to the following contributors
  
   Thomas Breitkreuz for his H2 dialect, report templates and many good feature requests
-  Thomas Winkler for testing, several bugfixes, usability enhancements and feature requests
+  Thomas Winkler for his MSAccess dialect, testing, several bugfixes, usability enhancements and feature requests
 
 Release 1.0
 
@@ -208,6 +208,7 @@ Release 2.5.0
 * Bug Fixing 2874576 [ERDesignerNG] Support PostgreSQL INET datatype
 * Bug Fixing 2882258 Reverse engineer not working on various DBMSs
 * Bug Fixing 2880450 [ERDesignerNG] existing data-type-xml is not updated by app
+* Bug Fixing 2892966 [ERDesignerNG] PostgreSQL fails to RevEng schemas w domains
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
@@ -215,6 +216,7 @@ Release 2.5.0
 * Implemented FR 2711878 [ERDesignerNG] edit entry dialog usability improvements
 * Implemented FR 2830914 [ERDesignerNG] Creating entities is overly complicated
 * Implemented FR 2883197 [ERDesignerNG] Add outline window to the editor
+* Implemented FR 2892962 [ERDesignerNG] support MSAccess databases (*.mdb)
 * Implemented FR 2893195 [ERDesignerNG] provide expand/collapse all children in outli
-* Fixed typo in Reverse-Engineer dialog (german)
+* Fixed typos in Reverse-Engineer dialog (german) and RelationEditor (german)
 * Performance tuning in Intelligent Layout functionality
