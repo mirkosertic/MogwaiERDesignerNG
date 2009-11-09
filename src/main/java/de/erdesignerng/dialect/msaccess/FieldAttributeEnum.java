@@ -24,7 +24,7 @@ package de.erdesignerng.dialect.msaccess;
  */
 public final class FieldAttributeEnum {
 
-    public static final int DB_NONE = 0;                      // 0
+    public static final int DB_NONE = 0;                       // 0
 
     /**
      * Das Feld wird in absteigender Reihenfolge (Z bis A oder
@@ -36,18 +36,18 @@ public final class FieldAttributeEnum {
      * für Index- und TableDef-Felder (nur Microsoft Jet-
      * Arbeitsbereich).
      */
-    public static final int DB_DESCENDING = 2^0;              // 1
+    public static final int DB_DESCENDING = 1;                 // 2^0
 
     /**
      * Die Feldgröße ist festgelegt (Standard bei numerischen
      * Feldern).
      */
-    public static final int DB_FIXED_FIELD = 2^0;             // 1
+    public static final int DB_FIXED_FIELD = 1;                // 2^0
 
     /**
      * Die Feldgröße kann geändert werden (nur Textfelder).
      */
-    public static final int DB_VARIABLE_FIELD = 2^1;          // 2
+    public static final int DB_VARIABLE_FIELD = 2;             // 2^1
 
     /**
      * Der Feldwert wird für neue Datensätze automatisch um
@@ -56,24 +56,24 @@ public final class FieldAttributeEnum {
      * (in einem Microsoft Jet-Arbeitsbereich, werden nur
      * Microsoft Jet Datenbank (.mdb)-Tabellen unterstützt).
      */
-    public static final int DB_AUTO_INCR_FIELD = 2^4;         // 16
+    public static final int DB_AUTO_INCR_FIELD = 16;           // 2^4
 
     /**
      * Der Feldwert kann geändert werden.
      */
-    public static final int DB_UPDATABLE_FIELD = 2^5;         // 32
+    public static final int DB_UPDATABLE_FIELD = 32;           // 2^5
 
     /**
      * Das Feld speichert Informationen für Replikate; dieser
      * Feldtyp kann nicht gelöscht werden (gilt nur für
      * Microsoft Jet-Arbeitsbereiche).
      */
-    public static final int DB_SYSTEM_FIELD = 2^13;           // 8192
+    public static final int DB_SYSTEM_FIELD = 8192;            // 2^13
 
     /**
      * Das Feld enthält Hyperlink-Informationen (nur
      * Memofelder).
      */
-    public static final int DB_HYPERLINK_FIELD = 2^15;        // 32768
+    public static final int DB_HYPERLINK_FIELD = 32768;        // 2^15
 
 }

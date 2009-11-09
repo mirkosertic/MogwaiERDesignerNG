@@ -38,6 +38,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author $Author: dr-death $
@@ -48,6 +49,18 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     private static final int OBJECT_TYPE_TABLE = 1;
 
     private static final String TABLES = "Tables";
+
+    private static final String SPACE = " ";
+
+    private static final String COMMA = "," + SPACE;
+
+    private static final String AS    = "AS";
+
+    private static final String ON    = "ON";
+
+    private static final String AND   = "AND";
+
+    private static final String FROM  = "FROM";
 
     public MSAccessReverseEngineeringStrategy(MSAccessDialect aDialect) {
         super(aDialect);
@@ -158,13 +171,14 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                 theNewRelation.setImportingTable(aModel.getTables().findByName(theRelations.getString("szObject")));
 
                 Integer theNewRelationAttributes = theRelations.getInt("grbit");
-                if ((theNewRelationAttributes | RelationAttributeEnum.DB_RELATION_DELETE_CASCADE) == RelationAttributeEnum.DB_RELATION_DELETE_CASCADE) {
+
+                if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_DELETE_CASCADE)) {
                     theNewRelation.setOnDelete(CascadeType.CASCADE);
-                } else if ((theNewRelationAttributes | RelationAttributeEnum.DB_RELATION_DELETE_SET_NULL) == RelationAttributeEnum.DB_RELATION_DELETE_SET_NULL) {
+                } else if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_DELETE_SET_NULL)) {
                     theNewRelation.setOnDelete(CascadeType.SET_NULL);
                 }
 
-                if ((theNewRelationAttributes | RelationAttributeEnum.DB_RELATION_UPDATE_CASCADE ) == RelationAttributeEnum.DB_RELATION_UPDATE_CASCADE) {
+                if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_UPDATE_CASCADE)) {
                     theNewRelation.setOnUpdate(CascadeType.CASCADE);
                 }
 
@@ -195,188 +209,296 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException, ReverseEngineeringException {
+        String theViewSQL = "";
+
+        QueryProperty theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
+        QueryProperty theFields  = getSQLInputFields(aConnection, aViewEntry.getTableName());
+        QueryProperty theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
+        QueryProperty theFrom    = getSQLFromExpression(aConnection, aViewEntry.getTableName());
+
+        theViewSQL = merge(theCommand.getLeadingSQL(), theOptions.getLeadingSQL(), SPACE);
+        theViewSQL = merge(theViewSQL, theFields.getLeadingSQL(), SPACE);
+        theViewSQL = merge(theViewSQL, theOptions.getTrailingSQL(), COMMA);
+
+        theViewSQL = merge(theViewSQL, theFrom.getLeadingSQL(), SPACE);
+
+        return theViewSQL;
+
+    }
+
+    /**
+     * Checks, if a flag is set in a combination of flags
+     * 
+     * @param theFlags
+     * @param theFlag
+     * @return true, if the combination contains the flag
+     *         false, else
+     */
+    private boolean containsFlag(int theFlags, int theFlag){
+        return ((theFlags & theFlag) == theFlag);
+    }
+
+    /**
+     * Merges two strings by forcing a specified separator.
+     *
+     * @param aFirstString
+     * @param aSecondString
+     * @param aSeparator
+     * @return merged string
+     */
+    private String merge(String aFirstString, String aSecondString, String aSeparator) {
+
+        String theSQL = ((aFirstString == null)?"":aFirstString);
+
+        if (!(StringUtils.isEmpty(aFirstString)) && !(theSQL.endsWith(aSeparator)) && !(StringUtils.isEmpty(aSecondString))) {
+            theSQL += aSeparator;
+        }
+
+        return theSQL + ((aSecondString == null)?"":aSecondString);
+
+    }
+
+    /**
+     * Returns a ResultSet containing all records that represent a specified
+     * attribute of a query.
+     *
+     * @param aConnection
+     * @param aViewName
+     * @param theAttributeID
+     * @return ResultSet containing all records that represent a specified attribute
+     * @throws java.sql.SQLException
+     */
+    private ResultSet getSQLProperties(Connection aConnection, String aViewName, Short theAttributeID) throws SQLException {
         String theQuery = "SELECT MSysQueries.* " +
                           "FROM MSysQueries LEFT JOIN MSysObjects ON MSysQueries.ObjectId = MSysObjects.Id " +
-                          "WHERE (MSysObjects.Name = ?) " +
-                          "ORDER BY MSysQueries.Attribute;";
+                          "WHERE ((MSysObjects.Name = ?) AND (MSysQueries.Attribute = ?));";
 
-        String theViewSQL = "SELECT ";
-        int theQueryType = QueryProperties.QueryType.DEFAULT;
-        Short thePreviousAttribute = null;
-        Short theCurrentAttribute = null;
+        PreparedStatement theStatement = null;
+        ResultSet theQueryProperties = null;
 
-        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
-        theStatement.setString(1, aViewEntry.getTableName());
+//        try {
+            theStatement = aConnection.prepareStatement(theQuery);
+            theStatement.setString(1, aViewName);
+            theStatement.setShort(2, theAttributeID);
 
-        ResultSet theQueryDetails = null;
+            theQueryProperties = theStatement.executeQuery();
 
-        try {
-            theQueryDetails = theStatement.executeQuery();
+//            theStatement.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
-            while (theQueryDetails.next()) {
-                thePreviousAttribute = theCurrentAttribute;
-                theCurrentAttribute = theQueryDetails.getShort("Attribute");
-                switch (theCurrentAttribute) {
+        return theQueryProperties;
+    }
 
-                    /*
-                     * CreationType
-                     */
-                    case QueryProperties.CreationType.ID:
-                        // Nothing to do here
+    private QueryProperty getSQLQuery(Connection aConnection, String aViewName) throws SQLException {
+        int theType = QueryProperties.QueryType.SELECT;
+        String theSQL = "";
+        String theSQLStart = "";
+        String theSQLMid = "";
+        String theSQLEnd = "";
+
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryType.ID);
+
+        if (theProperties != null && theProperties.next()) {
+            theType = theProperties.getInt("Flag");
+        }
+
+        switch (theType) {
+
+            case QueryProperties.QueryType.SELECT:
+                theSQLStart = "SELECT";
+                break;
+
+            case QueryProperties.QueryType.SELECT_INTO:
+                theSQLStart = "SELECT";
+                theSQLEnd = "INTO";
+                break;
+
+            case QueryProperties.QueryType.INSERT_INTO:
+                theSQLStart = "INSERT INTO";
+                break;
+
+            case QueryProperties.QueryType.UPDATE:
+                theSQLStart = "UPDATE";
+                break;
+
+            case QueryProperties.QueryType.TRANSFORM:
+                theSQLStart = "TRANSFORM";
+                break;
+
+            case QueryProperties.QueryType.DDL:
+                theSQLStart = theProperties.getString("Expression");
+                break;
+
+            case QueryProperties.QueryType.PASS_THROUGH:
+                //nothing to do here
+                break;
+
+            case QueryProperties.QueryType.UNION:
+                theSQLMid = "UNION";
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown QueryType!");
+
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        // TODO [dr-death] implement theSQLMid UNION
+        return new QueryProperty(theType, theSQLStart, theSQLEnd);
+
+    }
+
+    private QueryProperty getSQLQueryOptions(Connection aConnection, String aViewName) throws SQLException {
+        int theType = QueryProperties.QueryOptions.DEFAULT;
+        String theSQLStart = "";
+        String theSQLEnd = "";
+        String theSQLAccessOptions= "";
+
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryOptions.ID);
+
+        if (theProperties != null && theProperties.next()) {
+            theType = theProperties.getInt("Flag");
+        }
+
+        if (containsFlag(theType, QueryProperties.QueryOptions.RETURNS_ALL_FIELDS)) {
+            theSQLEnd = "*";
+        }
+
+        if (containsFlag(theType, QueryProperties.QueryOptions.DISTINCT)) {
+            theSQLStart = merge(theSQLStart, "DISTINCT", SPACE);
+        }
+
+        if (containsFlag(theType, QueryProperties.QueryOptions.OWNER_ACCESS_OPTION)) {
+            theSQLAccessOptions = "WITH OWNER ACCESS OPTION";
+        }
+
+        if (containsFlag(theType, QueryProperties.QueryOptions.DISTINCTROW)) {
+            theSQLStart = merge(theSQLStart, "DISTINCTROW", SPACE);
+        }
+
+        if (containsFlag(theType, QueryProperties.QueryOptions.TOP_COUNT)) {
+            theSQLStart = merge(theSQLStart, "TOP", SPACE);
+            theSQLStart = merge(theSQLStart, theProperties.getString("Name1"), SPACE);
+        }
+
+        if (containsFlag(theType, QueryProperties.QueryOptions.TOP_PERCENT)) {
+            theSQLStart = merge(theSQLStart, "PERCENT", SPACE);
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        // TODO [dr-death] implement "WITH OWNER ACCESS OPTION"
+        return new QueryProperty(theType, theSQLStart, theSQLEnd);
+    }
+
+    private QueryProperty getSQLInputFields(Connection aConnection, String aViewName) throws SQLException {
+        int theType = QueryProperties.InputFields.DEFAULT;
+        String theSQL = "";
+        String theField = "";
+
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputFields.ID);
+
+        while (theProperties != null && theProperties.next()) {
+            theField = merge(theProperties.getString("Expression"), AS, SPACE);
+            theField = merge(theField, theProperties.getString("Name1"), SPACE);
+            theSQL = merge(theSQL, theField, COMMA);
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        return new QueryProperty(theType, theSQL);
+    }
+
+    private QueryProperty getSQLFromExpression(Connection aConnection, String aViewName) throws SQLException {
+        int theType = 0;
+        String theSQL = "";
+        boolean hasJoins = false;
+        String currentFirstTable = "";
+        String currentSecondTable = "";
+        String previousFirstTable = "";
+        String previousSecondTable = "";
+        String previousExpression = "";
+        String previousConcatenation = null;
+
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.JoinTypes.ID);
+
+        while (theProperties != null && theProperties.next()) {
+            hasJoins = true;
+            previousFirstTable = currentFirstTable;
+            previousSecondTable = currentSecondTable;
+            currentFirstTable = theProperties.getString("Name1");
+            currentSecondTable = theProperties.getString("Name2");
+
+            if ((previousFirstTable.length() > 0 && previousSecondTable.length() > 0)
+                 && currentFirstTable.equalsIgnoreCase(previousFirstTable)
+                 && currentSecondTable.equalsIgnoreCase(previousSecondTable)) {
+
+                // alte Expression mit AND-Verknüpfung fortsetzen
+                if (previousConcatenation != null) {
+                    theSQL = merge(theSQL, previousConcatenation, SPACE);
+                    theSQL = merge(theSQL, "(" + previousExpression + ")", SPACE);
+                }
+                previousConcatenation = AND;
+                previousExpression = theProperties.getString("Expression");
+            } else {
+                // neue Expression beginnen
+                if (previousConcatenation != null) {
+                    theSQL = merge(theSQL, previousConcatenation, SPACE);
+                    theSQL = merge(theSQL, (AND.equalsIgnoreCase(previousConcatenation)?"(":"") + previousExpression + (AND.equalsIgnoreCase(previousConcatenation)?")":""), SPACE);
+                }
+
+                theSQL = currentFirstTable;
+
+                switch (theProperties.getInt("Flag")) {
+                    case QueryProperties.JoinTypes.INNER_JOIN:
+                        theSQL = merge(theSQL, "INNER JOIN", SPACE);
                         break;
 
-                    /*
-                     * QueryType
-                     */
-                    case QueryProperties.QueryType.ID:
-                        theQueryType = theQueryDetails.getInt("Flag");
-
-                        switch (theQueryType) {
-
-                            case QueryProperties.QueryType.SELECT:
-                                theViewSQL = "SELECT ";
-                                break;
-
-                            case QueryProperties.QueryType.SELECT_INTO:
-                                theViewSQL = "SELECT ";
-                                throw new UnsupportedOperationException("SELECT INTO not supportet yet.");
-
-                            case QueryProperties.QueryType.INSERT_INTO:
-                                theViewSQL = "INSERT INTO ";
-                                throw new UnsupportedOperationException("INSERT INTO not supportet yet.");
-
-                            case QueryProperties.QueryType.UPDATE:
-                                theViewSQL = "UPDATE ";
-                                throw new UnsupportedOperationException("UPDATE not supportet yet.");
-
-                            case QueryProperties.QueryType.TRANSFORM:
-                                theViewSQL = "TRANSFORM ";
-                                throw new UnsupportedOperationException("TRANSFORM not supportet yet.");
-
-                            case QueryProperties.QueryType.DDL:
-                                theViewSQL = theQueryDetails.getString("Expression");
-                                break;
-
-                            case QueryProperties.QueryType.PASS_THROUGH:
-                                throw new UnsupportedOperationException("PASS THROUGH not supportet yet.");
-
-                            case QueryProperties.QueryType.UNION:
-                                throw new UnsupportedOperationException("UNION not supportet yet.");
-
-                            default:
-                                theViewSQL = "SELECT ";
-
-                        }
-                        break;
- 
-                    /*
-                     * QueryOptions
-                     */
-                    case QueryProperties.QueryOptions.ID:
+                    case QueryProperties.JoinTypes.LEFT_JOIN:
+                        theSQL = merge(theSQL, "LEFT JOIN", SPACE);
                         break;
 
-                    /*
-                     * SourceDatabase
-                     */
-                    case QueryProperties.SourceDatabase.ID:
+                    case QueryProperties.JoinTypes.RIGHT_JOIN:
+                        theSQL = merge(theSQL, "RIGHT JOIN", SPACE);
                         break;
 
-                    /*
-                     * InputTables
-                     */
-                    case QueryProperties.InputTables.ID:
-                        break;
-
-                    /*
-                     * InputExpressions
-                     */
-                    case QueryProperties.Rows.ID:
-                        if (QueryProperties.Rows.ID == thePreviousAttribute) {
-                            theViewSQL += ", ";
-                        }
-                        theViewSQL += theQueryDetails.getString("Expression");
-                        break;
-
-                    /*
-                     * JoinTypes
-                     */
-                    case QueryProperties.JoinTypes.ID:
-                        theViewSQL += "\nFROM " + theQueryDetails.getString("Name1") + " ";
-
-                        switch (theQueryDetails.getInt("Flag")) {
-                            case QueryProperties.JoinTypes.INNER_JOIN:
-                                theViewSQL += "INNER JOIN ";
-                                break;
-
-                            case QueryProperties.JoinTypes.LEFT_JOIN:
-                                theViewSQL += "LEFT JOIN ";
-                                break;
-
-                            case QueryProperties.JoinTypes.RIGHT_JOIN:
-                                theViewSQL += "RIGHT JOIN ";
-                                break;
-                        }
-
-                        theViewSQL += theQueryDetails.getString("Name2") + " " +
-                                      "ON " + theQueryDetails.getString("Expression");
-                        break;
-
-                    /*
-                     * WhereExpression
-                     */
-                    case QueryProperties.WhereExpression.ID:
-                        break;
-
-                    /*
-                     * GroupByExpression
-                     */
-                    case QueryProperties.GroupByExpression.ID:
-                        break;
-
-                    /*
-                     * HavingExpression
-                     */
-                    case QueryProperties.HavingExpression.ID:
-                        break;
-
-                    /*
-                     * ColumnOrder
-                     */
-                    case QueryProperties.ColumnOrder.ID:
-                        break;
-
-                    /*
-                     * EndOfDefinition
-                     */
-                    case QueryProperties.EndOfDefinition.ID:
-                        if (!theViewSQL.endsWith(";")) {
-                            theViewSQL += ";";
-                        }
-                        break;
-
-                    /*
-                     * unknown property
-                     */
                     default:
-                        throw new UnsupportedOperationException("Unknown query property");
+                        throw new UnsupportedOperationException("Unknown JOIN-Type!");
 
                 }
 
-            }
+                theSQL = merge(theSQL, currentSecondTable, SPACE);
 
-        } finally {
-            if (theQueryDetails != null) {
-                theQueryDetails.close();
+                previousConcatenation = ON;
+                previousExpression = theProperties.getString("Expression");
             }
-            theStatement.close();
         }
 
-        return theViewSQL;
-    }
+        if (previousConcatenation != null) {
+            theSQL = merge(theSQL, previousConcatenation, SPACE);
+            theSQL = merge(theSQL, (AND.equalsIgnoreCase(previousConcatenation)?"(":"") + previousExpression + (AND.equalsIgnoreCase(previousConcatenation)?")":""), SPACE);
+        }
 
-//    @Override
-//    public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
+        if (!hasJoins) {
+            // TODO [dr-death] use Tables (5) for FROM
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        theSQL = merge(FROM, theSQL, SPACE);
+
+        return new QueryProperty(theType, theSQL);
+    }
 
 }

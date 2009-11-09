@@ -24,7 +24,7 @@ package de.erdesignerng.dialect.msaccess;
  */
 public final class TableDefAttributeEnum {
 
-    public static final int DB_NONE = 0;                      // 0
+    public static final int DB_NONE = 0;                       // 0
 
     /**
      * Die Tabelle ist eine Systemtabelle, die vom Microsoft
@@ -32,7 +32,7 @@ public final class TableDefAttributeEnum {
      * diese Konstante auf ein angefügtes TableDef-Objekt
      * festlegen.
      */
-    public static final int DB_SYSTEM_OBJECT = (-2^31 | 2^1); // -2147483646
+    public static final int DB_SYSTEM_OBJECT = -2147483646;    // (-2^31 | 2^1)
 
     /**
      * Die Tabelle ist eine verborgene Tabelle, die vom
@@ -43,7 +43,7 @@ public final class TableDefAttributeEnum {
      * Diese Einstellung kann *nicht* über das Access-GUI
      * eingestellt werden.
      */
-    public static final int DB_HIDDEN_OBJECT = 2^0;           // 1
+    public static final int DB_HIDDEN_OBJECT = 1;              // 2^0
 
     /**
      * Die Tabelle ist eine verborgene Tabelle, die vom
@@ -54,7 +54,7 @@ public final class TableDefAttributeEnum {
      * Diese Einstellung kann über das GUI eingestellt
      * werden - Eigenschaft "Ausgeblendet".
      */
-    public static final int DB_INVISIBLE_OBJECT = 2^3;           // 8
+    public static final int DB_INVISIBLE_OBJECT = 8;           // 2^3
 
     /**
      * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul
@@ -64,7 +64,7 @@ public final class TableDefAttributeEnum {
      * einer lokalen Tabelle festlegen, nicht jedoch für eine
      * Remote-Tabelle.
      */
-    public static final int DB_ATTACHED_EXCLUSIVE = 2^16;     // 65536
+    public static final int DB_ATTACHED_EXCLUSIVE = 65536;     // 2^16
 
     /**
      * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul
@@ -75,20 +75,20 @@ public final class TableDefAttributeEnum {
      * Remote-Tabelle festlegen, nicht jedoch auf eine lokale
      * Tabelle.
      */
-    public static final int DB_ATTACHED_SAVE_PWD = 2^17;      // 131072
+    public static final int DB_ATTACHED_SAVE_PWD = 131072;     // 2^17
 
     /**
      * Die Tabelle ist eine verknüpfte Tabelle aus einer ODBC-
      * Datenbank, z.B. aus einer Datenbank des Microsoft SQL
      * Server (schreibgeschützt).
      */
-    public static final int DB_ATTACHED_ODBC = 2^19;          // 536870912
+    public static final int DB_ATTACHED_ODBC = 536870912;      // 2^19
 
     /**
      * Die Tabelle ist eine verknüpfte Tabelle aus einer
      * Nicht-ODBC-Datenquelle, z.B. aus einer Microsoft Jet-
      * oder Paradox-Datenbank (schreibgeschützt).
      */
-    public static final int DB_ATTACHED_TABLE = 2^30;         // 1073741824
+    public static final int DB_ATTACHED_TABLE = 1073741824;    // 2^30
 
 }

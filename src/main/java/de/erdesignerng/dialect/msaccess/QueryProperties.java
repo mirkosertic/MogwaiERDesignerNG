@@ -23,9 +23,9 @@ package de.erdesignerng.dialect.msaccess;
  */
 public final class QueryProperties {
 
-    public final class CreationType {
+    public static final class CreationType {
 
-        public static final int ID = 0;
+        public static final short ID = 0;
 
         public static final int ASSISTANT = 0;
 
@@ -33,9 +33,9 @@ public final class QueryProperties {
 
     }
 
-    public final class QueryType {
+    public static final class QueryType {
 
-        public static final int ID = 1;
+        public static final short ID = 1;
 
         public static final int SELECT = 1;
 
@@ -57,35 +57,35 @@ public final class QueryProperties {
 
     }
 
-    public final class QueryOptions {
+    public static final class QueryOptions {
 
-        public static final int ID = 3;
+        public static final short ID = 3;
 
         /**
          * Alle Felder ausgeben: Nein;
          * SELECT fieldName
          */
-        public static final int RETURNS_SPECIFIED_FIELDS = 0;
+        public static final int RETURNS_SPECIFIED_FIELDS = 0;  // 0
 
         /**
          * Alle Felder ausgeben: Ja;
          * SELECT *; SELECT fieldName, *
          */
-        public static final int RETURNS_ALL_FIELDS = 2^0;     // 1
+        public static final int RETURNS_ALL_FIELDS = 1;        // 2^0
 
-        public static final int DISTINCT = 2^1;               // 2
+        public static final int DISTINCT = 2;                  // 2^1
 
         /**
          * ...
          * WITH OWNERACCESS OPTION
          */
-        public static final int OWNER_ACCESS_OPTION = 2^2;    // 4
+        public static final int OWNER_ACCESS_OPTION = 4;       // 2^2
 
-        public static final int DISTINCTROW = 2^3;            // 8
+        public static final int DISTINCTROW = 8;               // 2^3
 
-        public static final int TOP_TOTAL = 2^4;              // 16
+        public static final int TOP_COUNT = 16;                // 2^4
 
-        public static final int TOP_PERCENT = 2^5;            // 32
+        public static final int TOP_PERCENT = 32;              // 2^5
 
         public static final int DEFAULT = RETURNS_ALL_FIELDS;
 
@@ -94,27 +94,48 @@ public final class QueryProperties {
     /**
      * SELECT ... FROM ... IN SourceDatabase
      */
-    public final class SourceDatabase {
+    public static final class SourceDatabase {
 
-        public static final int ID = 4;
-
-    }
-
-    public final class InputTables {
-
-        public static final int ID = 5;
+        public static final short ID = 4;
 
     }
 
-    public final class Rows { //i.e. Fieldnames, Domain-Functions etc.
+    public static final class InputTables {
 
-        public static final int ID = 6;
+        public static final short ID = 5;
 
     }
 
-    public final class JoinTypes {
+    public static final class InputFields {
+        //TRANSFORM 0
+        //SELECT 2
+        //FROM 
+        //GROUP BY 
+        //PIVOT 1
+        public static final short ID = 6;
 
-        public static final int ID = 7;
+        /**
+         * Wert
+         */
+        public static final int TRANSFORM = 0;
+
+        /**
+         * Spaltenüberschrift
+         */
+        public static final int PIVOT = 1;
+
+        /**
+         * Zeilenüberschrift
+         */
+        public static final int SELECT = 2;
+
+        public static final int DEFAULT = TRANSFORM;
+
+    }
+
+    public static final class JoinTypes {
+
+        public static final short ID = 7;
 
         public static final int INNER_JOIN = 1;
 
@@ -124,27 +145,27 @@ public final class QueryProperties {
 
     }
 
-    public final class WhereExpression {
+    public static final class WhereExpression {
 
-        public static final int ID = 8;
-
-    }
-
-    public final class GroupByExpression {
-
-        public static final int ID = 9;
+        public static final short ID = 8;
 
     }
 
-    public final class HavingExpression {
+    public static final class GroupByExpression {
 
-        public static final int ID = 10;
+        public static final short ID = 9;
 
     }
 
-    public final class ColumnOrder {
+    public static final class HavingExpression {
 
-        public static final int ID = 11;
+        public static final short ID = 10;
+
+    }
+
+    public static final class ColumnOrder {
+
+        public static final short ID = 11;
 
         public static final String ASCENDING = "";
 
@@ -152,9 +173,9 @@ public final class QueryProperties {
 
     }
 
-    public final class EndOfDefinition {
+    public static final class EndOfDefinition {
 
-        public static final int ID = 255;
+        public static final short ID = 255;
 
     }
 
