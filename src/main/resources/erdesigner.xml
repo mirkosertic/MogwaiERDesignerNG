@@ -835,5 +835,9 @@
 			<Text lang="de">Alles zusammenklappen</Text>		
 			<Text lang="en">Collapse all</Text>					
 		</Entry>
+		<Entry id="GRIDSIZEAFTERREVERSEENGINEERING">
+			<Text lang="de">Gittergrösse nach Reverse Engineering</Text>		
+			<Text lang="en">Grid size after reverse engineering</Text>					
+		</Entry>
 	</Bundle>
 </Resource>

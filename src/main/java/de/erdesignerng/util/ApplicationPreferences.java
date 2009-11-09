@@ -62,6 +62,8 @@ public class ApplicationPreferences {
     private static final String RPCPREFIX = "rpc_";
 
     private static final String GRIDSIZE = "gridsize";
+    
+    private static final String TABLEGRIDWIDTHAFTERREVERSEENGINEERING = "tablegridwidthafterre";
 
     private static final String AUTOMATICRELATIONATTRIBUTEPATTERN = "automaticrelationattributepattern";
 
@@ -110,6 +112,8 @@ public class ApplicationPreferences {
     private CascadeType onDeleteDefault;
 
     private byte[] windowLayout;
+    
+    private int gridWidthAfterReverseEngineering;
 
     private static ApplicationPreferences me;
 
@@ -188,6 +192,7 @@ public class ApplicationPreferences {
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
         automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
         windowLayout = preferences.getByteArray(LAYOUT, new byte[0]);
+        gridWidthAfterReverseEngineering = preferences.getInt(TABLEGRIDWIDTHAFTERREVERSEENGINEERING, 8);
 
         onUpdateDefault = CascadeType.fromType(preferences.get(ONUPDATEDEFAULT, CascadeType.NOTHING.getType()));
         onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT, CascadeType.NOTHING.getType()));
@@ -309,6 +314,7 @@ public class ApplicationPreferences {
         preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
         preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
         preferences.putByteArray(LAYOUT, windowLayout);
+        preferences.putInt(TABLEGRIDWIDTHAFTERREVERSEENGINEERING, gridWidthAfterReverseEngineering);
 
         if (repositoryConnection != null) {
             preferences.put(RPCPREFIX + "DIALECT", repositoryConnection.getDialect());
@@ -546,5 +552,13 @@ public class ApplicationPreferences {
 
     public void setWindowLayout(byte[] windowLayout) {
         this.windowLayout = windowLayout;
+    }
+
+    public int getGridWidthAfterReverseEngineering() {
+        return gridWidthAfterReverseEngineering;
+    }
+
+    public void setGridWidthAfterReverseEngineering(int gridWidthAfterReverseEngineering) {
+        this.gridWidthAfterReverseEngineering = gridWidthAfterReverseEngineering;
     }
 }
