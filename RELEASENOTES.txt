@@ -209,6 +209,7 @@ Release 2.5.0
 * Bug Fixing 2882258 Reverse engineer not working on various DBMSs
 * Bug Fixing 2880450 [ERDesignerNG] existing data-type-xml is not updated by app
 * Bug Fixing 2892966 [ERDesignerNG] PostgreSQL fails to RevEng schemas w domains
+* Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows VARCHAR(0)
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships

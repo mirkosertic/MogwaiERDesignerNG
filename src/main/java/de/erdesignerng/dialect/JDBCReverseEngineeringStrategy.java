@@ -210,7 +210,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
 
-        System.out.println("Schema: " + aTableEntry.getSchemaName() + ";            Table: " + aTableEntry.getTableName());
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableEntry.getTableName());
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
@@ -234,11 +233,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
             if (!StringUtils.isEmpty(theTableRemarks)) {
                 theNewTable.setComment(theTableRemarks);
-            }
-
-            // Bug Fixing 2895163 [ERDesignerNG] missing schema-attribute of table-element
-            if (!StringUtils.isEmpty(aTableEntry.getSchemaName())) {
-                theNewTable.setSchema(aTableEntry.getSchemaName());
             }
 
             // Reverse engineer attributes
