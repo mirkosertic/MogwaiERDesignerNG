@@ -73,7 +73,7 @@ public class SaveToFileCommand extends UICommand {
 
         PrintWriter theWriter = null;
         try {
-            
+
             Model theModel = component.getModel();
 
             component.setIntelligentLayoutEnabled(false);

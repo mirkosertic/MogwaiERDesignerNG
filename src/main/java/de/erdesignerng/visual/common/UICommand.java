@@ -25,29 +25,29 @@ import javax.swing.JComponent;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 
-public abstract class UICommand implements ActionEventProcessor , ActionListener {
-    
+public abstract class UICommand implements ActionEventProcessor, ActionListener {
+
     protected ERDesignerComponent component;
-    
+
     private final ApplicationPreferences preferences;
-    
+
     public UICommand(ERDesignerComponent aComponent) {
         component = aComponent;
         preferences = ApplicationPreferences.getInstance();
     }
-    
+
     protected ERDesignerWorldConnector getWorldConnector() {
         return component.getWorldConnector();
     }
-    
+
     protected JComponent getDetailComponent() {
         return component.getDetailComponent();
     }
-    
+
     protected ApplicationPreferences getPreferences() {
         return preferences;
     }
-    
+
     public abstract void execute();
 
     @Override
@@ -63,7 +63,8 @@ public abstract class UICommand implements ActionEventProcessor , ActionListener
     /**
      * Refresh the display of a specific object.
      * 
-     * @param aChangedObject the object to update
+     * @param aChangedObject
+     *            the object to update
      */
     public void refreshDisplayOf(Object aChangedObject) {
         component.repaintGraph();

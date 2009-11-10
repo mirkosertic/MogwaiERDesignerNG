@@ -59,30 +59,32 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
         final ViewMap theViewMap = new ViewMap();
         final View[] theViews = new View[3];
-        theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, ERDesignerComponent.getDefault()
-                .getDetailComponent());
+        theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, ERDesignerComponent
+                .getDefault().getDetailComponent());
         theViews[0].getWindowProperties().setCloseEnabled(false);
         theViews[0].getWindowProperties().setUndockEnabled(false);
         theViews[0].getWindowProperties().setUndockOnDropEnabled(false);
-        theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, OutlineComponent.getDefault());
+        theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, OutlineComponent
+                .getDefault());
         theViews[1].getWindowProperties().setCloseEnabled(false);
         theViews[1].getWindowProperties().setUndockEnabled(false);
         theViews[1].getWindowProperties().setUndockOnDropEnabled(false);
-        theViews[2] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.SQL), null, SQLComponent.getDefault());
+        theViews[2] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.SQL), null, SQLComponent
+                .getDefault());
         theViews[2].getWindowProperties().setCloseEnabled(false);
         theViews[2].getWindowProperties().setUndockEnabled(false);
         theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
         theViewMap.addView(0, theViews[0]);
         theViewMap.addView(1, theViews[1]);
         theViewMap.addView(2, theViews[2]);
-        
-        Runnable theRunnable =new Runnable() {
+
+        Runnable theRunnable = new Runnable() {
 
             @Override
             public void run() {
-                
+
                 Thread.currentThread().setContextClassLoader(DockingHelper.class.getClassLoader());
-                
+
                 rootWindow = DockingUtil.createRootWindow(theViewMap, true);
                 byte[] windowLayout = preferences.getWindowLayout();
                 boolean layoutRestored = false;
@@ -90,7 +92,7 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
                     try {
                         rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(windowLayout)));
                         layoutRestored = true;
-                        
+
                         LOGGER.info("Workbench layout restored");
                     } catch (Exception e) {
                         LOGGER.error("Failed to restore window state", e);
@@ -109,7 +111,8 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
         };
 
-        // The Docking initialization must be performed in the EDT. If we are not there,
+        // The Docking initialization must be performed in the EDT. If we are
+        // not there,
         // invoke it there, else invoke it directly
         if (SwingUtilities.isEventDispatchThread()) {
             theRunnable.run();
@@ -119,7 +122,7 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 
         theViews[0].addListener(this);
         theViews[1].addListener(this);
-        theViews[2].addListener(this);        
+        theViews[2].addListener(this);
     }
 
     public RootWindow getRootWindow() {
@@ -135,7 +138,7 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
             theOs.close();
 
             preferences.setWindowLayout(theBos.toByteArray());
-            
+
             LOGGER.info("Workbench layout saved. ");
         } catch (IOException e) {
             LOGGER.error("Failed to store window state", e);

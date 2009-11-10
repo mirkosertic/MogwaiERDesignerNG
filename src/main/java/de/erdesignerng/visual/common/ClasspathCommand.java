@@ -21,7 +21,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 
 public class ClasspathCommand extends UICommand {
-    
+
     public ClasspathCommand(ERDesignerComponent aComponent) {
         super(aComponent);
     }

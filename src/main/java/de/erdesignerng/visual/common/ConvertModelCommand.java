@@ -33,7 +33,7 @@ public class ConvertModelCommand extends UICommand {
         if (!component.checkForValidConnection()) {
             return;
         }
-        
+
         Model theModel = component.getModel();
 
         ConvertModelEditor theEditor = new ConvertModelEditor(theModel, getDetailComponent());
@@ -43,8 +43,9 @@ public class ConvertModelCommand extends UICommand {
 
                 component.setModel(theModel);
 
-                getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
-                
+                getWorldConnector().setStatusText(
+                        component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
+
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

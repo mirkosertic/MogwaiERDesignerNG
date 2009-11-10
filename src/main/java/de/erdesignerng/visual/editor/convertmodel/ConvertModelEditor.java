@@ -131,10 +131,10 @@ public class ConvertModelEditor extends BaseEditor {
 
     @Override
     public void applyValues() throws Exception {
-        
+
         ConversionInfos theInfos = bindingInfo.getDefaultModel();
         bindingInfo.view2model(theInfos);
-        
+
         model.convert(theInfos);
     }
 }

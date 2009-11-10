@@ -63,9 +63,9 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 
             ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
             theOptions.setTableNaming(TableNamingEnum.INCLUDE_SCHEMA);
-            theOptions.getSchemaEntries().add(new SchemaEntry("","public"));
-            theOptions.getSchemaEntries().add(new SchemaEntry("","schemaa"));
-            theOptions.getSchemaEntries().add(new SchemaEntry("","schemab"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("", "public"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("", "schemaa"));
+            theOptions.getSchemaEntries().add(new SchemaEntry("", "schemab"));
             theOptions.getTableEntries().addAll(
                     theST.getTablesForSchemas(theConnection, theST.getSchemaEntries(theConnection)));
 
@@ -94,7 +94,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
             assertTrue(theAttribute.getFraction() == 5);
 
             Index thePK = theTable.getPrimarykey();
-            assertTrue(thePK != null);            
+            assertTrue(thePK != null);
             assertTrue("pk1".equals(thePK.getName()));
             assertTrue(thePK.getExpressions().findByAttributeName("tb1_1") != null);
 
@@ -139,7 +139,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             String theReference = readResourceFile("result.sql");
-            
+
             assertTrue(compareStrings(theResult, theReference));
         } finally {
             if (theConnection != null) {

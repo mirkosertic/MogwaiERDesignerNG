@@ -38,8 +38,9 @@ public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml
 
         theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
 
-        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-        theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null)?aAttribute.getSize():""));
+        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+        // max-length wrong
+        theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null) ? aAttribute.getSize() : ""));
 
         theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
         theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
@@ -47,7 +48,7 @@ public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml
         theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
 
         setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
- 
+
         serializeCommentElement(aDocument, theAttributeElement, aAttribute);
     }
 
@@ -64,12 +65,16 @@ public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml
             deserializeProperties(theAttributeElement, theAttribute);
             deserializeCommentElement(theAttributeElement, theAttribute);
 
-            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(theAttributeElement.getAttribute(DATATYPE)));
+            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(
+                    theAttributeElement.getAttribute(DATATYPE)));
             theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
 
-            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
+            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+            // max-length wrong
             String theAttributeString = theAttributeElement.getAttribute(SIZE);
-            theAttribute.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString)))?null:Integer.parseInt(theAttributeString));
+            theAttribute
+                    .setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
+                            : Integer.parseInt(theAttributeString));
 
             theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));
             theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));

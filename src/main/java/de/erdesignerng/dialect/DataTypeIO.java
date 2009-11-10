@@ -186,7 +186,7 @@ public final class DataTypeIO {
             }
             theRootElement.appendChild(theTypeElement);
         }
-        
+
         xmlUtils.transform(theDocument, new OutputStreamWriter(aStream, "UTF-8"));
     }
 }

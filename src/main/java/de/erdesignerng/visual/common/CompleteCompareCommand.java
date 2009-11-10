@@ -53,7 +53,8 @@ public class CompleteCompareCommand extends UICommand {
                 if (theConnection == null) {
                     return;
                 }
-                final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect().getReverseEngineeringStrategy();
+                final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect()
+                        .getReverseEngineeringStrategy();
                 final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
                 final Model theDatabaseModel = getWorldConnector().createNewModel();

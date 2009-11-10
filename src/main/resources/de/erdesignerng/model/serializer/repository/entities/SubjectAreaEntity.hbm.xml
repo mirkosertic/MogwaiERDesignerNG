@@ -12,7 +12,7 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" not-null="false" type="text"/>
+    <property name="comment" column="elementcomment" not-null="false" type="text"/>
     <property name="color" not-null="true"/>
     <property name="visible" not-null="false"/>
     <list cascade="all-delete-orphan" name="tables" table="mogrep_sa_tables">

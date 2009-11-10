@@ -32,7 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 public class GenerateDocumentationCommand extends UICommand {
 
     private File JRXMLFile;
-    
+
     public GenerateDocumentationCommand(ERDesignerComponent component, File aJRXMLFile) {
         super(component);
         JRXMLFile = aJRXMLFile;

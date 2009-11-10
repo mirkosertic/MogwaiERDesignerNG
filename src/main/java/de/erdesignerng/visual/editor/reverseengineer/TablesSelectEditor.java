@@ -81,7 +81,7 @@ public class TablesSelectEditor extends BaseEditor {
         editingView.getCancelButton().setAction(cancelAction);
 
         editingView.getTableList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        
+
         DefaultAction theSelectAllAction = new DefaultAction(this, ERDesignerBundle.SELECTALL);
         theSelectAllAction.addActionListener(new ActionListener() {
             @Override
@@ -104,7 +104,7 @@ public class TablesSelectEditor extends BaseEditor {
             public void actionPerformed(ActionEvent e) {
                 DefaultCheckBoxList theList = editingView.getTableList();
                 List<TableEntry> theSelecion = theList.getSelectedItems();
-                List<TableEntry> theNewSelection = new ArrayList<TableEntry>();                
+                List<TableEntry> theNewSelection = new ArrayList<TableEntry>();
                 for (TableEntry theEntry : bindingInfo.getDefaultModel().getTableEntries()) {
                     if (!theSelecion.contains(theEntry)) {
                         theNewSelection.add(theEntry);
@@ -113,11 +113,11 @@ public class TablesSelectEditor extends BaseEditor {
                 theList.setSelectedItems(theNewSelection);
             }
         });
-        
+
         editingView.getSelectAll().setAction(theSelectAllAction);
         editingView.getDeselectAll().setAction(theDeselectAllAction);
         editingView.getInvertSelection().setAction(theInvertSelectionAction);
-        
+
         setContentPane(editingView);
         setResizable(false);
 

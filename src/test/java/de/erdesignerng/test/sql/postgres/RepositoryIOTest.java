@@ -20,8 +20,8 @@ package de.erdesignerng.test.sql.postgres;
 import java.sql.Connection;
 
 import org.apache.commons.io.IOUtils;
+import org.hibernate.dialect.PostgreSQLDialect;
 
-import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.test.io.repository.RepositioryHelper;
 
 public class RepositoryIOTest extends AbstractConnectionTest {
@@ -29,15 +29,16 @@ public class RepositoryIOTest extends AbstractConnectionTest {
     public void testLoadSaveRepository() throws Exception {
 
         Connection theConnection = createConnection();
-        
-        Class theHibernateDialect = PostgresDialect.class;
-        
+
+        Class theHibernateDialect = PostgreSQLDialect.class;
+
         String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
 
-        String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect, theConnection);
+        String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
+                theConnection);
 
         String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
-        
+
         assertTrue(compareStrings(theOriginalFile, theNewFile));
     }
 }

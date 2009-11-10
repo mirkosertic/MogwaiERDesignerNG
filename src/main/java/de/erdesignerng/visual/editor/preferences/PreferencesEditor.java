@@ -40,8 +40,7 @@ public class PreferencesEditor extends BaseEditor {
 
     private ERDesignerComponent component;
 
-    public PreferencesEditor(JComponent aParent, ApplicationPreferences aPreferences,
-            ERDesignerComponent aComponent) {
+    public PreferencesEditor(JComponent aParent, ApplicationPreferences aPreferences, ERDesignerComponent aComponent) {
         super(aParent, ERDesignerBundle.PREFERENCES);
 
         view = new PreferencesEditorView(aPreferences);
@@ -55,7 +54,7 @@ public class PreferencesEditor extends BaseEditor {
     private void initialize() {
 
         UIInitializer.getInstance().initialize(this);
-        
+
         view.getOkButton().setAction(okAction);
         view.getCancelButton().setAction(cancelAction);
 

@@ -51,7 +51,8 @@ public class SVGExporter implements Exporter {
             RepaintManager theRepaintManager = RepaintManager.currentManager(aGraph);
             theRepaintManager.setDoubleBufferingEnabled(false);
             boolean theDoubleBufferted = aGraph.isDoubleBuffered();
-            // Disable double buffering to allow Batik to render svg elements instead of images
+            // Disable double buffering to allow Batik to render svg elements
+            // instead of images
             aGraph.setDoubleBuffered(false);
             aGraph.paint(theSvgGenerator);
             aGraph.setDoubleBuffered(theDoubleBufferted);

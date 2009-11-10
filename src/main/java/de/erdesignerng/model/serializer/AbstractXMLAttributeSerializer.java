@@ -28,7 +28,7 @@ import de.erdesignerng.model.Table;
  * @author $Author: dr-death $
  * @version $Date: 2009-10-25 02:50:00 $
  */
-public abstract class  AbstractXMLAttributeSerializer extends CommonAbstractXMLSerializer<Attribute>{
+public abstract class AbstractXMLAttributeSerializer extends CommonAbstractXMLSerializer<Attribute> {
 
     protected static final String ATTRIBUTE = "Attribute";
 

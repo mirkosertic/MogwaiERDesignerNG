@@ -32,13 +32,13 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 
 public class BaseERDesignerTestCaseImpl extends TestCase {
-    
+
     protected boolean compareStrings(String aString1, String aString2) {
-        aString1 = StringUtils.remove(aString1, (char)13);
-        aString1 = StringUtils.remove(aString1, (char)10);
-        
-        aString2 = StringUtils.remove(aString2, (char)13);
-        aString2 = StringUtils.remove(aString2, (char)10);
+        aString1 = StringUtils.remove(aString1, (char) 13);
+        aString1 = StringUtils.remove(aString1, (char) 10);
+
+        aString2 = StringUtils.remove(aString2, (char) 13);
+        aString2 = StringUtils.remove(aString2, (char) 10);
 
         return aString1.equals(aString2);
     }

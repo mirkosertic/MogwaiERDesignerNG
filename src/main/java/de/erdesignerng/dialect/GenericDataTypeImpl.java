@@ -41,7 +41,8 @@ public abstract class GenericDataTypeImpl implements DataType {
 
     public static final String EXTRA_TOKEN = "$extra";
 
-    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {};
+    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {
+    };
 
     private static final int PRIME = 31;
 
@@ -71,8 +72,9 @@ public abstract class GenericDataTypeImpl implements DataType {
         for (StringTokenizer theST = new StringTokenizer(aDefinition.trim(), ","); theST.hasMoreTokens();) {
             String theToken = theST.nextToken();
 
-            //Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-            //to also match optional tokens
+            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+            // max-length wrong
+            // to also match optional tokens
             theToken = theToken.replace("[", "").replace("]", "");
 
             if (SIZE_TOKEN.equals(theToken)) {
@@ -123,7 +125,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 
     protected String patternToType(Attribute aAttribute) {
         Map<String, String> theMapping = new HashMap<String, String>();
-        theMapping.put(SIZE_TOKEN, ((aAttribute.getSize()==null)?null:""+aAttribute.getSize()));
+        theMapping.put(SIZE_TOKEN, ((aAttribute.getSize() == null) ? null : "" + aAttribute.getSize()));
         theMapping.put(FRACTION_TOKEN, "" + aAttribute.getFraction());
         theMapping.put(SCALE_TOKEN, "" + aAttribute.getScale());
         theMapping.put(EXTRA_TOKEN, "" + aAttribute.getExtra());
@@ -145,7 +147,7 @@ public abstract class GenericDataTypeImpl implements DataType {
                     throw new RuntimeException("No value for required token " + theToken);
                 }
             } else {
-                theResult+= ((theResult.length() > 0)?",":"") + theValue.toString();
+                theResult += ((theResult.length() > 0) ? "," : "") + theValue.toString();
             }
         }
 
@@ -194,7 +196,7 @@ public abstract class GenericDataTypeImpl implements DataType {
     public boolean supportsSize() {
         return supportsSize;
     }
-    
+
     public boolean supportsExtra() {
         return supportsExtra;
     }

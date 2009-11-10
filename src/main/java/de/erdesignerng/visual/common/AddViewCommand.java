@@ -75,7 +75,7 @@ public class AddViewCommand extends UICommand {
                 theCell.transferAttributesToProperties(theCell.getAttributes());
 
                 component.graph.doLayout();
-                
+
                 refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

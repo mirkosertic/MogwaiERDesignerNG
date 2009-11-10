@@ -26,8 +26,12 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
+    private Connection connection;
+
     @Override
     protected void setUp() throws Exception {
+
+        connection = null;
 
         Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
         Connection theConnection = null;
@@ -44,9 +48,24 @@ public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
         theStatement.execute("create database mogwai");
         theConnection.close();
+
+        super.setUp();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     protected Connection createConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:jtds:sqlserver://"+getDBServerName()+":1433/mogwai", "sa", "Mirko123!");
+        if (connection == null) {
+            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/mogwai",
+                    "sa", "Mirko123!");
+        }
+        return connection;
     }
 }

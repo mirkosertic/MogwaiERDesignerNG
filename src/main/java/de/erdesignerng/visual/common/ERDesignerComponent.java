@@ -128,12 +128,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                         }
                     }
                 }
-                
+
                 SQLComponent.getDefault().displaySQLFor(theItems.toArray(new ModelItem[0]));
                 if (theItems.size() == 1) {
                     OutlineComponent.getDefault().setSelectedItem(theItems.get(0));
                 }
-                
+
             } else {
                 SQLComponent.getDefault().resetDisplay();
             }
@@ -258,14 +258,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private final ERDesignerGraphLayout layout;
 
     private Thread layoutThread;
-    
+
     private static ERDesignerComponent DEFAULT;
-    
-    public static ERDesignerComponent initializeComponent(ApplicationPreferences aPreferences, ERDesignerWorldConnector aConnector) {
+
+    public static ERDesignerComponent initializeComponent(ApplicationPreferences aPreferences,
+            ERDesignerWorldConnector aConnector) {
         DEFAULT = new ERDesignerComponent(aPreferences, aConnector);
         return DEFAULT;
     }
-    
+
     public static ERDesignerComponent getDefault() {
         if (DEFAULT == null) {
             throw new RuntimeException("Component is not initialized");
@@ -816,8 +817,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 if (theCell.getUserObject().equals(aArea)) {
                     aArea.setVisible(true);
 
-                    Object[] theCellObjects = DefaultGraphModel.getDescendants(graph.getModel(), new Object[] { theCell })
-                            .toArray();
+                    Object[] theCellObjects = DefaultGraphModel.getDescendants(graph.getModel(),
+                            new Object[] { theCell }).toArray();
 
                     graph.getGraphLayoutCache().showCells(theCellObjects, true);
                     for (Object theSingleCell : theCellObjects) {
@@ -922,7 +923,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
 
         UIInitializer.getInstance().initialize(subjectAreas);
-        
+
         OutlineComponent.getDefault().refresh(model, null);
     }
 
@@ -1135,8 +1136,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     /**
      * Factory Method for the graph layout cacne.
-     *
-     * @param aModel the graph model
+     * 
+     * @param aModel
+     *            the graph model
      * @return the newly created graph layout cache
      */
     private GraphLayoutCache createNewGraphlayoutCache(GraphModel aModel) {
@@ -1213,7 +1215,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             graph.setUI(new ERDesignerGraphUI(this));
             graph.addGraphSelectionListener(new ERDesignerGraphSelectionListener());
-            
+
             SQLComponent.getDefault().resetDisplay();
 
             displayAllMenuItem.setSelected(true);
@@ -1231,7 +1233,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             refreshPreferences(preferences);
 
             fillGraph(aModel);
-            
+
             OutlineComponent.getDefault().setModel(aModel, true);
 
         } finally {
@@ -1525,17 +1527,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Set the currently selected cell depending on its user object.
      * 
-     * @param aItem the user object.
+     * @param aItem
+     *            the user object.
      */
     public void setSelectedObject(ModelItem aItem) {
         for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
-           DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
-           if (aItem.equals(theCell.getUserObject())) {
-               // We do have a match
-               graph.setSelectionCell(theCell);
-               graph.scrollCellToVisible(theCell);
-               return;
-           }
+            DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+            if (aItem.equals(theCell.getUserObject())) {
+                // We do have a match
+                graph.setSelectionCell(theCell);
+                graph.scrollCellToVisible(theCell);
+                return;
+            }
         }
     }
 }

@@ -24,71 +24,61 @@ package de.erdesignerng.dialect.msaccess;
  */
 public final class TableDefAttributeEnum {
 
-    public static final int DB_NONE = 0;                       // 0
+    public static final int DB_NONE = 0; // 0
 
     /**
-     * Die Tabelle ist eine Systemtabelle, die vom Microsoft
-     * Jet-Datenbankmodul bereitgestellt wird. Sie können
-     * diese Konstante auf ein angefügtes TableDef-Objekt
-     * festlegen.
+     * Die Tabelle ist eine Systemtabelle, die vom Microsoft Jet-Datenbankmodul
+     * bereitgestellt wird. Sie können diese Konstante auf ein angefügtes
+     * TableDef-Objekt festlegen.
      */
-    public static final int DB_SYSTEM_OBJECT = -2147483646;    // (-2^31 | 2^1)
+    public static final int DB_SYSTEM_OBJECT = -2147483646; // (-2^31 | 2^1)
 
     /**
-     * Die Tabelle ist eine verborgene Tabelle, die vom
-     * Microsoft Jet-Datenbankmodul bereitgestellt wird. Sie
-     * können diese Konstante auf ein angefügtes TableDef-
-     * Objekt festlegen.
-     *
-     * Diese Einstellung kann *nicht* über das Access-GUI
-     * eingestellt werden.
+     * Die Tabelle ist eine verborgene Tabelle, die vom Microsoft
+     * Jet-Datenbankmodul bereitgestellt wird. Sie können diese Konstante auf
+     * ein angefügtes TableDef- Objekt festlegen.
+     * 
+     * Diese Einstellung kann *nicht* über das Access-GUI eingestellt werden.
      */
-    public static final int DB_HIDDEN_OBJECT = 1;              // 2^0
+    public static final int DB_HIDDEN_OBJECT = 1; // 2^0
 
     /**
-     * Die Tabelle ist eine verborgene Tabelle, die vom
-     * Microsoft Jet-Datenbankmodul bereitgestellt wird. Sie
-     * können diese Konstante auf ein angefügtes TableDef-
-     * Objekt festlegen.
-     *
-     * Diese Einstellung kann über das GUI eingestellt
-     * werden - Eigenschaft "Ausgeblendet".
+     * Die Tabelle ist eine verborgene Tabelle, die vom Microsoft
+     * Jet-Datenbankmodul bereitgestellt wird. Sie können diese Konstante auf
+     * ein angefügtes TableDef- Objekt festlegen.
+     * 
+     * Diese Einstellung kann über das GUI eingestellt werden - Eigenschaft
+     * "Ausgeblendet".
      */
-    public static final int DB_INVISIBLE_OBJECT = 8;           // 2^3
+    public static final int DB_INVISIBLE_OBJECT = 8; // 2^3
 
     /**
-     * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul
-     * verwenden, ist die Tabelle eine verknüpfte Tabelle, die
-     * für den exklusiven Zugriff geöffnet wurde. Sie können
-     * die Konstanten auf einem angefügten TableDef-Objekt
-     * einer lokalen Tabelle festlegen, nicht jedoch für eine
-     * Remote-Tabelle.
+     * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul verwenden, ist die
+     * Tabelle eine verknüpfte Tabelle, die für den exklusiven Zugriff geöffnet
+     * wurde. Sie können die Konstanten auf einem angefügten TableDef-Objekt
+     * einer lokalen Tabelle festlegen, nicht jedoch für eine Remote-Tabelle.
      */
-    public static final int DB_ATTACHED_EXCLUSIVE = 65536;     // 2^16
+    public static final int DB_ATTACHED_EXCLUSIVE = 65536; // 2^16
 
     /**
-     * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul
-     * verwenden, sind die Benutzerkennung und das Kennwort
-     * für die verknüpfte Tabelle zusammen mit den
-     * Verbindungsinformationen gespeichert. Sie können diese
-     * Konstanten auf ein hinzugefügtes TableDef-Objekt einer
-     * Remote-Tabelle festlegen, nicht jedoch auf eine lokale
-     * Tabelle.
+     * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul verwenden, sind die
+     * Benutzerkennung und das Kennwort für die verknüpfte Tabelle zusammen mit
+     * den Verbindungsinformationen gespeichert. Sie können diese Konstanten auf
+     * ein hinzugefügtes TableDef-Objekt einer Remote-Tabelle festlegen, nicht
+     * jedoch auf eine lokale Tabelle.
      */
-    public static final int DB_ATTACHED_SAVE_PWD = 131072;     // 2^17
+    public static final int DB_ATTACHED_SAVE_PWD = 131072; // 2^17
 
     /**
-     * Die Tabelle ist eine verknüpfte Tabelle aus einer ODBC-
-     * Datenbank, z.B. aus einer Datenbank des Microsoft SQL
-     * Server (schreibgeschützt).
+     * Die Tabelle ist eine verknüpfte Tabelle aus einer ODBC- Datenbank, z.B.
+     * aus einer Datenbank des Microsoft SQL Server (schreibgeschützt).
      */
-    public static final int DB_ATTACHED_ODBC = 536870912;      // 2^19
+    public static final int DB_ATTACHED_ODBC = 536870912; // 2^19
 
     /**
-     * Die Tabelle ist eine verknüpfte Tabelle aus einer
-     * Nicht-ODBC-Datenquelle, z.B. aus einer Microsoft Jet-
-     * oder Paradox-Datenbank (schreibgeschützt).
+     * Die Tabelle ist eine verknüpfte Tabelle aus einer Nicht-ODBC-Datenquelle,
+     * z.B. aus einer Microsoft Jet- oder Paradox-Datenbank (schreibgeschützt).
      */
-    public static final int DB_ATTACHED_TABLE = 1073741824;    // 2^30
+    public static final int DB_ATTACHED_TABLE = 1073741824; // 2^30
 
 }

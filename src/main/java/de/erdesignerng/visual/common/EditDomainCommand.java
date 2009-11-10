@@ -22,7 +22,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.domain.DomainEditor;
 
 public class EditDomainCommand extends UICommand {
-    
+
     private final Domain domain;
 
     public EditDomainCommand(ERDesignerComponent component) {
@@ -31,7 +31,7 @@ public class EditDomainCommand extends UICommand {
 
     public EditDomainCommand(ERDesignerComponent component, Domain aDomain) {
         super(component);
-        
+
         domain = aDomain;
     }
 
@@ -44,7 +44,7 @@ public class EditDomainCommand extends UICommand {
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                
+
                 refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

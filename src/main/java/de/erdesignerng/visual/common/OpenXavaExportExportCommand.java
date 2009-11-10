@@ -34,8 +34,8 @@ public class OpenXavaExportExportCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-                getWorldConnector().setStatusText(component.getResourceHelper().getText(
-                        ERDesignerBundle.OPENXAVAEXPORTOK));
+                getWorldConnector().setStatusText(
+                        component.getResourceHelper().getText(ERDesignerBundle.OPENXAVAEXPORTOK));
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

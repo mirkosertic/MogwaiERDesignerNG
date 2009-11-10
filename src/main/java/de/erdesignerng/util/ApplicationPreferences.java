@@ -62,7 +62,7 @@ public class ApplicationPreferences {
     private static final String RPCPREFIX = "rpc_";
 
     private static final String GRIDSIZE = "gridsize";
-    
+
     private static final String TABLEGRIDWIDTHAFTERREVERSEENGINEERING = "tablegridwidthafterre";
 
     private static final String AUTOMATICRELATIONATTRIBUTEPATTERN = "automaticrelationattributepattern";
@@ -112,7 +112,7 @@ public class ApplicationPreferences {
     private CascadeType onDeleteDefault;
 
     private byte[] windowLayout;
-    
+
     private int gridWidthAfterReverseEngineering;
 
     private static ApplicationPreferences me;
@@ -498,7 +498,7 @@ public class ApplicationPreferences {
         if (theUserHomeFile == null) {
             return getRelativeFile("dataTypes");
         }
-        
+
         String theVersionNumber = MavenPropertiesLocator.getERDesignerVersionInfo();
         if (theVersionNumber.equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
             theVersionNumber = "development";
@@ -506,7 +506,7 @@ public class ApplicationPreferences {
         theVersionNumber = theVersionNumber.replace(".", "_");
         theVersionNumber = theVersionNumber.replace(" ", "_");
         theVersionNumber = theVersionNumber.replace("-", "_");
-        
+
         File theMogwaiHome = new File(theUserHomeFile, ".mogwai");
         File theVersionHome = new File(theMogwaiHome, theVersionNumber);
         return new File(theVersionHome, "dataTypes");

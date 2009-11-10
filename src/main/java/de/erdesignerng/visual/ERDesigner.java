@@ -46,7 +46,7 @@ public final class ERDesigner {
             ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException,
             TransformerException, IOException, ParserConfigurationException, SAXException, InterruptedException,
             InvocationTargetException {
-        
+
         // Disable D3D rendering pipeline
         System.setProperty("sun.java2d.d3d", "false");
 

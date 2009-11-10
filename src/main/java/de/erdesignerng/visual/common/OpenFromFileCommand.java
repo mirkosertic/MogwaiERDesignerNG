@@ -72,7 +72,8 @@ public class OpenFromFileCommand extends UICommand {
 
         } catch (Exception e) {
 
-            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(ERDesignerBundle.ERRORLOADINGFILE));
+            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
+                    ERDesignerBundle.ERRORLOADINGFILE));
 
             getWorldConnector().notifyAboutException(e);
         } finally {

@@ -52,7 +52,7 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("float8", "", Types.DOUBLE, Types.FLOAT));
         registerType(createDataType("money", "", Types.DOUBLE));
         registerType(createDataType("bpchar", "", Types.CHAR));
-        registerType(createDataType("varchar", "["+ GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
+        registerType(createDataType("varchar", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
         registerType(createDataType("date", "", Types.DATE));
         registerType(createDataType("time", "", Types.TIME));
         registerType(createDataType("timestamp", "", Types.TIMESTAMP));
@@ -60,11 +60,12 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("timestamp with time zone", "", Types.TIMESTAMP));
         registerType(createDataType("timetz", "", Types.TIME));
         registerType(createDataType("bit", "", Types.BIT));
-        registerType(createDataType("numeric", GenericDataTypeImpl.SIZE_TOKEN + "," + GenericDataTypeImpl.FRACTION_TOKEN, Types.NUMERIC, Types.DECIMAL));
+        registerType(createDataType("numeric", GenericDataTypeImpl.SIZE_TOKEN + ","
+                + GenericDataTypeImpl.FRACTION_TOKEN, Types.NUMERIC, Types.DECIMAL));
 
         // Patch [ 2124875 ] Add Postgres data types
-        registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
-        registerType(createDataType("character", GenericDataTypeImpl.SIZE_TOKEN , Types.CHAR));
+        registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN, Types.CHAR));
+        registerType(createDataType("character", GenericDataTypeImpl.SIZE_TOKEN, Types.CHAR));
         registerType(createDataType("character varying", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
         registerType(createDataType("boolean", "", Types.BOOLEAN));
         registerType(createDataType("interval", "", Types.TIMESTAMP));
@@ -78,16 +79,19 @@ public class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("blob", "", Types.BLOB, Types.LONGVARBINARY));
         registerType(createDataType("clob", "", Types.CLOB, Types.LONGVARCHAR));
 
-        // Patch [ 2874576 ] Reverse-Engineering unterstuetzt INET Datentyp nicht
-        // @see http://www.postgresql.org/docs/8.4/interactive/datatype-net-types.html#DATATYPE-INET
+        // Patch [ 2874576 ] Reverse-Engineering unterstuetzt INET Datentyp
+        // nicht
+        // @see
+        // http://www.postgresql.org/docs/8.4/interactive/datatype-net-types.html#DATATYPE-INET
         registerType(createDataType("inet", "", Types.VARCHAR, Types.NVARCHAR));
 
         // TODO [dr-death] add all missing datatypes according to
-        // @see http://www.postgresql.org/docs/8.4/interactive/datatype.html#DATATYPE-TABLE
-//        registerType(createDataType("_point", "", Types.OTHER));
-//        registerType(createDataType("point", "", Types.OTHER));
-//        registerType(createDataType("abstime", "", Types.OTHER));
-//        registerType(createDataType("_xml", "", Types.OTHER));
+        // @see
+        // http://www.postgresql.org/docs/8.4/interactive/datatype.html#DATATYPE-TABLE
+        // registerType(createDataType("_point", "", Types.OTHER));
+        // registerType(createDataType("point", "", Types.OTHER));
+        // registerType(createDataType("abstime", "", Types.OTHER));
+        // registerType(createDataType("_xml", "", Types.OTHER));
 
         seal();
     }

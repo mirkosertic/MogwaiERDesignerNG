@@ -41,7 +41,7 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
     @Override
     public void addIndexToTable(Table aTable, Index aIndex) throws VetoException {
     }
-    
+
     @Override
     public void addRelation(Relation aRelation) throws VetoException {
     }
@@ -53,7 +53,7 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
     @Override
     public void changeAttribute(Attribute aExistantAttribute, Attribute aNewAttribute) throws VetoException {
     }
-    
+
     @Override
     public void changeIndex(Index aExistantIndex, Index aNewIndex) throws VetoException {
     }

@@ -24,30 +24,28 @@ package de.erdesignerng.dialect.msaccess;
  */
 public final class RelationAttributeEnum {
 
-    public static final int DB_RELATION_NONE = 0;              // 0
+    public static final int DB_RELATION_NONE = 0; // 0
 
     /**
      * Es handelt sich um eine 1:1-Beziehung.
      */
-    public static final int DB_RELATION_UNIQUE = 1;            // 2^0
+    public static final int DB_RELATION_UNIQUE = 1; // 2^0
 
     /**
-     * Die referentielle Integrität der Beziehung wird nicht
-     * erzwungen.
+     * Die referentielle Integrität der Beziehung wird nicht erzwungen.
      */
-    public static final int DB_RELATION_DONT_ENFORCE = 2;      // 2^1
+    public static final int DB_RELATION_DONT_ENFORCE = 2; // 2^1
 
     /**
-     * Die Beziehung existiert zwischen zwei verknüpften
-     * Tabellen aus einer Datenbank, die nicht die aktuelle
-     * Datenbank ist.
+     * Die Beziehung existiert zwischen zwei verknüpften Tabellen aus einer
+     * Datenbank, die nicht die aktuelle Datenbank ist.
      */
-    public static final int DB_RELATION_INHERITED = 4;         // 2^2
+    public static final int DB_RELATION_INHERITED = 4; // 2^2
 
     /**
      * Aktualisierungen werden weitergegeben.
      */
-    public static final int DB_RELATION_UPDATE_CASCADE = 256;  // 2^8
+    public static final int DB_RELATION_UPDATE_CASCADE = 256; // 2^8
 
     /**
      * Löschvorgänge werden weitergegeben.
@@ -55,23 +53,20 @@ public final class RelationAttributeEnum {
     public static final int DB_RELATION_DELETE_CASCADE = 4096; // 2^12
 
     /**
-     * Beim Löschen werden betroffene Fremdschlüssel auf NULL
-     * gesetzt.
+     * Beim Löschen werden betroffene Fremdschlüssel auf NULL gesetzt.
      */
     public static final int DB_RELATION_DELETE_SET_NULL = 8192;// 2^13
 
     /**
-     * Nur in Microsoft Access. Zeigen Sie in der
-     * Entwurfsansicht ein LEFT JOIN als standardmäßigen
-     * Verknüpfungstyp an.
+     * Nur in Microsoft Access. Zeigen Sie in der Entwurfsansicht ein LEFT JOIN
+     * als standardmäßigen Verknüpfungstyp an.
      */
-    public static final int DB_RELATION_LEFT = 16777216;       // 2^24
+    public static final int DB_RELATION_LEFT = 16777216; // 2^24
 
     /**
-     * Nur in Microsoft Access. Zeigen Sie in der
-     * Entwurfsansicht ein RIGHT JOIN als standardmäßigen
-     * Verknüpfungstyp an.
+     * Nur in Microsoft Access. Zeigen Sie in der Entwurfsansicht ein RIGHT JOIN
+     * als standardmäßigen Verknüpfungstyp an.
      */
-    public static final int DB_RELATION_RRIGHT = 33554432;     // 2^25
+    public static final int DB_RELATION_RRIGHT = 33554432; // 2^25
 
 }

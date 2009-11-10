@@ -38,7 +38,7 @@ public class DependencyInfo {
         }
         return theList;
     }
-    
+
     public List<ModelItem> getItemsWithoutDependencies() {
         List<ModelItem> theResult = new ArrayList<ModelItem>();
         for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {

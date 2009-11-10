@@ -39,7 +39,7 @@ public class DBConnectionCommand extends UICommand {
             try {
                 theEditor.applyValues();
                 component.addCurrentConnectionToConnectionHistory();
-                
+
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
