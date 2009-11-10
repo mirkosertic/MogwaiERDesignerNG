@@ -19,9 +19,7 @@ package de.erdesignerng.test.sql.oracle;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +39,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 /**
  * Test for XML based model io.
@@ -49,38 +46,13 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
-
-    @Override
-    protected void setUp() throws Exception {
-        Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-        Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
-                "sys as sysdba", "sys");
-
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("DROP USER mogwai CASCADE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            theStatement.execute("CREATE USER mogwai IDENTIFIED BY mogwai");
-            theStatement.execute("GRANT DBA TO mogwai");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        theConnection.close();
-    }
+public class ReverseEngineeringTest extends AbstractConnectionTest {
 
     public void testReverseEngineerOracle() throws Exception {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
-                    "mogwai", "mogwai");
+            theConnection = createConnection();
 
             loadSQL(theConnection, "db.sql");
 
@@ -181,8 +153,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
-                    "mogwai", "mogwai");
+            theConnection = createConnection();
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {
