@@ -40,7 +40,7 @@ import org.jgraph.graph.GraphConstants;
 import de.erdesignerng.model.Relation;
 
 /**
- *
+ * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008/06/13 16:48:59 $
  */
@@ -65,70 +65,61 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         Relation theRelation = (Relation) getUserObject();
         String theLocation = "";
 
-        //PROPERTY_TEXT_OFFSET
+        // PROPERTY_TEXT_OFFSET
         Point2D theOffset = GraphConstants.getOffset(aAttributes);
         if (theOffset != null) {
             theLocation = ((int) theOffset.getX()) + ":" + ((int) theOffset.getY());
             theRelation.getProperties().setProperty(Relation.PROPERTY_TEXT_OFFSET, theLocation);
         }
 
-        //PROPERTY_LABEL_POSITION
+        // PROPERTY_LABEL_POSITION
         Point2D theLabelPosition = GraphConstants.getLabelPosition(aAttributes);
         if (theLabelPosition != null) {
             theLocation = ((int) theLabelPosition.getX()) + ":" + ((int) theLabelPosition.getY());
             theRelation.getProperties().setProperty(Relation.PROPERTY_LABEL_POSITION, theLocation);
         }
 
-        //PROPERTY_POINTS
+        // PROPERTY_POINTS
         List<Point2D> thePoints = GraphConstants.getPoints(aAttributes);
         if (thePoints != null) {
             StringBuffer theBuffer = new StringBuffer();
 
-            try {
-                for (Point2D thePoint : thePoints) {
-                    Point2D theDoublePoint = thePoint;
+            for (Point2D thePoint : thePoints) {
+                Point2D theDoublePoint = thePoint;
 
-                    if (theBuffer.length() > 0) {
-                        theBuffer.append(",");
-                    }
-
-                    theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
+                if (theBuffer.length() > 0) {
+                    theBuffer.append(",");
                 }
 
-                String thePointBuffer = theBuffer.toString();
-                theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS, thePointBuffer);
-            } catch (ClassCastException e) {
-                // TODO mirkosertic The "for (..."-line throws a strange,
-                // reproducable ClassCastException when a label of a relation is dragged
-                // de.erdesignerng.visual.cells.views.DefaultPortView cannot be cast to java.awt.geom.Point2D
-                //
-                // This exception does not open the exception-message-window and
-                // instead silently occurs in console output.
-                //
-                // The app correctly continues to work as if nothing had happened.
+                theBuffer.append(((int) theDoublePoint.getX()) + ":" + ((int) theDoublePoint.getY()));
             }
+
+            String thePointBuffer = theBuffer.toString();
+            theRelation.getProperties().setProperty(Relation.PROPERTY_POINTS, thePointBuffer);
         }
     }
 
     public void transferPropertiesToAttributes(Relation aRelation) {
         Point2D thePoint = null;
 
-        //PROPERTY_TEXT_OFFSET
-        //skip processing of the offset-property, instead remove it from
-        //relation to be compatible to earlier versions
-        thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(Relation.PROPERTY_TEXT_OFFSET));
+        // PROPERTY_TEXT_OFFSET
+        // skip processing of the offset-property, instead remove it from
+        // relation to be compatible to earlier versions
+        thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(
+                Relation.PROPERTY_TEXT_OFFSET));
         if (thePoint != null) {
             GraphConstants.setOffset(getAttributes(), thePoint);
         }
 
-        //PROPERTY_LABEL_POSITION)
-        //instead of storing the offset, store the location of the label now
-        thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(Relation.PROPERTY_LABEL_POSITION));
+        // PROPERTY_LABEL_POSITION)
+        // instead of storing the offset, store the location of the label now
+        thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(
+                Relation.PROPERTY_LABEL_POSITION));
         if (thePoint != null) {
             GraphConstants.setLabelPosition(getAttributes(), thePoint);
         }
 
-        //PROPERTY_POINTS
+        // PROPERTY_POINTS
         String thePoints = aRelation.getProperties().getProperty(Relation.PROPERTY_POINTS);
         if (thePoints != null) {
             List<Point2D> thePointList = new Vector<Point2D>();

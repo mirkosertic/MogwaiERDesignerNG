@@ -33,6 +33,7 @@ import org.jgraph.plaf.basic.BasicGraphUI;
 
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.cells.ModelCell;
+import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -46,7 +47,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
     private static final Logger LOGGER = Logger.getLogger(ERDesignerGraphUI.class);
 
-    private ERDesignerComponent erdesigner;
+    private final ERDesignerComponent erdesigner;
 
     public ERDesignerGraphUI(ERDesignerComponent aComponent) {
         erdesigner = aComponent;
@@ -125,7 +126,12 @@ public class ERDesignerGraphUI extends BasicGraphUI {
             theGraph.setDragging(false);
 
             if (focus != null && focus.getCell() instanceof ModelCell) {
-                ((ModelCell)focus.getCell()).transferAttributesToProperties(focus.getAllAttributes());
+                ModelCell theCell = (ModelCell) focus.getCell();
+                if (theCell instanceof RelationEdge) {
+                    theCell.transferAttributesToProperties(focus.getAttributes());
+                } else {
+                    theCell.transferAttributesToProperties(focus.getAllAttributes());
+                }
             }
         }
 

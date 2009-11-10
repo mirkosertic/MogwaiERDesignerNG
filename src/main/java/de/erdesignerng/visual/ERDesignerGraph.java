@@ -95,7 +95,6 @@ public abstract class ERDesignerGraph extends JGraph {
 
         List<DefaultGraphCell> theObjectsToRemove = new ArrayList<DefaultGraphCell>();
 
-        // TODO [mirkosertic] Is "Object" the right class?
         for (Object theSingleCell : aCells) {
 
             if (!theObjectsToRemove.contains(theSingleCell)) {
