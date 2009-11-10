@@ -165,7 +165,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         }
 
         @Override
-        protected void postProcessSelection(MouseEvent e, Object cell, boolean wasSelected) {
+        protected void postProcessSelection(MouseEvent aEvent, Object aCell, boolean aWasSelected) {
         }
     }
 
@@ -247,7 +247,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     }
 
     @Override
-    public boolean isEditing(JGraph graph) {
+    public boolean isEditing(JGraph aGraph) {
         return false;
     }
 }

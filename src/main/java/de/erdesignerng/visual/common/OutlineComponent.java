@@ -67,6 +67,7 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.OwnedModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
@@ -117,7 +118,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         private TimerTask oldTask;
 
         @Override
-        public void keyTyped(KeyEvent e) {
+        public void keyTyped(KeyEvent aEvent) {
             if (oldTask != null) {
                 oldTask.cancel();
             }
@@ -416,6 +417,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     public void setModel(Model aModel, boolean aExpandAll) {
 
         userObjectMap.clear();
@@ -423,7 +425,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
         DefaultMutableTreeNode theRoot = new DefaultMutableTreeNode(TreeGroupingElement.MODEL);
 
-        Comparator theComparator = new BeanComparator("name");
+        Comparator<OwnedModelItem> theComparator = new BeanComparator("name");
 
         // Add the domains
         List<Domain> theDomains = new ArrayList<Domain>();
@@ -477,6 +479,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         // }
     }
 
+    @SuppressWarnings("unchecked")
     private void buildSubjectAreasChilds(Model aModel, DefaultMutableTreeNode aParent, List<SubjectArea> aList) {
         DefaultMutableTreeNode theSANode = new DefaultMutableTreeNode(TreeGroupingElement.SUBJECTAREAS);
         for (SubjectArea theArea : aList) {
@@ -714,11 +717,12 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void expandOrCollapseAllChildsOfNode(TreePath aParentPath, boolean aExpand) {
         TreeNode node = (TreeNode) aParentPath.getLastPathComponent();
         if (node.getChildCount() > 0) {
-            for (Enumeration en = node.children(); en.hasMoreElements();) {
-                TreeNode n = (TreeNode) en.nextElement();
+            for (Enumeration<TreeNode> en = node.children(); en.hasMoreElements();) {
+                TreeNode n = en.nextElement();
                 TreePath path = aParentPath.pathByAddingChild(n);
                 expandOrCollapseAllChildsOfNode(path, aExpand);
             }
