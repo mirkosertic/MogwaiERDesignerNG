@@ -19,9 +19,7 @@ package de.erdesignerng.test.sql.mysql;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
 
 import de.erdesignerng.dialect.Dialect;
@@ -38,7 +36,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 /**
  * Test for XML based model io.
@@ -46,39 +43,13 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
-
-    @Override
-    protected void setUp() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mysql", "root", "root");
-
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("DROP USER mogwai");
-            theStatement.execute("DROP DATABASE mogwai");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            theStatement.execute("CREATE DATABASE MOGWAI");
-            theStatement.execute("CREATE USER mogwai IDENTIFIED BY 'mogwai'");
-            theStatement.execute("GRANT ALL ON MOGWAI.* TO mogwai");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        theConnection.close();
-    }
+public class ReverseEngineeringTest extends AbstractConnectionTest {
 
     public void testReverseEngineerMySQL() throws Exception {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
-                    "mogwai");
+            theConnection = createConnection();
 
             loadSQL(theConnection, "db.sql");
 
@@ -162,8 +133,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
-                    "mogwai");
+            theConnection = createConnection();
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {

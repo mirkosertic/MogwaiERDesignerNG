@@ -19,9 +19,7 @@ package de.erdesignerng.test.sql.postgres;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
 
 import de.erdesignerng.dialect.Dialect;
@@ -39,7 +37,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 /**
  * Test for XML based model io.
@@ -47,42 +44,13 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
-
-    @Override
-    protected void setUp() throws Exception {
-        Class.forName("org.postgresql.Driver").newInstance();
-
-        Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
-                "mogwai", "mogwai");
-
-        // 
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("DROP SCHEMA schemaa CASCADE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            theStatement.execute("DROP SCHEMA schemab CASCADE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        try {
-            theStatement.execute("DROP domain testdomain");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+public class ReverseEngineeringTest extends AbstractConnectionTest {
 
     public void testReverseEngineerPostgreSQL() throws Exception {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
-                    "mogwai", "mogwai");
+            theConnection = createConnection();
 
             loadSQL(theConnection, "db.sql");
 
@@ -184,8 +152,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
-                    "mogwai", "mogwai");
+            theConnection = createConnection();
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {
