@@ -19,9 +19,7 @@ package de.erdesignerng.test.sql.mssql;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +39,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 /**
  * Test for XML based model io.
@@ -49,33 +46,13 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
-public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
-
-    @Override
-    protected void setUp() throws Exception {
-
-        Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-        Connection theConnection = null;
-
-        theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/master",
-                "sa", "Mirko123!");
-
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("drop database mogwai");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        theStatement.execute("create database mogwai");
-        theConnection.close();
-    }
+public class ReverseEngineeringTest extends AbstractConnectionTest {
 
     public void testReverseEngineerMSSQL() throws Exception {
 
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+getDBServerName()+":1433/mogwai", "sa", "Mirko123!");
+            theConnection = createConnection();
 
             loadSQL(theConnection, "db.sql");
 
@@ -168,7 +145,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             ClassNotFoundException, SQLException, IOException {
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+getDBServerName()+":1433/mogwai", "sa", "Mirko123!");
+            theConnection = createConnection();
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {
@@ -178,5 +155,4 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             }
         }
     }
-
 }
