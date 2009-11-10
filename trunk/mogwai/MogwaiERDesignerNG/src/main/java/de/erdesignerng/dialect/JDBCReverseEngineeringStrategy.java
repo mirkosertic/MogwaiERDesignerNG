@@ -323,7 +323,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                     isNullable = true;
                     break;
                 default:
-                    // TODO [mirkosertic] What should happen here?
+                    LOGGER.warn("Unknown nullability : " + theNullable + " for " + theColumnName + " of table "
+                            + theNewTable.getName());
                 }
 
                 theAttribute.setDatatype(theDataType);
@@ -792,7 +793,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException,
             ReverseEngineeringException {
 
-        PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM information_schema.domains where DOMAIN_SCHEMA = ?");
+        PreparedStatement theStatement = aConnection
+                .prepareStatement("SELECT * FROM information_schema.domains where DOMAIN_SCHEMA = ?");
         for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
             theStatement.setString(1, theEntry.getSchemaName());
             ResultSet theResult = theStatement.executeQuery();
@@ -924,14 +926,14 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
         return theResult;
     }
-    
+
     protected String extractSelectDDLFromViewDefinition(String theViewDefinition) {
         if (!StringUtils.isEmpty(theViewDefinition)) {
             String theViewDefinitionLower = theViewDefinition.toLowerCase();
             theViewDefinitionLower = theViewDefinitionLower.replace('\n', ' ');
             theViewDefinitionLower = theViewDefinitionLower.replace('\r', ' ');
             theViewDefinitionLower = theViewDefinitionLower.replace('\t', ' ');
-            
+
             if (theViewDefinitionLower.startsWith("create view ")) {
                 int p = theViewDefinitionLower.indexOf(" as ");
                 if (p >= 0) {
