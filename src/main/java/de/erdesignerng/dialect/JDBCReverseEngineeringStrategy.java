@@ -96,6 +96,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             ReverseEngineeringNotifier aNotifier, TableEntry aTable, Connection aConnection) throws SQLException {
     }
 
+    protected void reverseEngineerDomain(Model aModel, Domain aDomain, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException {
+    }
+
     /**
      * Reverse engineerer the sql statement for a view.
      * 
@@ -838,6 +842,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                     throw new ReverseEngineeringException("Unknown data type " + theDataType + " for domain "
                             + theDomainName);
                 }
+
+                reverseEngineerDomain(aModel, theDomain, aOptions, aNotifier, aConnection);
             }
             theResult.close();
         }

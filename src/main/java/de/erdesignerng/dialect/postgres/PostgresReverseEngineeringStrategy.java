@@ -32,6 +32,7 @@ import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 
@@ -63,18 +64,34 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         return theList;
     }
 
+    // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
     @Override
     protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException {
 
-        if (aAttribute.getDatatype().getName().equals("varchar")) {
+        if ((aAttribute.getDatatype().getName().equalsIgnoreCase("varchar")) ||
+            (aAttribute.getDatatype().getName().equalsIgnoreCase("character varying"))){
             // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR
-            // ohne
-            // Parameter definiert wurde, obwohl 1073741823 korrekt w√§re
+            // ohne Parameter definiert wurde, obwohl 1073741823 korrekt
+            // w‰re
             if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
                 aAttribute.setSize(null);
             }
         }
+    }
+
+     // Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows VARCHAR(0)
+    @Override
+    protected void reverseEngineerDomain(Model aModel, Domain aDomain, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException {
+
+            if ((aDomain.getConcreteType().getName().equalsIgnoreCase("varchar")) ||
+                (aDomain.getConcreteType().getName().equalsIgnoreCase("character varying"))) {
+                // PostgreSQL liefert 0, wenn VARCHAR ohne Parameter definiert wurde
+                if (new Integer(0).equals(aDomain.getSize())) {
+                    aDomain.setSize(null);
+                }
+            }
     }
 
     @Override
