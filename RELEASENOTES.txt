@@ -223,3 +223,4 @@ Release 2.5.0
 * Fixed typos in Reverse-Engineer dialog (german) and RelationEditor (german)
 * Performance tuning in Intelligent Layout functionality
 * Tables are now layed out like a grid after reverse engineering
+* Fixed ClassCastException when moving relation labels
