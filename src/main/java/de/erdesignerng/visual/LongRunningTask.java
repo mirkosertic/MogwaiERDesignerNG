@@ -25,7 +25,7 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 
 public abstract class LongRunningTask<T> extends Thread {
 
-    private ERDesignerWorldConnector connector;
+    private final ERDesignerWorldConnector connector;
 
     private SwingWorker<T, String> worker;
 
@@ -34,7 +34,7 @@ public abstract class LongRunningTask<T> extends Thread {
         void publishMessage(String aMessage);
     }
 
-    protected abstract class MySwingWorker<T> extends SwingWorker<T, String> implements MessagePublisher {
+    protected abstract class MySwingWorker<X> extends SwingWorker<X, String> implements MessagePublisher {
 
         @Override
         public void publishMessage(String aMessage) {

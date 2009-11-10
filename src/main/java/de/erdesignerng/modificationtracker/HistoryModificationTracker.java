@@ -110,9 +110,6 @@ public class HistoryModificationTracker implements ModelModificationTracker {
         addStatementsToHistory(getSQLGenerator().createAddPrimaryKeyToTable(aTable, aIndex));
     }
 
-    /**
-     * @return the statements
-     */
     public StatementList getStatements() {
         return statements;
     }

@@ -22,7 +22,7 @@ package de.erdesignerng.dialect;
  * @version $Date: 2008-01-15 19:22:42 $
  */
 public enum NameCastType {
-    NOTHING(1), UPPERCASE(2), LOWERCASE(3);
+    NOTHING(1), UPPERCASE(2);
 
     private int mode;
 
@@ -36,8 +36,6 @@ public enum NameCastType {
             return aValue;
         case 2:
             return aValue.toUpperCase();
-        case 3:
-            return aValue.toLowerCase();
         default:
             throw new IllegalStateException();
         }
