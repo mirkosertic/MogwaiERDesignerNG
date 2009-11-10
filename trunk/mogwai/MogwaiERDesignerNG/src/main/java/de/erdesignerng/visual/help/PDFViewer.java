@@ -63,6 +63,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -251,7 +252,7 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
     Action fullScreenAction = new AbstractAction("Full screen", getIcon("gfx/fullscrn.gif")) {
 
         public void actionPerformed(ActionEvent evt) {
-            doFullScreen((evt.getModifiers() & evt.SHIFT_MASK) != 0);
+            doFullScreen((evt.getModifiers() & ActionEvent.SHIFT_MASK) != 0);
         }
     };
 
@@ -311,12 +312,12 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
         page.addKeyListener(this);
 
         if (doThumb) {
-            split = new JSplitPane(split.HORIZONTAL_SPLIT);
-            split.addPropertyChangeListener(split.DIVIDER_LOCATION_PROPERTY, thumbAction);
+            split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+            split.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, thumbAction);
             split.setOneTouchExpandable(true);
             thumbs = new ThumbPanel(null);
-            thumbscroll = new JScrollPane(thumbs, thumbscroll.VERTICAL_SCROLLBAR_ALWAYS,
-                    thumbscroll.HORIZONTAL_SCROLLBAR_NEVER);
+            thumbscroll = new JScrollPane(thumbs, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             split.setLeftComponent(thumbscroll);
             split.setRightComponent(page);
             getContentPane().add(split, BorderLayout.CENTER);
@@ -413,13 +414,13 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
         int y = (screen.height - getHeight()) / 2;
         setLocation(x, y);
         if (SwingUtilities.isEventDispatchThread()) {
-            show();
+            setVisible(true);
         } else {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
 
                     public void run() {
-                        show();
+                        setVisible(true);
                     }
                 });
             } catch (InvocationTargetException ie) {
@@ -909,25 +910,25 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      */
     public void keyPressed(KeyEvent evt) {
         int code = evt.getKeyCode();
-        if (code == evt.VK_LEFT) {
+        if (code == KeyEvent.VK_LEFT) {
             doPrev();
-        } else if (code == evt.VK_RIGHT) {
+        } else if (code == KeyEvent.VK_RIGHT) {
             doNext();
-        } else if (code == evt.VK_UP) {
+        } else if (code == KeyEvent.VK_UP) {
             doPrev();
-        } else if (code == evt.VK_DOWN) {
+        } else if (code == KeyEvent.VK_DOWN) {
             doNext();
-        } else if (code == evt.VK_HOME) {
+        } else if (code == KeyEvent.VK_HOME) {
             doFirst();
-        } else if (code == evt.VK_END) {
+        } else if (code == KeyEvent.VK_END) {
             doLast();
-        } else if (code == evt.VK_PAGE_UP) {
+        } else if (code == KeyEvent.VK_PAGE_UP) {
             doPrev();
-        } else if (code == evt.VK_PAGE_DOWN) {
+        } else if (code == KeyEvent.VK_PAGE_DOWN) {
             doNext();
-        } else if (code == evt.VK_SPACE) {
+        } else if (code == KeyEvent.VK_SPACE) {
             doNext();
-        } else if (code == evt.VK_ESCAPE) {
+        } else if (code == KeyEvent.VK_ESCAPE) {
             setFullScreenMode(false, false);
         }
     }

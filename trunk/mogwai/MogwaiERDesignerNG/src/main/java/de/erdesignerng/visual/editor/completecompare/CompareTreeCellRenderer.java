@@ -34,9 +34,9 @@ import de.erdesignerng.visual.IconFactory;
  */
 public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
 
-    private ImageIcon missingIcon;
+    private final ImageIcon missingIcon;
 
-    private ImageIcon matchingIcon;
+    private final ImageIcon matchingIcon;
 
     public CompareTreeCellRenderer() {
         missingIcon = IconFactory.getMissingIcon();
@@ -44,14 +44,14 @@ public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
     }
 
     @Override
-    public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean selected, boolean expanded,
-            boolean leaf, int row, boolean hasFocus) {
+    public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean aSelected, boolean expanded,
+            boolean aLeaf, int aRow, boolean aHasFocus) {
 
         DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
 
-        setLeafIcon(leaf ? matchingIcon : null);
-        setOpenIcon(leaf ? matchingIcon : null);
-        setClosedIcon(leaf ? matchingIcon : null);
+        setLeafIcon(aLeaf ? matchingIcon : null);
+        setOpenIcon(aLeaf ? matchingIcon : null);
+        setClosedIcon(aLeaf ? matchingIcon : null);
 
         if (theNode.getUserObject() instanceof MissingInfo) {
 
@@ -69,6 +69,6 @@ public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
 
         }
 
-        return super.getTreeCellRendererComponent(aTree, aValue, selected, expanded, leaf, row, hasFocus);
+        return super.getTreeCellRendererComponent(aTree, aValue, aSelected, expanded, aLeaf, aRow, aHasFocus);
     }
 }
