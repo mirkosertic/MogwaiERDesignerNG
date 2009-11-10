@@ -138,7 +138,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
             String theReference = readResourceFile("result.sql");
-            
+
             assertTrue(theResult.equals(theReference));
 
         } finally {

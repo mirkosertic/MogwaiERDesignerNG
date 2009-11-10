@@ -23,11 +23,11 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class EditTableCommand extends UICommand {
-    
+
     private final Table table;
-    
+
     private Attribute attribute;
-    
+
     private Index index;
 
     public EditTableCommand(ERDesignerComponent aComponent, Table aTable) {
@@ -58,7 +58,7 @@ public class EditTableCommand extends UICommand {
         if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                
+
                 refreshDisplayOf(table);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

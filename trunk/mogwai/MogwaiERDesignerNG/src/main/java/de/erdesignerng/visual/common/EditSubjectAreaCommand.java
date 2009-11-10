@@ -22,7 +22,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 
 public class EditSubjectAreaCommand extends UICommand {
-    
+
     private final SubjectArea area;
 
     public EditSubjectAreaCommand(ERDesignerComponent component, SubjectArea aArea) {
@@ -37,7 +37,7 @@ public class EditSubjectAreaCommand extends UICommand {
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                
+
                 refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

@@ -29,24 +29,28 @@ public class MSAccessSQLGenerator extends SQL92SQLGenerator<MSAccessDialect> {
         super(aDialect);
     }
 
-//    @Override
-//    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
+    // @Override
+    // public StatementList createRemoveIndexFromTableStatement(Table aTable,
+    // Index aIndex) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+    // }
 
-//    @Override
-//    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
+    // @Override
+    // public StatementList createRenameTableStatement(Table aTable, String
+    // aNewName) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+    // }
 
-//    @Override
-//    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
+    // @Override
+    // public StatementList createRenameAttributeStatement(Attribute
+    // aExistantAttribute, String aNewName) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+    // }
 
-//    @Override
-//    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
+    // @Override
+    // public StatementList createChangeAttributeStatement(Attribute
+    // aExistantAttribute, Attribute aNewAttribute) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+    // }
 
 }

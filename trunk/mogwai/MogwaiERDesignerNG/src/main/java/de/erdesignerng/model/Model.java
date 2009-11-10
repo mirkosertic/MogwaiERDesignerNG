@@ -74,7 +74,7 @@ public class Model extends ModelItem {
     private Dialect dialect;
 
     private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
-    
+
     /**
      * Add a table to the database model.
      * 
@@ -166,7 +166,7 @@ public class Model extends ModelItem {
             InstantiationException, IllegalAccessException, SQLException {
 
         ModelProperties theProperties = getProperties();
-        
+
         Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
                 theProperties.getProperty(PROPERTY_DRIVER), theProperties.getProperty(PROPERTY_URL),
                 theProperties.getProperty(PROPERTY_USER), theProperties.getProperty(PROPERTY_PASSWORD),
@@ -434,12 +434,12 @@ public class Model extends ModelItem {
      * 
      * @param aDomain
      *            the domain
-     * @throws VetoException 
+     * @throws VetoException
      */
     public void addDomain(Domain aDomain) throws VetoException {
-        
+
         modificationTracker.addDomain(aDomain);
-        
+
         aDomain.setOwner(this);
         domains.add(aDomain);
     }
@@ -449,12 +449,12 @@ public class Model extends ModelItem {
      * 
      * @param aDomain
      *            a domain
-     * @throws VetoException 
+     * @throws VetoException
      */
     public void removeDomain(Domain aDomain) throws VetoException {
-        
+
         modificationTracker.removeDomain(aDomain);
-        
+
         domains.remove(aDomain);
     }
 
@@ -617,7 +617,7 @@ public class Model extends ModelItem {
         }
         return theResult;
     }
-    
+
     /**
      * Create a dependency information object describing the model dependencies.
      * 
@@ -632,8 +632,10 @@ public class Model extends ModelItem {
             theInfo.register(theView);
         }
         for (Relation theRelation : relations) {
-            theInfo.addDependencyFor(theRelation.getImportingTable(), new Dependency(Dependency.DependencyType.DEPENDSON, theRelation.getExportingTable()));
-            theInfo.addDependencyFor(theRelation.getExportingTable(), new Dependency(Dependency.DependencyType.ISREQUIREDBY, theRelation.getImportingTable()));            
+            theInfo.addDependencyFor(theRelation.getImportingTable(), new Dependency(
+                    Dependency.DependencyType.DEPENDSON, theRelation.getExportingTable()));
+            theInfo.addDependencyFor(theRelation.getExportingTable(), new Dependency(
+                    Dependency.DependencyType.ISREQUIREDBY, theRelation.getImportingTable()));
         }
         return theInfo;
     }

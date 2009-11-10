@@ -50,7 +50,7 @@ public abstract class Dialect {
     private boolean supportsColumnExtra;
 
     private boolean suppressONALLIfNOACTION = false;
-    
+
     private boolean supportsDomains = false;
 
     private boolean supportsSchemaInformation = true;
@@ -357,7 +357,7 @@ public abstract class Dialect {
         }
         return null;
     }
-    
+
     public boolean isSupportsDomains() {
         return supportsDomains;
     }

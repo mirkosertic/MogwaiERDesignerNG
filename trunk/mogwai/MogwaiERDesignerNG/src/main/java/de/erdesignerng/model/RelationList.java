@@ -42,21 +42,21 @@ public class RelationList extends ModelItemVector<Relation> {
      * @return true if yes, else false
      */
     public boolean isForeignKeyAttribute(Attribute aAttribute) {
-        
+
         Boolean theResult = foreignKeyCache.get(aAttribute);
         if (theResult != null) {
             return theResult;
         }
-        
+
         theResult = false;
         for (Relation theRelation : this) {
             Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
             if (theMap.containsValue(aAttribute)) {
-                theResult=true;
+                theResult = true;
                 break;
             }
         }
-        
+
         foreignKeyCache.put(aAttribute, theResult);
 
         return theResult;

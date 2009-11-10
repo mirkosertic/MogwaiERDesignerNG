@@ -62,30 +62,27 @@ public final class QueryProperties {
         public static final short ID = 3;
 
         /**
-         * Alle Felder ausgeben: Nein;
-         * SELECT fieldName
+         * Alle Felder ausgeben: Nein; SELECT fieldName
          */
-        public static final int RETURNS_SPECIFIED_FIELDS = 0;  // 0
+        public static final int RETURNS_SPECIFIED_FIELDS = 0; // 0
 
         /**
-         * Alle Felder ausgeben: Ja;
-         * SELECT *; SELECT fieldName, *
+         * Alle Felder ausgeben: Ja; SELECT *; SELECT fieldName, *
          */
-        public static final int RETURNS_ALL_FIELDS = 1;        // 2^0
+        public static final int RETURNS_ALL_FIELDS = 1; // 2^0
 
-        public static final int DISTINCT = 2;                  // 2^1
+        public static final int DISTINCT = 2; // 2^1
 
         /**
-         * ...
-         * WITH OWNERACCESS OPTION
+         * ... WITH OWNERACCESS OPTION
          */
-        public static final int OWNER_ACCESS_OPTION = 4;       // 2^2
+        public static final int OWNER_ACCESS_OPTION = 4; // 2^2
 
-        public static final int DISTINCTROW = 8;               // 2^3
+        public static final int DISTINCTROW = 8; // 2^3
 
-        public static final int TOP_COUNT = 16;                // 2^4
+        public static final int TOP_COUNT = 16; // 2^4
 
-        public static final int TOP_PERCENT = 32;              // 2^5
+        public static final int TOP_PERCENT = 32; // 2^5
 
         public static final int DEFAULT = RETURNS_ALL_FIELDS;
 
@@ -107,11 +104,11 @@ public final class QueryProperties {
     }
 
     public static final class InputFields {
-        //TRANSFORM 0
-        //SELECT 2
-        //FROM 
-        //GROUP BY 
-        //PIVOT 1
+        // TRANSFORM 0
+        // SELECT 2
+        // FROM
+        // GROUP BY
+        // PIVOT 1
         public static final short ID = 6;
 
         /**

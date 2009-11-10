@@ -89,7 +89,7 @@ public class DomainEditor extends BaseEditor {
 
         editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
         editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
-        
+
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
         for (DataType theType : aModel.getDomainDataTypes()) {
             theDataTypes.addElement(theType);
@@ -255,11 +255,12 @@ public class DomainEditor extends BaseEditor {
             }
         }
     }
-    
+
     /**
      * Set the selected main.
      * 
-     * @param aDomain the selected domain
+     * @param aDomain
+     *            the selected domain
      */
     public void setSelectedDomain(Domain aDomain) {
         editingView.getDomainList().setSelectedValue(aDomain, true);

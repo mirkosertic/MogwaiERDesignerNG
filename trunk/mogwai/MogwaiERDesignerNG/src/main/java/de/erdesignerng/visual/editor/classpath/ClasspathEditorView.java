@@ -44,7 +44,7 @@ public class ClasspathEditorView extends JPanel {
     public ClasspathEditorView() {
         initialize();
     }
-    
+
     public DefaultList getClassPath() {
         if (classpath == null) {
             classpath = new DefaultList();
@@ -52,7 +52,7 @@ public class ClasspathEditorView extends JPanel {
         }
         return classpath;
     }
-    
+
     private void initialize() {
 
         String theColDef = "2dlu,fill:150dlu:grow,2dlu,p,2dlu";

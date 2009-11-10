@@ -100,19 +100,20 @@ public class ReverseEngineerEditor extends BaseEditor {
         bindingInfo.configure();
         bindingInfo.model2view();
 
-        //Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show avail. schemas
+        // Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show
+        // avail. schemas
         if (model.getDialect().isSupportsSchemaInformation()) {
-            //initially show available schemas
+            // initially show available schemas
             commandUpdate();
 
-            //initially preselect first schema if possible
+            // initially preselect first schema if possible
             if (schemaList.getSize() > 0) {
-              editingView.getSchemaList().setSelectedIndex(0);
+                editingView.getSchemaList().setSelectedIndex(0);
             }
         }
 
-        //initially preselect first table-generation item, if possible
-        if (editingView.getNaming().getModel().getSize() > 0){
+        // initially preselect first table-generation item, if possible
+        if (editingView.getNaming().getModel().getSize() > 0) {
             editingView.getNaming().setSelectedItem(editingView.getNaming().getModel().getElementAt(0));
         }
     }

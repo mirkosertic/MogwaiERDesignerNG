@@ -29,10 +29,10 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 
 public class AddCommentCommand extends UICommand {
-    
+
     private final Point2D location;
 
-    public AddCommentCommand(ERDesignerComponent component,Point2D aLocation) {
+    public AddCommentCommand(ERDesignerComponent component, Point2D aLocation) {
         super(component);
         location = aLocation;
     }
@@ -70,9 +70,9 @@ public class AddCommentCommand extends UICommand {
                 theCell.transferAttributesToProperties(theCell.getAttributes());
 
                 component.graph.doLayout();
-                
+
                 refreshDisplayOf(null);
-                
+
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

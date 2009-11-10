@@ -121,7 +121,7 @@ public abstract class SQLGenerator<T extends Dialect> {
     public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
 
     public abstract StatementList createAddDomainStatement(Domain aDomain);
-    
+
     public abstract StatementList createDropDomainStatement(Domain domain);
 
     /**

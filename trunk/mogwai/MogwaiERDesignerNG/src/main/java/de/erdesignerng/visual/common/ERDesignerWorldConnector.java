@@ -34,7 +34,7 @@ public interface ERDesignerWorldConnector {
     void setStatusText(String theMessage);
 
     DefaultToolbar getToolBar();
-    
+
     boolean supportsExitApplication();
 
     boolean supportsClasspathEditor();
@@ -44,9 +44,9 @@ public interface ERDesignerWorldConnector {
     boolean supportsPreferences();
 
     boolean supportsRepositories();
-    
+
     boolean supportsHelp();
-    
+
     boolean supportsReporting();
 
     Model createNewModel();

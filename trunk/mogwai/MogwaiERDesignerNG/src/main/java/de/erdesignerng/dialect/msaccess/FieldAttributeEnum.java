@@ -24,56 +24,50 @@ package de.erdesignerng.dialect.msaccess;
  */
 public final class FieldAttributeEnum {
 
-    public static final int DB_NONE = 0;                       // 0
+    public static final int DB_NONE = 0; // 0
 
     /**
-     * Das Feld wird in absteigender Reihenfolge (Z bis A oder
-     * 100 bis 0) sortiert (nur bei einem Field-Objekt in
-     * einer Fields-Auflistung eines Index-Objekts). Wenn Sie
-     * diese Konstante nicht angeben, wird das Feld in
-     * aufsteigender Reihenfolge (A bis Z oder 0 bis 100)
-     * sortiert (Voreinstellung). Dies ist der Standardwert
-     * für Index- und TableDef-Felder (nur Microsoft Jet-
-     * Arbeitsbereich).
+     * Das Feld wird in absteigender Reihenfolge (Z bis A oder 100 bis 0)
+     * sortiert (nur bei einem Field-Objekt in einer Fields-Auflistung eines
+     * Index-Objekts). Wenn Sie diese Konstante nicht angeben, wird das Feld in
+     * aufsteigender Reihenfolge (A bis Z oder 0 bis 100) sortiert
+     * (Voreinstellung). Dies ist der Standardwert für Index- und
+     * TableDef-Felder (nur Microsoft Jet- Arbeitsbereich).
      */
-    public static final int DB_DESCENDING = 1;                 // 2^0
+    public static final int DB_DESCENDING = 1; // 2^0
 
     /**
-     * Die Feldgröße ist festgelegt (Standard bei numerischen
-     * Feldern).
+     * Die Feldgröße ist festgelegt (Standard bei numerischen Feldern).
      */
-    public static final int DB_FIXED_FIELD = 1;                // 2^0
+    public static final int DB_FIXED_FIELD = 1; // 2^0
 
     /**
      * Die Feldgröße kann geändert werden (nur Textfelder).
      */
-    public static final int DB_VARIABLE_FIELD = 2;             // 2^1
+    public static final int DB_VARIABLE_FIELD = 2; // 2^1
 
     /**
-     * Der Feldwert wird für neue Datensätze automatisch um
-     * eins erhöht (mit dem Ergebnis Long Integer) und ergibt
-     * einen eindeutigen Wert, der nicht geändert werden kann
-     * (in einem Microsoft Jet-Arbeitsbereich, werden nur
+     * Der Feldwert wird für neue Datensätze automatisch um eins erhöht (mit dem
+     * Ergebnis Long Integer) und ergibt einen eindeutigen Wert, der nicht
+     * geändert werden kann (in einem Microsoft Jet-Arbeitsbereich, werden nur
      * Microsoft Jet Datenbank (.mdb)-Tabellen unterstützt).
      */
-    public static final int DB_AUTO_INCR_FIELD = 16;           // 2^4
+    public static final int DB_AUTO_INCR_FIELD = 16; // 2^4
 
     /**
      * Der Feldwert kann geändert werden.
      */
-    public static final int DB_UPDATABLE_FIELD = 32;           // 2^5
+    public static final int DB_UPDATABLE_FIELD = 32; // 2^5
 
     /**
-     * Das Feld speichert Informationen für Replikate; dieser
-     * Feldtyp kann nicht gelöscht werden (gilt nur für
-     * Microsoft Jet-Arbeitsbereiche).
+     * Das Feld speichert Informationen für Replikate; dieser Feldtyp kann nicht
+     * gelöscht werden (gilt nur für Microsoft Jet-Arbeitsbereiche).
      */
-    public static final int DB_SYSTEM_FIELD = 8192;            // 2^13
+    public static final int DB_SYSTEM_FIELD = 8192; // 2^13
 
     /**
-     * Das Feld enthält Hyperlink-Informationen (nur
-     * Memofelder).
+     * Das Feld enthält Hyperlink-Informationen (nur Memofelder).
      */
-    public static final int DB_HYPERLINK_FIELD = 32768;        // 2^15
+    public static final int DB_HYPERLINK_FIELD = 32768; // 2^15
 
 }

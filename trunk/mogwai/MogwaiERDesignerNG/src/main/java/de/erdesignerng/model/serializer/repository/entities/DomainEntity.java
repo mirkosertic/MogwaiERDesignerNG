@@ -31,7 +31,7 @@ public class DomainEntity extends ModelEntity {
     private int fraction;
 
     private int scale;
-    
+
     private boolean nullable;
 
     /**

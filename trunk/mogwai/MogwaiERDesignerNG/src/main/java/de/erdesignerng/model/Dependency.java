@@ -22,10 +22,11 @@ public class Dependency {
     public static enum DependencyType {
         DEPENDSON, ISREQUIREDBY;
     }
-    
+
     private DependencyType type;
+
     private Table table;
-    
+
     public Dependency(DependencyType aType, Table aTable) {
         type = aType;
         table = aTable;

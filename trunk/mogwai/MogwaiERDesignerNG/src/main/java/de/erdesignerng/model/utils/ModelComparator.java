@@ -510,7 +510,8 @@ public class ModelComparator {
 
                     // The entity is existant, but the attribute is
                     // missing
-                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
+                            new MissingRelationInfo(theRelationName));
                     aModelSideTableNode.add(missing);
 
                 }
@@ -563,7 +564,8 @@ public class ModelComparator {
 
                     // The entity is existant, but the attribute is
                     // missing
-                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
+                            new MissingRelationInfo(theRelationName));
                     aDBSideTableNode.add(missing);
 
                 }

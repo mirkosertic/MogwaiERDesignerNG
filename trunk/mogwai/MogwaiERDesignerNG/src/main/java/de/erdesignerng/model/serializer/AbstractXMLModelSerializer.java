@@ -176,11 +176,11 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlAttributeSerializer;
     }
 
-    protected AbstractXMLCommentSerializer getXMLCommentSerializer(){
+    protected AbstractXMLCommentSerializer getXMLCommentSerializer() {
         return xmlCommentSerializer;
     }
 
-    protected AbstractXMLDomainSerializer getXMLDomainSerializer(){
+    protected AbstractXMLDomainSerializer getXMLDomainSerializer() {
         return xmlDomainSerializer;
     }
 

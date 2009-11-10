@@ -34,7 +34,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     private int scale = 10;
 
     private DataType concreteType;
-    
+
     private boolean nullable = true;
 
     public Domain() {

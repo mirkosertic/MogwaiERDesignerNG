@@ -101,7 +101,7 @@ public final class ModelIOUtilities {
      *             will be thrown in case of an error
      * @throws IOException
      *             will be thrown in case of an error
-     * @throws ParserConfigurationException 
+     * @throws ParserConfigurationException
      */
     public void serializeModelToXML(Model aModel, Writer aWriter) throws TransformerException, IOException {
         new XMLModel30Serializer(xmlUtils).serializeModelToXML(aModel, aWriter);

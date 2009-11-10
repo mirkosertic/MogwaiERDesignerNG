@@ -22,7 +22,7 @@ import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class EditRelationCommand extends UICommand {
-    
+
     private final Relation relation;
 
     public EditRelationCommand(ERDesignerComponent aComponent, Relation aTable) {
@@ -37,7 +37,7 @@ public class EditRelationCommand extends UICommand {
         if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                
+
                 refreshDisplayOf(relation);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

@@ -69,7 +69,7 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
         DefaultComboBox theAttributes = new DefaultComboBox();
         Vector<Attribute> theElements = new Vector<Attribute>(theRelation.getImportingTable().getAttributes());
         DefaultComboBoxModel theModel = new DefaultComboBoxModel(theElements);
-        
+
         // This is for for the foreign key suggestions
         for (Attribute theAttribute : theAssigned) {
             if (theModel.getIndexOf(theAttribute) < 0) {

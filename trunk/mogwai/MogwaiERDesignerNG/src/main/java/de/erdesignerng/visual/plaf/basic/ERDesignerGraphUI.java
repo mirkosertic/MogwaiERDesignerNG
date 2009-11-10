@@ -222,7 +222,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                         theDialog.applyValues();
 
                         erdesigner.commandNotifyAboutEdit();
-                        
+
                         DefaultGraphCell theCell = (DefaultGraphCell) cell;
                         OutlineComponent.getDefault().refresh(erdesigner.getModel(), theCell.getUserObject());
                     } catch (Exception e1) {

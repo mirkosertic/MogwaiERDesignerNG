@@ -22,7 +22,7 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
 
 public class EditViewCommand extends UICommand {
-    
+
     private final View view;
 
     public EditViewCommand(ERDesignerComponent aComponent, View aTable) {
@@ -37,7 +37,7 @@ public class EditViewCommand extends UICommand {
         if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
-                
+
                 refreshDisplayOf(view);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

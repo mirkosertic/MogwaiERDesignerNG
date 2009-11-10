@@ -26,8 +26,12 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
+    private Connection connection;
+
     @Override
     protected void setUp() throws Exception {
+
+        connection = null;
 
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         Connection theConnection = null;
@@ -50,9 +54,23 @@ public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
         }
 
         theConnection.close();
+        super.setUp();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     protected Connection createConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai", "mogwai");
+        if (connection == null) {
+            connection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
+                    "mogwai");
+        }
+        return connection;
     }
 }

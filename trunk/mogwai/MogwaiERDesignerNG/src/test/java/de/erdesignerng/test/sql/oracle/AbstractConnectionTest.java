@@ -26,8 +26,13 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
+    private Connection connection;
+
     @Override
     protected void setUp() throws Exception {
+
+        connection = null;
+
         Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
         Connection theConnection = null;
         theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
@@ -48,9 +53,24 @@ public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
         }
 
         theConnection.close();
+
+        super.setUp();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     protected Connection createConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE", "mogwai", "mogwai");
+        if (connection == null) {
+            connection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE", "mogwai",
+                    "mogwai");
+        }
+        return connection;
     }
 }

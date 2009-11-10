@@ -44,7 +44,7 @@ public class XML20IOTest extends BaseERDesignerTestCaseImpl {
 
     public void testLoadXML20Model() throws ParserConfigurationException, SAXException, IOException,
             TransformerException {
-        
+
         XMLUtils theUtils = XMLUtils.getInstance();
 
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
@@ -55,10 +55,10 @@ public class XML20IOTest extends BaseERDesignerTestCaseImpl {
 
         StringWriter theStringWriter = new StringWriter();
         theSerializer.serializeModelToXML(theModel, theStringWriter);
-        
+
         String theOriginalFile = readResourceFile("examplemodel.mxm");
         String theNewFile = theStringWriter.toString();
-        
+
         assertTrue(compareStrings(theOriginalFile, theNewFile));
     }
 }

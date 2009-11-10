@@ -40,9 +40,9 @@ import de.mogwai.common.i18n.ResourceHelper;
 public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesignerWorldConnector {
 
     private final DockingHelper dockingHelper;
-    
+
     private final ERDesignerComponent component;
-    
+
     private final ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
     private final DefaultFrameContent content = new DefaultFrameContent();
@@ -56,13 +56,13 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
     public SquirrelMogwaiTabSheet(SquirrelMogwaiController aController) {
 
         controller = aController;
-        
+
         ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
 
         OutlineComponent.initializeComponent();
         SQLComponent.initializeComponent();
         component = ERDesignerComponent.initializeComponent(thePreferences, this);
-                
+
         dockingHelper = new DockingHelper(thePreferences);
         try {
             dockingHelper.initialize();
