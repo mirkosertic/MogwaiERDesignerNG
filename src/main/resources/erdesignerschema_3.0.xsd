@@ -134,7 +134,13 @@
 								</xs:annotation>
 								<xs:complexType>
 									<xs:sequence minOccurs="0" maxOccurs="unbounded">
-										<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                                            <xs:element name="Property" type="PropertyType">
+                                                <xs:annotation>
+                                                    <xs:documentation>A relation layout property</xs:documentation>
+                                                </xs:annotation>
+                                            </xs:element>
+                                        </xs:sequence>
 										<xs:element name="Comment" type="CommentType" minOccurs="0"/>
 										<xs:element name="Mapping" maxOccurs="unbounded">
 											<xs:annotation>
@@ -236,7 +242,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>				
-				
+
 			</xs:sequence>
 			<xs:attribute name="version" type="xs:string" use="required"/>
 		</xs:complexType>
