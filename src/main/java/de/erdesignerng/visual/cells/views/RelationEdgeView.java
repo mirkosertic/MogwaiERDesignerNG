@@ -57,8 +57,6 @@ public class RelationEdgeView extends EdgeView {
 
     public static class MyRenderer extends EdgeRenderer {
 
-        public static final int STYLE_GRAPHVIZ_BEZIER = 14;
-
         @Override
         protected Shape createShape() {
             int n = view.getPointCount();
@@ -137,13 +135,6 @@ public class RelationEdgeView extends EdgeView {
                         double[] xy = spline.getPoint(t);
                         view.sharedPath.lineTo((float) xy[0], (float) xy[1]);
                     }
-                } else if (lineStyle == MyRenderer.STYLE_GRAPHVIZ_BEZIER && n > 2) {
-                    for (int i = 3; i < p.length; i += 3) {
-                        view.sharedPath.curveTo((float) p[i - 2].getX(), (float) p[i - 2].getY(), (float) p[i - 1]
-                                .getX(), (float) p[i - 1].getY(), (float) p[i].getX(), (float) p[i].getY());
-                    }
-
-                    view.sharedPath.lineTo((float) p[n - 1].getX(), (float) p[n - 1].getY());
                 } else {
                     for (int i = 1; i < n - 1; i++) {
                         view.sharedPath.lineTo((float) p[i].getX(), (float) p[i].getY());
