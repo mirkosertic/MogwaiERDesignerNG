@@ -46,7 +46,7 @@ public class XML10IOTest extends BaseERDesignerTestCaseImpl {
             TransformerException {
 
         XMLUtils theUtils = XMLUtils.getInstance();
-        
+
         DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
         Document theDoc = theBuilder.parse(getClass().getResourceAsStream("examplemodel.mxm"));

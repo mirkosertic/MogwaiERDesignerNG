@@ -29,15 +29,16 @@ public class RepositoryIOTest extends AbstractConnectionTest {
     public void testLoadSaveRepository() throws Exception {
 
         Connection theConnection = createConnection();
-        
+
         Class theHibernateDialect = Oracle8iDialect.class;
-        
+
         String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
 
-        String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect, theConnection);
+        String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
+                theConnection);
 
         String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
-        
+
         assertTrue(compareStrings(theOriginalFile, theNewFile));
     }
 }

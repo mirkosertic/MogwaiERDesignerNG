@@ -31,12 +31,12 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 
 public class AddRelationCommand extends UICommand {
-    
+
     private final TableCell exportingTable;
-    
+
     private final TableCell importingTable;
 
-    public AddRelationCommand(ERDesignerComponent component,TableCell aImportingCell, TableCell aExportingCell) {
+    public AddRelationCommand(ERDesignerComponent component, TableCell aImportingCell, TableCell aExportingCell) {
         super(component);
         exportingTable = aExportingCell;
         importingTable = aImportingCell;
@@ -59,14 +59,14 @@ public class AddRelationCommand extends UICommand {
             try {
                 theEditor.applyValues();
                 component.graph.getGraphLayoutCache().insert(theEdge);
-                
+
                 refreshDisplayOf(null);
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }
         }
     }
-    
+
     private Relation createPreparedRelationFor(Table aSourceTable, Table aTargetTable) {
         Relation theRelation = new Relation();
         theRelation.setImportingTable(aSourceTable);
@@ -94,5 +94,5 @@ public class AddRelationCommand extends UICommand {
             }
         }
         return theRelation;
-    }    
+    }
 }

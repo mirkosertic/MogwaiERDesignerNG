@@ -61,8 +61,8 @@ public class ExportGraphicsCommand extends UICommand {
 
                         File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
                         try {
-                            exporter.exportToStream(theItemCellView.getRendererComponent(component.graph, false, false, false),
-                                    new FileOutputStream(theOutputFile));
+                            exporter.exportToStream(theItemCellView.getRendererComponent(component.graph, false, false,
+                                    false), new FileOutputStream(theOutputFile));
                         } catch (Exception e) {
                             getWorldConnector().notifyAboutException(e);
                         }

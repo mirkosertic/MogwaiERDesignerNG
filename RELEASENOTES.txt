@@ -225,3 +225,4 @@ Release 2.5.0
 * Performance tuning in Intelligent Layout functionality
 * Tables are now layed out like a grid after reverse engineering
 * Fixed ClassCastException when moving relation labels
+* Fixed some issues regarding object naming in model repository on different databases

@@ -43,12 +43,12 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
     protected void copyExtendedAttributes(Attribute aSource, AttributeEntity aDestination) {
         aDestination.setDatatype(null);
-        aDestination.setDomain(null);
+        aDestination.setDomainId(null);
         if (!(aSource.getDatatype().isDomain())) {
             aDestination.setDatatype(aSource.getDatatype().getName());
         } else {
             Domain theDomain = (Domain) aSource.getDatatype();
-            aDestination.setDomain(theDomain.getSystemId());
+            aDestination.setDomainId(theDomain.getSystemId());
         }
         aDestination.setSize(aSource.getSize());
         aDestination.setFraction(aSource.getFraction());
@@ -60,8 +60,8 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
     protected void copyExtendedAttributes(AttributeEntity aSource, Attribute aDestination, Model aModel) {
 
-        if (!StringUtils.isEmpty(aSource.getDomain())) {
-            aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomain()));
+        if (!StringUtils.isEmpty(aSource.getDomainId())) {
+            aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomainId()));
         } else {
             aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
         }

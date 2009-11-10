@@ -52,15 +52,15 @@ public class OpenFromRepositoryCommand extends UICommand {
 
             component.setIntelligentLayoutEnabled(false);
 
-            theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(), theRepositoryConnection
-                    .getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection.getUsername(),
-                    theRepositoryConnection.getPassword(), false);
+            theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(),
+                    theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
+                            .getUsername(), theRepositoryConnection.getPassword(), false);
 
-            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
-                    theConnection);
+            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(
+                    theDialect, theConnection);
 
-            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(getDetailComponent(), getPreferences(), theConnection,
-                    theEntries);
+            LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(getDetailComponent(), getPreferences(),
+                    theConnection, theEntries);
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
                 RepositoryEntryDescriptor theDescriptor = theEditor.getModel().getEntry();

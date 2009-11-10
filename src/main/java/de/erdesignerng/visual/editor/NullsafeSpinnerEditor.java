@@ -26,7 +26,6 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
-
 //TODO [mirkosertic] handle setting the size to null here
 public class NullsafeSpinnerEditor extends DefaultEditor {
 

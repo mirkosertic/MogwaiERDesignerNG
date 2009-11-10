@@ -55,8 +55,8 @@ public class SaveToRepositoryCommand extends UICommand {
                     theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
                             .getUsername(), theRepositoryConnection.getPassword(), false);
 
-            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(theDialect,
-                    theConnection);
+            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(
+                    theDialect, theConnection);
 
             SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(getDetailComponent(), theEntries,
                     component.currentRepositoryEntry);

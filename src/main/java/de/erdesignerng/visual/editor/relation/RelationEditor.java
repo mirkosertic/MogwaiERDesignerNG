@@ -115,7 +115,7 @@ public class RelationEditor extends BaseEditor {
         if (!model.getRelations().contains(theRelation)) {
 
             bindingInfo.view2model();
-            
+
             // Try to detect if there were foreign key suggestions used
             for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
                 Attribute theAttribute = theEntry.getValue();
@@ -124,7 +124,7 @@ public class RelationEditor extends BaseEditor {
                     model.addAttributeToTable(theRelation.getImportingTable(), theAttribute);
                 }
             }
-            
+
             model.addRelation(theRelation);
 
         } else {

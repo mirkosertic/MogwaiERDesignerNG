@@ -32,7 +32,7 @@ public interface DataType extends Serializable {
     boolean supportsFraction();
 
     boolean supportsScale();
-    
+
     boolean supportsExtra();
 
     boolean isJDBCStringType();

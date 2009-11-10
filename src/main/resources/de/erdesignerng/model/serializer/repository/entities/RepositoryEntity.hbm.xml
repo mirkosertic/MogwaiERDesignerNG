@@ -12,7 +12,7 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" type="text"/>
+    <property name="comment" column="elementcomment" type="text"/>
     <property name="dialect" not-null="true"/>
     <list cascade="all-delete-orphan" name="domains">
       <key column="repid" foreign-key="mogrep_domains_fk1" not-null="true"/>
@@ -54,7 +54,7 @@
       <list-index column="listindex"/>
       <composite-element class="StringKeyValuePair">
         <property column="propname" name="key" not-null="true"/>
-        <property column="propvalue" name="value" not-null="true"/>
+        <property column="propvalue" name="value" not-null="false"/>
       </composite-element>
     </list>
   </class>

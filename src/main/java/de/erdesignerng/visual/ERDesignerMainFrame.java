@@ -84,7 +84,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
         OutlineComponent.initializeComponent();
         SQLComponent.initializeComponent();
         dockingHelper = new DockingHelper(preferences);
-        
+
         try {
             dockingHelper.initialize();
         } catch (Exception e) {

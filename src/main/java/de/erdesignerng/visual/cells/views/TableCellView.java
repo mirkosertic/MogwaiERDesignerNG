@@ -340,7 +340,7 @@ public class TableCellView extends VertexView {
 
             return this;
         }
-        
+
         public Component getRendererComponent(Table aTable) {
 
             table = aTable;

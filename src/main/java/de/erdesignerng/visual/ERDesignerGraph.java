@@ -69,8 +69,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
     private DisplayOrder displayOrder = DisplayOrder.NATURAL;
 
-    public ERDesignerGraph(Model aDBModel, GraphModel aModel,
-            GraphLayoutCache aLayoutCache) {
+    public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
         super(aModel, aLayoutCache);
         model = aDBModel;
 
@@ -176,7 +175,7 @@ public abstract class ERDesignerGraph extends JGraph {
         }
 
         theModel.remove(theObjectsToRemove.toArray());
-        
+
         refreshOutline();
     }
 
@@ -331,7 +330,7 @@ public abstract class ERDesignerGraph extends JGraph {
      * @param aObject
      */
     public abstract void commandLocateInOutline(Object aObject);
-    
+
     /**
      * Update the outline.
      */

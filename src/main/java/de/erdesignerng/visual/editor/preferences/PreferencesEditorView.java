@@ -54,14 +54,13 @@ public class PreferencesEditorView extends JPanel {
         setLayout(theLayout);
 
         CellConstraints cons = new CellConstraints();
-        
+
         UIInitializer.getInstance().initialize(this);
         add(preferences, cons.xy(2, 2));
 
         JPanel thePanel = new JPanel();
         UIInitializer.getInstance().initialize(thePanel);
-        
-        
+
         theColDef = "60dlu,2dlu:grow,60dlu";
         theRowDef = "p";
 

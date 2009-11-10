@@ -76,7 +76,7 @@ public class DomainEditorView extends DefaultPanel {
     private final DefaultSpinner fractionSpinner = new DefaultSpinner();
 
     private final DefaultSpinner scaleSpinner = new DefaultSpinner();
-    
+
     private DefaultCheckBox nullable;
 
     /**
@@ -385,7 +385,7 @@ public class DomainEditorView extends DefaultPanel {
     public DefaultSpinner getSizeSpinner() {
         return sizeSpinner;
     }
-    
+
     /**
      * Getter method for component Required.
      * 

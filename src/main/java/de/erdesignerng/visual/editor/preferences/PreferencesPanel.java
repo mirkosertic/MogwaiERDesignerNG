@@ -38,13 +38,13 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 public class PreferencesPanel extends DefaultPanel implements ResourceHelperProvider {
 
     private final DefaultSpinner gridSize = new DefaultSpinner();
-    
+
     private final DefaultTextField automaticRelationAttributePattern = new DefaultTextField();
-    
+
     private final DefaultComboBox onDeleteDefault = new DefaultComboBox();
-    
+
     private final DefaultComboBox onUpdateDefault = new DefaultComboBox();
-    
+
     private final DefaultSpinner gridWidth = new DefaultSpinner();
 
     private BindingInfo<ApplicationPreferences> bindinginfo;
@@ -68,14 +68,13 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
 
         add(new DefaultLabel(ERDesignerBundle.AUTOMATICRELATIONATTRIBUTEPATTERN), cons.xy(2, 4));
         add(automaticRelationAttributePattern, cons.xywh(4, 4, 3, 1));
-        
+
         DefaultComboBoxModel theDefaultOnUpdateModel = new DefaultComboBoxModel();
         DefaultComboBoxModel theDefaultOnDeleteModel = new DefaultComboBoxModel();
         for (CascadeType theType : CascadeType.values()) {
             theDefaultOnUpdateModel.addElement(theType);
             theDefaultOnDeleteModel.addElement(theType);
         }
-        
 
         add(new DefaultLabel(ERDesignerBundle.DEFAULTFORONDELETE), cons.xy(2, 6));
         add(onDeleteDefault, cons.xywh(4, 6, 3, 1));
@@ -84,10 +83,9 @@ public class PreferencesPanel extends DefaultPanel implements ResourceHelperProv
         add(new DefaultLabel(ERDesignerBundle.DEFAULTFORONUPDATE), cons.xy(2, 8));
         add(onUpdateDefault, cons.xywh(4, 8, 3, 1));
         onUpdateDefault.setModel(theDefaultOnUpdateModel);
-        
+
         add(new DefaultLabel(ERDesignerBundle.GRIDSIZEAFTERREVERSEENGINEERING), cons.xy(2, 10));
         add(gridWidth, cons.xywh(4, 10, 3, 1));
-        
 
         UIInitializer.getInstance().initialize(this);
 

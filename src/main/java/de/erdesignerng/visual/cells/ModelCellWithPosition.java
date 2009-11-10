@@ -21,12 +21,12 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * Interface for model cells with a position.
- *
+ * 
  * @param <T>
  */
 public interface ModelCellWithPosition<T> extends ModelCell<T> {
 
     Rectangle2D getBounds();
-    
+
     void setBounds(Rectangle2D aBounds);
 }

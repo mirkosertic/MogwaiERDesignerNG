@@ -18,7 +18,9 @@
 package de.erdesignerng.test.sql.postgres;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -26,12 +28,16 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
+    private Connection connection;
+
     @Override
     protected void setUp() throws Exception {
+
+        connection = null;
+
         Class.forName("org.postgresql.Driver").newInstance();
 
-        Connection theConnection = null;
-        theConnection = createConnection();
+        Connection theConnection = createConnection();
 
         Statement theStatement = theConnection.createStatement();
         try {
@@ -50,10 +56,37 @@ public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        DatabaseMetaData theMeta = theConnection.getMetaData();
+        ResultSet theResultSet = theMeta.getTables("mogwai", "%", "%", null);
+        while (theResultSet.next()) {
+            String theTablename = theResultSet.getString("TABLE_NAME");
+            if (theTablename.startsWith("mogrep")) {
+                try {
+                    theStatement.execute("DROP TABLE " + theTablename + " CASCADE");
+                } catch (Exception e) {
+                    // Ignore this
+                }
+            }
+        }
+
+        super.setUp();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     protected Connection createConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai", "mogwai",
-                "mogwai");
+        if (connection == null) {
+            connection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
+                    "mogwai", "mogwai");
+        }
+        return connection;
     }
 }

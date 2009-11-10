@@ -12,7 +12,7 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" not-null="false" type="text"/>
+    <property name="comment" column="elementcomment" not-null="false" type="text"/>
     <list cascade="all-delete-orphan" name="attributes">
       <key column="tableid" foreign-key="mogrep_attributes_fk1"/>
       <list-index column="listindex"/>
@@ -28,7 +28,7 @@
       <list-index column="listindex"/>
       <composite-element class="StringKeyValuePair">
         <property column="propname" name="key" not-null="true"/>
-        <property column="propvalue" name="value" not-null="true"/>
+        <property column="propvalue" name="value" not-null="false"/>
       </composite-element>
     </list>
     <property name="schema" column="dbschema" not-null="false"/>

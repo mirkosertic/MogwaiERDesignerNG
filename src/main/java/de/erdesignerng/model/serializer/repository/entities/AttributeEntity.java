@@ -24,9 +24,11 @@ package de.erdesignerng.model.serializer.repository.entities;
  */
 public class AttributeEntity extends ModelEntity {
     /*
-     * TODO [mirkosertic] Unify de.erdesignerng.model.serializer.repository.entities.AttributeEntity
-     * and de.erdesignerng.model.Attribute to reduce redundancy and increase maintainability.
-     * Then only store de.erdesignerng.model.Attribute to hibernate.
+     * TODO [mirkosertic] Unify
+     * de.erdesignerng.model.serializer.repository.entities.AttributeEntity and
+     * de.erdesignerng.model.Attribute to reduce redundancy and increase
+     * maintainability. Then only store de.erdesignerng.model.Attribute to
+     * hibernate.
      * 
      * Dito for similar classes.
      */
@@ -34,7 +36,7 @@ public class AttributeEntity extends ModelEntity {
 
     private String datatype;
 
-    private String domain;
+    private String domainId;
 
     private Integer size = null;
 
@@ -66,16 +68,16 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @return the domain
      */
-    public String getDomain() {
-        return domain;
+    public String getDomainId() {
+        return domainId;
     }
 
     /**
      * @param domain
      *            the domain to set
      */
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setDomainId(String domain) {
+        this.domainId = domain;
     }
 
     /**

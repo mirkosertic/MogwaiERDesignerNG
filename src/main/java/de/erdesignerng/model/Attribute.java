@@ -24,7 +24,7 @@ import de.erdesignerng.dialect.DataType;
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class Attribute extends OwnedModelItem<Table> implements ModelItemClonable<Attribute> {
-    
+
     public static final int DEFAULT_SCALE = 10;
 
     private DataType datatype;
@@ -40,7 +40,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     private String defaultValue;
 
     private String extra;
-    
+
     /**
      * @return the nullable
      */
@@ -81,13 +81,13 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
     }
 
     public void setDefaultValue(String defaultValue) {
-        synchronized(this) {
+        synchronized (this) {
             this.defaultValue = defaultValue;
         }
     }
 
     public void setNullable(boolean nullable) {
-        synchronized(this) {
+        synchronized (this) {
             this.nullable = nullable;
         }
     }

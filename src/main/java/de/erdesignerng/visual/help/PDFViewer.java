@@ -784,8 +784,8 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      */
     public void doThumbs(boolean show) {
         if (show) {
-            split.setDividerLocation(thumbs.getPreferredSize().width
-                    + thumbscroll.getVerticalScrollBar().getWidth() + 4);
+            split.setDividerLocation(thumbs.getPreferredSize().width + thumbscroll.getVerticalScrollBar().getWidth()
+                    + 4);
         } else {
             split.setDividerLocation(0);
         }

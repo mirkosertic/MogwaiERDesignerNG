@@ -40,7 +40,7 @@ public final class IconFactory {
     public static ImageIcon getMatchingIcon() {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/ok_st_obj.gif"));
     }
-    
+
     public static ImageIcon getEntityIcon() {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/entity_small.gif"));
     }
@@ -50,15 +50,18 @@ public final class IconFactory {
     }
 
     public static ImageIcon getRelationIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/relation1_small.gif"));
+        return new ImageIcon(IconFactory.class.getClassLoader()
+                .getResource("de/erdesignerng/icons/relation1_small.gif"));
     }
 
     public static ImageIcon getAttributeIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/attribute_small.gif"));
+        return new ImageIcon(IconFactory.class.getClassLoader()
+                .getResource("de/erdesignerng/icons/attribute_small.gif"));
     }
 
     public static ImageIcon getExpressionIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/expression_small.gif"));
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource(
+                "de/erdesignerng/icons/expression_small.gif"));
     }
 
     public static ImageIcon getIndexIcon() {

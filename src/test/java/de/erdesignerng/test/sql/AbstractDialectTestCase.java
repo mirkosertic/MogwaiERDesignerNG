@@ -553,7 +553,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
 
         String theStatements = statementListToString(theStatementList, theGenerator);
         System.out.println(theStatements);
-        
+
         String theReference = readResourceFile(basePath + "testAddDomain.sql");
 
         assertTrue(theStatements.equals(theReference));
@@ -638,7 +638,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
 
         HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
         theModel.setModificationTracker(theTracker);
-        
+
         theModel.changeView(theView);
 
         SQLGenerator theGenerator = dialect.createSQLGenerator();
