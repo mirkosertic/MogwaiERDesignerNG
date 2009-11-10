@@ -604,7 +604,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         Model theModel = new Model();
         theModel.setDialect(dialect);
 
-        Table theExporting = createReferenceTable(theModel, "TESTTABLE1", true);
+        createReferenceTable(theModel, "TESTTABLE1", true);
 
         HistoryModificationTracker theTracker = new HistoryModificationTracker(theModel);
         theModel.setModificationTracker(theTracker);
@@ -631,7 +631,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         Model theModel = new Model();
         theModel.setDialect(dialect);
 
-        Table theExporting = createReferenceTable(theModel, "TESTTABLE1", true);
+        createReferenceTable(theModel, "TESTTABLE1", true);
         View theView = new View();
         theView.setName("TESTVIEW");
         theView.setSql("select * from TESTTABLE1");
