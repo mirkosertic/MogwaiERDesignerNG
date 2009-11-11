@@ -21,6 +21,7 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Editor for the database connection.
@@ -41,7 +42,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
         @Override
         public void handleDialectChange(Dialect aDialect) {
-            commandChangeDialect(aDialect);
+            commandChangeDialect(aDialect, getAlias().getText(), getDriver().getText(), getUrl().getText(), getUser().getText(), getPassword().getText());
         }
     };
 
@@ -173,19 +174,41 @@ public class DatabaseConnectionEditor extends BaseEditor {
         }
     }
 
-    private void commandChangeDialect(Dialect aDialect) {
+    private void commandChangeDialect(Dialect aNewDialect, String theUserdefinedAlias, String theUserdefinedDriver, String theUserdefinedUrl,  String theUserdefinedUsername, String theUserdefinedPassword) {
 
         if (!bindingInfo.isBinding()) {
             DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
 
-            if (aDialect != null) {
-                theDescriptor.setDriver(aDialect.getDriverClassName());
-                theDescriptor.setUrl(aDialect.getDriverURLTemplate());
-                theDescriptor.setUser(aDialect.getDefaultUserName());
-                theDescriptor.setDialect(aDialect);
+            if (aNewDialect != null) {
+                // Bug Fixing 2895853 [ERDesignerNG] DbConnEditor *don't* overwrite user input
+                // always respect user input for alias, username and password
+                // over the use of the chosen dialects defaults
+                theDescriptor.setAlias(getSetting(theUserdefinedAlias, ""));
+                theDescriptor.setUser(getSetting(theUserdefinedUsername, aNewDialect.getDefaultUserName()));
+                theDescriptor.setPassword(getSetting(theUserdefinedPassword, ""));
+
+                // here the driver names are copared because a Dialect name change
+                // can result in theDesriptor.getDialect() == null
+                if (aNewDialect.getDriverClassName().equals(theDescriptor.getDriver())) {
+                    // if re-selecting the same DB only set fields to the
+                    // dialects defaults in case they are empty
+                    theDescriptor.setDriver(getSetting(theUserdefinedDriver, aNewDialect.getDriverClassName()));
+                    theDescriptor.setUrl(getSetting(theUserdefinedUrl, aNewDialect.getDriverURLTemplate()));
+                } else {
+                    // if selecting a completely different DB set generally set
+                    // the fields to the dialects defaults
+                    theDescriptor.setDriver(aNewDialect.getDriverClassName());
+                    theDescriptor.setUrl(aNewDialect.getDriverURLTemplate());
+                }
+
+                theDescriptor.setDialect(aNewDialect);
             }
 
             bindingInfo.model2view();
         }
+    }
+
+    private String getSetting(String aPrimarySetting, String aSecondarySetting) {
+        return !StringUtils.isEmpty(aPrimarySetting)?aPrimarySetting:aSecondarySetting;
     }
 }
