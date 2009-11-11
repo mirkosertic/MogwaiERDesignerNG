@@ -45,7 +45,7 @@ import de.erdesignerng.modificationtracker.VetoException;
  * @author $Author: dr-death $
  * @version $Date: 2009-11-06 01:30:00 $
  */
-public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSAccessDialect> {
+public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSAccessDialect>{
 
     private static final int OBJECT_TYPE_TABLE = 1;
 
@@ -55,118 +55,108 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     private static final String COMMA = "," + SPACE;
 
-    private static final String AS = "AS";
+    private static final String AS    = "AS";
 
-    private static final String ON = "ON";
+    private static final String ON    = "ON";
 
-    private static final String AND = "AND";
+    private static final String AND   = "AND";
 
-    private static final String FROM = "FROM";
+    private static final String FROM  = "FROM";
+
+    private static final String WHERE = "WHERE";
 
     public MSAccessReverseEngineeringStrategy(MSAccessDialect aDialect) {
         super(aDialect);
     }
 
-    // @Override
-    // protected String convertColumnTypeToRealType(String aTypeName) {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected String convertColumnTypeToRealType(String aTypeName) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected String convertIndexNameFor(Table aTable, String aIndexName) {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected String convertIndexNameFor(Table aTable, String aIndexName) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected CascadeType getCascadeType(int aValue) {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected CascadeType getCascadeType(int aValue) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected String[] getReverseEngineeringTableTypes() {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected String[] getReverseEngineeringTableTypes() {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected List<TableEntry> getTablesForSchemaEntry(Connection
-    // aConnection, SchemaEntry aEntry) throws SQLException {
-    // String theQuery = "SELECT MSysObjects.Name " +
-    // "FROM MSysObjects LEFT JOIN MSysObjects AS MSysObjects_1 ON MSysObjects.ParentId = MSysObjects_1.Id "
-    // +
-    // "WHERE ((MSysObjects.Flags = ?) AND (MSysObjects.Type = ?) AND (MSysObjects_1.Name = ?));";
-    // List<TableEntry> theList = new ArrayList<TableEntry>();
-    //
-    // PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
-    // theStatement.setInt(1, TABLE_FLAGS_ALL);
-    // theStatement.setInt(2, OBJECT_TYPE_TABLE);
-    // theStatement.setString(3, TABLES);
-    //
-    // ResultSet theTablesResultSet = null;
-    //
-    // try {
-    // theTablesResultSet = theStatement.executeQuery();
-    //
-    // while (theTablesResultSet.next()) {
-    // String theTableName = theTablesResultSet.getString("Name");
-    //
-    // theList.add(new TableEntry(null, null, theTableName, TABLE_TABLE_TYPE));
-    // }
-    //
-    // } finally {
-    // if (theTablesResultSet != null) {
-    // theTablesResultSet.close();
-    // }
-    // theStatement.close();
-    // }
-    //
-    // return theList;
-    // }
+//    @Override
+//    protected List<TableEntry> getTablesForSchemaEntry(Connection aConnection, SchemaEntry aEntry) throws SQLException {
+//        String theQuery = "SELECT MSysObjects.Name " +
+//                          "FROM MSysObjects LEFT JOIN MSysObjects AS MSysObjects_1 ON MSysObjects.ParentId = MSysObjects_1.Id " +
+//                          "WHERE ((MSysObjects.Flags = ?) AND (MSysObjects.Type = ?) AND (MSysObjects_1.Name = ?));";
+//        List<TableEntry> theList = new ArrayList<TableEntry>();
+//
+//        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
+//        theStatement.setInt(1, TABLE_FLAGS_ALL);
+//        theStatement.setInt(2, OBJECT_TYPE_TABLE);
+//        theStatement.setString(3, TABLES);
+//
+//        ResultSet theTablesResultSet = null;
+//
+//        try {
+//            theTablesResultSet = theStatement.executeQuery();
+//
+//            while (theTablesResultSet.next()) {
+//                String theTableName = theTablesResultSet.getString("Name");
+//
+//                theList.add(new TableEntry(null, null, theTableName, TABLE_TABLE_TYPE));
+//            }
+//
+//        } finally {
+//            if (theTablesResultSet != null) {
+//                theTablesResultSet.close();
+//            }
+//            theStatement.close();
+//        }
+//
+//        return theList;
+//    }
 
-    // @Override
-    // protected boolean isValidTable(String aTableName, String aTableType) {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected boolean isValidTable(String aTableName, String aTableType) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected boolean isValidView(String aTableName, String aTableType) {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected boolean isValidView(String aTableName, String aTableType) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected void reverseEngineerAttribute(Model aModel, Attribute
-    // aAttribute, ReverseEngineeringOptions aOptions,
-    // ReverseEngineeringNotifier aNotifier, TableEntry aTable, Connection
-    // aConnection) throws SQLException {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTable, Connection aConnection) throws SQLException {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData,
-    // TableEntry aTableEntry, Table aTable, ReverseEngineeringNotifier
-    // aNotifier, Index aIndex, String aColumnName, short aPosition, String
-    // aASCorDESC) throws SQLException, ReverseEngineeringException {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected void reverseEngineerIndexAttribute(DatabaseMetaData aMetaData, TableEntry aTableEntry, Table aTable, ReverseEngineeringNotifier aNotifier, Index aIndex, String aColumnName, short aPosition, String aASCorDESC) throws SQLException, ReverseEngineeringException {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
-    // @Override
-    // protected void reverseEngineerIndexes(Model aModel, TableEntry
-    // aTableEntry, DatabaseMetaData aMetaData, Table aTable,
-    // ReverseEngineeringNotifier aNotifier) throws SQLException,
-    // ReverseEngineeringException {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected void reverseEngineerIndexes(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData, Table aTable, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
     @Override
-    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
-            Table aTable) throws SQLException, ReverseEngineeringException {
+    protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
         // TODO [dr-death] IMPLEMENT RevEngPK
     }
 
     @Override
-    protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions,
-            ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException,
-            ReverseEngineeringException {
-        String theQuery = "SELECT * " + "FROM MSysRelationships " + "WHERE (szReferencedObject = ?);";
+    protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+        String theQuery = "SELECT * " +
+                          "FROM MSysRelationships " +
+                          "WHERE (szReferencedObject = ?);";
 
         PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
         theStatement.setString(1, aTableEntry.getTableName());
@@ -180,8 +170,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                 Relation theNewRelation = new Relation();
 
                 theNewRelation.setName(theRelations.getString("szRelationship"));
-                theNewRelation.setExportingTable(aModel.getTables().findByName(
-                        theRelations.getString("szReferencedObject")));
+                theNewRelation.setExportingTable(aModel.getTables().findByName(theRelations.getString("szReferencedObject")));
                 theNewRelation.setImportingTable(aModel.getTables().findByName(theRelations.getString("szObject")));
 
                 Integer theNewRelationAttributes = theRelations.getInt("grbit");
@@ -216,29 +205,32 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     }
 
-    // @Override
-    // protected void reverseEngineerView(Model aModel,
-    // ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier,
-    // TableEntry aViewEntry, Connection aConnection) throws SQLException,
-    // ReverseEngineeringException {
-    // throw new UnsupportedOperationException("Not supported yet.");
-    // }
+//    @Override
+//    protected void reverseEngineerView(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aViewEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
     @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
-            throws SQLException, ReverseEngineeringException {
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException, ReverseEngineeringException {
         String theViewSQL = "";
 
         QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
-        QueryFragment theFields = getSQLInputFields(aConnection, aViewEntry.getTableName());
+        QueryFragment theFields  = getSQLInputFields(aConnection, aViewEntry.getTableName());
         QueryFragment theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
-        QueryFragment theFrom = getSQLFromExpression(aConnection, aViewEntry.getTableName());
+        QueryFragment theFrom    = getSQLFromJoinExpression(aConnection, aViewEntry.getTableName());
+        if (StringUtils.isEmpty(theFrom.getLeadingSQL())) {
+            theFrom = getSQLFromTables(aConnection, aViewEntry.getTableName());
+        }
 
-        theViewSQL = merge(theCommand.getLeadingSQL(), theOptions.getLeadingSQL(), SPACE);
-        theViewSQL = merge(theViewSQL, theFields.getLeadingSQL(), SPACE);
-        theViewSQL = merge(theViewSQL, theOptions.getTrailingSQL(), COMMA);
+        QueryFragment theWhere   = getSQLWhereExpression(aConnection, aViewEntry.getTableName());
 
-        theViewSQL = merge(theViewSQL, theFrom.getLeadingSQL(), SPACE);
+        theViewSQL = mergeRight(theCommand.getLeadingSQL(), SPACE, theOptions.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, theFields.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, COMMA, theOptions.getTrailingSQL());
+
+        theViewSQL = mergeRight(theViewSQL, SPACE, theFrom.getLeadingSQL());
+
+        theViewSQL = mergeRight(theViewSQL, SPACE, theWhere.getLeadingSQL());
 
         return theViewSQL;
 
@@ -249,65 +241,85 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
      * 
      * @param theFlags
      * @param theFlag
-     * @return true, if the combination contains the flag false, else
+     * @return true, if the combination contains the flag
+     *         false, else
      */
-    private boolean containsFlag(int theFlags, int theFlag) {
+    private boolean containsFlag(int theFlags, int theFlag){
         return ((theFlags & theFlag) == theFlag);
     }
 
     /**
-     * Merges two strings by forcing a specified separator.
-     * 
-     * @param aFirstString
-     * @param aSecondString
+     * Merges a secondary string right to a primary string by ensuring the
+     * useage of a specified separator in between. If the primary string is
+     * empty <b>the secondary</b> string is returned.
+     *
+     * @param aPrimaryString
      * @param aSeparator
+     * @param aSecondaryString
      * @return merged string
      */
-    private String merge(String aFirstString, String aSecondString, String aSeparator) {
+    private String mergeRight(String aPrimaryString, String aSeparator, String aSecondaryString) {
+        String theResult = ((aPrimaryString == null) ? "" : aPrimaryString);
 
-        String theSQL = ((aFirstString == null) ? "" : aFirstString);
-
-        if (!(StringUtils.isEmpty(aFirstString)) && !(theSQL.endsWith(aSeparator))
-                && !(StringUtils.isEmpty(aSecondString))) {
-            theSQL += aSeparator;
+        if (!(StringUtils.isEmpty(aPrimaryString)) && !(theResult.endsWith(aSeparator))
+                && !(StringUtils.isEmpty(aSecondaryString))) {
+            theResult += aSeparator;
         }
 
-        return theSQL + ((aSecondString == null) ? "" : aSecondString);
+        return theResult + ((aSecondaryString == null) ? "" : aSecondaryString);
+
+    }
+
+    /**
+     * Merges a secondary string left to a primary string by ensuring the
+     * useage of a specified separator in beween. If the primary string is
+     * empty <b>an empty</b> string is returned.
+     *
+     * @param aPrimaryString
+     * @param aSeparator
+     * @param aSecondaryString
+     * @return merged string
+     */
+    private String mergeLeft(String aPrimaryString, String aSeparator, String aSecondaryString) {
+        String thePrimaryString = ((aPrimaryString == null)?"":aPrimaryString);
+        String theSecondaryString = ((aSecondaryString == null)?"":aSecondaryString);
+        String theResult = thePrimaryString;
+
+        if (!(StringUtils.isEmpty(thePrimaryString)) && !(StringUtils.isEmpty(theSecondaryString))) {
+            if ((thePrimaryString.startsWith(aSeparator))) {
+                theResult = theSecondaryString + thePrimaryString;
+            } else {
+                theResult = theSecondaryString + aSeparator + thePrimaryString;
+            }
+        }
+
+        return theResult;
 
     }
 
     /**
      * Returns a ResultSet containing all records that represent a specified
      * attribute of a query.
-     * 
+     *
      * @param aConnection
      * @param aViewName
      * @param theAttributeID
-     * @return ResultSet containing all records that represent a specified
-     *         attribute
+     * @return ResultSet containing all records that represent a specified attribute
      * @throws java.sql.SQLException
      */
-    private ResultSet getSQLProperties(Connection aConnection, String aViewName, Short theAttributeID)
-            throws SQLException {
-        String theQuery = "SELECT MSysQueries.* "
-                + "FROM MSysQueries LEFT JOIN MSysObjects ON MSysQueries.ObjectId = MSysObjects.Id "
-                + "WHERE ((MSysObjects.Name = ?) AND (MSysQueries.Attribute = ?));";
+    private ResultSet getSQLProperties(Connection aConnection, String aViewName, Short theAttributeID) throws SQLException {
+        String theQuery = "SELECT MSysQueries.* " +
+                          "FROM MSysQueries LEFT JOIN MSysObjects ON MSysQueries.ObjectId = MSysObjects.Id " +
+                          "WHERE ((MSysObjects.Name = ?) AND (MSysQueries.Attribute = ?));";
 
         PreparedStatement theStatement = null;
         ResultSet theQueryProperties = null;
 
-        // try {
         theStatement = aConnection.prepareStatement(theQuery);
         theStatement.setString(1, aViewName);
         theStatement.setShort(2, theAttributeID);
 
         theQueryProperties = theStatement.executeQuery();
-
-        // theStatement.close();
-        // } catch (SQLException ex) {
-        // Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE,
-        // null, ex);
-        // }
 
         return theQueryProperties;
     }
@@ -327,41 +339,41 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
         switch (theType) {
 
-        case QueryProperties.QueryType.SELECT:
-            theSQLStart = "SELECT";
-            break;
+            case QueryProperties.QueryType.SELECT:
+                theSQLStart = "SELECT";
+                break;
 
-        case QueryProperties.QueryType.SELECT_INTO:
-            theSQLStart = "SELECT";
-            theSQLEnd = "INTO";
-            break;
+            case QueryProperties.QueryType.SELECT_INTO:
+                theSQLStart = "SELECT";
+                theSQLEnd = "INTO";
+                break;
 
-        case QueryProperties.QueryType.INSERT_INTO:
-            theSQLStart = "INSERT INTO";
-            break;
+            case QueryProperties.QueryType.INSERT_INTO:
+                theSQLStart = "INSERT INTO";
+                break;
 
-        case QueryProperties.QueryType.UPDATE:
-            theSQLStart = "UPDATE";
-            break;
+            case QueryProperties.QueryType.UPDATE:
+                theSQLStart = "UPDATE";
+                break;
 
-        case QueryProperties.QueryType.TRANSFORM:
-            theSQLStart = "TRANSFORM";
-            break;
+            case QueryProperties.QueryType.TRANSFORM:
+                theSQLStart = "TRANSFORM";
+                break;
 
-        case QueryProperties.QueryType.DDL:
-            theSQLStart = theProperties.getString("Expression");
-            break;
+            case QueryProperties.QueryType.DDL:
+                theSQLStart = theProperties.getString("Expression");
+                break;
 
-        case QueryProperties.QueryType.PASS_THROUGH:
-            // nothing to do here
-            break;
+            case QueryProperties.QueryType.PASS_THROUGH:
+                //nothing to do here
+                break;
 
-        case QueryProperties.QueryType.UNION:
-            theSQLMid = "UNION";
-            break;
+            case QueryProperties.QueryType.UNION:
+                theSQLMid = "UNION";
+                break;
 
-        default:
-            throw new UnsupportedOperationException("Unknown QueryType!");
+            default:
+                throw new UnsupportedOperationException("Unknown QueryType!");
 
         }
 
@@ -370,7 +382,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         // TODO [dr-death] implement theSQLMid UNION
-        return new QueryFragment(theType, theSQLStart, theSQLEnd);
+        return new QueryFragment(theSQLStart, theType, theSQLEnd);
 
     }
 
@@ -378,7 +390,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         int theType = QueryProperties.QueryOptions.DEFAULT;
         String theSQLStart = "";
         String theSQLEnd = "";
-        String theSQLAccessOptions = "";
+        String theSQLAccessOptions= "";
 
         ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.QueryOptions.ID);
 
@@ -391,7 +403,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         if (containsFlag(theType, QueryProperties.QueryOptions.DISTINCT)) {
-            theSQLStart = merge(theSQLStart, "DISTINCT", SPACE);
+            theSQLStart = mergeRight(theSQLStart, SPACE, "DISTINCT");
         }
 
         if (containsFlag(theType, QueryProperties.QueryOptions.OWNER_ACCESS_OPTION)) {
@@ -399,16 +411,16 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         if (containsFlag(theType, QueryProperties.QueryOptions.DISTINCTROW)) {
-            theSQLStart = merge(theSQLStart, "DISTINCTROW", SPACE);
+            theSQLStart = mergeRight(theSQLStart, SPACE, "DISTINCTROW");
         }
 
         if (containsFlag(theType, QueryProperties.QueryOptions.TOP_COUNT)) {
-            theSQLStart = merge(theSQLStart, "TOP", SPACE);
-            theSQLStart = merge(theSQLStart, theProperties.getString("Name1"), SPACE);
+            theSQLStart = mergeRight(theSQLStart, SPACE, "TOP");
+            theSQLStart = mergeRight(theSQLStart, SPACE, theProperties.getString("Name1"));
         }
 
         if (containsFlag(theType, QueryProperties.QueryOptions.TOP_PERCENT)) {
-            theSQLStart = merge(theSQLStart, "PERCENT", SPACE);
+            theSQLStart = mergeRight(theSQLStart, SPACE, "PERCENT");
         }
 
         if (theProperties != null) {
@@ -416,7 +428,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         // TODO [dr-death] implement "WITH OWNER ACCESS OPTION"
-        return new QueryFragment(theType, theSQLStart, theSQLEnd);
+        return new QueryFragment(theSQLStart, theType, theSQLEnd);
     }
 
     private QueryFragment getSQLInputFields(Connection aConnection, String aViewName) throws SQLException {
@@ -427,22 +439,19 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputFields.ID);
 
         while (theProperties != null && theProperties.next()) {
-            theField = merge(theProperties.getString("Expression"), AS, SPACE);
-            theField = merge(theField, theProperties.getString("Name1"), SPACE);
-            theSQL = merge(theSQL, theField, COMMA);
+            theField = mergeRight(theProperties.getString("Expression"), SPACE + AS + SPACE, theProperties.getString("Name1"));
+            theSQL = mergeRight(theSQL, COMMA, theField);
         }
 
         if (theProperties != null) {
             theProperties.close();
         }
 
-        return new QueryFragment(theType, theSQL);
+        return new QueryFragment(theSQL, theType);
     }
 
-    private QueryFragment getSQLFromExpression(Connection aConnection, String aViewName) throws SQLException {
-        int theType = 0;
+    private QueryFragment getSQLFromJoinExpression(Connection aConnection, String aViewName) throws SQLException {
         String theSQL = "";
-        boolean hasJoins = false;
         String currentFirstTable = "";
         String currentSecondTable = "";
         String previousFirstTable = "";
@@ -453,52 +462,50 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.JoinTypes.ID);
 
         while (theProperties != null && theProperties.next()) {
-            hasJoins = true;
             previousFirstTable = currentFirstTable;
             previousSecondTable = currentSecondTable;
             currentFirstTable = theProperties.getString("Name1");
             currentSecondTable = theProperties.getString("Name2");
 
             if ((previousFirstTable.length() > 0 && previousSecondTable.length() > 0)
-                    && currentFirstTable.equalsIgnoreCase(previousFirstTable)
-                    && currentSecondTable.equalsIgnoreCase(previousSecondTable)) {
+                && currentFirstTable.equalsIgnoreCase(previousFirstTable)
+                && currentSecondTable.equalsIgnoreCase(previousSecondTable)) {
 
                 // alte Expression mit AND-Verknüpfung fortsetzen
                 if (previousConcatenation != null) {
-                    theSQL = merge(theSQL, previousConcatenation, SPACE);
-                    theSQL = merge(theSQL, "(" + previousExpression + ")", SPACE);
+                    theSQL = mergeRight(theSQL, SPACE, previousConcatenation);
+                    theSQL = mergeRight(theSQL, SPACE, "(" + previousExpression + ")");
                 }
                 previousConcatenation = AND;
                 previousExpression = theProperties.getString("Expression");
             } else {
                 // neue Expression beginnen
                 if (previousConcatenation != null) {
-                    theSQL = merge(theSQL, previousConcatenation, SPACE);
-                    theSQL = merge(theSQL, (AND.equalsIgnoreCase(previousConcatenation) ? "(" : "")
-                            + previousExpression + (AND.equalsIgnoreCase(previousConcatenation) ? ")" : ""), SPACE);
+                    theSQL = mergeRight(theSQL, SPACE, previousConcatenation);
+                    theSQL = mergeRight(theSQL, SPACE, (AND.equalsIgnoreCase(previousConcatenation)?"(":"") + previousExpression + (AND.equalsIgnoreCase(previousConcatenation)?")":""));
                 }
 
                 theSQL = currentFirstTable;
 
                 switch (theProperties.getInt("Flag")) {
-                case QueryProperties.JoinTypes.INNER_JOIN:
-                    theSQL = merge(theSQL, "INNER JOIN", SPACE);
-                    break;
+                    case QueryProperties.JoinTypes.INNER_JOIN:
+                        theSQL = mergeRight(theSQL, SPACE, "INNER JOIN");
+                        break;
 
-                case QueryProperties.JoinTypes.LEFT_JOIN:
-                    theSQL = merge(theSQL, "LEFT JOIN", SPACE);
-                    break;
+                    case QueryProperties.JoinTypes.LEFT_JOIN:
+                        theSQL = mergeRight(theSQL, SPACE, "LEFT JOIN");
+                        break;
 
-                case QueryProperties.JoinTypes.RIGHT_JOIN:
-                    theSQL = merge(theSQL, "RIGHT JOIN", SPACE);
-                    break;
+                    case QueryProperties.JoinTypes.RIGHT_JOIN:
+                        theSQL = mergeRight(theSQL, SPACE, "RIGHT JOIN");
+                        break;
 
-                default:
-                    throw new UnsupportedOperationException("Unknown JOIN-Type!");
+                    default:
+                        throw new UnsupportedOperationException("Unknown JOIN-Type!");
 
                 }
 
-                theSQL = merge(theSQL, currentSecondTable, SPACE);
+                theSQL = mergeRight(theSQL, SPACE, currentSecondTable);
 
                 previousConcatenation = ON;
                 previousExpression = theProperties.getString("Expression");
@@ -506,22 +513,56 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         if (previousConcatenation != null) {
-            theSQL = merge(theSQL, previousConcatenation, SPACE);
-            theSQL = merge(theSQL, (AND.equalsIgnoreCase(previousConcatenation) ? "(" : "") + previousExpression
-                    + (AND.equalsIgnoreCase(previousConcatenation) ? ")" : ""), SPACE);
-        }
-
-        if (!hasJoins) {
-            // TODO [dr-death] use Tables (5) for FROM
+            theSQL = mergeRight(theSQL, SPACE, previousConcatenation);
+            theSQL = mergeRight(theSQL, SPACE, (AND.equalsIgnoreCase(previousConcatenation)?"(":"") + previousExpression + (AND.equalsIgnoreCase(previousConcatenation)?")":""));
         }
 
         if (theProperties != null) {
             theProperties.close();
         }
 
-        theSQL = merge(FROM, theSQL, SPACE);
+        theSQL = mergeLeft(theSQL, SPACE, FROM);
 
-        return new QueryFragment(theType, theSQL);
+        return new QueryFragment(theSQL, null);
+    }
+
+    private QueryFragment getSQLFromTables(Connection aConnection, String aViewName) throws SQLException {
+        String theSQL = "";
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.InputTables.ID);
+
+        while (theProperties != null && theProperties.next()) {
+            String theFieldWithAlias = mergeRight(theProperties.getString("Name1"), SPACE + AS + SPACE, theProperties.getString("Name2"));
+            theSQL = mergeRight(theSQL, COMMA, theFieldWithAlias);
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        theSQL = mergeLeft(theSQL, SPACE, FROM);
+
+        return new QueryFragment(theSQL, null);
+    }
+
+    private QueryFragment getSQLWhereExpression(Connection aConnection, String aViewName) throws SQLException {
+
+        Integer theType = null;
+        String theWhere = "";
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.WhereExpression.ID);
+
+        if (theProperties != null && theProperties.next()) {
+            theWhere = theProperties.getString("Expression");
+            theType = theProperties.getInt("Flag");
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        theWhere = mergeLeft(theWhere, SPACE, WHERE);
+
+        return new QueryFragment(theWhere, theType);
+
     }
 
 }

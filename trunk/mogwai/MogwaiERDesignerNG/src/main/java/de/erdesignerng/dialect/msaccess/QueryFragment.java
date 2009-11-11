@@ -17,29 +17,35 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author $Author: dr-death $
  * @version $Date: 2009-11-09 09:30:00 $
  */
 public class QueryFragment {
-    private Integer propertyType = null;
+    private Integer properties = null;
 
     private String leadingSQL = "";
 
     private String trailingSQL = "";
 
-    public QueryFragment(Integer propertyType, String leadingSQL) {
-        this(propertyType, leadingSQL, "");
+    public QueryFragment(String leadingSQL) {
+        this(leadingSQL, null);
     }
 
-    public QueryFragment(Integer propertyType, String leadingSQL, String trailingSQL) {
-        this.propertyType = propertyType;
-        this.leadingSQL = leadingSQL;
-        this.trailingSQL = trailingSQL;
+    public QueryFragment(String leadingSQL, Integer properties) {
+        this(leadingSQL, properties, "");
+    }
+
+    public QueryFragment(String leadingSQL, Integer properties, String trailingSQL) {
+        this.leadingSQL = (StringUtils.isEmpty(leadingSQL))?"":leadingSQL;
+        this.properties = properties;
+        this.trailingSQL = (StringUtils.isEmpty(trailingSQL))?"":trailingSQL;
     }
 
     public Integer getPropertyType() {
-        return propertyType;
+        return properties;
     }
 
     public String getLeadingSQL() {
