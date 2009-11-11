@@ -151,12 +151,8 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
             url = getClass().getResource(name);
 
             icon = new ImageIcon(url);
-            if (icon == null) {
-                System.out.println("Couldn't find " + url);
-            }
         } catch (Exception e) {
-            System.out.println("Couldn't find " + getClass().getName() + "/" + name);
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return icon;
     }
@@ -459,7 +455,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
         } else if (pagenum >= curFile.getNumPages()) {
             pagenum = curFile.getNumPages() - 1;
         }
-        // System.out.println("Going to page " + pagenum);
         curpage = pagenum;
 
         // update the page text field
@@ -523,8 +518,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
             Rectangle2D clip = null;
 
             // wait for the current page
-            // System.out.println("Preparer waiting for page " + (waitforPage +
-            // 1));
             if (fspp != null) {
                 fspp.waitForCurrentPage();
                 size = fspp.getCurSize();
@@ -537,17 +530,10 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
 
             if (waitforPage == curpage) {
                 // don't go any further if the user changed pages.
-                // System.out.println("Preparer generating page " + (prepPage +
-                // 2));
                 PDFPage pdfPage = curFile.getPage(prepPage + 1, true);
                 if (pdfPage != null && waitforPage == curpage) {
                     // don't go any further if the user changed pages
-                    // System.out.println("Generating image for page " +
-                    // (prepPage + 2));
-
                     pdfPage.getImage(size.width, size.height, clip, null, true, true);
-                    // System.out.println("Generated image for page "+
-                    // (prepPage+2));
                 }
             }
         }
@@ -752,9 +738,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      * PDFViewer is the only application running.
      */
     public void doQuit() {
-        // if (thumbs != null) {
-        // thumbs.stop();
-        // }
         doClose();
         dispose();
         setVisible(false);
@@ -805,9 +788,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
 
     public void doZoom(double factor) {
     }
-
-    // public void doOpenMeetingDoc(DocumentInfo doc) {
-    // }
 
     /**
      * Goes to the next page
@@ -891,7 +871,6 @@ public class PDFViewer extends JDialog implements KeyListener, TreeSelectionList
      *            second time full screen mode is entered.
      */
     public void setFullScreenMode(boolean full, boolean force) {
-        // curpage= -1;
         if (full && fullScreen == null) {
             fullScreenAction.setEnabled(false);
             new Thread(new PerformFullScreenMode(force), getClass().getName() + ".setFullScreenMode").start();
