@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.common;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,7 +81,6 @@ import de.erdesignerng.visual.cells.views.CellViewFactory;
 import de.erdesignerng.visual.export.Exporter;
 import de.erdesignerng.visual.export.ImageExporter;
 import de.erdesignerng.visual.export.SVGExporter;
-import de.erdesignerng.visual.help.PDFViewer;
 import de.erdesignerng.visual.plaf.basic.ERDesignerGraphUI;
 import de.erdesignerng.visual.tools.CommentTool;
 import de.erdesignerng.visual.tools.EntityTool;
@@ -1109,10 +1109,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      * Display the application help screen.
      */
     protected void commandShowHelp() {
-        PDFViewer theViewer = new PDFViewer(scrollPane, true, getResourceHelper().getText(ERDesignerBundle.ONLINEHELP));
         try {
-            theViewer.setMinimumSize(new Dimension(640, 480));
-            theViewer.openFile(preferences.getOnlineHelpPDFFile());
+            File theFile = preferences.getOnlineHelpPDFFile();            
+            Desktop.getDesktop().open(theFile);            
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }
