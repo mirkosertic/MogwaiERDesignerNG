@@ -223,6 +223,7 @@ Release 2.5.0
 * Implemented FR 2891900 [ERDesignerNG] export to *.svg - create *real* SVG-XML
 * Implemented FR 2893184 [ERDesignerNG] (de)select all function in tableselect dialog
 * Implemented FR 2895534 [ERDesignerNG] show RevEngEd only on DBs with schema support
+* Implemented FR 2896460 [ERDesignerNG] Replace PDF Help viewer
 * Fixed typos in Reverse-Engineer dialog (german) and RelationEditor (german)
 * Performance tuning in Intelligent Layout functionality
 * Tables are now layed out like a grid after reverse engineering
