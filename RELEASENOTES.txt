@@ -211,6 +211,7 @@ Release 2.5.0
 * Bug Fixing 2892966 [ERDesignerNG] PostgreSQL fails to RevEng schemas w domains
 * Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows VARCHAR(0)
 * Bug Fixing 2895853 [ERDesignerNG] DbConnEditor *don't* overwrite user input
+* Bug Fixing 2895110 [ERDesignerNG] create *valid* UTF-8 encoded MXM files
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships

@@ -22,12 +22,16 @@ package de.erdesignerng;
  * 
  * @author msertic
  */
-public final class PlattformConfig {
+public final class PlatformConfig {
 
-    private PlattformConfig() {
+    private PlatformConfig() {
     }
 
     public static String getLineSeparator() {
         return System.getProperty("line.separator");
+    }
+    
+    public static String getXMLEncoding() {
+        return "UTF-8";
     }
 }

@@ -38,6 +38,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.XMLUtils;
 
@@ -65,7 +66,7 @@ public final class DataTypeIO {
 
     private static DataTypeIO me;
 
-    private XMLUtils xmlUtils;
+    private final XMLUtils xmlUtils;
 
     public static DataTypeIO getInstance() throws ParserConfigurationException {
         if (me == null) {
@@ -187,6 +188,6 @@ public final class DataTypeIO {
             theRootElement.appendChild(theTypeElement);
         }
 
-        xmlUtils.transform(theDocument, new OutputStreamWriter(aStream, "UTF-8"));
+        xmlUtils.transform(theDocument, new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding()));
     }
 }

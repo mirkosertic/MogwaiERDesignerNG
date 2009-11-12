@@ -18,7 +18,8 @@
 package de.erdesignerng.visual.common;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +28,7 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
@@ -83,7 +85,7 @@ public class SaveToFileCommand extends UICommand {
                 aFile.renameTo(theBakFile);
             }
 
-            ModelIOUtilities.getInstance().serializeModelToXML(theModel, new FileWriter(aFile));
+            ModelIOUtilities.getInstance().serializeModelToXML(theModel, new OutputStreamWriter(new FileOutputStream(aFile), PlatformConfig.getXMLEncoding()));
 
             getWorldConnector().initTitle();
 
