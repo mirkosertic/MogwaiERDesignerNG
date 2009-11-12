@@ -34,6 +34,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import de.erdesignerng.PlatformConfig;
+
 /**
  * Utility class to deal with XML io.
  * 
@@ -43,11 +45,11 @@ public final class XMLUtils {
 
     private static XMLUtils me;
 
-    private DocumentBuilderFactory documentBuilderFactory;
+    private final DocumentBuilderFactory documentBuilderFactory;
 
-    private DocumentBuilder documentBuilder;
+    private final DocumentBuilder documentBuilder;
 
-    private TransformerFactory transformerFactory;
+    private final TransformerFactory transformerFactory;
 
     private XMLUtils() throws ParserConfigurationException {
         documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -74,6 +76,7 @@ public final class XMLUtils {
     public void transform(Document aDocument, Writer aWriter) throws TransformerException {
         Transformer theTransformer = transformerFactory.newTransformer();
         theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig.getXMLEncoding());
         theTransformer.transform(new DOMSource(aDocument), new StreamResult(aWriter));
     }
 }

@@ -19,11 +19,13 @@ package de.erdesignerng.visual.common;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.LongRunningTask;
@@ -31,7 +33,7 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 
 public class GenerateDocumentationCommand extends UICommand {
 
-    private File JRXMLFile;
+    private final File JRXMLFile;
 
     public GenerateDocumentationCommand(ERDesignerComponent component, File aJRXMLFile) {
         super(component);
@@ -53,7 +55,7 @@ public class GenerateDocumentationCommand extends UICommand {
 
                 ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
                 File theTempFile = File.createTempFile("mogwai", ".mxm");
-                theUtils.serializeModelToXML(component.getModel(), new FileWriter(theTempFile));
+                theUtils.serializeModelToXML(component.getModel(), new OutputStreamWriter(new FileOutputStream(theTempFile),PlatformConfig.getXMLEncoding()));
 
                 aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
 

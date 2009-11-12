@@ -32,6 +32,7 @@ import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
+import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
@@ -56,7 +57,7 @@ public class SVGExporter implements Exporter {
             aGraph.setDoubleBuffered(false);
             aGraph.paint(theSvgGenerator);
             aGraph.setDoubleBuffered(theDoubleBufferted);
-            Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
+            Writer theWriter = new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding());
             theSvgGenerator.stream(theWriter, false);
             theRepaintManager.setDoubleBufferingEnabled(true);
 
@@ -80,7 +81,7 @@ public class SVGExporter implements Exporter {
         aComponent.setSize(theSize);
 
         aComponent.paint(theSvgGenerator);
-        Writer theWriter = new OutputStreamWriter(aStream, "UTF-8");
+        Writer theWriter = new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding());
         theSvgGenerator.stream(theWriter, false);
         theRepaintManager.setDoubleBufferingEnabled(true);
 
