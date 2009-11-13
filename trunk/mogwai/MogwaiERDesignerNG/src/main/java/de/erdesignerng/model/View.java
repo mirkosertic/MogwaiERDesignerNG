@@ -77,7 +77,7 @@ public class View extends OwnedModelItem<Model> {
      * @return true if it was modified, else false
      */
     public boolean isModified(View aView) {
-        if (!sql.equals(aView.getSql())) {
+        if (!StringUtils.equals(sql, aView.getSql())) {
             return true;
         }
         return false;
