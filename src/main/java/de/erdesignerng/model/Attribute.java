@@ -185,7 +185,10 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemClonabl
         }
 
         if (datatype.supportsSize()) {
-            if (size != aAttribute.getSize()) {
+            if (size != null && !size.equals(aAttribute.getSize())) {
+                return true;
+            }
+            if (size == null && aAttribute.getSize() != null) {
                 return true;
             }
         }
