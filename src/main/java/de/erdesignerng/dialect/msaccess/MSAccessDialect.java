@@ -24,38 +24,47 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import java.util.Locale;
 
 /**
  * Works only on Windows-based Systems due to the need of the JET/ACE-Engine.
- * 
- * JET 3 for MSAccess 95 (MSOffice 7 JET 3.5 for MSAccess 97 (MSOffice 8) JET 4
- * for MSAccess 2000 to 2003 (MSOffice 9 to 11)
- * 
- * ACE for MSAccess 2007+ (MSOffice 12)
+ *
+ * Jet 1.0 - Access  1.0 - n. a.
+ * Jet 1.1 - Access  1.1 - n. a.          - 1992
+ * Jet 2.X - Access  2.0 - Office 4.3 Pro - 1993
+ * Jet 3.0 - Access  7.0 - Office 95      - 1995
+ * Jet 3.5 - Access  8.0 - Office 97      - 1997
+ * Jet 4.0 - Access  9.0 - Office 2000    - 1999
+ * Jet 4.0 - Access 10.0 - Office 2002    - 2001
+ * Jet 4.0 - Access 11.5 - Office 2003    - 2003
+ * ACE     - Access 12.0 - Office 2007    - 2007
  * 
  * While the JET-Database-Engine comes with the Windows-OS, the new ACE-Engine
  * comes with the installation of MSOffice 12 or by download from:
  * http://www.microsoft
  * .com/downloads/details.aspx?displaylang=de&FamilyID=7554f536
  * -8c28-4598-9b72-ef94e038c891
+ * http://en.wikipedia.org/wiki/Microsoft_Access
+ * http://en.wikipedia.org/wiki/Microsoft_Jet_Database_Engine
  * 
  * @author $Author: dr-death $
  * @version $Date: 2009-11-06 01:30:00 $
  */
 public class MSAccessDialect extends SQL92Dialect {
 
+    private static final int ERROR_FILE_NOT_FOUND = -1811;
+
+    private static final int ERROR_FILE_TOO_NEW = -1028;
+
     @Override
-    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
-            String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, SQLException {
+    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+
         File workgroupFile = null;
         String systemDB = "";
 
@@ -63,21 +72,52 @@ public class MSAccessDialect extends SQL92Dialect {
             workgroupFile = new File(getClass().getResource("/de/erdesignerng/System.mdw").toURI());
             systemDB = "SystemDB=" + workgroupFile.getAbsoluteFile() + ";";
         } catch (URISyntaxException ex) {
-            Logger.getLogger(MSAccessDialect.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("File '" + aUrl + "' not found!");
         }
 
         String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
-        Connection connection = DriverManager.getConnection(database, aUser, aPassword);
+        Connection connection = null;
 
-        // Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
-        // im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
-        // Um die Einstellungen der "echten" System.mdw in
-        // %HOMEDRIVE%%HOMEPATH%\Anwendungsdaten\Microsoft\Access\System.mdw
-        // nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
-        Statement statement = connection.createStatement();
-        statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
-        statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
-        statement.execute("GRANT SELECT ON TABLE MSysQueries TO " + aUser);
+        try{
+            connection = DriverManager.getConnection(database, aUser, aPassword);
+
+            // Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
+            // im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
+            // Um die Einstellungen der "echten" System.mdw in
+            // %HOMEDRIVE%%HOMEPATH%\Anwendungsdaten\Microsoft\Access\System.mdw
+            // nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
+            Statement statement = connection.createStatement();
+            statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
+            statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
+            statement.execute("GRANT SELECT ON TABLE MSysQueries TO " + aUser);
+
+        } catch (SQLException e) {
+            switch (e.getErrorCode()) {
+                case ERROR_FILE_TOO_NEW:
+                    int theVersion = MSAccessFormats.getVersion(aUrl);
+
+                    if (theVersion == MSAccessFormats.VERSION_2007) {
+                        throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu öffnen.\n" +
+                                               "Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
+                                               "Diese können sie hier herunterladen:\n" +
+                                               "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage());
+                    } else if ((theVersion == MSAccessFormats.VERSION_200X) || (theVersion == MSAccessFormats.VERSION_2000) || (theVersion == MSAccessFormats.VERSION_2002) || (theVersion == MSAccessFormats.VERSION_2003)) {
+                        throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu öffnen.\n" +
+                                               "Dazu benötigen sie mindestens die Jet 4.0 Engine.\n\n" +
+                                               "Diese können sie hier herunterladen:\n" +
+                                               "http://www.microsoft.com/downloads/details.aspx?familyid=2deddec4-350e-4cd0-a12a-d7f70a153156&displaylang=" + Locale.getDefault().getLanguage());
+                    }
+                    break;
+
+                case ERROR_FILE_NOT_FOUND:
+                    throw new SQLException("Die Datei '" + aUrl + "' konnte nicht gefunden werden!");
+
+                default:
+                    throw new SQLException(e.getMessage());
+            }
+
+            throw new SQLException(e.getMessage());
+        }
 
         return connection;
     }
@@ -132,7 +172,7 @@ public class MSAccessDialect extends SQL92Dialect {
 
     @Override
     public String getDriverURLTemplate() {
-        return "C:\\<dbname.mdb>";
+        return "C:\\<filename.mdb>";
     }
 
     @Override
