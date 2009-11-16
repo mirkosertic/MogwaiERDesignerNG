@@ -22,10 +22,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
@@ -46,6 +45,8 @@ import de.erdesignerng.modificationtracker.VetoException;
  * @version $Date: 2009-11-06 01:30:00 $
  */
 public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<MSAccessDialect>{
+
+    private static final Logger LOGGER = Logger.getLogger(MSAccessReverseEngineeringStrategy.class);
 
     private static final int OBJECT_TYPE_TABLE = 1;
 
@@ -188,11 +189,11 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                 try {
                     aModel.addRelation(theNewRelation);
                 } catch (ElementAlreadyExistsException ex) {
-                    Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.fatal(ex.getMessage());
                 } catch (ElementInvalidNameException ex) {
-                    Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.fatal(ex.getMessage());
                 } catch (VetoException ex) {
-                    Logger.getLogger(MSAccessReverseEngineeringStrategy.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.fatal(ex.getMessage());
                 }
             }
 
