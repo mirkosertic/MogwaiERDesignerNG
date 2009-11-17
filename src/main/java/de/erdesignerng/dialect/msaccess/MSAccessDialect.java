@@ -44,14 +44,14 @@ import java.util.Locale;
  * Jet 4.0 - Access 10.0 - Office 2002    - 2001
  * Jet 4.0 - Access 11.5 - Office 2003    - 2003
  * ACE     - Access 12.0 - Office 2007    - 2007
+ *
+ * @see http://en.wikipedia.org/wiki/Microsoft_Access
+ * @see http://en.wikipedia.org/wiki/Microsoft_Jet_Database_Engine
  * 
  * While the JET-Database-Engine comes with the Windows-OS, the new ACE-Engine
  * comes with the installation of MSOffice 12 or by download from:
- * http://www.microsoft
- * .com/downloads/details.aspx?displaylang=de&FamilyID=7554f536
- * -8c28-4598-9b72-ef94e038c891
- * http://en.wikipedia.org/wiki/Microsoft_Access
- * http://en.wikipedia.org/wiki/Microsoft_Jet_Database_Engine
+ * @see http://www.microsoft.com/downloads/details.aspx?FamilyID=
+ * 7554f536-8c28-4598-9b72-ef94e038c891
  * 
  * @author $Author: dr-death $
  * @version $Date: 2009-11-06 01:30:00 $
@@ -100,7 +100,8 @@ public class MSAccessDialect extends SQL92Dialect {
                         throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu öffnen.\n" +
                                                "Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
                                                "Diese können sie hier herunterladen:\n" +
-                                               "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage());
+                                               "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage() + "\n" +
+                                               "http://www.microsoft.com/downloads/details.aspx?FamilyID=6f4edeed-d83f-4c31-ae67-458ae365d420&displaylang=" + Locale.getDefault().getLanguage());
                     } else if ((theVersion == MSAccessFormats.VERSION_200X) || (theVersion == MSAccessFormats.VERSION_2000) || (theVersion == MSAccessFormats.VERSION_2002) || (theVersion == MSAccessFormats.VERSION_2003)) {
                         throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu öffnen.\n" +
                                                "Dazu benötigen sie mindestens die Jet 4.0 Engine.\n\n" +
