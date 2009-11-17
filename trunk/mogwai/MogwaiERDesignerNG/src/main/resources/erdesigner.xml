@@ -2,114 +2,114 @@
 <Resource>
 	<Bundle interface="de.erdesignerng.ERDesignerBundle">
 		<Entry id="TITLE">
-			<Text>Mogwai ER-Designer NG</Text>		
+			<Text>Mogwai ER-Designer NG</Text>
 		</Entry>
 		<Entry id="FILE">
-			<Text lang="de">Datei</Text>		
-			<Text lang="en">File</Text>					
+			<Text lang="de">Datei</Text>
+			<Text lang="en">File</Text>
 		</Entry>
 		<Entry id="RECENTLYUSEDFILES">
-			<Text lang="de">Zuletzt benutzte Dateien</Text>		
-			<Text lang="en">Recently used files</Text>					
+			<Text lang="de">Zuletzt benutzte Dateien</Text>
+			<Text lang="en">Recently used files</Text>
 		</Entry>
 		<Entry id="NEWMODEL">
-			<Text lang="de">Neues Modell</Text>		
+			<Text lang="de">Neues Modell</Text>
 			<Text lang="en">New model</Text>
 			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODEL">
-			<Text lang="de">Modell speichern</Text>		
-			<Text lang="en">Save model</Text>					
+			<Text lang="de">Modell speichern</Text>
+			<Text lang="en">Save model</Text>
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODELAS">
-			<Text lang="de">Modell speichern als...</Text>		
-			<Text lang="en">Save model as...</Text>					
+			<Text lang="de">Modell speichern als...</Text>
+			<Text lang="en">Save model as...</Text>
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SAVEMODELTODB">
-			<Text lang="de">Modell in Repository speichern...</Text>		
-			<Text lang="en">Save model to repository...</Text>					
+			<Text lang="de">Modell in Repository speichern...</Text>
+			<Text lang="en">Save model to repository...</Text>
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="LOADMODELFROMDB">
-			<Text lang="de">Modell aus Repository laden...</Text>		
-			<Text lang="en">Load model from repository...</Text>					
+			<Text lang="de">Modell aus Repository laden...</Text>
+			<Text lang="en">Load model from repository...</Text>
 			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="LOADMODEL">
-			<Text lang="de">Modell laden...</Text>		
-			<Text lang="en">Load model...</Text>					
+			<Text lang="de">Modell laden...</Text>
+			<Text lang="en">Load model...</Text>
 			<Icon>/de/erdesignerng/icons/folder.png</Icon>
 		</Entry>
 		<Entry id="EXITPROGRAM">
-			<Text lang="de">Programm beenden</Text>		
-			<Text lang="en">Exit</Text>					
+			<Text lang="de">Programm beenden</Text>
+			<Text lang="en">Exit</Text>
 			<Icon>/de/erdesignerng/icons/door_in.png</Icon>
 		</Entry>
 		<Entry id="EXPORT">
-			<Text lang="de">Export</Text>		
-			<Text lang="en">Export</Text>					
+			<Text lang="de">Export</Text>
+			<Text lang="en">Export</Text>
 		</Entry>
 		<Entry id="ASSVG">
-			<Text lang="de">als SVG</Text>		
-			<Text lang="en">as SVG</Text>					
+			<Text lang="de">als SVG</Text>
+			<Text lang="en">as SVG</Text>
 		</Entry>
 		<Entry id="ASPNG">
-			<Text lang="de">als PNG</Text>		
-			<Text lang="en">as PNG</Text>					
+			<Text lang="de">als PNG</Text>
+			<Text lang="en">as PNG</Text>
 		</Entry>
 		<Entry id="ASJPEG">
-			<Text lang="de">als JPEG</Text>		
-			<Text lang="en">as JPEG</Text>					
+			<Text lang="de">als JPEG</Text>
+			<Text lang="en">as JPEG</Text>
 		</Entry>
 		<Entry id="ASBMP">
-			<Text lang="de">als BMP</Text>		
-			<Text lang="en">as BMP</Text>					
+			<Text lang="de">als BMP</Text>
+			<Text lang="en">as BMP</Text>
 		</Entry>
 		<Entry id="DATABASE">
-			<Text lang="de">Datenbank</Text>		
-			<Text lang="en">Database</Text>					
+			<Text lang="de">Datenbank</Text>
+			<Text lang="en">Database</Text>
 		</Entry>
 		<Entry id="CLASSPATH">
-			<Text lang="de">Klassenpfad...</Text>		
-			<Text lang="en">Classpath...</Text>					
+			<Text lang="de">Klassenpfad...</Text>
+			<Text lang="en">Classpath...</Text>
 		</Entry>
 		<Entry id="DBCONNECTION">
-			<Text lang="de">Datenbankverbindung...</Text>		
-			<Text lang="en">DB - Connection...</Text>					
+			<Text lang="de">Datenbankverbindung...</Text>
+			<Text lang="en">DB - Connection...</Text>
 			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
 		</Entry>
 		<Entry id="REPOSITORYCONNECTION">
-			<Text lang="de">Verbindung zum Repository...</Text>		
-			<Text lang="en">Repository connection...</Text>					
+			<Text lang="de">Verbindung zum Repository...</Text>
+			<Text lang="en">Repository connection...</Text>
 			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
 		</Entry>
 		<Entry id="STOREDDBCONNECTION">
-			<Text lang="de">Letzte Datenbankverbindungen</Text>		
-			<Text lang="en">Last DB - Connections</Text>					
+			<Text lang="de">Letzte Datenbankverbindungen</Text>
+			<Text lang="en">Last DB - Connections</Text>
 			<Icon>/de/erdesignerng/icons/database_connect.png</Icon>
 		</Entry>
 		<Entry id="REVERSEENGINEER">
-			<Text lang="de">Reverse engineer...</Text>		
-			<Text lang="en">Reverse engineer...</Text>					
+			<Text lang="de">Reverse engineer...</Text>
+			<Text lang="en">Reverse engineer...</Text>
 		</Entry>
 		<Entry id="DOMAINS">
-			<Text lang="de">Domänen...</Text>		
-			<Text lang="en">Domains...</Text>					
+			<Text lang="de">Domänen...</Text>
+			<Text lang="en">Domains...</Text>
 		</Entry>
 		<Entry id="VIEW">
-			<Text lang="de">Ansicht</Text>		
-			<Text lang="en">View</Text>					
+			<Text lang="de">Ansicht</Text>
+			<Text lang="en">View</Text>
 		</Entry>
 		<Entry id="ZOOMIN">
-			<Text lang="de">Vergrössern</Text>		
-			<Text lang="en">Zoom in</Text>					
+			<Text lang="de">Vergrössern</Text>
+			<Text lang="en">Zoom in</Text>
 			<Icon>/de/erdesignerng/icons/magnifier_zoom_in.png</Icon>
 		</Entry>
 		<Entry id="ZOOMOUT">
-			<Text lang="de">Verkleinern</Text>		
-			<Text lang="en">Zoom out</Text>					
+			<Text lang="de">Verkleinern</Text>
+			<Text lang="en">Zoom out</Text>
 			<Icon>/de/erdesignerng/icons/magnifier_zoom_out.png</Icon>
 		</Entry>
 		<Entry id="HAND">
@@ -125,101 +125,101 @@
 			<Icon>/de/erdesignerng/icons/view.gif</Icon>
 		</Entry>
 		<Entry id="ZOOM">
-			<Text lang="de">Vergrösserung</Text>		
+			<Text lang="de">Vergrösserung</Text>
 			<Text lang="en">Zoom</Text>
 		</Entry>
 		<Entry id="CLASSPATHCONFIGURATION">
-			<Text lang="de">Konfiguration Treiber-Klassenpfad</Text>		
-			<Text lang="en">Driver classpath configuration</Text>					
+			<Text lang="de">Konfiguration Treiber-Klassenpfad</Text>
+			<Text lang="en">Driver classpath configuration</Text>
 		</Entry>
 		<Entry id="CONNECTIONCONFIGURATION">
-			<Text lang="de">Konfiguration Datenbankverbindung</Text>		
-			<Text lang="en">Database connection configuration</Text>					
+			<Text lang="de">Konfiguration Datenbankverbindung</Text>
+			<Text lang="en">Database connection configuration</Text>
 		</Entry>
 		<Entry id="ENTITYEDITOR">
-			<Text lang="de">Tabelle editieren</Text>		
-			<Text lang="en">Edit table</Text>					
+			<Text lang="de">Tabelle editieren</Text>
+			<Text lang="en">Edit table</Text>
 		</Entry>
 		<Entry id="RELATIONEDITOR">
-			<Text lang="de">Relation editieren</Text>		
-			<Text lang="en">Edit relation</Text>					
+			<Text lang="de">Relation editieren</Text>
+			<Text lang="en">Edit relation</Text>
 		</Entry>
 		<Entry id="NAME">
-			<Text lang="de">Name</Text>		
-			<Text lang="en">Name</Text>					
+			<Text lang="de">Name</Text>
+			<Text lang="en">Name</Text>
 		</Entry>
 		<Entry id="ATTRIBUTEISUSEDINFOREIGNKEYS">
-			<Text lang="de">Das Attribut ist Teil eines Fremdschlüssels</Text>		
-			<Text lang="en">The attribute is part of a foreign key relation</Text>					
+			<Text lang="de">Das Attribut ist Teil eines Fremdschlüssels</Text>
+			<Text lang="en">The attribute is part of a foreign key relation</Text>
 		</Entry>
 		<Entry id="INFORMATION">
-			<Text lang="de">Information</Text>		
-			<Text lang="en">Information</Text>					
+			<Text lang="de">Information</Text>
+			<Text lang="en">Information</Text>
 		</Entry>
 		<Entry id="ERROR">
-			<Text lang="de">Fehler</Text>		
-			<Text lang="en">Error</Text>					
+			<Text lang="de">Fehler</Text>
+			<Text lang="en">Error</Text>
 		</Entry>
 		<Entry id="QUESTION">
-			<Text lang="de">Frage</Text>		
-			<Text lang="en">Question</Text>					
+			<Text lang="de">Frage</Text>
+			<Text lang="en">Question</Text>
 		</Entry>
 		<Entry id="DOYOUREALLYWANTTODELETE">
-			<Text lang="de">Wollen Sie das Element wirklich löschen?</Text>		
-			<Text lang="en">Do you really want to delete this element?</Text>					
+			<Text lang="de">Wollen Sie das Element wirklich löschen?</Text>
+			<Text lang="en">Do you really want to delete this element?</Text>
 		</Entry>
 		<Entry id="CONNECTIONSEEMSTOBEOK">
-			<Text lang="de">Die Verbindung scheint zu funktionieren</Text>		
-			<Text lang="en">The connection seems to be ok</Text>					
+			<Text lang="de">Die Verbindung scheint zu funktionieren</Text>
+			<Text lang="en">The connection seems to be ok</Text>
 		</Entry>
 		<Entry id="NEW">
-			<Text lang="de">Neu</Text>		
-			<Text lang="en">New</Text>					
+			<Text lang="de">Neu</Text>
+			<Text lang="en">New</Text>
 			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="DELETE">
-			<Text lang="de">Löschen</Text>		
+			<Text lang="de">Löschen</Text>
 			<Text lang="en">Delete</Text>
 			<Icon>/de/erdesignerng/icons/delete.png</Icon>
 		</Entry>
 		<Entry id="UPDATE">
-			<Text lang="de">Aktualisieren</Text>		
-			<Text lang="en">Update</Text>					
+			<Text lang="de">Aktualisieren</Text>
+			<Text lang="en">Update</Text>
 			<Icon>/de/erdesignerng/icons/arrow_refresh_small.png</Icon>
 		</Entry>
 		<Entry id="OK">
-			<Text lang="de">Ok</Text>		
-			<Text lang="en">Ok</Text>					
+			<Text lang="de">Ok</Text>
+			<Text lang="en">Ok</Text>
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="CANCEL">
-			<Text lang="de">Abbrechen</Text>		
-			<Text lang="en">Cancel</Text>			
+			<Text lang="de">Abbrechen</Text>
+			<Text lang="en">Cancel</Text>
 			<Icon>/de/erdesignerng/icons/cancel.png</Icon>
 		</Entry>
 		<Entry id="TEST">
-			<Text lang="de">Test</Text>		
-			<Text lang="en">Test</Text>					
+			<Text lang="de">Test</Text>
+			<Text lang="en">Test</Text>
 		</Entry>
 		<Entry id="DIALECT">
-			<Text lang="de">Dialekt</Text>		
-			<Text lang="en">Dialect</Text>					
+			<Text lang="de">Dialekt</Text>
+			<Text lang="en">Dialect</Text>
 		</Entry>
 		<Entry id="JDBCDRIVER">
-			<Text lang="de">Treiber</Text>		
-			<Text lang="en">Driver</Text>					
+			<Text lang="de">Treiber</Text>
+			<Text lang="en">Driver</Text>
 		</Entry>
 		<Entry id="JDBCURL">
-			<Text lang="de">JDBC-URL</Text>		
-			<Text lang="en">JDBC-URL</Text>					
+			<Text lang="de">JDBC-URL</Text>
+			<Text lang="en">JDBC-URL</Text>
 		</Entry>
 		<Entry id="USER">
-			<Text lang="de">Benutzer</Text>		
-			<Text lang="en">User</Text>					
+			<Text lang="de">Benutzer</Text>
+			<Text lang="en">User</Text>
 		</Entry>
 		<Entry id="PASSWORD">
-			<Text lang="de">Kennwort</Text>		
-			<Text lang="en">Password</Text>					
+			<Text lang="de">Kennwort</Text>
+			<Text lang="en">Password</Text>
 		</Entry>
 		<Entry id="ADDFOLDER">
 			<Icon>/de/erdesignerng/icons/folder_add.png</Icon>
@@ -228,283 +228,283 @@
 			<Icon>/de/erdesignerng/icons/folder_delete.png</Icon>
 		</Entry>
 		<Entry id="ENTITYNAME">
-			<Text lang="de">Name</Text>		
-			<Text lang="en">Name</Text>					
+			<Text lang="de">Name</Text>
+			<Text lang="en">Name</Text>
 		</Entry>
 		<Entry id="DEFAULT">
-			<Text lang="de">Default</Text>		
-			<Text lang="en">Default</Text>					
+			<Text lang="de">Default</Text>
+			<Text lang="en">Default</Text>
 		</Entry>
 		<Entry id="NULLABLE">
-			<Text lang="de">Ist NULLABLE</Text>		
-			<Text lang="en">Is NULLABLE</Text>					
+			<Text lang="de">Ist NULLABLE</Text>
+			<Text lang="en">Is NULLABLE</Text>
 		</Entry>
 		<Entry id="GENERAL">
-			<Text lang="de">Allgemeines</Text>		
-			<Text lang="en">General</Text>					
+			<Text lang="de">Allgemeines</Text>
+			<Text lang="en">General</Text>
 		</Entry>
 		<Entry id="COMMENTS">
-			<Text lang="de">Kommentare</Text>		
-			<Text lang="en">Comments</Text>					
+			<Text lang="de">Kommentare</Text>
+			<Text lang="en">Comments</Text>
 		</Entry>
 		<Entry id="ATTRIBUTES">
-			<Text lang="de">Attribute</Text>		
-			<Text lang="en">Attributes</Text>					
+			<Text lang="de">Attribute</Text>
+			<Text lang="en">Attributes</Text>
 		</Entry>
 		<Entry id="INDEXES">
-			<Text lang="de">Indexe</Text>		
-			<Text lang="en">Indexes</Text>					
+			<Text lang="de">Indexe</Text>
+			<Text lang="en">Indexes</Text>
 		</Entry>
 		<Entry id="DATABASEDEFAULT">
-			<Text lang="de">Nichts</Text>		
-			<Text lang="en">Nothing</Text>					
+			<Text lang="de">Nichts</Text>
+			<Text lang="en">Nothing</Text>
 		</Entry>
 		<Entry id="CASCADE">
-			<Text lang="de">CASCADE</Text>		
-			<Text lang="en">CASCADE</Text>					
+			<Text lang="de">CASCADE</Text>
+			<Text lang="en">CASCADE</Text>
 		</Entry>
 		<Entry id="SETNULL">
-			<Text lang="de">SET NULL</Text>		
-			<Text lang="en">SET NULL</Text>					
+			<Text lang="de">SET NULL</Text>
+			<Text lang="en">SET NULL</Text>
 		</Entry>
 		<Entry id="RELATIONNAME">
-			<Text lang="de">Name der Relation</Text>		
-			<Text lang="en">Relation name</Text>					
+			<Text lang="de">Name der Relation</Text>
+			<Text lang="en">Relation name</Text>
 		</Entry>
 		<Entry id="ALLINONEFILE">
-			<Text lang="de">Alles in eine Datei...</Text>		
-			<Text lang="en">All in one file...</Text>					
+			<Text lang="de">Alles in eine Datei...</Text>
+			<Text lang="en">All in one file...</Text>
 		</Entry>
 		<Entry id="ONEFILEPERTABLE">
-			<Text lang="de">Eine Datei pro Tabelle...</Text>		
-			<Text lang="en">One file per table...</Text>					
+			<Text lang="de">Eine Datei pro Tabelle...</Text>
+			<Text lang="en">One file per table...</Text>
 		</Entry>
 		<Entry id="TABLEGENERATION">
 			<Text lang="de">Tabellengenerierung</Text>
-			<Text lang="en">Table generation</Text>					
+			<Text lang="en">Table generation</Text>
 		</Entry>
 		<Entry id="CHOOSEONESCHEMA">
-			<Text lang="de">Sie müssen mindestens ein Schema auswählen</Text>		
-			<Text lang="en">You have to select at least one schema</Text>					
+			<Text lang="de">Sie müssen mindestens ein Schema auswählen</Text>
+			<Text lang="en">You have to select at least one schema</Text>
 		</Entry>
 		<Entry id="STANDART">
-			<Text lang="de">Standard</Text>		
-			<Text lang="en">Standard</Text>					
+			<Text lang="de">Standard</Text>
+			<Text lang="en">Standard</Text>
 		</Entry>
 		<Entry id="ENGINEERINGTABLE">
-			<Text lang="de">Reverseengineering von Tabelle {0}</Text>		
-			<Text lang="en">Reverse engineering of table {0}</Text>					
+			<Text lang="de">Reverseengineering von Tabelle {0}</Text>
+			<Text lang="en">Reverse engineering of table {0}</Text>
 		</Entry>
 		<Entry id="ENGINEERINGINDEX">
-			<Text lang="de">Reverseengineering von Index {0}</Text>		
-			<Text lang="en">Reverse engineering of index {0}</Text>					
+			<Text lang="de">Reverseengineering von Index {0}</Text>
+			<Text lang="en">Reverse engineering of index {0}</Text>
 		</Entry>
 		<Entry id="ENGINEERINGRELATION">
-			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>		
-			<Text lang="en">Reverse engineering of relations for table {0}</Text>					
+			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>
+			<Text lang="en">Reverse engineering of relations for table {0}</Text>
 		</Entry>
 		<Entry id="ENGINEERINGFINISHED">
-			<Text lang="de">Reverseengineering beendet</Text>		
-			<Text lang="en">Reverse engineering finished</Text>					
+			<Text lang="de">Reverseengineering beendet</Text>
+			<Text lang="en">Reverse engineering finished</Text>
 		</Entry>
 		<Entry id="RELATIONPROPERTIES">
-			<Text lang="de">Eigenschaften der Relation</Text>		
-			<Text lang="en">Relation properties</Text>					
+			<Text lang="de">Eigenschaften der Relation</Text>
+			<Text lang="en">Relation properties</Text>
 		</Entry>
 		<Entry id="ATTRIBUTEMAPPING">
-			<Text lang="de">Mapping der Eigenschaften</Text>		
-			<Text lang="en">Attribute mapping</Text>					
+			<Text lang="de">Mapping der Eigenschaften</Text>
+			<Text lang="en">Attribute mapping</Text>
 		</Entry>
 		<Entry id="ONDELETEHANDLING">
-			<Text lang="de">Behandlung von ON DELETE</Text>		
-			<Text lang="en">Handling of ON DELETE</Text>					
+			<Text lang="de">Behandlung von ON DELETE</Text>
+			<Text lang="en">Handling of ON DELETE</Text>
 		</Entry>
 		<Entry id="ONUPDATEHANDLING">
-			<Text lang="de">Behandlung von ON UPDATE</Text>		
-			<Text lang="en">Handling of ON UPDATE</Text>					
+			<Text lang="de">Behandlung von ON UPDATE</Text>
+			<Text lang="en">Handling of ON UPDATE</Text>
 		</Entry>
 		<Entry id="SCHEMAOPTIONS">
-			<Text lang="de">Schema Optionen</Text>		
-			<Text lang="en">Schema options</Text>					
+			<Text lang="de">Schema Optionen</Text>
+			<Text lang="en">Schema options</Text>
 		</Entry>
 		<Entry id="ENGINEERINGOPTIONS">
-			<Text lang="de">Engineering Optionen</Text>		
-			<Text lang="en">Engineering options</Text>					
+			<Text lang="de">Engineering Optionen</Text>
+			<Text lang="en">Engineering options</Text>
 		</Entry>
 		<Entry id="INDEXISUNIQUE">
-			<Text lang="de">Index ist eindeutig</Text>		
-			<Text lang="en">Index is unique</Text>					
+			<Text lang="de">Index ist eindeutig</Text>
+			<Text lang="en">Index is unique</Text>
 		</Entry>
 		<Entry id="INDEXISNOTUNIQUE">
-			<Text lang="de">Index ist nicht eindeutig</Text>		
-			<Text lang="en">Index is not unique</Text>					
+			<Text lang="de">Index ist nicht eindeutig</Text>
+			<Text lang="en">Index is not unique</Text>
 		</Entry>
 		<Entry id="INDEXISPRIMARY">
-			<Text lang="de">Index ist Primärschlüssel</Text>		
-			<Text lang="en">Index is primary key</Text>					
+			<Text lang="de">Index ist Primärschlüssel</Text>
+			<Text lang="en">Index is primary key</Text>
 		</Entry>
 		<Entry id="THEREISALREADYAPRIMARYKEY">
-			<Text lang="de">Es existiert schon ein Primärschlüssel!</Text>		
-			<Text lang="en">There is already a primary key</Text>					
+			<Text lang="de">Es existiert schon ein Primärschlüssel!</Text>
+			<Text lang="en">There is already a primary key</Text>
 		</Entry>
 		<Entry id="PREFERENCES">
-			<Text lang="de">Voreinstellungen...</Text>		
-			<Text lang="en">Preferences...</Text>					
+			<Text lang="de">Voreinstellungen...</Text>
+			<Text lang="en">Preferences...</Text>
 		</Entry>
 		<Entry id="ERRORLOADINGFILE">
-			<Text lang="de">Fehler beim Laden der Datei</Text>		
-			<Text lang="en">Error loading file</Text>					
+			<Text lang="de">Fehler beim Laden der Datei</Text>
+			<Text lang="en">Error loading file</Text>
 		</Entry>
 		<Entry id="FILELOADED">
-			<Text lang="de">Datei erfolgreich geladen</Text>		
-			<Text lang="en">File loaded</Text>					
+			<Text lang="de">Datei erfolgreich geladen</Text>
+			<Text lang="en">File loaded</Text>
 		</Entry>
 		<Entry id="FILESAVED">
-			<Text lang="de">Datei erfolgreich gespeichert</Text>		
-			<Text lang="en">File saved</Text>					
+			<Text lang="de">Datei erfolgreich gespeichert</Text>
+			<Text lang="en">File saved</Text>
 		</Entry>
 		<Entry id="NEWMODELCREATED">
-			<Text lang="de">Neues Modell erzeugt</Text>		
-			<Text lang="en">New model created</Text>					
+			<Text lang="de">Neues Modell erzeugt</Text>
+			<Text lang="en">New model created</Text>
 		</Entry>
 		<Entry id="PLEASEDEFINEADATABASECONNECTIONFIRST">
-			<Text lang="de">Bitte definieren Sie vorher eine Datenbankverbindung!</Text>		
-			<Text lang="en">Please define a database connection prior to using this operation!</Text>					
+			<Text lang="de">Bitte definieren Sie vorher eine Datenbankverbindung!</Text>
+			<Text lang="en">Please define a database connection prior to using this operation!</Text>
 		</Entry>
 		<Entry id="SIZE">
-			<Text lang="de">Grösse</Text>		
-			<Text lang="en">Size</Text>					
+			<Text lang="de">Grösse</Text>
+			<Text lang="en">Size</Text>
 		</Entry>
 		<Entry id="FRACTION">
-			<Text lang="de">NK-Stellen</Text>		
-			<Text lang="en">Fraction</Text>					
+			<Text lang="de">NK-Stellen</Text>
+			<Text lang="en">Fraction</Text>
 		</Entry>
 		<Entry id="SCALE">
-			<Text lang="de">Skalierung</Text>		
-			<Text lang="en">Scale</Text>					
+			<Text lang="de">Skalierung</Text>
+			<Text lang="en">Scale</Text>
 		</Entry>
 		<Entry id="DATATYPE">
-			<Text lang="de">Datentyp</Text>		
-			<Text lang="en">Datatype</Text>					
+			<Text lang="de">Datentyp</Text>
+			<Text lang="en">Datatype</Text>
 		</Entry>
 		<Entry id="GENERATECREATEDBDDL">
-			<Text lang="de">DDL Generierung...</Text>		
-			<Text lang="en">Create DDL for model...</Text>					
+			<Text lang="de">DDL Generierung...</Text>
+			<Text lang="en">Create DDL for model...</Text>
 		</Entry>
 		<Entry id="EXECUTESCRIPT">
-			<Text lang="de">Ausführen</Text>		
-			<Text lang="en">Execute</Text>					
+			<Text lang="de">Ausführen</Text>
+			<Text lang="en">Execute</Text>
 			<Icon>/de/erdesignerng/icons/database_save.png</Icon>
 		</Entry>
 		<Entry id="SAVESCRIPTTOFILE">
-			<Text lang="de">In Datei speichern</Text>		
-			<Text lang="en">Save to file</Text>					
+			<Text lang="de">In Datei speichern</Text>
+			<Text lang="en">Save to file</Text>
 			<Icon>/de/erdesignerng/icons/script_save.png</Icon>
 		</Entry>
 		<Entry id="SQLWINDOW">
-			<Text lang="de">SQL Fenster</Text>		
-			<Text lang="en">SQL Window</Text>					
+			<Text lang="de">SQL Fenster</Text>
+			<Text lang="en">SQL Window</Text>
 		</Entry>
 		<Entry id="EXCEPTIONWINDOW">
-			<Text lang="de">Ausnahmesituation ( Stacktrace )</Text>		
-			<Text lang="en">Exception ( Stacktrace )</Text>					
+			<Text lang="de">Ausnahmesituation ( Stacktrace )</Text>
+			<Text lang="en">Exception ( Stacktrace )</Text>
 		</Entry>
 		<Entry id="CLOSE">
-			<Text lang="de">Schliessen</Text>		
-			<Text lang="en">Close</Text>					
+			<Text lang="de">Schliessen</Text>
+			<Text lang="en">Close</Text>
 		</Entry>
 		<Entry id="GENERATECHANGELOG">
-			<Text lang="de">Aktuelle Datenbankänderungen...</Text>		
-			<Text lang="en">Current database changes...</Text>					
+			<Text lang="de">Aktuelle Datenbankänderungen...</Text>
+			<Text lang="en">Current database changes...</Text>
 		</Entry>
 		<Entry id="TABLEMUSTHAVEATLEASTONEATTRIBUTE">
-			<Text lang="de">Eine Tabelle muss mindestens ein Attribut beinhalten</Text>		
-			<Text lang="en">A table must have contain least one attribute!</Text>					
+			<Text lang="de">Eine Tabelle muss mindestens ein Attribut beinhalten</Text>
+			<Text lang="en">A table must have contain least one attribute!</Text>
 		</Entry>
 		<Entry id="DIALECTISNOTSUPPORTED">
-			<Text lang="de">Der Datenbankdialekt wird nicht unterstützt!</Text>		
-			<Text lang="en">The database dialect is not supported!</Text>					
+			<Text lang="de">Der Datenbankdialekt wird nicht unterstützt!</Text>
+			<Text lang="en">The database dialect is not supported!</Text>
 		</Entry>
 		<Entry id="EXTRA">
-			<Text lang="de">Extra</Text>		
-			<Text lang="en">Extra</Text>					
+			<Text lang="de">Extra</Text>
+			<Text lang="en">Extra</Text>
 		</Entry>
 		<Entry id="COMPLETECOMPARE">
-			<Text lang="de">Vergleichen mit Datenbank...</Text>		
+			<Text lang="de">Vergleichen mit Datenbank...</Text>
 			<Text lang="en">Compare with database...</Text>
-			<Icon>/de/erdesignerng/icons/compare_view.gif</Icon>					
+			<Icon>/de/erdesignerng/icons/compare_view.gif</Icon>
 		</Entry>
 		<Entry id="MODEL">
-			<Text lang="de">Modell</Text>		
-			<Text lang="en">Model</Text>					
+			<Text lang="de">Modell</Text>
+			<Text lang="en">Model</Text>
 		</Entry>
 		<Entry id="MISSINGENTITY">
-			<Text lang="de">Tabelle {0} fehlt</Text>		
-			<Text lang="en">Table {0} is missing</Text>					
+			<Text lang="de">Tabelle {0} fehlt</Text>
+			<Text lang="en">Table {0} is missing</Text>
 		</Entry>
 		<Entry id="MISSINGATTRIBUTE">
-			<Text lang="de">Attribut {0} fehlt</Text>		
-			<Text lang="en">Attribute {0} is missing</Text>					
+			<Text lang="de">Attribut {0} fehlt</Text>
+			<Text lang="en">Attribute {0} is missing</Text>
 		</Entry>
 		<Entry id="REDEFINED">
-			<Text lang="de">Umdefiniert {0} </Text>		
-			<Text lang="en">Redefined {0}</Text>					
-		</Entry>		
+			<Text lang="de">Umdefiniert {0} </Text>
+			<Text lang="en">Redefined {0}</Text>
+		</Entry>
 		<Entry id="MISSINGINDEX">
-			<Text lang="de">Index {0} fehlt</Text>		
-			<Text lang="en">Index {0} is missing</Text>					
+			<Text lang="de">Index {0} fehlt</Text>
+			<Text lang="en">Index {0} is missing</Text>
 		</Entry>
 		<Entry id="MISSINGRELATION">
-			<Text lang="de">Relation {0} fehlt</Text>		
-			<Text lang="en">Relation {0} is missing</Text>					
+			<Text lang="de">Relation {0} fehlt</Text>
+			<Text lang="en">Relation {0} is missing</Text>
 		</Entry>
 		<Entry id="RELATIONS">
-			<Text lang="de">Relationen</Text>		
-			<Text lang="en">Relations</Text>					
-		</Entry>		
+			<Text lang="de">Relationen</Text>
+			<Text lang="en">Relations</Text>
+		</Entry>
 		<Entry id="TABLESELECTION">
-			<Text lang="de">Tabellenauswahl</Text>		
-			<Text lang="en">Table selection</Text>					
-		</Entry>		
+			<Text lang="de">Tabellenauswahl</Text>
+			<Text lang="en">Table selection</Text>
+		</Entry>
 		<Entry id="ADDTONEWSUBJECTAREA">
-			<Text lang="de">Zu einem neuen Subject Area hinzufügen</Text>		
-			<Text lang="en">Add to new subject area</Text>					
-		</Entry>		
+			<Text lang="de">Zu einem neuen Subject Area hinzufügen</Text>
+			<Text lang="en">Add to new subject area</Text>
+		</Entry>
 		<Entry id="SUBJECTAREAPROPERTIES">
-			<Text lang="de">Eigenschaften des Subject Areas</Text>		
-			<Text lang="en">Subject area properties</Text>					
-		</Entry>		
+			<Text lang="de">Eigenschaften des Subject Areas</Text>
+			<Text lang="en">Subject area properties</Text>
+		</Entry>
 		<Entry id="SUBJECTAREAEDITOR">
-			<Text lang="de">Subject Area bearbeiten</Text>		
-			<Text lang="en">Edit subject area</Text>					
-		</Entry>		
+			<Text lang="de">Subject Area bearbeiten</Text>
+			<Text lang="en">Edit subject area</Text>
+		</Entry>
 		<Entry id="COLOR">
-			<Text lang="de">Farbe</Text>		
-			<Text lang="en">Color</Text>					
-		</Entry>		
+			<Text lang="de">Farbe</Text>
+			<Text lang="en">Color</Text>
+		</Entry>
 		<Entry id="DISPLAYCOMMENTS">
-			<Text lang="de">Elementkommentare anzeigen</Text>		
-			<Text lang="en">Display element comments</Text>					
+			<Text lang="de">Elementkommentare anzeigen</Text>
+			<Text lang="en">Display element comments</Text>
 		</Entry>
 		<Entry id="DISPLAYGRID">
-			<Text lang="de">Gitter anzeigen</Text>		
-			<Text lang="en">Display grid</Text>					
+			<Text lang="de">Gitter anzeigen</Text>
+			<Text lang="en">Display grid</Text>
 		</Entry>
 		<Entry id="EDITORGRIDSIZE">
-			<Text lang="de">Gittergrösse im Editor (Pixel)</Text>		
-			<Text lang="en">Editor grid size (px)</Text>					
+			<Text lang="de">Gittergrösse im Editor (Pixel)</Text>
+			<Text lang="en">Editor grid size (px)</Text>
 		</Entry>
 		<Entry id="COMMENTEDITOR">
-			<Text lang="de">Kommentar bearbeiten</Text>		
-			<Text lang="en">Edit comment</Text>					
-		</Entry>		
+			<Text lang="de">Kommentar bearbeiten</Text>
+			<Text lang="en">Edit comment</Text>
+		</Entry>
 		<Entry id="COMMENTPROPERTIES">
-			<Text lang="de">Eigenschaften des Kommentares</Text>		
-			<Text lang="en">Comment properties</Text>					
+			<Text lang="de">Eigenschaften des Kommentares</Text>
+			<Text lang="en">Comment properties</Text>
 		</Entry>
 		<Entry id="DOMAINEDITOR">
-			<Text lang="de">Domänen Editor...</Text>		
-			<Text lang="en">Domain editor...</Text>					
+			<Text lang="de">Domänen Editor...</Text>
+			<Text lang="en">Domain editor...</Text>
 		</Entry>
 		<Entry id="COMMENT">
 			<Icon>/de/erdesignerng/icons/comment_add.gif</Icon>
@@ -514,342 +514,342 @@
 			<Text lang="en">The exporting table needs to have a primary key!</Text>
 		</Entry>
 		<Entry id="CANNOTDELETEMODELITEM">
-			<Text lang="de">Element kann nicht aus dem Model gelöscht werden : {0}</Text>		
-			<Text lang="en">Cannot delete element from model : {0}</Text>					
+			<Text lang="de">Element kann nicht aus dem Model gelöscht werden : {0}</Text>
+			<Text lang="en">Cannot delete element from model : {0}</Text>
 		</Entry>
 		<Entry id="DISPLAYLEVEL">
-			<Text lang="de">Anzeigetiefe</Text>		
-			<Text lang="en">Display level</Text>					
+			<Text lang="de">Anzeigetiefe</Text>
+			<Text lang="en">Display level</Text>
 		</Entry>
 		<Entry id="DISPLAYALL">
-			<Text lang="de">Alles</Text>		
-			<Text lang="en">All</Text>					
+			<Text lang="de">Alles</Text>
+			<Text lang="en">All</Text>
 		</Entry>
 		<Entry id="DISPLAYPRIMARYKEY">
-			<Text lang="de">Nur Primärschlüssel</Text>		
-			<Text lang="en">Primary keys only</Text>					
+			<Text lang="de">Nur Primärschlüssel</Text>
+			<Text lang="en">Primary keys only</Text>
 		</Entry>
 		<Entry id="DISPLAYPRIMARYKEYANDFOREIGNKEY">
-			<Text lang="de">Primär- und Fremdschlüssel</Text>		
-			<Text lang="en">Primary and foreign keys</Text>					
+			<Text lang="de">Primär- und Fremdschlüssel</Text>
+			<Text lang="en">Primary and foreign keys</Text>
 		</Entry>
 		<Entry id="DISPLAYNATURALORDER">
-			<Text lang="de">Natürliche Sortierung</Text>		
-			<Text lang="en">Natural order</Text>					
+			<Text lang="de">Natürliche Sortierung</Text>
+			<Text lang="en">Natural order</Text>
 		</Entry>
 		<Entry id="DISPLAYASCENDING">
-			<Text lang="de">Aufsteigend sortiert</Text>		
-			<Text lang="en">Ascending order</Text>					
+			<Text lang="de">Aufsteigend sortiert</Text>
+			<Text lang="en">Ascending order</Text>
 		</Entry>
 		<Entry id="DISPLAYDESCENDING">
-			<Text lang="de">Absteigend sortiert</Text>		
-			<Text lang="en">Descending order</Text>					
+			<Text lang="de">Absteigend sortiert</Text>
+			<Text lang="en">Descending order</Text>
 		</Entry>
 		<Entry id="DISPLAYORDER">
-			<Text lang="de">Attributreihenfolge</Text>		
-			<Text lang="en">Attribute order</Text>					
+			<Text lang="de">Attributreihenfolge</Text>
+			<Text lang="en">Attribute order</Text>
 		</Entry>
 		<Entry id="ALIAS">
-			<Text lang="de">Alias</Text>		
-			<Text lang="en">Alias</Text>					
+			<Text lang="de">Alias</Text>
+			<Text lang="en">Alias</Text>
 		</Entry>
 		<Entry id="CREATENEWENTRY">
-			<Text lang="de">Neuen Eintrag erzeugen</Text>		
-			<Text lang="en">Create new entry</Text>					
+			<Text lang="de">Neuen Eintrag erzeugen</Text>
+			<Text lang="en">Create new entry</Text>
 		</Entry>
 		<Entry id="OVERWRITEEXISTINGENTRY">
-			<Text lang="de">Existierenden Eintrag überschreiben</Text>		
-			<Text lang="en">Overwrite existing entry</Text>					
+			<Text lang="de">Existierenden Eintrag überschreiben</Text>
+			<Text lang="en">Overwrite existing entry</Text>
 		</Entry>
 		<Entry id="NEWNAME">
-			<Text lang="de">Neuer Name</Text>		
-			<Text lang="en">New name</Text>					
+			<Text lang="de">Neuer Name</Text>
+			<Text lang="en">New name</Text>
 		</Entry>
 		<Entry id="ERRORINREPOSITORYCONNECTION">
-			<Text lang="de">Es trat ein Fehler bei der Verbindung zum Repository auf.</Text>		
-			<Text lang="en">An exception occoured while connecting to the repository</Text>					
+			<Text lang="de">Es trat ein Fehler bei der Verbindung zum Repository auf.</Text>
+			<Text lang="en">An exception occoured while connecting to the repository</Text>
 		</Entry>
 		<Entry id="REPOSITORYUTILS">
-			<Text lang="de">Repository Werkzeuge...</Text>		
-			<Text lang="en">Repository utilities...</Text>					
+			<Text lang="de">Repository Werkzeuge...</Text>
+			<Text lang="en">Repository utilities...</Text>
 		</Entry>
 		<Entry id="CREATEMIGRATIONSCRIPT">
-			<Text lang="de">Migrationskript erstellen...</Text>		
-			<Text lang="en">Create migration script...</Text>					
+			<Text lang="de">Migrationskript erstellen...</Text>
+			<Text lang="en">Create migration script...</Text>
 		</Entry>
 		<Entry id="FROMVERSION">
-			<Text lang="de">Quellversion</Text>		
-			<Text lang="en">From version</Text>					
+			<Text lang="de">Quellversion</Text>
+			<Text lang="en">From version</Text>
 		</Entry>
 		<Entry id="TOVERSION">
-			<Text lang="de">Zielversion</Text>		
-			<Text lang="en">To version</Text>					
+			<Text lang="de">Zielversion</Text>
+			<Text lang="en">To version</Text>
 		</Entry>
 		<Entry id="ATTRIBUTE">
-			<Text lang="de">Attribut</Text>		
-			<Text lang="en">Attribute</Text>					
+			<Text lang="de">Attribut</Text>
+			<Text lang="en">Attribute</Text>
 		</Entry>
 		<Entry id="EXPRESSION">
-			<Text lang="de">Ausdruck</Text>		
-			<Text lang="en">Expression</Text>					
+			<Text lang="de">Ausdruck</Text>
+			<Text lang="en">Expression</Text>
 		</Entry>
 		<Entry id="NEWONLYICON">
 			<Icon>/de/erdesignerng/icons/new.png</Icon>
 		</Entry>
 		<Entry id="ATTRIBUTEALREADYPARTOFINDEX">
-			<Text lang="de">Dieses Attribut ist bereits Teil des Indexes</Text>		
-			<Text lang="en">This attribute is already part of this index</Text>					
+			<Text lang="de">Dieses Attribut ist bereits Teil des Indexes</Text>
+			<Text lang="en">This attribute is already part of this index</Text>
 		</Entry>
 		<Entry id="DELETEONLYICON">
 			<Icon>/de/erdesignerng/icons/delete.png</Icon>
 		</Entry>
 		<Entry id="ATTRIBUTEISUSEDININDEX">
-			<Text lang="de">Dieses Attribut ist Teil eines Indexes</Text>		
-			<Text lang="en">This attribute is part of an index</Text>					
+			<Text lang="de">Dieses Attribut ist Teil eines Indexes</Text>
+			<Text lang="en">This attribute is part of an index</Text>
 		</Entry>
 		<Entry id="ANINDEXMUSTHAVEATLEASTONEELEMENT">
-			<Text lang="de">Ein Index muss mindestens einen Ausdruck oder ein Attribut umfassen!</Text>		
-			<Text lang="en">An index must include at least one expression or attribute!</Text>					
+			<Text lang="de">Ein Index muss mindestens einen Ausdruck oder ein Attribut umfassen!</Text>
+			<Text lang="en">An index must include at least one expression or attribute!</Text>
 		</Entry>
 		<Entry id="VIEWEDITOR">
-			<Text lang="de">View editieren</Text>		
-			<Text lang="en">Edit view</Text>					
+			<Text lang="de">View editieren</Text>
+			<Text lang="en">Edit view</Text>
 		</Entry>
 		<Entry id="DOMAINISINUSEBYTABLE">
-			<Text lang="de">Die Domäne wird noch in Tabelle {0} benutzt</Text>		
-			<Text lang="en">The domain is still in use by table {0}</Text>					
+			<Text lang="de">Die Domäne wird noch in Tabelle {0} benutzt</Text>
+			<Text lang="en">The domain is still in use by table {0}</Text>
 		</Entry>
 		<Entry id="CONVERTMODEL">
-			<Text lang="de">Modell konvertieren...</Text>		
-			<Text lang="en">Convert model...</Text>					
+			<Text lang="de">Modell konvertieren...</Text>
+			<Text lang="en">Convert model...</Text>
 		</Entry>
 		<Entry id="TARGETDIALECT">
-			<Text lang="de">Ziel Dialekt</Text>		
-			<Text lang="en">Target dialect</Text>					
+			<Text lang="de">Ziel Dialekt</Text>
+			<Text lang="en">Target dialect</Text>
 		</Entry>
 		<Entry id="DATATYPEMAPPING">
-			<Text lang="de">Zuordnung der Datentypen</Text>		
-			<Text lang="en">Datatype mapping</Text>					
+			<Text lang="de">Zuordnung der Datentypen</Text>
+			<Text lang="en">Datatype mapping</Text>
 		</Entry>
 		<Entry id="CURRENTDATATYPE">
-			<Text lang="de">Aktueller Datentyp</Text>		
-			<Text lang="en">Current datatype</Text>					
+			<Text lang="de">Aktueller Datentyp</Text>
+			<Text lang="en">Current datatype</Text>
 		</Entry>
 		<Entry id="TARGETDATATYPE">
-			<Text lang="de">wird zugeordnet zu</Text>		
-			<Text lang="en">Will be assigned to</Text>					
+			<Text lang="de">wird zugeordnet zu</Text>
+			<Text lang="en">Will be assigned to</Text>
 		</Entry>
 		<Entry id="MODELCONVERTED">
-			<Text lang="de">Datenmodell erfolgreich konvertiert</Text>		
-			<Text lang="en">Model converted</Text>					
+			<Text lang="de">Datenmodell erfolgreich konvertiert</Text>
+			<Text lang="en">Model converted</Text>
 		</Entry>
 		<Entry id="RESTRICT">
-			<Text lang="de">RESTRICT</Text>		
-			<Text lang="en">RESTRICT</Text>					
+			<Text lang="de">RESTRICT</Text>
+			<Text lang="en">RESTRICT</Text>
 		</Entry>
 		<Entry id="PROMPTFORPASSWORD">
-			<Text lang="de">Kennwort vor Verbindungsaufbau erfragen</Text>		
-			<Text lang="en">Prompt for password before connection establishment</Text>					
+			<Text lang="de">Kennwort vor Verbindungsaufbau erfragen</Text>
+			<Text lang="en">Prompt for password before connection establishment</Text>
 		</Entry>
 		<Entry id="PLEASEENTERDATABASEPASSWORD">
-			<Text lang="de">Bitte geben Sie das Datenbankkennwort ein</Text>		
-			<Text lang="en">Please enter the database password</Text>					
+			<Text lang="de">Bitte geben Sie das Datenbankkennwort ein</Text>
+			<Text lang="en">Please enter the database password</Text>
 		</Entry>
 		<Entry id="HIDE">
-			<Text lang="de">Verbergen</Text>		
-			<Text lang="en">Hide</Text>					
+			<Text lang="de">Verbergen</Text>
+			<Text lang="en">Hide</Text>
 		</Entry>
 		<Entry id="MENUSUBJECTAREAS">
-			<Text lang="de">Subject Areas</Text>		
-			<Text lang="en">Subject areas</Text>					
+			<Text lang="de">Subject Areas</Text>
+			<Text lang="en">Subject areas</Text>
 		</Entry>
 		<Entry id="SHOWALL">
-			<Text lang="de">Alle anzeigen</Text>		
-			<Text lang="en">Show all</Text>					
+			<Text lang="de">Alle anzeigen</Text>
+			<Text lang="en">Show all</Text>
 		</Entry>
 		<Entry id="HIDEALL">
-			<Text lang="de">Alle verbergen</Text>		
-			<Text lang="en">Hide all</Text>					
+			<Text lang="de">Alle verbergen</Text>
+			<Text lang="en">Hide all</Text>
 		</Entry>
 		<Entry id="CREATEDBDOCUMENTATION">
-			<Text lang="de">Datenbankdokumentation erstellen</Text>		
-			<Text lang="en">Create database documentation</Text>					
+			<Text lang="de">Datenbankdokumentation erstellen</Text>
+			<Text lang="en">Create database documentation</Text>
 		</Entry>
 		<Entry id="DOCSTEP1">
-			<Text lang="de">Schreiben der Modellinformationen...</Text>		
-			<Text lang="en">Writing model information...</Text>					
+			<Text lang="de">Schreiben der Modellinformationen...</Text>
+			<Text lang="en">Writing model information...</Text>
 		</Entry>
 		<Entry id="DOCSTEP2">
-			<Text lang="de">Generierung des Reports...</Text>		
-			<Text lang="en">Generating report...</Text>					
+			<Text lang="de">Generierung des Reports...</Text>
+			<Text lang="en">Generating report...</Text>
 		</Entry>
 		<Entry id="DOCSTEP3">
-			<Text lang="de">Dokumentation erstellt</Text>		
-			<Text lang="en">Documentation done</Text>					
+			<Text lang="de">Dokumentation erstellt</Text>
+			<Text lang="en">Documentation done</Text>
 		</Entry>
 		<Entry id="HELP">
-			<Text lang="de">Hilfe...</Text>		
-			<Text lang="en">Help...</Text>					
+			<Text lang="de">Hilfe...</Text>
+			<Text lang="en">Help...</Text>
 		</Entry>
 		<Entry id="ONLINEHELP">
-			<Text lang="de">Onlinehilfe</Text>		
-			<Text lang="en">Online help</Text>					
+			<Text lang="de">Onlinehilfe</Text>
+			<Text lang="en">Online help</Text>
 		</Entry>
 		<Entry id="STEREOTYPE">
-			<Text lang="de">Stereotyp</Text>		
-			<Text lang="en">Stereotype</Text>					
+			<Text lang="de">Stereotyp</Text>
+			<Text lang="en">Stereotype</Text>
 		</Entry>
 		<Entry id="TARGET">
-			<Text lang="de">Ziel</Text>		
-			<Text lang="en">Target</Text>					
+			<Text lang="de">Ziel</Text>
+			<Text lang="en">Target</Text>
 		</Entry>
 		<Entry id="SRCDIRECTORY">
-			<Text lang="de">SRC-Verzeichnis</Text>		
-			<Text lang="en">Src directory</Text>					
+			<Text lang="de">SRC-Verzeichnis</Text>
+			<Text lang="en">Src directory</Text>
 		</Entry>
 		<Entry id="PACKAGENAME">
-			<Text lang="de">Package</Text>		
-			<Text lang="en">Package</Text>					
+			<Text lang="de">Package</Text>
+			<Text lang="en">Package</Text>
 		</Entry>
 		<Entry id="OPENXAVAEXPORT">
-			<Text lang="de">OpenXava Export...</Text>		
-			<Text lang="en">OpenXava Export...</Text>					
+			<Text lang="de">OpenXava Export...</Text>
+			<Text lang="en">OpenXava Export...</Text>
 		</Entry>
 		<Entry id="OPENXAVAEXPORTOK">
-			<Text lang="de">Die OpenXava Dateien wurden erfolgreich generiert!</Text>		
-			<Text lang="en">The OpenXava files were sucsessfully generated!</Text>					
+			<Text lang="de">Die OpenXava Dateien wurden erfolgreich generiert!</Text>
+			<Text lang="en">The OpenXava files were sucsessfully generated!</Text>
 		</Entry>
 		<Entry id="INCLUDESCHEMAINNAME">
-			<Text lang="de">Schema berücksichtigen</Text>		
-			<Text lang="en">Respect database schema</Text>					
+			<Text lang="de">Schema berücksichtigen</Text>
+			<Text lang="en">Respect database schema</Text>
 		</Entry>
 		<Entry id="INTELLIGENTLAYOUT">
-			<Text lang="de">Intelligent Layout (BETA)</Text>		
-			<Text lang="en">Intelligent layout (BETA)</Text>					
+			<Text lang="de">Intelligent Layout (BETA)</Text>
+			<Text lang="en">Intelligent layout (BETA)</Text>
 		</Entry>
 		<Entry id="DELETENOTUSEDATTRIBUTES">
-			<Text lang="de">Wollen Sie das nicht mehr benötigte Attribut {0} in Tabelle {1} löschen?</Text>		
-			<Text lang="en">Do you want to delete the no longer used attribute {0} of table {1}?</Text>					
+			<Text lang="de">Wollen Sie das nicht mehr benötigte Attribut {0} in Tabelle {1} löschen?</Text>
+			<Text lang="en">Do you want to delete the no longer used attribute {0} of table {1}?</Text>
 		</Entry>
 		<Entry id="AUTOMATICRELATIONATTRIBUTEPATTERN">
-			<Text lang="de">Namensgebung neue Attribute in Relationen</Text>		
-			<Text lang="en">Name of new Attributes in Relations</Text>					
+			<Text lang="de">Namensgebung neue Attribute in Relationen</Text>
+			<Text lang="en">Name of new Attributes in Relations</Text>
 		</Entry>
 		<Entry id="DEFAULTFORONDELETE">
-			<Text lang="de">Voreinstelling für ONDELETE</Text>		
-			<Text lang="en">Default for ONDELETE</Text>					
+			<Text lang="de">Voreinstelling für ONDELETE</Text>
+			<Text lang="en">Default for ONDELETE</Text>
 		</Entry>
 		<Entry id="DEFAULTFORONUPDATE">
-			<Text lang="de">Voreinstelling für ONUPDATE</Text>		
-			<Text lang="en">Default for ONUPDATE</Text>					
+			<Text lang="de">Voreinstelling für ONUPDATE</Text>
+			<Text lang="en">Default for ONUPDATE</Text>
 		</Entry>
 		<Entry id="SAVEATTRIBUTECHANGESFIRST">
-			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>		
-			<Text lang="en">Please save your Attribute changes first!</Text>					
+			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>
+			<Text lang="en">Please save your Attribute changes first!</Text>
 		</Entry>
 		<Entry id="NAMEINVALID">
-			<Text lang="de">Der eingebenene Elementname ist ungültig!</Text>		
-			<Text lang="en">The entered element name is invalid</Text>					
+			<Text lang="de">Der eingebenene Elementname ist ungültig!</Text>
+			<Text lang="en">The entered element name is invalid</Text>
 		</Entry>
 		<Entry id="INDEXALREADYEXISTS">
-			<Text lang="de">Es existiert schon ein Index mit gleichem Namen!</Text>		
-			<Text lang="en">There is already an Index with the same name!</Text>					
+			<Text lang="de">Es existiert schon ein Index mit gleichem Namen!</Text>
+			<Text lang="en">There is already an Index with the same name!</Text>
 		</Entry>
 		<Entry id="SAVEINDEXCHANGESFIRST">
-			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Index!</Text>		
-			<Text lang="en">Please save your Index changes first!</Text>					
+			<Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Index!</Text>
+			<Text lang="en">Please save your Index changes first!</Text>
 		</Entry>
 		<Entry id="ATTRIBUTEALREADYEXISTS">
-			<Text lang="de">Es existiert schon ein Attribut mit gleichem Namen!</Text>		
-			<Text lang="en">There is already an Attribute with the same name!</Text>					
+			<Text lang="de">Es existiert schon ein Attribut mit gleichem Namen!</Text>
+			<Text lang="en">There is already an Attribute with the same name!</Text>
 		</Entry>
 		<Entry id="CREATECHILDTABLEHERE">
-			<Text lang="de">Neue Kind Tabelle hier erstellen und verbinden</Text>		
-			<Text lang="en">Create new child Table here and connect it</Text>					
+			<Text lang="de">Neue Kind Tabelle hier erstellen und verbinden</Text>
+			<Text lang="en">Create new child Table here and connect it</Text>
 		</Entry>
 		<Entry id="CREATEPARENTTABLEHERE">
-			<Text lang="de">Neue Eltern Tabelle hier erstellen und verbinden</Text>		
-			<Text lang="en">Create new parent Table here and connect it</Text>					
+			<Text lang="de">Neue Eltern Tabelle hier erstellen und verbinden</Text>
+			<Text lang="en">Create new parent Table here and connect it</Text>
 		</Entry>
 		<Entry id="EDITOR">
-			<Text lang="de">Editor</Text>		
-			<Text lang="en">Editor</Text>					
+			<Text lang="de">Editor</Text>
+			<Text lang="en">Editor</Text>
 		</Entry>
 		<Entry id="OUTLINE">
-			<Text lang="de">Modellübersicht</Text>		
-			<Text lang="en">Outline</Text>					
+			<Text lang="de">Modellübersicht</Text>
+			<Text lang="en">Outline</Text>
 		</Entry>
 		<Entry id="TABLES">
-			<Text lang="de">Tabellen</Text>		
-			<Text lang="en">Tables</Text>					
+			<Text lang="de">Tabellen</Text>
+			<Text lang="en">Tables</Text>
 		</Entry>
 		<Entry id="VIEWS">
-			<Text lang="de">Views</Text>		
-			<Text lang="en">Views</Text>					
+			<Text lang="de">Views</Text>
+			<Text lang="en">Views</Text>
 		</Entry>
 		<Entry id="DOMAINSLIST">
-			<Text lang="de">Domänen</Text>		
-			<Text lang="en">Domains</Text>					
+			<Text lang="de">Domänen</Text>
+			<Text lang="en">Domains</Text>
 		</Entry>
 		<Entry id="SUBJECTAREALIST">
-			<Text lang="de">Subject Areas</Text>		
-			<Text lang="en">Subject Areas</Text>					
-		</Entry>		
+			<Text lang="de">Subject Areas</Text>
+			<Text lang="en">Subject Areas</Text>
+		</Entry>
 		<Entry id="EDITTABLE">
-			<Text lang="de">Tabelle {0} bearbeiten</Text>		
-			<Text lang="en">Edit Table {0}</Text>					
+			<Text lang="de">Tabelle {0} bearbeiten</Text>
+			<Text lang="en">Edit Table {0}</Text>
 		</Entry>
 		<Entry id="EDITVIEW">
-			<Text lang="de">View {0} bearbeiten</Text>		
-			<Text lang="en">Edit View {0}</Text>					
+			<Text lang="de">View {0} bearbeiten</Text>
+			<Text lang="en">Edit View {0}</Text>
 		</Entry>
 		<Entry id="EDITRELATION">
-			<Text lang="de">Relation {0} bearbeiten</Text>		
-			<Text lang="en">Edit Relation {0}</Text>					
+			<Text lang="de">Relation {0} bearbeiten</Text>
+			<Text lang="en">Edit Relation {0}</Text>
 		</Entry>
 		<Entry id="EDITDOMAIN">
-			<Text lang="de">Domäne {0} bearbeiten</Text>		
-			<Text lang="en">Edit Domain {0}</Text>					
+			<Text lang="de">Domäne {0} bearbeiten</Text>
+			<Text lang="en">Edit Domain {0}</Text>
 		</Entry>
 		<Entry id="EDITATTRIBUTE">
-			<Text lang="de">Attribut {0} bearbeiten</Text>		
-			<Text lang="en">Edit Attribute {0}</Text>					
+			<Text lang="de">Attribut {0} bearbeiten</Text>
+			<Text lang="en">Edit Attribute {0}</Text>
 		</Entry>
 		<Entry id="EDITINDEX">
-			<Text lang="de">Index {0} bearbeiten</Text>		
-			<Text lang="en">Edit Index {0}</Text>					
+			<Text lang="de">Index {0} bearbeiten</Text>
+			<Text lang="en">Edit Index {0}</Text>
 		</Entry>
 		<Entry id="EDITSUBJECTAREA">
-			<Text lang="de">Subject Area {0} bearbeiten</Text>		
-			<Text lang="en">Edit Subject Area {0}</Text>					
-		</Entry>		
+			<Text lang="de">Subject Area {0} bearbeiten</Text>
+			<Text lang="en">Edit Subject Area {0}</Text>
+		</Entry>
 		<Entry id="SQL">
-			<Text lang="de">SQL</Text>		
-			<Text lang="en">SQL</Text>					
+			<Text lang="de">SQL</Text>
+			<Text lang="en">SQL</Text>
 		</Entry>
 		<Entry id="EXPANDALL">
-			<Text lang="de">Alles expandieren</Text>		
-			<Text lang="en">Expand all</Text>					
+			<Text lang="de">Alles expandieren</Text>
+			<Text lang="en">Expand all</Text>
 		</Entry>
 		<Entry id="COLLAPSEALL">
-			<Text lang="de">Alles zusammenklappen</Text>		
-			<Text lang="en">Collapse all</Text>					
+			<Text lang="de">Alles zusammenklappen</Text>
+			<Text lang="en">Collapse all</Text>
 		</Entry>
 		<Entry id="GRIDSIZEAFTERREVERSEENGINEERING">
-			<Text lang="de">Gittergrösse nach Reverse Engineering</Text>		
-			<Text lang="en">Grid size after reverse engineering</Text>					
+			<Text lang="de">Gittergrösse nach Reverse Engineering</Text>
+			<Text lang="en">Grid size after reverse engineering</Text>
 		</Entry>
 		<Entry id="SELECTALL">
-			<Text lang="de">Alle auswählen</Text>		
-			<Text lang="en">Select all</Text>					
+			<Text lang="de">Alle auswählen</Text>
+			<Text lang="en">Select all</Text>
 		</Entry>
 		<Entry id="DESELECTALL">
-			<Text lang="de">Alle abwählen</Text>		
-			<Text lang="en">Deselect all</Text>					
+			<Text lang="de">Alle abwählen</Text>
+			<Text lang="en">Deselect all</Text>
 		</Entry>
 		<Entry id="INVERTSELECTION">
-			<Text lang="de">Auswahl umkehren</Text>		
-			<Text lang="en">Invert selection</Text>					
+			<Text lang="de">Auswahl umkehren</Text>
+			<Text lang="en">Invert selection</Text>
 		</Entry>
 	</Bundle>
 </Resource>
