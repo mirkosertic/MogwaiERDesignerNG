@@ -1,4 +1,20 @@
-
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 package de.erdesignerng.dialect.msaccess;
 
 import java.io.File;
@@ -13,6 +29,10 @@ import java.sql.SQLException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+/**
+ * @author $Author: dr-death $
+ * @version $Date: 2009-11-16 15:00:00 $
+ */
 public final class MSAccessFileFormat {
 
     private static final Logger LOGGER = Logger.getLogger(MSAccessFileFormat.class);
@@ -63,7 +83,7 @@ public final class MSAccessFileFormat {
     }
 
     /**
-     * Reads the version of the engine from the binary.
+     * Reads the version of the database engine from the binary.
      *
      * Attention: Access 2000, 2002 and 2003 can *not* be devided!
      *
@@ -97,7 +117,6 @@ public final class MSAccessFileFormat {
                 theResult = ((theHeader.charAt(theFlagOffset) == theFlagValue) && (theHeader.substring(theNameOffset, theNameOffset + theName.length()).equals(theName)));
 
                 // additionally search binary for occurance of a special tablename
-                // TODO needs tuning, avoid reading entire file
                 if (aComareWholeFile && theResult && !StringUtils.isEmpty(theIdentifyingTable)) {
                     theResult = (findInFile(aFileName, expand(theIdentifyingTable, 0)) > theHeaderSize);
                 }
@@ -230,7 +249,7 @@ public final class MSAccessFileFormat {
      * each original character.
      *
      * @param aString           - the string to expand
-     * @param aDividingCharCode - the character to use for expanding
+     * @param aDividingCharCode - the character code to use for expanding
      *
      * @return An expanded string
      */
@@ -243,5 +262,4 @@ public final class MSAccessFileFormat {
 
         return buffer.toString();
     }
-
 }
