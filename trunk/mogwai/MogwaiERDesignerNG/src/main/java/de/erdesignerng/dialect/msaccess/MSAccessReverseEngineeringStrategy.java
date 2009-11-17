@@ -54,7 +54,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     private static final String SPACE = " ";
 
-    private static final String COMMA = "," + SPACE;
+    private static final String COMMA = ", ";
 
     private static final String AS    = "AS";
 
@@ -65,6 +65,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     private static final String FROM  = "FROM";
 
     private static final String WHERE = "WHERE";
+
+    private static final String GROUP_BY = "GROUP BY";
+
+    private static final String HAVING = "HAVING";
 
     public MSAccessReverseEngineeringStrategy(MSAccessDialect aDialect) {
         super(aDialect);
@@ -88,39 +92,6 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 //    @Override
 //    protected String[] getReverseEngineeringTableTypes() {
 //        throw new UnsupportedOperationException("Not supported yet.");
-//    }
-
-//    @Override
-//    protected List<TableEntry> getTablesForSchemaEntry(Connection aConnection, SchemaEntry aEntry) throws SQLException {
-//        String theQuery = "SELECT MSysObjects.Name " +
-//                          "FROM MSysObjects LEFT JOIN MSysObjects AS MSysObjects_1 ON MSysObjects.ParentId = MSysObjects_1.Id " +
-//                          "WHERE ((MSysObjects.Flags = ?) AND (MSysObjects.Type = ?) AND (MSysObjects_1.Name = ?));";
-//        List<TableEntry> theList = new ArrayList<TableEntry>();
-//
-//        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
-//        theStatement.setInt(1, TABLE_FLAGS_ALL);
-//        theStatement.setInt(2, OBJECT_TYPE_TABLE);
-//        theStatement.setString(3, TABLES);
-//
-//        ResultSet theTablesResultSet = null;
-//
-//        try {
-//            theTablesResultSet = theStatement.executeQuery();
-//
-//            while (theTablesResultSet.next()) {
-//                String theTableName = theTablesResultSet.getString("Name");
-//
-//                theList.add(new TableEntry(null, null, theTableName, TABLE_TABLE_TYPE));
-//            }
-//
-//        } finally {
-//            if (theTablesResultSet != null) {
-//                theTablesResultSet.close();
-//            }
-//            theStatement.close();
-//        }
-//
-//        return theList;
 //    }
 
 //    @Override
@@ -224,14 +195,22 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
 
         QueryFragment theWhere   = getSQLWhereExpression(aConnection, aViewEntry.getTableName());
+        QueryFragment theGroupBy = getSQLGroupByExpression(aConnection, aViewEntry.getTableName());
+        QueryFragment theHaving = new QueryFragment("");
+        if (theGroupBy != null) {
+            theHaving = getSQLHavingExpression(aConnection, aViewEntry.getTableName());
+        }
 
-        theViewSQL = mergeRight(theCommand.getLeadingSQL(), SPACE, theOptions.getLeadingSQL());
+        theViewSQL = mergeRight("\n" + theCommand.getLeadingSQL(), SPACE, theOptions.getLeadingSQL());
         theViewSQL = mergeRight(theViewSQL, SPACE, theFields.getLeadingSQL());
-        theViewSQL = mergeRight(theViewSQL, COMMA, theOptions.getTrailingSQL());
+        if (!theCommand.getLeadingSQL().endsWith(theOptions.getTrailingSQL())) {
+            theViewSQL = mergeRight(theViewSQL, COMMA, theOptions.getTrailingSQL());
+        }
 
-        theViewSQL = mergeRight(theViewSQL, SPACE, theFrom.getLeadingSQL());
-
-        theViewSQL = mergeRight(theViewSQL, SPACE, theWhere.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theFrom.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theWhere.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theGroupBy.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theHaving.getLeadingSQL());
 
         return theViewSQL;
 
@@ -564,6 +543,46 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
         return new QueryFragment(theWhere, theType);
 
+    }
+
+    private QueryFragment getSQLGroupByExpression(Connection aConnection, String aViewName) throws SQLException {
+        String theSQL = "";
+
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.GroupByExpression.ID);
+
+        while (theProperties != null && theProperties.next()) {
+            theSQL = mergeRight(theSQL, COMMA, theProperties.getString("Expression"));
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        theSQL = mergeLeft(theSQL, SPACE, GROUP_BY);
+
+        if (StringUtils.isEmpty(theSQL)) {
+            return null;
+        } else {
+            return new QueryFragment(theSQL);
+        }
+    }
+
+    private QueryFragment getSQLHavingExpression(Connection aConnection, String aViewName) throws SQLException {
+        String theSQL = "";
+
+        ResultSet theProperties = getSQLProperties(aConnection, aViewName, QueryProperties.HavingExpression.ID);
+
+        if (theProperties != null && theProperties.next()) {
+            theSQL = theProperties.getString("Expression");
+        }
+
+        if (theProperties != null) {
+            theProperties.close();
+        }
+
+        theSQL = mergeLeft(theSQL, SPACE, HAVING);
+
+        return new QueryFragment(theSQL);
     }
 
 }
