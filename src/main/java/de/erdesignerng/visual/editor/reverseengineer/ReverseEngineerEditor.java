@@ -106,9 +106,31 @@ public class ReverseEngineerEditor extends BaseEditor {
             // initially show available schemas
             commandUpdate();
 
-            // initially preselect first schema if possible
+            // Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd
+            // initially preselect first *non-system* schema if possible
             if (schemaList.getSize() > 0) {
-                editingView.getSchemaList().setSelectedIndex(0);
+                List<String> systemSchemas = model.getDialect().getSystemSchemas();
+                int selectedIndex = 0;
+
+                if (systemSchemas != null) {
+                    int i = 0;
+                    while ((i < schemaList.getSize()) && (selectedIndex == 0)) {
+                        boolean isSystemSchema = false;
+                        int j = 0;
+                        while ((j < systemSchemas.size()) && (!isSystemSchema)) {
+                            isSystemSchema = schemaList.get(i).getSchemaName().equals(systemSchemas.get(j));
+                            j++;
+                        }
+
+                        if (!isSystemSchema) {
+                            selectedIndex = i;
+                        }
+
+                        i++;
+                    }
+                }
+
+                editingView.getSchemaList().setSelectedIndex(selectedIndex);
             }
         }
 

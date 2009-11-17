@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
+import java.util.ArrayList;
 
 /**
  * @author $Author: mirkosertic $
@@ -58,6 +59,8 @@ public abstract class Dialect {
     private NameCastType castType;
 
     private final DataTypeList dataTypes = new DataTypeList();
+
+    private ArrayList<String> systemSchemas = null;
 
     /**
      * @return the caseSensitive
@@ -368,6 +371,22 @@ public abstract class Dialect {
 
     public void setSupportsSchemaInformation(boolean supportsSchemaInformation) {
         this.supportsSchemaInformation = supportsSchemaInformation;
+    }
+
+    public ArrayList<String> getSystemSchemas() {
+        if (supportsSchemaInformation) {
+            return systemSchemas;
+        }else {
+            return null;
+        }
+    }
+
+    public void addSystemSchema(String aSystemSchemaName) {
+        if (systemSchemas == null) {
+            systemSchemas = new ArrayList<String>();
+        }
+
+        systemSchemas.add(aSystemSchemaName);
     }
 
     public abstract DataType createDataType(String aName, String aDefinition, int... aJdbcType);
