@@ -62,7 +62,7 @@ public class ModelItemVector<T extends ModelItem> extends Vector<T> implements M
                     return true;
                 }
             } else {
-                if (aUniqueName.toLowerCase().equals(theElement.getUniqueName().toLowerCase())) {
+                if (aUniqueName.equalsIgnoreCase(theElement.getUniqueName())) {
                     return true;
                 }
             }
