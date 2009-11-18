@@ -145,9 +145,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aViewEntry.getTableName());
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
+        
+        String theTablePattern = getEscapedPattern(theMetaData, aViewEntry.getTableName());
+        String theSchemaPattern = getEscapedPattern(theMetaData, aViewEntry.getSchemaName());
 
-        ResultSet theViewsResultSet = theMetaData.getTables(aViewEntry.getCatalogName(), aViewEntry.getSchemaName(),
-                aViewEntry.getTableName(), new String[] { aViewEntry.getTableType() });
+        ResultSet theViewsResultSet = theMetaData.getTables(aViewEntry.getCatalogName(), theSchemaPattern,
+                theTablePattern, new String[] { aViewEntry.getTableType() });
         while (theViewsResultSet.next()) {
 
             String theViewRemarks = theViewsResultSet.getString("REMARKS");
@@ -188,6 +191,15 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         theViewsResultSet.close();
     }
 
+    protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
+        String thePrefix = aMetaData.getSearchStringEscape();
+        if (!StringUtils.isEmpty(thePrefix) && !StringUtils.isEmpty(aValue)) {
+            aValue = aValue.replace("_", thePrefix + "_");
+            aValue = aValue.replace("%", thePrefix + "_");
+        }
+        return aValue;
+    }
+
     /**
      * Reverse enginner an existing table.
      * 
@@ -214,8 +226,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
 
-        ResultSet theTablesResultSet = theMetaData.getTables(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(),
-                aTableEntry.getTableName(), new String[] { aTableEntry.getTableType() });
+        String theTablePattern = getEscapedPattern(theMetaData, aTableEntry.getTableName());
+        String theSchemaPattern = getEscapedPattern(theMetaData, aTableEntry.getSchemaName());
+
+        ResultSet theTablesResultSet = theMetaData.getTables(aTableEntry.getCatalogName(), theSchemaPattern,
+                theTablePattern, new String[] { aTableEntry.getTableType() });
         while (theTablesResultSet.next()) {
 
             String theTableRemarks = theTablesResultSet.getString("REMARKS");
@@ -236,8 +251,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             }
 
             // Reverse engineer attributes
-            ResultSet theColumnsResultSet = theMetaData.getColumns(aTableEntry.getCatalogName(), aTableEntry
-                    .getSchemaName(), aTableEntry.getTableName(), null);
+            ResultSet theColumnsResultSet = theMetaData.getColumns(aTableEntry.getCatalogName(), theSchemaPattern,
+                    theTablePattern, null);
             while (theColumnsResultSet.next()) {
 
                 String theColumnName = null;
@@ -362,8 +377,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
             Table aTable) throws SQLException, ReverseEngineeringException {
 
-        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry
-                .getSchemaName(), aTableEntry.getTableName());
+        String theTablePattern = getEscapedPattern(aMetaData, aTableEntry.getTableName());
+        String theSchemaPattern = getEscapedPattern(aMetaData, aTableEntry.getSchemaName());
+
+        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), theSchemaPattern,
+                theTablePattern);
         Index thePrimaryKeyIndex = null;
         while (thePrimaryKeyResultSet.next()) {
 
@@ -410,8 +428,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     protected void reverseEngineerIndexes(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
             Table aTable, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
 
-        ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(),
-                aTableEntry.getTableName(), false, true);
+        String theTablePattern = getEscapedPattern(aMetaData, aTableEntry.getTableName());
+        String theSchemaPattern = getEscapedPattern(aMetaData, aTableEntry.getSchemaName());
+
+        ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), theSchemaPattern,
+                theTablePattern, false, true);
         Index theIndex = null;
         while (theIndexResults.next()) {
 
@@ -560,11 +581,13 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         }
 
         String theOldFKName = null;
+        
+        String theTablePattern = getEscapedPattern(theMetaData, aTableEntry.getTableName());
+        String theSchemaPattern = getEscapedPattern(theMetaData, aTableEntry.getSchemaName());
 
         // Foreign keys
         Relation theNewRelation = null;
-        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry
-                .getTableName());
+        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaPattern, theTablePattern);
         while (theForeignKeys.next()) {
             String theFKName = theForeignKeys.getString("FK_NAME");
 
