@@ -54,7 +54,7 @@ public final class ModelUtilities {
         }
 
         if (aVector.elementExists(aName, theCaseSensitive)) {
-            throw new ElementAlreadyExistsException(aName);
+            throw new ElementAlreadyExistsException("Element '" + aName + "' aleady exists!");
         }
 
     }
