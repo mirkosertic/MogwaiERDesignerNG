@@ -126,9 +126,10 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     @Override
     protected void reverseEngineerRelations(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+        // TODO [dr-death] manage relations with multiple fields
         String theQuery = "SELECT * " +
                           "FROM MSysRelationships " +
-                          "WHERE (szReferencedObject = ?);";
+                          "WHERE (szObject = ?);";
 
         PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
         theStatement.setString(1, aTableEntry.getTableName());
@@ -560,11 +561,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
         theSQL = mergeLeft(theSQL, SPACE, GROUP_BY);
 
-        if (StringUtils.isEmpty(theSQL)) {
-            return null;
-        } else {
-            return new QueryFragment(theSQL);
-        }
+        return new QueryFragment(theSQL);
     }
 
     private QueryFragment getSQLHavingExpression(Connection aConnection, String aViewName) throws SQLException {
