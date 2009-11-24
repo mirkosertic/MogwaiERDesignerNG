@@ -173,6 +173,7 @@ Release 2.0
 * Bug Fixing 2292224 [ERDesignerNG] Comments cannot be added to Subject Areas
 * Bug Fixing 2735418 [ERDesignerNG] Table content is clipped
 * Bug Fixing 2735413 [ERDesignerNG] German umlauts corrupted
+* Bug Fixing 2898966 [ERDesignerNG] domain editor: base-datatype *required*
 * Implemented FR 2581994 [ERDesignerNG] Support for function based indexes
 * Implemented FR 1905364 [ERDesignerNG] Add support for views ( early alpha )
 * Implemented FR 2675641 [ERDesignerNG] ESC Default buttons for dialogs

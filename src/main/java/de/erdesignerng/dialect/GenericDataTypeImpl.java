@@ -41,9 +41,6 @@ public abstract class GenericDataTypeImpl implements DataType {
 
     public static final String EXTRA_TOKEN = "$extra";
 
-    public static final GenericDataTypeImpl UNDEFINED = new GenericDataTypeImpl("UNDEFINED", "", Types.OTHER) {
-    };
-
     private static final int PRIME = 31;
 
     protected String name;
