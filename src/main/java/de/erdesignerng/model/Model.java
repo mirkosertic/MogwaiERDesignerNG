@@ -31,7 +31,6 @@ import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.dialect.GenericDataTypeImpl;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.modificationtracker.EmptyModelModificationTracker;
@@ -515,7 +514,6 @@ public class Model extends ModelItem {
      */
     public DataTypeList getDomainDataTypes() {
         DataTypeList theResult = new DataTypeList();
-        theResult.add(GenericDataTypeImpl.UNDEFINED);
         if (dialect != null) {
             theResult.addAll(dialect.getDataTypes());
         }

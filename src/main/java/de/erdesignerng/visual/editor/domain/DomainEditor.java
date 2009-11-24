@@ -112,7 +112,7 @@ public class DomainEditor extends BaseEditor {
         model = aModel;
 
         domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
-        domainBindingInfo.addBinding("concreteType", editingView.getDataType());
+        domainBindingInfo.addBinding("concreteType", editingView.getDataType(), true);
         domainBindingInfo.addBinding("size", editingView.getSizeSpinner());
         domainBindingInfo.addBinding("fraction", editingView.getFractionSpinner());
         domainBindingInfo.addBinding("scale", editingView.getScaleSpinner());
