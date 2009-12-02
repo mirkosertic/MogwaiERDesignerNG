@@ -120,7 +120,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
             assertTrue(theIndex.getExpressions().findByAttributeName("tb3_2") == null);
             assertTrue("upper((tb3_2)::text)".equals(theIndex.getExpressions().get(0).getExpression()));
 
-            assertTrue(theModel.getRelations().size() == 1);
+            assertTrue(theModel.getRelations().size() == 2);
 
             Relation theRelation = theModel.getRelations().findByName("fk1");
             assertTrue(theRelation != null);
@@ -137,6 +137,8 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
+            
+            System.out.println(theResult);
 
             String theReference = readResourceFile("result.sql");
 
