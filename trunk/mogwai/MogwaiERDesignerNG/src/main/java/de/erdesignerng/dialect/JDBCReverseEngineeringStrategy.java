@@ -564,8 +564,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             theImportingTable = aModel.getTables().findByName(theImportingTableName);
             break;
         case INCLUDE_SCHEMA:
-            theImportingTable = aModel.getTables().findByNameAndSchema(theImportingTableName,
-                    theSchemaName);
+            theImportingTable = aModel.getTables().findByNameAndSchema(theImportingTableName, theSchemaName);
             break;
         default:
             throw new RuntimeException("Not supported naming type");
@@ -576,12 +575,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
         String theOldFKName = null;
 
-        String theTablePattern = getEscapedPattern(theMetaData, aTableEntry.getTableName());
-        String theSchemaPattern = getEscapedPattern(theMetaData, aTableEntry.getSchemaName());
-
         // Foreign keys
         Relation theNewRelation = null;
-        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaPattern, theTablePattern);
+        ResultSet theForeignKeys = theMetaData.getImportedKeys(theCatalogName, theSchemaName, aTableEntry
+                .getTableName());
         while (theForeignKeys.next()) {
             String theFKName = theForeignKeys.getString("FK_NAME");
 
@@ -940,10 +937,14 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
     protected String extractSelectDDLFromViewDefinition(String theViewDefinition) {
         if (!StringUtils.isEmpty(theViewDefinition)) {
+
+            theViewDefinition = theViewDefinition.replace('\n', ' ');
+            theViewDefinition = theViewDefinition.replace('\r', ' ');
+            theViewDefinition = theViewDefinition.replace('\t', ' ');
+            theViewDefinition = theViewDefinition.replace('\t', ' ').trim();
+
             String theViewDefinitionLower = theViewDefinition.toLowerCase();
-            theViewDefinitionLower = theViewDefinitionLower.replace('\n', ' ');
-            theViewDefinitionLower = theViewDefinitionLower.replace('\r', ' ');
-            theViewDefinitionLower = theViewDefinitionLower.replace('\t', ' ');
+            theViewDefinitionLower = theViewDefinitionLower.trim();
 
             if (theViewDefinitionLower.startsWith("create view ")) {
                 int p = theViewDefinitionLower.indexOf(" as ");
@@ -955,6 +956,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                 theViewDefinition = theViewDefinition.substring(0, theViewDefinition.length() - 1);
             }
         }
-        return theViewDefinition;
+
+        return SQLUtils.prettyFormat(theViewDefinition);
     }
 }
