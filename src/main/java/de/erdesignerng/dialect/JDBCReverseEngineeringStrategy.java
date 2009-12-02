@@ -145,7 +145,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aViewEntry.getTableName());
 
         DatabaseMetaData theMetaData = aConnection.getMetaData();
-        
+
         String theTablePattern = getEscapedPattern(theMetaData, aViewEntry.getTableName());
         String theSchemaPattern = getEscapedPattern(theMetaData, aViewEntry.getSchemaName());
 
@@ -377,11 +377,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
             Table aTable) throws SQLException, ReverseEngineeringException {
 
-        String theTablePattern = getEscapedPattern(aMetaData, aTableEntry.getTableName());
-        String theSchemaPattern = getEscapedPattern(aMetaData, aTableEntry.getSchemaName());
-
-        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), theSchemaPattern,
-                theTablePattern);
+        ResultSet thePrimaryKeyResultSet = aMetaData.getPrimaryKeys(aTableEntry.getCatalogName(), aTableEntry
+                .getSchemaName(), aTableEntry.getTableName());
         Index thePrimaryKeyIndex = null;
         while (thePrimaryKeyResultSet.next()) {
 
@@ -428,11 +425,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
     protected void reverseEngineerIndexes(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData,
             Table aTable, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
 
-        String theTablePattern = getEscapedPattern(aMetaData, aTableEntry.getTableName());
-        String theSchemaPattern = getEscapedPattern(aMetaData, aTableEntry.getSchemaName());
-
-        ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), theSchemaPattern,
-                theTablePattern, false, true);
+        ResultSet theIndexResults = aMetaData.getIndexInfo(aTableEntry.getCatalogName(), aTableEntry.getSchemaName(),
+                aTableEntry.getTableName(), false, true);
         Index theIndex = null;
         while (theIndexResults.next()) {
 
@@ -571,7 +565,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             break;
         case INCLUDE_SCHEMA:
             theImportingTable = aModel.getTables().findByNameAndSchema(theImportingTableName,
-                    aTableEntry.getSchemaName());
+                    theSchemaName);
             break;
         default:
             throw new RuntimeException("Not supported naming type");
@@ -581,7 +575,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         }
 
         String theOldFKName = null;
-        
+
         String theTablePattern = getEscapedPattern(theMetaData, aTableEntry.getTableName());
         String theSchemaPattern = getEscapedPattern(theMetaData, aTableEntry.getSchemaName());
 
