@@ -4,6 +4,9 @@ create domain TestDomain varchar(20);
 create table schemaa.Table1 (tb1_1 TestDomain not null,tb1_2 varchar(100) default 'Test',tb1_3 numeric(20,5) not null,CONSTRAINT PK1 PRIMARY KEY (tb1_1))
 create table schemab.Table1 (tb2_1 varchar not null,tb2_2 varchar(100) default 'A' ,tb2_3 numeric(20,5) not null)
 create table schemab.Table2 (tb3_1 varchar(20) not null,tb3_2 varchar(100) default 'A' ,tb3_3 numeric(20,5) not null)
+create table schemab.Table_2 (tb2_1 varchar(20) not null,tb2_2 varchar(100) default 'Test',tb2_3 numeric(20,5) not null,CONSTRAINT PK3 PRIMARY KEY (tb2_1))
+create table schemab.Tablea2 (tb3_1 varchar(20) not null,tb3_2 varchar(100) default 'Test',tb3_3 numeric(20,5) not null,CONSTRAINT PK6 PRIMARY KEY (tb3_1))
+alter table schemab.Table1 add constraint FK1 foreign key (tb1_1) references schemab.Table_2(tb2_1) on delete no action on update no action;
 create view schemab.View1 as SELECT * from schemab.Table1
 create unique index Tabl11_idx1 on schemab.Table1 (tb2_2)
 create index Tabl11_idx2 on schemab.Table1 (tb2_3)
