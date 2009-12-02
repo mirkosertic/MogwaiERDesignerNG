@@ -18,6 +18,7 @@
 package de.erdesignerng.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.jdbc.util.BasicFormatterImpl;
 
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttribute;
@@ -144,5 +145,20 @@ public final class SQLUtils {
         if (!StringUtils.isEmpty(theCurrentToken)) {
             addViewAttribute(theCurrentToken, aView);
         }
+    }
+
+    /**
+     * Prettyformat a SQL Statement.
+     * 
+     * This is based on the Hibernate Formatter implementation.
+     * 
+     * @param aSQL
+     * @return
+     */
+    public static String prettyFormat(String aSQL) {
+        if (StringUtils.isEmpty(aSQL)) {
+            return aSQL;
+        }
+        return new BasicFormatterImpl().format(aSQL);
     }
 }
