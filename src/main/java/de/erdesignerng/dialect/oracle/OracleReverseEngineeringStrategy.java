@@ -152,10 +152,4 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         }
         return super.getCascadeType(aValue);
     }
-    
-    @Override
-    // TODO [mirkosertic] Add units tests to test this strange behavior
-    protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
-        return aValue;
-    }    
 }
