@@ -118,11 +118,4 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
             theStatement.close();
         }
     }
-
-    @Override
-    // TODO [mirkosertic] Add units tests to test this strange behavior
-    protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
-        return aValue;
-    }
-    
 }
