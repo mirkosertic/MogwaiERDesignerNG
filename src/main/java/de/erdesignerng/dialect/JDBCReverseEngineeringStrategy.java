@@ -957,6 +957,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             }
         }
 
-        return SQLUtils.prettyFormat(theViewDefinition);
+        return theViewDefinition;
     }
 }

@@ -136,6 +136,8 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
+            
+            System.out.println(theResult);
 
             String theReference = readResourceFile("result.sql");
 
