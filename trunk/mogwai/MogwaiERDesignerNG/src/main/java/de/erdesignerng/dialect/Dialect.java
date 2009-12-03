@@ -20,13 +20,13 @@ package de.erdesignerng.dialect;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import java.util.ArrayList;
 
 /**
  * @author $Author: mirkosertic $
@@ -376,9 +376,8 @@ public abstract class Dialect {
     public ArrayList<String> getSystemSchemas() {
         if (supportsSchemaInformation) {
             return systemSchemas;
-        }else {
-            return null;
         }
+        return null;
     }
 
     public void addSystemSchema(String aSystemSchemaName) {
