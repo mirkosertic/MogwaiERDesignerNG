@@ -31,7 +31,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 
-public class BaseERDesignerTestCaseImpl extends TestCase {
+public abstract class BaseERDesignerTestCaseImpl extends TestCase {
 
     protected boolean compareStrings(String aString1, String aString2) {
         aString1 = StringUtils.remove(aString1, (char) 13);

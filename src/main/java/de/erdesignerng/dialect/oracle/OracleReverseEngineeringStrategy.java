@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.SchemaEntry;
@@ -151,5 +153,18 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
             break;
         }
         return super.getCascadeType(aValue);
+    }
+
+    @Override
+    protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
+        if (StringUtils.isEmpty(aValue)) {
+            return aValue;
+        }
+        // Oracle is strage, just use a single / here!
+        // The driver is just wrong.
+        String thePrefix = "/";
+        aValue = aValue.replace("_", thePrefix + "_");
+        aValue = aValue.replace("%", thePrefix + "_");
+        return aValue;
     }
 }
