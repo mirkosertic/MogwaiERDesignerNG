@@ -26,7 +26,7 @@ import java.sql.Statement;
 
 import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
-public class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
+public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
     private Connection connection;
 
