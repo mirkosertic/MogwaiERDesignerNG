@@ -34,7 +34,7 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 
-public class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseImpl {
+public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseImpl {
 
     public class EmptyWorldConnector implements ERDesignerWorldConnector {
 
