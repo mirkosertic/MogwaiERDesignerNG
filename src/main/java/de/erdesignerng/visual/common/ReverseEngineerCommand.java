@@ -25,6 +25,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -42,156 +44,193 @@ import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
 
 public class ReverseEngineerCommand extends UICommand {
 
-    public ReverseEngineerCommand(ERDesignerComponent aComponent) {
-        super(aComponent);
-    }
+	public ReverseEngineerCommand(ERDesignerComponent aComponent) {
+		super(aComponent);
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        final Model theModel = component.getModel();
-        final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect().getReverseEngineeringStrategy();
+		final Model theModel = component.getModel();
+		final JDBCReverseEngineeringStrategy theStrategy = theModel
+				.getDialect().getReverseEngineeringStrategy();
 
-        if (theModel.getDialect().isSupportsSchemaInformation()) {
-            final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(),
-                    getPreferences());
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+		if (theModel.getDialect().isSupportsSchemaInformation()) {
+			final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
+					theModel, getDetailComponent(), getPreferences());
+			if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                component.setIntelligentLayoutEnabled(false);
+				component.setIntelligentLayoutEnabled(false);
 
-                try {
+				try {
 
-                    final Connection theConnection = theModel.createConnection(getPreferences());
-                    if (theConnection == null) {
-                        return;
-                    }
+					final Connection theConnection = theModel
+							.createConnection(getPreferences());
+					if (theConnection == null) {
+						return;
+					}
 
+					LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<ReverseEngineeringOptions>(
+							getWorldConnector()) {
 
-                    LongRunningTask<ReverseEngineeringOptions> theRETask = new LongRunningTask<ReverseEngineeringOptions>(
-                            getWorldConnector()) {
+						@Override
+						public ReverseEngineeringOptions doWork(
+								MessagePublisher aMessagePublisher)
+								throws Exception {
+							ReverseEngineeringOptions theOptions = theEditor
+									.createREOptions();
+							theOptions.getTableEntries().addAll(
+									theStrategy.getTablesForSchemas(
+											theConnection, theOptions
+													.getSchemaEntries()));
+							return theOptions;
+						}
 
-                        @Override
-                        public ReverseEngineeringOptions doWork(MessagePublisher aMessagePublisher) throws Exception {
-                            ReverseEngineeringOptions theOptions = theEditor.createREOptions();
-                            theOptions.getTableEntries().addAll(
-                                    theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
-                            return theOptions;
-                        }
+						@Override
+						public void handleResult(
+								final ReverseEngineeringOptions theOptions) {
+							showTablesSelectEditor(theStrategy, theModel,
+									theConnection, theOptions);
+						}
 
-                        @Override
-                        public void handleResult(final ReverseEngineeringOptions theOptions) {
-                            showTablesSelectEditor(theStrategy, theModel, theConnection, theOptions);
-                        }
+					};
+					theRETask.start();
 
-                    };
-                    theRETask.start();
+				} catch (Exception e) {
+					getWorldConnector().notifyAboutException(e);
+				} finally {
+					component.setIntelligentLayoutEnabled(getPreferences()
+							.isIntelligentLayout());
+				}
+			}
+		} else {
+			try {
 
-                } catch (Exception e) {
-                    getWorldConnector().notifyAboutException(e);
-                } finally {
-                    component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
-                }
-            }
-        } else {
-            try {
+				final Connection theConnection = theModel
+						.createConnection(getPreferences());
+				if (theConnection == null) {
+					return;
+				}
+				final ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+				theOptions.setTableNaming(TableNamingEnum.STANDARD);
+				theOptions.getTableEntries().addAll(
+						theStrategy.getTablesForSchemas(theConnection,
+								theOptions.getSchemaEntries()));
 
-                final Connection theConnection = theModel.createConnection(getPreferences());
-                if (theConnection == null) {
-                    return;
-                }
-                final ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-                theOptions.setTableNaming(TableNamingEnum.STANDARD);
-                theOptions.getTableEntries().addAll(theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
+				showTablesSelectEditor(theStrategy, theModel, theConnection,
+						theOptions);
 
-                showTablesSelectEditor(theStrategy, theModel, theConnection, theOptions);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			} finally {
+				component.setIntelligentLayoutEnabled(getPreferences()
+						.isIntelligentLayout());
+			}
+		}
+	}
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            } finally {
-                component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
-            }
-        }
-    }
+	// FR 2895534 [ERDesignerNG] show RevEngEd only on DBs with schema support
+	private void showTablesSelectEditor(
+			final JDBCReverseEngineeringStrategy aStrategy, final Model aModel,
+			final Connection aConnection,
+			final ReverseEngineeringOptions theOptions) {
+		TablesSelectEditor theTablesEditor = new TablesSelectEditor(theOptions,
+				getDetailComponent());
 
-    // FR 2895534 [ERDesignerNG] show RevEngEd only on DBs with schema support
-    private void showTablesSelectEditor(final JDBCReverseEngineeringStrategy aStrategy, final Model aModel, final Connection aConnection, final ReverseEngineeringOptions theOptions) {
-        TablesSelectEditor theTablesEditor = new TablesSelectEditor(theOptions, getDetailComponent());
+		if (theTablesEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-        if (theTablesEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			LongRunningTask<Model> theTask = new LongRunningTask<Model>(
+					getWorldConnector()) {
 
-            LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
+				@Override
+				public Model doWork(final MessagePublisher aPublisher)
+						throws Exception {
+					ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
 
-                @Override
-                public Model doWork(final MessagePublisher aPublisher) throws Exception {
-                    ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
+						public void notifyMessage(String aResourceKey,
+								String... aValues) {
+							String theMessage = MessageFormat.format(component
+									.getResourceHelper().getText(aResourceKey),
+									(Object[]) aValues);
+							aPublisher.publishMessage(theMessage);
+						}
 
-                        public void notifyMessage(String aResourceKey, String... aValues) {
-                            String theMessage = MessageFormat.format(component.getResourceHelper()
-                                    .getText(aResourceKey), (Object[]) aValues);
-                            aPublisher.publishMessage(theMessage);
-                        }
+					};
 
-                    };
+					aStrategy.updateModelFromConnection(aModel,
+							getWorldConnector(), aConnection, theOptions,
+							theNotifier);
 
-                    aStrategy.updateModelFromConnection(aModel, getWorldConnector(), aConnection,
-                            theOptions, theNotifier);
+					// Iterate over the views and the tables and
+					// order them in a matrix like position
+					List<ModelItem> theItems = new ArrayList<ModelItem>();
+					theItems.addAll(aModel.getTables());
+					theItems.addAll(aModel.getViews());
+					int xoffset = 20;
+					int yoffset = 20;
+					int xcounter = 0;
+					int maxheight = Integer.MIN_VALUE;
+					for (ModelItem theItem : theItems) {
+						Component theComponent = null;
+						if (theItem instanceof Table) {
+							theComponent = new TableCellView.MyRenderer()
+									.getRendererComponent((Table) theItem);
+						}
+						if (theItem instanceof View) {
+							theComponent = new ViewCellView.MyRenderer()
+									.getRendererComponent((View) theItem);
+						}
+						Dimension theSize = theComponent.getPreferredSize();
 
-                    // Iterate over the views and the tables and
-                    // order them in a matrix like position
-                    List<ModelItem> theItems = new ArrayList<ModelItem>();
-                    theItems.addAll(aModel.getTables());
-                    theItems.addAll(aModel.getViews());
-                    int xoffset = 20;
-                    int yoffset = 20;
-                    int xcounter = 0;
-                    int maxheight = Integer.MIN_VALUE;
-                    for (ModelItem theItem : theItems) {
-                        Component theComponent = null;
-                        if (theItem instanceof Table) {
-                            theComponent = new TableCellView.MyRenderer()
-                                    .getRendererComponent((Table) theItem);
-                        }
-                        if (theItem instanceof View) {
-                            theComponent = new ViewCellView.MyRenderer()
-                                    .getRendererComponent((View) theItem);
-                        }
-                        Dimension theSize = theComponent.getPreferredSize();
+						String theLocation = xoffset + ":" + yoffset;
+						theItem.getProperties().setProperty(
+								ModelItem.PROPERTY_LOCATION, theLocation);
 
-                        String theLocation = xoffset + ":" + yoffset;
-                        theItem.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+						maxheight = Math.max(maxheight, theSize.height);
+						xoffset += theSize.width + 20;
 
-                        maxheight = Math.max(maxheight, theSize.height);
-                        xoffset += theSize.width + 20;
+						xcounter++;
+						if (xcounter >= getPreferences()
+								.getGridWidthAfterReverseEngineering()) {
+							xcounter = 0;
+							xoffset = 0;
+							yoffset += maxheight + 20;
+							maxheight = Integer.MIN_VALUE;
+						}
+					}
 
-                        xcounter++;
-                        if (xcounter >= getPreferences().getGridWidthAfterReverseEngineering()) {
-                            xcounter = 0;
-                            xoffset = 0;
-                            yoffset += maxheight + 20;
-                            maxheight = Integer.MIN_VALUE;
-                        }
-                    }
+					return aModel;
+				}
 
-                    return aModel;
-                }
+				@Override
+				public void handleResult(final Model aResultModel) {
+					try {
+						// Make sure this is called in the EDT, as else JGraph might throw a NPE
+						SwingUtilities.invokeAndWait(new Runnable() {
 
-                @Override
-                public void handleResult(Model aResultModel) {
-                    component.setModel(aResultModel);
-                }
+							@Override
+							public void run() {
+								component.setModel(aResultModel);
+							}
+						});
+					} catch (Exception e) {
+						throw new RuntimeException(
+								"Cannot set model in editor", e);
+					}
+				}
 
-                @Override
-                public void cleanup() throws SQLException {
-                    if (!aModel.getDialect().generatesManagedConnection()) {
-                        aConnection.close();
-                    }
-                }
+				@Override
+				public void cleanup() throws SQLException {
+					if (!aModel.getDialect().generatesManagedConnection()) {
+						aConnection.close();
+					}
+				}
 
-            };
-            theTask.start();
-        }
-    }
+			};
+			theTask.start();
+		}
+	}
 }
