@@ -164,7 +164,7 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
         // The driver is just wrong.
         String thePrefix = "/";
         aValue = aValue.replace("_", thePrefix + "_");
-        aValue = aValue.replace("%", thePrefix + "_");
+        aValue = aValue.replace("%", thePrefix + "%");
         return aValue;
     }
 }
