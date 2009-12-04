@@ -195,7 +195,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         String thePrefix = aMetaData.getSearchStringEscape();
         if (!StringUtils.isEmpty(thePrefix) && !StringUtils.isEmpty(aValue)) {
             aValue = aValue.replace("_", thePrefix + "_");
-            aValue = aValue.replace("%", thePrefix + "_");
+            aValue = aValue.replace("%", thePrefix + "%");
         }
         return aValue;
     }
