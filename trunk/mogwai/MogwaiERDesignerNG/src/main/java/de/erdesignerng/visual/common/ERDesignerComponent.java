@@ -1309,7 +1309,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             RelationEdge theCell = new RelationEdge(theRelation, theImportingCell, theExportingCell);
             theCell.transferPropertiesToAttributes(theRelation);
 
-            graph.getGraphLayoutCache().insert(theCell);
+          	graph.getGraphLayoutCache().insert(theCell);
         }
 
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
