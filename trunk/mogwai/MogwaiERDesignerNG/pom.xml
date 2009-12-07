@@ -190,6 +190,9 @@
 						<descriptor>
 							assembly-squirrelplugin.xml
                         </descriptor>
+						<descriptor>
+							assembly-plain.xml
+                        </descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>
