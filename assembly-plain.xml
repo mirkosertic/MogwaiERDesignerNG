@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<assembly>
+	<id>plain</id>
+	<formats>
+		<format>tar.gz</format>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>${staging.dir}</directory>
+			<outputDirectory>.</outputDirectory>
+			<excludes>
+				<exclude>install*.xml</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets>
+</assembly>
