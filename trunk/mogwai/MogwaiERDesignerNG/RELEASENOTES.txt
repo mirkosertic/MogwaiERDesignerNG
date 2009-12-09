@@ -214,6 +214,7 @@ Release 2.5.0
 * Bug Fixing 2895853 [ERDesignerNG] DbConnEditor *don't* overwrite user input
 * Bug Fixing 2895110 [ERDesignerNG] create *valid* UTF-8 encoded MXM files
 * Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd
+* Bug Fixing 2895140 [ERDesignerNG] NullPointerException in during layouting
 * Implemented FR 2675655 [ERDesignerNG] Automatic entity relation propagation
 * Implemented FR 2791976 [ERDesignerNG] Support for MySQL ENUM Types
 * Implemented FR 2711890 [ERDesignerNG] Allow user settable defaults for new relationships
