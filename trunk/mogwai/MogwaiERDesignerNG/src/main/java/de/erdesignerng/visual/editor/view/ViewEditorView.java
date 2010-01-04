@@ -1,5 +1,7 @@
 package de.erdesignerng.visual.editor.view;
 
+import java.awt.BorderLayout;
+
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -34,10 +36,9 @@ public class ViewEditorView extends DefaultPanel {
     private DefaultButton cancelButton;
 
     private DefaultTextArea sqlText = new DefaultTextArea();
+    
+    private DefaultTabbedPaneTab propertiesPanel;    
 
-    /**
-     * Constructor.
-     */
     public ViewEditorView() {
         initialize();
     }
@@ -62,11 +63,6 @@ public class ViewEditorView extends DefaultPanel {
         this.add(getCancelButton(), cons.xywh(7, 7, 1, 1));
     }
 
-    /**
-     * Getter method for component Component_1.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JLabel getComponent1() {
 
         if (component1 == null) {
@@ -76,11 +72,6 @@ public class ViewEditorView extends DefaultPanel {
         return component1;
     }
 
-    /**
-     * Getter method for component Entity_name.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextField getEntityName() {
 
         if (entityName == null) {
@@ -91,17 +82,13 @@ public class ViewEditorView extends DefaultPanel {
         return entityName;
     }
 
-    /**
-     * Getter method for component MainTabbedPane.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPane getMainTabbedPane() {
 
         if (mainTabbedPane == null) {
             mainTabbedPane = new DefaultTabbedPane();
             mainTabbedPane.addTab("SQL", new DefaultScrollPane(sqlText));
             mainTabbedPane.addTab(null, getTableCommentsTab());
+            mainTabbedPane.addTab(null, getPropertiesPanel());            
             mainTabbedPane.setName("MainTabbedPane");
             mainTabbedPane.setSelectedIndex(0);
         }
@@ -109,11 +96,6 @@ public class ViewEditorView extends DefaultPanel {
         return mainTabbedPane;
     }
 
-    /**
-     * Getter method for component MainCommensTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getTableCommentsTab() {
 
         if (tableCommentsTab == null) {
@@ -135,11 +117,6 @@ public class ViewEditorView extends DefaultPanel {
         return tableCommentsTab;
     }
 
-    /**
-     * Getter method for component EntityComment.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextArea getEntityComment() {
 
         if (tableComment == null) {
@@ -150,11 +127,6 @@ public class ViewEditorView extends DefaultPanel {
         return tableComment;
     }
 
-    /**
-     * Getter method for component OkButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getOkButton() {
 
         if (okButton == null) {
@@ -164,11 +136,6 @@ public class ViewEditorView extends DefaultPanel {
         return okButton;
     }
 
-    /**
-     * Getter method for component CancelButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getCancelButton() {
 
         if (cancelButton == null) {
@@ -178,10 +145,20 @@ public class ViewEditorView extends DefaultPanel {
         return cancelButton;
     }
 
-    /**
-     * @return the sqlText
-     */
     public DefaultTextArea getSqlText() {
         return sqlText;
     }
+    
+	public DefaultTabbedPaneTab getPropertiesPanel() {
+		if (propertiesPanel == null) {
+			propertiesPanel = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
+			propertiesPanel.setLayout(new BorderLayout());
+		}
+		return propertiesPanel;
+	}
+
+	public void disablePropertiesTab() {
+		getMainTabbedPane().removeTabAt(2);
+	}
+    
 }

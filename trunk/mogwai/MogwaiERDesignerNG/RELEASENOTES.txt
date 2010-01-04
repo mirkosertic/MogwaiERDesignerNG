@@ -233,3 +233,7 @@ Release 2.5.0
 * Tables are now layed out like a grid after reverse engineering
 * Fixed ClassCastException when moving relation labels
 * Fixed some issues regarding object naming in model repository on different databases
+
+Release 2.6.0
+
+* Added support for scaffolded properties based on the current dialect for tables, views, relations and domains
