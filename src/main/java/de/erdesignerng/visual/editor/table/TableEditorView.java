@@ -1,5 +1,7 @@
 package de.erdesignerng.visual.editor.table;
 
+import java.awt.BorderLayout;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ListSelectionModel;
 
@@ -119,17 +121,13 @@ public class TableEditorView extends DefaultPanel {
     private DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
 
     private DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
+    
+    private DefaultTabbedPaneTab propertiesPanel;
 
-    /**
-     * Constructor.
-     */
     public TableEditorView() {
         initialize();
     }
 
-    /**
-     * Initialize method.
-     */
     private void initialize() {
 
         String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
@@ -152,11 +150,6 @@ public class TableEditorView extends DefaultPanel {
         getRemoveFromIndexButton().setEnabled(false);
     }
 
-    /**
-     * Getter method for component Component_1.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JLabel getComponent1() {
 
         if (component1 == null) {
@@ -166,11 +159,6 @@ public class TableEditorView extends DefaultPanel {
         return component1;
     }
 
-    /**
-     * Getter method for component Entity_name.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextField getEntityName() {
 
         if (entityName == null) {
@@ -181,11 +169,6 @@ public class TableEditorView extends DefaultPanel {
         return entityName;
     }
 
-    /**
-     * Getter method for component MainTabbedPane.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPane getMainTabbedPane() {
 
         if (mainTabbedPane == null) {
@@ -193,6 +176,7 @@ public class TableEditorView extends DefaultPanel {
             mainTabbedPane.addTab(null, getAttributesTab());
             mainTabbedPane.addTab(null, getIndexesTab());
             mainTabbedPane.addTab(null, getTableCommentsTab());
+            mainTabbedPane.addTab(null, getPropertiesPanel());
             mainTabbedPane.setName("MainTabbedPane");
             mainTabbedPane.setSelectedIndex(0);
         }
@@ -200,11 +184,6 @@ public class TableEditorView extends DefaultPanel {
         return mainTabbedPane;
     }
 
-    /**
-     * Getter method for component AttributesTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getAttributesTab() {
 
         if (attributesTab == null) {
@@ -233,11 +212,6 @@ public class TableEditorView extends DefaultPanel {
         return attributesTab;
     }
 
-    /**
-     * Getter method for component AttributeList.
-     * 
-     * @return the initialized component
-     */
     public DefaultList getAttributeList() {
 
         if (attributeList == null) {
@@ -248,11 +222,6 @@ public class TableEditorView extends DefaultPanel {
         return attributeList;
     }
 
-    /**
-     * Getter method for component NewButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getNewButton() {
 
         if (newButton == null) {
@@ -262,11 +231,6 @@ public class TableEditorView extends DefaultPanel {
         return newButton;
     }
 
-    /**
-     * Getter method for component DeleteButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getDeleteButton() {
 
         if (deleteButton == null) {
@@ -276,11 +240,6 @@ public class TableEditorView extends DefaultPanel {
         return deleteButton;
     }
 
-    /**
-     * Getter method for component Component_15.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPane getComponent15() {
 
         if (component15 == null) {
@@ -294,11 +253,6 @@ public class TableEditorView extends DefaultPanel {
         return component15;
     }
 
-    /**
-     * Getter method for component AttributesGeneralTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getAttributesGeneralTab() {
 
         if (attributesGeneralTab == null) {
@@ -336,11 +290,6 @@ public class TableEditorView extends DefaultPanel {
         return attributesGeneralTab;
     }
 
-    /**
-     * Getter method for component Component_20.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JLabel getComponent20() {
 
         if (component20 == null) {
@@ -350,11 +299,6 @@ public class TableEditorView extends DefaultPanel {
         return component20;
     }
 
-    /**
-     * Getter method for component AttributeName.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextField getAttributeName() {
 
         if (attributeName == null) {
@@ -365,11 +309,6 @@ public class TableEditorView extends DefaultPanel {
         return attributeName;
     }
 
-    /**
-     * Getter method for component Required.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JCheckBox getNullable() {
 
         if (nullable == null) {
@@ -379,11 +318,6 @@ public class TableEditorView extends DefaultPanel {
         return nullable;
     }
 
-    /**
-     * Getter method for component Component_42.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JLabel getComponent42() {
 
         if (component42 == null) {
@@ -393,11 +327,6 @@ public class TableEditorView extends DefaultPanel {
         return component42;
     }
 
-    /**
-     * Getter method for component Default.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextField getDefault() {
 
         if (defaultValue == null) {
@@ -416,11 +345,6 @@ public class TableEditorView extends DefaultPanel {
         return extra;
     }
 
-    /**
-     * Getter method for component AttributeCommentTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getAttributeCommentTab() {
 
         if (attributeCommentsTab == null) {
@@ -442,11 +366,6 @@ public class TableEditorView extends DefaultPanel {
         return attributeCommentsTab;
     }
 
-    /**
-     * Getter method for component AttributeComment.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JTextArea getAttributeComment() {
 
         if (attributeComments == null) {
@@ -456,11 +375,6 @@ public class TableEditorView extends DefaultPanel {
         return attributeComments;
     }
 
-    /**
-     * Getter method for component UpdateAttributeButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getUpdateAttributeButton() {
 
         if (updateAttributeButton == null) {
@@ -470,11 +384,6 @@ public class TableEditorView extends DefaultPanel {
         return updateAttributeButton;
     }
 
-    /**
-     * Getter method for component IndexesTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getIndexesTab() {
 
         if (indexesTab == null) {
@@ -500,11 +409,6 @@ public class TableEditorView extends DefaultPanel {
         return indexesTab;
     }
 
-    /**
-     * Getter method for component IndexList.
-     * 
-     * @return the initialized component
-     */
     public DefaultList getIndexList() {
 
         if (indexList == null) {
@@ -515,11 +419,6 @@ public class TableEditorView extends DefaultPanel {
         return indexList;
     }
 
-    /**
-     * Getter method for component NewIndexButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getNewIndexButton() {
 
         if (newIndexButton == null) {
@@ -529,11 +428,6 @@ public class TableEditorView extends DefaultPanel {
         return newIndexButton;
     }
 
-    /**
-     * Getter method for component DeleteIndexButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getDeleteIndexButton() {
 
         if (deleteIndexButton == null) {
@@ -543,11 +437,6 @@ public class TableEditorView extends DefaultPanel {
         return deleteIndexButton;
     }
 
-    /**
-     * Getter method for component IndexTabbedPane.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPane getIndexTabbedPane() {
 
         if (indexTabbedPane == null) {
@@ -560,11 +449,6 @@ public class TableEditorView extends DefaultPanel {
         return indexTabbedPane;
     }
 
-    /**
-     * Getter method for component IndexGeneralTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getIndexGeneralTab() {
 
         if (indexGeneralTab == null) {
@@ -602,11 +486,6 @@ public class TableEditorView extends DefaultPanel {
         return indexGeneralTab;
     }
 
-    /**
-     * Getter method for component Label1.
-     * 
-     * @return the initialized component
-     */
     public DefaultLabel getLabel1() {
 
         if (label1 == null) {
@@ -616,11 +495,6 @@ public class TableEditorView extends DefaultPanel {
         return label1;
     }
 
-    /**
-     * Getter method for component IndexName.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextField getIndexName() {
 
         if (indexName == null) {
@@ -631,11 +505,6 @@ public class TableEditorView extends DefaultPanel {
         return indexName;
     }
 
-    /**
-     * Getter method for component UniqueIndex.
-     * 
-     * @return the initialized component
-     */
     public DefaultRadioButton getUniqueIndex() {
 
         if (uniqueIndex == null) {
@@ -654,11 +523,6 @@ public class TableEditorView extends DefaultPanel {
         return primaryKeyIndex;
     }
 
-    /**
-     * Getter method for component NotUniqueIndex.
-     * 
-     * @return the initialized component
-     */
     public DefaultRadioButton getNotUniqueIndex() {
 
         if (notUniqueIndex == null) {
@@ -668,11 +532,6 @@ public class TableEditorView extends DefaultPanel {
         return notUniqueIndex;
     }
 
-    /**
-     * Getter method for component IndexFieldList.
-     * 
-     * @return the initialized component
-     */
     public DefaultList<IndexExpression> getIndexFieldList() {
 
         if (indexAttributesList == null) {
@@ -683,11 +542,6 @@ public class TableEditorView extends DefaultPanel {
         return indexAttributesList;
     }
 
-    /**
-     * Getter method for component UpdateIndexButton.
-     * 
-     * @return the initialized component
-     */
     public DefaultButton getUpdateIndexButton() {
 
         if (updateIndexButton == null) {
@@ -697,11 +551,6 @@ public class TableEditorView extends DefaultPanel {
         return updateIndexButton;
     }
 
-    /**
-     * Getter method for component MainCommensTab.
-     * 
-     * @return the initialized component
-     */
     public DefaultTabbedPaneTab getTableCommentsTab() {
 
         if (tableCommentsTab == null) {
@@ -723,11 +572,6 @@ public class TableEditorView extends DefaultPanel {
         return tableCommentsTab;
     }
 
-    /**
-     * Getter method for component EntityComment.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextArea getEntityComment() {
 
         if (tableComment == null) {
@@ -738,11 +582,6 @@ public class TableEditorView extends DefaultPanel {
         return tableComment;
     }
 
-    /**
-     * Getter method for component OkButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getOkButton() {
 
         if (okButton == null) {
@@ -752,11 +591,6 @@ public class TableEditorView extends DefaultPanel {
         return okButton;
     }
 
-    /**
-     * Getter method for component CancelButton.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JButton getCancelButton() {
 
         if (cancelButton == null) {
@@ -781,12 +615,6 @@ public class TableEditorView extends DefaultPanel {
         theGroup2.add(getAddIndexExpression());
     }
 
-    /**
-     * Getter for the group value for group Group1.
-     * 
-     * @return the value for the current selected item in the group or null if
-     *         nothing was selected
-     */
     public String getGroup1Value() {
 
         if (getUniqueIndex().isSelected()) {
@@ -798,129 +626,73 @@ public class TableEditorView extends DefaultPanel {
         return null;
     }
 
-    /**
-     * Setter for the group value for group Group1.
-     * 
-     * @param aValue
-     *            value for the current selected item in the group or null if
-     *            nothing is selected
-     */
     public void setGroup1Value(String aValue) {
 
         getUniqueIndex().setSelected("U".equals(aValue));
         getNotUniqueIndex().setSelected("NU".equals(aValue));
     }
 
-    /**
-     * @return the dataType
-     */
     public DefaultComboBox getDataType() {
         return dataType;
     }
 
-    /**
-     * @return the precisionSpinner
-     */
     public DefaultSpinner getFractionSpinner() {
         return fractionSpinner;
     }
 
-    /**
-     * @return the scaleSpinner
-     */
     public DefaultSpinner getScaleSpinner() {
         return scaleSpinner;
     }
 
-    /**
-     * @return the sizeSpinner
-     */
     public DefaultSpinner getSizeSpinner() {
         return sizeSpinner;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>indexAttribute</code> zurück.
-     * 
-     * @return Wert des Attributs indexAttribute.
-     */
     public DefaultComboBox getIndexAttribute() {
         return indexAttribute;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>addIndexAttribute</code> zurück.
-     * 
-     * @return Wert des Attributs addIndexAttribute.
-     */
     public DefaultRadioButton getAddIndexAttribute() {
         return addIndexAttribute;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>addIndexExpression</code> zurück.
-     * 
-     * @return Wert des Attributs addIndexExpression.
-     */
     public DefaultRadioButton getAddIndexExpression() {
         return addIndexExpression;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>addExpressionToIndexButton</code>
-     * zurück.
-     * 
-     * @return Wert des Attributs addExpressionToIndexButton.
-     */
     public DefaultButton getAddExpressionToIndexButton() {
         return addExpressionToIndexButton;
     }
 
-    /**
-     * Setzt den Wert des Attributs <code>addExpressionToIndexButton</code>.
-     * 
-     * @param addExpressionToIndexButton
-     *            Wert für das Attribut addExpressionToIndexButton.
-     */
     public void setAddExpressionToIndexButton(DefaultButton addExpressionToIndexButton) {
         this.addExpressionToIndexButton = addExpressionToIndexButton;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>addAttributeToIndexButton</code>
-     * zurück.
-     * 
-     * @return Wert des Attributs addAttributeToIndexButton.
-     */
     public DefaultButton getAddAttributeToIndexButton() {
         return addAttributeToIndexButton;
     }
 
-    /**
-     * Setzt den Wert des Attributs <code>addAttributeToIndexButton</code>.
-     * 
-     * @param addAttributeToIndexButton
-     *            Wert für das Attribut addAttributeToIndexButton.
-     */
     public void setAddAttributeToIndexButton(DefaultButton addAttributeToIndexButton) {
         this.addAttributeToIndexButton = addAttributeToIndexButton;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>indexExpression</code> zurück.
-     * 
-     * @return Wert des Attributs indexExpression.
-     */
     public DefaultTextField getIndexExpression() {
         return indexExpression;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>removeFromIndexButton</code> zurück.
-     * 
-     * @return Wert des Attributs removeFromIndexButton.
-     */
     public DefaultButton getRemoveFromIndexButton() {
         return removeFromIndexButton;
     }
+
+	public DefaultTabbedPaneTab getPropertiesPanel() {
+		if (propertiesPanel == null) {
+			propertiesPanel = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
+			propertiesPanel.setLayout(new BorderLayout());
+		}
+		return propertiesPanel;
+	}
+
+	public void disablePropertiesTab() {
+		getMainTabbedPane().removeTabAt(3);
+	}
 }

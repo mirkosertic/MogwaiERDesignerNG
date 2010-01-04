@@ -17,19 +17,26 @@
  */
 package de.erdesignerng.visual.editor.relation;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Map;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.RelationProperties;
+import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.util.ScaffoldingUtils;
+import de.erdesignerng.util.ScaffoldingWrapper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 
 /**
  * @author $Author: mirkosertic $
@@ -42,6 +49,11 @@ public class RelationEditor extends BaseEditor {
     private BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
 
     private RelationEditorView editingView;
+    
+    private RelationProperties relationProperties;
+    
+    private ScaffoldingWrapper relationPropertiesWrapper;
+    
 
     /**
      * Create a relation editor.
@@ -99,6 +111,17 @@ public class RelationEditor extends BaseEditor {
     public void initializeFor(Relation aRelation) {
         bindingInfo.setDefaultModel(aRelation);
         bindingInfo.model2view();
+        
+        relationProperties = model.getDialect().createRelationPropertiesFor(aRelation);
+        DefaultPanel theProperties = editingView.getPropertiesPanel();
+        relationPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, relationProperties);
+        	
+       	theProperties.setLayout(new BorderLayout());
+       	theProperties.add(relationPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+        	
+       	UIInitializer.getInstance().initialize(theProperties);
+       	
+       	pack();
     }
 
     @Override
@@ -111,6 +134,9 @@ public class RelationEditor extends BaseEditor {
     @Override
     public void applyValues() throws Exception {
         Relation theRelation = bindingInfo.getDefaultModel();
+        
+        relationPropertiesWrapper.save();
+        relationProperties.copyTo(theRelation);
 
         if (!model.getRelations().contains(theRelation)) {
 

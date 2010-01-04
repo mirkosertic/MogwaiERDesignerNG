@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.visual.editor.domain;
 
+import java.awt.BorderLayout;
+
 import javax.swing.ListSelectionModel;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -78,6 +80,8 @@ public class DomainEditorView extends DefaultPanel {
     private final DefaultSpinner scaleSpinner = new DefaultSpinner();
 
     private DefaultCheckBox nullable;
+    
+    private DefaultTabbedPaneTab propertiesPanel;    
 
     /**
      * Constructor.
@@ -103,7 +107,6 @@ public class DomainEditorView extends DefaultPanel {
         this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
         this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
-        buildGroups();
     }
 
     /**
@@ -209,6 +212,7 @@ public class DomainEditorView extends DefaultPanel {
         if (component15 == null) {
             component15 = new DefaultTabbedPane();
             component15.addTab(null, getDomainsGeneralTab());
+            component15.addTab(null, getPropertiesPanel());
             component15.setName("Component_15");
             component15.setSelectedIndex(0);
         }
@@ -351,46 +355,22 @@ public class DomainEditorView extends DefaultPanel {
         return cancelButton;
     }
 
-    /**
-     * Initialize method.
-     */
-    private void buildGroups() {
-
-    }
-
-    /**
-     * @return the dataType
-     */
     public DefaultComboBox getDataType() {
         return dataType;
     }
 
-    /**
-     * @return the precisionSpinner
-     */
     public DefaultSpinner getFractionSpinner() {
         return fractionSpinner;
     }
 
-    /**
-     * @return the scaleSpinner
-     */
     public DefaultSpinner getScaleSpinner() {
         return scaleSpinner;
     }
 
-    /**
-     * @return the sizeSpinner
-     */
     public DefaultSpinner getSizeSpinner() {
         return sizeSpinner;
     }
 
-    /**
-     * Getter method for component Required.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JCheckBox getNullable() {
 
         if (nullable == null) {
@@ -399,4 +379,22 @@ public class DomainEditorView extends DefaultPanel {
 
         return nullable;
     }
+    
+	public DefaultTabbedPaneTab getPropertiesPanel() {
+		if (propertiesPanel == null) {
+			propertiesPanel = new DefaultTabbedPaneTab(component15, ERDesignerBundle.PROPERTIES);
+			propertiesPanel.setLayout(new BorderLayout());
+		}
+		return propertiesPanel;
+	}
+
+	public void disablePropertiesTab() {
+		if (getComponent15().getTabCount() > 1) {
+			getComponent15().removeTabAt(1);
+		}
+	}
+
+	public void enablePropertiesTab() {
+		getComponent15().addTab(null, getPropertiesPanel());
+	}
 }

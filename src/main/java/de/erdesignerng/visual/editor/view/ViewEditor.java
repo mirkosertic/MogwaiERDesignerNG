@@ -17,18 +17,24 @@
  */
 package de.erdesignerng.visual.editor.view;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.TableProperties;
+import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
+import de.erdesignerng.util.ScaffoldingUtils;
+import de.erdesignerng.util.ScaffoldingWrapper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 
 /**
  * 
@@ -42,6 +48,10 @@ public class ViewEditor extends BaseEditor {
     private ViewEditorView editingView;
 
     private BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
+    
+    private ViewProperties viewProperties;
+    
+    private ScaffoldingWrapper viewPropertiesWrapper;
 
     public ViewEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.VIEWEDITOR);
@@ -76,6 +86,16 @@ public class ViewEditor extends BaseEditor {
 
     public void initializeFor(View aView) {
 
+    	viewProperties = model.getDialect().createViewPropertiesFor(aView);
+        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+        viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, viewProperties);
+        theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+        if (!viewPropertiesWrapper.hasComponents()) {
+        	editingView.disablePropertiesTab();
+        } else {
+        	UIInitializer.getInstance().initialize(theTab);
+        }    	
+    	
         viewBindingInfo.setDefaultModel(aView);
         viewBindingInfo.model2view();
     }
@@ -99,7 +119,10 @@ public class ViewEditor extends BaseEditor {
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         View theView = viewBindingInfo.getDefaultModel();
-
+        
+        viewPropertiesWrapper.save();
+        viewProperties.copyTo(theView);
+        
         viewBindingInfo.view2model();
 
         theView.getAttributes().clear();
