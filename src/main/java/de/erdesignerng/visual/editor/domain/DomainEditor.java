@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.editor.domain;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +28,15 @@ import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.DomainProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.util.ScaffoldingUtils;
+import de.erdesignerng.util.ScaffoldingWrapper;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.NullsafeSpinnerEditor;
@@ -40,6 +44,7 @@ import de.erdesignerng.visual.editor.NullsafeSpinnerModel;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
@@ -62,26 +67,30 @@ public class DomainEditor extends BaseEditor {
 
     private final List<Domain> removedDomains = new ArrayList<Domain>();
 
-    private final DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction newDomainAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandNewDomain(e);
         }
     }, this, ERDesignerBundle.NEW);
 
-    private final DefaultAction deleteAttributeAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction deleteDomainAction = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandDeleteDomain(e);
         }
     }, this, ERDesignerBundle.DELETE);
 
-    private final DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction updateDomain = new DefaultAction(new ActionEventProcessor() {
 
         public void processActionEvent(ActionEvent e) {
             commandUpdateDomain(e);
         }
     }, this, ERDesignerBundle.UPDATE);
+    
+    private DomainProperties domainProperties;
+    
+    private ScaffoldingWrapper domainPropertiesWrapper;
 
     public DomainEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.DOMAINEDITOR);
@@ -137,9 +146,9 @@ public class DomainEditor extends BaseEditor {
                 commandAttributeListValueChanged(e);
             }
         });
-        editingView.getNewButton().setAction(newAttributeAction);
-        editingView.getDeleteButton().setAction(deleteAttributeAction);
-        editingView.getUpdateDomainButton().setAction(updateAttribute);
+        editingView.getNewButton().setAction(newDomainAction);
+        editingView.getDeleteButton().setAction(deleteDomainAction);
+        editingView.getUpdateDomainButton().setAction(updateDomain);
 
         setContentPane(editingView);
 
@@ -151,6 +160,10 @@ public class DomainEditor extends BaseEditor {
         Domain theModel = domainBindingInfo.getDefaultModel();
         List<ValidationError> theValidationResult = domainBindingInfo.validate();
         if (theValidationResult.size() == 0) {
+        	
+            domainPropertiesWrapper.save();
+            domainProperties.copyTo(theModel);
+        	
             domainBindingInfo.view2model();
 
             if (!domainListModel.contains(theModel)) {
@@ -210,10 +223,24 @@ public class DomainEditor extends BaseEditor {
         int index = editingView.getDomainList().getSelectedIndex();
         if (index >= 0) {
             domainBindingInfo.setDefaultModel((Domain) domainListModel.get(index));
+            
+            initializeDomainEdit(domainBindingInfo.getDefaultModel());
         }
 
         updateDomainEditFields();
-
+    }
+    
+    private void initializeDomainEdit(Domain aDomain) {
+        domainProperties = model.getDialect().createDomainPropertiesFor(aDomain);
+        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+        theTab.removeAll();
+        domainPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, domainProperties);
+        theTab.add(domainPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+    	editingView.disablePropertiesTab();        
+        if (domainPropertiesWrapper.hasComponents()) {
+        	editingView.enablePropertiesTab();        	
+        	UIInitializer.getInstance().initialize(theTab);
+        }
     }
 
     private void commandDeleteDomain(java.awt.event.ActionEvent aEvent) {
@@ -235,6 +262,8 @@ public class DomainEditor extends BaseEditor {
     private void commandNewDomain(java.awt.event.ActionEvent evt) {
         domainBindingInfo.setDefaultModel(new Domain());
         updateDomainEditFields();
+        
+        initializeDomainEdit(domainBindingInfo.getDefaultModel());
     }
 
     @Override

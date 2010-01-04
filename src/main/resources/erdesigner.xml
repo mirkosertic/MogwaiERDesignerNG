@@ -851,5 +851,9 @@
 			<Text lang="de">Auswahl umkehren</Text>
 			<Text lang="en">Invert selection</Text>
 		</Entry>
+		<Entry id="PROPERTIES">
+			<Text lang="de">Eigenschaften</Text>
+			<Text lang="en">Properties</Text>
+		</Entry>
 	</Bundle>
 </Resource>

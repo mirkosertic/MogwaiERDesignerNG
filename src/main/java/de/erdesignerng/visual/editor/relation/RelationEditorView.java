@@ -27,6 +27,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultRadioButton;
 import de.mogwai.common.client.looks.components.DefaultSeparator;
 import de.mogwai.common.client.looks.components.DefaultTable;
@@ -69,10 +70,9 @@ public class RelationEditorView extends JPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
-
-    /**
-     * Constructor.
-     */
+    
+    private DefaultPanel propertiesPanel = new DefaultPanel();
+    
     public RelationEditorView() {
         initialize();
     }
@@ -82,7 +82,7 @@ public class RelationEditorView extends JPanel {
      */
     private void initialize() {
 
-        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
+        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
         String colDef = "2dlu,60dlu,2dlu,fill:150dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
@@ -100,16 +100,13 @@ public class RelationEditorView extends JPanel {
         add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
         add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
 
-        add(getComponent8(), cons.xywh(2, 20, 3, 1));
+        add(getPropertiesPanel(), cons.xywh(2, 20, 3, 1));
+        
+        add(getComponent8(), cons.xywh(2, 22, 3, 1));
 
         buildGroups();
     }
 
-    /**
-     * Getter method for component Component_1.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JLabel getComponent1() {
 
         if (component1 == null) {
@@ -119,11 +116,6 @@ public class RelationEditorView extends JPanel {
         return component1;
     }
 
-    /**
-     * Getter method for component Relationname.
-     * 
-     * @return the initialized component
-     */
     public DefaultTextField getRelationName() {
 
         if (relationName == null) {
@@ -133,11 +125,6 @@ public class RelationEditorView extends JPanel {
         return relationName;
     }
 
-    /**
-     * Getter method for component Component_5.
-     * 
-     * @return the initialized component
-     */
     public DefaultTable getAttributeMappingTable() {
 
         if (attributeMappingTable == null) {
@@ -148,18 +135,13 @@ public class RelationEditorView extends JPanel {
         return attributeMappingTable;
     }
 
-    /**
-     * Getter method for component Component_7.
-     * 
-     * @return the initialized component
-     */
     public JPanel getOnDeleteContainer() {
 
         if (onDeleteContainer == null) {
             onDeleteContainer = new JPanel();
 
-            String rowDef = "p,2dlu,p,2dlu,p,2dlu,p";
-            String colDef = "50dlu:grow";
+            String rowDef = "p,2dlu";
+            String colDef = "p,p,p,p";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             onDeleteContainer.setLayout(layout);
@@ -167,9 +149,9 @@ public class RelationEditorView extends JPanel {
             CellConstraints cons = new CellConstraints();
 
             onDeleteContainer.add(getOnDeleteCascadeNothing(), cons.xywh(1, 1, 1, 1));
-            onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(1, 3, 1, 1));
-            onDeleteContainer.add(getOnDeleteRestrict(), cons.xywh(1, 5, 1, 1));
-            onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(1, 7, 1, 1));
+            onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(2, 1, 1, 1));
+            onDeleteContainer.add(getOnDeleteRestrict(), cons.xywh(3, 1, 1, 1));
+            onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(4, 1, 1, 1));
             onDeleteContainer.setName("Component_7");
         }
 
@@ -181,8 +163,8 @@ public class RelationEditorView extends JPanel {
         if (onUpdateContainer == null) {
             onUpdateContainer = new JPanel();
 
-            String rowDef = "p,2dlu,p,2dlu,p,2dlu,p";
-            String colDef = "50dlu:grow";
+            String rowDef = "p,2dlu";
+            String colDef = "p,p,p,p";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             onUpdateContainer.setLayout(layout);
@@ -190,20 +172,15 @@ public class RelationEditorView extends JPanel {
             CellConstraints cons = new CellConstraints();
 
             onUpdateContainer.add(getOnUpdateCascadeNothing(), cons.xywh(1, 1, 1, 1));
-            onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(1, 3, 1, 1));
-            onUpdateContainer.add(getOnUpdateRestrict(), cons.xywh(1, 5, 1, 1));
-            onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(1, 7, 1, 1));
+            onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(2, 1, 1, 1));
+            onUpdateContainer.add(getOnUpdateRestrict(), cons.xywh(3, 1, 1, 1));
+            onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(4, 1, 1, 1));
             onUpdateContainer.setName("Component_7");
         }
 
         return onUpdateContainer;
     }
 
-    /**
-     * Getter method for component Component_11.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JRadioButton getOnDeleteCascadeNothing() {
 
         if (onDeleteNothing == null) {
@@ -213,11 +190,6 @@ public class RelationEditorView extends JPanel {
         return onDeleteNothing;
     }
 
-    /**
-     * Getter method for component Component_12.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JRadioButton getOnDeleteCascade() {
 
         if (onDeleteCascade == null) {
@@ -236,11 +208,6 @@ public class RelationEditorView extends JPanel {
         return onDeleteRestrict;
     }
 
-    /**
-     * Getter method for component Component_13.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JRadioButton getOnDeleteSetNull() {
 
         if (onDeleteSetNull == null) {
@@ -250,11 +217,6 @@ public class RelationEditorView extends JPanel {
         return onDeleteSetNull;
     }
 
-    /**
-     * Getter method for component Component_11.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JRadioButton getOnUpdateCascadeNothing() {
 
         if (onUpdateNothing == null) {
@@ -264,11 +226,6 @@ public class RelationEditorView extends JPanel {
         return onUpdateNothing;
     }
 
-    /**
-     * Getter method for component Component_12.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JRadioButton getOnUpdateCascade() {
 
         if (onUpdateCascade == null) {
@@ -287,11 +244,6 @@ public class RelationEditorView extends JPanel {
         return onUpdateRestrict;
     }
 
-    /**
-     * Getter method for component Component_13.
-     * 
-     * @return the initialized component
-     */
     public javax.swing.JRadioButton getOnUpdateSetNull() {
 
         if (onUpdateSetNull == null) {
@@ -301,11 +253,6 @@ public class RelationEditorView extends JPanel {
         return onUpdateSetNull;
     }
 
-    /**
-     * Getter method for component Component_8.
-     * 
-     * @return the initialized component
-     */
     public JPanel getComponent8() {
 
         if (component8 == null) {
@@ -327,11 +274,6 @@ public class RelationEditorView extends JPanel {
         return component8;
     }
 
-    /**
-     * Getter method for component OKButton.
-     * 
-     * @return the initialized component
-     */
     public DefaultButton getOKButton() {
 
         if (okButton == null) {
@@ -341,11 +283,6 @@ public class RelationEditorView extends JPanel {
         return okButton;
     }
 
-    /**
-     * Getter method for component CancelButton.
-     * 
-     * @return the initialized component
-     */
     public DefaultButton getCancelButton() {
 
         if (cancelButton == null) {
@@ -373,37 +310,7 @@ public class RelationEditorView extends JPanel {
         theGroup2.add(getOnUpdateRestrict());
     }
 
-    /**
-     * Getter for the group value for group Group1.
-     * 
-     * @return the value for the current selected item in the group or null if
-     *         nothing was selected
-     */
-    public String getGroup1Value() {
-
-        if (getOnDeleteCascadeNothing().isSelected()) {
-            return "DEFAULT";
-        }
-        if (getOnDeleteCascade().isSelected()) {
-            return "CASCADE";
-        }
-        if (getOnDeleteSetNull().isSelected()) {
-            return "SETNULL";
-        }
-        return null;
-    }
-
-    /**
-     * Setter for the group value for group Group1.
-     * 
-     * @param aValue
-     *            value for the current selected item in the group or null if
-     *            nothing is selected
-     */
-    public void setGroup1Value(String aValue) {
-
-        getOnDeleteCascadeNothing().setSelected("DEFAULT".equals(aValue));
-        getOnDeleteCascade().setSelected("CASCADE".equals(aValue));
-        getOnDeleteSetNull().setSelected("SETNULL".equals(aValue));
-    }
+	public DefaultPanel getPropertiesPanel() {
+		return propertiesPanel;
+	}
 }

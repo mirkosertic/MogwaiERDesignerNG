@@ -27,6 +27,10 @@ import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
@@ -392,4 +396,43 @@ public abstract class Dialect {
 
     public abstract DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType);
 
+    /**
+     * Create a new table properties object for a given table.
+     * 
+     * @param aTable the table
+     * @return the created table properties object
+     */
+    public TableProperties createTablePropertiesFor(Table aTable) {
+    	return new TableProperties(aTable);
+    }
+
+    /**
+     * Create a new view properties object for a given view.
+     * 
+     * @param aView the view
+     * @return the created view properties object
+     */
+	public ViewProperties createViewPropertiesFor(View aView) {
+		return new ViewProperties(aView);
+	}
+
+    /**
+     * Create a new domain properties object for a given domain.
+     * 
+     * @param aDomain the domain
+     * @return the created domain properties object
+     */
+	public DomainProperties createDomainPropertiesFor(Domain aDomain) {
+		return new DomainProperties(aDomain);
+	}
+
+    /**
+     * Create a new relation properties object for a given relation.
+     * 
+     * @param aRelation the relation
+     * @return the created relation properties object
+     */
+	public RelationProperties createRelationPropertiesFor(Relation aRelation) {
+		return new RelationProperties(aRelation);
+	}
 }

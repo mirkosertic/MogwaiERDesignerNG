@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model;
 
+import java.lang.annotation.ElementType;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import de.erdesignerng.modificationtracker.ModelModificationTracker;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
+import de.erdesignerng.util.ERDesignerElementType;
 
 /**
  * 
@@ -637,4 +639,13 @@ public class Model extends ModelItem {
         }
         return theInfo;
     }
+
+	public void addElementPropertiesTo(List<String> aValues,
+			ERDesignerElementType aElementType, String aPropertyName) {
+		switch(aElementType) {
+		case TABLE:
+		case VIEW:
+		case RELATION:
+		}
+	}
 }

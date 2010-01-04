@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.editor.table;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ import javax.swing.event.ChangeEvent;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
@@ -41,6 +43,8 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.util.ScaffoldingUtils;
+import de.erdesignerng.util.ScaffoldingWrapper;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.NullsafeSpinnerEditor;
@@ -49,6 +53,7 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
@@ -148,6 +153,10 @@ public class TableEditor extends BaseEditor {
             commandRemoveIndexElement();
         }
     }, this, ERDesignerBundle.DELETEONLYICON);
+    
+    private TableProperties tableProperties;
+    
+    private ScaffoldingWrapper tablePropertiesWrapper;
 
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
@@ -288,7 +297,7 @@ public class TableEditor extends BaseEditor {
     }
 
     public void initializeFor(Table aTable) {
-
+    	
         tableBindingInfo.setDefaultModel(aTable);
         tableBindingInfo.model2view();
 
@@ -309,7 +318,17 @@ public class TableEditor extends BaseEditor {
         }
 
         updateAttributeEditFields();
-
+        
+        tableProperties = model.getDialect().createTablePropertiesFor(aTable);
+        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+        tablePropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, tableProperties);
+        theTab.add(tablePropertiesWrapper.getComponent(), BorderLayout.CENTER);
+        if (!tablePropertiesWrapper.hasComponents()) {
+        	editingView.disablePropertiesTab();
+        } else {
+        	UIInitializer.getInstance().initialize(theTab);
+        }
+        
         commandNewAttribute();
     }
 
@@ -352,6 +371,7 @@ public class TableEditor extends BaseEditor {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
                 return;
             }
+            
             setModalResult(MODAL_RESULT_OK);
         }
     }
@@ -722,6 +742,9 @@ public class TableEditor extends BaseEditor {
     public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         Table theTable = tableBindingInfo.getDefaultModel();
+        
+        tablePropertiesWrapper.save();
+        tableProperties.copyTo(theTable);
 
         if (!model.getTables().contains(theTable)) {
 
