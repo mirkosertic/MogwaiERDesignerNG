@@ -17,23 +17,25 @@
  */
 package de.erdesignerng.dialect.mysql;
 
+import org.metawidget.inspector.annotation.UiSection;
+
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.model.Table;
 
 public class MySQLTableProperties extends TableProperties {
 
 	public enum EngineEnum {
-		MyISAM, MEMORY , MERGE , BDB , EXAMPLE, NDBCLUSTER, ARCHIVE, CSV, BLACKHOLE, FEDERATED;
+		MyISAM, MEMORY, MERGE, BDB, EXAMPLE, NDBCLUSTER, ARCHIVE, CSV, BLACKHOLE, FEDERATED;
 	};
-	
+
 	public enum RowFormatEnum {
-		DEFAULT,DYNAMIC,FIXED,COMPRESSED,REDUNDANT,COMPACT;		
+		DEFAULT, DYNAMIC, FIXED, COMPRESSED, REDUNDANT, COMPACT;
 	};
-	
+
 	public enum InsertMethodEnum {
-		 NO,FIRST,LAST;
+		NO, FIRST, LAST;
 	}
-	
+
 	private EngineEnum engine = EngineEnum.MyISAM;
 	private int avgRowLength = -1;
 	private int maxRows = -1;
