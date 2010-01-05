@@ -25,9 +25,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.apache.commons.lang.StringUtils;
+import org.metawidget.inspector.InspectionResultConstants;
+import org.metawidget.inspector.iface.Inspector;
 import org.metawidget.layout.iface.Layout;
 import org.metawidget.swing.SwingMetawidget;
 
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -61,24 +64,43 @@ public class JGoodiesTableLayout implements Layout<JComponent, SwingMetawidget> 
 	public void onEndBuild(SwingMetawidget aWidget) {
 		String theColDef = "2dlu,p,2dlu,p,2dlu";
 		String theRowDef = "2dlu";
+		
 		for (int i = 0; i < components.size(); i++) {
+			
+			Entry theEntry = components.get(i);
+			
 			theRowDef = theRowDef + ",p,2dlu";
+			if (theEntry.attributes != null) {
+				String theSection = theEntry.attributes.get(InspectionResultConstants.SECTION);
+				if (!StringUtils.isEmpty(theSection)) {
+					theRowDef = theRowDef + ",p,2dlu";					
+				}
+			}
 		}
 
 		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
 		CellConstraints cons = new CellConstraints();
 
 		aWidget.setLayout(theLayout);
+		int theRow = 2;
 		for (int i = 0; i < components.size(); i++) {
-
-			int theRow = 2 + i * 2;
 
 			Entry theEntry = components.get(i);
 
 			String labelText = null;
-
+			
 			if (theEntry.attributes != null) {
 				labelText = aWidget.getLabelString(theEntry.attributes);
+				
+				String theSection = theEntry.attributes.get(InspectionResultConstants.SECTION);
+				if (!StringUtils.isEmpty(theSection)) {
+					String theSectionLabel = aWidget.getLocalizedKey(theSection);
+					
+					JComponent theSectionComponent = DefaultComponentFactory.getInstance().createSeparator(theSectionLabel);
+					aWidget.add(theSectionComponent, cons.xyw(2, theRow, 3));
+					
+					theRow+=2;
+				}
 			}
 
 			if (!StringUtils.isEmpty(labelText)) {
@@ -89,6 +111,7 @@ public class JGoodiesTableLayout implements Layout<JComponent, SwingMetawidget> 
 			}
 
 			aWidget.add(theEntry.component, cons.xy(4, theRow));
+			theRow+=2;
 		}
 	}
 }
