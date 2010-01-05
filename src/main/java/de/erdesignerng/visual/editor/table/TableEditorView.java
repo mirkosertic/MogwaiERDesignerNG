@@ -122,7 +122,9 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
     
-    private DefaultTabbedPaneTab propertiesPanel;
+    private DefaultTabbedPaneTab tablePropertiesTab;
+    
+    private DefaultTabbedPaneTab indexPropertiesTab;
 
     public TableEditorView() {
         initialize();
@@ -176,7 +178,7 @@ public class TableEditorView extends DefaultPanel {
             mainTabbedPane.addTab(null, getAttributesTab());
             mainTabbedPane.addTab(null, getIndexesTab());
             mainTabbedPane.addTab(null, getTableCommentsTab());
-            mainTabbedPane.addTab(null, getPropertiesPanel());
+            mainTabbedPane.addTab(null, getTablePropertiesTab());
             mainTabbedPane.setName("MainTabbedPane");
             mainTabbedPane.setSelectedIndex(0);
         }
@@ -442,6 +444,7 @@ public class TableEditorView extends DefaultPanel {
         if (indexTabbedPane == null) {
             indexTabbedPane = new DefaultTabbedPane();
             indexTabbedPane.addTab(null, getIndexGeneralTab());
+            indexTabbedPane.addTab(null, getIndexPropertiesTab());
             indexTabbedPane.setName("IndexTabbedPane");
             indexTabbedPane.setSelectedIndex(0);
         }
@@ -684,15 +687,33 @@ public class TableEditorView extends DefaultPanel {
         return removeFromIndexButton;
     }
 
-	public DefaultTabbedPaneTab getPropertiesPanel() {
-		if (propertiesPanel == null) {
-			propertiesPanel = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
-			propertiesPanel.setLayout(new BorderLayout());
+	public DefaultTabbedPaneTab getTablePropertiesTab() {
+		if (tablePropertiesTab == null) {
+			tablePropertiesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
+			tablePropertiesTab.setLayout(new BorderLayout());
 		}
-		return propertiesPanel;
+		return tablePropertiesTab;
 	}
 
-	public void disablePropertiesTab() {
+	public DefaultTabbedPaneTab getIndexPropertiesTab() {
+		if (indexPropertiesTab == null) {
+			indexPropertiesTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.PROPERTIES);
+			indexPropertiesTab.setLayout(new BorderLayout());
+		}
+		return indexPropertiesTab;
+	}
+
+	public void disableTablePropertiesTab() {
 		getMainTabbedPane().removeTabAt(3);
+	}
+
+	public void disableIndexPropertiesTab() {
+		if (getIndexTabbedPane().getTabCount() > 1) {
+			getIndexTabbedPane().removeTabAt(1);
+		}
+	}
+
+	public void enableIndexPropertiesTab() {
+		getIndexTabbedPane().addTab(null, getIndexPropertiesTab());
 	}
 }

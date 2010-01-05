@@ -855,5 +855,45 @@
 			<Text lang="de">Eigenschaften</Text>
 			<Text lang="en">Properties</Text>
 		</Entry>
+		<Entry id="ENGINE">
+			<Text lang="de">Engine</Text>
+			<Text lang="en">Engine</Text>
+		</Entry>
+		<Entry id="AVGROWLENGTH">
+			<Text lang="de">Average row length</Text>
+			<Text lang="en">Average row length</Text>
+		</Entry>
+		<Entry id="MAXROWS">
+			<Text lang="de">Max rows</Text>
+			<Text lang="en">Max rows</Text>
+		</Entry>
+		<Entry id="MINROWS">
+			<Text lang="de">Min rows</Text>
+			<Text lang="en">Min rows</Text>
+		</Entry>
+		<Entry id="CHECKSUM">
+			<Text lang="de">Checksum</Text>
+			<Text lang="en">Checksum</Text>
+		</Entry>
+		<Entry id="PACKKEYS">
+			<Text lang="de">Pack keys</Text>
+			<Text lang="en">Pack keys</Text>
+		</Entry>
+		<Entry id="DELAYKEYWRITE">
+			<Text lang="de">Delay key write</Text>
+			<Text lang="en">Delay key write</Text>
+		</Entry>
+		<Entry id="ROWFORMAT">
+			<Text lang="de">Row format</Text>
+			<Text lang="en">Row format</Text>
+		</Entry>
+		<Entry id="INSERTMETHOD">
+			<Text lang="de">Insert method</Text>
+			<Text lang="en">Insert method</Text>
+		</Entry>
+		<Entry id="CHARACTERSET">
+			<Text lang="de">Character set</Text>
+			<Text lang="en">Character set</Text>
+		</Entry>
 	</Bundle>
 </Resource>

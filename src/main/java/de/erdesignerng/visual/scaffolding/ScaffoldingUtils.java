@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.util;
+package de.erdesignerng.visual.scaffolding;
 
 import java.util.ResourceBundle;
 
@@ -34,18 +34,28 @@ public class ScaffoldingUtils {
 	public final static ScaffoldingWrapper createScaffoldingPanelFor(
 			Model aModel, Object aObject) {
 
-		ERDesignerAnnotationInspector theInspector = new ERDesignerAnnotationInspector(aModel);
-		BeanUtilsBindingProcessor theProcessor = new BeanUtilsBindingProcessor();
+		ERDesignerAnnotationInspector theInspector = new ERDesignerAnnotationInspector(
+				aModel);
+		BeanUtilsBindingProcessor theProcessor = new ERDesignerBeanUtilsBindingProcessor();
 
-		SwingMetawidget theMetaWidget = new SwingMetawidget();
+		SwingMetawidget theMetaWidget = new SwingMetawidget() {
+			@Override
+			public String getLocalizedKey(String key) {
+				return super.getLocalizedKey(key.toUpperCase()+".text");
+			}
+		};
+
 		theMetaWidget.setBundle(ResourceBundle
 				.getBundle(ERDesignerBundle.BUNDLE_NAME));
 		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig()
-				.setInspectors(theInspector,
-						new PropertyTypeInspector(), new Java5Inspector());
+				.setInspectors(theInspector, new PropertyTypeInspector(),
+						new Java5Inspector());
 		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
 		theMetaWidget.addWidgetProcessor(theProcessor);
 		theMetaWidget.setToInspect(aObject);
+
+		// Force the computation of the widgets
+		theMetaWidget.getPreferredSize();
 
 		return new ScaffoldingWrapper(theMetaWidget, theProcessor, theInspector);
 	}
