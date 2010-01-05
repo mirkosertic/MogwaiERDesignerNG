@@ -28,9 +28,13 @@ import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingPr
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
+import de.mogwai.common.i18n.ResourceHelper;
 
-public class ScaffoldingUtils {
+public final class ScaffoldingUtils {
 
+	private ScaffoldingUtils() {
+	}
+	
 	public final static ScaffoldingWrapper createScaffoldingPanelFor(
 			Model aModel, Object aObject) {
 
@@ -39,9 +43,13 @@ public class ScaffoldingUtils {
 		BeanUtilsBindingProcessor theProcessor = new ERDesignerBeanUtilsBindingProcessor();
 
 		SwingMetawidget theMetaWidget = new SwingMetawidget() {
+
+			private ResourceHelper helper = ResourceHelper
+					.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+
 			@Override
 			public String getLocalizedKey(String key) {
-				return super.getLocalizedKey(key.toUpperCase()+".text");
+				return helper.getText(key.toUpperCase());
 			}
 		};
 
@@ -52,6 +60,8 @@ public class ScaffoldingUtils {
 						new Java5Inspector());
 		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
 		theMetaWidget.addWidgetProcessor(theProcessor);
+		theMetaWidget.setMetawidgetLayout(new JGoodiesTableLayout());
+		theMetaWidget.setWidgetBuilder(new MogwaiWidgetBuilder());
 		theMetaWidget.setToInspect(aObject);
 
 		// Force the computation of the widgets

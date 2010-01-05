@@ -20,7 +20,8 @@ This software uses or is based on the following libraries:
   JGoodies ( www.jgoodies.com )
   JasperReports ( http://jasperforge.org )  
   Some stuff from java.net ( https://www.dev.java.net )
-  InfoNode Docking Windows GPL Version ( http://www.infonode.net/index.html?idw )  
+  InfoNode Docking Windows GPL Version ( http://www.infonode.net/index.html?idw )
+  Metawidget ( http://www.metawidget.org )  
   ... Many more ...
   
  Thanks to the following contributors
