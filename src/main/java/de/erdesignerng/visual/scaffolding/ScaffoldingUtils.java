@@ -25,6 +25,7 @@ import org.metawidget.inspector.java5.Java5Inspector;
 import org.metawidget.inspector.propertytype.PropertyTypeInspector;
 import org.metawidget.swing.SwingMetawidget;
 import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingProcessor;
+import org.metawidget.util.simple.StringUtils;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
@@ -49,7 +50,11 @@ public final class ScaffoldingUtils {
 
 			@Override
 			public String getLocalizedKey(String key) {
-				return helper.getText(key.toUpperCase());
+				try {
+					return helper.getText(key.toUpperCase());
+				} catch (Exception e) {
+					return StringUtils.RESOURCE_KEY_NOT_FOUND_PREFIX + key + StringUtils.RESOURCE_KEY_NOT_FOUND_SUFFIX;					
+				}
 			}
 		};
 
