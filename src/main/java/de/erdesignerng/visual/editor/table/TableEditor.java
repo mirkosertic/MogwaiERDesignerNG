@@ -32,6 +32,7 @@ import javax.swing.event.ChangeEvent;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -43,12 +44,12 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
-import de.erdesignerng.util.ScaffoldingUtils;
-import de.erdesignerng.util.ScaffoldingWrapper;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.NullsafeSpinnerEditor;
 import de.erdesignerng.visual.editor.NullsafeSpinnerModel;
+import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
+import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
@@ -157,7 +158,11 @@ public class TableEditor extends BaseEditor {
     private TableProperties tableProperties;
     
     private ScaffoldingWrapper tablePropertiesWrapper;
-
+    
+    private IndexProperties indexProperties;
+    
+    private ScaffoldingWrapper indexPropertiesWrapper;
+    
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
@@ -320,11 +325,11 @@ public class TableEditor extends BaseEditor {
         updateAttributeEditFields();
         
         tableProperties = model.getDialect().createTablePropertiesFor(aTable);
-        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+        DefaultTabbedPaneTab theTab = editingView.getTablePropertiesTab();
         tablePropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, tableProperties);
         theTab.add(tablePropertiesWrapper.getComponent(), BorderLayout.CENTER);
         if (!tablePropertiesWrapper.hasComponents()) {
-        	editingView.disablePropertiesTab();
+        	editingView.disableTablePropertiesTab();
         } else {
         	UIInitializer.getInstance().initialize(theTab);
         }
@@ -565,9 +570,31 @@ public class TableEditor extends BaseEditor {
         int index = editingView.getIndexList().getSelectedIndex();
         if (index >= 0) {
             indexBindingInfo.setDefaultModel((Index) indexListModel.get(index));
+            
+            updateIndexProperties();
         }
 
         updateIndexEditFields();
+    }
+    
+    private void updateIndexProperties() {
+
+    	Index theIndex = indexBindingInfo.getDefaultModel();
+    	
+    	indexProperties = model.getDialect().createIndexPropertiesFor(theIndex);
+        DefaultTabbedPaneTab theTab = editingView.getIndexPropertiesTab();
+        indexPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, indexProperties);
+        theTab.removeAll();
+        
+        theTab.add(indexPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+        if (!indexPropertiesWrapper.hasComponents()) {
+        	editingView.disableIndexPropertiesTab();
+        } else {
+        	editingView.enableIndexPropertiesTab();
+        }
+        
+    	UIInitializer.getInstance().initialize(editingView.getIndexTabbedPane());        
+    	
     }
 
     private void commandDeleteAttribute(java.awt.event.ActionEvent aEvent) {
@@ -618,6 +645,9 @@ public class TableEditor extends BaseEditor {
 
     private void commandNewIndex() {
         indexBindingInfo.setDefaultModel(new Index());
+        
+        updateIndexProperties();
+        
         updateIndexEditFields();
 
         editingView.getIndexList().clearSelection();
@@ -677,8 +707,10 @@ public class TableEditor extends BaseEditor {
             }
 
             updateIndexEditFields();
+            
+            indexPropertiesWrapper.save();
+            indexProperties.copyTo(theIndex);
         }
-
     }
 
     private void commandAddIndexExpression() {

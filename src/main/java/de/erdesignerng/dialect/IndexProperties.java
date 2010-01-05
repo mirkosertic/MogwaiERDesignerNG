@@ -15,36 +15,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.util;
+package de.erdesignerng.dialect;
 
-import javax.swing.JComponent;
+import de.erdesignerng.model.Index;
 
-import org.metawidget.swing.SwingMetawidget;
-import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingProcessor;
-
-public class ScaffoldingWrapper {
-
-	private SwingMetawidget widget;
+public class IndexProperties extends ModelItemProperties<Index> {
 	
-	private BeanUtilsBindingProcessor processor;
-	
-	private ERDesignerAnnotationInspector inspector;
-	
-	public ScaffoldingWrapper(SwingMetawidget aWidget, BeanUtilsBindingProcessor aProcessor, ERDesignerAnnotationInspector aInspector) {
-		widget = aWidget;
-		processor = aProcessor;
-		inspector = aInspector;
-	}
-	
-	public JComponent getComponent() {
-		return widget;
-	}
-	
-	public void save() {
-		processor.save(widget);
-	}
-
-	public boolean hasComponents() {
-		return inspector.getPropertyCount() > 0;
+	public IndexProperties(Index aIndex) {
+		super(aIndex);
 	}
 }
