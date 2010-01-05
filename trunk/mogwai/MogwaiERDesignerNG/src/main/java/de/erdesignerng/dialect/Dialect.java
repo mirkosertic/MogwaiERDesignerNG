@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
@@ -434,5 +435,15 @@ public abstract class Dialect {
      */
 	public RelationProperties createRelationPropertiesFor(Relation aRelation) {
 		return new RelationProperties(aRelation);
+	}
+
+    /**
+     * Create a new index properties object for a given index.
+     * 
+     * @param aIndex the index
+     * @return the created index properties object
+     */
+	public IndexProperties createIndexPropertiesFor(Index aIndex) {
+		return new IndexProperties(aIndex);
 	}
 }

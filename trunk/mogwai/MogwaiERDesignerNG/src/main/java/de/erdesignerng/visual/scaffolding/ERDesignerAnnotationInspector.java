@@ -15,7 +15,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.util;
+package de.erdesignerng.visual.scaffolding;
 
 import static org.metawidget.inspector.InspectionResultConstants.LOOKUP;
 
@@ -28,6 +28,7 @@ import org.metawidget.inspector.impl.propertystyle.Property;
 import org.metawidget.util.ArrayUtils;
 
 import de.erdesignerng.model.Model;
+import de.erdesignerng.util.ERDesignerLookup;
 
 public class ERDesignerAnnotationInspector extends
 		MetawidgetAnnotationInspector {
