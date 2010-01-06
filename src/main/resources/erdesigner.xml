@@ -907,5 +907,21 @@
 			<Text lang="de">Forced</Text>
 			<Text lang="en">Forced</Text>
 		</Entry>
+		<Entry id="CHECKOPTION">
+			<Text lang="de">Check option</Text>
+			<Text lang="en">Check option</Text>
+		</Entry>
+		<Entry id="ENCRYPTION">
+			<Text lang="de">Encryption</Text>
+			<Text lang="en">Encryption</Text>
+		</Entry>
+		<Entry id="SCHEMABINDING">
+			<Text lang="de">Schema binding</Text>
+			<Text lang="en">Schema binding</Text>
+		</Entry>
+		<Entry id="VIEWMETADATA">
+			<Text lang="de">View metadata</Text>
+			<Text lang="en">View metadata</Text>
+		</Entry>
 	</Bundle>
 </Resource>
