@@ -20,8 +20,14 @@ package de.erdesignerng.dialect.h2;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.TableProperties;
+import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: gniddelgesicht $
@@ -105,4 +111,19 @@ public class H2Dialect extends SQL92Dialect {
     public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
         return new H2DataType(aName, aDefinition, anIdentity, aJdbcType);
     }
+
+	@Override
+	public TableProperties createTablePropertiesFor(Table aTable) {
+		return new H2TableProperties(aTable);
+	}
+
+	@Override
+	public ViewProperties createViewPropertiesFor(View aView) {
+		return new H2ViewProperties(aView);
+	}
+
+	@Override
+	public IndexProperties createIndexPropertiesFor(Index aIndex) {
+		return new H2IndexProperties(aIndex);
+	}
 }

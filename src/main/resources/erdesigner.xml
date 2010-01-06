@@ -895,5 +895,17 @@
 			<Text lang="de">Character set</Text>
 			<Text lang="en">Character set</Text>
 		</Entry>
+		<Entry id="HASH">
+			<Text lang="de">Hash</Text>
+			<Text lang="en">Hash</Text>
+		</Entry>
+		<Entry id="TABLETYPE">
+			<Text lang="de">Table type</Text>
+			<Text lang="en">Table type</Text>
+		</Entry>
+		<Entry id="FORCED">
+			<Text lang="de">Forced</Text>
+			<Text lang="en">Forced</Text>
+		</Entry>
 	</Bundle>
 </Resource>

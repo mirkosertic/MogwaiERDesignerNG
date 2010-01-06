@@ -449,4 +449,10 @@ public interface ERDesignerBundle {
   String INSERTMETHOD = "INSERTMETHOD";
   /** \u0043\u0068\u0061\u0072\u0061\u0063\u0074\u0065\u0072\u0020\u0073\u0065\u0074. */
   String CHARACTERSET = "CHARACTERSET";
+  /** \u0048\u0061\u0073\u0068. */
+  String HASH = "HASH";
+  /** \u0054\u0061\u0062\u006c\u0065\u0020\u0074\u0079\u0070\u0065. */
+  String TABLETYPE = "TABLETYPE";
+  /** \u0046\u006f\u0072\u0063\u0065\u0064. */
+  String FORCED = "FORCED";
 }
