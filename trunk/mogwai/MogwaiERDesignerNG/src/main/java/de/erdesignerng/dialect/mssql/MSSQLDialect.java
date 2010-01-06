@@ -21,7 +21,9 @@ import java.sql.Types;
 
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.model.View;
 
 /**
  * 
@@ -114,4 +116,9 @@ public class MSSQLDialect extends SQL92Dialect {
     public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
         return new MSSQLDataType(aName, aDefinition, aIdentity, aJdbcType);
     }
+
+	@Override
+	public ViewProperties createViewPropertiesFor(View aView) {
+		return new MSSQLViewProperties(aView);
+	}
 }
