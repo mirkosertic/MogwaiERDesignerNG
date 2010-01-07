@@ -20,9 +20,13 @@ package de.erdesignerng.dialect.mssql;
 import java.sql.Types;
 
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 
 /**
@@ -120,5 +124,15 @@ public class MSSQLDialect extends SQL92Dialect {
 	@Override
 	public ViewProperties createViewPropertiesFor(View aView) {
 		return new MSSQLViewProperties(aView);
+	}
+
+	@Override
+	public IndexProperties createIndexPropertiesFor(Index aIndex) {
+		return new MSSQLIndexProperties(aIndex);
+	}
+
+	@Override
+	public TableProperties createTablePropertiesFor(Table aTable) {
+		return new MSSQLTableProperties(aTable);
 	}
 }

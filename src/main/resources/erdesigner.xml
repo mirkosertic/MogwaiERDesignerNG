@@ -923,5 +923,13 @@
 			<Text lang="de">View metadata</Text>
 			<Text lang="en">View metadata</Text>
 		</Entry>
+		<Entry id="INDEXTYPE">
+			<Text lang="de">Index type</Text>
+			<Text lang="en">Index type</Text>
+		</Entry>
+		<Entry id="FILEGROUP">
+			<Text lang="de">File group</Text>
+			<Text lang="en">File group</Text>
+		</Entry>
 	</Bundle>
 </Resource>
