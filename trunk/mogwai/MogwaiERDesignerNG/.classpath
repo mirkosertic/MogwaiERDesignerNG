@@ -6,6 +6,5 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Andrea/Downloads/metawidget-0.85/metawidget.jar" sourcepath="C:/Users/Andrea/Downloads/metawidget-0.85/src/java"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

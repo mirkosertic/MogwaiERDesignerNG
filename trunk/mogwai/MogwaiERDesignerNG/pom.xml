@@ -243,6 +243,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.metawidget</groupId>
+			<artifactId>metawidget</artifactId>
+			<version>0.85</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>batik</groupId>
 			<artifactId>batik-svggen</artifactId>
 			<version>1.6-1</version>
