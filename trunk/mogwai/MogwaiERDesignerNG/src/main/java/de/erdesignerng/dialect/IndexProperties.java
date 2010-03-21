@@ -21,7 +21,6 @@ import de.erdesignerng.model.Index;
 
 public class IndexProperties extends ModelItemProperties<Index> {
 	
-	public IndexProperties(Index aIndex) {
-		super(aIndex);
+	public IndexProperties() {
 	}
 }

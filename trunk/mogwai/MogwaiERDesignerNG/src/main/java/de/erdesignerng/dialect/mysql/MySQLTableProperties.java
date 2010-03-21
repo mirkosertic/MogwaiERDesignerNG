@@ -17,10 +17,7 @@
  */
 package de.erdesignerng.dialect.mysql;
 
-import org.metawidget.inspector.annotation.UiSection;
-
 import de.erdesignerng.dialect.TableProperties;
-import de.erdesignerng.model.Table;
 
 public class MySQLTableProperties extends TableProperties {
 
@@ -46,10 +43,6 @@ public class MySQLTableProperties extends TableProperties {
 	private RowFormatEnum rowFormat;
 	private InsertMethodEnum insertMethod;
 	private String characterSet;
-
-	public MySQLTableProperties(Table aTable) {
-		super(aTable);
-	}
 
 	public EngineEnum getEngine() {
 		return engine;

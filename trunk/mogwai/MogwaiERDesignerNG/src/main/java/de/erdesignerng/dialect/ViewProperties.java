@@ -21,7 +21,6 @@ import de.erdesignerng.model.View;
 
 public class ViewProperties extends ModelItemProperties<View> {
 	
-	public ViewProperties(View aView) {
-		super(aView);
+	public ViewProperties() {
 	}
 }

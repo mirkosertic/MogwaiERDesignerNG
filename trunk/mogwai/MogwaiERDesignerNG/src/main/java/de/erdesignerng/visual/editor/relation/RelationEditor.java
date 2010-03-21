@@ -23,7 +23,6 @@ import java.util.Map;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.RelationProperties;
-import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.model.IndexExpression;
@@ -36,7 +35,6 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 
 /**
  * @author $Author: mirkosertic $

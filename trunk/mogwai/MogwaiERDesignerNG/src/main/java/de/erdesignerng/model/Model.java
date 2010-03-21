@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.model;
 
-import java.lang.annotation.ElementType;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
