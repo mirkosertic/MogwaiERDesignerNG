@@ -18,15 +18,10 @@
 package de.erdesignerng.dialect.h2;
 
 import de.erdesignerng.dialect.ViewProperties;
-import de.erdesignerng.model.View;
 
 public class H2ViewProperties extends ViewProperties {
 	
 	private boolean forced;
-
-	public H2ViewProperties(View aView) {
-		super(aView);
-	}
 
 	public boolean isForced() {
 		return forced;

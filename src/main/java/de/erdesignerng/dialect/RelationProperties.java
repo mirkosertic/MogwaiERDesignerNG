@@ -21,7 +21,6 @@ import de.erdesignerng.model.Relation;
 
 public class RelationProperties extends ModelItemProperties<Relation> {
 	
-	public RelationProperties(Relation aRelation) {
-		super(aRelation);
+	public RelationProperties() {
 	}
 }

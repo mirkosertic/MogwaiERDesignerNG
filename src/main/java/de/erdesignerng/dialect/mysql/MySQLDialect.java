@@ -143,7 +143,8 @@ public class MySQLDialect extends SQL92Dialect {
 
 	@Override
 	public TableProperties createTablePropertiesFor(Table aTable) {
-		MySQLTableProperties theProperties = new MySQLTableProperties(aTable);
+		MySQLTableProperties theProperties = new MySQLTableProperties();
+		theProperties.initializeFrom(aTable);
 		return theProperties;
 	}
 }

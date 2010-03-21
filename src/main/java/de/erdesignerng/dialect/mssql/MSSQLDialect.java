@@ -123,16 +123,22 @@ public class MSSQLDialect extends SQL92Dialect {
 
 	@Override
 	public ViewProperties createViewPropertiesFor(View aView) {
-		return new MSSQLViewProperties(aView);
+		MSSQLViewProperties theResult = new MSSQLViewProperties();
+		theResult.initializeFrom(aView);
+		return theResult;
 	}
 
 	@Override
 	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		return new MSSQLIndexProperties(aIndex);
+		MSSQLIndexProperties theResult = new MSSQLIndexProperties();
+		theResult.initializeFrom(aIndex);
+		return theResult;
 	}
 
 	@Override
 	public TableProperties createTablePropertiesFor(Table aTable) {
-		return new MSSQLTableProperties(aTable);
+		MSSQLTableProperties theResult = new MSSQLTableProperties();
+		theResult.initializeFrom(aTable);
+		return theResult;
 	}
 }

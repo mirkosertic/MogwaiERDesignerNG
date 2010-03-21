@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
@@ -21,7 +23,6 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Editor for the database connection.

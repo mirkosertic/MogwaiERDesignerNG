@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 
 import org.apache.commons.lang.StringUtils;
 import org.metawidget.inspector.InspectionResultConstants;
-import org.metawidget.inspector.iface.Inspector;
 import org.metawidget.layout.iface.Layout;
 import org.metawidget.swing.SwingMetawidget;
 

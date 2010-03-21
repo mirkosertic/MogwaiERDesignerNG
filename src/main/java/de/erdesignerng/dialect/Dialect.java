@@ -404,7 +404,9 @@ public abstract class Dialect {
      * @return the created table properties object
      */
     public TableProperties createTablePropertiesFor(Table aTable) {
-    	return new TableProperties(aTable);
+    	TableProperties theProps = new TableProperties();
+    	theProps.initializeFrom(aTable);
+    	return theProps;
     }
 
     /**
@@ -414,7 +416,9 @@ public abstract class Dialect {
      * @return the created view properties object
      */
 	public ViewProperties createViewPropertiesFor(View aView) {
-		return new ViewProperties(aView);
+		ViewProperties theProps = new ViewProperties();
+    	theProps.initializeFrom(aView);
+    	return theProps;
 	}
 
     /**
@@ -424,7 +428,9 @@ public abstract class Dialect {
      * @return the created domain properties object
      */
 	public DomainProperties createDomainPropertiesFor(Domain aDomain) {
-		return new DomainProperties(aDomain);
+		DomainProperties theProps = new DomainProperties();
+    	theProps.initializeFrom(aDomain);
+    	return theProps;
 	}
 
     /**
@@ -434,7 +440,9 @@ public abstract class Dialect {
      * @return the created relation properties object
      */
 	public RelationProperties createRelationPropertiesFor(Relation aRelation) {
-		return new RelationProperties(aRelation);
+		RelationProperties theProps = new RelationProperties();
+    	theProps.initializeFrom(aRelation);
+    	return theProps;
 	}
 
     /**
@@ -444,6 +452,8 @@ public abstract class Dialect {
      * @return the created index properties object
      */
 	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		return new IndexProperties(aIndex);
+		IndexProperties theProps = new IndexProperties();
+    	theProps.initializeFrom(aIndex);
+    	return theProps;
 	}
 }
