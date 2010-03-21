@@ -114,16 +114,22 @@ public class H2Dialect extends SQL92Dialect {
 
 	@Override
 	public TableProperties createTablePropertiesFor(Table aTable) {
-		return new H2TableProperties(aTable);
+		H2TableProperties theResult = new H2TableProperties();
+		theResult.initializeFrom(aTable);
+		return theResult;
 	}
 
 	@Override
 	public ViewProperties createViewPropertiesFor(View aView) {
-		return new H2ViewProperties(aView);
+		H2ViewProperties theResult = new H2ViewProperties();
+		theResult.initializeFrom(aView);
+		return theResult;
 	}
 
 	@Override
 	public IndexProperties createIndexPropertiesFor(Index aIndex) {
-		return new H2IndexProperties(aIndex);
+		H2IndexProperties theResult = new H2IndexProperties();
+		theResult.initializeFrom(aIndex);
+		return theResult;
 	}
 }

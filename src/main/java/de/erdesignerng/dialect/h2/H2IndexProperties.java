@@ -18,16 +18,11 @@
 package de.erdesignerng.dialect.h2;
 
 import de.erdesignerng.dialect.IndexProperties;
-import de.erdesignerng.model.Index;
 
 public class H2IndexProperties extends IndexProperties {
 
 	private boolean hash;
 	
-	public H2IndexProperties(Index aIndex) {
-		super(aIndex);
-	}
-
 	public boolean isHash() {
 		return hash;
 	}

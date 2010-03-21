@@ -27,8 +27,7 @@ import de.erdesignerng.model.ModelProperties;
 
 public class ModelItemProperties<T extends ModelItem> {
 	
-	protected ModelItemProperties(T aValue) {
-		initializeFrom(aValue);
+	protected ModelItemProperties() {
 	}
 
 	public void copyTo(T aObject) {
@@ -64,22 +63,22 @@ public class ModelItemProperties<T extends ModelItem> {
 					String theValue = theProperties.getProperty(theDescriptor
 							.getName());
 					if (!StringUtils.isEmpty(theValue)) {
+						Class theType = theDescriptor.getPropertyType();
+						//TODO: Handle enums here correctly
 						if (String.class
-								.equals(theDescriptor.getPropertyType())) {
+								.equals(theType)) {
 							PropertyUtils.setProperty(this, theDescriptor
 									.getName(), theValue);
 						}
-						if (Long.class.equals(theDescriptor.getPropertyType())) {
+						if (Long.class.equals(theType) || long.class.equals(theType)) {
 							PropertyUtils.setProperty(this, theDescriptor
 									.getName(), Long.parseLong(theValue));
 						}
-						if (Integer.class.equals(theDescriptor
-								.getPropertyType())) {
+						if (Integer.class.equals(theType) || int.class.equals(theType)) {
 							PropertyUtils.setProperty(this, theDescriptor
 									.getName(), Integer.parseInt(theValue));
 						}
-						if (Boolean.class.equals(theDescriptor
-								.getPropertyType())) {
+						if (Boolean.class.equals(theType) || boolean.class.equals(theType)) {
 							PropertyUtils.setProperty(this, theDescriptor
 									.getName(), Boolean.parseBoolean(theValue));
 						}

@@ -18,7 +18,6 @@
 package de.erdesignerng.dialect.mssql;
 
 import de.erdesignerng.dialect.ViewProperties;
-import de.erdesignerng.model.View;
 
 public class MSSQLViewProperties extends ViewProperties {
 	
@@ -29,10 +28,6 @@ public class MSSQLViewProperties extends ViewProperties {
 	private boolean schemaBinding;
 	
 	private boolean viewMetaData;
-
-	public MSSQLViewProperties(View aView) {
-		super(aView);
-	}
 
 	public boolean isCheckOption() {
 		return checkOption;

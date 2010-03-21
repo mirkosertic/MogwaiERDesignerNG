@@ -21,7 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;

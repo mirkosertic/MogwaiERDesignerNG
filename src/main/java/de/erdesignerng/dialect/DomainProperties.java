@@ -21,7 +21,6 @@ import de.erdesignerng.model.Domain;
 
 public class DomainProperties extends ModelItemProperties<Domain> {
 	
-	public DomainProperties(Domain aDomain) {
-		super(aDomain);
+	public DomainProperties() {
 	}
 }

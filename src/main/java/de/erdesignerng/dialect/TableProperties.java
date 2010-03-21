@@ -21,7 +21,6 @@ import de.erdesignerng.model.Table;
 
 public class TableProperties extends ModelItemProperties<Table> {
 	
-	public TableProperties(Table aTable) {
-		super(aTable);
+	public TableProperties() {
 	}
 }

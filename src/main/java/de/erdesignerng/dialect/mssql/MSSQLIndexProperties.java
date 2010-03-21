@@ -18,7 +18,6 @@
 package de.erdesignerng.dialect.mssql;
 
 import de.erdesignerng.dialect.IndexProperties;
-import de.erdesignerng.model.Index;
 
 public class MSSQLIndexProperties extends IndexProperties {
 
@@ -29,10 +28,6 @@ public class MSSQLIndexProperties extends IndexProperties {
 	private IndexTypeEnum indexType;
 	
 	private String fileGroup = "default";
-
-	public MSSQLIndexProperties(Index aIndex) {
-		super(aIndex);
-	}
 
 	public IndexTypeEnum getIndexType() {
 		return indexType;

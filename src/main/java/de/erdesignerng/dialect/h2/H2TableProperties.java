@@ -18,7 +18,6 @@
 package de.erdesignerng.dialect.h2;
 
 import de.erdesignerng.dialect.TableProperties;
-import de.erdesignerng.model.Table;
 
 public class H2TableProperties extends TableProperties {
 	
@@ -27,10 +26,6 @@ public class H2TableProperties extends TableProperties {
 	};
 	
 	private TableTypeEnum tableType = TableTypeEnum.CACHED;
-
-	public H2TableProperties(Table aTable) {
-		super(aTable);
-	}
 
 	public TableTypeEnum getTableType() {
 		return tableType;

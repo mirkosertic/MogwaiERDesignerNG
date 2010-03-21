@@ -18,15 +18,10 @@
 package de.erdesignerng.dialect.mssql;
 
 import de.erdesignerng.dialect.TableProperties;
-import de.erdesignerng.model.Table;
 
 public class MSSQLTableProperties extends TableProperties {
 	
 	private String fileGroup = "default";
-
-	public MSSQLTableProperties(Table aTable) {
-		super(aTable);
-	}
 
 	public String getFileGroup() {
 		return fileGroup;

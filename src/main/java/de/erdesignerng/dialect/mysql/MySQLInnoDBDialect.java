@@ -18,7 +18,6 @@
 package de.erdesignerng.dialect.mysql;
 
 import de.erdesignerng.dialect.TableProperties;
-import de.erdesignerng.dialect.mysql.MySQLTableProperties.EngineEnum;
 import de.erdesignerng.model.Table;
 
 /**
@@ -49,7 +48,8 @@ public class MySQLInnoDBDialect extends MySQLDialect {
     
 	@Override
 	public TableProperties createTablePropertiesFor(Table aTable) {
-		MySQLTableProperties theProperties = new MySQLTableProperties(aTable);
+		MySQLTableProperties theProperties = new MySQLTableProperties();
+		theProperties.initializeFrom(aTable);
 		//theProperties.setEngine(EngineEnum.INNODB);
 		return theProperties;
 	}
