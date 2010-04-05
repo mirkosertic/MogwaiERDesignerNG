@@ -37,6 +37,7 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.model.serializer.xml10.XMLModel10Serializer;
 import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
 import de.erdesignerng.model.serializer.xml30.XMLModel30Serializer;
+import de.erdesignerng.model.serializer.xml40.XMLModel40Serializer;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.XMLUtils;
 
@@ -57,6 +58,7 @@ public final class ModelIOUtilities {
         knownSerializers.add(new XMLModel10Serializer(xmlUtils));
         knownSerializers.add(new XMLModel20Serializer(xmlUtils));
         knownSerializers.add(new XMLModel30Serializer(xmlUtils));
+        knownSerializers.add(new XMLModel40Serializer(xmlUtils));
     }
 
     public static ModelIOUtilities getInstance() throws ParserConfigurationException {
@@ -104,7 +106,7 @@ public final class ModelIOUtilities {
      * @throws ParserConfigurationException
      */
     public void serializeModelToXML(Model aModel, Writer aWriter) throws TransformerException, IOException {
-        new XMLModel30Serializer(xmlUtils).serializeModelToXML(aModel, aWriter);
+        new XMLModel40Serializer(xmlUtils).serializeModelToXML(aModel, aWriter);
     }
 
     /**

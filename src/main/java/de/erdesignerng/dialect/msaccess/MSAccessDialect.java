@@ -84,7 +84,7 @@ public class MSAccessDialect extends SQL92Dialect {
             // Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
             // im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
             // Um die Einstellungen der "echten" System.mdw in
-            // %HOMEDRIVE%%HOMEPATH%\Anwendungsdaten\Microsoft\Access\System.mdw
+            // %APPDATA%\Microsoft\Access\System.mdw
             // nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
             Statement statement = connection.createStatement();
             statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
@@ -130,6 +130,7 @@ public class MSAccessDialect extends SQL92Dialect {
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
         setSupportsDomains(false);
+        setSupportsCustomTypes(false);
         setSupportsSchemaInformation(false);
 
         // @see http://msdn.microsoft.com/en-us/library/bb177899.aspx
@@ -144,7 +145,7 @@ public class MSAccessDialect extends SQL92Dialect {
         registerType(createDataType("double", "", Types.DOUBLE)); // DOUBLE
         registerType(createDataType("real", "", Types.REAL)); // SINGLE
         registerType(createDataType("currency", "", Types.BIGINT)); // CURRENCY
-        registerType(createDataType("longbinary", "", Types.BLOB)); // OLE-Objekt
+        registerType(createDataType("longbinary", "", Types.BLOB)); // OLE-Object
         registerType(createDataType("decimal", "", Types.DECIMAL)); // DECIMAL
 
         seal();
@@ -195,4 +196,5 @@ public class MSAccessDialect extends SQL92Dialect {
     public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
         return new MSAccessDataType(aName, aDefinition, aIdentity, aJdbcType);
     }
+
 }

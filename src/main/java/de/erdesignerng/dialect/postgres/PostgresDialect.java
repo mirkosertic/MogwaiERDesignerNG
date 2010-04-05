@@ -37,11 +37,14 @@ public class PostgresDialect extends SQL92Dialect {
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
         setSupportsDomains(true);
+        setSupportsCustomTypes(true);
         setSupportsSchemaInformation(true);
         addSystemSchema("information_schema");
         addSystemSchema("pg_catalog");
+        addSystemSchema("pg_toast");
         addSystemSchema("pg_toast_temp");
         addSystemSchema("pg_toast_temp_1");
+        addSystemSchema("pg_temp_1");
 
         registerType(createDataType("bool", "", Types.BIT));
         registerType(createDataType("bytea", "", Types.BINARY, Types.VARBINARY));

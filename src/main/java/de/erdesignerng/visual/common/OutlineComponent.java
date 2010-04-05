@@ -62,6 +62,7 @@ import org.jgraph.graph.DefaultGraphCell;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
@@ -214,6 +215,9 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                     theLabel.setIcon(IconFactory.getViewIcon());
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
                 }
+                if (theUserObject instanceof CustomType) {
+                    theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
+                }
                 if (theUserObject instanceof Domain) {
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
                 }
@@ -243,6 +247,9 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                     switch ((TreeGroupingElement) theUserObject) {
                     case MODEL:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.MODEL));
+                        break;
+                    case CUSTOMTYPES:
+                        theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.CUSTOMTYPESLIST));
                         break;
                     case DOMAINS:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.DOMAINSLIST));
@@ -274,7 +281,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
     }
 
     private enum TreeGroupingElement {
-        MODEL, DOMAINS, TABLES, VIEWS, SUBJECTAREAS, INDEXES, RELATIONS;
+        MODEL, CUSTOMTYPES, DOMAINS, TABLES, VIEWS, SUBJECTAREAS, INDEXES, RELATIONS;
     }
 
     private DefaultTree tree;
@@ -427,6 +434,12 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
         Comparator<OwnedModelItem> theComparator = new BeanComparator("name");
 
+        // Add the user-defined datatypeas
+        List<CustomType> theCustomTypes = new ArrayList<CustomType>();
+        theCustomTypes.addAll(aModel.getCustomTypes());
+        Collections.sort(theCustomTypes, theComparator);
+        buildCustomTypesChilds(aModel, theRoot, theCustomTypes);
+
         // Add the domains
         List<Domain> theDomains = new ArrayList<Domain>();
         theDomains.addAll(aModel.getDomains());
@@ -519,6 +532,21 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
         aParent.add(theViewsNode);
     }
 
+    private void buildCustomTypesChilds(Model aModel, DefaultMutableTreeNode aParent, List<CustomType> aCustomTypesList) {
+        DefaultMutableTreeNode theCustomTypesNode = new DefaultMutableTreeNode(TreeGroupingElement.CUSTOMTYPES);
+        for (CustomType theCustomType : aCustomTypesList) {
+            if (isVisible(theCustomType)) {
+                DefaultMutableTreeNode theCustomTypeNode = new DefaultMutableTreeNode(theCustomType);
+                theCustomTypesNode.add(theCustomTypeNode);
+
+                registerUserObject(theCustomType, theCustomTypeNode);
+
+                updateCustomTypeTreeNode(aModel, theCustomType, theCustomTypeNode);
+            }
+        }
+        aParent.add(theCustomTypesNode);
+    }
+
     private void buildDomainsChilds(Model aModel, DefaultMutableTreeNode aParent, List<Domain> aDomainList) {
         DefaultMutableTreeNode theDomainsNode = new DefaultMutableTreeNode(TreeGroupingElement.DOMAINS);
         for (Domain theDomain : aDomainList) {
@@ -598,6 +626,11 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 registerUserObject(theEntry.getKey(), theAttributeNode);
             }
         }
+    }
+
+    private void updateCustomTypeTreeNode(Model aModel, CustomType aCustomType, DefaultMutableTreeNode aCustomTypeNode) {
+
+        aCustomTypeNode.removeAllChildren();
     }
 
     private void updateDomainTreeNode(Model aModel, Domain aDomain, DefaultMutableTreeNode aDomainNode) {
@@ -802,6 +835,17 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITRELATION,
                     theRelation.getName()));
             theEditItem.addActionListener(new EditRelationCommand(theComponent, theRelation));
+
+            aMenu.add(theEditItem);
+
+        }
+        if (theUserObject instanceof CustomType) {
+
+            CustomType theCustomType = (CustomType) theUserObject;
+
+            JMenuItem theEditItem = new JMenuItem();
+            theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITCUSTOMTYPE, theCustomType.getName()));
+            theEditItem.addActionListener(new EditCustomTypeCommand(theComponent, theCustomType));
 
             aMenu.add(theEditItem);
 

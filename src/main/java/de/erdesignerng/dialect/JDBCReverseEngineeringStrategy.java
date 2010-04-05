@@ -32,6 +32,7 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
@@ -98,6 +99,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
     protected void reverseEngineerDomain(Model aModel, Domain aDomain, ReverseEngineeringOptions aOptions,
             ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException {
+    }
+
+    protected void reverseEngineerCustomType(Model aModel, CustomType aCustomType, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException {
+                throw new UnsupportedOperationException("Userdefined datatypes (UDTs) not supportet for " + aModel.getDialect().getUniqueName() + " databases.");
     }
 
     /**
@@ -314,8 +320,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                     theAttribute.setComment(theColumnRemarks);
                 }
 
-                // Search for the datatype in the domains and the dialect
-                // specific datatypes
+                // Search for the datatype in the domains, the dialect
+                // specific and the user defined datatypes
                 DataType theDataType = aModel.getAvailableDataTypes().findByName(
                         convertColumnTypeToRealType(theTypeName));
                 if (theDataType == null) {
@@ -765,6 +771,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException,
             ReverseEngineeringException {
 
+        if (aModel.getDialect().isSupportsCustomTypes()) {
+            reverseEngineerCustomTypes(aModel, aOptions, aNotifier, aConnection);
+        }
+
         if (aModel.getDialect().isSupportsDomains()) {
             reverseEngineerDomains(aModel, aOptions, aNotifier, aConnection);
         }
@@ -785,6 +795,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         }
 
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
+    }
+
+    protected void reverseEngineerCustomTypes(Model aModel, ReverseEngineeringOptions aOptions,
+            ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException,
+            ReverseEngineeringException {
+        throw new UnsupportedOperationException("Userdefined datatypes (UDTs) not supportet for " + aModel.getDialect().getUniqueName() + " databases.");
     }
 
     /**
@@ -827,6 +843,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
                 int theFraction = theResult.getInt("NUMERIC_PRECISION_RADIX");
                 int theScale = theResult.getInt("NUMERIC_SCALE");
+
+                aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGDOMAIN, theDomainName);
 
                 Domain theDomain = aModel.getDomains().findByName(theDomainName);
                 if (theDomain != null) {

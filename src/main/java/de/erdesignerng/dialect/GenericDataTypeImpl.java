@@ -250,6 +250,11 @@ public abstract class GenericDataTypeImpl implements DataType {
     }
 
     @Override
+    public boolean isCustomType() {
+        return false;
+    }
+
+    @Override
     public int[] getJDBCType() {
         return jdbcType;
     }

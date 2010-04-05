@@ -69,6 +69,8 @@ public class Model extends ModelItem {
 
     private final DomainList domains = new DomainList();
 
+    private final CustomTypeList customTypes = new CustomTypeList();
+
     private final ViewList views = new ViewList();
 
     private Dialect dialect;
@@ -411,6 +413,10 @@ public class Model extends ModelItem {
         return domains;
     }
 
+    public CustomTypeList getCustomTypes() {
+        return customTypes;
+    }
+
     /**
      * Get the available data types.
      * 
@@ -424,6 +430,8 @@ public class Model extends ModelItem {
         if (dialect != null) {
             theResult.addAll(dialect.getDataTypes());
         }
+
+        theResult.addAll(customTypes);
         theResult.addAll(domains);
         Collections.sort(theResult, new BeanComparator("name"));
         return theResult;
@@ -456,6 +464,35 @@ public class Model extends ModelItem {
         modificationTracker.removeDomain(aDomain);
 
         domains.remove(aDomain);
+    }
+
+    /**
+     * Add a custom datatype to the model.
+     *
+     * @param aCustomType
+     *            the custom datatype
+     * @throws VetoException
+     */
+    public void addCustomType(CustomType aCustomType) throws VetoException {
+
+        modificationTracker.addCustomType(aCustomType);
+
+        aCustomType.setOwner(this);
+        customTypes.add(aCustomType);
+    }
+
+    /**
+     * Remove a custom datatype from the model.
+     *
+     * @param aCustomType
+     *            the custom datatype
+     * @throws VetoException
+     */
+    public void removeCustomType(CustomType aCustomType) throws VetoException {
+
+        modificationTracker.removeCustomType(aCustomType);
+
+        customTypes.remove(aCustomType);
     }
 
     /**

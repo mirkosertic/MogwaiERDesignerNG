@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect.sql92;
 
+import de.erdesignerng.model.CustomType;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.PlatformConfig;
@@ -31,6 +32,8 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  * @author $Author: mirkosertic $
@@ -460,4 +463,54 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
         return EMPTY_STATEMENTLIST;
     }
+
+    @Override
+    public StatementList createAddCustomTypeStatement(CustomType aCustomType) {
+        if (getDialect().isSupportsCustomTypes()) {
+            StatementList theList = new StatementList();
+            StringBuilder theBuilder = new StringBuilder();
+            theBuilder.append("CREATE TYPE ");
+            theBuilder.append(aCustomType.getName());
+            switch (aCustomType.getJDBCType()[0]) {
+                case Types.DISTINCT:
+                    //TODO [dr_death] integrate SQL for enhanced basic types
+                    theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
+                    break;
+
+                case Types.STRUCT:
+                    //TODO [dr_death] integrate SQL for complex udts
+                    theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
+                    break;
+
+                case Types.ARRAY:
+                    ArrayList<String> theLabelList = aCustomType.getLabelList();
+                    theBuilder.append(" AS ENUM (\n");
+                    for (int i = 0; i < theLabelList.size(); i++) {
+                        theBuilder.append((i > 0?", \n":"")+ "    " +  "'" + theLabelList.get(i) + "'");
+                    }
+                    theBuilder.append("\n)");
+                    break;
+            }
+            theList.add(new Statement(theBuilder.toString()));
+
+            return theList;
+        }
+
+        return EMPTY_STATEMENTLIST;
+    }
+
+    @Override
+    public StatementList createDropCustomTypeStatement(CustomType aCustomType) {
+        if (getDialect().isSupportsCustomTypes()) {
+            StatementList theList = new StatementList();
+            StringBuilder theBuilder = new StringBuilder();
+            theBuilder.append("DROP TYPE ");
+            theBuilder.append(aCustomType.getName());
+            theList.add(new Statement(theBuilder.toString()));
+            return theList;
+        }
+
+        return EMPTY_STATEMENTLIST;
+    }
+
 }

@@ -21,6 +21,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
@@ -144,5 +145,13 @@ public class HistoryModificationTracker implements ModelModificationTracker {
     @Override
     public void removeDomain(Domain aDomain) throws VetoException {
         addStatementsToHistory(getSQLGenerator().createDropDomainStatement(aDomain));
+    }
+
+    public void addCustomType(CustomType aCustomType) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createAddCustomTypeStatement(aCustomType));
+    }
+
+    public void removeCustomType(CustomType aCustomType) throws VetoException {
+        addStatementsToHistory(getSQLGenerator().createDropCustomTypeStatement(aCustomType));
     }
 }
