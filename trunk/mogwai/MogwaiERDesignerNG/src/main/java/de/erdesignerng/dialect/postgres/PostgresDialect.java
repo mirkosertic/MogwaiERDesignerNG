@@ -93,6 +93,9 @@ public class PostgresDialect extends SQL92Dialect {
         // http://www.postgresql.org/docs/8.4/interactive/datatype-net-types.html#DATATYPE-INET
         registerType(createDataType("inet", "", Types.VARCHAR, Types.NVARCHAR));
 
+        // Bug Fixing 2933615 [ERDesignerNG] UUID Datatype not Supported in PostgreSQL
+        registerType(createDataType("uuid", "", Types.VARCHAR, Types.NVARCHAR));
+
         // TODO [dr-death] add all missing datatypes according to
         // @see
         // http://www.postgresql.org/docs/8.4/interactive/datatype.html#DATATYPE-TABLE
