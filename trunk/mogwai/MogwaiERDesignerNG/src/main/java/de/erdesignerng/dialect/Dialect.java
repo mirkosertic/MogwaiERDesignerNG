@@ -59,6 +59,8 @@ public abstract class Dialect {
 
     private boolean supportsDomains = false;
 
+    private boolean supportsCustomTypes = false;
+
     private boolean supportsSchemaInformation = true;
 
     private NameCastType castType;
@@ -372,6 +374,14 @@ public abstract class Dialect {
 
     public void setSupportsDomains(boolean supportsDomains) {
         this.supportsDomains = supportsDomains;
+    }
+
+    public boolean isSupportsCustomTypes() {
+        return supportsCustomTypes;
+    }
+
+    public void setSupportsCustomTypes(boolean supportsCustomTypes) {
+        this.supportsCustomTypes = supportsCustomTypes;
     }
 
     public void setSupportsSchemaInformation(boolean supportsSchemaInformation) {

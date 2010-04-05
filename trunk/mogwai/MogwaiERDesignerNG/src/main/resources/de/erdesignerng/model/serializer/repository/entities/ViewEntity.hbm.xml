@@ -12,7 +12,7 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" column="elementcomment" not-null="false" type="text"/>
+    <property column="elementcomment" name="comment" not-null="false" type="text"/>
     <property name="sqlstatement" not-null="true" type="text"/>
     <list cascade="all-delete-orphan" name="properties" table="mogrep_view_props">
       <key column="tableid" foreign-key="mogrep_view_props_fk1"/>
@@ -22,6 +22,6 @@
         <property column="propvalue" name="value" not-null="false"/>
       </composite-element>
     </list>
-    <property name="schema" column="dbschema" not-null="false"/>
+    <property column="dbschema" name="schema" not-null="false"/>
   </class>
 </hibernate-mapping>

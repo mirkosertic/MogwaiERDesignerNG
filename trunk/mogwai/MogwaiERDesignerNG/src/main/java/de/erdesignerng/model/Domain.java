@@ -192,4 +192,9 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<D
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
+
+    public boolean isCustomType() {
+        return false;
+    }
+
 }

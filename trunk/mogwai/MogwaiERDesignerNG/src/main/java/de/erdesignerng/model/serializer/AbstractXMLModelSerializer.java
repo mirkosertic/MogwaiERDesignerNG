@@ -46,6 +46,8 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     protected static final String DIALECT = "dialect";
 
+    protected static final String CUSTOMTYPES = "CustomTypes";
+
     protected static final String DOMAINS = "Domains";
 
     protected static final String TABLES = "Tables";
@@ -63,6 +65,8 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
     private AbstractXMLCommentSerializer xmlCommentSerializer = null;
 
     private AbstractXMLDomainSerializer xmlDomainSerializer = null;
+
+    private AbstractXMLCustomTypeSerializer xmlCustomTypeSerializer = null;
 
     private AbstractXMLIndexSerializer xmlIndexSerializer = null;
 
@@ -180,6 +184,10 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlCommentSerializer;
     }
 
+    protected AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer() {
+        return xmlCustomTypeSerializer;
+    }
+
     protected AbstractXMLDomainSerializer getXMLDomainSerializer() {
         return xmlDomainSerializer;
     }
@@ -206,6 +214,10 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     protected void setXMLCommentSerializer(AbstractXMLCommentSerializer xmlCommentSerializer) {
         this.xmlCommentSerializer = xmlCommentSerializer;
+    }
+
+    protected void setXMLCustomTypeSerializer(AbstractXMLCustomTypeSerializer xmlCustomTypeSerializer) {
+        this.xmlCustomTypeSerializer = xmlCustomTypeSerializer;
     }
 
     protected void setXMLDomainSerializer(AbstractXMLDomainSerializer xmlDomainSerializer) {

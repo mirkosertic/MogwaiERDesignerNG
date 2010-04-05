@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
@@ -122,8 +123,11 @@ public abstract class SQLGenerator<T extends Dialect> {
 
     public abstract StatementList createAddDomainStatement(Domain aDomain);
 
-    public abstract StatementList createDropDomainStatement(Domain domain);
+    public abstract StatementList createDropDomainStatement(Domain aDomain);
 
+    public abstract StatementList createAddCustomTypeStatement(CustomType aCustomType);
+
+    public abstract StatementList createDropCustomTypeStatement(CustomType aCustomType);
     /**
      * Create the DDL script for the whole model.
      * 
@@ -141,6 +145,9 @@ public abstract class SQLGenerator<T extends Dialect> {
         }
         for (Domain theDomain : aModel.getDomains()) {
             theResult.addAll(createAddDomainStatement(theDomain));
+        }
+        for (CustomType theCustomType : aModel.getCustomTypes()) {
+            theResult.addAll(createAddCustomTypeStatement(theCustomType));
         }
         for (Table theTable : aModel.getTables()) {
             theResult.addAll(createAddTableStatement(theTable));

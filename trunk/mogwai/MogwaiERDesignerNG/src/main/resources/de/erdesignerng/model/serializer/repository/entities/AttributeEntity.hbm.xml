@@ -12,10 +12,10 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" column="elementcomment" not-null="false" type="text"/>
+    <property column="elementcomment" name="comment" not-null="false" type="text"/>
     <property name="datatype" not-null="false"/>
     <property name="domainId" not-null="false"/>
-    <property name="size" column="attributesize" not-null="false"/>
+    <property column="attributesize" name="size" not-null="false"/>
     <property name="fraction" not-null="true"/>
     <property name="scale" not-null="true"/>
     <property name="nullable" not-null="true"/>
