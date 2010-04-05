@@ -240,3 +240,4 @@ Release 2.6.0
 * Added support for scaffolded properties based on the current dialect for tables, views, relations and domains
 * Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
 * Bug Fixing 2952877 [ERDesignerNG] Custom Types
+* Bug Fixing 2933615 [ERDesignerNG] UUID Datatype not Supported in PostgreSQL
