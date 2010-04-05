@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -20,24 +20,22 @@ package de.erdesignerng.model;
 import java.util.Vector;
 
 /**
- * A list of domains.
- * 
- * @author $Author: mirkosertic $
- * @version $Date: 2008-11-12 19:11:45 $
+ * @author $Author: dr-death $
+ * @version $Date: 2010-03-30 20:00:00 $
  */
-public class DomainList extends Vector<Domain> implements ModelList<Domain> {
+public class CustomTypeList extends Vector<CustomType> implements ModelList<CustomType> {
 
     /**
-     * Find a domain by system id.
-     * 
+     * Find a custom datatype by system id.
+     *
      * @param aSystemId
      *            the system id
-     * @return the domain or null if domain does not exist
+     * @return the custom datatype or null if custom datatype does not exist
      */
-    public Domain findBySystemId(String aSystemId) {
-        for (Domain theDomain : this) {
-            if (aSystemId.equals(theDomain.getSystemId())) {
-                return theDomain;
+    public CustomType findBySystemId(String aSystemId) {
+        for (CustomType theCustomType : this) {
+            if (aSystemId.equals(theCustomType.getSystemId())) {
+                return theCustomType;
             }
         }
 
@@ -45,16 +43,16 @@ public class DomainList extends Vector<Domain> implements ModelList<Domain> {
     }
 
     /**
-     * Find a domain by a given name.
-     * 
+     * Find a custom datatype by a given name.
+     *
      * @param aName
      *            the name
-     * @return the found element
+     * @return the custom datatype or null if custom datatype does not exist
      */
-    public Domain findByName(String aName) {
-        for (Domain theDomain : this) {
-            if (aName.equals(theDomain.getName())) {
-                return theDomain;
+    public CustomType findByName(String aName) {
+        for (CustomType theCustomType : this) {
+            if (aName.equals(theCustomType.getName())) {
+                return theCustomType;
             }
         }
 

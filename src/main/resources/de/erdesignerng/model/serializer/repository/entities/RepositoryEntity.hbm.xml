@@ -12,7 +12,7 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" column="elementcomment" type="text"/>
+    <property column="elementcomment" name="comment" type="text"/>
     <property name="dialect" not-null="true"/>
     <list cascade="all-delete-orphan" name="domains">
       <key column="repid" foreign-key="mogrep_domains_fk1" not-null="true"/>

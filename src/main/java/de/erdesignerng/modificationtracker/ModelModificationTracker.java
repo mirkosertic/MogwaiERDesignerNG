@@ -18,6 +18,7 @@
 package de.erdesignerng.modificationtracker;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
@@ -67,4 +68,9 @@ public interface ModelModificationTracker {
     void addDomain(Domain aDomain) throws VetoException;
 
     void removeDomain(Domain aDomain) throws VetoException;
+
+    void addCustomType(CustomType aCustomType) throws VetoException;
+
+    void removeCustomType(CustomType aCustomType) throws VetoException;
+
 }

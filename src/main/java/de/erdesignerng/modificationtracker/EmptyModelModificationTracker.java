@@ -18,6 +18,7 @@
 package de.erdesignerng.modificationtracker;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
@@ -108,5 +109,11 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
 
     @Override
     public void removeDomain(Domain domain) throws VetoException {
+    }
+
+    public void addCustomType(CustomType aCustomType) throws VetoException {
+    }
+
+    public void removeCustomType(CustomType aCustomType) throws VetoException {
     }
 }

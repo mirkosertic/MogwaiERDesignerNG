@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sourceforge.mogwai</groupId>
@@ -9,7 +10,7 @@
 	<version>2.6.0-SNAPSHOT</version>
 	<description>
         Mogwai ER-Designer is an entity relationship design tool.
-    </description>
+	</description>
 	<parent>
 		<groupId>net.sourceforge.mogwai</groupId>
 		<artifactId>mogwai-masterpom</artifactId>
@@ -20,7 +21,29 @@
 			<id>mogwai-repository</id>
 			<url>http://mogwai.sourceforge.net/repository/maven2</url>
 		</repository>
-	</repositories>
+<!--
+		<repository>
+			<id>maven-repository-1</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>maven-repository-2</id>
+			<url>http://repo2.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>jboss-repository</id>
+			<url>http://repository.jboss.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>ideotechnologies-repository</id>
+			<url>http://sweetdev-ria.ideotechnologies.com/maven2/repository/</url>
+		</repository>
+		<repository>
+			<id>ibiblio-repository</id>
+			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
+		</repository>
+-->
+    </repositories>
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<plugins>
@@ -35,11 +58,11 @@
 						<configuration>
 							<tasks>
 								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask"
-									name="XMLResourceBundle" />
+                                    name="XMLResourceBundle" />
 
 								<XMLResourceBundle dest="src/main/resources"
-									defaultLanguage="en" src="src/main/java" encoding="ISO8859_1"
-									javaEncoding="ISO8859_1">
+                                    defaultLanguage="en" src="src/main/java" encoding="ISO8859_1"
+                                    javaEncoding="ISO8859_1">
 									<fileset dir="src/main/resources">
 										<include name="erdesigner.xml" />
 									</fileset>
@@ -125,7 +148,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin
-                </artifactId>
+				</artifactId>
 				<version>2.0</version>
 				<executions>
 					<execution>
@@ -136,14 +159,14 @@
 						</goals>
 						<configuration>
 							<excludeGroupIds>
-								org.codehaus.izpack
-                            </excludeGroupIds>
+                                org.codehaus.izpack
+							</excludeGroupIds>
 							<excludeArtifactIds>
-								mogwai-squirrelplugin
-                            </excludeArtifactIds>
+                                mogwai-squirrelplugin
+							</excludeArtifactIds>
 							<outputDirectory>
-								${staging.dir}/lib
-                            </outputDirectory>
+                                ${staging.dir}/lib
+							</outputDirectory>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
@@ -159,17 +182,17 @@
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>
                             izpack-standalone-compiler
-                        </artifactId>
+						</artifactId>
 						<version>
                             ${your.standalone-compiler.version}
-                        </version>
+						</version>
 					</dependency>
 				</dependencies>
 				<configuration>
 					<izpackBasedir>${staging.dir}</izpackBasedir>
 					<customPanelDirectory>
-						${staging.dir}
-                    </customPanelDirectory>
+                        ${staging.dir}
+					</customPanelDirectory>
 					<descriptorEncoding>ISO8859-1</descriptorEncoding>
 				</configuration>
 				<executions>
@@ -188,11 +211,11 @@
 				<configuration>
 					<descriptors>
 						<descriptor>
-							assembly-squirrelplugin.xml
-                        </descriptor>
+                            assembly-squirrelplugin.xml
+						</descriptor>
 						<descriptor>
-							assembly-plain.xml
-                        </descriptor>
+                            assembly-plain.xml
+						</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>
@@ -334,9 +357,9 @@
 		<dependency>
 			<groupId>org.codehaus.izpack</groupId>
 			<artifactId>izpack-standalone-compiler
-            </artifactId>
+			</artifactId>
 			<version>${your.standalone-compiler.version}
-            </version>
+			</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -356,7 +379,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.javaparser
-            </groupId>
+			</groupId>
 			<artifactId>javaparser</artifactId>
 			<version>1.0.7</version>
 		</dependency>

@@ -29,6 +29,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
@@ -124,6 +125,10 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
                         theStatementList.addAll(theGenerator.createAddIndexToTableStatement(theIndex.getOwner(),
                                 theIndex));
                     }
+                }
+                if (aItem instanceof CustomType) {
+                    CustomType theCustomType = (CustomType) aItem;
+                    theStatementList.addAll(theGenerator.createAddCustomTypeStatement(theCustomType));
                 }
                 if (aItem instanceof Domain) {
                     Domain theDomain = (Domain) aItem;

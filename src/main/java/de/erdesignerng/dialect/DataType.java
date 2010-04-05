@@ -27,6 +27,8 @@ public interface DataType extends Serializable {
 
     boolean isDomain();
 
+    boolean isCustomType();
+
     boolean supportsSize();
 
     boolean supportsFraction();

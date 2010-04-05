@@ -12,7 +12,7 @@
     <property name="lastModificationUser" not-null="false"/>
     <property name="lastModificationDate" not-null="false"/>
     <property name="name" not-null="true"/>
-    <property name="comment" column="elementcomment" not-null="false" type="text"/>
+    <property column="elementcomment" name="comment" not-null="false" type="text"/>
     <property name="type" not-null="true"/>
     <list cascade="all-delete-orphan" name="expressions" table="mogrep_indexes_expression">
       <key column="indexid" foreign-key="mogrep_indexes_expression_fk1"/>

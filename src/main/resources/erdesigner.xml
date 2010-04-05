@@ -303,6 +303,14 @@
 			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>
 			<Text lang="en">Reverse engineering of relations for table {0}</Text>
 		</Entry>
+        <Entry id="ENGINEERINGDOMAIN">
+			<Text lang="de">Reverseengineering von Domäne {0}</Text>
+			<Text lang="en">Reverse engineering of domain {0}</Text>
+		</Entry>
+        <Entry id="ENGINEERINGCUSTOMTYPE">
+			<Text lang="de">Reverseengineering von benutzerdefiniertem Datentyp {0}</Text>
+			<Text lang="en">Reverse engineering of user-defined datatype {0}</Text>
+		</Entry>
 		<Entry id="ENGINEERINGFINISHED">
 			<Text lang="de">Reverseengineering beendet</Text>
 			<Text lang="en">Reverse engineering finished</Text>
@@ -501,6 +509,10 @@
 		<Entry id="COMMENTPROPERTIES">
 			<Text lang="de">Eigenschaften des Kommentares</Text>
 			<Text lang="en">Comment properties</Text>
+		</Entry>
+        <Entry id="CUSTOMTYPEEDITOR">
+			<Text lang="de">Typen Editor...</Text>
+			<Text lang="en">Type editor...</Text>
 		</Entry>
 		<Entry id="DOMAINEDITOR">
 			<Text lang="de">Domänen Editor...</Text>
@@ -787,6 +799,10 @@
 			<Text lang="de">Views</Text>
 			<Text lang="en">Views</Text>
 		</Entry>
+        <Entry id="CUSTOMTYPESLIST">
+			<Text lang="de">Typen</Text>
+			<Text lang="en">Types</Text>
+		</Entry>
 		<Entry id="DOMAINSLIST">
 			<Text lang="de">Domänen</Text>
 			<Text lang="en">Domains</Text>
@@ -806,6 +822,10 @@
 		<Entry id="EDITRELATION">
 			<Text lang="de">Relation {0} bearbeiten</Text>
 			<Text lang="en">Edit Relation {0}</Text>
+		</Entry>
+        <Entry id="EDITCUSTOMTYPE">
+			<Text lang="de">Type {0} bearbeiten</Text>
+			<Text lang="en">Edit Type {0}</Text>
 		</Entry>
 		<Entry id="EDITDOMAIN">
 			<Text lang="de">Domäne {0} bearbeiten</Text>
