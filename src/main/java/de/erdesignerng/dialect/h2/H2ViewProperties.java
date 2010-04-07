@@ -20,14 +20,14 @@ package de.erdesignerng.dialect.h2;
 import de.erdesignerng.dialect.ViewProperties;
 
 public class H2ViewProperties extends ViewProperties {
-	
-	private boolean forced;
 
-	public boolean isForced() {
-		return forced;
-	}
+    private Boolean forced;
 
-	public void setForced(boolean forced) {
-		this.forced = forced;
-	}
+    public Boolean getForced() {
+        return forced;
+    }
+
+    public void setForced(Boolean forced) {
+        this.forced = forced;
+    }
 }

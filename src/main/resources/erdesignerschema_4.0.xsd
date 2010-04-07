@@ -31,10 +31,7 @@
 									<xs:documentation>A definition for a user-defined datatype</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
-									<xs:attribute name="schema" use="required"/>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-
+									<xs:sequence>
                                     <xs:element name="Comment" type="CommentType" minOccurs="0" maxOccurs="1">
                                         <xs:annotation>
                                             <xs:documentation>The comment</xs:documentation>
@@ -45,7 +42,9 @@
                                         <xs:annotation>
                                             <xs:documentation>A basic datatype in case of enhanced basic datatype</xs:documentation>
                                         </xs:annotation>
-                                        <xs:attribute name="datatype" use="required"/>
+                                        <xs:complexType>
+											<xs:attribute name="datatype" use="required"/>
+                                        </xs:complexType>
                                     </xs:element>
 
                                     <xs:element name="Struct" minOccurs="0" maxOccurs="1">
@@ -66,11 +65,17 @@
                                         <xs:complexType>
                                             <xs:sequence minOccurs="1" maxOccurs="unbounded">
                                                 <xs:element name="EnumLabel">
-                                                    <xs:attribute name="name" use="required"/>
+													<xs:complexType>
+														<xs:attribute name="name" use="required"/>
+													</xs:complexType>
                                                 </xs:element>
                                             </xs:sequence>
                                         </xs:complexType>
-                                    </xs:element>
+                                    </xs:element>									
+									</xs:sequence>
+									<xs:attribute name="schema" use="required"/>
+									<xs:attribute name="id" use="required"/>
+									<xs:attribute name="name" use="required"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
