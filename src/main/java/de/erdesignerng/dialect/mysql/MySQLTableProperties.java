@@ -21,106 +21,115 @@ import de.erdesignerng.dialect.TableProperties;
 
 public class MySQLTableProperties extends TableProperties {
 
-	public enum EngineEnum {
-		MyISAM, MEMORY, MERGE, BDB, EXAMPLE, NDBCLUSTER, ARCHIVE, CSV, BLACKHOLE, FEDERATED;
-	};
+    public enum EngineEnum {
+        MyISAM, MEMORY, MERGE, BDB, EXAMPLE, NDBCLUSTER, ARCHIVE, CSV, BLACKHOLE, FEDERATED;
+    };
 
-	public enum RowFormatEnum {
-		DEFAULT, DYNAMIC, FIXED, COMPRESSED, REDUNDANT, COMPACT;
-	};
+    public enum RowFormatEnum {
+        DEFAULT, DYNAMIC, FIXED, COMPRESSED, REDUNDANT, COMPACT;
+    };
 
-	public enum InsertMethodEnum {
-		NO, FIRST, LAST;
-	}
+    public enum InsertMethodEnum {
+        NO, FIRST, LAST;
+    }
 
-	private EngineEnum engine = EngineEnum.MyISAM;
-	private int avgRowLength = -1;
-	private int maxRows = -1;
-	private int minRows = -1;
-	private boolean checksum;
-	private boolean packKeys;
-	private boolean delayKeyWrite;
-	private RowFormatEnum rowFormat;
-	private InsertMethodEnum insertMethod;
-	private String characterSet;
+    private EngineEnum engine = EngineEnum.MyISAM;
 
-	public EngineEnum getEngine() {
-		return engine;
-	}
+    private Integer avgRowLength;
 
-	public void setEngine(EngineEnum engine) {
-		this.engine = engine;
-	}
+    private Integer maxRows;
 
-	public int getAvgRowLength() {
-		return avgRowLength;
-	}
+    private Integer minRows;
 
-	public void setAvgRowLength(int avgRowLength) {
-		this.avgRowLength = avgRowLength;
-	}
+    private Boolean checksum;
 
-	public int getMaxRows() {
-		return maxRows;
-	}
+    private Boolean packKeys;
 
-	public void setMaxRows(int maxRows) {
-		this.maxRows = maxRows;
-	}
+    private Boolean delayKeyWrite;
 
-	public int getMinRows() {
-		return minRows;
-	}
+    private RowFormatEnum rowFormat;
 
-	public void setMinRows(int minRows) {
-		this.minRows = minRows;
-	}
+    private InsertMethodEnum insertMethod;
 
-	public boolean isChecksum() {
-		return checksum;
-	}
+    private String characterSet;
 
-	public void setChecksum(boolean checksum) {
-		this.checksum = checksum;
-	}
+    public EngineEnum getEngine() {
+        return engine;
+    }
 
-	public boolean isPackKeys() {
-		return packKeys;
-	}
+    public void setEngine(EngineEnum engine) {
+        this.engine = engine;
+    }
 
-	public void setPackKeys(boolean packKeys) {
-		this.packKeys = packKeys;
-	}
+    public Integer getAvgRowLength() {
+        return avgRowLength;
+    }
 
-	public boolean isDelayKeyWrite() {
-		return delayKeyWrite;
-	}
+    public void setAvgRowLength(Integer avgRowLength) {
+        this.avgRowLength = avgRowLength;
+    }
 
-	public void setDelayKeyWrite(boolean delayKeyWrite) {
-		this.delayKeyWrite = delayKeyWrite;
-	}
+    public Integer getMaxRows() {
+        return maxRows;
+    }
 
-	public RowFormatEnum getRowFormat() {
-		return rowFormat;
-	}
+    public void setMaxRows(Integer maxRows) {
+        this.maxRows = maxRows;
+    }
 
-	public void setRowFormat(RowFormatEnum rowFormat) {
-		this.rowFormat = rowFormat;
-	}
+    public Integer getMinRows() {
+        return minRows;
+    }
 
-	public InsertMethodEnum getInsertMethod() {
-		return insertMethod;
-	}
+    public void setMinRows(Integer minRows) {
+        this.minRows = minRows;
+    }
 
-	public void setInsertMethod(InsertMethodEnum insertMethod) {
-		this.insertMethod = insertMethod;
-	}
+    public Boolean getChecksum() {
+        return checksum;
+    }
 
-	public String getCharacterSet() {
-		return characterSet;
-	}
+    public void setChecksum(Boolean checksum) {
+        this.checksum = checksum;
+    }
 
-	public void setCharacterSet(String characterSet) {
-		this.characterSet = characterSet;
-	}
+    public Boolean getPackKeys() {
+        return packKeys;
+    }
+
+    public void setPackKeys(Boolean packKeys) {
+        this.packKeys = packKeys;
+    }
+
+    public Boolean getDelayKeyWrite() {
+        return delayKeyWrite;
+    }
+
+    public void setDelayKeyWrite(Boolean delayKeyWrite) {
+        this.delayKeyWrite = delayKeyWrite;
+    }
+
+    public RowFormatEnum getRowFormat() {
+        return rowFormat;
+    }
+
+    public void setRowFormat(RowFormatEnum rowFormat) {
+        this.rowFormat = rowFormat;
+    }
+
+    public InsertMethodEnum getInsertMethod() {
+        return insertMethod;
+    }
+
+    public void setInsertMethod(InsertMethodEnum insertMethod) {
+        this.insertMethod = insertMethod;
+    }
+
+    public String getCharacterSet() {
+        return characterSet;
+    }
+
+    public void setCharacterSet(String characterSet) {
+        this.characterSet = characterSet;
+    }
 }
