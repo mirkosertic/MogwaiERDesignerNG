@@ -32,46 +32,37 @@
 								</xs:annotation>
 								<xs:complexType>
 									<xs:sequence>
-                                    <xs:element name="Comment" type="CommentType" minOccurs="0" maxOccurs="1">
-                                        <xs:annotation>
-                                            <xs:documentation>The comment</xs:documentation>
-                                        </xs:annotation>
-                                    </xs:element>
+                                        <xs:element name="Comment" type="CommentType" minOccurs="0" maxOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation>The comment</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
 
-                                    <xs:element name="Distinct" minOccurs="0" maxOccurs="1">
-                                        <xs:annotation>
-                                            <xs:documentation>A basic datatype in case of enhanced basic datatype</xs:documentation>
-                                        </xs:annotation>
-                                        <xs:complexType>
-											<xs:attribute name="datatype" use="required"/>
-                                        </xs:complexType>
-                                    </xs:element>
+                                        <xs:element name="Struct" minOccurs="0" maxOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation>A struct in case of an complex user-defined datatype</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <!--
+                                                  - TODO [CustomType.STRUCT] how can complex udts be handled?
+                                                 -->
+                                            </xs:complexType>
+                                        </xs:element>
 
-                                    <xs:element name="Struct" minOccurs="0" maxOccurs="1">
-                                        <xs:annotation>
-                                            <xs:documentation>A struct in case of an complex user-defined datatype</xs:documentation>
-                                        </xs:annotation>
-                                        <xs:complexType>
-                                            <!--
-                                              - TODO [CustomType.STRUCT] how can complex udts be handled?
-                                             -->
-                                        </xs:complexType>
-                                    </xs:element>
-
-                                    <xs:element name="Array" minOccurs="0" maxOccurs="1">
-                                        <xs:annotation>
-                                            <xs:documentation>An array of labels in case of an enum based user-defined datatype</xs:documentation>
-                                        </xs:annotation>
-                                        <xs:complexType>
-                                            <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                                                <xs:element name="EnumLabel">
-													<xs:complexType>
-														<xs:attribute name="name" use="required"/>
-													</xs:complexType>
-                                                </xs:element>
-                                            </xs:sequence>
-                                        </xs:complexType>
-                                    </xs:element>									
+                                        <xs:element name="Array" minOccurs="0" maxOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation>An array of labels in case of an enum based user-defined datatype</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                                                    <xs:element name="EnumLabel">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>			
 									</xs:sequence>
 									<xs:attribute name="schema" use="required"/>
 									<xs:attribute name="id" use="required"/>
