@@ -45,11 +45,6 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
         theCustomTypeElement.setAttribute(SCHEMA, aCustomType.getSchema());
 
         switch (aCustomType.getJDBCType()[0]){
-            case Types.DISTINCT:
-                theChildElement = addElement(aDocument, theCustomTypeElement, DISTINCT);
-                theChildElement.setAttribute(DATATYPE, aCustomType.getConcreteType().getName());
-                break;
-
             case Types.STRUCT:
                 theChildElement = addElement(aDocument, theCustomTypeElement, STRUCT);
                 //TODO [CustomType.STRUCT] add serialization
@@ -77,18 +72,13 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
 
             String theSchema = theElement.getAttribute(SCHEMA);
 
-            theChildElement = theElement.getElementsByTagName(DISTINCT);
+            theChildElement = theElement.getElementsByTagName(STRUCT);
             if (theChildElement != null) {
-                theJdbcType = Types.DISTINCT;
+                theJdbcType = Types.STRUCT;
             } else {
-                theChildElement = theElement.getElementsByTagName(STRUCT);
+                theChildElement = theElement.getElementsByTagName(ARRAY);
                 if (theChildElement != null) {
-                    theJdbcType = Types.STRUCT;
-                } else {
-                    theChildElement = theElement.getElementsByTagName(ARRAY);
-                    if (theChildElement != null) {
-                        theJdbcType = Types.ARRAY;
-                    }
+                    theJdbcType = Types.ARRAY;
                 }
             }
 
@@ -100,10 +90,6 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
                 deserializeCommentElement(theElement, theCustomType);
 
                 switch (theJdbcType){
-                    case Types.DISTINCT:
-                        theCustomType.setConcreteType(aModel.getAvailableDataTypes().findByName(theElement.getAttribute(DATATYPE)));
-                        break;
-
                     case Types.STRUCT:
                         //TODO [CustomType.STRUCT] add deserialization
                         break;
