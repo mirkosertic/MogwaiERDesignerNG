@@ -472,11 +472,6 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             theBuilder.append("CREATE TYPE ");
             theBuilder.append(aCustomType.getName());
             switch (aCustomType.getJDBCType()[0]) {
-                case Types.DISTINCT:
-                    //TODO [dr_death] integrate SQL for enhanced basic types
-                    theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
-                    break;
-
                 case Types.STRUCT:
                     //TODO [dr_death] integrate SQL for complex udts
                     theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
