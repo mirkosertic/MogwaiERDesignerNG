@@ -101,6 +101,8 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
     }
 
+    // Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
+    // Bug Fixing 2952877 [ERDesignerNG] Custom Types
     @Override
     protected void reverseEngineerCustomTypes(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException, ReverseEngineeringException {
         //This query is reverse engineered from the original
@@ -109,6 +111,9 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         //It is altered to support the typtypes 'c' and 'e'
         //The support of typtype 'd' (extended basic types) is removed because
         //it is just another representation of domains.
+        // 'c' -> complex datatypes (java.sql.Types.STRUCT)
+        // 'd' -> domains           (java.sql.Types.DISTINCT)
+        // 'e' -> enumerations      (java.sql.Types.ARRAY)
         String theQuery = "SELECT NULL AS type_cat, n.nspname AS type_schem, t.typname AS type_name, NULL AS class_name, CASE WHEN t.typtype = 'c' THEN 2002 WHEN t.typtype = 'e' THEN 2003 ELSE 2001 END AS data_type, pg_catalog.Obj_description(t.oid, 'pg_type') AS remarks, NULL AS base_type FROM pg_catalog.pg_type t, pg_catalog.pg_namespace n WHERE t.typnamespace = n.oid AND n.nspname != 'pg_catalog' AND n.nspname != 'pg_toast' AND t.typtype IN ( 'c', 'e' ) AND n.nspname = ? ORDER BY data_type, type_schem, type_name ";
         PreparedStatement theStatement = null;
 
@@ -155,6 +160,8 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         }
     }
 
+    // Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
+    // Bug Fixing 2952877 [ERDesignerNG] Custom Types
     @Override
     protected void reverseEngineerCustomType(Model aModel, CustomType aCustomType, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException {
         String theSchema = aCustomType.getSchema();
