@@ -47,7 +47,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
     private DefaultTextField user = new DefaultTextField();
 
-    // Feature Request 2982848 [ERDesigner] Hide password in ConnectionEditor
+    // Implemented FR 2982848 [ERDesignerNG] Hide password in ConnectionEditor
     private DefaultPasswordField password = new DefaultPasswordField();
 
     private DefaultCheckBox promptForPassword = new DefaultCheckBox(ERDesignerBundle.PROMPTFORPASSWORD);
@@ -128,7 +128,7 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         return driver;
     }
 
-    // Feature Request 2982848 [ERDesigner] Hide password in ConnectionEditor
+    // Implemented FR 2982848 [ERDesignerNG] Hide password in ConnectionEditor
     public DefaultPasswordField getPassword() {
         return password;
     }
