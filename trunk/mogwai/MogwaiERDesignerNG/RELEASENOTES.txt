@@ -27,7 +27,7 @@ This software uses or is based on the following libraries:
  Thanks to the following contributors
  
   Thomas Breitkreuz for his H2 dialect, report templates and many good feature requests
-  Thomas Winkler for his MSAccess dialect, testing, several bugfixes, usability enhancements and feature requests
+  Thomas Winkler for his MSAccess dialect, testing, several bugfixes, usability enhancements, feature requests and implementtion of CustomTypes
 
 Release 1.0
 
@@ -241,3 +241,4 @@ Release 2.6.0
 * Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
 * Bug Fixing 2952877 [ERDesignerNG] Custom Types
 * Bug Fixing 2933615 [ERDesignerNG] UUID Datatype not Supported in PostgreSQL
+* Implemented FR 2982848 [ERDesigner] Hide password in ConnectionEditor

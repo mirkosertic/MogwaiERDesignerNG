@@ -33,6 +33,7 @@ import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.DefaultPasswordField;
 
 public class DatabaseConnectionEditorView extends DefaultPanel {
 
@@ -46,7 +47,8 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
 
     private DefaultTextField user = new DefaultTextField();
 
-    private DefaultTextField password = new DefaultTextField();
+    // Feature Request 2982848 [ERDesigner] Hide password in ConnectionEditor
+    private DefaultPasswordField password = new DefaultPasswordField();
 
     private DefaultCheckBox promptForPassword = new DefaultCheckBox(ERDesignerBundle.PROMPTFORPASSWORD);
 
@@ -126,7 +128,8 @@ public class DatabaseConnectionEditorView extends DefaultPanel {
         return driver;
     }
 
-    public DefaultTextField getPassword() {
+    // Feature Request 2982848 [ERDesigner] Hide password in ConnectionEditor
+    public DefaultPasswordField getPassword() {
         return password;
     }
 
