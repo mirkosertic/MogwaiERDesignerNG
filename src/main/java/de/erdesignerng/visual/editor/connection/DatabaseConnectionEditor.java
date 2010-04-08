@@ -43,7 +43,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
         @Override
         public void handleDialectChange(Dialect aDialect) {
-            commandChangeDialect(aDialect, getAlias().getText(), getDriver().getText(), getUrl().getText(), getUser().getText(), getPassword().getText());
+            commandChangeDialect(aDialect, getAlias().getText(), getDriver().getText(), getUrl().getText(), getUser().getText(), String.valueOf(getPassword().getPassword()));
         }
     };
 
