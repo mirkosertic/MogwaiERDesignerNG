@@ -44,6 +44,8 @@ public class ModelItemProperties<T extends ModelItem> {
 					if (theValue != null) {
 						theProperties.setProperty(theDescriptor.getName(),
 								theValue.toString());
+					} else {
+						theProperties.setProperty(theDescriptor.getName(), null);
 					}
 				}
 			}
