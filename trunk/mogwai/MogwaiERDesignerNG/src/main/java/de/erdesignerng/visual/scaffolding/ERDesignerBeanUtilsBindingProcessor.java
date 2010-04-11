@@ -218,12 +218,18 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
      * @param componentValue
      *            the raw value from the <code>JComponent</code>
      */
-
     @Override
     protected void saveValueToObject(SwingMetawidget metawidget, String names, Object componentValue) throws Exception {
         Object source = metawidget.getToInspect();
-
-        BeanUtils.setProperty(source, names, componentValue);
+        if ("".equals(componentValue)) {
+        	componentValue = null;
+        }
+     
+        Class theTargetType = PropertyUtils.getPropertyType(source, names);
+        if (componentValue instanceof String && theTargetType != String.class) {
+        	componentValue = ConvertUtils.convert((String) componentValue, theTargetType);
+        }
+        PropertyUtils.setSimpleProperty(source, names, componentValue);
     }
 
     protected Object retrieveValueFromWidget(SavedBinding binding) throws Exception {
@@ -231,7 +237,8 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
     }
 
     protected void saveValueToWidget(SavedBinding binding, Object sourceValue) throws Exception {
-        if (sourceValue != null && !(sourceValue instanceof String) && binding.getComponent() instanceof JTextComponent) {
+    	Class theTargetProperty = PropertyUtils.getPropertyType(binding.getComponent(), binding.getComponentProperty());
+        if (theTargetProperty == String.class) {
             sourceValue = ConvertUtils.convert(sourceValue);
         }
         PropertyUtils.setProperty(binding.getComponent(), binding.getComponentProperty(), sourceValue);
