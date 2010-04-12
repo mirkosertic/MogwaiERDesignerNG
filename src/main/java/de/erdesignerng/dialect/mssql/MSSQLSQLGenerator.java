@@ -17,12 +17,18 @@
  */
 package de.erdesignerng.dialect.mssql;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: mirkosertic $
@@ -79,6 +85,133 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
         theResult.add(new Statement(theStatement.toString()));
 
+        return theResult;
+    }
+
+    @Override
+    public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("CREATE ");
+
+        if (IndexType.UNIQUE.equals(aIndex.getIndexType())) {
+            theStatement.append("UNIQUE ");
+        }
+
+        MSSQLIndexProperties theProperties = (MSSQLIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+        switch (theProperties.getIndexType()) {
+        case CLUSTERED:
+            theStatement.append("CLUSTERED ");
+            break;
+        case NONCLUSTERED:
+            theStatement.append("NONCLUSTERED ");
+            break;
+        }
+
+        theStatement.append("INDEX ");
+        theStatement.append(aIndex.getName());
+        theStatement.append(" ON ");
+        theStatement.append(createUniqueTableName(aTable));
+        theStatement.append(" (");
+
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+            IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+
+            if (i > 0) {
+                theStatement.append(",");
+            }
+
+            if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
+                theStatement.append(theIndexExpression.getExpression());
+            } else {
+                theStatement.append(theIndexExpression.getAttributeRef().getName());
+            }
+        }
+
+        theStatement.append(")");
+
+        if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
+            theStatement.append(" ON ");
+            theStatement.append("\"");
+            theStatement.append(theProperties.getFileGroup());
+            theStatement.append("\"");
+        }
+
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
+    }
+
+    @Override
+    protected String createCreateTableSuffix(Table aTable) {
+        MSSQLTableProperties theProperties = (MSSQLTableProperties) getDialect().createTablePropertiesFor(aTable);
+        
+        StringBuilder theStatement = new StringBuilder();
+        if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
+            theStatement.append(" ON ");
+            theStatement.append("\"");
+            theStatement.append(theProperties.getFileGroup());
+            theStatement.append("\"");
+        }
+
+        return theStatement.toString();
+    }
+
+    @Override
+    public StatementList createAddViewStatement(View aView) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+        theStatement.append("CREATE VIEW ");
+        theStatement.append(createUniqueViewName(aView));
+
+        boolean first = true;
+        int counter = 0;
+        MSSQLViewProperties theProperties = (MSSQLViewProperties) getDialect().createViewPropertiesFor(aView);
+        if (Boolean.TRUE.equals(theProperties.getEncryption())) {
+            if (first) {
+                first = false;
+                theStatement.append("WITH ");
+                counter = 0;
+            } else {
+                if (counter > 0) {
+                    theStatement.append(",");
+                }
+            }
+            theStatement.append("ENCRYPTION");
+            counter++;
+        }
+        if (Boolean.TRUE.equals(theProperties.getSchemaBinding())) {
+            if (first) {
+                first = false;
+                theStatement.append("WITH ");
+                counter = 0;
+            } else {
+                if (counter > 0) {
+                    theStatement.append(",");
+                }
+            }
+            theStatement.append("SCHEMABINDING");
+            counter++;
+        }
+        if (Boolean.TRUE.equals(theProperties.getViewMetaData())) {
+            if (first) {
+                first = false;
+                theStatement.append("WITH ");
+                counter = 0;
+            } else {
+                if (counter > 0) {
+                    theStatement.append(",");
+                }
+            }
+            theStatement.append("VIEW_METADATA");
+            counter++;
+        }
+
+        theStatement.append(" AS ");
+        theStatement.append(aView.getSql());
+
+        theResult.add(new Statement(theStatement.toString()));
         return theResult;
     }
 }

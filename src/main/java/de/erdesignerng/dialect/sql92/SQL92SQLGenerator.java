@@ -304,7 +304,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return EMPTY_STATEMENTLIST;
     }
     
-    protected void addAdditionalInformationToCreateTableStatement(Table aTable, StringBuilder aStatement) {
+    protected void addAdditionalInformationToPreCreateTableStatement(Table aTable, StringBuilder aStatement) {
     }
 
     @Override
@@ -314,8 +314,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StringBuilder theStatement = new StringBuilder();
 
         theStatement.append("CREATE ");
-        addAdditionalInformationToCreateTableStatement(aTable, theStatement);
-        
+        addAdditionalInformationToPreCreateTableStatement(aTable, theStatement);
         
         theStatement.append("TABLE " + createUniqueTableName(aTable) + " (" + PlatformConfig.getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
