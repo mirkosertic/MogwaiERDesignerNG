@@ -61,9 +61,7 @@ public class NullsafeSpinnerModel extends AbstractSpinnerModel {
             }
         } else {
             if (value != null) {
-
-                value = (Integer) aValue;
-
+                value = null;
                 fireStateChanged();
             }
         }

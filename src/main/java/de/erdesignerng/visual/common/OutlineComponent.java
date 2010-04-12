@@ -85,7 +85,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class OutlineComponent extends DefaultPanel implements ResourceHelperProvider {
 
-    private final class OutlineSelectionListener implements TreeSelectionListener {
+    private static final class OutlineSelectionListener implements TreeSelectionListener {
         @Override
         public void valueChanged(TreeSelectionEvent aEvent) {
             TreePath thePath = aEvent.getNewLeadSelectionPath();
