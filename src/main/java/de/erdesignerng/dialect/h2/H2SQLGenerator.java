@@ -40,7 +40,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
     }
 
     @Override
-    protected void addAdditionalInformationToCreateTableStatement(Table aTable, StringBuilder aStatement) {
+    protected void addAdditionalInformationToPreCreateTableStatement(Table aTable, StringBuilder aStatement) {
         H2TableProperties theProperties = (H2TableProperties) getDialect().createTablePropertiesFor(aTable);
         switch (theProperties.getTableType()) {
         case GLOBAL_TEMPORARY:
