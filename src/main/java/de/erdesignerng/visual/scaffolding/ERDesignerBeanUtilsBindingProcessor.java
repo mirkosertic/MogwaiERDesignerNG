@@ -28,9 +28,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.text.JTextComponent;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.metawidget.swing.SwingMetawidget;
@@ -192,10 +190,6 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
         }
     }
 
-    //
-    // Protected methods
-    //
-
     /**
      * Retrieve value identified by the given names from the given source.
      * <p>
@@ -222,12 +216,12 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
     protected void saveValueToObject(SwingMetawidget metawidget, String names, Object componentValue) throws Exception {
         Object source = metawidget.getToInspect();
         if ("".equals(componentValue)) {
-        	componentValue = null;
+            componentValue = null;
         }
-     
+
         Class theTargetType = PropertyUtils.getPropertyType(source, names);
         if (componentValue instanceof String && theTargetType != String.class) {
-        	componentValue = ConvertUtils.convert((String) componentValue, theTargetType);
+            componentValue = ConvertUtils.convert((String) componentValue, theTargetType);
         }
         PropertyUtils.setSimpleProperty(source, names, componentValue);
     }
@@ -237,7 +231,7 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
     }
 
     protected void saveValueToWidget(SavedBinding binding, Object sourceValue) throws Exception {
-    	Class theTargetProperty = PropertyUtils.getPropertyType(binding.getComponent(), binding.getComponentProperty());
+        Class theTargetProperty = PropertyUtils.getPropertyType(binding.getComponent(), binding.getComponentProperty());
         if (theTargetProperty == String.class) {
             sourceValue = ConvertUtils.convert(sourceValue);
         }
@@ -255,24 +249,12 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
         return state;
     }
 
-    //
-    // Inner class
-    //
+    private static class State {
 
-    /**
-     * Simple, lightweight structure for saving state.
-     */
-
-    /* package private */class State {
-        /* package private */Set<SavedBinding> bindings;
+        Set<SavedBinding> bindings;
     }
 
-    class SavedBinding {
-        //
-        //
-        // Private members
-        //
-        //
+    private static class SavedBinding {
 
         private Component mComponent;
 
@@ -282,24 +264,12 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
 
         private boolean mNoSetter;
 
-        //
-        //
-        // Constructor
-        //
-        //
-
         public SavedBinding(Component component, String componentProperty, String names, boolean noSetter) {
             mComponent = component;
             mComponentProperty = componentProperty;
             mNames = names;
             mNoSetter = noSetter;
         }
-
-        //
-        //
-        // Public methods
-        //
-        //
 
         public Component getComponent() {
             return mComponent;
@@ -308,12 +278,6 @@ public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcess
         public String getComponentProperty() {
             return mComponentProperty;
         }
-
-        /**
-         * Property names into the source object.
-         * <p>
-         * Stored in BeanUtils style <code>foo.bar.baz</code>.
-         */
 
         public String getNames() {
             return mNames;

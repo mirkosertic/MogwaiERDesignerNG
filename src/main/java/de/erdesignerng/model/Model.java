@@ -75,7 +75,7 @@ public class Model extends ModelItem {
 
     private Dialect dialect;
 
-    private ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
+    private transient ModelModificationTracker modificationTracker = new EmptyModelModificationTracker();
 
     /**
      * Add a table to the database model.
