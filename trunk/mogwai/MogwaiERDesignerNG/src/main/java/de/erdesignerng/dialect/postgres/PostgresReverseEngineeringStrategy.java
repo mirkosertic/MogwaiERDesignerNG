@@ -95,7 +95,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
         if ((aDomain.getConcreteType().getName().equalsIgnoreCase("varchar"))
                 || (aDomain.getConcreteType().getName().equalsIgnoreCase("character varying"))) {
             // PostgreSQL liefert 0, wenn VARCHAR ohne Parameter definiert wurde
-            if (new Integer(0).equals(aDomain.getSize())) {
+            if (((Integer)0).equals(aDomain.getSize())) {
                 aDomain.setSize(null);
             }
         }

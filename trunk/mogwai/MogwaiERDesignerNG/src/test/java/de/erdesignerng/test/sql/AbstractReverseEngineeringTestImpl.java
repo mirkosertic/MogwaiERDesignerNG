@@ -36,7 +36,7 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
 
 public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseImpl {
 
-    public class EmptyWorldConnector implements ERDesignerWorldConnector {
+    public static class EmptyWorldConnector implements ERDesignerWorldConnector {
 
         @Override
         public Model createNewModel() {
@@ -113,7 +113,7 @@ public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerT
         }
     }
 
-    public class EmptyReverseEngineeringNotifier implements ReverseEngineeringNotifier {
+    public static class EmptyReverseEngineeringNotifier implements ReverseEngineeringNotifier {
 
         @Override
         public void notifyMessage(String resourceKey, String... values) {

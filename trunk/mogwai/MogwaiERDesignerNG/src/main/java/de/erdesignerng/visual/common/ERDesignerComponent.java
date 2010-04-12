@@ -113,7 +113,7 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
-    private final class ERDesignerGraphSelectionListener implements GraphSelectionListener {
+    private static final class ERDesignerGraphSelectionListener implements GraphSelectionListener {
         @Override
         public void valueChanged(GraphSelectionEvent aEvent) {
             Object[] theCells = aEvent.getCells();
@@ -1250,7 +1250,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         return model;
     }
 
-    private class GraphModelMappingInfo {
+    private static final class GraphModelMappingInfo {
         Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
 
         Map<View, ViewCell> modelViewCells = new HashMap<View, ViewCell>();
