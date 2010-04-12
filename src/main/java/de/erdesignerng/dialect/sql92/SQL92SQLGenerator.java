@@ -303,6 +303,9 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
     public StatementList createRenameTableStatement(Table aTable, String aNewName) {
         return EMPTY_STATEMENTLIST;
     }
+    
+    protected void addAdditionalInformationToCreateTableStatement(Table aTable, StringBuilder aStatement) {
+    }
 
     @Override
     public StatementList createAddTableStatement(Table aTable) {
@@ -310,8 +313,11 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         StatementList theResult = new StatementList();
         StringBuilder theStatement = new StringBuilder();
 
-        theStatement
-                .append("CREATE TABLE " + createUniqueTableName(aTable) + " (" + PlatformConfig.getLineSeparator());
+        theStatement.append("CREATE ");
+        addAdditionalInformationToCreateTableStatement(aTable, theStatement);
+        
+        
+        theStatement.append("TABLE " + createUniqueTableName(aTable) + " (" + PlatformConfig.getLineSeparator());
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute theAttribute = aTable.getAttributes().get(i);
 
@@ -472,19 +478,19 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             theBuilder.append("CREATE TYPE ");
             theBuilder.append(aCustomType.getName());
             switch (aCustomType.getJDBCType()[0]) {
-                case Types.STRUCT:
-                    //TODO [dr_death] integrate SQL for complex udts
-                    theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
-                    break;
+            case Types.STRUCT:
+                // TODO [dr_death] integrate SQL for complex udts
+                theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
+                break;
 
-                case Types.ARRAY:
-                    ArrayList<String> theLabelList = aCustomType.getLabelList();
-                    theBuilder.append(" AS ENUM (\n");
-                    for (int i = 0; i < theLabelList.size(); i++) {
-                        theBuilder.append((i > 0?", \n":"")+ "    " +  "'" + theLabelList.get(i) + "'");
-                    }
-                    theBuilder.append("\n)");
-                    break;
+            case Types.ARRAY:
+                ArrayList<String> theLabelList = aCustomType.getLabelList();
+                theBuilder.append(" AS ENUM (\n");
+                for (int i = 0; i < theLabelList.size(); i++) {
+                    theBuilder.append((i > 0 ? ", \n" : "") + "    " + "'" + theLabelList.get(i) + "'");
+                }
+                theBuilder.append("\n)");
+                break;
             }
             theList.add(new Statement(theBuilder.toString()));
 

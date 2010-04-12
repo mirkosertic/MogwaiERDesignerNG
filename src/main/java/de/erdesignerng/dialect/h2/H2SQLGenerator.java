@@ -17,12 +17,17 @@
  */
 package de.erdesignerng.dialect.h2;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 
 /**
  * @author $Author: gniddelgesciht $
@@ -32,6 +37,121 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 
     public H2SQLGenerator(H2Dialect aDialect) {
         super(aDialect);
+    }
+
+    @Override
+    protected void addAdditionalInformationToCreateTableStatement(Table aTable, StringBuilder aStatement) {
+        H2TableProperties theProperties = (H2TableProperties) getDialect().createTablePropertiesFor(aTable);
+        switch (theProperties.getTableType()) {
+        case GLOBAL_TEMPORARY:
+            aStatement.append("GLOBAL TEMPORARY ");
+            break;
+        case LOCAL_TEMPORARY:
+            aStatement.append("LOCAL TEMPORARY ");
+            break;
+        case MEMORY:
+            aStatement.append("MEMORY ");
+            break;
+        case TEMP:
+            aStatement.append("TEMP ");
+            break;
+        case CACHED:
+        default:
+            aStatement.append("CACHED ");
+            break;
+        }
+    }
+
+    @Override
+    public StatementList createAddViewStatement(View aView) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+        theStatement.append("CREATE ");
+
+        H2ViewProperties theProperties = (H2ViewProperties) getDialect().createViewPropertiesFor(aView);
+        if (Boolean.TRUE.equals(theProperties.getForce())) {
+            theStatement.append("FORCE ");
+        }
+
+        theStatement.append("VIEW ");
+        theStatement.append(createUniqueViewName(aView));
+        theStatement.append(" AS ");
+        theStatement.append(aView.getSql());
+        theResult.add(new Statement(theStatement.toString()));
+        return theResult;
+    }
+
+    @Override
+    public StatementList createAddIndexToTableStatement(Table aTable, Index aIndex) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder();
+
+        theStatement.append("CREATE ");
+
+        if (IndexType.UNIQUE.equals(aIndex.getIndexType())) {
+            theStatement.append("UNIQUE ");
+        }
+
+        H2IndexProperties theProperties = (H2IndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+        if (Boolean.TRUE.equals(theProperties.getHash())) {
+            theStatement.append("HASH ");
+        }
+
+        theStatement.append("INDEX ");
+        theStatement.append(aIndex.getName());
+        theStatement.append(" ON ");
+        theStatement.append(createUniqueTableName(aTable));
+        theStatement.append(" (");
+
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+            IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+
+            if (i > 0) {
+                theStatement.append(",");
+            }
+
+            if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
+                theStatement.append(theIndexExpression.getExpression());
+            } else {
+                theStatement.append(theIndexExpression.getAttributeRef().getName());
+            }
+        }
+
+        theStatement.append(")");
+        theResult.add(new Statement(theStatement.toString()));
+        return theResult;
+    }
+
+    @Override
+    public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
+        StatementList theResult = new StatementList();
+        StringBuilder theStatement = new StringBuilder("CREATE PRIMARY KEY ");
+
+        H2IndexProperties theProperties = (H2IndexProperties) getDialect().createIndexPropertiesFor(aIndex);
+        if (Boolean.TRUE.equals(theProperties.getHash())) {
+            theStatement.append("HASH ");
+        }
+
+        theStatement.append(" ON ");
+
+        theStatement.append(createUniqueTableName(aTable));
+        theStatement.append("(");
+
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+            if (i > 0) {
+                theStatement.append(",");
+            }
+            IndexExpression theExpression = aIndex.getExpressions().get(i);
+            if (!StringUtils.isEmpty(theExpression.getExpression())) {
+                theStatement.append(theExpression.getExpression());
+            } else {
+                theStatement.append(theExpression.getAttributeRef().getName());
+            }
+        }
+        theStatement.append(")");
+        theResult.add(new Statement(theStatement.toString()));
+
+        return theResult;
     }
 
     @Override
