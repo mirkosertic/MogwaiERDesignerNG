@@ -147,7 +147,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         String theStatements = statementListToString(theStatementList, theGenerator);
         String theReference = readResourceFile(basePath + "testCreateTableWithPKAndIndex.sql");
 
-        // System.out.println(theStatements);
+        System.out.println(theStatements);
         assertTrue(theStatements.equals(theReference));
     }
 

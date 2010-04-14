@@ -322,6 +322,9 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
             }
         }
 
+        if (theBuilder.length() > 0) {
+        	theBuilder.insert(0, ' ');
+        }
         return theBuilder.toString();
     }
 }
