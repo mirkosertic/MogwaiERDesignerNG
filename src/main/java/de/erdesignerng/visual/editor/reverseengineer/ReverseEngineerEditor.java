@@ -128,10 +128,10 @@ public class ReverseEngineerEditor extends BaseEditor {
 
                         i++;
                     }
-
-                    if (selectedIndex == null) {
-                        selectedIndex = 0;
-                    }
+                }
+                
+                if (selectedIndex == null) {
+                    selectedIndex = 0;
                 }
 
                 editingView.getSchemaList().setSelectedIndex(selectedIndex);
