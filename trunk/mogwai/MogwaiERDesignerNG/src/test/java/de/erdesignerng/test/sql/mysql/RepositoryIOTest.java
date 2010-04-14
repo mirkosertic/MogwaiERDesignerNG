@@ -39,6 +39,8 @@ public class RepositoryIOTest extends AbstractConnectionTest {
 
         String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
 
+        System.out.println(theOriginalFile);
+        System.out.println(theNewFile);
         assertTrue(compareStrings(theOriginalFile, theNewFile));
     }
 }
