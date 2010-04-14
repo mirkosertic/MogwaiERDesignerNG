@@ -132,7 +132,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
             theStatement.append("HASH ");
         }
 
-        theStatement.append(" ON ");
+        theStatement.append("ON ");
 
         theStatement.append(createUniqueTableName(aTable));
         theStatement.append("(");

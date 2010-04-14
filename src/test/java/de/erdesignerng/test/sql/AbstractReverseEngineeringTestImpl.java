@@ -161,7 +161,7 @@ public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerT
     public String getDBServerName() {
         String theName = System.getProperty("mogwai.test.db.server.name");
         if (StringUtils.isEmpty(theName)) {
-            theName = "192.168.0.112";
+            theName = "192.168.0.191";
         }
         return theName;
     }
