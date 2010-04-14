@@ -17,16 +17,10 @@
  */
 package de.erdesignerng.dialect.mysql;
 
-import de.erdesignerng.model.Table;
 
 public class MySQLInnoDBSQLGenerator extends MySQLSQLGenerator {
 
     public MySQLInnoDBSQLGenerator(MySQLInnoDBDialect aDialect) {
         super(aDialect);
-    }
-
-    @Override
-    protected String createCreateTableSuffix(Table aTable) {
-        return " ENGINE=InnoDB";
     }
 }

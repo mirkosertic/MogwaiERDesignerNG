@@ -150,4 +150,178 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
                 + createUniqueRelationName(aRelation)));
         return theResult;
     }
+
+    @Override
+    protected String createCreateTableSuffix(Table aTable) {
+        StringBuilder theBuilder = new StringBuilder();
+        MySQLTableProperties theProperties = (MySQLTableProperties) getDialect().createTablePropertiesFor(aTable);
+        boolean first = true;
+        if (theProperties.getEngine() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("ENGINE=");
+            switch (theProperties.getEngine()) {
+            case InnoDB:
+                theBuilder.append("InnoDB");
+                break;
+            case ARCHIVE:
+                theBuilder.append("ARCHIVE");
+                break;
+            case BDB:
+                theBuilder.append("BDB");
+                break;
+            case BLACKHOLE:
+                theBuilder.append("BLACKHOLE");
+                break;
+            case CSV:
+                theBuilder.append("CSV");
+                break;
+            case EXAMPLE:
+                theBuilder.append("EXAMPLE");
+                break;
+            case FEDERATED:
+                theBuilder.append("FEDERATED");
+                break;
+            case MEMORY:
+                theBuilder.append("MEMORY");
+                break;
+            case MERGE:
+                theBuilder.append("MERGE");
+                break;
+            case MyISAM:
+                theBuilder.append("MyISAM");
+                break;
+            case NDBCLUSTER:
+                theBuilder.append("NDBCLUSTER");
+                break;
+            }
+        }
+        if (theProperties.getAvgRowLength() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("AVG_ROW_LENGTH=");
+            theBuilder.append(theProperties.getAvgRowLength());
+        }
+        if (theProperties.getCharacterSet() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("CHARACTER SET=");
+            theBuilder.append(theProperties.getCharacterSet());
+        }
+        if (theProperties.getChecksum() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("CHECKSUM=");
+            if (Boolean.TRUE.equals(theProperties.getChecksum())) {
+                theBuilder.append("1");
+            } else {
+                theBuilder.append("0");
+            }
+        }
+        if (theProperties.getDelayKeyWrite() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("DELAY_KEY_WRITE=");
+            if (Boolean.TRUE.equals(theProperties.getDelayKeyWrite())) {
+                theBuilder.append("1");
+            } else {
+                theBuilder.append("0");
+            }
+        }
+        if (theProperties.getInsertMethod() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("INSERT_HETHOD=");
+            switch (theProperties.getInsertMethod()) {
+            case FIRST:
+                theBuilder.append("FIRST");
+                break;
+            case LAST:
+                theBuilder.append("LAST");
+                break;
+            case NO:
+                theBuilder.append("NO");
+                break;
+            }
+        }
+        if (theProperties.getMaxRows() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("MAX_ROWS=");
+            theBuilder.append(theProperties.getMaxRows());
+        }
+        if (theProperties.getMinRows() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("MIN_ROWS=");
+            theBuilder.append(theProperties.getMinRows());
+        }
+        if (theProperties.getPackKeys() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("PACK_KEYS=");
+            if (Boolean.TRUE.equals(theProperties.getPackKeys())) {
+                theBuilder.append("1");
+            } else {
+                theBuilder.append("0");
+            }
+        }
+        if (theProperties.getRowFormat() != null) {
+            if (first) {
+                first = false;
+            } else {
+                theBuilder.append(",");
+            }
+            theBuilder.append("INSERT_HETHOD=");
+            switch (theProperties.getRowFormat()) {
+            case COMPACT:
+                theBuilder.append("COMPACT");
+                break;
+            case COMPRESSED:
+                theBuilder.append("COMPRESSED");
+                break;
+            case DEFAULT:
+                theBuilder.append("DEFAULT");
+                break;
+            case DYNAMIC:
+                theBuilder.append("DYNAMIC");
+                break;
+            case FIXED:
+                theBuilder.append("FIXED");
+                break;
+            case REDUNDANT:
+                theBuilder.append("REDUNDANT");
+                break;
+            }
+        }
+
+        return theBuilder.toString();
+    }
 }
