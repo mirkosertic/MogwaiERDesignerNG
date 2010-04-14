@@ -22,12 +22,12 @@ import de.erdesignerng.dialect.TableProperties;
 public class MySQLTableProperties extends TableProperties {
 
     public enum EngineEnum {
-        MyISAM, MEMORY, MERGE, BDB, EXAMPLE, NDBCLUSTER, ARCHIVE, CSV, BLACKHOLE, FEDERATED;
-    };
+        InnoDB, MyISAM, MEMORY, MERGE, BDB, EXAMPLE, NDBCLUSTER, ARCHIVE, CSV, BLACKHOLE, FEDERATED;
+    }
 
     public enum RowFormatEnum {
         DEFAULT, DYNAMIC, FIXED, COMPRESSED, REDUNDANT, COMPACT;
-    };
+    }
 
     public enum InsertMethodEnum {
         NO, FIRST, LAST;

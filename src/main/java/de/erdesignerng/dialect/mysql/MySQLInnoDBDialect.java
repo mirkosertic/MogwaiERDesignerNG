@@ -18,6 +18,7 @@
 package de.erdesignerng.dialect.mysql;
 
 import de.erdesignerng.dialect.TableProperties;
+import de.erdesignerng.dialect.mysql.MySQLTableProperties.EngineEnum;
 import de.erdesignerng.model.Table;
 
 /**
@@ -45,12 +46,12 @@ public class MySQLInnoDBDialect extends MySQLDialect {
     public Class getHibernateDialectClass() {
         return org.hibernate.dialect.MySQLInnoDBDialect.class;
     }
-    
-	@Override
-	public TableProperties createTablePropertiesFor(Table aTable) {
-		MySQLTableProperties theProperties = new MySQLTableProperties();
-		theProperties.initializeFrom(aTable);
-		//theProperties.setEngine(EngineEnum.INNODB);
-		return theProperties;
-	}
+
+    @Override
+    public TableProperties createTablePropertiesFor(Table aTable) {
+        MySQLTableProperties theProperties = new MySQLTableProperties();
+        theProperties.initializeFrom(aTable);
+        theProperties.setEngine(EngineEnum.InnoDB);
+        return theProperties;
+    }
 }
