@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 
-import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.utils.ModelComparator;
 import de.erdesignerng.model.utils.ModelCompareResult;
@@ -46,8 +45,8 @@ public class CompleteCompareEditor extends BaseEditor {
     private ApplicationPreferences preferences;
 
     public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel,
-            ApplicationPreferences aPreferences) {
-        super(aParent, ERDesignerBundle.COMPLETECOMPARE);
+            ApplicationPreferences aPreferences, String aCaption) {
+        super(aParent, aCaption);
 
         currentModel = aCurrentModel;
         databaseModel = aDatabaseModel;

@@ -437,14 +437,23 @@
 			<Text lang="de">Extra</Text>
 			<Text lang="en">Extra</Text>
 		</Entry>
-		<Entry id="COMPLETECOMPARE">
+		<Entry id="COMPLETECOMPAREWITHDATABASE">
 			<Text lang="de">Vergleichen mit Datenbank...</Text>
 			<Text lang="en">Compare with database...</Text>
 			<Icon>/de/erdesignerng/icons/compare_view.gif</Icon>
 		</Entry>
-		<Entry id="MODEL">
-			<Text lang="de">Modell</Text>
-			<Text lang="en">Model</Text>
+		<Entry id="COMPLETECOMPAREWITHOTHERMODEL">
+			<Text lang="de">Vergleichen mit anderem Modell...</Text>
+			<Text lang="en">Compare with other model...</Text>
+			<Icon>/de/erdesignerng/icons/compare_view.gif</Icon>
+		</Entry>
+		<Entry id="CURRENTMODEL">
+			<Text lang="de">Aktuelles Modell</Text>
+			<Text lang="en">Current model</Text>
+		</Entry>
+		<Entry id="OTHERMODEL">
+			<Text lang="de">Anderes Modell</Text>
+			<Text lang="en">Other model</Text>
 		</Entry>
 		<Entry id="MISSINGENTITY">
 			<Text lang="de">Tabelle {0} fehlt</Text>

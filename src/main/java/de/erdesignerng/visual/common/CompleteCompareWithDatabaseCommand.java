@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -30,9 +31,9 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 
-public class CompleteCompareCommand extends UICommand {
+public class CompleteCompareWithDatabaseCommand extends UICommand {
 
-    public CompleteCompareCommand(ERDesignerComponent component) {
+    public CompleteCompareWithDatabaseCommand(ERDesignerComponent component) {
         super(component);
     }
 
@@ -90,7 +91,7 @@ public class CompleteCompareCommand extends UICommand {
                         component.addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
                         CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theModel,
-                                aResultModel, getPreferences());
+                                aResultModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
                         theCompare.showModal();
                     }
 
