@@ -86,8 +86,8 @@ public class CompleteCompareEditorView extends JPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            contentPanel.add(new DefaultSeparator(ERDesignerBundle.MODEL), cons.xy(1, 2));
-            contentPanel.add(new DefaultSeparator(ERDesignerBundle.DATABASE), cons.xywh(3, 2, 1, 1));
+            contentPanel.add(new DefaultSeparator(ERDesignerBundle.CURRENTMODEL), cons.xy(1, 2));
+            contentPanel.add(new DefaultSeparator(ERDesignerBundle.OTHERMODEL), cons.xywh(3, 2, 1, 1));
             contentPanel.add(getCurrentModelView().getScrollPane(), cons.xy(1, 4));
             contentPanel.add(getDatabaseView().getScrollPane(), cons.xy(3, 4));
         }

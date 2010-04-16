@@ -413,8 +413,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         DefaultAction theGenerateChangelog = new DefaultAction(new GenerateChangeLogSQLCommand(this), this,
                 ERDesignerBundle.GENERATECHANGELOG);
 
-        DefaultAction theCompleteCompareAction = new DefaultAction(new CompleteCompareCommand(this), this,
-                ERDesignerBundle.COMPLETECOMPARE);
+        DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(new CompleteCompareWithDatabaseCommand(this), this,
+                ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
+
+        DefaultAction theCompleteCompareWithModelAction = new DefaultAction(new CompleteCompareWithOtherModelCommand(this), this,
+                ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
 
         DefaultAction theConvertModelAction = new DefaultAction(new ConvertModelCommand(this), this,
                 ERDesignerBundle.CONVERTMODEL);
@@ -545,7 +548,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(theGenerateChangelog));
         theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(theCompleteCompareAction));
+        theDBMenu.add(new DefaultMenuItem(theCompleteCompareWithDatabaseAction));
+        theDBMenu.add(new DefaultMenuItem(theCompleteCompareWithModelAction));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(theConvertModelAction));
 
