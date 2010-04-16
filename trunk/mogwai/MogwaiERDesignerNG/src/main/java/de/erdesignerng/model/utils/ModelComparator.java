@@ -52,8 +52,8 @@ public class ModelComparator {
      * @return the compare result
      */
     public ModelCompareResult compareModels(Model aCurrentModel, Model aDatabaseModel) {
-        DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.MODEL));
-        DefaultMutableTreeNode theDBSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.DATABASE));
+        DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.CURRENTMODEL));
+        DefaultMutableTreeNode theDBSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.OTHERMODEL));
 
         TableList theAllTables = new TableList();
         theAllTables.addAll(aCurrentModel.getTables());

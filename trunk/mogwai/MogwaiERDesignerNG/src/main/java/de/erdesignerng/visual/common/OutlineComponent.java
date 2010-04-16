@@ -246,7 +246,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
                 if (theUserObject instanceof TreeGroupingElement) {
                     switch ((TreeGroupingElement) theUserObject) {
                     case MODEL:
-                        theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.MODEL));
+                        theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.CURRENTMODEL));
                         break;
                     case CUSTOMTYPES:
                         theLabel.setText(getResourceHelper().getFormattedText(ERDesignerBundle.CUSTOMTYPESLIST));
