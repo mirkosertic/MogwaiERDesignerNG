@@ -46,10 +46,10 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
     public void testReverseEngineerH2() throws Exception {
 
-        Class.forName("org.hsqldb.jdbcDriver").newInstance();
+        Class.forName("org.h2.Driver").newInstance();
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:bname", "sa", "");
+            theConnection = DriverManager.getConnection("jdbc:h2:mem:bname", "sa", "");
 
             loadSQL(theConnection, "db.sql");
 
@@ -84,7 +84,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             theAttribute = theTable.getAttributes().findByName("TB1_3");
             assertTrue(theAttribute != null);
             assertTrue(theAttribute.isNullable() == false);
-            assertTrue(theAttribute.getDatatype().getName().equals("numeric"));
+            assertTrue(theAttribute.getDatatype().getName().equals("decimal"));
             assertTrue(theAttribute.getSize() == 20);
             assertTrue(theAttribute.getFraction() == 5);
 
@@ -110,7 +110,9 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
             SQLGenerator theGenerator = theDialect.createSQLGenerator();
             String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
+            System.out.println("RES=");
             System.out.println(theResult);
+            System.out.println("RES=");
 
             String theReference = readResourceFile("result.sql");
 
@@ -127,10 +129,10 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 
     public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
             ClassNotFoundException, SQLException, IOException {
-        Class.forName("org.hsqldb.jdbcDriver").newInstance();
+        Class.forName("org.h2.Driver").newInstance();
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:cname", "sa", "");
+            theConnection = DriverManager.getConnection("jdbc:h2:mem:cname", "sa", "");
 
             loadSingleSQL(theConnection, "result.sql");
         } finally {

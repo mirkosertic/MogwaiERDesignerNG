@@ -239,7 +239,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
         StringBuilder theStatement = new StringBuilder();
         theStatement.append("CREATE SCHEMA ");
         theStatement.append(createUniqueSchemaName(aSchema));
-        theStatement.append(" authorization DBA");
+        theStatement.append(" authorization SA");
         theResult.add(new Statement(theStatement.toString()));
         return theResult;
     }

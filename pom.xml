@@ -349,9 +349,9 @@
 			<version>1.6.1</version>
 		</dependency>
 		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.7</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.2.126</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -410,7 +410,7 @@
 	</dependencies>
 
 	<properties>
-		<mogwai.test.db.server.name>192.168.0.112</mogwai.test.db.server.name>
+		<mogwai.test.db.server.name>192.168.0.191</mogwai.test.db.server.name>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
 		<your.standalone-compiler.version>4.2.1</your.standalone-compiler.version>
 	</properties>
