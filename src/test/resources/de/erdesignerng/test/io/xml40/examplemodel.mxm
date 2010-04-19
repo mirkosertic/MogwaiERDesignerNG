@@ -9,7 +9,7 @@
 </Configuration>
 <CustomTypes/>
 <Domains>
-<Domain datatype="BIT" fraction="0" id="71510af1-dbe3-4593-ada8-be8b1dae4900" name="TestDomain" nullable="true" scale="10" size="8"/>
+<Domain datatype="BIT" fraction="0" id="848fe19f-93d4-4f04-8b81-b20a20949966" name="DOMAIN1" nullable="true" scale="10" size="8"/>
 </Domains>
 <Tables>
 <Table id="f7c0db65-0ece-4ae6-ab9a-7c1763da508a" name="TABLE1" schema="">
@@ -52,7 +52,7 @@
 </Index>
 </Table>
 <Table id="a90c364b-96d0-444d-a3b5-3db2b1b7a85e" name="TABLE3" schema="">
-<Property name="LOCATION" value="531:394"/>
+<Property name="LOCATION" value="560:383"/>
 <Comment/>
 <Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="2157ee17-199e-481f-9f57-d191c189e26a" name="TB3_AT1" nullable="true" scale="10" size="0">
 <Comment/>
@@ -93,27 +93,16 @@
 </Relation>
 </Relations>
 <Views>
-<View id="e0cdded8-27c8-4fec-a531-6d76cd7fde03" name="TestView">
-<Property name="LOCATION" value="538:470"/>
+<View id="0056f37b-83c2-4426-83c5-a6f25ac59bb9" name="VIEW1">
+<Property name="LOCATION" value="84:75"/>
 <Comment/>
-<Sql>Select 1 from nudel</Sql>
+<Sql>SELECT 1 FROM SYSDATE</Sql>
 </View>
 </Views>
 <Subjectareas>
-<Subjectarea color="-4144960" id="24213772-1eff-46fa-aba5-a1715d565b64" name="Subject Area" visible="true">
-<Item tablerefid="a90c364b-96d0-444d-a3b5-3db2b1b7a85e"/>
-<Item viewrefid="e0cdded8-27c8-4fec-a531-6d76cd7fde03"/>
-<Item commentrefid="31526aa6-284b-4a18-b537-28049b8fd709"/>
+<Subjectarea color="-4144960" id="9dec6d2b-56eb-4a7b-9885-61897debd6e1" name="Subject Area" visible="true">
+<Item tablerefid="dd36a167-9b62-40e8-b643-2ddd2edda09b"/>
 </Subjectarea>
 </Subjectareas>
-<Comments>
-<ModelComment id="ca859df2-d5a7-402f-8fab-e233d8d88193" name="">
-<Property name="LOCATION" value="212:36"/>
-<Comment>Comment 1</Comment>
-</ModelComment>
-<ModelComment id="31526aa6-284b-4a18-b537-28049b8fd709" name="">
-<Property name="LOCATION" value="713:387"/>
-<Comment>Comment 2</Comment>
-</ModelComment>
-</Comments>
+<Comments/>
 </Model>
