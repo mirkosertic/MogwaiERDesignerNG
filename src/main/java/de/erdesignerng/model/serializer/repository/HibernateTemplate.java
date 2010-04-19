@@ -28,6 +28,7 @@ import org.hibernate.cfg.Environment;
 import de.erdesignerng.model.serializer.repository.entities.AttributeEntity;
 import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 import de.erdesignerng.model.serializer.repository.entities.CommentEntity;
+import de.erdesignerng.model.serializer.repository.entities.CustomTypeEntity;
 import de.erdesignerng.model.serializer.repository.entities.DomainEntity;
 import de.erdesignerng.model.serializer.repository.entities.IndexEntity;
 import de.erdesignerng.model.serializer.repository.entities.RelationEntity;
@@ -56,6 +57,7 @@ public abstract class HibernateTemplate {
     protected Configuration createConfiguration(Class aHibernateDialectClass) {
         Configuration theConfiguration = new Configuration();
         theConfiguration.addClass(DomainEntity.class);
+        theConfiguration.addClass(CustomTypeEntity.class);        
         theConfiguration.addClass(TableEntity.class);
         theConfiguration.addClass(AttributeEntity.class);
         theConfiguration.addClass(IndexEntity.class);

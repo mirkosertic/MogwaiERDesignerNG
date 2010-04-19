@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
@@ -38,8 +40,6 @@ import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
-import java.sql.Types;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author $Author: mirkosertic $
@@ -126,7 +126,6 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                 while (theResult.next()) {
                     String theSchemaName = theResult.getString("TYPE_SCHEM");
                     String theCustomTypeName = theResult.getString("TYPE_NAME");
-                    int theJdbcType = theResult.getInt("DATA_TYPE");
                     String theRemarks = theResult.getString("REMARKS");
 
                     aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE, theCustomTypeName);
@@ -136,8 +135,9 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                         throw new ReverseEngineeringException("Duplicate custom datatype found : " + theCustomTypeName);
                     }
 
-                    theCustomType = new CustomType(theSchemaName, theJdbcType);
+                    theCustomType = new CustomType();
                     theCustomType.setName(theCustomTypeName);
+                    theCustomType.setSchema(theSchemaName);
 
                     if (!StringUtils.isEmpty(theRemarks)) {
                         theCustomType.setComment(theRemarks);
@@ -164,44 +164,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
     // Bug Fixing 2952877 [ERDesignerNG] Custom Types
     @Override
     protected void reverseEngineerCustomType(Model aModel, CustomType aCustomType, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException {
-        String theSchema = aCustomType.getSchema();
-        ResultSet theResult = null;
-
-        switch (aCustomType.getJDBCType()[0]) {
-            case Types.STRUCT: //2002
-                //complex datatypes
-                //TODO [dr_death] reverse engineer complex types
-                break;
-
-            case Types.ARRAY: //2003
-                //typical enums
-                String theQuery = "SELECT e.enumlabel FROM pg_catalog.pg_type t, pg_catalog.pg_enum e, pg_catalog.pg_namespace n WHERE t.typnamespace = n.oid AND e.enumtypid = t.oid AND t.typname = ?" + ((theSchema != null)?" AND n.nspname = ?":"");
-
-                PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
-                theStatement.setString(1, aCustomType.getName());
-                if (theSchema != null) {
-                    theStatement.setString(2, theSchema);
-                }
-
-                try {
-                    ArrayList<String> theLabelList = new ArrayList<String>();
-                    theResult = theStatement.executeQuery();
-                    while (theResult.next()) {
-                        String theLabel = theResult.getString("ENUMLABEL");
-                        theLabelList.add(theLabel);
-                    }
-
-                    aCustomType.setLabelList(theLabelList);
-
-                } finally {
-                    if (theResult != null) {
-                        theResult.close();
-                    }
-                    theStatement.close();
-                }
-
-                break;
-        }
+        //TODO [mirko sertic]: Grab custom type ddl from information_schema
     }
 
     @Override

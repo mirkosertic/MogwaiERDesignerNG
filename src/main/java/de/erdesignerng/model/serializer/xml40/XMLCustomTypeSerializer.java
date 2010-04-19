@@ -17,14 +17,13 @@
  */
 package de.erdesignerng.model.serializer.xml40;
 
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.serializer.AbstractXMLCustomTypeSerializer;
-import java.sql.Types;
-import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import de.erdesignerng.model.CustomType;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.serializer.AbstractXMLCustomTypeSerializer;
 
 /**
  * @author $Author: dr-death $
@@ -35,80 +34,38 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
     @Override
     public void serialize(CustomType aCustomType, Document aDocument, Element aRootElement) {
         Element theCustomTypeElement = addElement(aDocument, aRootElement, CUSTOMTYPE);
-        Element theChildElement = null;
-        Element theEnumLabelElement = null;
 
-        // Basisdaten des Modelelementes speichern
         serializeProperties(aDocument, theCustomTypeElement, aCustomType);
         serializeCommentElement(aDocument, theCustomTypeElement, aCustomType);
 
         theCustomTypeElement.setAttribute(SCHEMA, aCustomType.getSchema());
 
-        switch (aCustomType.getJDBCType()[0]){
-            case Types.STRUCT:
-                theChildElement = addElement(aDocument, theCustomTypeElement, STRUCT);
-                //TODO [CustomType.STRUCT] add serialization
-                break;
-
-            case Types.ARRAY:
-                theChildElement = addElement(aDocument, theCustomTypeElement, ARRAY);
-                for (String aEnumLabel : aCustomType.getLabelList()) {
-                    theEnumLabelElement = addElement(aDocument, theChildElement, ENUMLABEL);
-                    theEnumLabelElement.setAttribute(NAME, aEnumLabel);
-                }
-                break;
-        }
+        Element theSQLElement = addElement(aDocument, theCustomTypeElement, SQLDEFINITION);
+        theSQLElement.appendChild(aDocument.createTextNode(aCustomType.getSqlDefinition()));
     }
 
     @Override
     public void deserialize(Model aModel, Document aDocument) {
-        NodeList theChildElement = null;
-        NodeList theLabelElements = null;
-        Integer theJdbcType = null;
-
         NodeList theElements = aDocument.getElementsByTagName(CUSTOMTYPE);
         for (int i = 0; i < theElements.getLength(); i++) {
             Element theElement = (Element) theElements.item(i);
 
-            String theSchema = theElement.getAttribute(SCHEMA);
+            CustomType theCustomType = new CustomType();
 
-            theChildElement = theElement.getElementsByTagName(STRUCT);
-            if (theChildElement != null) {
-                theJdbcType = Types.STRUCT;
-            } else {
-                theChildElement = theElement.getElementsByTagName(ARRAY);
-                if (theChildElement != null) {
-                    theJdbcType = Types.ARRAY;
-                }
+            theCustomType.setOwner(aModel);
+
+            deserializeProperties(theElement, theCustomType);
+            deserializeCommentElement(theElement, theCustomType);
+
+            theCustomType.setSchema(theElement.getAttribute(SCHEMA));
+
+            NodeList theSQL = theElement.getElementsByTagName(SQLDEFINITION);
+            for (int j = 0; j < theSQL.getLength(); j++) {
+                Element theSQLElement = (Element) theSQL.item(j);
+                theCustomType.setSqlDefinition(theSQLElement.getChildNodes().item(0).getNodeValue());
             }
 
-            if (theJdbcType != null) {
-                CustomType theCustomType = new CustomType(theSchema, theJdbcType);
-                theCustomType.setOwner(aModel);
-
-                deserializeProperties(theElement, theCustomType);
-                deserializeCommentElement(theElement, theCustomType);
-
-                switch (theJdbcType){
-                    case Types.STRUCT:
-                        //TODO [CustomType.STRUCT] add deserialization
-                        break;
-
-                    case Types.ARRAY:
-                        ArrayList<String> theLabelList = new ArrayList<String>();
-                        theLabelElements = theElement.getElementsByTagName(ENUMLABEL);
-
-                        for (int j = 0; j < theLabelElements.getLength(); j++) {
-                            Element theLabelElement = (Element) theElements.item(j);
-                            theLabelList.add(theLabelElement.getAttribute(NAME));
-                        }
-
-                        theCustomType.setLabelList(theLabelList);
-                        break;
-                }
-  
-                aModel.getCustomTypes().add(theCustomType);
-            }
+            aModel.getCustomTypes().add(theCustomType);
         }
     }
 }

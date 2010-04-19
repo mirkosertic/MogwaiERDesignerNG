@@ -17,8 +17,9 @@
  */
 package de.erdesignerng.model;
 
+import java.sql.Types;
+
 import de.erdesignerng.dialect.DataType;
-import java.util.ArrayList;
 
 /**
  * A custom datatype.
@@ -27,57 +28,45 @@ import java.util.ArrayList;
  * @version $Date: 2010-03-30 20:00:00 $
  */
 public class CustomType extends OwnedModelItem<Model> implements ModelItemClonable<CustomType>, DataType {
-    //TODO [dr-death] currently CustomTypes only supports types consisting of a
-    //String-Enum (CREATE TYPE %1 AS ENUM ('Label1', 'Label2', ...) or
-    //enhancing an baic datatype.
-    //Complex UDTs are currently not supported.
 
-    private int[] jdbcType;
-
+    // The schema of the custom type
     private String schema;
-
-    private DataType concreteType;
-
-    private ArrayList<String> labelList = new ArrayList<String>();
-
-    public CustomType(String aSchema, int... aJdbcType) {
-        this.schema = aSchema;
-        this.jdbcType = aJdbcType;
-    }
-
-    public void setConcreteType(DataType concreteType) {
-        this.concreteType = concreteType;
-    }
-
-    public void setLabelList(ArrayList<String> labelList) {
-        this.labelList = labelList;
+    
+    // The DDL Part to create the custom type, the part after the "CREATE TYPE <name> AS "
+    private String sqlDefinition;
+    
+    public CustomType() {
     }
 
     public String getSchema() {
         return schema;
     }
 
-    public DataType getConcreteType() {
-        return concreteType;
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
+    
+    public String getSqlDefinition() {
+        return sqlDefinition;
     }
 
-    public ArrayList<String> getLabelList() {
-        return labelList;
+    public void setSqlDefinition(String sqlDefinition) {
+        this.sqlDefinition = sqlDefinition;
     }
 
     @Override
     public CustomType clone() {
-        CustomType theCustomType = new CustomType(schema, jdbcType);
+        CustomType theCustomType = new CustomType();
         theCustomType.setSystemId(getSystemId());
         theCustomType.setName(getName());
-        theCustomType.setLabelList(labelList);
+        theCustomType.setSqlDefinition(getSqlDefinition());
         return theCustomType;
     }
 
     public void restoreFrom(CustomType aCustomType) throws Exception {
         setSystemId(aCustomType.getSystemId());
         setName(aCustomType.getName());
-        setLabelList(aCustomType.getLabelList());
+        setSqlDefinition(aCustomType.getSqlDefinition());
     }
 
     public boolean isDomain() {
@@ -117,7 +106,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonab
     }
 
     public int[] getJDBCType() {
-        return jdbcType;
+        return new int[] {Types.OTHER};
     }
 
     public String getDefinition() {

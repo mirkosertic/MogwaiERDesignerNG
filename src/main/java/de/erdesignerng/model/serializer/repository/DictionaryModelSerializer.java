@@ -75,8 +75,10 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 }
 
                 // Serialize the rest
+                DictionaryCustomTypeSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);                
+                
                 DictionaryDomainSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
-
+                
                 DictionaryTableSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
 
                 DictionaryViewSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
@@ -134,6 +136,8 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 theNewModel.setDialect(DialectFactory.getInstance().getDialect(theRepositoryEntity.getDialect()));
 
                 // Deserialize the rest
+                DictionaryCustomTypeSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);                
+                
                 DictionaryDomainSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);
 
                 DictionaryTableSerializer.SERIALIZER.deserialize(theNewModel, theRepositoryEntity);

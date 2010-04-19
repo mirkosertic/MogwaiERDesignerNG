@@ -62,12 +62,14 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
             throws SQLException, ReverseEngineeringException {
-        PreparedStatement theStatement = aConnection
-                .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.SYSTEM_VIEWS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?");
-        theStatement.setString(1, aViewEntry.getTableName());
-        theStatement.setString(2, aViewEntry.getSchemaName());
+        PreparedStatement theStatement = null;
         ResultSet theResult = null;
         try {
+            theStatement = aConnection
+                    .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.SYSTEM_VIEWS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?");
+            theStatement.setString(1, aViewEntry.getTableName());
+            theStatement.setString(2, aViewEntry.getSchemaName());
+
             theResult = theStatement.executeQuery();
             while (theResult.next()) {
                 String theViewDefinition = theResult.getString("VIEW_DEFINITION");
@@ -76,10 +78,20 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
             }
             return null;
         } finally {
-            if (theResult != null) {
-                theResult.close();
+            if (theStatement != null) {
+                try {
+                    theStatement.close();
+                } catch (Exception e) {
+                    // ignore this
+                }
             }
-            theStatement.close();
+            if (theResult != null) {
+                try {
+                    theResult.close();
+                } catch (Exception e) {
+                    // Ignore this
+                }
+            }
         }
     }
 }

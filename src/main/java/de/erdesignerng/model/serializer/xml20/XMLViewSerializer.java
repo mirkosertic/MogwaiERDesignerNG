@@ -31,7 +31,6 @@ public class XMLViewSerializer extends AbstractXMLViewSerializer {
     public void serialize(View aView, Document aDocument, Element aRootElement) {
         Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
 
-        // Basisdaten des Modelelementes speichern
         serializeProperties(aDocument, theRelationElement, aView);
         serializeCommentElement(aDocument, theRelationElement, aView);
 

@@ -58,12 +58,13 @@ public final class MSAccessFileFormat {
 
     private final String theIdentifyingTable;
 
-    public MSAccessFileFormat(String anEngineName, int aHeaderSize, int anEngineFlagOffset, int anEngineFlagValue, int anEngineNameOffset, String anIdentifyingTable) {
+    public MSAccessFileFormat(String anEngineName, int aHeaderSize, int anEngineFlagOffset, int anEngineFlagValue,
+            int anEngineNameOffset, String anIdentifyingTable) {
         if ((anEngineFlagOffset < aHeaderSize) && (anEngineNameOffset + anEngineName.length() < aHeaderSize)) {
             theName = anEngineName;
             theHeaderSize = aHeaderSize;
             theFlagOffset = anEngineFlagOffset;
-            theFlagValue = (char)anEngineFlagValue;
+            theFlagValue = (char) anEngineFlagValue;
             theNameOffset = anEngineNameOffset;
             theIdentifyingTable = anIdentifyingTable;
         } else {
@@ -71,11 +72,14 @@ public final class MSAccessFileFormat {
         }
     }
 
-    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset, int anEngineFlagValue, int anEngineNameOffset, String anIdentifyingTable) {
-        this(anEngineName, DEFAULT_HEADER_SIZE, anEngineFlagOffset, anEngineFlagValue, anEngineNameOffset, anIdentifyingTable);
+    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset, int anEngineFlagValue,
+            int anEngineNameOffset, String anIdentifyingTable) {
+        this(anEngineName, DEFAULT_HEADER_SIZE, anEngineFlagOffset, anEngineFlagValue, anEngineNameOffset,
+                anIdentifyingTable);
     }
 
-    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset, int anEngineFlagValue, String anIdentifyingTable) {
+    public MSAccessFileFormat(String anEngineName, int anEngineFlagOffset, int anEngineFlagValue,
+            String anIdentifyingTable) {
         this(anEngineName, anEngineFlagOffset, anEngineFlagValue, DEFAULT_ENGINE_NAME_OFFSET, anIdentifyingTable);
     }
 
@@ -85,13 +89,14 @@ public final class MSAccessFileFormat {
 
     /**
      * Reads the version of the database engine from the binary.
-     *
+     * 
      * Attention: Access 2000, 2002 and 2003 can *not* be devided!
-     *
+     * 
      * @see http://msdn.microsoft.com/en-us/library/aa139959%28office.10%29.aspx
      * @param aFileName
-     * @param aComareWholeFile - searches the whole file if true
-     *
+     * @param aComareWholeFile
+     *            - searches the whole file if true
+     * 
      * @return true if the the file matches the defined version
      */
     public final boolean matches(String aFileName, boolean aComareWholeFile) {
@@ -100,10 +105,11 @@ public final class MSAccessFileFormat {
 
         if (aFileName != null) {
             // binary read required header bytes
+            FileInputStream f = null;
             try {
 
                 byte[] buffer = new byte[theHeaderSize];
-                FileInputStream f = new FileInputStream(aFileName);
+                f = new FileInputStream(aFileName);
                 f.read(buffer);
                 theHeader = new String(buffer);
 
@@ -111,13 +117,23 @@ public final class MSAccessFileFormat {
                 LOGGER.error("Cannot find database file " + aFileName, ex);
             } catch (IOException ex) {
                 LOGGER.error("Cannot read database file " + aFileName, ex);
+            } finally {
+                if (f != null) {
+                    try {
+                        f.close();
+                    } catch (IOException e) {
+                        // Ignore this
+                    }
+                }
             }
 
             if (!StringUtils.isEmpty(theHeader)) {
                 // evaluate the engine information
-                theResult = ((theHeader.charAt(theFlagOffset) == theFlagValue) && (theHeader.substring(theNameOffset, theNameOffset + theName.length()).equals(theName)));
+                theResult = ((theHeader.charAt(theFlagOffset) == theFlagValue) && (theHeader.substring(theNameOffset,
+                        theNameOffset + theName.length()).equals(theName)));
 
-                // additionally search binary for occurance of a special tablename
+                // additionally search binary for occurance of a special
+                // tablename
                 if (aComareWholeFile && theResult && !StringUtils.isEmpty(theIdentifyingTable)) {
                     theResult = (findInFile(aFileName, expand(theIdentifyingTable, 0)) > theHeaderSize);
                 }
@@ -129,12 +145,12 @@ public final class MSAccessFileFormat {
     }
 
     /**
-     * Reads the version of the engine from the binary and searches for
-     * special system tables throuph the connection to classifie the
-     * version more detailled.
-     *
+     * Reads the version of the engine from the binary and searches for special
+     * system tables throuph the connection to classifie the version more
+     * detailled.
+     * 
      * Attention: Access 2002 and 2003 still *not* be devided!
-     *
+     * 
      * @see http://msdn.microsoft.com/en-us/library/aa139959%28office.10%29.aspx
      */
     public final boolean matches(Connection aConnection) {
@@ -162,7 +178,8 @@ public final class MSAccessFileFormat {
                     theResult = (getTableCount(aConnection, theIdentifyingTable) == 1);
                 }
             }
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+        }
 
         return theResult;
 
@@ -172,9 +189,8 @@ public final class MSAccessFileFormat {
 
         final String theColumnName = "theCount";
         short theResult = 0;
-        String theSQL = "SELECT Count(MSysObjects.Id) AS " + theColumnName + " " +
-                        "FROM MSysObjects " +
-                        "WHERE (MSysObjects.Name LIKE ?);";
+        String theSQL = "SELECT Count(MSysObjects.Id) AS " + theColumnName + " " + "FROM MSysObjects "
+                + "WHERE (MSysObjects.Name LIKE ?);";
 
         PreparedStatement theStatement = aConnection.prepareStatement(theSQL);
         theStatement.setString(1, aTableName);
@@ -182,7 +198,7 @@ public final class MSAccessFileFormat {
         ResultSet theIdentificationResult = theStatement.executeQuery();
 
         if (theIdentificationResult != null) {
-            if  (theIdentificationResult.next()) {
+            if (theIdentificationResult.next()) {
                 theResult = theIdentificationResult.getShort(theColumnName);
             }
 
@@ -207,7 +223,7 @@ public final class MSAccessFileFormat {
             try {
                 File file = new File(aFileName);
                 RandomAccessFile ra = new RandomAccessFile(aFileName, "r");
-                byte[] theByteBuffer = new byte[(int)theBufferSize];
+                byte[] theByteBuffer = new byte[(int) theBufferSize];
 
                 while ((theOffset < file.length()) && (theSearchOn) && (theRead == theBufferSize)) {
                     theRead = ra.read(theByteBuffer);
@@ -239,26 +255,29 @@ public final class MSAccessFileFormat {
                 LOGGER.error("Cannot read database file " + aFileName, ex);
             }
         } else {
-            throw new RuntimeException("The string to find is too long. Only strings of lenght up to " + theBufferSize + " can be found!");
+            throw new RuntimeException("The string to find is too long. Only strings of lenght up to " + theBufferSize
+                    + " can be found!");
         }
 
         return theResult;
     }
 
     /**
-     * Expands a given string by inserting special characters between
-     * each original character.
-     *
-     * @param aString           - the string to expand
-     * @param aDividingCharCode - the character code to use for expanding
-     *
+     * Expands a given string by inserting special characters between each
+     * original character.
+     * 
+     * @param aString
+     *            - the string to expand
+     * @param aDividingCharCode
+     *            - the character code to use for expanding
+     * 
      * @return An expanded string
      */
     private static String expand(String aString, Integer aDividingCharCode) {
         StringBuilder buffer = new StringBuilder(aString);
 
         for (int i = 0; i < aString.length() - 1; i++) {
-            buffer.insert((i * 2) + 1, (char)(int)aDividingCharCode);
+            buffer.insert((i * 2) + 1, (char) (int) aDividingCharCode);
         }
 
         return buffer.toString();

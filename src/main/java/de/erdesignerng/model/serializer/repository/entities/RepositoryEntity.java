@@ -31,6 +31,8 @@ public class RepositoryEntity extends ModelEntity {
     private String dialect;
 
     private List<DomainEntity> domains = new ArrayList<DomainEntity>();
+    
+    private List<CustomTypeEntity> customType = new ArrayList<CustomTypeEntity>();    
 
     private List<TableEntity> tables = new ArrayList<TableEntity>();
 
@@ -44,107 +46,58 @@ public class RepositoryEntity extends ModelEntity {
 
     private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
 
-    /**
-     * @return the domains
-     */
     public List<DomainEntity> getDomains() {
         return domains;
     }
 
-    /**
-     * @param domains
-     *            the domains to set
-     */
     public void setDomains(List<DomainEntity> domains) {
         this.domains = domains;
     }
 
-    /**
-     * @return the tables
-     */
     public List<TableEntity> getTables() {
         return tables;
     }
 
-    /**
-     * @param tables
-     *            the tables to set
-     */
     public void setTables(List<TableEntity> tables) {
         this.tables = tables;
     }
 
-    /**
-     * @return the relations
-     */
     public List<RelationEntity> getRelations() {
         return relations;
     }
 
-    /**
-     * @param relations
-     *            the relations to set
-     */
     public void setRelations(List<RelationEntity> relations) {
         this.relations = relations;
     }
 
-    /**
-     * @return the comments
-     */
     public List<CommentEntity> getComments() {
         return comments;
     }
 
-    /**
-     * @param comments
-     *            the comments to set
-     */
     public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
     }
 
-    /**
-     * @return the subjectareas
-     */
     public List<SubjectAreaEntity> getSubjectareas() {
         return subjectareas;
     }
 
-    /**
-     * @param subjectareas
-     *            the subjectareas to set
-     */
     public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
         this.subjectareas = subjectareas;
     }
 
-    /**
-     * @return the changes
-     */
     public List<ChangeEntity> getChanges() {
         return changes;
     }
 
-    /**
-     * @param changes
-     *            the changes to set
-     */
     public void setChanges(List<ChangeEntity> changes) {
         this.changes = changes;
     }
 
-    /**
-     * @return the dialect
-     */
     public String getDialect() {
         return dialect;
     }
 
-    /**
-     * @param dialect
-     *            the dialect to set
-     */
     public void setDialect(String dialect) {
         this.dialect = dialect;
     }
@@ -155,6 +108,14 @@ public class RepositoryEntity extends ModelEntity {
 
     public void setViews(List<ViewEntity> views) {
         this.views = views;
+    }
+    
+    public List<CustomTypeEntity> getCustomType() {
+        return customType;
+    }
+
+    public void setCustomType(List<CustomTypeEntity> customType) {
+        this.customType = customType;
     }
 
     /**

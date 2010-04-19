@@ -476,21 +476,8 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             StringBuilder theBuilder = new StringBuilder();
             theBuilder.append("CREATE TYPE ");
             theBuilder.append(aCustomType.getName());
-            switch (aCustomType.getJDBCType()[0]) {
-            case Types.STRUCT:
-                // TODO [dr_death] integrate SQL for complex udts
-                theBuilder.insert(0, "--THIS IS INCOMPLETE\n");
-                break;
-
-            case Types.ARRAY:
-                ArrayList<String> theLabelList = aCustomType.getLabelList();
-                theBuilder.append(" AS ENUM (\n");
-                for (int i = 0; i < theLabelList.size(); i++) {
-                    theBuilder.append((i > 0 ? ", \n" : "") + "    " + "'" + theLabelList.get(i) + "'");
-                }
-                theBuilder.append("\n)");
-                break;
-            }
+            theBuilder.append(" AS ");
+            theBuilder.append(aCustomType.getSqlDefinition());
             theList.add(new Statement(theBuilder.toString()));
 
             return theList;

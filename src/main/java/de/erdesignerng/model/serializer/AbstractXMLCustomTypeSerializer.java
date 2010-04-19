@@ -27,12 +27,7 @@ public abstract class AbstractXMLCustomTypeSerializer extends CommonAbstractXMLS
 
     protected static final String CUSTOMTYPE = "CustomType";
 
-    protected static final String STRUCT = "Struct";
-
-    protected static final String ARRAY = "Array";
-
-    protected static final String ENUMLABEL = "EnumLabel";
-
     protected static final String SCHEMA = "schema";
-
+    
+    protected static final String SQLDEFINITION = "SqlDefinition";    
 }
