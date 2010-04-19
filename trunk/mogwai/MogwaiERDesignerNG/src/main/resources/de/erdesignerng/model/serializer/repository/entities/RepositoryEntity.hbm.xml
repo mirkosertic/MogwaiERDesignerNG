@@ -19,6 +19,11 @@
       <list-index column="listindex"/>
       <one-to-many class="DomainEntity"/>
     </list>
+    <list cascade="all-delete-orphan" name="customType">
+      <key column="repid" foreign-key="mogrep_custtype_fk1" not-null="true"/>
+      <list-index column="listindex"/>
+      <one-to-many class="CustomTypeEntity"/>
+    </list>
     <list cascade="all-delete-orphan" name="tables">
       <key column="repid" foreign-key="mogrep_tables_fk1" not-null="true"/>
       <list-index column="listindex"/>

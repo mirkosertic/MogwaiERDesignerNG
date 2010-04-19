@@ -17,46 +17,10 @@
  */
 package de.erdesignerng.model;
 
-import java.util.Vector;
-
 /**
  * @author $Author: dr-death $
  * @version $Date: 2010-03-30 20:00:00 $
  */
-public class CustomTypeList extends Vector<CustomType> implements ModelList<CustomType> {
-
-    /**
-     * Find a custom datatype by system id.
-     *
-     * @param aSystemId
-     *            the system id
-     * @return the custom datatype or null if custom datatype does not exist
-     */
-    public CustomType findBySystemId(String aSystemId) {
-        for (CustomType theCustomType : this) {
-            if (aSystemId.equals(theCustomType.getSystemId())) {
-                return theCustomType;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Find a custom datatype by a given name.
-     *
-     * @param aName
-     *            the name
-     * @return the custom datatype or null if custom datatype does not exist
-     */
-    public CustomType findByName(String aName) {
-        for (CustomType theCustomType : this) {
-            if (aName.equals(theCustomType.getName())) {
-                return theCustomType;
-            }
-        }
-
-        return null;
-    }
+public class CustomTypeList extends ModelItemVector<CustomType> {
 
 }
