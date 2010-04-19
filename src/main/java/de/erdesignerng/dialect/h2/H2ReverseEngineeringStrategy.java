@@ -66,7 +66,7 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
         ResultSet theResult = null;
         try {
             theStatement = aConnection
-                    .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.SYSTEM_VIEWS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?");
+                    .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?");
             theStatement.setString(1, aViewEntry.getTableName());
             theStatement.setString(2, aViewEntry.getSchemaName());
 
