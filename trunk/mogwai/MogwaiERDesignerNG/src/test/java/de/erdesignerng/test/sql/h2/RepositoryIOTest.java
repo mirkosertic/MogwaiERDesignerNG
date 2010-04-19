@@ -25,7 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.IOUtils;
-import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.H2Dialect;
 import org.xml.sax.SAXException;
 
 import de.erdesignerng.test.io.repository.RepositioryHelper;
@@ -36,12 +36,12 @@ public class RepositoryIOTest extends AbstractReverseEngineeringTestImpl {
     public void testLoadSaveRepository() throws SAXException, IOException, ParserConfigurationException,
             TransformerException, Exception {
 
-        Class.forName("org.hsqldb.jdbcDriver").newInstance();
+        Class.forName("org.h2.Driver").newInstance();
         Connection theConnection = null;
         try {
-            theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:dname", "sa", "");
+            theConnection = DriverManager.getConnection("jdbc:h2:mem:dname", "sa", "");
 
-            Class theHibernateDialect = HSQLDialect.class;
+            Class theHibernateDialect = H2Dialect.class;
 
             String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
 
