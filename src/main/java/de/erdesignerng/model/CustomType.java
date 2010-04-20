@@ -63,7 +63,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonab
         return theCustomType;
     }
 
-    public void restoreFrom(CustomType aCustomType) throws Exception {
+    public void restoreFrom(CustomType aCustomType) {
         setSystemId(aCustomType.getSystemId());
         setName(aCustomType.getName());
         setSqlDefinition(aCustomType.getSqlDefinition());
