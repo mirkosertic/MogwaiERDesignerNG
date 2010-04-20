@@ -845,7 +845,7 @@ public class OutlineComponent extends DefaultPanel implements ResourceHelperProv
 
             JMenuItem theEditItem = new JMenuItem();
             theEditItem.setText(getResourceHelper().getFormattedText(ERDesignerBundle.EDITCUSTOMTYPE, theCustomType.getName()));
-            theEditItem.addActionListener(new EditCustomTypeCommand(theComponent, theCustomType));
+            theEditItem.addActionListener(new EditCustomTypesCommand(theComponent, theCustomType));
 
             aMenu.add(theEditItem);
 

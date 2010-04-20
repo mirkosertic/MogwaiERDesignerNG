@@ -257,6 +257,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private final ERDesignerGraphLayout layout;
 
+    private DefaultAction editCustomTypes = new DefaultAction(new EditCustomTypesCommand(this), this,
+            ERDesignerBundle.CUSTOMTYPEEDITOR);
+
     private Thread layoutThread;
 
     private static ERDesignerComponent DEFAULT;
@@ -413,11 +416,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         DefaultAction theGenerateChangelog = new DefaultAction(new GenerateChangeLogSQLCommand(this), this,
                 ERDesignerBundle.GENERATECHANGELOG);
 
-        DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(new CompleteCompareWithDatabaseCommand(this), this,
-                ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
+        DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(new CompleteCompareWithDatabaseCommand(
+                this), this, ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
 
-        DefaultAction theCompleteCompareWithModelAction = new DefaultAction(new CompleteCompareWithOtherModelCommand(this), this,
-                ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
+        DefaultAction theCompleteCompareWithModelAction = new DefaultAction(new CompleteCompareWithOtherModelCommand(
+                this), this, ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
 
         DefaultAction theConvertModelAction = new DefaultAction(new ConvertModelCommand(this), this,
                 ERDesignerBundle.CONVERTMODEL);
@@ -539,6 +542,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theDBMenu.addSeparator();
         }
 
+        theDBMenu.add(new DefaultMenuItem(editCustomTypes));
         theDBMenu.add(new DefaultMenuItem(theDomainsAction));
         theDBMenu.addSeparator();
 
@@ -971,6 +975,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         ConnectionDescriptor theConnection = model.createConnectionHistoryEntry();
         addConnectionToConnectionHistory(theConnection);
+        
+        editCustomTypes.setEnabled(model.getDialect().isSupportsCustomTypes());
     }
 
     protected void addConnectionToConnectionHistory(ConnectionDescriptor aConnection) {
@@ -1114,8 +1120,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandShowHelp() {
         try {
-            File theFile = preferences.getOnlineHelpPDFFile();            
-            Desktop.getDesktop().open(theFile);            
+            File theFile = preferences.getOnlineHelpPDFFile();
+            Desktop.getDesktop().open(theFile);
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }
@@ -1224,6 +1230,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             displayAllMenuItem.setSelected(true);
             displayNaturalOrderMenuItem.setSelected(true);
             displayCommentsMenuItem.setSelected(true);
+            if (aModel != null  && aModel.getDialect() != null) {
+                editCustomTypes.setEnabled(aModel.getDialect().isSupportsCustomTypes());
+            } else {
+                editCustomTypes.setEnabled(false);
+            }
 
             commandSetDisplayGridState(displayGridMenuItem.isSelected());
             commandSetDisplayCommentsState(true);
@@ -1313,7 +1324,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             RelationEdge theCell = new RelationEdge(theRelation, theImportingCell, theExportingCell);
             theCell.transferPropertiesToAttributes(theRelation);
 
-          	graph.getGraphLayoutCache().insert(theCell);
+            graph.getGraphLayoutCache().insert(theCell);
         }
 
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
