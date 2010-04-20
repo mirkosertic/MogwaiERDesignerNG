@@ -19,21 +19,21 @@ package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.CustomType;
 import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.editor.customtype.CustomTypeEditor;
+import de.erdesignerng.visual.editor.customtypes.CustomTypeEditor;
 
 /**
  * @author $Author: de_death $
  * @version $Date: 2010-04-05 23:30:00 $
  */
-public class EditCustomTypeCommand extends UICommand {
+public class EditCustomTypesCommand extends UICommand {
 
     private final CustomType customType;
 
-    public EditCustomTypeCommand(ERDesignerComponent component) {
+    public EditCustomTypesCommand(ERDesignerComponent component) {
         this(component, null);
     }
 
-    public EditCustomTypeCommand(ERDesignerComponent component, CustomType aCustomType) {
+    public EditCustomTypesCommand(ERDesignerComponent component, CustomType aCustomType) {
         super(component);
 
         customType = aCustomType;
@@ -43,7 +43,7 @@ public class EditCustomTypeCommand extends UICommand {
     public void execute() {
         CustomTypeEditor theEditor = new CustomTypeEditor(component.getModel(), getDetailComponent());
         if (customType != null) {
-            theEditor.setSelectedCustomType(customType);
+            theEditor.setSelectedType(customType);
         }
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {

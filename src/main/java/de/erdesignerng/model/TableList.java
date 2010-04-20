@@ -75,4 +75,14 @@ public class TableList extends ModelItemVector<Table> {
         }
         return null;
     }
+
+    /**
+     * Check if a type is used somewhere.
+     * 
+     * @param aType the type
+     * @return the table where it is used or null of it is nowhere used
+     */
+    public Table checkIfUsedByTable(CustomType aType) {
+        return null;
+    }
 }

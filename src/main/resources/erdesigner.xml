@@ -520,8 +520,8 @@
 			<Text lang="en">Comment properties</Text>
 		</Entry>
         <Entry id="CUSTOMTYPEEDITOR">
-			<Text lang="de">Typen Editor...</Text>
-			<Text lang="en">Type editor...</Text>
+			<Text lang="de">Benutzerdefinierte Typen Editor...</Text>
+			<Text lang="en">Custom types editor...</Text>
 		</Entry>
 		<Entry id="DOMAINEDITOR">
 			<Text lang="de">Domänen Editor...</Text>
@@ -809,8 +809,8 @@
 			<Text lang="en">Views</Text>
 		</Entry>
         <Entry id="CUSTOMTYPESLIST">
-			<Text lang="de">Typen</Text>
-			<Text lang="en">Types</Text>
+			<Text lang="de">Benutzerdefinierte Typen</Text>
+			<Text lang="en">Custom types</Text>
 		</Entry>
 		<Entry id="DOMAINSLIST">
 			<Text lang="de">Domänen</Text>
