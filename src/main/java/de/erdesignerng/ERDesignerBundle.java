@@ -51,6 +51,8 @@ public interface ERDesignerBundle {
   String REVERSEENGINEER = "REVERSEENGINEER";
   /** \u0044\u006f\u006d\u0061\u0069\u006e\u0073\u002e\u002e\u002e. */
   String DOMAINS = "DOMAINS";
+  /** \u0054\u0079\u0070\u0065\u0073\u002e\u002e\u002e. */
+  String TYPES = "TYPES";
   /** \u0056\u0069\u0065\u0077. */
   String VIEW = "VIEW";
   /** \u005a\u006f\u006f\u006d\u0020\u0069\u006e. */
