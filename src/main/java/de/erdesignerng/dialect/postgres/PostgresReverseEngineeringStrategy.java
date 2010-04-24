@@ -130,7 +130,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
                     aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE, theCustomTypeName);
 
-                    CustomType theCustomType = aModel.getCustomTypes().findByName(theCustomTypeName);
+                    CustomType theCustomType = aModel.getCustomTypes().findByNameAndSchema(theCustomTypeName, theSchemaName);
                     if (theCustomType != null) {
                         throw new ReverseEngineeringException("Duplicate custom datatype found : " + theCustomTypeName);
                     }
