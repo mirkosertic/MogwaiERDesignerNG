@@ -98,6 +98,10 @@
 			<Text lang="de">Domänen...</Text>
 			<Text lang="en">Domains...</Text>
 		</Entry>
+		<Entry id="TYPES">
+			<Text lang="de">Typen...</Text>
+			<Text lang="en">Types...</Text>
+		</Entry>
 		<Entry id="VIEW">
 			<Text lang="de">Ansicht</Text>
 			<Text lang="en">View</Text>
