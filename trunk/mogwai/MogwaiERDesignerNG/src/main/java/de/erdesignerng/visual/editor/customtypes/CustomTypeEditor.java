@@ -34,7 +34,6 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
@@ -90,6 +89,7 @@ public class CustomTypeEditor extends BaseEditor {
         model = aModel;
 
         typeBindingInfo.addBinding("name", editingView.getTypeName(), true);
+        typeBindingInfo.addBinding("sqlDefinition", editingView.getTypeddl(), true);
         typeBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
@@ -146,11 +146,13 @@ public class CustomTypeEditor extends BaseEditor {
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(!isNew);
             editingView.getTypeName().setEnabled(true);
+            editingView.getTypeddl().setEnabled(true);
 
         } else {
             editingView.getNewButton().setEnabled(true);
             editingView.getDeleteButton().setEnabled(false);
             editingView.getTypeName().setEnabled(false);
+            editingView.getTypeddl().setEnabled(false);
         }
 
         typeBindingInfo.model2view();
@@ -165,18 +167,11 @@ public class CustomTypeEditor extends BaseEditor {
         int index = editingView.getTypesList().getSelectedIndex();
         if (index >= 0) {
             typeBindingInfo.setDefaultModel((CustomType) typeListModel.get(index));
-            
-            initializeTypeEdit(typeBindingInfo.getDefaultModel());
         }
 
         updateTypeEditFields();
     }
     
-    private void initializeTypeEdit(CustomType aDomain) {
-        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
-        theTab.removeAll();
-    }
-
     private void commandDeleteType(java.awt.event.ActionEvent aEvent) {
 
         CustomType theType = typeBindingInfo.getDefaultModel();
@@ -196,8 +191,6 @@ public class CustomTypeEditor extends BaseEditor {
     private void commandNewType(java.awt.event.ActionEvent evt) {
         typeBindingInfo.setDefaultModel(new CustomType());
         updateTypeEditFields();
-        
-        initializeTypeEdit(typeBindingInfo.getDefaultModel());
     }
 
     @Override
