@@ -17,10 +17,21 @@
  */
 package de.erdesignerng.model;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author $Author: dr-death $
  * @version $Date: 2010-03-30 20:00:00 $
  */
 public class CustomTypeList extends ModelItemVector<CustomType> {
 
+	public CustomType findByNameAndSchema(String aTypeName, String aSchemaName) {
+		for (CustomType theType : this) {
+			if (StringUtils.equals(aTypeName, theType.getName())
+					&& StringUtils.equals(aSchemaName, theType.getSchema())) {
+				return theType;
+			}
+		}
+		return null;
+	}
 }
