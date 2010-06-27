@@ -28,6 +28,7 @@ import org.apache.commons.lang.SystemUtils;
 
 import de.erdesignerng.dialect.db2.DB2Dialect;
 import de.erdesignerng.dialect.h2.H2Dialect;
+import de.erdesignerng.dialect.hsqldb.HSQLDBDialect;
 import de.erdesignerng.dialect.msaccess.MSAccessDialect;
 import de.erdesignerng.dialect.mssql.MSSQLDialect;
 import de.erdesignerng.dialect.mysql.MySQLDialect;
@@ -58,6 +59,7 @@ public final class DialectFactory {
             me.registerDialect(new OracleDialect());
             me.registerDialect(new PostgresDialect());
             me.registerDialect(new H2Dialect());
+            me.registerDialect(new HSQLDBDialect());
 
             // provide MSAccessDialect only on Windows-Systems due to the
             // requirement of the JET/ACE-Engine
