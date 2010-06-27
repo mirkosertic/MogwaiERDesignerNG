@@ -32,8 +32,8 @@ import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultTextField;
 import de.mogwai.common.client.looks.components.DefaultPasswordField;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 public class DatabaseConnectionEditorView extends DefaultPanel {
 
