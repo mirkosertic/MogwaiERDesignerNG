@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
  */
 public class DB2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<DB2Dialect> {
 
-    public DB2ReverseEngineeringStrategy(DB2Dialect aDialect) {
-        super(aDialect);
-    }
+	public DB2ReverseEngineeringStrategy(DB2Dialect aDialect) {
+		super(aDialect);
+	}
 }

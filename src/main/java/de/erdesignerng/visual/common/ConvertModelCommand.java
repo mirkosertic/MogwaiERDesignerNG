@@ -24,31 +24,31 @@ import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 
 public class ConvertModelCommand extends UICommand {
 
-    public ConvertModelCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public ConvertModelCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        Model theModel = component.getModel();
+		Model theModel = component.getModel();
 
-        ConvertModelEditor theEditor = new ConvertModelEditor(theModel, getDetailComponent());
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+		ConvertModelEditor theEditor = new ConvertModelEditor(theModel, getDetailComponent());
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                component.setModel(theModel);
+				component.setModel(theModel);
 
-                getWorldConnector().setStatusText(
-                        component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
+				getWorldConnector().setStatusText(
+						component.getResourceHelper().getText(ERDesignerBundle.MODELCONVERTED));
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

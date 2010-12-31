@@ -20,7 +20,7 @@ package de.erdesignerng.dialect.mysql;
 
 public class MySQLInnoDBSQLGenerator extends MySQLSQLGenerator {
 
-    public MySQLInnoDBSQLGenerator(MySQLInnoDBDialect aDialect) {
-        super(aDialect);
-    }
+	public MySQLInnoDBSQLGenerator(MySQLInnoDBDialect aDialect) {
+		super(aDialect);
+	}
 }

@@ -25,8 +25,8 @@ package de.erdesignerng.model;
  */
 public class Comment extends OwnedModelItem<Model> {
 
-    @Override
-    public String toString() {
-        return getComment();
-    }
+	@Override
+	public String toString() {
+		return getComment();
+	}
 }

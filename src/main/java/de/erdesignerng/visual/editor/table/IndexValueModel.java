@@ -21,23 +21,23 @@ import de.erdesignerng.model.Attribute;
 
 public class IndexValueModel {
 
-    private String expression;
+	private String expression;
 
-    private Attribute attribute;
+	private Attribute attribute;
 
-    public String getExpression() {
-        return expression;
-    }
+	public String getExpression() {
+		return expression;
+	}
 
-    public void setExpression(String expression) {
-        this.expression = expression;
-    }
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
 
-    public Attribute getAttribute() {
-        return attribute;
-    }
+	public Attribute getAttribute() {
+		return attribute;
+	}
 
-    public void setAttribute(Attribute attribute) {
-        this.attribute = attribute;
-    }
+	public void setAttribute(Attribute attribute) {
+		this.attribute = attribute;
+	}
 }

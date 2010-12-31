@@ -26,19 +26,19 @@ import de.erdesignerng.test.io.repository.RepositioryHelper;
 
 public class RepositoryIOTest extends AbstractConnectionTest {
 
-    public void testLoadSaveRepository() throws Exception {
+	public void testLoadSaveRepository() throws Exception {
 
-        Connection theConnection = createConnection();
+		Connection theConnection = createConnection();
 
-        Class theHibernateDialect = Oracle8iDialect.class;
+		Class theHibernateDialect = Oracle8iDialect.class;
 
-        String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
+		String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
 
-        String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
-                theConnection);
+		String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
+				theConnection);
 
-        String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
+		String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
 
-        assertTrue(compareStrings(theOriginalFile, theNewFile));
-    }
+		assertTrue(compareStrings(theOriginalFile, theNewFile));
+	}
 }

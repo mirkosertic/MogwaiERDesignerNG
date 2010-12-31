@@ -23,23 +23,23 @@ package de.erdesignerng.model;
  */
 public class ViewList extends ModelItemVector<View> {
 
-    private static final long serialVersionUID = 7291908371933857720L;
+	private static final long serialVersionUID = 7291908371933857720L;
 
-    /**
-     * Find a table by name and schema.
-     * 
-     * @param aName
-     *            the name of the table
-     * @param aSchemaName
-     *            the schema of the table
-     * @return the table or null if nothing was found
-     */
-    public View findByNameAndSchema(String aName, String aSchemaName) {
-        for (View theElement : this) {
-            if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
-                return theElement;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Find a table by name and schema.
+	 * 
+	 * @param aName
+	 *			the name of the table
+	 * @param aSchemaName
+	 *			the schema of the table
+	 * @return the table or null if nothing was found
+	 */
+	public View findByNameAndSchema(String aName, String aSchemaName) {
+		for (View theElement : this) {
+			if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
+				return theElement;
+			}
+		}
+		return null;
+	}
 }

@@ -31,41 +31,41 @@ import de.erdesignerng.model.serializer.AbstractXMLCustomTypeSerializer;
  */
 public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
 
-    @Override
-    public void serialize(CustomType aCustomType, Document aDocument, Element aRootElement) {
-        Element theCustomTypeElement = addElement(aDocument, aRootElement, CUSTOMTYPE);
+	@Override
+	public void serialize(CustomType aCustomType, Document aDocument, Element aRootElement) {
+		Element theCustomTypeElement = addElement(aDocument, aRootElement, CUSTOMTYPE);
 
-        serializeProperties(aDocument, theCustomTypeElement, aCustomType);
-        serializeCommentElement(aDocument, theCustomTypeElement, aCustomType);
+		serializeProperties(aDocument, theCustomTypeElement, aCustomType);
+		serializeCommentElement(aDocument, theCustomTypeElement, aCustomType);
 
-        theCustomTypeElement.setAttribute(SCHEMA, aCustomType.getSchema());
+		theCustomTypeElement.setAttribute(SCHEMA, aCustomType.getSchema());
 
-        Element theSQLElement = addElement(aDocument, theCustomTypeElement, SQLDEFINITION);
-        theSQLElement.appendChild(aDocument.createTextNode(aCustomType.getSqlDefinition()));
-    }
+		Element theSQLElement = addElement(aDocument, theCustomTypeElement, SQLDEFINITION);
+		theSQLElement.appendChild(aDocument.createTextNode(aCustomType.getSqlDefinition()));
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
-        NodeList theElements = aDocument.getElementsByTagName(CUSTOMTYPE);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
+		NodeList theElements = aDocument.getElementsByTagName(CUSTOMTYPE);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            CustomType theCustomType = new CustomType();
+			CustomType theCustomType = new CustomType();
 
-            theCustomType.setOwner(aModel);
+			theCustomType.setOwner(aModel);
 
-            deserializeProperties(theElement, theCustomType);
-            deserializeCommentElement(theElement, theCustomType);
+			deserializeProperties(theElement, theCustomType);
+			deserializeCommentElement(theElement, theCustomType);
 
-            theCustomType.setSchema(theElement.getAttribute(SCHEMA));
+			theCustomType.setSchema(theElement.getAttribute(SCHEMA));
 
-            NodeList theSQL = theElement.getElementsByTagName(SQLDEFINITION);
-            for (int j = 0; j < theSQL.getLength(); j++) {
-                Element theSQLElement = (Element) theSQL.item(j);
-                theCustomType.setSqlDefinition(theSQLElement.getChildNodes().item(0).getNodeValue());
-            }
+			NodeList theSQL = theElement.getElementsByTagName(SQLDEFINITION);
+			for (int j = 0; j < theSQL.getLength(); j++) {
+				Element theSQLElement = (Element) theSQL.item(j);
+				theCustomType.setSqlDefinition(theSQLElement.getChildNodes().item(0).getNodeValue());
+			}
 
-            aModel.getCustomTypes().add(theCustomType);
-        }
-    }
+			aModel.getCustomTypes().add(theCustomType);
+		}
+	}
 }

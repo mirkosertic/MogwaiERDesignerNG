@@ -23,85 +23,85 @@ import java.util.List;
 /**
  * Entity for subject areas.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class SubjectAreaEntity extends ModelEntity {
 
-    private int color;
+	private int color;
 
-    private Boolean visible;
+	private Boolean visible;
 
-    private List<String> tables = new ArrayList<String>();
+	private List<String> tables = new ArrayList<String>();
 
-    private List<String> comments = new ArrayList<String>();
+	private List<String> comments = new ArrayList<String>();
 
-    private List<String> views = new ArrayList<String>();
+	private List<String> views = new ArrayList<String>();
 
-    /**
-     * @return the color
-     */
-    public int getColor() {
-        return color;
-    }
+	/**
+	 * @return the color
+	 */
+	public int getColor() {
+		return color;
+	}
 
-    /**
-     * @param color
-     *            the color to set
-     */
-    public void setColor(int color) {
-        this.color = color;
-    }
+	/**
+	 * @param color
+	 *			the color to set
+	 */
+	public void setColor(int color) {
+		this.color = color;
+	}
 
-    /**
-     * @return the tables
-     */
-    public List<String> getTables() {
-        return tables;
-    }
+	/**
+	 * @return the tables
+	 */
+	public List<String> getTables() {
+		return tables;
+	}
 
-    /**
-     * @param tables
-     *            the tables to set
-     */
-    public void setTables(List<String> tables) {
-        this.tables = tables;
-    }
+	/**
+	 * @param tables
+	 *			the tables to set
+	 */
+	public void setTables(List<String> tables) {
+		this.tables = tables;
+	}
 
-    /**
-     * @return the comments
-     */
-    public List<String> getComments() {
-        return comments;
-    }
+	/**
+	 * @return the comments
+	 */
+	public List<String> getComments() {
+		return comments;
+	}
 
-    /**
-     * @param comments
-     *            the comments to set
-     */
-    public void setComments(List<String> comments) {
-        this.comments = comments;
-    }
+	/**
+	 * @param comments
+	 *			the comments to set
+	 */
+	public void setComments(List<String> comments) {
+		this.comments = comments;
+	}
 
-    public List<String> getViews() {
-        return views;
-    }
+	public List<String> getViews() {
+		return views;
+	}
 
-    public void setViews(List<String> views) {
-        this.views = views;
-    }
+	public void setViews(List<String> views) {
+		this.views = views;
+	}
 
-    /**
-     * @return the visible
-     */
-    public Boolean getVisible() {
-        return visible;
-    }
+	/**
+	 * @return the visible
+	 */
+	public Boolean getVisible() {
+		return visible;
+	}
 
-    /**
-     * @param visible
-     *            the visible to set
-     */
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
-    }
+	/**
+	 * @param visible
+	 *			the visible to set
+	 */
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
 }

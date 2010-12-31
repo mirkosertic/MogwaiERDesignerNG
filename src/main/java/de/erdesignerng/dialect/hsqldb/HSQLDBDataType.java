@@ -25,16 +25,16 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class HSQLDBDataType extends GenericDataTypeImpl {
 
-    public HSQLDBDataType(String aName, String aDefinition, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
-    }
+	public HSQLDBDataType(String aName, String aDefinition, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
+	}
 
-    public HSQLDBDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
+	public HSQLDBDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
 
-        identity = anIdentity;
-        if (anIdentity) {
-            maxOccoursPerTable = 1;
-        }
-    }
+		identity = anIdentity;
+		if (anIdentity) {
+			maxOccursPerTable = 1;
+		}
+	}
 }

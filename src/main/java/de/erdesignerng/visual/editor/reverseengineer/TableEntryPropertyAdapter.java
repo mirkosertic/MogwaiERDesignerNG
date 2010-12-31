@@ -33,43 +33,43 @@ import de.mogwai.common.i18n.ResourceHelper;
  */
 public class TableEntryPropertyAdapter extends PropertyAdapter {
 
-    private ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
+	private final ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
-    public TableEntryPropertyAdapter(DefaultCheckBoxList aComponent, String aPropertyName) {
-        super(aComponent, aPropertyName);
-    }
+	public TableEntryPropertyAdapter(DefaultCheckBoxList aComponent, String aPropertyName) {
+		super(aComponent, aPropertyName);
+	}
 
-    @Override
-    public void model2view(Object aModel, String aPropertyName) {
+	@Override
+	public void model2view(Object aModel, String aPropertyName) {
 
-        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+		DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
 
-        ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
-        theComponent.setSelectedItems(theModel.getTableEntries());
-    }
+		ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
+		theComponent.setSelectedItems(theModel.getTableEntries());
+	}
 
-    @Override
-    public void view2model(Object aModel, String aPropertyName) {
-        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+	@Override
+	public void view2model(Object aModel, String aPropertyName) {
+		DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
 
-        ReverseEngineeringOptions theIndex = (ReverseEngineeringOptions) aModel;
-        theIndex.getTableEntries().clear();
-        theIndex.getTableEntries().addAll(theComponent.getSelectedItems());
+		ReverseEngineeringOptions theIndex = (ReverseEngineeringOptions) aModel;
+		theIndex.getTableEntries().clear();
+		theIndex.getTableEntries().addAll(theComponent.getSelectedItems());
 
-    }
+	}
 
-    @Override
-    public List<ValidationError> validate() {
-        List<ValidationError> theResult = new ArrayList<ValidationError>();
-        DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
-        if (theComponent.getSelectedItems().size() == 0) {
-            theResult.add(new ValidationError(this, helper.getText(BindingBundle.MISSINGREQUIREDFIELD)));
-        }
-        if (theResult.size() > 0) {
-            markInvalid(theResult);
-        } else {
-            markValid();
-        }
-        return theResult;
-    }
+	@Override
+	public List<ValidationError> validate() {
+		List<ValidationError> theResult = new ArrayList<ValidationError>();
+		DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+		if (theComponent.getSelectedItems().size() == 0) {
+			theResult.add(new ValidationError(this, helper.getText(BindingBundle.MISSINGREQUIREDFIELD)));
+		}
+		if (theResult.size() > 0) {
+			markInvalid(theResult);
+		} else {
+			markValid();
+		}
+		return theResult;
+	}
 }

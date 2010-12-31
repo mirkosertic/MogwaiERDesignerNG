@@ -19,23 +19,23 @@ package de.erdesignerng.generator.openxava;
 
 public class OpenXavaTypeMap {
 
-    private String javaType;
+	private String javaType;
 
-    private String stereoType;
+	private String stereoType;
 
-    public String getJavaType() {
-        return javaType;
-    }
+	public String getJavaType() {
+		return javaType;
+	}
 
-    public void setJavaType(String javaType) {
-        this.javaType = javaType;
-    }
+	public void setJavaType(String javaType) {
+		this.javaType = javaType;
+	}
 
-    public String getStereoType() {
-        return stereoType;
-    }
+	public String getStereoType() {
+		return stereoType;
+	}
 
-    public void setStereoType(String stereoType) {
-        this.stereoType = stereoType;
-    }
+	public void setStereoType(String stereoType) {
+		this.stereoType = stereoType;
+	}
 }

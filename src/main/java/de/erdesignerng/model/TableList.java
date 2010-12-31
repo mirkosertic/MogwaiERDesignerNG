@@ -23,66 +23,66 @@ package de.erdesignerng.model;
  */
 public class TableList extends ModelItemVector<Table> {
 
-    private static final long serialVersionUID = 7291908371933857720L;
+	private static final long serialVersionUID = 7291908371933857720L;
 
-    /**
-     * Find an attribute by a given system id.
-     * 
-     * @param aSystemId
-     *            the system id
-     * @return the attribute or null if nothing was found
-     */
-    public Attribute findAttributeBySystemId(String aSystemId) {
-        for (Table theTable : this) {
-            Attribute theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
-            if (theAttribute != null) {
-                return theAttribute;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Find an attribute by a given system id.
+	 * 
+	 * @param aSystemId
+	 *			the system id
+	 * @return the attribute or null if nothing was found
+	 */
+	public Attribute findAttributeBySystemId(String aSystemId) {
+		for (Table theTable : this) {
+			Attribute theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
+			if (theAttribute != null) {
+				return theAttribute;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Test if the domain is in use by a table.
-     * 
-     * @param aDomain
-     *            the domain
-     * @return the using table or null if the domain is not in use
-     */
-    public Table checkIfUsedByTable(Domain aDomain) {
-        for (Table theTable : this) {
-            if (theTable.getAttributes().isDomainInUse(aDomain)) {
-                return theTable;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Test if the domain is in use by a table.
+	 * 
+	 * @param aDomain
+	 *			the domain
+	 * @return the using table or null if the domain is not in use
+	 */
+	public Table checkIfUsedByTable(Domain aDomain) {
+		for (Table theTable : this) {
+			if (theTable.getAttributes().isDomainInUse(aDomain)) {
+				return theTable;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Find a table by name and schema.
-     * 
-     * @param aName
-     *            the name of the table
-     * @param aSchemaName
-     *            the schema of the table
-     * @return the table or null if nothing was found
-     */
-    public Table findByNameAndSchema(String aName, String aSchemaName) {
-        for (Table theElement : this) {
-            if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
-                return theElement;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Find a table by name and schema.
+	 * 
+	 * @param aName
+	 *			the name of the table
+	 * @param aSchemaName
+	 *			the schema of the table
+	 * @return the table or null if nothing was found
+	 */
+	public Table findByNameAndSchema(String aName, String aSchemaName) {
+		for (Table theElement : this) {
+			if (aName.equals(theElement.getName()) && aSchemaName.equals(theElement.getSchema())) {
+				return theElement;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Check if a type is used somewhere.
-     * 
-     * @param aType the type
-     * @return the table where it is used or null of it is nowhere used
-     */
-    public Table checkIfUsedByTable(CustomType aType) {
-        return null;
-    }
+	/**
+	 * Check if a type is used somewhere.
+	 * 
+	 * @param aType the type
+	 * @return the table where it is used or null of it is nowhere used
+	 */
+	public Table checkIfUsedByTable(CustomType aType) {
+		return null;
+	}
 }

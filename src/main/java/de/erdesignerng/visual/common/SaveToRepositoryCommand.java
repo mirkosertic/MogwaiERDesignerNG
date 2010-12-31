@@ -33,56 +33,56 @@ import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
 
 public class SaveToRepositoryCommand extends UICommand {
 
-    public SaveToRepositoryCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public SaveToRepositoryCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
-        if (theRepositoryConnection == null) {
-            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-                    ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
-            return;
-        }
-        Connection theConnection = null;
-        Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
-        try {
+	@Override
+	public void execute() {
+		ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
+		if (theRepositoryConnection == null) {
+			MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
+					ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
+			return;
+		}
+		Connection theConnection = null;
+		Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
+		try {
 
-            component.setIntelligentLayoutEnabled(false);
+			component.setIntelligentLayoutEnabled(false);
 
-            theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(),
-                    theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
-                            .getUsername(), theRepositoryConnection.getPassword(), false);
+			theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(),
+					theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
+							.getUsername(), theRepositoryConnection.getPassword(), false);
 
-            List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(
-                    theDialect, theConnection);
+			List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(
+					theDialect, theConnection);
 
-            SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(getDetailComponent(), theEntries,
-                    component.currentRepositoryEntry);
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			SaveToRepositoryEditor theEditor = new SaveToRepositoryEditor(getDetailComponent(), theEntries,
+					component.currentRepositoryEntry);
+			if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-                RepositoryEntryDescriptor theDesc = theEditor.getRepositoryDescriptor();
+				RepositoryEntryDescriptor theDesc = theEditor.getRepositoryDescriptor();
 
-                theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
-                        component.getModel(), getPreferences());
+				theDesc = ModelIOUtilities.getInstance().serializeModelToDB(theDesc, theDialect, theConnection,
+						component.getModel(), getPreferences());
 
-                component.setupViewFor(theDesc);
-                getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+				component.setupViewFor(theDesc);
+				getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
-            }
-        } catch (Exception e) {
-            getWorldConnector().notifyAboutException(e);
-        } finally {
-            if (theConnection != null && !theDialect.generatesManagedConnection()) {
-                try {
-                    theConnection.close();
-                } catch (SQLException e) {
-                    // Do nothing here
-                }
-            }
+			}
+		} catch (Exception e) {
+			getWorldConnector().notifyAboutException(e);
+		} finally {
+			if (theConnection != null && !theDialect.generatesManagedConnection()) {
+				try {
+					theConnection.close();
+				} catch (SQLException e) {
+					// Do nothing here
+				}
+			}
 
-            component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
-        }
-    }
+			component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
+		}
+	}
 }

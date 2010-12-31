@@ -21,24 +21,24 @@ package de.erdesignerng.model;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-02-02 14:57:50 $
  * @param <T>
- *            the type
+ *			the type
  */
 public abstract class OwnedModelItem<T extends ModelItem> extends ModelItem {
 
-    private T owner;
+	private T owner;
 
-    /**
-     * @return the owner
-     */
-    public T getOwner() {
-        return owner;
-    }
+	/**
+	 * @return the owner
+	 */
+	public T getOwner() {
+		return owner;
+	}
 
-    /**
-     * @param aOwner
-     *            the owner to set
-     */
-    public void setOwner(T aOwner) {
-        owner = aOwner;
-    }
+	/**
+	 * @param aOwner
+	 *			the owner to set
+	 */
+	public void setOwner(T aOwner) {
+		owner = aOwner;
+	}
 }

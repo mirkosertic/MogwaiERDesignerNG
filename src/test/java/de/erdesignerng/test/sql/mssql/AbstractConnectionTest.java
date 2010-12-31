@@ -26,46 +26,46 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
-    private Connection connection;
+	private Connection connection;
 
-    @Override
-    protected void setUp() throws Exception {
+	@Override
+	protected void setUp() throws Exception {
 
-        connection = null;
+		connection = null;
 
-        Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-        Connection theConnection = null;
+		Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
+		Connection theConnection = null;
 
-        theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/master",
-                "sa", "Mirko123!");
+		theConnection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/master",
+				"sa", "Mirko123!");
 
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("drop database mogwai");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		Statement theStatement = theConnection.createStatement();
+		try {
+			theStatement.execute("drop database mogwai");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        theStatement.execute("create database mogwai");
-        theConnection.close();
+		theStatement.execute("create database mogwai");
+		theConnection.close();
 
-        super.setUp();
-    }
+		super.setUp();
+	}
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
 
-        if (connection != null) {
-            connection.close();
-        }
-    }
+		if (connection != null) {
+			connection.close();
+		}
+	}
 
-    protected Connection createConnection() throws SQLException {
-        if (connection == null) {
-            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/mogwai",
-                    "sa", "Mirko123!");
-        }
-        return connection;
-    }
+	protected Connection createConnection() throws SQLException {
+		if (connection == null) {
+			connection = DriverManager.getConnection("jdbc:jtds:sqlserver://" + getDBServerName() + ":1433/mogwai",
+					"sa", "Mirko123!");
+		}
+		return connection;
+	}
 }

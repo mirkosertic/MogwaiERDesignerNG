@@ -23,25 +23,25 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class EditRelationCommand extends UICommand {
 
-    private final Relation relation;
+	private final Relation relation;
 
-    public EditRelationCommand(ERDesignerComponent aComponent, Relation aTable) {
-        super(aComponent);
-        relation = aTable;
-    }
+	public EditRelationCommand(ERDesignerComponent aComponent, Relation aTable) {
+		super(aComponent);
+		relation = aTable;
+	}
 
-    @Override
-    public void execute() {
-        RelationEditor theEditor = new RelationEditor(component.getModel(), component.getDetailComponent());
-        theEditor.initializeFor(relation);
-        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+	@Override
+	public void execute() {
+		RelationEditor theEditor = new RelationEditor(component.getModel(), component.getDetailComponent());
+		theEditor.initializeFor(relation);
+		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                refreshDisplayOf(relation);
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayOf(relation);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

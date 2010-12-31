@@ -26,92 +26,92 @@ import de.erdesignerng.dialect.DataType;
 
 public class OpenXavaOptions {
 
-    public static final String[] SUPPORTED_STEREOTYPES = new String[] { "MONEY", "IMAGE", "MEMO", "LABEL",
-            "BOLD_LABEL", "TIME", "DATETIME", "IMAGE_GELLERY", "ZEROS_FILLED", "HTML_TEXT", "IMAGE_LABEL", "EMAIL",
-            "TELEPHONE", "WEBURL", "IP", "ISBN", "CREDIT_CARD", "EMAIL_LIST" };
+	public static final String[] SUPPORTED_STEREOTYPES = new String[] { "MONEY", "IMAGE", "MEMO", "LABEL",
+			"BOLD_LABEL", "TIME", "DATETIME", "IMAGE_GALLERY", "ZEROS_FILLED", "HTML_TEXT", "IMAGE_LABEL", "EMAIL",
+			"TELEPHONE", "WEBURL", "IP", "ISBN", "CREDIT_CARD", "EMAIL_LIST" };
 
-    private Map<DataType, OpenXavaTypeMap> typeMapping = new HashMap<DataType, OpenXavaTypeMap>();
+	private Map<DataType, OpenXavaTypeMap> typeMapping = new HashMap<DataType, OpenXavaTypeMap>();
 
-    private String srcDirectory;
+	private String srcDirectory;
 
-    private String packageName;
+	private String packageName;
 
-    public OpenXavaOptions() {
-    }
+	public OpenXavaOptions() {
+	}
 
-    public String createTableName(String aName) {
-        return StringUtils.capitalize(aName.toLowerCase());
-    }
+	public String createTableName(String aName) {
+		return StringUtils.capitalize(aName.toLowerCase());
+	}
 
-    public String createFieldName(String aName) {
-        return aName.toLowerCase();
-    }
+	public String createFieldName(String aName) {
+		return aName.toLowerCase();
+	}
 
-    public String createPropertyName(String aName) {
-        return StringUtils.capitalize(aName.toLowerCase());
-    }
+	public String createPropertyName(String aName) {
+		return StringUtils.capitalize(aName.toLowerCase());
+	}
 
-    public String getJavaType(DataType aDatatype, boolean aNullable, boolean aPrimarykey) {
-        OpenXavaTypeMap theType = typeMapping.get(aDatatype);
-        String theJavaType = "String";
-        if (theType != null) {
-            theJavaType = theType.getJavaType();
-        }
-        if (!aNullable && !aPrimarykey) {
-            if ("Integer".equals(theJavaType)) {
-                theJavaType = "int";
-            }
-            if ("Long".equals(theJavaType)) {
-                theJavaType = "long";
-            }
-            if ("Short".equals(theJavaType)) {
-                theJavaType = "short";
-            }
-            if ("Double".equals(theJavaType)) {
-                theJavaType = "double";
-            }
-            if ("Boolean".equals(theJavaType)) {
-                theJavaType = "boolean";
-            }
-        }
-        return theJavaType;
-    }
+	public String getJavaType(DataType aDatatype, boolean aNullable, boolean aPrimarykey) {
+		OpenXavaTypeMap theType = typeMapping.get(aDatatype);
+		String theJavaType = "String";
+		if (theType != null) {
+			theJavaType = theType.getJavaType();
+		}
+		if (!aNullable && !aPrimarykey) {
+			if ("Integer".equals(theJavaType)) {
+				theJavaType = "int";
+			}
+			if ("Long".equals(theJavaType)) {
+				theJavaType = "long";
+			}
+			if ("Short".equals(theJavaType)) {
+				theJavaType = "short";
+			}
+			if ("Double".equals(theJavaType)) {
+				theJavaType = "double";
+			}
+			if ("Boolean".equals(theJavaType)) {
+				theJavaType = "boolean";
+			}
+		}
+		return theJavaType;
+	}
 
-    public Map<DataType, OpenXavaTypeMap> getTypeMapping() {
-        return typeMapping;
-    }
+	public Map<DataType, OpenXavaTypeMap> getTypeMapping() {
+		return typeMapping;
+	}
 
-    public void setTypeMapping(Map<DataType, OpenXavaTypeMap> typeMapping) {
-        this.typeMapping = typeMapping;
-    }
+	public void setTypeMapping(Map<DataType, OpenXavaTypeMap> typeMapping) {
+		this.typeMapping = typeMapping;
+	}
 
-    /**
-     * @return the srcDirectory
-     */
-    public String getSrcDirectory() {
-        return srcDirectory;
-    }
+	/**
+	 * @return the srcDirectory
+	 */
+	public String getSrcDirectory() {
+		return srcDirectory;
+	}
 
-    /**
-     * @param srcDirectory
-     *            the srcDirectory to set
-     */
-    public void setSrcDirectory(String srcDirectory) {
-        this.srcDirectory = srcDirectory;
-    }
+	/**
+	 * @param srcDirectory
+	 *			the srcDirectory to set
+	 */
+	public void setSrcDirectory(String srcDirectory) {
+		this.srcDirectory = srcDirectory;
+	}
 
-    /**
-     * @return the packageName
-     */
-    public String getPackageName() {
-        return packageName;
-    }
+	/**
+	 * @return the packageName
+	 */
+	public String getPackageName() {
+		return packageName;
+	}
 
-    /**
-     * @param packageName
-     *            the packageName to set
-     */
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
+	/**
+	 * @param packageName
+	 *			the packageName to set
+	 */
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
 }

@@ -25,9 +25,9 @@ import de.erdesignerng.model.CustomType;
  */
 public abstract class AbstractXMLCustomTypeSerializer extends CommonAbstractXMLSerializer<CustomType> {
 
-    protected static final String CUSTOMTYPE = "CustomType";
+	protected static final String CUSTOMTYPE = "CustomType";
 
-    protected static final String SCHEMA = "schema";
-    
-    protected static final String SQLDEFINITION = "SqlDefinition";    
+	protected static final String SCHEMA = "schema";
+	
+	protected static final String SQLDEFINITION = "SqlDefinition";	
 }

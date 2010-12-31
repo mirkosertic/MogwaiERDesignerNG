@@ -45,118 +45,118 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class DockingHelper extends DockingWindowAdapter implements ResourceHelperProvider {
 
-    private static final Logger LOGGER = Logger.getLogger(DockingHelper.class);
+	private static final Logger LOGGER = Logger.getLogger(DockingHelper.class);
 
-    private RootWindow rootWindow;
+	private RootWindow rootWindow;
 
-    private ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    public DockingHelper(ApplicationPreferences aPreferences) {
-        preferences = aPreferences;
-    }
+	public DockingHelper(ApplicationPreferences aPreferences) {
+		preferences = aPreferences;
+	}
 
-    public void initialize() throws InterruptedException, InvocationTargetException {
+	public void initialize() throws InterruptedException, InvocationTargetException {
 
-        final ViewMap theViewMap = new ViewMap();
-        final View[] theViews = new View[3];
-        theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, ERDesignerComponent
-                .getDefault().getDetailComponent());
-        theViews[0].getWindowProperties().setCloseEnabled(false);
-        theViews[0].getWindowProperties().setUndockEnabled(false);
-        theViews[0].getWindowProperties().setUndockOnDropEnabled(false);
-        theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, OutlineComponent
-                .getDefault());
-        theViews[1].getWindowProperties().setCloseEnabled(false);
-        theViews[1].getWindowProperties().setUndockEnabled(false);
-        theViews[1].getWindowProperties().setUndockOnDropEnabled(false);
-        theViews[2] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.SQL), null, SQLComponent
-                .getDefault());
-        theViews[2].getWindowProperties().setCloseEnabled(false);
-        theViews[2].getWindowProperties().setUndockEnabled(false);
-        theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
-        theViewMap.addView(0, theViews[0]);
-        theViewMap.addView(1, theViews[1]);
-        theViewMap.addView(2, theViews[2]);
+		final ViewMap theViewMap = new ViewMap();
+		final View[] theViews = new View[3];
+		theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, ERDesignerComponent
+				.getDefault().getDetailComponent());
+		theViews[0].getWindowProperties().setCloseEnabled(false);
+		theViews[0].getWindowProperties().setUndockEnabled(false);
+		theViews[0].getWindowProperties().setUndockOnDropEnabled(false);
+		theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, OutlineComponent
+				.getDefault());
+		theViews[1].getWindowProperties().setCloseEnabled(false);
+		theViews[1].getWindowProperties().setUndockEnabled(false);
+		theViews[1].getWindowProperties().setUndockOnDropEnabled(false);
+		theViews[2] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.SQL), null, SQLComponent
+				.getDefault());
+		theViews[2].getWindowProperties().setCloseEnabled(false);
+		theViews[2].getWindowProperties().setUndockEnabled(false);
+		theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
+		theViewMap.addView(0, theViews[0]);
+		theViewMap.addView(1, theViews[1]);
+		theViewMap.addView(2, theViews[2]);
 
-        Runnable theRunnable = new Runnable() {
+		Runnable theRunnable = new Runnable() {
 
-            @Override
-            public void run() {
+			@Override
+			public void run() {
 
-                Thread.currentThread().setContextClassLoader(DockingHelper.class.getClassLoader());
+				Thread.currentThread().setContextClassLoader(DockingHelper.class.getClassLoader());
 
-                rootWindow = DockingUtil.createRootWindow(theViewMap, true);
-                byte[] windowLayout = preferences.getWindowLayout();
-                boolean layoutRestored = false;
-                if (windowLayout != null && windowLayout.length > 0) {
-                    try {
-                        rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(windowLayout)));
-                        layoutRestored = true;
+				rootWindow = DockingUtil.createRootWindow(theViewMap, true);
+				byte[] windowLayout = preferences.getWindowLayout();
+				boolean layoutRestored = false;
+				if (windowLayout != null && windowLayout.length > 0) {
+					try {
+						rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(windowLayout)));
+						layoutRestored = true;
 
-                        LOGGER.info("Workbench layout restored");
-                    } catch (Exception e) {
-                        LOGGER.error("Failed to restore window state", e);
-                    }
-                }
+						LOGGER.info("Workbench layout restored");
+					} catch (Exception e) {
+						LOGGER.error("Failed to restore window state", e);
+					}
+				}
 
-                if (!layoutRestored) {
-                    SplitWindow theRightWindow = new SplitWindow(false, 0.8f, theViews[1], theViews[2]);
-                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theRightWindow);
-                    rootWindow.setWindow(theSplitWindow);
-                }
+				if (!layoutRestored) {
+					SplitWindow theRightWindow = new SplitWindow(false, 0.8f, theViews[1], theViews[2]);
+					SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theRightWindow);
+					rootWindow.setWindow(theSplitWindow);
+				}
 
-                rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
-                rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(false);
-            }
+				rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
+				rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(false);
+			}
 
-        };
+		};
 
-        // The Docking initialization must be performed in the EDT. If we are
-        // not there,
-        // invoke it there, else invoke it directly
-        if (SwingUtilities.isEventDispatchThread()) {
-            theRunnable.run();
-        } else {
-            SwingUtilities.invokeAndWait(theRunnable);
-        }
+		// The Docking initialization must be performed in the EDT. If we are
+		// not there,
+		// invoke it there, else invoke it directly
+		if (SwingUtilities.isEventDispatchThread()) {
+			theRunnable.run();
+		} else {
+			SwingUtilities.invokeAndWait(theRunnable);
+		}
 
-        theViews[0].addListener(this);
-        theViews[1].addListener(this);
-        theViews[2].addListener(this);
-    }
+		theViews[0].addListener(this);
+		theViews[1].addListener(this);
+		theViews[2].addListener(this);
+	}
 
-    public RootWindow getRootWindow() {
-        return rootWindow;
-    }
+	public RootWindow getRootWindow() {
+		return rootWindow;
+	}
 
-    public void saveLayoutToPreferences() {
-        ByteArrayOutputStream theBos = new ByteArrayOutputStream();
-        ObjectOutputStream theOs;
-        try {
-            theOs = new ObjectOutputStream(theBos);
-            rootWindow.write(theOs);
-            theOs.close();
+	public void saveLayoutToPreferences() {
+		ByteArrayOutputStream theBos = new ByteArrayOutputStream();
+		ObjectOutputStream theOs;
+		try {
+			theOs = new ObjectOutputStream(theBos);
+			rootWindow.write(theOs);
+			theOs.close();
 
-            preferences.setWindowLayout(theBos.toByteArray());
+			preferences.setWindowLayout(theBos.toByteArray());
 
-            LOGGER.info("Workbench layout saved. ");
-        } catch (IOException e) {
-            LOGGER.error("Failed to store window state", e);
-        }
-    }
+			LOGGER.info("Workbench layout saved. ");
+		} catch (IOException e) {
+			LOGGER.error("Failed to store window state", e);
+		}
+	}
 
-    @Override
-    public ResourceHelper getResourceHelper() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
+	@Override
+	public ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
 
-    @Override
-    public void windowRestored(DockingWindow aWindow) {
-        UIInitializer.getInstance().initialize(rootWindow);
-    }
+	@Override
+	public void windowRestored(DockingWindow aWindow) {
+		UIInitializer.getInstance().initialize(rootWindow);
+	}
 
-    @Override
-    public void windowAdded(DockingWindow arg0, DockingWindow arg1) {
-        UIInitializer.getInstance().initialize(rootWindow);
-    }
+	@Override
+	public void windowAdded(DockingWindow arg0, DockingWindow arg1) {
+		UIInitializer.getInstance().initialize(rootWindow);
+	}
 }

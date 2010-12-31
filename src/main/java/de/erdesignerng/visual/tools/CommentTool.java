@@ -30,17 +30,17 @@ import de.erdesignerng.visual.ERDesignerGraph;
  */
 public class CommentTool extends BaseTool {
 
-    public CommentTool(ERDesignerGraph aGraph) {
-        super(aGraph);
-    }
+	public CommentTool(ERDesignerGraph aGraph) {
+		super(aGraph);
+	}
 
-    @Override
-    public boolean isForceMarqueeEvent(MouseEvent event) {
-        return true;
-    }
+	@Override
+	public boolean isForceMarqueeEvent(MouseEvent event) {
+		return true;
+	}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        graph.commandNewComment(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
-    }
+	@Override
+	public void mousePressed(MouseEvent e) {
+		graph.commandNewComment(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
+	}
 }

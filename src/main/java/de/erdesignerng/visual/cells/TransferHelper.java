@@ -26,18 +26,18 @@ import java.awt.geom.Point2D;
  */
 public final class TransferHelper {
 
-    private TransferHelper() {
-    }
+	private TransferHelper() {
+	}
 
-    public static Point2D createPoint2DFromString(String aValue) {
-        if (aValue == null) {
-            return null;
-        }
+	public static Point2D createPoint2DFromString(String aValue) {
+		if (aValue == null) {
+			return null;
+		}
 
-        int theP = aValue.indexOf(":");
-        int theX = Integer.parseInt(aValue.substring(0, theP));
-        int theY = Integer.parseInt(aValue.substring(theP + 1));
+		int theP = aValue.indexOf(":");
+		int theX = Integer.parseInt(aValue.substring(0, theP));
+		int theY = Integer.parseInt(aValue.substring(theP + 1));
 
-        return new Point2D.Double(theX, theY);
-    }
+		return new Point2D.Double(theX, theY);
+	}
 }

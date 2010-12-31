@@ -22,19 +22,19 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
 /**
  * An Oracle DataType.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class OracleDataType extends GenericDataTypeImpl {
 
-    public OracleDataType(String aName, String aDefinition, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
-    }
+	public OracleDataType(String aName, String aDefinition, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
+	}
 
-    public OracleDataType(String aName, String aDefinition, boolean aUseOnlyOnce, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
-        if (aUseOnlyOnce) {
-            maxOccoursPerTable = 1;
-        }
-    }
+	public OracleDataType(String aName, String aDefinition, boolean aUseOnlyOnce, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
+		if (aUseOnlyOnce) {
+			maxOccursPerTable = 1;
+		}
+	}
 
 }

@@ -31,52 +31,52 @@ import de.erdesignerng.model.serializer.repository.entities.StringKeyValuePair;
 /**
  * Base class for all serializers.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public abstract class DictionaryBaseSerializer {
 
-    protected void copyBaseAttributes(ModelItem aSource, ModelEntity aDestination) {
-        aDestination.setSystemId(aSource.getSystemId());
-        aDestination.setName(aSource.getName());
-        aDestination.setComment(aSource.getComment());
+	protected void copyBaseAttributes(ModelItem aSource, ModelEntity aDestination) {
+		aDestination.setSystemId(aSource.getSystemId());
+		aDestination.setName(aSource.getName());
+		aDestination.setComment(aSource.getComment());
 
-        aDestination.getProperties().clear();
-        for (Map.Entry<String, String> theEntry : aSource.getProperties().getProperties().entrySet()) {
-            StringKeyValuePair theElement = new StringKeyValuePair();
-            theElement.setKey(theEntry.getKey());
-            theElement.setValue(theEntry.getValue());
-            aDestination.getProperties().add(theElement);
-        }
-    }
+		aDestination.getProperties().clear();
+		for (Map.Entry<String, String> theEntry : aSource.getProperties().getProperties().entrySet()) {
+			StringKeyValuePair theElement = new StringKeyValuePair();
+			theElement.setKey(theEntry.getKey());
+			theElement.setValue(theEntry.getValue());
+			aDestination.getProperties().add(theElement);
+		}
+	}
 
-    protected void copyBaseAttributes(ModelEntity aSource, ModelItem aDestination) {
-        aDestination.setSystemId(aSource.getSystemId());
-        aDestination.setName(aSource.getName());
-        aDestination.setComment(aSource.getComment());
+	protected void copyBaseAttributes(ModelEntity aSource, ModelItem aDestination) {
+		aDestination.setSystemId(aSource.getSystemId());
+		aDestination.setName(aSource.getName());
+		aDestination.setComment(aSource.getComment());
 
-        aDestination.getProperties().getProperties().clear();
-        for (StringKeyValuePair theElement : aSource.getProperties()) {
-            aDestination.getProperties().getProperties().put(theElement.getKey(), theElement.getValue());
-        }
-    }
+		aDestination.getProperties().getProperties().clear();
+		for (StringKeyValuePair theElement : aSource.getProperties()) {
+			aDestination.getProperties().getProperties().put(theElement.getKey(), theElement.getValue());
+		}
+	}
 
-    protected Map<String, ModelEntity> deletedRemovedInstances(ModelList aItems, List aModelEntities) {
+	protected Map<String, ModelEntity> deletedRemovedInstances(ModelList aItems, List aModelEntities) {
 
-        Set<ModelEntity> theRemovedModelInstances = new HashSet<ModelEntity>();
+		Set<ModelEntity> theRemovedModelInstances = new HashSet<ModelEntity>();
 
-        Map<String, ModelEntity> theModelInstances = new HashMap<String, ModelEntity>();
-        for (Object theObject : aModelEntities) {
-            ModelEntity theCommentEntity = (ModelEntity) theObject;
-            Object theExistingEntity = aItems.findBySystemId(theCommentEntity.getSystemId());
-            if (theExistingEntity == null) {
-                theRemovedModelInstances.add(theCommentEntity);
-            } else {
-                theModelInstances.put(theCommentEntity.getSystemId(), theCommentEntity);
-            }
-        }
+		Map<String, ModelEntity> theModelInstances = new HashMap<String, ModelEntity>();
+		for (Object theObject : aModelEntities) {
+			ModelEntity theCommentEntity = (ModelEntity) theObject;
+			Object theExistingEntity = aItems.findBySystemId(theCommentEntity.getSystemId());
+			if (theExistingEntity == null) {
+				theRemovedModelInstances.add(theCommentEntity);
+			} else {
+				theModelInstances.put(theCommentEntity.getSystemId(), theCommentEntity);
+			}
+		}
 
-        aModelEntities.removeAll(theRemovedModelInstances);
+		aModelEntities.removeAll(theRemovedModelInstances);
 
-        return theModelInstances;
-    }
+		return theModelInstances;
+	}
 }

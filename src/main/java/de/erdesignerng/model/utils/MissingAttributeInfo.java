@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class MissingAttributeInfo extends MissingInfo {
 
-    public MissingAttributeInfo(String aWhat) {
-        super(ERDesignerBundle.MISSINGATTRIBUTE, aWhat);
-    }
+	public MissingAttributeInfo(String aWhat) {
+		super(ERDesignerBundle.MISSINGATTRIBUTE, aWhat);
+	}
 }

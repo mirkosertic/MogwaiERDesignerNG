@@ -37,107 +37,107 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  */
 public abstract class BaseEditor extends DefaultDialog implements DialogConstants {
 
-    private int modalResult;
+	private int modalResult;
 
-    private javax.swing.JPanel jContentPane;
+	private JPanel jContentPane;
 
-    protected DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
+	protected final DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
+		public void processActionEvent(ActionEvent e) {
+			commandOk();
+		}
+	}, this, ERDesignerBundle.OK);
 
-    protected DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
+	protected final DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
+		public void processActionEvent(ActionEvent e) {
+			commandCancel();
+		}
+	}, this, ERDesignerBundle.CANCEL);
 
-    /**
-     * Initialize.
-     * 
-     * @param aParent
-     *            the parent Frame
-     * @param aTitle
-     *            the title
-     */
-    public BaseEditor(Component aParent, String aTitle) {
-        super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
-        initialize();
-    }
+	/**
+	 * Initialize.
+	 * 
+	 * @param aParent
+	 *			the parent Frame
+	 * @param aTitle
+	 *			the title
+	 */
+	public BaseEditor(Component aParent, String aTitle) {
+		super(aParent, ERDesignerBundle.BUNDLE_NAME, aTitle);
+		initialize();
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
-        setSize(300, 200);
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
+		setSize(300, 200);
 
-        JPanel theContentPane = getJContentPane();
+		JPanel theContentPane = getJContentPane();
 
-        setContentPane(theContentPane);
-        setResizable(false);
-        setModal(true);
+		setContentPane(theContentPane);
+		setResizable(false);
+		setModal(true);
 
-        cancelAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
-    }
+		cancelAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+	}
 
-    /**
-     * This method initializes jContentPane.
-     * 
-     * @return javax.swing.JPanel
-     */
-    private javax.swing.JPanel getJContentPane() {
-        if (jContentPane == null) {
-            jContentPane = new javax.swing.JPanel();
-            jContentPane.setLayout(new java.awt.BorderLayout());
-        }
-        return jContentPane;
-    }
+	/**
+	 * This method initializes jContentPane.
+	 * 
+	 * @return JPanel
+	 */
+	private JPanel getJContentPane() {
+		if (jContentPane == null) {
+			jContentPane = new javax.swing.JPanel();
+			jContentPane.setLayout(new java.awt.BorderLayout());
+		}
+		return jContentPane;
+	}
 
-    /**
-     * Set the dialogs modal result and hide it.
-     * 
-     * @param aModalResult
-     *            the modal result.
-     */
-    public void setModalResult(int aModalResult) {
-        modalResult = aModalResult;
-        super.setVisible(false);
-    }
+	/**
+	 * Set the dialogs modal result and hide it.
+	 * 
+	 * @param aModalResult
+	 *			the modal result.
+	 */
+	public void setModalResult(int aModalResult) {
+		modalResult = aModalResult;
+		super.setVisible(false);
+	}
 
-    public int showModal() {
-        modalResult = DialogConstants.MODAL_RESULT_CANCEL;
-        setVisible(true);
+	public int showModal() {
+		modalResult = DialogConstants.MODAL_RESULT_CANCEL;
+		setVisible(true);
 
-        return modalResult;
-    }
+		return modalResult;
+	}
 
-    public abstract void applyValues() throws Exception;
+	public abstract void applyValues() throws Exception;
 
-    /**
-     * Is called by the default cancel action.
-     */
-    protected void commandCancel() {
-        setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
-    }
+	/**
+	 * Is called by the default cancel action.
+	 */
+	protected void commandCancel() {
+		setModalResult(DialogConstants.MODAL_RESULT_CANCEL);
+	}
 
-    /**
-     * is called by the default ok action.
-     */
-    protected void commandOk() {
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
-    }
+	/**
+	 * is called by the default ok action.
+	 */
+	protected void commandOk() {
+		setModalResult(DialogConstants.MODAL_RESULT_OK);
+	}
 
-    /**
-     * Log a fatal error using the default exception dialogue.
-     * 
-     * @param e
-     *            the exception to log
-     */
-    protected void logFatalError(Exception e) {
-        ExceptionEditor theEditor = new ExceptionEditor(this, e);
-        theEditor.showModal();
-    }
+	/**
+	 * Log a fatal error using the default exception dialogue.
+	 * 
+	 * @param e
+	 *			the exception to log
+	 */
+	protected void logFatalError(Exception e) {
+		ExceptionEditor theEditor = new ExceptionEditor(this, e);
+		theEditor.showModal();
+	}
 }

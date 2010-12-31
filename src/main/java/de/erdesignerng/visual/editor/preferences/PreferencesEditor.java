@@ -34,45 +34,45 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class PreferencesEditor extends BaseEditor {
 
-    private PreferencesEditorView view;
+	private final PreferencesEditorView view;
 
-    private ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    private ERDesignerComponent component;
+	private final ERDesignerComponent component;
 
-    public PreferencesEditor(JComponent aParent, ApplicationPreferences aPreferences, ERDesignerComponent aComponent) {
-        super(aParent, ERDesignerBundle.PREFERENCES);
+	public PreferencesEditor(JComponent aParent, ApplicationPreferences aPreferences, ERDesignerComponent aComponent) {
+		super(aParent, ERDesignerBundle.PREFERENCES);
 
-        view = new PreferencesEditorView(aPreferences);
+		view = new PreferencesEditorView(aPreferences);
 
-        initialize();
+		initialize();
 
-        preferences = aPreferences;
-        component = aComponent;
-    }
+		preferences = aPreferences;
+		component = aComponent;
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        UIInitializer.getInstance().initialize(this);
+		UIInitializer.getInstance().initialize(this);
 
-        view.getOkButton().setAction(okAction);
-        view.getCancelButton().setAction(cancelAction);
+		view.getOkButton().setAction(okAction);
+		view.getCancelButton().setAction(cancelAction);
 
-        setContentPane(view);
-        setResizable(false);
+		setContentPane(view);
+		setResizable(false);
 
-        pack();
-    }
+		pack();
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 
-    @Override
-    protected void commandOk() {
-        if (view.getPreferences().applyValues(preferences)) {
-            setModalResult(DialogConstants.MODAL_RESULT_OK);
-            component.refreshPreferences(preferences);
-        }
-    }
+	@Override
+	protected void commandOk() {
+		if (view.getPreferences().applyValues(preferences)) {
+			setModalResult(DialogConstants.MODAL_RESULT_OK);
+			component.refreshPreferences(preferences);
+		}
+	}
 }

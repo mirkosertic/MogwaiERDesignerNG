@@ -20,85 +20,85 @@ package de.erdesignerng.model.serializer.repository.entities;
 /**
  * Entity for a domain.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class DomainEntity extends ModelEntity {
 
-    private String datatype;
+	private String datatype;
 
-    private int size;
+	private int size;
 
-    private int fraction;
+	private int fraction;
 
-    private int scale;
+	private int scale;
 
-    private boolean nullable;
+	private boolean nullable;
 
-    /**
-     * @return the datatype
-     */
-    public String getDatatype() {
-        return datatype;
-    }
+	/**
+	 * @return the datatype
+	 */
+	public String getDatatype() {
+		return datatype;
+	}
 
-    /**
-     * @param datatype
-     *            the datatype to set
-     */
-    public void setDatatype(String datatype) {
-        this.datatype = datatype;
-    }
+	/**
+	 * @param datatype
+	 *			the datatype to set
+	 */
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
+	}
 
-    /**
-     * @return the size
-     */
-    public int getSize() {
-        return size;
-    }
+	/**
+	 * @return the size
+	 */
+	public int getSize() {
+		return size;
+	}
 
-    /**
-     * @param size
-     *            the size to set
-     */
-    public void setSize(int size) {
-        this.size = size;
-    }
+	/**
+	 * @param size
+	 *			the size to set
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
 
-    /**
-     * @return the fraction
-     */
-    public int getFraction() {
-        return fraction;
-    }
+	/**
+	 * @return the fraction
+	 */
+	public int getFraction() {
+		return fraction;
+	}
 
-    /**
-     * @param fraction
-     *            the fraction to set
-     */
-    public void setFraction(int fraction) {
-        this.fraction = fraction;
-    }
+	/**
+	 * @param fraction
+	 *			the fraction to set
+	 */
+	public void setFraction(int fraction) {
+		this.fraction = fraction;
+	}
 
-    /**
-     * @return the scale
-     */
-    public int getScale() {
-        return scale;
-    }
+	/**
+	 * @return the scale
+	 */
+	public int getScale() {
+		return scale;
+	}
 
-    /**
-     * @param scale
-     *            the scale to set
-     */
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
+	/**
+	 * @param scale
+	 *			the scale to set
+	 */
+	public void setScale(int scale) {
+		this.scale = scale;
+	}
 
-    public boolean isNullable() {
-        return nullable;
-    }
+	public boolean isNullable() {
+		return nullable;
+	}
 
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
+	public void setNullable(boolean nullable) {
+		this.nullable = nullable;
+	}
 }

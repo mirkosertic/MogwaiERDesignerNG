@@ -23,25 +23,25 @@ import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 
 public class EditSubjectAreaCommand extends UICommand {
 
-    private final SubjectArea area;
+	private final SubjectArea area;
 
-    public EditSubjectAreaCommand(ERDesignerComponent component, SubjectArea aArea) {
-        super(component);
-        area = aArea;
-    }
+	public EditSubjectAreaCommand(ERDesignerComponent component, SubjectArea aArea) {
+		super(component);
+		area = aArea;
+	}
 
-    @Override
-    public void execute() {
-        SubjectAreaEditor theEditor = new SubjectAreaEditor(getDetailComponent());
-        theEditor.initializeFor(area);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+	@Override
+	public void execute() {
+		SubjectAreaEditor theEditor = new SubjectAreaEditor(getDetailComponent());
+		theEditor.initializeFor(area);
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                refreshDisplayOf(null);
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayOf(null);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

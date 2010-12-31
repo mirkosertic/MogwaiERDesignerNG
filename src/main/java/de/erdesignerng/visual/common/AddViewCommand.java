@@ -30,56 +30,56 @@ import de.erdesignerng.visual.editor.view.ViewEditor;
 
 public class AddViewCommand extends UICommand {
 
-    private final Point2D location;
+	private final Point2D location;
 
-    public AddViewCommand(ERDesignerComponent component, Point2D aLocation) {
-        super(component);
-        location = aLocation;
-    }
+	public AddViewCommand(ERDesignerComponent component, Point2D aLocation) {
+		super(component);
+		location = aLocation;
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        View theView = new View();
-        ViewEditor theEditor = new ViewEditor(component.getModel(), getDetailComponent());
-        theEditor.initializeFor(theView);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
+		View theView = new View();
+		ViewEditor theEditor = new ViewEditor(component.getModel(), getDetailComponent());
+		theEditor.initializeFor(theView);
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
 
-                try {
-                    theEditor.applyValues();
-                } catch (VetoException e) {
-                    getWorldConnector().notifyAboutException(e);
-                    return;
-                }
+				try {
+					theEditor.applyValues();
+				} catch (VetoException e) {
+					getWorldConnector().notifyAboutException(e);
+					return;
+				}
 
-                ViewCell theCell = new ViewCell(theView);
-                theCell.transferPropertiesToAttributes(theView);
+				ViewCell theCell = new ViewCell(theView);
+				theCell.transferPropertiesToAttributes(theView);
 
-                Object theTargetCell = component.graph.getFirstCellForLocation(location.getX(), location.getY());
-                if (theTargetCell instanceof SubjectAreaCell) {
-                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
-                    theArea.getViews().add(theView);
+				Object theTargetCell = component.graph.getFirstCellForLocation(location.getX(), location.getY());
+				if (theTargetCell instanceof SubjectAreaCell) {
+					SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+					SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+					theArea.getViews().add(theView);
 
-                    theSACell.add(theCell);
-                }
+					theSACell.add(theCell);
+				}
 
-                theCell.setBounds(new Rectangle2D.Double(location.getX(), location.getY(), -1, -1));
+				theCell.setBounds(new Rectangle2D.Double(location.getX(), location.getY(), -1, -1));
 
-                component.graph.getGraphLayoutCache().insert(theCell);
+				component.graph.getGraphLayoutCache().insert(theCell);
 
-                theCell.transferAttributesToProperties(theCell.getAttributes());
+				theCell.transferAttributesToProperties(theCell.getAttributes());
 
-                component.graph.doLayout();
+				component.graph.doLayout();
 
-                refreshDisplayOf(null);
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayOf(null);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

@@ -46,179 +46,179 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  */
 public class CustomTypeEditor extends BaseEditor {
 
-    private final Model model;
+	private final Model model;
 
-    private CustomTypeEditorView editingView;
+	private CustomTypeEditorView editingView;
 
-    private final BindingInfo<CustomType> typeBindingInfo = new BindingInfo<CustomType>();
+	private final BindingInfo<CustomType> typeBindingInfo = new BindingInfo<CustomType>();
 
-    private final DefaultListModel typeListModel;
+	private final DefaultListModel typeListModel;
 
-    private final List<CustomType> removedTypes = new ArrayList<CustomType>();
+	private final List<CustomType> removedTypes = new ArrayList<CustomType>();
 
-    private final DefaultAction newTypeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction newTypeAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandNewType(e);
-        }
-    }, this, ERDesignerBundle.NEW);
+		public void processActionEvent(ActionEvent e) {
+			commandNewType(e);
+		}
+	}, this, ERDesignerBundle.NEW);
 
-    private final DefaultAction deleteTypeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction deleteTypeAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandDeleteType(e);
-        }
-    }, this, ERDesignerBundle.DELETE);
+		public void processActionEvent(ActionEvent e) {
+			commandDeleteType(e);
+		}
+	}, this, ERDesignerBundle.DELETE);
 
-    private final DefaultAction updateTypeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction updateTypeAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandUpdateType(e);
-        }
-    }, this, ERDesignerBundle.UPDATE);
-    
-    public CustomTypeEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.CUSTOMTYPEEDITOR);
-        initialize();
+		public void processActionEvent(ActionEvent e) {
+			commandUpdateType(e);
+		}
+	}, this, ERDesignerBundle.UPDATE);
+	
+	public CustomTypeEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.CUSTOMTYPEEDITOR);
+		initialize();
 
-        typeListModel = editingView.getTypesList().getModel();
-        for (CustomType theType : aModel.getCustomTypes()) {
-            typeListModel.add(theType.clone());
-        }
+		typeListModel = editingView.getTypesList().getModel();
+		for (CustomType theType : aModel.getCustomTypes()) {
+			typeListModel.add(theType.clone());
+		}
 
-        model = aModel;
+		model = aModel;
 
-        typeBindingInfo.addBinding("name", editingView.getTypeName(), true);
-        typeBindingInfo.addBinding("sqlDefinition", editingView.getTypeddl(), true);
-        typeBindingInfo.configure();
+		typeBindingInfo.addBinding("name", editingView.getTypeName(), true);
+		typeBindingInfo.addBinding("sqlDefinition", editingView.getTypeddl(), true);
+		typeBindingInfo.configure();
 
-        UIInitializer.getInstance().initialize(this);
-        updateTypeEditFields();
-    }
+		UIInitializer.getInstance().initialize(this);
+		updateTypeEditFields();
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new CustomTypeEditorView();
-        editingView.getOkButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
-        editingView.getTypesList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+		editingView = new CustomTypeEditorView();
+		editingView.getOkButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
+		editingView.getTypesList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 
-            public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-                commandAttributeListValueChanged(e);
-            }
-        });
-        editingView.getNewButton().setAction(newTypeAction);
-        editingView.getDeleteButton().setAction(deleteTypeAction);
-        editingView.getUpdateTypeButton().setAction(updateTypeAction);
+			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+				commandAttributeListValueChanged(e);
+			}
+		});
+		editingView.getNewButton().setAction(newTypeAction);
+		editingView.getDeleteButton().setAction(deleteTypeAction);
+		editingView.getUpdateTypeButton().setAction(updateTypeAction);
 
-        setContentPane(editingView);
+		setContentPane(editingView);
 
-        pack();
-    }
+		pack();
+	}
 
-    private void commandUpdateType(java.awt.event.ActionEvent evt) {
+	private void commandUpdateType(java.awt.event.ActionEvent evt) {
 
-        CustomType theModel = typeBindingInfo.getDefaultModel();
-        List<ValidationError> theValidationResult = typeBindingInfo.validate();
-        if (theValidationResult.size() == 0) {
-        	
-            typeBindingInfo.view2model();
+		CustomType theModel = typeBindingInfo.getDefaultModel();
+		List<ValidationError> theValidationResult = typeBindingInfo.validate();
+		if (theValidationResult.size() == 0) {
+			
+			typeBindingInfo.view2model();
 
-            if (!typeListModel.contains(theModel)) {
-                typeListModel.add(theModel);
-            }
+			if (!typeListModel.contains(theModel)) {
+				typeListModel.add(theModel);
+			}
 
-            updateTypeEditFields();
-        }
-    }
+			updateTypeEditFields();
+		}
+	}
 
-    private void updateTypeEditFields() {
+	private void updateTypeEditFields() {
 
-        CustomType theValue = typeBindingInfo.getDefaultModel();
+		CustomType theValue = typeBindingInfo.getDefaultModel();
 
-        if (theValue != null) {
+		if (theValue != null) {
 
-            boolean isNew = !typeListModel.contains(theValue);
+			boolean isNew = !typeListModel.contains(theValue);
 
-            editingView.getNewButton().setEnabled(true);
-            editingView.getDeleteButton().setEnabled(!isNew);
-            editingView.getTypeName().setEnabled(true);
-            editingView.getTypeddl().setEnabled(true);
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(!isNew);
+			editingView.getTypeName().setEnabled(true);
+			editingView.getTypeddl().setEnabled(true);
 
-        } else {
-            editingView.getNewButton().setEnabled(true);
-            editingView.getDeleteButton().setEnabled(false);
-            editingView.getTypeName().setEnabled(false);
-            editingView.getTypeddl().setEnabled(false);
-        }
+		} else {
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(false);
+			editingView.getTypeName().setEnabled(false);
+			editingView.getTypeddl().setEnabled(false);
+		}
 
-        typeBindingInfo.model2view();
+		typeBindingInfo.model2view();
 
-        editingView.getTypesList().invalidate();
-        editingView.getTypesList().setSelectedValue(typeBindingInfo.getDefaultModel(), true);
+		editingView.getTypesList().invalidate();
+		editingView.getTypesList().setSelectedValue(typeBindingInfo.getDefaultModel(), true);
 
-    }
+	}
 
-    private void commandAttributeListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+	private void commandAttributeListValueChanged(javax.swing.event.ListSelectionEvent evt) {
 
-        int index = editingView.getTypesList().getSelectedIndex();
-        if (index >= 0) {
-            typeBindingInfo.setDefaultModel((CustomType) typeListModel.get(index));
-        }
+		int index = editingView.getTypesList().getSelectedIndex();
+		if (index >= 0) {
+			typeBindingInfo.setDefaultModel((CustomType) typeListModel.get(index));
+		}
 
-        updateTypeEditFields();
-    }
-    
-    private void commandDeleteType(java.awt.event.ActionEvent aEvent) {
+		updateTypeEditFields();
+	}
+	
+	private void commandDeleteType(java.awt.event.ActionEvent aEvent) {
 
-        CustomType theType = typeBindingInfo.getDefaultModel();
-        Table theTable = model.getTables().checkIfUsedByTable(theType);
-        if (theTable == null) {
+		CustomType theType = typeBindingInfo.getDefaultModel();
+		Table theTable = model.getTables().checkIfUsedByTable(theType);
+		if (theTable == null) {
 
-            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-                typeListModel.remove(theType);
-                removedTypes.add(theType);
-            }
-        } else {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
-                    ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
-        }
-    }
+			if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+				typeListModel.remove(theType);
+				removedTypes.add(theType);
+			}
+		} else {
+			MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+					ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
+		}
+	}
 
-    private void commandNewType(java.awt.event.ActionEvent evt) {
-        typeBindingInfo.setDefaultModel(new CustomType());
-        updateTypeEditFields();
-    }
+	private void commandNewType(java.awt.event.ActionEvent evt) {
+		typeBindingInfo.setDefaultModel(new CustomType());
+		updateTypeEditFields();
+	}
 
-    @Override
-    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+	@Override
+	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        for (CustomType theRemovedType : removedTypes) {
-            model.removeCustomType(theRemovedType);
-        }
+		for (CustomType theRemovedType : removedTypes) {
+			model.removeCustomType(theRemovedType);
+		}
 
-        for (int i = 0; i < typeListModel.getSize(); i++) {
-            CustomType theType = (CustomType) typeListModel.get(i);
+		for (int i = 0; i < typeListModel.getSize(); i++) {
+			CustomType theType = (CustomType) typeListModel.get(i);
 
-            CustomType theOriginalType = model.getCustomTypes().findBySystemId(theType.getSystemId());
-            if (theOriginalType == null) {
-                model.addCustomType(theType);
-            } else {
-                theOriginalType.restoreFrom(theType);
-            }
-        }
-    }
+			CustomType theOriginalType = model.getCustomTypes().findBySystemId(theType.getSystemId());
+			if (theOriginalType == null) {
+				model.addCustomType(theType);
+			} else {
+				theOriginalType.restoreFrom(theType);
+			}
+		}
+	}
 
-    /**
-     * Set the selected type.
-     * 
-     * @param aType
-     *            the type to select
-     */
-    public void setSelectedType(CustomType aType) {
-        editingView.getTypesList().setSelectedValue(aType, true);
-    }
+	/**
+	 * Set the selected type.
+	 * 
+	 * @param aType
+	 *			the type to select
+	 */
+	public void setSelectedType(CustomType aType) {
+		editingView.getTypesList().setSelectedValue(aType, true);
+	}
 }

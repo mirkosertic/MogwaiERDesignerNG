@@ -27,36 +27,36 @@ import de.erdesignerng.model.serializer.AbstractXMLViewSerializer;
 
 public class XMLViewSerializer extends AbstractXMLViewSerializer {
 
-    @Override
-    public void serialize(View aView, Document aDocument, Element aRootElement) {
-        Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
+	@Override
+	public void serialize(View aView, Document aDocument, Element aRootElement) {
+		Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
 
-        serializeProperties(aDocument, theRelationElement, aView);
-        serializeCommentElement(aDocument, theRelationElement, aView);
+		serializeProperties(aDocument, theRelationElement, aView);
+		serializeCommentElement(aDocument, theRelationElement, aView);
 
-        Element theSQLElement = addElement(aDocument, theRelationElement, SQL);
-        theSQLElement.appendChild(aDocument.createTextNode(aView.getSql()));
-    }
+		Element theSQLElement = addElement(aDocument, theRelationElement, SQL);
+		theSQLElement.appendChild(aDocument.createTextNode(aView.getSql()));
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
 
-        NodeList theElements = aDocument.getElementsByTagName(VIEW);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+		NodeList theElements = aDocument.getElementsByTagName(VIEW);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            View theView = new View();
-            theView.setOwner(aModel);
-            deserializeProperties(theElement, theView);
-            deserializeCommentElement(theElement, theView);
+			View theView = new View();
+			theView.setOwner(aModel);
+			deserializeProperties(theElement, theView);
+			deserializeCommentElement(theElement, theView);
 
-            NodeList theSQL = theElement.getElementsByTagName(SQL);
-            for (int j = 0; j < theSQL.getLength(); j++) {
-                Element theSQLElement = (Element) theSQL.item(j);
-                theView.setSql(theSQLElement.getChildNodes().item(0).getNodeValue());
-            }
+			NodeList theSQL = theElement.getElementsByTagName(SQL);
+			for (int j = 0; j < theSQL.getLength(); j++) {
+				Element theSQLElement = (Element) theSQL.item(j);
+				theView.setSql(theSQLElement.getChildNodes().item(0).getNodeValue());
+			}
 
-            aModel.getViews().add(theView);
-        }
-    }
+			aModel.getViews().add(theView);
+		}
+	}
 }

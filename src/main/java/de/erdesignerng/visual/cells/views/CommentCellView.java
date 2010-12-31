@@ -45,73 +45,73 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
  */
 public class CommentCellView extends VertexView {
 
-    private static MyRenderer renderer = new MyRenderer();
+	private static final MyRenderer renderer = new MyRenderer();
 
-    public CommentCellView(CommentCell aCell) {
-        super(aCell);
-    }
+	public CommentCellView(CommentCell aCell) {
+		super(aCell);
+	}
 
-    @Override
-    public CellViewRenderer getRenderer() {
-        return renderer;
-    }
+	@Override
+	public CellViewRenderer getRenderer() {
+		return renderer;
+	}
 
-    public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
+	public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
-        private static final Dimension NULL_DIMENSION = new Dimension(0, 0);
+		private static final Dimension NULL_DIMENSION = new Dimension(0, 0);
 
-        private JTextArea textarea = new JTextArea();
+		private final JTextArea textarea = new JTextArea();
 
-        private boolean selected;
+		private boolean selected;
 
-        private boolean visible;
+		private boolean visible;
 
-        public MyRenderer() {
-            textarea.setFont(textarea.getFont().deriveFont(Font.BOLD));
-            textarea.setOpaque(false);
-        }
+		public MyRenderer() {
+			textarea.setFont(textarea.getFont().deriveFont(Font.BOLD));
+			textarea.setOpaque(false);
+		}
 
-        @Override
-        public Dimension getPreferredSize() {
-            if (visible) {
-                Dimension theSize = textarea.getPreferredSize();
+		@Override
+		public Dimension getPreferredSize() {
+			if (visible) {
+				Dimension theSize = textarea.getPreferredSize();
 
-                return new Dimension(theSize.width + 20, theSize.height + 20);
-            }
-            return NULL_DIMENSION;
-        }
+				return new Dimension(theSize.width + 20, theSize.height + 20);
+			}
+			return NULL_DIMENSION;
+		}
 
-        @Override
-        public void paint(Graphics aGraphics) {
+		@Override
+		public void paint(Graphics aGraphics) {
 
-            if (visible) {
-                Dimension theSize = getSize();
+			if (visible) {
+				Dimension theSize = getSize();
 
-                aGraphics.setColor(selected ? Color.blue : Color.gray);
-                aGraphics.drawRoundRect(0, 0, theSize.width - 1, theSize.height - 1, 10, 10);
+				aGraphics.setColor(selected ? Color.blue : Color.gray);
+				aGraphics.drawRoundRect(0, 0, theSize.width - 1, theSize.height - 1, 10, 10);
 
-                textarea.setSize(new Dimension(theSize.width - 20, theSize.height - 20));
-                aGraphics.translate(10, 10);
-                textarea.paint(aGraphics);
-            }
-        }
+				textarea.setSize(new Dimension(theSize.width - 20, theSize.height - 20));
+				aGraphics.translate(10, 10);
+				textarea.paint(aGraphics);
+			}
+		}
 
-        @Override
-        public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-                boolean aPreview) {
+		@Override
+		public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
+				boolean aPreview) {
 
-            CommentCellView theView = (CommentCellView) aView;
-            Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
-            textarea.setText(theComment.getComment());
-            selected = aSelected;
-            visible = true;
+			CommentCellView theView = (CommentCellView) aView;
+			Comment theComment = (Comment) ((CommentCell) theView.getCell()).getUserObject();
+			textarea.setText(theComment.getComment());
+			selected = aSelected;
+			visible = true;
 
-            return this;
-        }
-    }
+			return this;
+		}
+	}
 
-    @Override
-    public GraphCellEditor getEditor() {
-        return new CellEditorFactory();
-    }
+	@Override
+	public GraphCellEditor getEditor() {
+		return new CellEditorFactory();
+	}
 }

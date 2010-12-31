@@ -64,21 +64,21 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
 	@Override
 	public StatementList createRenameAttributeStatement(
-			Attribute aExistantAttribute, String aNewName) {
+			Attribute anExistingAttribute, String aNewName) {
 
-		Table theTable = aExistantAttribute.getOwner();
+		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();
 		theResult.add(new Statement("EXEC sp_rename '" + theTable.getName()
-				+ "." + aExistantAttribute.getName() + "' , '" + aNewName
+				+ "." + anExistingAttribute.getName() + "' , '" + aNewName
 				+ "' , 'COLUMN'"));
 		return theResult;
 	}
 
 	@Override
 	public StatementList createChangeAttributeStatement(
-			Attribute aExistantAttribute, Attribute aNewAttribute) {
-		Table theTable = aExistantAttribute.getOwner();
+			Attribute anExistingAttribute, Attribute aNewAttribute) {
+		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();
 		StringBuilder theStatement = new StringBuilder();
@@ -86,7 +86,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 		theStatement.append("ALTER TABLE " + createUniqueTableName(theTable)
 				+ " ALTER COLUMN ");
 
-		theStatement.append(aExistantAttribute.getName());
+		theStatement.append(anExistingAttribute.getName());
 		theStatement.append(" ");
 		theStatement.append(createAttributeDataDefinition(aNewAttribute, true));
 

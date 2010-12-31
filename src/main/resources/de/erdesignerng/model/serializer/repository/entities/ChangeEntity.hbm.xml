@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-lazy="false" package="de.erdesignerng.model.serializer.repository.entities">
-  <class name="ChangeEntity" select-before-update="true" table="mogrep_change">
-    <id name="id">
-      <generator class="native"/>
-    </id>
-    <version name="version"/>
-    <property name="systemId" not-null="true"/>
-    <property name="creationUser" not-null="true"/>
-    <property name="creationDate" not-null="true"/>
-    <property name="lastModificationUser" not-null="false"/>
-    <property name="lastModificationDate" not-null="false"/>
-    <list cascade="all-delete-orphan" name="statements" table="mogrep_change_stm">
-      <key column="changeid" foreign-key="mogrep_change_stm_fk1" not-null="true"/>
-      <list-index column="listindex"/>
-      <element column="stm" not-null="true" type="text"/>
-    </list>
-  </class>
+	<class name="ChangeEntity" select-before-update="true" table="mogrep_change">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<version name="version"/>
+		<property name="systemId" not-null="true"/>
+		<property name="creationUser" not-null="true"/>
+		<property name="creationDate" not-null="true"/>
+		<property name="lastModificationUser" not-null="false"/>
+		<property name="lastModificationDate" not-null="false"/>
+		<list cascade="all-delete-orphan" name="statements" table="mogrep_change_stm">
+			<key column="changeid" foreign-key="mogrep_change_stm_fk1" not-null="true"/>
+			<list-index column="listindex"/>
+			<element column="stm" not-null="true" type="text"/>
+		</list>
+	</class>
 </hibernate-mapping>

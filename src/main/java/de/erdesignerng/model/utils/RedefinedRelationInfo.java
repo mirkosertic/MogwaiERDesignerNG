@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class RedefinedRelationInfo extends RedefinedInfo {
 
-    public RedefinedRelationInfo(String aWhat) {
-        super(ERDesignerBundle.REDEFINED, aWhat);
-    }
+	public RedefinedRelationInfo(String aWhat) {
+		super(ERDesignerBundle.REDEFINED, aWhat);
+	}
 }

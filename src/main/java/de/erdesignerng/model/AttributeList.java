@@ -27,24 +27,24 @@ import de.erdesignerng.dialect.DataType;
  */
 public class AttributeList extends ModelItemVector<Attribute> {
 
-    private static final long serialVersionUID = 890361971577085178L;
+	private static final long serialVersionUID = 890361971577085178L;
 
-    /**
-     * Test if a domain is in use.
-     * 
-     * @param aDomain
-     *            the domain
-     * @return true if yes, else false
-     */
-    public boolean isDomainInUse(Domain aDomain) {
-        for (Attribute theAttribute : this) {
-            DataType theType = theAttribute.getDatatype();
-            if (theType.isDomain()) {
-                if (aDomain.getSystemId().equals(((Domain) theType).getSystemId())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	/**
+	 * Test if a domain is in use.
+	 * 
+	 * @param aDomain
+	 *			the domain
+	 * @return true if yes, else false
+	 */
+	public boolean isDomainInUse(Domain aDomain) {
+		for (Attribute theAttribute : this) {
+			DataType theType = theAttribute.getDatatype();
+			if (theType.isDomain()) {
+				if (aDomain.getSystemId().equals(((Domain) theType).getSystemId())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

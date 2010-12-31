@@ -21,13 +21,13 @@ import de.erdesignerng.dialect.IndexProperties;
 
 public class H2IndexProperties extends IndexProperties {
 
-    private Boolean hash;
+	private Boolean hash;
 
-    public Boolean getHash() {
-        return hash;
-    }
+	public Boolean getHash() {
+		return hash;
+	}
 
-    public void setHash(Boolean hash) {
-        this.hash = hash;
-    }
+	public void setHash(Boolean hash) {
+		this.hash = hash;
+	}
 }

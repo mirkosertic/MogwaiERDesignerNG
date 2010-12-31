@@ -23,10 +23,10 @@ package de.erdesignerng.exception;
  */
 public abstract class ModelException extends Exception {
 
-    public ModelException() {
-    }
+	public ModelException() {
+	}
 
-    public ModelException(String aMessage) {
-        super(aMessage);
-    }
+	public ModelException(String aMessage) {
+		super(aMessage);
+	}
 }

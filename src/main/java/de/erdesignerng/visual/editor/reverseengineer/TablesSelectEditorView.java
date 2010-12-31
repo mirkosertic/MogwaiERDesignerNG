@@ -33,138 +33,138 @@ import de.mogwai.common.client.looks.components.DefaultPanel;
  */
 public class TablesSelectEditorView extends JPanel {
 
-    private JPanel contentPanel;
+	private JPanel contentPanel;
 
-    private DefaultCheckBoxList tableList;
+	private DefaultCheckBoxList tableList;
 
-    private DefaultButton okButton;
+	private DefaultButton okButton;
 
-    private DefaultButton cancelButton;
+	private DefaultButton cancelButton;
 
-    private final DefaultButton selectAll = new DefaultButton();
+	private final DefaultButton selectAll = new DefaultButton();
 
-    private final DefaultButton deselectAll = new DefaultButton();
+	private final DefaultButton deselectAll = new DefaultButton();
 
-    private final DefaultButton invertSelection = new DefaultButton();
+	private final DefaultButton invertSelection = new DefaultButton();
 
-    /**
-     * Constructor.
-     */
-    public TablesSelectEditorView() {
-        initialize();
-    }
+	/**
+	 * Constructor.
+	 */
+	public TablesSelectEditorView() {
+		initialize();
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-        String rowDef = "8dlu,fill:250dlu,8dlu,p,2dlu";
-        String colDef = "2dlu,fill:60dlu,2dlu:grow,fill:60dlu,2dlu";
+		String rowDef = "8dlu,fill:250dlu,8dlu,p,2dlu";
+		String colDef = "2dlu,fill:60dlu,2dlu:grow,fill:60dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        setLayout(layout);
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        this.add(getContentPanel(), cons.xywh(2, 2, 3, 1));
-        this.add(getOkButton(), cons.xywh(2, 4, 1, 1));
-        this.add(getCancelButton(), cons.xywh(4, 4, 1, 1));
+		this.add(getContentPanel(), cons.xywh(2, 2, 3, 1));
+		this.add(getOkButton(), cons.xywh(2, 4, 1, 1));
+		this.add(getCancelButton(), cons.xywh(4, 4, 1, 1));
 
-        buildGroups();
-    }
+		buildGroups();
+	}
 
-    /**
-     * Getter method for component ContentPanel.
-     * 
-     * @return the initialized component
-     */
-    public JPanel getContentPanel() {
+	/**
+	 * Getter method for component ContentPanel.
+	 * 
+	 * @return the initialized component
+	 */
+	public JPanel getContentPanel() {
 
-        if (contentPanel == null) {
-            contentPanel = new JPanel();
+		if (contentPanel == null) {
+			contentPanel = new JPanel();
 
-            String rowDef = "2dlu,fill:200dlu:grow,2dlu,p,2dlu";
-            String colDef = "fill:180dlu:grow";
+			String rowDef = "2dlu,fill:200dlu:grow,2dlu,p,2dlu";
+			String colDef = "fill:180dlu:grow";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            contentPanel.setLayout(layout);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			contentPanel.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+			CellConstraints cons = new CellConstraints();
 
-            contentPanel.add(getTableList().getScrollPane(), cons.xywh(1, 2, 1, 1));
+			contentPanel.add(getTableList().getScrollPane(), cons.xywh(1, 2, 1, 1));
 
-            DefaultPanel thePanel = new DefaultPanel();
-            thePanel.setLayout(new FormLayout("fill:60dlu:grow,2dlu,fill:60dlu:grow", "p,2dlu,p"));
-            thePanel.add(selectAll, cons.xy(1, 1));
-            thePanel.add(deselectAll, cons.xy(3, 1));
-            thePanel.add(invertSelection, cons.xy(1, 3));
+			DefaultPanel thePanel = new DefaultPanel();
+			thePanel.setLayout(new FormLayout("fill:60dlu:grow,2dlu,fill:60dlu:grow", "p,2dlu,p"));
+			thePanel.add(selectAll, cons.xy(1, 1));
+			thePanel.add(deselectAll, cons.xy(3, 1));
+			thePanel.add(invertSelection, cons.xy(1, 3));
 
-            contentPanel.add(thePanel, cons.xywh(1, 4, 1, 1));
+			contentPanel.add(thePanel, cons.xywh(1, 4, 1, 1));
 
-        }
+		}
 
-        return contentPanel;
-    }
+		return contentPanel;
+	}
 
-    /**
-     * Getter method for component DatabaseView.
-     * 
-     * @return the initialized component
-     */
-    public DefaultCheckBoxList getTableList() {
+	/**
+	 * Getter method for component DatabaseView.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultCheckBoxList getTableList() {
 
-        if (tableList == null) {
-            tableList = new DefaultCheckBoxList();
-        }
+		if (tableList == null) {
+			tableList = new DefaultCheckBoxList();
+		}
 
-        return tableList;
-    }
+		return tableList;
+	}
 
-    /**
-     * Getter method for component OkButton.
-     * 
-     * @return the initialized component
-     */
-    public DefaultButton getOkButton() {
+	/**
+	 * Getter method for component OkButton.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultButton getOkButton() {
 
-        if (okButton == null) {
-            okButton = new DefaultButton();
-        }
+		if (okButton == null) {
+			okButton = new DefaultButton();
+		}
 
-        return okButton;
-    }
+		return okButton;
+	}
 
-    /**
-     * Getter method for component CancelButton.
-     * 
-     * @return the initialized component
-     */
-    public DefaultButton getCancelButton() {
+	/**
+	 * Getter method for component CancelButton.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultButton getCancelButton() {
 
-        if (cancelButton == null) {
-            cancelButton = new DefaultButton();
-        }
+		if (cancelButton == null) {
+			cancelButton = new DefaultButton();
+		}
 
-        return cancelButton;
-    }
+		return cancelButton;
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void buildGroups() {
+	/**
+	 * Initialize method.
+	 */
+	private void buildGroups() {
 
-    }
+	}
 
-    public DefaultButton getSelectAll() {
-        return selectAll;
-    }
+	public DefaultButton getSelectAll() {
+		return selectAll;
+	}
 
-    public DefaultButton getDeselectAll() {
-        return deselectAll;
-    }
+	public DefaultButton getDeselectAll() {
+		return deselectAll;
+	}
 
-    public DefaultButton getInvertSelection() {
-        return invertSelection;
-    }
+	public DefaultButton getInvertSelection() {
+		return invertSelection;
+	}
 }

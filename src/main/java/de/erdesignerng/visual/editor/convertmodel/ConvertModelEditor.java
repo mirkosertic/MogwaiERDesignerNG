@@ -39,102 +39,102 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class ConvertModelEditor extends BaseEditor {
 
-    private Model model;
+	private final Model model;
 
-    private BindingInfo<ConversionInfos> bindingInfo = new BindingInfo<ConversionInfos>(new ConversionInfos());
+	private final BindingInfo<ConversionInfos> bindingInfo = new BindingInfo<ConversionInfos>(new ConversionInfos());
 
-    private ConvertModelEditorView editingView;
+	private ConvertModelEditorView editingView;
 
-    /**
-     * @param aModel
-     *            the model
-     * @param aParent
-     *            the parent container
-     */
-    public ConvertModelEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.CONVERTMODEL);
+	/**
+	 * @param aModel
+	 *			the model
+	 * @param aParent
+	 *			the parent container
+	 */
+	public ConvertModelEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.CONVERTMODEL);
 
-        initialize();
+		initialize();
 
-        model = aModel;
+		model = aModel;
 
-        DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
-        DialectFactory theFactory = DialectFactory.getInstance();
+		DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
+		DialectFactory theFactory = DialectFactory.getInstance();
 
-        for (Dialect theDialect : theFactory.getSupportedDialects()) {
-            if (!theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())) {
-                theDialectModel.addElement(theDialect);
-            }
-        }
-        editingView.getTargetDialect().setModel(theDialectModel);
-        bindingInfo.getDefaultModel().setTargetDialect((Dialect) theDialectModel.getElementAt(0));
+		for (Dialect theDialect : theFactory.getSupportedDialects()) {
+			if (!theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())) {
+				theDialectModel.addElement(theDialect);
+			}
+		}
+		editingView.getTargetDialect().setModel(theDialectModel);
+		bindingInfo.getDefaultModel().setTargetDialect((Dialect) theDialectModel.getElementAt(0));
 
-        editingView.getTargetDialect().addActionListener(new ActionListener() {
+		editingView.getTargetDialect().addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                initializeMappingModelFor((Dialect) editingView.getTargetDialect().getSelectedItem());
-                bindingInfo.model2view();
-            }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				initializeMappingModelFor((Dialect) editingView.getTargetDialect().getSelectedItem());
+				bindingInfo.model2view();
+			}
 
-        });
+		});
 
-        bindingInfo.addBinding("targetDialect", editingView.getTargetDialect(), true);
-        bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
-                getResourceHelper()));
+		bindingInfo.addBinding("targetDialect", editingView.getTargetDialect(), true);
+		bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
+				getResourceHelper()));
 
-        bindingInfo.configure();
-        bindingInfo.model2view();
-    }
+		bindingInfo.configure();
+		bindingInfo.model2view();
+	}
 
-    /**
-     * Initialize the current mapping model for a target dialect.
-     * 
-     * @param aDialect
-     *            the target dialect
-     */
-    private void initializeMappingModelFor(Dialect aDialect) {
+	/**
+	 * Initialize the current mapping model for a target dialect.
+	 * 
+	 * @param aDialect
+	 *			the target dialect
+	 */
+	private void initializeMappingModelFor(Dialect aDialect) {
 
-        ConversionInfos theInfos = bindingInfo.getDefaultModel();
-        theInfos.setTargetDialect(aDialect);
-        theInfos.getTypeMapping().clear();
+		ConversionInfos theInfos = bindingInfo.getDefaultModel();
+		theInfos.setTargetDialect(aDialect);
+		theInfos.getTypeMapping().clear();
 
-        // Try to map the types
-        for (DataType theCurrentType : model.getUsedDataTypes()) {
-            theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));
-        }
-    }
+		// Try to map the types
+		for (DataType theCurrentType : model.getUsedDataTypes()) {
+			theInfos.getTypeMapping().put(theCurrentType, aDialect.findClosestMatchingTypeFor(theCurrentType));
+		}
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new ConvertModelEditorView();
-        editingView.getOKButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
+		editingView = new ConvertModelEditorView();
+		editingView.getOKButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 
-        setContentPane(editingView);
-        setResizable(false);
+		setContentPane(editingView);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    protected void commandOk() {
-        if (bindingInfo.validate().size() == 0) {
-            setModalResult(MODAL_RESULT_OK);
-        }
-    }
+	@Override
+	protected void commandOk() {
+		if (bindingInfo.validate().size() == 0) {
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
-    @Override
-    public void applyValues() throws Exception {
+	@Override
+	public void applyValues() throws Exception {
 
-        ConversionInfos theInfos = bindingInfo.getDefaultModel();
-        bindingInfo.view2model(theInfos);
+		ConversionInfos theInfos = bindingInfo.getDefaultModel();
+		bindingInfo.view2model(theInfos);
 
-        model.convert(theInfos);
-    }
+		model.convert(theInfos);
+	}
 }

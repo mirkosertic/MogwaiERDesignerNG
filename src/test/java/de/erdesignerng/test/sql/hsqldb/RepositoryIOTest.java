@@ -33,31 +33,31 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public class RepositoryIOTest extends AbstractReverseEngineeringTestImpl {
 
-    public void testLoadSaveRepository() throws SAXException, IOException, ParserConfigurationException,
-            TransformerException, Exception {
+	public void testLoadSaveRepository() throws SAXException, IOException, ParserConfigurationException,
+			TransformerException, Exception {
 
-        Class.forName("org.hsqldb.jdbc.JDBCDriver").newInstance();
-        Connection theConnection = null;
-        try {
-            theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:dname", "sa", "");
+		Class.forName("org.hsqldb.jdbc.JDBCDriver").newInstance();
+		Connection theConnection = null;
+		try {
+			theConnection = DriverManager.getConnection("jdbc:hsqldb:mem:dname", "sa", "");
 
-            Class theHibernateDialect = HSQLDialect.class;
+			Class theHibernateDialect = HSQLDialect.class;
 
-            String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
+			String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
 
-            String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
-                    theConnection);
+			String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
+					theConnection);
 
-            String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
+			String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
 
-            assertTrue(compareStrings(theOriginalFile, theNewFile));
+			assertTrue(compareStrings(theOriginalFile, theNewFile));
 
-        } finally {
-            if (theConnection != null) {
+		} finally {
+			if (theConnection != null) {
 
-                theConnection.createStatement().execute("SHUTDOWN");
-                theConnection.close();
-            }
-        }
-    }
+				theConnection.createStatement().execute("SHUTDOWN");
+				theConnection.close();
+			}
+		}
+	}
 }

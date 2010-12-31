@@ -28,32 +28,32 @@ import javax.swing.filechooser.FileFilter;
  */
 public class GenericFileFilter extends FileFilter {
 
-    private String extension;
+	private final String extension;
 
-    private String description;
+	private final String description;
 
-    public GenericFileFilter(String aExtension, String aDescription) {
-        extension = aExtension;
-        description = aDescription;
-    }
+	public GenericFileFilter(String aExtension, String aDescription) {
+		extension = aExtension;
+		description = aDescription;
+	}
 
-    @Override
-    public boolean accept(File aFileName) {
-        if (aFileName.isDirectory()) {
-            return true;
-        }
-        return aFileName.getName().toLowerCase().endsWith(extension);
-    }
+	@Override
+	public boolean accept(File aFileName) {
+		if (aFileName.isDirectory()) {
+			return true;
+		}
+		return aFileName.getName().toLowerCase().endsWith(extension);
+	}
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
+	@Override
+	public String getDescription() {
+		return description;
+	}
 
-    public File getCompletedFile(File aFile) {
-        if (!aFile.getName().toLowerCase().endsWith(extension)) {
-            return new File(aFile.toString() + extension);
-        }
-        return aFile;
-    }
+	public File getCompletedFile(File aFile) {
+		if (!aFile.getName().toLowerCase().endsWith(extension)) {
+			return new File(aFile.toString() + extension);
+		}
+		return aFile;
+	}
 }

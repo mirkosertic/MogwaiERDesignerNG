@@ -26,23 +26,23 @@ import de.erdesignerng.util.XMLUtils;
  */
 public class XMLModel30Serializer extends XMLModel20Serializer {
 
-    private static final String CURRENT_VERSION = "3.0";
+	private static final String CURRENT_VERSION = "3.0";
 
-    private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_3.0.xsd";
+	private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_3.0.xsd";
 
-    public XMLModel30Serializer(XMLUtils utils) {
-        super(utils);
-        setXMLAttributeSerializer(new XMLAttributeSerializer());
-        setXMLDomainSerializer(new XMLDomainSerializer());
-    }
+	public XMLModel30Serializer(XMLUtils utils) {
+		super(utils);
+		setXMLAttributeSerializer(new XMLAttributeSerializer());
+		setXMLDomainSerializer(new XMLDomainSerializer());
+	}
 
-    @Override
-    public String getSchemaResource() {
-        return XML_SCHEMA_DEFINITION;
-    }
+	@Override
+	public String getSchemaResource() {
+		return XML_SCHEMA_DEFINITION;
+	}
 
-    @Override
-    public String getVersion() {
-        return CURRENT_VERSION;
-    }
+	@Override
+	public String getVersion() {
+		return CURRENT_VERSION;
+	}
 }

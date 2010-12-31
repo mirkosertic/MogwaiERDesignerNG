@@ -46,196 +46,196 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  */
 public class ReverseEngineerEditor extends BaseEditor {
 
-    private Model model;
+	private final Model model;
 
-    private BindingInfo<ReverseEngineerDataModel> bindingInfo = new BindingInfo<ReverseEngineerDataModel>(
-            new ReverseEngineerDataModel());
+	private final BindingInfo<ReverseEngineerDataModel> bindingInfo = new BindingInfo<ReverseEngineerDataModel>(
+			new ReverseEngineerDataModel());
 
-    private ReverseEngineerView editingView;
+	private ReverseEngineerView editingView;
 
-    private ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    private DefaultListModel<SchemaEntry> schemaList;
+	private final DefaultListModel<SchemaEntry> schemaList;
 
-    private DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
 
-        @Override
-        public void processActionEvent(ActionEvent e) {
-            commandUpdate();
-        }
-    }, this, ERDesignerBundle.UPDATE);
+		@Override
+		public void processActionEvent(ActionEvent e) {
+			commandUpdate();
+		}
+	}, this, ERDesignerBundle.UPDATE);
 
-    /**
-     * Create a reverse engineering editor.
-     * 
-     * @param aModel
-     *            the model
-     * @param aParent
-     *            the parent container
-     * @param aPreferences
-     *            the preferences
-     */
-    public ReverseEngineerEditor(Model aModel, Component aParent, ApplicationPreferences aPreferences) {
-        super(aParent, ERDesignerBundle.REVERSEENGINEER);
+	/**
+	 * Create a reverse engineering editor.
+	 * 
+	 * @param aModel
+	 *			the model
+	 * @param aParent
+	 *			the parent container
+	 * @param aPreferences
+	 *			the preferences
+	 */
+	public ReverseEngineerEditor(Model aModel, Component aParent, ApplicationPreferences aPreferences) {
+		super(aParent, ERDesignerBundle.REVERSEENGINEER);
 
-        model = aModel;
+		model = aModel;
 
-        initialize();
+		initialize();
 
-        ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
+		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
 
-        theModel.getTableOptions().add(
-                new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper().getText(ERDesignerBundle.STANDART)));
-        theModel.getTableOptions().add(
-                new NameValuePair(TableNamingEnum.INCLUDE_SCHEMA, getResourceHelper().getText(
-                        ERDesignerBundle.INCLUDESCHEMAINNAME)));
+		theModel.getTableOptions().add(
+				new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper().getText(ERDesignerBundle.STANDARD)));
+		theModel.getTableOptions().add(
+				new NameValuePair(TableNamingEnum.INCLUDE_SCHEMA, getResourceHelper().getText(
+						ERDesignerBundle.INCLUDESCHEMAINNAME)));
 
-        bindingInfo.addBinding("tableGenerator", editingView.getNaming(), true);
-        bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(editingView.getNaming()));
+		bindingInfo.addBinding("tableGenerator", editingView.getNaming(), true);
+		bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(editingView.getNaming()));
 
-        schemaList = editingView.getSchemaList().getModel();
+		schemaList = editingView.getSchemaList().getModel();
 
-        preferences = aPreferences;
+		preferences = aPreferences;
 
-        bindingInfo.configure();
-        bindingInfo.model2view();
+		bindingInfo.configure();
+		bindingInfo.model2view();
 
-        // Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show
-        // avail. schemas
-        if (model.getDialect().isSupportsSchemaInformation()) {
-            // initially show available schemas
-            commandUpdate();
+		// Bug Fixing 2876904 [ERDesignerNG] ReverseEng dialog does'nt show
+		// avail. schemas
+		if (model.getDialect().isSupportsSchemaInformation()) {
+			// initially show available schemas
+			commandUpdate();
 
-            // Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd
-            // initially preselect first *non-system* schema if possible
-            if (schemaList.getSize() > 0) {
-                List<String> systemSchemas = model.getDialect().getSystemSchemas();
-                Integer selectedIndex = null;
+			// Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd
+			// initially preselect first *non-system* schema if possible
+			if (schemaList.getSize() > 0) {
+				List<String> systemSchemas = model.getDialect().getSystemSchemas();
+				Integer selectedIndex = null;
 
-                if (systemSchemas != null) {
-                    int i = 0;
-                    while ((i < schemaList.getSize()) && (selectedIndex == null)) {
-                        boolean isSystemSchema = true;
-                        int j = 0;
-                        while ((j < systemSchemas.size()) && (isSystemSchema)) {
-                            isSystemSchema = schemaList.get(i).getSchemaName().equals(systemSchemas.get(j));
-                            j++;
-                        }
+				if (systemSchemas != null) {
+					int i = 0;
+					while ((i < schemaList.getSize()) && (selectedIndex == null)) {
+						boolean isSystemSchema = true;
+						int j = 0;
+						while ((j < systemSchemas.size()) && (isSystemSchema)) {
+							isSystemSchema = schemaList.get(i).getSchemaName().equals(systemSchemas.get(j));
+							j++;
+						}
 
-                        if (!isSystemSchema) {
-                            selectedIndex = i;
-                        }
+						if (!isSystemSchema) {
+							selectedIndex = i;
+						}
 
-                        i++;
-                    }
-                }
-                
-                if (selectedIndex == null) {
-                    selectedIndex = 0;
-                }
+						i++;
+					}
+				}
+				
+				if (selectedIndex == null) {
+					selectedIndex = 0;
+				}
 
-                editingView.getSchemaList().setSelectedIndex(selectedIndex);
-            }
-        }
+				editingView.getSchemaList().setSelectedIndex(selectedIndex);
+			}
+		}
 
-        // initially preselect first table-generation item, if possible
-        if (editingView.getNaming().getModel().getSize() > 0) {
-            editingView.getNaming().setSelectedItem(editingView.getNaming().getModel().getElementAt(0));
-        }
-    }
+		// initially preselect first table-generation item, if possible
+		if (editingView.getNaming().getModel().getSize() > 0) {
+			editingView.getNaming().setSelectedItem(editingView.getNaming().getModel().getElementAt(0));
+		}
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new ReverseEngineerView();
-        editingView.getStartButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
-        editingView.getRefreshButton().setAction(updateAction);
-        editingView.getSchemaList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		editingView = new ReverseEngineerView();
+		editingView.getStartButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
+		editingView.getRefreshButton().setAction(updateAction);
+		editingView.getSchemaList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        editingView.getSchemaList().setEnabled(model.getDialect().isSupportsSchemaInformation());
-        editingView.getRefreshButton().setEnabled(model.getDialect().isSupportsSchemaInformation());
+		editingView.getSchemaList().setEnabled(model.getDialect().isSupportsSchemaInformation());
+		editingView.getRefreshButton().setEnabled(model.getDialect().isSupportsSchemaInformation());
 
-        setContentPane(editingView);
-        setResizable(false);
+		setContentPane(editingView);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    protected void commandOk() {
-        if (bindingInfo.validate().size() == 0) {
-            Object[] theSelectesValues = editingView.getSchemaList().getSelectedValues();
-            if (((theSelectesValues == null) || (theSelectesValues.length == 0))
-                    && (model.getDialect().isSupportsSchemaInformation())) {
-                MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
-                return;
-            }
-            setModalResult(MODAL_RESULT_OK);
-        }
-    }
+	@Override
+	protected void commandOk() {
+		if (bindingInfo.validate().size() == 0) {
+			Object[] theSelectedValues = editingView.getSchemaList().getSelectedValues();
+			if (((theSelectedValues == null) || (theSelectedValues.length == 0))
+					&& (model.getDialect().isSupportsSchemaInformation())) {
+				MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
+				return;
+			}
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
-    private void commandUpdate() {
+	private void commandUpdate() {
 
-        if (model.getDialect().isSupportsSchemaInformation()) {
+		if (model.getDialect().isSupportsSchemaInformation()) {
 
-            schemaList.clear();
+			schemaList.clear();
 
-            Connection theConnection = null;
-            try {
-                theConnection = model.createConnection(preferences);
-                if (theConnection == null) {
-                    return;
-                }
+			Connection theConnection = null;
+			try {
+				theConnection = model.createConnection(preferences);
+				if (theConnection == null) {
+					return;
+				}
 
-                schemaList.clear();
+				schemaList.clear();
 
-                JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+				JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
 
-                List<SchemaEntry> theEntries = theStrategy.getSchemaEntries(theConnection);
-                for (SchemaEntry theEntry : theEntries) {
-                    schemaList.add(theEntry);
-                }
+				List<SchemaEntry> theEntries = theStrategy.getSchemaEntries(theConnection);
+				for (SchemaEntry theEntry : theEntries) {
+					schemaList.add(theEntry);
+				}
 
-            } catch (Exception e) {
-                MessagesHelper.displayErrorMessage(this, e.getMessage());
-            } finally {
-                if (!model.getDialect().generatesManagedConnection()) {
-                    if (theConnection != null) {
-                        try {
-                            theConnection.close();
-                        } catch (Exception e) {
-                            // Nothing will happen here
-                        }
-                    }
-                }
-            }
-        } else {
-            // Here happens nothing :-)
-        }
-    }
+			} catch (Exception e) {
+				MessagesHelper.displayErrorMessage(this, e.getMessage());
+			} finally {
+				if (!model.getDialect().generatesManagedConnection()) {
+					if (theConnection != null) {
+						try {
+							theConnection.close();
+						} catch (Exception e) {
+							// Nothing will happen here
+						}
+					}
+				}
+			}
+		} else {
+			// Here happens nothing :-)
+		}
+	}
 
-    public ReverseEngineeringOptions createREOptions() {
-        ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
-        bindingInfo.view2model();
+	public ReverseEngineeringOptions createREOptions() {
+		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
+		bindingInfo.view2model();
 
-        ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-        theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
+		ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+		theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
 
-        if (model.getDialect().isSupportsSchemaInformation()) {
-            for (Object theEntry : editingView.getSchemaList().getSelectedValues()) {
-                theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
-            }
-        }
+		if (model.getDialect().isSupportsSchemaInformation()) {
+			for (Object theEntry : editingView.getSchemaList().getSelectedValues()) {
+				theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
+			}
+		}
 
-        return theOptions;
-    }
+		return theOptions;
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 }

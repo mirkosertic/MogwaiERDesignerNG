@@ -30,25 +30,25 @@ import de.erdesignerng.model.Table;
  */
 public abstract class AbstractXMLAttributeSerializer extends CommonAbstractXMLSerializer<Attribute> {
 
-    protected static final String ATTRIBUTE = "Attribute";
+	protected static final String ATTRIBUTE = "Attribute";
 
-    protected static final String DEFAULTVALUE = "defaultvalue";
+	protected static final String DEFAULTVALUE = "defaultvalue";
 
-    protected static final String EXTRA = "extra";
+	protected static final String EXTRA = "extra";
 
-    protected static final String FRACTION = "fraction";
+	protected static final String FRACTION = "fraction";
 
-    protected static final String NULLABLE = "nullable";
+	protected static final String NULLABLE = "nullable";
 
-    protected static final String SCALE = "scale";
+	protected static final String SCALE = "scale";
 
-    protected static final String SIZE = "size";
+	protected static final String SIZE = "size";
 
-    public abstract void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement);
+	public abstract void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement);
 
-    @Override
-    @Deprecated
-    public void deserialize(Model aModel, Document aDocument) {
-        throw new UnsupportedOperationException("Not supported.");
-    }
+	@Override
+	@Deprecated
+	public void deserialize(Model aModel, Document aDocument) {
+		throw new UnsupportedOperationException("Not supported.");
+	}
 }

@@ -24,46 +24,46 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class EditTableCommand extends UICommand {
 
-    private final Table table;
+	private final Table table;
 
-    private Attribute attribute;
+	private Attribute attribute;
 
-    private Index index;
+	private Index index;
 
-    public EditTableCommand(ERDesignerComponent aComponent, Table aTable) {
-        super(aComponent);
-        table = aTable;
-    }
+	public EditTableCommand(ERDesignerComponent aComponent, Table aTable) {
+		super(aComponent);
+		table = aTable;
+	}
 
-    public EditTableCommand(ERDesignerComponent aComponent, Table aTable, Attribute aAttribute) {
-        this(aComponent, aTable);
-        attribute = aAttribute;
-    }
+	public EditTableCommand(ERDesignerComponent aComponent, Table aTable, Attribute aAttribute) {
+		this(aComponent, aTable);
+		attribute = aAttribute;
+	}
 
-    public EditTableCommand(ERDesignerComponent aComponent, Table aTable, Index aIndex) {
-        this(aComponent, aTable);
-        index = aIndex;
-    }
+	public EditTableCommand(ERDesignerComponent aComponent, Table aTable, Index aIndex) {
+		this(aComponent, aTable);
+		index = aIndex;
+	}
 
-    @Override
-    public void execute() {
-        TableEditor theEditor = new TableEditor(component.getModel(), component.getDetailComponent());
-        theEditor.initializeFor(table);
-        if (attribute != null) {
-            theEditor.setSelectedAttribute(attribute);
-        }
-        if (index != null) {
-            theEditor.setSelectedIndex(index);
-        }
-        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+	@Override
+	public void execute() {
+		TableEditor theEditor = new TableEditor(component.getModel(), component.getDetailComponent());
+		theEditor.initializeFor(table);
+		if (attribute != null) {
+			theEditor.setSelectedAttribute(attribute);
+		}
+		if (index != null) {
+			theEditor.setSelectedIndex(index);
+		}
+		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                refreshDisplayOf(table);
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayOf(table);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 
 }

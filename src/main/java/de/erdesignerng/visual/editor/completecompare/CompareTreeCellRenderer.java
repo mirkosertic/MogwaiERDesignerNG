@@ -34,41 +34,41 @@ import de.erdesignerng.visual.IconFactory;
  */
 public class CompareTreeCellRenderer extends DefaultTreeCellRenderer {
 
-    private final ImageIcon missingIcon;
+	private final ImageIcon missingIcon;
 
-    private final ImageIcon matchingIcon;
+	private final ImageIcon matchingIcon;
 
-    public CompareTreeCellRenderer() {
-        missingIcon = IconFactory.getMissingIcon();
-        matchingIcon = IconFactory.getMatchingIcon();
-    }
+	public CompareTreeCellRenderer() {
+		missingIcon = IconFactory.getMissingIcon();
+		matchingIcon = IconFactory.getMatchingIcon();
+	}
 
-    @Override
-    public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean aSelected, boolean expanded,
-            boolean aLeaf, int aRow, boolean aHasFocus) {
+	@Override
+	public Component getTreeCellRendererComponent(JTree aTree, Object aValue, boolean aSelected, boolean expanded,
+			boolean aLeaf, int aRow, boolean aHasFocus) {
 
-        DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
+		DefaultMutableTreeNode theNode = (DefaultMutableTreeNode) aValue;
 
-        setLeafIcon(aLeaf ? matchingIcon : null);
-        setOpenIcon(aLeaf ? matchingIcon : null);
-        setClosedIcon(aLeaf ? matchingIcon : null);
+		setLeafIcon(aLeaf ? matchingIcon : null);
+		setOpenIcon(aLeaf ? matchingIcon : null);
+		setClosedIcon(aLeaf ? matchingIcon : null);
 
-        if (theNode.getUserObject() instanceof MissingInfo) {
+		if (theNode.getUserObject() instanceof MissingInfo) {
 
-            setLeafIcon(missingIcon);
-            setOpenIcon(missingIcon);
-            setClosedIcon(missingIcon);
+			setLeafIcon(missingIcon);
+			setOpenIcon(missingIcon);
+			setClosedIcon(missingIcon);
 
-        }
+		}
 
-        if (theNode.getUserObject() instanceof RedefinedInfo) {
+		if (theNode.getUserObject() instanceof RedefinedInfo) {
 
-            setLeafIcon(missingIcon);
-            setOpenIcon(missingIcon);
-            setClosedIcon(missingIcon);
+			setLeafIcon(missingIcon);
+			setOpenIcon(missingIcon);
+			setClosedIcon(missingIcon);
 
-        }
+		}
 
-        return super.getTreeCellRendererComponent(aTree, aValue, aSelected, expanded, aLeaf, aRow, aHasFocus);
-    }
+		return super.getTreeCellRendererComponent(aTree, aValue, aSelected, expanded, aLeaf, aRow, aHasFocus);
+	}
 }

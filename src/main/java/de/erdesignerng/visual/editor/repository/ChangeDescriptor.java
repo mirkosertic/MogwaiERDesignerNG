@@ -30,26 +30,26 @@ import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
  */
 public class ChangeDescriptor {
 
-    private ChangeEntity change;
+	private final ChangeEntity change;
 
-    private int index;
+	private final int index;
 
-    public ChangeDescriptor(ChangeEntity aChange, int aIndex) {
-        change = aChange;
-        index = aIndex;
-    }
+	public ChangeDescriptor(ChangeEntity aChange, int aIndex) {
+		change = aChange;
+		index = aIndex;
+	}
 
-    @Override
-    public String toString() {
-        DateFormat theFormat = new SimpleDateFormat();
-        return "#" + index + " " + change.getCreationUser() + "@" + theFormat.format(change.getCreationDate());
-    }
+	@Override
+	public String toString() {
+		DateFormat theFormat = new SimpleDateFormat();
+		return "#" + index + " " + change.getCreationUser() + "@" + theFormat.format(change.getCreationDate());
+	}
 
-    public ChangeEntity getChange() {
-        return change;
-    }
+	public ChangeEntity getChange() {
+		return change;
+	}
 
-    public int getIndex() {
-        return index;
-    }
+	public int getIndex() {
+		return index;
+	}
 }

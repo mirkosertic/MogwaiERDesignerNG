@@ -26,63 +26,63 @@ import java.util.List;
  */
 public class ReverseEngineeringOptions {
 
-    private TableNamingEnum tableNaming;
+	private TableNamingEnum tableNaming;
 
-    private List<SchemaEntry> schemaEntries = new ArrayList<SchemaEntry>();
+	private List<SchemaEntry> schemaEntries = new ArrayList<SchemaEntry>();
 
-    private List<TableEntry> tableEntries = new ArrayList<TableEntry>();
+	private List<TableEntry> tableEntries = new ArrayList<TableEntry>();
 
-    /**
-     * @return the tableNaming
-     */
-    public TableNamingEnum getTableNaming() {
-        return tableNaming;
-    }
+	/**
+	 * @return the tableNaming
+	 */
+	public TableNamingEnum getTableNaming() {
+		return tableNaming;
+	}
 
-    /**
-     * @param tableNaming
-     *            the tableNaming to set
-     */
-    public void setTableNaming(TableNamingEnum tableNaming) {
-        this.tableNaming = tableNaming;
-    }
+	/**
+	 * @param tableNaming
+	 *			the tableNaming to set
+	 */
+	public void setTableNaming(TableNamingEnum tableNaming) {
+		this.tableNaming = tableNaming;
+	}
 
-    /**
-     * Gibt den Wert des Attributs <code>schemaEntries</code> zurück.
-     * 
-     * @return Wert des Attributs schemaEntries.
-     */
-    public List<SchemaEntry> getSchemaEntries() {
-        return schemaEntries;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>schemaEntries</code> zurück.
+	 * 
+	 * @return Wert des Attributs schemaEntries.
+	 */
+	public List<SchemaEntry> getSchemaEntries() {
+		return schemaEntries;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>schemaEntries</code>.
-     * 
-     * @param schemaEntries
-     *            Wert für das Attribut schemaEntries.
-     */
-    public void setSchemaEntries(List<SchemaEntry> schemaEntries) {
-        this.schemaEntries = schemaEntries;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>schemaEntries</code>.
+	 * 
+	 * @param schemaEntries
+	 *			Wert für das Attribut schemaEntries.
+	 */
+	public void setSchemaEntries(List<SchemaEntry> schemaEntries) {
+		this.schemaEntries = schemaEntries;
+	}
 
-    @Override
-    public String toString() {
-        return schemaEntries.toString();
-    }
+	@Override
+	public String toString() {
+		return schemaEntries.toString();
+	}
 
-    /**
-     * @return the tableNames
-     */
-    public List<TableEntry> getTableEntries() {
-        return tableEntries;
-    }
+	/**
+	 * @return the tableNames
+	 */
+	public List<TableEntry> getTableEntries() {
+		return tableEntries;
+	}
 
-    /**
-     * @param tableNames
-     *            the tableNames to set
-     */
-    public void setTableEntries(List<TableEntry> tableNames) {
-        this.tableEntries = tableNames;
-    }
+	/**
+	 * @param tableNames
+	 *			the tableNames to set
+	 */
+	public void setTableEntries(List<TableEntry> tableNames) {
+		this.tableEntries = tableNames;
+	}
 }

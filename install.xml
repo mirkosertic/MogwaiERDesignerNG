@@ -13,8 +13,8 @@
 		</authors>
 		<url>http://mogwai.sourceforge.net</url>
 		<javaversion>1.6</javaversion>
-    	<requiresjdk>no</requiresjdk>
-    	<run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
+		<requiresjdk>no</requiresjdk>
+		<run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
 	</info>
 	<guiprefs width="640" height="480" resizable="no">
 		<modifier key="useButtonIcons" value="no" />

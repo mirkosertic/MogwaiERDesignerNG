@@ -25,84 +25,84 @@ import org.apache.commons.lang.StringUtils;
  */
 public class View extends OwnedModelItem<Model> {
 
-    private String sql;
+	private String sql;
 
-    private ViewAttributeList attributes = new ViewAttributeList();
+	private ViewAttributeList attributes = new ViewAttributeList();
 
-    private String schema;
+	private String schema;
 
-    /**
-     * Gibt den Wert des Attributs <code>sql</code> zurück.
-     * 
-     * @return Wert des Attributs sql.
-     */
-    public String getSql() {
-        return sql;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>sql</code> zurück.
+	 * 
+	 * @return Wert des Attributs sql.
+	 */
+	public String getSql() {
+		return sql;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>sql</code>.
-     * 
-     * @param sql
-     *            Wert für das Attribut sql.
-     */
-    public void setSql(String sql) {
-        this.sql = sql;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>sql</code>.
+	 * 
+	 * @param sql
+	 *			Wert für das Attribut sql.
+	 */
+	public void setSql(String sql) {
+		this.sql = sql;
+	}
 
-    /**
-     * Gibt den Wert des Attributs <code>attributes</code> zurück.
-     * 
-     * @return Wert des Attributs attributes.
-     */
-    public ViewAttributeList getAttributes() {
-        return attributes;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>attributes</code> zurück.
+	 * 
+	 * @return Wert des Attributs attributes.
+	 */
+	public ViewAttributeList getAttributes() {
+		return attributes;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>attributes</code>.
-     * 
-     * @param attributes
-     *            Wert für das Attribut attributes.
-     */
-    public void setAttributes(ViewAttributeList attributes) {
-        this.attributes = attributes;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>attributes</code>.
+	 * 
+	 * @param attributes
+	 *			Wert für das Attribut attributes.
+	 */
+	public void setAttributes(ViewAttributeList attributes) {
+		this.attributes = attributes;
+	}
 
-    /**
-     * Test if the view was modified(compare it with another view).
-     * 
-     * @param aView
-     *            the view to test against with
-     * @return true if it was modified, else false
-     */
-    public boolean isModified(View aView) {
-        if (!StringUtils.equals(sql, aView.getSql())) {
-            return true;
-        }
-        return false;
-    }
+	/**
+	 * Test if the view was modified(compare it with another view).
+	 * 
+	 * @param aView
+	 *			the view to test against with
+	 * @return true if it was modified, else false
+	 */
+	public boolean isModified(View aView) {
+		if (!StringUtils.equals(sql, aView.getSql())) {
+			return true;
+		}
+		return false;
+	}
 
-    /**
-     * @return the schema
-     */
-    public String getSchema() {
-        return schema;
-    }
+	/**
+	 * @return the schema
+	 */
+	public String getSchema() {
+		return schema;
+	}
 
-    /**
-     * @param schema
-     *            the schema to set
-     */
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
+	/**
+	 * @param schema
+	 *			the schema to set
+	 */
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 
-    @Override
-    public String getUniqueName() {
-        if (!StringUtils.isEmpty(schema)) {
-            return schema + "." + getName();
-        }
-        return super.getUniqueName();
-    }
+	@Override
+	public String getUniqueName() {
+		if (!StringUtils.isEmpty(schema)) {
+			return schema + "." + getName();
+		}
+		return super.getUniqueName();
+	}
 }

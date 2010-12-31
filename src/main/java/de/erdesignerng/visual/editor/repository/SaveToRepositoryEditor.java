@@ -38,125 +38,125 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class SaveToRepositoryEditor extends BaseEditor {
 
-    private SaveToRepositoryView view = new SaveToRepositoryView() {
+	private final SaveToRepositoryView view = new SaveToRepositoryView() {
 
-        @Override
-        public void commandChangeRepositoryEntry() {
-            SaveToRepositoryEditor.this.commandChangeRepositoryEntry();
-        }
+		@Override
+		public void commandChangeRepositoryEntry() {
+			SaveToRepositoryEditor.this.commandChangeRepositoryEntry();
+		}
 
-    };
+	};
 
-    private BindingInfo<SaveToRepositoryDataModel> bindingInfo1;
+	private final BindingInfo<SaveToRepositoryDataModel> bindingInfo1;
 
-    private BindingInfo<SaveToRepositoryDataModel> bindingInfo2;
+	private final BindingInfo<SaveToRepositoryDataModel> bindingInfo2;
 
-    public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDescriptor> aEntries,
-            RepositoryEntryDescriptor aCurrentEntry) {
-        super(aParent, ERDesignerBundle.SAVEMODELTODB);
+	public SaveToRepositoryEditor(Component aParent, List<RepositoryEntryDescriptor> aEntries,
+			RepositoryEntryDescriptor aCurrentEntry) {
+		super(aParent, ERDesignerBundle.SAVEMODELTODB);
 
-        initialize();
+		initialize();
 
-        SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
-        bindingInfo1 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
-        bindingInfo2 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
+		SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
+		bindingInfo1 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
+		bindingInfo2 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
 
-        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-        for (RepositoryEntryDescriptor theEntry : aEntries) {
-            theModel.addElement(theEntry);
-        }
-        view.getExistingNameBox().setModel(theModel);
-        if (theModel.getSize() > 0) {
-            theBindModel.setExistingEntry((RepositoryEntryDescriptor) theModel.getElementAt(0));
-            theBindModel.setNameForExistantEntry(theBindModel.getExistingEntry().getName());
-        }
+		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		for (RepositoryEntryDescriptor theEntry : aEntries) {
+			theModel.addElement(theEntry);
+		}
+		view.getExistingNameBox().setModel(theModel);
+		if (theModel.getSize() > 0) {
+			theBindModel.setExistingEntry((RepositoryEntryDescriptor) theModel.getElementAt(0));
+			theBindModel.setNameForExistingEntry(theBindModel.getExistingEntry().getName());
+		}
 
-        if (aCurrentEntry == null) {
-            view.getNewEntryButton().setSelected(true);
-        } else {
-            view.getExistingEntryButton().setSelected(true);
-            theBindModel.setExistingEntry(aCurrentEntry);
-            theBindModel.setNameForExistantEntry(aCurrentEntry.getName());
-        }
+		if (aCurrentEntry == null) {
+			view.getNewEntryButton().setSelected(true);
+		} else {
+			view.getExistingEntryButton().setSelected(true);
+			theBindModel.setExistingEntry(aCurrentEntry);
+			theBindModel.setNameForExistingEntry(aCurrentEntry.getName());
+		}
 
-        bindingInfo1.addBinding("nameForNewEntry", view.getNewNameField(), true);
-        bindingInfo1.configure();
+		bindingInfo1.addBinding("nameForNewEntry", view.getNewNameField(), true);
+		bindingInfo1.configure();
 
-        bindingInfo2.addBinding("existingEntry", view.getExistingNameBox(), true);
-        bindingInfo2.addBinding("nameForExistantEntry", view.getExistingNameField(), true);
-        bindingInfo2.configure();
+		bindingInfo2.addBinding("existingEntry", view.getExistingNameBox(), true);
+		bindingInfo2.addBinding("nameForExistingEntry", view.getExistingNameField(), true);
+		bindingInfo2.configure();
 
-        bindingInfo2.model2view();
-    }
+		bindingInfo2.model2view();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        ButtonGroup theGroup = new ButtonGroup();
-        theGroup.add(view.getExistingEntryButton());
-        theGroup.add(view.getNewEntryButton());
+		ButtonGroup theGroup = new ButtonGroup();
+		theGroup.add(view.getExistingEntryButton());
+		theGroup.add(view.getNewEntryButton());
 
-        view.getExistingEntryButton().setSelected(true);
+		view.getExistingEntryButton().setSelected(true);
 
-        view.getOkButton().setAction(okAction);
-        view.getCancelButton().setAction(cancelAction);
+		view.getOkButton().setAction(okAction);
+		view.getCancelButton().setAction(cancelAction);
 
-        setContentPane(view);
-        setResizable(false);
+		setContentPane(view);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 
-    private void commandChangeRepositoryEntry() {
-        RepositoryEntryDescriptor theDesc = (RepositoryEntryDescriptor) view.getExistingNameBox().getSelectedItem();
-        if (theDesc != null) {
-            SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
-            theModel.setExistingEntry(theDesc);
-            theModel.setNameForExistantEntry(theDesc.getName());
-            bindingInfo2.model2view();
-        }
-    }
+	private void commandChangeRepositoryEntry() {
+		RepositoryEntryDescriptor theDesc = (RepositoryEntryDescriptor) view.getExistingNameBox().getSelectedItem();
+		if (theDesc != null) {
+			SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
+			theModel.setExistingEntry(theDesc);
+			theModel.setNameForExistingEntry(theDesc.getName());
+			bindingInfo2.model2view();
+		}
+	}
 
-    @Override
-    protected void commandOk() {
+	@Override
+	protected void commandOk() {
 
-        if (view.getNewEntryButton().isSelected()) {
-            if (bindingInfo1.validate().size() == 0) {
-                bindingInfo1.view2model();
-                setModalResult(DialogConstants.MODAL_RESULT_OK);
-            }
-        }
+		if (view.getNewEntryButton().isSelected()) {
+			if (bindingInfo1.validate().size() == 0) {
+				bindingInfo1.view2model();
+				setModalResult(DialogConstants.MODAL_RESULT_OK);
+			}
+		}
 
-        if (view.getExistingEntryButton().isSelected()) {
-            if (bindingInfo2.validate().size() == 0) {
-                bindingInfo2.view2model();
-                setModalResult(DialogConstants.MODAL_RESULT_OK);
-            }
-        }
-    }
+		if (view.getExistingEntryButton().isSelected()) {
+			if (bindingInfo2.validate().size() == 0) {
+				bindingInfo2.view2model();
+				setModalResult(DialogConstants.MODAL_RESULT_OK);
+			}
+		}
+	}
 
-    /**
-     * Create a repository descriptor for the selected entry.
-     * 
-     * @return the descriptor
-     */
-    public RepositoryEntryDescriptor getRepositoryDescriptor() {
+	/**
+	 * Create a repository descriptor for the selected entry.
+	 * 
+	 * @return the descriptor
+	 */
+	public RepositoryEntryDescriptor getRepositoryDescriptor() {
 
-        SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
+		SaveToRepositoryDataModel theModel = bindingInfo1.getDefaultModel();
 
-        if (view.getNewEntryButton().isSelected()) {
-            RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
-            theDesc.setName(theModel.getNameForNewEntry());
-            return theDesc;
-        }
+		if (view.getNewEntryButton().isSelected()) {
+			RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
+			theDesc.setName(theModel.getNameForNewEntry());
+			return theDesc;
+		}
 
-        RepositoryEntryDescriptor theDesc = theModel.getExistingEntry();
-        theDesc.setName(theModel.getNameForExistantEntry());
-        return theDesc;
-    }
+		RepositoryEntryDescriptor theDesc = theModel.getExistingEntry();
+		theDesc.setName(theModel.getNameForExistingEntry());
+		return theDesc;
+	}
 }

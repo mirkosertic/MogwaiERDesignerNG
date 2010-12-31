@@ -45,135 +45,135 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  */
 public class OpenXavaExportEditor extends BaseEditor {
 
-    private static final String OX_STYPE_ = "OX_STYPE_";
+	private static final String OX_STYPE_ = "OX_STYPE_";
 
-    private static final String OX_TYPE_ = "OX_TYPE_";
+	private static final String OX_TYPE_ = "OX_TYPE_";
 
-    private static final String OX_PACKAGE = "OX_PACKAGE";
+	private static final String OX_PACKAGE = "OX_PACKAGE";
 
-    private static final String OX_SRCDIR = "OX_SRCDIR";
+	private static final String OX_SRCDIR = "OX_SRCDIR";
 
-    private Model model;
+	private final Model model;
 
-    private BindingInfo<OpenXavaOptions> bindingInfo = new BindingInfo<OpenXavaOptions>(new OpenXavaOptions());
+	private final BindingInfo<OpenXavaOptions> bindingInfo = new BindingInfo<OpenXavaOptions>(new OpenXavaOptions());
 
-    private OpenXavaExportEditorView editingView;
+	private OpenXavaExportEditorView editingView;
 
-    protected DefaultAction chooseSrcDirectoryAction = new DefaultAction(new ActionEventProcessor() {
+	protected final DefaultAction chooseSrcDirectoryAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandChooseSrcDirectory();
-        }
-    }, this, ERDesignerBundle.FILE);
+		public void processActionEvent(ActionEvent e) {
+			commandChooseSrcDirectory();
+		}
+	}, this, ERDesignerBundle.FILE);
 
-    /**
-     * Create a relation editor.
-     * 
-     * @param aModel
-     *            the model
-     * @param aParent
-     *            the parent container
-     */
-    public OpenXavaExportEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.OPENXAVAEXPORT);
+	/**
+	 * Create a relation editor.
+	 * 
+	 * @param aModel
+	 *			the model
+	 * @param aParent
+	 *			the parent container
+	 */
+	public OpenXavaExportEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.OPENXAVAEXPORT);
 
-        initialize();
+		initialize();
 
-        model = aModel;
+		model = aModel;
 
-        bindingInfo.addBinding("srcDirectory", editingView.getSrcDirectory(), true);
-        bindingInfo.addBinding("packageName", editingView.getPackageName(), true);
+		bindingInfo.addBinding("srcDirectory", editingView.getSrcDirectory(), true);
+		bindingInfo.addBinding("packageName", editingView.getPackageName(), true);
 
-        initializeMappingModelFor(aModel);
-        bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
-                getResourceHelper()));
+		initializeMappingModelFor(aModel);
+		bindingInfo.addBinding("typeMapping", new ConvertPropertyAdapter(editingView.getMappingTable(), null,
+				getResourceHelper()));
 
-        bindingInfo.configure();
-        bindingInfo.model2view();
-    }
+		bindingInfo.configure();
+		bindingInfo.model2view();
+	}
 
-    /**
-     * Initialize the current mapping model for a target dialect.
-     * 
-     * @param aDialect
-     *            the target dialect
-     */
-    private void initializeMappingModelFor(Model aModel) {
+	/**
+	 * Initialize the current mapping model for a target dialect.
+	 * 
+	 * @param aModel
+	 *			the target model
+	 */
+	private void initializeMappingModelFor(Model aModel) {
 
-        OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
+		OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
 
-        theOptions.setSrcDirectory(aModel.getProperties().getProperty(OX_SRCDIR));
-        theOptions.setPackageName(aModel.getProperties().getProperty(OX_PACKAGE));
+		theOptions.setSrcDirectory(aModel.getProperties().getProperty(OX_SRCDIR));
+		theOptions.setPackageName(aModel.getProperties().getProperty(OX_PACKAGE));
 
-        for (DataType theType : aModel.getUsedDataTypes()) {
-            OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
-            String theJavaType = aModel.getProperties().getProperty(OX_TYPE_ + theType.getName());
-            String theStereoType = aModel.getProperties().getProperty(OX_STYPE_ + theType.getName());
-            if (StringUtils.isEmpty(theJavaType)) {
-                theJavaType = GeneratorUtils.findClosestJavaTypeFor(theType);
-            }
-            theMapping.setJavaType(theJavaType);
-            theMapping.setStereoType(theStereoType);
+		for (DataType theType : aModel.getUsedDataTypes()) {
+			OpenXavaTypeMap theMapping = new OpenXavaTypeMap();
+			String theJavaType = aModel.getProperties().getProperty(OX_TYPE_ + theType.getName());
+			String theStereoType = aModel.getProperties().getProperty(OX_STYPE_ + theType.getName());
+			if (StringUtils.isEmpty(theJavaType)) {
+				theJavaType = GeneratorUtils.findClosestJavaTypeFor(theType);
+			}
+			theMapping.setJavaType(theJavaType);
+			theMapping.setStereoType(theStereoType);
 
-            theOptions.getTypeMapping().put(theType, theMapping);
-        }
-    }
+			theOptions.getTypeMapping().put(theType, theMapping);
+		}
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new OpenXavaExportEditorView();
-        editingView.getOKButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
-        editingView.getSearchDirectoryButton().setAction(chooseSrcDirectoryAction);
+		editingView = new OpenXavaExportEditorView();
+		editingView.getOKButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
+		editingView.getSearchDirectoryButton().setAction(chooseSrcDirectoryAction);
 
-        setContentPane(editingView);
-        setResizable(false);
+		setContentPane(editingView);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    private void commandChooseSrcDirectory() {
-        JFileChooser theChooser = new JFileChooser();
-        theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File theBaseDirectory = theChooser.getSelectedFile();
-            editingView.getSrcDirectory().setText(theBaseDirectory.toString());
-        }
-    }
+	private void commandChooseSrcDirectory() {
+		JFileChooser theChooser = new JFileChooser();
+		theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (theChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File theBaseDirectory = theChooser.getSelectedFile();
+			editingView.getSrcDirectory().setText(theBaseDirectory.toString());
+		}
+	}
 
-    @Override
-    protected void commandOk() {
-        if (bindingInfo.validate().size() == 0) {
+	@Override
+	protected void commandOk() {
+		if (bindingInfo.validate().size() == 0) {
 
-            bindingInfo.view2model();
+			bindingInfo.view2model();
 
-            OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
+			OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
 
-            model.getProperties().setProperty(OX_SRCDIR, theOptions.getSrcDirectory());
-            model.getProperties().setProperty(OX_PACKAGE, theOptions.getPackageName());
+			model.getProperties().setProperty(OX_SRCDIR, theOptions.getSrcDirectory());
+			model.getProperties().setProperty(OX_PACKAGE, theOptions.getPackageName());
 
-            for (Map.Entry<DataType, OpenXavaTypeMap> theEntry : theOptions.getTypeMapping().entrySet()) {
+			for (Map.Entry<DataType, OpenXavaTypeMap> theEntry : theOptions.getTypeMapping().entrySet()) {
 
-                model.getProperties().setProperty(OX_TYPE_ + theEntry.getKey().getName(),
-                        theEntry.getValue().getJavaType());
-                model.getProperties().setProperty(OX_STYPE_ + theEntry.getKey().getName(),
-                        theEntry.getValue().getStereoType());
+				model.getProperties().setProperty(OX_TYPE_ + theEntry.getKey().getName(),
+						theEntry.getValue().getJavaType());
+				model.getProperties().setProperty(OX_STYPE_ + theEntry.getKey().getName(),
+						theEntry.getValue().getStereoType());
 
-            }
-            setModalResult(MODAL_RESULT_OK);
-        }
-    }
+			}
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-        OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
+	@Override
+	public void applyValues() throws Exception {
+		OpenXavaOptions theOptions = bindingInfo.getDefaultModel();
 
-        OpenXavaGenerator theGenerator = new OpenXavaGenerator();
-        theGenerator.generate(model, theOptions);
-    }
+		OpenXavaGenerator theGenerator = new OpenXavaGenerator();
+		theGenerator.generate(model, theOptions);
+	}
 }

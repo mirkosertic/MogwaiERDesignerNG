@@ -29,24 +29,24 @@ import de.erdesignerng.util.ApplicationPreferences;
  */
 public class GenericConnectionProvider implements ConnectionProvider {
 
-    private Connection connection;
+	private final Connection connection;
 
-    private String statementSeparator;
+	private final String statementSeparator;
 
-    public GenericConnectionProvider(Connection aConnection, String aStatementSeparator) {
-        connection = aConnection;
-        statementSeparator = aStatementSeparator;
-    }
+	public GenericConnectionProvider(Connection aConnection, String aStatementSeparator) {
+		connection = aConnection;
+		statementSeparator = aStatementSeparator;
+	}
 
-    public Connection createConnection(ApplicationPreferences preferences) throws Exception {
-        return connection;
-    }
+	public Connection createConnection(ApplicationPreferences preferences) throws Exception {
+		return connection;
+	}
 
-    public String createScriptStatementSeparator() {
-        return statementSeparator;
-    }
+	public String createScriptStatementSeparator() {
+		return statementSeparator;
+	}
 
-    public boolean generatesManagedConnection() {
-        return true;
-    }
+	public boolean generatesManagedConnection() {
+		return true;
+	}
 }

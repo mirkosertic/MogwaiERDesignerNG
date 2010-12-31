@@ -23,34 +23,34 @@ import java.util.List;
 /**
  * Entity for indexes.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class IndexEntity extends ModelEntity {
 
-    private int type;
+	private int type;
 
-    private List<IndexExpressionEntity> expressions = new ArrayList<IndexExpressionEntity>();
+	private List<IndexExpressionEntity> expressions = new ArrayList<IndexExpressionEntity>();
 
-    /**
-     * @return the type
-     */
-    public int getType() {
-        return type;
-    }
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
 
-    /**
-     * @param type
-     *            the type to set
-     */
-    public void setType(int type) {
-        this.type = type;
-    }
+	/**
+	 * @param type
+	 *			the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
 
-    public List<IndexExpressionEntity> getExpressions() {
-        return expressions;
-    }
+	public List<IndexExpressionEntity> getExpressions() {
+		return expressions;
+	}
 
-    public void setExpressions(List<IndexExpressionEntity> expressions) {
-        this.expressions = expressions;
-    }
+	public void setExpressions(List<IndexExpressionEntity> expressions) {
+		this.expressions = expressions;
+	}
 }

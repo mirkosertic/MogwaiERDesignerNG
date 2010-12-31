@@ -66,7 +66,7 @@
 										</xs:element>
 										<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
 											<xs:annotation>
-												<xs:documentation>Definition of an atrtribute</xs:documentation>
+												<xs:documentation>Definition of an attribute</xs:documentation>
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence minOccurs="0">

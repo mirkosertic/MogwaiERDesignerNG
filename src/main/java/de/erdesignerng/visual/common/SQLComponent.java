@@ -46,116 +46,116 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class SQLComponent extends DefaultPanel implements ResourceHelperProvider {
 
-    private DefaultTextArea sql;
+	private DefaultTextArea sql;
 
-    private static SQLComponent DEFAULT;
+	private static SQLComponent DEFAULT;
 
-    public static SQLComponent initializeComponent() {
-        if (DEFAULT == null) {
-            DEFAULT = new SQLComponent();
-        }
-        return DEFAULT;
-    }
+	public static SQLComponent initializeComponent() {
+		if (DEFAULT == null) {
+			DEFAULT = new SQLComponent();
+		}
+		return DEFAULT;
+	}
 
-    public static SQLComponent getDefault() {
-        initializeComponent();
-        return DEFAULT;
-    }
+	public static SQLComponent getDefault() {
+		initializeComponent();
+		return DEFAULT;
+	}
 
-    private SQLComponent() {
-        initialize();
-    }
+	private SQLComponent() {
+		initialize();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        setLayout(new BorderLayout());
-        sql = new DefaultTextArea();
-        sql.setEditable(false);
-        add(sql.getScrollPane(), BorderLayout.CENTER);
+		setLayout(new BorderLayout());
+		sql = new DefaultTextArea();
+		sql.setEditable(false);
+		add(sql.getScrollPane(), BorderLayout.CENTER);
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    /**
-     * Reset the SQL display.
-     */
-    public void resetDisplay() {
-        sql.setText("");
-    }
+	/**
+	 * Reset the SQL display.
+	 */
+	public void resetDisplay() {
+		sql.setText("");
+	}
 
-    /**
-     * Display the CREATE SQL Statements for a given set of model items.
-     * 
-     * @param aModelItems
-     *            a set of model items
-     */
-    public void displaySQLFor(ModelItem[] aModelItems) {
-        resetDisplay();
+	/**
+	 * Display the CREATE SQL Statements for a given set of model items.
+	 * 
+	 * @param aModelItems
+	 *			a set of model items
+	 */
+	public void displaySQLFor(ModelItem[] aModelItems) {
+		resetDisplay();
 
-        Model theModel = ERDesignerComponent.getDefault().getModel();
-        Dialect theDialect = theModel.getDialect();
-        if (theDialect != null && !ArrayUtils.isEmpty(aModelItems)) {
-            StatementList theStatementList = new StatementList();
-            SQLGenerator theGenerator = theDialect.createSQLGenerator();
-            for (ModelItem aItem : aModelItems) {
-                if (aItem instanceof Table) {
-                    Table theTable = (Table) aItem;
-                    theStatementList.addAll(theGenerator.createAddTableStatement(theTable));
-                    for (Relation theRelation : theModel.getRelations().getForeignKeysFor(theTable)) {
-                        theStatementList.addAll(theGenerator.createAddRelationStatement(theRelation));
+		Model theModel = ERDesignerComponent.getDefault().getModel();
+		Dialect theDialect = theModel.getDialect();
+		if (theDialect != null && !ArrayUtils.isEmpty(aModelItems)) {
+			StatementList theStatementList = new StatementList();
+			SQLGenerator theGenerator = theDialect.createSQLGenerator();
+			for (ModelItem aItem : aModelItems) {
+				if (aItem instanceof Table) {
+					Table theTable = (Table) aItem;
+					theStatementList.addAll(theGenerator.createAddTableStatement(theTable));
+					for (Relation theRelation : theModel.getRelations().getForeignKeysFor(theTable)) {
+						theStatementList.addAll(theGenerator.createAddRelationStatement(theRelation));
 
-                    }
-                }
-                if (aItem instanceof View) {
-                    theStatementList.addAll(theGenerator.createAddViewStatement((View) aItem));
-                }
-                if (aItem instanceof Relation) {
-                    theStatementList.addAll(theGenerator.createAddRelationStatement((Relation) aItem));
-                }
-                if (aItem instanceof Attribute) {
-                    Attribute theAttribute = (Attribute) aItem;
-                    theStatementList.addAll(theGenerator.createAddAttributeToTableStatement(theAttribute.getOwner(),
-                            theAttribute));
-                }
-                if (aItem instanceof Index) {
-                    Index theIndex = (Index) aItem;
-                    if (theIndex.getIndexType() == IndexType.PRIMARYKEY) {
-                        theStatementList.addAll(theGenerator.createAddPrimaryKeyToTable(theIndex.getOwner(), theIndex));
-                    } else {
-                        theStatementList.addAll(theGenerator.createAddIndexToTableStatement(theIndex.getOwner(),
-                                theIndex));
-                    }
-                }
-                if (aItem instanceof CustomType) {
-                    CustomType theCustomType = (CustomType) aItem;
-                    theStatementList.addAll(theGenerator.createAddCustomTypeStatement(theCustomType));
-                }
-                if (aItem instanceof Domain) {
-                    Domain theDomain = (Domain) aItem;
-                    theStatementList.addAll(theGenerator.createAddDomainStatement(theDomain));
-                }
-            }
+					}
+				}
+				if (aItem instanceof View) {
+					theStatementList.addAll(theGenerator.createAddViewStatement((View) aItem));
+				}
+				if (aItem instanceof Relation) {
+					theStatementList.addAll(theGenerator.createAddRelationStatement((Relation) aItem));
+				}
+				if (aItem instanceof Attribute) {
+					Attribute theAttribute = (Attribute) aItem;
+					theStatementList.addAll(theGenerator.createAddAttributeToTableStatement(theAttribute.getOwner(),
+							theAttribute));
+				}
+				if (aItem instanceof Index) {
+					Index theIndex = (Index) aItem;
+					if (theIndex.getIndexType() == IndexType.PRIMARYKEY) {
+						theStatementList.addAll(theGenerator.createAddPrimaryKeyToTable(theIndex.getOwner(), theIndex));
+					} else {
+						theStatementList.addAll(theGenerator.createAddIndexToTableStatement(theIndex.getOwner(),
+								theIndex));
+					}
+				}
+				if (aItem instanceof CustomType) {
+					CustomType theCustomType = (CustomType) aItem;
+					theStatementList.addAll(theGenerator.createAddCustomTypeStatement(theCustomType));
+				}
+				if (aItem instanceof Domain) {
+					Domain theDomain = (Domain) aItem;
+					theStatementList.addAll(theGenerator.createAddDomainStatement(theDomain));
+				}
+			}
 
-            if (theStatementList.size() > 0) {
-                StringWriter theWriter = new StringWriter();
-                PrintWriter thePW = new PrintWriter(theWriter);
-                for (Statement theStatement : theStatementList) {
-                    thePW.print(theStatement.getSql());
-                    thePW.println(theGenerator.createScriptStatementSeparator());
-                }
-                thePW.flush();
-                thePW.close();
-                sql.setText(theWriter.toString());
-            }
-        } else {
-            if (theDialect == null) {
-                sql.setText(getResourceHelper().getText(ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
-            }
-        }
-    }
+			if (theStatementList.size() > 0) {
+				StringWriter theWriter = new StringWriter();
+				PrintWriter thePW = new PrintWriter(theWriter);
+				for (Statement theStatement : theStatementList) {
+					thePW.print(theStatement.getSql());
+					thePW.println(theGenerator.createScriptStatementSeparator());
+				}
+				thePW.flush();
+				thePW.close();
+				sql.setText(theWriter.toString());
+			}
+		} else {
+			if (theDialect == null) {
+				sql.setText(getResourceHelper().getText(ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+			}
+		}
+	}
 
-    @Override
-    public ResourceHelper getResourceHelper() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
+	@Override
+	public ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
 }

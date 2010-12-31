@@ -19,58 +19,58 @@ package de.erdesignerng.dialect;
 
 public class SchemaEntry {
 
-    private String catalogName;
+	private String catalogName;
 
-    private String schemaName;
+	private String schemaName;
 
-    public SchemaEntry(String aCatalogName, String aSchemaName) {
-        catalogName = aCatalogName;
-        schemaName = aSchemaName;
-    }
+	public SchemaEntry(String aCatalogName, String aSchemaName) {
+		catalogName = aCatalogName;
+		schemaName = aSchemaName;
+	}
 
-    /**
-     * Gibt den Wert des Attributs <code>catalogName</code> zurück.
-     * 
-     * @return Wert des Attributs catalogName.
-     */
-    public String getCatalogName() {
-        return catalogName;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>catalogName</code> zurück.
+	 * 
+	 * @return Wert des Attributs catalogName.
+	 */
+	public String getCatalogName() {
+		return catalogName;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>catalogName</code>.
-     * 
-     * @param catalogName
-     *            Wert für das Attribut catalogName.
-     */
-    public void setCatalogName(String catalogName) {
-        this.catalogName = catalogName;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>catalogName</code>.
+	 * 
+	 * @param catalogName
+	 *			Wert für das Attribut catalogName.
+	 */
+	public void setCatalogName(String catalogName) {
+		this.catalogName = catalogName;
+	}
 
-    /**
-     * Gibt den Wert des Attributs <code>schemaName</code> zurück.
-     * 
-     * @return Wert des Attributs schemaName.
-     */
-    public String getSchemaName() {
-        return schemaName;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>schemaName</code> zurück.
+	 * 
+	 * @return Wert des Attributs schemaName.
+	 */
+	public String getSchemaName() {
+		return schemaName;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>schemaName</code>.
-     * 
-     * @param schemaName
-     *            Wert für das Attribut schemaName.
-     */
-    public void setSchemaName(String schemaName) {
-        this.schemaName = schemaName;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>schemaName</code>.
+	 * 
+	 * @param schemaName
+	 *			Wert für das Attribut schemaName.
+	 */
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
+	}
 
-    @Override
-    public String toString() {
-        if (catalogName != null) {
-            return schemaName + "@" + catalogName;
-        }
-        return schemaName;
-    }
+	@Override
+	public String toString() {
+		if (catalogName != null) {
+			return schemaName + "@" + catalogName;
+		}
+		return schemaName;
+	}
 }

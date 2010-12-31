@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class RedefinedAttributeInfo extends RedefinedInfo {
 
-    public RedefinedAttributeInfo(String aWhat) {
-        super(ERDesignerBundle.REDEFINED, aWhat);
-    }
+	public RedefinedAttributeInfo(String aWhat) {
+		super(ERDesignerBundle.REDEFINED, aWhat);
+	}
 }

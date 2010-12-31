@@ -27,7 +27,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * Find an index expression by attribute name.
 	 * 
 	 * @param aAttributeName
-	 *            the name of the attribute
+	 *			the name of the attribute
 	 * @return the expression or null if nothing was found
 	 */
 	public IndexExpression findByAttributeName(String aAttributeName) {
@@ -46,7 +46,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * Find an index expression by is referred attribute.
 	 * 
 	 * @param aAttribute
-	 *            the attribute
+	 *			the attribute
 	 * @return the expression or null if nothing was found
 	 */
 	public IndexExpression findByAttribute(Attribute aAttribute) {
@@ -62,10 +62,10 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * Add an expression for an attribute to the list.
 	 * 
 	 * @param aAttribute
-	 *            the attribute
+	 *			the attribute
 	 * @return the created IndexExpression
 	 * @throws ElementAlreadyExistsException
-	 *             is thrown is the attribute is already part of this index
+	 *			 is thrown is the attribute is already part of this index
 	 */
 	public IndexExpression addExpressionFor(Attribute aAttribute)
 			throws ElementAlreadyExistsException {
@@ -85,7 +85,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * Add an expression for an attribute to the list.
 	 * 
 	 * @param aColumnExpression
-	 *            the expression
+	 *			the expression
 	 * @return the created IndexExpression
 	 */
 	public IndexExpression addExpressionFor(String aColumnExpression) {
@@ -99,7 +99,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * Remove an attribute from the expression list.
 	 * 
 	 * @param aAttribute
-	 *            the attribute to remove
+	 *			the attribute to remove
 	 */
 	public void removeAttribute(Attribute aAttribute) {
 		IndexExpression theExpression = findByAttribute(aAttribute);
@@ -109,10 +109,10 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	}
 
 	/**
-	 * Check if this list contails the same expressions as another list.
+	 * Check if this list contains the same expressions as another list.
 	 * 
 	 * @param aExpressions
-	 *            the other list
+	 *			the other list
 	 * @return true if yes, else false
 	 */
 	public boolean containsAllExpressions(IndexExpressionList aExpressions) {

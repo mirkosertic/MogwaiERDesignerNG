@@ -31,61 +31,61 @@ import de.erdesignerng.visual.MessagesHelper;
 
 public class OpenFromFileCommand extends UICommand {
 
-    public OpenFromFileCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public OpenFromFileCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        ModelFileFilter theFiler = new ModelFileFilter();
+	@Override
+	public void execute() {
+		ModelFileFilter theFiler = new ModelFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
-        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        theChooser.setFileFilter(theFiler);
-        if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+		JFileChooser theChooser = new JFileChooser();
+		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		theChooser.setFileFilter(theFiler);
+		if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+			File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
 
-            execute(theFile);
-        }
-    }
+			execute(theFile);
+		}
+	}
 
-    void execute(File aFile) {
-        FileInputStream theStream = null;
+	void execute(File aFile) {
+		FileInputStream theStream = null;
 
-        try {
-            component.setIntelligentLayoutEnabled(false);
+		try {
+			component.setIntelligentLayoutEnabled(false);
 
-            theStream = new FileInputStream(aFile);
+			theStream = new FileInputStream(aFile);
 
-            Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
-            getWorldConnector().initializeLoadedModel(theModel);
+			Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
+			getWorldConnector().initializeLoadedModel(theModel);
 
-            component.setModel(theModel);
+			component.setModel(theModel);
 
-            getPreferences().addRecentlyUsedFile(aFile);
+			getPreferences().addRecentlyUsedFile(aFile);
 
-            component.addCurrentConnectionToConnectionHistory();
+			component.addCurrentConnectionToConnectionHistory();
 
-            component.setupViewFor(aFile);
-            getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+			component.setupViewFor(aFile);
+			getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILELOADED));
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-                    ERDesignerBundle.ERRORLOADINGFILE));
+			MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
+					ERDesignerBundle.ERRORLOADINGFILE));
 
-            getWorldConnector().notifyAboutException(e);
-        } finally {
-            if (theStream != null) {
-                try {
-                    theStream.close();
-                } catch (IOException e) {
-                    // Ignore this exception
-                }
-            }
+			getWorldConnector().notifyAboutException(e);
+		} finally {
+			if (theStream != null) {
+				try {
+					theStream.close();
+				} catch (IOException e) {
+					// Ignore this exception
+				}
+			}
 
-            component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
-        }
-    }
+			component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
+		}
+	}
 }

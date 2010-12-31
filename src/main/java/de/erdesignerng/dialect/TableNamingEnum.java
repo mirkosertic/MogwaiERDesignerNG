@@ -19,5 +19,5 @@ package de.erdesignerng.dialect;
 
 public enum TableNamingEnum {
 
-    STANDARD, INCLUDE_SCHEMA;
+	STANDARD, INCLUDE_SCHEMA
 }

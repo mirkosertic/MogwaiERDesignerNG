@@ -23,26 +23,26 @@ import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 
 public class DBConnectionCommand extends UICommand {
 
-    public DBConnectionCommand(ERDesignerComponent aComponent) {
-        super(aComponent);
-    }
+	public DBConnectionCommand(ERDesignerComponent aComponent) {
+		super(aComponent);
+	}
 
-    @Override
-    public void execute() {
-        execute(component.getModel().createConnectionHistoryEntry());
-    }
+	@Override
+	public void execute() {
+		execute(component.getModel().createConnectionHistoryEntry());
+	}
 
-    public void execute(ConnectionDescriptor aConnection) {
-        DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(getDetailComponent(), component.getModel(),
-                getPreferences(), aConnection);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-                component.addCurrentConnectionToConnectionHistory();
+	public void execute(ConnectionDescriptor aConnection) {
+		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(getDetailComponent(), component.getModel(),
+				getPreferences(), aConnection);
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+				component.addCurrentConnectionToConnectionHistory();
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

@@ -43,40 +43,38 @@ import de.erdesignerng.PlatformConfig;
  */
 public final class XMLUtils {
 
-    private static XMLUtils me;
+	private static XMLUtils me;
 
-    private final DocumentBuilderFactory documentBuilderFactory;
+	private final DocumentBuilder documentBuilder;
 
-    private final DocumentBuilder documentBuilder;
+	private final TransformerFactory transformerFactory;
 
-    private final TransformerFactory transformerFactory;
+	private XMLUtils() throws ParserConfigurationException {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		transformerFactory = TransformerFactory.newInstance();
+	}
 
-    private XMLUtils() throws ParserConfigurationException {
-        documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        transformerFactory = TransformerFactory.newInstance();
-    }
+	public static XMLUtils getInstance() throws ParserConfigurationException {
 
-    public static XMLUtils getInstance() throws ParserConfigurationException {
+		if (me == null) {
+			me = new XMLUtils();
+		}
+		return me;
+	}
 
-        if (me == null) {
-            me = new XMLUtils();
-        }
-        return me;
-    }
+	public Document parse(InputStream aStream) throws SAXException, IOException {
+		return documentBuilder.parse(aStream);
+	}
 
-    public Document parse(InputStream aStream) throws SAXException, IOException {
-        return documentBuilder.parse(aStream);
-    }
+	public Document newDocument() {
+		return documentBuilder.newDocument();
+	}
 
-    public Document newDocument() {
-        return documentBuilder.newDocument();
-    }
-
-    public void transform(Document aDocument, Writer aWriter) throws TransformerException {
-        Transformer theTransformer = transformerFactory.newTransformer();
-        theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig.getXMLEncoding());
-        theTransformer.transform(new DOMSource(aDocument), new StreamResult(aWriter));
-    }
+	public void transform(Document aDocument, Writer aWriter) throws TransformerException {
+		Transformer theTransformer = transformerFactory.newTransformer();
+		theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig.getXMLEncoding());
+		theTransformer.transform(new DOMSource(aDocument), new StreamResult(aWriter));
+	}
 }

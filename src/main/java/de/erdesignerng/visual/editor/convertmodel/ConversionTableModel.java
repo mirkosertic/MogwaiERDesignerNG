@@ -30,59 +30,59 @@ import de.erdesignerng.dialect.DataType;
  */
 public class ConversionTableModel implements TableModel {
 
-    private final List<DataType> dataTypes;
+	private final List<DataType> dataTypes;
 
-    private final DataType[] targetTypes;
+	private final DataType[] targetTypes;
 
-    private final String sourceName;
+	private final String sourceName;
 
-    private final String targetName;
+	private final String targetName;
 
-    public ConversionTableModel(String aSourceName, String aTargetName, List<DataType> aDataTypes,
-            DataType[] aTargetTypes) {
-        sourceName = aSourceName;
-        targetName = aTargetName;
-        dataTypes = aDataTypes;
-        targetTypes = aTargetTypes;
-    }
+	public ConversionTableModel(String aSourceName, String aTargetName, List<DataType> aDataTypes,
+			DataType[] aTargetTypes) {
+		sourceName = aSourceName;
+		targetName = aTargetName;
+		dataTypes = aDataTypes;
+		targetTypes = aTargetTypes;
+	}
 
-    public Class<Object> getColumnClass(int aColumn) {
-        return Object.class;
-    }
+	public Class<Object> getColumnClass(int aColumn) {
+		return Object.class;
+	}
 
-    public int getColumnCount() {
-        return 2;
-    }
+	public int getColumnCount() {
+		return 2;
+	}
 
-    public String getColumnName(int aColumn) {
-        if (aColumn == 0) {
-            return sourceName;
-        }
-        return targetName;
-    }
+	public String getColumnName(int aColumn) {
+		if (aColumn == 0) {
+			return sourceName;
+		}
+		return targetName;
+	}
 
-    public int getRowCount() {
-        return dataTypes.size();
-    }
+	public int getRowCount() {
+		return dataTypes.size();
+	}
 
-    public Object getValueAt(int aRow, int aColumn) {
-        if (aColumn == 1) {
-            return targetTypes[aRow];
-        }
-        return dataTypes.get(aRow);
-    }
+	public Object getValueAt(int aRow, int aColumn) {
+		if (aColumn == 1) {
+			return targetTypes[aRow];
+		}
+		return dataTypes.get(aRow);
+	}
 
-    public boolean isCellEditable(int aRow, int aColumn) {
-        return aColumn != 0;
-    }
+	public boolean isCellEditable(int aRow, int aColumn) {
+		return aColumn != 0;
+	}
 
-    public void setValueAt(Object aValue, int aRow, int aColumn) {
-        targetTypes[aRow] = (DataType) aValue;
-    }
+	public void setValueAt(Object aValue, int aRow, int aColumn) {
+		targetTypes[aRow] = (DataType) aValue;
+	}
 
-    public void addTableModelListener(TableModelListener l) {
-    }
+	public void addTableModelListener(TableModelListener l) {
+	}
 
-    public void removeTableModelListener(TableModelListener l) {
-    }
+	public void removeTableModelListener(TableModelListener l) {
+	}
 }

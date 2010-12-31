@@ -30,52 +30,52 @@ import de.erdesignerng.visual.editor.comment.CommentEditor;
 
 public class AddCommentCommand extends UICommand {
 
-    private final Point2D location;
+	private final Point2D location;
 
-    public AddCommentCommand(ERDesignerComponent component, Point2D aLocation) {
-        super(component);
-        location = aLocation;
-    }
+	public AddCommentCommand(ERDesignerComponent component, Point2D aLocation) {
+		super(component);
+		location = aLocation;
+	}
 
-    @Override
-    public void execute() {
-        Comment theComment = new Comment();
-        CommentEditor theEditor = new CommentEditor(component.getModel(), getDetailComponent());
-        theEditor.initializeFor(theComment);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
+	@Override
+	public void execute() {
+		Comment theComment = new Comment();
+		CommentEditor theEditor = new CommentEditor(component.getModel(), getDetailComponent());
+		theEditor.initializeFor(theComment);
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
 
-                try {
-                    theEditor.applyValues();
-                } catch (VetoException e) {
-                    getWorldConnector().notifyAboutException(e);
-                }
+				try {
+					theEditor.applyValues();
+				} catch (VetoException e) {
+					getWorldConnector().notifyAboutException(e);
+				}
 
-                CommentCell theCell = new CommentCell(theComment);
-                theCell.transferPropertiesToAttributes(theComment);
+				CommentCell theCell = new CommentCell(theComment);
+				theCell.transferPropertiesToAttributes(theComment);
 
-                Object theTargetCell = component.graph.getFirstCellForLocation(location.getX(), location.getY());
-                if (theTargetCell instanceof SubjectAreaCell) {
-                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
-                    theArea.getComments().add(theComment);
+				Object theTargetCell = component.graph.getFirstCellForLocation(location.getX(), location.getY());
+				if (theTargetCell instanceof SubjectAreaCell) {
+					SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+					SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+					theArea.getComments().add(theComment);
 
-                    theSACell.add(theCell);
-                }
+					theSACell.add(theCell);
+				}
 
-                theCell.setBounds(new Rectangle2D.Double(location.getX(), location.getY(), -1, -1));
+				theCell.setBounds(new Rectangle2D.Double(location.getX(), location.getY(), -1, -1));
 
-                component.graph.getGraphLayoutCache().insert(theCell);
+				component.graph.getGraphLayoutCache().insert(theCell);
 
-                theCell.transferAttributesToProperties(theCell.getAttributes());
+				theCell.transferAttributesToProperties(theCell.getAttributes());
 
-                component.graph.doLayout();
+				component.graph.doLayout();
 
-                refreshDisplayOf(null);
+				refreshDisplayOf(null);
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

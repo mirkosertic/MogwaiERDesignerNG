@@ -1,9 +1,9 @@
 CREATE CACHED TABLE TESTTABLE (
-    PK1 varchar(10) NOT NULL,
-    PK2 integer NOT NULL DEFAULT 42,
-    AT1 varchar(5),
-    AT2 varchar(5) NOT NULL,
-    AT3 varchar(5)
+	PK1 varchar(10) NOT NULL,
+	PK2 integer NOT NULL DEFAULT 42,
+	AT1 varchar(5),
+	AT2 varchar(5) NOT NULL,
+	AT3 varchar(5)
 );
 CREATE PRIMARY KEY ON TESTTABLE(PK1,PK2);
 CREATE INDEX TESTTABLE_IDX1 ON TESTTABLE (AT2);

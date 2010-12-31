@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+							 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sourceforge.mogwai</groupId>
 	<artifactId>mogwai-erdesignerng</artifactId>
 	<name>MogwaiERDesignerNG</name>
 	<version>2.6.0</version>
 	<description>
-        Mogwai ER-Designer is an entity relationship design tool.
+		Mogwai ER-Designer is an entity relationship design tool.
 	</description>
 	<parent>
 		<groupId>net.sourceforge.mogwai</groupId>
 		<artifactId>mogwai-masterpom</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
+	<developers>
+		<developer>
+			<id>dr-death</id>
+			<name>Thomas Winkler</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<email/>
+			<organization/>
+		</developer>
+	</developers>
 	<repositories>
 		<repository>
 			<id>mogwai-repository</id>
@@ -43,7 +54,7 @@
 			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
 		</repository>
 -->
-    </repositories>
+	</repositories>
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<plugins>
@@ -58,11 +69,11 @@
 						<configuration>
 							<tasks>
 								<taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask"
-                                    name="XMLResourceBundle" />
+									name="XMLResourceBundle" />
 
 								<XMLResourceBundle dest="src/main/resources"
-                                    defaultLanguage="en" src="src/main/java" encoding="ISO8859_1"
-                                    javaEncoding="ISO8859_1">
+									defaultLanguage="en" src="src/main/java" encoding="ISO8859_1"
+									javaEncoding="ISO8859_1">
 									<fileset dir="src/main/resources">
 										<include name="erdesigner.xml" />
 									</fileset>
@@ -159,13 +170,13 @@
 						</goals>
 						<configuration>
 							<excludeGroupIds>
-                                org.codehaus.izpack
+								org.codehaus.izpack
 							</excludeGroupIds>
 							<excludeArtifactIds>
-                                mogwai-squirrelplugin
+								mogwai-squirrelplugin
 							</excludeArtifactIds>
 							<outputDirectory>
-                                ${staging.dir}/lib
+								${staging.dir}/lib
 							</outputDirectory>
 							<includeScope>runtime</includeScope>
 						</configuration>
@@ -181,17 +192,17 @@
 					<dependency>
 						<groupId>org.codehaus.izpack</groupId>
 						<artifactId>
-                            izpack-standalone-compiler
+							izpack-standalone-compiler
 						</artifactId>
 						<version>
-                            ${your.standalone-compiler.version}
+							${your.standalone-compiler.version}
 						</version>
 					</dependency>
 				</dependencies>
 				<configuration>
 					<izpackBasedir>${staging.dir}</izpackBasedir>
 					<customPanelDirectory>
-                        ${staging.dir}
+						${staging.dir}
 					</customPanelDirectory>
 					<descriptorEncoding>ISO8859-1</descriptorEncoding>
 				</configuration>
@@ -211,10 +222,10 @@
 				<configuration>
 					<descriptors>
 						<descriptor>
-                            assembly-squirrelplugin.xml
+							assembly-squirrelplugin.xml
 						</descriptor>
 						<descriptor>
-                            assembly-plain.xml
+							assembly-plain.xml
 						</descriptor>
 					</descriptors>
 				</configuration>
@@ -319,7 +330,7 @@
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>

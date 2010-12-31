@@ -29,93 +29,93 @@ import java.util.Map;
  */
 public class RelationList extends ModelItemVector<Relation> {
 
-    private static final long serialVersionUID = 330168987165235683L;
+	private static final long serialVersionUID = 330168987165235683L;
 
-    // Just a cache for all foreign keys in the model
-    private Map<Attribute, Boolean> foreignKeyCache = new HashMap<Attribute, Boolean>();
+	// Just a cache for all foreign keys in the model
+	private final Map<Attribute, Boolean> foreignKeyCache = new HashMap<Attribute, Boolean>();
 
-    /**
-     * Test if an attribute is a foreign key attribute.
-     * 
-     * @param aAttribute
-     *            the attribute
-     * @return true if yes, else false
-     */
-    public boolean isForeignKeyAttribute(Attribute aAttribute) {
+	/**
+	 * Test if an attribute is a foreign key attribute.
+	 * 
+	 * @param aAttribute
+	 *			the attribute
+	 * @return true if yes, else false
+	 */
+	public boolean isForeignKeyAttribute(Attribute aAttribute) {
 
-        Boolean theResult = foreignKeyCache.get(aAttribute);
-        if (theResult != null) {
-            return theResult;
-        }
+		Boolean theResult = foreignKeyCache.get(aAttribute);
+		if (theResult != null) {
+			return theResult;
+		}
 
-        theResult = false;
-        for (Relation theRelation : this) {
-            Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
-            if (theMap.containsValue(aAttribute)) {
-                theResult = true;
-                break;
-            }
-        }
+		theResult = false;
+		for (Relation theRelation : this) {
+			Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
+			if (theMap.containsValue(aAttribute)) {
+				theResult = true;
+				break;
+			}
+		}
 
-        foreignKeyCache.put(aAttribute, theResult);
+		foreignKeyCache.put(aAttribute, theResult);
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    /**
-     * Remove all relations that are connected to a given table.
-     * 
-     * @param aTable
-     *            the table
-     */
-    public void removeByTable(Table aTable) {
-        List<Relation> theRelationsToRemove = new ArrayList<Relation>();
-        for (Relation theRelation : this) {
-            if (theRelation.getImportingTable().equals(aTable)) {
-                theRelationsToRemove.add(theRelation);
-            } else {
-                if (theRelation.getExportingTable().equals(aTable)) {
-                    theRelationsToRemove.add(theRelation);
-                }
-            }
-        }
-        removeAll(theRelationsToRemove);
-        foreignKeyCache.clear();
-    }
+	/**
+	 * Remove all relations that are connected to a given table.
+	 * 
+	 * @param aTable
+	 *			the table
+	 */
+	public void removeByTable(Table aTable) {
+		List<Relation> theRelationsToRemove = new ArrayList<Relation>();
+		for (Relation theRelation : this) {
+			if (theRelation.getImportingTable().equals(aTable)) {
+				theRelationsToRemove.add(theRelation);
+			} else {
+				if (theRelation.getExportingTable().equals(aTable)) {
+					theRelationsToRemove.add(theRelation);
+				}
+			}
+		}
+		removeAll(theRelationsToRemove);
+		foreignKeyCache.clear();
+	}
 
-    public List<Relation> getForeignKeysFor(Table aTable) {
-        List<Relation> theResult = new ArrayList<Relation>();
-        for (Relation theRelation : this) {
-            if (theRelation.getImportingTable().equals(aTable)) {
-                theResult.add(theRelation);
-            }
-        }
-        return theResult;
-    }
+	public List<Relation> getForeignKeysFor(Table aTable) {
+		List<Relation> theResult = new ArrayList<Relation>();
+		for (Relation theRelation : this) {
+			if (theRelation.getImportingTable().equals(aTable)) {
+				theResult.add(theRelation);
+			}
+		}
+		return theResult;
+	}
 
-    public List<Relation> getExportedKeysFor(Table aTable) {
-        List<Relation> theResult = new ArrayList<Relation>();
-        for (Relation theRelation : this) {
-            if (theRelation.getExportingTable().equals(aTable)) {
-                theResult.add(theRelation);
-            }
-        }
-        return theResult;
-    }
+	public List<Relation> getExportedKeysFor(Table aTable) {
+		List<Relation> theResult = new ArrayList<Relation>();
+		for (Relation theRelation : this) {
+			if (theRelation.getExportingTable().equals(aTable)) {
+				theResult.add(theRelation);
+			}
+		}
+		return theResult;
+	}
 
-    @Override
-    public synchronized boolean add(Relation e) {
-        foreignKeyCache.clear();
-        return super.add(e);
-    }
+	@Override
+	public synchronized boolean add(Relation e) {
+		foreignKeyCache.clear();
+		return super.add(e);
+	}
 
-    @Override
-    public boolean remove(Object o) {
-        foreignKeyCache.clear();
-        return super.remove(o);
-    }
+	@Override
+	public boolean remove(Object o) {
+		foreignKeyCache.clear();
+		return super.remove(o);
+	}
 
-    public void clearCache() {
-        foreignKeyCache.clear();
-    }
+	public void clearCache() {
+		foreignKeyCache.clear();
+	}
 }

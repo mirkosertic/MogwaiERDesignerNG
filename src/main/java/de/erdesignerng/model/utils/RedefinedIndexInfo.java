@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class RedefinedIndexInfo extends RedefinedInfo {
 
-    public RedefinedIndexInfo(String aWhat) {
-        super(ERDesignerBundle.REDEFINED, aWhat);
-    }
+	public RedefinedIndexInfo(String aWhat) {
+		super(ERDesignerBundle.REDEFINED, aWhat);
+	}
 }

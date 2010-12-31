@@ -29,9 +29,9 @@ import de.erdesignerng.visual.ERDesignerGraph;
  */
 public interface Exporter {
 
-    String getFileExtension();
+	String getFileExtension();
 
-    void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException;
+	void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException;
 
-    void exportToStream(Component aComponent, OutputStream aStream) throws IOException;
+	void exportToStream(Component aComponent, OutputStream aStream) throws IOException;
 }
