@@ -21,13 +21,13 @@ import de.erdesignerng.dialect.ViewProperties;
 
 public class H2ViewProperties extends ViewProperties {
 
-    private Boolean force;
+	private Boolean force;
 
-    public Boolean getForce() {
-        return force;
-    }
+	public Boolean getForce() {
+		return force;
+	}
 
-    public void setForce(Boolean force) {
-        this.force = force;
-    }
+	public void setForce(Boolean force) {
+		this.force = force;
+	}
 }

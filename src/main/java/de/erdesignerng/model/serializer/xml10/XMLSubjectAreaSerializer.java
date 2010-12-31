@@ -36,70 +36,70 @@ import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
  */
 public class XMLSubjectAreaSerializer extends AbstractXMLSubjectAreaSerializer {
 
-    @Override
-    public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
+	@Override
+	public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
 
-        Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
+		Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
 
-        // Basisdaten des Modelelementes speichern
-        serializeProperties(aDocument, theSubjectAreaElement, aArea);
-        theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
+		// Basisdaten des Modelelementes speichern
+		serializeProperties(aDocument, theSubjectAreaElement, aArea);
+		theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
 
-        for (Table theTable : aArea.getTables()) {
+		for (Table theTable : aArea.getTables()) {
 
-            Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
-            theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
+			Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
 
-        }
+		}
 
-        for (Comment theComment : aArea.getComments()) {
+		for (Comment theComment : aArea.getComments()) {
 
-            Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
-            theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
+			Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
 
-        }
-    }
+		}
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
 
-        NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+		NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            SubjectArea theSubjectArea = new SubjectArea();
-            deserializeProperties(theElement, theSubjectArea);
+			SubjectArea theSubjectArea = new SubjectArea();
+			deserializeProperties(theElement, theSubjectArea);
 
-            theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
+			theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
 
-            NodeList theTables = theElement.getElementsByTagName(ITEM);
-            for (int j = 0; j < theTables.getLength(); j++) {
+			NodeList theTables = theElement.getElementsByTagName(ITEM);
+			for (int j = 0; j < theTables.getLength(); j++) {
 
-                Element theItemElement = (Element) theTables.item(j);
-                String theTableId = theItemElement.getAttribute(TABLEREFID);
-                String theCommentId = theItemElement.getAttribute(COMMENTREFID);
+				Element theItemElement = (Element) theTables.item(j);
+				String theTableId = theItemElement.getAttribute(TABLEREFID);
+				String theCommentId = theItemElement.getAttribute(COMMENTREFID);
 
-                if (!StringUtils.isEmpty(theTableId)) {
-                    Table theTable = aModel.getTables().findBySystemId(theTableId);
-                    if (theTable == null) {
-                        throw new IllegalArgumentException("Cannot find table with id " + theTableId);
-                    }
+				if (!StringUtils.isEmpty(theTableId)) {
+					Table theTable = aModel.getTables().findBySystemId(theTableId);
+					if (theTable == null) {
+						throw new IllegalArgumentException("Cannot find table with id " + theTableId);
+					}
 
-                    theSubjectArea.getTables().add(theTable);
-                }
+					theSubjectArea.getTables().add(theTable);
+				}
 
-                if (!StringUtils.isEmpty(theCommentId)) {
-                    Comment theComment = aModel.getComments().findBySystemId(theCommentId);
-                    if (theComment == null) {
-                        throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
-                    }
+				if (!StringUtils.isEmpty(theCommentId)) {
+					Comment theComment = aModel.getComments().findBySystemId(theCommentId);
+					if (theComment == null) {
+						throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
+					}
 
-                    theSubjectArea.getComments().add(theComment);
-                }
-            }
+					theSubjectArea.getComments().add(theComment);
+				}
+			}
 
-            aModel.getSubjectAreas().add(theSubjectArea);
-        }
+			aModel.getSubjectAreas().add(theSubjectArea);
+		}
 
-    }
+	}
 }

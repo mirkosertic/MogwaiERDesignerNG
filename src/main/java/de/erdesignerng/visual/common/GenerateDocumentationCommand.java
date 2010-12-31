@@ -33,55 +33,55 @@ import de.mogwai.common.client.looks.components.DefaultDialog;
 
 public class GenerateDocumentationCommand extends UICommand {
 
-    private final File JRXMLFile;
+	private final File JRXMLFile;
 
-    public GenerateDocumentationCommand(ERDesignerComponent component, File aJRXMLFile) {
-        super(component);
-        JRXMLFile = aJRXMLFile;
-    }
+	public GenerateDocumentationCommand(ERDesignerComponent component, File aJRXMLFile) {
+		super(component);
+		JRXMLFile = aJRXMLFile;
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(getWorldConnector()) {
+		LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(getWorldConnector()) {
 
-            @Override
-            public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
+			@Override
+			public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
 
-                aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
+				aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
 
-                ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
-                File theTempFile = File.createTempFile("mogwai", ".mxm");
-                theUtils.serializeModelToXML(component.getModel(), new OutputStreamWriter(new FileOutputStream(theTempFile),PlatformConfig.getXMLEncoding()));
+				ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
+				File theTempFile = File.createTempFile("mogwai", ".mxm");
+				theUtils.serializeModelToXML(component.getModel(), new OutputStreamWriter(new FileOutputStream(theTempFile),PlatformConfig.getXMLEncoding()));
 
-                aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
+				aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
 
-                JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, JRXMLFile);
+				JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, JRXMLFile);
 
-                aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
+				aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
 
-                return thePrint;
-            }
+				return thePrint;
+			}
 
-            @Override
-            public void handleResult(JasperPrint aResult) {
+			@Override
+			public void handleResult(JasperPrint aResult) {
 
-                JRViewer theViewer = new JRViewer(aResult);
+				JRViewer theViewer = new JRViewer(aResult);
 
-                DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
-                        ERDesignerBundle.CREATEDBDOCUMENTATION);
-                theResult.setContentPane(theViewer);
-                theResult.setMinimumSize(new Dimension(640, 480));
-                theResult.pack();
-                theViewer.setFitPageZoomRatio();
+				DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
+						ERDesignerBundle.CREATEDBDOCUMENTATION);
+				theResult.setContentPane(theViewer);
+				theResult.setMinimumSize(new Dimension(640, 480));
+				theResult.pack();
+				theViewer.setFitPageZoomRatio();
 
-                theResult.setVisible(true);
-            }
+				theResult.setVisible(true);
+			}
 
-        };
-        theTask.start();
-    }
+		};
+		theTask.start();
+	}
 }

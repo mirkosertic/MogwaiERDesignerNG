@@ -29,79 +29,79 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
  */
 public class OracleDialect extends SQL92Dialect {
 
-    public OracleDialect() {
-        setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(false);
-        setMaxObjectNameLength(64);
-        setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.UPPERCASE);
-        setSupportsOnUpdate(false);
-        setSuppressONALLIfNOACTION(true);
+	public OracleDialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(false);
+		setMaxObjectNameLength(64);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.UPPERCASE);
+		setSupportsOnUpdate(false);
+		setSuppressONALLIfNOACTION(true);
 
-        registerType(createDataType("LONG RAW", "", true, Types.LONGVARBINARY));
-        registerType(createDataType("RAW", "$size", true, Types.VARBINARY, Types.BINARY));
-        registerType(createDataType("LONG", "", true, Types.LONGVARCHAR));
-        registerType(createDataType("CHAR", "$size", Types.CHAR));
-        registerType(createDataType("NUMBER", "$size,$fraction", Types.NUMERIC, Types.INTEGER, Types.BIGINT,
-                Types.DECIMAL, Types.DOUBLE, Types.SMALLINT, Types.BIT, Types.TINYINT, Types.BOOLEAN));
-        registerType(createDataType("FLOAT", "", Types.FLOAT));
-        registerType(createDataType("REAL", "", Types.REAL));
-        registerType(createDataType("VARCHAR2", "$size", Types.VARCHAR));
-        registerType(createDataType("NVARCHAR2", "$size", Types.VARCHAR));
-        registerType(createDataType("DATE", "", Types.DATE));
-        registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP, Types.TIME));
-        registerType(createDataType("BLOB", "", Types.BLOB));
-        registerType(createDataType("CLOB", "", Types.CLOB));
-        registerType(createDataType("NCLOB", "", Types.CLOB));
-        registerType(createDataType("XMLTYPE", "", Types.SQLXML));
-        registerType(createDataType("ROWID", "", Types.OTHER));
-        registerType(createDataType("SDO_GEOMETRY", "", Types.OTHER));
-        registerType(createDataType("SDO_GTYPE", "", Types.OTHER));
-        registerType(createDataType("SDO_SRID", "", Types.OTHER));
-        registerType(createDataType("SDO_POINT", "", Types.OTHER));
-        registerType(createDataType("SDO_ELEM_INFO", "", Types.OTHER));
-        registerType(createDataType("SDO_ORDINATES", "", Types.OTHER));
+		registerType(createDataType("LONG RAW", "", true, Types.LONGVARBINARY));
+		registerType(createDataType("RAW", "$size", true, Types.VARBINARY, Types.BINARY));
+		registerType(createDataType("LONG", "", true, Types.LONGVARCHAR));
+		registerType(createDataType("CHAR", "$size", Types.CHAR));
+		registerType(createDataType("NUMBER", "$size,$fraction", Types.NUMERIC, Types.INTEGER, Types.BIGINT,
+				Types.DECIMAL, Types.DOUBLE, Types.SMALLINT, Types.BIT, Types.TINYINT, Types.BOOLEAN));
+		registerType(createDataType("FLOAT", "", Types.FLOAT));
+		registerType(createDataType("REAL", "", Types.REAL));
+		registerType(createDataType("VARCHAR2", "$size", Types.VARCHAR));
+		registerType(createDataType("NVARCHAR2", "$size", Types.VARCHAR));
+		registerType(createDataType("DATE", "", Types.DATE));
+		registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP, Types.TIME));
+		registerType(createDataType("BLOB", "", Types.BLOB));
+		registerType(createDataType("CLOB", "", Types.CLOB));
+		registerType(createDataType("NCLOB", "", Types.CLOB));
+		registerType(createDataType("XMLTYPE", "", Types.SQLXML));
+		registerType(createDataType("ROWID", "", Types.OTHER));
+		registerType(createDataType("SDO_GEOMETRY", "", Types.OTHER));
+		registerType(createDataType("SDO_GTYPE", "", Types.OTHER));
+		registerType(createDataType("SDO_SRID", "", Types.OTHER));
+		registerType(createDataType("SDO_POINT", "", Types.OTHER));
+		registerType(createDataType("SDO_ELEM_INFO", "", Types.OTHER));
+		registerType(createDataType("SDO_ORDINATES", "", Types.OTHER));
 
-        seal();
-    }
+		seal();
+	}
 
-    @Override
-    public OracleReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new OracleReverseEngineeringStrategy(this);
-    }
+	@Override
+	public OracleReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new OracleReverseEngineeringStrategy(this);
+	}
 
-    @Override
-    public String getUniqueName() {
-        return "OracleDialect";
-    }
+	@Override
+	public String getUniqueName() {
+		return "OracleDialect";
+	}
 
-    @Override
-    public String getDriverClassName() {
-        return "oracle.jdbc.driver.OracleDriver";
-    }
+	@Override
+	public String getDriverClassName() {
+		return "oracle.jdbc.driver.OracleDriver";
+	}
 
-    @Override
-    public String getDriverURLTemplate() {
-        return "jdbc:oracle:thin:@//<host>:<port>/<db>";
-    }
+	@Override
+	public String getDriverURLTemplate() {
+		return "jdbc:oracle:thin:@//<host>:<port>/<db>";
+	}
 
-    @Override
-    public OracleSQLGenerator createSQLGenerator() {
-        return new OracleSQLGenerator(this);
-    }
+	@Override
+	public OracleSQLGenerator createSQLGenerator() {
+		return new OracleSQLGenerator(this);
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.Oracle8iDialect.class;
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		return org.hibernate.dialect.Oracle8iDialect.class;
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
-        return new OracleDataType(aName, aDefinition, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+		return new OracleDataType(aName, aDefinition, aJdbcType);
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-        return new OracleDataType(aName, aDefinition, aIdentity, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+		return new OracleDataType(aName, aDefinition, aIdentity, aJdbcType);
+	}
 }

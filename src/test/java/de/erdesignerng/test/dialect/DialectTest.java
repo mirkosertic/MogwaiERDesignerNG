@@ -29,24 +29,24 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 public class DialectTest extends BaseERDesignerTestCaseImpl {
 
-    public void testDialectConvertable() {
-        DialectFactory theFactory = DialectFactory.getInstance();
-        List<Dialect> theDialects = theFactory.getSupportedDialects();
-        for (Dialect theDialect : theDialects) {
-            for (Dialect theOtherDialect : theDialects) {
-                if (!theOtherDialect.getUniqueName().equals(theDialect.getUniqueName())) {
-                    for (DataType theDataType : theDialect.getDataTypes()) {
-                        if (!ArrayUtils.contains(theDataType.getJDBCType(), Types.OTHER)) {
-                            DataType theOtherDataType = theOtherDialect.findClosestMatchingTypeFor(theDataType);
-                            if (theOtherDataType == null) {
-                                throw new RuntimeException(theDialect + " No Matching type for " + theDataType + " in "
-                                        + theOtherDialect + " JDBC-Type : "
-                                        + ArrayUtils.toString(theDataType.getJDBCType()));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+	public void testDialectConvertable() {
+		DialectFactory theFactory = DialectFactory.getInstance();
+		List<Dialect> theDialects = theFactory.getSupportedDialects();
+		for (Dialect theDialect : theDialects) {
+			for (Dialect theOtherDialect : theDialects) {
+				if (!theOtherDialect.getUniqueName().equals(theDialect.getUniqueName())) {
+					for (DataType theDataType : theDialect.getDataTypes()) {
+						if (!ArrayUtils.contains(theDataType.getJDBCType(), Types.OTHER)) {
+							DataType theOtherDataType = theOtherDialect.findClosestMatchingTypeFor(theDataType);
+							if (theOtherDataType == null) {
+								throw new RuntimeException(theDialect + " No Matching type for " + theDataType + " in "
+										+ theOtherDialect + " JDBC-Type : "
+										+ ArrayUtils.toString(theDataType.getJDBCType()));
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

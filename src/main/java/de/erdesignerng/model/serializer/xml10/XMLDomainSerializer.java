@@ -27,36 +27,36 @@ import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
 
 public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 
-    @Override
-    public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
-        Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
+	@Override
+	public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
+		Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
-        // Basisdaten des Modelelementes speichern
-        theDomainElement.setAttribute(ID, aDomain.getSystemId());
-        theDomainElement.setAttribute(NAME, aDomain.getName());
+		// Basisdaten des Modelelementes speichern
+		theDomainElement.setAttribute(ID, aDomain.getSystemId());
+		theDomainElement.setAttribute(NAME, aDomain.getName());
 
-        theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
-        theDomainElement.setAttribute(SIZE, "" + aDomain.getSize());
-        theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
-        theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
-    }
+		theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
+		theDomainElement.setAttribute(SIZE, "" + aDomain.getSize());
+		theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
+		theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
-        NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
+		NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            Domain theDomain = new Domain();
-            theDomain.setSystemId(theElement.getAttribute(ID));
-            theDomain.setName(theElement.getAttribute(NAME));
-            theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
-            theDomain.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
-            theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
-            theDomain.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
+			Domain theDomain = new Domain();
+			theDomain.setSystemId(theElement.getAttribute(ID));
+			theDomain.setName(theElement.getAttribute(NAME));
+			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
+			theDomain.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
+			theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
+			theDomain.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
 
-            aModel.getDomains().add(theDomain);
-        }
+			aModel.getDomains().add(theDomain);
+		}
 
-    }
+	}
 }

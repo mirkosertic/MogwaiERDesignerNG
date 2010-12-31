@@ -93,7 +93,7 @@ public class PostgresDialect extends SQL92Dialect {
 		registerType(createDataType("blob", "", Types.BLOB, Types.LONGVARBINARY));
 		registerType(createDataType("clob", "", Types.CLOB, Types.LONGVARCHAR));
 
-		// Patch [ 2874576 ] Reverse-Engineering unterstuetzt INET Datentyp
+		// Patch [ 2874576 ] Reverse-Engineering unterstützt INET Datentyp
 		// nicht
 		// @see
 		// http://www.postgresql.org/docs/8.4/interactive/datatype-net-types.html#DATATYPE-INET

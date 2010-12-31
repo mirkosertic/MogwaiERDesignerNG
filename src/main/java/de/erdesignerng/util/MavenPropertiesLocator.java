@@ -29,61 +29,61 @@ import java.util.Properties;
  */
 public final class MavenPropertiesLocator {
 
-    public static final String CANNOT_IDENTIFY_VERSION = "Cannot identify version";
+	public static final String CANNOT_IDENTIFY_VERSION = "Cannot identify version";
 
-    private MavenPropertiesLocator() {
+	private MavenPropertiesLocator() {
 
-    }
+	}
 
-    /**
-     * Get the pom properties for a defined artifact.
-     * 
-     * @param aGroupId
-     *            the groupid
-     * @param aArtifactId
-     *            the artifactid
-     * @return the properties
-     * @throws IOException
-     *             will be thrown in case of an error
-     */
-    public static Properties locatePropertiesFor(String aGroupId, String aArtifactId) throws IOException {
+	/**
+	 * Get the pom properties for a defined artifact.
+	 * 
+	 * @param aGroupId
+	 *			the groupid
+	 * @param aArtifactId
+	 *			the artifactid
+	 * @return the properties
+	 * @throws IOException
+	 *			 will be thrown in case of an error
+	 */
+	public static Properties locatePropertiesFor(String aGroupId, String aArtifactId) throws IOException {
 
-        URL theResource = MavenPropertiesLocator.class.getClassLoader().getResource(
-                "META-INF/maven/" + aGroupId + "/" + aArtifactId + "/pom.properties");
-        Properties theProperties = new Properties();
-        theProperties.load(theResource.openStream());
+		URL theResource = MavenPropertiesLocator.class.getClassLoader().getResource(
+				"META-INF/maven/" + aGroupId + "/" + aArtifactId + "/pom.properties");
+		Properties theProperties = new Properties();
+		theProperties.load(theResource.openStream());
 
-        return theProperties;
-    }
+		return theProperties;
+	}
 
-    /**
-     * Get the version info for a defined artifact.
-     * 
-     * @param aGroupId
-     *            the group id
-     * @param aArtifactId
-     *            the artifactid
-     * @return the version info
-     * @throws IOException
-     *             will be thrown in case of an error
-     */
-    public static String getVersionFor(String aGroupId, String aArtifactId) throws IOException {
-        Properties theProperties = locatePropertiesFor(aGroupId, aArtifactId);
-        return theProperties.getProperty("version");
-    }
+	/**
+	 * Get the version info for a defined artifact.
+	 * 
+	 * @param aGroupId
+	 *			the group id
+	 * @param aArtifactId
+	 *			the artifactid
+	 * @return the version info
+	 * @throws IOException
+	 *			 will be thrown in case of an error
+	 */
+	public static String getVersionFor(String aGroupId, String aArtifactId) throws IOException {
+		Properties theProperties = locatePropertiesFor(aGroupId, aArtifactId);
+		return theProperties.getProperty("version");
+	}
 
-    /**
-     * Get the version info of ERDesignerNG.
-     * 
-     * @return the version info
-     */
-    public static String getERDesignerVersionInfo() {
-        String theVersion = CANNOT_IDENTIFY_VERSION;
-        try {
-            theVersion = getVersionFor("net.sourceforge.mogwai", "mogwai-erdesignerng");
-        } catch (Exception e) {
-            // Nothing shall happen here
-        }
-        return theVersion;
-    }
+	/**
+	 * Get the version info of ERDesignerNG.
+	 * 
+	 * @return the version info
+	 */
+	public static String getERDesignerVersionInfo() {
+		String theVersion = CANNOT_IDENTIFY_VERSION;
+		try {
+			theVersion = getVersionFor("net.sourceforge.mogwai", "mogwai-erdesignerng");
+		} catch (Exception e) {
+			// Nothing shall happen here
+		}
+		return theVersion;
+	}
 }

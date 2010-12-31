@@ -24,5 +24,5 @@ package de.erdesignerng.visual.tools;
  * @version $Date: 2009-03-09 19:07:30 $
  */
 public enum ToolEnum {
-    HAND, ENTITY, RELATION, COMMENT, VIEW;
+	HAND, ENTITY, RELATION, COMMENT, VIEW
 }

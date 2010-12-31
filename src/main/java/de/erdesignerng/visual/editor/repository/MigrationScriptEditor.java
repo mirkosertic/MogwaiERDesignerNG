@@ -42,82 +42,82 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class MigrationScriptEditor extends BaseEditor {
 
-    private MigrationScriptView view = new MigrationScriptView();
+	private final MigrationScriptView view = new MigrationScriptView();
 
-    private BindingInfo<MigrationScriptDataModel> bindingInfo = new BindingInfo<MigrationScriptDataModel>(
-            new MigrationScriptDataModel());
+	private final BindingInfo<MigrationScriptDataModel> bindingInfo = new BindingInfo<MigrationScriptDataModel>(
+			new MigrationScriptDataModel());
 
-    private RepositoryEntity repositoryEntity;
+	private final RepositoryEntity repositoryEntity;
 
-    private ConnectionProvider connectionProvider;
+	private final ConnectionProvider connectionProvider;
 
-    private ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    private ERDesignerWorldConnector worldConnector;
+	private final ERDesignerWorldConnector worldConnector;
 
-    public MigrationScriptEditor(Component aParent, RepositoryEntity aRepositoryEntity,
-            ConnectionProvider aConnectionProvider, ApplicationPreferences aPreferences,
-            ERDesignerWorldConnector aWorldConnector) {
-        super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
+	public MigrationScriptEditor(Component aParent, RepositoryEntity aRepositoryEntity,
+			ConnectionProvider aConnectionProvider, ApplicationPreferences aPreferences,
+			ERDesignerWorldConnector aWorldConnector) {
+		super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
-        preferences = aPreferences;
-        worldConnector = aWorldConnector;
+		preferences = aPreferences;
+		worldConnector = aWorldConnector;
 
-        initialize();
+		initialize();
 
-        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-        DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();
-        for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
-            theModel.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
-            theModel2.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
-        }
+		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();
+		for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
+			theModel.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
+			theModel2.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
+		}
 
-        view.getSourceVersion().setModel(theModel);
-        view.getDestinationVersion().setModel(theModel2);
+		view.getSourceVersion().setModel(theModel);
+		view.getDestinationVersion().setModel(theModel2);
 
-        repositoryEntity = aRepositoryEntity;
-        connectionProvider = aConnectionProvider;
+		repositoryEntity = aRepositoryEntity;
+		connectionProvider = aConnectionProvider;
 
-        bindingInfo.addBinding("sourceChange", view.getSourceVersion(), true);
-        bindingInfo.addBinding("destinationChange", view.getDestinationVersion(), true);
-        bindingInfo.configure();
-    }
+		bindingInfo.addBinding("sourceChange", view.getSourceVersion(), true);
+		bindingInfo.addBinding("destinationChange", view.getDestinationVersion(), true);
+		bindingInfo.configure();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        view.getOkButton().setAction(okAction);
-        view.getCancelButton().setAction(cancelAction);
+		view.getOkButton().setAction(okAction);
+		view.getCancelButton().setAction(cancelAction);
 
-        setContentPane(view);
-        setResizable(false);
+		setContentPane(view);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 
-    @Override
-    protected void commandOk() {
+	@Override
+	protected void commandOk() {
 
-        if (bindingInfo.validate().size() == 0) {
-            bindingInfo.view2model();
+		if (bindingInfo.validate().size() == 0) {
+			bindingInfo.view2model();
 
-            MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();
+			MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();
 
-            MessageFormat theFormat = new MessageFormat("changelog-{0}-to-{1}.sql");
-            String theChangeLogFile = theFormat.format(new String[] { "" + theModel.getSourceChange().getIndex(),
-                    "" + theModel.getDestinationChange().getIndex() });
+			MessageFormat theFormat = new MessageFormat("changelog-{0}-to-{1}.sql");
+			String theChangeLogFile = theFormat.format(new String[] { "" + theModel.getSourceChange().getIndex(),
+					"" + theModel.getDestinationChange().getIndex() });
 
-            StatementList theStatements = repositoryEntity.createChangeLog(theModel.getSourceChange().getChange(),
-                    theModel.getDestinationChange().getChange());
+			StatementList theStatements = repositoryEntity.createChangeLog(theModel.getSourceChange().getChange(),
+					theModel.getDestinationChange().getChange());
 
-            SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile,
-                    preferences, worldConnector);
-            theEditor.showModal();
-        }
-    }
+			SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile,
+					preferences, worldConnector);
+			theEditor.showModal();
+		}
+	}
 }

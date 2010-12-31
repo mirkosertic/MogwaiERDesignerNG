@@ -28,15 +28,15 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 public class ResourceProviderPanel extends JPanel implements ResourceHelperProvider {
 
-    public ResourceProviderPanel() {
-        setLayout(new BorderLayout());
-    }
+	public ResourceProviderPanel() {
+		setLayout(new BorderLayout());
+	}
 
-    public ResourceHelper getResourceHelper() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
+	public ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
 
-    public void setContent(JComponent aComponent) {
-        add(aComponent, BorderLayout.CENTER);
-    }
+	public void setContent(JComponent aComponent) {
+		add(aComponent, BorderLayout.CENTER);
+	}
 }

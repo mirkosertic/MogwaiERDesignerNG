@@ -23,92 +23,92 @@ import java.util.List;
 /**
  * Entity for a table.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class RelationEntity extends ModelEntity {
 
-    private String importingTable;
+	private String importingTable;
 
-    private String exportingTable;
+	private String exportingTable;
 
-    private List<StringKeyValuePair> mapping = new ArrayList<StringKeyValuePair>();
+	private List<StringKeyValuePair> mapping = new ArrayList<StringKeyValuePair>();
 
-    private int onDelete;
+	private int onDelete;
 
-    private int onUpdate;
+	private int onUpdate;
 
-    /**
-     * @return the importingTable
-     */
-    public String getImportingTable() {
-        return importingTable;
-    }
+	/**
+	 * @return the importingTable
+	 */
+	public String getImportingTable() {
+		return importingTable;
+	}
 
-    /**
-     * @param importingTable
-     *            the importingTable to set
-     */
-    public void setImportingTable(String importingTable) {
-        this.importingTable = importingTable;
-    }
+	/**
+	 * @param importingTable
+	 *			the importingTable to set
+	 */
+	public void setImportingTable(String importingTable) {
+		this.importingTable = importingTable;
+	}
 
-    /**
-     * @return the exportingTable
-     */
-    public String getExportingTable() {
-        return exportingTable;
-    }
+	/**
+	 * @return the exportingTable
+	 */
+	public String getExportingTable() {
+		return exportingTable;
+	}
 
-    /**
-     * @param exportingTable
-     *            the exportingTable to set
-     */
-    public void setExportingTable(String exportingTable) {
-        this.exportingTable = exportingTable;
-    }
+	/**
+	 * @param exportingTable
+	 *			the exportingTable to set
+	 */
+	public void setExportingTable(String exportingTable) {
+		this.exportingTable = exportingTable;
+	}
 
-    /**
-     * @return the onDelete
-     */
-    public int getOnDelete() {
-        return onDelete;
-    }
+	/**
+	 * @return the onDelete
+	 */
+	public int getOnDelete() {
+		return onDelete;
+	}
 
-    /**
-     * @param onDelete
-     *            the onDelete to set
-     */
-    public void setOnDelete(int onDelete) {
-        this.onDelete = onDelete;
-    }
+	/**
+	 * @param onDelete
+	 *			the onDelete to set
+	 */
+	public void setOnDelete(int onDelete) {
+		this.onDelete = onDelete;
+	}
 
-    /**
-     * @return the onUpdate
-     */
-    public int getOnUpdate() {
-        return onUpdate;
-    }
+	/**
+	 * @return the onUpdate
+	 */
+	public int getOnUpdate() {
+		return onUpdate;
+	}
 
-    /**
-     * @param onUpdate
-     *            the onUpdate to set
-     */
-    public void setOnUpdate(int onUpdate) {
-        this.onUpdate = onUpdate;
-    }
+	/**
+	 * @param onUpdate
+	 *			the onUpdate to set
+	 */
+	public void setOnUpdate(int onUpdate) {
+		this.onUpdate = onUpdate;
+	}
 
-    /**
-     * @return the mapping
-     */
-    public List<StringKeyValuePair> getMapping() {
-        return mapping;
-    }
+	/**
+	 * @return the mapping
+	 */
+	public List<StringKeyValuePair> getMapping() {
+		return mapping;
+	}
 
-    /**
-     * @param mapping
-     *            the mapping to set
-     */
-    public void setMapping(List<StringKeyValuePair> mapping) {
-        this.mapping = mapping;
-    }
+	/**
+	 * @param mapping
+	 *			the mapping to set
+	 */
+	public void setMapping(List<StringKeyValuePair> mapping) {
+		this.mapping = mapping;
+	}
 }

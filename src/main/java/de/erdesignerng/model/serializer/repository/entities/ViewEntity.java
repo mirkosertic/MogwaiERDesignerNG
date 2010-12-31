@@ -20,34 +20,34 @@ package de.erdesignerng.model.serializer.repository.entities;
 /**
  * Entity for a view.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class ViewEntity extends ModelEntity {
 
-    private String sqlstatement;
+	private String sqlstatement;
 
-    private String schema;
+	private String schema;
 
-    public String getSqlstatement() {
-        return sqlstatement;
-    }
+	public String getSqlstatement() {
+		return sqlstatement;
+	}
 
-    public void setSqlstatement(String sqlstatement) {
-        this.sqlstatement = sqlstatement;
-    }
+	public void setSqlstatement(String sqlstatement) {
+		this.sqlstatement = sqlstatement;
+	}
 
-    /**
-     * @return the schema
-     */
-    public String getSchema() {
-        return schema;
-    }
+	/**
+	 * @return the schema
+	 */
+	public String getSchema() {
+		return schema;
+	}
 
-    /**
-     * @param schema
-     *            the schema to set
-     */
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
+	/**
+	 * @param schema
+	 *			the schema to set
+	 */
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 }

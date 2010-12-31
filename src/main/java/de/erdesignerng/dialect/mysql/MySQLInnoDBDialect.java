@@ -27,31 +27,31 @@ import de.erdesignerng.model.Table;
  */
 public class MySQLInnoDBDialect extends MySQLDialect {
 
-    public MySQLInnoDBDialect() {
+	public MySQLInnoDBDialect() {
 
-        seal();
-    }
+		seal();
+	}
 
-    @Override
-    public String getUniqueName() {
-        return "MySQLInnoDBDialect";
-    }
+	@Override
+	public String getUniqueName() {
+		return "MySQLInnoDBDialect";
+	}
 
-    @Override
-    public MySQLInnoDBSQLGenerator createSQLGenerator() {
-        return new MySQLInnoDBSQLGenerator(this);
-    }
+	@Override
+	public MySQLInnoDBSQLGenerator createSQLGenerator() {
+		return new MySQLInnoDBSQLGenerator(this);
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.MySQLInnoDBDialect.class;
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		return org.hibernate.dialect.MySQLInnoDBDialect.class;
+	}
 
-    @Override
-    public TableProperties createTablePropertiesFor(Table aTable) {
-        MySQLTableProperties theProperties = new MySQLTableProperties();
-        theProperties.initializeFrom(aTable);
-        theProperties.setEngine(EngineEnum.InnoDB);
-        return theProperties;
-    }
+	@Override
+	public TableProperties createTablePropertiesFor(Table aTable) {
+		MySQLTableProperties theProperties = new MySQLTableProperties();
+		theProperties.initializeFrom(aTable);
+		theProperties.setEngine(EngineEnum.InnoDB);
+		return theProperties;
+	}
 }

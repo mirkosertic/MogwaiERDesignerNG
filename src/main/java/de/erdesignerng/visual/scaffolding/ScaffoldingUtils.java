@@ -36,7 +36,7 @@ public final class ScaffoldingUtils {
 	private ScaffoldingUtils() {
 	}
 	
-	public final static ScaffoldingWrapper createScaffoldingPanelFor(
+	public static ScaffoldingWrapper createScaffoldingPanelFor(
 			Model aModel, Object aObject) {
 
 		ERDesignerAnnotationInspector theInspector = new ERDesignerAnnotationInspector(
@@ -45,7 +45,7 @@ public final class ScaffoldingUtils {
 
 		SwingMetawidget theMetaWidget = new SwingMetawidget() {
 
-			private ResourceHelper helper = ResourceHelper
+			private final ResourceHelper helper = ResourceHelper
 					.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
 			@Override
@@ -60,9 +60,8 @@ public final class ScaffoldingUtils {
 
 		theMetaWidget.setBundle(ResourceBundle
 				.getBundle(ERDesignerBundle.BUNDLE_NAME));
-		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig()
-				.setInspectors(theInspector, new PropertyTypeInspector(),
-						new Java5Inspector());
+		// TODO [mirkosertic] NB 6.9.1 and IDEA 10 refuse to compile the following line while NB 6.7.1 does
+		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig().setInspectors(theInspector, new PropertyTypeInspector(), new Java5Inspector());
 		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
 		theMetaWidget.addWidgetProcessor(theProcessor);
 		theMetaWidget.setMetawidgetLayout(new JGoodiesTableLayout());

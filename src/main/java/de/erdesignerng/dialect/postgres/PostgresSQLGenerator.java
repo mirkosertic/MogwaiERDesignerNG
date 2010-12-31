@@ -30,93 +30,93 @@ import de.erdesignerng.model.Table;
  */
 public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 
-    public PostgresSQLGenerator(PostgresDialect aDialect) {
-        super(aDialect);
-    }
+	public PostgresSQLGenerator(PostgresDialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+	@Override
+	public StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("DROP INDEX ");
-        theStatement.append(aIndex.getName());
+		theStatement.append("DROP INDEX ");
+		theStatement.append(aIndex.getName());
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	@Override
+	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(aTable));
-        theStatement.append(" RENAME TO ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(aTable));
+		theStatement.append(" RENAME TO ");
 
-        theStatement.append(aNewName);
+		theStatement.append(aNewName);
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameAttributeStatement(Attribute aExistantAttribute, String aNewName) {
+	@Override
+	public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
 
-        Table theTable = aExistantAttribute.getOwner();
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" RENAME COLUMN ");
-        theStatement.append(aExistantAttribute.getName());
-        theStatement.append(" TO ");
-        theStatement.append(aNewName);
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" RENAME COLUMN ");
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" TO ");
+		theStatement.append(aNewName);
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createChangeAttributeStatement(Attribute aExistantAttribute, Attribute aNewAttribute) {
+	@Override
+	public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
 
-        Table theTable = aExistantAttribute.getOwner();
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
+		StatementList theResult = new StatementList();
 
-        StringBuilder theStatement = new StringBuilder();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" ALTER ");
-        theStatement.append(aExistantAttribute.getName());
-        theStatement.append(" TYPE ");
-        theStatement.append(aNewAttribute.getPhysicalDeclaration());
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" ALTER ");
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" TYPE ");
+		theStatement.append(aNewAttribute.getPhysicalDeclaration());
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        theStatement = new StringBuilder();
+		theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" ALTER ");
-        theStatement.append(aExistantAttribute.getName());
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" ALTER ");
+		theStatement.append(anExistingAttribute.getName());
 
-        boolean isNullable = aNewAttribute.isNullable();
+		boolean isNullable = aNewAttribute.isNullable();
 
-        if (!isNullable) {
-            theStatement.append("SET NOT NULL");
-        } else {
-            theStatement.append("SET NULL");
-        }
+		if (!isNullable) {
+			theStatement.append("SET NOT NULL");
+		} else {
+			theStatement.append("SET NULL");
+		}
 
-        return theResult;
-    }
+		return theResult;
+	}
 }

@@ -31,29 +31,29 @@ import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
  */
 public class XMLCommentSerializer extends AbstractXMLCommentSerializer {
 
-    @Override
-    public void serialize(Comment aComment, Document aDocument, Element aRootElement) {
+	@Override
+	public void serialize(Comment aComment, Document aDocument, Element aRootElement) {
 
-        Element theSubjectAreaElement = addElement(aDocument, aRootElement, COMMENT);
+		Element theSubjectAreaElement = addElement(aDocument, aRootElement, COMMENT);
 
-        // Basisdaten des Modelelementes speichern
-        serializeProperties(aDocument, theSubjectAreaElement, aComment);
-        serializeCommentElement(aDocument, theSubjectAreaElement, aComment);
-    }
+		// Basisdaten des Modelelementes speichern
+		serializeProperties(aDocument, theSubjectAreaElement, aComment);
+		serializeCommentElement(aDocument, theSubjectAreaElement, aComment);
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
 
-        NodeList theElements = aDocument.getElementsByTagName(COMMENT);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+		NodeList theElements = aDocument.getElementsByTagName(COMMENT);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            Comment theComment = new Comment();
-            theComment.setOwner(aModel);
-            deserializeProperties(theElement, theComment);
-            deserializeCommentElement(theElement, theComment);
+			Comment theComment = new Comment();
+			theComment.setOwner(aModel);
+			deserializeProperties(theElement, theComment);
+			deserializeCommentElement(theElement, theComment);
 
-            aModel.getComments().add(theComment);
-        }
-    }
+			aModel.getComments().add(theComment);
+		}
+	}
 }

@@ -33,40 +33,40 @@ import de.erdesignerng.dialect.StatementList;
 
 public abstract class BaseERDesignerTestCaseImpl extends TestCase {
 
-    protected boolean compareStrings(String aString1, String aString2) {
-        aString1 = StringUtils.remove(aString1, (char) 13);
-        aString1 = StringUtils.remove(aString1, (char) 10);
+	protected boolean compareStrings(String aString1, String aString2) {
+		aString1 = StringUtils.remove(aString1, (char) 13);
+		aString1 = StringUtils.remove(aString1, (char) 10);
 
-        aString2 = StringUtils.remove(aString2, (char) 13);
-        aString2 = StringUtils.remove(aString2, (char) 10);
+		aString2 = StringUtils.remove(aString2, (char) 13);
+		aString2 = StringUtils.remove(aString2, (char) 10);
 
-        return aString1.equals(aString2);
-    }
+		return aString1.equals(aString2);
+	}
 
-    protected String readResourceFile(String aResourceName) throws IOException {
-        StringWriter theStringWriter = new StringWriter();
-        PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
-        BufferedReader theBr = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(aResourceName)));
-        while (theBr.ready()) {
-            String theLine = theBr.readLine();
-            if (theLine != null && theLine.length() > 0) {
-                thePrintWriter.println(theLine);
-            }
-        }
-        theBr.close();
-        thePrintWriter.flush();
-        return theStringWriter.toString().trim();
+	protected String readResourceFile(String aResourceName) throws IOException {
+		StringWriter theStringWriter = new StringWriter();
+		PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
+		BufferedReader theBr = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(aResourceName)));
+		while (theBr.ready()) {
+			String theLine = theBr.readLine();
+			if (theLine != null && theLine.length() > 0) {
+				thePrintWriter.println(theLine);
+			}
+		}
+		theBr.close();
+		thePrintWriter.flush();
+		return theStringWriter.toString().trim();
 
-    }
+	}
 
-    protected String statementListToString(StatementList aStatements, SQLGenerator aGenerator) {
-        StringWriter theStringWriter = new StringWriter();
-        PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
-        for (Statement theStatement : aStatements) {
-            thePrintWriter.print(theStatement.getSql());
-            thePrintWriter.println(aGenerator.createScriptStatementSeparator());
-        }
-        thePrintWriter.flush();
-        return theStringWriter.toString().trim();
-    }
+	protected String statementListToString(StatementList aStatements, SQLGenerator aGenerator) {
+		StringWriter theStringWriter = new StringWriter();
+		PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
+		for (Statement theStatement : aStatements) {
+			thePrintWriter.print(theStatement.getSql());
+			thePrintWriter.println(aGenerator.createScriptStatementSeparator());
+		}
+		thePrintWriter.flush();
+		return theStringWriter.toString().trim();
+	}
 }

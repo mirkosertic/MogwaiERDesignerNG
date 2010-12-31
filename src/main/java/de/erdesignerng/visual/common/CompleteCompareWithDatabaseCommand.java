@@ -33,80 +33,80 @@ import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 
 public class CompleteCompareWithDatabaseCommand extends UICommand {
 
-    public CompleteCompareWithDatabaseCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public CompleteCompareWithDatabaseCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        final Model theModel = component.getModel();
+		final Model theModel = component.getModel();
 
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(),
-                getPreferences());
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+		final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(),
+				getPreferences());
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-            try {
-                final Connection theConnection = theModel.createConnection(getPreferences());
-                if (theConnection == null) {
-                    return;
-                }
-                final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect()
-                        .getReverseEngineeringStrategy();
-                final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+			try {
+				final Connection theConnection = theModel.createConnection(getPreferences());
+				if (theConnection == null) {
+					return;
+				}
+				final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect()
+						.getReverseEngineeringStrategy();
+				final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
 
-                final Model theDatabaseModel = getWorldConnector().createNewModel();
-                theDatabaseModel.setDialect(theModel.getDialect());
-                theDatabaseModel.getProperties().copyFrom(theModel);
+				final Model theDatabaseModel = getWorldConnector().createNewModel();
+				theDatabaseModel.setDialect(theModel.getDialect());
+				theDatabaseModel.getProperties().copyFrom(theModel);
 
-                LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
+				LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
 
-                    @Override
-                    public Model doWork(final MessagePublisher aPublisher) throws Exception {
-                        theOptions.getTableEntries().addAll(
-                                theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
+					@Override
+					public Model doWork(final MessagePublisher aPublisher) throws Exception {
+						theOptions.getTableEntries().addAll(
+								theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
 
-                        ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
+						ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
 
-                            public void notifyMessage(String aResourceKey, String... aValues) {
-                                String theMessage = MessageFormat.format(component.getResourceHelper().getText(
-                                        aResourceKey), (Object[]) aValues);
-                                aPublisher.publishMessage(theMessage);
-                            }
+							public void notifyMessage(String aResourceKey, String... aValues) {
+								String theMessage = MessageFormat.format(component.getResourceHelper().getText(
+										aResourceKey), (Object[]) aValues);
+								aPublisher.publishMessage(theMessage);
+							}
 
-                        };
+						};
 
-                        theStrategy.updateModelFromConnection(theDatabaseModel, getWorldConnector(), theConnection,
-                                theOptions, theNotifier);
+						theStrategy.updateModelFromConnection(theDatabaseModel, getWorldConnector(), theConnection,
+								theOptions, theNotifier);
 
-                        return theDatabaseModel;
+						return theDatabaseModel;
 
-                    }
+					}
 
-                    @Override
-                    public void handleResult(Model aResultModel) {
-                        component.addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
+					@Override
+					public void handleResult(Model aResultModel) {
+						component.addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
 
-                        CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theModel,
-                                aResultModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
-                        theCompare.showModal();
-                    }
+						CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theModel,
+								aResultModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
+						theCompare.showModal();
+					}
 
-                    @Override
-                    public void cleanup() throws SQLException {
-                        if (!theModel.getDialect().generatesManagedConnection()) {
-                            theConnection.close();
-                        }
-                    }
-                };
-                theTask.start();
+					@Override
+					public void cleanup() throws SQLException {
+						if (!theModel.getDialect().generatesManagedConnection()) {
+							theConnection.close();
+						}
+					}
+				};
+				theTask.start();
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

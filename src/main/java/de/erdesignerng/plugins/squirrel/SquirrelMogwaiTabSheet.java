@@ -39,167 +39,167 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesignerWorldConnector {
 
-    private final DockingHelper dockingHelper;
+	private final DockingHelper dockingHelper;
 
-    private final ERDesignerComponent component;
+	private final ERDesignerComponent component;
 
-    private final ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	private final ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-    private final DefaultFrameContent content = new DefaultFrameContent();
+	private final DefaultFrameContent content = new DefaultFrameContent();
 
-    private final ResourceProviderPanel panel = new ResourceProviderPanel();
+	private final ResourceProviderPanel panel = new ResourceProviderPanel();
 
-    private String title;
+	private String title;
 
-    private final SquirrelMogwaiController controller;
+	private final SquirrelMogwaiController controller;
 
-    public SquirrelMogwaiTabSheet(SquirrelMogwaiController aController) {
+	public SquirrelMogwaiTabSheet(SquirrelMogwaiController aController) {
 
-        controller = aController;
+		controller = aController;
 
-        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
+		ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
 
-        OutlineComponent.initializeComponent();
-        SQLComponent.initializeComponent();
-        component = ERDesignerComponent.initializeComponent(thePreferences, this);
+		OutlineComponent.initializeComponent();
+		SQLComponent.initializeComponent();
+		component = ERDesignerComponent.initializeComponent(thePreferences, this);
 
-        dockingHelper = new DockingHelper(thePreferences);
-        try {
-            dockingHelper.initialize();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		dockingHelper = new DockingHelper(thePreferences);
+		try {
+			dockingHelper.initialize();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-        content.setDetailComponent(dockingHelper.getRootWindow());
-        panel.setContent(content);
+		content.setDetailComponent(dockingHelper.getRootWindow());
+		panel.setContent(content);
 
-        component.setModel(createNewModel());
+		component.setModel(createNewModel());
 
-        UIInitializer.getInstance().initialize(panel);
-    }
+		UIInitializer.getInstance().initialize(panel);
+	}
 
-    @Override
-    protected void refreshComponent() {
-    }
+	@Override
+	protected void refreshComponent() {
+	}
 
-    public Component getComponent() {
-        return panel;
-    }
+	public Component getComponent() {
+		return panel;
+	}
 
-    public String getHint() {
-        return "";
-    }
+	public String getHint() {
+		return "";
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public DefaultMenuBar getComponentMenuBar() {
-        return new DefaultMenuBar();
-    }
+	public DefaultMenuBar getComponentMenuBar() {
+		return new DefaultMenuBar();
+	}
 
-    public DefaultToolbar getToolBar() {
-        return content.getToolbar();
-    }
+	public DefaultToolbar getToolBar() {
+		return content.getToolbar();
+	}
 
-    @Override
-    public void initTitle(String aFile) {
-        StringBuffer theTitle = new StringBuffer();
-        if (aFile != null) {
-            theTitle.append(" - ").append(aFile);
-        }
+	@Override
+	public void initTitle(String aFile) {
+		StringBuffer theTitle = new StringBuffer();
+		if (aFile != null) {
+			theTitle.append(" - ").append(aFile);
+		}
 
-        title = helper.getText(ERDesignerBundle.TITLE) + theTitle;
+		title = helper.getText(ERDesignerBundle.TITLE) + theTitle;
 
-    }
+	}
 
-    @Override
-    public void initTitle() {
-        initTitle(null);
-    }
+	@Override
+	public void initTitle() {
+		initTitle(null);
+	}
 
-    public void setStatusText(String aMessage) {
-        content.getStatusBar().setText(aMessage);
-        controller.getSession().showMessage(aMessage);
-    }
+	public void setStatusText(String aMessage) {
+		content.getStatusBar().setText(aMessage);
+		controller.getSession().showMessage(aMessage);
+	}
 
-    @Override
-    public boolean supportsClasspathEditor() {
-        return false;
-    }
+	@Override
+	public boolean supportsClasspathEditor() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsConnectionEditor() {
-        return false;
-    }
+	@Override
+	public boolean supportsConnectionEditor() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsExitApplication() {
-        return false;
-    }
+	@Override
+	public boolean supportsExitApplication() {
+		return false;
+	}
 
-    @Override
-    public Model createNewModel() {
-        Model theModel = new Model();
-        theModel.setDialect(controller.getDialect());
-        theModel.setModificationTracker(new HistoryModificationTracker(theModel));
-        return theModel;
-    }
+	@Override
+	public Model createNewModel() {
+		Model theModel = new Model();
+		theModel.setDialect(controller.getDialect());
+		theModel.setModificationTracker(new HistoryModificationTracker(theModel));
+		return theModel;
+	}
 
-    @Override
-    public void sessionEnding(ISession aSession) {
-        super.sessionEnding(aSession);
+	@Override
+	public void sessionEnding(ISession aSession) {
+		super.sessionEnding(aSession);
 
-        dockingHelper.saveLayoutToPreferences();
-        component.savePreferences();
-    }
+		dockingHelper.saveLayoutToPreferences();
+		component.savePreferences();
+	}
 
-    public void startReverseEngineering() {
-        new ReverseEngineerCommand(component).execute();
-    }
+	public void startReverseEngineering() {
+		new ReverseEngineerCommand(component).execute();
+	}
 
-    @Override
-    public boolean supportsPreferences() {
-        return false;
-    }
+	@Override
+	public boolean supportsPreferences() {
+		return false;
+	}
 
-    @Override
-    public void initializeLoadedModel(Model aModel) {
-        aModel.setDialect(controller.getDialect());
-        aModel.setModificationTracker(new HistoryModificationTracker(aModel));
-    }
+	@Override
+	public void initializeLoadedModel(Model aModel) {
+		aModel.setDialect(controller.getDialect());
+		aModel.setModificationTracker(new HistoryModificationTracker(aModel));
+	}
 
-    @Override
-    public void notifyAboutException(Exception aException) {
-        controller.notifyAboutException(aException);
-    }
+	@Override
+	public void notifyAboutException(Exception aException) {
+		controller.notifyAboutException(aException);
+	}
 
-    public void exitApplication() {
-        controller.exitApplication();
-    }
+	public void exitApplication() {
+		controller.exitApplication();
+	}
 
-    /**
-     * The preferences were changed, so they need to be reloaded.
-     * 
-     * @param aPreferences
-     *            the preferences
-     */
-    public void refreshPreferences(ApplicationPreferences aPreferences) {
-        component.refreshPreferences(aPreferences);
-    }
+	/**
+	 * The preferences were changed, so they need to be reloaded.
+	 * 
+	 * @param aPreferences
+	 *			the preferences
+	 */
+	public void refreshPreferences(ApplicationPreferences aPreferences) {
+		component.refreshPreferences(aPreferences);
+	}
 
-    @Override
-    public boolean supportsRepositories() {
-        return false;
-    }
+	@Override
+	public boolean supportsRepositories() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsHelp() {
-        return true;
-    }
+	@Override
+	public boolean supportsHelp() {
+		return true;
+	}
 
-    @Override
-    public boolean supportsReporting() {
-        return true;
-    }
+	@Override
+	public boolean supportsReporting() {
+		return true;
+	}
 }

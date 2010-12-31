@@ -22,11 +22,11 @@ import de.erdesignerng.dialect.NameCastType;
 
 public class NameCastTypeTest extends TestCase {
 
-    public void testNothing() {
-        assertTrue("HallO".equals(NameCastType.NOTHING.cast("HallO")));
-    }
+	public void testNothing() {
+		assertTrue("HallO".equals(NameCastType.NOTHING.cast("HallO")));
+	}
 
-    public void testUppercase() {
-        assertTrue("HALLO".equals(NameCastType.UPPERCASE.cast("HallO")));
-    }
+	public void testUppercase() {
+		assertTrue("HALLO".equals(NameCastType.UPPERCASE.cast("HallO")));
+	}
 }

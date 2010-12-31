@@ -22,19 +22,19 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
 /**
  * A MSSQL DataType.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class MSSQLDataType extends GenericDataTypeImpl {
 
-    public MSSQLDataType(String aName, String aDefinition, int... aJdbcType) {
-        super(aName, aDefinition, aJdbcType);
-    }
+	public MSSQLDataType(String aName, String aDefinition, int... aJdbcType) {
+		super(aName, aDefinition, aJdbcType);
+	}
 
-    public MSSQLDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-        super(aName, aDefinition, aJdbcType);
-        identity = aIdentity;
-        if (aIdentity) {
-            maxOccoursPerTable = 1;
-        }
-    }
+	public MSSQLDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+		super(aName, aDefinition, aJdbcType);
+		identity = aIdentity;
+		if (aIdentity) {
+			maxOccursPerTable = 1;
+		}
+	}
 }

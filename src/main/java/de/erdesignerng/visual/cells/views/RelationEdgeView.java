@@ -30,12 +30,12 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
  */
 public class RelationEdgeView extends EdgeView {
 
-    public RelationEdgeView(RelationEdge aRelation) {
-        super(aRelation);
-    }
+	public RelationEdgeView(RelationEdge aRelation) {
+		super(aRelation);
+	}
 
-    @Override
-    public GraphCellEditor getEditor() {
-        return new CellEditorFactory();
-    }
+	@Override
+	public GraphCellEditor getEditor() {
+		return new CellEditorFactory();
+	}
 }

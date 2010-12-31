@@ -25,12 +25,12 @@ import de.erdesignerng.model.Domain;
  */
 public abstract class AbstractXMLDomainSerializer extends CommonAbstractXMLSerializer<Domain> {
 
-    protected static final String DOMAIN = "Domain";
+	protected static final String DOMAIN = "Domain";
 
-    protected static final String FRACTION = "fraction";
+	protected static final String FRACTION = "fraction";
 
-    protected static final String SCALE = "scale";
+	protected static final String SCALE = "scale";
 
-    protected static final String SIZE = "size";
+	protected static final String SIZE = "size";
 
 }

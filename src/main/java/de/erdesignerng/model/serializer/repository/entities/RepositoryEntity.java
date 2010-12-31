@@ -24,121 +24,121 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 
 /**
- * @author msertic
+ * @author mirkosertic
  */
 public class RepositoryEntity extends ModelEntity {
 
-    private String dialect;
+	private String dialect;
 
-    private List<DomainEntity> domains = new ArrayList<DomainEntity>();
-    
-    private List<CustomTypeEntity> customType = new ArrayList<CustomTypeEntity>();    
+	private List<DomainEntity> domains = new ArrayList<DomainEntity>();
+	
+	private List<CustomTypeEntity> customType = new ArrayList<CustomTypeEntity>();	
 
-    private List<TableEntity> tables = new ArrayList<TableEntity>();
+	private List<TableEntity> tables = new ArrayList<TableEntity>();
 
-    private List<RelationEntity> relations = new ArrayList<RelationEntity>();
+	private List<RelationEntity> relations = new ArrayList<RelationEntity>();
 
-    private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+	private List<CommentEntity> comments = new ArrayList<CommentEntity>();
 
-    private List<ViewEntity> views = new ArrayList<ViewEntity>();
+	private List<ViewEntity> views = new ArrayList<ViewEntity>();
 
-    private List<SubjectAreaEntity> subjectareas = new ArrayList<SubjectAreaEntity>();
+	private List<SubjectAreaEntity> subjectareas = new ArrayList<SubjectAreaEntity>();
 
-    private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
+	private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
 
-    public List<DomainEntity> getDomains() {
-        return domains;
-    }
+	public List<DomainEntity> getDomains() {
+		return domains;
+	}
 
-    public void setDomains(List<DomainEntity> domains) {
-        this.domains = domains;
-    }
+	public void setDomains(List<DomainEntity> domains) {
+		this.domains = domains;
+	}
 
-    public List<TableEntity> getTables() {
-        return tables;
-    }
+	public List<TableEntity> getTables() {
+		return tables;
+	}
 
-    public void setTables(List<TableEntity> tables) {
-        this.tables = tables;
-    }
+	public void setTables(List<TableEntity> tables) {
+		this.tables = tables;
+	}
 
-    public List<RelationEntity> getRelations() {
-        return relations;
-    }
+	public List<RelationEntity> getRelations() {
+		return relations;
+	}
 
-    public void setRelations(List<RelationEntity> relations) {
-        this.relations = relations;
-    }
+	public void setRelations(List<RelationEntity> relations) {
+		this.relations = relations;
+	}
 
-    public List<CommentEntity> getComments() {
-        return comments;
-    }
+	public List<CommentEntity> getComments() {
+		return comments;
+	}
 
-    public void setComments(List<CommentEntity> comments) {
-        this.comments = comments;
-    }
+	public void setComments(List<CommentEntity> comments) {
+		this.comments = comments;
+	}
 
-    public List<SubjectAreaEntity> getSubjectareas() {
-        return subjectareas;
-    }
+	public List<SubjectAreaEntity> getSubjectareas() {
+		return subjectareas;
+	}
 
-    public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
-        this.subjectareas = subjectareas;
-    }
+	public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
+		this.subjectareas = subjectareas;
+	}
 
-    public List<ChangeEntity> getChanges() {
-        return changes;
-    }
+	public List<ChangeEntity> getChanges() {
+		return changes;
+	}
 
-    public void setChanges(List<ChangeEntity> changes) {
-        this.changes = changes;
-    }
+	public void setChanges(List<ChangeEntity> changes) {
+		this.changes = changes;
+	}
 
-    public String getDialect() {
-        return dialect;
-    }
+	public String getDialect() {
+		return dialect;
+	}
 
-    public void setDialect(String dialect) {
-        this.dialect = dialect;
-    }
+	public void setDialect(String dialect) {
+		this.dialect = dialect;
+	}
 
-    public List<ViewEntity> getViews() {
-        return views;
-    }
+	public List<ViewEntity> getViews() {
+		return views;
+	}
 
-    public void setViews(List<ViewEntity> views) {
-        this.views = views;
-    }
-    
-    public List<CustomTypeEntity> getCustomType() {
-        return customType;
-    }
+	public void setViews(List<ViewEntity> views) {
+		this.views = views;
+	}
+	
+	public List<CustomTypeEntity> getCustomType() {
+		return customType;
+	}
 
-    public void setCustomType(List<CustomTypeEntity> customType) {
-        this.customType = customType;
-    }
+	public void setCustomType(List<CustomTypeEntity> customType) {
+		this.customType = customType;
+	}
 
-    /**
-     * Create a changelog.
-     * 
-     * @param aSource
-     *            the source change ( included )
-     * @param aDestination
-     *            the destination change ( included )
-     * @return the statements
-     */
-    public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {
-        StatementList theStatements = new StatementList();
+	/**
+	 * Create a changelog.
+	 * 
+	 * @param aSource
+	 *			the source change ( included )
+	 * @param aDestination
+	 *			the destination change ( included )
+	 * @return the statements
+	 */
+	public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {
+		StatementList theStatements = new StatementList();
 
-        int a = changes.indexOf(aSource);
-        int b = changes.indexOf(aDestination);
-        for (int i = a; i <= b; i++) {
-            ChangeEntity theChange = changes.get(i);
-            for (String theStm : theChange.getStatements()) {
-                theStatements.add(new Statement(theStm));
-            }
-        }
+		int a = changes.indexOf(aSource);
+		int b = changes.indexOf(aDestination);
+		for (int i = a; i <= b; i++) {
+			ChangeEntity theChange = changes.get(i);
+			for (String theStm : theChange.getStatements()) {
+				theStatements.add(new Statement(theStm));
+			}
+		}
 
-        return theStatements;
-    }
+		return theStatements;
+	}
 }

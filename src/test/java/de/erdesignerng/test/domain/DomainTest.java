@@ -36,30 +36,30 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
  */
 public class DomainTest extends BaseERDesignerTestCaseImpl {
 
-    public void testIfDomainsAreDomains() throws ParserConfigurationException, SAXException, IOException {
+	public void testIfDomainsAreDomains() throws ParserConfigurationException, SAXException, IOException {
 
-        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
-                getClass().getResourceAsStream("modelwithdomains.mxm"));
+		Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
+				getClass().getResourceAsStream("modelwithdomains.mxm"));
 
-        Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
-        assertTrue(theNotUsedDom.isDomain());
+		Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
+		assertTrue(theNotUsedDom.isDomain());
 
-        Domain theUsedDom = theModel.getDomains().findByName("DOM1");
-        assertTrue(theUsedDom.isDomain());
-    }
+		Domain theUsedDom = theModel.getDomains().findByName("DOM1");
+		assertTrue(theUsedDom.isDomain());
+	}
 
-    public void testDomainInUsage() throws ParserConfigurationException, SAXException, IOException {
+	public void testDomainInUsage() throws ParserConfigurationException, SAXException, IOException {
 
-        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
-                getClass().getResourceAsStream("modelwithdomains.mxm"));
+		Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
+				getClass().getResourceAsStream("modelwithdomains.mxm"));
 
-        Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
-        assertTrue(theNotUsedDom != null);
-        assertTrue(theModel.getTables().checkIfUsedByTable(theNotUsedDom) == null);
+		Domain theNotUsedDom = theModel.getDomains().findByName("DOM2");
+		assertTrue(theNotUsedDom != null);
+		assertTrue(theModel.getTables().checkIfUsedByTable(theNotUsedDom) == null);
 
-        Domain theUsedDom = theModel.getDomains().findByName("DOM1");
-        assertTrue(theUsedDom != null);
-        assertTrue(theModel.getTables().checkIfUsedByTable(theUsedDom) != null);
+		Domain theUsedDom = theModel.getDomains().findByName("DOM1");
+		assertTrue(theUsedDom != null);
+		assertTrue(theModel.getTables().checkIfUsedByTable(theUsedDom) != null);
 
-    }
+	}
 }

@@ -28,13 +28,13 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  */
 public class MySQLInnoDBDialectTest extends AbstractDialectTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 
-        dialect = new MySQLInnoDBDialect();
-        textDataType = dialect.getDataTypes().findByName("VARCHAR");
-        intDataType = dialect.getDataTypes().findByName("INTEGER");
-        basePath = "/de/erdesignerng/test/sql/mysqlinnodb/";
-    }
+		dialect = new MySQLInnoDBDialect();
+		textDataType = dialect.getDataTypes().findByName("VARCHAR");
+		intDataType = dialect.getDataTypes().findByName("INTEGER");
+		basePath = "/de/erdesignerng/test/sql/mysqlinnodb/";
+	}
 }

@@ -45,209 +45,209 @@ import de.erdesignerng.visual.editor.DialogConstants;
  */
 public class ERDesignerGraphUI extends BasicGraphUI {
 
-    private static final Logger LOGGER = Logger.getLogger(ERDesignerGraphUI.class);
+	private static final Logger LOGGER = Logger.getLogger(ERDesignerGraphUI.class);
 
-    private final ERDesignerComponent erdesigner;
+	private final ERDesignerComponent erdesigner;
 
-    public ERDesignerGraphUI(ERDesignerComponent aComponent) {
-        erdesigner = aComponent;
-    }
+	public ERDesignerGraphUI(ERDesignerComponent aComponent) {
+		erdesigner = aComponent;
+	}
 
-    public class MyMouseHandler extends MouseHandler {
+	public class MyMouseHandler extends MouseHandler {
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-            handler = null;
-            if (!e.isConsumed() && graph.isEnabled()) {
-                graph.requestFocus();
-                int s = graph.getTolerance();
-                Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
-                        2 * s));
-                lastFocus = focus;
-                focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
-                cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
-                if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
-                    CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
-                    if (theTemp != null) {
-                        cell = theTemp;
-                    }
-                }
-                // if (focus == null) {
-                focus = cell;
-                // }
-                completeEditing();
-                boolean isForceMarquee = isForceMarqueeEvent(e);
-                boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());
-                if (!isForceMarquee) {
-                    if (e.getClickCount() == graph.getEditClickCount() && focus != null && isEditable
-                            && graph.isCellEditable(focus.getCell()) && handleEditTrigger(cell.getCell(), e)) {
-                        e.consume();
-                        cell = null;
-                    } else if (!isToggleSelectionEvent(e)) {
-                        if (handle != null) {
-                            handle.mousePressed(e);
-                            handler = handle;
-                        }
-                        // Immediate Selection
-                        if (!e.isConsumed() && cell != null && !graph.isCellSelected(cell.getCell())) {
-                            selectCellForEvent(cell.getCell(), e);
-                            focus = cell;
-                            if (handle != null) {
-                                handle.mousePressed(e);
-                                handler = handle;
-                            }
-                            e.consume();
-                            cell = null;
-                        }
-                    }
-                }
-                // Marquee Selection
-                if (!e.isConsumed() && marquee != null
-                        && (!isToggleSelectionEvent(e) || focus == null || isForceMarquee)) {
-                    marquee.mousePressed(e);
-                    handler = marquee;
-                }
-            }
-        }
+		@Override
+		public void mousePressed(MouseEvent e) {
+			handler = null;
+			if (!e.isConsumed() && graph.isEnabled()) {
+				graph.requestFocus();
+				int s = graph.getTolerance();
+				Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+						2 * s));
+				lastFocus = focus;
+				focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
+				cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
+				if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
+					CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+					if (theTemp != null) {
+						cell = theTemp;
+					}
+				}
+				// if (focus == null) {
+				focus = cell;
+				// }
+				completeEditing();
+				boolean isForceMarquee = isForceMarqueeEvent(e);
+				boolean isEditable = graph.isGroupsEditable() || (focus != null && focus.isLeaf());
+				if (!isForceMarquee) {
+					if (e.getClickCount() == graph.getEditClickCount() && focus != null && isEditable
+							&& graph.isCellEditable(focus.getCell()) && handleEditTrigger(cell.getCell(), e)) {
+						e.consume();
+						cell = null;
+					} else if (!isToggleSelectionEvent(e)) {
+						if (handle != null) {
+							handle.mousePressed(e);
+							handler = handle;
+						}
+						// Immediate Selection
+						if (!e.isConsumed() && cell != null && !graph.isCellSelected(cell.getCell())) {
+							selectCellForEvent(cell.getCell(), e);
+							focus = cell;
+							if (handle != null) {
+								handle.mousePressed(e);
+								handler = handle;
+							}
+							e.consume();
+							cell = null;
+						}
+					}
+				}
+				// Marquee Selection
+				if (!e.isConsumed() && marquee != null
+						&& (!isToggleSelectionEvent(e) || focus == null || isForceMarquee)) {
+					marquee.mousePressed(e);
+					handler = marquee;
+				}
+			}
+		}
 
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            super.mouseDragged(e);
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			super.mouseDragged(e);
 
-            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
-            theGraph.setDragging(true);
-        }
+			ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+			theGraph.setDragging(true);
+		}
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            super.mouseReleased(e);
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			super.mouseReleased(e);
 
-            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
-            theGraph.setDragging(false);
+			ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+			theGraph.setDragging(false);
 
-            if (focus != null && focus.getCell() instanceof ModelCell) {
-                ModelCell theCell = (ModelCell) focus.getCell();
-                if (theCell instanceof RelationEdge) {
-                    theCell.transferAttributesToProperties(focus.getAttributes());
-                } else {
-                    theCell.transferAttributesToProperties(focus.getAllAttributes());
-                }
-            }
-        }
+			if (focus != null && focus.getCell() instanceof ModelCell) {
+				ModelCell theCell = (ModelCell) focus.getCell();
+				if (theCell instanceof RelationEdge) {
+					theCell.transferAttributesToProperties(focus.getAttributes());
+				} else {
+					theCell.transferAttributesToProperties(focus.getAllAttributes());
+				}
+			}
+		}
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == graph.getEditClickCount()) {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == graph.getEditClickCount()) {
 
-                int s = graph.getTolerance();
+				int s = graph.getTolerance();
 
-                Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
-                        2 * s));
-                lastFocus = focus;
-                focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
-                cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
-                if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
-                    CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
-                    if (theTemp != null) {
-                        cell = theTemp;
-                    }
-                }
-                if (focus == null) {
-                    focus = cell;
-                }
+				Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+						2 * s));
+				lastFocus = focus;
+				focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
+				cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
+				if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
+					CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+					if (theTemp != null) {
+						cell = theTemp;
+					}
+				}
+				if (focus == null) {
+					focus = cell;
+				}
 
-                if (cell != null) {
-                    if (handleEditTrigger(cell.getCell(), e)) {
-                        e.consume();
-                    }
-                }
-            }
-        }
+				if (cell != null) {
+					if (handleEditTrigger(cell.getCell(), e)) {
+						e.consume();
+					}
+				}
+			}
+		}
 
-        @Override
-        protected void postProcessSelection(MouseEvent aEvent, Object aCell, boolean aWasSelected) {
-        }
-    }
+		@Override
+		protected void postProcessSelection(MouseEvent aEvent, Object aCell, boolean aWasSelected) {
+		}
+	}
 
-    @Override
-    protected MouseListener createMouseListener() {
-        return new MyMouseHandler();
-    }
+	@Override
+	protected MouseListener createMouseListener() {
+		return new MyMouseHandler();
+	}
 
-    @Override
-    protected boolean startEditing(Object cell, MouseEvent event) {
-        completeEditing();
+	@Override
+	protected boolean startEditing(Object cell, MouseEvent event) {
+		completeEditing();
 
-        if (graph.isCellEditable(cell)) {
-            CellView tmp = graphLayoutCache.getMapping(cell, false);
-            cellEditor = tmp.getEditor();
-            editingComponent = cellEditor.getGraphCellEditorComponent(graph, cell, graph.isCellSelected(cell));
-            if (cellEditor.isCellEditable(event)) {
+		if (graph.isCellEditable(cell)) {
+			CellView tmp = graphLayoutCache.getMapping(cell, false);
+			cellEditor = tmp.getEditor();
+			editingComponent = cellEditor.getGraphCellEditorComponent(graph, cell, graph.isCellSelected(cell));
+			if (cellEditor.isCellEditable(event)) {
 
-                editingCell = cell;
-                editingComponent.validate();
+				editingCell = cell;
+				editingComponent.validate();
 
-                if (cellEditor.shouldSelectCell(event) && graph.isSelectionEnabled()) {
-                    stopEditingInCompleteEditing = false;
-                    try {
-                        graph.setSelectionCell(cell);
-                    } catch (Exception e) {
-                        LOGGER.error("Error setting selection cell", e);
-                    }
-                    stopEditingInCompleteEditing = true;
-                }
+				if (cellEditor.shouldSelectCell(event) && graph.isSelectionEnabled()) {
+					stopEditingInCompleteEditing = false;
+					try {
+						graph.setSelectionCell(cell);
+					} catch (Exception e) {
+						LOGGER.error("Error setting selection cell", e);
+					}
+					stopEditingInCompleteEditing = true;
+				}
 
-                /*
-                 * Find the component that will get forwarded all the mouse
-                 * events until mouseReleased.
-                 */
-                Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
-                        editingComponent);
+				/*
+				 * Find the component that will get forwarded all the mouse
+				 * events until mouseReleased.
+				 */
+				Point componentPoint = SwingUtilities.convertPoint(graph, new Point(event.getX(), event.getY()),
+						editingComponent);
 
-                /*
-                 * Create an instance of BasicTreeMouseListener to handle
-                 * passing the mouse/motion events to the necessary component.
-                 */
-                // We really want similiar behavior to getMouseEventTarget,
-                // but it is package private.
-                Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent, componentPoint.x,
-                        componentPoint.y);
-                if (activeComponent != null) {
-                    new MouseInputHandler(graph, activeComponent, event);
-                }
+				/*
+				 * Create an instance of BasicTreeMouseListener to handle
+				 * passing the mouse/motion events to the necessary component.
+				 */
+				// We really want similar behavior to getMouseEventTarget,
+				// but it is package private.
+				Component activeComponent = SwingUtilities.getDeepestComponentAt(editingComponent, componentPoint.x,
+						componentPoint.y);
+				if (activeComponent != null) {
+					new MouseInputHandler(graph, activeComponent, event);
+				}
 
-                BaseEditor theDialog = (BaseEditor) editingComponent;
-                if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                    try {
-                        theDialog.applyValues();
+				BaseEditor theDialog = (BaseEditor) editingComponent;
+				if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
+					try {
+						theDialog.applyValues();
 
-                        erdesigner.commandNotifyAboutEdit();
+						erdesigner.commandNotifyAboutEdit();
 
-                        DefaultGraphCell theCell = (DefaultGraphCell) cell;
-                        OutlineComponent.getDefault().refresh(erdesigner.getModel(), theCell.getUserObject());
-                    } catch (Exception e1) {
-                        erdesigner.getWorldConnector().notifyAboutException(e1);
-                    }
-                }
+						DefaultGraphCell theCell = (DefaultGraphCell) cell;
+						OutlineComponent.getDefault().refresh(erdesigner.getModel(), theCell.getUserObject());
+					} catch (Exception e1) {
+						erdesigner.getWorldConnector().notifyAboutException(e1);
+					}
+				}
 
-                editingComponent = null;
+				editingComponent = null;
 
-                // Mark the cell as edited, so it is resized during
-                // redisplay to its new preferred size
-                DefaultGraphCell theCell = (DefaultGraphCell) editingCell;
-                graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());
+				// Mark the cell as edited, so it is resized during
+				// redisplay to its new preferred size
+				DefaultGraphCell theCell = (DefaultGraphCell) editingCell;
+				graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());
 
-                graph.invalidate();
-                graph.repaint();
-            } else {
-                editingComponent = null;
-            }
-        }
-        return false;
-    }
+				graph.invalidate();
+				graph.repaint();
+			} else {
+				editingComponent = null;
+			}
+		}
+		return false;
+	}
 
-    @Override
-    public boolean isEditing(JGraph aGraph) {
-        return false;
-    }
+	@Override
+	public boolean isEditing(JGraph aGraph) {
+		return false;
+	}
 }

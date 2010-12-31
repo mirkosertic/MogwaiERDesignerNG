@@ -35,41 +35,41 @@ import de.erdesignerng.model.ModelItem;
  */
 public class CommentCell extends DefaultGraphCell implements ModelCellWithPosition<Comment> {
 
-    public CommentCell(Comment aTable) {
-        super(aTable);
+	public CommentCell(Comment aTable) {
+		super(aTable);
 
-        GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
-        GraphConstants.setOpaque(getAttributes(), false);
-        GraphConstants.setAutoSize(getAttributes(), true);
-        GraphConstants.setResize(getAttributes(), true);
-        GraphConstants.setEditable(getAttributes(), true);
-    }
+		GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
+		GraphConstants.setOpaque(getAttributes(), false);
+		GraphConstants.setAutoSize(getAttributes(), true);
+		GraphConstants.setResize(getAttributes(), true);
+		GraphConstants.setEditable(getAttributes(), true);
+	}
 
-    public void transferAttributesToProperties(Map aAttributes) {
+	public void transferAttributesToProperties(Map aAttributes) {
 
-        Comment theComment = (Comment) getUserObject();
-        Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
-        String theLocation = ((int) theBounds.getX()) + ":" + ((int) theBounds.getY());
-        theComment.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
-    }
+		Comment theComment = (Comment) getUserObject();
+		Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
+		String theLocation = ((int) theBounds.getX()) + ":" + ((int) theBounds.getY());
+		theComment.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+	}
 
-    public void transferPropertiesToAttributes(Comment aObject) {
+	public void transferPropertiesToAttributes(Comment aObject) {
 
-        Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
-                ModelItem.PROPERTY_LOCATION));
-        if (thePoint != null) {
-            GraphConstants.setBounds(getAttributes(),
-                    new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), 100, 100));
-        }
-    }
+		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
+				ModelItem.PROPERTY_LOCATION));
+		if (thePoint != null) {
+			GraphConstants.setBounds(getAttributes(),
+					new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), 100, 100));
+		}
+	}
 
-    @Override
-    public Rectangle2D getBounds() {
-        return GraphConstants.getBounds(getAttributes());
-    }
+	@Override
+	public Rectangle2D getBounds() {
+		return GraphConstants.getBounds(getAttributes());
+	}
 
-    @Override
-    public void setBounds(Rectangle2D aBounds) {
-        GraphConstants.setBounds(getAttributes(), aBounds);
-    }
+	@Override
+	public void setBounds(Rectangle2D aBounds) {
+		GraphConstants.setBounds(getAttributes(), aBounds);
+	}
 }

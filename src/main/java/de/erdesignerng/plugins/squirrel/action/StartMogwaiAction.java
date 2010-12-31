@@ -44,67 +44,67 @@ import de.mogwai.common.i18n.ResourceHelper;
  */
 public class StartMogwaiAction extends SquirrelAction implements ISessionAction {
 
-    protected ISession session;
+	protected ISession session;
 
-    protected final SquirrelMogwaiPluginDelegate plugin;
+	protected final SquirrelMogwaiPluginDelegate plugin;
 
-    public StartMogwaiAction(IApplication aApplication, SquirrelMogwaiPluginResources aResources,
-            SquirrelMogwaiPluginDelegate aPlugin) {
-        super(aApplication, aResources);
-        plugin = aPlugin;
-    }
+	public StartMogwaiAction(IApplication aApplication, SquirrelMogwaiPluginResources aResources,
+			SquirrelMogwaiPluginDelegate aPlugin) {
+		super(aApplication, aResources);
+		plugin = aPlugin;
+	}
 
-    protected Dialect determineDialect(ISession aSession) {
-        if (DialectFactory.isOracle(aSession.getMetaData())) {
-            return new OracleDialect();
-        }
-        if (DialectFactory.isMySQL(aSession.getMetaData())) {
-            return new MySQLInnoDBDialect();
-        }
-        if (DialectFactory.isMySQL5(aSession.getMetaData())) {
-            return new MySQLInnoDBDialect();
-        }
-        if (DialectFactory.isMSSQLServer(aSession.getMetaData())) {
-            return new MSSQLDialect();
-        }
-        if (DialectFactory.isPostgreSQL(aSession.getMetaData())) {
-            return new PostgresDialect();
-        }
-        if (DialectFactory.isDB2(aSession.getMetaData())) {
-            return new DB2Dialect();
-        }
-        if (DialectFactory.isH2(aSession.getMetaData())) {
-            return new H2Dialect();
-        }
-        return null;
-    }
+	protected Dialect determineDialect(ISession aSession) {
+		if (DialectFactory.isOracle(aSession.getMetaData())) {
+			return new OracleDialect();
+		}
+		if (DialectFactory.isMySQL(aSession.getMetaData())) {
+			return new MySQLInnoDBDialect();
+		}
+		if (DialectFactory.isMySQL5(aSession.getMetaData())) {
+			return new MySQLInnoDBDialect();
+		}
+		if (DialectFactory.isMSSQLServer(aSession.getMetaData())) {
+			return new MSSQLDialect();
+		}
+		if (DialectFactory.isPostgreSQL(aSession.getMetaData())) {
+			return new PostgresDialect();
+		}
+		if (DialectFactory.isDB2(aSession.getMetaData())) {
+			return new DB2Dialect();
+		}
+		if (DialectFactory.isH2(aSession.getMetaData())) {
+			return new H2Dialect();
+		}
+		return null;
+	}
 
-    public void actionPerformed(ActionEvent evt) {
-        if (session != null) {
+	public void actionPerformed(ActionEvent evt) {
+		if (session != null) {
 
-            Dialect theDialect = determineDialect(session);
-            if (theDialect != null) {
+			Dialect theDialect = determineDialect(session);
+			if (theDialect != null) {
 
-                session.showMessage("Mogwai Dialect : " + theDialect.getClass().getName());
-                for (DataType theDataType : theDialect.getDataTypes()) {
-                    session.showMessage(" Supported datatype : " + theDataType.getName());
-                }
+				session.showMessage("Mogwai Dialect : " + theDialect.getClass().getName());
+				for (DataType theDataType : theDialect.getDataTypes()) {
+					session.showMessage(" Supported datatype : " + theDataType.getName());
+				}
 
-                SquirrelMogwaiController theNewController = null;
+				SquirrelMogwaiController theNewController = null;
 
-                SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
-                if ((controllers == null) || (0 == controllers.length)) {
-                    theNewController = plugin.createNewGraphControllerForSession(session, theDialect);
-                    theNewController.startReverseEngineering();
-                }
-            } else {
-                ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-                session.showErrorMessage(theHelper.getText(ERDesignerBundle.DIALECTISNOTSUPPORTED));
-            }
-        }
-    }
+				SquirrelMogwaiController[] controllers = plugin.getGraphControllers(session);
+				if ((controllers == null) || (0 == controllers.length)) {
+					theNewController = plugin.createNewGraphControllerForSession(session, theDialect);
+					theNewController.startReverseEngineering();
+				}
+			} else {
+				ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+				session.showErrorMessage(theHelper.getText(ERDesignerBundle.DIALECTISNOTSUPPORTED));
+			}
+		}
+	}
 
-    public void setSession(ISession aSession) {
-        session = aSession;
-    }
+	public void setSession(ISession aSession) {
+		session = aSession;
+	}
 }

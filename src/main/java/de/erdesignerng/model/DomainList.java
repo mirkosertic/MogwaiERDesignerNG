@@ -27,38 +27,38 @@ import java.util.Vector;
  */
 public class DomainList extends Vector<Domain> implements ModelList<Domain> {
 
-    /**
-     * Find a domain by system id.
-     * 
-     * @param aSystemId
-     *            the system id
-     * @return the domain or null if domain does not exist
-     */
-    public Domain findBySystemId(String aSystemId) {
-        for (Domain theDomain : this) {
-            if (aSystemId.equals(theDomain.getSystemId())) {
-                return theDomain;
-            }
-        }
+	/**
+	 * Find a domain by system id.
+	 * 
+	 * @param aSystemId
+	 *			the system id
+	 * @return the domain or null if domain does not exist
+	 */
+	public Domain findBySystemId(String aSystemId) {
+		for (Domain theDomain : this) {
+			if (aSystemId.equals(theDomain.getSystemId())) {
+				return theDomain;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * Find a domain by a given name.
-     * 
-     * @param aName
-     *            the name
-     * @return the found element
-     */
-    public Domain findByName(String aName) {
-        for (Domain theDomain : this) {
-            if (aName.equals(theDomain.getName())) {
-                return theDomain;
-            }
-        }
+	/**
+	 * Find a domain by a given name.
+	 * 
+	 * @param aName
+	 *			the name
+	 * @return the found element
+	 */
+	public Domain findByName(String aName) {
+		for (Domain theDomain : this) {
+			if (aName.equals(theDomain.getName())) {
+				return theDomain;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

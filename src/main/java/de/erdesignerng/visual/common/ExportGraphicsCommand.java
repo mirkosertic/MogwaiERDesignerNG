@@ -33,60 +33,60 @@ import de.erdesignerng.visual.export.Exporter;
 
 public class ExportGraphicsCommand extends UICommand {
 
-    private Exporter exporter;
+	private final Exporter exporter;
 
-    private ExportType exportType;
+	private final ExportType exportType;
 
-    public ExportGraphicsCommand(ERDesignerComponent component, Exporter aExporter, ExportType aExportType) {
-        super(component);
-        exporter = aExporter;
-        exportType = aExportType;
-    }
+	public ExportGraphicsCommand(ERDesignerComponent component, Exporter aExporter, ExportType aExportType) {
+		super(component);
+		exporter = aExporter;
+		exportType = aExportType;
+	}
 
-    @Override
-    public void execute() {
-        if (exportType.equals(ExportType.ONE_PER_FILE)) {
+	@Override
+	public void execute() {
+		if (exportType.equals(ExportType.ONE_PER_FILE)) {
 
-            JFileChooser theChooser = new JFileChooser();
-            theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
-                File theBaseDirectory = theChooser.getSelectedFile();
+			JFileChooser theChooser = new JFileChooser();
+			theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+				File theBaseDirectory = theChooser.getSelectedFile();
 
-                CellView[] theViews = component.graph.getGraphLayoutCache().getAllViews();
-                for (CellView theView : theViews) {
-                    if (theView instanceof TableCellView) {
-                        TableCellView theItemCellView = (TableCellView) theView;
-                        DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
-                        ModelItem theItem = (ModelItem) theItemCell.getUserObject();
+				CellView[] theViews = component.graph.getGraphLayoutCache().getAllViews();
+				for (CellView theView : theViews) {
+					if (theView instanceof TableCellView) {
+						TableCellView theItemCellView = (TableCellView) theView;
+						DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
+						ModelItem theItem = (ModelItem) theItemCell.getUserObject();
 
-                        File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
-                        try {
-                            exporter.exportToStream(theItemCellView.getRendererComponent(component.graph, false, false,
-                                    false), new FileOutputStream(theOutputFile));
-                        } catch (Exception e) {
-                            getWorldConnector().notifyAboutException(e);
-                        }
-                    }
-                }
-            }
+						File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
+						try {
+							exporter.exportToStream(theItemCellView.getRendererComponent(component.graph, false, false,
+									false), new FileOutputStream(theOutputFile));
+						} catch (Exception e) {
+							getWorldConnector().notifyAboutException(e);
+						}
+					}
+				}
+			}
 
-        } else {
+		} else {
 
-            JFileChooser theChooser = new JFileChooser();
-            GenericFileFilter theFilter = new GenericFileFilter(exporter.getFileExtension(), exporter
-                    .getFileExtension()
-                    + " File");
-            theChooser.setFileFilter(theFilter);
-            if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+			JFileChooser theChooser = new JFileChooser();
+			GenericFileFilter theFilter = new GenericFileFilter(exporter.getFileExtension(), exporter
+					.getFileExtension()
+					+ " File");
+			theChooser.setFileFilter(theFilter);
+			if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-                File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
-                try {
-                    exporter.fullExportToStream(component.graph, new FileOutputStream(theFile));
-                } catch (Exception e) {
-                    getWorldConnector().notifyAboutException(e);
-                }
-            }
+				File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
+				try {
+					exporter.fullExportToStream(component.graph, new FileOutputStream(theFile));
+				} catch (Exception e) {
+					getWorldConnector().notifyAboutException(e);
+				}
+			}
 
-        }
-    }
+		}
+	}
 }

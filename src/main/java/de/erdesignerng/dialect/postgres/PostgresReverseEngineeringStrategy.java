@@ -80,7 +80,7 @@ public class PostgresReverseEngineeringStrategy extends
 						.equalsIgnoreCase("character varying"))) {
 			// PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR
 			// ohne Parameter definiert wurde, obwohl 1073741823 korrekt
-			// w‰re
+			// w√§re
 			if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
 				aAttribute.setSize(null);
 			}

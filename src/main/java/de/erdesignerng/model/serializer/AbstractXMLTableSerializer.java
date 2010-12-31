@@ -24,15 +24,15 @@ import de.erdesignerng.model.Table;
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLTableSerializer extends CommonAbstractXMLSerializer<Table> {
-    protected static final String TABLE = "Table";
+	protected static final String TABLE = "Table";
 
-    private AbstractXMLModelSerializer xmlModelSerializer = null;
+	private AbstractXMLModelSerializer xmlModelSerializer = null;
 
-    public AbstractXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
-        this.xmlModelSerializer = xmlModelSerializer;
-    }
+	public AbstractXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+		this.xmlModelSerializer = xmlModelSerializer;
+	}
 
-    protected AbstractXMLModelSerializer getXMLModelSerializer() {
-        return xmlModelSerializer;
-    }
+	protected AbstractXMLModelSerializer getXMLModelSerializer() {
+		return xmlModelSerializer;
+	}
 }

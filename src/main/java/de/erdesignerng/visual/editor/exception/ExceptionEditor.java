@@ -39,48 +39,48 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  */
 public class ExceptionEditor extends BaseEditor {
 
-    private static final Logger LOGGER = Logger.getLogger(ExceptionEditor.class);
+	private static final Logger LOGGER = Logger.getLogger(ExceptionEditor.class);
 
-    private ExceptionEditorView view = new ExceptionEditorView();
+	private final ExceptionEditorView view = new ExceptionEditorView();
 
-    private DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandClose();
-        }
-    }, this, ERDesignerBundle.CLOSE);
+		public void processActionEvent(ActionEvent e) {
+			commandClose();
+		}
+	}, this, ERDesignerBundle.CLOSE);
 
-    public ExceptionEditor(Component aParent, Exception aException) {
-        super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
+	public ExceptionEditor(Component aParent, Exception aException) {
+		super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);
 
-        LOGGER.error("Exception", aException);
+		LOGGER.error("Exception", aException);
 
-        initialize();
+		initialize();
 
-        StringWriter theWriter = new StringWriter();
-        PrintWriter thePrintWriter = new PrintWriter(theWriter);
-        aException.printStackTrace(thePrintWriter);
-        thePrintWriter.flush();
+		StringWriter theWriter = new StringWriter();
+		PrintWriter thePrintWriter = new PrintWriter(theWriter);
+		aException.printStackTrace(thePrintWriter);
+		thePrintWriter.flush();
 
-        view.getExceptionText().setText(theWriter.toString());
-    }
+		view.getExceptionText().setText(theWriter.toString());
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        view.getCloseButton().setAction(closeAction);
+		view.getCloseButton().setAction(closeAction);
 
-        setContentPane(view);
-        setResizable(false);
-        pack();
+		setContentPane(view);
+		setResizable(false);
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 
-    private void commandClose() {
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
-    }
+	private void commandClose() {
+		setModalResult(DialogConstants.MODAL_RESULT_OK);
+	}
 }

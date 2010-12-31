@@ -24,28 +24,28 @@ import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingPr
 
 public class ScaffoldingWrapper {
 
-    private SwingMetawidget widget;
+	private final SwingMetawidget widget;
 
-    private BeanUtilsBindingProcessor processor;
+	private final BeanUtilsBindingProcessor processor;
 
-    private ERDesignerAnnotationInspector inspector;
+	private final ERDesignerAnnotationInspector inspector;
 
-    public ScaffoldingWrapper(SwingMetawidget aWidget, BeanUtilsBindingProcessor aProcessor,
-            ERDesignerAnnotationInspector aInspector) {
-        widget = aWidget;
-        processor = aProcessor;
-        inspector = aInspector;
-    }
+	public ScaffoldingWrapper(SwingMetawidget aWidget, BeanUtilsBindingProcessor aProcessor,
+			ERDesignerAnnotationInspector aInspector) {
+		widget = aWidget;
+		processor = aProcessor;
+		inspector = aInspector;
+	}
 
-    public JComponent getComponent() {
-        return widget;
-    }
+	public JComponent getComponent() {
+		return widget;
+	}
 
-    public void save() {
-        processor.save(widget);
-    }
+	public void save() {
+		processor.save(widget);
+	}
 
-    public boolean hasComponents() {
-        return inspector.getPropertyCount() > 0;
-    }
+	public boolean hasComponents() {
+		return inspector.getPropertyCount() > 0;
+	}
 }

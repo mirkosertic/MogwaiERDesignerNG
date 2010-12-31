@@ -36,81 +36,81 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class CompleteCompareEditor extends BaseEditor {
 
-    private CompleteCompareEditorView editingView;
+	private CompleteCompareEditorView editingView;
 
-    private Model currentModel;
+	private final Model currentModel;
 
-    private Model databaseModel;
+	private final Model databaseModel;
 
-    private ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel,
-            ApplicationPreferences aPreferences, String aCaption) {
-        super(aParent, aCaption);
+	public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel,
+			ApplicationPreferences aPreferences, String aCaption) {
+		super(aParent, aCaption);
 
-        currentModel = aCurrentModel;
-        databaseModel = aDatabaseModel;
-        preferences = aPreferences;
+		currentModel = aCurrentModel;
+		databaseModel = aDatabaseModel;
+		preferences = aPreferences;
 
-        initialize();
+		initialize();
 
-        TreeCellRenderer theRenderer = new CompareTreeCellRenderer();
+		TreeCellRenderer theRenderer = new CompareTreeCellRenderer();
 
-        editingView.getCurrentModelView().setCellRenderer(theRenderer);
-        editingView.getDatabaseView().setCellRenderer(theRenderer);
-        editingView.getOkButton().setAction(okAction);
+		editingView.getCurrentModelView().setCellRenderer(theRenderer);
+		editingView.getDatabaseView().setCellRenderer(theRenderer);
+		editingView.getOkButton().setAction(okAction);
 
-        refreshView();
+		refreshView();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    private void refreshView() {
+	private void refreshView() {
 
-        ModelComparator theComparator = new ModelComparator();
-        ModelCompareResult theResult = theComparator.compareModels(currentModel, databaseModel);
+		ModelComparator theComparator = new ModelComparator();
+		ModelCompareResult theResult = theComparator.compareModels(currentModel, databaseModel);
 
-        editingView.getCurrentModelView().setModel(new DefaultTreeModel(theResult.getModelRootNode()));
-        editingView.getDatabaseView().setModel(new DefaultTreeModel(theResult.getDbRootNode()));
+		editingView.getCurrentModelView().setModel(new DefaultTreeModel(theResult.getModelRootNode()));
+		editingView.getDatabaseView().setModel(new DefaultTreeModel(theResult.getDbRootNode()));
 
-        int theRow = 0;
-        while (theRow < editingView.getCurrentModelView().getRowCount()) {
-            editingView.getCurrentModelView().expandRow(theRow++);
-        }
+		int theRow = 0;
+		while (theRow < editingView.getCurrentModelView().getRowCount()) {
+			editingView.getCurrentModelView().expandRow(theRow++);
+		}
 
-        theRow = 0;
-        while (theRow < editingView.getDatabaseView().getRowCount()) {
-            editingView.getDatabaseView().expandRow(theRow++);
-        }
-    }
+		theRow = 0;
+		while (theRow < editingView.getDatabaseView().getRowCount()) {
+			editingView.getDatabaseView().expandRow(theRow++);
+		}
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        editingView = new CompleteCompareEditorView();
-        editingView.getOkButton().setAction(okAction);
+		editingView = new CompleteCompareEditorView();
+		editingView.getOkButton().setAction(okAction);
 
-        JScrollPane modelScroll = editingView.getCurrentModelView().getScrollPane();
-        JScrollPane dbScroll = editingView.getDatabaseView().getScrollPane();
+		JScrollPane modelScroll = editingView.getCurrentModelView().getScrollPane();
+		JScrollPane dbScroll = editingView.getDatabaseView().getScrollPane();
 
-        modelScroll.getVerticalScrollBar().setModel(dbScroll.getVerticalScrollBar().getModel());
-        modelScroll.getHorizontalScrollBar().setModel(dbScroll.getHorizontalScrollBar().getModel());
+		modelScroll.getVerticalScrollBar().setModel(dbScroll.getVerticalScrollBar().getModel());
+		modelScroll.getHorizontalScrollBar().setModel(dbScroll.getHorizontalScrollBar().getModel());
 
-        setContentPane(editingView);
-        setResizable(true);
+		setContentPane(editingView);
+		setResizable(true);
 
-        pack();
+		pack();
 
-        setMinimumSize(getSize());
-        preferences.setWindowSize(getClass().getSimpleName(), this);
-    }
+		setMinimumSize(getSize());
+		preferences.setWindowSize(getClass().getSimpleName(), this);
+	}
 
-    @Override
-    protected void commandOk() {
-        preferences.updateWindowSize(getClass().getSimpleName(), this);
-        super.commandOk();
-    }
+	@Override
+	protected void commandOk() {
+		preferences.updateWindowSize(getClass().getSimpleName(), this);
+		super.commandOk();
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 }

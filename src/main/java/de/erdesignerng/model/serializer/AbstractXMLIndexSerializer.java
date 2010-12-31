@@ -29,18 +29,18 @@ import de.erdesignerng.model.Table;
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLIndexSerializer extends CommonAbstractXMLSerializer<Index> {
-    protected static final String INDEX = "Index";
+	protected static final String INDEX = "Index";
 
-    protected static final String INDEXATTRIBUTE = "Indexattribute";
+	protected static final String INDEXATTRIBUTE = "Indexattribute";
 
-    protected static final String INDEXTYPE = "indextype";
+	protected static final String INDEXTYPE = "indextype";
 
-    public abstract void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement);
+	public abstract void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement);
 
-    @Override
-    @Deprecated
-    public void deserialize(Model aModel, Document aDocument) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	@Deprecated
+	public void deserialize(Model aModel, Document aDocument) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 }

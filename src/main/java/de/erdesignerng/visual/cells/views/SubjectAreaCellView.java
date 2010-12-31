@@ -42,62 +42,62 @@ import de.erdesignerng.visual.editor.CellEditorFactory;
  */
 public class SubjectAreaCellView extends VertexView {
 
-    private static MyRenderer renderer = new MyRenderer();
+	private static final MyRenderer renderer = new MyRenderer();
 
-    public SubjectAreaCellView(SubjectAreaCell aCell) {
-        super(aCell);
-    }
+	public SubjectAreaCellView(SubjectAreaCell aCell) {
+		super(aCell);
+	}
 
-    @Override
-    public CellViewRenderer getRenderer() {
-        return renderer;
-    }
+	@Override
+	public CellViewRenderer getRenderer() {
+		return renderer;
+	}
 
-    public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
+	public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
-        private SubjectArea subjectArea;
+		private SubjectArea subjectArea;
 
-        private boolean selected;
+		private boolean selected;
 
-        public MyRenderer() {
-            setBackground(Color.white);
-        }
+		public MyRenderer() {
+			setBackground(Color.white);
+		}
 
-        @Override
-        public void paint(Graphics aGraphics) {
+		@Override
+		public void paint(Graphics aGraphics) {
 
-            Dimension theSize = getSize();
-            int theWidth = theSize.width;
-            int theHeight = theSize.height;
+			Dimension theSize = getSize();
+			int theWidth = theSize.width;
+			int theHeight = theSize.height;
 
-            aGraphics.setColor(subjectArea.getColor());
-            aGraphics.fillRect(0, 0, theWidth - 1, theHeight - 1);
+			aGraphics.setColor(subjectArea.getColor());
+			aGraphics.fillRect(0, 0, theWidth - 1, theHeight - 1);
 
-            aGraphics.setColor(selected ? Color.blue : Color.black);
-            aGraphics.drawRect(0, 0, theWidth - 1, theHeight - 1);
+			aGraphics.setColor(selected ? Color.blue : Color.black);
+			aGraphics.drawRect(0, 0, theWidth - 1, theHeight - 1);
 
-            aGraphics.setColor(Color.black);
+			aGraphics.setColor(Color.black);
 
-            FontMetrics theMetrics = aGraphics.getFontMetrics();
-            int theYOffset = theMetrics.getHeight();
+			FontMetrics theMetrics = aGraphics.getFontMetrics();
+			int theYOffset = theMetrics.getHeight();
 
-            aGraphics.drawString(subjectArea.getName(), 5, theYOffset);
-        }
+			aGraphics.drawString(subjectArea.getName(), 5, theYOffset);
+		}
 
-        @Override
-        public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-                boolean aPreview) {
+		@Override
+		public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
+				boolean aPreview) {
 
-            SubjectAreaCellView theView = (SubjectAreaCellView) aView;
-            subjectArea = (SubjectArea) ((SubjectAreaCell) theView.getCell()).getUserObject();
-            selected = aSelected;
+			SubjectAreaCellView theView = (SubjectAreaCellView) aView;
+			subjectArea = (SubjectArea) ((SubjectAreaCell) theView.getCell()).getUserObject();
+			selected = aSelected;
 
-            return this;
-        }
-    }
+			return this;
+		}
+	}
 
-    @Override
-    public GraphCellEditor getEditor() {
-        return new CellEditorFactory();
-    }
+	@Override
+	public GraphCellEditor getEditor() {
+		return new CellEditorFactory();
+	}
 }

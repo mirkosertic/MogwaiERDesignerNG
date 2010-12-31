@@ -25,30 +25,30 @@ import org.hibernate.connection.ConnectionProvider;
 
 public class ThreadbasedConnectionProvider implements ConnectionProvider {
 
-    private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>();
+	private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>();
 
-    public static void initializeForThread(Connection aConnection) {
-        CONNECTION.set(aConnection);
-    }
+	public static void initializeForThread(Connection aConnection) {
+		CONNECTION.set(aConnection);
+	}
 
-    public static void cleanup() {
-        CONNECTION.set(null);
-    }
+	public static void cleanup() {
+		CONNECTION.set(null);
+	}
 
-    public void close() {
-    }
+	public void close() {
+	}
 
-    public void closeConnection(Connection conn) throws SQLException {
-    }
+	public void closeConnection(Connection conn) throws SQLException {
+	}
 
-    public void configure(Properties aProps) {
-    }
+	public void configure(Properties aProps) {
+	}
 
-    public Connection getConnection() throws SQLException {
-        return CONNECTION.get();
-    }
+	public Connection getConnection() throws SQLException {
+		return CONNECTION.get();
+	}
 
-    public boolean supportsAggressiveRelease() {
-        return false;
-    }
+	public boolean supportsAggressiveRelease() {
+		return false;
+	}
 }

@@ -23,5 +23,5 @@ package de.erdesignerng.visual;
  * @version $Date: 2008-01-15 19:22:45 $
  */
 public enum ExportType {
-    ONE_PER_FILE(), ALL_IN_ONE();
+	ONE_PER_FILE(), ALL_IN_ONE()
 }

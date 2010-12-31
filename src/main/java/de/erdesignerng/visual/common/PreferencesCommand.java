@@ -22,19 +22,19 @@ import de.erdesignerng.visual.editor.preferences.PreferencesEditor;
 
 public class PreferencesCommand extends UICommand {
 
-    public PreferencesCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public PreferencesCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        PreferencesEditor theEditor = new PreferencesEditor(getDetailComponent(), getPreferences(), component);
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+	@Override
+	public void execute() {
+		PreferencesEditor theEditor = new PreferencesEditor(getDetailComponent(), getPreferences(), component);
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

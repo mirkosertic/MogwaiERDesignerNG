@@ -26,29 +26,29 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 public final class MessagesHelper {
 
-    private MessagesHelper() {
-    }
+	private MessagesHelper() {
+	}
 
-    public static ResourceHelper getResourceHelper() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
+	public static ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
 
-    public static void displayErrorMessage(Component aParent, String aMessage) {
+	public static void displayErrorMessage(Component aParent, String aMessage) {
 
-        String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
-        JOptionPane.showMessageDialog(aParent, aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
-    }
+		String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
+		JOptionPane.showMessageDialog(aParent, aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
+	}
 
-    public static void displayInfoMessage(Component aParent, String aMessage) {
+	public static void displayInfoMessage(Component aParent, String aMessage) {
 
-        String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
-        JOptionPane.showMessageDialog(aParent, aMessage, theInfoText, JOptionPane.INFORMATION_MESSAGE);
-    }
+		String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
+		JOptionPane.showMessageDialog(aParent, aMessage, theInfoText, JOptionPane.INFORMATION_MESSAGE);
+	}
 
-    public static boolean displayQuestionMessage(Component aParent, String aMessageKey, Object... aReplacementValues) {
-        String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
-        String theMessage = getResourceHelper().getFormattedText(aMessageKey, aReplacementValues);
-        return JOptionPane.showConfirmDialog(aParent, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+	public static boolean displayQuestionMessage(Component aParent, String aMessageKey, Object... aReplacementValues) {
+		String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
+		String theMessage = getResourceHelper().getFormattedText(aMessageKey, aReplacementValues);
+		return JOptionPane.showConfirmDialog(aParent, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
-    }
+	}
 }

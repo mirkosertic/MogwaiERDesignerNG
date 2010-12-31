@@ -39,97 +39,97 @@ import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 
 public class SaveToFileCommand extends UICommand {
 
-    public SaveToFileCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public SaveToFileCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        if (component.currentEditingFile != null) {
-            executeSaveToFile(component.currentEditingFile);
-        } else {
-            executeSaveFileAs();
-        }
-    }
+	@Override
+	public void execute() {
+		if (component.currentEditingFile != null) {
+			executeSaveToFile(component.currentEditingFile);
+		} else {
+			executeSaveFileAs();
+		}
+	}
 
-    public void executeSaveFileAs() {
+	public void executeSaveFileAs() {
 
-        ModelFileFilter theFiler = new ModelFileFilter();
+		ModelFileFilter theFiler = new ModelFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
-        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        theChooser.setFileFilter(theFiler);
-        theChooser.setSelectedFile(component.currentEditingFile);
-        if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+		JFileChooser theChooser = new JFileChooser();
+		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		theChooser.setFileFilter(theFiler);
+		theChooser.setSelectedFile(component.currentEditingFile);
+		if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
-            executeSaveToFile(theFile);
+			File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+			executeSaveToFile(theFile);
 
-        }
-    }
+		}
+	}
 
-    private void executeSaveToFile(File aFile) {
+	private void executeSaveToFile(File aFile) {
 
-        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        Date theNow = new Date();
+		DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		Date theNow = new Date();
 
-        PrintWriter theWriter = null;
-        try {
+		PrintWriter theWriter = null;
+		try {
 
-            Model theModel = component.getModel();
+			Model theModel = component.getModel();
 
-            component.setIntelligentLayoutEnabled(false);
+			component.setIntelligentLayoutEnabled(false);
 
-            if (aFile.exists()) {
-                File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
-                aFile.renameTo(theBakFile);
-            }
+			if (aFile.exists()) {
+				File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
+				aFile.renameTo(theBakFile);
+			}
 
-            ModelIOUtilities.getInstance().serializeModelToXML(theModel, new OutputStreamWriter(new FileOutputStream(aFile), PlatformConfig.getXMLEncoding()));
+			ModelIOUtilities.getInstance().serializeModelToXML(theModel, new OutputStreamWriter(new FileOutputStream(aFile), PlatformConfig.getXMLEncoding()));
 
-            getWorldConnector().initTitle();
+			getWorldConnector().initTitle();
 
-            getPreferences().addRecentlyUsedFile(aFile);
+			getPreferences().addRecentlyUsedFile(aFile);
 
-            component.updateRecentlyUsedMenuEntries();
+			component.updateRecentlyUsedMenuEntries();
 
-            if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
-                HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel.getModificationTracker();
-                StatementList theStatements = theTracker.getNotSavedStatements();
-                if (theStatements.size() > 0) {
-                    StringBuilder theFileName = new StringBuilder(aFile.toString());
-                    int p = theFileName.lastIndexOf(".");
-                    if (p > 0) {
+			if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
+				HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel.getModificationTracker();
+				StatementList theStatements = theTracker.getNotSavedStatements();
+				if (theStatements.size() > 0) {
+					StringBuilder theFileName = new StringBuilder(aFile.toString());
+					int p = theFileName.lastIndexOf(".");
+					if (p > 0) {
 
-                        SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
+						SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
 
-                        theFileName = new StringBuilder(theFileName.substring(0, p));
+						theFileName = new StringBuilder(theFileName.substring(0, p));
 
-                        theFileName.insert(p, "_" + theFormat.format(theNow));
-                        theFileName.append(".sql");
+						theFileName.insert(p, "_" + theFormat.format(theNow));
+						theFileName.append(".sql");
 
-                        theWriter = new PrintWriter(new File(theFileName.toString()));
-                        for (Statement theStatement : theStatements) {
-                            theWriter.print(theStatement.getSql());
-                            theWriter.println(theGenerator.createScriptStatementSeparator());
-                            theStatement.setSaved(true);
+						theWriter = new PrintWriter(new File(theFileName.toString()));
+						for (Statement theStatement : theStatements) {
+							theWriter.print(theStatement.getSql());
+							theWriter.println(theGenerator.createScriptStatementSeparator());
+							theStatement.setSaved(true);
 
-                        }
-                    }
-                }
-            }
+						}
+					}
+				}
+			}
 
-            component.setupViewFor(aFile);
-            getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+			component.setupViewFor(aFile);
+			getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
 
-        } catch (Exception e) {
-            getWorldConnector().notifyAboutException(e);
-        } finally {
-            if (theWriter != null) {
-                theWriter.close();
-            }
+		} catch (Exception e) {
+			getWorldConnector().notifyAboutException(e);
+		} finally {
+			if (theWriter != null) {
+				theWriter.close();
+			}
 
-            component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
-        }
-    }
+			component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
+		}
+	}
 }

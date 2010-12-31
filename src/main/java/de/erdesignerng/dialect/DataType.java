@@ -23,27 +23,27 @@ import de.erdesignerng.model.Attribute;
 
 public interface DataType extends Serializable {
 
-    String getName();
+	String getName();
 
-    boolean isDomain();
+	boolean isDomain();
 
-    boolean isCustomType();
+	boolean isCustomType();
 
-    boolean supportsSize();
+	boolean supportsSize();
 
-    boolean supportsFraction();
+	boolean supportsFraction();
 
-    boolean supportsScale();
+	boolean supportsScale();
 
-    boolean supportsExtra();
+	boolean supportsExtra();
 
-    boolean isJDBCStringType();
+	boolean isJDBCStringType();
 
-    String createTypeDefinitionFor(Attribute aAttribute);
+	String createTypeDefinitionFor(Attribute aAttribute);
 
-    boolean isIdentity();
+	boolean isIdentity();
 
-    int[] getJDBCType();
+	int[] getJDBCType();
 
-    String getDefinition();
+	String getDefinition();
 }

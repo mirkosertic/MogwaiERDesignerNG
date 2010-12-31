@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class MissingViewInfo extends MissingInfo {
 
-    public MissingViewInfo(String aWhat) {
-        super(ERDesignerBundle.MISSINGENTITY, aWhat);
-    }
+	public MissingViewInfo(String aWhat) {
+		super(ERDesignerBundle.MISSINGENTITY, aWhat);
+	}
 }

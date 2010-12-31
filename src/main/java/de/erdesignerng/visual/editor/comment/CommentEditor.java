@@ -34,69 +34,69 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class CommentEditor extends BaseEditor {
 
-    private BindingInfo<Comment> bindingInfo = new BindingInfo<Comment>();
+	private final BindingInfo<Comment> bindingInfo = new BindingInfo<Comment>();
 
-    private CommentEditorView editingView;
+	private CommentEditorView editingView;
 
-    private Model model;
+	private final Model model;
 
-    /**
-     * Create a relation editor.
-     * 
-     * @param aModel
-     *            the db model
-     * @param aParent
-     *            the parent container
-     */
-    public CommentEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.COMMENTEDITOR);
+	/**
+	 * Create a relation editor.
+	 * 
+	 * @param aModel
+	 *			the db model
+	 * @param aParent
+	 *			the parent container
+	 */
+	public CommentEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.COMMENTEDITOR);
 
-        initialize();
+		initialize();
 
-        model = aModel;
+		model = aModel;
 
-        bindingInfo.addBinding("comment", editingView.getComment(), true);
-        bindingInfo.configure();
-    }
+		bindingInfo.addBinding("comment", editingView.getComment(), true);
+		bindingInfo.configure();
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new CommentEditorView();
-        editingView.getOKButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
+		editingView = new CommentEditorView();
+		editingView.getOKButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 
-        setContentPane(editingView);
-        setResizable(false);
+		setContentPane(editingView);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    public void initializeFor(Comment aArea) {
+	public void initializeFor(Comment aArea) {
 
-        bindingInfo.setDefaultModel(aArea);
-        bindingInfo.model2view();
-    }
+		bindingInfo.setDefaultModel(aArea);
+		bindingInfo.model2view();
+	}
 
-    @Override
-    protected void commandOk() {
-        if (bindingInfo.validate().size() == 0) {
-            setModalResult(MODAL_RESULT_OK);
-        }
-    }
+	@Override
+	protected void commandOk() {
+		if (bindingInfo.validate().size() == 0) {
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
-    @Override
-    public void applyValues() throws Exception {
+	@Override
+	public void applyValues() throws Exception {
 
-        Comment theComment = bindingInfo.getDefaultModel();
+		Comment theComment = bindingInfo.getDefaultModel();
 
-        bindingInfo.view2model();
-        if (!model.getComments().contains(theComment)) {
-            model.addComment(theComment);
-        }
-    }
+		bindingInfo.view2model();
+		if (!model.getComments().contains(theComment)) {
+			model.addComment(theComment);
+		}
+	}
 }

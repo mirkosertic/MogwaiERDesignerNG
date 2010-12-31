@@ -30,21 +30,21 @@ import de.erdesignerng.util.ApplicationPreferences;
  */
 public class ModelBasedConnectionProvider implements ConnectionProvider {
 
-    private Model model;
+	private final Model model;
 
-    public ModelBasedConnectionProvider(Model aModel) {
-        model = aModel;
-    }
+	public ModelBasedConnectionProvider(Model aModel) {
+		model = aModel;
+	}
 
-    public Connection createConnection(ApplicationPreferences aPreferences) throws Exception {
-        return model.createConnection(aPreferences);
-    }
+	public Connection createConnection(ApplicationPreferences aPreferences) throws Exception {
+		return model.createConnection(aPreferences);
+	}
 
-    public String createScriptStatementSeparator() {
-        return model.getDialect().createSQLGenerator().createScriptStatementSeparator();
-    }
+	public String createScriptStatementSeparator() {
+		return model.getDialect().createSQLGenerator().createScriptStatementSeparator();
+	}
 
-    public boolean generatesManagedConnection() {
-        return model.getDialect().generatesManagedConnection();
-    }
+	public boolean generatesManagedConnection() {
+		return model.getDialect().generatesManagedConnection();
+	}
 }

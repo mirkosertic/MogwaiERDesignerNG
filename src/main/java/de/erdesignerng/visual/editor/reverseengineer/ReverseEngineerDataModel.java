@@ -22,38 +22,38 @@ import java.util.List;
 
 public class ReverseEngineerDataModel {
 
-    private NameValuePair tableGenerator;
+	private NameValuePair tableGenerator;
 
-    private List<Object> tableOptions = new ArrayList<Object>();
+	private List<Object> tableOptions = new ArrayList<Object>();
 
-    /**
-     * @return the tableGenerator
-     */
-    public NameValuePair getTableGenerator() {
-        return tableGenerator;
-    }
+	/**
+	 * @return the tableGenerator
+	 */
+	public NameValuePair getTableGenerator() {
+		return tableGenerator;
+	}
 
-    /**
-     * @param tableGenerator
-     *            the tableGenerator to set
-     */
-    public void setTableGenerator(NameValuePair tableGenerator) {
-        this.tableGenerator = tableGenerator;
-    }
+	/**
+	 * @param tableGenerator
+	 *			the tableGenerator to set
+	 */
+	public void setTableGenerator(NameValuePair tableGenerator) {
+		this.tableGenerator = tableGenerator;
+	}
 
-    /**
-     * @return the tableOptions
-     */
-    public List<Object> getTableOptions() {
-        return tableOptions;
-    }
+	/**
+	 * @return the tableOptions
+	 */
+	public List<Object> getTableOptions() {
+		return tableOptions;
+	}
 
-    /**
-     * @param tableOptions
-     *            the tableOptions to set
-     */
-    public void setTableOptions(List<Object> tableOptions) {
-        this.tableOptions = tableOptions;
-    }
+	/**
+	 * @param tableOptions
+	 *			the tableOptions to set
+	 */
+	public void setTableOptions(List<Object> tableOptions) {
+		this.tableOptions = tableOptions;
+	}
 
 }

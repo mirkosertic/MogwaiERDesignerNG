@@ -22,19 +22,19 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
 /**
  * A DB2 DataType.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class DB2DataType extends GenericDataTypeImpl {
 
-    public DB2DataType(String aName, String aDefinition, int... aJdbcType) {
-        super(aName, aDefinition, aJdbcType);
-    }
+	public DB2DataType(String aName, String aDefinition, int... aJdbcType) {
+		super(aName, aDefinition, aJdbcType);
+	}
 
-    public DB2DataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-        super(aName, aDefinition, aJdbcType);
-        identity = aIdentity;
-        if (aIdentity) {
-            maxOccoursPerTable = 1;
-        }
-    }
+	public DB2DataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+		super(aName, aDefinition, aJdbcType);
+		identity = aIdentity;
+		if (aIdentity) {
+			maxOccursPerTable = 1;
+		}
+	}
 }

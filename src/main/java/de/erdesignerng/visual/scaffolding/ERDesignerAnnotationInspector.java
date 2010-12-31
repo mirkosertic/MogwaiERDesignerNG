@@ -33,7 +33,7 @@ import de.erdesignerng.util.ERDesignerLookup;
 public class ERDesignerAnnotationInspector extends
 		MetawidgetAnnotationInspector {
 
-	private Model model;
+	private final Model model;
 	
 	private int propertyCount;
 	

@@ -22,22 +22,22 @@ package de.erdesignerng.dialect;
  * @version $Date: 2008-01-15 19:22:42 $
  */
 public enum NameCastType {
-    NOTHING(1), UPPERCASE(2);
+	NOTHING(1), UPPERCASE(2);
 
-    private int mode;
+	private final int mode;
 
-    private NameCastType(int aMode) {
-        mode = aMode;
-    }
+	private NameCastType(int aMode) {
+		mode = aMode;
+	}
 
-    public String cast(String aValue) {
-        switch (mode) {
-        case 1:
-            return aValue;
-        case 2:
-            return aValue.toUpperCase();
-        default:
-            throw new IllegalStateException();
-        }
-    }
+	public String cast(String aValue) {
+		switch (mode) {
+		case 1:
+			return aValue;
+		case 2:
+			return aValue.toUpperCase();
+		default:
+			throw new IllegalStateException();
+		}
+	}
 }

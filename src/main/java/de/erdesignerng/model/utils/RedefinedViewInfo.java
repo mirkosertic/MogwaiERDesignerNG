@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class RedefinedViewInfo extends RedefinedInfo {
 
-    public RedefinedViewInfo(String aWhat) {
-        super(ERDesignerBundle.REDEFINED, aWhat);
-    }
+	public RedefinedViewInfo(String aWhat) {
+		super(ERDesignerBundle.REDEFINED, aWhat);
+	}
 }

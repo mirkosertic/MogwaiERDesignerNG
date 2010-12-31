@@ -30,53 +30,53 @@ import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 /**
  * Serializer for tables.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class DictionaryTableSerializer extends DictionaryBaseSerializer {
 
-    public static final DictionaryTableSerializer SERIALIZER = new DictionaryTableSerializer();
+	public static final DictionaryTableSerializer SERIALIZER = new DictionaryTableSerializer();
 
-    public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionary) {
+	public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionary) {
 
-        Map<String, ModelEntity> theTables = deletedRemovedInstances(aModel.getTables(), aDictionary.getTables());
+		Map<String, ModelEntity> theTables = deletedRemovedInstances(aModel.getTables(), aDictionary.getTables());
 
-        for (Table theTable : aModel.getTables()) {
-            boolean existing = true;
-            TableEntity theExisting = (TableEntity) theTables.get(theTable.getSystemId());
-            if (theExisting == null) {
-                theExisting = new TableEntity();
-                existing = false;
-            }
+		for (Table theTable : aModel.getTables()) {
+			boolean existing = true;
+			TableEntity theExisting = (TableEntity) theTables.get(theTable.getSystemId());
+			if (theExisting == null) {
+				theExisting = new TableEntity();
+				existing = false;
+			}
 
-            copyBaseAttributes(theTable, theExisting);
+			copyBaseAttributes(theTable, theExisting);
 
-            theExisting.setSchema(theTable.getSchema());
+			theExisting.setSchema(theTable.getSchema());
 
-            DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
+			DictionaryAttributeSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
 
-            DictionaryIndexSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
+			DictionaryIndexSerializer.SERIALIZER.serialize(theTable, theExisting, aSession);
 
-            if (!existing) {
-                aDictionary.getTables().add(theExisting);
-            }
-        }
-    }
+			if (!existing) {
+				aDictionary.getTables().add(theExisting);
+			}
+		}
+	}
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (TableEntity theTableEntity : aRepositoryEntity.getTables()) {
+	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+		for (TableEntity theTableEntity : aRepositoryEntity.getTables()) {
 
-            Table theTable = new Table();
-            theTable.setOwner(aModel);
+			Table theTable = new Table();
+			theTable.setOwner(aModel);
 
-            copyBaseAttributes(theTableEntity, theTable);
+			copyBaseAttributes(theTableEntity, theTable);
 
-            theTable.setSchema(theTableEntity.getSchema());
+			theTable.setSchema(theTableEntity.getSchema());
 
-            DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
+			DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
 
-            DictionaryIndexSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
+			DictionaryIndexSerializer.SERIALIZER.deserialize(aModel, theTable, theTableEntity);
 
-            aModel.getTables().add(theTable);
-        }
-    }
+			aModel.getTables().add(theTable);
+		}
+	}
 }

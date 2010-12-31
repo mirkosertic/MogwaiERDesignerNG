@@ -37,37 +37,37 @@ import de.erdesignerng.visual.cells.ViewCell;
  */
 public class CellViewFactory extends DefaultCellViewFactory {
 
-    @Override
-    protected VertexView createVertexView(Object aVertex) {
-        if (aVertex instanceof TableCell) {
-            return new TableCellView((TableCell) aVertex);
-        }
-        if (aVertex instanceof SubjectAreaCell) {
-            return new SubjectAreaCellView((SubjectAreaCell) aVertex);
-        }
-        if (aVertex instanceof CommentCell) {
-            return new CommentCellView((CommentCell) aVertex);
-        }
-        if (aVertex instanceof ViewCell) {
-            return new ViewCellView((ViewCell) aVertex);
-        }
+	@Override
+	protected VertexView createVertexView(Object aVertex) {
+		if (aVertex instanceof TableCell) {
+			return new TableCellView((TableCell) aVertex);
+		}
+		if (aVertex instanceof SubjectAreaCell) {
+			return new SubjectAreaCellView((SubjectAreaCell) aVertex);
+		}
+		if (aVertex instanceof CommentCell) {
+			return new CommentCellView((CommentCell) aVertex);
+		}
+		if (aVertex instanceof ViewCell) {
+			return new ViewCellView((ViewCell) aVertex);
+		}
 
-        return super.createVertexView(aVertex);
-    }
+		return super.createVertexView(aVertex);
+	}
 
-    @Override
-    protected EdgeView createEdgeView(Object aObject) {
-        if (aObject instanceof RelationEdge) {
-            return new RelationEdgeView((RelationEdge) aObject);
-        }
-        return super.createEdgeView(aObject);
-    }
+	@Override
+	protected EdgeView createEdgeView(Object aObject) {
+		if (aObject instanceof RelationEdge) {
+			return new RelationEdgeView((RelationEdge) aObject);
+		}
+		return super.createEdgeView(aObject);
+	}
 
-    @Override
-    protected PortView createPortView(Object cell) {
-        if (cell instanceof DefaultPort) {
-            return new DefaultPortView(cell);
-        }
-        return super.createPortView(cell);
-    }
+	@Override
+	protected PortView createPortView(Object cell) {
+		if (cell instanceof DefaultPort) {
+			return new DefaultPortView(cell);
+		}
+		return super.createPortView(cell);
+	}
 }

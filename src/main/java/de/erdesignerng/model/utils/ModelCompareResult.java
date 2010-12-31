@@ -21,20 +21,20 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ModelCompareResult {
 
-    private DefaultMutableTreeNode modelRootNode;
+	private final DefaultMutableTreeNode modelRootNode;
 
-    private DefaultMutableTreeNode dbRootNode;
+	private final DefaultMutableTreeNode dbRootNode;
 
-    public ModelCompareResult(DefaultMutableTreeNode aModelRootNode, DefaultMutableTreeNode aDBRootNode) {
-        modelRootNode = aModelRootNode;
-        dbRootNode = aDBRootNode;
-    }
+	public ModelCompareResult(DefaultMutableTreeNode aModelRootNode, DefaultMutableTreeNode aDBRootNode) {
+		modelRootNode = aModelRootNode;
+		dbRootNode = aDBRootNode;
+	}
 
-    public DefaultMutableTreeNode getModelRootNode() {
-        return modelRootNode;
-    }
+	public DefaultMutableTreeNode getModelRootNode() {
+		return modelRootNode;
+	}
 
-    public DefaultMutableTreeNode getDbRootNode() {
-        return dbRootNode;
-    }
+	public DefaultMutableTreeNode getDbRootNode() {
+		return dbRootNode;
+	}
 }

@@ -19,24 +19,24 @@ package de.erdesignerng.model;
 
 public class Dependency {
 
-    public static enum DependencyType {
-        DEPENDSON, ISREQUIREDBY;
-    }
+	public static enum DependencyType {
+		DEPENDSON, ISREQUIREDBY
+	}
 
-    private DependencyType type;
+	private final DependencyType type;
 
-    private Table table;
+	private final Table table;
 
-    public Dependency(DependencyType aType, Table aTable) {
-        type = aType;
-        table = aTable;
-    }
+	public Dependency(DependencyType aType, Table aTable) {
+		type = aType;
+		table = aTable;
+	}
 
-    public DependencyType getType() {
-        return type;
-    }
+	public DependencyType getType() {
+		return type;
+	}
 
-    public Table getTable() {
-        return table;
-    }
+	public Table getTable() {
+		return table;
+	}
 }

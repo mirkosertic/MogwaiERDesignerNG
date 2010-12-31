@@ -22,57 +22,57 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 /**
  * Datamodel for the save to repository dialog.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class SaveToRepositoryDataModel {
-    private String nameForNewEntry;
+	private String nameForNewEntry;
 
-    private RepositoryEntryDescriptor existingEntry;
+	private RepositoryEntryDescriptor existingEntry;
 
-    private String nameForExistantEntry;
+	private String nameForExistingEntry;
 
-    /**
-     * @return the nameForNewEntry
-     */
-    public String getNameForNewEntry() {
-        return nameForNewEntry;
-    }
+	/**
+	 * @return the nameForNewEntry
+	 */
+	public String getNameForNewEntry() {
+		return nameForNewEntry;
+	}
 
-    /**
-     * @param nameForNewEntry
-     *            the nameForNewEntry to set
-     */
-    public void setNameForNewEntry(String nameForNewEntry) {
-        this.nameForNewEntry = nameForNewEntry;
-    }
+	/**
+	 * @param nameForNewEntry
+	 *			the nameForNewEntry to set
+	 */
+	public void setNameForNewEntry(String nameForNewEntry) {
+		this.nameForNewEntry = nameForNewEntry;
+	}
 
-    /**
-     * @return the existingEntry
-     */
-    public RepositoryEntryDescriptor getExistingEntry() {
-        return existingEntry;
-    }
+	/**
+	 * @return the existingEntry
+	 */
+	public RepositoryEntryDescriptor getExistingEntry() {
+		return existingEntry;
+	}
 
-    /**
-     * @param existingEntry
-     *            the existingEntry to set
-     */
-    public void setExistingEntry(RepositoryEntryDescriptor existingEntry) {
-        this.existingEntry = existingEntry;
-    }
+	/**
+	 * @param existingEntry
+	 *			the existingEntry to set
+	 */
+	public void setExistingEntry(RepositoryEntryDescriptor existingEntry) {
+		this.existingEntry = existingEntry;
+	}
 
-    /**
-     * @return the nameForExistantEntry
-     */
-    public String getNameForExistantEntry() {
-        return nameForExistantEntry;
-    }
+	/**
+	 * @return the nameForExistingEntry
+	 */
+	public String getNameForExistingEntry() {
+		return nameForExistingEntry;
+	}
 
-    /**
-     * @param nameForExistantEntry
-     *            the nameForExistantEntry to set
-     */
-    public void setNameForExistantEntry(String nameForExistantEntry) {
-        this.nameForExistantEntry = nameForExistantEntry;
-    }
+	/**
+	 * @param nameForExistingEntry
+	 *			the nameForExistingEntry to set
+	 */
+	public void setNameForExistingEntry(String nameForExistingEntry) {
+		this.nameForExistingEntry = nameForExistingEntry;
+	}
 }

@@ -31,28 +31,28 @@ import de.mogwai.common.client.looks.components.DefaultPopupMenu;
  */
 public class ERDesignerToolbarEntry extends DefaultButton {
 
-    private DefaultPopupMenu menu = new DefaultPopupMenu();
+	private final DefaultPopupMenu menu = new DefaultPopupMenu();
 
-    public ERDesignerToolbarEntry(String aId) {
-        super(aId);
+	public ERDesignerToolbarEntry(String aId) {
+		super(aId);
 
-        addActionListener(new ActionListener() {
+		addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                menu.show(ERDesignerToolbarEntry.this, 0, getSize().height);
-            }
-        });
-    }
+			public void actionPerformed(ActionEvent e) {
+				menu.show(ERDesignerToolbarEntry.this, 0, getSize().height);
+			}
+		});
+	}
 
-    public DefaultPopupMenu getMenu() {
-        return menu;
-    }
+	public DefaultPopupMenu getMenu() {
+		return menu;
+	}
 
-    public void add(JMenuItem aItem) {
-        menu.add(aItem);
-    }
+	public void add(JMenuItem aItem) {
+		menu.add(aItem);
+	}
 
-    public void addSeparator() {
-        menu.addSeparator();
-    }
+	public void addSeparator() {
+		menu.addSeparator();
+	}
 }

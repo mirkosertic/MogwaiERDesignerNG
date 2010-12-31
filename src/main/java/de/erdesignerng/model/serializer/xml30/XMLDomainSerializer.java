@@ -31,54 +31,54 @@ import de.erdesignerng.model.Model;
  */
 public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.XMLDomainSerializer {
 
-    protected static final String NULLABLE = "nullable";
+	protected static final String NULLABLE = "nullable";
 
-    @Override
-    public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
-        Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
+	@Override
+	public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
+		Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
-        // Basisdaten des Modelelementes speichern
-        theDomainElement.setAttribute(ID, aDomain.getSystemId());
-        theDomainElement.setAttribute(NAME, aDomain.getName());
+		// Basisdaten des Modelelementes speichern
+		theDomainElement.setAttribute(ID, aDomain.getSystemId());
+		theDomainElement.setAttribute(NAME, aDomain.getName());
 
-        theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
+		theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
 
-        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-        // max-length wrong
-        theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null) ? aDomain.getSize() : ""));
+		// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+		// max-length wrong
+		theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null) ? aDomain.getSize() : ""));
 
-        theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
-        theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
-        theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
-    }
+		theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
+		theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
+		theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
-        NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theDomainElement = (Element) theElements.item(i);
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
+		NodeList theElements = aDocument.getElementsByTagName(DOMAIN);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theDomainElement = (Element) theElements.item(i);
 
-            Domain theDomain = new Domain();
-            theDomain.setSystemId(theDomainElement.getAttribute(ID));
-            theDomain.setName(theDomainElement.getAttribute(NAME));
-            theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
+			Domain theDomain = new Domain();
+			theDomain.setSystemId(theDomainElement.getAttribute(ID));
+			theDomain.setName(theDomainElement.getAttribute(NAME));
+			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
 
-            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-            // max-length wrong
-            String theAttributeString = theDomainElement.getAttribute(SIZE);
-            theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
-                    : Integer.parseInt(theAttributeString));
+			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+			// max-length wrong
+			String theAttributeString = theDomainElement.getAttribute(SIZE);
+			theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
+					: Integer.parseInt(theAttributeString));
 
-            theDomain.setFraction(Integer.parseInt(theDomainElement.getAttribute(FRACTION)));
-            theDomain.setScale(Integer.parseInt(theDomainElement.getAttribute(SCALE)));
+			theDomain.setFraction(Integer.parseInt(theDomainElement.getAttribute(FRACTION)));
+			theDomain.setScale(Integer.parseInt(theDomainElement.getAttribute(SCALE)));
 
-            String theNullable = theDomainElement.getAttribute(NULLABLE);
-            if (!StringUtils.isEmpty(theNullable)) {
-                theDomain.setNullable(Boolean.parseBoolean(theNullable));
-            }
+			String theNullable = theDomainElement.getAttribute(NULLABLE);
+			if (!StringUtils.isEmpty(theNullable)) {
+				theDomain.setNullable(Boolean.parseBoolean(theNullable));
+			}
 
-            aModel.getDomains().add(theDomain);
-        }
-    }
+			aModel.getDomains().add(theDomain);
+		}
+	}
 
 }

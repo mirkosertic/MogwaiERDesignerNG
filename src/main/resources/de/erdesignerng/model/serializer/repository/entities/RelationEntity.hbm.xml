@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-lazy="false" package="de.erdesignerng.model.serializer.repository.entities">
-  <class name="RelationEntity" select-before-update="true" table="mogrep_relations">
-    <id name="id">
-      <generator class="native"/>
-    </id>
-    <version name="version"/>
-    <property name="systemId" not-null="true"/>
-    <property name="creationUser" not-null="true"/>
-    <property name="creationDate" not-null="true"/>
-    <property name="lastModificationUser" not-null="false"/>
-    <property name="lastModificationDate" not-null="false"/>
-    <property name="name" not-null="true"/>
-    <property column="elementcomment" name="comment" not-null="false" type="text"/>
-    <list cascade="all-delete-orphan" name="properties" table="mogrep_relations_props">
-      <key column="relationid" foreign-key="mogrep_relations_props_fk1"/>
-      <list-index column="listindex"/>
-      <composite-element class="StringKeyValuePair">
-        <property column="propname" name="key" not-null="true"/>
-        <property column="propvalue" name="value" not-null="false"/>
-      </composite-element>
-    </list>
-    <property name="importingTable" not-null="true"/>
-    <property name="exportingTable" not-null="true"/>
-    <property name="onDelete" not-null="true"/>
-    <property name="onUpdate" not-null="true"/>
-    <list cascade="all-delete-orphan" name="mapping" table="mogrep_relations_map">
-      <key column="relationid" foreign-key="mogrep_relations_map_fk1"/>
-      <list-index column="listindex"/>
-      <composite-element class="StringKeyValuePair">
-        <property column="exp_attribute_id" name="key" not-null="true"/>
-        <property column="imp_attribute_id" name="value" not-null="true"/>
-      </composite-element>
-    </list>
-  </class>
+	<class name="RelationEntity" select-before-update="true" table="mogrep_relations">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<version name="version"/>
+		<property name="systemId" not-null="true"/>
+		<property name="creationUser" not-null="true"/>
+		<property name="creationDate" not-null="true"/>
+		<property name="lastModificationUser" not-null="false"/>
+		<property name="lastModificationDate" not-null="false"/>
+		<property name="name" not-null="true"/>
+		<property column="elementcomment" name="comment" not-null="false" type="text"/>
+		<list cascade="all-delete-orphan" name="properties" table="mogrep_relations_props">
+			<key column="relationid" foreign-key="mogrep_relations_props_fk1"/>
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property column="propname" name="key" not-null="true"/>
+				<property column="propvalue" name="value" not-null="false"/>
+			</composite-element>
+		</list>
+		<property name="importingTable" not-null="true"/>
+		<property name="exportingTable" not-null="true"/>
+		<property name="onDelete" not-null="true"/>
+		<property name="onUpdate" not-null="true"/>
+		<list cascade="all-delete-orphan" name="mapping" table="mogrep_relations_map">
+			<key column="relationid" foreign-key="mogrep_relations_map_fk1"/>
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property column="exp_attribute_id" name="key" not-null="true"/>
+				<property column="imp_attribute_id" name="value" not-null="true"/>
+			</composite-element>
+		</list>
+	</class>
 </hibernate-mapping>

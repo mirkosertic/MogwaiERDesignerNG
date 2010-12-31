@@ -26,31 +26,31 @@ import org.jgraph.graph.GraphCell;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  * @param <T>
- *            the type
+ *			the type
  */
 public interface ModelCell<T> extends GraphCell {
 
-    /**
-     * Get the user object assigned to the cell.
-     * 
-     * @return the user object
-     */
-    Object getUserObject();
+	/**
+	 * Get the user object assigned to the cell.
+	 * 
+	 * @return the user object
+	 */
+	Object getUserObject();
 
-    /**
-     * Transfer the cell attributes to the model properties.
-     * 
-     * @param aAttributes
-     *            the cell attributes.
-     */
-    void transferAttributesToProperties(Map aAttributes);
+	/**
+	 * Transfer the cell attributes to the model properties.
+	 * 
+	 * @param aAttributes
+	 *			the cell attributes.
+	 */
+	void transferAttributesToProperties(Map aAttributes);
 
-    /**
-     * Transfer the model properties to the cell attributes.
-     * 
-     * @param aObject
-     *            the model
-     */
-    void transferPropertiesToAttributes(T aObject);
+	/**
+	 * Transfer the model properties to the cell attributes.
+	 * 
+	 * @param aObject
+	 *			the model
+	 */
+	void transferPropertiesToAttributes(T aObject);
 
 }

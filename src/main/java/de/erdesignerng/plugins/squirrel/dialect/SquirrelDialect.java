@@ -31,151 +31,151 @@ import de.erdesignerng.exception.ElementInvalidNameException;
 
 public class SquirrelDialect extends Dialect {
 
-    private Dialect dialect;
+	private final Dialect dialect;
 
-    private ISession session;
+	private final ISession session;
 
-    public SquirrelDialect(Dialect aDialect, ISession aSession) {
-        dialect = aDialect;
-        session = aSession;
+	public SquirrelDialect(Dialect aDialect, ISession aSession) {
+		dialect = aDialect;
+		session = aSession;
 
-        setGeneratesManagedConnection(true);
-    }
+		setGeneratesManagedConnection(true);
+	}
 
-    @Override
-    public String checkName(String aName) throws ElementInvalidNameException {
-        return dialect.checkName(aName);
-    }
+	@Override
+	public String checkName(String aName) throws ElementInvalidNameException {
+		return dialect.checkName(aName);
+	}
 
-    @Override
-    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
-            String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, SQLException {
-        return session.getSQLConnection().getConnection();
-    }
+	@Override
+	public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser,
+			String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, SQLException {
+		return session.getSQLConnection().getConnection();
+	}
 
-    @Override
-    public SQLGenerator createSQLGenerator() {
-        return dialect.createSQLGenerator();
-    }
+	@Override
+	public SQLGenerator createSQLGenerator() {
+		return dialect.createSQLGenerator();
+	}
 
-    @Override
-    public NameCastType getCastType() {
-        return dialect.getCastType();
-    }
+	@Override
+	public NameCastType getCastType() {
+		return dialect.getCastType();
+	}
 
-    @Override
-    public DataTypeList getDataTypes() {
-        return dialect.getDataTypes();
-    }
+	@Override
+	public DataTypeList getDataTypes() {
+		return dialect.getDataTypes();
+	}
 
-    @Override
-    public String getDriverClassName() {
-        return dialect.getDriverClassName();
-    }
+	@Override
+	public String getDriverClassName() {
+		return dialect.getDriverClassName();
+	}
 
-    @Override
-    public String getDriverURLTemplate() {
-        return dialect.getDriverURLTemplate();
-    }
+	@Override
+	public String getDriverURLTemplate() {
+		return dialect.getDriverURLTemplate();
+	}
 
-    @Override
-    public int getMaxObjectNameLength() {
-        return dialect.getMaxObjectNameLength();
-    }
+	@Override
+	public int getMaxObjectNameLength() {
+		return dialect.getMaxObjectNameLength();
+	}
 
-    @Override
-    public JDBCReverseEngineeringStrategy<Dialect> getReverseEngineeringStrategy() {
-        return dialect.getReverseEngineeringStrategy();
-    }
+	@Override
+	public JDBCReverseEngineeringStrategy<Dialect> getReverseEngineeringStrategy() {
+		return dialect.getReverseEngineeringStrategy();
+	}
 
-    @Override
-    public String getUniqueName() {
-        return dialect.getUniqueName();
-    }
+	@Override
+	public String getUniqueName() {
+		return dialect.getUniqueName();
+	}
 
-    @Override
-    public boolean isCaseSensitive() {
-        return dialect.isCaseSensitive();
-    }
+	@Override
+	public boolean isCaseSensitive() {
+		return dialect.isCaseSensitive();
+	}
 
-    @Override
-    public boolean isNullablePrimaryKeyAllowed() {
-        return dialect.isNullablePrimaryKeyAllowed();
-    }
+	@Override
+	public boolean isNullablePrimaryKeyAllowed() {
+		return dialect.isNullablePrimaryKeyAllowed();
+	}
 
-    @Override
-    public boolean isSpacesAllowedInObjectNames() {
-        return dialect.isSpacesAllowedInObjectNames();
-    }
+	@Override
+	public boolean isSpacesAllowedInObjectNames() {
+		return dialect.isSpacesAllowedInObjectNames();
+	}
 
-    @Override
-    public boolean isSupportsOnDelete() {
-        return dialect.isSupportsOnDelete();
-    }
+	@Override
+	public boolean isSupportsOnDelete() {
+		return dialect.isSupportsOnDelete();
+	}
 
-    @Override
-    public boolean isSupportsOnUpdate() {
-        return dialect.isSupportsOnUpdate();
-    }
+	@Override
+	public boolean isSupportsOnUpdate() {
+		return dialect.isSupportsOnUpdate();
+	}
 
-    @Override
-    public void setCaseSensitive(boolean aCaseSensitive) {
-        dialect.setCaseSensitive(aCaseSensitive);
-    }
+	@Override
+	public void setCaseSensitive(boolean aCaseSensitive) {
+		dialect.setCaseSensitive(aCaseSensitive);
+	}
 
-    @Override
-    public void setCastType(NameCastType aCastType) {
-        dialect.setCastType(aCastType);
-    }
+	@Override
+	public void setCastType(NameCastType aCastType) {
+		dialect.setCastType(aCastType);
+	}
 
-    @Override
-    public void setMaxObjectNameLength(int aMaxObjectNameLength) {
-        dialect.setMaxObjectNameLength(aMaxObjectNameLength);
-    }
+	@Override
+	public void setMaxObjectNameLength(int aMaxObjectNameLength) {
+		dialect.setMaxObjectNameLength(aMaxObjectNameLength);
+	}
 
-    @Override
-    public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
-        dialect.setNullablePrimaryKeyAllowed(aNullablePrimaryKeyAllowed);
-    }
+	@Override
+	public void setNullablePrimaryKeyAllowed(boolean aNullablePrimaryKeyAllowed) {
+		dialect.setNullablePrimaryKeyAllowed(aNullablePrimaryKeyAllowed);
+	}
 
-    @Override
-    public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
-        dialect.setSpacesAllowedInObjectNames(aSpacesAllowedInObjectNames);
-    }
+	@Override
+	public void setSpacesAllowedInObjectNames(boolean aSpacesAllowedInObjectNames) {
+		dialect.setSpacesAllowedInObjectNames(aSpacesAllowedInObjectNames);
+	}
 
-    @Override
-    public void setSupportsOnDelete(boolean supportsOnDelete) {
-        dialect.setSupportsOnDelete(supportsOnDelete);
-    }
+	@Override
+	public void setSupportsOnDelete(boolean supportsOnDelete) {
+		dialect.setSupportsOnDelete(supportsOnDelete);
+	}
 
-    @Override
-    public void setSupportsOnUpdate(boolean supportsOnUpdate) {
-        dialect.setSupportsOnUpdate(supportsOnUpdate);
-    }
+	@Override
+	public void setSupportsOnUpdate(boolean supportsOnUpdate) {
+		dialect.setSupportsOnUpdate(supportsOnUpdate);
+	}
 
-    @Override
-    public boolean isSupportsSchemaInformation() {
-        return dialect.isSupportsSchemaInformation();
-    }
+	@Override
+	public boolean isSupportsSchemaInformation() {
+		return dialect.isSupportsSchemaInformation();
+	}
 
-    @Override
-    public String toString() {
-        return dialect.toString();
-    }
+	@Override
+	public String toString() {
+		return dialect.toString();
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        return dialect.getHibernateDialectClass();
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		return dialect.getHibernateDialectClass();
+	}
 
-    @Override
-    public DataType createDataType(String name, String definition, int... jdbcType) {
-        return dialect.createDataType(name, definition, jdbcType);
-    }
+	@Override
+	public DataType createDataType(String name, String definition, int... jdbcType) {
+		return dialect.createDataType(name, definition, jdbcType);
+	}
 
-    @Override
-    public DataType createDataType(String name, String definition, boolean identity, int... jdbcType) {
-        return dialect.createDataType(name, definition, identity, jdbcType);
-    }
+	@Override
+	public DataType createDataType(String name, String definition, boolean identity, int... jdbcType) {
+		return dialect.createDataType(name, definition, identity, jdbcType);
+	}
 }

@@ -29,16 +29,16 @@ import javax.swing.text.NumberFormatter;
 //TODO [mirkosertic] handle setting the size to null here
 public class NullsafeSpinnerEditor extends DefaultEditor {
 
-    public NullsafeSpinnerEditor(JSpinner spinner) {
-        super(spinner);
+	public NullsafeSpinnerEditor(JSpinner spinner) {
+		super(spinner);
 
-        NumberFormatter formatter = new NumberFormatter(new DecimalFormat());
-        DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
+		NumberFormatter formatter = new NumberFormatter(new DecimalFormat());
+		DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
 
-        JFormattedTextField ftf = getTextField();
-        ftf.setEditable(true);
-        ftf.setFormatterFactory(factory);
-        ftf.setHorizontalAlignment(JTextField.RIGHT);
-        ftf.setColumns(("" + Integer.MAX_VALUE).length());
-    }
+		JFormattedTextField ftf = getTextField();
+		ftf.setEditable(true);
+		ftf.setFormatterFactory(factory);
+		ftf.setHorizontalAlignment(JTextField.RIGHT);
+		ftf.setColumns(("" + Integer.MAX_VALUE).length());
+	}
 }

@@ -25,17 +25,17 @@ import de.erdesignerng.model.IndexType;
 
 public class IndexTest extends TestCase {
 
-    public void testModified() throws ElementAlreadyExistsException {
-        Attribute theAttribute = new Attribute();
-        theAttribute.setName("TEST");
+	public void testModified() throws ElementAlreadyExistsException {
+		Attribute theAttribute = new Attribute();
+		theAttribute.setName("TEST");
 
-        Index theIndex = new Index();
-        theIndex.setName("TESTINDEX");
-        theIndex.setIndexType(IndexType.UNIQUE);
-        theIndex.getExpressions().addExpressionFor(theAttribute);
+		Index theIndex = new Index();
+		theIndex.setName("TESTINDEX");
+		theIndex.setIndexType(IndexType.UNIQUE);
+		theIndex.getExpressions().addExpressionFor(theAttribute);
 
-        Index theCloneIndex = theIndex.clone();
-        assertTrue(!theIndex.isModified(theCloneIndex, true));
-        assertTrue(!theIndex.isModified(theCloneIndex, false));
-    }
+		Index theCloneIndex = theIndex.clone();
+		assertTrue(!theIndex.isModified(theCloneIndex, true));
+		assertTrue(!theIndex.isModified(theCloneIndex, false));
+	}
 }

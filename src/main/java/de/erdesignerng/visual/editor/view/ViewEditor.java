@@ -42,103 +42,103 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
  */
 public class ViewEditor extends BaseEditor {
 
-    private Model model;
+	private final Model model;
 
-    private ViewEditorView editingView;
+	private ViewEditorView editingView;
 
-    private BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
-    
-    private ViewProperties viewProperties;
-    
-    private ScaffoldingWrapper viewPropertiesWrapper;
+	private final BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
+	
+	private ViewProperties viewProperties;
+	
+	private ScaffoldingWrapper viewPropertiesWrapper;
 
-    public ViewEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.VIEWEDITOR);
+	public ViewEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.VIEWEDITOR);
 
-        initialize();
+		initialize();
 
-        // Connection initialisieren
+		// Connection initialisieren
 
-        model = aModel;
+		model = aModel;
 
-        viewBindingInfo.addBinding("name", editingView.getEntityName(), true);
-        viewBindingInfo.addBinding("sql", editingView.getSqlText(), true);
-        viewBindingInfo.addBinding("comment", editingView.getEntityComment());
-        viewBindingInfo.configure();
+		viewBindingInfo.addBinding("name", editingView.getEntityName(), true);
+		viewBindingInfo.addBinding("sql", editingView.getSqlText(), true);
+		viewBindingInfo.addBinding("comment", editingView.getEntityComment());
+		viewBindingInfo.configure();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new ViewEditorView();
-        editingView.getOkButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
+		editingView = new ViewEditorView();
+		editingView.getOkButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 
-        setContentPane(editingView);
+		setContentPane(editingView);
 
-        pack();
-    }
+		pack();
+	}
 
-    public void initializeFor(View aView) {
+	public void initializeFor(View aView) {
 
-    	viewProperties = model.getDialect().createViewPropertiesFor(aView);
-        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
-        viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, viewProperties);
-        theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
-        if (!viewPropertiesWrapper.hasComponents()) {
-        	editingView.disablePropertiesTab();
-        } else {
-        	UIInitializer.getInstance().initialize(theTab);
-        }    	
-    	
-        viewBindingInfo.setDefaultModel(aView);
-        viewBindingInfo.model2view();
-    }
+		viewProperties = model.getDialect().createViewPropertiesFor(aView);
+		DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+		viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, viewProperties);
+		theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+		if (!viewPropertiesWrapper.hasComponents()) {
+			editingView.disablePropertiesTab();
+		} else {
+			UIInitializer.getInstance().initialize(theTab);
+		}		
+		
+		viewBindingInfo.setDefaultModel(aView);
+		viewBindingInfo.model2view();
+	}
 
-    @Override
-    protected void commandOk() {
-        if (viewBindingInfo.validate().size() == 0) {
+	@Override
+	protected void commandOk() {
+		if (viewBindingInfo.validate().size() == 0) {
 
-            try {
-                // Test if every expression has an assigned alias
-                SQLUtils.updateViewAttributesFromSQL(new View(), editingView.getSqlText().getText());
+			try {
+				// Test if every expression has an assigned alias
+				SQLUtils.updateViewAttributesFromSQL(new View(), editingView.getSqlText().getText());
 
-                setModalResult(MODAL_RESULT_OK);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+				setModalResult(MODAL_RESULT_OK);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+	@Override
+	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        View theView = viewBindingInfo.getDefaultModel();
-        
-        viewPropertiesWrapper.save();
-        viewProperties.copyTo(theView);
-        
-        viewBindingInfo.view2model();
+		View theView = viewBindingInfo.getDefaultModel();
+		
+		viewPropertiesWrapper.save();
+		viewProperties.copyTo(theView);
+		
+		viewBindingInfo.view2model();
 
-        theView.getAttributes().clear();
+		theView.getAttributes().clear();
 
-        try {
-            SQLUtils.updateViewAttributesFromSQL(theView, editingView.getSqlText().getText());
-        } catch (Exception e) {
-            // This exception is checked in commandOk before
-        }
+		try {
+			SQLUtils.updateViewAttributesFromSQL(theView, editingView.getSqlText().getText());
+		} catch (Exception e) {
+			// This exception is checked in commandOk before
+		}
 
-        if (!model.getViews().contains(theView)) {
+		if (!model.getViews().contains(theView)) {
 
-            model.addView(theView);
+			model.addView(theView);
 
-        } else {
+		} else {
 
-            model.changeView(theView);
-        }
-    }
+			model.changeView(theView);
+		}
+	}
 }

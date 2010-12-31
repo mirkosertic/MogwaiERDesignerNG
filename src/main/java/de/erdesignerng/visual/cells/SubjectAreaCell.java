@@ -32,18 +32,18 @@ import de.erdesignerng.model.SubjectArea;
  */
 public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<SubjectArea>, HideableCell {
 
-    public SubjectAreaCell(SubjectArea aArea) {
-        super(aArea);
+	public SubjectAreaCell(SubjectArea aArea) {
+		super(aArea);
 
-        GraphConstants.setAutoSize(getAttributes(), true);
-        GraphConstants.setEditable(getAttributes(), true);
-        GraphConstants.setInset(getAttributes(), 20);
-        GraphConstants.setGroupOpaque(getAttributes(), true);
-    }
+		GraphConstants.setAutoSize(getAttributes(), true);
+		GraphConstants.setEditable(getAttributes(), true);
+		GraphConstants.setInset(getAttributes(), 20);
+		GraphConstants.setGroupOpaque(getAttributes(), true);
+	}
 
-    public void transferAttributesToProperties(Map aAttributes) {
-    }
+	public void transferAttributesToProperties(Map aAttributes) {
+	}
 
-    public void transferPropertiesToAttributes(SubjectArea aObject) {
-    }
+	public void transferPropertiesToAttributes(SubjectArea aObject) {
+	}
 }

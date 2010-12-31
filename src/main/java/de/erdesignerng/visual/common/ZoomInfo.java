@@ -19,21 +19,21 @@ package de.erdesignerng.visual.common;
 
 public class ZoomInfo {
 
-    private String description;
+	private final String description;
 
-    private double value;
+	private final double value;
 
-    public ZoomInfo(String aDescription, double aValue) {
-        description = aDescription;
-        value = aValue;
-    }
+	public ZoomInfo(String aDescription, double aValue) {
+		description = aDescription;
+		value = aValue;
+	}
 
-    public double getValue() {
-        return value;
-    }
+	public double getValue() {
+		return value;
+	}
 
-    @Override
-    public String toString() {
-        return description;
-    }
+	@Override
+	public String toString() {
+		return description;
+	}
 }

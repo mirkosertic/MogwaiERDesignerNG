@@ -20,27 +20,27 @@ package de.erdesignerng.model.serializer.repository.entities;
 /**
  * Entity for indexes.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class IndexExpressionEntity extends ModelEntity {
 
-    private String attributeId;
+	private String attributeId;
 
-    private String expression;
+	private String expression;
 
-    public String getExpression() {
-        return expression;
-    }
+	public String getExpression() {
+		return expression;
+	}
 
-    public void setExpression(String expression) {
-        this.expression = expression;
-    }
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
 
-    public String getAttributeId() {
-        return attributeId;
-    }
+	public String getAttributeId() {
+		return attributeId;
+	}
 
-    public void setAttributeId(String attributeId) {
-        this.attributeId = attributeId;
-    }
+	public void setAttributeId(String attributeId) {
+		this.attributeId = attributeId;
+	}
 }

@@ -33,49 +33,49 @@ import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 
 public class CompleteCompareWithOtherModelCommand extends UICommand {
 
-    public CompleteCompareWithOtherModelCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public CompleteCompareWithOtherModelCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        Model theCurrentModel = component.getModel();
+	@Override
+	public void execute() {
+		Model theCurrentModel = component.getModel();
 
-        ModelFileFilter theFiler = new ModelFileFilter();
+		ModelFileFilter theFiler = new ModelFileFilter();
 
-        JFileChooser theChooser = new JFileChooser();
-        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        theChooser.setFileFilter(theFiler);
-        if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+		JFileChooser theChooser = new JFileChooser();
+		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		theChooser.setFileFilter(theFiler);
+		if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-            File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
-            
-            InputStream theStream = null;
-            try {
+			File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+			
+			InputStream theStream = null;
+			try {
 
-                theStream = new FileInputStream(theFile);
-                
-                Model theNewModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
+				theStream = new FileInputStream(theFile);
+				
+				Model theNewModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
 
-                CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theCurrentModel,
-                        theNewModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
-                theCompare.showModal();
-                
-            } catch (Exception e) {
-                MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-                        ERDesignerBundle.ERRORLOADINGFILE));
+				CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theCurrentModel,
+						theNewModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
+				theCompare.showModal();
+				
+			} catch (Exception e) {
+				MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
+						ERDesignerBundle.ERRORLOADINGFILE));
 
-                getWorldConnector().notifyAboutException(e);
+				getWorldConnector().notifyAboutException(e);
 
-            } finally {
-                if (theStream != null) {
-                    try {
-                        theStream.close();
-                    } catch (IOException e) {
-                        // Ignore this exception
-                    }
-                }
-            }
-        }
-    }
+			} finally {
+				if (theStream != null) {
+					try {
+						theStream.close();
+					} catch (IOException e) {
+						// Ignore this exception
+					}
+				}
+			}
+		}
+	}
 }

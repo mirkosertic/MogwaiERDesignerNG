@@ -21,24 +21,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author msertic
+ * @author mirkosertic
  */
 public class ChangeEntity extends ModelEntity {
 
-    private List<String> statements = new ArrayList<String>();
+	private List<String> statements = new ArrayList<String>();
 
-    /**
-     * @return the statements
-     */
-    public List<String> getStatements() {
-        return statements;
-    }
+	/**
+	 * @return the statements
+	 */
+	public List<String> getStatements() {
+		return statements;
+	}
 
-    /**
-     * @param statements
-     *            the statements to set
-     */
-    public void setStatements(List<String> statements) {
-        this.statements = statements;
-    }
+	/**
+	 * @param statements
+	 *			the statements to set
+	 */
+	public void setStatements(List<String> statements) {
+		this.statements = statements;
+	}
 }

@@ -22,22 +22,22 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
 /**
  * A DataType for PostgreSQL.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class PostgresDataType extends GenericDataTypeImpl {
 
-    public PostgresDataType(String aName, String aDefinition, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
-    }
+	public PostgresDataType(String aName, String aDefinition, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
+	}
 
-    public PostgresDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
+	public PostgresDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
 
-        identity = aIdentity;
-        if (aIdentity) {
-            maxOccoursPerTable = 1;
-        }
+		identity = aIdentity;
+		if (aIdentity) {
+			maxOccursPerTable = 1;
+		}
 
-    }
+	}
 
 }

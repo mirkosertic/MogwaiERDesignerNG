@@ -20,153 +20,153 @@ package de.erdesignerng.model.serializer.repository.entities;
 /**
  * Entity for attributes.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class AttributeEntity extends ModelEntity {
-    /*
-     * TODO [mirkosertic] Unify
-     * de.erdesignerng.model.serializer.repository.entities.AttributeEntity and
-     * de.erdesignerng.model.Attribute to reduce redundancy and increase
-     * maintainability. Then only store de.erdesignerng.model.Attribute to
-     * hibernate.
-     * 
-     * Dito for similar classes.
-     */
-    public static final int DEFAULT_SCALE = 10;
+	/*
+	 * TODO [mirkosertic] Unify
+	 * de.erdesignerng.model.serializer.repository.entities.AttributeEntity and
+	 * de.erdesignerng.model.Attribute to reduce redundancy and increase
+	 * maintainability. Then only store de.erdesignerng.model.Attribute to
+	 * hibernate.
+	 * 
+	 * Dito for similar classes.
+	 */
+	private static final int DEFAULT_SCALE = 10;
 
-    private String datatype;
+	private String datatype;
 
-    private String domainId;
+	private String domainId;
 
-    private Integer size = null;
+	private Integer size = null;
 
-    private int fraction;
+	private int fraction;
 
-    private int scale = DEFAULT_SCALE;
+	private int scale = DEFAULT_SCALE;
 
-    private boolean nullable = true;
+	private boolean nullable = true;
 
-    private String defaultValue;
+	private String defaultValue;
 
-    private String extra;
+	private String extra;
 
-    /**
-     * @return the datatype
-     */
-    public String getDatatype() {
-        return datatype;
-    }
+	/**
+	 * @return the datatype
+	 */
+	public String getDatatype() {
+		return datatype;
+	}
 
-    /**
-     * @param datatype
-     *            the datatype to set
-     */
-    public void setDatatype(String datatype) {
-        this.datatype = datatype;
-    }
+	/**
+	 * @param datatype
+	 *			the datatype to set
+	 */
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
+	}
 
-    /**
-     * @return the domain
-     */
-    public String getDomainId() {
-        return domainId;
-    }
+	/**
+	 * @return the domain
+	 */
+	public String getDomainId() {
+		return domainId;
+	}
 
-    /**
-     * @param domain
-     *            the domain to set
-     */
-    public void setDomainId(String domain) {
-        this.domainId = domain;
-    }
+	/**
+	 * @param domain
+	 *			the domain to set
+	 */
+	public void setDomainId(String domain) {
+		this.domainId = domain;
+	}
 
-    /**
-     * @return the size
-     */
-    public Integer getSize() {
-        return size;
-    }
+	/**
+	 * @return the size
+	 */
+	public Integer getSize() {
+		return size;
+	}
 
-    /**
-     * @param size
-     *            the size to set
-     */
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+	/**
+	 * @param size
+	 *			the size to set
+	 */
+	public void setSize(Integer size) {
+		this.size = size;
+	}
 
-    /**
-     * @return the fraction
-     */
-    public int getFraction() {
-        return fraction;
-    }
+	/**
+	 * @return the fraction
+	 */
+	public int getFraction() {
+		return fraction;
+	}
 
-    /**
-     * @param fraction
-     *            the fraction to set
-     */
-    public void setFraction(int fraction) {
-        this.fraction = fraction;
-    }
+	/**
+	 * @param fraction
+	 *			the fraction to set
+	 */
+	public void setFraction(int fraction) {
+		this.fraction = fraction;
+	}
 
-    /**
-     * @return the scale
-     */
-    public int getScale() {
-        return scale;
-    }
+	/**
+	 * @return the scale
+	 */
+	public int getScale() {
+		return scale;
+	}
 
-    /**
-     * @param scale
-     *            the scale to set
-     */
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
+	/**
+	 * @param scale
+	 *			the scale to set
+	 */
+	public void setScale(int scale) {
+		this.scale = scale;
+	}
 
-    /**
-     * @return the nullable
-     */
-    public boolean isNullable() {
-        return nullable;
-    }
+	/**
+	 * @return the nullable
+	 */
+	public boolean isNullable() {
+		return nullable;
+	}
 
-    /**
-     * @param nullable
-     *            the nullable to set
-     */
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
+	/**
+	 * @param nullable
+	 *			the nullable to set
+	 */
+	public void setNullable(boolean nullable) {
+		this.nullable = nullable;
+	}
 
-    /**
-     * @return the defaultValue
-     */
-    public String getDefaultValue() {
-        return defaultValue;
-    }
+	/**
+	 * @return the defaultValue
+	 */
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 
-    /**
-     * @param defaultValue
-     *            the defaultValue to set
-     */
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
+	/**
+	 * @param defaultValue
+	 *			the defaultValue to set
+	 */
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
 
-    /**
-     * @return the extra
-     */
-    public String getExtra() {
-        return extra;
-    }
+	/**
+	 * @return the extra
+	 */
+	public String getExtra() {
+		return extra;
+	}
 
-    /**
-     * @param extra
-     *            the extra to set
-     */
-    public void setExtra(String extra) {
-        this.extra = extra;
-    }
+	/**
+	 * @param extra
+	 *			the extra to set
+	 */
+	public void setExtra(String extra) {
+		this.extra = extra;
+	}
 }

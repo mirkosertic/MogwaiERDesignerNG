@@ -22,24 +22,24 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 /**
  * Datamodel for the load from repository dialog.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class LoadFromRepositoryDataModel {
 
-    private RepositoryEntryDescriptor entry;
+	private RepositoryEntryDescriptor entry;
 
-    /**
-     * @return the entry
-     */
-    public RepositoryEntryDescriptor getEntry() {
-        return entry;
-    }
+	/**
+	 * @return the entry
+	 */
+	public RepositoryEntryDescriptor getEntry() {
+		return entry;
+	}
 
-    /**
-     * @param entry
-     *            the entry to set
-     */
-    public void setEntry(RepositoryEntryDescriptor entry) {
-        this.entry = entry;
-    }
+	/**
+	 * @param entry
+	 *			the entry to set
+	 */
+	public void setEntry(RepositoryEntryDescriptor entry) {
+		this.entry = entry;
+	}
 }

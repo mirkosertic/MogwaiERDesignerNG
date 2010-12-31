@@ -24,5 +24,5 @@ import de.erdesignerng.model.Comment;
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLCommentSerializer extends CommonAbstractXMLSerializer<Comment> {
-    protected static final String COMMENT = "ModelComment";
+	protected static final String COMMENT = "ModelComment";
 }

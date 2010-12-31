@@ -24,15 +24,15 @@ import de.erdesignerng.dialect.DialectFactory;
 
 public class DataTypeTest extends TestCase {
 
-    /**
-     * Test if every build in type is not a domain.
-     */
-    public void testDialectsForValidDataTypes() {
-        DialectFactory theFactory = DialectFactory.getInstance();
-        for (Dialect theDialect : theFactory.getSupportedDialects()) {
-            for (DataType theDataType : theDialect.getDataTypes()) {
-                assertTrue(!theDataType.isDomain());
-            }
-        }
-    }
+	/**
+	 * Test if every build in type is not a domain.
+	 */
+	public void testDialectsForValidDataTypes() {
+		DialectFactory theFactory = DialectFactory.getInstance();
+		for (Dialect theDialect : theFactory.getSupportedDialects()) {
+			for (DataType theDataType : theDialect.getDataTypes()) {
+				assertTrue(!theDataType.isDomain());
+			}
+		}
+	}
 }

@@ -24,5 +24,5 @@ package de.erdesignerng.model;
  */
 public class IndexList extends ModelItemVector<Index> {
 
-    private static final long serialVersionUID = 890361971577085178L;
+	private static final long serialVersionUID = 890361971577085178L;
 }

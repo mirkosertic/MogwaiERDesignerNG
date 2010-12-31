@@ -30,67 +30,67 @@ import de.mogwai.common.client.looks.components.DefaultLabel;
 /**
  * View for the save to dictionary dialog.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class LoadFromRepositoryView extends JPanel {
 
-    private DefaultComboBox existingNameBox = new DefaultComboBox();
+	private final DefaultComboBox existingNameBox = new DefaultComboBox();
 
-    private DefaultButton okButton = new DefaultButton();
+	private final DefaultButton okButton = new DefaultButton();
 
-    private DefaultButton cancelButton = new DefaultButton();
+	private final DefaultButton cancelButton = new DefaultButton();
 
-    public LoadFromRepositoryView() {
-        initialize();
-    }
+	public LoadFromRepositoryView() {
+		initialize();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        String theColDef = "2dlu,50dlu,2dlu,fill:100dlu:grow,2dlu";
-        String theRowDef = "2dlu,p,50dlu,p,2dlu";
+		String theColDef = "2dlu,50dlu,2dlu,fill:100dlu:grow,2dlu";
+		String theRowDef = "2dlu,p,50dlu,p,2dlu";
 
-        FormLayout theLayout = new FormLayout(theColDef, theRowDef);
-        setLayout(theLayout);
+		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
+		setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        add(new DefaultLabel(ERDesignerBundle.NAME), cons.xy(2, 2));
-        add(existingNameBox, cons.xy(4, 2));
+		add(new DefaultLabel(ERDesignerBundle.NAME), cons.xy(2, 2));
+		add(existingNameBox, cons.xy(4, 2));
 
-        JPanel thePanel = new JPanel();
+		JPanel thePanel = new JPanel();
 
-        theColDef = "60dlu,fill:2dlu:grow,60dlu";
-        theRowDef = "p";
+		theColDef = "60dlu,fill:2dlu:grow,60dlu";
+		theRowDef = "p";
 
-        theLayout = new FormLayout(theColDef, theRowDef);
-        thePanel.setLayout(theLayout);
+		theLayout = new FormLayout(theColDef, theRowDef);
+		thePanel.setLayout(theLayout);
 
-        thePanel.add(okButton, cons.xy(1, 1));
-        okButton.setText("Ok");
-        thePanel.add(cancelButton, cons.xy(3, 1));
-        cancelButton.setText("Cancel");
+		thePanel.add(okButton, cons.xy(1, 1));
+		okButton.setText("Ok");
+		thePanel.add(cancelButton, cons.xy(3, 1));
+		cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xywh(2, 4, 3, 1));
-    }
+		add(thePanel, cons.xywh(2, 4, 3, 1));
+	}
 
-    /**
-     * @return the existingNameBox
-     */
-    public DefaultComboBox getExistingNameBox() {
-        return existingNameBox;
-    }
+	/**
+	 * @return the existingNameBox
+	 */
+	public DefaultComboBox getExistingNameBox() {
+		return existingNameBox;
+	}
 
-    /**
-     * @return the okButton
-     */
-    public DefaultButton getOkButton() {
-        return okButton;
-    }
+	/**
+	 * @return the okButton
+	 */
+	public DefaultButton getOkButton() {
+		return okButton;
+	}
 
-    /**
-     * @return the cancelButton
-     */
-    public DefaultButton getCancelButton() {
-        return cancelButton;
-    }
+	/**
+	 * @return the cancelButton
+	 */
+	public DefaultButton getCancelButton() {
+		return cancelButton;
+	}
 }

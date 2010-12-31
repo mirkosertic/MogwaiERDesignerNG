@@ -18,20 +18,20 @@
 package de.erdesignerng;
 
 /**
- * Plattform specific configuration settings.
+ * Platform specific configuration settings.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public final class PlatformConfig {
 
-    private PlatformConfig() {
-    }
+	private PlatformConfig() {
+	}
 
-    public static String getLineSeparator() {
-        return System.getProperty("line.separator");
-    }
-    
-    public static String getXMLEncoding() {
-        return "UTF-8";
-    }
+	public static String getLineSeparator() {
+		return System.getProperty("line.separator");
+	}
+	
+	public static String getXMLEncoding() {
+		return "UTF-8";
+	}
 }

@@ -28,13 +28,13 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  */
 public class OracleDialectTest extends AbstractDialectTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 
-        dialect = new OracleDialect();
-        textDataType = dialect.getDataTypes().findByName("VARCHAR2");
-        intDataType = dialect.getDataTypes().findByName("LONG");
-        basePath = "/de/erdesignerng/test/sql/oracle/";
-    }
+		dialect = new OracleDialect();
+		textDataType = dialect.getDataTypes().findByName("VARCHAR2");
+		intDataType = dialect.getDataTypes().findByName("LONG");
+		basePath = "/de/erdesignerng/test/sql/oracle/";
+	}
 }

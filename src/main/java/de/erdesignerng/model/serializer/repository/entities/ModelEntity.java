@@ -24,177 +24,177 @@ import java.util.List;
 /**
  * Base class for all model entities.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public abstract class ModelEntity {
 
-    private Long id;
+	private Long id;
 
-    private String systemId;
+	private String systemId;
 
-    private String name;
+	private String name;
 
-    private String comment;
+	private String comment;
 
-    private Integer version;
+	private Integer version;
 
-    private String creationUser;
+	private String creationUser;
 
-    private Timestamp creationDate;
+	private Timestamp creationDate;
 
-    private String lastModificationUser;
+	private String lastModificationUser;
 
-    private Timestamp lastModificationDate;
+	private Timestamp lastModificationDate;
 
-    private List<StringKeyValuePair> properties = new ArrayList<StringKeyValuePair>();
+	private List<StringKeyValuePair> properties = new ArrayList<StringKeyValuePair>();
 
-    /**
-     * @return the systemId
-     */
-    public String getSystemId() {
-        return systemId;
-    }
+	/**
+	 * @return the systemId
+	 */
+	public String getSystemId() {
+		return systemId;
+	}
 
-    /**
-     * @param systemId
-     *            the systemId to set
-     */
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
-    }
+	/**
+	 * @param systemId
+	 *			the systemId to set
+	 */
+	public void setSystemId(String systemId) {
+		this.systemId = systemId;
+	}
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @param name
-     *            the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * @param name
+	 *			the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    /**
-     * @return the comment
-     */
-    public String getComment() {
-        return comment;
-    }
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+		return comment;
+	}
 
-    /**
-     * @param comment
-     *            the comment to set
-     */
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	/**
+	 * @param comment
+	 *			the comment to set
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
-    /**
-     * @return the version
-     */
-    public Integer getVersion() {
-        return version;
-    }
+	/**
+	 * @return the version
+	 */
+	public Integer getVersion() {
+		return version;
+	}
 
-    /**
-     * @param version
-     *            the version to set
-     */
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	/**
+	 * @param version
+	 *			the version to set
+	 */
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    /**
-     * @return the creationUser
-     */
-    public String getCreationUser() {
-        return creationUser;
-    }
+	/**
+	 * @return the creationUser
+	 */
+	public String getCreationUser() {
+		return creationUser;
+	}
 
-    /**
-     * @param creationUser
-     *            the creationUser to set
-     */
-    public void setCreationUser(String creationUser) {
-        this.creationUser = creationUser;
-    }
+	/**
+	 * @param creationUser
+	 *			the creationUser to set
+	 */
+	public void setCreationUser(String creationUser) {
+		this.creationUser = creationUser;
+	}
 
-    /**
-     * @return the creationDate
-     */
-    public Timestamp getCreationDate() {
-        return creationDate;
-    }
+	/**
+	 * @return the creationDate
+	 */
+	public Timestamp getCreationDate() {
+		return creationDate;
+	}
 
-    /**
-     * @param creationDate
-     *            the creationDate to set
-     */
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
-    }
+	/**
+	 * @param creationDate
+	 *			the creationDate to set
+	 */
+	public void setCreationDate(Timestamp creationDate) {
+		this.creationDate = creationDate;
+	}
 
-    /**
-     * @return the lastModificationUser
-     */
-    public String getLastModificationUser() {
-        return lastModificationUser;
-    }
+	/**
+	 * @return the lastModificationUser
+	 */
+	public String getLastModificationUser() {
+		return lastModificationUser;
+	}
 
-    /**
-     * @param lastModificationUser
-     *            the lastModificationUser to set
-     */
-    public void setLastModificationUser(String lastModificationUser) {
-        this.lastModificationUser = lastModificationUser;
-    }
+	/**
+	 * @param lastModificationUser
+	 *			the lastModificationUser to set
+	 */
+	public void setLastModificationUser(String lastModificationUser) {
+		this.lastModificationUser = lastModificationUser;
+	}
 
-    /**
-     * @return the lastModificationDate
-     */
-    public Timestamp getLastModificationDate() {
-        return lastModificationDate;
-    }
+	/**
+	 * @return the lastModificationDate
+	 */
+	public Timestamp getLastModificationDate() {
+		return lastModificationDate;
+	}
 
-    /**
-     * @param lastModificationDate
-     *            the lastModificationDate to set
-     */
-    public void setLastModificationDate(Timestamp lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
+	/**
+	 * @param lastModificationDate
+	 *			the lastModificationDate to set
+	 */
+	public void setLastModificationDate(Timestamp lastModificationDate) {
+		this.lastModificationDate = lastModificationDate;
+	}
 
-    /**
-     * @return the properties
-     */
-    public List<StringKeyValuePair> getProperties() {
-        return properties;
-    }
+	/**
+	 * @return the properties
+	 */
+	public List<StringKeyValuePair> getProperties() {
+		return properties;
+	}
 
-    /**
-     * @param properties
-     *            the properties to set
-     */
-    public void setProperties(List<StringKeyValuePair> properties) {
-        this.properties = properties;
-    }
+	/**
+	 * @param properties
+	 *			the properties to set
+	 */
+	public void setProperties(List<StringKeyValuePair> properties) {
+		this.properties = properties;
+	}
 
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
 
-    /**
-     * @param id
-     *            the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+	/**
+	 * @param id
+	 *			the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

@@ -20,8 +20,8 @@ package de.erdesignerng.visual;
 /**
  * Enum for different display orders.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public enum DisplayOrder {
-    NATURAL, ASCENDING, DESCENDING;
+	NATURAL, ASCENDING, DESCENDING
 }
