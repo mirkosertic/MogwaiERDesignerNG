@@ -23,25 +23,25 @@ import de.erdesignerng.visual.editor.view.ViewEditor;
 
 public class EditViewCommand extends UICommand {
 
-    private final View view;
+	private final View view;
 
-    public EditViewCommand(ERDesignerComponent aComponent, View aTable) {
-        super(aComponent);
-        view = aTable;
-    }
+	public EditViewCommand(ERDesignerComponent aComponent, View aTable) {
+		super(aComponent);
+		view = aTable;
+	}
 
-    @Override
-    public void execute() {
-        ViewEditor theEditor = new ViewEditor(component.getModel(), component.getDetailComponent());
-        theEditor.initializeFor(view);
-        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+	@Override
+	public void execute() {
+		ViewEditor theEditor = new ViewEditor(component.getModel(), component.getDetailComponent());
+		theEditor.initializeFor(view);
+		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                refreshDisplayOf(view);
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayOf(view);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

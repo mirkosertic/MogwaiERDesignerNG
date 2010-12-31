@@ -41,128 +41,128 @@ import de.erdesignerng.util.XMLUtils;
  */
 public class XMLModel20Serializer extends XMLModel10Serializer {
 
-    private static final String CURRENT_VERSION = "2.0";
+	private static final String CURRENT_VERSION = "2.0";
 
-    private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_2.0.xsd";
+	private static final String XML_SCHEMA_DEFINITION = "/erdesignerschema_2.0.xsd";
 
-    private AbstractXMLViewSerializer xmlViewSerializer = null;
+	private AbstractXMLViewSerializer xmlViewSerializer = null;
 
-    public XMLModel20Serializer(XMLUtils utils) {
-        super(utils);
-        setXMLIndexSerializer(new XMLIndexSerializer());
-        setXMLRelationSerializer(new XMLRelationSerializer());
-        setXMLSubjectAreaSerializer(new XMLSubjectAreaSerializer());
-        setXMLTableSerializer(new XMLTableSerializer(this));
-        setXMLViewSerializer(new XMLViewSerializer());
-    }
+	public XMLModel20Serializer(XMLUtils utils) {
+		super(utils);
+		setXMLIndexSerializer(new XMLIndexSerializer());
+		setXMLRelationSerializer(new XMLRelationSerializer());
+		setXMLSubjectAreaSerializer(new XMLSubjectAreaSerializer());
+		setXMLTableSerializer(new XMLTableSerializer(this));
+		setXMLViewSerializer(new XMLViewSerializer());
+	}
 
-    @Override
-    protected void serialize(Model aModel, Document aDocument) {
+	@Override
+	protected void serialize(Model aModel, Document aDocument) {
 
-        Element theRootElement = addElement(aDocument, aDocument, MODEL);
-        theRootElement.setAttribute(VERSION, getVersion());
+		Element theRootElement = addElement(aDocument, aDocument, MODEL);
+		theRootElement.setAttribute(VERSION, getVersion());
 
-        Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
+		Element theConfigurationElement = addElement(aDocument, theRootElement, CONFIGURATION);
 
-        Element theDialectElement = addElement(aDocument, theConfigurationElement, PROPERTY);
-        theDialectElement.setAttribute(NAME, DIALECT);
-        theDialectElement.setAttribute(VALUE, aModel.getDialect().getUniqueName());
+		Element theDialectElement = addElement(aDocument, theConfigurationElement, PROPERTY);
+		theDialectElement.setAttribute(NAME, DIALECT);
+		theDialectElement.setAttribute(VALUE, aModel.getDialect().getUniqueName());
 
-        for (Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
-            Element thePropertyElement = addElement(aDocument, theConfigurationElement, PROPERTY);
-            thePropertyElement.setAttribute(NAME, theEntry.getKey());
-            thePropertyElement.setAttribute(VALUE, theEntry.getValue());
-        }
+		for (Map.Entry<String, String> theEntry : aModel.getProperties().getProperties().entrySet()) {
+			Element thePropertyElement = addElement(aDocument, theConfigurationElement, PROPERTY);
+			thePropertyElement.setAttribute(NAME, theEntry.getKey());
+			thePropertyElement.setAttribute(VALUE, theEntry.getValue());
+		}
 
-        Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
-        for (Domain theTable : aModel.getDomains()) {
-            getXMLDomainSerializer().serialize(theTable, aDocument, theDomainsElement);
-        }
+		Element theDomainsElement = addElement(aDocument, theRootElement, DOMAINS);
+		for (Domain theTable : aModel.getDomains()) {
+			getXMLDomainSerializer().serialize(theTable, aDocument, theDomainsElement);
+		}
 
-        Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
-        for (Table theTable : aModel.getTables()) {
-            getXMLTableSerializer().serialize(theTable, aDocument, theTablesElement);
-        }
+		Element theTablesElement = addElement(aDocument, theRootElement, TABLES);
+		for (Table theTable : aModel.getTables()) {
+			getXMLTableSerializer().serialize(theTable, aDocument, theTablesElement);
+		}
 
-        Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
-        for (Relation theRelation : aModel.getRelations()) {
-            getXMLRelationSerializer().serialize(theRelation, aDocument, theRelationsElement);
-        }
+		Element theRelationsElement = addElement(aDocument, theRootElement, RELATIONS);
+		for (Relation theRelation : aModel.getRelations()) {
+			getXMLRelationSerializer().serialize(theRelation, aDocument, theRelationsElement);
+		}
 
-        Element theViewsElement = addElement(aDocument, theRootElement, VIEWS);
-        for (View theView : aModel.getViews()) {
-            getXMLViewSerializer().serialize(theView, aDocument, theViewsElement);
-        }
+		Element theViewsElement = addElement(aDocument, theRootElement, VIEWS);
+		for (View theView : aModel.getViews()) {
+			getXMLViewSerializer().serialize(theView, aDocument, theViewsElement);
+		}
 
-        Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
-        for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
-            getXMLSubjectAreaSerializer().serialize(theSubjectArea, aDocument, theSubjectAreasElement);
-        }
+		Element theSubjectAreasElement = addElement(aDocument, theRootElement, SUBJECTAREAS);
+		for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+			getXMLSubjectAreaSerializer().serialize(theSubjectArea, aDocument, theSubjectAreasElement);
+		}
 
-        Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
-        for (Comment theComment : aModel.getComments()) {
-            getXMLCommentSerializer().serialize(theComment, aDocument, theCommentsElement);
-        }
-    }
+		Element theCommentsElement = addElement(aDocument, theRootElement, COMMENTS);
+		for (Comment theComment : aModel.getComments()) {
+			getXMLCommentSerializer().serialize(theComment, aDocument, theCommentsElement);
+		}
+	}
 
-    @Override
-    protected Model deserialize(Document aDocument) {
-        Model theModel = new Model();
+	@Override
+	protected Model deserialize(Document aDocument) {
+		Model theModel = new Model();
 
-        NodeList theElements = aDocument.getElementsByTagName(MODEL);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
-            String theVersion = theElement.getAttribute(VERSION);
-            if (!getVersion().equals(theVersion)) {
-                throw new RuntimeException("Unsupported version of model : " + theVersion);
-            }
-        }
+		NodeList theElements = aDocument.getElementsByTagName(MODEL);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
+			String theVersion = theElement.getAttribute(VERSION);
+			if (!getVersion().equals(theVersion)) {
+				throw new RuntimeException("Unsupported version of model : " + theVersion);
+			}
+		}
 
-        theElements = aDocument.getElementsByTagName(CONFIGURATION);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+		theElements = aDocument.getElementsByTagName(CONFIGURATION);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            NodeList theProperties = theElement.getElementsByTagName(PROPERTY);
-            for (int j = 0; j < theProperties.getLength(); j++) {
-                Element theProperty = (Element) theProperties.item(j);
+			NodeList theProperties = theElement.getElementsByTagName(PROPERTY);
+			for (int j = 0; j < theProperties.getLength(); j++) {
+				Element theProperty = (Element) theProperties.item(j);
 
-                String theName = theProperty.getAttribute(NAME);
-                String theValue = theProperty.getAttribute(VALUE);
+				String theName = theProperty.getAttribute(NAME);
+				String theValue = theProperty.getAttribute(VALUE);
 
-                if (DIALECT.equals(theName)) {
-                    theModel.setDialect(DialectFactory.getInstance().getDialect(theValue));
-                } else {
-                    theModel.getProperties().setProperty(theName, theValue);
-                }
-            }
-        }
+				if (DIALECT.equals(theName)) {
+					theModel.setDialect(DialectFactory.getInstance().getDialect(theValue));
+				} else {
+					theModel.getProperties().setProperty(theName, theValue);
+				}
+			}
+		}
 
-        getXMLDomainSerializer().deserialize(theModel, aDocument);
-        getXMLTableSerializer().deserialize(theModel, aDocument);
-        getXMLRelationSerializer().deserialize(theModel, aDocument);
-        getXMLViewSerializer().deserialize(theModel, aDocument);
-        getXMLCommentSerializer().deserialize(theModel, aDocument);
-        getXMLSubjectAreaSerializer().deserialize(theModel, aDocument);
+		getXMLDomainSerializer().deserialize(theModel, aDocument);
+		getXMLTableSerializer().deserialize(theModel, aDocument);
+		getXMLRelationSerializer().deserialize(theModel, aDocument);
+		getXMLViewSerializer().deserialize(theModel, aDocument);
+		getXMLCommentSerializer().deserialize(theModel, aDocument);
+		getXMLSubjectAreaSerializer().deserialize(theModel, aDocument);
 
-        return theModel;
-    }
+		return theModel;
+	}
 
-    @Override
-    public String getSchemaResource() {
-        return XML_SCHEMA_DEFINITION;
-    }
+	@Override
+	public String getSchemaResource() {
+		return XML_SCHEMA_DEFINITION;
+	}
 
-    @Override
-    public String getVersion() {
-        return CURRENT_VERSION;
-    }
+	@Override
+	public String getVersion() {
+		return CURRENT_VERSION;
+	}
 
-    protected AbstractXMLViewSerializer getXMLViewSerializer() {
-        return xmlViewSerializer;
-    }
+	protected AbstractXMLViewSerializer getXMLViewSerializer() {
+		return xmlViewSerializer;
+	}
 
-    protected void setXMLViewSerializer(AbstractXMLViewSerializer xmlViewSerializer) {
-        this.xmlViewSerializer = xmlViewSerializer;
-    }
+	protected void setXMLViewSerializer(AbstractXMLViewSerializer xmlViewSerializer) {
+		this.xmlViewSerializer = xmlViewSerializer;
+	}
 
 }

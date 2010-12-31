@@ -28,13 +28,13 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  */
 public class PostgresDialectTest extends AbstractDialectTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 
-        dialect = new PostgresDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("integer");
-        basePath = "/de/erdesignerng/test/sql/postgres/";
-    }
+		dialect = new PostgresDialect();
+		textDataType = dialect.getDataTypes().findByName("varchar");
+		intDataType = dialect.getDataTypes().findByName("integer");
+		basePath = "/de/erdesignerng/test/sql/postgres/";
+	}
 }

@@ -20,27 +20,27 @@ package de.erdesignerng.visual.editor.repository;
 /**
  * Datamodel for the migration script dialog.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class MigrationScriptDataModel {
 
-    private ChangeDescriptor sourceChange;
+	private ChangeDescriptor sourceChange;
 
-    private ChangeDescriptor destinationChange;
+	private ChangeDescriptor destinationChange;
 
-    public ChangeDescriptor getSourceChange() {
-        return sourceChange;
-    }
+	public ChangeDescriptor getSourceChange() {
+		return sourceChange;
+	}
 
-    public void setSourceChange(ChangeDescriptor sourceChange) {
-        this.sourceChange = sourceChange;
-    }
+	public void setSourceChange(ChangeDescriptor sourceChange) {
+		this.sourceChange = sourceChange;
+	}
 
-    public ChangeDescriptor getDestinationChange() {
-        return destinationChange;
-    }
+	public ChangeDescriptor getDestinationChange() {
+		return destinationChange;
+	}
 
-    public void setDestinationChange(ChangeDescriptor destinationChange) {
-        this.destinationChange = destinationChange;
-    }
+	public void setDestinationChange(ChangeDescriptor destinationChange) {
+		this.destinationChange = destinationChange;
+	}
 }

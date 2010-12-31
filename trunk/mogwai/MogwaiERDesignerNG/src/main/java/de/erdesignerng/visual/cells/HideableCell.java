@@ -21,7 +21,7 @@ package de.erdesignerng.visual.cells;
  * Marker interface for diagram objects indicating that it can be shown or
  * hidden.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public interface HideableCell {
 }

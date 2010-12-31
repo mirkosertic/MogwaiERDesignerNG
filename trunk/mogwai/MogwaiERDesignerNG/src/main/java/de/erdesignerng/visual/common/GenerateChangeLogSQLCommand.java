@@ -24,25 +24,25 @@ import de.erdesignerng.visual.editor.sql.SQLEditor;
 
 public class GenerateChangeLogSQLCommand extends UICommand {
 
-    public GenerateChangeLogSQLCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public GenerateChangeLogSQLCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    protected String generateChangelogSQLFileName() {
-        return "changelog.sql";
-    }
+	protected String generateChangelogSQLFileName() {
+		return "changelog.sql";
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        StatementList theStatements = ((HistoryModificationTracker) component.getModel().getModificationTracker())
-                .getStatements();
-        SQLEditor theEditor = new SQLEditor(getDetailComponent(),
-                new ModelBasedConnectionProvider(component.getModel()), theStatements, component.currentEditingFile,
-                generateChangelogSQLFileName(), getPreferences(), getWorldConnector());
-        theEditor.showModal();
-    }
+		StatementList theStatements = ((HistoryModificationTracker) component.getModel().getModificationTracker())
+				.getStatements();
+		SQLEditor theEditor = new SQLEditor(getDetailComponent(),
+				new ModelBasedConnectionProvider(component.getModel()), theStatements, component.currentEditingFile,
+				generateChangelogSQLFileName(), getPreferences(), getWorldConnector());
+		theEditor.showModal();
+	}
 }

@@ -42,23 +42,23 @@ import de.erdesignerng.util.XMLUtils;
  */
 public class XML30IOTest extends BaseERDesignerTestCaseImpl {
 
-    public void testLoadXML20Model() throws ParserConfigurationException, SAXException, IOException,
-            TransformerException {
+	public void testLoadXML20Model() throws ParserConfigurationException, SAXException, IOException,
+			TransformerException {
 
-        XMLUtils theUtils = XMLUtils.getInstance();
+		XMLUtils theUtils = XMLUtils.getInstance();
 
-        DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
-        Document theDoc = theBuilder.parse(getClass().getResourceAsStream("examplemodel.mxm"));
-        AbstractXMLModelSerializer theSerializer = new XMLModel30Serializer(theUtils);
-        Model theModel = theSerializer.deserializeModelFromXML(theDoc);
+		DocumentBuilderFactory theFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder theBuilder = theFactory.newDocumentBuilder();
+		Document theDoc = theBuilder.parse(getClass().getResourceAsStream("examplemodel.mxm"));
+		AbstractXMLModelSerializer theSerializer = new XMLModel30Serializer(theUtils);
+		Model theModel = theSerializer.deserializeModelFromXML(theDoc);
 
-        StringWriter theStringWriter = new StringWriter();
-        theSerializer.serializeModelToXML(theModel, theStringWriter);
+		StringWriter theStringWriter = new StringWriter();
+		theSerializer.serializeModelToXML(theModel, theStringWriter);
 
-        String theOriginalFile = readResourceFile("examplemodel.mxm");
-        String theNewFile = theStringWriter.toString();
+		String theOriginalFile = readResourceFile("examplemodel.mxm");
+		String theNewFile = theStringWriter.toString();
 
-        assertTrue(compareStrings(theOriginalFile, theNewFile));
-    }
+		assertTrue(compareStrings(theOriginalFile, theNewFile));
+	}
 }

@@ -30,80 +30,80 @@ import de.mogwai.common.client.looks.components.DefaultLabel;
 /**
  * View for the migration script dialog.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class MigrationScriptView extends JPanel {
 
-    private DefaultComboBox sourceVersion = new DefaultComboBox();
+	private final DefaultComboBox sourceVersion = new DefaultComboBox();
 
-    private DefaultComboBox destinationVersion = new DefaultComboBox();
+	private final DefaultComboBox destinationVersion = new DefaultComboBox();
 
-    private DefaultButton okButton = new DefaultButton();
+	private final DefaultButton okButton = new DefaultButton();
 
-    private DefaultButton cancelButton = new DefaultButton();
+	private final DefaultButton cancelButton = new DefaultButton();
 
-    public MigrationScriptView() {
-        initialize();
-    }
+	public MigrationScriptView() {
+		initialize();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        String theColDef = "2dlu,50dlu,2dlu,fill:100dlu:grow,2dlu";
-        String theRowDef = "2dlu,p,2dlu,p,50dlu,p,2dlu";
+		String theColDef = "2dlu,50dlu,2dlu,fill:100dlu:grow,2dlu";
+		String theRowDef = "2dlu,p,2dlu,p,50dlu,p,2dlu";
 
-        FormLayout theLayout = new FormLayout(theColDef, theRowDef);
-        setLayout(theLayout);
+		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
+		setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        add(new DefaultLabel(ERDesignerBundle.FROMVERSION), cons.xy(2, 2));
-        add(sourceVersion, cons.xy(4, 2));
+		add(new DefaultLabel(ERDesignerBundle.FROMVERSION), cons.xy(2, 2));
+		add(sourceVersion, cons.xy(4, 2));
 
-        add(new DefaultLabel(ERDesignerBundle.TOVERSION), cons.xy(2, 4));
-        add(destinationVersion, cons.xy(4, 4));
+		add(new DefaultLabel(ERDesignerBundle.TOVERSION), cons.xy(2, 4));
+		add(destinationVersion, cons.xy(4, 4));
 
-        JPanel thePanel = new JPanel();
+		JPanel thePanel = new JPanel();
 
-        theColDef = "60dlu,fill:2dlu:grow,60dlu";
-        theRowDef = "p";
+		theColDef = "60dlu,fill:2dlu:grow,60dlu";
+		theRowDef = "p";
 
-        theLayout = new FormLayout(theColDef, theRowDef);
-        thePanel.setLayout(theLayout);
+		theLayout = new FormLayout(theColDef, theRowDef);
+		thePanel.setLayout(theLayout);
 
-        thePanel.add(okButton, cons.xy(1, 1));
-        okButton.setText("Ok");
-        thePanel.add(cancelButton, cons.xy(3, 1));
-        cancelButton.setText("Cancel");
+		thePanel.add(okButton, cons.xy(1, 1));
+		okButton.setText("Ok");
+		thePanel.add(cancelButton, cons.xy(3, 1));
+		cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xywh(2, 6, 3, 1));
+		add(thePanel, cons.xywh(2, 6, 3, 1));
 
-    }
+	}
 
-    /**
-     * @return the sourceVersion
-     */
-    public DefaultComboBox getSourceVersion() {
-        return sourceVersion;
-    }
+	/**
+	 * @return the sourceVersion
+	 */
+	public DefaultComboBox getSourceVersion() {
+		return sourceVersion;
+	}
 
-    /**
-     * @return the destinationVersion
-     */
-    public DefaultComboBox getDestinationVersion() {
-        return destinationVersion;
-    }
+	/**
+	 * @return the destinationVersion
+	 */
+	public DefaultComboBox getDestinationVersion() {
+		return destinationVersion;
+	}
 
-    /**
-     * @return the okButton
-     */
-    public DefaultButton getOkButton() {
-        return okButton;
-    }
+	/**
+	 * @return the okButton
+	 */
+	public DefaultButton getOkButton() {
+		return okButton;
+	}
 
-    /**
-     * @return the cancelButton
-     */
-    public DefaultButton getCancelButton() {
-        return cancelButton;
-    }
+	/**
+	 * @return the cancelButton
+	 */
+	public DefaultButton getCancelButton() {
+		return cancelButton;
+	}
 }

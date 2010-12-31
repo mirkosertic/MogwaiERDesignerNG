@@ -30,70 +30,70 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
  */
 public class DB2Dialect extends SQL92Dialect {
 
-    public DB2Dialect() {
-        setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(false);
-        setMaxObjectNameLength(128);
-        setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.UPPERCASE);
+	public DB2Dialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(false);
+		setMaxObjectNameLength(128);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.UPPERCASE);
 
-        registerType(createDataType("VARCHAR() FOR BIT DATA", "$size", Types.VARBINARY));
-        registerType(createDataType("CHAR() FOR BIT DATA", "$size", Types.BINARY, Types.BIT));
-        registerType(createDataType("CHAR", "$size", Types.CHAR));
-        registerType(createDataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
-        registerType(createDataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
-        registerType(createDataType("BIGINT", "", Types.BIGINT));
-        registerType(createDataType("BLOB", "", Types.BLOB, Types.LONGVARBINARY));
-        registerType(createDataType("CLOB", "", Types.CLOB, Types.SQLXML, Types.LONGVARCHAR));
-        registerType(createDataType("INTEGER", "", Types.INTEGER));
-        registerType(createDataType("SMALLINT", "", Types.SMALLINT, Types.TINYINT, Types.BOOLEAN));
-        registerType(createDataType("REAL", "", Types.FLOAT, Types.REAL));
-        registerType(createDataType("FLOAT", "$size", Types.DOUBLE));
-        registerType(createDataType("VARCHAR", "$size", Types.VARCHAR));
-        registerType(createDataType("DATE", "", Types.DATE));
-        registerType(createDataType("TIME", "", Types.TIME));
-        registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP));
+		registerType(createDataType("VARCHAR() FOR BIT DATA", "$size", Types.VARBINARY));
+		registerType(createDataType("CHAR() FOR BIT DATA", "$size", Types.BINARY, Types.BIT));
+		registerType(createDataType("CHAR", "$size", Types.CHAR));
+		registerType(createDataType("NUMERIC", "$size,$fraction", Types.NUMERIC));
+		registerType(createDataType("DECIMAL", "$size,$fraction", Types.DECIMAL));
+		registerType(createDataType("BIGINT", "", Types.BIGINT));
+		registerType(createDataType("BLOB", "", Types.BLOB, Types.LONGVARBINARY));
+		registerType(createDataType("CLOB", "", Types.CLOB, Types.SQLXML, Types.LONGVARCHAR));
+		registerType(createDataType("INTEGER", "", Types.INTEGER));
+		registerType(createDataType("SMALLINT", "", Types.SMALLINT, Types.TINYINT, Types.BOOLEAN));
+		registerType(createDataType("REAL", "", Types.FLOAT, Types.REAL));
+		registerType(createDataType("FLOAT", "$size", Types.DOUBLE));
+		registerType(createDataType("VARCHAR", "$size", Types.VARCHAR));
+		registerType(createDataType("DATE", "", Types.DATE));
+		registerType(createDataType("TIME", "", Types.TIME));
+		registerType(createDataType("TIMESTAMP", "", Types.TIMESTAMP));
 
-        seal();
-    }
+		seal();
+	}
 
-    @Override
-    public DB2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new DB2ReverseEngineeringStrategy(this);
-    }
+	@Override
+	public DB2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new DB2ReverseEngineeringStrategy(this);
+	}
 
-    @Override
-    public String getUniqueName() {
-        return "DB2";
-    }
+	@Override
+	public String getUniqueName() {
+		return "DB2";
+	}
 
-    @Override
-    public String getDriverClassName() {
-        return "hit.db2.Db2Driver";
-    }
+	@Override
+	public String getDriverClassName() {
+		return "hit.db2.Db2Driver";
+	}
 
-    @Override
-    public String getDriverURLTemplate() {
-        return "jdbc:db2://<host>/<db>";
-    }
+	@Override
+	public String getDriverURLTemplate() {
+		return "jdbc:db2://<host>/<db>";
+	}
 
-    @Override
-    public DB2SQLGenerator createSQLGenerator() {
-        return new DB2SQLGenerator(this);
-    }
+	@Override
+	public DB2SQLGenerator createSQLGenerator() {
+		return new DB2SQLGenerator(this);
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.DB2Dialect.class;
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		return org.hibernate.dialect.DB2Dialect.class;
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
-        return new DB2DataType(aName, aDefinition, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+		return new DB2DataType(aName, aDefinition, aJdbcType);
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-        return new DB2DataType(aName, aDefinition, aIdentity, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
+		return new DB2DataType(aName, aDefinition, aIdentity, aJdbcType);
+	}
 }

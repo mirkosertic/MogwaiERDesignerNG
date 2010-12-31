@@ -24,66 +24,66 @@ import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 
 /**
- * Interceptor for audit informations.
+ * Interceptor for audit information.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class AuditInterceptor extends EmptyInterceptor {
 
-    public static final AuditInterceptor INSTANCE = new AuditInterceptor();
+	public static final AuditInterceptor INSTANCE = new AuditInterceptor();
 
-    protected String getCurrentUserId() {
-        return System.getProperty("user.name");
-    }
+	protected String getCurrentUserId() {
+		return System.getProperty("user.name");
+	}
 
-    @Override
-    public boolean onSave(Object aEntity, Serializable aID, Object[] aStates, String[] aPropertyNames, Type[] aTypes) {
+	@Override
+	public boolean onSave(Object aEntity, Serializable aID, Object[] aStates, String[] aPropertyNames, Type[] aTypes) {
 
-        String theCurrentUser = getCurrentUserId();
+		String theCurrentUser = getCurrentUserId();
 
-        if (theCurrentUser != null) {
+		if (theCurrentUser != null) {
 
-            for (int i = 0; i < aPropertyNames.length; i++) {
+			for (int i = 0; i < aPropertyNames.length; i++) {
 
-                String thePropertyName = aPropertyNames[i];
-                if ("creationDate".equals(thePropertyName)) {
-                    aStates[i] = new Timestamp(System.currentTimeMillis());
-                }
-                if ("creationUser".equals(thePropertyName)) {
-                    aStates[i] = theCurrentUser;
-                }
+				String thePropertyName = aPropertyNames[i];
+				if ("creationDate".equals(thePropertyName)) {
+					aStates[i] = new Timestamp(System.currentTimeMillis());
+				}
+				if ("creationUser".equals(thePropertyName)) {
+					aStates[i] = theCurrentUser;
+				}
 
-            }
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean onFlushDirty(Object aEntity, Serializable aID, Object[] aCurrentState, Object[] aPreviousState,
-            String[] aPropertyNames, Type[] aTypes) {
+	@Override
+	public boolean onFlushDirty(Object aEntity, Serializable aID, Object[] aCurrentState, Object[] aPreviousState,
+			String[] aPropertyNames, Type[] aTypes) {
 
-        String theCurrentUser = getCurrentUserId();
+		String theCurrentUser = getCurrentUserId();
 
-        if (theCurrentUser != null) {
+		if (theCurrentUser != null) {
 
-            for (int i = 0; i < aPropertyNames.length; i++) {
+			for (int i = 0; i < aPropertyNames.length; i++) {
 
-                String thePropertyName = aPropertyNames[i];
-                if ("lastModificationDate".equals(thePropertyName)) {
-                    aCurrentState[i] = new Timestamp(System.currentTimeMillis());
-                }
-                if ("lastModificationUser".equals(thePropertyName)) {
-                    aCurrentState[i] = theCurrentUser;
-                }
+				String thePropertyName = aPropertyNames[i];
+				if ("lastModificationDate".equals(thePropertyName)) {
+					aCurrentState[i] = new Timestamp(System.currentTimeMillis());
+				}
+				if ("lastModificationUser".equals(thePropertyName)) {
+					aCurrentState[i] = theCurrentUser;
+				}
 
-            }
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

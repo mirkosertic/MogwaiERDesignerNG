@@ -33,21 +33,21 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 
 public class RepositioryHelper {
 
-    public static String performRepositorySaveAndLoad(String aModelResource, Class aHibernateDialect,
-            Connection aConnection) throws SAXException, IOException, ParserConfigurationException, Exception,
-            TransformerException {
-        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
-                RepositioryHelper.class.getResourceAsStream(aModelResource));
+	public static String performRepositorySaveAndLoad(String aModelResource, Class aHibernateDialect,
+			Connection aConnection) throws SAXException, IOException, ParserConfigurationException, Exception,
+			TransformerException {
+		Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
+				RepositioryHelper.class.getResourceAsStream(aModelResource));
 
-        RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
-        theDesc.setName("Dummy");
+		RepositoryEntryDescriptor theDesc = new RepositoryEntryDescriptor();
+		theDesc.setName("Dummy");
 
-        theDesc = DictionaryModelSerializer.SERIALIZER.serialize(theDesc, theModel, aConnection, aHibernateDialect);
+		theDesc = DictionaryModelSerializer.SERIALIZER.serialize(theDesc, theModel, aConnection, aHibernateDialect);
 
-        Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theDesc, aConnection, aHibernateDialect);
+		Model theNewModel = DictionaryModelSerializer.SERIALIZER.deserialize(theDesc, aConnection, aHibernateDialect);
 
-        StringWriter theStringWriter = new StringWriter();
-        ModelIOUtilities.getInstance().serializeModelToXML(theNewModel, theStringWriter);
-        return theStringWriter.toString().trim();
-    }
+		StringWriter theStringWriter = new StringWriter();
+		ModelIOUtilities.getInstance().serializeModelToXML(theNewModel, theStringWriter);
+		return theStringWriter.toString().trim();
+	}
 }

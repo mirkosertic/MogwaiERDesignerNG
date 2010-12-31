@@ -23,15 +23,15 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 public final class DialogUtils {
 
-    private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-    private DialogUtils() {
-    }
+	private DialogUtils() {
+	}
 
-    public static String promptForPassword() {
+	public static String promptForPassword() {
 
-        String theMesssage = HELPER.getText(ERDesignerBundle.PLEASEENTERDATABASEPASSWORD);
-        String theTitle = HELPER.getText(ERDesignerBundle.CONNECTIONCONFIGURATION);
-        return JOptionPane.showInputDialog(null, theMesssage, theTitle, JOptionPane.QUESTION_MESSAGE);
-    }
+		String theMesssage = HELPER.getText(ERDesignerBundle.PLEASEENTERDATABASEPASSWORD);
+		String theTitle = HELPER.getText(ERDesignerBundle.CONNECTIONCONFIGURATION);
+		return JOptionPane.showInputDialog(null, theMesssage, theTitle, JOptionPane.QUESTION_MESSAGE);
+	}
 }

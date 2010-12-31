@@ -24,14 +24,14 @@ import de.erdesignerng.model.SubjectArea;
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLSubjectAreaSerializer extends CommonAbstractXMLSerializer<SubjectArea> {
-    protected static final String COLOR = "color";
+	protected static final String COLOR = "color";
 
-    protected static final String COMMENTREFID = "commentrefid";
+	protected static final String COMMENTREFID = "commentrefid";
 
-    protected static final String ITEM = "Item";
+	protected static final String ITEM = "Item";
 
-    protected static final String SUBJECTAREA = "Subjectarea";
+	protected static final String SUBJECTAREA = "Subjectarea";
 
-    protected static final String TABLEREFID = "tablerefid";
+	protected static final String TABLEREFID = "tablerefid";
 
 }

@@ -24,7 +24,7 @@ package de.erdesignerng.io;
  */
 public class SQLFileFilter extends GenericFileFilter {
 
-    public SQLFileFilter() {
-        super(".sql", "SQL file");
-    }
+	public SQLFileFilter() {
+		super(".sql", "SQL file");
+	}
 }

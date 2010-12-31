@@ -24,7 +24,7 @@ package de.erdesignerng.io;
  */
 public class ModelFileFilter extends GenericFileFilter {
 
-    public ModelFileFilter() {
-        super(".mxm", "Mogwai model");
-    }
+	public ModelFileFilter() {
+		super(".mxm", "Mogwai model");
+	}
 }

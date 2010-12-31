@@ -22,19 +22,19 @@ import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 
 public class ClasspathCommand extends UICommand {
 
-    public ClasspathCommand(ERDesignerComponent aComponent) {
-        super(aComponent);
-    }
+	public ClasspathCommand(ERDesignerComponent aComponent) {
+		super(aComponent);
+	}
 
-    @Override
-    public void execute() {
-        ClasspathEditor theEditor = new ClasspathEditor(getDetailComponent(), getPreferences());
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+	@Override
+	public void execute() {
+		ClasspathEditor theEditor = new ClasspathEditor(getDetailComponent(), getPreferences());
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

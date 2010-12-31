@@ -107,7 +107,7 @@
 			<Text lang="en">View</Text>
 		</Entry>
 		<Entry id="ZOOMIN">
-			<Text lang="de">Vergrössern</Text>
+			<Text lang="de">Vergrößern</Text>
 			<Text lang="en">Zoom in</Text>
 			<Icon>/de/erdesignerng/icons/magnifier_zoom_in.png</Icon>
 		</Entry>
@@ -129,7 +129,7 @@
 			<Icon>/de/erdesignerng/icons/view.gif</Icon>
 		</Entry>
 		<Entry id="ZOOM">
-			<Text lang="de">Vergrösserung</Text>
+			<Text lang="de">Vergrößerung</Text>
 			<Text lang="en">Zoom</Text>
 		</Entry>
 		<Entry id="CLASSPATHCONFIGURATION">
@@ -291,7 +291,7 @@
 			<Text lang="de">Sie müssen mindestens ein Schema auswählen</Text>
 			<Text lang="en">You have to select at least one schema</Text>
 		</Entry>
-		<Entry id="STANDART">
+		<Entry id="STANDARD">
 			<Text lang="de">Standard</Text>
 			<Text lang="en">Standard</Text>
 		</Entry>
@@ -307,11 +307,11 @@
 			<Text lang="de">Reverseengineering von Relationen für Tabelle {0}</Text>
 			<Text lang="en">Reverse engineering of relations for table {0}</Text>
 		</Entry>
-        <Entry id="ENGINEERINGDOMAIN">
+		<Entry id="ENGINEERINGDOMAIN">
 			<Text lang="de">Reverseengineering von Domäne {0}</Text>
 			<Text lang="en">Reverse engineering of domain {0}</Text>
 		</Entry>
-        <Entry id="ENGINEERINGCUSTOMTYPE">
+		<Entry id="ENGINEERINGCUSTOMTYPE">
 			<Text lang="de">Reverseengineering von benutzerdefiniertem Datentyp {0}</Text>
 			<Text lang="en">Reverse engineering of user-defined datatype {0}</Text>
 		</Entry>
@@ -384,11 +384,11 @@
 			<Text lang="en">Please define a database connection prior to using this operation!</Text>
 		</Entry>
 		<Entry id="SIZE">
-			<Text lang="de">Grösse</Text>
+			<Text lang="de">Größe</Text>
 			<Text lang="en">Size</Text>
 		</Entry>
 		<Entry id="FRACTION">
-			<Text lang="de">NK-Stellen</Text>
+			<Text lang="de">Nachkommastellen</Text>
 			<Text lang="en">Fraction</Text>
 		</Entry>
 		<Entry id="SCALE">
@@ -422,7 +422,7 @@
 			<Text lang="en">Exception ( Stacktrace )</Text>
 		</Entry>
 		<Entry id="CLOSE">
-			<Text lang="de">Schliessen</Text>
+			<Text lang="de">Schließen</Text>
 			<Text lang="en">Close</Text>
 		</Entry>
 		<Entry id="GENERATECHANGELOG">
@@ -512,7 +512,7 @@
 			<Text lang="en">Display grid</Text>
 		</Entry>
 		<Entry id="EDITORGRIDSIZE">
-			<Text lang="de">Gittergrösse im Editor (Pixel)</Text>
+			<Text lang="de">Gittergröße im Editor (Pixel)</Text>
 			<Text lang="en">Editor grid size (px)</Text>
 		</Entry>
 		<Entry id="COMMENTEDITOR">
@@ -520,10 +520,10 @@
 			<Text lang="en">Edit comment</Text>
 		</Entry>
 		<Entry id="COMMENTPROPERTIES">
-			<Text lang="de">Eigenschaften des Kommentares</Text>
+			<Text lang="de">Eigenschaften des Kommentars</Text>
 			<Text lang="en">Comment properties</Text>
 		</Entry>
-        <Entry id="CUSTOMTYPEEDITOR">
+		<Entry id="CUSTOMTYPEEDITOR">
 			<Text lang="de">Benutzerdefinierte Typen Editor...</Text>
 			<Text lang="en">Custom types editor...</Text>
 		</Entry>
@@ -592,7 +592,7 @@
 		</Entry>
 		<Entry id="ERRORINREPOSITORYCONNECTION">
 			<Text lang="de">Es trat ein Fehler bei der Verbindung zum Repository auf.</Text>
-			<Text lang="en">An exception occoured while connecting to the repository</Text>
+			<Text lang="en">An exception occurred while connecting to the repository</Text>
 		</Entry>
 		<Entry id="REPOSITORYUTILS">
 			<Text lang="de">Repository Werkzeuge...</Text>
@@ -729,8 +729,8 @@
 			<Text lang="en">Target</Text>
 		</Entry>
 		<Entry id="SRCDIRECTORY">
-			<Text lang="de">SRC-Verzeichnis</Text>
-			<Text lang="en">Src directory</Text>
+			<Text lang="de">Quell-Verzeichnis</Text>
+			<Text lang="en">Source directory</Text>
 		</Entry>
 		<Entry id="PACKAGENAME">
 			<Text lang="de">Package</Text>
@@ -809,10 +809,10 @@
 			<Text lang="en">Tables</Text>
 		</Entry>
 		<Entry id="VIEWS">
-			<Text lang="de">Views</Text>
+			<Text lang="de">Sichten</Text>
 			<Text lang="en">Views</Text>
 		</Entry>
-        <Entry id="CUSTOMTYPESLIST">
+		<Entry id="CUSTOMTYPESLIST">
 			<Text lang="de">Benutzerdefinierte Typen</Text>
 			<Text lang="en">Custom types</Text>
 		</Entry>
@@ -829,14 +829,14 @@
 			<Text lang="en">Edit Table {0}</Text>
 		</Entry>
 		<Entry id="EDITVIEW">
-			<Text lang="de">View {0} bearbeiten</Text>
+			<Text lang="de">Sicht {0} bearbeiten</Text>
 			<Text lang="en">Edit View {0}</Text>
 		</Entry>
 		<Entry id="EDITRELATION">
 			<Text lang="de">Relation {0} bearbeiten</Text>
 			<Text lang="en">Edit Relation {0}</Text>
 		</Entry>
-        <Entry id="EDITCUSTOMTYPE">
+		<Entry id="EDITCUSTOMTYPE">
 			<Text lang="de">Type {0} bearbeiten</Text>
 			<Text lang="en">Edit Type {0}</Text>
 		</Entry>
@@ -893,19 +893,19 @@
 			<Text lang="en">Engine</Text>
 		</Entry>
 		<Entry id="AVGROWLENGTH">
-			<Text lang="de">Average row length</Text>
+			<Text lang="de">Durchschnittliche Zeilenlänge</Text>
 			<Text lang="en">Average row length</Text>
 		</Entry>
 		<Entry id="MAXROWS">
-			<Text lang="de">Max rows</Text>
+			<Text lang="de">Maximale Zeilenanzahl</Text>
 			<Text lang="en">Max rows</Text>
 		</Entry>
 		<Entry id="MINROWS">
-			<Text lang="de">Min rows</Text>
+			<Text lang="de">Minimale Zeilenanzahl</Text>
 			<Text lang="en">Min rows</Text>
 		</Entry>
 		<Entry id="CHECKSUM">
-			<Text lang="de">Checksum</Text>
+			<Text lang="de">Checksumme</Text>
 			<Text lang="en">Checksum</Text>
 		</Entry>
 		<Entry id="PACKKEYS">
@@ -917,15 +917,15 @@
 			<Text lang="en">Delay key write</Text>
 		</Entry>
 		<Entry id="ROWFORMAT">
-			<Text lang="de">Row format</Text>
+			<Text lang="de">Zeilenformat</Text>
 			<Text lang="en">Row format</Text>
 		</Entry>
 		<Entry id="INSERTMETHOD">
-			<Text lang="de">Insert method</Text>
+			<Text lang="de">Methode einfügen</Text>
 			<Text lang="en">Insert method</Text>
 		</Entry>
 		<Entry id="CHARACTERSET">
-			<Text lang="de">Character set</Text>
+			<Text lang="de">Zeichensatz</Text>
 			<Text lang="en">Character set</Text>
 		</Entry>
 		<Entry id="HASH">
@@ -933,11 +933,11 @@
 			<Text lang="en">Hash</Text>
 		</Entry>
 		<Entry id="TABLETYPE">
-			<Text lang="de">Table type</Text>
+			<Text lang="de">Tabellentyp</Text>
 			<Text lang="en">Table type</Text>
 		</Entry>
 		<Entry id="FORCED">
-			<Text lang="de">Forced</Text>
+			<Text lang="de">Erzwungen</Text>
 			<Text lang="en">Forced</Text>
 		</Entry>
 		<Entry id="CHECKOPTION">
@@ -945,7 +945,7 @@
 			<Text lang="en">Check option</Text>
 		</Entry>
 		<Entry id="ENCRYPTION">
-			<Text lang="de">Encryption</Text>
+			<Text lang="de">Verschlüsselung</Text>
 			<Text lang="en">Encryption</Text>
 		</Entry>
 		<Entry id="SCHEMABINDING">
@@ -953,15 +953,15 @@
 			<Text lang="en">Schema binding</Text>
 		</Entry>
 		<Entry id="VIEWMETADATA">
-			<Text lang="de">View metadata</Text>
+			<Text lang="de">Metadaten anzeigen</Text>
 			<Text lang="en">View metadata</Text>
 		</Entry>
 		<Entry id="INDEXTYPE">
-			<Text lang="de">Index type</Text>
+			<Text lang="de">Indextyp</Text>
 			<Text lang="en">Index type</Text>
 		</Entry>
 		<Entry id="FILEGROUP">
-			<Text lang="de">File group</Text>
+			<Text lang="de">Dateigruppe</Text>
 			<Text lang="en">File group</Text>
 		</Entry>
 	</Bundle>

@@ -39,61 +39,61 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class LoadFromRepositoryEditor extends BaseEditor {
 
-    private final LoadFromRepositoryView view = new LoadFromRepositoryView();
+	private final LoadFromRepositoryView view = new LoadFromRepositoryView();
 
-    private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
-            new LoadFromRepositoryDataModel());
+	private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
+			new LoadFromRepositoryDataModel());
 
-    public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection,
-            List<RepositoryEntryDescriptor> aEntries) {
-        super(aParent, ERDesignerBundle.LOADMODELFROMDB);
+	public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection,
+			List<RepositoryEntryDescriptor> aEntries) {
+		super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
-        DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-        for (RepositoryEntryDescriptor theEntry : aEntries) {
-            theModel.addElement(theEntry);
-        }
-        view.getExistingNameBox().setModel(theModel);
+		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
+		for (RepositoryEntryDescriptor theEntry : aEntries) {
+			theModel.addElement(theEntry);
+		}
+		view.getExistingNameBox().setModel(theModel);
 
-        initialize();
+		initialize();
 
-        bindingInfo.addBinding("entry", view.getExistingNameBox(), true);
-        bindingInfo.configure();
-    }
+		bindingInfo.addBinding("entry", view.getExistingNameBox(), true);
+		bindingInfo.configure();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        view.getOkButton().setAction(okAction);
-        view.getCancelButton().setAction(cancelAction);
+		view.getOkButton().setAction(okAction);
+		view.getCancelButton().setAction(cancelAction);
 
-        setContentPane(view);
-        setResizable(false);
+		setContentPane(view);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 
-    @Override
-    protected void commandOk() {
+	@Override
+	protected void commandOk() {
 
-        if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().size() == 0) {
 
-            bindingInfo.view2model();
+			bindingInfo.view2model();
 
-            setModalResult(DialogConstants.MODAL_RESULT_OK);
-        }
-    }
+			setModalResult(DialogConstants.MODAL_RESULT_OK);
+		}
+	}
 
-    /**
-     * Get the data model.
-     * 
-     * @return the data model
-     */
-    public LoadFromRepositoryDataModel getModel() {
-        return bindingInfo.getDefaultModel();
-    }
+	/**
+	 * Get the data model.
+	 * 
+	 * @return the data model
+	 */
+	public LoadFromRepositoryDataModel getModel() {
+		return bindingInfo.getDefaultModel();
+	}
 }

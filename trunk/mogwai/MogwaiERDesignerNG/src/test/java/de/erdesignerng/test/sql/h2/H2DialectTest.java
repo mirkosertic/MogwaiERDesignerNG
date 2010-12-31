@@ -28,13 +28,13 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  */
 public class H2DialectTest extends AbstractDialectTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 
-        dialect = new H2Dialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("integer");
-        basePath = "/de/erdesignerng/test/sql/h2/";
-    }
+		dialect = new H2Dialect();
+		textDataType = dialect.getDataTypes().findByName("varchar");
+		intDataType = dialect.getDataTypes().findByName("integer");
+		basePath = "/de/erdesignerng/test/sql/h2/";
+	}
 }

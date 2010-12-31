@@ -23,31 +23,31 @@ package de.erdesignerng.model;
  * @version $Date: 2008-01-15 19:22:43 $
  */
 public enum CascadeType {
-    NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull"), RESTRICT("restrict");
+	NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull"), RESTRICT("restrict");
 
-    private String type;
+	private final String type;
 
-    private CascadeType(String aType) {
-        type = aType;
-    }
+	private CascadeType(String aType) {
+		type = aType;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public static CascadeType fromType(String aType) {
-        if (NOTHING.getType().equals(aType)) {
-            return NOTHING;
-        }
-        if (CASCADE.getType().equals(aType)) {
-            return CASCADE;
-        }
-        if (SET_NULL.getType().equals(aType)) {
-            return SET_NULL;
-        }
-        if (RESTRICT.getType().equals(aType)) {
-            return RESTRICT;
-        }
-        throw new IllegalArgumentException("Invalid type " + aType);
-    }
+	public static CascadeType fromType(String aType) {
+		if (NOTHING.getType().equals(aType)) {
+			return NOTHING;
+		}
+		if (CASCADE.getType().equals(aType)) {
+			return CASCADE;
+		}
+		if (SET_NULL.getType().equals(aType)) {
+			return SET_NULL;
+		}
+		if (RESTRICT.getType().equals(aType)) {
+			return RESTRICT;
+		}
+		throw new IllegalArgumentException("Invalid type " + aType);
+	}
 }

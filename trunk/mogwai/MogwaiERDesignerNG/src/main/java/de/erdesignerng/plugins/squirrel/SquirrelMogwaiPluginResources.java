@@ -26,7 +26,7 @@ import net.sourceforge.squirrel_sql.client.plugin.PluginResources;
  */
 public final class SquirrelMogwaiPluginResources extends PluginResources {
 
-    public SquirrelMogwaiPluginResources(IPlugin aPlugin) {
-        super(SquirrelMogwaiPluginResources.class.getName(), aPlugin);
-    }
+	public SquirrelMogwaiPluginResources(IPlugin aPlugin) {
+		super(SquirrelMogwaiPluginResources.class.getName(), aPlugin);
+	}
 }

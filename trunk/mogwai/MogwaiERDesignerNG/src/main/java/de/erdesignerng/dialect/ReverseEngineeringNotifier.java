@@ -23,5 +23,5 @@ package de.erdesignerng.dialect;
  */
 public interface ReverseEngineeringNotifier {
 
-    void notifyMessage(String aResourceKey, String... aValues);
+	void notifyMessage(String aResourceKey, String... aValues);
 }

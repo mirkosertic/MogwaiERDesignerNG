@@ -27,19 +27,19 @@ import java.util.Vector;
  */
 public class DataTypeList extends Vector<DataType> {
 
-    /**
-     * Find a datatype by its name.
-     * 
-     * @param aName
-     *            the name of the datatype
-     * @return the datatype or null if nothing was found
-     */
-    public DataType findByName(String aName) {
-        for (DataType theType : this) {
-            if (theType.getName().equalsIgnoreCase(aName)) {
-                return theType;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Find a datatype by its name.
+	 * 
+	 * @param aName
+	 *			the name of the datatype
+	 * @return the datatype or null if nothing was found
+	 */
+	public DataType findByName(String aName) {
+		for (DataType theType : this) {
+			if (theType.getName().equalsIgnoreCase(aName)) {
+				return theType;
+			}
+		}
+		return null;
+	}
 }

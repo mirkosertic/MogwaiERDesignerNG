@@ -21,17 +21,17 @@ import de.erdesignerng.dialect.TableProperties;
 
 public class H2TableProperties extends TableProperties {
 
-    public enum TableTypeEnum {
-        CACHED, MEMORY, TEMP, GLOBAL_TEMPORARY, LOCAL_TEMPORARY;
-    };
+	public enum TableTypeEnum {
+		CACHED, MEMORY, TEMP, GLOBAL_TEMPORARY, LOCAL_TEMPORARY
+	}
 
-    private TableTypeEnum tableType = TableTypeEnum.CACHED;
+	private TableTypeEnum tableType = TableTypeEnum.CACHED;
 
-    public TableTypeEnum getTableType() {
-        return tableType;
-    }
+	public TableTypeEnum getTableType() {
+		return tableType;
+	}
 
-    public void setTableType(TableTypeEnum tableType) {
-        this.tableType = tableType;
-    }
+	public void setTableType(TableTypeEnum tableType) {
+		this.tableType = tableType;
+	}
 }

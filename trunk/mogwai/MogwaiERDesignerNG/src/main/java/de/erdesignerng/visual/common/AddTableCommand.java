@@ -30,76 +30,76 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class AddTableCommand extends UICommand {
 
-    private final Point2D location;
+	private final Point2D location;
 
-    private final TableCell exportingCell;
+	private final TableCell exportingCell;
 
-    private final boolean newTableIsChild;
+	private final boolean newTableIsChild;
 
-    public AddTableCommand(ERDesignerComponent component, Point2D aLocation, TableCell aExportingCell,
-            boolean aNewTableIsChild) {
-        super(component);
+	public AddTableCommand(ERDesignerComponent component, Point2D aLocation, TableCell aExportingCell,
+			boolean aNewTableIsChild) {
+		super(component);
 
-        location = aLocation;
-        exportingCell = aExportingCell;
-        newTableIsChild = aNewTableIsChild;
-    }
+		location = aLocation;
+		exportingCell = aExportingCell;
+		newTableIsChild = aNewTableIsChild;
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        Table theTable = new Table();
-        TableEditor theTableEditor = new TableEditor(component.getModel(), getDetailComponent());
-        theTableEditor.initializeFor(theTable);
-        if (theTableEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
+		Table theTable = new Table();
+		TableEditor theTableEditor = new TableEditor(component.getModel(), getDetailComponent());
+		theTableEditor.initializeFor(theTable);
+		if (theTableEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
 
-                try {
-                    theTableEditor.applyValues();
-                } catch (VetoException e) {
-                    getWorldConnector().notifyAboutException(e);
-                    return;
-                }
+				try {
+					theTableEditor.applyValues();
+				} catch (VetoException e) {
+					getWorldConnector().notifyAboutException(e);
+					return;
+				}
 
-                TableCell theImportingCell = new TableCell(theTable);
-                theImportingCell.transferPropertiesToAttributes(theTable);
+				TableCell theImportingCell = new TableCell(theTable);
+				theImportingCell.transferPropertiesToAttributes(theTable);
 
-                Object theTargetCell = component.graph.getFirstCellForLocation(location.getX(), location.getY());
-                if (theTargetCell instanceof SubjectAreaCell) {
-                    SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
-                    SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
-                    theArea.getTables().add(theTable);
+				Object theTargetCell = component.graph.getFirstCellForLocation(location.getX(), location.getY());
+				if (theTargetCell instanceof SubjectAreaCell) {
+					SubjectAreaCell theSACell = (SubjectAreaCell) theTargetCell;
+					SubjectArea theArea = (SubjectArea) theSACell.getUserObject();
+					theArea.getTables().add(theTable);
 
-                    theSACell.add(theImportingCell);
-                }
+					theSACell.add(theImportingCell);
+				}
 
-                theImportingCell.setBounds(new Rectangle2D.Double(location.getX(), location.getY(), -1, -1));
+				theImportingCell.setBounds(new Rectangle2D.Double(location.getX(), location.getY(), -1, -1));
 
-                if (exportingCell != null) {
+				if (exportingCell != null) {
 
-                    // If the user cancels the add relation dialog
-                    // the table is added, too
-                    if (newTableIsChild) {
-                        new AddRelationCommand(component, theImportingCell, exportingCell).execute();
-                    } else {
-                        new AddRelationCommand(component, exportingCell, theImportingCell).execute();
-                    }
-                }
+					// If the user cancels the add relation dialog
+					// the table is added, too
+					if (newTableIsChild) {
+						new AddRelationCommand(component, theImportingCell, exportingCell).execute();
+					} else {
+						new AddRelationCommand(component, exportingCell, theImportingCell).execute();
+					}
+				}
 
-                component.graph.getGraphLayoutCache().insert(theImportingCell);
+				component.graph.getGraphLayoutCache().insert(theImportingCell);
 
-                theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
+				theImportingCell.transferAttributesToProperties(theImportingCell.getAttributes());
 
-                component.graph.doLayout();
+				component.graph.doLayout();
 
-                refreshDisplayOf(null);
+				refreshDisplayOf(null);
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

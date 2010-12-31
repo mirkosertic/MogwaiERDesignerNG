@@ -30,47 +30,47 @@ import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
 
 public class XMLTableSerializer extends AbstractXMLTableSerializer {
 
-    public XMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
-        super(xmlModelSerializer);
-    }
+	public XMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+		super(xmlModelSerializer);
+	}
 
-    @Override
-    public void serialize(Table aTable, Document aDocument, Element aRootElement) {
-        Element theTableElement = addElement(aDocument, aRootElement, TABLE);
+	@Override
+	public void serialize(Table aTable, Document aDocument, Element aRootElement) {
+		Element theTableElement = addElement(aDocument, aRootElement, TABLE);
 
-        // Basisdaten des Modelelementes speichern
-        serializeProperties(aDocument, theTableElement, aTable);
-        serializeCommentElement(aDocument, theTableElement, aTable);
+		// Basisdaten des Modelelementes speichern
+		serializeProperties(aDocument, theTableElement, aTable);
+		serializeCommentElement(aDocument, theTableElement, aTable);
 
-        // Attribute serialisieren
-        for (Attribute theAttribute : aTable.getAttributes()) {
-            getXMLModelSerializer().getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
-        }
+		// Attribute serialisieren
+		for (Attribute theAttribute : aTable.getAttributes()) {
+			getXMLModelSerializer().getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
+		}
 
-        // Indexes serialisieren
-        for (Index theIndex : aTable.getIndexes()) {
-            getXMLModelSerializer().getXMLIndexSerializer().serialize(theIndex, aDocument, theTableElement);
-        }
-    }
+		// Indexes serialisieren
+		for (Index theIndex : aTable.getIndexes()) {
+			getXMLModelSerializer().getXMLIndexSerializer().serialize(theIndex, aDocument, theTableElement);
+		}
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
-        // Now, parse tables
-        NodeList theElements = aDocument.getElementsByTagName(TABLE);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
+		// Now, parse tables
+		NodeList theElements = aDocument.getElementsByTagName(TABLE);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            Table theTable = new Table();
-            theTable.setOwner(aModel);
-            deserializeProperties(theElement, theTable);
+			Table theTable = new Table();
+			theTable.setOwner(aModel);
+			deserializeProperties(theElement, theTable);
 
-            deserializeCommentElement(theElement, theTable);
+			deserializeCommentElement(theElement, theTable);
 
-            getXMLModelSerializer().getXMLAttributeSerializer().deserialize(aModel, theTable, aDocument, theElement);
-            getXMLModelSerializer().getXMLIndexSerializer().deserialize(aModel, theTable, aDocument, theElement);
+			getXMLModelSerializer().getXMLAttributeSerializer().deserialize(aModel, theTable, aDocument, theElement);
+			getXMLModelSerializer().getXMLIndexSerializer().deserialize(aModel, theTable, aDocument, theElement);
 
-            aModel.getTables().add(theTable);
-        }
-    }
+			aModel.getTables().add(theTable);
+		}
+	}
 
 }

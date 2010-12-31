@@ -35,82 +35,82 @@ import de.erdesignerng.model.View;
  */
 public class HSQLDBDialect extends SQL92Dialect {
 
-    public HSQLDBDialect() {
-        setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(true);
-        setMaxObjectNameLength(255);
-        setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.UPPERCASE);
-        setSupportsColumnExtra(true);
+	public HSQLDBDialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(true);
+		setMaxObjectNameLength(255);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.UPPERCASE);
+		setSupportsColumnExtra(true);
 
-        // registerType(new H2DataType("array", "", Types.ARRAY));
-        registerType(createDataType("bigint", "", Types.BIGINT));
-        registerType(createDataType("binay", "$size", Types.BINARY));
-        registerType(createDataType("blob", "$size", Types.BLOB));
-        registerType(createDataType("boolean", "", Types.BOOLEAN, Types.BIT));
-        registerType(createDataType("char", "$size", Types.CHAR));
-        registerType(createDataType("clob", "$size", Types.CLOB));
-        registerType(createDataType("date", "", Types.DATE));
-        registerType(createDataType("decimal", "$size,$fraction", Types.NUMERIC));
-        registerType(createDataType("double", "", Types.DOUBLE));
-        registerType(createDataType("float", "", Types.FLOAT));
-        registerType(createDataType("identity", "", true, Types.BIGINT));
-        registerType(createDataType("integer", "", Types.INTEGER));
-        registerType(createDataType("longvarbinary", "$size", Types.LONGVARBINARY, Types.SQLXML));
-        registerType(createDataType("longvarchar", "$size", Types.LONGVARCHAR));
-        registerType(createDataType("numeric", "$size,$fraction", Types.NUMERIC, Types.DECIMAL));
-        registerType(createDataType("real", "", Types.REAL));
-        registerType(createDataType("smallint", "", Types.SMALLINT));
-        registerType(createDataType("time", "", Types.TIME));
-        registerType(createDataType("timestamp", "", Types.TIMESTAMP));
-        registerType(createDataType("tinyint", "", Types.TINYINT));
-        registerType(createDataType("uuid", "$size", true, Types.BINARY));
-        registerType(createDataType("varbinary", "$size", Types.VARBINARY));
-        registerType(createDataType("varchar", "$size", Types.VARCHAR));
-        registerType(createDataType("varchar_ignorecase", "$size", Types.VARCHAR));
+		// registerType(new H2DataType("array", "", Types.ARRAY));
+		registerType(createDataType("bigint", "", Types.BIGINT));
+		registerType(createDataType("binary", "$size", Types.BINARY));
+		registerType(createDataType("blob", "$size", Types.BLOB));
+		registerType(createDataType("boolean", "", Types.BOOLEAN, Types.BIT));
+		registerType(createDataType("char", "$size", Types.CHAR));
+		registerType(createDataType("clob", "$size", Types.CLOB));
+		registerType(createDataType("date", "", Types.DATE));
+		registerType(createDataType("decimal", "$size,$fraction", Types.NUMERIC));
+		registerType(createDataType("double", "", Types.DOUBLE));
+		registerType(createDataType("float", "", Types.FLOAT));
+		registerType(createDataType("identity", "", true, Types.BIGINT));
+		registerType(createDataType("integer", "", Types.INTEGER));
+		registerType(createDataType("longvarbinary", "$size", Types.LONGVARBINARY, Types.SQLXML));
+		registerType(createDataType("longvarchar", "$size", Types.LONGVARCHAR));
+		registerType(createDataType("numeric", "$size,$fraction", Types.NUMERIC, Types.DECIMAL));
+		registerType(createDataType("real", "", Types.REAL));
+		registerType(createDataType("smallint", "", Types.SMALLINT));
+		registerType(createDataType("time", "", Types.TIME));
+		registerType(createDataType("timestamp", "", Types.TIMESTAMP));
+		registerType(createDataType("tinyint", "", Types.TINYINT));
+		registerType(createDataType("uuid", "$size", true, Types.BINARY));
+		registerType(createDataType("varbinary", "$size", Types.VARBINARY));
+		registerType(createDataType("varchar", "$size", Types.VARCHAR));
+		registerType(createDataType("varchar_ignorecase", "$size", Types.VARCHAR));
 
-        seal();
-    }
+		seal();
+	}
 
-    @Override
-    public HSQLDBReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new HSQLDBReverseEngineeringStrategy(this);
-    }
+	@Override
+	public HSQLDBReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new HSQLDBReverseEngineeringStrategy(this);
+	}
 
-    @Override
-    public String getUniqueName() {
-        return "HSQLDBDialect";
-    }
+	@Override
+	public String getUniqueName() {
+		return "HSQLDBDialect";
+	}
 
-    @Override
-    public String getDriverClassName() {
-        return "org.hsqldb.jdbc.JDBCDriver";
-    }
+	@Override
+	public String getDriverClassName() {
+		return "org.hsqldb.jdbc.JDBCDriver";
+	}
 
-    @Override
-    public String getDriverURLTemplate() {
-        return "jdbc:hsqldb:file:<Path to database directory>";
-    }
+	@Override
+	public String getDriverURLTemplate() {
+		return "jdbc:hsqldb:file:<Path to database directory>";
+	}
 
-    @Override
-    public HSQLDBSQLGenerator createSQLGenerator() {
-        return new HSQLDBSQLGenerator(this);
-    }
+	@Override
+	public HSQLDBSQLGenerator createSQLGenerator() {
+		return new HSQLDBSQLGenerator(this);
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.HSQLDialect.class;
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		return org.hibernate.dialect.HSQLDialect.class;
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
-        return new HSQLDBDataType(aName, aDefinition, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+		return new HSQLDBDataType(aName, aDefinition, aJdbcType);
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
-        return new HSQLDBDataType(aName, aDefinition, anIdentity, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+		return new HSQLDBDataType(aName, aDefinition, anIdentity, aJdbcType);
+	}
 
 	@Override
 	public TableProperties createTablePropertiesFor(Table aTable) {

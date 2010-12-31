@@ -21,43 +21,43 @@ import de.erdesignerng.dialect.ViewProperties;
 
 public class MSSQLViewProperties extends ViewProperties {
 
-    private Boolean checkOption;
+	private Boolean checkOption;
 
-    private Boolean encryption;
+	private Boolean encryption;
 
-    private Boolean schemaBinding;
+	private Boolean schemaBinding;
 
-    private Boolean viewMetaData;
+	private Boolean viewMetaData;
 
-    public Boolean getCheckOption() {
-        return checkOption;
-    }
+	public Boolean getCheckOption() {
+		return checkOption;
+	}
 
-    public void setCheckOption(Boolean checkOption) {
-        this.checkOption = checkOption;
-    }
+	public void setCheckOption(Boolean checkOption) {
+		this.checkOption = checkOption;
+	}
 
-    public Boolean getEncryption() {
-        return encryption;
-    }
+	public Boolean getEncryption() {
+		return encryption;
+	}
 
-    public void setEncryption(Boolean encryption) {
-        this.encryption = encryption;
-    }
+	public void setEncryption(Boolean encryption) {
+		this.encryption = encryption;
+	}
 
-    public Boolean getSchemaBinding() {
-        return schemaBinding;
-    }
+	public Boolean getSchemaBinding() {
+		return schemaBinding;
+	}
 
-    public void setSchemaBinding(Boolean schemaBinding) {
-        this.schemaBinding = schemaBinding;
-    }
+	public void setSchemaBinding(Boolean schemaBinding) {
+		this.schemaBinding = schemaBinding;
+	}
 
-    public Boolean getViewMetaData() {
-        return viewMetaData;
-    }
+	public Boolean getViewMetaData() {
+		return viewMetaData;
+	}
 
-    public void setViewMetaData(Boolean viewMetaData) {
-        this.viewMetaData = viewMetaData;
-    }
+	public void setViewMetaData(Boolean viewMetaData) {
+		this.viewMetaData = viewMetaData;
+	}
 }

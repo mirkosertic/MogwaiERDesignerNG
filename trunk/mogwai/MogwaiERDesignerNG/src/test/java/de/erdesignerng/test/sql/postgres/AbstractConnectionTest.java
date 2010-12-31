@@ -28,65 +28,65 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
-    private Connection connection;
+	private Connection connection;
 
-    @Override
-    protected void setUp() throws Exception {
+	@Override
+	protected void setUp() throws Exception {
 
-        connection = null;
+		connection = null;
 
-        Class.forName("org.postgresql.Driver").newInstance();
+		Class.forName("org.postgresql.Driver").newInstance();
 
-        Connection theConnection = createConnection();
+		Connection theConnection = createConnection();
 
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("DROP SCHEMA schemaa CASCADE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            theStatement.execute("DROP SCHEMA schemab CASCADE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		Statement theStatement = theConnection.createStatement();
+		try {
+			theStatement.execute("DROP SCHEMA schemaa CASCADE");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			theStatement.execute("DROP SCHEMA schemab CASCADE");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        try {
-            theStatement.execute("DROP domain testdomain");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		try {
+			theStatement.execute("DROP domain testdomain");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        DatabaseMetaData theMeta = theConnection.getMetaData();
-        ResultSet theResultSet = theMeta.getTables("mogwai", "%", "%", null);
-        while (theResultSet.next()) {
-            String theTablename = theResultSet.getString("TABLE_NAME");
-            if (theTablename.startsWith("mogrep")) {
-                try {
-                    theStatement.execute("DROP TABLE " + theTablename + " CASCADE");
-                } catch (Exception e) {
-                    // Ignore this
-                }
-            }
-        }
+		DatabaseMetaData theMeta = theConnection.getMetaData();
+		ResultSet theResultSet = theMeta.getTables("mogwai", "%", "%", null);
+		while (theResultSet.next()) {
+			String theTablename = theResultSet.getString("TABLE_NAME");
+			if (theTablename.startsWith("mogrep")) {
+				try {
+					theStatement.execute("DROP TABLE " + theTablename + " CASCADE");
+				} catch (Exception e) {
+					// Ignore this
+				}
+			}
+		}
 
-        super.setUp();
-    }
+		super.setUp();
+	}
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
 
-        if (connection != null) {
-            connection.close();
-        }
-    }
+		if (connection != null) {
+			connection.close();
+		}
+	}
 
-    protected Connection createConnection() throws SQLException {
-        if (connection == null) {
-            connection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
-                    "mogwai", "mogwai");
-        }
-        return connection;
-    }
+	protected Connection createConnection() throws SQLException {
+		if (connection == null) {
+			connection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
+					"mogwai", "mogwai");
+		}
+		return connection;
+	}
 }

@@ -48,69 +48,69 @@ import de.erdesignerng.visual.editor.view.ViewEditor;
  */
 public class CellEditorFactory extends DefaultGraphCellEditor {
 
-    protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
+	protected BaseEditor createEditDialogForValue(JComponent aParent, Object aValue) {
 
-        if (aValue instanceof TableCell) {
-            TableCell theCell = (TableCell) aValue;
+		if (aValue instanceof TableCell) {
+			TableCell theCell = (TableCell) aValue;
 
-            Table theTable = (Table) theCell.getUserObject();
-            TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
-            theEditor.initializeFor(theTable);
-            return theEditor;
-        }
+			Table theTable = (Table) theCell.getUserObject();
+			TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
+			theEditor.initializeFor(theTable);
+			return theEditor;
+		}
 
-        if (aValue instanceof ViewCell) {
-            ViewCell theCell = (ViewCell) aValue;
+		if (aValue instanceof ViewCell) {
+			ViewCell theCell = (ViewCell) aValue;
 
-            View theTable = (View) theCell.getUserObject();
-            ViewEditor theEditor = new ViewEditor(theTable.getOwner(), aParent);
-            theEditor.initializeFor(theTable);
-            return theEditor;
-        }
+			View theTable = (View) theCell.getUserObject();
+			ViewEditor theEditor = new ViewEditor(theTable.getOwner(), aParent);
+			theEditor.initializeFor(theTable);
+			return theEditor;
+		}
 
-        if (aValue instanceof SubjectAreaCell) {
-            SubjectAreaCell theCell = (SubjectAreaCell) aValue;
+		if (aValue instanceof SubjectAreaCell) {
+			SubjectAreaCell theCell = (SubjectAreaCell) aValue;
 
-            SubjectArea theSubjectArea = (SubjectArea) theCell.getUserObject();
-            SubjectAreaEditor theEditor = new SubjectAreaEditor(aParent);
-            theEditor.initializeFor(theSubjectArea);
-            return theEditor;
-        }
+			SubjectArea theSubjectArea = (SubjectArea) theCell.getUserObject();
+			SubjectAreaEditor theEditor = new SubjectAreaEditor(aParent);
+			theEditor.initializeFor(theSubjectArea);
+			return theEditor;
+		}
 
-        if (aValue instanceof CommentCell) {
-            CommentCell theCell = (CommentCell) aValue;
+		if (aValue instanceof CommentCell) {
+			CommentCell theCell = (CommentCell) aValue;
 
-            Comment theComment = (Comment) theCell.getUserObject();
-            CommentEditor theEditor = new CommentEditor(theComment.getOwner(), aParent);
-            theEditor.initializeFor(theComment);
-            return theEditor;
-        }
+			Comment theComment = (Comment) theCell.getUserObject();
+			CommentEditor theEditor = new CommentEditor(theComment.getOwner(), aParent);
+			theEditor.initializeFor(theComment);
+			return theEditor;
+		}
 
-        if (aValue instanceof RelationEdge) {
-            RelationEdge theCell = (RelationEdge) aValue;
+		if (aValue instanceof RelationEdge) {
+			RelationEdge theCell = (RelationEdge) aValue;
 
-            Relation theRelation = (Relation) theCell.getUserObject();
+			Relation theRelation = (Relation) theCell.getUserObject();
 
-            RelationEditor theEditor = new RelationEditor(theRelation.getOwner(), aParent);
-            theEditor.initializeFor(theRelation);
+			RelationEditor theEditor = new RelationEditor(theRelation.getOwner(), aParent);
+			theEditor.initializeFor(theRelation);
 
-            return theEditor;
-        }
+			return theEditor;
+		}
 
-        throw new IllegalArgumentException("Cannot create editor for " + aValue.getClass());
-    }
+		throw new IllegalArgumentException("Cannot create editor for " + aValue.getClass());
+	}
 
-    @Override
-    public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
+	@Override
+	public Component getGraphCellEditorComponent(JGraph aGraph, Object aValue, boolean arg2) {
 
-        BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
-        theEditor.validate();
+		BaseEditor theEditor = createEditDialogForValue(aGraph, aValue);
+		theEditor.validate();
 
-        return theEditor;
-    }
+		return theEditor;
+	}
 
-    @Override
-    public boolean isCellEditable(EventObject aEvent) {
-        return true;
-    }
+	@Override
+	public boolean isCellEditable(EventObject aEvent) {
+		return true;
+	}
 }

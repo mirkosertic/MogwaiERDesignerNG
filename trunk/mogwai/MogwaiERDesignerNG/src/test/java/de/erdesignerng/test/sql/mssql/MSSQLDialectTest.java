@@ -28,13 +28,13 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  */
 public class MSSQLDialectTest extends AbstractDialectTestCase {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 
-        dialect = new MSSQLDialect();
-        textDataType = dialect.getDataTypes().findByName("varchar");
-        intDataType = dialect.getDataTypes().findByName("int");
-        basePath = "/de/erdesignerng/test/sql/mssql/";
-    }
+		dialect = new MSSQLDialect();
+		textDataType = dialect.getDataTypes().findByName("varchar");
+		intDataType = dialect.getDataTypes().findByName("int");
+		basePath = "/de/erdesignerng/test/sql/mssql/";
+	}
 }

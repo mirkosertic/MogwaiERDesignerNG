@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.IndexProperties;
 public class MSSQLIndexProperties extends IndexProperties {
 
 	public enum IndexTypeEnum {
-		CLUSTERED, NONCLUSTERED;
+		CLUSTERED, NONCLUSTERED
 	}
 	
 	private IndexTypeEnum indexType;

@@ -39,34 +39,34 @@ import de.mogwai.common.client.looks.components.DefaultSplashScreen;
  */
 public final class ERDesigner {
 
-    private ERDesigner() {
-    }
+	private ERDesigner() {
+	}
 
-    public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
-            ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException,
-            TransformerException, IOException, ParserConfigurationException, SAXException, InterruptedException,
-            InvocationTargetException {
+	public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
+			ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException,
+			TransformerException, IOException, ParserConfigurationException, SAXException, InterruptedException,
+			InvocationTargetException {
 
-        // Disable D3D rendering pipeline
-        System.setProperty("sun.java2d.d3d", "false");
+		// Disable D3D rendering pipeline
+		System.setProperty("sun.java2d.d3d", "false");
 
-        DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
-        theScreen.setVisible(true);
+		DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
+		theScreen.setVisible(true);
 
-        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
-        DataTypeIO.getInstance().loadUserTypes(thePreferences);
+		ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
+		DataTypeIO.getInstance().loadUserTypes(thePreferences);
 
-        ERDesignerMainFrame frame = new ERDesignerMainFrame(thePreferences);
-        frame.setModel(frame.createNewModel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ERDesignerMainFrame frame = new ERDesignerMainFrame(thePreferences);
+		frame.setModel(frame.createNewModel());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            // Just wait here :-)
-        }
+		try {
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			// Just wait here :-)
+		}
 
-        theScreen.setVisible(false);
-        frame.setVisible(true);
-    }
+		theScreen.setVisible(false);
+		frame.setVisible(true);
+	}
 }

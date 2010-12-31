@@ -24,44 +24,44 @@ import java.util.Map;
 
 public class DependencyInfo {
 
-    private Map<ModelItem, List<Dependency>> dependencies = new HashMap<ModelItem, List<Dependency>>();
+	private final Map<ModelItem, List<Dependency>> dependencies = new HashMap<ModelItem, List<Dependency>>();
 
-    public void addDependencyFor(ModelItem aItem, Dependency aDependency) {
-        register(aItem).add(aDependency);
-    }
+	public void addDependencyFor(ModelItem aItem, Dependency aDependency) {
+		register(aItem).add(aDependency);
+	}
 
-    public List<Dependency> register(ModelItem aItem) {
-        List<Dependency> theList = dependencies.get(aItem);
-        if (theList == null) {
-            theList = new ArrayList<Dependency>();
-            dependencies.put(aItem, theList);
-        }
-        return theList;
-    }
+	public List<Dependency> register(ModelItem aItem) {
+		List<Dependency> theList = dependencies.get(aItem);
+		if (theList == null) {
+			theList = new ArrayList<Dependency>();
+			dependencies.put(aItem, theList);
+		}
+		return theList;
+	}
 
-    public List<ModelItem> getItemsWithoutDependencies() {
-        List<ModelItem> theResult = new ArrayList<ModelItem>();
-        for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {
-            if (theEntry.getValue().size() == 0) {
-                theResult.add(theEntry.getKey());
-            }
-        }
-        return theResult;
-    }
+	public List<ModelItem> getItemsWithoutDependencies() {
+		List<ModelItem> theResult = new ArrayList<ModelItem>();
+		for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {
+			if (theEntry.getValue().size() == 0) {
+				theResult.add(theEntry.getKey());
+			}
+		}
+		return theResult;
+	}
 
-    public List<ModelItem> getRootTables() {
-        List<ModelItem> theRootTables = new ArrayList<ModelItem>();
-        for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {
-            boolean dependsOn = false;
-            for (Dependency theDependency : theEntry.getValue()) {
-                if (theDependency.getType() == Dependency.DependencyType.DEPENDSON) {
-                    dependsOn = true;
-                }
-            }
-            if (!dependsOn) {
-                theRootTables.add(theEntry.getKey());
-            }
-        }
-        return theRootTables;
-    }
+	public List<ModelItem> getRootTables() {
+		List<ModelItem> theRootTables = new ArrayList<ModelItem>();
+		for (Map.Entry<ModelItem, List<Dependency>> theEntry : dependencies.entrySet()) {
+			boolean dependsOn = false;
+			for (Dependency theDependency : theEntry.getValue()) {
+				if (theDependency.getType() == Dependency.DependencyType.DEPENDSON) {
+					dependsOn = true;
+				}
+			}
+			if (!dependsOn) {
+				theRootTables.add(theEntry.getKey());
+			}
+		}
+		return theRootTables;
+	}
 }

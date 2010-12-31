@@ -21,29 +21,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Informations to do a model conversion.
+ * Information to do a model conversion.
  * 
  * @author $Author$
  */
 public class ConversionInfos {
 
-    private Dialect targetDialect;
+	private Dialect targetDialect;
 
-    private Map<DataType, DataType> typeMapping = new HashMap<DataType, DataType>();
+	private Map<DataType, DataType> typeMapping = new HashMap<DataType, DataType>();
 
-    public Dialect getTargetDialect() {
-        return targetDialect;
-    }
+	public Dialect getTargetDialect() {
+		return targetDialect;
+	}
 
-    public void setTargetDialect(Dialect targetDialect) {
-        this.targetDialect = targetDialect;
-    }
+	public void setTargetDialect(Dialect targetDialect) {
+		this.targetDialect = targetDialect;
+	}
 
-    public Map<DataType, DataType> getTypeMapping() {
-        return typeMapping;
-    }
+	public Map<DataType, DataType> getTypeMapping() {
+		return typeMapping;
+	}
 
-    public void setTypeMapping(Map<DataType, DataType> typeMapping) {
-        this.typeMapping = typeMapping;
-    }
+	public void setTypeMapping(Map<DataType, DataType> typeMapping) {
+		this.typeMapping = typeMapping;
+	}
 }

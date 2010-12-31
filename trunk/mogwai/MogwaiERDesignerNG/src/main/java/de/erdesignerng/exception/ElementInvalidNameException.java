@@ -23,9 +23,9 @@ package de.erdesignerng.exception;
  */
 public class ElementInvalidNameException extends ModelException {
 
-    private static final long serialVersionUID = -3853933090405919607L;
+	private static final long serialVersionUID = -3853933090405919607L;
 
-    public ElementInvalidNameException(String aMessage) {
-        super(aMessage);
-    }
+	public ElementInvalidNameException(String aMessage) {
+		super(aMessage);
+	}
 }

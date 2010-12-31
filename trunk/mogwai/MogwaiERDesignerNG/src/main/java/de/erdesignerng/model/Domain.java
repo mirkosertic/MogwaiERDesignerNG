@@ -25,176 +25,176 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class Domain extends OwnedModelItem<Model> implements ModelItemClonable<Domain>, DataType {
+public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<Domain>, DataType {
 
-    private Integer size;
+	private Integer size;
 
-    private int fraction;
+	private int fraction;
 
-    private int scale = 10;
+	private int scale = 10;
 
-    private DataType concreteType;
+	private DataType concreteType;
 
-    private boolean nullable = true;
+	private boolean nullable = true;
 
-    public Domain() {
-    }
+	public Domain() {
+	}
 
-    /**
-     * @return the size
-     */
-    public Integer getSize() {
-        return size;
-    }
+	/**
+	 * @return the size
+	 */
+	public Integer getSize() {
+		return size;
+	}
 
-    /**
-     * @param size
-     *            the size to set
-     */
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+	/**
+	 * @param size
+	 *			the size to set
+	 */
+	public void setSize(Integer size) {
+		this.size = size;
+	}
 
-    /**
-     * @return the fraction
-     */
-    public int getFraction() {
-        return fraction;
-    }
+	/**
+	 * @return the fraction
+	 */
+	public int getFraction() {
+		return fraction;
+	}
 
-    /**
-     * @param fraction
-     *            the fraction to set
-     */
-    public void setFraction(int fraction) {
-        this.fraction = fraction;
-    }
+	/**
+	 * @param fraction
+	 *			the fraction to set
+	 */
+	public void setFraction(int fraction) {
+		this.fraction = fraction;
+	}
 
-    /**
-     * @return the scale
-     */
-    public int getScale() {
-        return scale;
-    }
+	/**
+	 * @return the scale
+	 */
+	public int getScale() {
+		return scale;
+	}
 
-    /**
-     * @param scale
-     *            the scale to set
-     */
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
+	/**
+	 * @param scale
+	 *			the scale to set
+	 */
+	public void setScale(int scale) {
+		this.scale = scale;
+	}
 
-    /**
-     * @return the concreteType
-     */
-    public DataType getConcreteType() {
-        return concreteType;
-    }
+	/**
+	 * @return the concreteType
+	 */
+	public DataType getConcreteType() {
+		return concreteType;
+	}
 
-    /**
-     * @param concreteType
-     *            the concreteType to set
-     */
-    public void setConcreteType(DataType concreteType) {
-        this.concreteType = concreteType;
-    }
+	/**
+	 * @param concreteType
+	 *			the concreteType to set
+	 */
+	public void setConcreteType(DataType concreteType) {
+		this.concreteType = concreteType;
+	}
 
-    @Override
-    public boolean supportsFraction() {
-        return concreteType.supportsFraction();
-    }
+	@Override
+	public boolean supportsFraction() {
+		return concreteType.supportsFraction();
+	}
 
-    @Override
-    public boolean supportsScale() {
-        return concreteType.supportsScale();
-    }
+	@Override
+	public boolean supportsScale() {
+		return concreteType.supportsScale();
+	}
 
-    @Override
-    public boolean supportsSize() {
-        return concreteType.supportsSize();
-    }
+	@Override
+	public boolean supportsSize() {
+		return concreteType.supportsSize();
+	}
 
-    @Override
-    public Domain clone() {
-        Domain theDomain = new Domain();
-        theDomain.setSystemId(getSystemId());
-        theDomain.setName(getName());
-        theDomain.setConcreteType(concreteType);
-        theDomain.setSize(size);
-        theDomain.setFraction(fraction);
-        theDomain.setScale(scale);
-        theDomain.setNullable(nullable);
-        return theDomain;
-    }
+	@Override
+	public Domain clone() {
+		Domain theDomain = new Domain();
+		theDomain.setSystemId(getSystemId());
+		theDomain.setName(getName());
+		theDomain.setConcreteType(concreteType);
+		theDomain.setSize(size);
+		theDomain.setFraction(fraction);
+		theDomain.setScale(scale);
+		theDomain.setNullable(nullable);
+		return theDomain;
+	}
 
-    /**
-     * Restore the data from a clone.
-     * 
-     * @param aValue
-     *            the clone
-     */
-    public void restoreFrom(Domain aValue) {
-        setName(aValue.getName());
-        setSystemId(aValue.getSystemId());
-        setConcreteType(aValue.getConcreteType());
-        setSize(aValue.getSize());
-        setFraction(aValue.getFraction());
-        setScale(aValue.getScale());
-        setNullable(aValue.isNullable());
-    }
+	/**
+	 * Restore the data from a clone.
+	 * 
+	 * @param aValue
+	 *			the clone
+	 */
+	public void restoreFrom(Domain aValue) {
+		setName(aValue.getName());
+		setSystemId(aValue.getSystemId());
+		setConcreteType(aValue.getConcreteType());
+		setSize(aValue.getSize());
+		setFraction(aValue.getFraction());
+		setScale(aValue.getScale());
+		setNullable(aValue.isNullable());
+	}
 
-    @Override
-    public String createTypeDefinitionFor(Attribute aAttribute) {
-        Attribute theTemp = new Attribute();
-        theTemp.setDatatype(concreteType);
-        theTemp.setSize(size);
-        theTemp.setFraction(fraction);
-        theTemp.setScale(scale);
-        theTemp.setNullable(nullable);
-        return concreteType.createTypeDefinitionFor(theTemp);
-    }
+	@Override
+	public String createTypeDefinitionFor(Attribute aAttribute) {
+		Attribute theTemp = new Attribute();
+		theTemp.setDatatype(concreteType);
+		theTemp.setSize(size);
+		theTemp.setFraction(fraction);
+		theTemp.setScale(scale);
+		theTemp.setNullable(nullable);
+		return concreteType.createTypeDefinitionFor(theTemp);
+	}
 
-    @Override
-    public boolean isDomain() {
-        return true;
-    }
+	@Override
+	public boolean isDomain() {
+		return true;
+	}
 
-    @Override
-    public boolean isJDBCStringType() {
-        return concreteType.isJDBCStringType();
-    }
+	@Override
+	public boolean isJDBCStringType() {
+		return concreteType.isJDBCStringType();
+	}
 
-    @Override
-    public int[] getJDBCType() {
-        return concreteType.getJDBCType();
-    }
+	@Override
+	public int[] getJDBCType() {
+		return concreteType.getJDBCType();
+	}
 
-    @Override
-    public boolean isIdentity() {
-        return concreteType.isIdentity();
-    }
+	@Override
+	public boolean isIdentity() {
+		return concreteType.isIdentity();
+	}
 
-    @Override
-    public String getDefinition() {
-        return concreteType.getDefinition();
-    }
+	@Override
+	public String getDefinition() {
+		return concreteType.getDefinition();
+	}
 
-    @Override
-    public boolean supportsExtra() {
-        return concreteType.supportsExtra();
-    }
+	@Override
+	public boolean supportsExtra() {
+		return concreteType.supportsExtra();
+	}
 
-    public boolean isNullable() {
-        return nullable;
-    }
+	public boolean isNullable() {
+		return nullable;
+	}
 
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
+	public void setNullable(boolean nullable) {
+		this.nullable = nullable;
+	}
 
-    public boolean isCustomType() {
-        return false;
-    }
+	public boolean isCustomType() {
+		return false;
+	}
 
 }

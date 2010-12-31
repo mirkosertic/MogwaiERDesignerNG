@@ -18,5 +18,5 @@
 package de.erdesignerng.util;
 
 public enum ERDesignerElementType {
-	TABLE,VIEW,RELATION;
+	TABLE,VIEW,RELATION
 }

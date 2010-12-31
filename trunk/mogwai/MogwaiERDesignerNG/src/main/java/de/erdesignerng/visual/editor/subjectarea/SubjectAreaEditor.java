@@ -31,63 +31,63 @@ import de.mogwai.common.client.looks.UIInitializer;
  */
 public class SubjectAreaEditor extends BaseEditor {
 
-    private BindingInfo<SubjectArea> bindingInfo = new BindingInfo<SubjectArea>();
+	private final BindingInfo<SubjectArea> bindingInfo = new BindingInfo<SubjectArea>();
 
-    private SubjectAreaEditorView editingView;
+	private SubjectAreaEditorView editingView;
 
-    /**
-     * Create a relation editor.
-     * 
-     * @param aParent
-     *            the parent container
-     */
-    public SubjectAreaEditor(Component aParent) {
-        super(aParent, ERDesignerBundle.SUBJECTAREAEDITOR);
+	/**
+	 * Create a relation editor.
+	 * 
+	 * @param aParent
+	 *			the parent container
+	 */
+	public SubjectAreaEditor(Component aParent) {
+		super(aParent, ERDesignerBundle.SUBJECTAREAEDITOR);
 
-        initialize();
+		initialize();
 
-        bindingInfo.addBinding("name", editingView.getSubjectAreaName(), true);
+		bindingInfo.addBinding("name", editingView.getSubjectAreaName(), true);
 
-        bindingInfo.configure();
-    }
+		bindingInfo.configure();
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new SubjectAreaEditorView();
-        editingView.getOKButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
+		editingView = new SubjectAreaEditorView();
+		editingView.getOKButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 
-        setContentPane(editingView);
-        setResizable(false);
+		setContentPane(editingView);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    public void initializeFor(SubjectArea aArea) {
+	public void initializeFor(SubjectArea aArea) {
 
-        editingView.getColorPanel().setBackground(aArea.getColor());
+		editingView.getColorPanel().setBackground(aArea.getColor());
 
-        bindingInfo.setDefaultModel(aArea);
-        bindingInfo.model2view();
-    }
+		bindingInfo.setDefaultModel(aArea);
+		bindingInfo.model2view();
+	}
 
-    @Override
-    protected void commandOk() {
-        if (bindingInfo.validate().size() == 0) {
+	@Override
+	protected void commandOk() {
+		if (bindingInfo.validate().size() == 0) {
 
-            SubjectArea theArea = bindingInfo.getDefaultModel();
-            theArea.setColor(editingView.getColorPanel().getBackground());
-            setModalResult(MODAL_RESULT_OK);
-        }
-    }
+			SubjectArea theArea = bindingInfo.getDefaultModel();
+			theArea.setColor(editingView.getColorPanel().getBackground());
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-        bindingInfo.view2model();
-    }
+	@Override
+	public void applyValues() throws Exception {
+		bindingInfo.view2model();
+	}
 }

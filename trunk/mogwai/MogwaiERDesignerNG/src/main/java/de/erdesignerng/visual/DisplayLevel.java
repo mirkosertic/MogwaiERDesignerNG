@@ -20,8 +20,8 @@ package de.erdesignerng.visual;
 /**
  * Enum for different display levels.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public enum DisplayLevel {
-    ALL, PRIMARYKEYONLY, PRIMARYKEYSANDFOREIGNKEYS;
+	ALL, PRIMARYKEYONLY, PRIMARYKEYSANDFOREIGNKEYS
 }

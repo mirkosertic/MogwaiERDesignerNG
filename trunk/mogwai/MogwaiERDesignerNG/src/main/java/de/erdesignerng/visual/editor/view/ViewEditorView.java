@@ -15,140 +15,143 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ViewEditorView extends DefaultPanel {
 
-    private DefaultLabel component1;
+	private DefaultLabel component1;
 
-    private DefaultTextField entityName;
+	private DefaultTextField entityName;
 
-    private DefaultTabbedPane mainTabbedPane;
+	private DefaultTabbedPane mainTabbedPane;
 
-    private DefaultTabbedPaneTab tableCommentsTab;
+	private DefaultTabbedPaneTab tableCommentsTab;
 
-    private DefaultTextArea tableComment;
+	private DefaultTextArea tableComment;
 
-    private DefaultButton okButton;
+	private DefaultButton okButton;
 
-    private DefaultButton cancelButton;
+	private DefaultButton cancelButton;
 
-    private DefaultTextArea sqlText = new DefaultTextArea();
-    
-    private DefaultTabbedPaneTab propertiesPanel;    
+	private final DefaultTextArea sqlText = new DefaultTextArea();
+	
+	private DefaultTabbedPaneTab propertiesPanel;	
 
-    public ViewEditorView() {
-        initialize();
-    }
+	public ViewEditorView() {
+		initialize();
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,fill:220dlu,10dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+		String rowDef = "2dlu,p,2dlu,p,fill:220dlu,10dlu,p,2dlu";
+		String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        setLayout(layout);
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        this.add(getComponent1(), cons.xywh(2, 2, 1, 1));
-        this.add(getEntityName(), cons.xywh(4, 2, 4, 1));
-        this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
-        this.add(getOkButton(), cons.xywh(5, 7, 1, 1));
-        this.add(getCancelButton(), cons.xywh(7, 7, 1, 1));
-    }
+		this.add(getComponent1(), cons.xywh(2, 2, 1, 1));
+		this.add(getEntityName(), cons.xywh(4, 2, 4, 1));
+		this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
+		this.add(getOkButton(), cons.xywh(5, 7, 1, 1));
+		this.add(getCancelButton(), cons.xywh(7, 7, 1, 1));
+	}
 
-    public javax.swing.JLabel getComponent1() {
+	public JLabel getComponent1() {
 
-        if (component1 == null) {
-            component1 = new DefaultLabel(ERDesignerBundle.ENTITYNAME);
-        }
+		if (component1 == null) {
+			component1 = new DefaultLabel(ERDesignerBundle.ENTITYNAME);
+		}
 
-        return component1;
-    }
+		return component1;
+	}
 
-    public DefaultTextField getEntityName() {
+	public DefaultTextField getEntityName() {
 
-        if (entityName == null) {
-            entityName = new DefaultTextField();
-            entityName.setName("Entity_name");
-        }
+		if (entityName == null) {
+			entityName = new DefaultTextField();
+			entityName.setName("Entity_name");
+		}
 
-        return entityName;
-    }
+		return entityName;
+	}
 
-    public DefaultTabbedPane getMainTabbedPane() {
+	public DefaultTabbedPane getMainTabbedPane() {
 
-        if (mainTabbedPane == null) {
-            mainTabbedPane = new DefaultTabbedPane();
-            mainTabbedPane.addTab("SQL", new DefaultScrollPane(sqlText));
-            mainTabbedPane.addTab(null, getTableCommentsTab());
-            mainTabbedPane.addTab(null, getPropertiesPanel());            
-            mainTabbedPane.setName("MainTabbedPane");
-            mainTabbedPane.setSelectedIndex(0);
-        }
+		if (mainTabbedPane == null) {
+			mainTabbedPane = new DefaultTabbedPane();
+			mainTabbedPane.addTab("SQL", new DefaultScrollPane(sqlText));
+			mainTabbedPane.addTab(null, getTableCommentsTab());
+			mainTabbedPane.addTab(null, getPropertiesPanel());			
+			mainTabbedPane.setName("MainTabbedPane");
+			mainTabbedPane.setSelectedIndex(0);
+		}
 
-        return mainTabbedPane;
-    }
+		return mainTabbedPane;
+	}
 
-    public DefaultTabbedPaneTab getTableCommentsTab() {
+	public DefaultTabbedPaneTab getTableCommentsTab() {
 
-        if (tableCommentsTab == null) {
-            tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
+		if (tableCommentsTab == null) {
+			tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
 
-            String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
-            String colDef = "2dlu,40dlu:grow,2dlu";
+			String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
+			String colDef = "2dlu,40dlu:grow,2dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            tableCommentsTab.setLayout(layout);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			tableCommentsTab.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+			CellConstraints cons = new CellConstraints();
 
-            tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
-            tableCommentsTab.setName("MainCommensTab");
-            tableCommentsTab.setVisible(false);
-        }
+			tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
+			tableCommentsTab.setName("MainCommentsTab");
+			tableCommentsTab.setVisible(false);
+		}
 
-        return tableCommentsTab;
-    }
+		return tableCommentsTab;
+	}
 
-    public DefaultTextArea getEntityComment() {
+	public DefaultTextArea getEntityComment() {
 
-        if (tableComment == null) {
-            tableComment = new DefaultTextArea();
-            tableComment.setName("EntityComment");
-        }
+		if (tableComment == null) {
+			tableComment = new DefaultTextArea();
+			tableComment.setName("EntityComment");
+		}
 
-        return tableComment;
-    }
+		return tableComment;
+	}
 
-    public javax.swing.JButton getOkButton() {
+	public JButton getOkButton() {
 
-        if (okButton == null) {
-            okButton = new DefaultButton(ERDesignerBundle.OK);
-        }
+		if (okButton == null) {
+			okButton = new DefaultButton(ERDesignerBundle.OK);
+		}
 
-        return okButton;
-    }
+		return okButton;
+	}
 
-    public javax.swing.JButton getCancelButton() {
+	public JButton getCancelButton() {
 
-        if (cancelButton == null) {
-            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
-        }
+		if (cancelButton == null) {
+			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
+		}
 
-        return cancelButton;
-    }
+		return cancelButton;
+	}
 
-    public DefaultTextArea getSqlText() {
-        return sqlText;
-    }
-    
+	public DefaultTextArea getSqlText() {
+		return sqlText;
+	}
+	
 	public DefaultTabbedPaneTab getPropertiesPanel() {
 		if (propertiesPanel == null) {
 			propertiesPanel = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
@@ -160,5 +163,5 @@ public class ViewEditorView extends DefaultPanel {
 	public void disablePropertiesTab() {
 		getMainTabbedPane().removeTabAt(2);
 	}
-    
+	
 }

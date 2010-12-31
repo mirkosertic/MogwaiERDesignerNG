@@ -24,20 +24,20 @@ import de.erdesignerng.model.Relation;
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLRelationSerializer extends CommonAbstractXMLSerializer<Relation> {
-    protected static final String EXPORTINGATTRIBUTEREFID = "exportingattributerefid";
+	protected static final String EXPORTINGATTRIBUTEREFID = "exportingattributerefid";
 
-    protected static final String EXPORTINGTABLEREFID = "exportingtablerefid";
+	protected static final String EXPORTINGTABLEREFID = "exportingtablerefid";
 
-    protected static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
+	protected static final String IMPORTINGATTRIBUTEREFID = "importingattributerefid";
 
-    protected static final String IMPORTINGTABLEREFID = "importingtablerefid";
+	protected static final String IMPORTINGTABLEREFID = "importingtablerefid";
 
-    protected static final String MAPPING = "Mapping";
+	protected static final String MAPPING = "Mapping";
 
-    protected static final String ONDELETE = "ondelete";
+	protected static final String ONDELETE = "ondelete";
 
-    protected static final String ONUPDATE = "onupdate";
+	protected static final String ONUPDATE = "onupdate";
 
-    protected static final String RELATION = "Relation";
+	protected static final String RELATION = "Relation";
 
 }

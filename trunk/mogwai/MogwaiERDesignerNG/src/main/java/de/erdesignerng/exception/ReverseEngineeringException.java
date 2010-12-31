@@ -22,12 +22,12 @@ package de.erdesignerng.exception;
  */
 public class ReverseEngineeringException extends Exception {
 
-    public ReverseEngineeringException(String aMessage) {
-        super(aMessage);
-    }
+	public ReverseEngineeringException(String aMessage) {
+		super(aMessage);
+	}
 
-    public ReverseEngineeringException(String aMessage, Exception aCause) {
-        super(aMessage, aCause);
-    }
+	public ReverseEngineeringException(String aMessage, Exception aCause) {
+		super(aMessage, aCause);
+	}
 
 }

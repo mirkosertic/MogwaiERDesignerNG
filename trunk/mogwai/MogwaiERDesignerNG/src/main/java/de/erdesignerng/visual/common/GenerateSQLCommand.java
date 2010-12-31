@@ -25,22 +25,22 @@ import de.erdesignerng.visual.editor.sql.SQLEditor;
 
 public class GenerateSQLCommand extends UICommand {
 
-    public GenerateSQLCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public GenerateSQLCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        if (!component.checkForValidConnection()) {
-            return;
-        }
+	@Override
+	public void execute() {
+		if (!component.checkForValidConnection()) {
+			return;
+		}
 
-        Model theModel = component.getModel();
+		Model theModel = component.getModel();
 
-        SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
-        StatementList theStatements = theGenerator.createCreateAllObjects(theModel);
-        SQLEditor theEditor = new SQLEditor(getDetailComponent(), new ModelBasedConnectionProvider(theModel),
-                theStatements, component.currentEditingFile, "schema.sql", getPreferences(), getWorldConnector());
-        theEditor.showModal();
-    }
+		SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
+		StatementList theStatements = theGenerator.createCreateAllObjects(theModel);
+		SQLEditor theEditor = new SQLEditor(getDetailComponent(), new ModelBasedConnectionProvider(theModel),
+				theStatements, component.currentEditingFile, "schema.sql", getPreferences(), getWorldConnector());
+		theEditor.showModal();
+	}
 }

@@ -30,80 +30,80 @@ import de.erdesignerng.dialect.DataType;
  */
 public class OpenXavaExportTableModel implements TableModel {
 
-    private final List<DataType> dataTypes;
+	private final List<DataType> dataTypes;
 
-    private final String[] targetTypes;
+	private final String[] targetTypes;
 
-    private final String[] stereoTypes;
+	private final String[] stereoTypes;
 
-    private final String sourceName;
+	private final String sourceName;
 
-    private final String targetName;
+	private final String targetName;
 
-    private final String stereoTypeName;
+	private final String stereoTypeName;
 
-    public OpenXavaExportTableModel(String aSourceName, String aTargetName, String aStereoTypeName,
-            List<DataType> aDataTypes, String[] aTargetTypes, String[] aStereoTypes) {
-        sourceName = aSourceName;
-        targetName = aTargetName;
-        dataTypes = aDataTypes;
-        targetTypes = aTargetTypes;
-        stereoTypes = aStereoTypes;
-        stereoTypeName = aStereoTypeName;
-    }
+	public OpenXavaExportTableModel(String aSourceName, String aTargetName, String aStereoTypeName,
+			List<DataType> aDataTypes, String[] aTargetTypes, String[] aStereoTypes) {
+		sourceName = aSourceName;
+		targetName = aTargetName;
+		dataTypes = aDataTypes;
+		targetTypes = aTargetTypes;
+		stereoTypes = aStereoTypes;
+		stereoTypeName = aStereoTypeName;
+	}
 
-    public Class<Object> getColumnClass(int aColumn) {
-        return Object.class;
-    }
+	public Class<Object> getColumnClass(int aColumn) {
+		return Object.class;
+	}
 
-    public int getColumnCount() {
-        return 3;
-    }
+	public int getColumnCount() {
+		return 3;
+	}
 
-    public String getColumnName(int aColumn) {
-        switch (aColumn) {
-        case 0:
-            return sourceName;
-        case 1:
-            return targetName;
-        default:
-            return stereoTypeName;
-        }
-    }
+	public String getColumnName(int aColumn) {
+		switch (aColumn) {
+		case 0:
+			return sourceName;
+		case 1:
+			return targetName;
+		default:
+			return stereoTypeName;
+		}
+	}
 
-    public int getRowCount() {
-        return dataTypes.size();
-    }
+	public int getRowCount() {
+		return dataTypes.size();
+	}
 
-    public Object getValueAt(int aRow, int aColumn) {
-        switch (aColumn) {
-        case 0:
-            return dataTypes.get(aRow);
-        case 1:
-            return targetTypes[aRow];
-        default:
-            return stereoTypes[aRow];
-        }
-    }
+	public Object getValueAt(int aRow, int aColumn) {
+		switch (aColumn) {
+		case 0:
+			return dataTypes.get(aRow);
+		case 1:
+			return targetTypes[aRow];
+		default:
+			return stereoTypes[aRow];
+		}
+	}
 
-    public boolean isCellEditable(int aRow, int aColumn) {
-        return aColumn != 0;
-    }
+	public boolean isCellEditable(int aRow, int aColumn) {
+		return aColumn != 0;
+	}
 
-    public void setValueAt(Object aValue, int aRow, int aColumn) {
-        switch (aColumn) {
-        case 1:
-            targetTypes[aRow] = (String) aValue;
-            break;
-        case 2:
-            stereoTypes[aRow] = (String) aValue;
-            break;
-        }
-    }
+	public void setValueAt(Object aValue, int aRow, int aColumn) {
+		switch (aColumn) {
+		case 1:
+			targetTypes[aRow] = (String) aValue;
+			break;
+		case 2:
+			stereoTypes[aRow] = (String) aValue;
+			break;
+		}
+	}
 
-    public void addTableModelListener(TableModelListener l) {
-    }
+	public void addTableModelListener(TableModelListener l) {
+	}
 
-    public void removeTableModelListener(TableModelListener l) {
-    }
+	public void removeTableModelListener(TableModelListener l) {
+	}
 }

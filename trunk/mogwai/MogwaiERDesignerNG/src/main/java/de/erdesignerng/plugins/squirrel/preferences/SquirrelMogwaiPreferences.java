@@ -35,42 +35,42 @@ import de.mogwai.common.i18n.ResourceHelper;
  */
 public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
-    private PreferencesPanel panel;
+	private final PreferencesPanel panel;
 
-    private ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    private SquirrelMogwaiPluginDelegate plugin;
+	private final SquirrelMogwaiPluginDelegate plugin;
 
-    public SquirrelMogwaiPreferences(SquirrelMogwaiPluginDelegate aPlugin, ApplicationPreferences aPreferences) {
-        preferences = aPreferences;
-        plugin = aPlugin;
-        panel = new PreferencesPanel();
-    }
+	public SquirrelMogwaiPreferences(SquirrelMogwaiPluginDelegate aPlugin, ApplicationPreferences aPreferences) {
+		preferences = aPreferences;
+		plugin = aPlugin;
+		panel = new PreferencesPanel();
+	}
 
-    public void initialize(IApplication aApplication) {
-        panel.initValues(preferences);
-    }
+	public void initialize(IApplication aApplication) {
+		panel.initValues(preferences);
+	}
 
-    public void uninitialize(IApplication aApplication) {
-    }
+	public void uninitialize(IApplication aApplication) {
+	}
 
-    public void applyChanges() {
-        if (!panel.applyValues(preferences)) {
-            plugin.refreshPreferences();
-            // TODO [mirkosertic] How to prevent it from closing if validation
-            // fails?
-        }
-    }
+	public void applyChanges() {
+		if (!panel.applyValues(preferences)) {
+			plugin.refreshPreferences();
+			// TODO [mirkosertic] How to prevent it from closing if validation
+			// fails?
+		}
+	}
 
-    public String getHint() {
-        return "";
-    }
+	public String getHint() {
+		return "";
+	}
 
-    public Component getPanelComponent() {
-        return panel;
-    }
+	public Component getPanelComponent() {
+		return panel;
+	}
 
-    public String getTitle() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.TITLE);
-    }
+	public String getTitle() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.TITLE);
+	}
 }

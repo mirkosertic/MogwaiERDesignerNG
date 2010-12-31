@@ -21,49 +21,49 @@ import javax.swing.AbstractSpinnerModel;
 
 public class NullsafeSpinnerModel extends AbstractSpinnerModel {
 
-    private Integer value;
+	private Integer value;
 
-    @Override
-    public Object getNextValue() {
-        if (value != null) {
-            return value + 1;
-        }
-        return 1;
-    }
+	@Override
+	public Object getNextValue() {
+		if (value != null) {
+			return value + 1;
+		}
+		return 1;
+	}
 
-    @Override
-    public Object getPreviousValue() {
-        if (value != null) {
-            if (value > 1) {
-                return value - 1;
-            }
-            return value;
-        }
-        return 1;
-    }
+	@Override
+	public Object getPreviousValue() {
+		if (value != null) {
+			if (value > 1) {
+				return value - 1;
+			}
+			return value;
+		}
+		return 1;
+	}
 
-    @Override
-    public Object getValue() {
-        return value;
-    }
+	@Override
+	public Object getValue() {
+		return value;
+	}
 
-    @Override
-    public void setValue(Object aValue) {
-        if (aValue instanceof Long) {
-            aValue = ((Long) aValue).intValue();
-        }
-        if (aValue != null) {
-            if (!aValue.equals(value)) {
+	@Override
+	public void setValue(Object aValue) {
+		if (aValue instanceof Long) {
+			aValue = ((Long) aValue).intValue();
+		}
+		if (aValue != null) {
+			if (!aValue.equals(value)) {
 
-                value = (Integer) aValue;
+				value = (Integer) aValue;
 
-                fireStateChanged();
-            }
-        } else {
-            if (value != null) {
-                value = null;
-                fireStateChanged();
-            }
-        }
-    }
+				fireStateChanged();
+			}
+		} else {
+			if (value != null) {
+				value = null;
+				fireStateChanged();
+			}
+		}
+	}
 }

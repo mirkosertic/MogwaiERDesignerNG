@@ -27,47 +27,47 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 
 public abstract class UICommand implements ActionEventProcessor, ActionListener {
 
-    protected ERDesignerComponent component;
+	protected final ERDesignerComponent component;
 
-    private final ApplicationPreferences preferences;
+	private final ApplicationPreferences preferences;
 
-    public UICommand(ERDesignerComponent aComponent) {
-        component = aComponent;
-        preferences = ApplicationPreferences.getInstance();
-    }
+	public UICommand(ERDesignerComponent aComponent) {
+		component = aComponent;
+		preferences = ApplicationPreferences.getInstance();
+	}
 
-    protected ERDesignerWorldConnector getWorldConnector() {
-        return component.getWorldConnector();
-    }
+	protected ERDesignerWorldConnector getWorldConnector() {
+		return component.getWorldConnector();
+	}
 
-    protected JComponent getDetailComponent() {
-        return component.getDetailComponent();
-    }
+	protected JComponent getDetailComponent() {
+		return component.getDetailComponent();
+	}
 
-    protected ApplicationPreferences getPreferences() {
-        return preferences;
-    }
+	protected ApplicationPreferences getPreferences() {
+		return preferences;
+	}
 
-    public abstract void execute();
+	public abstract void execute();
 
-    @Override
-    public void processActionEvent(ActionEvent e) {
-        execute();
-    }
+	@Override
+	public void processActionEvent(ActionEvent e) {
+		execute();
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        execute();
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		execute();
+	}
 
-    /**
-     * Refresh the display of a specific object.
-     * 
-     * @param aChangedObject
-     *            the object to update
-     */
-    public void refreshDisplayOf(Object aChangedObject) {
-        component.repaintGraph();
-        OutlineComponent.getDefault().refresh(component.getModel(), aChangedObject);
-    }
+	/**
+	 * Refresh the display of a specific object.
+	 * 
+	 * @param aChangedObject
+	 *			the object to update
+	 */
+	public void refreshDisplayOf(Object aChangedObject) {
+		component.repaintGraph();
+		OutlineComponent.getDefault().refresh(component.getModel(), aChangedObject);
+	}
 }

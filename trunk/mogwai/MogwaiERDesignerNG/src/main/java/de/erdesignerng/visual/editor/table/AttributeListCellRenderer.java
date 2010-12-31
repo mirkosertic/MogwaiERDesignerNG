@@ -39,68 +39,68 @@ import de.erdesignerng.visual.IconFactory;
  */
 public class AttributeListCellRenderer implements ListCellRenderer {
 
-    private final JPanel panel;
+	private final JPanel panel;
 
-    private final JPanel labelPanel;
+	private final JPanel labelPanel;
 
-    private final JLabel label;
+	private final JLabel label;
 
-    private final JLabel keyLabel;
+	private final JLabel keyLabel;
 
-    private static ImageIcon keyIcon = IconFactory.getKeyIcon();
+	private static final ImageIcon keyIcon = IconFactory.getKeyIcon();
 
-    private final TableEditor editor;
+	private final TableEditor editor;
 
-    public AttributeListCellRenderer(TableEditor aEditor) {
+	public AttributeListCellRenderer(TableEditor aEditor) {
 
-        editor = aEditor;
+		editor = aEditor;
 
-        panel = new JPanel(new BorderLayout());
-        labelPanel = new JPanel(new BorderLayout());
+		panel = new JPanel(new BorderLayout());
+		labelPanel = new JPanel(new BorderLayout());
 
-        label = new JLabel();
-        label.setFont(label.getFont().deriveFont(Font.PLAIN));
-        labelPanel.add(label);
+		label = new JLabel();
+		label.setFont(label.getFont().deriveFont(Font.PLAIN));
+		labelPanel.add(label);
 
-        panel.add(labelPanel);
-        panel.setOpaque(false);
-        labelPanel.setOpaque(false);
+		panel.add(labelPanel);
+		panel.setOpaque(false);
+		labelPanel.setOpaque(false);
 
-        JPanel theLeft = new JPanel(new BorderLayout());
-        keyLabel = new JLabel(keyIcon);
-        theLeft.add(keyLabel);
-        theLeft.setSize(20, 10);
-        theLeft.setPreferredSize(new Dimension(10, 10));
-        theLeft.setOpaque(false);
+		JPanel theLeft = new JPanel(new BorderLayout());
+		keyLabel = new JLabel(keyIcon);
+		theLeft.add(keyLabel);
+		theLeft.setSize(20, 10);
+		theLeft.setPreferredSize(new Dimension(10, 10));
+		theLeft.setOpaque(false);
 
-        panel.add(theLeft, BorderLayout.WEST);
+		panel.add(theLeft, BorderLayout.WEST);
 
-        labelPanel.setBackground(new Color(221, 221, 233));
-    }
+		labelPanel.setBackground(new Color(221, 221, 233));
+	}
 
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-            boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
 
-        Attribute theAttribute = (Attribute) value;
-        label.setText(theAttribute.getName());
+		Attribute theAttribute = (Attribute) value;
+		label.setText(theAttribute.getName());
 
-        label.setForeground(Color.black);
+		label.setForeground(Color.black);
 
-        boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
+		boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
 
-        if (isPrimaryKey || theAttribute.isForeignKey()) {
-            label.setForeground(Color.red);
-        }
+		if (isPrimaryKey || theAttribute.isForeignKey()) {
+			label.setForeground(Color.red);
+		}
 
-        keyLabel.setVisible(isPrimaryKey);
+		keyLabel.setVisible(isPrimaryKey);
 
-        labelPanel.setOpaque(isSelected);
-        if (isSelected) {
-            labelPanel.setBorder(BorderFactory.createLineBorder(new Color(160, 160, 180)));
-        } else {
-            labelPanel.setBorder(null);
-        }
+		labelPanel.setOpaque(isSelected);
+		if (isSelected) {
+			labelPanel.setBorder(BorderFactory.createLineBorder(new Color(160, 160, 180)));
+		} else {
+			labelPanel.setBorder(null);
+		}
 
-        return panel;
-    }
+		return panel;
+	}
 }

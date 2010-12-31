@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class MissingIndexInfo extends MissingInfo {
 
-    public MissingIndexInfo(String aWhat) {
-        super(ERDesignerBundle.MISSINGINDEX, aWhat);
-    }
+	public MissingIndexInfo(String aWhat) {
+		super(ERDesignerBundle.MISSINGINDEX, aWhat);
+	}
 }

@@ -25,7 +25,7 @@ import de.erdesignerng.ERDesignerBundle;
  */
 public class MissingRelationInfo extends MissingInfo {
 
-    public MissingRelationInfo(String aWhat) {
-        super(ERDesignerBundle.MISSINGRELATION, aWhat);
-    }
+	public MissingRelationInfo(String aWhat) {
+		super(ERDesignerBundle.MISSINGRELATION, aWhat);
+	}
 }

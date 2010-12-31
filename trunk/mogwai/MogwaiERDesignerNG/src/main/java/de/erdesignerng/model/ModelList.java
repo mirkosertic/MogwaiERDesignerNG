@@ -20,12 +20,12 @@ package de.erdesignerng.model;
 /**
  * Interface for all sorts of lists in the model.
  * 
- * @author msertic
+ * @author mirkosertic
  * 
  * @param <T>
- *            the list element type
+ *			the list element type
  */
 public interface ModelList<T> {
 
-    T findBySystemId(String aSystemId);
+	T findBySystemId(String aSystemId);
 }

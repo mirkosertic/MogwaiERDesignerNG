@@ -25,8 +25,8 @@ import de.erdesignerng.model.View;
  */
 public abstract class AbstractXMLViewSerializer extends CommonAbstractXMLSerializer<View> {
 
-    public static final String SQL = "Sql";
+	public static final String SQL = "Sql";
 
-    public static final String VIEW = "View";
+	public static final String VIEW = "View";
 
 }

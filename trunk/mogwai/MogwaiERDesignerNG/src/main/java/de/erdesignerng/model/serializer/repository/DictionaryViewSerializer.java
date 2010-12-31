@@ -30,47 +30,47 @@ import de.erdesignerng.model.serializer.repository.entities.ViewEntity;
 /**
  * Serializer for views.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class DictionaryViewSerializer extends DictionaryBaseSerializer {
 
-    public static final DictionaryViewSerializer SERIALIZER = new DictionaryViewSerializer();
+	public static final DictionaryViewSerializer SERIALIZER = new DictionaryViewSerializer();
 
-    public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionary) {
+	public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionary) {
 
-        Map<String, ModelEntity> theViews = deletedRemovedInstances(aModel.getViews(), aDictionary.getViews());
+		Map<String, ModelEntity> theViews = deletedRemovedInstances(aModel.getViews(), aDictionary.getViews());
 
-        for (View theView : aModel.getViews()) {
-            boolean existing = true;
-            ViewEntity theExisting = (ViewEntity) theViews.get(theView.getSystemId());
-            if (theExisting == null) {
-                theExisting = new ViewEntity();
-                existing = false;
-            }
+		for (View theView : aModel.getViews()) {
+			boolean existing = true;
+			ViewEntity theExisting = (ViewEntity) theViews.get(theView.getSystemId());
+			if (theExisting == null) {
+				theExisting = new ViewEntity();
+				existing = false;
+			}
 
-            copyBaseAttributes(theView, theExisting);
+			copyBaseAttributes(theView, theExisting);
 
-            theExisting.setSqlstatement(theView.getSql());
-            theExisting.setSchema(theView.getSchema());
+			theExisting.setSqlstatement(theView.getSql());
+			theExisting.setSchema(theView.getSchema());
 
-            if (!existing) {
-                aDictionary.getViews().add(theExisting);
-            }
-        }
-    }
+			if (!existing) {
+				aDictionary.getViews().add(theExisting);
+			}
+		}
+	}
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (ViewEntity theViewEntity : aRepositoryEntity.getViews()) {
+	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+		for (ViewEntity theViewEntity : aRepositoryEntity.getViews()) {
 
-            View theView = new View();
-            theView.setOwner(aModel);
+			View theView = new View();
+			theView.setOwner(aModel);
 
-            copyBaseAttributes(theViewEntity, theView);
+			copyBaseAttributes(theViewEntity, theView);
 
-            theView.setSql(theViewEntity.getSqlstatement());
-            theView.setSchema(theViewEntity.getSchema());
+			theView.setSql(theViewEntity.getSqlstatement());
+			theView.setSchema(theViewEntity.getSchema());
 
-            aModel.getViews().add(theView);
-        }
-    }
+			aModel.getViews().add(theView);
+		}
+	}
 }

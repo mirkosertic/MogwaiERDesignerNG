@@ -23,37 +23,37 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
 /**
  * Interface from ERDesignerNG to the outside world.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public interface ERDesignerWorldConnector {
 
-    void initTitle(String aFile);
+	void initTitle(String aFile);
 
-    void initTitle();
+	void initTitle();
 
-    void setStatusText(String theMessage);
+	void setStatusText(String theMessage);
 
-    DefaultToolbar getToolBar();
+	DefaultToolbar getToolBar();
 
-    boolean supportsExitApplication();
+	boolean supportsExitApplication();
 
-    boolean supportsClasspathEditor();
+	boolean supportsClasspathEditor();
 
-    boolean supportsConnectionEditor();
+	boolean supportsConnectionEditor();
 
-    boolean supportsPreferences();
+	boolean supportsPreferences();
 
-    boolean supportsRepositories();
+	boolean supportsRepositories();
 
-    boolean supportsHelp();
+	boolean supportsHelp();
 
-    boolean supportsReporting();
+	boolean supportsReporting();
 
-    Model createNewModel();
+	Model createNewModel();
 
-    void initializeLoadedModel(Model aModel);
+	void initializeLoadedModel(Model aModel);
 
-    void notifyAboutException(Exception aException);
+	void notifyAboutException(Exception aException);
 
-    void exitApplication();
+	void exitApplication();
 }

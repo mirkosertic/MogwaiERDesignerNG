@@ -23,22 +23,22 @@ import de.erdesignerng.visual.editor.openxavaexport.OpenXavaExportEditor;
 
 public class OpenXavaExportExportCommand extends UICommand {
 
-    public OpenXavaExportExportCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public OpenXavaExportExportCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        OpenXavaExportEditor theEditor = new OpenXavaExportEditor(component.getModel(), getDetailComponent());
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+	@Override
+	public void execute() {
+		OpenXavaExportEditor theEditor = new OpenXavaExportEditor(component.getModel(), getDetailComponent());
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                getWorldConnector().setStatusText(
-                        component.getResourceHelper().getText(ERDesignerBundle.OPENXAVAEXPORTOK));
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				getWorldConnector().setStatusText(
+						component.getResourceHelper().getText(ERDesignerBundle.OPENXAVAEXPORTOK));
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

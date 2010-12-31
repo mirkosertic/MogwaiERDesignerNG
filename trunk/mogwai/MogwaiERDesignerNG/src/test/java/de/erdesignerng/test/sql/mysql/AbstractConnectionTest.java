@@ -26,51 +26,51 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
-    private Connection connection;
+	private Connection connection;
 
-    @Override
-    protected void setUp() throws Exception {
+	@Override
+	protected void setUp() throws Exception {
 
-        connection = null;
+		connection = null;
 
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mysql", "root", "root");
+		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Connection theConnection = null;
+		theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mysql", "root", "root");
 
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("DROP USER mogwai");
-            theStatement.execute("DROP DATABASE mogwai");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		Statement theStatement = theConnection.createStatement();
+		try {
+			theStatement.execute("DROP USER mogwai");
+			theStatement.execute("DROP DATABASE mogwai");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        try {
-            theStatement.execute("CREATE DATABASE MOGWAI");
-            theStatement.execute("CREATE USER mogwai IDENTIFIED BY 'mogwai'");
-            theStatement.execute("GRANT ALL ON MOGWAI.* TO mogwai");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		try {
+			theStatement.execute("CREATE DATABASE MOGWAI");
+			theStatement.execute("CREATE USER mogwai IDENTIFIED BY 'mogwai'");
+			theStatement.execute("GRANT ALL ON MOGWAI.* TO mogwai");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-        theConnection.close();
-        super.setUp();
-    }
+		theConnection.close();
+		super.setUp();
+	}
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
 
-        if (connection != null) {
-            connection.close();
-        }
-    }
+		if (connection != null) {
+			connection.close();
+		}
+	}
 
-    protected Connection createConnection() throws SQLException {
-        if (connection == null) {
-            connection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
-                    "mogwai");
-        }
-        return connection;
-    }
+	protected Connection createConnection() throws SQLException {
+		if (connection == null) {
+			connection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
+					"mogwai");
+		}
+		return connection;
+	}
 }

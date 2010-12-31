@@ -29,13 +29,13 @@ import de.mogwai.common.i18n.ResourceHelper;
  */
 public abstract class BaseTool extends BasicMarqueeHandler {
 
-    protected ERDesignerGraph graph;
+	protected final ERDesignerGraph graph;
 
-    public BaseTool(ERDesignerGraph aGraph) {
-        graph = aGraph;
-    }
+	public BaseTool(ERDesignerGraph aGraph) {
+		graph = aGraph;
+	}
 
-    protected ResourceHelper getResourceHelper() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
+	protected ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
 }

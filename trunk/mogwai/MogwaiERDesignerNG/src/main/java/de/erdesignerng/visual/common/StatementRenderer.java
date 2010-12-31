@@ -29,27 +29,27 @@ import de.mogwai.common.client.looks.components.DefaultTextArea;
 
 public class StatementRenderer implements ListCellRenderer {
 
-    private DefaultTextArea component = new DefaultTextArea();
+	private final DefaultTextArea component = new DefaultTextArea();
 
-    private UIInitializer initializer = UIInitializer.getInstance();
+	private final UIInitializer initializer = UIInitializer.getInstance();
 
-    public Component getListCellRendererComponent(JList aList, Object aValue, int aIndex, boolean isSelected,
-            boolean cellHasFocus) {
-        Statement theStatement = (Statement) aValue;
-        if (theStatement.isExecuted()) {
-            component.setForeground(Color.BLACK);
-        } else {
-            component.setForeground(Color.GRAY);
+	public Component getListCellRendererComponent(JList aList, Object aValue, int aIndex, boolean isSelected,
+			boolean cellHasFocus) {
+		Statement theStatement = (Statement) aValue;
+		if (theStatement.isExecuted()) {
+			component.setForeground(Color.BLACK);
+		} else {
+			component.setForeground(Color.GRAY);
 
-        }
+		}
 
-        component.setText(theStatement.getSql());
-        if (isSelected) {
-            component.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
-        } else {
-            component.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
-        }
+		component.setText(theStatement.getSql());
+		if (isSelected) {
+			component.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
+		} else {
+			component.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
+		}
 
-        return component;
-    }
+		return component;
+	}
 }

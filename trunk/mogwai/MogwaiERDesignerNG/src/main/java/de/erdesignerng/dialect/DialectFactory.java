@@ -42,47 +42,47 @@ import de.erdesignerng.dialect.postgres.PostgresDialect;
  */
 public final class DialectFactory {
 
-    private static DialectFactory me;
+	private static DialectFactory me;
 
-    private Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
+	private final Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
 
-    private DialectFactory() {
-    }
+	private DialectFactory() {
+	}
 
-    public static synchronized DialectFactory getInstance() {
-        if (me == null) {
-            me = new DialectFactory();
-            me.registerDialect(new DB2Dialect());
-            me.registerDialect(new MSSQLDialect());
-            me.registerDialect(new MySQLDialect());
-            me.registerDialect(new MySQLInnoDBDialect());
-            me.registerDialect(new OracleDialect());
-            me.registerDialect(new PostgresDialect());
-            me.registerDialect(new H2Dialect());
-            me.registerDialect(new HSQLDBDialect());
+	public static synchronized DialectFactory getInstance() {
+		if (me == null) {
+			me = new DialectFactory();
+			me.registerDialect(new DB2Dialect());
+			me.registerDialect(new MSSQLDialect());
+			me.registerDialect(new MySQLDialect());
+			me.registerDialect(new MySQLInnoDBDialect());
+			me.registerDialect(new OracleDialect());
+			me.registerDialect(new PostgresDialect());
+			me.registerDialect(new H2Dialect());
+			me.registerDialect(new HSQLDBDialect());
 
-            // provide MSAccessDialect only on Windows-Systems due to the
-            // requirement of the JET/ACE-Engine
-            if (SystemUtils.IS_OS_WINDOWS) {
-                me.registerDialect(new MSAccessDialect());
-            }
-        }
+			// provide MSAccessDialect only on Windows-Systems due to the
+			// requirement of the JET/ACE-Engine
+			if (SystemUtils.IS_OS_WINDOWS) {
+				me.registerDialect(new MSAccessDialect());
+			}
+		}
 
-        return me;
-    }
+		return me;
+	}
 
-    private void registerDialect(Dialect aDialect) {
-        knownDialects.put(aDialect.getUniqueName(), aDialect);
-    }
+	private void registerDialect(Dialect aDialect) {
+		knownDialects.put(aDialect.getUniqueName(), aDialect);
+	}
 
-    public Dialect getDialect(String aUniqueName) {
-        return knownDialects.get(aUniqueName);
-    }
+	public Dialect getDialect(String aUniqueName) {
+		return knownDialects.get(aUniqueName);
+	}
 
-    public List<Dialect> getSupportedDialects() {
-        List<Dialect> theDialects = new ArrayList<Dialect>();
-        theDialects.addAll(knownDialects.values());
-        Collections.sort(theDialects, new BeanComparator("uniqueName", String.CASE_INSENSITIVE_ORDER));
-        return theDialects;
-    }
+	public List<Dialect> getSupportedDialects() {
+		List<Dialect> theDialects = new ArrayList<Dialect>();
+		theDialects.addAll(knownDialects.values());
+		Collections.sort(theDialects, new BeanComparator("uniqueName", String.CASE_INSENSITIVE_ORDER));
+		return theDialects;
+	}
 }

@@ -31,87 +31,87 @@ import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
 
 public class XMLRelationSerializer extends AbstractXMLRelationSerializer {
 
-    @Override
-    public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
-        Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
+	@Override
+	public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
+		Element theRelationElement = addElement(aDocument, aRootElement, RELATION);
 
-        // Basisdaten des Modelelementes speichern
-        serializeProperties(aDocument, theRelationElement, aRelation);
+		// Basisdaten des Modelelementes speichern
+		serializeProperties(aDocument, theRelationElement, aRelation);
 
-        // Zusatzdaten
-        theRelationElement.setAttribute(IMPORTINGTABLEREFID, aRelation.getImportingTable().getSystemId());
-        theRelationElement.setAttribute(EXPORTINGTABLEREFID, aRelation.getExportingTable().getSystemId());
+		// Zusatzdaten
+		theRelationElement.setAttribute(IMPORTINGTABLEREFID, aRelation.getImportingTable().getSystemId());
+		theRelationElement.setAttribute(EXPORTINGTABLEREFID, aRelation.getExportingTable().getSystemId());
 
-        theRelationElement.setAttribute(ONDELETE, aRelation.getOnDelete().getType());
-        theRelationElement.setAttribute(ONUPDATE, aRelation.getOnDelete().getType());
+		theRelationElement.setAttribute(ONDELETE, aRelation.getOnDelete().getType());
+		theRelationElement.setAttribute(ONUPDATE, aRelation.getOnDelete().getType());
 
-        serializeCommentElement(aDocument, theRelationElement, aRelation);
+		serializeCommentElement(aDocument, theRelationElement, aRelation);
 
-        // Mapping
-        for (IndexExpression theKey : aRelation.getMapping().keySet()) {
-            Attribute theValue = aRelation.getMapping().get(theKey);
+		// Mapping
+		for (IndexExpression theKey : aRelation.getMapping().keySet()) {
+			Attribute theValue = aRelation.getMapping().get(theKey);
 
-            Element theMapping = addElement(aDocument, theRelationElement, MAPPING);
-            theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theKey.getAttributeRef().getSystemId());
-            theMapping.setAttribute(EXPORTINGATTRIBUTEREFID, theValue.getSystemId());
-        }
-    }
+			Element theMapping = addElement(aDocument, theRelationElement, MAPPING);
+			theMapping.setAttribute(IMPORTINGATTRIBUTEREFID, theKey.getAttributeRef().getSystemId());
+			theMapping.setAttribute(EXPORTINGATTRIBUTEREFID, theValue.getSystemId());
+		}
+	}
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
 
-        // And finally, parse the relations
-        NodeList theElements = aDocument.getElementsByTagName(RELATION);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+		// And finally, parse the relations
+		NodeList theElements = aDocument.getElementsByTagName(RELATION);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-            Relation theRelation = new Relation();
-            theRelation.setOwner(aModel);
-            deserializeProperties(theElement, theRelation);
+			Relation theRelation = new Relation();
+			theRelation.setOwner(aModel);
+			deserializeProperties(theElement, theRelation);
 
-            theRelation.setOnDelete(CascadeType.fromType(theElement.getAttribute(ONDELETE)));
-            theRelation.setOnUpdate(CascadeType.fromType(theElement.getAttribute(ONUPDATE)));
+			theRelation.setOnDelete(CascadeType.fromType(theElement.getAttribute(ONDELETE)));
+			theRelation.setOnUpdate(CascadeType.fromType(theElement.getAttribute(ONUPDATE)));
 
-            String theStartTableID = theElement.getAttribute(IMPORTINGTABLEREFID);
-            String theEndTableID = theElement.getAttribute(EXPORTINGTABLEREFID);
+			String theStartTableID = theElement.getAttribute(IMPORTINGTABLEREFID);
+			String theEndTableID = theElement.getAttribute(EXPORTINGTABLEREFID);
 
-            Table theTempTable = aModel.getTables().findBySystemId(theStartTableID);
-            if (theTempTable == null) {
-                throw new IllegalArgumentException("Cannot find table with id " + theStartTableID);
-            }
-            theRelation.setImportingTable(theTempTable);
-            theTempTable = aModel.getTables().findBySystemId(theEndTableID);
-            if (theTempTable == null) {
-                throw new IllegalArgumentException("Cannot find table with id " + theEndTableID);
-            }
+			Table theTempTable = aModel.getTables().findBySystemId(theStartTableID);
+			if (theTempTable == null) {
+				throw new IllegalArgumentException("Cannot find table with id " + theStartTableID);
+			}
+			theRelation.setImportingTable(theTempTable);
+			theTempTable = aModel.getTables().findBySystemId(theEndTableID);
+			if (theTempTable == null) {
+				throw new IllegalArgumentException("Cannot find table with id " + theEndTableID);
+			}
 
-            theRelation.setExportingTable(theTempTable);
+			theRelation.setExportingTable(theTempTable);
 
-            // Parse the mapping
-            NodeList theMappings = theElement.getElementsByTagName(MAPPING);
-            for (int j = 0; j < theMappings.getLength(); j++) {
-                Element theAttributeElement = (Element) theMappings.item(j);
+			// Parse the mapping
+			NodeList theMappings = theElement.getElementsByTagName(MAPPING);
+			for (int j = 0; j < theMappings.getLength(); j++) {
+				Element theAttributeElement = (Element) theMappings.item(j);
 
-                String theStartId = theAttributeElement.getAttribute(IMPORTINGATTRIBUTEREFID);
-                String theEndId = theAttributeElement.getAttribute(EXPORTINGATTRIBUTEREFID);
+				String theStartId = theAttributeElement.getAttribute(IMPORTINGATTRIBUTEREFID);
+				String theEndId = theAttributeElement.getAttribute(EXPORTINGATTRIBUTEREFID);
 
-                Attribute theStartAttribute = aModel.getTables().findAttributeBySystemId(theStartId);
-                if (theStartAttribute == null) {
-                    throw new IllegalArgumentException("Cannot find attribute with id " + theStartId);
-                }
+				Attribute theStartAttribute = aModel.getTables().findAttributeBySystemId(theStartId);
+				if (theStartAttribute == null) {
+					throw new IllegalArgumentException("Cannot find attribute with id " + theStartId);
+				}
 
-                Attribute theEndAttribute = aModel.getTables().findAttributeBySystemId(theEndId);
-                if (theEndAttribute == null) {
-                    throw new IllegalArgumentException("Cannot find attribute with id " + theEndId);
-                }
+				Attribute theEndAttribute = aModel.getTables().findAttributeBySystemId(theEndId);
+				if (theEndAttribute == null) {
+					throw new IllegalArgumentException("Cannot find attribute with id " + theEndId);
+				}
 
-                IndexExpression theExpression = theRelation.getExportingTable().getPrimarykey().getExpressions()
-                        .findByAttribute(theStartAttribute);
+				IndexExpression theExpression = theRelation.getExportingTable().getPrimarykey().getExpressions()
+						.findByAttribute(theStartAttribute);
 
-                theRelation.getMapping().put(theExpression, theEndAttribute);
-            }
+				theRelation.getMapping().put(theExpression, theEndAttribute);
+			}
 
-            aModel.getRelations().add(theRelation);
-        }
-    }
+			aModel.getRelations().add(theRelation);
+		}
+	}
 }

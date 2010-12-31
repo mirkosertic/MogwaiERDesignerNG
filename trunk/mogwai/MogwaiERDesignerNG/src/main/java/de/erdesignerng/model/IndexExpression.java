@@ -19,99 +19,99 @@ package de.erdesignerng.model;
 
 import org.apache.commons.lang.StringUtils;
 
-public class IndexExpression extends ModelItem implements ModelItemClonable<IndexExpression> {
+public class IndexExpression extends ModelItem implements ModelItemCloneable<IndexExpression> {
 
-    private String expression;
+	private String expression;
 
-    private Attribute attributeRef;
+	private Attribute attributeRef;
 
-    /**
-     * Gibt den Wert des Attributs <code>expression</code> zurück.
-     * 
-     * @return Wert des Attributs expression.
-     */
-    public String getExpression() {
-        return expression;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>expression</code> zurï¿½ck.
+	 * 
+	 * @return Wert des Attributs expression.
+	 */
+	public String getExpression() {
+		return expression;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>expression</code>.
-     * 
-     * @param expression
-     *            Wert für das Attribut expression.
-     */
-    public void setExpression(String expression) {
-        this.expression = expression;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>expression</code>.
+	 * 
+	 * @param expression
+	 *			Wert fï¿½r das Attribut expression.
+	 */
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
 
-    /**
-     * Gibt den Wert des Attributs <code>attributeRef</code> zurück.
-     * 
-     * @return Wert des Attributs attributeRef.
-     */
-    public Attribute getAttributeRef() {
-        return attributeRef;
-    }
+	/**
+	 * Gibt den Wert des Attributs <code>attributeRef</code> zurï¿½ck.
+	 * 
+	 * @return Wert des Attributs attributeRef.
+	 */
+	public Attribute getAttributeRef() {
+		return attributeRef;
+	}
 
-    /**
-     * Setzt den Wert des Attributs <code>attributeRef</code>.
-     * 
-     * @param attributeRef
-     *            Wert für das Attribut attributeRef.
-     */
-    public void setAttributeRef(Attribute attributeRef) {
-        this.attributeRef = attributeRef;
-    }
+	/**
+	 * Setzt den Wert des Attributs <code>attributeRef</code>.
+	 * 
+	 * @param attributeRef
+	 *			Wert fï¿½r das Attribut attributeRef.
+	 */
+	public void setAttributeRef(Attribute attributeRef) {
+		this.attributeRef = attributeRef;
+	}
 
-    @Override
-    public IndexExpression clone() {
-        IndexExpression theClone = new IndexExpression();
-        theClone.setExpression(expression);
-        theClone.setSystemId(getSystemId());
-        if (attributeRef != null) {
-            theClone.setAttributeRef(attributeRef.clone());
-        }
-        return theClone;
-    }
+	@Override
+	public IndexExpression clone() {
+		IndexExpression theClone = new IndexExpression();
+		theClone.setExpression(expression);
+		theClone.setSystemId(getSystemId());
+		if (attributeRef != null) {
+			theClone.setAttributeRef(attributeRef.clone());
+		}
+		return theClone;
+	}
 
-    public void restoreFrom(IndexExpression aValue) throws Exception {
-        expression = aValue.getExpression();
-        setSystemId(aValue.getSystemId());
-        Attribute theAttribtueRef = aValue.getAttributeRef();
-        if (theAttribtueRef != null) {
-            Attribute theNewAttribute = new Attribute();
-            theNewAttribute.restoreFrom(theAttribtueRef);
-            attributeRef = theNewAttribute;
-        } else {
-            attributeRef = null;
-        }
-    }
+	public void restoreFrom(IndexExpression aValue) throws Exception {
+		expression = aValue.getExpression();
+		setSystemId(aValue.getSystemId());
+		Attribute theAttributeRef = aValue.getAttributeRef();
+		if (theAttributeRef != null) {
+			Attribute theNewAttribute = new Attribute();
+			theNewAttribute.restoreFrom(theAttributeRef);
+			attributeRef = theNewAttribute;
+		} else {
+			attributeRef = null;
+		}
+	}
 
-    /**
-     * Test if this expression is not equals to another expression.
-     * 
-     * @param aExpression
-     *            the other expression
-     * @param aUseName
-     *            true if attribtue check shall be done by name, not by system
-     *            id
-     * @return true if they are not equals
-     */
-    public boolean isModified(IndexExpression aExpression, boolean aUseName) {
-        if (!StringUtils.isEmpty(expression)) {
-            return !expression.equals(aExpression.getExpression());
-        }
-        if (aUseName) {
-            return !attributeRef.getName().equals(aExpression.getAttributeRef().getName());
-        }
-        return !attributeRef.equals(aExpression.getAttributeRef());
-    }
+	/**
+	 * Test if this expression is not equals to another expression.
+	 * 
+	 * @param aExpression
+	 *			the other expression
+	 * @param aUseName
+	 *			true if attribute check shall be done by name, not by system
+	 *			id
+	 * @return true if they are not equals
+	 */
+	public boolean isModified(IndexExpression aExpression, boolean aUseName) {
+		if (!StringUtils.isEmpty(expression)) {
+			return !expression.equals(aExpression.getExpression());
+		}
+		if (aUseName) {
+			return !attributeRef.getName().equals(aExpression.getAttributeRef().getName());
+		}
+		return !attributeRef.equals(aExpression.getAttributeRef());
+	}
 
-    @Override
-    public String toString() {
-        if (!StringUtils.isEmpty(expression)) {
-            return expression;
-        }
-        return attributeRef.toString();
-    }
+	@Override
+	public String toString() {
+		if (!StringUtils.isEmpty(expression)) {
+			return expression;
+		}
+		return attributeRef.toString();
+	}
 }

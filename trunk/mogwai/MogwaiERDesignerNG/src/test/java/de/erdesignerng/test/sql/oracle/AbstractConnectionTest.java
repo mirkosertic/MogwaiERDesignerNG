@@ -26,51 +26,51 @@ import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
-    private Connection connection;
+	private Connection connection;
 
-    @Override
-    protected void setUp() throws Exception {
+	@Override
+	protected void setUp() throws Exception {
 
-        connection = null;
+		connection = null;
 
-        Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-        Connection theConnection = null;
-        theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
-                "sys as sysdba", "sys");
+		Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+		Connection theConnection = null;
+		theConnection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE",
+				"sys as sysdba", "sys");
 
-        Statement theStatement = theConnection.createStatement();
-        try {
-            theStatement.execute("DROP USER mogwai CASCADE");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		Statement theStatement = theConnection.createStatement();
+		try {
+			theStatement.execute("DROP USER mogwai CASCADE");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        try {
-            theStatement.execute("CREATE USER mogwai IDENTIFIED BY mogwai");
-            theStatement.execute("GRANT DBA TO mogwai");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		try {
+			theStatement.execute("CREATE USER mogwai IDENTIFIED BY mogwai");
+			theStatement.execute("GRANT DBA TO mogwai");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-        theConnection.close();
+		theConnection.close();
 
-        super.setUp();
-    }
+		super.setUp();
+	}
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
 
-        if (connection != null) {
-            connection.close();
-        }
-    }
+		if (connection != null) {
+			connection.close();
+		}
+	}
 
-    protected Connection createConnection() throws SQLException {
-        if (connection == null) {
-            connection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE", "mogwai",
-                    "mogwai");
-        }
-        return connection;
-    }
+	protected Connection createConnection() throws SQLException {
+		if (connection == null) {
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@" + getDBServerName() + ":1521:XE", "mogwai",
+					"mogwai");
+		}
+		return connection;
+	}
 }

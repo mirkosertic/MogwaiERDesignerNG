@@ -23,32 +23,32 @@ import de.erdesignerng.visual.editor.domain.DomainEditor;
 
 public class EditDomainCommand extends UICommand {
 
-    private final Domain domain;
+	private final Domain domain;
 
-    public EditDomainCommand(ERDesignerComponent component) {
-        this(component, null);
-    }
+	public EditDomainCommand(ERDesignerComponent component) {
+		this(component, null);
+	}
 
-    public EditDomainCommand(ERDesignerComponent component, Domain aDomain) {
-        super(component);
+	public EditDomainCommand(ERDesignerComponent component, Domain aDomain) {
+		super(component);
 
-        domain = aDomain;
-    }
+		domain = aDomain;
+	}
 
-    @Override
-    public void execute() {
-        DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
-        if (domain != null) {
-            theEditor.setSelectedDomain(domain);
-        }
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+	@Override
+	public void execute() {
+		DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
+		if (domain != null) {
+			theEditor.setSelectedDomain(domain);
+		}
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-                refreshDisplayOf(null);
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayOf(null);
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

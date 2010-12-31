@@ -22,19 +22,19 @@ import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 
 public class RepositoryConnectionCommand extends UICommand {
 
-    public RepositoryConnectionCommand(ERDesignerComponent component) {
-        super(component);
-    }
+	public RepositoryConnectionCommand(ERDesignerComponent component) {
+		super(component);
+	}
 
-    @Override
-    public void execute() {
-        RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(getDetailComponent(), getPreferences());
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+	@Override
+	public void execute() {
+		RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(getDetailComponent(), getPreferences());
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

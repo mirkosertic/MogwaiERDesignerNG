@@ -28,95 +28,95 @@ import de.mogwai.common.client.looks.components.DefaultButton;
 
 public class PreferencesEditorView extends JPanel {
 
-    private PreferencesPanel preferences;
+	private PreferencesPanel preferences;
 
-    private DefaultButton okButton = new DefaultButton();
+	private DefaultButton okButton = new DefaultButton();
 
-    private DefaultButton cancelButton = new DefaultButton();
+	private DefaultButton cancelButton = new DefaultButton();
 
-    private ApplicationPreferences ap;
+	private final ApplicationPreferences ap;
 
-    public PreferencesEditorView(ApplicationPreferences aPref) {
-        ap = aPref;
-        initialize();
-    }
+	public PreferencesEditorView(ApplicationPreferences aPref) {
+		ap = aPref;
+		initialize();
+	}
 
-    private void initialize() {
+	private void initialize() {
 
-        preferences = new PreferencesPanel();
+		preferences = new PreferencesPanel();
 
-        preferences.initValues(ap);
+		preferences.initValues(ap);
 
-        String theColDef = "2dlu,fill:250dlu:grow,2dlu";
-        String theRowDef = "2dlu,p,10dlu,p,2dlu";
+		String theColDef = "2dlu,fill:250dlu:grow,2dlu";
+		String theRowDef = "2dlu,p,10dlu,p,2dlu";
 
-        FormLayout theLayout = new FormLayout(theColDef, theRowDef);
-        setLayout(theLayout);
+		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
+		setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        UIInitializer.getInstance().initialize(this);
-        add(preferences, cons.xy(2, 2));
+		UIInitializer.getInstance().initialize(this);
+		add(preferences, cons.xy(2, 2));
 
-        JPanel thePanel = new JPanel();
-        UIInitializer.getInstance().initialize(thePanel);
+		JPanel thePanel = new JPanel();
+		UIInitializer.getInstance().initialize(thePanel);
 
-        theColDef = "60dlu,2dlu:grow,60dlu";
-        theRowDef = "p";
+		theColDef = "60dlu,2dlu:grow,60dlu";
+		theRowDef = "p";
 
-        theLayout = new FormLayout(theColDef, theRowDef);
-        thePanel.setLayout(theLayout);
+		theLayout = new FormLayout(theColDef, theRowDef);
+		thePanel.setLayout(theLayout);
 
-        thePanel.add(okButton, cons.xy(1, 1));
-        okButton.setText("Ok");
-        thePanel.add(cancelButton, cons.xy(3, 1));
-        cancelButton.setText("Cancel");
+		thePanel.add(okButton, cons.xy(1, 1));
+		okButton.setText("Ok");
+		thePanel.add(cancelButton, cons.xy(3, 1));
+		cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xy(2, 4));
-    }
+		add(thePanel, cons.xy(2, 4));
+	}
 
-    /**
-     * @return the cancelButton
-     */
-    public DefaultButton getCancelButton() {
-        return cancelButton;
-    }
+	/**
+	 * @return the cancelButton
+	 */
+	public DefaultButton getCancelButton() {
+		return cancelButton;
+	}
 
-    /**
-     * @param cancelButton
-     *            the cancelButton to set
-     */
-    public void setCancelButton(DefaultButton cancelButton) {
-        this.cancelButton = cancelButton;
-    }
+	/**
+	 * @param cancelButton
+	 *			the cancelButton to set
+	 */
+	public void setCancelButton(DefaultButton cancelButton) {
+		this.cancelButton = cancelButton;
+	}
 
-    /**
-     * @return the okButton
-     */
-    public DefaultButton getOkButton() {
-        return okButton;
-    }
+	/**
+	 * @return the okButton
+	 */
+	public DefaultButton getOkButton() {
+		return okButton;
+	}
 
-    /**
-     * @param okButton
-     *            the okButton to set
-     */
-    public void setOkButton(DefaultButton okButton) {
-        this.okButton = okButton;
-    }
+	/**
+	 * @param okButton
+	 *			the okButton to set
+	 */
+	public void setOkButton(DefaultButton okButton) {
+		this.okButton = okButton;
+	}
 
-    /**
-     * @return the preferences
-     */
-    public PreferencesPanel getPreferences() {
-        return preferences;
-    }
+	/**
+	 * @return the preferences
+	 */
+	public PreferencesPanel getPreferences() {
+		return preferences;
+	}
 
-    /**
-     * @param preferences
-     *            the preferences to set
-     */
-    public void setPreferences(PreferencesPanel preferences) {
-        this.preferences = preferences;
-    }
+	/**
+	 * @param preferences
+	 *			the preferences to set
+	 */
+	public void setPreferences(PreferencesPanel preferences) {
+		this.preferences = preferences;
+	}
 }

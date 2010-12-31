@@ -41,186 +41,186 @@ import de.mogwai.layout.graph.Spring;
 
 public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElement, CellView> {
 
-    private ERDesignerComponent component;
+	private final ERDesignerComponent component;
 
-    public ERDesignerGraphLayout(ERDesignerComponent aComponent) {
-        component = aComponent;
-    }
+	public ERDesignerGraphLayout(ERDesignerComponent aComponent) {
+		component = aComponent;
+	}
 
-    private List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
+	private final List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
 
-    private List<Spring<CellView, VertexCellElement>> springs = new ArrayList<Spring<CellView, VertexCellElement>>();
+	private final List<Spring<CellView, VertexCellElement>> springs = new ArrayList<Spring<CellView, VertexCellElement>>();
 
-    private Map<Object, Map> modelModifications = new HashMap<Object, Map>();
+	private final Map<Object, Map> modelModifications = new HashMap<Object, Map>();
 
-    private Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
+	private final Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
 
-    @Override
-    public boolean preEvolveLayout() {
-        super.preEvolveLayout();
+	@Override
+	public boolean preEvolveLayout() {
+		super.preEvolveLayout();
 
-        elements.clear();
-        springs.clear();
-        modelModifications.clear();
+		elements.clear();
+		springs.clear();
+		modelModifications.clear();
 
-        if (component.graph == null) {
-            return false;
-        }
+		if (component.graph == null) {
+			return false;
+		}
 
-        elementsToIgnore.clear();
-        if (component.graph.isDragging()) {
-            for (Object theCell : component.graph.getSelectionCells()) {
-                if (theCell instanceof ModelCellWithPosition) {
-                    ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
-                    elementsToIgnore.add((ModelItem) theTableCell.getUserObject());
-                }
-                if (theCell instanceof SubjectAreaCell) {
-                    for (Object theChildCell : ((SubjectAreaCell) theCell).getChildren()) {
-                        if (theCell instanceof ModelCellWithPosition) {
-                            DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
-                            elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
-                        }
-                    }
-                }
-            }
-        }
+		elementsToIgnore.clear();
+		if (component.graph.isDragging()) {
+			for (Object theCell : component.graph.getSelectionCells()) {
+				if (theCell instanceof ModelCellWithPosition) {
+					ModelCellWithPosition<ModelItem> theTableCell = (ModelCellWithPosition<ModelItem>) theCell;
+					elementsToIgnore.add((ModelItem) theTableCell.getUserObject());
+				}
+				if (theCell instanceof SubjectAreaCell) {
+					for (Object theChildCell : ((SubjectAreaCell) theCell).getChildren()) {
+						if (theCell instanceof ModelCellWithPosition) {
+							DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
+							elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
+						}
+					}
+				}
+			}
+		}
 
-        Map<ModelItem, VertexCellElement> theTables = new HashMap<ModelItem, VertexCellElement>();
-        Set<RelationEdgeView> theRelations = new HashSet<RelationEdgeView>();
+		Map<ModelItem, VertexCellElement> theTables = new HashMap<ModelItem, VertexCellElement>();
+		Set<RelationEdgeView> theRelations = new HashSet<RelationEdgeView>();
 
-        for (CellView theView : component.graph.getGraphLayoutCache().getAllViews()) {
+		for (CellView theView : component.graph.getGraphLayoutCache().getAllViews()) {
 
-            if (theView.getCell() instanceof ModelCellWithPosition) {
+			if (theView.getCell() instanceof ModelCellWithPosition) {
 
-                DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+				DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
 
-                ModelItem theModelItem = (ModelItem) theCell.getUserObject();
-                if (!elementsToIgnore.contains(theModelItem)) {
+				ModelItem theModelItem = (ModelItem) theCell.getUserObject();
+				if (!elementsToIgnore.contains(theModelItem)) {
 
-                    VertexCellElement theElement = new VertexCellElement(theView);
+					VertexCellElement theElement = new VertexCellElement(theView);
 
-                    theTables.put(theModelItem, theElement);
-                    elements.add(theElement);
-                }
-            }
+					theTables.put(theModelItem, theElement);
+					elements.add(theElement);
+				}
+			}
 
-            if (theView instanceof RelationEdgeView) {
-                theRelations.add((RelationEdgeView) theView);
-            }
-        }
+			if (theView instanceof RelationEdgeView) {
+				theRelations.add((RelationEdgeView) theView);
+			}
+		}
 
-        for (RelationEdgeView theRelationView : theRelations) {
+		for (RelationEdgeView theRelationView : theRelations) {
 
-            RelationEdge theCell = (RelationEdge) theRelationView.getCell();
-            Relation theRelation = (Relation) theCell.getUserObject();
+			RelationEdge theCell = (RelationEdge) theRelationView.getCell();
+			Relation theRelation = (Relation) theCell.getUserObject();
 
-            if (!elementsToIgnore.contains(theRelation.getExportingTable())
-                    && (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
-                Spring<CellView, VertexCellElement> theSpring = new Spring<CellView, VertexCellElement>(theTables
-                        .get(theRelation.getExportingTable()), theTables.get(theRelation.getImportingTable()),
-                        theRelationView);
-                springs.add(theSpring);
-            }
-        }
+			if (!elementsToIgnore.contains(theRelation.getExportingTable())
+					&& (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
+				Spring<CellView, VertexCellElement> theSpring = new Spring<CellView, VertexCellElement>(theTables
+						.get(theRelation.getExportingTable()), theTables.get(theRelation.getImportingTable()),
+						theRelationView);
+				springs.add(theSpring);
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public void postEvolveLayout() {
-        super.postEvolveLayout();
+	@Override
+	public void postEvolveLayout() {
+		super.postEvolveLayout();
 
-        // Move graph origin to 20,20
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
+		// Move graph origin to 20,20
+		int minX = Integer.MAX_VALUE;
+		int minY = Integer.MAX_VALUE;
 
-        List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
+		List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
 
-        for (CellView theView : component.graph.getGraphLayoutCache().getAllViews()) {
+		for (CellView theView : component.graph.getGraphLayoutCache().getAllViews()) {
 
-            Object theObjectCell = theView.getCell();
+			Object theObjectCell = theView.getCell();
 
-            if (theObjectCell instanceof ModelCellWithPosition) {
-                DefaultGraphCell theCell = (DefaultGraphCell) theObjectCell;
+			if (theObjectCell instanceof ModelCellWithPosition) {
+				DefaultGraphCell theCell = (DefaultGraphCell) theObjectCell;
 
-                Map theAttributes = modelModifications.get(theCell);
-                if (theAttributes == null) {
-                    theAttributes = theCell.getAttributes();
-                }
+				Map theAttributes = modelModifications.get(theCell);
+				if (theAttributes == null) {
+					theAttributes = theCell.getAttributes();
+				}
 
-                Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
-                minX = (int) Math.min(minX, theBounds.getX());
-                minY = (int) Math.min(minY, theBounds.getY());
+				Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
+				minX = (int) Math.min(minX, theBounds.getX());
+				minY = (int) Math.min(minY, theBounds.getY());
 
-                theCells.add(theCell);
-            }
+				theCells.add(theCell);
+			}
 
-            if (theObjectCell instanceof SubjectAreaCell) {
-                for (Object theChildCell : ((SubjectAreaCell) theObjectCell).getChildren()) {
-                    if (theChildCell instanceof ModelCellWithPosition) {
+			if (theObjectCell instanceof SubjectAreaCell) {
+				for (Object theChildCell : ((SubjectAreaCell) theObjectCell).getChildren()) {
+					if (theChildCell instanceof ModelCellWithPosition) {
 
-                        DefaultGraphCell theCell = (DefaultGraphCell) theChildCell;
+						DefaultGraphCell theCell = (DefaultGraphCell) theChildCell;
 
-                        Map theAttributes = modelModifications.get(theCell);
-                        if (theAttributes == null) {
-                            theAttributes = theCell.getAttributes();
-                        }
+						Map theAttributes = modelModifications.get(theCell);
+						if (theAttributes == null) {
+							theAttributes = theCell.getAttributes();
+						}
 
-                        Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
-                        minX = (int) Math.min(minX, theBounds.getX());
-                        minY = (int) Math.min(minY, theBounds.getY());
+						Rectangle2D theBounds = GraphConstants.getBounds(theAttributes);
+						minX = (int) Math.min(minX, theBounds.getX());
+						minY = (int) Math.min(minY, theBounds.getY());
 
-                        theCells.add(theCell);
-                    }
-                }
-            }
-        }
+						theCells.add(theCell);
+					}
+				}
+			}
+		}
 
-        if (minX < 20 || minY < 20) {
-            int mx = minX < 20 ? 20 - minX : 0;
-            int my = minY < 20 ? 20 - minY : 0;
-            for (DefaultGraphCell theCell : theCells) {
-                evolvePosition(theCell, mx, my);
-            }
-        }
+		if (minX < 20 || minY < 20) {
+			int mx = minX < 20 ? 20 - minX : 0;
+			int my = minY < 20 ? 20 - minY : 0;
+			for (DefaultGraphCell theCell : theCells) {
+				evolvePosition(theCell, mx, my);
+			}
+		}
 
-        if (modelModifications.size() > 0) {
-            component.graph.getGraphLayoutCache().edit(modelModifications);
-        }
-    }
+		if (modelModifications.size() > 0) {
+			component.graph.getGraphLayoutCache().edit(modelModifications);
+		}
+	}
 
-    @Override
-    public List<VertexCellElement> getElements() {
-        return elements;
-    }
+	@Override
+	public List<VertexCellElement> getElements() {
+		return elements;
+	}
 
-    @Override
-    public List<Spring<CellView, VertexCellElement>> getSprings() {
-        return springs;
-    }
+	@Override
+	public List<Spring<CellView, VertexCellElement>> getSprings() {
+		return springs;
+	}
 
-    private void evolvePosition(GraphCell aCell, int movementX, int movementY) {
+	private void evolvePosition(GraphCell aCell, int movementX, int movementY) {
 
-        if (movementX != 0 || movementY != 0) {
-            Rectangle2D theBounds;
-            Map theAttributes = modelModifications.get(aCell);
-            if (theAttributes != null) {
-                theBounds = GraphConstants.getBounds(theAttributes);
-            } else {
-                theAttributes = new HashMap();
-                theBounds = GraphConstants.getBounds(aCell.getAttributes());
+		if (movementX != 0 || movementY != 0) {
+			Rectangle2D theBounds;
+			Map theAttributes = modelModifications.get(aCell);
+			if (theAttributes != null) {
+				theBounds = GraphConstants.getBounds(theAttributes);
+			} else {
+				theAttributes = new HashMap();
+				theBounds = GraphConstants.getBounds(aCell.getAttributes());
 
-                modelModifications.put(aCell, theAttributes);
-            }
+				modelModifications.put(aCell, theAttributes);
+			}
 
-            theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
-                    theBounds.getHeight());
-            GraphConstants.setBounds(theAttributes, theBounds);
-        }
-    }
+			theBounds.setRect(theBounds.getX() + movementX, theBounds.getY() + movementY, theBounds.getWidth(),
+					theBounds.getHeight());
+			GraphConstants.setBounds(theAttributes, theBounds);
+		}
+	}
 
-    @Override
-    public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
-        evolvePosition(aElement.getCell(), movementX, movementY);
-    }
+	@Override
+	public void evolvePosition(VertexCellElement aElement, int movementX, int movementY) {
+		evolvePosition(aElement.getCell(), movementX, movementY);
+	}
 }

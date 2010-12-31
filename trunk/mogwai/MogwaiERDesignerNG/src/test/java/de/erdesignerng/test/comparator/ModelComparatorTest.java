@@ -32,28 +32,28 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 
 public class ModelComparatorTest extends BaseERDesignerTestCaseImpl {
 
-    protected void compare(DefaultMutableTreeNode aNode1, DefaultMutableTreeNode aNode2, boolean aCompareUserObjects) {
-        if (aCompareUserObjects) {
-            assertTrue("UserObjekt equals for " + aNode1, aNode1.getUserObject().toString().equals(
-                    aNode2.getUserObject().toString()));
-        }
-        assertTrue("Same child count for " + aNode1, aNode1.getChildCount() == aNode2.getChildCount());
-        for (int i = 0; i < aNode1.getChildCount(); i++) {
-            compare((DefaultMutableTreeNode) aNode1.getChildAt(i), (DefaultMutableTreeNode) aNode2.getChildAt(i), true);
-        }
-    }
+	protected void compare(DefaultMutableTreeNode aNode1, DefaultMutableTreeNode aNode2, boolean aCompareUserObjects) {
+		if (aCompareUserObjects) {
+			assertTrue("UserObjekt equals for " + aNode1, aNode1.getUserObject().toString().equals(
+					aNode2.getUserObject().toString()));
+		}
+		assertTrue("Same child count for " + aNode1, aNode1.getChildCount() == aNode2.getChildCount());
+		for (int i = 0; i < aNode1.getChildCount(); i++) {
+			compare((DefaultMutableTreeNode) aNode1.getChildAt(i), (DefaultMutableTreeNode) aNode2.getChildAt(i), true);
+		}
+	}
 
-    public void testModelComparator() throws SAXException, IOException, ParserConfigurationException {
-        Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
-                getClass().getResourceAsStream("examplemodel.mxm"));
+	public void testModelComparator() throws SAXException, IOException, ParserConfigurationException {
+		Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(
+				getClass().getResourceAsStream("examplemodel.mxm"));
 
-        ModelComparator theComparator = new ModelComparator();
-        ModelCompareResult theResult = theComparator.compareModels(theModel, theModel);
+		ModelComparator theComparator = new ModelComparator();
+		ModelCompareResult theResult = theComparator.compareModels(theModel, theModel);
 
-        DefaultMutableTreeNode theDbRootNode = theResult.getDbRootNode();
-        DefaultMutableTreeNode theModelRootNode = theResult.getModelRootNode();
+		DefaultMutableTreeNode theDbRootNode = theResult.getDbRootNode();
+		DefaultMutableTreeNode theModelRootNode = theResult.getModelRootNode();
 
-        compare(theDbRootNode, theModelRootNode, false);
-    }
+		compare(theDbRootNode, theModelRootNode, false);
+	}
 
 }

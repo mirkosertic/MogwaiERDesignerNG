@@ -35,88 +35,88 @@ import de.erdesignerng.model.serializer.repository.entities.TableEntity;
 /**
  * Serializer for attributes.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
 
-    public static final DictionaryAttributeSerializer SERIALIZER = new DictionaryAttributeSerializer();
+	public static final DictionaryAttributeSerializer SERIALIZER = new DictionaryAttributeSerializer();
 
-    protected void copyExtendedAttributes(Attribute aSource, AttributeEntity aDestination) {
-        aDestination.setDatatype(null);
-        aDestination.setDomainId(null);
-        if (!(aSource.getDatatype().isDomain())) {
-            aDestination.setDatatype(aSource.getDatatype().getName());
-        } else {
-            Domain theDomain = (Domain) aSource.getDatatype();
-            aDestination.setDomainId(theDomain.getSystemId());
-        }
-        aDestination.setSize(aSource.getSize());
-        aDestination.setFraction(aSource.getFraction());
-        aDestination.setScale(aSource.getScale());
-        aDestination.setNullable(aSource.isNullable());
-        aDestination.setDefaultValue(aSource.getDefaultValue());
-        aDestination.setExtra(aSource.getExtra());
-    }
+	protected void copyExtendedAttributes(Attribute aSource, AttributeEntity aDestination) {
+		aDestination.setDatatype(null);
+		aDestination.setDomainId(null);
+		if (!(aSource.getDatatype().isDomain())) {
+			aDestination.setDatatype(aSource.getDatatype().getName());
+		} else {
+			Domain theDomain = (Domain) aSource.getDatatype();
+			aDestination.setDomainId(theDomain.getSystemId());
+		}
+		aDestination.setSize(aSource.getSize());
+		aDestination.setFraction(aSource.getFraction());
+		aDestination.setScale(aSource.getScale());
+		aDestination.setNullable(aSource.isNullable());
+		aDestination.setDefaultValue(aSource.getDefaultValue());
+		aDestination.setExtra(aSource.getExtra());
+	}
 
-    protected void copyExtendedAttributes(AttributeEntity aSource, Attribute aDestination, Model aModel) {
+	protected void copyExtendedAttributes(AttributeEntity aSource, Attribute aDestination, Model aModel) {
 
-        if (!StringUtils.isEmpty(aSource.getDomainId())) {
-            aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomainId()));
-        } else {
-            aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
-        }
-        aDestination.setSize(aSource.getSize());
-        aDestination.setFraction(aSource.getFraction());
-        aDestination.setScale(aSource.getScale());
-        aDestination.setNullable(aSource.isNullable());
-        aDestination.setDefaultValue(aSource.getDefaultValue());
-        aDestination.setExtra(aSource.getExtra());
-    }
+		if (!StringUtils.isEmpty(aSource.getDomainId())) {
+			aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomainId()));
+		} else {
+			aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+		}
+		aDestination.setSize(aSource.getSize());
+		aDestination.setFraction(aSource.getFraction());
+		aDestination.setScale(aSource.getScale());
+		aDestination.setNullable(aSource.isNullable());
+		aDestination.setDefaultValue(aSource.getDefaultValue());
+		aDestination.setExtra(aSource.getExtra());
+	}
 
-    public void serialize(Table aTable, TableEntity aTableEntity, Session aSession) {
+	public void serialize(Table aTable, TableEntity aTableEntity, Session aSession) {
 
-        Set<AttributeEntity> theRemovedAttributes = new HashSet<AttributeEntity>();
+		Set<AttributeEntity> theRemovedAttributes = new HashSet<AttributeEntity>();
 
-        Map<String, AttributeEntity> theAttributes = new HashMap<String, AttributeEntity>();
-        for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
-            Attribute theAttribute = aTable.getAttributes().findBySystemId(theAttributeEntity.getSystemId());
-            if (theAttribute == null) {
-                theRemovedAttributes.add(theAttributeEntity);
-            } else {
-                theAttributes.put(theAttributeEntity.getSystemId(), theAttributeEntity);
-            }
-        }
+		Map<String, AttributeEntity> theAttributes = new HashMap<String, AttributeEntity>();
+		for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
+			Attribute theAttribute = aTable.getAttributes().findBySystemId(theAttributeEntity.getSystemId());
+			if (theAttribute == null) {
+				theRemovedAttributes.add(theAttributeEntity);
+			} else {
+				theAttributes.put(theAttributeEntity.getSystemId(), theAttributeEntity);
+			}
+		}
 
-        aTableEntity.getAttributes().removeAll(theRemovedAttributes);
+		aTableEntity.getAttributes().removeAll(theRemovedAttributes);
 
-        for (Attribute theAttribute : aTable.getAttributes()) {
-            boolean existing = true;
-            AttributeEntity theEntity = theAttributes.get(theAttribute.getSystemId());
-            if (theEntity == null) {
-                theEntity = new AttributeEntity();
-                existing = false;
-            }
+		for (Attribute theAttribute : aTable.getAttributes()) {
+			boolean existing = true;
+			AttributeEntity theEntity = theAttributes.get(theAttribute.getSystemId());
+			if (theEntity == null) {
+				theEntity = new AttributeEntity();
+				existing = false;
+			}
 
-            copyBaseAttributes(theAttribute, theEntity);
-            copyExtendedAttributes(theAttribute, theEntity);
+			copyBaseAttributes(theAttribute, theEntity);
+			copyExtendedAttributes(theAttribute, theEntity);
 
-            if (!existing) {
-                aTableEntity.getAttributes().add(theEntity);
-            }
-        }
+			if (!existing) {
+				aTableEntity.getAttributes().add(theEntity);
+			}
+		}
 
-    }
+	}
 
-    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
-        for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
+	public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
+		for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
 
-            Attribute theAttribute = new Attribute();
+			Attribute theAttribute = new Attribute();
 
-            copyBaseAttributes(theAttributeEntity, theAttribute);
-            copyExtendedAttributes(theAttributeEntity, theAttribute, aModel);
+			copyBaseAttributes(theAttributeEntity, theAttribute);
+			copyExtendedAttributes(theAttributeEntity, theAttribute, aModel);
 
-            theAttribute.setOwner(aTable);
-            aTable.getAttributes().add(theAttribute);
-        }
-    }
+			theAttribute.setOwner(aTable);
+			aTable.getAttributes().add(theAttribute);
+		}
+	}
 }

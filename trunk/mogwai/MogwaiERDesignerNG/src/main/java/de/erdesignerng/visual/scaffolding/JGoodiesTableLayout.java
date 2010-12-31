@@ -35,82 +35,76 @@ import com.jgoodies.forms.layout.FormLayout;
 
 public class JGoodiesTableLayout implements Layout<JComponent, SwingMetawidget> {
 
-    private static class Entry {
-        JComponent component;
+	private static class Entry {
+		JComponent component;
 
-        Map<String, String> attributes;
-    }
+		Map<String, String> attributes;
+	}
 
-    private List<Entry> components;
+	private List<Entry> components;
 
-    @Override
-    public void onStartBuild(SwingMetawidget metawidget) {
-        components = new ArrayList<Entry>();
-    }
+	@Override
+	public void onStartBuild(SwingMetawidget metawidget) {
+		components = new ArrayList<Entry>();
+	}
 
-    @Override
-    public void layoutChild(JComponent aWidget, String aElementName, Map<String, String> aAttributes,
-            SwingMetawidget aMetaWidget) {
-        Entry theEntry = new Entry();
-        theEntry.component = aWidget;
-        theEntry.attributes = aAttributes;
+	@Override
+	public void layoutChild(JComponent aWidget, String aElementName, Map<String, String> aAttributes,
+			SwingMetawidget aMetaWidget) {
+		Entry theEntry = new Entry();
+		theEntry.component = aWidget;
+		theEntry.attributes = aAttributes;
 
-        components.add(theEntry);
-    }
+		components.add(theEntry);
+	}
 
-    @Override
-    public void onEndBuild(SwingMetawidget aWidget) {
-        String theColDef = "2dlu,p,2dlu,p,2dlu";
-        StringBuilder theRowDef = new StringBuilder("2dlu");
+	@Override
+	public void onEndBuild(SwingMetawidget aWidget) {
+		String theColDef = "2dlu,p,2dlu,p,2dlu";
+		StringBuilder theRowDef = new StringBuilder("2dlu");
 
-        for (int i = 0; i < components.size(); i++) {
+		for (Entry theEntry : components) {
+			theRowDef = theRowDef.append(",p,2dlu");
+			if (theEntry.attributes != null) {
+				String theSection = theEntry.attributes.get(InspectionResultConstants.SECTION);
+				if (!StringUtils.isEmpty(theSection)) {
+					theRowDef = theRowDef.append(",p,2dlu");
+				}
+			}
+		}
 
-            Entry theEntry = components.get(i);
+		FormLayout theLayout = new FormLayout(theColDef, theRowDef.toString());
+		CellConstraints cons = new CellConstraints();
 
-            theRowDef = theRowDef.append(",p,2dlu");
-            if (theEntry.attributes != null) {
-                String theSection = theEntry.attributes.get(InspectionResultConstants.SECTION);
-                if (!StringUtils.isEmpty(theSection)) {
-                    theRowDef = theRowDef.append(",p,2dlu");
-                }
-            }
-        }
+		aWidget.setLayout(theLayout);
+		int theRow = 2;
+		for (Entry theEntry : components) {
+			String labelText = null;
 
-        FormLayout theLayout = new FormLayout(theColDef, theRowDef.toString());
-        CellConstraints cons = new CellConstraints();
+			if (theEntry.attributes != null) {
+				labelText = aWidget.getLabelString(theEntry.attributes);
 
-        aWidget.setLayout(theLayout);
-        int theRow = 2;
-        for (int i = 0; i < components.size(); i++) {
+				String theSection = theEntry.attributes.get(InspectionResultConstants.SECTION);
+				if (!StringUtils.isEmpty(theSection)) {
+					String theSectionLabel = aWidget.getLocalizedKey(theSection);
 
-            Entry theEntry = components.get(i);
+					JComponent theSectionComponent = DefaultComponentFactory.getInstance().createSeparator(
+							theSectionLabel);
+					aWidget.add(theSectionComponent, cons.xyw(2, theRow, 3));
 
-            String labelText = null;
+					theRow += 2;
+				}
+			}
 
-            if (theEntry.attributes != null) {
-                labelText = aWidget.getLabelString(theEntry.attributes);
+			if (!StringUtils.isEmpty(labelText)) {
+				JLabel theLabel = new JLabel();
+				theLabel.setText(labelText + ":");
 
-                String theSection = theEntry.attributes.get(InspectionResultConstants.SECTION);
-                if (!StringUtils.isEmpty(theSection)) {
-                    String theSectionLabel = aWidget.getLocalizedKey(theSection);
+				aWidget.add(theLabel, cons.xy(2, theRow));
+			}
 
-                    JComponent theSectionComponent = DefaultComponentFactory.getInstance().createSeparator(
-                            theSectionLabel);
-                    aWidget.add(theSectionComponent, cons.xyw(2, theRow, 3));
-
-                    theRow += 2;
-                }
-            }
-
-            if (!StringUtils.isEmpty(labelText)) {
-                JLabel theLabel = new JLabel();
-                theLabel.setText(labelText + ":");
-
-                aWidget.add(theLabel, cons.xy(2, theRow));
-            }
-
-            aWidget.add(theEntry.component, cons.xy(4, theRow));
-            theRow += 2;
-        }
-    }
+			aWidget.add(theEntry.component, cons.xy(4, theRow));
+			theRow += 2;
+		}
+	}
 }

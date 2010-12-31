@@ -17,9 +17,6 @@
  */
 package de.erdesignerng.visual.editor.convertmodel;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -30,147 +27,151 @@ import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultSeparator;
 import de.mogwai.common.client.looks.components.DefaultTable;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:59 $
  */
 public class ConvertModelEditorView extends JPanel {
 
-    private DefaultLabel component1;
+	private DefaultLabel component1;
 
-    private DefaultComboBox targetDialect;
+	private DefaultComboBox targetDialect;
 
-    private DefaultTable mappingTable;
+	private DefaultTable mappingTable;
 
-    private JPanel component8;
+	private JPanel component8;
 
-    private DefaultButton okButton;
+	private DefaultButton okButton;
 
-    private DefaultButton cancelButton;
+	private DefaultButton cancelButton;
 
-    /**
-     * Constructor.
-     */
-    public ConvertModelEditorView() {
-        initialize();
-    }
+	/**
+	 * Constructor.
+	 */
+	public ConvertModelEditorView() {
+		initialize();
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
-        String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu";
+		String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:300dlu,8dlu,p,2dlu";
+		String colDef = "2dlu,60dlu,2dlu,fill:250dlu:grow,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        setLayout(layout);
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        add(getComponent1(), cons.xywh(2, 4, 1, 1));
-        add(new DefaultSeparator(ERDesignerBundle.TARGETDIALECT), cons.xywh(2, 2, 3, 1));
-        add(getTargetDialect(), cons.xywh(4, 4, 1, 1));
-        add(new DefaultSeparator(ERDesignerBundle.DATATYPEMAPPING), cons.xywh(2, 6, 3, 1));
-        add(new JScrollPane(getMappingTable()), cons.xywh(2, 8, 3, 1));
+		add(getComponent1(), cons.xywh(2, 4, 1, 1));
+		add(new DefaultSeparator(ERDesignerBundle.TARGETDIALECT), cons.xywh(2, 2, 3, 1));
+		add(getTargetDialect(), cons.xywh(4, 4, 1, 1));
+		add(new DefaultSeparator(ERDesignerBundle.DATATYPEMAPPING), cons.xywh(2, 6, 3, 1));
+		add(new JScrollPane(getMappingTable()), cons.xywh(2, 8, 3, 1));
 
-        add(getComponent8(), cons.xywh(2, 10, 3, 1));
-    }
+		add(getComponent8(), cons.xywh(2, 10, 3, 1));
+	}
 
-    /**
-     * Getter method for component Component_1.
-     * 
-     * @return the initialized component
-     */
-    public javax.swing.JLabel getComponent1() {
+	/**
+	 * Getter method for component Component_1.
+	 * 
+	 * @return the initialized component
+	 */
+	public JLabel getComponent1() {
 
-        if (component1 == null) {
-            component1 = new DefaultLabel(ERDesignerBundle.DIALECT);
-        }
+		if (component1 == null) {
+			component1 = new DefaultLabel(ERDesignerBundle.DIALECT);
+		}
 
-        return component1;
-    }
+		return component1;
+	}
 
-    /**
-     * Getter method for component TargetDataType.
-     * 
-     * @return the initialized component
-     */
-    public DefaultComboBox getTargetDialect() {
+	/**
+	 * Getter method for component TargetDataType.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultComboBox getTargetDialect() {
 
-        if (targetDialect == null) {
-            targetDialect = new DefaultComboBox();
-        }
+		if (targetDialect == null) {
+			targetDialect = new DefaultComboBox();
+		}
 
-        return targetDialect;
-    }
+		return targetDialect;
+	}
 
-    /**
-     * Getter method for component Component_5.
-     * 
-     * @return the initialized component
-     */
-    public DefaultTable getMappingTable() {
+	/**
+	 * Getter method for component Component_5.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultTable getMappingTable() {
 
-        if (mappingTable == null) {
-            mappingTable = new DefaultTable();
-            mappingTable.setName("Component_5");
-        }
+		if (mappingTable == null) {
+			mappingTable = new DefaultTable();
+			mappingTable.setName("Component_5");
+		}
 
-        return mappingTable;
-    }
+		return mappingTable;
+	}
 
-    /**
-     * Getter method for component Component_8.
-     * 
-     * @return the initialized component
-     */
-    public JPanel getComponent8() {
+	/**
+	 * Getter method for component Component_8.
+	 * 
+	 * @return the initialized component
+	 */
+	public JPanel getComponent8() {
 
-        if (component8 == null) {
-            component8 = new JPanel();
+		if (component8 == null) {
+			component8 = new JPanel();
 
-            String rowDef = "p";
-            String colDef = "60dlu,2dlu:grow,60dlu";
+			String rowDef = "p";
+			String colDef = "60dlu,2dlu:grow,60dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            component8.setLayout(layout);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			component8.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+			CellConstraints cons = new CellConstraints();
 
-            component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
-            component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
-            component8.setName("Component_8");
-        }
+			component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
+			component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
+			component8.setName("Component_8");
+		}
 
-        return component8;
-    }
+		return component8;
+	}
 
-    /**
-     * Getter method for component OKButton.
-     * 
-     * @return the initialized component
-     */
-    public DefaultButton getOKButton() {
+	/**
+	 * Getter method for component OKButton.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultButton getOKButton() {
 
-        if (okButton == null) {
-            okButton = new DefaultButton(ERDesignerBundle.OK);
-        }
+		if (okButton == null) {
+			okButton = new DefaultButton(ERDesignerBundle.OK);
+		}
 
-        return okButton;
-    }
+		return okButton;
+	}
 
-    /**
-     * Getter method for component CancelButton.
-     * 
-     * @return the initialized component
-     */
-    public DefaultButton getCancelButton() {
+	/**
+	 * Getter method for component CancelButton.
+	 * 
+	 * @return the initialized component
+	 */
+	public DefaultButton getCancelButton() {
 
-        if (cancelButton == null) {
-            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
-        }
+		if (cancelButton == null) {
+			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
+		}
 
-        return cancelButton;
-    }
+		return cancelButton;
+	}
 }

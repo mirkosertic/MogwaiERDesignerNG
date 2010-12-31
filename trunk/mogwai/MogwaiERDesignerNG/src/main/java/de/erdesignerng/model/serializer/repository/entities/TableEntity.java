@@ -23,58 +23,58 @@ import java.util.List;
 /**
  * Entity for a table.
  * 
- * @author msertic
+ * @author mirkosertic
  */
 public class TableEntity extends ModelEntity {
 
-    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+	private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
 
-    private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
+	private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
 
-    private String schema;
+	private String schema;
 
-    /**
-     * @return the attributes
-     */
-    public List<AttributeEntity> getAttributes() {
-        return attributes;
-    }
+	/**
+	 * @return the attributes
+	 */
+	public List<AttributeEntity> getAttributes() {
+		return attributes;
+	}
 
-    /**
-     * @param attributes
-     *            the attributes to set
-     */
-    public void setAttributes(List<AttributeEntity> attributes) {
-        this.attributes = attributes;
-    }
+	/**
+	 * @param attributes
+	 *			the attributes to set
+	 */
+	public void setAttributes(List<AttributeEntity> attributes) {
+		this.attributes = attributes;
+	}
 
-    /**
-     * @return the indexes
-     */
-    public List<IndexEntity> getIndexes() {
-        return indexes;
-    }
+	/**
+	 * @return the indexes
+	 */
+	public List<IndexEntity> getIndexes() {
+		return indexes;
+	}
 
-    /**
-     * @param indexes
-     *            the indexes to set
-     */
-    public void setIndexes(List<IndexEntity> indexes) {
-        this.indexes = indexes;
-    }
+	/**
+	 * @param indexes
+	 *			the indexes to set
+	 */
+	public void setIndexes(List<IndexEntity> indexes) {
+		this.indexes = indexes;
+	}
 
-    /**
-     * @return the schema
-     */
-    public String getSchema() {
-        return schema;
-    }
+	/**
+	 * @return the schema
+	 */
+	public String getSchema() {
+		return schema;
+	}
 
-    /**
-     * @param schema
-     *            the schema to set
-     */
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
+	/**
+	 * @param schema
+	 *			the schema to set
+	 */
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 }

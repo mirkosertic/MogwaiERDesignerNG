@@ -27,60 +27,60 @@ import de.erdesignerng.model.ModelProperties;
 
 public class ModelItemProperties<T extends ModelItem> {
 
-    protected ModelItemProperties() {
-    }
+	protected ModelItemProperties() {
+	}
 
-    public void copyTo(T aObject) {
+	public void copyTo(T aObject) {
 
-        ModelProperties theProperties = aObject.getProperties();
+		ModelProperties theProperties = aObject.getProperties();
 
-        try {
-            for (PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
-                if (theDescriptor.getReadMethod() != null && theDescriptor.getWriteMethod() != null) {
-                    Object theValue = PropertyUtils.getProperty(this, theDescriptor.getName());
-                    if (theValue != null) {
-                        theProperties.setProperty(theDescriptor.getName(), theValue.toString());
-                    } else {
-                        theProperties.setProperty(theDescriptor.getName(), null);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+		try {
+			for (PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
+				if (theDescriptor.getReadMethod() != null && theDescriptor.getWriteMethod() != null) {
+					Object theValue = PropertyUtils.getProperty(this, theDescriptor.getName());
+					if (theValue != null) {
+						theProperties.setProperty(theDescriptor.getName(), theValue.toString());
+					} else {
+						theProperties.setProperty(theDescriptor.getName(), null);
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public void initializeFrom(T aObject) {
-        ModelProperties theProperties = aObject.getProperties();
+	public void initializeFrom(T aObject) {
+		ModelProperties theProperties = aObject.getProperties();
 
-        try {
-            for (PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
-                if (theDescriptor.getReadMethod() != null && theDescriptor.getWriteMethod() != null) {
-                    String theValue = theProperties.getProperty(theDescriptor.getName());
-                    if (!StringUtils.isEmpty(theValue)) {
-                        Class theType = theDescriptor.getPropertyType();
+		try {
+			for (PropertyDescriptor theDescriptor : PropertyUtils.getPropertyDescriptors(this)) {
+				if (theDescriptor.getReadMethod() != null && theDescriptor.getWriteMethod() != null) {
+					String theValue = theProperties.getProperty(theDescriptor.getName());
+					if (!StringUtils.isEmpty(theValue)) {
+						Class theType = theDescriptor.getPropertyType();
 
-                        if (theType.isEnum()) {
-                            PropertyUtils.setProperty(this, theDescriptor.getName(), Enum.valueOf(theType, theValue));
-                        }
-                        if (String.class.equals(theType)) {
-                            PropertyUtils.setProperty(this, theDescriptor.getName(), theValue);
-                        }
-                        if (Long.class.equals(theType) || long.class.equals(theType)) {
-                            PropertyUtils.setProperty(this, theDescriptor.getName(), Long.parseLong(theValue));
-                        }
-                        if (Integer.class.equals(theType) || int.class.equals(theType)) {
-                            PropertyUtils.setProperty(this, theDescriptor.getName(), Integer.parseInt(theValue));
-                        }
-                        if (Boolean.class.equals(theType) || boolean.class.equals(theType)) {
-                            PropertyUtils.setProperty(this, theDescriptor.getName(), Boolean.parseBoolean(theValue));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+						if (theType.isEnum()) {
+							PropertyUtils.setProperty(this, theDescriptor.getName(), Enum.valueOf(theType, theValue));
+						}
+						if (String.class.equals(theType)) {
+							PropertyUtils.setProperty(this, theDescriptor.getName(), theValue);
+						}
+						if (Long.class.equals(theType) || long.class.equals(theType)) {
+							PropertyUtils.setProperty(this, theDescriptor.getName(), Long.parseLong(theValue));
+						}
+						if (Integer.class.equals(theType) || int.class.equals(theType)) {
+							PropertyUtils.setProperty(this, theDescriptor.getName(), Integer.parseInt(theValue));
+						}
+						if (Boolean.class.equals(theType) || boolean.class.equals(theType)) {
+							PropertyUtils.setProperty(this, theDescriptor.getName(), Boolean.parseBoolean(theValue));
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-    }
+	}
 }

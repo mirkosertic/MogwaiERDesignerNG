@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.visual.editor.customtypes;
 
-import javax.swing.ListSelectionModel;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -32,6 +30,10 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
 import de.mogwai.common.client.looks.components.DefaultTextField;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.ListSelectionModel;
 
 /**
  * @author $Author: mirkosertic $
@@ -154,7 +156,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 		return typesList;
 	}
 
-	public javax.swing.JButton getNewButton() {
+	public JButton getNewButton() {
 
 		if (newButton == null) {
 			newButton = new DefaultButton(ERDesignerBundle.NEW);
@@ -163,7 +165,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 		return newButton;
 	}
 
-	public javax.swing.JButton getDeleteButton() {
+	public JButton getDeleteButton() {
 
 		if (deleteButton == null) {
 			deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
@@ -222,7 +224,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JLabel getComponent20() {
+	public JLabel getComponent20() {
 
 		if (component20 == null) {
 			component20 = new DefaultLabel(ERDesignerBundle.NAME);
@@ -251,7 +253,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JLabel getComponent42() {
+	public JLabel getComponent42() {
 
 		if (component42 == null) {
 			component42 = new DefaultLabel(ERDesignerBundle.DEFAULT);
@@ -265,7 +267,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getUpdateTypeButton() {
+	public JButton getUpdateTypeButton() {
 
 		if (updateDomainButton == null) {
 			updateDomainButton = new DefaultButton(ERDesignerBundle.UPDATE);
@@ -293,7 +295,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getOkButton() {
+	public JButton getOkButton() {
 
 		if (okButton == null) {
 			okButton = new DefaultButton(ERDesignerBundle.OK);
@@ -307,7 +309,7 @@ public class CustomTypeEditorView extends DefaultPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public javax.swing.JButton getCancelButton() {
+	public JButton getCancelButton() {
 
 		if (cancelButton == null) {
 			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
