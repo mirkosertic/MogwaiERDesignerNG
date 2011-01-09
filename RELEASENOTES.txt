@@ -243,3 +243,7 @@ Release 2.6.0
 * Bug Fixing 2933615 [ERDesignerNG] UUID Datatype not Supported in PostgreSQL
 * Implemented FR 2982848 [ERDesignerNG] Hide password in ConnectionEditor
 * Implemented FR 2925550 [ERDesignerNG] Compare with other models
+
+Release 2.7.0
+
+* Implemented FR 2895866 [ERDesignerNG] force connection aliases to be unique
