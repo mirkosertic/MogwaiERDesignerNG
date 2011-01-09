@@ -26,7 +26,5 @@ import java.awt.geom.Rectangle2D;
  */
 public interface ModelCellWithPosition<T> extends ModelCell<T> {
 
-	Rectangle2D getBounds();
-
 	void setBounds(Rectangle2D aBounds);
 }

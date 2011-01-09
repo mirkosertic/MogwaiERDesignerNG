@@ -21,7 +21,7 @@ package de.erdesignerng.model;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-16 19:27:07 $
  * @param <T>
- *			the type
+ *            the type
  */
 public interface ModelItemCloneable<T> extends Cloneable {
 

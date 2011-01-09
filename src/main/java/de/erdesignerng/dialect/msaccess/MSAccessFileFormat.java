@@ -261,9 +261,7 @@ public final class MSAccessFileFormat {
 					}
 				}
 
-				if (ra != null) {
-					ra.close();
-				}
+				ra.close();
 			} catch (FileNotFoundException ex) {
 				LOGGER.error("Cannot find database file " + aFileName, ex);
 			} catch (IOException ex) {

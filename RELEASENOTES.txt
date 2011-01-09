@@ -27,7 +27,7 @@ This software uses or is based on the following libraries:
  Thanks to the following contributors
  
   Thomas Breitkreuz for his H2 dialect, report templates and many good feature requests
-  Thomas Winkler for his MSAccess dialect, testing, several bugfixes, usability enhancements, feature requests and implementtion of CustomTypes
+  Thomas Winkler for his MSAccess dialect, testing, several bugfixes, usability enhancements, feature requests and implementation of CustomTypes
 
 Release 1.0
 
@@ -249,3 +249,4 @@ Release 2.7.0
 * Implemented FR 2895866 [ERDesignerNG] force connection aliases to be unique
 * Implemented FR 2880354 [ERDesignerNG] wrap and indent *.mxm
 * Implemented FR 2895112 [ERDesignerNG] do *not* show column-comments by default
+* Implemented FR 2895244 [ERDesignerNG] make the context-menus consistent

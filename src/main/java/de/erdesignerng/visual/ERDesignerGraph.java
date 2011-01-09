@@ -44,7 +44,6 @@ import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.HideableCell;
-import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.TableCell;
@@ -69,7 +68,8 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	private DisplayOrder displayOrder = DisplayOrder.NATURAL;
 
-	public ERDesignerGraph(Model aDBModel, GraphModel aModel, GraphLayoutCache aLayoutCache) {
+	public ERDesignerGraph(Model aDBModel, GraphModel aModel,
+			GraphLayoutCache aLayoutCache) {
 		super(aModel, aLayoutCache);
 		model = aDBModel;
 
@@ -88,7 +88,8 @@ public abstract class ERDesignerGraph extends JGraph {
 		setMarqueeHandler(aTool);
 	}
 
-	public void commandDeleteCells(DefaultGraphCell[] aCells) throws VetoException {
+	public void commandDeleteCells(List<DefaultGraphCell> aCells)
+			throws VetoException {
 
 		GraphModel theModel = getModel();
 
@@ -105,24 +106,31 @@ public abstract class ERDesignerGraph extends JGraph {
 					getDBModel().removeRelation(theRelation);
 					theModel.remove(new Object[] { theEdge });
 
-					for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation.getMapping().entrySet()) {
+					for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation
+							.getMapping().entrySet()) {
 						Attribute theImportingAttribute = theEntry.getValue();
 
-						if (!(theImportingAttribute.isForeignKey() || theImportingAttribute.isPrimaryKey())) {
+						if (!(theImportingAttribute.isForeignKey() || theImportingAttribute
+								.isPrimaryKey())) {
 							// Only attributes not used in foreign keys or
 							// primary keys can
 							// be dropped, as other things might corrupt the
 							// database if the
 							// update script is run against a filled database
-							if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DELETENOTUSEDATTRIBUTES,
-									theImportingAttribute.getName(), theImportingAttribute.getOwner().getName())) {
+							if (MessagesHelper.displayQuestionMessage(this,
+									ERDesignerBundle.DELETENOTUSEDATTRIBUTES,
+									theImportingAttribute.getName(),
+									theImportingAttribute.getOwner().getName())) {
 								try {
-									getDBModel().removeAttributeFromTable(theRelation.getImportingTable(),
+									getDBModel().removeAttributeFromTable(
+											theRelation.getImportingTable(),
 											theImportingAttribute);
 								} catch (ElementInvalidNameException e) {
-									throw new VetoException("Cannot recreate existing index", e);
+									throw new VetoException(
+											"Cannot recreate existing index", e);
 								} catch (ElementAlreadyExistsException e) {
-									throw new VetoException("Cannot recreate existing index", e);
+									throw new VetoException(
+											"Cannot recreate existing index", e);
 								}
 							}
 						}
@@ -132,7 +140,8 @@ public abstract class ERDesignerGraph extends JGraph {
 				if (theSingleCell instanceof CommentCell) {
 					CommentCell theComment = (CommentCell) theSingleCell;
 
-					getDBModel().removeComment((Comment) theComment.getUserObject());
+					getDBModel().removeComment(
+							(Comment) theComment.getUserObject());
 					theModel.remove(new Object[] { theComment });
 				}
 
@@ -153,16 +162,22 @@ public abstract class ERDesignerGraph extends JGraph {
 					for (CellView theView : theViews) {
 						if (theView instanceof RelationEdgeView) {
 							RelationEdgeView theRelationView = (RelationEdgeView) theView;
-							RelationEdge theEdge = (RelationEdge) theRelationView.getCell();
-							TableCell theSource = (TableCell) ((DefaultPort) theEdge.getSource()).getParent();
-							TableCell theDestination = (TableCell) ((DefaultPort) theEdge.getTarget()).getParent();
+							RelationEdge theEdge = (RelationEdge) theRelationView
+									.getCell();
+							TableCell theSource = (TableCell) ((DefaultPort) theEdge
+									.getSource()).getParent();
+							TableCell theDestination = (TableCell) ((DefaultPort) theEdge
+									.getTarget()).getParent();
 
 							if (theTable.equals(theSource.getUserObject())) {
-								getDBModel().removeRelation((Relation) theEdge.getUserObject());
+								getDBModel().removeRelation(
+										(Relation) theEdge.getUserObject());
 								theObjectsToRemove.add(theEdge);
 							} else {
-								if (theTable.equals(theDestination.getUserObject())) {
-									getDBModel().removeRelation((Relation) theEdge.getUserObject());
+								if (theTable.equals(theDestination
+										.getUserObject())) {
+									getDBModel().removeRelation(
+											(Relation) theEdge.getUserObject());
 									theObjectsToRemove.add(theEdge);
 								}
 							}
@@ -183,7 +198,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a new table to the model.
 	 * 
 	 * @param aPoint
-	 *			the location
+	 *            the location
 	 */
 	public abstract void commandNewTable(Point2D aPoint);
 
@@ -191,7 +206,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a new view to the model.
 	 * 
 	 * @param aPoint
-	 *			the location
+	 *            the location
 	 */
 	public abstract void commandNewView(Point2D aPoint);
 
@@ -199,13 +214,13 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Create a new subject area for a set of cells.
 	 * 
 	 * @param aCells
-	 *			the cells to add to the subject area
+	 *            the cells to add to the subject area
 	 */
-	public void commandAddToNewSubjectArea(List<ModelCell> aCells) {
+	public void commandAddToNewSubjectArea(List<DefaultGraphCell> aCells) {
 
 		SubjectArea theArea = new SubjectArea();
 		SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
-		for (ModelCell theCell : aCells) {
+		for (DefaultGraphCell theCell : aCells) {
 			Object theUserObject = theCell.getUserObject();
 			if (theUserObject instanceof Table) {
 				theArea.getTables().add((Table) theUserObject);
@@ -230,7 +245,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param displayComments
-	 *			the displayComments to set
+	 *            the displayComments to set
 	 */
 	public void setDisplayComments(boolean displayComments) {
 		this.displayComments = displayComments;
@@ -240,7 +255,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a new comment to the model.
 	 * 
 	 * @param aLocation
-	 *			the location
+	 *            the location
 	 */
 	public abstract void commandNewComment(Point2D aLocation);
 
@@ -248,11 +263,12 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a relation to the model.
 	 * 
 	 * @param aImportingCell
-	 *			  - importing Cell
+	 *            - importing Cell
 	 * @param aExportingCell
-	 *			  - exporting Cell
+	 *            - exporting Cell
 	 */
-	public abstract void commandNewRelation(TableCell aImportingCell, TableCell aExportingCell);
+	public abstract void commandNewRelation(TableCell aImportingCell,
+			TableCell aExportingCell);
 
 	/**
 	 * @return the displayLevel
@@ -263,7 +279,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param displayLevel
-	 *			the displayLevel to set
+	 *            the displayLevel to set
 	 */
 	public void setDisplayLevel(DisplayLevel displayLevel) {
 		this.displayLevel = displayLevel;
@@ -278,7 +294,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param displayOrder
-	 *			the displayOrder to set
+	 *            the displayOrder to set
 	 */
 	public void setDisplayOrder(DisplayOrder displayOrder) {
 		this.displayOrder = displayOrder;
@@ -293,7 +309,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param dragging
-	 *			the dragging to set
+	 *            the dragging to set
 	 */
 	public void setDragging(boolean dragging) {
 		this.dragging = dragging;
@@ -309,7 +325,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Hide a list of specific cells.
 	 * 
 	 * @param aCellsToHide
-	 *			the cells to hide
+	 *            the cells to hide
 	 */
 	public abstract void commandHideCells(List<HideableCell> aCellsToHide);
 
@@ -317,20 +333,20 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Create a new table and add if to a new relation.
 	 * 
 	 * @param aLocation
-	 *			the location where the table should be created
+	 *            the location where the table should be created
 	 * @param aExportingTableCell
-	 *			the exporting table cell
+	 *            the exporting table cell
 	 * @param aNewTableIsChild
-	 *			true, if the new table should be the child of the new relation
+	 *            true, if the new table should be the child of the new relation
 	 */
-	public abstract void commandNewTableAndRelation(Point2D aLocation, TableCell aExportingTableCell,
-			boolean aNewTableIsChild);
+	public abstract void commandNewTableAndRelation(Point2D aLocation,
+			TableCell aExportingTableCell, boolean aNewTableIsChild);
 
 	/**
 	 * Command to show a specific cell in the outline view.
 	 * 
 	 * @param aObject
-	 *		  - object to locate
+	 *            - object to locate
 	 */
 	public abstract void commandLocateInOutline(Object aObject);
 
