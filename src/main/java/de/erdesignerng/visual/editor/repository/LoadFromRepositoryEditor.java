@@ -25,7 +25,6 @@ import javax.swing.DefaultComboBoxModel;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -44,7 +43,7 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 	private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
 			new LoadFromRepositoryDataModel());
 
-	public LoadFromRepositoryEditor(Component aParent, ApplicationPreferences aPreferences, Connection aConnection,
+	public LoadFromRepositoryEditor(Component aParent, Connection aConnection,
 			List<RepositoryEntryDescriptor> aEntries) {
 		super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 

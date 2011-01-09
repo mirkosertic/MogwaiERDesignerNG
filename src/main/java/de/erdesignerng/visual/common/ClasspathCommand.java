@@ -28,7 +28,7 @@ public class ClasspathCommand extends UICommand {
 
 	@Override
 	public void execute() {
-		ClasspathEditor theEditor = new ClasspathEditor(getDetailComponent(), getPreferences());
+		ClasspathEditor theEditor = new ClasspathEditor(getDetailComponent());
 		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();

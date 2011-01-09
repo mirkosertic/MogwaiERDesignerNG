@@ -24,7 +24,6 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.DockingHelper;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
@@ -37,13 +36,15 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuBar;
 import de.mogwai.common.i18n.ResourceHelper;
 
-public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesignerWorldConnector {
+public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
+		ERDesignerWorldConnector {
 
 	private final DockingHelper dockingHelper;
 
 	private final ERDesignerComponent component;
 
-	private final ResourceHelper helper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	private final ResourceHelper helper = ResourceHelper
+			.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
 	private final DefaultFrameContent content = new DefaultFrameContent();
 
@@ -57,13 +58,11 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 
 		controller = aController;
 
-		ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
-
 		OutlineComponent.initializeComponent();
 		SQLComponent.initializeComponent();
-		component = ERDesignerComponent.initializeComponent(thePreferences, this);
+		component = ERDesignerComponent.initializeComponent(this);
 
-		dockingHelper = new DockingHelper(thePreferences);
+		dockingHelper = new DockingHelper();
 		try {
 			dockingHelper.initialize();
 		} catch (Exception e) {
@@ -142,7 +141,8 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 	public Model createNewModel() {
 		Model theModel = new Model();
 		theModel.setDialect(controller.getDialect());
-		theModel.setModificationTracker(new HistoryModificationTracker(theModel));
+		theModel
+				.setModificationTracker(new HistoryModificationTracker(theModel));
 		return theModel;
 	}
 
@@ -182,10 +182,10 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements ERDesign
 	 * The preferences were changed, so they need to be reloaded.
 	 * 
 	 * @param aPreferences
-	 *			the preferences
+	 *            the preferences
 	 */
-	public void refreshPreferences(ApplicationPreferences aPreferences) {
-		component.refreshPreferences(aPreferences);
+	public void refreshPreferences() {
+		component.refreshPreferences();
 	}
 
 	@Override

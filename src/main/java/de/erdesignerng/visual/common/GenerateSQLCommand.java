@@ -38,9 +38,11 @@ public class GenerateSQLCommand extends UICommand {
 		Model theModel = component.getModel();
 
 		SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
-		StatementList theStatements = theGenerator.createCreateAllObjects(theModel);
-		SQLEditor theEditor = new SQLEditor(getDetailComponent(), new ModelBasedConnectionProvider(theModel),
-				theStatements, component.currentEditingFile, "schema.sql", getPreferences(), getWorldConnector());
+		StatementList theStatements = theGenerator
+				.createCreateAllObjects(theModel);
+		SQLEditor theEditor = new SQLEditor(getDetailComponent(),
+				new ModelBasedConnectionProvider(theModel), theStatements,
+				component.currentEditingFile, "schema.sql", getWorldConnector());
 		theEditor.showModal();
 	}
 }

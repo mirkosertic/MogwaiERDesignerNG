@@ -51,7 +51,8 @@ import de.erdesignerng.model.CascadeType;
  */
 public class ApplicationPreferences {
 
-	private static final Logger LOGGER = Logger.getLogger(ApplicationPreferences.class);
+	private static final Logger LOGGER = Logger
+			.getLogger(ApplicationPreferences.class);
 
 	private static final String LRUPREFIX = "file_";
 
@@ -62,6 +63,8 @@ public class ApplicationPreferences {
 	private static final String RPCPREFIX = "rpc_";
 
 	private static final String GRIDSIZE = "gridsize";
+
+	private static final String XMLINDENTATION = "xmlindentation";
 
 	private static final String TABLEGRIDWIDTHAFTERREVERSEENGINEERING = "tablegridwidthafterre";
 
@@ -97,6 +100,8 @@ public class ApplicationPreferences {
 
 	private int gridSize;
 
+	private int xmlIndentation;
+
 	private ConnectionDescriptor repositoryConnection;
 
 	private final Map<String, String> windowDefinitions = new HashMap<String, String>();
@@ -131,7 +136,8 @@ public class ApplicationPreferences {
 
 	protected ApplicationPreferences(int aSize) throws BackingStoreException {
 
-		preferences = Preferences.userNodeForPackage(ApplicationPreferences.class);
+		preferences = Preferences
+				.userNodeForPackage(ApplicationPreferences.class);
 		List<String> theNames = Arrays.asList(preferences.keys());
 		for (String theName : theNames) {
 
@@ -141,7 +147,8 @@ public class ApplicationPreferences {
 			}
 			if (theName.startsWith(LRUPREFIX)) {
 				File theFile = new File(preferences.get(theName, ""));
-				if ((theFile.exists()) && (!recentlyUsedFiles.contains(theFile))) {
+				if ((theFile.exists())
+						&& (!recentlyUsedFiles.contains(theFile))) {
 					recentlyUsedFiles.add(theFile);
 				}
 			}
@@ -161,26 +168,30 @@ public class ApplicationPreferences {
 			String theDriver = preferences.get(RPCPREFIX + "DRIVER", "");
 			String thePass = preferences.get(RPCPREFIX + "PASS", "");
 
-			repositoryConnection = new ConnectionDescriptor(null, theDialect, theURL, theUser, theDriver, thePass,
-					false);
+			repositoryConnection = new ConnectionDescriptor(null, theDialect,
+					theURL, theUser, theDriver, thePass, false);
 		}
 
 		for (int i = 0; i < aSize; i++) {
 			if (theNames.contains(LRCPREFIX + "DIALECT_" + i)) {
 				String theAlias = preferences.get(LRCPREFIX + "ALIAS_" + i, "");
-				String theDialect = preferences.get(LRCPREFIX + "DIALECT_" + i, "");
+				String theDialect = preferences.get(LRCPREFIX + "DIALECT_" + i,
+						"");
 				String theURL = preferences.get(LRCPREFIX + "URL_" + i, "");
 				String theUser = preferences.get(LRCPREFIX + "USER_" + i, "");
-				String theDriver = preferences.get(LRCPREFIX + "DRIVER_" + i, "");
+				String theDriver = preferences.get(LRCPREFIX + "DRIVER_" + i,
+						"");
 				String thePass = preferences.get(LRCPREFIX + "PASS_" + i, "");
-				String thePrompt = preferences.get(LRCPREFIX + "PROMPT_" + i, "");
+				String thePrompt = preferences.get(LRCPREFIX + "PROMPT_" + i,
+						"");
 				boolean theBooleanPrompt = false;
 				if (!StringUtils.isEmpty(thePrompt)) {
 					theBooleanPrompt = Boolean.parseBoolean(thePrompt);
 				}
 
-				ConnectionDescriptor theConnection = new ConnectionDescriptor(theAlias, theDialect, theURL, theUser,
-						theDriver, thePass, theBooleanPrompt);
+				ConnectionDescriptor theConnection = new ConnectionDescriptor(
+						theAlias, theDialect, theURL, theUser, theDriver,
+						thePass, theBooleanPrompt);
 				if (!recentlyUsedConnections.contains(theConnection)) {
 					recentlyUsedConnections.add(theConnection);
 				}
@@ -190,19 +201,24 @@ public class ApplicationPreferences {
 		size = aSize;
 		gridSize = preferences.getInt(GRIDSIZE, 10);
 		intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
-		automaticRelationAttributePattern = preferences.get(AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
+		automaticRelationAttributePattern = preferences.get(
+				AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
 		windowLayout = preferences.getByteArray(LAYOUT, new byte[0]);
-		gridWidthAfterReverseEngineering = preferences.getInt(TABLEGRIDWIDTHAFTERREVERSEENGINEERING, 8);
+		gridWidthAfterReverseEngineering = preferences.getInt(
+				TABLEGRIDWIDTHAFTERREVERSEENGINEERING, 8);
+		xmlIndentation = preferences.getInt(XMLINDENTATION, 4);
 
-		onUpdateDefault = CascadeType.fromType(preferences.get(ONUPDATEDEFAULT, CascadeType.NOTHING.getType()));
-		onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT, CascadeType.NOTHING.getType()));
+		onUpdateDefault = CascadeType.fromType(preferences.get(ONUPDATEDEFAULT,
+				CascadeType.NOTHING.getType()));
+		onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT,
+				CascadeType.NOTHING.getType()));
 	}
 
 	/**
 	 * Add a file to the least recently used (LRU) files list.
 	 * 
 	 * @param aFile
-	 *			the file to add
+	 *            the file to add
 	 */
 	public void addRecentlyUsedFile(File aFile) {
 
@@ -221,7 +237,7 @@ public class ApplicationPreferences {
 	 * Add a last used connection to the list.
 	 * 
 	 * @param aConnection
-	 *			the connection
+	 *            the connection
 	 */
 	public void addRecentlyUsedConnection(ConnectionDescriptor aConnection) {
 		if (!recentlyUsedConnections.contains(aConnection)) {
@@ -257,7 +273,7 @@ public class ApplicationPreferences {
 
 	/**
 	 * @param gridSize
-	 *			the gridSize to set
+	 *            the gridSize to set
 	 */
 	public void setGridSize(int gridSize) {
 		this.gridSize = gridSize;
@@ -267,7 +283,7 @@ public class ApplicationPreferences {
 	 * Save the preferences.
 	 * 
 	 * @throws BackingStoreException
-	 *			 is thrown if the operation fails
+	 *             is thrown if the operation fails
 	 */
 	public void store() throws BackingStoreException {
 
@@ -294,37 +310,52 @@ public class ApplicationPreferences {
 		for (int i = 0; i < recentlyUsedConnections.size(); i++) {
 			ConnectionDescriptor theConnection = recentlyUsedConnections.get(i);
 			if (!StringUtils.isEmpty(theConnection.getAlias())) {
-				preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection.getAlias());
+				preferences.put(LRCPREFIX + "ALIAS_" + i, theConnection
+						.getAlias());
 			}
-			preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection.getDialect());
+			preferences.put(LRCPREFIX + "DIALECT_" + i, theConnection
+					.getDialect());
 			preferences.put(LRCPREFIX + "URL_" + i, theConnection.getUrl());
-			preferences.put(LRCPREFIX + "USER_" + i, theConnection.getUsername());
-			preferences.put(LRCPREFIX + "DRIVER_" + i, theConnection.getDriver());
-			preferences.put(LRCPREFIX + "PASS_" + i, theConnection.getPassword());
-			preferences.put(LRCPREFIX + "PROMPT_" + i, Boolean.toString(theConnection.isPromptForPassword()));
+			preferences.put(LRCPREFIX + "USER_" + i, theConnection
+					.getUsername());
+			preferences.put(LRCPREFIX + "DRIVER_" + i, theConnection
+					.getDriver());
+			preferences.put(LRCPREFIX + "PASS_" + i, theConnection
+					.getPassword());
+			preferences.put(LRCPREFIX + "PROMPT_" + i, Boolean
+					.toString(theConnection.isPromptForPassword()));
 		}
 
 		for (int i = 0; i < classpathfiles.size(); i++) {
-			preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i).toString());
+			preferences.put(CLASSPATHPREFIX + i, classpathfiles.get(i)
+					.toString());
 		}
 
 		preferences.putInt(GRIDSIZE, gridSize);
-		preferences.put(AUTOMATICRELATIONATTRIBUTEPATTERN, automaticRelationAttributePattern);
+		preferences.putInt(XMLINDENTATION, xmlIndentation);
+		preferences.put(AUTOMATICRELATIONATTRIBUTEPATTERN,
+				automaticRelationAttributePattern);
 		preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
 		preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
 		preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
 		preferences.putByteArray(LAYOUT, windowLayout);
-		preferences.putInt(TABLEGRIDWIDTHAFTERREVERSEENGINEERING, gridWidthAfterReverseEngineering);
+		preferences.putInt(TABLEGRIDWIDTHAFTERREVERSEENGINEERING,
+				gridWidthAfterReverseEngineering);
 
 		if (repositoryConnection != null) {
-			preferences.put(RPCPREFIX + "DIALECT", repositoryConnection.getDialect());
+			preferences.put(RPCPREFIX + "DIALECT", repositoryConnection
+					.getDialect());
 			preferences.put(RPCPREFIX + "URL", repositoryConnection.getUrl());
-			preferences.put(RPCPREFIX + "USER", repositoryConnection.getUsername());
-			preferences.put(RPCPREFIX + "DRIVER", repositoryConnection.getDriver());
-			preferences.put(RPCPREFIX + "PASS", repositoryConnection.getPassword());
+			preferences.put(RPCPREFIX + "USER", repositoryConnection
+					.getUsername());
+			preferences.put(RPCPREFIX + "DRIVER", repositoryConnection
+					.getDriver());
+			preferences.put(RPCPREFIX + "PASS", repositoryConnection
+					.getPassword());
 		}
 
-		for (Map.Entry<String, String> theWindowEntry : windowDefinitions.entrySet()) {
+		for (Map.Entry<String, String> theWindowEntry : windowDefinitions
+				.entrySet()) {
 			preferences.put(theWindowEntry.getKey(), theWindowEntry.getValue());
 		}
 
@@ -342,12 +373,14 @@ public class ApplicationPreferences {
 			}
 		}
 
-		return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+		return AccessController
+				.doPrivileged(new PrivilegedAction<ClassLoader>() {
 
-			public ClassLoader run() {
-				return new URLClassLoader(theUrls, Thread.currentThread().getContextClassLoader());
-			}
-		});
+					public ClassLoader run() {
+						return new URLClassLoader(theUrls, Thread
+								.currentThread().getContextClassLoader());
+					}
+				});
 	}
 
 	/**
@@ -359,9 +392,10 @@ public class ApplicationPreferences {
 
 	/**
 	 * @param repositoryConnection
-	 *			the repositoryConnection to set
+	 *            the repositoryConnection to set
 	 */
-	public void setRepositoryConnection(ConnectionDescriptor repositoryConnection) {
+	public void setRepositoryConnection(
+			ConnectionDescriptor repositoryConnection) {
 		this.repositoryConnection = repositoryConnection;
 	}
 
@@ -369,12 +403,13 @@ public class ApplicationPreferences {
 	 * Update the last position of a window.
 	 * 
 	 * @param aAlias
-	 *			the alias of the window
+	 *            the alias of the window
 	 * @param aWindow
-	 *			the window
+	 *            the window
 	 */
 	public void updateWindowDefinition(String aAlias, JFrame aWindow) {
-		windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, "" + aWindow.getExtendedState());
+		windowDefinitions.put(WINDOWSTATEPREFIX + aAlias, ""
+				+ aWindow.getExtendedState());
 		updateWindowLocation(aAlias, aWindow);
 		updateWindowSize(aAlias, aWindow);
 	}
@@ -383,15 +418,16 @@ public class ApplicationPreferences {
 	 * Set the current window state as stored by updateWindowDefinition.
 	 * 
 	 * @param aAlias
-	 *			the alias of the window
+	 *            the alias of the window
 	 * @param aFrame
-	 *			the window
+	 *            the window
 	 */
 	public void setWindowState(String aAlias, JFrame aFrame) {
 
 		if (windowDefinitions.containsKey(WINDOWSTATEPREFIX + aAlias)) {
 			try {
-				aFrame.setExtendedState(Integer.parseInt(windowDefinitions.get(WINDOWSTATEPREFIX + aAlias)));
+				aFrame.setExtendedState(Integer.parseInt(windowDefinitions
+						.get(WINDOWSTATEPREFIX + aAlias)));
 				setWindowLocation(aAlias, aFrame);
 				setWindowSize(aAlias, aFrame);
 
@@ -415,8 +451,10 @@ public class ApplicationPreferences {
 
 	public void setWindowSize(String aAlias, Window aWindow) {
 		try {
-			int width = Integer.parseInt(windowDefinitions.get(WINDOWWIDTHPREFIX + aAlias));
-			int height = Integer.parseInt(windowDefinitions.get(WINDOWHEIGHTPREFIX + aAlias));
+			int width = Integer.parseInt(windowDefinitions
+					.get(WINDOWWIDTHPREFIX + aAlias));
+			int height = Integer.parseInt(windowDefinitions
+					.get(WINDOWHEIGHTPREFIX + aAlias));
 
 			aWindow.setSize(width, height);
 		} catch (Exception e) {
@@ -427,13 +465,17 @@ public class ApplicationPreferences {
 
 	public void setWindowLocation(String aAlias, Window aWindow) {
 		try {
-			int x = Integer.parseInt(windowDefinitions.get(WINDOWXPREFIX + aAlias));
-			int y = Integer.parseInt(windowDefinitions.get(WINDOWYPREFIX + aAlias));
+			int x = Integer.parseInt(windowDefinitions.get(WINDOWXPREFIX
+					+ aAlias));
+			int y = Integer.parseInt(windowDefinitions.get(WINDOWYPREFIX
+					+ aAlias));
 
 			// Only set the size and location if its within the available
 			// screen resolution
-			Dimension theCurrentScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			if (x < theCurrentScreenSize.width && y < theCurrentScreenSize.height) {
+			Dimension theCurrentScreenSize = Toolkit.getDefaultToolkit()
+					.getScreenSize();
+			if (x < theCurrentScreenSize.width
+					&& y < theCurrentScreenSize.height) {
 				aWindow.setLocation(x, y);
 			}
 		} catch (Exception e) {
@@ -451,7 +493,7 @@ public class ApplicationPreferences {
 
 	/**
 	 * @param baseDir
-	 *			the baseDir to set
+	 *            the baseDir to set
 	 */
 	public void setBaseDir(File baseDir) {
 		this.baseDir = baseDir;
@@ -466,7 +508,7 @@ public class ApplicationPreferences {
 
 	/**
 	 * @param intelligentLayout
-	 *			the intelligentLayout to set
+	 *            the intelligentLayout to set
 	 */
 	public void setIntelligentLayout(boolean intelligentLayout) {
 		this.intelligentLayout = intelligentLayout;
@@ -499,8 +541,10 @@ public class ApplicationPreferences {
 			return getRelativeFile("dataTypes");
 		}
 
-		String theVersionNumber = MavenPropertiesLocator.getERDesignerVersionInfo();
-		if (theVersionNumber.equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
+		String theVersionNumber = MavenPropertiesLocator
+				.getERDesignerVersionInfo();
+		if (theVersionNumber
+				.equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
 			theVersionNumber = "development";
 		}
 		theVersionNumber = theVersionNumber.replace(".", "_");
@@ -526,7 +570,8 @@ public class ApplicationPreferences {
 		return automaticRelationAttributePattern;
 	}
 
-	public void setAutomaticRelationAttributePattern(String automaticRelationAttributePattern) {
+	public void setAutomaticRelationAttributePattern(
+			String automaticRelationAttributePattern) {
 		this.automaticRelationAttributePattern = automaticRelationAttributePattern;
 	}
 
@@ -558,7 +603,16 @@ public class ApplicationPreferences {
 		return gridWidthAfterReverseEngineering;
 	}
 
-	public void setGridWidthAfterReverseEngineering(int gridWidthAfterReverseEngineering) {
+	public void setGridWidthAfterReverseEngineering(
+			int gridWidthAfterReverseEngineering) {
 		this.gridWidthAfterReverseEngineering = gridWidthAfterReverseEngineering;
+	}
+
+	public int getXmlIndentation() {
+		return xmlIndentation;
+	}
+
+	public void setXmlIndentation(int xmlIndentation) {
+		this.xmlIndentation = xmlIndentation;
 	}
 }

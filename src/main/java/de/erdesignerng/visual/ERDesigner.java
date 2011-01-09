@@ -30,7 +30,6 @@ import org.xml.sax.SAXException;
 import de.erdesignerng.dialect.DataTypeIO;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
 
 /**
@@ -42,21 +41,23 @@ public final class ERDesigner {
 	private ERDesigner() {
 	}
 
-	public static void main(String[] args) throws ElementAlreadyExistsException, ElementInvalidNameException,
-			ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException,
-			TransformerException, IOException, ParserConfigurationException, SAXException, InterruptedException,
-			InvocationTargetException {
+	public static void main(String[] args)
+			throws ElementAlreadyExistsException, ElementInvalidNameException,
+			ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException,
+			TransformerException, IOException, ParserConfigurationException,
+			SAXException, InterruptedException, InvocationTargetException {
 
 		// Disable D3D rendering pipeline
 		System.setProperty("sun.java2d.d3d", "false");
 
-		DefaultSplashScreen theScreen = new DefaultSplashScreen("/de/erdesignerng/splashscreen.jpg");
+		DefaultSplashScreen theScreen = new DefaultSplashScreen(
+				"/de/erdesignerng/splashscreen.jpg");
 		theScreen.setVisible(true);
 
-		ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
-		DataTypeIO.getInstance().loadUserTypes(thePreferences);
+		DataTypeIO.getInstance().loadUserTypes();
 
-		ERDesignerMainFrame frame = new ERDesignerMainFrame(thePreferences);
+		ERDesignerMainFrame frame = new ERDesignerMainFrame();
 		frame.setModel(frame.createNewModel());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

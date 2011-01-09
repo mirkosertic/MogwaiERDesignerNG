@@ -26,6 +26,7 @@ import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.dialect.GenericConnectionProvider;
 import de.erdesignerng.model.serializer.repository.DictionaryModelSerializer;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
@@ -38,33 +39,44 @@ public class GenerateMigrationScriptCommand extends UICommand {
 
 	@Override
 	public void execute() {
-		ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
+		ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
+				.getInstance().getRepositoryConnection();
 		if (theRepositoryConnection == null) {
-			MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-					ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
+			MessagesHelper.displayErrorMessage(getDetailComponent(), component
+					.getResourceHelper().getText(
+							ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
 			return;
 		}
 		Connection theConnection = null;
-		Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
+		Dialect theDialect = DialectFactory.getInstance().getDialect(
+				theRepositoryConnection.getDialect());
 		try {
 
-			theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(),
-					theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
-							.getUsername(), theRepositoryConnection.getPassword(), false);
+			theConnection = theDialect.createConnection(ApplicationPreferences
+					.getInstance().createDriverClassLoader(),
+					theRepositoryConnection.getDriver(),
+					theRepositoryConnection.getUrl(), theRepositoryConnection
+							.getUsername(), theRepositoryConnection
+							.getPassword(), false);
 
-			RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER.getRepositoryEntity(theDialect
-					.getHibernateDialectClass(), theConnection, component.currentRepositoryEntry);
+			RepositoryEntity theEntity = DictionaryModelSerializer.SERIALIZER
+					.getRepositoryEntity(theDialect.getHibernateDialectClass(),
+							theConnection, component.currentRepositoryEntry);
 
-			MigrationScriptEditor theEditor = new MigrationScriptEditor(getDetailComponent(), theEntity,
-					new GenericConnectionProvider(theConnection, theDialect.createSQLGenerator()
-							.createScriptStatementSeparator()), getPreferences(), getWorldConnector());
+			MigrationScriptEditor theEditor = new MigrationScriptEditor(
+					getDetailComponent(), theEntity,
+					new GenericConnectionProvider(theConnection, theDialect
+							.createSQLGenerator()
+							.createScriptStatementSeparator()),
+					getWorldConnector());
 
 			theEditor.showModal();
 
 		} catch (Exception e) {
 			getWorldConnector().notifyAboutException(e);
 		} finally {
-			if (theConnection != null && !theDialect.generatesManagedConnection()) {
+			if (theConnection != null
+					&& !theDialect.generatesManagedConnection()) {
 				try {
 					theConnection.close();
 				} catch (SQLException e) {

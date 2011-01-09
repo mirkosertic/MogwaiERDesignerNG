@@ -30,7 +30,6 @@ import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -53,29 +52,26 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 	private ReverseEngineerView editingView;
 
-	private final ApplicationPreferences preferences;
-
 	private final DefaultListModel<SchemaEntry> schemaList;
 
-	private final DefaultAction updateAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction updateAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandUpdate();
-		}
-	}, this, ERDesignerBundle.UPDATE);
+				@Override
+				public void processActionEvent(ActionEvent e) {
+					commandUpdate();
+				}
+			}, this, ERDesignerBundle.UPDATE);
 
 	/**
 	 * Create a reverse engineering editor.
 	 * 
 	 * @param aModel
-	 *			the model
+	 *            the model
 	 * @param aParent
-	 *			the parent container
-	 * @param aPreferences
-	 *			the preferences
+	 *            the parent container
 	 */
-	public ReverseEngineerEditor(Model aModel, Component aParent, ApplicationPreferences aPreferences) {
+	public ReverseEngineerEditor(Model aModel, Component aParent) {
 		super(aParent, ERDesignerBundle.REVERSEENGINEER);
 
 		model = aModel;
@@ -85,17 +81,18 @@ public class ReverseEngineerEditor extends BaseEditor {
 		ReverseEngineerDataModel theModel = bindingInfo.getDefaultModel();
 
 		theModel.getTableOptions().add(
-				new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper().getText(ERDesignerBundle.STANDARD)));
+				new NameValuePair(TableNamingEnum.STANDARD, getResourceHelper()
+						.getText(ERDesignerBundle.STANDARD)));
 		theModel.getTableOptions().add(
-				new NameValuePair(TableNamingEnum.INCLUDE_SCHEMA, getResourceHelper().getText(
-						ERDesignerBundle.INCLUDESCHEMAINNAME)));
+				new NameValuePair(TableNamingEnum.INCLUDE_SCHEMA,
+						getResourceHelper().getText(
+								ERDesignerBundle.INCLUDESCHEMAINNAME)));
 
 		bindingInfo.addBinding("tableGenerator", editingView.getNaming(), true);
-		bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(editingView.getNaming()));
+		bindingInfo.addBinding("tableOptions", new ComboboxModelAdapter(
+				editingView.getNaming()));
 
 		schemaList = editingView.getSchemaList().getModel();
-
-		preferences = aPreferences;
 
 		bindingInfo.configure();
 		bindingInfo.model2view();
@@ -106,19 +103,23 @@ public class ReverseEngineerEditor extends BaseEditor {
 			// initially show available schemas
 			commandUpdate();
 
-			// Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd
+			// Bug Fixing 2899094 [ERDesignerNG] select first *non-system*
+			// schema in RevEngEd
 			// initially preselect first *non-system* schema if possible
 			if (schemaList.getSize() > 0) {
-				List<String> systemSchemas = model.getDialect().getSystemSchemas();
+				List<String> systemSchemas = model.getDialect()
+						.getSystemSchemas();
 				Integer selectedIndex = null;
 
 				if (systemSchemas != null) {
 					int i = 0;
-					while ((i < schemaList.getSize()) && (selectedIndex == null)) {
+					while ((i < schemaList.getSize())
+							&& (selectedIndex == null)) {
 						boolean isSystemSchema = true;
 						int j = 0;
 						while ((j < systemSchemas.size()) && (isSystemSchema)) {
-							isSystemSchema = schemaList.get(i).getSchemaName().equals(systemSchemas.get(j));
+							isSystemSchema = schemaList.get(i).getSchemaName()
+									.equals(systemSchemas.get(j));
 							j++;
 						}
 
@@ -129,7 +130,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 						i++;
 					}
 				}
-				
+
 				if (selectedIndex == null) {
 					selectedIndex = 0;
 				}
@@ -140,7 +141,8 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 		// initially preselect first table-generation item, if possible
 		if (editingView.getNaming().getModel().getSize() > 0) {
-			editingView.getNaming().setSelectedItem(editingView.getNaming().getModel().getElementAt(0));
+			editingView.getNaming().setSelectedItem(
+					editingView.getNaming().getModel().getElementAt(0));
 		}
 	}
 
@@ -153,10 +155,13 @@ public class ReverseEngineerEditor extends BaseEditor {
 		editingView.getStartButton().setAction(okAction);
 		editingView.getCancelButton().setAction(cancelAction);
 		editingView.getRefreshButton().setAction(updateAction);
-		editingView.getSchemaList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		editingView.getSchemaList().setSelectionMode(
+				ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-		editingView.getSchemaList().setEnabled(model.getDialect().isSupportsSchemaInformation());
-		editingView.getRefreshButton().setEnabled(model.getDialect().isSupportsSchemaInformation());
+		editingView.getSchemaList().setEnabled(
+				model.getDialect().isSupportsSchemaInformation());
+		editingView.getRefreshButton().setEnabled(
+				model.getDialect().isSupportsSchemaInformation());
 
 		setContentPane(editingView);
 		setResizable(false);
@@ -169,10 +174,12 @@ public class ReverseEngineerEditor extends BaseEditor {
 	@Override
 	protected void commandOk() {
 		if (bindingInfo.validate().size() == 0) {
-			Object[] theSelectedValues = editingView.getSchemaList().getSelectedValues();
+			Object[] theSelectedValues = editingView.getSchemaList()
+					.getSelectedValues();
 			if (((theSelectedValues == null) || (theSelectedValues.length == 0))
 					&& (model.getDialect().isSupportsSchemaInformation())) {
-				MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.CHOOSEONESCHEMA));
+				MessagesHelper.displayErrorMessage(this, getResourceHelper()
+						.getText(ERDesignerBundle.CHOOSEONESCHEMA));
 				return;
 			}
 			setModalResult(MODAL_RESULT_OK);
@@ -187,16 +194,18 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 			Connection theConnection = null;
 			try {
-				theConnection = model.createConnection(preferences);
+				theConnection = model.createConnection();
 				if (theConnection == null) {
 					return;
 				}
 
 				schemaList.clear();
 
-				JDBCReverseEngineeringStrategy theStrategy = model.getDialect().getReverseEngineeringStrategy();
+				JDBCReverseEngineeringStrategy theStrategy = model.getDialect()
+						.getReverseEngineeringStrategy();
 
-				List<SchemaEntry> theEntries = theStrategy.getSchemaEntries(theConnection);
+				List<SchemaEntry> theEntries = theStrategy
+						.getSchemaEntries(theConnection);
 				for (SchemaEntry theEntry : theEntries) {
 					schemaList.add(theEntry);
 				}
@@ -224,10 +233,12 @@ public class ReverseEngineerEditor extends BaseEditor {
 		bindingInfo.view2model();
 
 		ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-		theOptions.setTableNaming((TableNamingEnum) theModel.getTableGenerator().getValue());
+		theOptions.setTableNaming((TableNamingEnum) theModel
+				.getTableGenerator().getValue());
 
 		if (model.getDialect().isSupportsSchemaInformation()) {
-			for (Object theEntry : editingView.getSchemaList().getSelectedValues()) {
+			for (Object theEntry : editingView.getSchemaList()
+					.getSelectedValues()) {
 				theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
 			}
 		}

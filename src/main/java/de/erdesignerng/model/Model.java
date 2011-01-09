@@ -81,15 +81,16 @@ public class Model extends ModelItem {
 	 * Add a table to the database model.
 	 * 
 	 * @param aTable
-	 *			the table
+	 *            the table
 	 * @throws ElementAlreadyExistsException
-	 *			 is thrown in case of an error
+	 *             is thrown in case of an error
 	 * @throws ElementInvalidNameException
-	 *			 is thrown in case of an error
+	 *             is thrown in case of an error
 	 * @throws VetoException
-	 *			 if there is a veto for doing this
+	 *             if there is a veto for doing this
 	 */
-	public void addTable(Table aTable) throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+	public void addTable(Table aTable) throws ElementAlreadyExistsException,
+			ElementInvalidNameException, VetoException {
 
 		modificationTracker.addTable(aTable);
 
@@ -110,15 +111,16 @@ public class Model extends ModelItem {
 	 * Add a relation to the database model.
 	 * 
 	 * @param aRelation
-	 *			the table
+	 *            the table
 	 * @throws ElementAlreadyExistsException
-	 *			 is thrown in case of an error
+	 *             is thrown in case of an error
 	 * @throws ElementInvalidNameException
-	 *			 is thrown in case of an error
+	 *             is thrown in case of an error
 	 * @throws VetoException
-	 *			 is thrown in case of an error
+	 *             is thrown in case of an error
 	 */
-	public void addRelation(Relation aRelation) throws ElementAlreadyExistsException, ElementInvalidNameException,
+	public void addRelation(Relation aRelation)
+			throws ElementAlreadyExistsException, ElementInvalidNameException,
 			VetoException {
 
 		ModelUtilities.checkNameAndExistence(relations, aRelation, dialect);
@@ -152,32 +154,35 @@ public class Model extends ModelItem {
 	/**
 	 * Create a JDBC database connection.
 	 * 
-	 * @param aPreferences
-	 *			the preferences
 	 * @return the database connection
 	 * @throws ClassNotFoundException
-	 *			 is thrown in case of an exception
+	 *             is thrown in case of an exception
 	 * @throws InstantiationException
-	 *			 is thrown in case of an exception
+	 *             is thrown in case of an exception
 	 * @throws IllegalAccessException
-	 *			 is thrown in case of an exception
+	 *             is thrown in case of an exception
 	 * @throws SQLException
-	 *			 is thrown in case of an exception
+	 *             is thrown in case of an exception
 	 */
-	public Connection createConnection(ApplicationPreferences aPreferences) throws ClassNotFoundException,
+	public Connection createConnection() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException, SQLException {
 
 		ModelProperties theProperties = getProperties();
 
-		Connection theConnection = getDialect().createConnection(aPreferences.createDriverClassLoader(),
-				theProperties.getProperty(PROPERTY_DRIVER), theProperties.getProperty(PROPERTY_URL),
-				theProperties.getProperty(PROPERTY_USER), theProperties.getProperty(PROPERTY_PASSWORD),
-				theProperties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
+		Connection theConnection = getDialect().createConnection(
+				ApplicationPreferences.getInstance().createDriverClassLoader(),
+				theProperties.getProperty(PROPERTY_DRIVER),
+				theProperties.getProperty(PROPERTY_URL),
+				theProperties.getProperty(PROPERTY_USER),
+				theProperties.getProperty(PROPERTY_PASSWORD),
+				theProperties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD,
+						false));
 		return theConnection;
 	}
 
 	public boolean checkIfUsedAsForeignKey(Table aTable, Attribute aAttribute) {
-		Attribute theRealAttribute = aTable.getAttributes().findBySystemId(aAttribute.getSystemId());
+		Attribute theRealAttribute = aTable.getAttributes().findBySystemId(
+				aAttribute.getSystemId());
 		return getRelations().isForeignKeyAttribute(theRealAttribute);
 	}
 
@@ -185,10 +190,10 @@ public class Model extends ModelItem {
 	 * Remove a table from the model.
 	 * 
 	 * @param aTable
-	 *			the table
+	 *            the table
 	 * @throws VetoException
-	 *			 will be thrown if the modification tracker has a veto for
-	 *			 completing this operation
+	 *             will be thrown if the modification tracker has a veto for
+	 *             completing this operation
 	 */
 	public void removeTable(Table aTable) throws VetoException {
 
@@ -204,10 +209,10 @@ public class Model extends ModelItem {
 	 * Remove a relation from the model.
 	 * 
 	 * @param aRelation
-	 *			the relation
+	 *            the relation
 	 * @throws VetoException
-	 *			 will be thrown if the modification tracker has a veto for
-	 *			 completing this operation
+	 *             will be thrown if the modification tracker has a veto for
+	 *             completing this operation
 	 */
 	public void removeRelation(Relation aRelation) throws VetoException {
 
@@ -215,8 +220,9 @@ public class Model extends ModelItem {
 		relations.remove(aRelation);
 	}
 
-	public void removeAttributeFromTable(Table aTable, Attribute aAttribute) throws VetoException,
-			ElementAlreadyExistsException, ElementInvalidNameException {
+	public void removeAttributeFromTable(Table aTable, Attribute aAttribute)
+			throws VetoException, ElementAlreadyExistsException,
+			ElementInvalidNameException {
 
 		for (Index theIndex : aTable.getIndexes()) {
 			if (theIndex.getExpressions().findByAttribute(aAttribute) != null) {
@@ -248,21 +254,24 @@ public class Model extends ModelItem {
 		aTable.getIndexes().removeById(aIndex.getSystemId());
 	}
 
-	public void addAttributeToTable(Table aTable, Attribute aAttribute) throws VetoException,
-			ElementAlreadyExistsException, ElementInvalidNameException {
+	public void addAttributeToTable(Table aTable, Attribute aAttribute)
+			throws VetoException, ElementAlreadyExistsException,
+			ElementInvalidNameException {
 
 		modificationTracker.addAttributeToTable(aTable, aAttribute);
 		aTable.addAttribute(this, aAttribute);
 	}
 
-	public void changeAttribute(Attribute anExistingAttribute, Attribute aNewAttribute) throws Exception {
+	public void changeAttribute(Attribute anExistingAttribute,
+			Attribute aNewAttribute) throws Exception {
 
 		modificationTracker.changeAttribute(anExistingAttribute, aNewAttribute);
 
 		anExistingAttribute.restoreFrom(aNewAttribute);
 	}
 
-	public void addIndexToTable(Table aTable, Index aIndex) throws VetoException, ElementAlreadyExistsException,
+	public void addIndexToTable(Table aTable, Index aIndex)
+			throws VetoException, ElementAlreadyExistsException,
 			ElementInvalidNameException {
 
 		if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
@@ -274,7 +283,8 @@ public class Model extends ModelItem {
 		aTable.addIndex(this, aIndex);
 	}
 
-	public void changeIndex(Index anExistingIndex, Index aNewIndex) throws Exception {
+	public void changeIndex(Index anExistingIndex, Index aNewIndex)
+			throws Exception {
 
 		modificationTracker.changeIndex(anExistingIndex, aNewIndex);
 
@@ -288,20 +298,23 @@ public class Model extends ModelItem {
 		aTable.setName(aNewName);
 	}
 
-	public void changeTableComment(Table aTable, String aNewComment) throws VetoException {
+	public void changeTableComment(Table aTable, String aNewComment)
+			throws VetoException {
 
 		modificationTracker.changeTableComment(aTable, aNewComment);
 
 		aTable.setComment(aNewComment);
 	}
 
-	public void renameAttribute(Attribute anExistingAttribute, String aNewName) throws VetoException {
+	public void renameAttribute(Attribute anExistingAttribute, String aNewName)
+			throws VetoException {
 		modificationTracker.renameAttribute(anExistingAttribute, aNewName);
 
 		anExistingAttribute.setName(aNewName);
 	}
 
-	public void changeRelation(Relation aRelation, Relation aTempRelation) throws Exception {
+	public void changeRelation(Relation aRelation, Relation aTempRelation)
+			throws Exception {
 
 		modificationTracker.changeRelation(aRelation, aTempRelation);
 		aRelation.restoreFrom(aTempRelation);
@@ -313,7 +326,8 @@ public class Model extends ModelItem {
 		return modificationTracker;
 	}
 
-	public void setModificationTracker(ModelModificationTracker modificationTracker) {
+	public void setModificationTracker(
+			ModelModificationTracker modificationTracker) {
 		this.modificationTracker = modificationTracker;
 	}
 
@@ -321,7 +335,7 @@ public class Model extends ModelItem {
 	 * Add a new subject area.
 	 * 
 	 * @param aArea
-	 *			the area
+	 *            the area
 	 */
 	public void addSubjectArea(SubjectArea aArea) {
 		subjectAreas.add(aArea);
@@ -331,7 +345,7 @@ public class Model extends ModelItem {
 	 * Remove a subject area.
 	 * 
 	 * @param aArea
-	 *			the area
+	 *            the area
 	 */
 	public void removeSubjectArea(SubjectArea aArea) {
 		subjectAreas.remove(aArea);
@@ -350,27 +364,33 @@ public class Model extends ModelItem {
 	 * @return the history entry
 	 */
 	public ConnectionDescriptor createConnectionHistoryEntry() {
-		String theDialectName = dialect != null ? dialect.getUniqueName() : null;
-		return new ConnectionDescriptor(getProperties().getProperty(PROPERTY_ALIAS), theDialectName, getProperties()
-				.getProperty(PROPERTY_URL), getProperties().getProperty(PROPERTY_USER), getProperties().getProperty(
-				PROPERTY_DRIVER), getProperties().getProperty(PROPERTY_PASSWORD), getProperties().getBooleanProperty(
-				PROPERTY_PROMPTFORPASSWORD, false));
+		String theDialectName = dialect != null ? dialect.getUniqueName()
+				: null;
+		return new ConnectionDescriptor(getProperties().getProperty(
+				PROPERTY_ALIAS), theDialectName, getProperties().getProperty(
+				PROPERTY_URL), getProperties().getProperty(PROPERTY_USER),
+				getProperties().getProperty(PROPERTY_DRIVER), getProperties()
+						.getProperty(PROPERTY_PASSWORD), getProperties()
+						.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
 	}
 
 	/**
 	 * Initialize the model with a defined connection.
 	 * 
 	 * @param aConnection
-	 *			the connection
+	 *            the connection
 	 */
 	public void initializeWith(ConnectionDescriptor aConnection) {
-		setDialect(DialectFactory.getInstance().getDialect(aConnection.getDialect()));
+		setDialect(DialectFactory.getInstance().getDialect(
+				aConnection.getDialect()));
 		getProperties().setProperty(PROPERTY_ALIAS, aConnection.getAlias());
 		getProperties().setProperty(PROPERTY_DRIVER, aConnection.getDriver());
 		getProperties().setProperty(PROPERTY_USER, aConnection.getUsername());
-		getProperties().setProperty(PROPERTY_PASSWORD, aConnection.getPassword());
+		getProperties().setProperty(PROPERTY_PASSWORD,
+				aConnection.getPassword());
 		getProperties().setProperty(PROPERTY_URL, aConnection.getUrl());
-		getProperties().setProperty(PROPERTY_PROMPTFORPASSWORD, aConnection.isPromptForPassword());
+		getProperties().setProperty(PROPERTY_PROMPTFORPASSWORD,
+				aConnection.isPromptForPassword());
 	}
 
 	/**
@@ -386,7 +406,7 @@ public class Model extends ModelItem {
 	 * Remove a comment from the model.
 	 * 
 	 * @param aComment
-	 *			the comment
+	 *            the comment
 	 */
 	public void removeComment(Comment aComment) {
 		comments.remove(aComment);
@@ -397,7 +417,7 @@ public class Model extends ModelItem {
 	 * Add a comment to the model.
 	 * 
 	 * @param aComment
-	 *			the comment
+	 *            the comment
 	 */
 	public void addComment(Comment aComment) {
 		aComment.setOwner(this);
@@ -441,9 +461,9 @@ public class Model extends ModelItem {
 	 * Add a domain to the model.
 	 * 
 	 * @param aDomain
-	 *		  - domain
+	 *            - domain
 	 * @throws VetoException
-	 *		  - veto exception
+	 *             - veto exception
 	 */
 	public void addDomain(Domain aDomain) throws VetoException {
 
@@ -457,9 +477,9 @@ public class Model extends ModelItem {
 	 * Remove a domain from the model.
 	 * 
 	 * @param aDomain
- *			  - a domain
+	 *            - a domain
 	 * @throws VetoException
-	 *		  - veto exception
+	 *             - veto exception
 	 */
 	public void removeDomain(Domain aDomain) throws VetoException {
 
@@ -470,11 +490,11 @@ public class Model extends ModelItem {
 
 	/**
 	 * Add a custom datatype to the model.
-	 *
+	 * 
 	 * @param aCustomType
-	 *		  - the custom datatype
+	 *            - the custom datatype
 	 * @throws VetoException
-	 *		  - veto exception
+	 *             - veto exception
 	 */
 	public void addCustomType(CustomType aCustomType) throws VetoException {
 
@@ -486,11 +506,11 @@ public class Model extends ModelItem {
 
 	/**
 	 * Remove a custom datatype from the model.
-	 *
+	 * 
 	 * @param aCustomType
-	 *		  - the custom datatype
+	 *            - the custom datatype
 	 * @throws VetoException
-	 *		  - veto exception
+	 *             - veto exception
 	 */
 	public void removeCustomType(CustomType aCustomType) throws VetoException {
 
@@ -503,15 +523,16 @@ public class Model extends ModelItem {
 	 * Add a view to the model.
 	 * 
 	 * @param aView
-	 *			the view
+	 *            the view
 	 * @throws VetoException
-	 *			 is thrown if someone has a veto to add the view
+	 *             is thrown if someone has a veto to add the view
 	 * @throws ElementAlreadyExistsException
-	 *			 is thrown if there is already
+	 *             is thrown if there is already
 	 * @throws ElementInvalidNameException
-	 *			 is thrown if the name is invalid
+	 *             is thrown if the name is invalid
 	 */
-	public void addView(View aView) throws VetoException, ElementInvalidNameException, ElementAlreadyExistsException {
+	public void addView(View aView) throws VetoException,
+			ElementInvalidNameException, ElementAlreadyExistsException {
 
 		modificationTracker.addView(aView);
 
@@ -528,9 +549,9 @@ public class Model extends ModelItem {
 	 * Remove a view from the model.
 	 * 
 	 * @param aView
-	 *			a view
+	 *            a view
 	 * @throws VetoException
-	 *			 is thrown is someone has a veto to remove the view
+	 *             is thrown is someone has a veto to remove the view
 	 */
 	public void removeView(View aView) throws VetoException {
 
@@ -566,9 +587,9 @@ public class Model extends ModelItem {
 	 * Mark a view as changed.
 	 * 
 	 * @param aView
-	 *			the view
+	 *            the view
 	 * @throws VetoException
-	 *			 is thrown if someone has a veto to change the view
+	 *             is thrown if someone has a veto to change the view
 	 */
 	public void changeView(View aView) throws VetoException {
 		modificationTracker.changeView(aView);
@@ -599,7 +620,7 @@ public class Model extends ModelItem {
 	 * Convert the model using defined conversion infos.
 	 * 
 	 * @param aConversionInfo
-	 *			the conversion info.
+	 *            the conversion info.
 	 */
 	public void convert(ConversionInfos aConversionInfo) {
 		Dialect theNewDialect = aConversionInfo.getTargetDialect();
@@ -608,15 +629,18 @@ public class Model extends ModelItem {
 		setDialect(theNewDialect);
 
 		// Update the database connection
-		getProperties().setProperty(PROPERTY_DRIVER, theNewDialect.getDriverClassName());
-		getProperties().setProperty(PROPERTY_URL, theNewDialect.getDriverURLTemplate());
+		getProperties().setProperty(PROPERTY_DRIVER,
+				theNewDialect.getDriverClassName());
+		getProperties().setProperty(PROPERTY_URL,
+				theNewDialect.getDriverURLTemplate());
 		getProperties().setProperty(PROPERTY_USER, "");
 		getProperties().setProperty(PROPERTY_PASSWORD, "");
 		getProperties().setProperty(PROPERTY_ALIAS, "");
 
 		// Convert the domains
 		for (Domain theDomain : getDomains()) {
-			theDomain.setConcreteType(aConversionInfo.getTypeMapping().get(theDomain));
+			theDomain.setConcreteType(aConversionInfo.getTypeMapping().get(
+					theDomain));
 		}
 
 		// Convert the attributes
@@ -626,7 +650,8 @@ public class Model extends ModelItem {
 
 				// Never convert domains, only concrete types !
 				if (!theType.isDomain()) {
-					theAttribute.setDatatype(aConversionInfo.getTypeMapping().get(theType));
+					theAttribute.setDatatype(aConversionInfo.getTypeMapping()
+							.get(theType));
 				}
 			}
 		}
@@ -672,17 +697,19 @@ public class Model extends ModelItem {
 			theInfo.register(theView);
 		}
 		for (Relation theRelation : relations) {
-			theInfo.addDependencyFor(theRelation.getImportingTable(), new Dependency(
-					Dependency.DependencyType.DEPENDSON, theRelation.getExportingTable()));
-			theInfo.addDependencyFor(theRelation.getExportingTable(), new Dependency(
-					Dependency.DependencyType.ISREQUIREDBY, theRelation.getImportingTable()));
+			theInfo.addDependencyFor(theRelation.getImportingTable(),
+					new Dependency(Dependency.DependencyType.DEPENDSON,
+							theRelation.getExportingTable()));
+			theInfo.addDependencyFor(theRelation.getExportingTable(),
+					new Dependency(Dependency.DependencyType.ISREQUIREDBY,
+							theRelation.getImportingTable()));
 		}
 		return theInfo;
 	}
 
 	public void addElementPropertiesTo(List<String> aValues,
 			ERDesignerElementType aElementType, String aPropertyName) {
-		switch(aElementType) {
+		switch (aElementType) {
 		case TABLE:
 		case VIEW:
 		case RELATION:

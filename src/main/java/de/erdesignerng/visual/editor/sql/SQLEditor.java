@@ -54,33 +54,37 @@ import de.mogwai.common.client.looks.components.list.DefaultListModel;
  */
 public class SQLEditor extends BaseEditor {
 
-	private final DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction closeAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void processActionEvent(ActionEvent e) {
-			commandClose();
-		}
-	}, this, ERDesignerBundle.CLOSE);
+				public void processActionEvent(ActionEvent e) {
+					commandClose();
+				}
+			}, this, ERDesignerBundle.CLOSE);
 
-	private final DefaultAction executeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction executeAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void processActionEvent(ActionEvent e) {
-			commandExecute();
-		}
-	}, this, ERDesignerBundle.EXECUTESCRIPT);
+				public void processActionEvent(ActionEvent e) {
+					commandExecute();
+				}
+			}, this, ERDesignerBundle.EXECUTESCRIPT);
 
-	private final DefaultAction saveToFileAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction saveToFileAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void processActionEvent(ActionEvent e) {
-			commandSaveToFile();
-		}
-	}, this, ERDesignerBundle.SAVESCRIPTTOFILE);
+				public void processActionEvent(ActionEvent e) {
+					commandSaveToFile();
+				}
+			}, this, ERDesignerBundle.SAVESCRIPTTOFILE);
 
-	private final DefaultAction deleteAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction deleteAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void processActionEvent(ActionEvent e) {
-			commandDeleteSelectedEntry();
-		}
-	}, this, ERDesignerBundle.DELETE);
+				public void processActionEvent(ActionEvent e) {
+					commandDeleteSelectedEntry();
+				}
+			}, this, ERDesignerBundle.DELETE);
 
 	private final File lastEditedFile;
 
@@ -92,16 +96,13 @@ public class SQLEditor extends BaseEditor {
 
 	private final StatementList statements;
 
-	private final ApplicationPreferences preferences;
-
 	private final ERDesignerWorldConnector worldConnector;
 
-	public SQLEditor(Component aParent, ConnectionProvider aConnectionAdapter, StatementList aStatements,
-			File aLastEditedFile, String aFileName, ApplicationPreferences aPreferences,
+	public SQLEditor(Component aParent, ConnectionProvider aConnectionAdapter,
+			StatementList aStatements, File aLastEditedFile, String aFileName,
 			ERDesignerWorldConnector aConnector) {
 		super(aParent, ERDesignerBundle.SQLWINDOW);
 
-		preferences = aPreferences;
 		connectionAdapter = aConnectionAdapter;
 		lastEditedFile = aLastEditedFile;
 		filename = aFileName;
@@ -114,7 +115,8 @@ public class SQLEditor extends BaseEditor {
 		view.getSqlList().addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
-				deleteAction.setEnabled(view.getSqlList().getSelectedIndex() >= 0);
+				deleteAction
+						.setEnabled(view.getSqlList().getSelectedIndex() >= 0);
 			}
 		});
 
@@ -138,7 +140,8 @@ public class SQLEditor extends BaseEditor {
 		pack();
 
 		setMinimumSize(getSize());
-		preferences.setWindowSize(getClass().getSimpleName(), this);
+		ApplicationPreferences.getInstance().setWindowSize(
+				getClass().getSimpleName(), this);
 
 		UIInitializer.getInstance().initialize(this);
 	}
@@ -160,7 +163,8 @@ public class SQLEditor extends BaseEditor {
 	}
 
 	private void commandClose() {
-		preferences.updateWindowSize(getClass().getSimpleName(), this);
+		ApplicationPreferences.getInstance().updateWindowSize(
+				getClass().getSimpleName(), this);
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
 	}
 
@@ -170,7 +174,8 @@ public class SQLEditor extends BaseEditor {
 		saveToFileAction.setEnabled(false);
 		deleteAction.setEnabled(false);
 
-		LongRunningTask<String> theTask = new LongRunningTask<String>(worldConnector) {
+		LongRunningTask<String> theTask = new LongRunningTask<String>(
+				worldConnector) {
 			@Override
 			public String doWork(MessagePublisher aPublisher) throws Exception {
 
@@ -179,7 +184,7 @@ public class SQLEditor extends BaseEditor {
 				Connection theConnection = null;
 				try {
 
-					theConnection = connectionAdapter.createConnection(ApplicationPreferences.getInstance());
+					theConnection = connectionAdapter.createConnection();
 
 					for (int i = 0; i < theModel.getSize(); i++) {
 						Statement theStatement = (Statement) theModel.get(i);
@@ -190,7 +195,8 @@ public class SQLEditor extends BaseEditor {
 
 							java.sql.Statement theJDBCStatement = null;
 							try {
-								theJDBCStatement = theConnection.createStatement();
+								theJDBCStatement = theConnection
+										.createStatement();
 								theJDBCStatement.execute(theStatement.getSql());
 
 								theStatement.setExecuted(true);
@@ -249,7 +255,8 @@ public class SQLEditor extends BaseEditor {
 		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		theChooser.setFileFilter(theFiler);
 		if (lastEditedFile != null) {
-			theChooser.setSelectedFile(new File(lastEditedFile.getParent(), filename));
+			theChooser.setSelectedFile(new File(lastEditedFile.getParent(),
+					filename));
 		} else {
 			theChooser.setSelectedFile(new File(filename));
 		}
@@ -257,7 +264,8 @@ public class SQLEditor extends BaseEditor {
 
 			DefaultListModel theModel = view.getSqlList().getModel();
 			try {
-				File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+				File theFile = theFiler.getCompletedFile(theChooser
+						.getSelectedFile());
 				FileWriter theWriter = new FileWriter(theFile);
 				PrintWriter thePW = new PrintWriter(theWriter);
 
@@ -265,13 +273,15 @@ public class SQLEditor extends BaseEditor {
 					Statement theStatement = (Statement) theModel.get(i);
 
 					thePW.print(theStatement.getSql());
-					thePW.println(connectionAdapter.createScriptStatementSeparator());
+					thePW.println(connectionAdapter
+							.createScriptStatementSeparator());
 				}
 
 				thePW.flush();
 				thePW.close();
 
-				MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+				MessagesHelper.displayInfoMessage(this, getResourceHelper()
+						.getText(ERDesignerBundle.FILESAVED));
 
 			} catch (Exception e) {
 				logFatalError(e);
@@ -281,7 +291,8 @@ public class SQLEditor extends BaseEditor {
 
 	private void commandDeleteSelectedEntry() {
 
-		if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+		if (MessagesHelper.displayQuestionMessage(this,
+				ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
 			Object theSelectedElement = view.getSqlList().getSelectedValue();
 
 			DefaultListModel theModel = view.getSqlList().getModel();

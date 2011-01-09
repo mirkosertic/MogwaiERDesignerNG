@@ -27,6 +27,7 @@ import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -40,37 +41,48 @@ public class OpenFromRepositoryCommand extends UICommand {
 
 	@Override
 	public void execute() {
-		ConnectionDescriptor theRepositoryConnection = getPreferences().getRepositoryConnection();
+		ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
+				.getInstance().getRepositoryConnection();
 		if (theRepositoryConnection == null) {
-			MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-					ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
+			MessagesHelper.displayErrorMessage(getDetailComponent(), component
+					.getResourceHelper().getText(
+							ERDesignerBundle.ERRORINREPOSITORYCONNECTION));
 			return;
 		}
 		Connection theConnection = null;
-		Dialect theDialect = DialectFactory.getInstance().getDialect(theRepositoryConnection.getDialect());
+		Dialect theDialect = DialectFactory.getInstance().getDialect(
+				theRepositoryConnection.getDialect());
 		try {
 
 			component.setIntelligentLayoutEnabled(false);
 
-			theConnection = theDialect.createConnection(getPreferences().createDriverClassLoader(),
-					theRepositoryConnection.getDriver(), theRepositoryConnection.getUrl(), theRepositoryConnection
-							.getUsername(), theRepositoryConnection.getPassword(), false);
+			theConnection = theDialect.createConnection(ApplicationPreferences
+					.getInstance().createDriverClassLoader(),
+					theRepositoryConnection.getDriver(),
+					theRepositoryConnection.getUrl(), theRepositoryConnection
+							.getUsername(), theRepositoryConnection
+							.getPassword(), false);
 
-			List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities.getInstance().getRepositoryEntries(
-					theDialect, theConnection);
+			List<RepositoryEntryDescriptor> theEntries = ModelIOUtilities
+					.getInstance().getRepositoryEntries(theDialect,
+							theConnection);
 
-			LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(getDetailComponent(), getPreferences(),
-					theConnection, theEntries);
+			LoadFromRepositoryEditor theEditor = new LoadFromRepositoryEditor(
+					getDetailComponent(), theConnection, theEntries);
 			if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-				RepositoryEntryDescriptor theDescriptor = theEditor.getModel().getEntry();
+				RepositoryEntryDescriptor theDescriptor = theEditor.getModel()
+						.getEntry();
 
-				Model theModel = ModelIOUtilities.getInstance().deserializeModelFromRepository(theDescriptor,
-						theDialect, theConnection, getPreferences());
+				Model theModel = ModelIOUtilities.getInstance()
+						.deserializeModelFromRepository(theDescriptor,
+								theDialect, theConnection);
 				getWorldConnector().initializeLoadedModel(theModel);
 
 				component.setupViewFor(theDescriptor);
-				getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+				getWorldConnector().setStatusText(
+						component.getResourceHelper().getText(
+								ERDesignerBundle.FILELOADED));
 
 				component.currentRepositoryEntry = theDescriptor;
 				component.currentEditingFile = null;
@@ -81,7 +93,8 @@ public class OpenFromRepositoryCommand extends UICommand {
 		} catch (Exception e) {
 			getWorldConnector().notifyAboutException(e);
 		} finally {
-			if (theConnection != null && !theDialect.generatesManagedConnection()) {
+			if (theConnection != null
+					&& !theDialect.generatesManagedConnection()) {
 				try {
 					theConnection.close();
 				} catch (SQLException e) {

@@ -27,7 +27,6 @@ import de.erdesignerng.dialect.ConnectionProvider;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
@@ -51,16 +50,14 @@ public class MigrationScriptEditor extends BaseEditor {
 
 	private final ConnectionProvider connectionProvider;
 
-	private final ApplicationPreferences preferences;
-
 	private final ERDesignerWorldConnector worldConnector;
 
-	public MigrationScriptEditor(Component aParent, RepositoryEntity aRepositoryEntity,
-			ConnectionProvider aConnectionProvider, ApplicationPreferences aPreferences,
+	public MigrationScriptEditor(Component aParent,
+			RepositoryEntity aRepositoryEntity,
+			ConnectionProvider aConnectionProvider,
 			ERDesignerWorldConnector aWorldConnector) {
 		super(aParent, ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
-		preferences = aPreferences;
 		worldConnector = aWorldConnector;
 
 		initialize();
@@ -68,8 +65,10 @@ public class MigrationScriptEditor extends BaseEditor {
 		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
 		DefaultComboBoxModel theModel2 = new DefaultComboBoxModel();
 		for (ChangeEntity theEntry : aRepositoryEntity.getChanges()) {
-			theModel.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
-			theModel2.addElement(new ChangeDescriptor(theEntry, aRepositoryEntity.getChanges().indexOf(theEntry)));
+			theModel.addElement(new ChangeDescriptor(theEntry,
+					aRepositoryEntity.getChanges().indexOf(theEntry)));
+			theModel2.addElement(new ChangeDescriptor(theEntry,
+					aRepositoryEntity.getChanges().indexOf(theEntry)));
 		}
 
 		view.getSourceVersion().setModel(theModel);
@@ -79,7 +78,8 @@ public class MigrationScriptEditor extends BaseEditor {
 		connectionProvider = aConnectionProvider;
 
 		bindingInfo.addBinding("sourceChange", view.getSourceVersion(), true);
-		bindingInfo.addBinding("destinationChange", view.getDestinationVersion(), true);
+		bindingInfo.addBinding("destinationChange", view
+				.getDestinationVersion(), true);
 		bindingInfo.configure();
 	}
 
@@ -108,15 +108,18 @@ public class MigrationScriptEditor extends BaseEditor {
 
 			MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();
 
-			MessageFormat theFormat = new MessageFormat("changelog-{0}-to-{1}.sql");
-			String theChangeLogFile = theFormat.format(new String[] { "" + theModel.getSourceChange().getIndex(),
+			MessageFormat theFormat = new MessageFormat(
+					"changelog-{0}-to-{1}.sql");
+			String theChangeLogFile = theFormat.format(new String[] {
+					"" + theModel.getSourceChange().getIndex(),
 					"" + theModel.getDestinationChange().getIndex() });
 
-			StatementList theStatements = repositoryEntity.createChangeLog(theModel.getSourceChange().getChange(),
-					theModel.getDestinationChange().getChange());
+			StatementList theStatements = repositoryEntity.createChangeLog(
+					theModel.getSourceChange().getChange(), theModel
+							.getDestinationChange().getChange());
 
-			SQLEditor theEditor = new SQLEditor(this, connectionProvider, theStatements, null, theChangeLogFile,
-					preferences, worldConnector);
+			SQLEditor theEditor = new SQLEditor(this, connectionProvider,
+					theStatements, null, theChangeLogFile, worldConnector);
 			theEditor.showModal();
 		}
 	}
