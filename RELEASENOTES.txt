@@ -248,3 +248,4 @@ Release 2.7.0
 
 * Implemented FR 2895866 [ERDesignerNG] force connection aliases to be unique
 * Implemented FR 2880354 [ERDesignerNG] wrap and indent *.mxm
+* Implemented FR 2895112 [ERDesignerNG] do *not* show column-comments by default
