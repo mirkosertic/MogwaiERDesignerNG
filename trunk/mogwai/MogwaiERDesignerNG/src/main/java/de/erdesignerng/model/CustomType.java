@@ -23,18 +23,20 @@ import de.erdesignerng.dialect.DataType;
 
 /**
  * A custom datatype.
- *
+ * 
  * @author $Author: dr-death $
  * @version $Date: 2010-03-30 20:00:00 $
  */
-public class CustomType extends OwnedModelItem<Model> implements ModelItemCloneable<CustomType>, DataType {
+public class CustomType extends OwnedModelItem<Model> implements
+		ModelItemCloneable<CustomType>, DataType {
 
 	// The schema of the custom type
 	private String schema;
-	
-	// The DDL Part to create the custom type, the part after the "CREATE TYPE <name> AS "
+
+	// The DDL Part to create the custom type, the part after the
+	// "CREATE TYPE <name> AS "
 	private String sqlDefinition;
-	
+
 	public CustomType() {
 	}
 
@@ -45,7 +47,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 	public void setSchema(String schema) {
 		this.schema = schema;
 	}
-	
+
 	public String getSqlDefinition() {
 		return sqlDefinition;
 	}
@@ -63,6 +65,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		return theCustomType;
 	}
 
+	@Override
 	public void restoreFrom(CustomType aCustomType) {
 		setSystemId(aCustomType.getSystemId());
 		setName(aCustomType.getName());
@@ -94,7 +97,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 	}
 
 	public boolean isJDBCStringType() {
-		return false; 
+		return false;
 	}
 
 	public String createTypeDefinitionFor(Attribute aAttribute) {
@@ -106,7 +109,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 	}
 
 	public int[] getJDBCType() {
-		return new int[] {Types.OTHER};
+		return new int[] { Types.OTHER };
 	}
 
 	public String getDefinition() {

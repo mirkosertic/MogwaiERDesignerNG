@@ -22,7 +22,8 @@ package de.erdesignerng.model;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class Index extends OwnedModelItem<Table> implements ModelItemCloneable<Index> {
+public class Index extends OwnedModelItem<Table> implements
+		ModelItemCloneable<Index> {
 
 	private IndexType indexType = IndexType.UNIQUE;
 
@@ -58,6 +59,7 @@ public class Index extends OwnedModelItem<Table> implements ModelItemCloneable<I
 		return theIndex;
 	}
 
+	@Override
 	public void restoreFrom(Index aValue) throws Exception {
 		setName(aValue.getName());
 		setIndexType(aValue.getIndexType());

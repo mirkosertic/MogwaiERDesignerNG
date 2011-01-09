@@ -19,7 +19,8 @@ package de.erdesignerng.model;
 
 import org.apache.commons.lang.StringUtils;
 
-public class IndexExpression extends ModelItem implements ModelItemCloneable<IndexExpression> {
+public class IndexExpression extends ModelItem implements
+		ModelItemCloneable<IndexExpression> {
 
 	private String expression;
 
@@ -38,7 +39,7 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	 * Setzt den Wert des Attributs <code>expression</code>.
 	 * 
 	 * @param expression
-	 *			Wert f�r das Attribut expression.
+	 *            Wert f�r das Attribut expression.
 	 */
 	public void setExpression(String expression) {
 		this.expression = expression;
@@ -57,7 +58,7 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	 * Setzt den Wert des Attributs <code>attributeRef</code>.
 	 * 
 	 * @param attributeRef
-	 *			Wert f�r das Attribut attributeRef.
+	 *            Wert f�r das Attribut attributeRef.
 	 */
 	public void setAttributeRef(Attribute attributeRef) {
 		this.attributeRef = attributeRef;
@@ -74,6 +75,7 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 		return theClone;
 	}
 
+	@Override
 	public void restoreFrom(IndexExpression aValue) throws Exception {
 		expression = aValue.getExpression();
 		setSystemId(aValue.getSystemId());
@@ -91,10 +93,10 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 	 * Test if this expression is not equals to another expression.
 	 * 
 	 * @param aExpression
-	 *			the other expression
+	 *            the other expression
 	 * @param aUseName
-	 *			true if attribute check shall be done by name, not by system
-	 *			id
+	 *            true if attribute check shall be done by name, not by system
+	 *            id
 	 * @return true if they are not equals
 	 */
 	public boolean isModified(IndexExpression aExpression, boolean aUseName) {
@@ -102,7 +104,8 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 			return !expression.equals(aExpression.getExpression());
 		}
 		if (aUseName) {
-			return !attributeRef.getName().equals(aExpression.getAttributeRef().getName());
+			return !attributeRef.getName().equals(
+					aExpression.getAttributeRef().getName());
 		}
 		return !attributeRef.equals(aExpression.getAttributeRef());
 	}

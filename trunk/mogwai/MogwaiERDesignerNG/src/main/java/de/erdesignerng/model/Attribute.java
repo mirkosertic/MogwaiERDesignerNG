@@ -23,7 +23,8 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class Attribute extends OwnedModelItem<Table> implements ModelItemCloneable<Attribute> {
+public class Attribute extends OwnedModelItem<Table> implements
+		ModelItemCloneable<Attribute> {
 
 	public static final int DEFAULT_SCALE = 10;
 
@@ -155,6 +156,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemCloneab
 		return theAttribute;
 	}
 
+	@Override
 	public void restoreFrom(Attribute aValue) {
 		setName(aValue.getName());
 		setDatatype(aValue.getDatatype());
@@ -175,11 +177,13 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemCloneab
 		}
 
 		if (aUseConcreteDataType) {
-			if (!getPhysicalDeclaration().equals(aAttribute.getPhysicalDeclaration())) {
+			if (!getPhysicalDeclaration().equals(
+					aAttribute.getPhysicalDeclaration())) {
 				return true;
 			}
 		} else {
-			if (!getDatatype().getName().equals(aAttribute.getDatatype().getName())) {
+			if (!getDatatype().getName().equals(
+					aAttribute.getDatatype().getName())) {
 				return true;
 			}
 		}
@@ -233,7 +237,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemCloneab
 
 	/**
 	 * @param extra
-	 *			the extra to set
+	 *            the extra to set
 	 */
 	public void setExtra(String extra) {
 		synchronized (this) {
@@ -245,7 +249,7 @@ public class Attribute extends OwnedModelItem<Table> implements ModelItemCloneab
 	 * Test if the attribute was renamed.
 	 * 
 	 * @param aAttribute
-	 *			the new attribute
+	 *            the new attribute
 	 * @return true if it was renamed, else false
 	 */
 	public boolean isRenamed(Attribute aAttribute) {

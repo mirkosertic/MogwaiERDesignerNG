@@ -61,6 +61,7 @@ import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
+import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
@@ -1150,7 +1151,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 				handButton.setSelected(true);
 			}
 
-			graph.setTool(new HandTool(graph));
+			graph.setTool(new HandTool(this, graph));
 		}
 		if (aTool.equals(ToolEnum.ENTITY)) {
 
@@ -1296,7 +1297,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 				}
 
 				@Override
-				public void commandAddToNewSubjectArea(List<ModelCell> aCells) {
+				public void commandAddToNewSubjectArea(
+						List<DefaultGraphCell> aCells) {
 					super.commandAddToNewSubjectArea(aCells);
 					updateSubjectAreasMenu();
 				}
@@ -1667,14 +1669,65 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 	 *            the user object.
 	 */
 	public void setSelectedObject(ModelItem aItem) {
+		DefaultGraphCell theCell = findCellforObject(aItem);
+		if (theCell != null) {
+			graph.setSelectionCell(theCell);
+			graph.scrollCellToVisible(theCell);
+		}
+	}
+
+	public DefaultGraphCell findCellforObject(ModelItem aItem) {
 		for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
 			DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
 			if (aItem.equals(theCell.getUserObject())) {
-				// We do have a match
-				graph.setSelectionCell(theCell);
-				graph.scrollCellToVisible(theCell);
-				return;
+				return theCell;
 			}
 		}
+		return null;
+	}
+
+	/**
+	 * Add a list of items to a new subject area.
+	 * 
+	 * @param aItems
+	 */
+	public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
+
+		List<DefaultGraphCell> theCells = getCellsFor(aItems);
+
+		if (theCells.size() > 0) {
+			graph.commandAddToNewSubjectArea(theCells);
+		}
+	}
+
+	public void commandDelete(List<ModelItem> aItems) {
+
+		List<DefaultGraphCell> theCells = getCellsFor(aItems);
+
+		if (theCells.size() > 0) {
+
+			if (MessagesHelper.displayQuestionMessage(graph,
+					ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+				try {
+					graph.commandDeleteCells(theCells);
+				} catch (VetoException ex) {
+					MessagesHelper.displayErrorMessage(graph,
+							getResourceHelper().getFormattedText(
+									ERDesignerBundle.CANNOTDELETEMODELITEM,
+									ex.getMessage()));
+				}
+			}
+		}
+	}
+
+	private List<DefaultGraphCell> getCellsFor(List<ModelItem> aItems) {
+		List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
+		for (ModelItem theItem : aItems) {
+			DefaultGraphCell theCell = findCellforObject(theItem);
+			if (theCell != null) {
+				theCells.add(theCell);
+			}
+		}
+		return theCells;
 	}
 }
