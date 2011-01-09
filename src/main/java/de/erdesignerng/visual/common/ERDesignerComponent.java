@@ -631,7 +631,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
 		displayCommentsMenuItem = new DefaultCheckboxMenuItem(
 				theDisplayCommentsAction);
-		displayCommentsMenuItem.setSelected(true);
+		displayCommentsMenuItem.setSelected(false);
 		theViewMenu.add(displayCommentsMenuItem);
 
 		DefaultAction theDisplayGridAction = new DefaultAction(
@@ -1334,7 +1334,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
 			displayAllMenuItem.setSelected(true);
 			displayNaturalOrderMenuItem.setSelected(true);
-			displayCommentsMenuItem.setSelected(true);
+			displayCommentsMenuItem.setSelected(false);
 			if (aModel != null && aModel.getDialect() != null) {
 				editCustomTypes.setEnabled(aModel.getDialect()
 						.isSupportsCustomTypes());
@@ -1343,7 +1343,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 			}
 
 			commandSetDisplayGridState(displayGridMenuItem.isSelected());
-			commandSetDisplayCommentsState(true);
+			commandSetDisplayCommentsState(false);
 			commandSetDisplayLevel(DisplayLevel.ALL);
 			commandSetDisplayOrder(DisplayOrder.NATURAL);
 
