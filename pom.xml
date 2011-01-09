@@ -435,7 +435,7 @@
 	</dependencies>
 
 	<properties>
-		<mogwai.test.db.server.name>192.168.0.191</mogwai.test.db.server.name>
+		<mogwai.test.db.server.name>192.168.56.101</mogwai.test.db.server.name>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
 		<your.standalone-compiler.version>4.2.1</your.standalone-compiler.version>
 	</properties>
