@@ -307,7 +307,6 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     private QueryFragment getSQLQuery(Connection aConnection, String aViewName) throws SQLException {
         int theType = QueryProperties.QueryType.SELECT;
-        String theSQL = "";
         String theSQLStart = "";
         String theSQLMid = "";
         String theSQLEnd = "";

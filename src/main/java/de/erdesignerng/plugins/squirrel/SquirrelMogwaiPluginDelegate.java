@@ -153,12 +153,12 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
 		PluginSessionCallback ret = new PluginSessionCallback() {
 
 			public void sqlInternalFrameOpened(
-					SQLInternalFrame sqlInternalFrame, ISession session) {
+					SQLInternalFrame aSqlInternalFrame, ISession aSession) {
 			}
 
 			public void objectTreeInternalFrameOpened(
-					ObjectTreeInternalFrame objectTreeInternalFrame,
-					ISession session) {
+					ObjectTreeInternalFrame aObjectTreeInternalFrame,
+					ISession aSession) {
 			}
 		};
 
