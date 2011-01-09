@@ -25,18 +25,20 @@ import de.erdesignerng.dialect.GenericDataTypeImpl;
  */
 public class MSAccessDataType extends GenericDataTypeImpl {
 
-    public MSAccessDataType(String aName, String aDefinition, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
-    }
+	public MSAccessDataType(String aName, String aDefinition,
+			int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
+	}
 
-    public MSAccessDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcDataType) {
-        super(aName, aDefinition, aJdbcDataType);
+	public MSAccessDataType(String aName, String aDefinition,
+			boolean aIdentity, int... aJdbcDataType) {
+		super(aName, aDefinition, aJdbcDataType);
 
-        identity = aIdentity;
-        if (aIdentity) {
-            maxOccoursPerTable = 1;
-        }
+		identity = aIdentity;
+		if (aIdentity) {
+			maxOccursPerTable = 1;
+		}
 
-    }
+	}
 
 }
