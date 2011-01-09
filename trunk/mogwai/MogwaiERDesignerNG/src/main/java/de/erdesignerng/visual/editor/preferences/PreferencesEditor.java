@@ -20,7 +20,6 @@ package de.erdesignerng.visual.editor.preferences;
 import javax.swing.JComponent;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -36,18 +35,15 @@ public class PreferencesEditor extends BaseEditor {
 
 	private final PreferencesEditorView view;
 
-	private final ApplicationPreferences preferences;
-
 	private final ERDesignerComponent component;
 
-	public PreferencesEditor(JComponent aParent, ApplicationPreferences aPreferences, ERDesignerComponent aComponent) {
+	public PreferencesEditor(JComponent aParent, ERDesignerComponent aComponent) {
 		super(aParent, ERDesignerBundle.PREFERENCES);
 
-		view = new PreferencesEditorView(aPreferences);
+		view = new PreferencesEditorView();
 
 		initialize();
 
-		preferences = aPreferences;
 		component = aComponent;
 	}
 
@@ -70,9 +66,9 @@ public class PreferencesEditor extends BaseEditor {
 
 	@Override
 	protected void commandOk() {
-		if (view.getPreferences().applyValues(preferences)) {
+		if (view.getPreferences().applyValues()) {
 			setModalResult(DialogConstants.MODAL_RESULT_OK);
-			component.refreshPreferences(preferences);
+			component.refreshPreferences();
 		}
 	}
 }

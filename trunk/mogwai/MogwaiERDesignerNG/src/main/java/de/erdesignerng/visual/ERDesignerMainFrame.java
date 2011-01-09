@@ -41,20 +41,17 @@ import de.mogwai.common.i18n.ResourceHelper;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-06 22:01:08 $
  */
-public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorldConnector {
+public class ERDesignerMainFrame extends DefaultFrame implements
+		ERDesignerWorldConnector {
 
 	private static final String WINDOW_ALIAS = "ERDesignerMainFrame";
 
 	private ERDesignerComponent component;
 
-	private final ApplicationPreferences preferences;
-
 	private DockingHelper dockingHelper;
 
-	public ERDesignerMainFrame(ApplicationPreferences aPreferences) {
+	public ERDesignerMainFrame() {
 		super(ERDesignerBundle.TITLE);
-
-		preferences = aPreferences;
 
 		initialize();
 
@@ -80,10 +77,10 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 
 	private void initialize() {
 
-		component = ERDesignerComponent.initializeComponent(preferences, this);
+		component = ERDesignerComponent.initializeComponent(this);
 		OutlineComponent.initializeComponent();
 		SQLComponent.initializeComponent();
-		dockingHelper = new DockingHelper(preferences);
+		dockingHelper = new DockingHelper();
 
 		try {
 			dockingHelper.initialize();
@@ -91,7 +88,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 			throw new RuntimeException(e);
 		}
 
-		getDefaultFrameContent().setDetailComponent(dockingHelper.getRootWindow());
+		getDefaultFrameContent().setDetailComponent(
+				dockingHelper.getRootWindow());
 	}
 
 	@Override
@@ -112,7 +110,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 		}
 
 		String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
-		setTitle(getResourceHelper().getText(getResourceBundleID()) + " " + theVersion + " " + theTitle);
+		setTitle(getResourceHelper().getText(getResourceBundleID()) + " "
+				+ theVersion + " " + theTitle);
 	}
 
 	@Override
@@ -142,7 +141,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 	@Override
 	public Model createNewModel() {
 		Model theModel = new Model();
-		theModel.setModificationTracker(new HistoryModificationTracker(theModel));
+		theModel
+				.setModificationTracker(new HistoryModificationTracker(theModel));
 		return theModel;
 	}
 
@@ -163,7 +163,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 	}
 
 	public void exitApplication() {
-		preferences.updateWindowDefinition(WINDOW_ALIAS, ERDesignerMainFrame.this);
+		ApplicationPreferences.getInstance().updateWindowDefinition(
+				WINDOW_ALIAS, ERDesignerMainFrame.this);
 		dockingHelper.saveLayoutToPreferences();
 		component.savePreferences();
 		System.exit(0);
@@ -174,7 +175,8 @@ public class ERDesignerMainFrame extends DefaultFrame implements ERDesignerWorld
 		super.setVisible(aVisible);
 
 		if (aVisible) {
-			preferences.setWindowState(WINDOW_ALIAS, this);
+			ApplicationPreferences.getInstance().setWindowState(WINDOW_ALIAS,
+					this);
 		}
 	}
 

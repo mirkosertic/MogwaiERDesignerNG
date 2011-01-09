@@ -33,8 +33,8 @@ public class DBConnectionCommand extends UICommand {
 	}
 
 	public void execute(ConnectionDescriptor aConnection) {
-		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(getDetailComponent(), component.getModel(),
-				getPreferences(), aConnection);
+		DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(
+				getDetailComponent(), component.getModel(), aConnection);
 		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 			try {
 				theEditor.applyValues();

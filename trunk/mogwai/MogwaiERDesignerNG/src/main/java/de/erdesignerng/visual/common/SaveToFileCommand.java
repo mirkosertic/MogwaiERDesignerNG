@@ -36,6 +36,7 @@ import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
+import de.erdesignerng.util.ApplicationPreferences;
 
 public class SaveToFileCommand extends UICommand {
 
@@ -62,7 +63,8 @@ public class SaveToFileCommand extends UICommand {
 		theChooser.setSelectedFile(component.currentEditingFile);
 		if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-			File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+			File theFile = theFiler.getCompletedFile(theChooser
+					.getSelectedFile());
 			executeSaveToFile(theFile);
 
 		}
@@ -81,37 +83,48 @@ public class SaveToFileCommand extends UICommand {
 			component.setIntelligentLayoutEnabled(false);
 
 			if (aFile.exists()) {
-				File theBakFile = new File(aFile.toString() + "_" + theFormat.format(theNow));
+				File theBakFile = new File(aFile.toString() + "_"
+						+ theFormat.format(theNow));
 				aFile.renameTo(theBakFile);
 			}
 
-			ModelIOUtilities.getInstance().serializeModelToXML(theModel, new OutputStreamWriter(new FileOutputStream(aFile), PlatformConfig.getXMLEncoding()));
+			ModelIOUtilities.getInstance().serializeModelToXML(
+					theModel,
+					new OutputStreamWriter(new FileOutputStream(aFile),
+							PlatformConfig.getXMLEncoding()));
 
 			getWorldConnector().initTitle();
 
-			getPreferences().addRecentlyUsedFile(aFile);
+			ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
 
 			component.updateRecentlyUsedMenuEntries();
 
 			if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
-				HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel.getModificationTracker();
-				StatementList theStatements = theTracker.getNotSavedStatements();
+				HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel
+						.getModificationTracker();
+				StatementList theStatements = theTracker
+						.getNotSavedStatements();
 				if (theStatements.size() > 0) {
-					StringBuilder theFileName = new StringBuilder(aFile.toString());
+					StringBuilder theFileName = new StringBuilder(aFile
+							.toString());
 					int p = theFileName.lastIndexOf(".");
 					if (p > 0) {
 
-						SQLGenerator theGenerator = theModel.getDialect().createSQLGenerator();
+						SQLGenerator theGenerator = theModel.getDialect()
+								.createSQLGenerator();
 
-						theFileName = new StringBuilder(theFileName.substring(0, p));
+						theFileName = new StringBuilder(theFileName.substring(
+								0, p));
 
 						theFileName.insert(p, "_" + theFormat.format(theNow));
 						theFileName.append(".sql");
 
-						theWriter = new PrintWriter(new File(theFileName.toString()));
+						theWriter = new PrintWriter(new File(theFileName
+								.toString()));
 						for (Statement theStatement : theStatements) {
 							theWriter.print(theStatement.getSql());
-							theWriter.println(theGenerator.createScriptStatementSeparator());
+							theWriter.println(theGenerator
+									.createScriptStatementSeparator());
 							theStatement.setSaved(true);
 
 						}
@@ -120,7 +133,9 @@ public class SaveToFileCommand extends UICommand {
 			}
 
 			component.setupViewFor(aFile);
-			getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILESAVED));
+			getWorldConnector().setStatusText(
+					component.getResourceHelper().getText(
+							ERDesignerBundle.FILESAVED));
 
 		} catch (Exception e) {
 			getWorldConnector().notifyAboutException(e);
@@ -129,7 +144,8 @@ public class SaveToFileCommand extends UICommand {
 				theWriter.close();
 			}
 
-			component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
+			component.setIntelligentLayoutEnabled(ApplicationPreferences
+					.getInstance().isIntelligentLayout());
 		}
 	}
 }

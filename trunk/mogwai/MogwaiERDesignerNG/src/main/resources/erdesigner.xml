@@ -964,5 +964,9 @@
 			<Text lang="de">Dateigruppe</Text>
 			<Text lang="en">File group</Text>
 		</Entry>
+		<Entry id="XMLINDENTATION">
+			<Text lang="de">XML Einrückung</Text>
+			<Text lang="en">XML indentation</Text>
+		</Entry>
 	</Bundle>
 </Resource>

@@ -29,12 +29,13 @@ import de.mogwai.common.client.looks.components.action.DefaultAction;
  */
 public class RepositoryConnectionEditor extends BaseEditor {
 
-	private final DefaultAction testAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction testAction = new DefaultAction(
+			new ActionEventProcessor() {
 
-		public void processActionEvent(ActionEvent e) {
-			commandTest();
-		}
-	}, this, ERDesignerBundle.TEST);
+				public void processActionEvent(ActionEvent e) {
+					commandTest();
+				}
+			}, this, ERDesignerBundle.TEST);
 
 	private final RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 
@@ -44,21 +45,18 @@ public class RepositoryConnectionEditor extends BaseEditor {
 		}
 	};
 
-	private final ApplicationPreferences preferences;
-
 	private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
 
-	public RepositoryConnectionEditor(Component aParent, ApplicationPreferences aPreferences) {
+	public RepositoryConnectionEditor(Component aParent) {
 		super(aParent, ERDesignerBundle.REPOSITORYCONNECTION);
-
-		preferences = aPreferences;
 
 		initialize();
 
 		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
 		theModel.addElement(null);
 
-		List<Dialect> theDialects = DialectFactory.getInstance().getSupportedDialects();
+		List<Dialect> theDialects = DialectFactory.getInstance()
+				.getSupportedDialects();
 		for (Dialect theDialect : theDialects) {
 			theModel.addElement(theDialect);
 		}
@@ -67,10 +65,12 @@ public class RepositoryConnectionEditor extends BaseEditor {
 
 		DatabaseConnectionDatamodel theDescriptor = new DatabaseConnectionDatamodel();
 
-		ConnectionDescriptor theConnection = aPreferences.getRepositoryConnection();
+		ConnectionDescriptor theConnection = ApplicationPreferences
+				.getInstance().getRepositoryConnection();
 		if (theConnection != null) {
 			if (theConnection.getDialect() != null) {
-				theDescriptor.setDialect(DialectFactory.getInstance().getDialect(theConnection.getDialect()));
+				theDescriptor.setDialect(DialectFactory.getInstance()
+						.getDialect(theConnection.getDialect()));
 			}
 			theDescriptor.setDriver(theConnection.getDriver());
 			theDescriptor.setUrl(theConnection.getUrl());
@@ -107,8 +107,10 @@ public class RepositoryConnectionEditor extends BaseEditor {
 	@Override
 	public void applyValues() throws Exception {
 
-		DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
-		preferences.setRepositoryConnection(theDescriptor.createConnectionDescriptor());
+		DatabaseConnectionDatamodel theDescriptor = bindingInfo
+				.getDefaultModel();
+		ApplicationPreferences.getInstance().setRepositoryConnection(
+				theDescriptor.createConnectionDescriptor());
 	}
 
 	@Override
@@ -128,14 +130,18 @@ public class RepositoryConnectionEditor extends BaseEditor {
 
 			bindingInfo.view2model();
 
-			DatabaseConnectionDatamodel theModel = bindingInfo.getDefaultModel();
+			DatabaseConnectionDatamodel theModel = bindingInfo
+					.getDefaultModel();
 
 			Dialect theDialect = theModel.getDialect();
 
 			try {
 
-				Connection theConnection = theDialect.createConnection(preferences.createDriverClassLoader(), theModel
-						.getDriver(), theModel.getUrl(), theModel.getUser(), theModel.getPassword(), false);
+				Connection theConnection = theDialect.createConnection(
+						ApplicationPreferences.getInstance()
+								.createDriverClassLoader(), theModel
+								.getDriver(), theModel.getUrl(), theModel
+								.getUser(), theModel.getPassword(), false);
 
 				DatabaseMetaData theMeta = theConnection.getMetaData();
 
@@ -146,8 +152,8 @@ public class RepositoryConnectionEditor extends BaseEditor {
 					theConnection.close();
 				}
 
-				MessagesHelper.displayInfoMessage(this, getResourceHelper().getText(
-						ERDesignerBundle.CONNECTIONSEEMSTOBEOK)
+				MessagesHelper.displayInfoMessage(this, getResourceHelper()
+						.getText(ERDesignerBundle.CONNECTIONSEEMSTOBEOK)
 						+ " DB : " + theDB + " " + theVersion);
 
 			} catch (Exception e) {
@@ -160,7 +166,8 @@ public class RepositoryConnectionEditor extends BaseEditor {
 	private void commandChangeDialect(Dialect aDialect) {
 
 		if (!bindingInfo.isBinding()) {
-			DatabaseConnectionDatamodel theDescriptor = bindingInfo.getDefaultModel();
+			DatabaseConnectionDatamodel theDescriptor = bindingInfo
+					.getDefaultModel();
 
 			if (aDialect != null) {
 				theDescriptor.setDriver(aDialect.getDriverClassName());

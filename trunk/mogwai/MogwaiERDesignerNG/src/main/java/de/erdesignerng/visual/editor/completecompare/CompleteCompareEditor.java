@@ -42,15 +42,12 @@ public class CompleteCompareEditor extends BaseEditor {
 
 	private final Model databaseModel;
 
-	private final ApplicationPreferences preferences;
-
-	public CompleteCompareEditor(Component aParent, Model aCurrentModel, Model aDatabaseModel,
-			ApplicationPreferences aPreferences, String aCaption) {
+	public CompleteCompareEditor(Component aParent, Model aCurrentModel,
+			Model aDatabaseModel, String aCaption) {
 		super(aParent, aCaption);
 
 		currentModel = aCurrentModel;
 		databaseModel = aDatabaseModel;
-		preferences = aPreferences;
 
 		initialize();
 
@@ -68,10 +65,13 @@ public class CompleteCompareEditor extends BaseEditor {
 	private void refreshView() {
 
 		ModelComparator theComparator = new ModelComparator();
-		ModelCompareResult theResult = theComparator.compareModels(currentModel, databaseModel);
+		ModelCompareResult theResult = theComparator.compareModels(
+				currentModel, databaseModel);
 
-		editingView.getCurrentModelView().setModel(new DefaultTreeModel(theResult.getModelRootNode()));
-		editingView.getDatabaseView().setModel(new DefaultTreeModel(theResult.getDbRootNode()));
+		editingView.getCurrentModelView().setModel(
+				new DefaultTreeModel(theResult.getModelRootNode()));
+		editingView.getDatabaseView().setModel(
+				new DefaultTreeModel(theResult.getDbRootNode()));
 
 		int theRow = 0;
 		while (theRow < editingView.getCurrentModelView().getRowCount()) {
@@ -89,11 +89,14 @@ public class CompleteCompareEditor extends BaseEditor {
 		editingView = new CompleteCompareEditorView();
 		editingView.getOkButton().setAction(okAction);
 
-		JScrollPane modelScroll = editingView.getCurrentModelView().getScrollPane();
+		JScrollPane modelScroll = editingView.getCurrentModelView()
+				.getScrollPane();
 		JScrollPane dbScroll = editingView.getDatabaseView().getScrollPane();
 
-		modelScroll.getVerticalScrollBar().setModel(dbScroll.getVerticalScrollBar().getModel());
-		modelScroll.getHorizontalScrollBar().setModel(dbScroll.getHorizontalScrollBar().getModel());
+		modelScroll.getVerticalScrollBar().setModel(
+				dbScroll.getVerticalScrollBar().getModel());
+		modelScroll.getHorizontalScrollBar().setModel(
+				dbScroll.getHorizontalScrollBar().getModel());
 
 		setContentPane(editingView);
 		setResizable(true);
@@ -101,12 +104,14 @@ public class CompleteCompareEditor extends BaseEditor {
 		pack();
 
 		setMinimumSize(getSize());
-		preferences.setWindowSize(getClass().getSimpleName(), this);
+		ApplicationPreferences.getInstance().setWindowSize(
+				getClass().getSimpleName(), this);
 	}
 
 	@Override
 	protected void commandOk() {
-		preferences.updateWindowSize(getClass().getSimpleName(), this);
+		ApplicationPreferences.getInstance().updateWindowSize(
+				getClass().getSimpleName(), this);
 		super.commandOk();
 	}
 

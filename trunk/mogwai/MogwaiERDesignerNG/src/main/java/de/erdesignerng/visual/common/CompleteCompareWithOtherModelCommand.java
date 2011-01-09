@@ -48,22 +48,26 @@ public class CompleteCompareWithOtherModelCommand extends UICommand {
 		theChooser.setFileFilter(theFiler);
 		if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-			File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
-			
+			File theFile = theFiler.getCompletedFile(theChooser
+					.getSelectedFile());
+
 			InputStream theStream = null;
 			try {
 
 				theStream = new FileInputStream(theFile);
-				
-				Model theNewModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
 
-				CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theCurrentModel,
-						theNewModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
+				Model theNewModel = ModelIOUtilities.getInstance()
+						.deserializeModelFromXML(theStream);
+
+				CompleteCompareEditor theCompare = new CompleteCompareEditor(
+						getDetailComponent(), theCurrentModel, theNewModel,
+						ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
 				theCompare.showModal();
-				
+
 			} catch (Exception e) {
-				MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-						ERDesignerBundle.ERRORLOADINGFILE));
+				MessagesHelper.displayErrorMessage(getDetailComponent(),
+						component.getResourceHelper().getText(
+								ERDesignerBundle.ERRORLOADINGFILE));
 
 				getWorldConnector().notifyAboutException(e);
 
