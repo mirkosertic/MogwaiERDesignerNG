@@ -18,29 +18,22 @@
 package de.erdesignerng.visual.tools;
 
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import org.jgraph.graph.DefaultGraphCell;
+
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.visual.ERDesignerGraph;
-import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.cells.HideableCell;
-import de.erdesignerng.visual.cells.ModelCell;
-import de.erdesignerng.visual.cells.TableCell;
-import de.erdesignerng.visual.cells.ViewCell;
+import de.erdesignerng.visual.common.ContextMenuFactory;
+import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
-import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import org.jgraph.graph.DefaultGraphCell;
 
 /**
  * @author $Author: mirkosertic $
@@ -48,8 +41,11 @@ import org.jgraph.graph.DefaultGraphCell;
  */
 public class HandTool extends BaseTool {
 
-	public HandTool(ERDesignerGraph aGraph) {
+	private ERDesignerComponent component;
+
+	public HandTool(ERDesignerComponent aComponent, ERDesignerGraph aGraph) {
 		super(aGraph);
+		component = aComponent;
 	}
 
 	@Override
@@ -66,10 +62,17 @@ public class HandTool extends BaseTool {
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isRightMouseButton(e)) {
 
-			DefaultGraphCell[] theCells = (DefaultGraphCell[])graph.getSelectionCells();
-
-			if ((theCells != null) && (theCells.length > 0)) {
-				DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theCells);
+			Object[] theSelectionCells = graph.getSelectionCells();
+			List<DefaultGraphCell> theList = new ArrayList<DefaultGraphCell>();
+			if (theSelectionCells != null) {
+				for (Object theCell : theSelectionCells) {
+					if (theCell instanceof DefaultGraphCell) {
+						theList.add((DefaultGraphCell) theCell);
+					}
+				}
+			}
+			if (theList.size() > 0) {
+				DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theList);
 				menu.show(graph, e.getX(), e.getY());
 				return;
 			}
@@ -77,80 +80,18 @@ public class HandTool extends BaseTool {
 		super.mousePressed(e);
 	}
 
-	public DefaultPopupMenu createPopupMenu(Point aPoint, final DefaultGraphCell[] aCells) {
+	public DefaultPopupMenu createPopupMenu(Point aPoint,
+			final List<DefaultGraphCell> aCells) {
 
-		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+				.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-		DefaultAction theDeleteAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
-		DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
-		theDeleteAction.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				if (MessagesHelper.displayQuestionMessage(graph, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-					try {
-						graph.commandDeleteCells(aCells);
-					} catch (VetoException ex) {
-						MessagesHelper.displayErrorMessage(graph, getResourceHelper().getFormattedText(
-								ERDesignerBundle.CANNOTDELETEMODELITEM, ex.getMessage()));
-					}
-				}
-			}
-		});
-
-		theMenu.add(theDeleteItem);
-
-		final List<ModelCell> theTableCells = new ArrayList<ModelCell>();
-		final List<HideableCell> theHideableCells = new ArrayList<HideableCell>();
-
-		for (Object theCell : aCells) {
-			if (theCell instanceof TableCell) {
-				TableCell theTableCell = (TableCell) theCell;
-				if (theTableCell.getParent() == null) {
-					theTableCells.add(theTableCell);
-				}
-			}
-			if (theCell instanceof ViewCell) {
-				ViewCell theViewCell = (ViewCell) theCell;
-				if (theViewCell.getParent() == null) {
-					theTableCells.add(theViewCell);
-				}
-			}
-			if (theCell instanceof HideableCell) {
-				HideableCell theHideable = (HideableCell) theCell;
-				theHideableCells.add(theHideable);
-			}
+		List<ModelItem> theItems = new ArrayList<ModelItem>();
+		for (DefaultGraphCell theCell : aCells) {
+			theItems.add((ModelItem) theCell.getUserObject());
 		}
 
-		if (theTableCells.size() > 0) {
-			theMenu.addSeparator();
-
-			DefaultAction theAddAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
-					ERDesignerBundle.ADDTONEWSUBJECTAREA);
-			DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
-			theAddAction.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					graph.commandAddToNewSubjectArea(theTableCells);
-				}
-			});
-
-			theMenu.add(theAddItem);
-		}
-
-		if (theHideableCells.size() > 0) {
-			theMenu.addSeparator();
-
-			DefaultAction theHideAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
-			DefaultMenuItem theAddItem = new DefaultMenuItem(theHideAction);
-			theHideAction.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					graph.commandHideCells(theHideableCells);
-				}
-			});
-
-			theMenu.add(theAddItem);
-		}
+		ContextMenuFactory.addActionsToMenu(theMenu, theItems, component);
 
 		UIInitializer.getInstance().initialize(theMenu);
 

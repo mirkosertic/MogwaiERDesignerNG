@@ -33,12 +33,14 @@ import de.erdesignerng.model.ModelItem;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:59 $
  */
-public class CommentCell extends DefaultGraphCell implements ModelCellWithPosition<Comment> {
+public class CommentCell extends DefaultGraphCell implements
+		ModelCellWithPosition<Comment> {
 
 	public CommentCell(Comment aTable) {
 		super(aTable);
 
-		GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
+		GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20,
+				20, 40, 20));
 		GraphConstants.setOpaque(getAttributes(), false);
 		GraphConstants.setAutoSize(getAttributes(), true);
 		GraphConstants.setResize(getAttributes(), true);
@@ -49,23 +51,20 @@ public class CommentCell extends DefaultGraphCell implements ModelCellWithPositi
 
 		Comment theComment = (Comment) getUserObject();
 		Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
-		String theLocation = ((int) theBounds.getX()) + ":" + ((int) theBounds.getY());
-		theComment.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+		String theLocation = ((int) theBounds.getX()) + ":"
+				+ ((int) theBounds.getY());
+		theComment.getProperties().setProperty(ModelItem.PROPERTY_LOCATION,
+				theLocation);
 	}
 
 	public void transferPropertiesToAttributes(Comment aObject) {
 
-		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
-				ModelItem.PROPERTY_LOCATION));
+		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
+				.getProperties().getProperty(ModelItem.PROPERTY_LOCATION));
 		if (thePoint != null) {
-			GraphConstants.setBounds(getAttributes(),
-					new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), 100, 100));
+			GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
+					thePoint.getX(), thePoint.getY(), 100, 100));
 		}
-	}
-
-	@Override
-	public Rectangle2D getBounds() {
-		return GraphConstants.getBounds(getAttributes());
 	}
 
 	@Override

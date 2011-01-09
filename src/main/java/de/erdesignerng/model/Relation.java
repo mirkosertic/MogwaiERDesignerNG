@@ -28,7 +28,8 @@ import org.apache.commons.collections.map.ListOrderedMap;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class Relation extends OwnedModelItem<Model> implements ModelItemCloneable<Relation> {
+public class Relation extends OwnedModelItem<Model> implements
+		ModelItemCloneable<Relation> {
 
 	public static final String PROPERTY_POINTS = "points";
 
@@ -55,7 +56,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemCloneabl
 
 	/**
 	 * @param end
-	 *			the end to set
+	 *            the end to set
 	 */
 	public void setExportingTable(Table end) {
 		exportingTable = end;
@@ -70,7 +71,7 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemCloneabl
 
 	/**
 	 * @param start
-	 *			the start to set
+	 *            the start to set
 	 */
 	public void setImportingTable(Table start) {
 		importingTable = start;
@@ -107,11 +108,13 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemCloneabl
 		theClone.setOnDelete(getOnDelete());
 		theClone.setOnUpdate(getOnUpdate());
 		for (IndexExpression theExpression : getMapping().keySet()) {
-			theClone.getMapping().put(theExpression, getMapping().get(theExpression));
+			theClone.getMapping().put(theExpression,
+					getMapping().get(theExpression));
 		}
 		return theClone;
 	}
 
+	@Override
 	public void restoreFrom(Relation aValue) throws Exception {
 		setName(aValue.getName());
 		setImportingTable(aValue.getImportingTable());
@@ -134,14 +137,17 @@ public class Relation extends OwnedModelItem<Model> implements ModelItemCloneabl
 			return true;
 		}
 
-		List<Attribute> theMyAttributes = new ArrayList<Attribute>(mapping.values());
-		List<Attribute> theOtherAttributes = new ArrayList<Attribute>(aRelation.getMapping().values());
+		List<Attribute> theMyAttributes = new ArrayList<Attribute>(mapping
+				.values());
+		List<Attribute> theOtherAttributes = new ArrayList<Attribute>(aRelation
+				.getMapping().values());
 		if (theMyAttributes.size() != theOtherAttributes.size()) {
 			return true;
 		}
 		for (int i = 0; i < theMyAttributes.size(); i++) {
 			if (aUseName) {
-				if (!theMyAttributes.get(i).getName().equals(theOtherAttributes.get(i).getName())) {
+				if (!theMyAttributes.get(i).getName().equals(
+						theOtherAttributes.get(i).getName())) {
 					return true;
 				}
 			} else {

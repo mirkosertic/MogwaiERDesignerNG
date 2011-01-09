@@ -25,7 +25,8 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<Domain>, DataType {
+public class Domain extends OwnedModelItem<Model> implements
+		ModelItemCloneable<Domain>, DataType {
 
 	private Integer size;
 
@@ -49,7 +50,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 
 	/**
 	 * @param size
-	 *			the size to set
+	 *            the size to set
 	 */
 	public void setSize(Integer size) {
 		this.size = size;
@@ -64,7 +65,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 
 	/**
 	 * @param fraction
-	 *			the fraction to set
+	 *            the fraction to set
 	 */
 	public void setFraction(int fraction) {
 		this.fraction = fraction;
@@ -79,7 +80,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 
 	/**
 	 * @param scale
-	 *			the scale to set
+	 *            the scale to set
 	 */
 	public void setScale(int scale) {
 		this.scale = scale;
@@ -94,7 +95,7 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 
 	/**
 	 * @param concreteType
-	 *			the concreteType to set
+	 *            the concreteType to set
 	 */
 	public void setConcreteType(DataType concreteType) {
 		this.concreteType = concreteType;
@@ -132,8 +133,9 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	 * Restore the data from a clone.
 	 * 
 	 * @param aValue
-	 *			the clone
+	 *            the clone
 	 */
+	@Override
 	public void restoreFrom(Domain aValue) {
 		setName(aValue.getName());
 		setSystemId(aValue.getSystemId());

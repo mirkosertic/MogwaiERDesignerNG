@@ -34,12 +34,14 @@ import de.erdesignerng.model.Table;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:48:59 $
  */
-public class TableCell extends DefaultGraphCell implements ModelCellWithPosition<Table> {
+public class TableCell extends DefaultGraphCell implements
+		ModelCellWithPosition<Table> {
 
 	public TableCell(Table aTable) {
 		super(aTable);
 
-		GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20, 20, 40, 20));
+		GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(20,
+				20, 40, 20));
 		GraphConstants.setGradientColor(getAttributes(), Color.orange);
 		GraphConstants.setOpaque(getAttributes(), false);
 		GraphConstants.setAutoSize(getAttributes(), true);
@@ -51,22 +53,20 @@ public class TableCell extends DefaultGraphCell implements ModelCellWithPosition
 
 		Table theTable = (Table) getUserObject();
 		Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
-		String theLocation = ((int) theBounds.getX()) + ":" + ((int) theBounds.getY());
-		theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+		String theLocation = ((int) theBounds.getX()) + ":"
+				+ ((int) theBounds.getY());
+		theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION,
+				theLocation);
 	}
 
 	public void transferPropertiesToAttributes(Table aObject) {
 
-		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject.getProperties().getProperty(
-				ModelItem.PROPERTY_LOCATION));
+		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
+				.getProperties().getProperty(ModelItem.PROPERTY_LOCATION));
 		if (thePoint != null) {
-			GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(thePoint.getX(), thePoint.getY(), -1, -1));
+			GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
+					thePoint.getX(), thePoint.getY(), -1, -1));
 		}
-	}
-
-	@Override
-	public Rectangle2D getBounds() {
-		return GraphConstants.getBounds(getAttributes());
 	}
 
 	@Override
