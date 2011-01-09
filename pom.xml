@@ -26,6 +26,15 @@
 			<email/>
 			<organization/>
 		</developer>
+		<developer>
+			<id>mirkosertic</id>
+			<name>Mirko Sertic</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<email/>
+			<organization/>
+		</developer>
 	</developers>
 	<repositories>
 		<repository>
@@ -389,10 +398,9 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.code.javaparser
-			</groupId>
+			<groupId>com.google.code.javaparser</groupId>
 			<artifactId>javaparser</artifactId>
-			<version>1.0.7</version>
+			<version>1.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>pgsql</groupId>
