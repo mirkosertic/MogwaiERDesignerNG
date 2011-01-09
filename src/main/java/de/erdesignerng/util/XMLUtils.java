@@ -50,7 +50,8 @@ public final class XMLUtils {
 	private final TransformerFactory transformerFactory;
 
 	private XMLUtils() throws ParserConfigurationException {
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+				.newInstance();
 		documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		transformerFactory = TransformerFactory.newInstance();
 	}
@@ -71,10 +72,16 @@ public final class XMLUtils {
 		return documentBuilder.newDocument();
 	}
 
-	public void transform(Document aDocument, Writer aWriter) throws TransformerException {
+	public void transform(Document aDocument, Writer aWriter)
+			throws TransformerException {
 		Transformer theTransformer = transformerFactory.newTransformer();
 		theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig.getXMLEncoding());
-		theTransformer.transform(new DOMSource(aDocument), new StreamResult(aWriter));
+		theTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
+		theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig
+				.getXMLEncoding());
+		theTransformer.setOutputProperty(
+				"{http://xml.apache.org/xslt}indent-amount", "2");
+		theTransformer.transform(new DOMSource(aDocument), new StreamResult(
+				aWriter));
 	}
 }
