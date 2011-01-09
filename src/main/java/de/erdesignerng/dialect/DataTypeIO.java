@@ -79,7 +79,8 @@ public final class DataTypeIO {
 		xmlUtils = XMLUtils.getInstance();
 	}
 
-	private static String jdbcTypeToString(int aType) throws IllegalAccessException {
+	private static String jdbcTypeToString(int aType)
+			throws IllegalAccessException {
 		for (Field theField : Types.class.getFields()) {
 			int theValue = theField.getInt(Types.class);
 			if (theValue == aType) {
@@ -89,7 +90,8 @@ public final class DataTypeIO {
 		return OTHER;
 	}
 
-	private static int stringToJdbcType(String aType) throws IllegalAccessException {
+	private static int stringToJdbcType(String aType)
+			throws IllegalAccessException {
 		for (Field theField : Types.class.getFields()) {
 			int theValue = theField.getInt(Types.class);
 			if (aType.equals(theField.getName())) {
@@ -99,16 +101,20 @@ public final class DataTypeIO {
 		return Types.OTHER;
 	}
 
-	public void loadUserTypes(ApplicationPreferences aPreferences) throws TransformerException, IOException,
+	public void loadUserTypes() throws TransformerException, IOException,
 			SAXException, IllegalAccessException {
 		DialectFactory theFactory = DialectFactory.getInstance();
 
-		File theDataTypesDirectory = aPreferences.getDatatypeConfigDirectory();
+		File theDataTypesDirectory = ApplicationPreferences.getInstance()
+				.getDatatypeConfigDirectory();
 		theDataTypesDirectory.mkdirs();
 
 		for (Dialect theDialect : theFactory.getSupportedDialects()) {
-			File theDatatypeFile = new File(theDataTypesDirectory, theDialect.getUniqueName() + ".xml");
-			if (!theDatatypeFile.exists() || theDatatypeFile.getTotalSpace() == 0) {
+			File theDatatypeFile = new File(theDataTypesDirectory, theDialect
+					.getUniqueName()
+					+ ".xml");
+			if (!theDatatypeFile.exists()
+					|| theDatatypeFile.getTotalSpace() == 0) {
 				LOGGER.info("Writing new datatype file " + theDatatypeFile);
 				FileOutputStream theStream = null;
 				try {
@@ -134,30 +140,35 @@ public final class DataTypeIO {
 		}
 	}
 
-	private void deserializeDataTypesFrom(Dialect aDialect, InputStream aStream) throws TransformerException,
-			IOException, SAXException, IllegalArgumentException, IllegalAccessException {
+	private void deserializeDataTypesFrom(Dialect aDialect, InputStream aStream)
+			throws TransformerException, IOException, SAXException,
+			IllegalArgumentException, IllegalAccessException {
 		Document theDocument = xmlUtils.parse(aStream);
 		NodeList theNodes = theDocument.getElementsByTagName(DATATYPE);
 		for (int i = 0; i < theNodes.getLength(); i++) {
 			Element theDataType = (Element) theNodes.item(i);
 			String theTypeName = theDataType.getAttribute(NAME);
-			boolean theIdentity = Boolean.parseBoolean(theDataType.getAttribute(IDENTITY));
+			boolean theIdentity = Boolean.parseBoolean(theDataType
+					.getAttribute(IDENTITY));
 			String theDefinition = theDataType.getAttribute(DEFINITION);
 
 			List<Integer> theJDBCTypes = new ArrayList<Integer>();
 			NodeList theTypesNode = theDataType.getElementsByTagName(JDBCTYPE);
 			for (int j = 0; j < theTypesNode.getLength(); j++) {
 				Element theJdbcElement = (Element) theTypesNode.item(j);
-				theJDBCTypes.add(stringToJdbcType(theJdbcElement.getAttribute(VALUE)));
+				theJDBCTypes.add(stringToJdbcType(theJdbcElement
+						.getAttribute(VALUE)));
 			}
 
 			int[] theTypes = new int[theJDBCTypes.size()];
 			for (int j = 0; j < theJDBCTypes.size(); j++) {
 				theTypes[j] = theJDBCTypes.get(j);
 			}
-			DataType theNewDataType = aDialect.createDataType(theTypeName, theDefinition, theIdentity, theTypes);
+			DataType theNewDataType = aDialect.createDataType(theTypeName,
+					theDefinition, theIdentity, theTypes);
 
-			DataType theExistingDataType = aDialect.getDataTypes().findByName(theTypeName);
+			DataType theExistingDataType = aDialect.getDataTypes().findByName(
+					theTypeName);
 			if (theExistingDataType == null) {
 				LOGGER.info("Adding new datatype " + theTypeName);
 				aDialect.getDataTypes().add(theNewDataType);
@@ -169,8 +180,8 @@ public final class DataTypeIO {
 		}
 	}
 
-	private void serializeDataTypesFor(Dialect aDialect, OutputStream aStream) throws TransformerException,
-			IOException, IllegalAccessException {
+	private void serializeDataTypesFor(Dialect aDialect, OutputStream aStream)
+			throws TransformerException, IOException, IllegalAccessException {
 		Document theDocument = xmlUtils.newDocument();
 		Element theRootElement = theDocument.createElement(DATATYPES);
 		theRootElement.setAttribute(DIALECT, aDialect.getUniqueName());
@@ -178,16 +189,20 @@ public final class DataTypeIO {
 		for (DataType theDataType : aDialect.getDataTypes()) {
 			Element theTypeElement = theDocument.createElement(DATATYPE);
 			theTypeElement.setAttribute(NAME, theDataType.getName());
-			theTypeElement.setAttribute(IDENTITY, Boolean.toString(theDataType.isIdentity()));
-			theTypeElement.setAttribute(DEFINITION, theDataType.getDefinition());
+			theTypeElement.setAttribute(IDENTITY, Boolean.toString(theDataType
+					.isIdentity()));
+			theTypeElement
+					.setAttribute(DEFINITION, theDataType.getDefinition());
 			for (int theJdbcType : theDataType.getJDBCType()) {
 				Element theJdbcElement = theDocument.createElement(JDBCTYPE);
-				theJdbcElement.setAttribute(VALUE, jdbcTypeToString(theJdbcType));
+				theJdbcElement.setAttribute(VALUE,
+						jdbcTypeToString(theJdbcType));
 				theTypeElement.appendChild(theJdbcElement);
 			}
 			theRootElement.appendChild(theTypeElement);
 		}
 
-		xmlUtils.transform(theDocument, new OutputStreamWriter(aStream, PlatformConfig.getXMLEncoding()));
+		xmlUtils.transform(theDocument, new OutputStreamWriter(aStream,
+				PlatformConfig.getXMLEncoding()));
 	}
 }

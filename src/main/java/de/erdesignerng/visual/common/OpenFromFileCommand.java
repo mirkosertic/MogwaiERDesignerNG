@@ -27,6 +27,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.MessagesHelper;
 
 public class OpenFromFileCommand extends UICommand {
@@ -44,7 +45,8 @@ public class OpenFromFileCommand extends UICommand {
 		theChooser.setFileFilter(theFiler);
 		if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-			File theFile = theFiler.getCompletedFile(theChooser.getSelectedFile());
+			File theFile = theFiler.getCompletedFile(theChooser
+					.getSelectedFile());
 
 			execute(theFile);
 		}
@@ -58,22 +60,26 @@ public class OpenFromFileCommand extends UICommand {
 
 			theStream = new FileInputStream(aFile);
 
-			Model theModel = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
+			Model theModel = ModelIOUtilities.getInstance()
+					.deserializeModelFromXML(theStream);
 			getWorldConnector().initializeLoadedModel(theModel);
 
 			component.setModel(theModel);
 
-			getPreferences().addRecentlyUsedFile(aFile);
+			ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
 
 			component.addCurrentConnectionToConnectionHistory();
 
 			component.setupViewFor(aFile);
-			getWorldConnector().setStatusText(component.getResourceHelper().getText(ERDesignerBundle.FILELOADED));
+			getWorldConnector().setStatusText(
+					component.getResourceHelper().getText(
+							ERDesignerBundle.FILELOADED));
 
 		} catch (Exception e) {
 
-			MessagesHelper.displayErrorMessage(getDetailComponent(), component.getResourceHelper().getText(
-					ERDesignerBundle.ERRORLOADINGFILE));
+			MessagesHelper.displayErrorMessage(getDetailComponent(), component
+					.getResourceHelper().getText(
+							ERDesignerBundle.ERRORLOADINGFILE));
 
 			getWorldConnector().notifyAboutException(e);
 		} finally {
@@ -85,7 +91,8 @@ public class OpenFromFileCommand extends UICommand {
 				}
 			}
 
-			component.setIntelligentLayoutEnabled(getPreferences().isIntelligentLayout());
+			component.setIntelligentLayoutEnabled(ApplicationPreferences
+					.getInstance().isIntelligentLayout());
 		}
 	}
 }

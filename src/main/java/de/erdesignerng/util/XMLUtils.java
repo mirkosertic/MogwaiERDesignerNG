@@ -74,13 +74,18 @@ public final class XMLUtils {
 
 	public void transform(Document aDocument, Writer aWriter)
 			throws TransformerException {
+
+		ApplicationPreferences thePreferences = ApplicationPreferences
+				.getInstance();
+
 		Transformer theTransformer = transformerFactory.newTransformer();
 		theTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		theTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
 		theTransformer.setOutputProperty(OutputKeys.ENCODING, PlatformConfig
 				.getXMLEncoding());
 		theTransformer.setOutputProperty(
-				"{http://xml.apache.org/xslt}indent-amount", "2");
+				"{http://xml.apache.org/xslt}indent-amount", ""
+						+ thePreferences.getXmlIndentation());
 		theTransformer.transform(new DOMSource(aDocument), new StreamResult(
 				aWriter));
 	}

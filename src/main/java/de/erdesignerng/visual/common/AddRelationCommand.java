@@ -25,6 +25,7 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.ModelUtilities;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -36,7 +37,8 @@ public class AddRelationCommand extends UICommand {
 
 	private final TableCell importingTable;
 
-	public AddRelationCommand(ERDesignerComponent component, TableCell aImportingCell, TableCell aExportingCell) {
+	public AddRelationCommand(ERDesignerComponent component,
+			TableCell aImportingCell, TableCell aExportingCell) {
 		super(component);
 		exportingTable = aExportingCell;
 		importingTable = aImportingCell;
@@ -47,14 +49,17 @@ public class AddRelationCommand extends UICommand {
 		Table theImportingTable = (Table) importingTable.getUserObject();
 		Table theExportingTable = (Table) exportingTable.getUserObject();
 
-		Relation theRelation = createPreparedRelationFor(theImportingTable, theExportingTable);
+		Relation theRelation = createPreparedRelationFor(theImportingTable,
+				theExportingTable);
 
-		RelationEditor theEditor = new RelationEditor(theImportingTable.getOwner(), getDetailComponent());
+		RelationEditor theEditor = new RelationEditor(theImportingTable
+				.getOwner(), getDetailComponent());
 		theEditor.initializeFor(theRelation);
 
 		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-			RelationEdge theEdge = new RelationEdge(theRelation, importingTable, exportingTable);
+			RelationEdge theEdge = new RelationEdge(theRelation,
+					importingTable, exportingTable);
 
 			try {
 				theEditor.applyValues();
@@ -67,26 +72,34 @@ public class AddRelationCommand extends UICommand {
 		}
 	}
 
-	private Relation createPreparedRelationFor(Table aSourceTable, Table aTargetTable) {
+	private Relation createPreparedRelationFor(Table aSourceTable,
+			Table aTargetTable) {
 		Relation theRelation = new Relation();
 		theRelation.setImportingTable(aSourceTable);
 		theRelation.setExportingTable(aTargetTable);
-		theRelation.setOnUpdate(getPreferences().getOnUpdateDefault());
-		theRelation.setOnDelete(getPreferences().getOnDeleteDefault());
+		theRelation.setOnUpdate(ApplicationPreferences.getInstance()
+				.getOnUpdateDefault());
+		theRelation.setOnDelete(ApplicationPreferences.getInstance()
+				.getOnDeleteDefault());
 
-		String thePattern = getPreferences().getAutomaticRelationAttributePattern();
-		String theTargetTableName = component.getModel().getDialect().getCastType().cast(aTargetTable.getName());
+		String thePattern = ApplicationPreferences.getInstance()
+				.getAutomaticRelationAttributePattern();
+		String theTargetTableName = component.getModel().getDialect()
+				.getCastType().cast(aTargetTable.getName());
 
 		// Create the foreign key suggestions
 		Index thePrimaryKey = aTargetTable.getPrimarykey();
 		for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
 			Attribute theAttribute = theExpression.getAttributeRef();
 			if (theAttribute != null) {
-				String theNewname = MessageFormat.format(thePattern, theTargetTableName, theAttribute.getName());
-				Attribute theNewAttribute = aSourceTable.getAttributes().findByName(theNewname);
+				String theNewname = MessageFormat.format(thePattern,
+						theTargetTableName, theAttribute.getName());
+				Attribute theNewAttribute = aSourceTable.getAttributes()
+						.findByName(theNewname);
 				if (theNewAttribute == null) {
 					theNewAttribute = theAttribute.clone();
-					theNewAttribute.setSystemId(ModelUtilities.createSystemIdFor(theNewAttribute));
+					theNewAttribute.setSystemId(ModelUtilities
+							.createSystemIdFor(theNewAttribute));
 					theNewAttribute.setOwner(null);
 					theNewAttribute.setName(theNewname);
 				}

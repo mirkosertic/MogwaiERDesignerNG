@@ -483,4 +483,6 @@ public interface ERDesignerBundle {
   String INDEXTYPE = "INDEXTYPE";
   /** \u0046\u0069\u006c\u0065\u0020\u0067\u0072\u006f\u0075\u0070. */
   String FILEGROUP = "FILEGROUP";
+  /** \u0058\u004d\u004c\u0020\u0069\u006e\u0064\u0065\u006e\u0074\u0061\u0074\u0069\u006f\u006e. */
+  String XMLINDENTATION = "XMLINDENTATION";
 }

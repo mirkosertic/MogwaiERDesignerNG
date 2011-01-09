@@ -19,8 +19,6 @@ package de.erdesignerng.dialect;
 
 import java.sql.Connection;
 
-import de.erdesignerng.util.ApplicationPreferences;
-
 /**
  * 
  * @author $Author: mirkosertic $
@@ -32,12 +30,12 @@ public interface ConnectionProvider {
 	 * Create a connection.
 	 * 
 	 * @param aPreferences
-	 *			the preferences
+	 *            the preferences
 	 * @return a connection
 	 * @throws Exception
-	 *			 will be thrown in case of an error
+	 *             will be thrown in case of an error
 	 */
-	Connection createConnection(ApplicationPreferences aPreferences) throws Exception;
+	Connection createConnection() throws Exception;
 
 	/**
 	 * Test, of the created connection is managed.

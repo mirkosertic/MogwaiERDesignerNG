@@ -19,7 +19,6 @@ package de.erdesignerng.plugins.squirrel;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import de.erdesignerng.plugins.squirrel.dialect.SquirrelDialect;
-import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * @author $Author: mirkosertic $
@@ -35,14 +34,16 @@ public class SquirrelMogwaiController {
 
 	private final SquirrelDialect dialect;
 
-	public SquirrelMogwaiController(SquirrelDialect aDialect, ISession aSession, SquirrelMogwaiPluginDelegate aPlugin) {
+	public SquirrelMogwaiController(SquirrelDialect aDialect,
+			ISession aSession, SquirrelMogwaiPluginDelegate aPlugin) {
 		session = aSession;
 		plugin = aPlugin;
 		dialect = aDialect;
 
 		tabsheet = new SquirrelMogwaiTabSheet(this);
 
-		session.getSessionSheet().selectMainTab(session.getSessionSheet().addMainTab(tabsheet));
+		session.getSessionSheet().selectMainTab(
+				session.getSessionSheet().addMainTab(tabsheet));
 	}
 
 	public void sessionEnding() {
@@ -77,9 +78,9 @@ public class SquirrelMogwaiController {
 	 * The preferences were changed, so they need to be reconfigured.
 	 * 
 	 * @param aPreferences
-	 *			the preferences
+	 *            the preferences
 	 */
-	public void refreshPreferences(ApplicationPreferences aPreferences) {
-		tabsheet.refreshPreferences(aPreferences);
+	public void refreshPreferences() {
+		tabsheet.refreshPreferences();
 	}
 }

@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultButton;
 
@@ -34,10 +33,7 @@ public class PreferencesEditorView extends JPanel {
 
 	private DefaultButton cancelButton = new DefaultButton();
 
-	private final ApplicationPreferences ap;
-
-	public PreferencesEditorView(ApplicationPreferences aPref) {
-		ap = aPref;
+	public PreferencesEditorView() {
 		initialize();
 	}
 
@@ -45,7 +41,7 @@ public class PreferencesEditorView extends JPanel {
 
 		preferences = new PreferencesPanel();
 
-		preferences.initValues(ap);
+		preferences.initValues();
 
 		String theColDef = "2dlu,fill:250dlu:grow,2dlu";
 		String theRowDef = "2dlu,p,10dlu,p,2dlu";
@@ -84,7 +80,7 @@ public class PreferencesEditorView extends JPanel {
 
 	/**
 	 * @param cancelButton
-	 *			the cancelButton to set
+	 *            the cancelButton to set
 	 */
 	public void setCancelButton(DefaultButton cancelButton) {
 		this.cancelButton = cancelButton;
@@ -99,7 +95,7 @@ public class PreferencesEditorView extends JPanel {
 
 	/**
 	 * @param okButton
-	 *			the okButton to set
+	 *            the okButton to set
 	 */
 	public void setOkButton(DefaultButton okButton) {
 		this.okButton = okButton;
@@ -114,7 +110,7 @@ public class PreferencesEditorView extends JPanel {
 
 	/**
 	 * @param preferences
-	 *			the preferences to set
+	 *            the preferences to set
 	 */
 	public void setPreferences(PreferencesPanel preferences) {
 		this.preferences = preferences;

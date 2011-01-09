@@ -20,7 +20,6 @@ package de.erdesignerng.model;
 import java.sql.Connection;
 
 import de.erdesignerng.dialect.ConnectionProvider;
-import de.erdesignerng.util.ApplicationPreferences;
 
 /**
  * Implementation of a connection provider.
@@ -36,12 +35,13 @@ public class ModelBasedConnectionProvider implements ConnectionProvider {
 		model = aModel;
 	}
 
-	public Connection createConnection(ApplicationPreferences aPreferences) throws Exception {
-		return model.createConnection(aPreferences);
+	public Connection createConnection() throws Exception {
+		return model.createConnection();
 	}
 
 	public String createScriptStatementSeparator() {
-		return model.getDialect().createSQLGenerator().createScriptStatementSeparator();
+		return model.getDialect().createSQLGenerator()
+				.createScriptStatementSeparator();
 	}
 
 	public boolean generatesManagedConnection() {

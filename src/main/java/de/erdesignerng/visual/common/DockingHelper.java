@@ -43,34 +43,31 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-public class DockingHelper extends DockingWindowAdapter implements ResourceHelperProvider {
+public class DockingHelper extends DockingWindowAdapter implements
+		ResourceHelperProvider {
 
 	private static final Logger LOGGER = Logger.getLogger(DockingHelper.class);
 
 	private RootWindow rootWindow;
 
-	private final ApplicationPreferences preferences;
-
-	public DockingHelper(ApplicationPreferences aPreferences) {
-		preferences = aPreferences;
-	}
-
-	public void initialize() throws InterruptedException, InvocationTargetException {
+	public void initialize() throws InterruptedException,
+			InvocationTargetException {
 
 		final ViewMap theViewMap = new ViewMap();
 		final View[] theViews = new View[3];
-		theViews[0] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.EDITOR), null, ERDesignerComponent
+		theViews[0] = new View(getResourceHelper().getFormattedText(
+				ERDesignerBundle.EDITOR), null, ERDesignerComponent
 				.getDefault().getDetailComponent());
 		theViews[0].getWindowProperties().setCloseEnabled(false);
 		theViews[0].getWindowProperties().setUndockEnabled(false);
 		theViews[0].getWindowProperties().setUndockOnDropEnabled(false);
-		theViews[1] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.OUTLINE), null, OutlineComponent
-				.getDefault());
+		theViews[1] = new View(getResourceHelper().getFormattedText(
+				ERDesignerBundle.OUTLINE), null, OutlineComponent.getDefault());
 		theViews[1].getWindowProperties().setCloseEnabled(false);
 		theViews[1].getWindowProperties().setUndockEnabled(false);
 		theViews[1].getWindowProperties().setUndockOnDropEnabled(false);
-		theViews[2] = new View(getResourceHelper().getFormattedText(ERDesignerBundle.SQL), null, SQLComponent
-				.getDefault());
+		theViews[2] = new View(getResourceHelper().getFormattedText(
+				ERDesignerBundle.SQL), null, SQLComponent.getDefault());
 		theViews[2].getWindowProperties().setCloseEnabled(false);
 		theViews[2].getWindowProperties().setUndockEnabled(false);
 		theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
@@ -83,14 +80,17 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 			@Override
 			public void run() {
 
-				Thread.currentThread().setContextClassLoader(DockingHelper.class.getClassLoader());
+				Thread.currentThread().setContextClassLoader(
+						DockingHelper.class.getClassLoader());
 
 				rootWindow = DockingUtil.createRootWindow(theViewMap, true);
-				byte[] windowLayout = preferences.getWindowLayout();
+				byte[] windowLayout = ApplicationPreferences.getInstance()
+						.getWindowLayout();
 				boolean layoutRestored = false;
 				if (windowLayout != null && windowLayout.length > 0) {
 					try {
-						rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(windowLayout)));
+						rootWindow.read(new ObjectInputStream(
+								new ByteArrayInputStream(windowLayout)));
 						layoutRestored = true;
 
 						LOGGER.info("Workbench layout restored");
@@ -100,13 +100,16 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 				}
 
 				if (!layoutRestored) {
-					SplitWindow theRightWindow = new SplitWindow(false, 0.8f, theViews[1], theViews[2]);
-					SplitWindow theSplitWindow = new SplitWindow(true, 0.8f, theViews[0], theRightWindow);
+					SplitWindow theRightWindow = new SplitWindow(false, 0.8f,
+							theViews[1], theViews[2]);
+					SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
+							theViews[0], theRightWindow);
 					rootWindow.setWindow(theSplitWindow);
 				}
 
 				rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
-				rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(false);
+				rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(
+						false);
 			}
 
 		};
@@ -137,7 +140,8 @@ public class DockingHelper extends DockingWindowAdapter implements ResourceHelpe
 			rootWindow.write(theOs);
 			theOs.close();
 
-			preferences.setWindowLayout(theBos.toByteArray());
+			ApplicationPreferences.getInstance().setWindowLayout(
+					theBos.toByteArray());
 
 			LOGGER.info("Workbench layout saved. ");
 		} catch (IOException e) {

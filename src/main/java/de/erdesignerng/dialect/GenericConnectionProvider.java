@@ -19,8 +19,6 @@ package de.erdesignerng.dialect;
 
 import java.sql.Connection;
 
-import de.erdesignerng.util.ApplicationPreferences;
-
 /**
  * Implementation of a generic ConnectionProvider.
  * 
@@ -33,12 +31,13 @@ public class GenericConnectionProvider implements ConnectionProvider {
 
 	private final String statementSeparator;
 
-	public GenericConnectionProvider(Connection aConnection, String aStatementSeparator) {
+	public GenericConnectionProvider(Connection aConnection,
+			String aStatementSeparator) {
 		connection = aConnection;
 		statementSeparator = aStatementSeparator;
 	}
 
-	public Connection createConnection(ApplicationPreferences preferences) throws Exception {
+	public Connection createConnection() throws Exception {
 		return connection;
 	}
 

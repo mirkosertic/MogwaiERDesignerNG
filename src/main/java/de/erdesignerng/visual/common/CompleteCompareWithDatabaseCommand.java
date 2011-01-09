@@ -45,42 +45,51 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
 
 		final Model theModel = component.getModel();
 
-		final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(theModel, getDetailComponent(),
-				getPreferences());
+		final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
+				theModel, getDetailComponent());
 		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
 			try {
-				final Connection theConnection = theModel.createConnection(getPreferences());
+				final Connection theConnection = theModel.createConnection();
 				if (theConnection == null) {
 					return;
 				}
-				final JDBCReverseEngineeringStrategy theStrategy = theModel.getDialect()
-						.getReverseEngineeringStrategy();
-				final ReverseEngineeringOptions theOptions = theEditor.createREOptions();
+				final JDBCReverseEngineeringStrategy theStrategy = theModel
+						.getDialect().getReverseEngineeringStrategy();
+				final ReverseEngineeringOptions theOptions = theEditor
+						.createREOptions();
 
-				final Model theDatabaseModel = getWorldConnector().createNewModel();
+				final Model theDatabaseModel = getWorldConnector()
+						.createNewModel();
 				theDatabaseModel.setDialect(theModel.getDialect());
 				theDatabaseModel.getProperties().copyFrom(theModel);
 
-				LongRunningTask<Model> theTask = new LongRunningTask<Model>(getWorldConnector()) {
+				LongRunningTask<Model> theTask = new LongRunningTask<Model>(
+						getWorldConnector()) {
 
 					@Override
-					public Model doWork(final MessagePublisher aPublisher) throws Exception {
+					public Model doWork(final MessagePublisher aPublisher)
+							throws Exception {
 						theOptions.getTableEntries().addAll(
-								theStrategy.getTablesForSchemas(theConnection, theOptions.getSchemaEntries()));
+								theStrategy.getTablesForSchemas(theConnection,
+										theOptions.getSchemaEntries()));
 
 						ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
 
-							public void notifyMessage(String aResourceKey, String... aValues) {
-								String theMessage = MessageFormat.format(component.getResourceHelper().getText(
-										aResourceKey), (Object[]) aValues);
+							public void notifyMessage(String aResourceKey,
+									String... aValues) {
+								String theMessage = MessageFormat.format(
+										component.getResourceHelper().getText(
+												aResourceKey),
+										(Object[]) aValues);
 								aPublisher.publishMessage(theMessage);
 							}
 
 						};
 
-						theStrategy.updateModelFromConnection(theDatabaseModel, getWorldConnector(), theConnection,
-								theOptions, theNotifier);
+						theStrategy.updateModelFromConnection(theDatabaseModel,
+								getWorldConnector(), theConnection, theOptions,
+								theNotifier);
 
 						return theDatabaseModel;
 
@@ -88,10 +97,13 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
 
 					@Override
 					public void handleResult(Model aResultModel) {
-						component.addConnectionToConnectionHistory(theDatabaseModel.createConnectionHistoryEntry());
+						component
+								.addConnectionToConnectionHistory(theDatabaseModel
+										.createConnectionHistoryEntry());
 
-						CompleteCompareEditor theCompare = new CompleteCompareEditor(getDetailComponent(), theModel,
-								aResultModel, getPreferences(), ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
+						CompleteCompareEditor theCompare = new CompleteCompareEditor(
+								getDetailComponent(), theModel, aResultModel,
+								ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
 						theCompare.showModal();
 					}
 

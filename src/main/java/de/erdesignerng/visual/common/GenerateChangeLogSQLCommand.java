@@ -38,11 +38,12 @@ public class GenerateChangeLogSQLCommand extends UICommand {
 			return;
 		}
 
-		StatementList theStatements = ((HistoryModificationTracker) component.getModel().getModificationTracker())
-				.getStatements();
+		StatementList theStatements = ((HistoryModificationTracker) component
+				.getModel().getModificationTracker()).getStatements();
 		SQLEditor theEditor = new SQLEditor(getDetailComponent(),
-				new ModelBasedConnectionProvider(component.getModel()), theStatements, component.currentEditingFile,
-				generateChangelogSQLFileName(), getPreferences(), getWorldConnector());
+				new ModelBasedConnectionProvider(component.getModel()),
+				theStatements, component.currentEditingFile,
+				generateChangelogSQLFileName(), getWorldConnector());
 		theEditor.showModal();
 	}
 }

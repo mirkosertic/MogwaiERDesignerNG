@@ -35,6 +35,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.cells.views.ViewCellView;
@@ -60,7 +61,7 @@ public class ReverseEngineerCommand extends UICommand {
 
 		if (theModel.getDialect().isSupportsSchemaInformation()) {
 			final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
-					theModel, getDetailComponent(), getPreferences());
+					theModel, getDetailComponent());
 			if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
 				component.setIntelligentLayoutEnabled(false);
@@ -68,7 +69,7 @@ public class ReverseEngineerCommand extends UICommand {
 				try {
 
 					final Connection theConnection = theModel
-							.createConnection(getPreferences());
+							.createConnection();
 					if (theConnection == null) {
 						return;
 					}
@@ -102,15 +103,15 @@ public class ReverseEngineerCommand extends UICommand {
 				} catch (Exception e) {
 					getWorldConnector().notifyAboutException(e);
 				} finally {
-					component.setIntelligentLayoutEnabled(getPreferences()
-							.isIntelligentLayout());
+					component
+							.setIntelligentLayoutEnabled(ApplicationPreferences
+									.getInstance().isIntelligentLayout());
 				}
 			}
 		} else {
 			try {
 
-				final Connection theConnection = theModel
-						.createConnection(getPreferences());
+				final Connection theConnection = theModel.createConnection();
 				if (theConnection == null) {
 					return;
 				}
@@ -126,8 +127,8 @@ public class ReverseEngineerCommand extends UICommand {
 			} catch (Exception e) {
 				getWorldConnector().notifyAboutException(e);
 			} finally {
-				component.setIntelligentLayoutEnabled(getPreferences()
-						.isIntelligentLayout());
+				component.setIntelligentLayoutEnabled(ApplicationPreferences
+						.getInstance().isIntelligentLayout());
 			}
 		}
 	}
@@ -193,7 +194,7 @@ public class ReverseEngineerCommand extends UICommand {
 						xoffset += theSize.width + 20;
 
 						xcounter++;
-						if (xcounter >= getPreferences()
+						if (xcounter >= ApplicationPreferences.getInstance()
 								.getGridWidthAfterReverseEngineering()) {
 							xcounter = 0;
 							xoffset = 0;
@@ -208,7 +209,8 @@ public class ReverseEngineerCommand extends UICommand {
 				@Override
 				public void handleResult(final Model aResultModel) {
 					try {
-						// Make sure this is called in the EDT, as else JGraph might throw a NPE
+						// Make sure this is called in the EDT, as else JGraph
+						// might throw a NPE
 						SwingUtilities.invokeAndWait(new Runnable() {
 
 							@Override

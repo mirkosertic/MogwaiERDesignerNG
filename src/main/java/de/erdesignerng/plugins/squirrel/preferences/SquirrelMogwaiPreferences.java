@@ -23,7 +23,6 @@ import net.sourceforge.squirrel_sql.client.IApplication;
 import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginDelegate;
-import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.preferences.PreferencesPanel;
 import de.mogwai.common.i18n.ResourceHelper;
 
@@ -37,25 +36,22 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 
 	private final PreferencesPanel panel;
 
-	private final ApplicationPreferences preferences;
-
 	private final SquirrelMogwaiPluginDelegate plugin;
 
-	public SquirrelMogwaiPreferences(SquirrelMogwaiPluginDelegate aPlugin, ApplicationPreferences aPreferences) {
-		preferences = aPreferences;
+	public SquirrelMogwaiPreferences(SquirrelMogwaiPluginDelegate aPlugin) {
 		plugin = aPlugin;
 		panel = new PreferencesPanel();
 	}
 
 	public void initialize(IApplication aApplication) {
-		panel.initValues(preferences);
+		panel.initValues();
 	}
 
 	public void uninitialize(IApplication aApplication) {
 	}
 
 	public void applyChanges() {
-		if (!panel.applyValues(preferences)) {
+		if (!panel.applyValues()) {
 			plugin.refreshPreferences();
 			// TODO [mirkosertic] How to prevent it from closing if validation
 			// fails?
@@ -71,6 +67,7 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 	}
 
 	public String getTitle() {
-		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.TITLE);
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME)
+				.getText(ERDesignerBundle.TITLE);
 	}
 }
