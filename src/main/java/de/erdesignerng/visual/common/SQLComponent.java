@@ -21,6 +21,8 @@ import java.awt.BorderLayout;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.swing.text.EditorKit;
+
 import org.apache.commons.lang.ArrayUtils;
 
 import de.erdesignerng.ERDesignerBundle;
@@ -38,15 +40,17 @@ import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.visual.components.DefaultEditorPane;
+import de.erdesignerng.visual.components.SQLEditorKit;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultTextArea;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-public class SQLComponent extends DefaultPanel implements ResourceHelperProvider {
+public class SQLComponent extends DefaultPanel implements
+		ResourceHelperProvider {
 
-	private DefaultTextArea sql;
+	private DefaultEditorPane sql;
 
 	private static SQLComponent DEFAULT;
 
@@ -69,8 +73,14 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
 	private void initialize() {
 
 		setLayout(new BorderLayout());
-		sql = new DefaultTextArea();
+		sql = new DefaultEditorPane();
 		sql.setEditable(false);
+
+		EditorKit editorKit = new SQLEditorKit();
+
+		sql.setEditorKitForContentType("text/sql", editorKit);
+		sql.setContentType("text/sql");
+
 		add(sql.getScrollPane(), BorderLayout.CENTER);
 
 		UIInitializer.getInstance().initialize(this);
@@ -87,7 +97,7 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
 	 * Display the CREATE SQL Statements for a given set of model items.
 	 * 
 	 * @param aModelItems
-	 *			a set of model items
+	 *            a set of model items
 	 */
 	public void displaySQLFor(ModelItem[] aModelItems) {
 		resetDisplay();
@@ -100,39 +110,50 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
 			for (ModelItem aItem : aModelItems) {
 				if (aItem instanceof Table) {
 					Table theTable = (Table) aItem;
-					theStatementList.addAll(theGenerator.createAddTableStatement(theTable));
-					for (Relation theRelation : theModel.getRelations().getForeignKeysFor(theTable)) {
-						theStatementList.addAll(theGenerator.createAddRelationStatement(theRelation));
+					theStatementList.addAll(theGenerator
+							.createAddTableStatement(theTable));
+					for (Relation theRelation : theModel.getRelations()
+							.getForeignKeysFor(theTable)) {
+						theStatementList.addAll(theGenerator
+								.createAddRelationStatement(theRelation));
 
 					}
 				}
 				if (aItem instanceof View) {
-					theStatementList.addAll(theGenerator.createAddViewStatement((View) aItem));
+					theStatementList.addAll(theGenerator
+							.createAddViewStatement((View) aItem));
 				}
 				if (aItem instanceof Relation) {
-					theStatementList.addAll(theGenerator.createAddRelationStatement((Relation) aItem));
+					theStatementList.addAll(theGenerator
+							.createAddRelationStatement((Relation) aItem));
 				}
 				if (aItem instanceof Attribute) {
 					Attribute theAttribute = (Attribute) aItem;
-					theStatementList.addAll(theGenerator.createAddAttributeToTableStatement(theAttribute.getOwner(),
-							theAttribute));
+					theStatementList.addAll(theGenerator
+							.createAddAttributeToTableStatement(theAttribute
+									.getOwner(), theAttribute));
 				}
 				if (aItem instanceof Index) {
 					Index theIndex = (Index) aItem;
 					if (theIndex.getIndexType() == IndexType.PRIMARYKEY) {
-						theStatementList.addAll(theGenerator.createAddPrimaryKeyToTable(theIndex.getOwner(), theIndex));
+						theStatementList.addAll(theGenerator
+								.createAddPrimaryKeyToTable(
+										theIndex.getOwner(), theIndex));
 					} else {
-						theStatementList.addAll(theGenerator.createAddIndexToTableStatement(theIndex.getOwner(),
-								theIndex));
+						theStatementList.addAll(theGenerator
+								.createAddIndexToTableStatement(theIndex
+										.getOwner(), theIndex));
 					}
 				}
 				if (aItem instanceof CustomType) {
 					CustomType theCustomType = (CustomType) aItem;
-					theStatementList.addAll(theGenerator.createAddCustomTypeStatement(theCustomType));
+					theStatementList.addAll(theGenerator
+							.createAddCustomTypeStatement(theCustomType));
 				}
 				if (aItem instanceof Domain) {
 					Domain theDomain = (Domain) aItem;
-					theStatementList.addAll(theGenerator.createAddDomainStatement(theDomain));
+					theStatementList.addAll(theGenerator
+							.createAddDomainStatement(theDomain));
 				}
 			}
 
@@ -141,7 +162,9 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
 				PrintWriter thePW = new PrintWriter(theWriter);
 				for (Statement theStatement : theStatementList) {
 					thePW.print(theStatement.getSql());
-					thePW.println(theGenerator.createScriptStatementSeparator());
+					thePW
+							.println(theGenerator
+									.createScriptStatementSeparator());
 				}
 				thePW.flush();
 				thePW.close();
@@ -149,7 +172,8 @@ public class SQLComponent extends DefaultPanel implements ResourceHelperProvider
 			}
 		} else {
 			if (theDialect == null) {
-				sql.setText(getResourceHelper().getText(ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+				sql.setText(getResourceHelper().getText(
+						ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
 			}
 		}
 	}
