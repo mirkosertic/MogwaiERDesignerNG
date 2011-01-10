@@ -1,0 +1,47 @@
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+package de.erdesignerng.visual.components;
+
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
+
+import de.mogwai.common.client.looks.components.DefaultScrollPane;
+import de.mogwai.common.client.looks.tools.DefaultModificationListener;
+
+public class DefaultEditorPane extends JEditorPane {
+
+	private DefaultScrollPane scrollPane;
+
+	public DefaultEditorPane() {
+
+		scrollPane = new DefaultScrollPane(this);
+		initialize();
+	}
+
+	public JScrollPane getScrollPane() {
+
+		return scrollPane;
+	}
+
+	private void initialize() {
+
+		getDocument()
+				.addDocumentListener(new DefaultModificationListener(this));
+	}
+
+}
