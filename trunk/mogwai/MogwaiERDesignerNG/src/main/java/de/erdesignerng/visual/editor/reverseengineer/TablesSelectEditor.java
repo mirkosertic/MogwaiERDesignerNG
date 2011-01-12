@@ -20,19 +20,12 @@ package de.erdesignerng.visual.editor.reverseengineer;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.ListSelectionModel;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxListModel;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 /**
@@ -50,23 +43,27 @@ public class TablesSelectEditor extends BaseEditor {
 	 * Create a table selection editor.
 	 * 
 	 * @param aParent
-	 *			the parent container
+	 *            the parent container
 	 * @param aOptions
-	 *			the options
+	 *            the options
 	 */
-	public TablesSelectEditor(ReverseEngineeringOptions aOptions, Component aParent) {
+	public TablesSelectEditor(ReverseEngineeringOptions aOptions,
+			Component aParent) {
 		super(aParent, ERDesignerBundle.TABLESELECTION);
 
 		initialize();
 
 		bindingInfo.setDefaultModel(aOptions);
-		DefaultCheckBoxListModel<TableEntry> tableList = editingView.getTableList().getModel();
-		tableList.addAll(aOptions.getTableEntries());
 
-		bindingInfo.addBinding("tableEntries", new TableEntryPropertyAdapter(editingView.getTableList(), null));
+		bindingInfo.addBinding("tableEntries", new TableEntryPropertyAdapter(
+				editingView.getTableList(), null));
 
 		bindingInfo.configure();
 		bindingInfo.model2view();
+
+		for (int i = 0; i < editingView.getTableList().getRowCount(); i++) {
+			editingView.getTableList().expandRow(i);
+		}
 	}
 
 	/**
@@ -78,37 +75,34 @@ public class TablesSelectEditor extends BaseEditor {
 		editingView.getOkButton().setAction(okAction);
 		editingView.getCancelButton().setAction(cancelAction);
 
-		editingView.getTableList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		DefaultAction theSelectAllAction = new DefaultAction(this, ERDesignerBundle.SELECTALL);
+		DefaultAction theSelectAllAction = new DefaultAction(this,
+				ERDesignerBundle.SELECTALL);
 		theSelectAllAction.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DefaultCheckBoxList theList = editingView.getTableList();
-				theList.setSelectedItems(bindingInfo.getDefaultModel().getTableEntries());
+				SelectableTableModel theModel = (SelectableTableModel) editingView
+						.getTableList().getModel();
+				theModel.selectAll();
 			}
 		});
-		DefaultAction theDeselectAllAction = new DefaultAction(this, ERDesignerBundle.DESELECTALL);
+		DefaultAction theDeselectAllAction = new DefaultAction(this,
+				ERDesignerBundle.DESELECTALL);
 		theDeselectAllAction.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DefaultCheckBoxList theList = editingView.getTableList();
-				theList.setSelectedItems(new ArrayList<TableEntry>());
+				SelectableTableModel theModel = (SelectableTableModel) editingView
+						.getTableList().getModel();
+				theModel.deselectAll();
 			}
 		});
-		DefaultAction theInvertSelectionAction = new DefaultAction(this, ERDesignerBundle.INVERTSELECTION);
+		DefaultAction theInvertSelectionAction = new DefaultAction(this,
+				ERDesignerBundle.INVERTSELECTION);
 		theInvertSelectionAction.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DefaultCheckBoxList theList = editingView.getTableList();
-				List<TableEntry> theSelection = theList.getSelectedItems();
-				List<TableEntry> theNewSelection = new ArrayList<TableEntry>();
-				for (TableEntry theEntry : bindingInfo.getDefaultModel().getTableEntries()) {
-					if (!theSelection.contains(theEntry)) {
-						theNewSelection.add(theEntry);
-					}
-				}
-				theList.setSelectedItems(theNewSelection);
+				SelectableTableModel theModel = (SelectableTableModel) editingView
+						.getTableList().getModel();
+				theModel.invertSelection();
 			}
 		});
 

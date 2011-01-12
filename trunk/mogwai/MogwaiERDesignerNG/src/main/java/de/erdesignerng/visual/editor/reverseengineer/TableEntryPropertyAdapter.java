@@ -18,13 +18,18 @@
 package de.erdesignerng.visual.editor.reverseengineer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
+import de.erdesignerng.dialect.TableEntry;
+import de.erdesignerng.util.SelectableWrapper;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
+import de.mogwai.common.client.looks.components.DefaultTree;
 import de.mogwai.common.i18n.ResourceHelper;
 
 /**
@@ -33,43 +38,78 @@ import de.mogwai.common.i18n.ResourceHelper;
  */
 public class TableEntryPropertyAdapter extends PropertyAdapter {
 
-	private final ResourceHelper helper = ResourceHelper.getResourceHelper(BindingBundle.BUNDLE_NAME);
+	private final ResourceHelper helper = ResourceHelper
+			.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
-	public TableEntryPropertyAdapter(DefaultCheckBoxList aComponent, String aPropertyName) {
+	public TableEntryPropertyAdapter(DefaultTree aComponent,
+			String aPropertyName) {
 		super(aComponent, aPropertyName);
 	}
 
 	@Override
 	public void model2view(Object aModel, String aPropertyName) {
 
-		DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
+		DefaultTree theComponent = (DefaultTree) getComponent()[0];
 
 		ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
-		theComponent.setSelectedItems(theModel.getTableEntries());
+
+		DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
+		for (String theEntry : theModel.getAvailableTableTypes()) {
+			SelectableWrapper<String> theWrapper = new SelectableWrapper<String>(
+					theEntry, true);
+			DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(
+					theWrapper);
+
+			for (TableEntry theTableEntry : theModel.getTableEntries()) {
+				if (theEntry.equals(theTableEntry.getTableType())) {
+
+					SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<TableEntry>(
+							theTableEntry, true);
+					DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
+							theWrapper2);
+
+					theNode.add(theNode2);
+				}
+			}
+
+			theRootNode.add(theNode);
+		}
+
+		theComponent.setModel(new SelectableTableModel(theRootNode));
 	}
 
 	@Override
 	public void view2model(Object aModel, String aPropertyName) {
-		DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
 
-		ReverseEngineeringOptions theIndex = (ReverseEngineeringOptions) aModel;
-		theIndex.getTableEntries().clear();
-		theIndex.getTableEntries().addAll(theComponent.getSelectedItems());
+		ReverseEngineeringOptions theDataModel = (ReverseEngineeringOptions) aModel;
 
+		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
+				.getModel();
+
+		Collection theSelectedEntries = theModel.getSelectedEntries();
+		theDataModel.getTableEntries().clear();
+		theDataModel.getTableEntries().addAll(theSelectedEntries);
 	}
 
 	@Override
 	public List<ValidationError> validate() {
 		List<ValidationError> theResult = new ArrayList<ValidationError>();
-		DefaultCheckBoxList theComponent = (DefaultCheckBoxList) getComponent()[0];
-		if (theComponent.getSelectedItems().size() == 0) {
-			theResult.add(new ValidationError(this, helper.getText(BindingBundle.MISSINGREQUIREDFIELD)));
+
+		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
+				.getModel();
+
+		Collection theSelectedEntries = theModel.getSelectedEntries();
+
+		if (theSelectedEntries.size() == 0) {
+			theResult.add(new ValidationError(this, helper
+					.getText(BindingBundle.MISSINGREQUIREDFIELD)));
 		}
 		if (theResult.size() > 0) {
 			markInvalid(theResult);
 		} else {
 			markValid();
 		}
+
 		return theResult;
 	}
 }
