@@ -32,36 +32,18 @@ public class ReverseEngineeringOptions {
 
 	private List<TableEntry> tableEntries = new ArrayList<TableEntry>();
 
-	/**
-	 * @return the tableNaming
-	 */
 	public TableNamingEnum getTableNaming() {
 		return tableNaming;
 	}
 
-	/**
-	 * @param tableNaming
-	 *			the tableNaming to set
-	 */
 	public void setTableNaming(TableNamingEnum tableNaming) {
 		this.tableNaming = tableNaming;
 	}
 
-	/**
-	 * Gibt den Wert des Attributs <code>schemaEntries</code> zurück.
-	 * 
-	 * @return Wert des Attributs schemaEntries.
-	 */
 	public List<SchemaEntry> getSchemaEntries() {
 		return schemaEntries;
 	}
 
-	/**
-	 * Setzt den Wert des Attributs <code>schemaEntries</code>.
-	 * 
-	 * @param schemaEntries
-	 *			Wert für das Attribut schemaEntries.
-	 */
 	public void setSchemaEntries(List<SchemaEntry> schemaEntries) {
 		this.schemaEntries = schemaEntries;
 	}
@@ -71,18 +53,21 @@ public class ReverseEngineeringOptions {
 		return schemaEntries.toString();
 	}
 
-	/**
-	 * @return the tableNames
-	 */
 	public List<TableEntry> getTableEntries() {
 		return tableEntries;
 	}
 
-	/**
-	 * @param tableNames
-	 *			the tableNames to set
-	 */
 	public void setTableEntries(List<TableEntry> tableNames) {
 		this.tableEntries = tableNames;
+	}
+
+	public List<String> getAvailableTableTypes() {
+		List<String> theResult = new ArrayList<String>();
+		for (TableEntry theEntry : tableEntries) {
+			if (!theResult.contains(theEntry.getTableType())) {
+				theResult.add(theEntry.getTableType());
+			}
+		}
+		return theResult;
 	}
 }

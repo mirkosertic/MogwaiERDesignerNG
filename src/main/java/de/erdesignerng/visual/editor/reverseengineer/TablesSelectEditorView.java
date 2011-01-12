@@ -23,8 +23,8 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultCheckBoxList;
 import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultTree;
 
 /**
  * Visual class TablesSelectEditorView.
@@ -35,7 +35,7 @@ public class TablesSelectEditorView extends JPanel {
 
 	private JPanel contentPanel;
 
-	private DefaultCheckBoxList tableList;
+	private DefaultTree tableList;
 
 	private DefaultButton okButton;
 
@@ -92,10 +92,12 @@ public class TablesSelectEditorView extends JPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			contentPanel.add(getTableList().getScrollPane(), cons.xywh(1, 2, 1, 1));
+			contentPanel.add(getTableList().getScrollPane(), cons.xywh(1, 2, 1,
+					1));
 
 			DefaultPanel thePanel = new DefaultPanel();
-			thePanel.setLayout(new FormLayout("fill:60dlu:grow,2dlu,fill:60dlu:grow", "p,2dlu,p"));
+			thePanel.setLayout(new FormLayout(
+					"fill:60dlu:grow,2dlu,fill:60dlu:grow", "p,2dlu,p"));
 			thePanel.add(selectAll, cons.xy(1, 1));
 			thePanel.add(deselectAll, cons.xy(3, 1));
 			thePanel.add(invertSelection, cons.xy(1, 3));
@@ -112,10 +114,14 @@ public class TablesSelectEditorView extends JPanel {
 	 * 
 	 * @return the initialized component
 	 */
-	public DefaultCheckBoxList getTableList() {
+	public DefaultTree getTableList() {
 
 		if (tableList == null) {
-			tableList = new DefaultCheckBoxList();
+			tableList = new DefaultTree();
+			tableList.setCellRenderer(CheckboxTreeCellRenderer.getInstance());
+			tableList.setCellEditor(new CheckboxTreeCellEditor(tableList));
+			tableList.setRootVisible(false);
+			tableList.setEditable(true);
 		}
 
 		return tableList;
