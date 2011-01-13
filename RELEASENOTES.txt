@@ -250,5 +250,5 @@ Release 2.7.0
 * Implemented FR 2880354 [ERDesignerNG] wrap and indent *.mxm
 * Implemented FR 2895112 [ERDesignerNG] do *not* show column-comments by default
 * Implemented FR 2895244 [ERDesignerNG] make the context-menus consistent
-* SQL Area is not syntax highlighted
+* SQL Area and View editor are not syntax highlighted
 * Implemented FR 2895576 [ERDesignerNG] TableSelectEditor devide tables from views
