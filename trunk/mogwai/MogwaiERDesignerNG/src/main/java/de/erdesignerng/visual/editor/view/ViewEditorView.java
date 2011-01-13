@@ -2,10 +2,16 @@ package de.erdesignerng.visual.editor.view;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.text.EditorKit;
+
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.visual.components.DefaultEditorPane;
+import de.erdesignerng.visual.components.SQLEditorKit;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultPanel;
@@ -14,9 +20,6 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPane;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
 import de.mogwai.common.client.looks.components.DefaultTextField;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 /**
  * @author $Author: mirkosertic $
@@ -38,9 +41,9 @@ public class ViewEditorView extends DefaultPanel {
 
 	private DefaultButton cancelButton;
 
-	private final DefaultTextArea sqlText = new DefaultTextArea();
-	
-	private DefaultTabbedPaneTab propertiesPanel;	
+	private final DefaultEditorPane sqlText = new DefaultEditorPane();
+
+	private DefaultTabbedPaneTab propertiesPanel;
 
 	public ViewEditorView() {
 		initialize();
@@ -50,6 +53,10 @@ public class ViewEditorView extends DefaultPanel {
 	 * Initialize method.
 	 */
 	private void initialize() {
+
+		EditorKit editorKit = new SQLEditorKit();
+		sqlText.setEditorKitForContentType("text/sql", editorKit);
+		sqlText.setContentType("text/sql");
 
 		String rowDef = "2dlu,p,2dlu,p,fill:220dlu,10dlu,p,2dlu";
 		String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
@@ -89,9 +96,9 @@ public class ViewEditorView extends DefaultPanel {
 
 		if (mainTabbedPane == null) {
 			mainTabbedPane = new DefaultTabbedPane();
-			mainTabbedPane.addTab("SQL", new DefaultScrollPane(sqlText));
+			mainTabbedPane.addTab("SQL", sqlText.getScrollPane());
 			mainTabbedPane.addTab(null, getTableCommentsTab());
-			mainTabbedPane.addTab(null, getPropertiesPanel());			
+			mainTabbedPane.addTab(null, getPropertiesPanel());
 			mainTabbedPane.setName("MainTabbedPane");
 			mainTabbedPane.setSelectedIndex(0);
 		}
@@ -102,7 +109,8 @@ public class ViewEditorView extends DefaultPanel {
 	public DefaultTabbedPaneTab getTableCommentsTab() {
 
 		if (tableCommentsTab == null) {
-			tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
+			tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane,
+					ERDesignerBundle.COMMENTS);
 
 			String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
 			String colDef = "2dlu,40dlu:grow,2dlu";
@@ -112,7 +120,8 @@ public class ViewEditorView extends DefaultPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
+			tableCommentsTab.add(new DefaultScrollPane(getEntityComment()),
+					cons.xywh(2, 2, 1, 3));
 			tableCommentsTab.setName("MainCommentsTab");
 			tableCommentsTab.setVisible(false);
 		}
@@ -148,13 +157,14 @@ public class ViewEditorView extends DefaultPanel {
 		return cancelButton;
 	}
 
-	public DefaultTextArea getSqlText() {
+	public DefaultEditorPane getSqlText() {
 		return sqlText;
 	}
-	
+
 	public DefaultTabbedPaneTab getPropertiesPanel() {
 		if (propertiesPanel == null) {
-			propertiesPanel = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
+			propertiesPanel = new DefaultTabbedPaneTab(mainTabbedPane,
+					ERDesignerBundle.PROPERTIES);
 			propertiesPanel.setLayout(new BorderLayout());
 		}
 		return propertiesPanel;
@@ -163,5 +173,5 @@ public class ViewEditorView extends DefaultPanel {
 	public void disablePropertiesTab() {
 		getMainTabbedPane().removeTabAt(2);
 	}
-	
+
 }

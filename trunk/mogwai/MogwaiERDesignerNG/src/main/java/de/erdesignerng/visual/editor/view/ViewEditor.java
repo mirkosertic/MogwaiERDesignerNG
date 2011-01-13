@@ -47,9 +47,9 @@ public class ViewEditor extends BaseEditor {
 	private ViewEditorView editingView;
 
 	private final BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
-	
+
 	private ViewProperties viewProperties;
-	
+
 	private ScaffoldingWrapper viewPropertiesWrapper;
 
 	public ViewEditor(Model aModel, Component aParent) {
@@ -87,14 +87,15 @@ public class ViewEditor extends BaseEditor {
 
 		viewProperties = model.getDialect().createViewPropertiesFor(aView);
 		DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
-		viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, viewProperties);
+		viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(
+				model, viewProperties);
 		theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
 		if (!viewPropertiesWrapper.hasComponents()) {
 			editingView.disablePropertiesTab();
 		} else {
 			UIInitializer.getInstance().initialize(theTab);
-		}		
-		
+		}
+
 		viewBindingInfo.setDefaultModel(aView);
 		viewBindingInfo.model2view();
 	}
@@ -105,7 +106,8 @@ public class ViewEditor extends BaseEditor {
 
 			try {
 				// Test if every expression has an assigned alias
-				SQLUtils.updateViewAttributesFromSQL(new View(), editingView.getSqlText().getText());
+				SQLUtils.updateViewAttributesFromSQL(new View(), editingView
+						.getSqlText().getText());
 
 				setModalResult(MODAL_RESULT_OK);
 			} catch (Exception e) {
@@ -115,19 +117,21 @@ public class ViewEditor extends BaseEditor {
 	}
 
 	@Override
-	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+	public void applyValues() throws ElementAlreadyExistsException,
+			ElementInvalidNameException, VetoException {
 
 		View theView = viewBindingInfo.getDefaultModel();
-		
+
 		viewPropertiesWrapper.save();
 		viewProperties.copyTo(theView);
-		
+
 		viewBindingInfo.view2model();
 
 		theView.getAttributes().clear();
 
 		try {
-			SQLUtils.updateViewAttributesFromSQL(theView, editingView.getSqlText().getText());
+			SQLUtils.updateViewAttributesFromSQL(theView, editingView
+					.getSqlText().getText());
 		} catch (Exception e) {
 			// This exception is checked in commandOk before
 		}
