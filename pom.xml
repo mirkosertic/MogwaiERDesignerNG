@@ -269,6 +269,12 @@
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.mogwai</groupId>
+			<artifactId>mogwai-databinding</artifactId>
+			<version>1.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.mogwai</groupId>
 			<artifactId>mogwai-smartstart</artifactId>
 			<version>1.0</version>
 			<scope>compile</scope>
