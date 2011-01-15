@@ -36,7 +36,7 @@ import de.erdesignerng.model.View;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  * @param <T>
- *			the dialect
+ *            the dialect
  */
 public abstract class SQLGenerator<T extends Dialect> {
 
@@ -89,50 +89,66 @@ public abstract class SQLGenerator<T extends Dialect> {
 		return aRelation.getName();
 	}
 
-	public abstract StatementList createRemoveRelationStatement(Relation aRelation);
+	public abstract StatementList createRemoveRelationStatement(
+			Relation aRelation);
 
 	public abstract StatementList createRemoveTableStatement(Table aTable);
 
-	public abstract StatementList createAddAttributeToTableStatement(Table aTable, Attribute aAttribute);
+	public abstract StatementList createAddAttributeToTableStatement(
+			Table aTable, Attribute aAttribute);
 
-	public abstract StatementList createAddIndexToTableStatement(Table aTable, Index aIndex);
+	public abstract StatementList createAddIndexToTableStatement(Table aTable,
+			Index aIndex);
 
 	public abstract StatementList createAddRelationStatement(Relation aRelation);
 
 	public abstract StatementList createAddTableStatement(Table aTable);
 
-	public abstract StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute);
+	public abstract StatementList createChangeAttributeStatement(
+			Attribute anExistingAttribute, Attribute aNewAttribute);
 
-	public abstract StatementList createChangeIndexStatement(Index anExistingIndex, Index aNewIndex);
+	public abstract StatementList createChangeIndexStatement(
+			Index anExistingIndex, Index aNewIndex);
 
-	public abstract StatementList createChangeRelationStatement(Relation aRelation, Relation aTempRelation);
+	public abstract StatementList createChangeRelationStatement(
+			Relation aRelation, Relation aTempRelation);
 
-	public abstract StatementList createChangeTableCommentStatement(Table aTable, String aNewComment);
+	public abstract StatementList createChangeTableCommentStatement(
+			Table aTable, String aNewComment);
 
-	public abstract StatementList createRemoveAttributeFromTableStatement(Table aTable, Attribute aAttribute);
+	public abstract StatementList createRemoveAttributeFromTableStatement(
+			Table aTable, Attribute aAttribute);
 
-	public abstract StatementList createRemoveIndexFromTableStatement(Table aTable, Index aIndex);
+	public abstract StatementList createRemoveIndexFromTableStatement(
+			Table aTable, Index aIndex);
 
-	public abstract StatementList createRenameTableStatement(Table aTable, String aNewName);
+	public abstract StatementList createRenameTableStatement(Table aTable,
+			String aNewName);
 
-	public abstract StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName);
+	public abstract StatementList createRenameAttributeStatement(
+			Attribute anExistingAttribute, String aNewName);
 
-	public abstract StatementList createRemovePrimaryKeyStatement(Table table, Index index);
+	public abstract StatementList createRemovePrimaryKeyStatement(Table table,
+			Index index);
 
-	public abstract StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex);
+	public abstract StatementList createAddPrimaryKeyToTable(Table aTable,
+			Index aIndex);
 
 	public abstract StatementList createAddDomainStatement(Domain aDomain);
 
 	public abstract StatementList createDropDomainStatement(Domain aDomain);
 
-	public abstract StatementList createAddCustomTypeStatement(CustomType aCustomType);
+	public abstract StatementList createAddCustomTypeStatement(
+			CustomType aCustomType);
 
-	public abstract StatementList createDropCustomTypeStatement(CustomType aCustomType);
+	public abstract StatementList createDropCustomTypeStatement(
+			CustomType aCustomType);
+
 	/**
 	 * Create the DDL script for the whole model.
 	 * 
 	 * @param aModel
-	 *			the model
+	 *            the model
 	 * @return the lists of statements
 	 */
 	public StatementList createCreateAllObjects(Model aModel) {
@@ -173,4 +189,8 @@ public abstract class SQLGenerator<T extends Dialect> {
 	public abstract StatementList createDropViewStatement(View aView);
 
 	public abstract StatementList createAddSchemaStatement(String aSchema);
+
+	public abstract String createSelectAllScriptFor(Table aTable);
+
+	public abstract String createSelectAllScriptFor(View aView);
 }

@@ -252,3 +252,4 @@ Release 2.7.0
 * Implemented FR 2895244 [ERDesignerNG] make the context-menus consistent
 * SQL Area and View editor are not syntax highlighted
 * Implemented FR 2895576 [ERDesignerNG] TableSelectEditor devide tables from views
+* Implemented FR 3158981 [ERDesignerNG] Add SQL Browser the the UI
