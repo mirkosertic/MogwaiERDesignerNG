@@ -18,7 +18,15 @@
 package de.erdesignerng.visual.editor.databrowser;
 
 import java.awt.Component;
+import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
@@ -33,6 +41,7 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.renderer.DefaultCellRenderer;
 
 /**
  * DataBrowser.
@@ -64,6 +73,10 @@ public class DataBrowserEditor extends BaseEditor {
 	private Dialect currentDialect;
 
 	private BindingInfo<DataBrowserModel> sqlBindingInfo = new BindingInfo<DataBrowserModel>();
+	private Connection connection;
+	private Statement statement;
+
+	private PaginationDataModel dataModel;
 
 	public DataBrowserEditor(Component aParent,
 			ERDesignerWorldConnector aConnector) {
@@ -71,6 +84,7 @@ public class DataBrowserEditor extends BaseEditor {
 
 		view.getCloseButton().setAction(closeAction);
 		view.getQueryButton().setAction(queryAction);
+		view.getData().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		initialize();
 
@@ -88,6 +102,8 @@ public class DataBrowserEditor extends BaseEditor {
 		theModel.setSql(currentDialect.createSQLGenerator()
 				.createSelectAllScriptFor(aTable));
 		sqlBindingInfo.model2view();
+
+		commandQuery();
 	}
 
 	public void initializeFor(View aView) {
@@ -99,6 +115,8 @@ public class DataBrowserEditor extends BaseEditor {
 		theModel.setSql(currentDialect.createSQLGenerator()
 				.createSelectAllScriptFor(aView));
 		sqlBindingInfo.model2view();
+
+		commandQuery();
 	}
 
 	private void initialize() {
@@ -120,9 +138,86 @@ public class DataBrowserEditor extends BaseEditor {
 	}
 
 	private void commandQuery() {
+
+		if (sqlBindingInfo.validate().size() == 0) {
+
+			sqlBindingInfo.view2model();
+
+			try {
+				if (connection == null) {
+					connection = currentModel.createConnection();
+				}
+				if (statement == null) {
+					statement = connection.createStatement();
+				}
+
+				ResultSet theResult = statement.executeQuery(sqlBindingInfo
+						.getDefaultModel().getSql());
+
+				if (dataModel != null) {
+					dataModel.cleanup();
+				}
+
+				dataModel = new PaginationDataModel(view.getData(), theResult);
+				dataModel.seekToRow(10);
+
+				view.getData().setModel(dataModel);
+				view.getData().getTableHeader().setReorderingAllowed(false);
+
+				dataModel
+						.addSeekListener(new PaginationDataModel.SeekListener() {
+
+							@Override
+							public void seeked() {
+								updateTableColumnWIdth();
+							}
+						});
+
+				updateTableColumnWIdth();
+
+			} catch (Exception e) {
+				logFatalError(e);
+			}
+		}
+
+	}
+
+	private void updateTableColumnWIdth() {
+		FontMetrics theMetrics = getFontMetrics(getFont());
+		int theWWidth = theMetrics.stringWidth("w");
+
+		for (int i = 0; i < dataModel.getColumnCount(); i++) {
+
+			TableColumn theColumn = view.getData().getColumnModel()
+					.getColumn(i);
+
+			theColumn.setCellRenderer(DefaultCellRenderer.getInstance());
+
+			int theTextWidth = dataModel.computeColumnWidth(i);
+			int theHeaderWidth = theColumn.getHeaderValue().toString().length();
+
+			theColumn.setPreferredWidth(theWWidth
+					* Math.max(theTextWidth, theHeaderWidth));
+		}
 	}
 
 	private void commandClose() {
+
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				// Ignore this
+			}
+		}
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// Ignore this
+			}
+		}
+
 		ApplicationPreferences.getInstance().updateWindowSize(
 				getClass().getSimpleName(), this);
 		setModalResult(DialogConstants.MODAL_RESULT_OK);
