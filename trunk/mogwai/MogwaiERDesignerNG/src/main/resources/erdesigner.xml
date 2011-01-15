@@ -968,5 +968,17 @@
 			<Text lang="de">XML Einrückung</Text>
 			<Text lang="en">XML indentation</Text>
 		</Entry>
+		<Entry id="QUERY">
+			<Text lang="de">Abfragen</Text>
+			<Text lang="en">Query</Text>
+		</Entry>
+		<Entry id="DATABROWSER">
+			<Text lang="de">Datenansicht</Text>
+			<Text lang="en">Databrowser</Text>
+		</Entry>
+		<Entry id="SHOWDATAOF">
+			<Text lang="de">Zeige Daten in {0}</Text>
+			<Text lang="en">Show data in {0}</Text>
+		</Entry>
 	</Bundle>
 </Resource>
