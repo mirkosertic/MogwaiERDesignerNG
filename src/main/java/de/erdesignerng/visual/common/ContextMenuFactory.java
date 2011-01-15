@@ -71,6 +71,14 @@ public final class ContextMenuFactory {
 
 				aMenu.add(theEditItem);
 
+				JMenuItem theDataBrowserItem = new JMenuItem();
+				theDataBrowserItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.SHOWDATAOF, theTable.getName()));
+				theDataBrowserItem.addActionListener(new DataBrowserCommand(
+						aComponent, theTable));
+
+				aMenu.add(theDataBrowserItem);
+
 				theNewSubjectAreaItems.add(theTable);
 				theItemsToBeDeleted.add(theTable);
 			}
@@ -83,6 +91,14 @@ public final class ContextMenuFactory {
 						ERDesignerBundle.EDITVIEW, theView.getName()));
 				theEditItem.addActionListener(new EditViewCommand(aComponent,
 						theView));
+
+				JMenuItem theDataBrowserItem = new JMenuItem();
+				theDataBrowserItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.SHOWDATAOF, theView.getName()));
+				theDataBrowserItem.addActionListener(new DataBrowserCommand(
+						aComponent, theView));
+
+				aMenu.add(theDataBrowserItem);
 
 				aMenu.add(theEditItem);
 
