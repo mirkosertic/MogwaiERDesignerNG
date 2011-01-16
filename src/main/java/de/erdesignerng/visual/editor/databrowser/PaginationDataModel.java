@@ -26,6 +26,9 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.util.JDBCUtils;
+
 public class PaginationDataModel extends AbstractTableModel {
 
 	private ResultSet resultSet;
@@ -40,12 +43,14 @@ public class PaginationDataModel extends AbstractTableModel {
 
 	private List<SeekListener> seekListener = new ArrayList<SeekListener>();
 	private JTable owner;
+	private Dialect dialect;
 
-	public PaginationDataModel(JTable aTable, ResultSet aResultSet)
-			throws SQLException {
+	public PaginationDataModel(Dialect aDialect, JTable aTable,
+			ResultSet aResultSet) throws SQLException {
 		owner = aTable;
 		resultSet = aResultSet;
 		metadata = aResultSet.getMetaData();
+		dialect = aDialect;
 		if (aResultSet.isLast()) {
 			rowCount = 0;
 		}
@@ -67,7 +72,8 @@ public class PaginationDataModel extends AbstractTableModel {
 	@Override
 	public String getColumnName(int column) {
 		try {
-			return metadata.getColumnName(column + 1);
+			return dialect.getCastType().cast(
+					metadata.getColumnName(column + 1));
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -133,8 +139,8 @@ public class PaginationDataModel extends AbstractTableModel {
 		return theRow.get(aColumnIndex);
 	}
 
-	public void cleanup() throws SQLException {
-		resultSet.close();
+	public void cleanup() {
+		JDBCUtils.closeQuietly(resultSet);
 	}
 
 	public int computeColumnWidth(int aColumnIndex) {

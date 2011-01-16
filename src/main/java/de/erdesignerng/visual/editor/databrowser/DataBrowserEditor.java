@@ -20,25 +20,33 @@ package de.erdesignerng.visual.editor.databrowser;
 import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.JDBCUtils;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.renderer.DefaultCellRenderer;
@@ -93,17 +101,85 @@ public class DataBrowserEditor extends BaseEditor {
 		sqlBindingInfo.configure();
 	}
 
-	public void initializeFor(Table aTable) {
+	public void initializeFor(final Table aTable) {
 
 		currentModel = aTable.getOwner();
 		currentDialect = aTable.getOwner().getDialect();
 
+		Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
+
 		DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
 		theModel.setSql(currentDialect.createSQLGenerator()
-				.createSelectAllScriptFor(aTable));
+				.createSelectAllScriptFor(aTable, theWhereValues));
 		sqlBindingInfo.model2view();
 
+		initializeContextMenu(aTable);
+
+		final String theSQL = theModel.getSql();
+
+		view.addBreadCrumb(aTable.getName(), new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				sqlBindingInfo.getDefaultModel().setSql(theSQL);
+				sqlBindingInfo.model2view();
+				commandQuery();
+			}
+		});
+
 		commandQuery();
+	}
+
+	private void initializeContextMenu(final Table aTable) {
+		DefaultPopupMenu theMenu = new DefaultPopupMenu();
+		for (Relation theRelation : currentModel.getRelations()
+				.getForeignKeysFor(aTable)) {
+
+			final Relation theFinalRelation = theRelation;
+
+			Table theNavigationTarget = theRelation.getExportingTable();
+
+			JMenuItem theItem = new JMenuItem();
+			theItem.setText(getResourceHelper().getFormattedText(
+					ERDesignerBundle.SHOWDATAOFUSING,
+					theNavigationTarget.getName(), theFinalRelation.getName()));
+
+			theItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					navigateToWithForeignKey(theFinalRelation);
+				}
+			});
+			theMenu.add(theItem);
+		}
+
+		for (Relation theRelation : currentModel.getRelations()
+				.getExportedKeysFor(aTable)) {
+
+			final Relation theFinalRelation = theRelation;
+			Table theNavigationTarget = theRelation.getImportingTable();
+
+			JMenuItem theItem = new JMenuItem();
+			theItem.setText(getResourceHelper().getFormattedText(
+					ERDesignerBundle.SHOWDATAOFUSING,
+					theNavigationTarget.getName(), theFinalRelation.getName()));
+
+			theItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					navigateToWithImportingKey(theFinalRelation);
+				}
+			});
+
+			theMenu.add(theItem);
+		}
+
+		if (theMenu.getComponentCount() > 0) {
+			view.getData().setContextMenu(theMenu);
+		}
 	}
 
 	public void initializeFor(View aView) {
@@ -117,6 +193,101 @@ public class DataBrowserEditor extends BaseEditor {
 		sqlBindingInfo.model2view();
 
 		commandQuery();
+	}
+
+	private void navigateToWithForeignKey(final Relation aRelation) {
+		int theCurrentRow = view.getData().getSelectedRow();
+		if (theCurrentRow >= 0) {
+
+			Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
+			for (Map.Entry<IndexExpression, Attribute> theEntry : aRelation
+					.getMapping().entrySet()) {
+
+				Attribute theAttribute = theEntry.getValue();
+				int theIndex = theAttribute.getOwner().getAttributes().indexOf(
+						theAttribute);
+
+				Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
+
+				Attribute theKey = theEntry.getKey().getAttributeRef();
+				if (theKey != null) {
+					theWhereValues.put(theKey, theValue);
+				}
+			}
+
+			DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+			theModel.setSql(currentDialect.createSQLGenerator()
+					.createSelectAllScriptFor(aRelation.getExportingTable(),
+							theWhereValues));
+			sqlBindingInfo.model2view();
+
+			initializeContextMenu(aRelation.getExportingTable());
+
+			commandQuery();
+
+			final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
+
+			view.addBreadCrumb(aRelation.getExportingTable().getName(),
+					new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							sqlBindingInfo.getDefaultModel().setSql(theSQL);
+							sqlBindingInfo.model2view();
+							commandQuery();
+
+							initializeContextMenu(aRelation.getExportingTable());
+						}
+					});
+
+		}
+	}
+
+	private void navigateToWithImportingKey(final Relation aRelation) {
+		int theCurrentRow = view.getData().getSelectedRow();
+		if (theCurrentRow >= 0) {
+
+			Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
+			for (Map.Entry<IndexExpression, Attribute> theEntry : aRelation
+					.getMapping().entrySet()) {
+				Attribute theAttribute = theEntry.getKey().getAttributeRef();
+				if (theAttribute != null) {
+					int theIndex = theAttribute.getOwner().getAttributes()
+							.indexOf(theAttribute);
+					Object theValue = dataModel.getValueAt(theCurrentRow,
+							theIndex);
+
+					theWhereValues.put(theEntry.getValue(), theValue);
+				}
+			}
+
+			DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+			theModel.setSql(currentDialect.createSQLGenerator()
+					.createSelectAllScriptFor(aRelation.getImportingTable(),
+							theWhereValues));
+			sqlBindingInfo.model2view();
+
+			initializeContextMenu(aRelation.getImportingTable());
+
+			commandQuery();
+
+			final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
+
+			view.addBreadCrumb(aRelation.getImportingTable().getName(),
+					new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							sqlBindingInfo.getDefaultModel().setSql(theSQL);
+							sqlBindingInfo.model2view();
+							commandQuery();
+
+							initializeContextMenu(aRelation.getImportingTable());
+						}
+					});
+		}
 	}
 
 	private void initialize() {
@@ -158,8 +329,9 @@ public class DataBrowserEditor extends BaseEditor {
 					dataModel.cleanup();
 				}
 
-				dataModel = new PaginationDataModel(view.getData(), theResult);
-				dataModel.seekToRow(10);
+				dataModel = new PaginationDataModel(currentDialect, view
+						.getData(), theResult);
+				dataModel.seekToRow(5);
 
 				view.getData().setModel(dataModel);
 				view.getData().getTableHeader().setReorderingAllowed(false);
@@ -184,7 +356,7 @@ public class DataBrowserEditor extends BaseEditor {
 
 	private void updateTableColumnWIdth() {
 		FontMetrics theMetrics = getFontMetrics(getFont());
-		int theWWidth = theMetrics.stringWidth("w");
+		int theWWidth = theMetrics.stringWidth("W");
 
 		for (int i = 0; i < dataModel.getColumnCount(); i++) {
 
@@ -203,20 +375,12 @@ public class DataBrowserEditor extends BaseEditor {
 
 	private void commandClose() {
 
-		if (statement != null) {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				// Ignore this
-			}
+		if (dataModel != null) {
+			dataModel.cleanup();
 		}
-		if (connection != null) {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				// Ignore this
-			}
-		}
+
+		JDBCUtils.closeQuietly(statement);
+		JDBCUtils.closeQuietly(connection);
 
 		ApplicationPreferences.getInstance().updateWindowSize(
 				getClass().getSimpleName(), this);
