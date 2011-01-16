@@ -30,8 +30,14 @@ import org.apache.commons.lang.StringUtils;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
+import de.erdesignerng.util.ApplicationPreferences;
 
 public abstract class BaseERDesignerTestCaseImpl extends TestCase {
+
+	@Override
+	protected void setUp() throws Exception {
+		ApplicationPreferences.getInstance().setXmlIndentation(0);
+	}
 
 	protected boolean compareStrings(String aString1, String aString2) {
 		aString1 = StringUtils.remove(aString1, (char) 13);
@@ -40,13 +46,17 @@ public abstract class BaseERDesignerTestCaseImpl extends TestCase {
 		aString2 = StringUtils.remove(aString2, (char) 13);
 		aString2 = StringUtils.remove(aString2, (char) 10);
 
+		System.out.println(aString1 + "\n" + aString1.length());
+		System.out.println(aString2 + "\n" + aString2.length());
+
 		return aString1.equals(aString2);
 	}
 
 	protected String readResourceFile(String aResourceName) throws IOException {
 		StringWriter theStringWriter = new StringWriter();
 		PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
-		BufferedReader theBr = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(aResourceName)));
+		BufferedReader theBr = new BufferedReader(new InputStreamReader(
+				getClass().getResourceAsStream(aResourceName)));
 		while (theBr.ready()) {
 			String theLine = theBr.readLine();
 			if (theLine != null && theLine.length() > 0) {
@@ -59,7 +69,8 @@ public abstract class BaseERDesignerTestCaseImpl extends TestCase {
 
 	}
 
-	protected String statementListToString(StatementList aStatements, SQLGenerator aGenerator) {
+	protected String statementListToString(StatementList aStatements,
+			SQLGenerator aGenerator) {
 		StringWriter theStringWriter = new StringWriter();
 		PrintWriter thePrintWriter = new PrintWriter(theStringWriter);
 		for (Statement theStatement : aStatements) {
