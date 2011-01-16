@@ -125,6 +125,8 @@ public class DataBrowserEditor extends BaseEditor {
 				sqlBindingInfo.getDefaultModel().setSql(theSQL);
 				sqlBindingInfo.model2view();
 				commandQuery();
+
+				initializeContextMenu(aTable);
 			}
 		});
 
