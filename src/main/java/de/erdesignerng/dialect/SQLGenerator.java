@@ -18,6 +18,7 @@
 package de.erdesignerng.dialect;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -190,7 +191,8 @@ public abstract class SQLGenerator<T extends Dialect> {
 
 	public abstract StatementList createAddSchemaStatement(String aSchema);
 
-	public abstract String createSelectAllScriptFor(Table aTable);
+	public abstract String createSelectAllScriptFor(Table aTable,
+			Map<Attribute, Object> aWhereValues);
 
 	public abstract String createSelectAllScriptFor(View aView);
 }

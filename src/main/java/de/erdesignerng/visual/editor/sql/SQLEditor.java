@@ -35,6 +35,7 @@ import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.io.SQLFileFilter;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.JDBCUtils;
 import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
@@ -219,13 +220,7 @@ public class SQLEditor extends BaseEditor {
 					worldConnector.notifyAboutException(e);
 				} finally {
 					if (!connectionAdapter.generatesManagedConnection()) {
-						if (theConnection != null) {
-							try {
-								theConnection.close();
-							} catch (Exception e) {
-								// Do nothing here
-							}
-						}
+						JDBCUtils.closeQuietly(theConnection);
 					}
 				}
 
