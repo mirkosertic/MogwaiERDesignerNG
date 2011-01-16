@@ -34,14 +34,16 @@ import de.erdesignerng.test.BaseERDesignerTestCaseImpl;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 
-public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerTestCaseImpl {
+public abstract class AbstractReverseEngineeringTestImpl extends
+		BaseERDesignerTestCaseImpl {
 
 	public static class EmptyWorldConnector implements ERDesignerWorldConnector {
 
 		@Override
 		public Model createNewModel() {
 			Model theNewModel = new Model();
-			theNewModel.setModificationTracker(new HistoryModificationTracker(theNewModel));
+			theNewModel.setModificationTracker(new HistoryModificationTracker(
+					theNewModel));
 			return theNewModel;
 		}
 
@@ -113,7 +115,8 @@ public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerT
 		}
 	}
 
-	public static class EmptyReverseEngineeringNotifier implements ReverseEngineeringNotifier {
+	public static class EmptyReverseEngineeringNotifier implements
+			ReverseEngineeringNotifier {
 
 		@Override
 		public void notifyMessage(String resourceKey, String... values) {
@@ -125,8 +128,10 @@ public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerT
 		}
 	}
 
-	protected void loadSQL(Connection aConnection, String aResource) throws IOException, SQLException {
-		BufferedReader theReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(aResource)));
+	protected void loadSQL(Connection aConnection, String aResource)
+			throws IOException, SQLException {
+		BufferedReader theReader = new BufferedReader(new InputStreamReader(
+				getClass().getResourceAsStream(aResource)));
 		Statement theStatement = aConnection.createStatement();
 		while (theReader.ready()) {
 			String theLine = theReader.readLine();
@@ -143,7 +148,8 @@ public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerT
 		theReader.close();
 	}
 
-	protected void loadSingleSQL(Connection aConnection, String aResource) throws IOException, SQLException {
+	protected void loadSingleSQL(Connection aConnection, String aResource)
+			throws IOException, SQLException {
 
 		String theSQL = readResourceFile(aResource);
 
@@ -161,7 +167,7 @@ public abstract class AbstractReverseEngineeringTestImpl extends BaseERDesignerT
 	public String getDBServerName() {
 		String theName = System.getProperty("mogwai.test.db.server.name");
 		if (StringUtils.isEmpty(theName)) {
-			theName = "192.168.0.191";
+			theName = "192.168.56.101";
 		}
 		return theName;
 	}
