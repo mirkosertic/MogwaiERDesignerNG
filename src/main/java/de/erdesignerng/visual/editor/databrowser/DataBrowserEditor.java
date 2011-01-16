@@ -297,7 +297,6 @@ public class DataBrowserEditor extends BaseEditor {
 
 		pack();
 
-		setMinimumSize(getSize());
 		ApplicationPreferences.getInstance().setWindowSize(
 				getClass().getSimpleName(), this);
 

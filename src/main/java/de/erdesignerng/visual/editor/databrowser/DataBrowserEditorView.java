@@ -148,7 +148,6 @@ public class DataBrowserEditorView extends JPanel {
 				while (breadCrumb.getComponentCount() > p + 1) {
 					breadCrumb.remove(breadCrumb.getComponentCount() - 1);
 				}
-				breadCrumb.doLayout();
 				breadCrumb.invalidate();
 				breadCrumb.repaint();
 			}
