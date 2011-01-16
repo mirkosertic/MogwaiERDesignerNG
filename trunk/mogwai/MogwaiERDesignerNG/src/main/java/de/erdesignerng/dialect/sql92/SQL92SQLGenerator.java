@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.dialect.sql92;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 
 import de.erdesignerng.PlatformConfig;
@@ -525,8 +527,39 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
 	}
 
 	@Override
-	public String createSelectAllScriptFor(Table aTable) {
-		return "SELECT * FROM " + createUniqueTableName(aTable);
+	public String createSelectAllScriptFor(Table aTable,
+			Map<Attribute, Object> aWhereValues) {
+		StringBuilder theBuilder = new StringBuilder("SELECT * FROM ");
+		theBuilder = theBuilder.append(createUniqueTableName(aTable));
+
+		if (aWhereValues.size() > 0) {
+			theBuilder.append(" WHERE ");
+			boolean first = true;
+			for (Map.Entry<Attribute, Object> theEntry : aWhereValues
+					.entrySet()) {
+				if (!first) {
+					theBuilder.append(" AND ");
+				}
+
+				theBuilder.append(theEntry.getKey().getName());
+				if (theEntry.getValue() != null) {
+					theBuilder.append(" = ");
+					if (theEntry.getKey().getDatatype().isJDBCStringType()) {
+						theBuilder.append("'");
+						theBuilder.append(theEntry.getValue());
+						theBuilder.append("'");
+					} else {
+						theBuilder.append(theEntry.getValue());
+					}
+				} else {
+					theBuilder.append(" IS NULL");
+				}
+
+				first = false;
+			}
+		}
+
+		return theBuilder.toString();
 	}
 
 	@Override

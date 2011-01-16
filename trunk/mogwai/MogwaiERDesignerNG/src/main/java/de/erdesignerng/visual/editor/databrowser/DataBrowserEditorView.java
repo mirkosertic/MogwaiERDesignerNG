@@ -1,14 +1,23 @@
 package de.erdesignerng.visual.editor.databrowser;
 
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.text.EditorKit;
+
+import org.apache.commons.lang.ArrayUtils;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.components.SQLEditorKit;
+import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultTable;
 import de.mogwai.common.client.looks.components.DefaultTextPane;
 
@@ -29,6 +38,8 @@ public class DataBrowserEditorView extends JPanel {
 
 	private DefaultButton queryButton;
 
+	private DefaultPanel breadCrumb;
+
 	public DataBrowserEditorView() {
 		initialize();
 	}
@@ -38,7 +49,7 @@ public class DataBrowserEditorView extends JPanel {
 	 */
 	private void initialize() {
 
-		String rowDef = "2dlu,fill:100dlu,2dlu,fill:200dlu:grow,10dlu,p,2dlu";
+		String rowDef = "2dlu,p,2dlu,fill:100dlu,2dlu,fill:200dlu:grow,10dlu,p,2dlu";
 		String colDef = "2dlu,fill:300dlu:grow,2dlu";
 
 		FormLayout layout = new FormLayout(colDef, rowDef);
@@ -46,9 +57,10 @@ public class DataBrowserEditorView extends JPanel {
 
 		CellConstraints cons = new CellConstraints();
 
-		add(getSql().getScrollPane(), cons.xywh(2, 2, 1, 1));
-		add(getData().getScrollPane(), cons.xywh(2, 4, 1, 1));
-		add(getButtonPanel(), cons.xywh(2, 6, 1, 1));
+		add(getBreadCrumb(), cons.xywh(2, 2, 1, 1));
+		add(getSql().getScrollPane(), cons.xywh(2, 4, 1, 1));
+		add(getData().getScrollPane(), cons.xywh(2, 6, 1, 1));
+		add(getButtonPanel(), cons.xywh(2, 8, 1, 1));
 
 		buildGroups();
 	}
@@ -114,9 +126,40 @@ public class DataBrowserEditorView extends JPanel {
 		return data;
 	}
 
-	/**
-	 * Initialize method.
-	 */
+	public DefaultPanel getBreadCrumb() {
+		if (breadCrumb == null) {
+			breadCrumb = new DefaultPanel();
+			breadCrumb.setLayout(new FlowLayout(FlowLayout.LEFT));
+		}
+		return breadCrumb;
+	}
+
+	public JButton addBreadCrumb(String aDescription,
+			ActionListener aActionListener) {
+		final JButton theButton = new JButton();
+		theButton.setText(aDescription);
+		theButton.addActionListener(aActionListener);
+		theButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int p = ArrayUtils.indexOf(breadCrumb.getComponents(),
+						theButton);
+				while (breadCrumb.getComponentCount() > p + 1) {
+					breadCrumb.remove(breadCrumb.getComponentCount() - 1);
+				}
+				breadCrumb.doLayout();
+				breadCrumb.invalidate();
+				breadCrumb.repaint();
+			}
+		});
+		breadCrumb.add(theButton);
+
+		UIInitializer.getInstance().initialize(theButton);
+
+		return theButton;
+	}
+
 	private void buildGroups() {
 
 	}
