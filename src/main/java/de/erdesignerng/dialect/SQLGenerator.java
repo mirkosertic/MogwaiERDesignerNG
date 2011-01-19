@@ -50,7 +50,7 @@ public abstract class SQLGenerator<T extends Dialect> {
 	}
 
 	/**
-	 * Gibt den Wert des Attributs <code>dialect</code> zurück.
+	 * Gibt den Wert des Attributs <code>dialect</code> zurÃ¼ck.
 	 * 
 	 * @return Wert des Attributs dialect.
 	 */
