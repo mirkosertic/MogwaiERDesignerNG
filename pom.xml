@@ -252,6 +252,24 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
+		 <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-compiler-plugin</artifactId>
+		  <version>2.0.2</version>
+		  <configuration>
+		   <source>1.6</source>
+		   <target>1.6</target>
+		   <encoding>${project.build.sourceEncoding}</encoding>
+		  </configuration>
+		 </plugin>
+		 <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-resources-plugin</artifactId>
+		  <version>2.2</version>
+		  <configuration>
+		   <encoding>${project.build.sourceEncoding}</encoding>
+		  </configuration>
+		 </plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -444,6 +462,7 @@
 		<mogwai.test.db.server.name>localhost</mogwai.test.db.server.name>
 		<staging.dir>${project.build.directory}/staging</staging.dir>
 		<your.standalone-compiler.version>4.2.1</your.standalone-compiler.version>
+	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<packaging>jar</packaging>
