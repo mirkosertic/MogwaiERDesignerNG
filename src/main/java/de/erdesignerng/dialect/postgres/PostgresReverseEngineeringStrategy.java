@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect.postgres;
 
+import de.erdesignerng.ERDesignerBundle;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -36,6 +37,9 @@ import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
+
+import de.erdesignerng.modificationtracker.VetoException;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author $Author: mirkosertic $
@@ -107,14 +111,17 @@ public class PostgresReverseEngineeringStrategy extends
 
 	// Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
 	// Bug Fixing 2952877 [ERDesignerNG] Custom Types
+    // Bug Fixing 3056071 [ERDesignerNG] postgres unkown datatype prevent reverse eng.
+    // TODO: [dr-death] reverse engineere details of custom types and create DDL
 	@Override
 	protected void reverseEngineerCustomTypes(Model aModel,
 			ReverseEngineeringOptions aOptions,
 			ReverseEngineeringNotifier aNotifier, Connection aConnection)
 			throws SQLException, ReverseEngineeringException {
+
 		// This query is reverse engineered from the original
 		// aConnection.getMetaData().getUDTs() method which unfortunately
-		// supports the typtypes 'c' and 'd'
+		// supports only the typtypes 'c' and 'd'
 		// It is altered to support the typtypes 'c' and 'e'
 		// The support of typtype 'd' (extended basic types) is removed because
 		// it is just another representation of domains.
@@ -122,45 +129,55 @@ public class PostgresReverseEngineeringStrategy extends
 		// 'd' -> domains (java.sql.Types.DISTINCT)
 		// 'e' -> enumerations (java.sql.Types.ARRAY)
 
-		// TODO: [mirkosertic] Commented till there is a valid way to retrieve
-		// type ddl from db
-		/*
-		 * String theQuery =
-		 * "SELECT NULL AS type_cat, n.nspname AS type_schem, t.typname AS type_name, NULL AS class_name, CASE WHEN t.typtype = 'c' THEN 2002 WHEN t.typtype = 'e' THEN 2003 ELSE 2001 END AS data_type, pg_catalog.Obj_description(t.oid, 'pg_type') AS remarks, NULL AS base_type FROM pg_catalog.pg_type t, pg_catalog.pg_namespace n WHERE t.typnamespace = n.oid AND n.nspname != 'pg_catalog' AND n.nspname != 'pg_toast' AND t.typtype IN ( 'c', 'e' ) AND n.nspname = ? ORDER BY data_type, type_schem, type_name "
-		 * ; PreparedStatement theStatement = null;
-		 * 
-		 * for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
-		 * theStatement = aConnection.prepareStatement(theQuery);
-		 * theStatement.setString(1, theEntry.getSchemaName()); ResultSet
-		 * theResult = null; try { theResult = theStatement.executeQuery();
-		 * while (theResult.next()) { String theSchemaName =
-		 * theResult.getString("TYPE_SCHEM"); String theCustomTypeName =
-		 * theResult.getString("TYPE_NAME"); String theRemarks =
-		 * theResult.getString("REMARKS");
-		 * 
-		 * aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE,
-		 * theCustomTypeName);
-		 * 
-		 * CustomType theCustomType =
-		 * aModel.getCustomTypes().findByNameAndSchema(theCustomTypeName,
-		 * theSchemaName); if (theCustomType != null) { throw new
-		 * ReverseEngineeringException("Duplicate custom datatype found : " +
-		 * theCustomTypeName); }
-		 * 
-		 * theCustomType = new CustomType();
-		 * theCustomType.setName(theCustomTypeName);
-		 * theCustomType.setSchema(theSchemaName);
-		 * 
-		 * if (!StringUtils.isEmpty(theRemarks)) {
-		 * theCustomType.setComment(theRemarks); }
-		 * 
-		 * try { aModel.addCustomType(theCustomType); } catch (VetoException e)
-		 * { throw new ReverseEngineeringException(e.getMessage(), e); }
-		 * 
-		 * reverseEngineerCustomType(aModel, theCustomType, aOptions, aNotifier,
-		 * aConnection); } } finally { if (theResult != null) {
-		 * theResult.close(); } theStatement.close(); } }
-		 */
+		// TODO: [mirkosertic] implement valid way to retrieve type ddl from db
+        String theQuery = "SELECT NULL AS type_cat, n.nspname AS type_schem, t.typname AS type_name, NULL AS class_name, CASE WHEN t.typtype = 'c' THEN 2002 WHEN t.typtype = 'e' THEN 2003 ELSE 2001 END AS data_type, pg_catalog.Obj_description(t.oid, 'pg_type') AS remarks, NULL AS base_type " +
+                          "FROM pg_catalog.pg_type t inner join pg_catalog.pg_namespace n on t.typnamespace = n.oid inner join pg_catalog.pg_authid a on t.typowner = a.oid " +
+                          "WHERE t.typtype IN ( 'c', 'e' ) AND n.nspname = ? AND a.rolname = 'postgres' " +
+                          "ORDER BY data_type, type_schem, type_name ";
+        PreparedStatement theStatement = null;
+
+        for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
+            theStatement = aConnection.prepareStatement(theQuery);
+            theStatement.setString(1, theEntry.getSchemaName());
+            ResultSet theResult = null;
+
+            try { theResult = theStatement.executeQuery();
+                while (theResult.next()) {
+                    String theSchemaName = theResult.getString("TYPE_SCHEM");
+                    String theCustomTypeName = theResult.getString("TYPE_NAME");
+                    String theRemarks = theResult.getString("REMARKS");
+
+                    aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE, theCustomTypeName);
+
+                    CustomType theCustomType = aModel.getCustomTypes().findByNameAndSchema(theCustomTypeName, theSchemaName);
+                    if (theCustomType != null) {
+                        throw new ReverseEngineeringException("Duplicate custom datatype found : " + theCustomTypeName);
+                    }
+
+                    theCustomType = new CustomType();
+                    theCustomType.setName(theCustomTypeName);
+                    theCustomType.setSchema(theSchemaName);
+
+                    if (!StringUtils.isEmpty(theRemarks)) {
+                        theCustomType.setComment(theRemarks);
+                    }
+
+                    try {
+                        aModel.addCustomType(theCustomType);
+                    } catch (VetoException e) {
+                        throw new ReverseEngineeringException(e.getMessage(), e);
+                    }
+
+                    reverseEngineerCustomType(aModel, theCustomType, aOptions, aNotifier, aConnection);
+                }
+            } finally {
+                if (theResult != null) {
+                    theResult.close();
+                }
+
+                theStatement.close();
+            }
+        }
 	}
 
 	// Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
