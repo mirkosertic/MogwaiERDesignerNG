@@ -1,583 +1,571 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 package de.erdesignerng.model.utils;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.AttributeList;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexList;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.RelationList;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.TableList;
-import de.erdesignerng.model.View;
-import de.erdesignerng.model.ViewList;
+import de.erdesignerng.model.*;
 import de.mogwai.common.i18n.ResourceHelper;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * A comparator for models.
- * 
+ *
  * @author mirkosertic
  */
 public class ModelComparator {
 
-	private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-
-	/**
-	 * Compare two models.
-	 * 
-	 * @param aCurrentModel
-	 *			the current model
-	 * @param aDatabaseModel
-	 *			the database model
-	 * @return the compare result
-	 */
-	public ModelCompareResult compareModels(Model aCurrentModel, Model aDatabaseModel) {
-		DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.CURRENTMODEL));
-		DefaultMutableTreeNode theDBSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.OTHERMODEL));
-
-		TableList theAllTables = new TableList();
-		theAllTables.addAll(aCurrentModel.getTables());
-
-		for (Table theTable : aDatabaseModel.getTables()) {
-			if (theAllTables.findByName(theTable.getName()) == null) {
-				theAllTables.add(theTable);
-			}
-		}
+    private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+
+    /**
+     * Compare two models.
+     *
+     * @param aCurrentModel  the current model
+     * @param aDatabaseModel the database model
+     * @return the compare result
+     */
+    public ModelCompareResult compareModels(Model aCurrentModel, Model aDatabaseModel) {
+        DefaultMutableTreeNode theModelSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.CURRENTMODEL));
+        DefaultMutableTreeNode theDBSideRootNode = new DefaultMutableTreeNode(HELPER.getText(ERDesignerBundle.OTHERMODEL));
+
+        TableList theAllTables = new TableList();
+        theAllTables.addAll(aCurrentModel.getTables());
+
+        for (Table theTable : aDatabaseModel.getTables()) {
+            if (theAllTables.findByName(theTable.getName()) == null) {
+                theAllTables.add(theTable);
+            }
+        }
 
-		for (Table theTable : theAllTables) {
-
-			String theTableName = theTable.getName();
-
-			DefaultMutableTreeNode theModelSideTableNode = null;
-			DefaultMutableTreeNode theDBSideTableNode = null;
-
-			Table theTableFromModel = aCurrentModel.getTables().findByName(theTableName);
-			Table theTableFromDB = null;
+        for (Table theTable : theAllTables) {
 
-			// Add it to both sides
-			if (theTableFromModel != null) {
+            String theTableName = theTable.getName();
+
+            DefaultMutableTreeNode theModelSideTableNode;
+            DefaultMutableTreeNode theDBSideTableNode;
 
-				// Entity exists in model
-				theModelSideTableNode = new DefaultMutableTreeNode(theTableName);
-				theModelSideRootNode.add(theModelSideTableNode);
+            Table theTableFromModel = aCurrentModel.getTables().findByName(theTableName);
+            Table theTableFromDB = null;
 
-			} else {
+            // Add it to both sides
+            if (theTableFromModel != null) {
 
-				// Entity does not exist in model
-				theModelSideTableNode = new DefaultMutableTreeNode(new MissingEntityInfo(theTableName));
-				theModelSideRootNode.add(theModelSideTableNode);
+                // Entity exists in model
+                theModelSideTableNode = new DefaultMutableTreeNode(theTableName);
+                theModelSideRootNode.add(theModelSideTableNode);
 
-			}
+            } else {
 
-			if (aDatabaseModel.getTables().findByName(theTableName) != null) {
-
-				// Entity exists in db
-				theDBSideTableNode = new DefaultMutableTreeNode(theTableName);
-				theDBSideRootNode.add(theDBSideTableNode);
+                // Entity does not exist in model
+                theModelSideTableNode = new DefaultMutableTreeNode(new MissingEntityInfo(theTableName));
+                theModelSideRootNode.add(theModelSideTableNode);
 
-				theTableFromDB = aDatabaseModel.getTables().findByName(theTableName);
+            }
 
-			} else {
+            if (aDatabaseModel.getTables().findByName(theTableName) != null) {
 
-				// Entity does not exists in db
-				theDBSideTableNode = new DefaultMutableTreeNode(new MissingEntityInfo(theTableName));
-				theDBSideRootNode.add(theDBSideTableNode);
+                // Entity exists in db
+                theDBSideTableNode = new DefaultMutableTreeNode(theTableName);
+                theDBSideRootNode.add(theDBSideTableNode);
 
-			}
+                theTableFromDB = aDatabaseModel.getTables().findByName(theTableName);
 
-			AttributeList theAllAttributes = new AttributeList();
-			IndexList theAllIndexes = new IndexList();
-			RelationList theAllRelations = new RelationList();
+            } else {
 
-			if (theTableFromModel != null) {
-				theAllAttributes.addAll(theTableFromModel.getAttributes());
-				theAllIndexes.addAll(theTableFromModel.getIndexes());
-				theAllRelations.addAll(aCurrentModel.getRelations().getForeignKeysFor(theTableFromModel));
-			}
+                // Entity does not exists in db
+                theDBSideTableNode = new DefaultMutableTreeNode(new MissingEntityInfo(theTableName));
+                theDBSideRootNode.add(theDBSideTableNode);
 
-			if (theTableFromDB != null) {
-				for (Attribute theAttribute : theTableFromDB.getAttributes()) {
-					if (theAllAttributes.findByName(theAttribute.getName()) == null) {
-						theAllAttributes.add(theAttribute);
-					}
-				}
-				for (Index theIndex : theTableFromDB.getIndexes()) {
-					if (theAllIndexes.findByName(theIndex.getName()) == null) {
-						theAllIndexes.add(theIndex);
-					}
-				}
-				for (Relation theRelation : aDatabaseModel.getRelations().getForeignKeysFor(theTableFromDB)) {
-					if (theAllRelations.findByName(theRelation.getName()) == null) {
-						theAllRelations.add(theRelation);
-					}
-				}
-			}
+            }
 
-			generateAttributesForTable(theModelSideTableNode, theDBSideTableNode, theTableFromModel, theTableFromDB,
-					theAllAttributes);
+            AttributeList theAllAttributes = new AttributeList();
+            IndexList theAllIndexes = new IndexList();
+            RelationList theAllRelations = new RelationList();
 
-			DefaultMutableTreeNode theIndexModelSideNode = new DefaultMutableTreeNode(HELPER
-					.getText(ERDesignerBundle.INDEXES));
-			DefaultMutableTreeNode theIndexDBSideNode = new DefaultMutableTreeNode(HELPER
-					.getText(ERDesignerBundle.INDEXES));
+            if (theTableFromModel != null) {
+                theAllAttributes.addAll(theTableFromModel.getAttributes());
+                theAllIndexes.addAll(theTableFromModel.getIndexes());
+                theAllRelations.addAll(aCurrentModel.getRelations().getForeignKeysFor(theTableFromModel));
+            }
 
-			theModelSideTableNode.add(theIndexModelSideNode);
-			theDBSideTableNode.add(theIndexDBSideNode);
+            if (theTableFromDB != null) {
+                for (Attribute theAttribute : theTableFromDB.getAttributes()) {
+                    if (theAllAttributes.findByName(theAttribute.getName()) == null) {
+                        theAllAttributes.add(theAttribute);
+                    }
+                }
+                for (Index theIndex : theTableFromDB.getIndexes()) {
+                    if (theAllIndexes.findByName(theIndex.getName()) == null) {
+                        theAllIndexes.add(theIndex);
+                    }
+                }
+                for (Relation theRelation : aDatabaseModel.getRelations().getForeignKeysFor(theTableFromDB)) {
+                    if (theAllRelations.findByName(theRelation.getName()) == null) {
+                        theAllRelations.add(theRelation);
+                    }
+                }
+            }
 
-			generateIndexesForTable(theIndexModelSideNode, theIndexDBSideNode, theTableFromModel, theTableFromDB,
-					theAllIndexes);
+            generateAttributesForTable(theModelSideTableNode, theDBSideTableNode, theTableFromModel, theTableFromDB,
+                    theAllAttributes);
 
-			DefaultMutableTreeNode theRelationsModelSideNode = new DefaultMutableTreeNode(HELPER
-					.getText(ERDesignerBundle.RELATIONS));
-			DefaultMutableTreeNode theRelationsDBSideNode = new DefaultMutableTreeNode(HELPER
-					.getText(ERDesignerBundle.RELATIONS));
+            DefaultMutableTreeNode theIndexModelSideNode = new DefaultMutableTreeNode(HELPER
+                    .getText(ERDesignerBundle.INDEXES));
+            DefaultMutableTreeNode theIndexDBSideNode = new DefaultMutableTreeNode(HELPER
+                    .getText(ERDesignerBundle.INDEXES));
 
-			theModelSideTableNode.add(theRelationsModelSideNode);
-			theDBSideTableNode.add(theRelationsDBSideNode);
+            theModelSideTableNode.add(theIndexModelSideNode);
+            theDBSideTableNode.add(theIndexDBSideNode);
 
-			generateRelationsForTable(theRelationsModelSideNode, theRelationsDBSideNode, theTableFromModel,
-					theTableFromDB, theAllRelations, aDatabaseModel, aCurrentModel);
+            generateIndexesForTable(theIndexModelSideNode, theIndexDBSideNode, theTableFromModel, theTableFromDB,
+                    theAllIndexes);
 
-		}
+            DefaultMutableTreeNode theRelationsModelSideNode = new DefaultMutableTreeNode(HELPER
+                    .getText(ERDesignerBundle.RELATIONS));
+            DefaultMutableTreeNode theRelationsDBSideNode = new DefaultMutableTreeNode(HELPER
+                    .getText(ERDesignerBundle.RELATIONS));
 
-		ViewList theAllViews = new ViewList();
-		theAllViews.addAll(aCurrentModel.getViews());
+            theModelSideTableNode.add(theRelationsModelSideNode);
+            theDBSideTableNode.add(theRelationsDBSideNode);
 
-		for (View theView : aDatabaseModel.getViews()) {
-			if (theAllViews.findByName(theView.getName()) == null) {
-				theAllViews.add(theView);
-			}
-		}
+            generateRelationsForTable(theRelationsModelSideNode, theRelationsDBSideNode, theTableFromModel,
+                    theTableFromDB, theAllRelations, aDatabaseModel, aCurrentModel);
 
-		for (View theView : theAllViews) {
+        }
 
-			String theViewName = theView.getName();
+        ViewList theAllViews = new ViewList();
+        theAllViews.addAll(aCurrentModel.getViews());
 
-			DefaultMutableTreeNode theModelSideTableNode = null;
-			DefaultMutableTreeNode theDBSideTableNode = null;
+        for (View theView : aDatabaseModel.getViews()) {
+            if (theAllViews.findByName(theView.getName()) == null) {
+                theAllViews.add(theView);
+            }
+        }
 
-			View theViewFromModel = aCurrentModel.getViews().findByName(theViewName);
-			View theViewFromDB = aDatabaseModel.getViews().findByName(theViewName);
+        for (View theView : theAllViews) {
 
-			// Add it to both sides
-			if (theViewFromModel != null) {
+            String theViewName = theView.getName();
 
-				if (theViewFromModel.isModified(theView)) {
-					// View was redefined
-					theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(theViewName));
-					theModelSideRootNode.add(theModelSideTableNode);
-				} else {
-					// View exists in model
-					theModelSideTableNode = new DefaultMutableTreeNode(theViewName);
-					theModelSideRootNode.add(theModelSideTableNode);
-				}
+            DefaultMutableTreeNode theModelSideTableNode;
+            DefaultMutableTreeNode theDBSideTableNode;
 
-			} else {
+            View theViewFromModel = aCurrentModel.getViews().findByName(theViewName);
+            View theViewFromDB = aDatabaseModel.getViews().findByName(theViewName);
 
-				// Entity does not exist in model
-				theModelSideTableNode = new DefaultMutableTreeNode(new MissingViewInfo(theViewName));
-				theModelSideRootNode.add(theModelSideTableNode);
+            // Add it to both sides
+            if (theViewFromModel != null) {
 
-			}
+                if (theViewFromModel.isModified(theView)) {
+                    // View was redefined
+                    theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(theViewName));
+                    theModelSideRootNode.add(theModelSideTableNode);
+                } else {
+                    // View exists in model
+                    theModelSideTableNode = new DefaultMutableTreeNode(theViewName);
+                    theModelSideRootNode.add(theModelSideTableNode);
+                }
 
-			if (theViewFromDB != null) {
+            } else {
 
-				if (theViewFromDB.isModified(theView)) {
-					// View was redefined
-					theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(theViewName));
-					theModelSideRootNode.add(theModelSideTableNode);
+                // Entity does not exist in model
+                theModelSideTableNode = new DefaultMutableTreeNode(new MissingViewInfo(theViewName));
+                theModelSideRootNode.add(theModelSideTableNode);
 
-				} else {
-					// View exists in db
-					theDBSideTableNode = new DefaultMutableTreeNode(theViewName);
-					theDBSideRootNode.add(theDBSideTableNode);
-				}
+            }
 
-			} else {
+            if (theViewFromDB != null) {
 
-				// Entity does not exists in db
-				theDBSideTableNode = new DefaultMutableTreeNode(new MissingViewInfo(theViewName));
-				theDBSideRootNode.add(theDBSideTableNode);
+                if (theViewFromDB.isModified(theView)) {
+                    // View was redefined
+                    theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(theViewName));
+                    theModelSideRootNode.add(theModelSideTableNode);
 
-			}
-		}
-		return new ModelCompareResult(theModelSideRootNode, theDBSideRootNode);
-	}
+                } else {
+                    // View exists in db
+                    theDBSideTableNode = new DefaultMutableTreeNode(theViewName);
+                    theDBSideRootNode.add(theDBSideTableNode);
+                }
 
-	private void generateAttributesForTable(DefaultMutableTreeNode aModelSideTableNode,
-			DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB,
-			AttributeList aAllAttributes) {
+            } else {
 
-		// Now, do it for each attribute
-		for (Attribute theAttribute : aAllAttributes) {
-			String theAttributeName = theAttribute.getName();
+                // Entity does not exists in db
+                theDBSideTableNode = new DefaultMutableTreeNode(new MissingViewInfo(theViewName));
+                theDBSideRootNode.add(theDBSideTableNode);
 
-			// First, handle the model side
-			if (aTableFromModel != null) {
+            }
+        }
+        return new ModelCompareResult(theModelSideRootNode, theDBSideRootNode);
+    }
 
-				Attribute theAttributeFromModel = aTableFromModel.getAttributes().findByName(theAttributeName);
+    private void generateAttributesForTable(DefaultMutableTreeNode aModelSideTableNode,
+                                            DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB,
+                                            AttributeList aAllAttributes) {
 
-				if (theAttributeFromModel != null) {
+        // Now, do it for each attribute
+        for (Attribute theAttribute : aAllAttributes) {
+            String theAttributeName = theAttribute.getName();
 
-					Attribute theAttributeFromDB = null;
-					if (aTableFromDB != null) {
-						theAttributeFromDB = aTableFromDB.getAttributes().findByName(theAttributeName);
-					}
+            // First, handle the model side
+            if (aTableFromModel != null) {
 
-					if (theAttributeFromDB != null) {
+                Attribute theAttributeFromModel = aTableFromModel.getAttributes().findByName(theAttributeName);
 
-						if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
-							// Compute the difference
+                if (theAttributeFromModel != null) {
 
-							String theDiffInfo = theAttributeFromModel.getPhysicalDeclaration();
+                    Attribute theAttributeFromDB = null;
+                    if (aTableFromDB != null) {
+                        theAttributeFromDB = aTableFromDB.getAttributes().findByName(theAttributeName);
+                    }
 
-							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
-									theAttributeName + " " + theDiffInfo));
-							aModelSideTableNode.add(error);
+                    if (theAttributeFromDB != null) {
 
-						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
-							aModelSideTableNode.add(existing);
-						}
+                        if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
+                            // Compute the difference
 
-						// Here, we have to compare the attributes
+                            String theDiffInfo = theAttributeFromModel.getPhysicalDeclaration();
 
-					} else {
+                            // Differences in definition
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
+                                    theAttributeName + " " + theDiffInfo));
+                            aModelSideTableNode.add(error);
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
-						aModelSideTableNode.add(existing);
-					}
+                        } else {
+                            DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+                            aModelSideTableNode.add(existing);
+                        }
 
-				} else {
+                        // Here, we have to compare the attributes
 
-					// The entity is existing, but the attribute is
-					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
-							theAttributeName));
-					aModelSideTableNode.add(missing);
+                    } else {
 
-				}
+                        DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+                        aModelSideTableNode.add(existing);
+                    }
 
-			} else {
+                } else {
 
-				// The entity is not existing in the model, so every
-				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
-				aModelSideTableNode.add(missing);
+                    // The entity is existing, but the attribute is
+                    // missing
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
+                            theAttributeName));
+                    aModelSideTableNode.add(missing);
 
-			}
+                }
 
-			// Now, the database side
-			if (aTableFromDB != null) {
+            } else {
 
-				Attribute theAttributeFromDB = aTableFromDB.getAttributes().findByName(theAttributeName);
+                // The entity is not existing in the model, so every
+                // attribute is missing
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
+                aModelSideTableNode.add(missing);
 
-				if (theAttributeFromDB != null) {
+            }
 
-					Attribute theAttributeFromModel = null;
-					if (aTableFromModel != null) {
-						theAttributeFromModel = aTableFromModel.getAttributes().findByName(theAttributeName);
-					}
+            // Now, the database side
+            if (aTableFromDB != null) {
 
-					if (theAttributeFromModel != null) {
+                Attribute theAttributeFromDB = aTableFromDB.getAttributes().findByName(theAttributeName);
 
-						if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
+                if (theAttributeFromDB != null) {
 
-							String diffInfo = theAttributeFromDB.getPhysicalDeclaration();
+                    Attribute theAttributeFromModel = null;
+                    if (aTableFromModel != null) {
+                        theAttributeFromModel = aTableFromModel.getAttributes().findByName(theAttributeName);
+                    }
 
-							// Modified
-							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
-									theAttributeName + " " + diffInfo));
-							aDBSideTableNode.add(error);
+                    if (theAttributeFromModel != null) {
 
-						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
-							aDBSideTableNode.add(existing);
-						}
+                        if (theAttributeFromModel.isModified(theAttributeFromDB, true)) {
 
-					} else {
+                            String diffInfo = theAttributeFromDB.getPhysicalDeclaration();
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
-						aDBSideTableNode.add(existing);
-					}
+                            // Modified
+                            // Differences in definition
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedAttributeInfo(
+                                    theAttributeName + " " + diffInfo));
+                            aDBSideTableNode.add(error);
 
-				} else {
+                        } else {
+                            DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+                            aDBSideTableNode.add(existing);
+                        }
 
-					// The entity is existing, but the attribute is
-					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
-							theAttributeName));
-					aDBSideTableNode.add(missing);
+                    } else {
 
-				}
+                        DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theAttributeName);
+                        aDBSideTableNode.add(existing);
+                    }
 
-			} else {
+                } else {
 
-				// The entity is not existing in the model, so every
-				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
-				aDBSideTableNode.add(missing);
+                    // The entity is existing, but the attribute is
+                    // missing
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(
+                            theAttributeName));
+                    aDBSideTableNode.add(missing);
 
-			}
-		}
-	}
+                }
 
-	private void generateIndexesForTable(DefaultMutableTreeNode aModelSideTableNode,
-			DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB, IndexList aAllIndexes) {
+            } else {
 
-		// Now, do it for each attribute
-		for (Index theAttribute : aAllIndexes) {
-			String theIndexName = theAttribute.getName();
+                // The entity is not existing in the model, so every
+                // attribute is missing
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingAttributeInfo(theAttributeName));
+                aDBSideTableNode.add(missing);
 
-			// First, handle the model side
-			if (aTableFromModel != null) {
+            }
+        }
+    }
 
-				Index theIndexFromModel = aTableFromModel.getIndexes().findByName(theIndexName);
+    private void generateIndexesForTable(DefaultMutableTreeNode aModelSideTableNode,
+                                         DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB, IndexList aAllIndexes) {
 
-				if (theIndexFromModel != null) {
+        // Now, do it for each attribute
+        for (Index theAttribute : aAllIndexes) {
+            String theIndexName = theAttribute.getName();
 
-					Index theIndexFromDB = null;
-					if (aTableFromDB != null) {
-						theIndexFromDB = aTableFromDB.getIndexes().findByName(theIndexName);
-					}
+            // First, handle the model side
+            if (aTableFromModel != null) {
 
-					if (theIndexFromDB != null) {
+                Index theIndexFromModel = aTableFromModel.getIndexes().findByName(theIndexName);
 
-						if (theIndexFromModel.isModified(theIndexFromDB, true)) {
-							// Compute the difference
+                if (theIndexFromModel != null) {
 
-							String theDiffInfo = "";
+                    Index theIndexFromDB = null;
+                    if (aTableFromDB != null) {
+                        theIndexFromDB = aTableFromDB.getIndexes().findByName(theIndexName);
+                    }
 
-							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
-									theIndexName + " " + theDiffInfo));
-							aModelSideTableNode.add(error);
+                    if (theIndexFromDB != null) {
 
-						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
-							aModelSideTableNode.add(existing);
-						}
+                        if (theIndexFromModel.isModified(theIndexFromDB, true)) {
+                            // Compute the difference
 
-						// Here, we have to compare the attributes
+                            String theDiffInfo = "";
 
-					} else {
+                            // Differences in definition
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
+                                    theIndexName + " " + theDiffInfo));
+                            aModelSideTableNode.add(error);
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
-						aModelSideTableNode.add(existing);
-					}
+                        } else {
+                            DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+                            aModelSideTableNode.add(existing);
+                        }
 
-				} else {
+                        // Here, we have to compare the attributes
 
-					// The entity is existing, but the attribute is
-					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
-					aModelSideTableNode.add(missing);
+                    } else {
 
-				}
+                        DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+                        aModelSideTableNode.add(existing);
+                    }
 
-			} else {
+                } else {
 
-				// The entity is not existing in the model, so every
-				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
-				aModelSideTableNode.add(missing);
+                    // The entity is existing, but the attribute is
+                    // missing
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+                    aModelSideTableNode.add(missing);
 
-			}
+                }
 
-			// Now, the database side
-			if (aTableFromDB != null) {
+            } else {
 
-				Index theIndexFromDB = aTableFromDB.getIndexes().findByName(theIndexName);
+                // The entity is not existing in the model, so every
+                // attribute is missing
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+                aModelSideTableNode.add(missing);
 
-				if (theIndexFromDB != null) {
+            }
 
-					Index theIndexFromModel = null;
-					if (aTableFromModel != null) {
-						theIndexFromModel = aTableFromModel.getIndexes().findByName(theIndexName);
-					}
+            // Now, the database side
+            if (aTableFromDB != null) {
 
-					if (theIndexFromModel != null) {
+                Index theIndexFromDB = aTableFromDB.getIndexes().findByName(theIndexName);
 
-						if (theIndexFromModel.isModified(theIndexFromDB, true)) {
+                if (theIndexFromDB != null) {
 
-							String diffInfo = "";
+                    Index theIndexFromModel = null;
+                    if (aTableFromModel != null) {
+                        theIndexFromModel = aTableFromModel.getIndexes().findByName(theIndexName);
+                    }
 
-							// Modified
-							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
-									theIndexName + " " + diffInfo));
-							aDBSideTableNode.add(error);
+                    if (theIndexFromModel != null) {
 
-						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
-							aDBSideTableNode.add(existing);
-						}
+                        if (theIndexFromModel.isModified(theIndexFromDB, true)) {
 
-					} else {
+                            String diffInfo = "";
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
-						aDBSideTableNode.add(existing);
-					}
+                            // Modified
+                            // Differences in definition
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedIndexInfo(
+                                    theIndexName + " " + diffInfo));
+                            aDBSideTableNode.add(error);
 
-				} else {
+                        } else {
+                            DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+                            aDBSideTableNode.add(existing);
+                        }
 
-					// The entity is existing, but the attribute is
-					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
-					aDBSideTableNode.add(missing);
+                    } else {
 
-				}
+                        DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theIndexName);
+                        aDBSideTableNode.add(existing);
+                    }
 
-			} else {
+                } else {
 
-				// The entity is not existing in the model, so every
-				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
-				aDBSideTableNode.add(missing);
+                    // The entity is existing, but the attribute is
+                    // missing
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+                    aDBSideTableNode.add(missing);
 
-			}
-		}
-	}
+                }
 
-	private void generateRelationsForTable(DefaultMutableTreeNode aModelSideTableNode,
-			DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB,
-			RelationList aAllRelations, Model aDBModel, Model aCurrentModel) {
+            } else {
 
-		// Now, do it for each attribute
-		for (Relation theRelation : aAllRelations) {
-			String theRelationName = theRelation.getName();
+                // The entity is not existing in the model, so every
+                // attribute is missing
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingIndexInfo(theIndexName));
+                aDBSideTableNode.add(missing);
 
-			// First, handle the model side
-			if (aTableFromModel != null) {
+            }
+        }
+    }
 
-				Relation theRelationFromModel = aCurrentModel.getRelations().findByName(theRelationName);
+    private void generateRelationsForTable(DefaultMutableTreeNode aModelSideTableNode,
+                                           DefaultMutableTreeNode aDBSideTableNode, Table aTableFromModel, Table aTableFromDB,
+                                           RelationList aAllRelations, Model aDBModel, Model aCurrentModel) {
 
-				if (theRelationFromModel != null) {
+        // Now, do it for each attribute
+        for (Relation theRelation : aAllRelations) {
+            String theRelationName = theRelation.getName();
 
-					Relation theRelationFromDB = null;
-					if (aTableFromDB != null) {
-						theRelationFromDB = aDBModel.getRelations().findByName(theRelationName);
-					}
+            // First, handle the model side
+            if (aTableFromModel != null) {
 
-					if (theRelationFromDB != null) {
+                Relation theRelationFromModel = aCurrentModel.getRelations().findByName(theRelationName);
 
-						if (theRelationFromModel.isModified(theRelationFromDB, true)) {
-							// Compute the difference
+                if (theRelationFromModel != null) {
 
-							String theDiffInfo = "";
+                    Relation theRelationFromDB = null;
+                    if (aTableFromDB != null) {
+                        theRelationFromDB = aDBModel.getRelations().findByName(theRelationName);
+                    }
 
-							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
-									theRelationName + " " + theDiffInfo));
-							aModelSideTableNode.add(error);
+                    if (theRelationFromDB != null) {
 
-						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
-							aModelSideTableNode.add(existing);
-						}
+                        if (theRelationFromModel.isModified(theRelationFromDB, true)) {
+                            // Compute the difference
 
-						// Here, we have to compare the attributes
+                            String theDiffInfo = "";
 
-					} else {
+                            // Differences in definition
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
+                                    theRelationName + " " + theDiffInfo));
+                            aModelSideTableNode.add(error);
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
-						aModelSideTableNode.add(existing);
-					}
+                        } else {
+                            DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+                            aModelSideTableNode.add(existing);
+                        }
 
-				} else {
+                        // Here, we have to compare the attributes
 
-					// The entity is existing, but the attribute is
-					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
-							new MissingRelationInfo(theRelationName));
-					aModelSideTableNode.add(missing);
+                    } else {
 
-				}
+                        DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+                        aModelSideTableNode.add(existing);
+                    }
 
-			} else {
+                } else {
 
-				// The entity is not existing in the model, so every
-				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
-				aModelSideTableNode.add(missing);
+                    // The entity is existing, but the attribute is
+                    // missing
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
+                            new MissingRelationInfo(theRelationName));
+                    aModelSideTableNode.add(missing);
 
-			}
+                }
 
-			// Now, the database side
-			if (aTableFromDB != null) {
+            } else {
 
-				Relation theRelationFromDB = aDBModel.getRelations().findByName(theRelationName);
+                // The entity is not existing in the model, so every
+                // attribute is missing
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
+                aModelSideTableNode.add(missing);
 
-				if (theRelationFromDB != null) {
+            }
 
-					Relation theRelationFromModel = null;
-					if (aTableFromModel != null) {
-						theRelationFromModel = aCurrentModel.getRelations().findByName(theRelationName);
-					}
+            // Now, the database side
+            if (aTableFromDB != null) {
 
-					if (theRelationFromModel != null) {
+                Relation theRelationFromDB = aDBModel.getRelations().findByName(theRelationName);
 
-						if (theRelationFromModel.isModified(theRelationFromDB, true)) {
+                if (theRelationFromDB != null) {
 
-							String diffInfo = "";
+                    Relation theRelationFromModel = null;
+                    if (aTableFromModel != null) {
+                        theRelationFromModel = aCurrentModel.getRelations().findByName(theRelationName);
+                    }
 
-							// Modified
-							// Differences in definition
-							DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
-									theRelationName + " " + diffInfo));
-							aDBSideTableNode.add(error);
+                    if (theRelationFromModel != null) {
 
-						} else {
-							DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
-							aDBSideTableNode.add(existing);
-						}
+                        if (theRelationFromModel.isModified(theRelationFromDB, true)) {
 
-					} else {
+                            String diffInfo = "";
 
-						DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
-						aDBSideTableNode.add(existing);
-					}
+                            // Modified
+                            // Differences in definition
+                            DefaultMutableTreeNode error = new DefaultMutableTreeNode(new RedefinedRelationInfo(
+                                    theRelationName + " " + diffInfo));
+                            aDBSideTableNode.add(error);
 
-				} else {
+                        } else {
+                            DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+                            aDBSideTableNode.add(existing);
+                        }
 
-					// The entity is existing, but the attribute is
-					// missing
-					DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
-							new MissingRelationInfo(theRelationName));
-					aDBSideTableNode.add(missing);
+                    } else {
 
-				}
+                        DefaultMutableTreeNode existing = new DefaultMutableTreeNode(theRelationName);
+                        aDBSideTableNode.add(existing);
+                    }
 
-			} else {
+                } else {
 
-				// The entity is not existing in the model, so every
-				// attribute is missing
-				DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
-				aDBSideTableNode.add(missing);
+                    // The entity is existing, but the attribute is
+                    // missing
+                    DefaultMutableTreeNode missing = new DefaultMutableTreeNode(
+                            new MissingRelationInfo(theRelationName));
+                    aDBSideTableNode.add(missing);
 
-			}
-		}
-	}
+                }
+
+            } else {
+
+                // The entity is not existing in the model, so every
+                // attribute is missing
+                DefaultMutableTreeNode missing = new DefaultMutableTreeNode(new MissingRelationInfo(theRelationName));
+                aDBSideTableNode.add(missing);
+
+            }
+        }
+    }
 }
