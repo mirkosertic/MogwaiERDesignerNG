@@ -1,63 +1,57 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 package de.erdesignerng.test.sql.h2;
 
-import java.io.IOException;
+import de.erdesignerng.test.io.repository.RepositioryHelper;
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
+import org.apache.commons.io.IOUtils;
+import org.hibernate.dialect.H2Dialect;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.io.IOUtils;
-import org.hibernate.dialect.H2Dialect;
-import org.xml.sax.SAXException;
-
-import de.erdesignerng.test.io.repository.RepositioryHelper;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
-
 public class RepositoryIOTest extends AbstractReverseEngineeringTestImpl {
 
-	public void testLoadSaveRepository() throws SAXException, IOException, ParserConfigurationException,
-			TransformerException, Exception {
+    public void testLoadSaveRepository() throws
+            Exception {
 
-		Class.forName("org.h2.Driver").newInstance();
-		Connection theConnection = null;
-		try {
-			theConnection = DriverManager.getConnection("jdbc:h2:mem:dname", "sa", "");
+        Class.forName("org.h2.Driver").newInstance();
+        Connection theConnection = null;
+        try {
+            theConnection = DriverManager.getConnection("jdbc:h2:mem:dname", "sa", "");
 
-			Class theHibernateDialect = H2Dialect.class;
+            Class theHibernateDialect = H2Dialect.class;
 
-			String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
+            String theModelResource = "/de/erdesignerng/test/io/repository/examplemodel.mxm";
 
-			String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
-					theConnection);
+            String theNewFile = RepositioryHelper.performRepositorySaveAndLoad(theModelResource, theHibernateDialect,
+                    theConnection);
 
-			String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
+            String theOriginalFile = IOUtils.toString(getClass().getResourceAsStream(theModelResource));
 
-			assertTrue(compareStrings(theOriginalFile, theNewFile));
+            assertTrue(compareStrings(theOriginalFile, theNewFile));
 
-		} finally {
-			if (theConnection != null) {
+        } finally {
+            if (theConnection != null) {
 
-				theConnection.createStatement().execute("SHUTDOWN");
-				theConnection.close();
-			}
-		}
-	}
+                theConnection.createStatement().execute("SHUTDOWN");
+                theConnection.close();
+            }
+        }
+    }
 }
