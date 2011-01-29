@@ -25,7 +25,7 @@ import java.sql.Connection;
  */
 public final class MSAccessFormats {
 
-    public static final int VERSION_UNKNOWN = 000; // unbekannt
+    public static final int VERSION_UNKNOWN = 0; // unbekannt
 
     public static final int VERSION_2 = 200;       // 2
 
@@ -55,12 +55,12 @@ public final class MSAccessFormats {
 
     /**
      * Reads the version of the engine from the binary.
-     *
+     * <p/>
      * Attention: Access 2000, 2002 and 2003 can *not* be devided!
-     * 
+     *
      * @param aFileName - the file to examine
      */
-    public static final int getVersion(String aFileName) {
+    public static int getVersion(String aFileName) {
 
         int theVersion = VERSION_UNKNOWN;
 
@@ -73,7 +73,7 @@ public final class MSAccessFormats {
                 theVersion = VERSION_2000;
             } else if (FORMAT_200X.matches(aFileName, true)) {
                 theVersion = VERSION_200X;
-            } else if (FORMAT_2007.matches(aFileName, true) ) {
+            } else if (FORMAT_2007.matches(aFileName, true)) {
                 theVersion = VERSION_2007;
             }
         }
@@ -86,12 +86,12 @@ public final class MSAccessFormats {
      * Reads the version of the engine from the binary and searches for
      * special system tables throuph the connection to classifie the
      * version more detailled.
-     *
+     * <p/>
      * Attention: Access 2002 and 2003 can *not* be devided!
      *
      * @param aFileName - the file to examine
      */
-    public static final int getVersion(Connection aConnection) {
+    public static int getVersion(Connection aConnection) {
 
         int theVersion = VERSION_UNKNOWN;
 
@@ -104,7 +104,7 @@ public final class MSAccessFormats {
                 theVersion = VERSION_2000;
             } else if (FORMAT_200X.matches(aConnection)) {
                 theVersion = VERSION_200X;
-            } else if (FORMAT_2007.matches(aConnection) ) {
+            } else if (FORMAT_2007.matches(aConnection)) {
                 theVersion = VERSION_2007;
             }
         }

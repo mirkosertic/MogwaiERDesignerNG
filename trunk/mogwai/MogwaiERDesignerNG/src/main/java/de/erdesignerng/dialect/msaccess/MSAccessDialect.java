@@ -17,24 +17,20 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.Locale;
-
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.sql.*;
+import java.util.Locale;
+
 /**
  * Works only on Windows-based Systems due to the need of the JET/ACE-Engine.
- *
+ * <p/>
  * Jet 1.0 - Access  1.0 - n. a.
  * Jet 1.1 - Access  1.1 - n. a.          - 1992
  * Jet 2.X - Access  2.0 - Office 4.3 Pro - 1993
@@ -45,16 +41,15 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
  * Jet 4.0 - Access 11.5 - Office 2003    - 2003
  * ACE     - Access 12.0 - Office 2007    - 2007
  *
- * @see http://en.wikipedia.org/wiki/Microsoft_Access
- * @see http://en.wikipedia.org/wiki/Microsoft_Jet_Database_Engine
- * 
- * While the JET-Database-Engine comes with the Windows-OS, the new ACE-Engine
- * comes with the installation of MSOffice 12 or by download from:
- * @see http://www.microsoft.com/downloads/details.aspx?FamilyID=
- * 7554f536-8c28-4598-9b72-ef94e038c891
- * 
  * @author $Author: dr-death $
  * @version $Date: 2009-11-06 01:30:00 $
+ * @see http://en.wikipedia.org/wiki/Microsoft_Access
+ * @see http://en.wikipedia.org/wiki/Microsoft_Jet_Database_Engine
+ *      <p/>
+ *      While the JET-Database-Engine comes with the Windows-OS, the new ACE-Engine
+ *      comes with the installation of MSOffice 12 or by download from:
+ * @see http://www.microsoft.com/downloads/details.aspx?FamilyID=
+ *      7554f536-8c28-4598-9b72-ef94e038c891
  */
 public class MSAccessDialect extends SQL92Dialect {
 
@@ -65,8 +60,8 @@ public class MSAccessDialect extends SQL92Dialect {
     @Override
     public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 
-        File workgroupFile = null;
-        String systemDB = "";
+        File workgroupFile;
+        String systemDB;
 
         try {
             workgroupFile = new File(getClass().getResource("/de/erdesignerng/System.mdw").toURI());
@@ -76,9 +71,9 @@ public class MSAccessDialect extends SQL92Dialect {
         }
 
         String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
-        Connection connection = null;
+        Connection connection;
 
-        try{
+        try {
             connection = DriverManager.getConnection(database, aUser, aPassword);
 
             // Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
@@ -98,15 +93,15 @@ public class MSAccessDialect extends SQL92Dialect {
 
                     if (theVersion == MSAccessFormats.VERSION_2007) {
                         throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu öffnen.\n" +
-                                               "Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
-                                               "Diese können sie hier herunterladen:\n" +
-                                               "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage() + "\n" +
-                                               "http://www.microsoft.com/downloads/details.aspx?FamilyID=6f4edeed-d83f-4c31-ae67-458ae365d420&displaylang=" + Locale.getDefault().getLanguage());
+                                "Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
+                                "Diese können sie hier herunterladen:\n" +
+                                "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage() + "\n" +
+                                "http://www.microsoft.com/downloads/details.aspx?FamilyID=6f4edeed-d83f-4c31-ae67-458ae365d420&displaylang=" + Locale.getDefault().getLanguage());
                     } else if ((theVersion == MSAccessFormats.VERSION_200X) || (theVersion == MSAccessFormats.VERSION_2000) || (theVersion == MSAccessFormats.VERSION_2002) || (theVersion == MSAccessFormats.VERSION_2003)) {
                         throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu öffnen.\n" +
-                                               "Dazu benötigen sie mindestens die Jet 4.0 Engine.\n\n" +
-                                               "Diese können sie hier herunterladen:\n" +
-                                               "http://www.microsoft.com/downloads/details.aspx?familyid=2deddec4-350e-4cd0-a12a-d7f70a153156&displaylang=" + Locale.getDefault().getLanguage());
+                                "Dazu benötigen sie mindestens die Jet 4.0 Engine.\n\n" +
+                                "Diese können sie hier herunterladen:\n" +
+                                "http://www.microsoft.com/downloads/details.aspx?familyid=2deddec4-350e-4cd0-a12a-d7f70a153156&displaylang=" + Locale.getDefault().getLanguage());
                     }
                     break;
 
