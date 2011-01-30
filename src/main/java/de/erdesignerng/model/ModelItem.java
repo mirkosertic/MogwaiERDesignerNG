@@ -27,7 +27,7 @@ public abstract class ModelItem implements Serializable {
 
     public static final String PROPERTY_LOCATION = "LOCATION";
 
-    private String systemId = ModelUtilities.createSystemIdFor(this);
+    private String systemId = ModelUtilities.createSystemIdFor();
 
     private String name;
 

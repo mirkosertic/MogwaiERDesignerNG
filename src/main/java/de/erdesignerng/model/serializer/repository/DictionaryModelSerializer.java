@@ -56,7 +56,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 RepositoryEntity theEntity;
                 if (aDesc.getId() == null) {
                     theEntity = new RepositoryEntity();
-                    theEntity.setSystemId(ModelUtilities.createSystemIdFor(theEntity));
+                    theEntity.setSystemId(ModelUtilities.createSystemIdFor());
                 } else {
                     theEntity = (RepositoryEntity) aSession.get(RepositoryEntity.class, aDesc.getId());
                 }
@@ -76,17 +76,17 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                 // Serialize the rest
                 DictionaryCustomTypeSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
 
-                DictionaryDomainSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
+                DictionaryDomainSerializer.SERIALIZER.serialize(aModel, theEntity);
 
                 DictionaryTableSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
 
-                DictionaryViewSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
+                DictionaryViewSerializer.SERIALIZER.serialize(aModel, theEntity);
 
-                DictionaryRelationSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
+                DictionaryRelationSerializer.SERIALIZER.serialize(aModel, theEntity);
 
-                DictionaryCommentSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
+                DictionaryCommentSerializer.SERIALIZER.serialize(aModel, theEntity);
 
-                DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, aSession, theEntity);
+                DictionarySubjectAreaSerializer.SERIALIZER.serialize(aModel, theEntity);
 
                 // Serialize changes
                 ModelModificationTracker theTracker = aModel.getModificationTracker();
@@ -95,7 +95,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
                     StatementList theList = theHistTracker.getNotSavedStatements();
                     if (theList.size() > 0) {
                         ChangeEntity theChange = new ChangeEntity();
-                        theChange.setSystemId(ModelUtilities.createSystemIdFor(theChange));
+                        theChange.setSystemId(ModelUtilities.createSystemIdFor());
                         for (Statement theStatement : theList) {
                             theChange.getStatements().add(theStatement.getSql());
                             theStatement.setSaved(true);

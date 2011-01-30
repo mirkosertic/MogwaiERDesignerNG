@@ -199,7 +199,6 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
         if (Boolean.TRUE.equals(theProperties.getViewMetaData())) {
             if (first) {
                 theStatement.append("WITH ");
-                counter = 0;
             } else {
                 if (counter > 0) {
                     theStatement.append(",");
