@@ -218,7 +218,7 @@ public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
         controllersBySessionID.put(session.getIdentifier(), theControllers);
     }
 
-    public void shutdownEditor(SquirrelMogwaiController controller) {
+    public void shutdownEditor() {
     }
 
     /**

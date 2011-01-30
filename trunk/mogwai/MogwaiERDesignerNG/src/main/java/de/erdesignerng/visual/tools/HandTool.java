@@ -28,7 +28,6 @@ import de.mogwai.common.i18n.ResourceHelper;
 import org.jgraph.graph.DefaultGraphCell;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +66,7 @@ public class HandTool extends BaseTool {
                 }
             }
             if (theList.size() > 0) {
-                DefaultPopupMenu menu = createPopupMenu(e.getPoint(), theList);
+                DefaultPopupMenu menu = createPopupMenu(theList);
                 menu.show(graph, e.getX(), e.getY());
                 return;
             }
@@ -75,8 +74,7 @@ public class HandTool extends BaseTool {
         super.mousePressed(e);
     }
 
-    public DefaultPopupMenu createPopupMenu(Point aPoint,
-                                            final List<DefaultGraphCell> aCells) {
+    public DefaultPopupMenu createPopupMenu(final List<DefaultGraphCell> aCells) {
 
         DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
                 .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));

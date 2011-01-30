@@ -52,7 +52,7 @@ public class OpenXavaGenerator {
     public OpenXavaGenerator() {
     }
 
-    private CompilationUnit createNewCompilationUnit(String aPackageName, String aMainTypeName) throws IOException {
+    private CompilationUnit createNewCompilationUnit(String aPackageName, String aMainTypeName) {
         CompilationUnit theUnit = new CompilationUnit();
         if (!StringUtils.isEmpty(aPackageName)) {
             theUnit.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(aPackageName)));

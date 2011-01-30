@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -24,36 +24,36 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class DataBrowserCommand extends UICommand {
 
-	private Table table;
-	private View view;
+    private Table table;
+    private View view;
 
-	public DataBrowserCommand(ERDesignerComponent aComponent, Table aTable) {
-		super(aComponent);
-		table = aTable;
-	}
+    public DataBrowserCommand(ERDesignerComponent aComponent, Table aTable) {
+        super(aComponent);
+        table = aTable;
+    }
 
-	public DataBrowserCommand(ERDesignerComponent aComponent, View aView) {
-		super(aComponent);
-		view = aView;
-	}
+    public DataBrowserCommand(ERDesignerComponent aComponent, View aView) {
+        super(aComponent);
+        view = aView;
+    }
 
-	@Override
-	public void execute() {
-		DataBrowserEditor theEditor = new DataBrowserEditor(component
-				.getDetailComponent(), getWorldConnector());
-		if (table != null) {
-			theEditor.initializeFor(table);
-		} else {
-			theEditor.initializeFor(view);
-		}
+    @Override
+    public void execute() {
+        DataBrowserEditor theEditor = new DataBrowserEditor(component
+                .getDetailComponent());
+        if (table != null) {
+            theEditor.initializeFor(table);
+        } else {
+            theEditor.initializeFor(view);
+        }
 
-		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
+        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
 
-			} catch (Exception e) {
-				getWorldConnector().notifyAboutException(e);
-			}
-		}
-	}
+            } catch (Exception e) {
+                getWorldConnector().notifyAboutException(e);
+            }
+        }
+    }
 }

@@ -109,15 +109,15 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         // hook up org.XML.sax.ErrorHandler implementation.
         theSchemaFactory.setErrorHandler(new ErrorHandler() {
 
-            public void error(SAXParseException aException) throws SAXException {
+            public void error(SAXParseException aException) {
                 theExceptions.add(aException);
             }
 
-            public void fatalError(SAXParseException aException) throws SAXException {
+            public void fatalError(SAXParseException aException) {
                 theExceptions.add(aException);
             }
 
-            public void warning(SAXParseException aException) throws SAXException {
+            public void warning(SAXParseException aException) {
                 theExceptions.add(aException);
             }
         });

@@ -1308,7 +1308,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             fillGraph(aModel);
 
-            OutlineComponent.getDefault().setModel(aModel, true);
+            OutlineComponent.getDefault().setModel(aModel);
 
         } finally {
 
@@ -1629,7 +1629,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Add a list of items to a new subject area.
      *
-     * @param aItems
+     * @param aItems the items to be added
      */
     public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
 

@@ -157,8 +157,8 @@ public class Model extends ModelItem {
                 theProperties.getProperty(PROPERTY_URL),
                 theProperties.getProperty(PROPERTY_USER),
                 theProperties.getProperty(PROPERTY_PASSWORD),
-                theProperties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD,
-                        false));
+                theProperties.getBooleanProperty(PROPERTY_PROMPTFORPASSWORD
+                ));
     }
 
     public boolean checkIfUsedAsForeignKey(Table aTable, Attribute aAttribute) {
@@ -346,7 +346,7 @@ public class Model extends ModelItem {
                 PROPERTY_URL), getProperties().getProperty(PROPERTY_USER),
                 getProperties().getProperty(PROPERTY_DRIVER), getProperties()
                 .getProperty(PROPERTY_PASSWORD), getProperties()
-                .getBooleanProperty(PROPERTY_PROMPTFORPASSWORD, false));
+                .getBooleanProperty(PROPERTY_PROMPTFORPASSWORD));
     }
 
     /**
