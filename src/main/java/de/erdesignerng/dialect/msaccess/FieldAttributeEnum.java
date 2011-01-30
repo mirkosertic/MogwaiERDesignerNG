@@ -31,42 +31,42 @@ public final class FieldAttributeEnum {
      * sortiert (nur bei einem Field-Objekt in einer Fields-Auflistung eines
      * Index-Objekts). Wenn Sie diese Konstante nicht angeben, wird das Feld in
      * aufsteigender Reihenfolge (A bis Z oder 0 bis 100) sortiert
-     * (Voreinstellung). Dies ist der Standardwert für Index- und
+     * (Voreinstellung). Dies ist der Standardwert fÃ¼r Index- und
      * TableDef-Felder (nur Microsoft Jet- Arbeitsbereich).
      */
     public static final int DB_DESCENDING = 1; // 2^0
 
     /**
-     * Die Feldgröße ist festgelegt (Standard bei numerischen Feldern).
+     * Die FeldgrÃ¶ÃŸe ist festgelegt (Standard bei numerischen Feldern).
      */
     public static final int DB_FIXED_FIELD = 1; // 2^0
 
     /**
-     * Die Feldgröße kann geändert werden (nur Textfelder).
+     * Die FeldgrÃ¶ÃŸe kann geÃ¤ndert werden (nur Textfelder).
      */
     public static final int DB_VARIABLE_FIELD = 2; // 2^1
 
     /**
-     * Der Feldwert wird für neue Datensätze automatisch um eins erhöht (mit dem
+     * Der Feldwert wird fÃ¼r neue DatensÃ¤tze automatisch um eins erhï¿½ht (mit dem
      * Ergebnis Long Integer) und ergibt einen eindeutigen Wert, der nicht
-     * geändert werden kann (in einem Microsoft Jet-Arbeitsbereich, werden nur
-     * Microsoft Jet Datenbank (.mdb)-Tabellen unterstützt).
+     * geÃ¤ndert werden kann (in einem Microsoft Jet-Arbeitsbereich, werden nur
+     * Microsoft Jet Datenbank (.mdb)-Tabellen unterstÃ¼tzt).
      */
     public static final int DB_AUTO_INCR_FIELD = 16; // 2^4
 
     /**
-     * Der Feldwert kann geändert werden.
+     * Der Feldwert kann geÃ¤ndert werden.
      */
     public static final int DB_UPDATABLE_FIELD = 32; // 2^5
 
     /**
-     * Das Feld speichert Informationen für Replikate; dieser Feldtyp kann nicht
-     * gelöscht werden (gilt nur für Microsoft Jet-Arbeitsbereiche).
+     * Das Feld speichert Informationen fÃ¼r Replikate; dieser Feldtyp kann nicht
+     * gelÃ¶scht werden (gilt nur fÃ¼r Microsoft Jet-Arbeitsbereiche).
      */
     public static final int DB_SYSTEM_FIELD = 8192; // 2^13
 
     /**
-     * Das Feld enthält Hyperlink-Informationen (nur Memofelder).
+     * Das Feld enthÃ¤lt Hyperlink-Informationen (nur Memofelder).
      */
     public static final int DB_HYPERLINK_FIELD = 32768; // 2^15
 

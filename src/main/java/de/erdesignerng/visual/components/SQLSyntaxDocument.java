@@ -23,7 +23,7 @@ import java.awt.*;
 /**
  * Document highlighting Oracle PL/SQL syntax.
  *
- * @author Tomáš Matoušek
+ * @author Tom Matouek
  * @version 1.0
  */
 class SQLSyntaxDocument extends DefaultStyledDocument {

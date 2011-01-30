@@ -7,7 +7,7 @@ import java.util.Hashtable;
 /**
  * Scanner used to find out tokens.
  *
- * @author Tomáš Matoušek
+ * @author Tom Matouek
  * @version 1.0
  */
 class SQLScanner {
