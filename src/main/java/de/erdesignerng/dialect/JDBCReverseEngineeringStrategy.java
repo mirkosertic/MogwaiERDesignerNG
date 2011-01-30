@@ -79,9 +79,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         return aTypeName;
     }
 
-    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute,
-                                            ReverseEngineeringOptions aOptions,
-                                            ReverseEngineeringNotifier aNotifier, TableEntry aTable,
+    protected void reverseEngineerAttribute(Attribute aAttribute,
+                                            TableEntry aTable,
                                             Connection aConnection) throws SQLException {
     }
 
@@ -346,8 +345,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                 theAttribute.setDefaultValue(theDefaultValue);
                 theAttribute.setNullable(isNullable);
 
-                reverseEngineerAttribute(aModel, theAttribute, aOptions,
-                        aNotifier, aTableEntry, aConnection);
+                reverseEngineerAttribute(theAttribute,
+                        aTableEntry, aConnection);
 
                 try {
                     theNewTable.addAttribute(aModel, theAttribute);

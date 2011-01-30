@@ -18,12 +18,9 @@
 package de.erdesignerng.dialect.mysql;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
-import de.erdesignerng.dialect.ReverseEngineeringNotifier;
-import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import org.apache.commons.lang.StringUtils;
@@ -49,8 +46,8 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
     }
 
     @Override
-    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute, ReverseEngineeringOptions aOptions,
-                                            ReverseEngineeringNotifier aNotifier, TableEntry aEntry, Connection aConnection) throws SQLException {
+    protected void reverseEngineerAttribute(Attribute aAttribute,
+                                            TableEntry aEntry, Connection aConnection) throws SQLException {
 
         // Special treatment for BIT types
         if ("BIT".equals(aAttribute.getDatatype().getName())) {

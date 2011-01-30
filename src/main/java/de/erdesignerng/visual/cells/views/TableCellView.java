@@ -83,8 +83,8 @@ public class TableCellView extends VertexView {
             aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
         }
 
-        private void drawRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
-            aGraphics.drawRect(aX1, aY1, aWidth, aHeight);
+        private void drawRect(Graphics aGraphics, int aY1, int aWidth, int aHeight) {
+            aGraphics.drawRect(0, aY1, aWidth, aHeight);
         }
 
         protected String getConvertedName(ModelItem aItem) {
@@ -127,7 +127,7 @@ public class TableCellView extends VertexView {
 
             aGraphics.setColor(selected ? Color.blue : Color.black);
 
-            drawRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
+            drawRect(aGraphics, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
             int theTextXOffset = 15;
 

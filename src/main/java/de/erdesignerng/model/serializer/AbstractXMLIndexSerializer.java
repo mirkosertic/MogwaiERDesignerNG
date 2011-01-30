@@ -17,30 +17,29 @@
  */
 package de.erdesignerng.model.serializer;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * @author $Author: dr-death $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLIndexSerializer extends CommonAbstractXMLSerializer<Index> {
-	protected static final String INDEX = "Index";
+    protected static final String INDEX = "Index";
 
-	protected static final String INDEXATTRIBUTE = "Indexattribute";
+    protected static final String INDEXATTRIBUTE = "Indexattribute";
 
-	protected static final String INDEXTYPE = "indextype";
+    protected static final String INDEXTYPE = "indextype";
 
-	public abstract void deserialize(Model aModel, Table aTable, Document aDocument, Element aElement);
+    public abstract void deserialize(Table aTable, Element aElement);
 
-	@Override
-	@Deprecated
-	public void deserialize(Model aModel, Document aDocument) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
+    @Override
+    @Deprecated
+    public void deserialize(Model aModel, Document aDocument) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

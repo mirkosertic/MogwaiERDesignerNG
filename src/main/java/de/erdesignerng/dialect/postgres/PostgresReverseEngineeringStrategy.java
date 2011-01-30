@@ -61,9 +61,8 @@ public class PostgresReverseEngineeringStrategy extends
     // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length
     // wrong
     @Override
-    protected void reverseEngineerAttribute(Model aModel, Attribute aAttribute,
-                                            ReverseEngineeringOptions aOptions,
-                                            ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry,
+    protected void reverseEngineerAttribute(Attribute aAttribute,
+                                            TableEntry aTableEntry,
                                             Connection aConnection) throws SQLException {
 
         if ((aAttribute.getDatatype().getName().equalsIgnoreCase("varchar"))

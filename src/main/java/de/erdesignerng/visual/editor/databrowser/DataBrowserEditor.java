@@ -22,7 +22,6 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.*;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.JDBCUtils;
-import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -62,8 +61,7 @@ public class DataBrowserEditor extends BaseEditor {
 
     private PaginationDataModel dataModel;
 
-    public DataBrowserEditor(Component aParent,
-                             ERDesignerWorldConnector aConnector) {
+    public DataBrowserEditor(Component aParent) {
         super(aParent, ERDesignerBundle.DATABROWSER);
 
         DefaultAction closeAction = new DefaultAction(
