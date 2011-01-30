@@ -438,7 +438,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                     && currentFirstTable.equalsIgnoreCase(previousFirstTable)
                     && currentSecondTable.equalsIgnoreCase(previousSecondTable)) {
 
-                // alte Expression mit AND-Verknüpfung fortsetzen
+                // alte Expression mit AND-VerknÃ¼pfung fortsetzen
                 if (previousConcatenation != null) {
                     theSQL = mergeRight(theSQL, SPACE, previousConcatenation);
                     theSQL = mergeRight(theSQL, SPACE, "(" + previousExpression + ")");

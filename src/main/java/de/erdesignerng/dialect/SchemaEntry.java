@@ -28,20 +28,10 @@ public class SchemaEntry {
         schemaName = aSchemaName;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>catalogName</code> zurück.
-     *
-     * @return Wert des Attributs catalogName.
-     */
     public String getCatalogName() {
         return catalogName;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>schemaName</code> zurück.
-     *
-     * @return Wert des Attributs schemaName.
-     */
     public String getSchemaName() {
         return schemaName;
     }

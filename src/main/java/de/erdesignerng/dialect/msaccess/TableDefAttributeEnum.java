@@ -28,56 +28,55 @@ public final class TableDefAttributeEnum {
 
     /**
      * Die Tabelle ist eine Systemtabelle, die vom Microsoft Jet-Datenbankmodul
-     * bereitgestellt wird. Sie können diese Konstante auf ein angefügtes
+     * bereitgestellt wird. Sie kÃ¶nnen diese Konstante auf ein angefï¿½gtes
      * TableDef-Objekt festlegen.
      */
     public static final int DB_SYSTEM_OBJECT = -2147483646; // (-2^31 | 2^1)
 
     /**
      * Die Tabelle ist eine verborgene Tabelle, die vom Microsoft
-     * Jet-Datenbankmodul bereitgestellt wird. Sie können diese Konstante auf
-     * ein angefügtes TableDef- Objekt festlegen.
-     * 
-     * Diese Einstellung kann *nicht* über das Access-GUI eingestellt werden.
+     * Jet-Datenbankmodul bereitgestellt wird. Sie kÃ¶nnen diese Konstante auf     * ein angefÃ¼gtes TableDef- Objekt festlegen.
+     * <p/>
+     * Diese Einstellung kann *nicht* Ã¼ber das Access-GUI eingestellt werden.
      */
     public static final int DB_HIDDEN_OBJECT = 1; // 2^0
 
     /**
      * Die Tabelle ist eine verborgene Tabelle, die vom Microsoft
-     * Jet-Datenbankmodul bereitgestellt wird. Sie können diese Konstante auf
-     * ein angefügtes TableDef- Objekt festlegen.
-     * 
-     * Diese Einstellung kann über das GUI eingestellt werden - Eigenschaft
+     * Jet-Datenbankmodul bereitgestellt wird. Sie kÃ¶nnen diese Konstante auf
+     * ein angefÃ¼gtes TableDef- Objekt festlegen.
+     * <p/>
+     * Diese Einstellung kann Ã¼ber das GUI eingestellt werden - Eigenschaft
      * "Ausgeblendet".
      */
     public static final int DB_INVISIBLE_OBJECT = 8; // 2^3
 
     /**
      * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul verwenden, ist die
-     * Tabelle eine verknüpfte Tabelle, die für den exklusiven Zugriff geöffnet
-     * wurde. Sie können die Konstanten auf einem angefügten TableDef-Objekt
-     * einer lokalen Tabelle festlegen, nicht jedoch für eine Remote-Tabelle.
+     * Tabelle eine verknÃ¼pfte Tabelle, die fÃ¼r den exklusiven Zugriff geï¿½ffnet
+     * wurde. Sie kÃ¶nnen die Konstanten auf einem angefÃ¼gten TableDef-Objekt
+     * einer lokalen Tabelle festlegen, nicht jedoch fÃ¼r eine Remote-Tabelle.
      */
     public static final int DB_ATTACHED_EXCLUSIVE = 65536; // 2^16
 
     /**
      * Bei Datenbanken, die das Microsoft Jet-Datenbankmodul verwenden, sind die
-     * Benutzerkennung und das Kennwort für die verknüpfte Tabelle zusammen mit
-     * den Verbindungsinformationen gespeichert. Sie können diese Konstanten auf
-     * ein hinzugefügtes TableDef-Objekt einer Remote-Tabelle festlegen, nicht
+     * Benutzerkennung und das Kennwort fÃ¼r die verknÃ¼pfte Tabelle zusammen mit
+     * den Verbindungsinformationen gespeichert. Sie kÃ¶nnen diese Konstanten auf
+     * ein hinzugefÃ¼gtes TableDef-Objekt einer Remote-Tabelle festlegen, nicht
      * jedoch auf eine lokale Tabelle.
      */
     public static final int DB_ATTACHED_SAVE_PWD = 131072; // 2^17
 
     /**
-     * Die Tabelle ist eine verknüpfte Tabelle aus einer ODBC- Datenbank, z.B.
-     * aus einer Datenbank des Microsoft SQL Server (schreibgeschützt).
+     * Die Tabelle ist eine verknÃ¼pfte Tabelle aus einer ODBC- Datenbank, z.B.
+     * aus einer Datenbank des Microsoft SQL Server (schreibgeschï¿½tzt).
      */
     public static final int DB_ATTACHED_ODBC = 536870912; // 2^19
 
     /**
-     * Die Tabelle ist eine verknüpfte Tabelle aus einer Nicht-ODBC-Datenquelle,
-     * z.B. aus einer Microsoft Jet- oder Paradox-Datenbank (schreibgeschützt).
+     * Die Tabelle ist eine verknÃ¼pfte Tabelle aus einer Nicht-ODBC-Datenquelle,
+     * z.B. aus einer Microsoft Jet- oder Paradox-Datenbank (schreibgeschï¿½tzt).
      */
     public static final int DB_ATTACHED_TABLE = 1073741824; // 2^30
 

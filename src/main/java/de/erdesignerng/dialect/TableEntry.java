@@ -18,18 +18,10 @@ public class TableEntry extends SchemaEntry {
         tableType = aTableType;
     }
 
-    /**
-     * @return the tableName
-     */
     public String getTableName() {
         return tableName;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>tableType</code> zurück.
-     *
-     * @return Wert des Attributs tableType.
-     */
     public String getTableType() {
         return tableType;
     }

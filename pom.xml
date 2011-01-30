@@ -151,9 +151,6 @@
                                         <include name="**/*.jrxml"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="${staging.dir}/javadoc">
-                                    <fileset dir="${basedir}/target/site/apidocs"/>
-                                </copy>
                                 <copy todir="${staging.dir}/lib">
                                     <fileset dir="${basedir}/target">
                                         <include name="${project.artifactId}-${project.version}.jar"/>
