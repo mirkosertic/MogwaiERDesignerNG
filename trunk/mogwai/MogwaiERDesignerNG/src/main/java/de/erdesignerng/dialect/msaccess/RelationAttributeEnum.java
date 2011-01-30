@@ -32,12 +32,12 @@ public final class RelationAttributeEnum {
     public static final int DB_RELATION_UNIQUE = 1; // 2^0
 
     /**
-     * Die referentielle Integrität der Beziehung wird nicht erzwungen.
+     * Die referentielle IntegritÃ¤t der Beziehung wird nicht erzwungen.
      */
     public static final int DB_RELATION_DONT_ENFORCE = 2; // 2^1
 
     /**
-     * Die Beziehung existiert zwischen zwei verknüpften Tabellen aus einer
+     * Die Beziehung existiert zwischen zwei verknÃ¼pften Tabellen aus einer
      * Datenbank, die nicht die aktuelle Datenbank ist.
      */
     public static final int DB_RELATION_INHERITED = 4; // 2^2
@@ -48,24 +48,24 @@ public final class RelationAttributeEnum {
     public static final int DB_RELATION_UPDATE_CASCADE = 256; // 2^8
 
     /**
-     * Löschvorgänge werden weitergegeben.
+     * LÃ¶schvorgÃ¤nge werden weitergegeben.
      */
     public static final int DB_RELATION_DELETE_CASCADE = 4096; // 2^12
 
     /**
-     * Beim Löschen werden betroffene Fremdschlüssel auf NULL gesetzt.
+     * Beim LÃ¶schen werden betroffene FremdschlÃ¼ssel auf NULL gesetzt.
      */
     public static final int DB_RELATION_DELETE_SET_NULL = 8192;// 2^13
 
     /**
      * Nur in Microsoft Access. Zeigen Sie in der Entwurfsansicht ein LEFT JOIN
-     * als standardmäßigen Verknüpfungstyp an.
+     * als standardmÃ¤ÃŸigen VerknÃ¼pfungstyp an.
      */
     public static final int DB_RELATION_LEFT = 16777216; // 2^24
 
     /**
      * Nur in Microsoft Access. Zeigen Sie in der Entwurfsansicht ein RIGHT JOIN
-     * als standardmäßigen Verknüpfungstyp an.
+     * als standardmÃ¤ÃŸigen VerknÃ¼pfungstyp an.
      */
     public static final int DB_RELATION_RRIGHT = 33554432; // 2^25
 

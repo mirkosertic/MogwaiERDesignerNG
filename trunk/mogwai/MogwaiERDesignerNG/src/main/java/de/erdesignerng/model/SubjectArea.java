@@ -63,11 +63,6 @@ public class SubjectArea extends OwnedModelItem<Model> {
         return tables;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>comments</code> zurück.
-     *
-     * @return Wert des Attributs comments.
-     */
     public CommentList getComments() {
         return comments;
     }
@@ -81,25 +76,14 @@ public class SubjectArea extends OwnedModelItem<Model> {
         return (comments.size() == 0) && (tables.size() == 0) && (views.size() == 0);
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>views</code> zurück.
-     *
-     * @return Wert des Attributs views.
-     */
     public ViewList getViews() {
         return views;
     }
 
-    /**
-     * @return the visible
-     */
     public boolean isVisible() {
         return visible;
     }
 
-    /**
-     * @param visible the visible to set
-     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }

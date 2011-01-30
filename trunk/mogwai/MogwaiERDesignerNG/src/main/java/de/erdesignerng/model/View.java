@@ -31,29 +31,14 @@ public class View extends OwnedModelItem<Model> {
 
     private String schema;
 
-    /**
-     * Gibt den Wert des Attributs <code>sql</code> zurück.
-     *
-     * @return Wert des Attributs sql.
-     */
     public String getSql() {
         return sql;
     }
 
-    /**
-     * Setzt den Wert des Attributs <code>sql</code>.
-     *
-     * @param sql Wert für das Attribut sql.
-     */
     public void setSql(String sql) {
         this.sql = sql;
     }
 
-    /**
-     * Gibt den Wert des Attributs <code>attributes</code> zurück.
-     *
-     * @return Wert des Attributs attributes.
-     */
     public ViewAttributeList getAttributes() {
         return attributes;
     }

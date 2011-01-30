@@ -80,7 +80,7 @@ public class MSAccessDialect extends SQL92Dialect {
             // im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
             // Um die Einstellungen der "echten" System.mdw in
             // %APPDATA%\Microsoft\Access\System.mdw
-            // nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
+            // nicht zu Ã¼berschreiben wird eine "eigene" System.mdw benutzt.
             Statement statement = connection.createStatement();
             statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
             statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
@@ -92,15 +92,15 @@ public class MSAccessDialect extends SQL92Dialect {
                     int theVersion = MSAccessFormats.getVersion(aUrl);
 
                     if (theVersion == MSAccessFormats.VERSION_2007) {
-                        throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu öffnen.\n" +
-                                "Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
-                                "Diese können sie hier herunterladen:\n" +
+                        throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu Ã–ffnen.\n" +
+                                "Dazu benÃ¶tigen sie entweder eine Office 2007 Installtion oder die Office 2007 DatenkonnektivitÃ¤tskomponenten.\n\n" +
+                                "Diese kÃ¶nnen sie hier herunterladen:\n" +
                                 "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage() + "\n" +
                                 "http://www.microsoft.com/downloads/details.aspx?FamilyID=6f4edeed-d83f-4c31-ae67-458ae365d420&displaylang=" + Locale.getDefault().getLanguage());
                     } else if ((theVersion == MSAccessFormats.VERSION_200X) || (theVersion == MSAccessFormats.VERSION_2000) || (theVersion == MSAccessFormats.VERSION_2002) || (theVersion == MSAccessFormats.VERSION_2003)) {
-                        throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu öffnen.\n" +
-                                "Dazu benötigen sie mindestens die Jet 4.0 Engine.\n\n" +
-                                "Diese können sie hier herunterladen:\n" +
+                        throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu ï¿½ffnen.\n" +
+                                "Dazu benï¿½tigen sie mindestens die Jet 4.0 Engine.\n\n" +
+                                "Diese kï¿½nnen sie hier herunterladen:\n" +
                                 "http://www.microsoft.com/downloads/details.aspx?familyid=2deddec4-350e-4cd0-a12a-d7f70a153156&displaylang=" + Locale.getDefault().getLanguage());
                     }
                     break;

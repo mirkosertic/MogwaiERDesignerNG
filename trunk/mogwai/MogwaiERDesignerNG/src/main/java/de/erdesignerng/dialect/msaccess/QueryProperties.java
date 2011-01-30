@@ -117,12 +117,12 @@ public final class QueryProperties {
         public static final int TRANSFORM = 0;
 
         /**
-         * Spaltenüberschrift
+         * SpaltenÃ¼berschrift
          */
         public static final int PIVOT = 1;
 
         /**
-         * Zeilenüberschrift
+         * ZeilenÃ¼berschrift
          */
         public static final int SELECT = 2;
 
