@@ -125,6 +125,9 @@ public class DataBrowserEditor extends BaseEditor {
 
     private void initializeContextMenu(final Table aTable) {
         DefaultPopupMenu theMenu = new DefaultPopupMenu();
+
+        Map<Table, JMenu> theMap = new HashMap<Table, JMenu>();
+
         for (Relation theRelation : currentModel.getRelations()
                 .getForeignKeysFor(aTable)) {
 
@@ -144,7 +147,13 @@ public class DataBrowserEditor extends BaseEditor {
                     navigateToWithForeignKey(theFinalRelation);
                 }
             });
-            theMenu.add(theItem);
+
+            JMenu theMenuToAdd = theMap.get(theNavigationTarget);
+            if (theMenuToAdd == null) {
+                theMenuToAdd = new JMenu(theNavigationTarget.getName());
+                theMap.put(theNavigationTarget, theMenuToAdd);
+            }
+            theMenuToAdd.add(theItem);
         }
 
         for (Relation theRelation : currentModel.getRelations()
@@ -166,10 +175,19 @@ public class DataBrowserEditor extends BaseEditor {
                 }
             });
 
-            theMenu.add(theItem);
+            JMenu theMenuToAdd = theMap.get(theNavigationTarget);
+            if (theMenuToAdd == null) {
+                theMenuToAdd = new JMenu(theNavigationTarget.getName());
+                theMap.put(theNavigationTarget, theMenuToAdd);
+            }
+            theMenuToAdd.add(theItem);
+
         }
 
-        if (theMenu.getComponentCount() > 0) {
+        if (theMap.size() > 0) {
+            for (Map.Entry<Table, JMenu> theEntry : theMap.entrySet()) {
+                theMenu.add(theEntry.getValue());
+            }
             view.getData().setContextMenu(theMenu);
         }
     }
