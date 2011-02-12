@@ -33,31 +33,27 @@ public class TableEntity extends ModelEntity {
 
     private String schema;
 
-    /**
-     * @return the attributes
-     */
     public List<AttributeEntity> getAttributes() {
         return attributes;
     }
 
-    /**
-     * @return the indexes
-     */
     public List<IndexEntity> getIndexes() {
         return indexes;
     }
 
-    /**
-     * @return the schema
-     */
     public String getSchema() {
         return schema;
     }
 
-    /**
-     * @param schema the schema to set
-     */
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public void setAttributes(List<AttributeEntity> attributes) {
+        this.attributes = attributes;
+    }
+
+    public void setIndexes(List<IndexEntity> indexes) {
+        this.indexes = indexes;
     }
 }
