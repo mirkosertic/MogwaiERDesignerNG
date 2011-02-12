@@ -821,7 +821,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
             ReverseEngineeringException {
 
         if (aModel.getDialect().isSupportsCustomTypes()) {
-            reverseEngineerCustomTypes(aModel, aOptions, aNotifier, aConnection);
+            try {
+                reverseEngineerCustomTypes(aModel, aOptions, aNotifier, aConnection);
+            } catch (Exception e) {
+                LOGGER.warn("Error retrieving custom types", e);
+            }
         }
 
         if (aModel.getDialect().isSupportsDomains()) {

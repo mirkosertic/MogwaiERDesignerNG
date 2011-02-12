@@ -42,7 +42,6 @@ public abstract class AbstractConnectionTest extends AbstractReverseEngineeringT
             theStatement.execute("DROP USER mogwai");
             theStatement.execute("DROP DATABASE mogwai");
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         try {
