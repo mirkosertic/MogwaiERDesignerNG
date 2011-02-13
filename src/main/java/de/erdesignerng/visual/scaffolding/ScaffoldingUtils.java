@@ -29,8 +29,6 @@ import org.metawidget.swing.SwingMetawidget;
 import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingProcessor;
 import org.metawidget.util.simple.StringUtils;
 
-import java.sql.ResultSetMetaData;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public final class ScaffoldingUtils {
@@ -38,33 +36,6 @@ public final class ScaffoldingUtils {
 	private ScaffoldingUtils() {
 	}
 
-    public static ScaffoldingWrapper createScaffoldingPanelFor(ResultSetMetaData aMetaData,Map<String, Object> aRow) {
-
-        final ResultSetMetaDataInspector theInspector = new ResultSetMetaDataInspector(aMetaData);
-		BeanUtilsBindingProcessor theProcessor = new ERDesignerBeanUtilsBindingProcessor();
-
-		SwingMetawidget theMetaWidget = new SwingMetawidget() {
-
-			@Override
-			public String getLocalizedKey(String key) {
-                return key.toUpperCase();
-			}
-		};
-
-		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig().setInspectors(new Inspector[] {theInspector});
-		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
-		theMetaWidget.addWidgetProcessor(theProcessor);
-		theMetaWidget.setMetawidgetLayout(new JGoodiesTableLayout());
-		theMetaWidget.setWidgetBuilder(new MogwaiWidgetBuilder());
-
-		theMetaWidget.setToInspect(aRow);
-
-		// Force the computation of the widgets
-		theMetaWidget.getPreferredSize();
-
-		return new ScaffoldingWrapper(theMetaWidget, theProcessor, true);
-    }
-	
 	public static ScaffoldingWrapper createScaffoldingPanelFor(
 			Model aModel, Object aObject) {
 
