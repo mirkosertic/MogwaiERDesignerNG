@@ -17,10 +17,10 @@
  */
 package de.erdesignerng.visual.tools;
 
+import de.erdesignerng.visual.ERDesignerGraph;
+
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-
-import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * Tool to add comments to the editor.

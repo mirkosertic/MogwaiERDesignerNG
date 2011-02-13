@@ -17,16 +17,15 @@
  */
 package de.erdesignerng.visual.cells;
 
-import java.awt.Color;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Map;
-
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Table;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Table;
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Map;
 
 /**
  * A table cell.

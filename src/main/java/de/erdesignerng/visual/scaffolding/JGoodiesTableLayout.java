@@ -17,21 +17,18 @@
  */
 package de.erdesignerng.visual.scaffolding;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import org.apache.commons.lang.StringUtils;
 import org.metawidget.inspector.InspectionResultConstants;
 import org.metawidget.layout.iface.Layout;
 import org.metawidget.swing.SwingMetawidget;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class JGoodiesTableLayout implements Layout<JComponent, SwingMetawidget> {
 

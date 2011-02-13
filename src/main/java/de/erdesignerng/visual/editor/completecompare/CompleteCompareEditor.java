@@ -17,18 +17,17 @@
  */
 package de.erdesignerng.visual.editor.completecompare;
 
-import java.awt.Component;
-
-import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
-
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.utils.ModelComparator;
 import de.erdesignerng.model.utils.ModelCompareResult;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $

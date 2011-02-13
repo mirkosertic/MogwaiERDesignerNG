@@ -17,24 +17,19 @@
  */
 package de.erdesignerng.plugins.squirrel;
 
-import java.awt.Component;
-
-import net.sourceforge.squirrel_sql.client.session.ISession;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.visual.common.DockingHelper;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.ReverseEngineerCommand;
-import de.erdesignerng.visual.common.SQLComponent;
+import de.erdesignerng.visual.common.*;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrameContent;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuBar;
 import de.mogwai.common.i18n.ResourceHelper;
+import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.BaseMainPanelTab;
+
+import java.awt.*;
 
 public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 		ERDesignerWorldConnector {

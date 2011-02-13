@@ -17,19 +17,11 @@
  */
 package de.erdesignerng.dialect;
 
-import java.util.List;
-import java.util.Map;
-
+import de.erdesignerng.model.*;
 import org.apache.commons.lang.StringUtils;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for all SQL generators.

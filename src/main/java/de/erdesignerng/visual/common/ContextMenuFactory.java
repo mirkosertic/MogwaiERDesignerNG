@@ -17,27 +17,17 @@
  */
 package de.erdesignerng.visual.common;
 
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.*;
+import de.mogwai.common.client.looks.components.action.DefaultAction;
+import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
+import de.mogwai.common.i18n.ResourceHelper;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import de.mogwai.common.client.looks.components.action.DefaultAction;
-import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
-import de.mogwai.common.i18n.ResourceHelper;
 
 /**
  * Factory for context menues.

@@ -17,17 +17,8 @@
  */
 package de.erdesignerng.visual.cells.views;
 
-import org.jgraph.graph.DefaultCellViewFactory;
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.EdgeView;
-import org.jgraph.graph.PortView;
-import org.jgraph.graph.VertexView;
-
-import de.erdesignerng.visual.cells.CommentCell;
-import de.erdesignerng.visual.cells.RelationEdge;
-import de.erdesignerng.visual.cells.SubjectAreaCell;
-import de.erdesignerng.visual.cells.TableCell;
-import de.erdesignerng.visual.cells.ViewCell;
+import de.erdesignerng.visual.cells.*;
+import org.jgraph.graph.*;
 
 /**
  * Factory for the cell views.

@@ -17,16 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -42,6 +32,14 @@ import de.erdesignerng.visual.cells.views.ViewCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReverseEngineerCommand extends UICommand {
 

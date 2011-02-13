@@ -38,6 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
@@ -188,8 +189,28 @@ public class DataBrowserEditor extends BaseEditor {
             for (Map.Entry<Table, JMenu> theEntry : theMap.entrySet()) {
                 theMenu.add(theEntry.getValue());
             }
-            view.getData().setContextMenu(theMenu);
         }
+        final JMenuItem theItem = new JMenuItem(getResourceHelper().getText(ERDesignerBundle.EDITROW));
+        theItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
+                    theEditor.setVisible(true);
+                } catch (SQLException ex) {
+                    logFatalError(ex);
+                }
+            }
+        });
+
+
+        // Deactivatred, will be available in future version
+        //if (theMap.size() > 0) {
+        //    theMenu.addSeparator();
+        //}
+        //theMenu.add(theItem);
+
+        view.getData().setContextMenu(theMenu);
     }
 
     public void initializeFor(View aView) {

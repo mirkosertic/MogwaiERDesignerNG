@@ -17,12 +17,12 @@
  */
 package de.erdesignerng.visual.cells.views;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jgraph.JGraph;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.PortView;
+
+import java.awt.geom.Rectangle2D;
 
 /**
  * 

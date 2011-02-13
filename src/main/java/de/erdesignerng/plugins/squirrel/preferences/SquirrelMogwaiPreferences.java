@@ -17,14 +17,14 @@
  */
 package de.erdesignerng.plugins.squirrel.preferences;
 
-import java.awt.Component;
-
-import net.sourceforge.squirrel_sql.client.IApplication;
-import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.plugins.squirrel.SquirrelMogwaiPluginDelegate;
 import de.erdesignerng.visual.editor.preferences.PreferencesPanel;
 import de.mogwai.common.i18n.ResourceHelper;
+import net.sourceforge.squirrel_sql.client.IApplication;
+import net.sourceforge.squirrel_sql.client.preferences.IGlobalPreferencesPanel;
+
+import java.awt.*;
 
 /**
  * The preferences dialog for Squirrel.

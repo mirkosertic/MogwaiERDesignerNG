@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.visual.common;
 
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JComponent;
-
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 
 public abstract class UICommand implements ActionEventProcessor, ActionListener {
 

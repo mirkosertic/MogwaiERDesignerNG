@@ -19,17 +19,10 @@ package de.erdesignerng.visual.editor.convertmodel;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.erdesignerng.ERDesignerBundle;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultSeparator;
-import de.mogwai.common.client.looks.components.DefaultTable;
+import de.mogwai.common.client.looks.components.*;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 /**
  * @author $Author: mirkosertic $

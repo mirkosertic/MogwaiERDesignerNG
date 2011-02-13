@@ -17,28 +17,15 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import java.util.Map;
-
+import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.model.*;
+import de.erdesignerng.model.serializer.*;
+import de.erdesignerng.util.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLIndexSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLRelationSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
-import de.erdesignerng.model.serializer.AbstractXMLTableSerializer;
-import de.erdesignerng.util.XMLUtils;
+import java.util.Map;
 
 /**
  * @author $Author: mirkosertic $

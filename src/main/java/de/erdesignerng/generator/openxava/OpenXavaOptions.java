@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.generator.openxava;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import de.erdesignerng.dialect.DataType;
 import org.apache.commons.lang.StringUtils;
 
-import de.erdesignerng.dialect.DataType;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OpenXavaOptions {
 

@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.visual.editor.relation;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
-
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
+
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 /**
  * @author $Author: mirkosertic $

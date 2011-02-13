@@ -17,18 +17,16 @@
  */
 package de.erdesignerng.visual.editor;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.components.DefaultDialog;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * 

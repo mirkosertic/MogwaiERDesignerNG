@@ -17,39 +17,22 @@
  */
 package de.erdesignerng.visual;
 
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.model.*;
+import de.erdesignerng.modificationtracker.VetoException;
+import de.erdesignerng.visual.cells.*;
+import de.erdesignerng.visual.cells.views.RelationEdgeView;
+import de.erdesignerng.visual.tools.BaseTool;
+import org.jgraph.JGraph;
+import org.jgraph.graph.*;
+
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphLayoutCache;
-import org.jgraph.graph.GraphModel;
-
-import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.exception.ElementAlreadyExistsException;
-import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.VetoException;
-import de.erdesignerng.visual.cells.CommentCell;
-import de.erdesignerng.visual.cells.HideableCell;
-import de.erdesignerng.visual.cells.RelationEdge;
-import de.erdesignerng.visual.cells.SubjectAreaCell;
-import de.erdesignerng.visual.cells.TableCell;
-import de.erdesignerng.visual.cells.ViewCell;
-import de.erdesignerng.visual.cells.views.RelationEdgeView;
-import de.erdesignerng.visual.tools.BaseTool;
 
 /**
  * 

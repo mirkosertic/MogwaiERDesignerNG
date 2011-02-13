@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.visual.editor.openxavaexport;
 
-import java.util.List;
+import de.erdesignerng.dialect.DataType;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-
-import de.erdesignerng.dialect.DataType;
+import java.util.List;
 
 /**
  * @author $Author: mirkosertic $

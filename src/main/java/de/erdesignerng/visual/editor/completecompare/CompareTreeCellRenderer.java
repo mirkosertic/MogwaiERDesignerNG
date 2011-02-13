@@ -17,16 +17,14 @@
  */
 package de.erdesignerng.visual.editor.completecompare;
 
-import java.awt.Component;
-
-import javax.swing.ImageIcon;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
 import de.erdesignerng.model.utils.MissingInfo;
 import de.erdesignerng.model.utils.RedefinedInfo;
 import de.erdesignerng.visual.IconFactory;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $

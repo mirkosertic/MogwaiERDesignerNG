@@ -17,13 +17,12 @@
  */
 package de.erdesignerng.model.serializer.xml30;
 
+import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Model;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Model;
 
 /**
  * @author $Author: dr-death $

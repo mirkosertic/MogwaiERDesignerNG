@@ -17,25 +17,14 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
-import java.sql.Connection;
-
+import de.erdesignerng.model.serializer.repository.entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 
-import de.erdesignerng.model.serializer.repository.entities.AttributeEntity;
-import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
-import de.erdesignerng.model.serializer.repository.entities.CommentEntity;
-import de.erdesignerng.model.serializer.repository.entities.CustomTypeEntity;
-import de.erdesignerng.model.serializer.repository.entities.DomainEntity;
-import de.erdesignerng.model.serializer.repository.entities.IndexEntity;
-import de.erdesignerng.model.serializer.repository.entities.RelationEntity;
-import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
-import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
-import de.erdesignerng.model.serializer.repository.entities.TableEntity;
-import de.erdesignerng.model.serializer.repository.entities.ViewEntity;
+import java.sql.Connection;
 
 /**
  * Template class for hibernate operations.

@@ -18,17 +18,8 @@
 package de.erdesignerng.generator.openxava;
 
 import japa.parser.ASTHelper;
-import japa.parser.ast.body.BodyDeclaration;
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.MethodDeclaration;
-import japa.parser.ast.body.VariableDeclarator;
-import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.Expression;
-import japa.parser.ast.expr.MarkerAnnotationExpr;
-import japa.parser.ast.expr.MemberValuePair;
-import japa.parser.ast.expr.NormalAnnotationExpr;
-import japa.parser.ast.expr.SingleMemberAnnotationExpr;
+import japa.parser.ast.body.*;
+import japa.parser.ast.expr.*;
 
 import java.util.ArrayList;
 import java.util.List;

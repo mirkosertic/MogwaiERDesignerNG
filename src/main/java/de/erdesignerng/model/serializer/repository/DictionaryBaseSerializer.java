@@ -17,16 +17,12 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.ModelList;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
 import de.erdesignerng.model.serializer.repository.entities.StringKeyValuePair;
+
+import java.util.*;
 
 /**
  * Base class for all serializers.

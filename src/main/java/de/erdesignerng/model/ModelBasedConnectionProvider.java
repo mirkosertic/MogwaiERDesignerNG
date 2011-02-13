@@ -17,9 +17,9 @@
  */
 package de.erdesignerng.model;
 
-import java.sql.Connection;
-
 import de.erdesignerng.dialect.ConnectionProvider;
+
+import java.sql.Connection;
 
 /**
  * Implementation of a connection provider.

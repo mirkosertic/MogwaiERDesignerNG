@@ -17,12 +17,12 @@
  */
 package de.erdesignerng.test.sql.mssql;
 
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
 
@@ -43,7 +43,6 @@ public abstract class AbstractConnectionTest extends AbstractReverseEngineeringT
 		try {
 			theStatement.execute("drop database mogwai");
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		theStatement.execute("create database mogwai");

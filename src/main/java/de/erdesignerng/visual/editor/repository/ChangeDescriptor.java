@@ -17,10 +17,10 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
+import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
-import de.erdesignerng.model.serializer.repository.entities.ChangeEntity;
 
 /**
  * A change descriptor.

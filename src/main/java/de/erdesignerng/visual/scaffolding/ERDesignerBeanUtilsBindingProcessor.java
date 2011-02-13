@@ -17,18 +17,6 @@
  */
 package de.erdesignerng.visual.scaffolding;
 
-import static org.metawidget.inspector.InspectionResultConstants.NAME;
-import static org.metawidget.inspector.InspectionResultConstants.NO_SETTER;
-import static org.metawidget.inspector.InspectionResultConstants.PROPERTY;
-import static org.metawidget.inspector.InspectionResultConstants.TRUE;
-
-import java.awt.Component;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.metawidget.swing.SwingMetawidget;
@@ -37,6 +25,13 @@ import org.metawidget.util.CollectionUtils;
 import org.metawidget.util.simple.PathUtils;
 import org.metawidget.util.simple.StringUtils;
 import org.metawidget.widgetprocessor.iface.WidgetProcessorException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+import java.util.Set;
+
+import static org.metawidget.inspector.InspectionResultConstants.*;
 
 public class ERDesignerBeanUtilsBindingProcessor extends BeanUtilsBindingProcessor {
 

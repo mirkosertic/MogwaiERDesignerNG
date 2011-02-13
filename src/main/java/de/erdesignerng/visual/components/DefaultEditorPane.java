@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.visual.components;
 
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
-
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.tools.DefaultModificationListener;
+
+import javax.swing.*;
 
 public class DefaultEditorPane extends JEditorPane {
 

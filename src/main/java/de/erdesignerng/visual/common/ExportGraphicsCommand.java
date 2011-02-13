@@ -17,19 +17,17 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
-import javax.swing.JFileChooser;
-
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultGraphCell;
-
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.cells.views.TableCellView;
 import de.erdesignerng.visual.export.Exporter;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class ExportGraphicsCommand extends UICommand {
 

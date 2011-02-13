@@ -17,9 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
@@ -30,6 +27,9 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class GenerateMigrationScriptCommand extends UICommand {
 

@@ -17,18 +17,12 @@
  */
 package de.erdesignerng.visual.editor.openxavaexport;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.erdesignerng.ERDesignerBundle;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultSeparator;
-import de.mogwai.common.client.looks.components.DefaultTable;
-import de.mogwai.common.client.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.*;
+
+import javax.swing.*;
 
 /**
  * @author $Author: mirkosertic $

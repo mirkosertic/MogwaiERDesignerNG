@@ -17,31 +17,20 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
-
-import net.infonode.docking.DockingWindow;
-import net.infonode.docking.DockingWindowAdapter;
-import net.infonode.docking.RootWindow;
-import net.infonode.docking.SplitWindow;
-import net.infonode.docking.View;
-import net.infonode.docking.util.DockingUtil;
-import net.infonode.docking.util.ViewMap;
-import net.infonode.util.Direction;
-
-import org.apache.log4j.Logger;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+import net.infonode.docking.*;
+import net.infonode.docking.util.DockingUtil;
+import net.infonode.docking.util.ViewMap;
+import net.infonode.util.Direction;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 
 public class DockingHelper extends DockingWindowAdapter implements
 		ResourceHelperProvider {

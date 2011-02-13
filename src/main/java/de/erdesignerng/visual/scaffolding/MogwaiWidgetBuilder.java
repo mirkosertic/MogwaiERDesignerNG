@@ -17,40 +17,10 @@
  */
 package de.erdesignerng.visual.scaffolding;
 
-import static org.metawidget.inspector.InspectionResultConstants.ACTION;
-import static org.metawidget.inspector.InspectionResultConstants.DONT_EXPAND;
-import static org.metawidget.inspector.InspectionResultConstants.HIDDEN;
-import static org.metawidget.inspector.InspectionResultConstants.LARGE;
-import static org.metawidget.inspector.InspectionResultConstants.LOOKUP;
-import static org.metawidget.inspector.InspectionResultConstants.LOOKUP_LABELS;
-import static org.metawidget.inspector.InspectionResultConstants.MASKED;
-import static org.metawidget.inspector.InspectionResultConstants.MAXIMUM_FRACTIONAL_DIGITS;
-import static org.metawidget.inspector.InspectionResultConstants.MAXIMUM_VALUE;
-import static org.metawidget.inspector.InspectionResultConstants.MINIMUM_VALUE;
-import static org.metawidget.inspector.InspectionResultConstants.REQUIRED;
-import static org.metawidget.inspector.InspectionResultConstants.TRUE;
-
-import java.awt.Component;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
-import javax.swing.text.JTextComponent;
-
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultSpinner;
+import de.mogwai.common.client.looks.components.DefaultTextArea;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 import org.metawidget.swing.Stub;
 import org.metawidget.swing.SwingMetawidget;
 import org.metawidget.swing.SwingValuePropertyProvider;
@@ -62,10 +32,17 @@ import org.metawidget.util.WidgetBuilderUtils;
 import org.metawidget.widgetbuilder.iface.WidgetBuilderException;
 import org.metawidget.widgetbuilder.impl.BaseWidgetBuilder;
 
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultSpinner;
-import de.mogwai.common.client.looks.components.DefaultTextArea;
-import de.mogwai.common.client.looks.components.DefaultTextField;
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static org.metawidget.inspector.InspectionResultConstants.*;
 
 public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMetawidget> implements
 		SwingValuePropertyProvider {
@@ -133,7 +110,7 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
 			return new JLabel();
 		}
 
-		String type = WidgetBuilderUtils.getActualClassOrType(attributes);
+		String type = getActualClassOrType(elementName, attributes);
 
 		// If no type, assume a String
 
@@ -204,6 +181,10 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
 		return null;
 	}
 
+    protected String getActualClassOrType(String aElementName, Map<String, String> attributes) {
+        return WidgetBuilderUtils.getActualClassOrType(attributes);
+    }
+
 	@Override
 	protected JComponent buildActiveWidget(String elementName, Map<String, String> attributes,
 			SwingMetawidget metawidget) throws Exception {
@@ -217,7 +198,7 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
 		if (ACTION.equals(elementName))
 			return new JButton(metawidget.getLabelString(attributes));
 
-		String type = WidgetBuilderUtils.getActualClassOrType(attributes);
+		String type = getActualClassOrType(elementName, attributes);
 
 		// If no type, assume a String
 

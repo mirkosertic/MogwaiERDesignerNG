@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual.editor;
 
-import javax.swing.AbstractSpinnerModel;
+import javax.swing.*;
 
 public class NullsafeSpinnerModel extends AbstractSpinnerModel {
 

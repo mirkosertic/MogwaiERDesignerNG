@@ -17,23 +17,6 @@
  */
 package de.erdesignerng.visual.tools;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.SwingUtilities;
-
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.Port;
-import org.jgraph.graph.PortView;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.ERDesignerGraph;
@@ -44,6 +27,15 @@ import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
+import org.jgraph.graph.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author $Author: mirkosertic $

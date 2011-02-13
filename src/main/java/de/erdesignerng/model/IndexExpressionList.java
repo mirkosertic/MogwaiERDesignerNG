@@ -17,9 +17,8 @@
  */
 package de.erdesignerng.model;
 
-import org.apache.commons.lang.StringUtils;
-
 import de.erdesignerng.exception.ElementAlreadyExistsException;
+import org.apache.commons.lang.StringUtils;
 
 public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 

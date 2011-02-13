@@ -17,9 +17,9 @@
  */
 package de.erdesignerng.model;
 
-import java.sql.Types;
-
 import de.erdesignerng.dialect.DataType;
+
+import java.sql.Types;
 
 /**
  * A custom datatype.

@@ -17,11 +17,6 @@
  */
 package de.erdesignerng.visual.editor.customtypes;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
@@ -37,6 +32,11 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The domain editor.

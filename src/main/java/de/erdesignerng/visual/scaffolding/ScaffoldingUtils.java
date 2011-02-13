@@ -17,24 +17,53 @@
  */
 package de.erdesignerng.visual.scaffolding;
 
-import java.util.ResourceBundle;
-
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.Model;
+import de.mogwai.common.i18n.ResourceHelper;
 import org.metawidget.inspector.composite.CompositeInspector;
 import org.metawidget.inspector.composite.CompositeInspectorConfig;
+import org.metawidget.inspector.iface.Inspector;
 import org.metawidget.inspector.java5.Java5Inspector;
 import org.metawidget.inspector.propertytype.PropertyTypeInspector;
 import org.metawidget.swing.SwingMetawidget;
 import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingProcessor;
 import org.metawidget.util.simple.StringUtils;
 
-import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Model;
-import de.mogwai.common.i18n.ResourceHelper;
+import java.sql.ResultSetMetaData;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public final class ScaffoldingUtils {
 
 	private ScaffoldingUtils() {
 	}
+
+    public static ScaffoldingWrapper createScaffoldingPanelFor(ResultSetMetaData aMetaData,Map<String, Object> aRow) {
+
+        final ResultSetMetaDataInspector theInspector = new ResultSetMetaDataInspector(aMetaData);
+		BeanUtilsBindingProcessor theProcessor = new ERDesignerBeanUtilsBindingProcessor();
+
+		SwingMetawidget theMetaWidget = new SwingMetawidget() {
+
+			@Override
+			public String getLocalizedKey(String key) {
+                return key.toUpperCase();
+			}
+		};
+
+		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig().setInspectors(new Inspector[] {theInspector});
+		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
+		theMetaWidget.addWidgetProcessor(theProcessor);
+		theMetaWidget.setMetawidgetLayout(new JGoodiesTableLayout());
+		theMetaWidget.setWidgetBuilder(new MogwaiWidgetBuilder());
+
+		theMetaWidget.setToInspect(aRow);
+
+		// Force the computation of the widgets
+		theMetaWidget.getPreferredSize();
+
+		return new ScaffoldingWrapper(theMetaWidget, theProcessor, true);
+    }
 	
 	public static ScaffoldingWrapper createScaffoldingPanelFor(
 			Model aModel, Object aObject) {
@@ -60,8 +89,8 @@ public final class ScaffoldingUtils {
 
 		theMetaWidget.setBundle(ResourceBundle
 				.getBundle(ERDesignerBundle.BUNDLE_NAME));
-		// TODO [mirkosertic] NB 6.9.1 and IDEA 10 refuse to compile the following line while NB 6.7.1 does
-		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig().setInspectors(theInspector, new PropertyTypeInspector(), new Java5Inspector());
+
+		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig().setInspectors(new Inspector[] {theInspector, new PropertyTypeInspector(), new Java5Inspector()});
 		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
 		theMetaWidget.addWidgetProcessor(theProcessor);
 		theMetaWidget.setMetawidgetLayout(new JGoodiesTableLayout());
@@ -71,6 +100,6 @@ public final class ScaffoldingUtils {
 		// Force the computation of the widgets
 		theMetaWidget.getPreferredSize();
 
-		return new ScaffoldingWrapper(theMetaWidget, theProcessor, theInspector);
+		return new ScaffoldingWrapper(theMetaWidget, theProcessor, theInspector.getPropertyCount() > 0);
 	}
 }

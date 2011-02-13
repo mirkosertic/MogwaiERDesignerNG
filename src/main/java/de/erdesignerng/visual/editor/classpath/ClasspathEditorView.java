@@ -17,17 +17,12 @@
  */
 package de.erdesignerng.visual.editor.classpath;
 
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultList;
+
+import javax.swing.*;
 
 public class ClasspathEditorView extends JPanel {
 

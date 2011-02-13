@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author mirkosertic
