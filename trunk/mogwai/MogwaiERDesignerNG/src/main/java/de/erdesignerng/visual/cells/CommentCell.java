@@ -17,15 +17,14 @@
  */
 package de.erdesignerng.visual.cells;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Map;
-
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.ModelItem;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.ModelItem;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Map;
 
 /**
  * A comment cell.

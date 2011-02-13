@@ -17,19 +17,18 @@
  */
 package de.erdesignerng.visual.editor.exception;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import org.apache.log4j.Logger;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * Editor for exceptions.

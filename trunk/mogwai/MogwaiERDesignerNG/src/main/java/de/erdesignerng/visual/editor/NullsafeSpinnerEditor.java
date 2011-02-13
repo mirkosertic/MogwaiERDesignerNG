@@ -17,14 +17,11 @@
  */
 package de.erdesignerng.visual.editor;
 
-import java.text.DecimalFormat;
-
-import javax.swing.JFormattedTextField;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
+import java.text.DecimalFormat;
 
 //TODO [mirkosertic] handle setting the size to null here
 public class NullsafeSpinnerEditor extends DefaultEditor {

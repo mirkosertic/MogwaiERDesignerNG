@@ -17,17 +17,10 @@
  */
 package de.erdesignerng.model.serializer.xml20;
 
+import de.erdesignerng.model.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CascadeType;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
 
 public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml10.XMLRelationSerializer {
 

@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Interceptor for audit information.

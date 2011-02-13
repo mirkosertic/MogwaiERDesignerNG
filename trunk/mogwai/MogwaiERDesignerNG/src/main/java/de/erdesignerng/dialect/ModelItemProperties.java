@@ -17,13 +17,12 @@
  */
 package de.erdesignerng.dialect;
 
-import java.beans.PropertyDescriptor;
-
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.ModelProperties;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.ModelProperties;
+import java.beans.PropertyDescriptor;
 
 public class ModelItemProperties<T extends ModelItem> {
 

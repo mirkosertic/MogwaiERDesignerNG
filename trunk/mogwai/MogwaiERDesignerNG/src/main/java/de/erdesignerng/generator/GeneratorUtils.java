@@ -17,9 +17,9 @@
  */
 package de.erdesignerng.generator;
 
-import java.sql.Types;
-
 import de.erdesignerng.dialect.DataType;
+
+import java.sql.Types;
 
 public final class GeneratorUtils {
 
@@ -31,46 +31,50 @@ public final class GeneratorUtils {
 	}
 
 	public static String findClosestJavaTypeFor(DataType aType, boolean aNullable) {
-		switch (aType.getJDBCType()[0]) {
-		case Types.CHAR:
-			return "String";
-		case Types.VARCHAR:
-			return "String";
-		case Types.LONGVARCHAR:
-			return "String";
-		case Types.NUMERIC:
-			return "java.math.BigDecimal";
-		case Types.DECIMAL:
-			return "java.math.BigDecimal";
-		case Types.BIT:
-			return aNullable ? "Boolean" : "boolean";
-		case Types.TINYINT:
-			return aNullable ? "Byte" : "byte";
-		case Types.SMALLINT:
-			return aNullable ? "Short" : "short";
-		case Types.INTEGER:
-			return aNullable ? "Integer" : "int";
-		case Types.BIGINT:
-			return aNullable ? "Long" : "long";
-		case Types.REAL:
-			return aNullable ? "Float" : "float";
-		case Types.FLOAT:
-			return aNullable ? "Double" : "double";
-		case Types.DOUBLE:
-			return aNullable ? "Double" : "double";
-		case Types.BINARY:
-			return "byte[]";
-		case Types.VARBINARY:
-			return "byte[]";
-		case Types.LONGVARBINARY:
-			return "byte[]";
-		case Types.DATE:
-			return "java.sql.Date";
-		case Types.TIME:
-			return "java.sql.Time";
-		case Types.TIMESTAMP:
-			return "java.sql.Timestamp";
-		}
-		return "String";
+        return findClosestJavaTypeFor(aType.getJDBCType()[0], aNullable);
 	}
+
+    public static String findClosestJavaTypeFor(int aJdbcType, boolean aNullable) {
+        switch (aJdbcType) {
+            case Types.CHAR:
+                return "String";
+            case Types.VARCHAR:
+                return "String";
+            case Types.LONGVARCHAR:
+                return "String";
+            case Types.NUMERIC:
+                return "java.math.BigDecimal";
+            case Types.DECIMAL:
+                return "java.math.BigDecimal";
+            case Types.BIT:
+                return aNullable ? "Boolean" : "boolean";
+            case Types.TINYINT:
+                return aNullable ? "Byte" : "byte";
+            case Types.SMALLINT:
+                return aNullable ? "Short" : "short";
+            case Types.INTEGER:
+                return aNullable ? "Integer" : "int";
+            case Types.BIGINT:
+                return aNullable ? "Long" : "long";
+            case Types.REAL:
+                return aNullable ? "Float" : "float";
+            case Types.FLOAT:
+                return aNullable ? "Double" : "double";
+            case Types.DOUBLE:
+                return aNullable ? "Double" : "double";
+            case Types.BINARY:
+                return "byte[]";
+            case Types.VARBINARY:
+                return "byte[]";
+            case Types.LONGVARBINARY:
+                return "byte[]";
+            case Types.DATE:
+                return "java.sql.Date";
+            case Types.TIME:
+                return "java.sql.Time";
+            case Types.TIMESTAMP:
+                return "java.sql.Timestamp";
+            }
+            return "String";
+    }
 }

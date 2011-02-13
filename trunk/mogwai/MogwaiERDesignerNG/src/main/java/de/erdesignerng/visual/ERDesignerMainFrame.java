@@ -17,24 +17,20 @@
  */
 package de.erdesignerng.visual;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.MavenPropertiesLocator;
-import de.erdesignerng.visual.common.DockingHelper;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.SQLComponent;
+import de.erdesignerng.visual.common.*;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.i18n.ResourceHelper;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * 

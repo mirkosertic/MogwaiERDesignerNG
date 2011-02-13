@@ -17,13 +17,13 @@
  */
 package de.erdesignerng.dialect.mysql;
 
-import java.sql.Types;
-
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 import de.erdesignerng.model.Table;
+
+import java.sql.Types;
 
 /**
  * @author $Author: mirkosertic $

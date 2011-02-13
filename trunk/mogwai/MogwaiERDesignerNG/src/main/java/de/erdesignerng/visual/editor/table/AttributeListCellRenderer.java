@@ -17,21 +17,11 @@
  */
 package de.erdesignerng.visual.editor.table;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
-
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.visual.IconFactory;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $

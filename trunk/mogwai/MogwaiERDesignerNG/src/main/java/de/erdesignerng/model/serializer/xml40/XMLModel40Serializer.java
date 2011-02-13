@@ -17,23 +17,15 @@
  */
 package de.erdesignerng.model.serializer.xml40;
 
-import java.util.Map;
-
+import de.erdesignerng.dialect.DialectFactory;
+import de.erdesignerng.model.*;
+import de.erdesignerng.model.serializer.xml30.XMLModel30Serializer;
+import de.erdesignerng.util.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import de.erdesignerng.dialect.DialectFactory;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import de.erdesignerng.model.serializer.xml30.XMLModel30Serializer;
-import de.erdesignerng.util.XMLUtils;
+import java.util.Map;
 
 /**
  * @author $Author: dr-death $

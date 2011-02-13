@@ -1,25 +1,15 @@
 package de.erdesignerng.visual.editor.view;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.text.EditorKit;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.components.DefaultEditorPane;
 import de.erdesignerng.visual.components.SQLEditorKit;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultScrollPane;
-import de.mogwai.common.client.looks.components.DefaultTabbedPane;
-import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
-import de.mogwai.common.client.looks.components.DefaultTextArea;
-import de.mogwai.common.client.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.*;
+
+import javax.swing.*;
+import javax.swing.text.EditorKit;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $

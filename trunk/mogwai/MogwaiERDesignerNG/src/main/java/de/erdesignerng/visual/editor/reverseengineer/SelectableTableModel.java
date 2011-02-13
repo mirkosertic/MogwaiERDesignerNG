@@ -17,14 +17,13 @@
  */
 package de.erdesignerng.visual.editor.reverseengineer;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import de.erdesignerng.util.SelectableWrapper;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-
-import de.erdesignerng.util.SelectableWrapper;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SelectableTableModel extends DefaultTreeModel {
 

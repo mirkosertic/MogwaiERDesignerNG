@@ -17,22 +17,19 @@
  */
 package de.erdesignerng.visual.editor.reverseengineer;
 
-import java.awt.Component;
+import de.erdesignerng.util.SelectableWrapper;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.tools.StringRendererHelper;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
-
-import javax.swing.AbstractCellEditor;
-import javax.swing.JCheckBox;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellEditor;
-import javax.swing.tree.TreePath;
-
-import de.erdesignerng.util.SelectableWrapper;
-import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.tools.StringRendererHelper;
 
 public class CheckboxTreeCellEditor extends AbstractCellEditor implements
 		TreeCellEditor {

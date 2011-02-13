@@ -17,9 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -27,6 +24,9 @@ import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.cells.ViewCell;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.view.ViewEditor;
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class AddViewCommand extends UICommand {
 

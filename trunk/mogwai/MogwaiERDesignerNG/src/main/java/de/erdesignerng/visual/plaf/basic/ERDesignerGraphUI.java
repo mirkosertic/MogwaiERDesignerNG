@@ -17,20 +17,6 @@
  */
 package de.erdesignerng.visual.plaf.basic;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.SwingUtilities;
-
-import org.apache.log4j.Logger;
-import org.jgraph.JGraph;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.plaf.basic.BasicGraphUI;
-
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.erdesignerng.visual.cells.ModelCell;
 import de.erdesignerng.visual.cells.RelationEdge;
@@ -38,6 +24,17 @@ import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
+import org.apache.log4j.Logger;
+import org.jgraph.JGraph;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.plaf.basic.BasicGraphUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author $Author: mirkosertic $

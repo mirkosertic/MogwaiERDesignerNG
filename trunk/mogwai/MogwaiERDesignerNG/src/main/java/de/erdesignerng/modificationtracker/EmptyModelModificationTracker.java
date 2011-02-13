@@ -17,13 +17,7 @@
  */
 package de.erdesignerng.modificationtracker;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 
 public class EmptyModelModificationTracker implements ModelModificationTracker {
 

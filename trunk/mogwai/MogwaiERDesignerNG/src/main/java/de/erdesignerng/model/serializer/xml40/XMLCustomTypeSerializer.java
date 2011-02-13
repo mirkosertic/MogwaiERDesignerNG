@@ -17,13 +17,12 @@
  */
 package de.erdesignerng.model.serializer.xml40;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.AbstractXMLCustomTypeSerializer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author $Author: dr-death $

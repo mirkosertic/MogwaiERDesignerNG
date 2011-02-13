@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.visual.cells.views;
 
-import org.jgraph.graph.EdgeView;
-import org.jgraph.graph.GraphCellEditor;
-
 import de.erdesignerng.visual.cells.RelationEdge;
 import de.erdesignerng.visual.editor.CellEditorFactory;
+import org.jgraph.graph.EdgeView;
+import org.jgraph.graph.GraphCellEditor;
 
 /**
  * 

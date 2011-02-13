@@ -17,14 +17,13 @@
  */
 package de.erdesignerng.visual.editor.reverseengineer;
 
-import javax.swing.JPanel;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultTree;
+
+import javax.swing.*;
 
 /**
  * Visual class TablesSelectEditorView.

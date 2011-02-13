@@ -17,9 +17,9 @@
  */
 package de.erdesignerng;
 
-import javax.swing.JOptionPane;
-
 import de.mogwai.common.i18n.ResourceHelper;
+
+import javax.swing.*;
 
 public final class DialogUtils {
 

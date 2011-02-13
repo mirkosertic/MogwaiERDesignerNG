@@ -17,23 +17,14 @@
  */
 package de.erdesignerng.visual.cells.views;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.io.Serializable;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.CellViewRenderer;
-import org.jgraph.graph.GraphCellEditor;
-import org.jgraph.graph.VertexRenderer;
-import org.jgraph.graph.VertexView;
-
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.editor.CellEditorFactory;
+import org.jgraph.JGraph;
+import org.jgraph.graph.*;
+
+import java.awt.*;
+import java.io.Serializable;
 
 /**
  * 

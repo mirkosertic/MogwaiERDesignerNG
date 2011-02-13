@@ -17,11 +17,6 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
-import java.awt.Component;
-import java.text.MessageFormat;
-
-import javax.swing.DefaultComboBoxModel;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ConnectionProvider;
 import de.erdesignerng.dialect.StatementList;
@@ -32,6 +27,10 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.text.MessageFormat;
 
 /**
  * Editor to save models to a repository.

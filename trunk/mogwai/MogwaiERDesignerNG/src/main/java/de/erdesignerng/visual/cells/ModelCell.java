@@ -17,9 +17,9 @@
  */
 package de.erdesignerng.visual.cells;
 
-import java.util.Map;
-
 import org.jgraph.graph.GraphCell;
+
+import java.util.Map;
 
 /**
  * 

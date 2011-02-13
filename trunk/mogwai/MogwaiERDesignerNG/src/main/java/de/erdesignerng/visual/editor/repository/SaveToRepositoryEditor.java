@@ -17,18 +17,16 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
-import java.awt.Component;
-import java.util.List;
-
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 /**
  * Editor to save models to a repository.

@@ -17,9 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -27,6 +24,9 @@ import de.erdesignerng.visual.cells.CommentCell;
 import de.erdesignerng.visual.cells.SubjectAreaCell;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class AddCommentCommand extends UICommand {
 
