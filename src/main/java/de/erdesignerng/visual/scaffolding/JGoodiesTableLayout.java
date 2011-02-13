@@ -20,6 +20,7 @@ package de.erdesignerng.visual.scaffolding;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import de.mogwai.common.client.looks.UIInitializer;
 import org.apache.commons.lang.StringUtils;
 import org.metawidget.inspector.InspectionResultConstants;
 import org.metawidget.layout.iface.Layout;
@@ -103,5 +104,6 @@ public class JGoodiesTableLayout implements Layout<JComponent, SwingMetawidget> 
 			aWidget.add(theEntry.component, cons.xy(4, theRow));
 			theRow += 2;
 		}
+        UIInitializer.getInstance().initialize(aWidget);
 	}
 }
