@@ -17,35 +17,24 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.BorderLayout;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import javax.swing.text.EditorKit;
-
-import org.apache.commons.lang.ArrayUtils;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.components.DefaultEditorPane;
 import de.erdesignerng.visual.components.SQLEditorKit;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+import org.apache.commons.lang.ArrayUtils;
+
+import javax.swing.text.EditorKit;
+import java.awt.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class SQLComponent extends DefaultPanel implements
 		ResourceHelperProvider {

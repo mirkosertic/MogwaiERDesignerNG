@@ -17,13 +17,13 @@
  */
 package de.erdesignerng.visual.editor.preferences;
 
-import javax.swing.JComponent;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import javax.swing.*;
 
 /**
  * Editor for the database connection.

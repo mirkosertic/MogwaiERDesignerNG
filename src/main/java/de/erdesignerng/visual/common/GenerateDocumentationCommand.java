@@ -17,19 +17,19 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.Dimension;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.swing.JRViewer;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.LongRunningTask;
 import de.mogwai.common.client.looks.components.DefaultDialog;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
+
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 public class GenerateDocumentationCommand extends UICommand {
 

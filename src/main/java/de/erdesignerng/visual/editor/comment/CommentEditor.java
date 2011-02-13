@@ -17,14 +17,14 @@
  */
 package de.erdesignerng.visual.editor.comment;
 
-import java.awt.Component;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import java.awt.*;
 
 /**
  * Editor for comments.

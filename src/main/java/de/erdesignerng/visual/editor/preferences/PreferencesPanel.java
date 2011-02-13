@@ -17,23 +17,18 @@
  */
 package de.erdesignerng.visual.editor.preferences;
 
-import javax.swing.DefaultComboBoxModel;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultSpinner;
-import de.mogwai.common.client.looks.components.DefaultTextField;
+import de.mogwai.common.client.looks.components.*;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+
+import javax.swing.*;
 
 public class PreferencesPanel extends DefaultPanel implements
 		ResourceHelperProvider {

@@ -17,16 +17,14 @@
  */
 package de.erdesignerng.visual.editor.reverseengineer;
 
-import java.awt.Component;
-
-import javax.swing.JCheckBox;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
-
 import de.erdesignerng.util.SelectableWrapper;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.tools.StringRendererHelper;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
 
 public class CheckboxTreeCellRenderer extends JCheckBox implements
 		TreeCellRenderer {

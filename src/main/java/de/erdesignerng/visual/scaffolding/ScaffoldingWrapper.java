@@ -17,10 +17,10 @@
  */
 package de.erdesignerng.visual.scaffolding;
 
-import javax.swing.JComponent;
-
 import org.metawidget.swing.SwingMetawidget;
 import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingProcessor;
+
+import javax.swing.*;
 
 public class ScaffoldingWrapper {
 
@@ -28,13 +28,15 @@ public class ScaffoldingWrapper {
 
 	private final BeanUtilsBindingProcessor processor;
 
-	private final ERDesignerAnnotationInspector inspector;
+    private boolean components;
 
 	public ScaffoldingWrapper(SwingMetawidget aWidget, BeanUtilsBindingProcessor aProcessor,
-			ERDesignerAnnotationInspector aInspector) {
+			boolean aComponents) {
 		widget = aWidget;
 		processor = aProcessor;
-		inspector = aInspector;
+		components = aComponents;
+
+        widget.getPreferredSize();
 	}
 
 	public JComponent getComponent() {
@@ -46,6 +48,6 @@ public class ScaffoldingWrapper {
 	}
 
 	public boolean hasComponents() {
-		return inspector.getPropertyCount() > 0;
+		return components;
 	}
 }

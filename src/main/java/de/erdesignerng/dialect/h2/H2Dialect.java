@@ -17,17 +17,13 @@
  */
 package de.erdesignerng.dialect.h2;
 
-import java.sql.Types;
-
-import de.erdesignerng.dialect.DataType;
-import de.erdesignerng.dialect.IndexProperties;
-import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.TableProperties;
-import de.erdesignerng.dialect.ViewProperties;
+import de.erdesignerng.dialect.*;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+
+import java.sql.Types;
 
 /**
  * @author $Author: gniddelgesicht $

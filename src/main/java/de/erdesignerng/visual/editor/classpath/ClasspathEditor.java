@@ -17,16 +17,6 @@
  */
 package de.erdesignerng.visual.editor.classpath;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.KeyStroke;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -35,6 +25,13 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.List;
 
 /**
  * Editor for the class path entries.

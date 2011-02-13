@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.visual.tools;
 
-import org.jgraph.graph.BasicMarqueeHandler;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.ERDesignerGraph;
 import de.mogwai.common.i18n.ResourceHelper;
+import org.jgraph.graph.BasicMarqueeHandler;
 
 /**
  * @author $Author: mirkosertic $

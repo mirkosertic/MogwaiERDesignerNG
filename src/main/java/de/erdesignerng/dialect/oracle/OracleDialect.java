@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.dialect.oracle;
 
-import java.sql.Types;
-
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+
+import java.sql.Types;
 
 /**
  * @author $Author: mirkosertic $

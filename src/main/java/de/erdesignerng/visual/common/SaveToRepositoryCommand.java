@@ -17,10 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
@@ -31,6 +27,10 @@ import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 public class SaveToRepositoryCommand extends UICommand {
 

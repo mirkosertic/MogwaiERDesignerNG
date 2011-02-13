@@ -17,10 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.MessageFormat;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
@@ -30,6 +26,10 @@ import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.MessageFormat;
 
 public class CompleteCompareWithDatabaseCommand extends UICommand {
 

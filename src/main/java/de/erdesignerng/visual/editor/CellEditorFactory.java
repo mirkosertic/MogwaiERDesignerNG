@@ -17,29 +17,19 @@
  */
 package de.erdesignerng.visual.editor;
 
-import java.awt.Component;
-import java.util.EventObject;
-
-import javax.swing.JComponent;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.DefaultGraphCellEditor;
-
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import de.erdesignerng.visual.cells.CommentCell;
-import de.erdesignerng.visual.cells.RelationEdge;
-import de.erdesignerng.visual.cells.SubjectAreaCell;
-import de.erdesignerng.visual.cells.TableCell;
-import de.erdesignerng.visual.cells.ViewCell;
+import de.erdesignerng.model.*;
+import de.erdesignerng.visual.cells.*;
 import de.erdesignerng.visual.editor.comment.CommentEditor;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
+import org.jgraph.JGraph;
+import org.jgraph.graph.DefaultGraphCellEditor;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.EventObject;
 
 /**
  * 

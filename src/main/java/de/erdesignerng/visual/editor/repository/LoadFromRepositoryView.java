@@ -17,15 +17,14 @@
  */
 package de.erdesignerng.visual.editor.repository;
 
-import javax.swing.JPanel;
-
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultLabel;
+
+import javax.swing.*;
 
 /**
  * View for the save to dictionary dialog.

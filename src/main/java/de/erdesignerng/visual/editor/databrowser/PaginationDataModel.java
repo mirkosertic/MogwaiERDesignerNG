@@ -17,17 +17,18 @@
  */
 package de.erdesignerng.visual.editor.databrowser;
 
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.util.JDBCUtils;
+
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-
-import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.util.JDBCUtils;
+import java.util.Map;
 
 public class PaginationDataModel extends AbstractTableModel {
 
@@ -37,7 +38,21 @@ public class PaginationDataModel extends AbstractTableModel {
 	private int rowCount = 1;
 	private List<List<Object>> cache = new ArrayList<List<Object>>();
 
-	public interface SeekListener {
+    public ResultSetMetaData getResultSetMetaData() {
+        return metadata;
+    }
+
+    public Map<String, Object> getRowData(int aRow) throws SQLException {
+        Map<String, Object> theRow = new HashMap<String, Object>();
+        List<Object> theRowData = cache.get(aRow);
+        for (int i=0;i<theRowData.size();i++) {
+            String theName = metadata.getColumnName(i+1);
+            theRow.put(theName, theRowData.get(i));
+        }
+        return theRow;
+    }
+
+    public interface SeekListener {
 		void seeked();
 	}
 
@@ -105,6 +120,10 @@ public class PaginationDataModel extends AbstractTableModel {
 			rowCount++;
 			seeked = true;
 		}
+
+        if (resultSet.isLast()) {
+            rowCount--;
+        }
 
 		if (currentRow < aRowIndex) {
 			rowCount = currentRow + 1;

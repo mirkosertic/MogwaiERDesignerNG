@@ -17,9 +17,6 @@
  */
 package de.erdesignerng.visual.editor.view;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
@@ -34,6 +31,8 @@ import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
+
+import java.awt.*;
 
 /**
  * 

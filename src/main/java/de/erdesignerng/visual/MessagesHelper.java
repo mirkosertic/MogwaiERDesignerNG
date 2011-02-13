@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.visual;
 
-import java.awt.Component;
-
-import javax.swing.JOptionPane;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.i18n.ResourceHelper;
+
+import javax.swing.*;
+import java.awt.*;
 
 public final class MessagesHelper {
 

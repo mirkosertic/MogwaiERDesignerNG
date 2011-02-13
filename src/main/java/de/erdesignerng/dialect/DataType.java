@@ -17,9 +17,9 @@
  */
 package de.erdesignerng.dialect;
 
-import java.io.Serializable;
-
 import de.erdesignerng.model.Attribute;
+
+import java.io.Serializable;
 
 public interface DataType extends Serializable {
 

@@ -17,19 +17,15 @@
  */
 package de.erdesignerng.visual.export;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import de.erdesignerng.visual.ERDesignerGraph;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $

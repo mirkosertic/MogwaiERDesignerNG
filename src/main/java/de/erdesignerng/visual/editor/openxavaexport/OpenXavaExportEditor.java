@@ -17,15 +17,6 @@
  */
 package de.erdesignerng.visual.editor.openxavaexport;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.Map;
-
-import javax.swing.JFileChooser;
-
-import org.apache.commons.lang.StringUtils;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.generator.GeneratorUtils;
@@ -38,6 +29,13 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+import org.apache.commons.lang.StringUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.Map;
 
 /**
  * @author $Author: mirkosertic $

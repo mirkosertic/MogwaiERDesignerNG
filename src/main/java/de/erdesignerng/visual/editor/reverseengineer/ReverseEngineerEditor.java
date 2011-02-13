@@ -17,13 +17,6 @@
  */
 package de.erdesignerng.visual.editor.reverseengineer;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.util.List;
-
-import javax.swing.ListSelectionModel;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -38,6 +31,12 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.util.List;
 
 /**
  * @author $Author: mirkosertic $

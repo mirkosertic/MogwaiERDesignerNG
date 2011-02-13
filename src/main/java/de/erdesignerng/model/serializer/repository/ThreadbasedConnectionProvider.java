@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
+import org.hibernate.connection.ConnectionProvider;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.hibernate.connection.ConnectionProvider;
 
 public class ThreadbasedConnectionProvider implements ConnectionProvider {
 

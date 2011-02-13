@@ -17,13 +17,13 @@
  */
 package de.erdesignerng.visual.editor.subjectarea;
 
-import java.awt.Component;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $

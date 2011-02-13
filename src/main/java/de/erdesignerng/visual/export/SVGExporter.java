@@ -17,23 +17,20 @@
  */
 package de.erdesignerng.visual.export;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
-import javax.swing.RepaintManager;
-
+import de.erdesignerng.PlatformConfig;
+import de.erdesignerng.visual.ERDesignerGraph;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
-import de.erdesignerng.PlatformConfig;
-import de.erdesignerng.visual.ERDesignerGraph;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 /**
  * @author $Author: mirkosertic $

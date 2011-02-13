@@ -1,13 +1,5 @@
 package de.erdesignerng.visual.editor.connection;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.util.List;
-
-import javax.swing.DefaultComboBoxModel;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
@@ -20,6 +12,13 @@ import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.util.List;
 
 /**
  * Editor for the database connection.

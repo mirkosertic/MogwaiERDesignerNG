@@ -17,13 +17,12 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 

@@ -17,18 +17,6 @@
  */
 package de.erdesignerng.visual.editor.sql;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.util.List;
-
-import javax.swing.JFileChooser;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ConnectionProvider;
 import de.erdesignerng.dialect.Statement;
@@ -46,6 +34,17 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.List;
 
 /**
  * Editor for sql statements.

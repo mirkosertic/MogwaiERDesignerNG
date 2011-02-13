@@ -17,12 +17,6 @@
  */
 package de.erdesignerng.visual.editor.convertmodel;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.DefaultComboBoxModel;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.ConversionInfos;
 import de.erdesignerng.dialect.DataType;
@@ -32,6 +26,11 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author $Author: mirkosertic $

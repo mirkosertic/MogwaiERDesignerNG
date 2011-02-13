@@ -17,18 +17,17 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import javax.swing.JFileChooser;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.MessagesHelper;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class OpenFromFileCommand extends UICommand {
 

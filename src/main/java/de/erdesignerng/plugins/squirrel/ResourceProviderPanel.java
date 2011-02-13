@@ -17,14 +17,12 @@
  */
 package de.erdesignerng.plugins.squirrel;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class ResourceProviderPanel extends JPanel implements ResourceHelperProvider {
 

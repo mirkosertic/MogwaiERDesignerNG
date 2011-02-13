@@ -17,12 +17,11 @@
  */
 package de.erdesignerng.util;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.jdbc.util.BasicFormatterImpl;
-
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.ViewAttribute;
 import de.erdesignerng.model.ViewAttributeList;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.jdbc.util.BasicFormatterImpl;
 
 /**
  * Common SQL Utilities.

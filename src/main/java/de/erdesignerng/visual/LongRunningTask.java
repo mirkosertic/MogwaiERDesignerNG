@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.visual;
 
-import java.util.List;
-
-import javax.swing.SwingWorker;
-
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+
+import javax.swing.*;
+import java.util.List;
 
 public abstract class LongRunningTask<T> extends Thread {
 

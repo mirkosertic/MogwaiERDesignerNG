@@ -17,16 +17,6 @@
  */
 package de.erdesignerng.visual.editor.openxavaexport;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-
-import org.apache.commons.beanutils.BeanComparator;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.generator.openxava.OpenXavaOptions;
@@ -37,6 +27,12 @@ import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultTable;
 import de.mogwai.common.i18n.ResourceHelper;
+import org.apache.commons.beanutils.BeanComparator;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ConvertPropertyAdapter extends PropertyAdapter {
 

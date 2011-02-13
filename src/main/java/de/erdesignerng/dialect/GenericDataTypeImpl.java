@@ -17,14 +17,13 @@
  */
 package de.erdesignerng.dialect;
 
+import de.erdesignerng.model.Attribute;
+import org.apache.commons.lang.StringUtils;
+
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.StringUtils;
-
-import de.erdesignerng.model.Attribute;
 
 /**
  * An implementation of a DataType.

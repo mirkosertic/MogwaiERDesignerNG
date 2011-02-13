@@ -17,13 +17,12 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.AbstractXMLCommentSerializer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author $Author: mirkosertic $

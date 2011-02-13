@@ -17,16 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.swing.JFileChooser;
-
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.dialect.SQLGenerator;
@@ -37,6 +27,15 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SaveToFileCommand extends UICommand {
 

@@ -17,15 +17,12 @@
  */
 package de.erdesignerng.visual.common;
 
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-
 import de.erdesignerng.dialect.Statement;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class StatementRenderer implements ListCellRenderer {
 

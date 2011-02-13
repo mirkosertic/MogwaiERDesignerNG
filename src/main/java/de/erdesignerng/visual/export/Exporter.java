@@ -17,11 +17,11 @@
  */
 package de.erdesignerng.visual.export;
 
-import java.awt.Component;
+import de.erdesignerng.visual.ERDesignerGraph;
+
+import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import de.erdesignerng.visual.ERDesignerGraph;
 
 /**
  * @author $Author: mirkosertic $

@@ -17,18 +17,17 @@
  */
 package de.erdesignerng.model.serializer.xml10;
 
-import java.awt.Color;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.AbstractXMLSubjectAreaSerializer;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $

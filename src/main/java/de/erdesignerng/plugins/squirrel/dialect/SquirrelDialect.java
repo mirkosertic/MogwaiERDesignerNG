@@ -17,17 +17,12 @@
  */
 package de.erdesignerng.plugins.squirrel.dialect;
 
+import de.erdesignerng.dialect.*;
+import de.erdesignerng.exception.ElementInvalidNameException;
+import net.sourceforge.squirrel_sql.client.session.ISession;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import net.sourceforge.squirrel_sql.client.session.ISession;
-import de.erdesignerng.dialect.DataType;
-import de.erdesignerng.dialect.DataTypeList;
-import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
-import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.SQLGenerator;
-import de.erdesignerng.exception.ElementInvalidNameException;
 
 public class SquirrelDialect extends Dialect {
 
