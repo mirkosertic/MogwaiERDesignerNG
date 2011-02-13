@@ -1,15 +1,10 @@
 package de.erdesignerng.visual.editor.databrowser;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultScrollPane;
 
 import javax.swing.*;
 import java.sql.SQLException;
-import java.util.Map;
 
 /**
  * View for the RowEditor.
@@ -28,7 +23,7 @@ public class RowEditorView extends JPanel {
 
     private void initialize(PaginationDataModel aModel, int aRow) throws SQLException {
 
-        String theColDef = "2dlu,fill:250dlu:grow,2dlu";
+/*        String theColDef = "2dlu,fill:250dlu:grow,2dlu";
         String theRowDef = "2dlu,fill:200dlu:grow,10dlu,p,2dlu";
 
         FormLayout theLayout = new FormLayout(theColDef, theRowDef);
@@ -55,7 +50,7 @@ public class RowEditorView extends JPanel {
         thePanel.add(cancelButton, cons.xy(3, 1));
         cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xy(2, 4));
+        add(thePanel, cons.xy(2, 4));*/
     }
 
     public DefaultButton getOkButton() {
