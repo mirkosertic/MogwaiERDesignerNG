@@ -175,7 +175,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 //    }
 
     @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException, ReverseEngineeringException {
+    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException {
         String theViewSQL;
 
         QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());

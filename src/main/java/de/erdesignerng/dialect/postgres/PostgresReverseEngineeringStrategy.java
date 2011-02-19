@@ -82,8 +82,7 @@ public class PostgresReverseEngineeringStrategy extends
     @Override
     protected void reverseEngineerDomain(Model aModel, Domain aDomain,
                                          ReverseEngineeringOptions aOptions,
-                                         ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException {
+                                         ReverseEngineeringNotifier aNotifier, Connection aConnection) {
 
         if ((aDomain.getConcreteType().getName().equalsIgnoreCase("varchar"))
                 || (aDomain.getConcreteType().getName()
@@ -172,15 +171,13 @@ public class PostgresReverseEngineeringStrategy extends
     @Override
     protected void reverseEngineerCustomType(Model aModel,
                                              CustomType aCustomType, ReverseEngineeringOptions aOptions,
-                                             ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException {
+                                             ReverseEngineeringNotifier aNotifier, Connection aConnection) {
         // TODO [mirko sertic]: Grab custom type ddl from information_schema
     }
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry,
-                                            Connection aConnection, View aView) throws SQLException,
-            ReverseEngineeringException {
+                                            Connection aConnection, View aView) throws SQLException {
         PreparedStatement theStatement = aConnection
                 .prepareStatement("SELECT * FROM information_schema.views WHERE table_name = ?");
         theStatement.setString(1, aViewEntry.getTableName());

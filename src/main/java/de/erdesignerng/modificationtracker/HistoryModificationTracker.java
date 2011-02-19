@@ -36,7 +36,7 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 		return model.getDialect().createSQLGenerator();
 	}
 
-	protected void addStatementsToHistory(StatementList aStatement) throws VetoException {
+	protected void addStatementsToHistory(StatementList aStatement) {
 		statements.addAll(aStatement);
 	}
 

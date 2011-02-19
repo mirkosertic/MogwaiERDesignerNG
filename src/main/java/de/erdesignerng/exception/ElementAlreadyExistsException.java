@@ -25,10 +25,8 @@ public class ElementAlreadyExistsException extends ModelException {
 
     private static final long serialVersionUID = 3016742498176605316L;
 
-    private final String elementName;
-
     public ElementAlreadyExistsException(String aElementName) {
         super(aElementName);
-        elementName = aElementName;
+        String elementName = aElementName;
     }
 }

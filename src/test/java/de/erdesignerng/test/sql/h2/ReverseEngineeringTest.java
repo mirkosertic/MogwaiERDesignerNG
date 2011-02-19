@@ -17,24 +17,16 @@
  */
 package de.erdesignerng.test.sql.h2;
 
+import de.erdesignerng.dialect.*;
+import de.erdesignerng.dialect.h2.H2Dialect;
+import de.erdesignerng.model.*;
+import de.erdesignerng.modificationtracker.HistoryModificationTracker;
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import de.erdesignerng.dialect.Dialect;
-import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
-import de.erdesignerng.dialect.ReverseEngineeringOptions;
-import de.erdesignerng.dialect.SQLGenerator;
-import de.erdesignerng.dialect.TableNamingEnum;
-import de.erdesignerng.dialect.h2.H2Dialect;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
 
 /**
  * Test for XML based model io.
@@ -73,7 +65,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 			assertTrue(theTable != null);
 			Attribute theAttribute = theTable.getAttributes().findByName("TB1_1");
 			assertTrue(theAttribute != null);
-			assertTrue(theAttribute.isNullable() == false);
+			assertTrue(!theAttribute.isNullable());
 			assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
 			assertTrue(theAttribute.getSize() == 20);
 			theAttribute = theTable.getAttributes().findByName("TB1_2");
@@ -83,7 +75,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 			assertTrue(theAttribute.getSize() == 100);
 			theAttribute = theTable.getAttributes().findByName("TB1_3");
 			assertTrue(theAttribute != null);
-			assertTrue(theAttribute.isNullable() == false);
+			assertTrue(!theAttribute.isNullable());
 			assertTrue(theAttribute.getDatatype().getName().equals("decimal"));
 			assertTrue(theAttribute.getSize() == 20);
 			assertTrue(theAttribute.getFraction() == 5);
