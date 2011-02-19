@@ -121,7 +121,7 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
-            throws SQLException, ReverseEngineeringException {
+            throws SQLException {
         PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM USER_VIEWS WHERE VIEW_NAME = ?");
         theStatement.setString(1, aViewEntry.getTableName());
         ResultSet theResult = null;

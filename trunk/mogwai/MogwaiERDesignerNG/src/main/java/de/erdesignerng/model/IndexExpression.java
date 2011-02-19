@@ -76,7 +76,7 @@ public class IndexExpression extends ModelItem implements
 	}
 
 	@Override
-	public void restoreFrom(IndexExpression aValue) throws Exception {
+	public void restoreFrom(IndexExpression aValue) {
 		expression = aValue.getExpression();
 		setSystemId(aValue.getSystemId());
 		Attribute theAttributeRef = aValue.getAttributeRef();

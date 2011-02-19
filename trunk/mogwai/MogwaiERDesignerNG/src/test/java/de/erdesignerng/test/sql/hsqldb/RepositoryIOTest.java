@@ -17,24 +17,18 @@
  */
 package de.erdesignerng.test.sql.hsqldb;
 
-import java.io.IOException;
+import de.erdesignerng.test.io.repository.RepositioryHelper;
+import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
+import org.apache.commons.io.IOUtils;
+import org.hibernate.dialect.HSQLDialect;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.io.IOUtils;
-import org.hibernate.dialect.HSQLDialect;
-import org.xml.sax.SAXException;
-
-import de.erdesignerng.test.io.repository.RepositioryHelper;
-import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
-
 public class RepositoryIOTest extends AbstractReverseEngineeringTestImpl {
 
-	public void testLoadSaveRepository() throws SAXException, IOException, ParserConfigurationException,
-			TransformerException, Exception {
+	public void testLoadSaveRepository() throws
+            Exception {
 
 		Class.forName("org.hsqldb.jdbc.JDBCDriver").newInstance();
 		Connection theConnection = null;

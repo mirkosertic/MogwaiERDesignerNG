@@ -115,7 +115,7 @@ public class Relation extends OwnedModelItem<Model> implements
 	}
 
 	@Override
-	public void restoreFrom(Relation aValue) throws Exception {
+	public void restoreFrom(Relation aValue) {
 		setName(aValue.getName());
 		setImportingTable(aValue.getImportingTable());
 		setExportingTable(aValue.getExportingTable());

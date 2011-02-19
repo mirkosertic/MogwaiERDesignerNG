@@ -21,7 +21,7 @@ public class RowEditorView extends JPanel {
         initialize(aModel, aRow);
     }
 
-    private void initialize(PaginationDataModel aModel, int aRow) throws SQLException {
+    private void initialize(PaginationDataModel aModel, int aRow) {
 
 /*        String theColDef = "2dlu,fill:250dlu:grow,2dlu";
         String theRowDef = "2dlu,fill:200dlu:grow,10dlu,p,2dlu";
