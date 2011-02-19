@@ -55,7 +55,7 @@ public class Index extends OwnedModelItem<Table> implements
     }
 
     @Override
-    public void restoreFrom(Index aValue) throws Exception {
+    public void restoreFrom(Index aValue) {
         setName(aValue.getName());
         setIndexType(aValue.getIndexType());
         setOwner(aValue.getOwner());

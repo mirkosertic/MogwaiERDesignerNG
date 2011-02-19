@@ -27,5 +27,5 @@ public interface ModelItemCloneable<T> extends Cloneable {
 
 	T clone();
 
-	void restoreFrom(T aValue) throws Exception;
+	void restoreFrom(T aValue);
 }

@@ -86,14 +86,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
     protected void reverseEngineerDomain(Model aModel, Domain aDomain,
                                          ReverseEngineeringOptions aOptions,
-                                         ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException {
+                                         ReverseEngineeringNotifier aNotifier, Connection aConnection) {
     }
 
     protected void reverseEngineerCustomType(Model aModel,
                                              CustomType aCustomType, ReverseEngineeringOptions aOptions,
-                                             ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException {
+                                             ReverseEngineeringNotifier aNotifier, Connection aConnection) {
         throw new UnsupportedOperationException(
                 "Userdefined datatypes (UDTs) not supported for "
                         + aModel.getDialect().getUniqueName() + " databases.");
@@ -110,8 +108,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
      * @throws ReverseEngineeringException is thrown in case of an exception
      */
     protected String reverseEngineerViewSQL(TableEntry aViewEntry,
-                                            Connection aConnection, View aView) throws SQLException,
-            ReverseEngineeringException {
+                                            Connection aConnection, View aView) throws SQLException {
         return null;
     }
 

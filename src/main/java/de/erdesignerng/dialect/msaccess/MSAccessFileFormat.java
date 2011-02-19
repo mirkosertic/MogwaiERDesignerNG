@@ -216,7 +216,7 @@ public final class MSAccessFileFormat {
 
     }
 
-    private static final int findInFile(String aFileName, String aSearchFor) {
+    private static int findInFile(String aFileName, String aSearchFor) {
         int theBufferSize = 5242880; // 5MB
         boolean theSearchOn = true;
         String theStringBuffer;

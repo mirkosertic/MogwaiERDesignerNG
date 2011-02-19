@@ -29,8 +29,6 @@ import java.sql.SQLException;
  */
 public class RowEditor extends BaseEditor {
 
-    private RowEditorView view;
-
     public RowEditor(JComponent aParent, PaginationDataModel aModel, int aRow) throws SQLException {
         super(aParent, ERDesignerBundle.EDITROW);
 
@@ -39,7 +37,7 @@ public class RowEditor extends BaseEditor {
 
     private void initialize(PaginationDataModel aModel, int aRow) throws SQLException {
 
-        view = new RowEditorView(aModel, aRow);
+        RowEditorView view = new RowEditorView(aModel, aRow);
 
         view.getOkButton().setAction(okAction);
         view.getCancelButton().setAction(cancelAction);

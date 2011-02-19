@@ -20,7 +20,6 @@ package de.erdesignerng.dialect.hsqldb;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.SchemaEntry;
 import de.erdesignerng.dialect.TableEntry;
-import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.View;
 
 import java.sql.*;
@@ -57,7 +56,7 @@ public class HSQLDBReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
-            throws SQLException, ReverseEngineeringException {
+            throws SQLException {
         PreparedStatement theStatement = null;
         ResultSet theResult = null;
         try {

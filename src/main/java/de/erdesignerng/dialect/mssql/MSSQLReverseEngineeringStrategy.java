@@ -49,8 +49,7 @@ public class MSSQLReverseEngineeringStrategy extends
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry,
-                                            Connection aConnection, View aView) throws SQLException,
-            ReverseEngineeringException {
+                                            Connection aConnection, View aView) throws SQLException {
         PreparedStatement theStatement = aConnection
                 .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
         theStatement.setString(1, aViewEntry.getTableName());
@@ -86,8 +85,7 @@ public class MSSQLReverseEngineeringStrategy extends
     @Override
     protected void reverseEngineerCustomType(Model aModel,
                                              CustomType aCustomType, ReverseEngineeringOptions aOptions,
-                                             ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException {
+                                             ReverseEngineeringNotifier aNotifier, Connection aConnection) {
         // TODO Auto-generated method stub
     }
 

@@ -19,7 +19,6 @@ package de.erdesignerng.dialect.mysql;
 
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.TableEntry;
-import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
@@ -93,7 +92,7 @@ public class MySQLReverseEngineeringStrategy extends JDBCReverseEngineeringStrat
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
-            throws SQLException, ReverseEngineeringException {
+            throws SQLException {
         PreparedStatement theStatement = aConnection
                 .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
         theStatement.setString(1, aViewEntry.getTableName());
