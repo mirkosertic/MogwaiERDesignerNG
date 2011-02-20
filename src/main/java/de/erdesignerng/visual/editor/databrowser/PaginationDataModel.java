@@ -37,6 +37,7 @@ public class PaginationDataModel extends AbstractTableModel {
 	private int currentRow = -1;
 	private int rowCount = 1;
 	private List<List<Object>> cache = new ArrayList<List<Object>>();
+    private boolean lastRecordReached;
 
     public ResultSetMetaData getResultSetMetaData() {
         return metadata;
@@ -121,8 +122,9 @@ public class PaginationDataModel extends AbstractTableModel {
 			seeked = true;
 		}
 
-        if (resultSet.isLast()) {
+        if (resultSet.isLast() && !lastRecordReached) {
             rowCount--;
+            lastRecordReached = true;
         }
 
 		if (currentRow < aRowIndex) {
