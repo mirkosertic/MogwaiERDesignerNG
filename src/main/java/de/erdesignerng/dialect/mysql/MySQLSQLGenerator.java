@@ -31,306 +31,306 @@ import de.erdesignerng.model.Table;
  */
 public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 
-    public MySQLSQLGenerator(MySQLDialect aDialect) {
-        super(aDialect);
-    }
+	public MySQLSQLGenerator(MySQLDialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
-        boolean theHasAutoIncrement = false;
-        for (Attribute theAttribute : aTable.getAttributes()) {
-            String theExtra = theAttribute.getExtra();
-            if (theExtra != null) {
-                if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
-                    theHasAutoIncrement = true;
-                }
-            }
-        }
+	@Override
+	public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
+		boolean theHasAutoIncrement = false;
+		for (Attribute theAttribute : aTable.getAttributes()) {
+			String theExtra = theAttribute.getExtra();
+			if (theExtra != null) {
+				if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
+					theHasAutoIncrement = true;
+				}
+			}
+		}
 
-        if (theHasAutoIncrement) {
-            return new StatementList();
-        }
-        return super.createAddPrimaryKeyToTable(aTable, aIndex);
-    }
+		if (theHasAutoIncrement) {
+			return new StatementList();
+		}
+		return super.createAddPrimaryKeyToTable(aTable, aIndex);
+	}
 
-    @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	@Override
+	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(aTable));
-        theStatement.append(" RENAME TO ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(aTable));
+		theStatement.append(" RENAME TO ");
 
-        theStatement.append(aNewName);
+		theStatement.append(aNewName);
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
+	@Override
+	public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
 
-        boolean theHasAutoIncrement = false;
-        for (Attribute theAttribute : aTable.getAttributes()) {
-            String theExtra = theAttribute.getExtra();
-            if (theExtra != null) {
-                if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
-                    theHasAutoIncrement = true;
-                }
-            }
-        }
-        if (theHasAutoIncrement) {
-            return new StatementList();
-        }
+		boolean theHasAutoIncrement = false;
+		for (Attribute theAttribute : aTable.getAttributes()) {
+			String theExtra = theAttribute.getExtra();
+			if (theExtra != null) {
+				if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
+					theHasAutoIncrement = true;
+				}
+			}
+		}
+		if (theHasAutoIncrement) {
+			return new StatementList();
+		}
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(aTable));
-        theStatement.append(" DROP PRIMARY KEY");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(aTable));
+		theStatement.append(" DROP PRIMARY KEY");
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
-        Table theTable = anExistingAttribute.getOwner();
+	@Override
+	public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" CHANGE ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" CHANGE ");
 
-        theStatement.append(anExistingAttribute.getName());
-        theStatement.append(" ");
-        theStatement.append(aNewName);
-        theStatement.append(" ");
-        theStatement.append(anExistingAttribute.getPhysicalDeclaration());
-        theStatement.append(" ");
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" ");
+		theStatement.append(aNewName);
+		theStatement.append(" ");
+		theStatement.append(anExistingAttribute.getPhysicalDeclaration());
+		theStatement.append(" ");
 
-        boolean isNullable = anExistingAttribute.isNullable();
+		boolean isNullable = anExistingAttribute.isNullable();
 
-        if (!isNullable) {
-            theStatement.append("NOT NULL");
-        }
+		if (!isNullable) {
+			theStatement.append("NOT NULL");
+		}
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
+		return theResult;
 
-    }
+	}
 
-    @Override
-    public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
-        Table theTable = anExistingAttribute.getOwner();
+	@Override
+	public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" MODIFY ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" MODIFY ");
 
-        theStatement.append(anExistingAttribute.getName());
-        theStatement.append(" ");
-        theStatement.append(createAttributeDataDefinition(aNewAttribute));
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" ");
+		theStatement.append(createAttributeDataDefinition(aNewAttribute));
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRemoveRelationStatement(Relation aRelation) {
+	@Override
+	public StatementList createRemoveRelationStatement(Relation aRelation) {
 
-        Table theImportingTable = aRelation.getImportingTable();
+		Table theImportingTable = aRelation.getImportingTable();
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP FOREIGN KEY "
-                + createUniqueRelationName(aRelation)));
-        return theResult;
-    }
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP FOREIGN KEY "
+				+ createUniqueRelationName(aRelation)));
+		return theResult;
+	}
 
-    @Override
-    protected String createCreateTableSuffix(Table aTable) {
-        StringBuilder theBuilder = new StringBuilder();
-        MySQLTableProperties theProperties = (MySQLTableProperties) getDialect().createTablePropertiesFor(aTable);
-        boolean first = true;
-        if (theProperties.getEngine() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("ENGINE=");
-            switch (theProperties.getEngine()) {
-                case InnoDB:
-                    theBuilder.append("InnoDB");
-                    break;
-                case ARCHIVE:
-                    theBuilder.append("ARCHIVE");
-                    break;
-                case BDB:
-                    theBuilder.append("BDB");
-                    break;
-                case BLACKHOLE:
-                    theBuilder.append("BLACKHOLE");
-                    break;
-                case CSV:
-                    theBuilder.append("CSV");
-                    break;
-                case EXAMPLE:
-                    theBuilder.append("EXAMPLE");
-                    break;
-                case FEDERATED:
-                    theBuilder.append("FEDERATED");
-                    break;
-                case MEMORY:
-                    theBuilder.append("MEMORY");
-                    break;
-                case MERGE:
-                    theBuilder.append("MERGE");
-                    break;
-                case MyISAM:
-                    theBuilder.append("MyISAM");
-                    break;
-                case NDBCLUSTER:
-                    theBuilder.append("NDBCLUSTER");
-                    break;
-            }
-        }
-        if (theProperties.getAvgRowLength() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("AVG_ROW_LENGTH=");
-            theBuilder.append(theProperties.getAvgRowLength());
-        }
-        if (theProperties.getCharacterSet() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("CHARACTER SET=");
-            theBuilder.append(theProperties.getCharacterSet());
-        }
-        if (theProperties.getChecksum() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("CHECKSUM=");
-            if (Boolean.TRUE.equals(theProperties.getChecksum())) {
-                theBuilder.append("1");
-            } else {
-                theBuilder.append("0");
-            }
-        }
-        if (theProperties.getDelayKeyWrite() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("DELAY_KEY_WRITE=");
-            if (Boolean.TRUE.equals(theProperties.getDelayKeyWrite())) {
-                theBuilder.append("1");
-            } else {
-                theBuilder.append("0");
-            }
-        }
-        if (theProperties.getInsertMethod() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("INSERT_METHOD=");
-            switch (theProperties.getInsertMethod()) {
-                case FIRST:
-                    theBuilder.append("FIRST");
-                    break;
-                case LAST:
-                    theBuilder.append("LAST");
-                    break;
-                case NO:
-                    theBuilder.append("NO");
-                    break;
-            }
-        }
-        if (theProperties.getMaxRows() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("MAX_ROWS=");
-            theBuilder.append(theProperties.getMaxRows());
-        }
-        if (theProperties.getMinRows() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("MIN_ROWS=");
-            theBuilder.append(theProperties.getMinRows());
-        }
-        if (theProperties.getPackKeys() != null) {
-            if (first) {
-                first = false;
-            } else {
-                theBuilder.append(",");
-            }
-            theBuilder.append("PACK_KEYS=");
-            if (Boolean.TRUE.equals(theProperties.getPackKeys())) {
-                theBuilder.append("1");
-            } else {
-                theBuilder.append("0");
-            }
-        }
-        if (theProperties.getRowFormat() != null) {
-            if (!first) {
-                theBuilder.append(",");
-            }
-            theBuilder.append("INSERT_METHOD=");
-            switch (theProperties.getRowFormat()) {
-                case COMPACT:
-                    theBuilder.append("COMPACT");
-                    break;
-                case COMPRESSED:
-                    theBuilder.append("COMPRESSED");
-                    break;
-                case DEFAULT:
-                    theBuilder.append("DEFAULT");
-                    break;
-                case DYNAMIC:
-                    theBuilder.append("DYNAMIC");
-                    break;
-                case FIXED:
-                    theBuilder.append("FIXED");
-                    break;
-                case REDUNDANT:
-                    theBuilder.append("REDUNDANT");
-                    break;
-            }
-        }
+	@Override
+	protected String createCreateTableSuffix(Table aTable) {
+		StringBuilder theBuilder = new StringBuilder();
+		MySQLTableProperties theProperties = (MySQLTableProperties) getDialect().createTablePropertiesFor(aTable);
+		boolean first = true;
+		if (theProperties.getEngine() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("ENGINE=");
+			switch (theProperties.getEngine()) {
+				case InnoDB:
+					theBuilder.append("InnoDB");
+					break;
+				case ARCHIVE:
+					theBuilder.append("ARCHIVE");
+					break;
+				case BDB:
+					theBuilder.append("BDB");
+					break;
+				case BLACKHOLE:
+					theBuilder.append("BLACKHOLE");
+					break;
+				case CSV:
+					theBuilder.append("CSV");
+					break;
+				case EXAMPLE:
+					theBuilder.append("EXAMPLE");
+					break;
+				case FEDERATED:
+					theBuilder.append("FEDERATED");
+					break;
+				case MEMORY:
+					theBuilder.append("MEMORY");
+					break;
+				case MERGE:
+					theBuilder.append("MERGE");
+					break;
+				case MyISAM:
+					theBuilder.append("MyISAM");
+					break;
+				case NDBCLUSTER:
+					theBuilder.append("NDBCLUSTER");
+					break;
+			}
+		}
+		if (theProperties.getAvgRowLength() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("AVG_ROW_LENGTH=");
+			theBuilder.append(theProperties.getAvgRowLength());
+		}
+		if (theProperties.getCharacterSet() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("CHARACTER SET=");
+			theBuilder.append(theProperties.getCharacterSet());
+		}
+		if (theProperties.getChecksum() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("CHECKSUM=");
+			if (Boolean.TRUE.equals(theProperties.getChecksum())) {
+				theBuilder.append("1");
+			} else {
+				theBuilder.append("0");
+			}
+		}
+		if (theProperties.getDelayKeyWrite() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("DELAY_KEY_WRITE=");
+			if (Boolean.TRUE.equals(theProperties.getDelayKeyWrite())) {
+				theBuilder.append("1");
+			} else {
+				theBuilder.append("0");
+			}
+		}
+		if (theProperties.getInsertMethod() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("INSERT_METHOD=");
+			switch (theProperties.getInsertMethod()) {
+				case FIRST:
+					theBuilder.append("FIRST");
+					break;
+				case LAST:
+					theBuilder.append("LAST");
+					break;
+				case NO:
+					theBuilder.append("NO");
+					break;
+			}
+		}
+		if (theProperties.getMaxRows() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("MAX_ROWS=");
+			theBuilder.append(theProperties.getMaxRows());
+		}
+		if (theProperties.getMinRows() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("MIN_ROWS=");
+			theBuilder.append(theProperties.getMinRows());
+		}
+		if (theProperties.getPackKeys() != null) {
+			if (first) {
+				first = false;
+			} else {
+				theBuilder.append(",");
+			}
+			theBuilder.append("PACK_KEYS=");
+			if (Boolean.TRUE.equals(theProperties.getPackKeys())) {
+				theBuilder.append("1");
+			} else {
+				theBuilder.append("0");
+			}
+		}
+		if (theProperties.getRowFormat() != null) {
+			if (!first) {
+				theBuilder.append(",");
+			}
+			theBuilder.append("INSERT_METHOD=");
+			switch (theProperties.getRowFormat()) {
+				case COMPACT:
+					theBuilder.append("COMPACT");
+					break;
+				case COMPRESSED:
+					theBuilder.append("COMPRESSED");
+					break;
+				case DEFAULT:
+					theBuilder.append("DEFAULT");
+					break;
+				case DYNAMIC:
+					theBuilder.append("DYNAMIC");
+					break;
+				case FIXED:
+					theBuilder.append("FIXED");
+					break;
+				case REDUNDANT:
+					theBuilder.append("REDUNDANT");
+					break;
+			}
+		}
 
-        if (theBuilder.length() > 0) {
-            theBuilder.insert(0, ' ');
-        }
-        return theBuilder.toString();
-    }
+		if (theBuilder.length() > 0) {
+			theBuilder.insert(0, ' ');
+		}
+		return theBuilder.toString();
+	}
 }

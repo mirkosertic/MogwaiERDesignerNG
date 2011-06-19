@@ -117,7 +117,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
 			theErrors.add(new ValidationError(this, BINDINGHELPER.getText(BindingBundle.MISSINGREQUIREDFIELD)));
 		}
 
-		if (theErrors.size() == 0) {
+		if (theErrors.isEmpty()) {
 			markValid();
 		} else {
 			markInvalid(theErrors);

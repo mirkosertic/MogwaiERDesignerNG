@@ -24,36 +24,36 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class DataBrowserCommand extends UICommand {
 
-    private Table table;
-    private View view;
+	private Table table;
+	private View view;
 
-    public DataBrowserCommand(ERDesignerComponent aComponent, Table aTable) {
-        super(aComponent);
-        table = aTable;
-    }
+	public DataBrowserCommand(ERDesignerComponent aComponent, Table aTable) {
+		super(aComponent);
+		table = aTable;
+	}
 
-    public DataBrowserCommand(ERDesignerComponent aComponent, View aView) {
-        super(aComponent);
-        view = aView;
-    }
+	public DataBrowserCommand(ERDesignerComponent aComponent, View aView) {
+		super(aComponent);
+		view = aView;
+	}
 
-    @Override
-    public void execute() {
-        DataBrowserEditor theEditor = new DataBrowserEditor(component
-                .getDetailComponent());
-        if (table != null) {
-            theEditor.initializeFor(table);
-        } else {
-            theEditor.initializeFor(view);
-        }
+	@Override
+	public void execute() {
+		DataBrowserEditor theEditor = new DataBrowserEditor(component
+				.getDetailComponent());
+		if (table != null) {
+			theEditor.initializeFor(table);
+		} else {
+			theEditor.initializeFor(view);
+		}
 
-        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
-            try {
-                theEditor.applyValues();
+		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+			try {
+				theEditor.applyValues();
 
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 }

@@ -30,64 +30,64 @@ import de.erdesignerng.model.Table;
  */
 public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 
-    public DB2SQLGenerator(DB2Dialect aDialect) {
-        super(aDialect);
-    }
+	public DB2SQLGenerator(DB2Dialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    public StatementList createRemoveRelationStatement(Relation aRelation) {
-        Table theImportingTable = aRelation.getImportingTable();
+	@Override
+	public StatementList createRemoveRelationStatement(Relation aRelation) {
+		Table theImportingTable = aRelation.getImportingTable();
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP CONSTRAINT "
-                + createUniqueRelationName(aRelation)));
-        return theResult;
-    }
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("ALTER TABLE " + createUniqueTableName(theImportingTable) + " DROP CONSTRAINT "
+				+ createUniqueRelationName(aRelation)));
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameTableStatement(Table aTable, String aNewName) {
+	@Override
+	public StatementList createRenameTableStatement(Table aTable, String aNewName) {
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
-        return theResult;
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
+		return theResult;
 
-    }
+	}
 
-    @Override
-    public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
+	@Override
+	public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
 
-        Table theTable = anExistingAttribute.getOwner();
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(theTable) + "."
-                + anExistingAttribute.getName() + "' , '" + aNewName + "' , 'COLUMN'"));
-        return theResult;
-    }
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("EXEC sp_rename '" + createUniqueTableName(theTable) + "."
+				+ anExistingAttribute.getName() + "' , '" + aNewName + "' , 'COLUMN'"));
+		return theResult;
+	}
 
-    @Override
-    public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
-        Table theTable = anExistingAttribute.getOwner();
+	@Override
+	public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" ALTER COLUMN ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" ALTER COLUMN ");
 
-        theStatement.append(anExistingAttribute.getName());
-        theStatement.append(" ");
-        theStatement.append(aNewAttribute.getPhysicalDeclaration());
-        theStatement.append(" ");
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" ");
+		theStatement.append(aNewAttribute.getPhysicalDeclaration());
+		theStatement.append(" ");
 
-        boolean isNullable = aNewAttribute.isNullable();
+		boolean isNullable = aNewAttribute.isNullable();
 
-        if (!isNullable) {
-            theStatement.append("NOT NULL");
-        }
+		if (!isNullable) {
+			theStatement.append("NOT NULL");
+		}
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 }

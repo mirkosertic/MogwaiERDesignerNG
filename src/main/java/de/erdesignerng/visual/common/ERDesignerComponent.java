@@ -73,1601 +73,1628 @@ import java.util.Map;
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
-    private static final class ERDesignerGraphSelectionListener implements
-            GraphSelectionListener {
-        @Override
-        public void valueChanged(GraphSelectionEvent aEvent) {
-            Object[] theCells = aEvent.getCells();
-            if (!ArrayUtils.isEmpty(theCells)) {
-                List<ModelItem> theItems = new ArrayList<ModelItem>();
-                for (Object theCell : theCells) {
-                    if (theCell instanceof DefaultGraphCell
-                            && aEvent.isAddedCell(theCell)) {
-                        DefaultGraphCell theGraphCell = (DefaultGraphCell) theCell;
-                        Object theUserObject = theGraphCell.getUserObject();
-                        if (theUserObject instanceof ModelItem) {
-                            theItems.add((ModelItem) theUserObject);
-                        }
-                    }
-                }
-
-                SQLComponent.getDefault().displaySQLFor(
-                        theItems.toArray(new ModelItem[theItems.size()]));
-                if (theItems.size() == 1) {
-                    OutlineComponent.getDefault().setSelectedItem(
-                            theItems.get(0));
-                }
-
-            } else {
-                SQLComponent.getDefault().resetDisplay();
-            }
-        }
-    }
-
-    private final class LayoutThread extends Thread {
-        @Override
-        public void run() {
-            while (!isInterrupted()) {
-                try {
-                    long theDuration = System.currentTimeMillis();
-
-                    if (layout.preEvolveLayout()) {
-                        layout.evolveLayout();
-
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            public void run() {
-                                layout.postEvolveLayout();
-                            }
-                        });
-                    }
-                    theDuration = System.currentTimeMillis() - theDuration;
+	private static final class ERDesignerGraphSelectionListener implements
+			GraphSelectionListener {
+		@Override
+		public void valueChanged(GraphSelectionEvent aEvent) {
+			Object[] theCells = aEvent.getCells();
+			if (!ArrayUtils.isEmpty(theCells)) {
+				List<ModelItem> theItems = new ArrayList<ModelItem>();
+				for (Object theCell : theCells) {
+					if (theCell instanceof DefaultGraphCell
+							&& aEvent.isAddedCell(theCell)) {
+						DefaultGraphCell theGraphCell = (DefaultGraphCell) theCell;
+						Object theUserObject = theGraphCell.getUserObject();
+						if (theUserObject instanceof ModelItem) {
+							theItems.add((ModelItem) theUserObject);
+						}
+					}
+				}
+
+				SQLComponent.getDefault().displaySQLFor(
+						theItems.toArray(new ModelItem[theItems.size()]));
+				if (theItems.size() == 1) {
+					OutlineComponent.getDefault().setSelectedItem(
+							theItems.get(0));
+				}
+
+			} else {
+				SQLComponent.getDefault().resetDisplay();
+			}
+		}
+	}
+
+	private final class LayoutThread extends Thread {
+		@Override
+		public void run() {
+			while (!isInterrupted()) {
+				try {
+					long theDuration = System.currentTimeMillis();
+
+					if (layout.preEvolveLayout()) {
+						layout.evolveLayout();
+
+						SwingUtilities.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+								layout.postEvolveLayout();
+							}
+						});
+					}
+					theDuration = System.currentTimeMillis() - theDuration;
+
+					// Assume 30 Frames / Second animation speed
+					long theDifference = (1000 - (theDuration * 30)) / 30;
+					if (theDifference > 0) {
+						sleep(theDifference);
+					} else {
+						sleep(40);
+					}
+				} catch (InterruptedException e) {
+					return;
+				} catch (Exception e) {
+					worldConnector.notifyAboutException(e);
+				}
+			}
+		}
+	}
 
-                    // Assume 30 Frames / Second animation speed
-                    long theDifference = (1000 - (theDuration * 30)) / 30;
-                    if (theDifference > 0) {
-                        sleep(theDifference);
-                    } else {
-                        sleep(40);
-                    }
-                } catch (InterruptedException e) {
-                    return;
-                } catch (Exception e) {
-                    worldConnector.notifyAboutException(e);
-                }
-            }
-        }
-    }
+	private class ERDesignerGraphModelListener implements GraphModelListener {
 
-    private class ERDesignerGraphModelListener implements GraphModelListener {
+		@Override
+		public void graphChanged(GraphModelEvent aEvent) {
+			GraphLayoutCacheChange theChange = aEvent.getChange();
+
+			Object[] theChangedObjects = theChange.getChanged();
+			Map theChangedAttributes = theChange.getPreviousAttributes();
+
+			if (theChangedAttributes != null) {
+				for (Object theChangedObject : theChangedObjects) {
+					Map theAttributes = (Map) theChangedAttributes
+							.get(theChangedObject);
 
-        public void graphChanged(GraphModelEvent aEvent) {
-            GraphLayoutCacheChange theChange = aEvent.getChange();
-
-            Object[] theChangedObjects = theChange.getChanged();
-            Map theChangedAttributes = theChange.getPreviousAttributes();
+					if (theChangedObject instanceof ModelCell) {
+
+						ModelCell theCell = (ModelCell) theChangedObject;
+						if (theAttributes != null) {
+							theCell
+									.transferAttributesToProperties(theAttributes);
+						}
+					}
 
-            if (theChangedAttributes != null) {
-                for (Object theChangedObject : theChangedObjects) {
-                    Map theAttributes = (Map) theChangedAttributes
-                            .get(theChangedObject);
+					if (theChangedObject instanceof SubjectAreaCell) {
 
-                    if (theChangedObject instanceof ModelCell) {
+						SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
+						if (theCell.getChildCount() == 0) {
+							commandRemoveSubjectArea(theCell);
+						} else {
+							commandUpdateSubjectArea(theCell);
+						}
+					}
+				}
+				graph.setSelectionCells(graph.getSelectionCells());
+			}
+		}
+	}
 
-                        ModelCell theCell = (ModelCell) theChangedObject;
-                        if (theAttributes != null) {
-                            theCell
-                                    .transferAttributesToProperties(theAttributes);
-                        }
-                    }
+	File currentEditingFile;
 
-                    if (theChangedObject instanceof SubjectAreaCell) {
+	RepositoryEntryDescriptor currentRepositoryEntry;
 
-                        SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
-                        if (theCell.getChildCount() == 0) {
-                            commandRemoveSubjectArea(theCell);
-                        } else {
-                            commandUpdateSubjectArea(theCell);
-                        }
-                    }
-                }
-                graph.setSelectionCells(graph.getSelectionCells());
-            }
-        }
-    }
+	private volatile Model model;
 
-    File currentEditingFile;
+	volatile ERDesignerGraph graph;
 
-    RepositoryEntryDescriptor currentRepositoryEntry;
+	private JToggleButton handButton;
 
-    private volatile Model model;
+	private JToggleButton commentButton;
 
-    volatile ERDesignerGraph graph;
+	private JToggleButton relationButton;
 
-    private JToggleButton handButton;
+	private JToggleButton viewButton;
 
-    private JToggleButton commentButton;
+	private JToggleButton entityButton;
 
-    private JToggleButton relationButton;
+	private DefaultMenu lruMenu;
 
-    private JToggleButton viewButton;
+	private DefaultMenu storedConnections;
 
-    private JToggleButton entityButton;
+	private DefaultMenu subjectAreas;
 
-    private DefaultMenu lruMenu;
+	private DefaultMenu documentationMenu;
 
-    private DefaultMenu storedConnections;
+	private DefaultCheckboxMenuItem displayCommentsMenuItem;
 
-    private DefaultMenu subjectAreas;
+	private DefaultCheckboxMenuItem displayGridMenuItem;
 
-    private DefaultMenu documentationMenu;
+	private DefaultRadioButtonMenuItem displayAllMenuItem;
 
-    private DefaultCheckboxMenuItem displayCommentsMenuItem;
+	private DefaultRadioButtonMenuItem displayNaturalOrderMenuItem;
 
-    private DefaultCheckboxMenuItem displayGridMenuItem;
+	private DefaultMenu repositoryUtilsMenu;
 
-    private DefaultRadioButtonMenuItem displayAllMenuItem;
+	private final DefaultScrollPane scrollPane = new DefaultScrollPane();
 
-    private DefaultRadioButtonMenuItem displayNaturalOrderMenuItem;
+	private final ERDesignerWorldConnector worldConnector;
 
-    private DefaultMenu repositoryUtilsMenu;
+	private final DefaultComboBox zoomBox = new DefaultComboBox();
 
-    private final DefaultScrollPane scrollPane = new DefaultScrollPane();
+	private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo(
+			"100%", 1);
 
-    private final ERDesignerWorldConnector worldConnector;
+	private final ERDesignerGraphLayout layout;
 
-    private final DefaultComboBox zoomBox = new DefaultComboBox();
+	private final DefaultAction editCustomTypes = new DefaultAction(
+			new EditCustomTypesCommand(this), this,
+			ERDesignerBundle.CUSTOMTYPEEDITOR);
 
-    private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo(
-            "100%", 1);
+	private Thread layoutThread;
 
-    private final ERDesignerGraphLayout layout;
+	private static ERDesignerComponent DEFAULT;
 
-    private final DefaultAction editCustomTypes = new DefaultAction(
-            new EditCustomTypesCommand(this), this,
-            ERDesignerBundle.CUSTOMTYPEEDITOR);
+	public static ERDesignerComponent initializeComponent(
+			ERDesignerWorldConnector aConnector) {
+		DEFAULT = new ERDesignerComponent(aConnector);
+		return DEFAULT;
+	}
 
-    private Thread layoutThread;
+	public static ERDesignerComponent getDefault() {
+		if (DEFAULT == null) {
+			throw new RuntimeException("Component is not initialized");
+		}
+		return DEFAULT;
+	}
 
-    private static ERDesignerComponent DEFAULT;
+	private ERDesignerComponent(ERDesignerWorldConnector aConnector) {
+		worldConnector = aConnector;
+		layout = new ERDesignerGraphLayout(this);
 
-    public static ERDesignerComponent initializeComponent(
-            ERDesignerWorldConnector aConnector) {
-        DEFAULT = new ERDesignerComponent(aConnector);
-        return DEFAULT;
-    }
+		initActions();
 
-    public static ERDesignerComponent getDefault() {
-        if (DEFAULT == null) {
-            throw new RuntimeException("Component is not initialized");
-        }
-        return DEFAULT;
-    }
+		if (ApplicationPreferences.getInstance().isIntelligentLayout()) {
+			setIntelligentLayoutEnabled(true);
+		}
+	}
 
-    private ERDesignerComponent(ERDesignerWorldConnector aConnector) {
-        worldConnector = aConnector;
-        layout = new ERDesignerGraphLayout(this);
+	protected final void initActions() {
 
-        initActions();
+		DefaultAction theReverseEngineerAction = new DefaultAction(
+				new ReverseEngineerCommand(this), this,
+				ERDesignerBundle.REVERSEENGINEER);
 
-        if (ApplicationPreferences.getInstance().isIntelligentLayout()) {
-            setIntelligentLayoutEnabled(true);
-        }
-    }
+		DefaultAction thePreferencesAction = new DefaultAction(
+				new PreferencesCommand(this), this,
+				ERDesignerBundle.PREFERENCES);
 
-    protected void initActions() {
+		DefaultAction theSaveAction = new DefaultAction(new SaveToFileCommand(
+				this), this, ERDesignerBundle.SAVEMODEL);
+		theSaveAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke
+				.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
-        DefaultAction theReverseEngineerAction = new DefaultAction(
-                new ReverseEngineerCommand(this), this,
-                ERDesignerBundle.REVERSEENGINEER);
+		DefaultAction theSaveAsAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        DefaultAction thePreferencesAction = new DefaultAction(
-                new PreferencesCommand(this), this,
-                ERDesignerBundle.PREFERENCES);
+			@Override
+					public void processActionEvent(ActionEvent aEvent) {
+						new SaveToFileCommand(ERDesignerComponent.this)
+								.executeSaveFileAs();
+					}
 
-        DefaultAction theSaveAction = new DefaultAction(new SaveToFileCommand(
-                this), this, ERDesignerBundle.SAVEMODEL);
-        theSaveAction.putValue(DefaultAction.HOTKEY_KEY, KeyStroke
-                .getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+				}, this, ERDesignerBundle.SAVEMODELAS);
 
-        DefaultAction theSaveAsAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theSaveToRepository = new DefaultAction(
+				new SaveToRepositoryCommand(this), this,
+				ERDesignerBundle.SAVEMODELTODB);
 
-                    public void processActionEvent(ActionEvent aEvent) {
-                        new SaveToFileCommand(ERDesignerComponent.this)
-                                .executeSaveFileAs();
-                    }
+		DefaultAction theRelationAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                }, this, ERDesignerBundle.SAVEMODELAS);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetTool(ToolEnum.RELATION);
+					}
 
-        DefaultAction theSaveToRepository = new DefaultAction(
-                new SaveToRepositoryCommand(this), this,
-                ERDesignerBundle.SAVEMODELTODB);
+				}, this, ERDesignerBundle.RELATION);
 
-        DefaultAction theRelationAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theNewAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.RELATION);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandNew();
+					}
+				}, this, ERDesignerBundle.NEWMODEL);
 
-                }, this, ERDesignerBundle.RELATION);
+		DefaultAction theLruAction = new DefaultAction(this,
+				ERDesignerBundle.RECENTLYUSEDFILES);
 
-        DefaultAction theNewAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theLoadAction = new DefaultAction(
+				new OpenFromFileCommand(this), this, ERDesignerBundle.LOADMODEL);
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandNew();
-                    }
-                }, this, ERDesignerBundle.NEWMODEL);
+		DefaultAction theHandAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        DefaultAction theLruAction = new DefaultAction(this,
-                ERDesignerBundle.RECENTLYUSEDFILES);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetTool(ToolEnum.HAND);
+					}
 
-        DefaultAction theLoadAction = new DefaultAction(
-                new OpenFromFileCommand(this), this, ERDesignerBundle.LOADMODEL);
+				}, this, ERDesignerBundle.HAND);
 
-        DefaultAction theHandAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theCommentAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.HAND);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetTool(ToolEnum.COMMENT);
+					}
 
-                }, this, ERDesignerBundle.HAND);
+				}, this, ERDesignerBundle.COMMENT);
 
-        DefaultAction theCommentAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theExportSVGAction = new DefaultAction(this,
+				ERDesignerBundle.ASSVG);
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.COMMENT);
-                    }
+		DefaultAction theEntityAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                }, this, ERDesignerBundle.COMMENT);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetTool(ToolEnum.ENTITY);
+					}
 
-        DefaultAction theExportSVGAction = new DefaultAction(this,
-                ERDesignerBundle.ASSVG);
+				}, this, ERDesignerBundle.ENTITY);
 
-        DefaultAction theEntityAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theViewAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.ENTITY);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetTool(ToolEnum.VIEW);
+					}
 
-                }, this, ERDesignerBundle.ENTITY);
+				}, this, ERDesignerBundle.VIEWTOOL);
 
-        DefaultAction theViewAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theExportAction = new DefaultAction(this,
+				ERDesignerBundle.EXPORT);
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.VIEW);
-                    }
+		DefaultAction theExitAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                }, this, ERDesignerBundle.VIEWTOOL);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						worldConnector.exitApplication();
+					}
 
-        DefaultAction theExportAction = new DefaultAction(this,
-                ERDesignerBundle.EXPORT);
+				}, this, ERDesignerBundle.EXITPROGRAM);
 
-        DefaultAction theExitAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theClasspathAction = new DefaultAction(
+				new ClasspathCommand(this), this, ERDesignerBundle.CLASSPATH);
 
-                    public void processActionEvent(ActionEvent e) {
-                        worldConnector.exitApplication();
-                    }
+		DefaultAction theDBConnectionAction = new DefaultAction(
+				new DBConnectionCommand(this), this,
+				ERDesignerBundle.DBCONNECTION);
 
-                }, this, ERDesignerBundle.EXITPROGRAM);
+		DefaultAction theRepositoryConnectionAction = new DefaultAction(
+				new RepositoryConnectionCommand(this), this,
+				ERDesignerBundle.REPOSITORYCONNECTION);
 
-        DefaultAction theClasspathAction = new DefaultAction(
-                new ClasspathCommand(this), this, ERDesignerBundle.CLASSPATH);
+		DefaultAction theDomainsAction = new DefaultAction(
+				new EditDomainCommand(this), this,
+				ERDesignerBundle.DOMAINEDITOR);
 
-        DefaultAction theDBConnectionAction = new DefaultAction(
-                new DBConnectionCommand(this), this,
-                ERDesignerBundle.DBCONNECTION);
+		DefaultAction theZoomAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        DefaultAction theRepositoryConnectionAction = new DefaultAction(
-                new RepositoryConnectionCommand(this), this,
-                ERDesignerBundle.REPOSITORYCONNECTION);
+			@Override
+					public void processActionEvent(ActionEvent aEvent) {
+						commandSetZoom((ZoomInfo) ((JComboBox) aEvent
+								.getSource()).getSelectedItem());
+					}
+				}, this, ERDesignerBundle.ZOOM);
 
-        DefaultAction theDomainsAction = new DefaultAction(
-                new EditDomainCommand(this), this,
-                ERDesignerBundle.DOMAINEDITOR);
+		DefaultAction theZoomInAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        DefaultAction theZoomAction = new DefaultAction(
-                new ActionEventProcessor() {
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandZoomIn();
+					}
 
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandSetZoom((ZoomInfo) ((JComboBox) aEvent
-                                .getSource()).getSelectedItem());
-                    }
-                }, this, ERDesignerBundle.ZOOM);
+				}, this, ERDesignerBundle.ZOOMIN);
 
-        DefaultAction theZoomInAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theZoomOutAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandZoomIn();
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandZoomOut();
+					}
 
-                }, this, ERDesignerBundle.ZOOMIN);
+				}, this, ERDesignerBundle.ZOOMOUT);
 
-        DefaultAction theZoomOutAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theGenerateSQL = new DefaultAction(
+				new GenerateSQLCommand(this), this,
+				ERDesignerBundle.GENERATECREATEDBDDL);
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandZoomOut();
-                    }
+		DefaultAction theGenerateChangelog = new DefaultAction(
+				new GenerateChangeLogSQLCommand(this), this,
+				ERDesignerBundle.GENERATECHANGELOG);
 
-                }, this, ERDesignerBundle.ZOOMOUT);
+		DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(
+				new CompleteCompareWithDatabaseCommand(this), this,
+				ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
 
-        DefaultAction theGenerateSQL = new DefaultAction(
-                new GenerateSQLCommand(this), this,
-                ERDesignerBundle.GENERATECREATEDBDDL);
+		DefaultAction theCompleteCompareWithModelAction = new DefaultAction(
+				new CompleteCompareWithOtherModelCommand(this), this,
+				ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
 
-        DefaultAction theGenerateChangelog = new DefaultAction(
-                new GenerateChangeLogSQLCommand(this), this,
-                ERDesignerBundle.GENERATECHANGELOG);
+		DefaultAction theConvertModelAction = new DefaultAction(
+				new ConvertModelCommand(this), this,
+				ERDesignerBundle.CONVERTMODEL);
 
-        DefaultAction theCompleteCompareWithDatabaseAction = new DefaultAction(
-                new CompleteCompareWithDatabaseCommand(this), this,
-                ERDesignerBundle.COMPLETECOMPAREWITHDATABASE);
+		DefaultAction theCreateMigrationScriptAction = new DefaultAction(
+				new GenerateMigrationScriptCommand(this), this,
+				ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
-        DefaultAction theCompleteCompareWithModelAction = new DefaultAction(
-                new CompleteCompareWithOtherModelCommand(this), this,
-                ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
+		DefaultAction theHelpAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        DefaultAction theConvertModelAction = new DefaultAction(
-                new ConvertModelCommand(this), this,
-                ERDesignerBundle.CONVERTMODEL);
+			@Override
+					public void processActionEvent(ActionEvent aEvent) {
+						commandShowHelp();
+					}
 
-        DefaultAction theCreateMigrationScriptAction = new DefaultAction(
-                new GenerateMigrationScriptCommand(this), this,
-                ERDesignerBundle.CREATEMIGRATIONSCRIPT);
+				}, this, ERDesignerBundle.HELP);
 
-        DefaultAction theHelpAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theExportOpenXavaAction = new DefaultAction(
+				new OpenXavaExportExportCommand(this), this,
+				ERDesignerBundle.OPENXAVAEXPORT);
 
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandShowHelp();
-                    }
+		lruMenu = new DefaultMenu(theLruAction);
 
-                }, this, ERDesignerBundle.HELP);
+		DefaultAction theStoredConnectionsAction = new DefaultAction(this,
+				ERDesignerBundle.STOREDDBCONNECTION);
+		storedConnections = new DefaultMenu(theStoredConnectionsAction);
 
-        DefaultAction theExportOpenXavaAction = new DefaultAction(
-                new OpenXavaExportExportCommand(this), this,
-                ERDesignerBundle.OPENXAVAEXPORT);
+		ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(
+				ERDesignerBundle.FILE);
+		if (worldConnector.supportsPreferences()) {
+			theFileMenu.add(new DefaultMenuItem(thePreferencesAction));
+			theFileMenu.addSeparator();
+		}
 
-        lruMenu = new DefaultMenu(theLruAction);
+		theFileMenu.add(new DefaultMenuItem(theNewAction));
+		theFileMenu.addSeparator();
+		DefaultMenuItem theSaveItem = new DefaultMenuItem(theSaveAction);
+		theFileMenu.add(theSaveItem);
+		KeyStroke theStroke = (KeyStroke) theSaveAction
+				.getValue(DefaultAction.HOTKEY_KEY);
+		if (theStroke != null) {
+			theSaveItem.setAccelerator(theStroke);
+			scrollPane.registerKeyboardAction(theSaveAction, theStroke,
+					JComponent.WHEN_IN_FOCUSED_WINDOW);
+		}
 
-        DefaultAction theStoredConnectionsAction = new DefaultAction(this,
-                ERDesignerBundle.STOREDDBCONNECTION);
-        storedConnections = new DefaultMenu(theStoredConnectionsAction);
+		theFileMenu.add(new DefaultMenuItem(theSaveAsAction));
+		theFileMenu.add(new DefaultMenuItem(theLoadAction));
 
-        ERDesignerToolbarEntry theFileMenu = new ERDesignerToolbarEntry(
-                ERDesignerBundle.FILE);
-        if (worldConnector.supportsPreferences()) {
-            theFileMenu.add(new DefaultMenuItem(thePreferencesAction));
-            theFileMenu.addSeparator();
-        }
+		if (worldConnector.supportsRepositories()) {
+			theFileMenu.addSeparator();
+			theFileMenu.add(new DefaultMenuItem(theRepositoryConnectionAction));
+			theFileMenu.add(new DefaultMenuItem(theSaveToRepository));
 
-        theFileMenu.add(new DefaultMenuItem(theNewAction));
-        theFileMenu.addSeparator();
-        DefaultMenuItem theSaveItem = new DefaultMenuItem(theSaveAction);
-        theFileMenu.add(theSaveItem);
-        KeyStroke theStroke = (KeyStroke) theSaveAction
-                .getValue(DefaultAction.HOTKEY_KEY);
-        if (theStroke != null) {
-            theSaveItem.setAccelerator(theStroke);
-            scrollPane.registerKeyboardAction(theSaveAction, theStroke,
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-        }
+			DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(
+					new DefaultAction(new OpenFromRepositoryCommand(this),
+							this, ERDesignerBundle.LOADMODELFROMDB));
 
-        theFileMenu.add(new DefaultMenuItem(theSaveAsAction));
-        theFileMenu.add(new DefaultMenuItem(theLoadAction));
+			theFileMenu.add(theLoadFromDBMenu);
 
-        if (worldConnector.supportsRepositories()) {
-            theFileMenu.addSeparator();
-            theFileMenu.add(new DefaultMenuItem(theRepositoryConnectionAction));
-            theFileMenu.add(new DefaultMenuItem(theSaveToRepository));
+			repositoryUtilsMenu = new DefaultMenu(this,
+					ERDesignerBundle.REPOSITORYUTILS);
+			repositoryUtilsMenu.add(new DefaultMenuItem(
+					theCreateMigrationScriptAction));
 
-            DefaultMenuItem theLoadFromDBMenu = new DefaultMenuItem(
-                    new DefaultAction(new OpenFromRepositoryCommand(this),
-                            this, ERDesignerBundle.LOADMODELFROMDB));
+			UIInitializer.getInstance().initialize(repositoryUtilsMenu);
 
-            theFileMenu.add(theLoadFromDBMenu);
+			theFileMenu.add(repositoryUtilsMenu);
 
-            repositoryUtilsMenu = new DefaultMenu(this,
-                    ERDesignerBundle.REPOSITORYUTILS);
-            repositoryUtilsMenu.add(new DefaultMenuItem(
-                    theCreateMigrationScriptAction));
+			theFileMenu.addSeparator();
+		}
 
-            UIInitializer.getInstance().initialize(repositoryUtilsMenu);
+		DefaultMenu theExportMenu = new DefaultMenu(theExportAction);
 
-            theFileMenu.add(repositoryUtilsMenu);
+		List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
+		if (theSupportedFormats.contains("IMAGE/PNG")) {
+			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
+					ERDesignerBundle.ASPNG);
+			theExportMenu.add(theSingleExportMenu);
 
-            theFileMenu.addSeparator();
-        }
+			addExportEntries(theSingleExportMenu, new ImageExporter("png"));
+		}
+		if (theSupportedFormats.contains("IMAGE/JPEG")) {
+			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
+					ERDesignerBundle.ASJPEG);
+			theExportMenu.add(theSingleExportMenu);
 
-        DefaultMenu theExportMenu = new DefaultMenu(theExportAction);
+			addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
+		}
+		if (theSupportedFormats.contains("IMAGE/BMP")) {
+			DefaultMenu theSingleExportMenu = new DefaultMenu(this,
+					ERDesignerBundle.ASBMP);
+			theExportMenu.add(theSingleExportMenu);
 
-        List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
-        if (theSupportedFormats.contains("IMAGE/PNG")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-                    ERDesignerBundle.ASPNG);
-            theExportMenu.add(theSingleExportMenu);
+			addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
+		}
 
-            addExportEntries(theSingleExportMenu, new ImageExporter("png"));
-        }
-        if (theSupportedFormats.contains("IMAGE/JPEG")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-                    ERDesignerBundle.ASJPEG);
-            theExportMenu.add(theSingleExportMenu);
+		DefaultMenu theSVGExportMenu = new DefaultMenu(theExportSVGAction);
 
-            addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
-        }
-        if (theSupportedFormats.contains("IMAGE/BMP")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-                    ERDesignerBundle.ASBMP);
-            theExportMenu.add(theSingleExportMenu);
+		theExportMenu.add(theSVGExportMenu);
+		addExportEntries(theSVGExportMenu, new SVGExporter());
 
-            addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
-        }
+		theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
 
-        DefaultMenu theSVGExportMenu = new DefaultMenu(theExportSVGAction);
+		UIInitializer.getInstance().initialize(theExportMenu);
 
-        theExportMenu.add(theSVGExportMenu);
-        addExportEntries(theSVGExportMenu, new SVGExporter());
+		theFileMenu.add(theExportMenu);
 
-        theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
+		theFileMenu.addSeparator();
+		theFileMenu.add(lruMenu);
 
-        UIInitializer.getInstance().initialize(theExportMenu);
+		if (worldConnector.supportsExitApplication()) {
+			theFileMenu.addSeparator();
+			theFileMenu.add(new DefaultMenuItem(theExitAction));
+		}
 
-        theFileMenu.add(theExportMenu);
+		ERDesignerToolbarEntry theDBMenu = new ERDesignerToolbarEntry(
+				ERDesignerBundle.DATABASE);
 
-        theFileMenu.addSeparator();
-        theFileMenu.add(lruMenu);
+		boolean addSeparator = false;
+		if (worldConnector.supportsClasspathEditor()) {
+			theDBMenu.add(new DefaultMenuItem(theClasspathAction));
+			addSeparator = true;
+		}
 
-        if (worldConnector.supportsExitApplication()) {
-            theFileMenu.addSeparator();
-            theFileMenu.add(new DefaultMenuItem(theExitAction));
-        }
+		if (worldConnector.supportsConnectionEditor()) {
+			theDBMenu.add(new DefaultMenuItem(theDBConnectionAction));
+			theDBMenu.add(storedConnections);
+			addSeparator = true;
+		}
 
-        ERDesignerToolbarEntry theDBMenu = new ERDesignerToolbarEntry(
-                ERDesignerBundle.DATABASE);
+		if (addSeparator) {
+			theDBMenu.addSeparator();
+		}
 
-        boolean addSeparator = false;
-        if (worldConnector.supportsClasspathEditor()) {
-            theDBMenu.add(new DefaultMenuItem(theClasspathAction));
-            addSeparator = true;
-        }
+		theDBMenu.add(new DefaultMenuItem(editCustomTypes));
+		theDBMenu.add(new DefaultMenuItem(theDomainsAction));
+		theDBMenu.addSeparator();
 
-        if (worldConnector.supportsConnectionEditor()) {
-            theDBMenu.add(new DefaultMenuItem(theDBConnectionAction));
-            theDBMenu.add(storedConnections);
-            addSeparator = true;
-        }
+		theDBMenu.add(new DefaultMenuItem(theReverseEngineerAction));
+		theDBMenu.addSeparator();
+		theDBMenu.add(new DefaultMenuItem(theGenerateSQL));
+		theDBMenu.addSeparator();
+		theDBMenu.add(new DefaultMenuItem(theGenerateChangelog));
+		theDBMenu.addSeparator();
+		theDBMenu
+				.add(new DefaultMenuItem(theCompleteCompareWithDatabaseAction));
+		theDBMenu.add(new DefaultMenuItem(theCompleteCompareWithModelAction));
+		theDBMenu.addSeparator();
+		theDBMenu.add(new DefaultMenuItem(theConvertModelAction));
 
-        if (addSeparator) {
-            theDBMenu.addSeparator();
-        }
+		if (worldConnector.supportsReporting()) {
+			documentationMenu = new DefaultMenu(this,
+					ERDesignerBundle.CREATEDBDOCUMENTATION);
+			theDBMenu.addSeparator();
+			theDBMenu.add(documentationMenu);
 
-        theDBMenu.add(new DefaultMenuItem(editCustomTypes));
-        theDBMenu.add(new DefaultMenuItem(theDomainsAction));
-        theDBMenu.addSeparator();
+			updateDocumentationMenu();
+		}
 
-        theDBMenu.add(new DefaultMenuItem(theReverseEngineerAction));
-        theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(theGenerateSQL));
-        theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(theGenerateChangelog));
-        theDBMenu.addSeparator();
-        theDBMenu
-                .add(new DefaultMenuItem(theCompleteCompareWithDatabaseAction));
-        theDBMenu.add(new DefaultMenuItem(theCompleteCompareWithModelAction));
-        theDBMenu.addSeparator();
-        theDBMenu.add(new DefaultMenuItem(theConvertModelAction));
+		ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(
+				ERDesignerBundle.VIEW);
 
-        if (worldConnector.supportsReporting()) {
-            documentationMenu = new DefaultMenu(this,
-                    ERDesignerBundle.CREATEDBDOCUMENTATION);
-            theDBMenu.addSeparator();
-            theDBMenu.add(documentationMenu);
+		DefaultAction theDisplayCommentsAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-            updateDocumentationMenu();
-        }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
+								.getSource();
+						commandSetDisplayCommentsState(theItem.isSelected());
+					}
 
-        ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(
-                ERDesignerBundle.VIEW);
+				}, this, ERDesignerBundle.DISPLAYCOMMENTS);
 
-        DefaultAction theDisplayCommentsAction = new DefaultAction(
-                new ActionEventProcessor() {
+		displayCommentsMenuItem = new DefaultCheckboxMenuItem(
+				theDisplayCommentsAction);
+		displayCommentsMenuItem.setSelected(false);
+		theViewMenu.add(displayCommentsMenuItem);
 
-                    public void processActionEvent(ActionEvent e) {
-                        DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
-                                .getSource();
-                        commandSetDisplayCommentsState(theItem.isSelected());
-                    }
+		DefaultAction theDisplayGridAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                }, this, ERDesignerBundle.DISPLAYCOMMENTS);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
+								.getSource();
+						commandSetDisplayGridState(theItem.isSelected());
+					}
 
-        displayCommentsMenuItem = new DefaultCheckboxMenuItem(
-                theDisplayCommentsAction);
-        displayCommentsMenuItem.setSelected(false);
-        theViewMenu.add(displayCommentsMenuItem);
+				}, this, ERDesignerBundle.DISPLAYGRID);
 
-        DefaultAction theDisplayGridAction = new DefaultAction(
-                new ActionEventProcessor() {
+		displayGridMenuItem = new DefaultCheckboxMenuItem(theDisplayGridAction);
+		theViewMenu.add(displayGridMenuItem);
 
-                    public void processActionEvent(ActionEvent e) {
-                        DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
-                                .getSource();
-                        commandSetDisplayGridState(theItem.isSelected());
-                    }
+		DefaultMenu theDisplayLevelMenu = new DefaultMenu(this,
+				ERDesignerBundle.DISPLAYLEVEL);
+		theViewMenu.add(theDisplayLevelMenu);
 
-                }, this, ERDesignerBundle.DISPLAYGRID);
+		DefaultAction theDisplayAllAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        displayGridMenuItem = new DefaultCheckboxMenuItem(theDisplayGridAction);
-        theViewMenu.add(displayGridMenuItem);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetDisplayLevel(DisplayLevel.ALL);
+					}
 
-        DefaultMenu theDisplayLevelMenu = new DefaultMenu(this,
-                ERDesignerBundle.DISPLAYLEVEL);
-        theViewMenu.add(theDisplayLevelMenu);
+				}, this, ERDesignerBundle.DISPLAYALL);
 
-        DefaultAction theDisplayAllAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theDisplayPKOnlyAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetDisplayLevel(DisplayLevel.ALL);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY);
+					}
 
-                }, this, ERDesignerBundle.DISPLAYALL);
+				}, this, ERDesignerBundle.DISPLAYPRIMARYKEY);
 
-        DefaultAction theDisplayPKOnlyAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theDisplayPKAndFK = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS);
+					}
 
-                }, this, ERDesignerBundle.DISPLAYPRIMARYKEY);
+				}, this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
 
-        DefaultAction theDisplayPKAndFK = new DefaultAction(
-                new ActionEventProcessor() {
+		displayAllMenuItem = new DefaultRadioButtonMenuItem(theDisplayAllAction);
+		DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(
+				theDisplayPKOnlyAction);
+		DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(
+				theDisplayPKAndFK);
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS);
-                    }
+		ButtonGroup theDisplayLevelGroup = new ButtonGroup();
+		theDisplayLevelGroup.add(displayAllMenuItem);
+		theDisplayLevelGroup.add(thePKOnlyItem);
+		theDisplayLevelGroup.add(thePKAndFKItem);
 
-                }, this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
+		theDisplayLevelMenu.add(displayAllMenuItem);
+		theDisplayLevelMenu.add(thePKOnlyItem);
+		theDisplayLevelMenu.add(thePKAndFKItem);
 
-        displayAllMenuItem = new DefaultRadioButtonMenuItem(theDisplayAllAction);
-        DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(
-                theDisplayPKOnlyAction);
-        DefaultRadioButtonMenuItem thePKAndFKItem = new DefaultRadioButtonMenuItem(
-                theDisplayPKAndFK);
+		UIInitializer.getInstance().initialize(theDisplayLevelMenu);
 
-        ButtonGroup theDisplayLevelGroup = new ButtonGroup();
-        theDisplayLevelGroup.add(displayAllMenuItem);
-        theDisplayLevelGroup.add(thePKOnlyItem);
-        theDisplayLevelGroup.add(thePKAndFKItem);
+		DefaultMenu theDisplayOrderMenu = new DefaultMenu(this,
+				ERDesignerBundle.DISPLAYORDER);
+		theViewMenu.add(theDisplayOrderMenu);
 
-        theDisplayLevelMenu.add(displayAllMenuItem);
-        theDisplayLevelMenu.add(thePKOnlyItem);
-        theDisplayLevelMenu.add(thePKAndFKItem);
+		DefaultAction theDisplayNaturalOrderAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-        UIInitializer.getInstance().initialize(theDisplayLevelMenu);
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetDisplayOrder(DisplayOrder.NATURAL);
+					}
 
-        DefaultMenu theDisplayOrderMenu = new DefaultMenu(this,
-                ERDesignerBundle.DISPLAYORDER);
-        theViewMenu.add(theDisplayOrderMenu);
+				}, this, ERDesignerBundle.DISPLAYNATURALORDER);
 
-        DefaultAction theDisplayNaturalOrderAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theDisplayAscendingOrderAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetDisplayOrder(DisplayOrder.NATURAL);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetDisplayOrder(DisplayOrder.ASCENDING);
+					}
 
-                }, this, ERDesignerBundle.DISPLAYNATURALORDER);
+				}, this, ERDesignerBundle.DISPLAYASCENDING);
 
-        DefaultAction theDisplayAscendingOrderAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction theDisplayDescendingOrderAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetDisplayOrder(DisplayOrder.ASCENDING);
-                    }
+			@Override
+					public void processActionEvent(ActionEvent e) {
+						commandSetDisplayOrder(DisplayOrder.DESCENDING);
+					}
 
-                }, this, ERDesignerBundle.DISPLAYASCENDING);
+				}, this, ERDesignerBundle.DISPLAYDESCENDING);
 
-        DefaultAction theDisplayDescendingOrderAction = new DefaultAction(
-                new ActionEventProcessor() {
+		displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(
+				theDisplayNaturalOrderAction);
+		DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(
+				theDisplayAscendingOrderAction);
+		DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(
+				theDisplayDescendingOrderAction);
 
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetDisplayOrder(DisplayOrder.DESCENDING);
-                    }
+		ButtonGroup theDisplayOrderGroup = new ButtonGroup();
+		theDisplayOrderGroup.add(displayNaturalOrderMenuItem);
+		theDisplayOrderGroup.add(theAscendingItem);
+		theDisplayOrderGroup.add(theDescendingItem);
 
-                }, this, ERDesignerBundle.DISPLAYDESCENDING);
+		theDisplayOrderMenu.add(displayNaturalOrderMenuItem);
+		theDisplayOrderMenu.add(theAscendingItem);
+		theDisplayOrderMenu.add(theDescendingItem);
 
-        displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(
-                theDisplayNaturalOrderAction);
-        DefaultRadioButtonMenuItem theAscendingItem = new DefaultRadioButtonMenuItem(
-                theDisplayAscendingOrderAction);
-        DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(
-                theDisplayDescendingOrderAction);
+		UIInitializer.getInstance().initialize(theDisplayOrderMenu);
 
-        ButtonGroup theDisplayOrderGroup = new ButtonGroup();
-        theDisplayOrderGroup.add(displayNaturalOrderMenuItem);
-        theDisplayOrderGroup.add(theAscendingItem);
-        theDisplayOrderGroup.add(theDescendingItem);
+		subjectAreas = new DefaultMenu(this, ERDesignerBundle.MENUSUBJECTAREAS);
 
-        theDisplayOrderMenu.add(displayNaturalOrderMenuItem);
-        theDisplayOrderMenu.add(theAscendingItem);
-        theDisplayOrderMenu.add(theDescendingItem);
+		UIInitializer.getInstance().initialize(subjectAreas);
+		theViewMenu.add(subjectAreas);
 
-        UIInitializer.getInstance().initialize(theDisplayOrderMenu);
+		theViewMenu.addSeparator();
 
-        subjectAreas = new DefaultMenu(this, ERDesignerBundle.MENUSUBJECTAREAS);
+		theViewMenu.add(new DefaultMenuItem(theZoomInAction));
+		theViewMenu.add(new DefaultMenuItem(theZoomOutAction));
 
-        UIInitializer.getInstance().initialize(subjectAreas);
-        theViewMenu.add(subjectAreas);
+		if (worldConnector.supportsHelp()) {
+			theViewMenu.addSeparator();
+			theViewMenu.add(new DefaultMenuItem(theHelpAction));
+		}
 
-        theViewMenu.addSeparator();
+		DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
+		theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
+		for (int i = 9; i > 0; i--) {
+			theZoomModel.addElement(new ZoomInfo(i * 10 + " %", ((double) i)
+					/ (double) 10));
+		}
+		zoomBox.setPreferredSize(new Dimension(100, 21));
+		zoomBox.setMaximumSize(new Dimension(100, 21));
+		zoomBox.setAction(theZoomAction);
+		zoomBox.setModel(theZoomModel);
 
-        theViewMenu.add(new DefaultMenuItem(theZoomInAction));
-        theViewMenu.add(new DefaultMenuItem(theZoomOutAction));
+		DefaultToolbar theToolBar = worldConnector.getToolBar();
 
-        if (worldConnector.supportsHelp()) {
-            theViewMenu.addSeparator();
-            theViewMenu.add(new DefaultMenuItem(theHelpAction));
-        }
+		theToolBar.add(theFileMenu);
+		theToolBar.add(theDBMenu);
+		theToolBar.add(theViewMenu);
+		theToolBar.addSeparator();
 
-        DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
-        theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
-        for (int i = 9; i > 0; i--) {
-            theZoomModel.addElement(new ZoomInfo(i * 10 + " %", ((double) i)
-                    / (double) 10));
-        }
-        zoomBox.setPreferredSize(new Dimension(100, 21));
-        zoomBox.setMaximumSize(new Dimension(100, 21));
-        zoomBox.setAction(theZoomAction);
-        zoomBox.setModel(theZoomModel);
+		theToolBar.add(theNewAction);
+		theToolBar.addSeparator();
+		theToolBar.add(theLoadAction);
+		theToolBar.add(theSaveAsAction);
+		theToolBar.addSeparator();
+		theToolBar.add(zoomBox);
+		theToolBar.addSeparator();
+		theToolBar.add(theZoomInAction);
+		theToolBar.add(theZoomOutAction);
+		theToolBar.addSeparator();
 
-        DefaultToolbar theToolBar = worldConnector.getToolBar();
+		handButton = new DefaultToggleButton(theHandAction);
+		relationButton = new DefaultToggleButton(theRelationAction);
+		entityButton = new DefaultToggleButton(theEntityAction);
+		commentButton = new DefaultToggleButton(theCommentAction);
+		viewButton = new DefaultToggleButton(theViewAction);
 
-        theToolBar.add(theFileMenu);
-        theToolBar.add(theDBMenu);
-        theToolBar.add(theViewMenu);
-        theToolBar.addSeparator();
+		ButtonGroup theGroup = new ButtonGroup();
+		theGroup.add(handButton);
+		theGroup.add(relationButton);
+		theGroup.add(entityButton);
+		theGroup.add(commentButton);
+		theGroup.add(viewButton);
 
-        theToolBar.add(theNewAction);
-        theToolBar.addSeparator();
-        theToolBar.add(theLoadAction);
-        theToolBar.add(theSaveAsAction);
-        theToolBar.addSeparator();
-        theToolBar.add(zoomBox);
-        theToolBar.addSeparator();
-        theToolBar.add(theZoomInAction);
-        theToolBar.add(theZoomOutAction);
-        theToolBar.addSeparator();
+		theToolBar.add(handButton);
+		theToolBar.add(entityButton);
+		theToolBar.add(relationButton);
+		theToolBar.add(commentButton);
+		theToolBar.add(viewButton);
 
-        handButton = new DefaultToggleButton(theHandAction);
-        relationButton = new DefaultToggleButton(theRelationAction);
-        entityButton = new DefaultToggleButton(theEntityAction);
-        commentButton = new DefaultToggleButton(theCommentAction);
-        viewButton = new DefaultToggleButton(theViewAction);
+		final DefaultCheckBox theCheckbox = new DefaultCheckBox(
+				ERDesignerBundle.INTELLIGENTLAYOUT);
+		theCheckbox.setSelected(ApplicationPreferences.getInstance()
+				.isIntelligentLayout());
+		theCheckbox.addActionListener(new ActionListener() {
 
-        ButtonGroup theGroup = new ButtonGroup();
-        theGroup.add(handButton);
-        theGroup.add(relationButton);
-        theGroup.add(entityButton);
-        theGroup.add(commentButton);
-        theGroup.add(viewButton);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setIntelligentLayoutEnabled(theCheckbox.isSelected());
+			}
 
-        theToolBar.add(handButton);
-        theToolBar.add(entityButton);
-        theToolBar.add(relationButton);
-        theToolBar.add(commentButton);
-        theToolBar.add(viewButton);
+		});
 
-        final DefaultCheckBox theCheckbox = new DefaultCheckBox(
-                ERDesignerBundle.INTELLIGENTLAYOUT);
-        theCheckbox.setSelected(ApplicationPreferences.getInstance()
-                .isIntelligentLayout());
-        theCheckbox.addActionListener(new ActionListener() {
+		theToolBar.addSeparator();
+		theToolBar.add(theCheckbox);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setIntelligentLayoutEnabled(theCheckbox.isSelected());
-            }
+		worldConnector.initTitle();
 
-        });
+		updateRecentlyUsedMenuEntries();
 
-        theToolBar.addSeparator();
-        theToolBar.add(theCheckbox);
+		setupViewForNothing();
 
-        worldConnector.initTitle();
+		UIInitializer.getInstance().initialize(scrollPane);
+	}
 
-        updateRecentlyUsedMenuEntries();
+	protected boolean checkForValidConnection() {
 
-        setupViewForNothing();
-
-        UIInitializer.getInstance().initialize(scrollPane);
-    }
-
-    protected boolean checkForValidConnection() {
-
-        if (model.getDialect() == null) {
-            MessagesHelper
-                    .displayErrorMessage(
-                            graph,
-                            getResourceHelper()
-                                    .getText(
-                                            ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Show all subject areas.
-     */
-    protected void commandShowAllSubjectAreas() {
-        for (SubjectArea theArea : model.getSubjectAreas()) {
-            commandShowSubjectArea(theArea);
-        }
-    }
-
-    /**
-     * Hide all subject areas.
-     */
-    protected void commandHideAllSubjectAreas() {
-        for (SubjectArea theArea : model.getSubjectAreas()) {
-            commandHideSubjectArea(theArea);
-        }
-    }
-
-    /**
-     * Hide a specific subject area.
-     *
-     * @param aArea the area
-     */
-    protected void commandHideSubjectArea(SubjectArea aArea) {
-        for (Object theItem : graph.getGraphLayoutCache().getVisibleSet()) {
-            if (theItem instanceof SubjectAreaCell) {
-                SubjectAreaCell theCell = (SubjectAreaCell) theItem;
-                if (theCell.getUserObject().equals(aArea)) {
-                    aArea.setVisible(false);
-
-                    Object[] theCellObjects = new Object[]{theCell};
-                    graph.getGraphLayoutCache().hideCells(theCellObjects, true);
-                }
-            }
-        }
-        updateSubjectAreasMenu();
-    }
-
-    /**
-     * Show a specific subject area.
-     *
-     * @param aArea the subject area to show
-     */
-    protected void commandShowSubjectArea(SubjectArea aArea) {
-        for (CellView theCellView : graph.getGraphLayoutCache()
-                .getHiddenCellViews()) {
-            Object theItem = theCellView.getCell();
-            if (theItem instanceof SubjectAreaCell) {
-                SubjectAreaCell theCell = (SubjectAreaCell) theItem;
-                if (theCell.getUserObject().equals(aArea)) {
-                    aArea.setVisible(true);
-
-                    Object[] theCellObjects = DefaultGraphModel.getDescendants(
-                            graph.getModel(), new Object[]{theCell})
-                            .toArray();
-
-                    graph.getGraphLayoutCache().showCells(theCellObjects, true);
-                    for (Object theSingleCell : theCellObjects) {
-                        if (theSingleCell instanceof TableCell) {
-                            TableCell theTableCell = (TableCell) theSingleCell;
-                            Table theTable = (Table) theTableCell
-                                    .getUserObject();
-
-                            theTableCell
-                                    .transferPropertiesToAttributes(theTable);
-                            graph.getGraphLayoutCache().edit(
-                                    new Object[]{theTableCell},
-                                    theTableCell.getAttributes());
-                        }
-                        if (theSingleCell instanceof ViewCell) {
-                            ViewCell theViewCell = (ViewCell) theSingleCell;
-                            View theView = (View) theViewCell.getUserObject();
-
-                            theViewCell.transferPropertiesToAttributes(theView);
-                            graph.getGraphLayoutCache().edit(
-                                    new Object[]{theViewCell},
-                                    theViewCell.getAttributes());
-                        }
-                        if (theSingleCell instanceof CommentCell) {
-                            CommentCell theCommentCell = (CommentCell) theSingleCell;
-                            Comment theComment = (Comment) theCommentCell
-                                    .getUserObject();
-
-                            theCommentCell
-                                    .transferPropertiesToAttributes(theComment);
-                            graph.getGraphLayoutCache().edit(
-                                    new Object[]{theCommentCell},
-                                    theCommentCell.getAttributes());
-                        }
-                    }
-                }
-            }
-        }
-        updateSubjectAreasMenu();
-    }
-
-    /**
-     * Update the create documentation menu.
-     */
-    protected void updateDocumentationMenu() {
-        documentationMenu.removeAll();
-
-        File theReportsFile = ApplicationPreferences.getInstance()
-                .getReportsDirectory();
-        try {
-            Map<File, String> theReports = JasperUtils
-                    .findReportsInDirectory(theReportsFile);
-            for (Map.Entry<File, String> theEntry : theReports.entrySet()) {
-
-                final File theJRXMLFile = theEntry.getKey();
-                JMenuItem theItem = new JMenuItem();
-                theItem.setText(theEntry.getValue());
-                theItem.addActionListener(new GenerateDocumentationCommand(
-                        this, theJRXMLFile));
-
-                documentationMenu.add(theItem);
-            }
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        }
-        UIInitializer.getInstance().initialize(documentationMenu);
-    }
-
-    /**
-     * Update the subject area menu.
-     */
-    protected void updateSubjectAreasMenu() {
-        subjectAreas.removeAll();
-        subjectAreas.add(new DefaultMenuItem(new DefaultAction(
-                new ActionEventProcessor() {
-
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandShowAllSubjectAreas();
-                    }
-
-                }, this, ERDesignerBundle.SHOWALL)));
-        subjectAreas.add(new DefaultMenuItem(new DefaultAction(
-                new ActionEventProcessor() {
-
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandHideAllSubjectAreas();
-                    }
-
-                }, this, ERDesignerBundle.HIDEALL)));
-
-        if (model.getSubjectAreas().size() > 0) {
-            subjectAreas.addSeparator();
-
-            for (SubjectArea theArea : model.getSubjectAreas()) {
-                final JCheckBoxMenuItem theItem = new JCheckBoxMenuItem();
-                theItem.setText(theArea.getName());
-                theItem.setState(theArea.isVisible());
-                final SubjectArea theFinalArea = theArea;
-                theItem.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (theItem.getState()) {
-                            commandShowSubjectArea(theFinalArea);
-                        } else {
-                            commandHideSubjectArea(theFinalArea);
-                        }
-                    }
-
-                });
-
-                subjectAreas.add(theItem);
-                UIInitializer.getInstance().initialize(theItem);
-            }
-        }
-
-        UIInitializer.getInstance().initialize(subjectAreas);
-
-        OutlineComponent.getDefault().refresh(model, null);
-    }
-
-    protected void updateRecentlyUsedMenuEntries() {
-
-        lruMenu.removeAll();
-        storedConnections.removeAll();
-
-        List<File> theFiles = ApplicationPreferences.getInstance()
-                .getRecentlyUsedFiles();
-        for (final File theFile : theFiles) {
-            JMenuItem theItem = new JMenuItem(theFile.toString());
-            theItem.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    new OpenFromFileCommand(ERDesignerComponent.this)
-                            .execute(theFile);
-                }
-            });
-
-            lruMenu.add(theItem);
-            UIInitializer.getInstance().initialize(theItem);
-        }
-
-        for (final ConnectionDescriptor theConnectionInfo : ApplicationPreferences
-                .getInstance().getRecentlyUsedConnections()) {
-            JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
-            theItem1.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    new DBConnectionCommand(ERDesignerComponent.this)
-                            .execute(theConnectionInfo);
-                }
-            });
-
-            storedConnections.add(theItem1);
-            UIInitializer.getInstance().initialize(theItem1);
-        }
-    }
-
-    protected void addCurrentConnectionToConnectionHistory() {
-
-        ConnectionDescriptor theConnection = model
-                .createConnectionHistoryEntry();
-        addConnectionToConnectionHistory(theConnection);
-
-        editCustomTypes.setEnabled(model.getDialect().isSupportsCustomTypes());
-    }
-
-    protected void addConnectionToConnectionHistory(
-            ConnectionDescriptor aConnection) {
-
-        ApplicationPreferences.getInstance().addRecentlyUsedConnection(
-                aConnection);
-
-        updateRecentlyUsedMenuEntries();
-    }
-
-    protected void commandNew() {
-
-        Model theModel = worldConnector.createNewModel();
-        setModel(theModel);
-
-        setupViewForNothing();
-
-        worldConnector.setStatusText(getResourceHelper().getText(
-                ERDesignerBundle.NEWMODELCREATED));
-    }
-
-    /**
-     * Setup the view for a model loaded from repository.
-     *
-     * @param aDescriptor the entry descriptor
-     */
-    protected void setupViewFor(RepositoryEntryDescriptor aDescriptor) {
-
-        currentEditingFile = null;
-        currentRepositoryEntry = aDescriptor;
-        worldConnector.initTitle(aDescriptor.getName());
-        if (worldConnector.supportsRepositories()) {
-            repositoryUtilsMenu.setEnabled(true);
-        }
-    }
-
-    /**
-     * Setup the view for a model loaded from file.
-     *
-     * @param aFile the file
-     */
-    protected void setupViewFor(File aFile) {
-
-        currentEditingFile = aFile;
-        currentRepositoryEntry = null;
-        worldConnector.initTitle(aFile.toString());
-        if (worldConnector.supportsRepositories()) {
-            repositoryUtilsMenu.setEnabled(false);
-        }
-    }
-
-    /**
-     * Setup the view for an empty model.
-     */
-    protected void setupViewForNothing() {
-
-        currentEditingFile = null;
-        currentRepositoryEntry = null;
-        if (worldConnector.supportsRepositories()) {
-            repositoryUtilsMenu.setEnabled(false);
-        }
-        worldConnector.initTitle();
-    }
-
-    /**
-     * Set the current editing tool.
-     *
-     * @param aTool the tool
-     */
-    protected void commandSetTool(ToolEnum aTool) {
-        if (aTool.equals(ToolEnum.HAND)) {
-
-            if (!handButton.isSelected()) {
-                handButton.setSelected(true);
-            }
-
-            graph.setTool(new HandTool(this, graph));
-        }
-        if (aTool.equals(ToolEnum.ENTITY)) {
-
-            if (!entityButton.isSelected()) {
-                entityButton.setSelected(true);
-            }
-
-            graph.setTool(new EntityTool(graph));
-        }
-        if (aTool.equals(ToolEnum.RELATION)) {
-
-            if (!relationButton.isSelected()) {
-                relationButton.setSelected(true);
-            }
-
-            graph.setTool(new RelationTool(graph));
-        }
-        if (aTool.equals(ToolEnum.COMMENT)) {
-
-            if (!commentButton.isSelected()) {
-                commentButton.setSelected(true);
-            }
-
-            graph.setTool(new CommentTool(graph));
-        }
-        if (aTool.equals(ToolEnum.VIEW)) {
-
-            if (!viewButton.isSelected()) {
-                viewButton.setSelected(true);
-            }
-
-            graph.setTool(new ViewTool(graph));
-        }
-    }
-
-    protected void commandSetZoom(ZoomInfo aZoomInfo) {
-        graph.setScale(aZoomInfo.getValue());
-        zoomBox.setSelectedItem(aZoomInfo);
-
-        repaintGraph();
-    }
-
-    protected void commandZoomIn() {
-        int theIndex = zoomBox.getSelectedIndex();
-        if (theIndex > 0) {
-            theIndex--;
-            zoomBox.setSelectedIndex(theIndex);
-            commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
-        }
-    }
-
-    protected void commandZoomOut() {
-        int theIndex = zoomBox.getSelectedIndex();
-        if (theIndex < zoomBox.getItemCount() - 1) {
-            theIndex++;
-            zoomBox.setSelectedIndex(theIndex);
-            commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
-        }
-    }
-
-    /**
-     * Display the application help screen.
-     */
-    protected void commandShowHelp() {
-        try {
-            File theFile = ApplicationPreferences.getInstance()
-                    .getOnlineHelpPDFFile();
-            Desktop.getDesktop().open(theFile);
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        }
-    }
-
-    public ResourceHelper getResourceHelper() {
-        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
-
-    /**
-     * Factory Method to create a new graph model and initialize it with the
-     * required listener.
-     *
-     * @return the newly created graphmodel
-     */
-    private GraphModel createNewGraphModel() {
-        GraphModel theModel = new DefaultGraphModel();
-        theModel.addGraphModelListener(new ERDesignerGraphModelListener());
-        return theModel;
-    }
-
-    /**
-     * Factory Method for the graph layout cache.
-     *
-     * @param aModel the graph model
-     * @return the newly created graph layout cache
-     */
-    private GraphLayoutCache createNewGraphlayoutCache(GraphModel aModel) {
-        GraphLayoutCache theCache = new GraphLayoutCache(aModel,
-                new CellViewFactory(), true);
-        theCache.setAutoSizeOnValueChange(true);
-        return theCache;
-    }
-
-    /**
-     * Set the current editing model.
-     *
-     * @param aModel the model
-     */
-    public void setModel(Model aModel) {
-
-        try {
-            setIntelligentLayoutEnabled(false);
-
-            model = aModel;
-
-            GraphModel theGraphModel = createNewGraphModel();
-
-            graph = new ERDesignerGraph(model, theGraphModel,
-                    createNewGraphlayoutCache(theGraphModel)) {
-
-                @Override
-                public void commandNewTable(Point2D aLocation) {
-                    new AddTableCommand(ERDesignerComponent.this, aLocation,
-                            null, false).execute();
-                }
-
-                @Override
-                public void commandNewComment(Point2D aLocation) {
-                    new AddCommentCommand(ERDesignerComponent.this, aLocation)
-                            .execute();
-                }
-
-                @Override
-                public void commandNewView(Point2D aLocation) {
-                    new AddViewCommand(ERDesignerComponent.this, aLocation)
-                            .execute();
-                }
-
-                @Override
-                public void commandHideCells(List<HideableCell> cellsToHide) {
-                    ERDesignerComponent.this.commandHideCells(cellsToHide);
-                }
-
-                @Override
-                public void commandAddToNewSubjectArea(
-                        List<DefaultGraphCell> aCells) {
-                    super.commandAddToNewSubjectArea(aCells);
-                    updateSubjectAreasMenu();
-                }
-
-                @Override
-                public void commandNewTableAndRelation(Point2D aLocation,
-                                                       TableCell aExportingTableCell, boolean aNewTableIsChild) {
-                    new AddTableCommand(ERDesignerComponent.this, aLocation,
-                            aExportingTableCell, aNewTableIsChild).execute();
-                }
-
-                @Override
-                public void commandNewRelation(TableCell aImportingCell,
-                                               TableCell aExportingCell) {
-                    new AddRelationCommand(ERDesignerComponent.this,
-                            aImportingCell, aExportingCell).execute();
-                }
-
-                @Override
-                public void commandLocateInOutline(Object object) {
-                    OutlineComponent.getDefault().locateObject(object);
-                }
-
-                @Override
-                public void refreshOutline() {
-                    OutlineComponent.getDefault().refresh(model, null);
-                }
-            };
-
-            graph.setUI(new ERDesignerGraphUI(this));
-            graph
-                    .addGraphSelectionListener(new ERDesignerGraphSelectionListener());
-
-            SQLComponent.getDefault().resetDisplay();
-
-            displayAllMenuItem.setSelected(true);
-            displayNaturalOrderMenuItem.setSelected(true);
-            displayCommentsMenuItem.setSelected(false);
-            if (aModel != null && aModel.getDialect() != null) {
-                editCustomTypes.setEnabled(aModel.getDialect()
-                        .isSupportsCustomTypes());
-            } else {
-                editCustomTypes.setEnabled(false);
-            }
-
-            commandSetDisplayGridState(displayGridMenuItem.isSelected());
-            commandSetDisplayCommentsState(false);
-            commandSetDisplayLevel(DisplayLevel.ALL);
-            commandSetDisplayOrder(DisplayOrder.NATURAL);
-
-            scrollPane.getViewport().removeAll();
-            scrollPane.getViewport().add(graph);
-
-            refreshPreferences();
-
-            fillGraph(aModel);
-
-            OutlineComponent.getDefault().setModel(aModel);
-
-        } finally {
-
-            commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
-            commandSetTool(ToolEnum.HAND);
-
-            updateSubjectAreasMenu();
-
-            setIntelligentLayoutEnabled(ApplicationPreferences.getInstance()
-                    .isIntelligentLayout());
-        }
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    private static final class GraphModelMappingInfo {
-        final Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
-
-        final Map<View, ViewCell> modelViewCells = new HashMap<View, ViewCell>();
-
-        final Map<Comment, CommentCell> modelCommentCells = new HashMap<Comment, CommentCell>();
-    }
-
-    private GraphModelMappingInfo fillGraph(Model aModel) {
-
-        GraphModel theGraphModel = createNewGraphModel();
-
-        graph.setModel(theGraphModel);
-        graph.setGraphLayoutCache(createNewGraphlayoutCache(theGraphModel));
-
-        GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
-
-        for (Table theTable : aModel.getTables()) {
-            TableCell theCell = new TableCell(theTable);
-            theCell.transferPropertiesToAttributes(theTable);
-
-            graph.getGraphLayoutCache().insert(theCell);
-
-            theInfo.modelTableCells.put(theTable, theCell);
-        }
-
-        for (View theView : aModel.getViews()) {
-
-            try {
-                SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            ViewCell theCell = new ViewCell(theView);
-            theCell.transferPropertiesToAttributes(theView);
-
-            graph.getGraphLayoutCache().insert(theCell);
-
-            theInfo.modelViewCells.put(theView, theCell);
-        }
-
-        for (Comment theComment : aModel.getComments()) {
-            CommentCell theCell = new CommentCell(theComment);
-            theCell.transferPropertiesToAttributes(theComment);
-
-            graph.getGraphLayoutCache().insert(theCell);
-
-            theInfo.modelCommentCells.put(theComment, theCell);
-        }
-
-        for (Relation theRelation : aModel.getRelations()) {
-
-            TableCell theImportingCell = theInfo.modelTableCells
-                    .get(theRelation.getImportingTable());
-            TableCell theExportingCell = theInfo.modelTableCells
-                    .get(theRelation.getExportingTable());
-
-            RelationEdge theCell = new RelationEdge(theRelation,
-                    theImportingCell, theExportingCell);
-            theCell.transferPropertiesToAttributes(theRelation);
-
-            graph.getGraphLayoutCache().insert(theCell);
-        }
-
-        for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
-
-            SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(
-                    theSubjectArea);
-            List<ModelCell> theTableCells = new ArrayList<ModelCell>();
-
-            for (Table theTable : theSubjectArea.getTables()) {
-                theTableCells.add(theInfo.modelTableCells.get(theTable));
-            }
-
-            for (View theView : theSubjectArea.getViews()) {
-                theTableCells.add(theInfo.modelViewCells.get(theView));
-            }
-
-            for (Comment theComment : theSubjectArea.getComments()) {
-                theTableCells.add(theInfo.modelCommentCells.get(theComment));
-            }
-
-            graph.getGraphLayoutCache().insertGroup(theSubjectAreaCell,
-                    theTableCells.toArray());
-            graph.getGraphLayoutCache().toBack(
-                    new Object[]{theSubjectAreaCell});
-
-            if (!theSubjectArea.isVisible()) {
-                commandHideSubjectArea(theSubjectArea);
-            }
-
-        }
-
-        return theInfo;
-    }
-
-    /**
-     * Hide a list of specific cells.
-     *
-     * @param aCellsToHide the cells to hide
-     */
-    protected void commandHideCells(List<HideableCell> aCellsToHide) {
-        for (HideableCell theCell : aCellsToHide) {
-            if (theCell instanceof SubjectAreaCell) {
-                SubjectAreaCell theSA = (SubjectAreaCell) theCell;
-                SubjectArea theArea = (SubjectArea) theSA.getUserObject();
-
-                commandHideSubjectArea(theArea);
-            }
-        }
-
-        updateSubjectAreasMenu();
-    }
-
-    protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
-
-        DefaultAction theAllInOneAction = new DefaultAction(
-                ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
-        DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
-        theAllInOneAction.addActionListener(new ExportGraphicsCommand(this,
-                aExporter, ExportType.ALL_IN_ONE));
-        aMenu.add(theAllInOneItem);
-
-        DefaultAction theOnePerTableAction = new DefaultAction(
-                ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
-        DefaultMenuItem theOnePerTable = new DefaultMenuItem(
-                theOnePerTableAction);
-        theOnePerTableAction.addActionListener(new ExportGraphicsCommand(this,
-                aExporter, ExportType.ONE_PER_FILE));
-
-        aMenu.add(theOnePerTable);
-    }
-
-    public JComponent getDetailComponent() {
-        return scrollPane;
-    }
-
-    /**
-     * Save the preferences.
-     */
-    public void savePreferences() {
-        try {
-            ApplicationPreferences.getInstance().store();
-        } catch (Exception e) {
-            worldConnector.notifyAboutException(e);
-        }
-    }
-
-    public ERDesignerWorldConnector getWorldConnector() {
-        return worldConnector;
-    }
-
-    protected void commandRemoveSubjectArea(SubjectAreaCell aCell) {
-        graph.getGraphLayoutCache().remove(new Object[]{aCell});
-        model.removeSubjectArea((SubjectArea) aCell.getUserObject());
-
-        updateSubjectAreasMenu();
-    }
-
-    protected void commandUpdateSubjectArea(SubjectAreaCell aCell) {
-
-        SubjectArea theArea = (SubjectArea) aCell.getUserObject();
-        theArea.getTables().clear();
-        theArea.getViews().clear();
-        theArea.getComments().clear();
-        for (Object theObject : aCell.getChildren()) {
-            if (theObject instanceof TableCell) {
-                theArea.getTables().add(
-                        (Table) ((TableCell) theObject).getUserObject());
-            }
-            if (theObject instanceof ViewCell) {
-                theArea.getViews().add(
-                        (View) ((ViewCell) theObject).getUserObject());
-            }
-            if (theObject instanceof CommentCell) {
-                theArea.getComments().add(
-                        (Comment) ((CommentCell) theObject).getUserObject());
-            }
-        }
-
-        updateSubjectAreasMenu();
-    }
-
-    /**
-     * Toggle the include comments view state.
-     *
-     * @param aState true if comments shall be displayed, else false
-     */
-    protected void commandSetDisplayCommentsState(boolean aState) {
-        graph.setDisplayComments(aState);
-        repaintGraph();
-    }
-
-    /**
-     * Toggle the include comments view state.
-     *
-     * @param aState true if comments shall be displayed, else false
-     */
-    protected void commandSetDisplayGridState(boolean aState) {
-        graph.setGridEnabled(aState);
-        graph.setGridVisible(aState);
-        repaintGraph();
-    }
-
-    /**
-     * The preferences where changed, so they need to be reloaded.
-     *
-     * @param aPreferences the preferences
-     */
-    public void refreshPreferences() {
-        graph.setGridSize(ApplicationPreferences.getInstance().getGridSize());
-        repaintGraph();
-    }
-
-    /**
-     * Set the current display level.
-     *
-     * @param aLevel the level
-     */
-    protected void commandSetDisplayLevel(DisplayLevel aLevel) {
-        graph.setDisplayLevel(aLevel);
-        repaintGraph();
-    }
-
-    /**
-     * Set the current display order.
-     *
-     * @param aOrder the display order
-     */
-    protected void commandSetDisplayOrder(DisplayOrder aOrder) {
-        graph.setDisplayOrder(aOrder);
-        repaintGraph();
-    }
-
-    /**
-     * Repaint the current graph.
-     */
-    public void repaintGraph() {
-        for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
-            graph.updateAutoSize(theView);
-        }
-        graph.getGraphLayoutCache().reload();
-        graph.getGraphLayoutCache().update(
-                graph.getGraphLayoutCache().getAllViews());
-
-        graph.addOffscreenDirty(new Rectangle2D.Double(0, 0, scrollPane
-                .getWidth(), scrollPane.getHeight()));
-        graph.repaint();
-    }
-
-    /**
-     * Hook method. Will be called if a cell was successfully edited.
-     */
-    public void commandNotifyAboutEdit() {
-        updateSubjectAreasMenu();
-    }
-
-    /**
-     * Set the status of the intelligent layout functionality.
-     *
-     * @param aStatus true if enabled, else false
-     */
-    protected void setIntelligentLayoutEnabled(boolean aStatus) {
-        if (!aStatus) {
-            if (layoutThread != null) {
-                layoutThread.interrupt();
-                while (layoutThread.getState() != Thread.State.TERMINATED) {
-                }
-            }
-        } else {
-            layoutThread = new LayoutThread();
-            layoutThread.start();
-        }
-        ApplicationPreferences.getInstance().setIntelligentLayout(aStatus);
-    }
-
-    /**
-     * Set the currently selected cell depending on its user object.
-     *
-     * @param aItem the user object.
-     */
-    public void setSelectedObject(ModelItem aItem) {
-        DefaultGraphCell theCell = findCellforObject(aItem);
-        if (theCell != null) {
-            graph.setSelectionCell(theCell);
-            graph.scrollCellToVisible(theCell);
-        }
-    }
-
-    public DefaultGraphCell findCellforObject(ModelItem aItem) {
-        for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
-            DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
-            if (aItem.equals(theCell.getUserObject())) {
-                return theCell;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Add a list of items to a new subject area.
-     *
-     * @param aItems the items to be added
-     */
-    public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
-
-        List<DefaultGraphCell> theCells = getCellsFor(aItems);
-
-        if (theCells.size() > 0) {
-            graph.commandAddToNewSubjectArea(theCells);
-        }
-    }
-
-    public void commandDelete(List<ModelItem> aItems) {
-
-        List<DefaultGraphCell> theCells = getCellsFor(aItems);
-
-        if (theCells.size() > 0) {
-
-            if (MessagesHelper.displayQuestionMessage(graph,
-                    ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-                try {
-                    graph.commandDeleteCells(theCells);
-                } catch (VetoException ex) {
-                    MessagesHelper.displayErrorMessage(graph,
-                            getResourceHelper().getFormattedText(
-                                    ERDesignerBundle.CANNOTDELETEMODELITEM,
-                                    ex.getMessage()));
-                }
-            }
-        }
-    }
-
-    private List<DefaultGraphCell> getCellsFor(List<ModelItem> aItems) {
-        List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
-        for (ModelItem theItem : aItems) {
-            DefaultGraphCell theCell = findCellforObject(theItem);
-            if (theCell != null) {
-                theCells.add(theCell);
-            }
-        }
-        return theCells;
-    }
+		if (model.getDialect() == null) {
+			MessagesHelper
+					.displayErrorMessage(
+							graph,
+							getResourceHelper()
+									.getText(
+											ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Show all subject areas.
+	 */
+	protected void commandShowAllSubjectAreas() {
+		for (SubjectArea theArea : model.getSubjectAreas()) {
+			commandShowSubjectArea(theArea);
+		}
+	}
+
+	/**
+	 * Hide all subject areas.
+	 */
+	protected void commandHideAllSubjectAreas() {
+		for (SubjectArea theArea : model.getSubjectAreas()) {
+			commandHideSubjectArea(theArea);
+		}
+	}
+
+	/**
+	 * Hide a specific subject area.
+	 *
+	 * @param aArea the area
+	 */
+	protected void commandHideSubjectArea(SubjectArea aArea) {
+		for (Object theItem : graph.getGraphLayoutCache().getVisibleSet()) {
+			if (theItem instanceof SubjectAreaCell) {
+				SubjectAreaCell theCell = (SubjectAreaCell) theItem;
+				if (theCell.getUserObject().equals(aArea)) {
+					aArea.setVisible(false);
+
+					Object[] theCellObjects = new Object[]{theCell};
+					graph.getGraphLayoutCache().hideCells(theCellObjects, true);
+				}
+			}
+		}
+		updateSubjectAreasMenu();
+	}
+
+	/**
+	 * Show a specific subject area.
+	 *
+	 * @param aArea the subject area to show
+	 */
+	protected void commandShowSubjectArea(SubjectArea aArea) {
+		for (CellView theCellView : graph.getGraphLayoutCache()
+				.getHiddenCellViews()) {
+			Object theItem = theCellView.getCell();
+			if (theItem instanceof SubjectAreaCell) {
+				SubjectAreaCell theCell = (SubjectAreaCell) theItem;
+				if (theCell.getUserObject().equals(aArea)) {
+					aArea.setVisible(true);
+
+					Object[] theCellObjects = DefaultGraphModel.getDescendants(
+							graph.getModel(), new Object[]{theCell})
+							.toArray();
+
+					graph.getGraphLayoutCache().showCells(theCellObjects, true);
+					for (Object theSingleCell : theCellObjects) {
+						if (theSingleCell instanceof TableCell) {
+							TableCell theTableCell = (TableCell) theSingleCell;
+							Table theTable = (Table) theTableCell
+									.getUserObject();
+
+							theTableCell
+									.transferPropertiesToAttributes(theTable);
+							graph.getGraphLayoutCache().edit(
+									new Object[]{theTableCell},
+									theTableCell.getAttributes());
+						}
+						if (theSingleCell instanceof ViewCell) {
+							ViewCell theViewCell = (ViewCell) theSingleCell;
+							View theView = (View) theViewCell.getUserObject();
+
+							theViewCell.transferPropertiesToAttributes(theView);
+							graph.getGraphLayoutCache().edit(
+									new Object[]{theViewCell},
+									theViewCell.getAttributes());
+						}
+						if (theSingleCell instanceof CommentCell) {
+							CommentCell theCommentCell = (CommentCell) theSingleCell;
+							Comment theComment = (Comment) theCommentCell
+									.getUserObject();
+
+							theCommentCell
+									.transferPropertiesToAttributes(theComment);
+							graph.getGraphLayoutCache().edit(
+									new Object[]{theCommentCell},
+									theCommentCell.getAttributes());
+						}
+					}
+				}
+			}
+		}
+		updateSubjectAreasMenu();
+	}
+
+	/**
+	 * Update the create documentation menu.
+	 */
+	protected void updateDocumentationMenu() {
+		documentationMenu.removeAll();
+
+		File theReportsFile = ApplicationPreferences.getInstance()
+				.getReportsDirectory();
+		try {
+			Map<File, String> theReports = JasperUtils
+					.findReportsInDirectory(theReportsFile);
+			for (Map.Entry<File, String> theEntry : theReports.entrySet()) {
+
+				final File theJRXMLFile = theEntry.getKey();
+				JMenuItem theItem = new JMenuItem();
+				theItem.setText(theEntry.getValue());
+				theItem.addActionListener(new GenerateDocumentationCommand(
+						this, theJRXMLFile));
+
+				documentationMenu.add(theItem);
+			}
+		} catch (Exception e) {
+			worldConnector.notifyAboutException(e);
+		}
+		UIInitializer.getInstance().initialize(documentationMenu);
+	}
+
+	/**
+	 * Update the subject area menu.
+	 */
+	protected void updateSubjectAreasMenu() {
+		subjectAreas.removeAll();
+		subjectAreas.add(new DefaultMenuItem(new DefaultAction(
+				new ActionEventProcessor() {
+
+			@Override
+					public void processActionEvent(ActionEvent aEvent) {
+						commandShowAllSubjectAreas();
+					}
+
+				}, this, ERDesignerBundle.SHOWALL)));
+		subjectAreas.add(new DefaultMenuItem(new DefaultAction(
+				new ActionEventProcessor() {
+
+			@Override
+					public void processActionEvent(ActionEvent aEvent) {
+						commandHideAllSubjectAreas();
+					}
+
+				}, this, ERDesignerBundle.HIDEALL)));
+
+		if (model.getSubjectAreas().size() > 0) {
+			subjectAreas.addSeparator();
+
+			for (SubjectArea theArea : model.getSubjectAreas()) {
+				final JCheckBoxMenuItem theItem = new JCheckBoxMenuItem();
+				theItem.setText(theArea.getName());
+				theItem.setState(theArea.isVisible());
+				final SubjectArea theFinalArea = theArea;
+				theItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (theItem.getState()) {
+							commandShowSubjectArea(theFinalArea);
+						} else {
+							commandHideSubjectArea(theFinalArea);
+						}
+					}
+
+				});
+
+				subjectAreas.add(theItem);
+				UIInitializer.getInstance().initialize(theItem);
+			}
+		}
+
+		UIInitializer.getInstance().initialize(subjectAreas);
+
+		OutlineComponent.getDefault().refresh(model, null);
+	}
+
+	protected void updateRecentlyUsedMenuEntries() {
+
+		lruMenu.removeAll();
+		storedConnections.removeAll();
+
+		List<File> theFiles = ApplicationPreferences.getInstance()
+				.getRecentlyUsedFiles();
+		for (final File theFile : theFiles) {
+			JMenuItem theItem = new JMenuItem(theFile.toString());
+			theItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new OpenFromFileCommand(ERDesignerComponent.this)
+							.execute(theFile);
+				}
+			});
+
+			lruMenu.add(theItem);
+			UIInitializer.getInstance().initialize(theItem);
+		}
+
+		for (final ConnectionDescriptor theConnectionInfo : ApplicationPreferences
+				.getInstance().getRecentlyUsedConnections()) {
+			JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
+			theItem1.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new DBConnectionCommand(ERDesignerComponent.this)
+							.execute(theConnectionInfo);
+				}
+			});
+
+			storedConnections.add(theItem1);
+			UIInitializer.getInstance().initialize(theItem1);
+		}
+	}
+
+	protected void addCurrentConnectionToConnectionHistory() {
+
+		ConnectionDescriptor theConnection = model
+				.createConnectionHistoryEntry();
+		addConnectionToConnectionHistory(theConnection);
+
+		editCustomTypes.setEnabled(model.getDialect().isSupportsCustomTypes());
+	}
+
+	protected void addConnectionToConnectionHistory(
+			ConnectionDescriptor aConnection) {
+
+		ApplicationPreferences.getInstance().addRecentlyUsedConnection(
+				aConnection);
+
+		updateRecentlyUsedMenuEntries();
+	}
+
+	protected void commandNew() {
+
+		Model theModel = worldConnector.createNewModel();
+		setModel(theModel);
+
+		setupViewForNothing();
+
+		worldConnector.setStatusText(getResourceHelper().getText(
+				ERDesignerBundle.NEWMODELCREATED));
+	}
+
+	/**
+	 * Setup the view for a model loaded from repository.
+	 *
+	 * @param aDescriptor the entry descriptor
+	 */
+	protected void setupViewFor(RepositoryEntryDescriptor aDescriptor) {
+
+		currentEditingFile = null;
+		currentRepositoryEntry = aDescriptor;
+		worldConnector.initTitle(aDescriptor.getName());
+		if (worldConnector.supportsRepositories()) {
+			repositoryUtilsMenu.setEnabled(true);
+		}
+	}
+
+	/**
+	 * Setup the view for a model loaded from file.
+	 *
+	 * @param aFile the file
+	 */
+	protected void setupViewFor(File aFile) {
+
+		currentEditingFile = aFile;
+		currentRepositoryEntry = null;
+		worldConnector.initTitle(aFile.toString());
+		if (worldConnector.supportsRepositories()) {
+			repositoryUtilsMenu.setEnabled(false);
+		}
+	}
+
+	/**
+	 * Setup the view for an empty model.
+	 */
+	protected void setupViewForNothing() {
+
+		currentEditingFile = null;
+		currentRepositoryEntry = null;
+		if (worldConnector.supportsRepositories()) {
+			repositoryUtilsMenu.setEnabled(false);
+		}
+		worldConnector.initTitle();
+	}
+
+	/**
+	 * Set the current editing tool.
+	 *
+	 * @param aTool the tool
+	 */
+	protected void commandSetTool(ToolEnum aTool) {
+		if (aTool.equals(ToolEnum.HAND)) {
+
+			if (!handButton.isSelected()) {
+				handButton.setSelected(true);
+			}
+
+			graph.setTool(new HandTool(this, graph));
+		}
+		if (aTool.equals(ToolEnum.ENTITY)) {
+
+			if (!entityButton.isSelected()) {
+				entityButton.setSelected(true);
+			}
+
+			graph.setTool(new EntityTool(graph));
+		}
+		if (aTool.equals(ToolEnum.RELATION)) {
+
+			if (!relationButton.isSelected()) {
+				relationButton.setSelected(true);
+			}
+
+			graph.setTool(new RelationTool(graph));
+		}
+		if (aTool.equals(ToolEnum.COMMENT)) {
+
+			if (!commentButton.isSelected()) {
+				commentButton.setSelected(true);
+			}
+
+			graph.setTool(new CommentTool(graph));
+		}
+		if (aTool.equals(ToolEnum.VIEW)) {
+
+			if (!viewButton.isSelected()) {
+				viewButton.setSelected(true);
+			}
+
+			graph.setTool(new ViewTool(graph));
+		}
+	}
+
+	protected void commandSetZoom(ZoomInfo aZoomInfo) {
+		graph.setScale(aZoomInfo.getValue());
+		zoomBox.setSelectedItem(aZoomInfo);
+
+		repaintGraph();
+	}
+
+	protected void commandZoomIn() {
+		int theIndex = zoomBox.getSelectedIndex();
+		if (theIndex > 0) {
+			theIndex--;
+			zoomBox.setSelectedIndex(theIndex);
+			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+		}
+	}
+
+	protected void commandZoomOut() {
+		int theIndex = zoomBox.getSelectedIndex();
+		if (theIndex < zoomBox.getItemCount() - 1) {
+			theIndex++;
+			zoomBox.setSelectedIndex(theIndex);
+			commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+		}
+	}
+
+	/**
+	 * Display the application help screen.
+	 */
+	protected void commandShowHelp() {
+		try {
+			File theFile = ApplicationPreferences.getInstance()
+					.getOnlineHelpPDFFile();
+			Desktop.getDesktop().open(theFile);
+		} catch (Exception e) {
+			worldConnector.notifyAboutException(e);
+		}
+	}
+
+	@Override
+	public ResourceHelper getResourceHelper() {
+		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+	}
+
+	/**
+	 * Factory Method to create a new graph model and initialize it with the
+	 * required listener.
+	 *
+	 * @return the newly created graphmodel
+	 */
+	private GraphModel createNewGraphModel() {
+		GraphModel theModel = new DefaultGraphModel();
+		theModel.addGraphModelListener(new ERDesignerGraphModelListener());
+		return theModel;
+	}
+
+	/**
+	 * Factory Method for the graph layout cache.
+	 *
+	 * @param aModel the graph model
+	 * @return the newly created graph layout cache
+	 */
+	private GraphLayoutCache createNewGraphlayoutCache(GraphModel aModel) {
+		GraphLayoutCache theCache = new GraphLayoutCache(aModel,
+				new CellViewFactory(), true);
+		theCache.setAutoSizeOnValueChange(true);
+		return theCache;
+	}
+
+	/**
+	 * Set the current editing model.
+	 *
+	 * @param aModel the model
+	 */
+	public void setModel(Model aModel) {
+
+		try {
+			setIntelligentLayoutEnabled(false);
+
+			model = aModel;
+
+			GraphModel theGraphModel = createNewGraphModel();
+
+			graph = new ERDesignerGraph(model, theGraphModel,
+					createNewGraphlayoutCache(theGraphModel)) {
+
+				@Override
+				public void commandNewTable(Point2D aLocation) {
+					new AddTableCommand(ERDesignerComponent.this, aLocation,
+							null, false).execute();
+				}
+
+				@Override
+				public void commandNewComment(Point2D aLocation) {
+					new AddCommentCommand(ERDesignerComponent.this, aLocation)
+							.execute();
+				}
+
+				@Override
+				public void commandNewView(Point2D aLocation) {
+					new AddViewCommand(ERDesignerComponent.this, aLocation)
+							.execute();
+				}
+
+				@Override
+				public void commandHideCells(List<HideableCell> cellsToHide) {
+					ERDesignerComponent.this.commandHideCells(cellsToHide);
+				}
+
+				@Override
+				public void commandAddToNewSubjectArea(
+						List<DefaultGraphCell> aCells) {
+					super.commandAddToNewSubjectArea(aCells);
+					updateSubjectAreasMenu();
+				}
+
+				@Override
+				public void commandNewTableAndRelation(Point2D aLocation,
+													   TableCell aExportingTableCell, boolean aNewTableIsChild) {
+					new AddTableCommand(ERDesignerComponent.this, aLocation,
+							aExportingTableCell, aNewTableIsChild).execute();
+				}
+
+				@Override
+				public void commandNewRelation(TableCell aImportingCell,
+											   TableCell aExportingCell) {
+					new AddRelationCommand(ERDesignerComponent.this,
+							aImportingCell, aExportingCell).execute();
+				}
+
+				@Override
+				public void commandLocateInOutline(Object object) {
+					OutlineComponent.getDefault().locateObject(object);
+				}
+
+				@Override
+				public void refreshOutline() {
+					OutlineComponent.getDefault().refresh(model, null);
+				}
+			};
+
+			graph.setUI(new ERDesignerGraphUI(this));
+			graph
+					.addGraphSelectionListener(new ERDesignerGraphSelectionListener());
+
+			SQLComponent.getDefault().resetDisplay();
+
+			displayAllMenuItem.setSelected(true);
+			displayNaturalOrderMenuItem.setSelected(true);
+			displayCommentsMenuItem.setSelected(false);
+			if (aModel != null && aModel.getDialect() != null) {
+				editCustomTypes.setEnabled(aModel.getDialect()
+						.isSupportsCustomTypes());
+			} else {
+				editCustomTypes.setEnabled(false);
+			}
+
+			commandSetDisplayGridState(displayGridMenuItem.isSelected());
+			commandSetDisplayCommentsState(false);
+			commandSetDisplayLevel(DisplayLevel.ALL);
+			commandSetDisplayOrder(DisplayOrder.NATURAL);
+
+			scrollPane.getViewport().removeAll();
+			scrollPane.getViewport().add(graph);
+
+			refreshPreferences();
+
+			fillGraph(aModel);
+
+			OutlineComponent.getDefault().setModel(aModel);
+
+		} finally {
+
+			commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
+			commandSetTool(ToolEnum.HAND);
+
+			updateSubjectAreasMenu();
+
+			setIntelligentLayoutEnabled(ApplicationPreferences.getInstance()
+					.isIntelligentLayout());
+		}
+	}
+
+	public Model getModel() {
+		return model;
+	}
+
+	private static final class GraphModelMappingInfo {
+		final Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
+
+		final Map<View, ViewCell> modelViewCells = new HashMap<View, ViewCell>();
+
+		final Map<Comment, CommentCell> modelCommentCells = new HashMap<Comment, CommentCell>();
+	}
+
+	private GraphModelMappingInfo fillGraph(Model aModel) {
+
+		GraphModel theGraphModel = createNewGraphModel();
+
+		graph.setModel(theGraphModel);
+		graph.setGraphLayoutCache(createNewGraphlayoutCache(theGraphModel));
+
+		GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
+
+		for (Table theTable : aModel.getTables()) {
+			TableCell theCell = new TableCell(theTable);
+			theCell.transferPropertiesToAttributes(theTable);
+
+			graph.getGraphLayoutCache().insert(theCell);
+
+			theInfo.modelTableCells.put(theTable, theCell);
+		}
+
+		for (View theView : aModel.getViews()) {
+
+			try {
+				SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			ViewCell theCell = new ViewCell(theView);
+			theCell.transferPropertiesToAttributes(theView);
+
+			graph.getGraphLayoutCache().insert(theCell);
+
+			theInfo.modelViewCells.put(theView, theCell);
+		}
+
+		for (Comment theComment : aModel.getComments()) {
+			CommentCell theCell = new CommentCell(theComment);
+			theCell.transferPropertiesToAttributes(theComment);
+
+			graph.getGraphLayoutCache().insert(theCell);
+
+			theInfo.modelCommentCells.put(theComment, theCell);
+		}
+
+		for (Relation theRelation : aModel.getRelations()) {
+
+			TableCell theImportingCell = theInfo.modelTableCells
+					.get(theRelation.getImportingTable());
+			TableCell theExportingCell = theInfo.modelTableCells
+					.get(theRelation.getExportingTable());
+
+			RelationEdge theCell = new RelationEdge(theRelation,
+					theImportingCell, theExportingCell);
+			theCell.transferPropertiesToAttributes(theRelation);
+
+			graph.getGraphLayoutCache().insert(theCell);
+		}
+
+		for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+
+			SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(
+					theSubjectArea);
+			List<ModelCell> theTableCells = new ArrayList<ModelCell>();
+
+			for (Table theTable : theSubjectArea.getTables()) {
+				theTableCells.add(theInfo.modelTableCells.get(theTable));
+			}
+
+			for (View theView : theSubjectArea.getViews()) {
+				theTableCells.add(theInfo.modelViewCells.get(theView));
+			}
+
+			for (Comment theComment : theSubjectArea.getComments()) {
+				theTableCells.add(theInfo.modelCommentCells.get(theComment));
+			}
+
+			graph.getGraphLayoutCache().insertGroup(theSubjectAreaCell,
+					theTableCells.toArray());
+			graph.getGraphLayoutCache().toBack(
+					new Object[]{theSubjectAreaCell});
+
+			if (!theSubjectArea.isVisible()) {
+				commandHideSubjectArea(theSubjectArea);
+			}
+
+		}
+
+		return theInfo;
+	}
+
+	/**
+	 * Hide a list of specific cells.
+	 *
+	 * @param aCellsToHide the cells to hide
+	 */
+	protected void commandHideCells(List<HideableCell> aCellsToHide) {
+		for (HideableCell theCell : aCellsToHide) {
+			if (theCell instanceof SubjectAreaCell) {
+				SubjectAreaCell theSA = (SubjectAreaCell) theCell;
+				SubjectArea theArea = (SubjectArea) theSA.getUserObject();
+
+				commandHideSubjectArea(theArea);
+			}
+		}
+
+		updateSubjectAreasMenu();
+	}
+
+	protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
+
+		DefaultAction theAllInOneAction = new DefaultAction(
+				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
+		DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
+		theAllInOneAction.addActionListener(new ExportGraphicsCommand(this,
+				aExporter, ExportType.ALL_IN_ONE));
+		aMenu.add(theAllInOneItem);
+
+		DefaultAction theOnePerTableAction = new DefaultAction(
+				ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
+		DefaultMenuItem theOnePerTable = new DefaultMenuItem(
+				theOnePerTableAction);
+		theOnePerTableAction.addActionListener(new ExportGraphicsCommand(this,
+				aExporter, ExportType.ONE_PER_FILE));
+
+		aMenu.add(theOnePerTable);
+	}
+
+	public JComponent getDetailComponent() {
+		return scrollPane;
+	}
+
+	/**
+	 * Save the preferences.
+	 */
+	public void savePreferences() {
+		try {
+			ApplicationPreferences.getInstance().store();
+		} catch (Exception e) {
+			worldConnector.notifyAboutException(e);
+		}
+	}
+
+	public ERDesignerWorldConnector getWorldConnector() {
+		return worldConnector;
+	}
+
+	protected void commandRemoveSubjectArea(SubjectAreaCell aCell) {
+		graph.getGraphLayoutCache().remove(new Object[]{aCell});
+		model.removeSubjectArea((SubjectArea) aCell.getUserObject());
+
+		updateSubjectAreasMenu();
+	}
+
+	protected void commandUpdateSubjectArea(SubjectAreaCell aCell) {
+
+		SubjectArea theArea = (SubjectArea) aCell.getUserObject();
+		theArea.getTables().clear();
+		theArea.getViews().clear();
+		theArea.getComments().clear();
+		for (Object theObject : aCell.getChildren()) {
+			if (theObject instanceof TableCell) {
+				theArea.getTables().add(
+						(Table) ((TableCell) theObject).getUserObject());
+			}
+			if (theObject instanceof ViewCell) {
+				theArea.getViews().add(
+						(View) ((ViewCell) theObject).getUserObject());
+			}
+			if (theObject instanceof CommentCell) {
+				theArea.getComments().add(
+						(Comment) ((CommentCell) theObject).getUserObject());
+			}
+		}
+
+		updateSubjectAreasMenu();
+	}
+
+	/**
+	 * Toggle the include comments view state.
+	 *
+	 * @param aState true if comments shall be displayed, else false
+	 */
+	protected void commandSetDisplayCommentsState(boolean aState) {
+		graph.setDisplayComments(aState);
+		repaintGraph();
+	}
+
+	/**
+	 * Toggle the include comments view state.
+	 *
+	 * @param aState true if comments shall be displayed, else false
+	 */
+	protected void commandSetDisplayGridState(boolean aState) {
+		graph.setGridEnabled(aState);
+		graph.setGridVisible(aState);
+		repaintGraph();
+	}
+
+	/**
+	 * The preferences where changed, so they need to be reloaded.
+	 *
+	 * @param aPreferences the preferences
+	 */
+	public void refreshPreferences() {
+		graph.setGridSize(ApplicationPreferences.getInstance().getGridSize());
+		repaintGraph();
+	}
+
+	/**
+	 * Set the current display level.
+	 *
+	 * @param aLevel the level
+	 */
+	protected void commandSetDisplayLevel(DisplayLevel aLevel) {
+		graph.setDisplayLevel(aLevel);
+		repaintGraph();
+	}
+
+	/**
+	 * Set the current display order.
+	 *
+	 * @param aOrder the display order
+	 */
+	protected void commandSetDisplayOrder(DisplayOrder aOrder) {
+		graph.setDisplayOrder(aOrder);
+		repaintGraph();
+	}
+
+	/**
+	 * Repaint the current graph.
+	 */
+	public void repaintGraph() {
+		for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
+			graph.updateAutoSize(theView);
+		}
+		graph.getGraphLayoutCache().reload();
+		graph.getGraphLayoutCache().update(
+				graph.getGraphLayoutCache().getAllViews());
+
+		graph.addOffscreenDirty(new Rectangle2D.Double(0, 0, scrollPane
+				.getWidth(), scrollPane.getHeight()));
+		graph.repaint();
+	}
+
+	/**
+	 * Hook method. Will be called if a cell was successfully edited.
+	 */
+	public void commandNotifyAboutEdit() {
+		updateSubjectAreasMenu();
+	}
+
+	/**
+	 * Set the status of the intelligent layout functionality.
+	 *
+	 * @param aStatus true if enabled, else false
+	 */
+	protected final void setIntelligentLayoutEnabled(boolean aStatus) {
+		if (!aStatus) {
+			if (layoutThread != null) {
+				layoutThread.interrupt();
+				while (layoutThread.getState() != Thread.State.TERMINATED) {
+				}
+			}
+		} else {
+			layoutThread = new LayoutThread();
+			layoutThread.start();
+		}
+		ApplicationPreferences.getInstance().setIntelligentLayout(aStatus);
+	}
+
+	/**
+	 * Set the currently selected cell depending on its user object.
+	 *
+	 * @param aItem the user object.
+	 */
+	public void setSelectedObject(ModelItem aItem) {
+		DefaultGraphCell theCell = findCellforObject(aItem);
+		if (theCell != null) {
+			graph.setSelectionCell(theCell);
+			graph.scrollCellToVisible(theCell);
+		}
+	}
+
+	public DefaultGraphCell findCellforObject(ModelItem aItem) {
+		for (CellView theView : graph.getGraphLayoutCache().getCellViews()) {
+			DefaultGraphCell theCell = (DefaultGraphCell) theView.getCell();
+			if (aItem.equals(theCell.getUserObject())) {
+				return theCell;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Add a list of items to a new subject area.
+	 *
+	 * @param aItems the items to be added
+	 */
+	public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
+
+		List<DefaultGraphCell> theCells = getCellsFor(aItems);
+
+		if (theCells.size() > 0) {
+			graph.commandAddToNewSubjectArea(theCells);
+		}
+	}
+
+	public void commandDelete(List<ModelItem> aItems) {
+
+		List<DefaultGraphCell> theCells = getCellsFor(aItems);
+
+		if (theCells.size() > 0) {
+
+			if (MessagesHelper.displayQuestionMessage(graph,
+					ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+				try {
+					graph.commandDeleteCells(theCells);
+				} catch (VetoException ex) {
+					MessagesHelper.displayErrorMessage(graph,
+							getResourceHelper().getFormattedText(
+									ERDesignerBundle.CANNOTDELETEMODELITEM,
+									ex.getMessage()));
+				}
+			}
+		}
+	}
+
+	private List<DefaultGraphCell> getCellsFor(List<ModelItem> aItems) {
+		List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
+		for (ModelItem theItem : aItems) {
+			DefaultGraphCell theCell = findCellforObject(theItem);
+			if (theCell != null) {
+				theCells.add(theCell);
+			}
+		}
+		return theCells;
+	}
 }

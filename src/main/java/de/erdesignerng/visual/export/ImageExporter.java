@@ -49,6 +49,7 @@ public class ImageExporter implements Exporter {
 		ext = aExt;
 	}
 
+	@Override
 	public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
 		Color theBackgroundColor = aGraph.getBackground();
 		BufferedImage theImage = aGraph.getImage(theBackgroundColor, 10);
@@ -57,10 +58,12 @@ public class ImageExporter implements Exporter {
 		aStream.close();
 	}
 
+	@Override
 	public String getFileExtension() {
 		return "." + ext.toLowerCase();
 	}
 
+	@Override
 	public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
 		Dimension theSize = aComponent.getPreferredSize();
 		aComponent.setSize(theSize);

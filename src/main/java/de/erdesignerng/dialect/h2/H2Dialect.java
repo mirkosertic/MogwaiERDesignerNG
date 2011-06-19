@@ -29,7 +29,7 @@ import java.sql.Types;
  * @author $Author: gniddelgesicht $
  * @version $Date: 2008/11/15 17:04:23 $
  */
-public class H2Dialect extends SQL92Dialect {
+public final class H2Dialect extends SQL92Dialect {
 
 	public H2Dialect() {
 		setSpacesAllowedInObjectNames(false);

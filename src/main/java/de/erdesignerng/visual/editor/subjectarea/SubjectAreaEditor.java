@@ -78,7 +78,7 @@ public class SubjectAreaEditor extends BaseEditor {
 
 	@Override
 	protected void commandOk() {
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 
 			SubjectArea theArea = bindingInfo.getDefaultModel();
 			theArea.setColor(editingView.getColorPanel().getBackground());

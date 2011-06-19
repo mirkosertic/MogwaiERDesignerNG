@@ -36,100 +36,100 @@ import java.sql.*;
  * @version $Date: 2009-03-09 19:07:29 $
  */
 public class MSSQLReverseEngineeringStrategy extends
-        JDBCReverseEngineeringStrategy<MSSQLDialect> {
+		JDBCReverseEngineeringStrategy<MSSQLDialect> {
 
-    public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
-        super(aDialect);
-    }
+	public MSSQLReverseEngineeringStrategy(MSSQLDialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    protected boolean isTableTypeView(String aTableType) {
-        return VIEW_TABLE_TYPE.equals(aTableType);
-    }
+	@Override
+	protected boolean isTableTypeView(String aTableType) {
+		return VIEW_TABLE_TYPE.equals(aTableType);
+	}
 
-    @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry,
-                                            Connection aConnection, View aView) throws SQLException {
-        PreparedStatement theStatement = aConnection
-                .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
-        theStatement.setString(1, aViewEntry.getTableName());
-        ResultSet theResult = null;
-        try {
-            theResult = theStatement.executeQuery();
-            if (theResult.next()) {
-                String theViewDefinition = theResult
-                        .getString("VIEW_DEFINITION");
-                theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
-                return theViewDefinition;
-            }
-            return null;
-        } finally {
-            if (theResult != null) {
-                theResult.close();
-            }
-            theStatement.close();
-        }
-    }
+	@Override
+	protected String reverseEngineerViewSQL(TableEntry aViewEntry,
+											Connection aConnection, View aView) throws SQLException {
+		PreparedStatement theStatement = aConnection
+				.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ?");
+		theStatement.setString(1, aViewEntry.getTableName());
+		ResultSet theResult = null;
+		try {
+			theResult = theStatement.executeQuery();
+			if (theResult.next()) {
+				String theViewDefinition = theResult
+						.getString("VIEW_DEFINITION");
+				theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
+				return theViewDefinition;
+			}
+			return null;
+		} finally {
+			if (theResult != null) {
+				theResult.close();
+			}
+			theStatement.close();
+		}
+	}
 
-    @Override
-    protected CascadeType getCascadeType(int aValue) {
-        switch (aValue) {
-            case DatabaseMetaData.importedKeyRestrict:
-                // Restrict is not supported my this db
-                aValue = DatabaseMetaData.importedKeyNoAction;
-                break;
-        }
-        return super.getCascadeType(aValue);
-    }
+	@Override
+	protected CascadeType getCascadeType(int aValue) {
+		switch (aValue) {
+			case DatabaseMetaData.importedKeyRestrict:
+				// Restrict is not supported my this db
+				aValue = DatabaseMetaData.importedKeyNoAction;
+				break;
+		}
+		return super.getCascadeType(aValue);
+	}
 
-    @Override
-    protected void reverseEngineerCustomType(Model aModel,
-                                             CustomType aCustomType, ReverseEngineeringOptions aOptions,
-                                             ReverseEngineeringNotifier aNotifier, Connection aConnection) {
-        // TODO Auto-generated method stub
-    }
+	@Override
+	protected void reverseEngineerCustomType(Model aModel,
+											 CustomType aCustomType, ReverseEngineeringOptions aOptions,
+											 ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+		// TODO Auto-generated method stub
+	}
 
-    @Override
-    protected void reverseEngineerCustomTypes(Model aModel,
-                                              ReverseEngineeringOptions aOptions,
-                                              ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException, ReverseEngineeringException {
-        String theQuery = "select b.principal_id,b.name,a.* from sys.types a,sys.schemas b where a.schema_id = b.schema_id and a.is_table_type = 0 and a.is_user_defined = 1";
-        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
-        ResultSet theResult = null;
-        try {
-            theResult = theStatement.executeQuery();
-            while (theResult.next()) {
-                String theCustomTypeName = theResult.getString("name");
+	@Override
+	protected void reverseEngineerCustomTypes(Model aModel,
+											  ReverseEngineeringOptions aOptions,
+											  ReverseEngineeringNotifier aNotifier, Connection aConnection)
+			throws SQLException, ReverseEngineeringException {
+		String theQuery = "select b.principal_id,b.name,a.* from sys.types a,sys.schemas b where a.schema_id = b.schema_id and a.is_table_type = 0 and a.is_user_defined = 1";
+		PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
+		ResultSet theResult = null;
+		try {
+			theResult = theStatement.executeQuery();
+			while (theResult.next()) {
+				String theCustomTypeName = theResult.getString("name");
 
-                aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE,
-                        theCustomTypeName);
+				aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE,
+						theCustomTypeName);
 
-                CustomType theCustomType = aModel.getCustomTypes()
-                        .findByNameAndSchema(theCustomTypeName, null);
-                if (theCustomType != null) {
-                    throw new ReverseEngineeringException(
-                            "Duplicate custom datatype found : "
-                                    + theCustomTypeName);
-                }
+				CustomType theCustomType = aModel.getCustomTypes()
+						.findByNameAndSchema(theCustomTypeName, null);
+				if (theCustomType != null) {
+					throw new ReverseEngineeringException(
+							"Duplicate custom datatype found : "
+									+ theCustomTypeName);
+				}
 
-                theCustomType = new CustomType();
-                theCustomType.setName(theCustomTypeName);
+				theCustomType = new CustomType();
+				theCustomType.setName(theCustomTypeName);
 
-                try {
-                    aModel.addCustomType(theCustomType);
-                } catch (VetoException e) {
-                    throw new ReverseEngineeringException(e.getMessage(), e);
-                }
+				try {
+					aModel.addCustomType(theCustomType);
+				} catch (VetoException e) {
+					throw new ReverseEngineeringException(e.getMessage(), e);
+				}
 
-                reverseEngineerCustomType(aModel, theCustomType, aOptions,
-                        aNotifier, aConnection);
-            }
-        } finally {
-            if (theResult != null) {
-                theResult.close();
-            }
-            theStatement.close();
-        }
-    }
+				reverseEngineerCustomType(aModel, theCustomType, aOptions,
+						aNotifier, aConnection);
+			}
+		} finally {
+			if (theResult != null) {
+				theResult.close();
+			}
+			theStatement.close();
+		}
+	}
 }

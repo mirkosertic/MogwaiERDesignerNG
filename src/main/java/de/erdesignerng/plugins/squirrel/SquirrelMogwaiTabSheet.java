@@ -76,14 +76,17 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 	protected void refreshComponent() {
 	}
 
+	@Override
 	public Component getComponent() {
 		return panel;
 	}
 
+	@Override
 	public String getHint() {
 		return "";
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -92,6 +95,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 		return new DefaultMenuBar();
 	}
 
+	@Override
 	public DefaultToolbar getToolBar() {
 		return content.getToolbar();
 	}
@@ -112,6 +116,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 		initTitle(null);
 	}
 
+	@Override
 	public void setStatusText(String aMessage) {
 		content.getStatusBar().setText(aMessage);
 		controller.getSession().showMessage(aMessage);
@@ -133,7 +138,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 	}
 
 	@Override
-	public Model createNewModel() {
+	public final Model createNewModel() {
 		Model theModel = new Model();
 		theModel.setDialect(controller.getDialect());
 		theModel
@@ -169,6 +174,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 		controller.notifyAboutException(aException);
 	}
 
+	@Override
 	public void exitApplication() {
 		controller.exitApplication();
 	}
@@ -177,7 +183,7 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 	 * The preferences were changed, so they need to be reloaded.
 	 * 
 	 * @param aPreferences
-	 *            the preferences
+	 *			the preferences
 	 */
 	public void refreshPreferences() {
 		component.refreshPreferences();

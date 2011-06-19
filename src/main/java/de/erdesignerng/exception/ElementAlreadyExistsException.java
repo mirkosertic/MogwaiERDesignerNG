@@ -23,10 +23,10 @@ package de.erdesignerng.exception;
  */
 public class ElementAlreadyExistsException extends ModelException {
 
-    private static final long serialVersionUID = 3016742498176605316L;
+	private static final long serialVersionUID = 3016742498176605316L;
 
-    public ElementAlreadyExistsException(String aElementName) {
-        super(aElementName);
-        String elementName = aElementName;
-    }
+	public ElementAlreadyExistsException(String aElementName) {
+		super(aElementName);
+		String elementName = aElementName;
+	}
 }

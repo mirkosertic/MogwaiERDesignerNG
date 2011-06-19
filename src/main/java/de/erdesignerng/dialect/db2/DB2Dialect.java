@@ -28,7 +28,7 @@ import java.sql.Types;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-02 14:20:18 $
  */
-public class DB2Dialect extends SQL92Dialect {
+public final class DB2Dialect extends SQL92Dialect {
 
 	public DB2Dialect() {
 		setSpacesAllowedInObjectNames(false);

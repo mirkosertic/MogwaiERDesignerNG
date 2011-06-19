@@ -19,28 +19,28 @@ package de.erdesignerng.dialect;
 
 public class SchemaEntry {
 
-    private String catalogName;
+	private String catalogName;
 
-    private String schemaName;
+	private String schemaName;
 
-    public SchemaEntry(String aCatalogName, String aSchemaName) {
-        catalogName = aCatalogName;
-        schemaName = aSchemaName;
-    }
+	public SchemaEntry(String aCatalogName, String aSchemaName) {
+		catalogName = aCatalogName;
+		schemaName = aSchemaName;
+	}
 
-    public String getCatalogName() {
-        return catalogName;
-    }
+	public String getCatalogName() {
+		return catalogName;
+	}
 
-    public String getSchemaName() {
-        return schemaName;
-    }
+	public String getSchemaName() {
+		return schemaName;
+	}
 
-    @Override
-    public String toString() {
-        if (catalogName != null) {
-            return schemaName + "@" + catalogName;
-        }
-        return schemaName;
-    }
+	@Override
+	public String toString() {
+		if (catalogName != null) {
+			return schemaName + "@" + catalogName;
+		}
+		return schemaName;
+	}
 }

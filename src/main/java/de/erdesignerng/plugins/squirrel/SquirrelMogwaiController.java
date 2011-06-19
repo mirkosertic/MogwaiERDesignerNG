@@ -26,60 +26,60 @@ import net.sourceforge.squirrel_sql.client.session.ISession;
  */
 public class SquirrelMogwaiController {
 
-    private final ISession session;
+	private final ISession session;
 
-    private final SquirrelMogwaiPluginDelegate plugin;
+	private final SquirrelMogwaiPluginDelegate plugin;
 
-    private final SquirrelMogwaiTabSheet tabsheet;
+	private final SquirrelMogwaiTabSheet tabsheet;
 
-    private final SquirrelDialect dialect;
+	private final SquirrelDialect dialect;
 
-    public SquirrelMogwaiController(SquirrelDialect aDialect,
-                                    ISession aSession, SquirrelMogwaiPluginDelegate aPlugin) {
-        session = aSession;
-        plugin = aPlugin;
-        dialect = aDialect;
+	public SquirrelMogwaiController(SquirrelDialect aDialect,
+									ISession aSession, SquirrelMogwaiPluginDelegate aPlugin) {
+		session = aSession;
+		plugin = aPlugin;
+		dialect = aDialect;
 
-        tabsheet = new SquirrelMogwaiTabSheet(this);
+		tabsheet = new SquirrelMogwaiTabSheet(this);
 
-        session.getSessionSheet().selectMainTab(
-                session.getSessionSheet().addMainTab(tabsheet));
-    }
+		session.getSessionSheet().selectMainTab(
+				session.getSessionSheet().addMainTab(tabsheet));
+	}
 
-    public void sessionEnding() {
-        tabsheet.sessionEnding(session);
-    }
+	public void sessionEnding() {
+		tabsheet.sessionEnding(session);
+	}
 
-    public void startReverseEngineering() {
-        tabsheet.startReverseEngineering();
-    }
+	public void startReverseEngineering() {
+		tabsheet.startReverseEngineering();
+	}
 
-    public void notifyAboutException(Exception aException) {
-        session.showErrorMessage(aException);
-    }
+	public void notifyAboutException(Exception aException) {
+		session.showErrorMessage(aException);
+	}
 
-    public SquirrelMogwaiPluginDelegate getPlugin() {
-        return plugin;
-    }
+	public SquirrelMogwaiPluginDelegate getPlugin() {
+		return plugin;
+	}
 
-    public void exitApplication() {
-        plugin.shutdownEditor();
-    }
+	public void exitApplication() {
+		plugin.shutdownEditor();
+	}
 
-    public SquirrelDialect getDialect() {
-        return dialect;
-    }
+	public SquirrelDialect getDialect() {
+		return dialect;
+	}
 
-    public ISession getSession() {
-        return session;
-    }
+	public ISession getSession() {
+		return session;
+	}
 
-    /**
-     * The preferences were changed, so they need to be reconfigured.
-     *
-     * @param aPreferences the preferences
-     */
-    public void refreshPreferences() {
-        tabsheet.refreshPreferences();
-    }
+	/**
+	 * The preferences were changed, so they need to be reconfigured.
+	 *
+	 * @param aPreferences the preferences
+	 */
+	public void refreshPreferences() {
+		tabsheet.refreshPreferences();
+	}
 }

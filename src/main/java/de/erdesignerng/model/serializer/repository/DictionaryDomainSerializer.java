@@ -32,56 +32,56 @@ import java.util.Map;
  */
 public class DictionaryDomainSerializer extends DictionaryBaseSerializer {
 
-    public static final DictionaryDomainSerializer SERIALIZER = new DictionaryDomainSerializer();
+	public static final DictionaryDomainSerializer SERIALIZER = new DictionaryDomainSerializer();
 
-    protected void copyBaseAttributes(Domain aSource, DomainEntity aDestination) {
-        aDestination.setSystemId(aSource.getSystemId());
-        aDestination.setName(aSource.getName());
-        aDestination.setDatatype(aSource.getConcreteType().getName());
-        aDestination.setSize(aSource.getSize());
-        aDestination.setFraction(aSource.getFraction());
-        aDestination.setScale(aSource.getScale());
-        aDestination.setNullable(aSource.isNullable());
-    }
+	protected void copyBaseAttributes(Domain aSource, DomainEntity aDestination) {
+		aDestination.setSystemId(aSource.getSystemId());
+		aDestination.setName(aSource.getName());
+		aDestination.setDatatype(aSource.getConcreteType().getName());
+		aDestination.setSize(aSource.getSize());
+		aDestination.setFraction(aSource.getFraction());
+		aDestination.setScale(aSource.getScale());
+		aDestination.setNullable(aSource.isNullable());
+	}
 
-    protected void copyBaseAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
-        aDestination.setSystemId(aSource.getSystemId());
-        aDestination.setName(aSource.getName());
-        aDestination.setConcreteType(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
-        aDestination.setSize(aSource.getSize());
-        aDestination.setFraction(aSource.getFraction());
-        aDestination.setScale(aSource.getScale());
-        aDestination.setNullable(aSource.isNullable());
-    }
+	protected void copyBaseAttributes(DomainEntity aSource, Domain aDestination, Model aModel) {
+		aDestination.setSystemId(aSource.getSystemId());
+		aDestination.setName(aSource.getName());
+		aDestination.setConcreteType(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+		aDestination.setSize(aSource.getSize());
+		aDestination.setFraction(aSource.getFraction());
+		aDestination.setScale(aSource.getScale());
+		aDestination.setNullable(aSource.isNullable());
+	}
 
-    public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
+	public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity
-                .getDomains());
+		Map<String, ModelEntity> theDomains = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity
+				.getDomains());
 
-        for (Domain theDomain : aModel.getDomains()) {
-            boolean existing = true;
-            DomainEntity theExisting = (DomainEntity) theDomains.get(theDomain.getSystemId());
-            if (theExisting == null) {
-                theExisting = new DomainEntity();
-                existing = false;
-            }
+		for (Domain theDomain : aModel.getDomains()) {
+			boolean existing = true;
+			DomainEntity theExisting = (DomainEntity) theDomains.get(theDomain.getSystemId());
+			if (theExisting == null) {
+				theExisting = new DomainEntity();
+				existing = false;
+			}
 
-            copyBaseAttributes(theDomain, theExisting);
+			copyBaseAttributes(theDomain, theExisting);
 
-            if (!existing) {
-                aDictionaryEntity.getDomains().add(theExisting);
-            }
-        }
-    }
+			if (!existing) {
+				aDictionaryEntity.getDomains().add(theExisting);
+			}
+		}
+	}
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (DomainEntity theEntity : aRepositoryEntity.getDomains()) {
+	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+		for (DomainEntity theEntity : aRepositoryEntity.getDomains()) {
 
-            Domain theDomain = new Domain();
-            copyBaseAttributes(theEntity, theDomain, aModel);
+			Domain theDomain = new Domain();
+			copyBaseAttributes(theEntity, theDomain, aModel);
 
-            aModel.getDomains().add(theDomain);
-        }
-    }
+			aModel.getDomains().add(theDomain);
+		}
+	}
 }

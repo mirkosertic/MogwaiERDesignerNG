@@ -45,14 +45,17 @@ public class AttributeTableModel implements TableModel {
 		assignedTableName = aSecondaryEntityName;
 	}
 
+	@Override
 	public Class<Object> getColumnClass(int aColumn) {
 		return Object.class;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 2;
 	}
 
+	@Override
 	public String getColumnName(int aColumn) {
 		if (aColumn == 0) {
 			return primaryKeyTableName;
@@ -60,10 +63,12 @@ public class AttributeTableModel implements TableModel {
 		return assignedTableName;
 	}
 
+	@Override
 	public int getRowCount() {
 		return primaryKey.getExpressions().size();
 	}
 
+	@Override
 	public Object getValueAt(int aRow, int aColumn) {
 		if (aColumn == 1) {
 			return assignedAttributes[aRow];
@@ -71,17 +76,21 @@ public class AttributeTableModel implements TableModel {
 		return primaryKey.getExpressions().get(aRow);
 	}
 
+	@Override
 	public boolean isCellEditable(int aRow, int aColumn) {
 		return aColumn != 0;
 	}
 
+	@Override
 	public void setValueAt(Object aValue, int aRow, int aColumn) {
 		assignedAttributes[aRow] = (Attribute) aValue;
 	}
 
+	@Override
 	public void addTableModelListener(TableModelListener l) {
 	}
 
+	@Override
 	public void removeTableModelListener(TableModelListener l) {
 	}
 }

@@ -11,53 +11,53 @@ import java.sql.SQLException;
  */
 public class RowEditorView extends JPanel {
 
-    private final DefaultButton okButton = new DefaultButton();
+	private final DefaultButton okButton = new DefaultButton();
 
-    private final DefaultButton cancelButton = new DefaultButton();
+	private final DefaultButton cancelButton = new DefaultButton();
 
-    private ScaffoldingWrapper content;
+	private ScaffoldingWrapper content;
 
-    public RowEditorView(PaginationDataModel aModel, int aRow) throws SQLException {
-        initialize(aModel, aRow);
-    }
+	public RowEditorView(PaginationDataModel aModel, int aRow) throws SQLException {
+		initialize(aModel, aRow);
+	}
 
-    private void initialize(PaginationDataModel aModel, int aRow) {
+	private void initialize(PaginationDataModel aModel, int aRow) {
 
-/*        String theColDef = "2dlu,fill:250dlu:grow,2dlu";
-        String theRowDef = "2dlu,fill:200dlu:grow,10dlu,p,2dlu";
+/*		String theColDef = "2dlu,fill:250dlu:grow,2dlu";
+		String theRowDef = "2dlu,fill:200dlu:grow,10dlu,p,2dlu";
 
-        FormLayout theLayout = new FormLayout(theColDef, theRowDef);
-        setLayout(theLayout);
+		FormLayout theLayout = new FormLayout(theColDef, theRowDef);
+		setLayout(theLayout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        Map<String, Object> theRow = aModel.getRowData(aRow);
+		Map<String, Object> theRow = aModel.getRowData(aRow);
 
-        content = ScaffoldingUtils.createScaffoldingPanelFor(aModel.getResultSetMetaData(), theRow);
-        add(new DefaultScrollPane(content.getComponent()), cons.xy(2, 2));
+		content = ScaffoldingUtils.createScaffoldingPanelFor(aModel.getResultSetMetaData(), theRow);
+		add(new DefaultScrollPane(content.getComponent()), cons.xy(2, 2));
 
-        JPanel thePanel = new JPanel();
+		JPanel thePanel = new JPanel();
 
-        theColDef = "60dlu,2dlu:grow,60dlu,";
-        theRowDef = "p";
+		theColDef = "60dlu,2dlu:grow,60dlu,";
+		theRowDef = "p";
 
-        theLayout = new FormLayout(theColDef, theRowDef);
-        thePanel.setLayout(theLayout);
+		theLayout = new FormLayout(theColDef, theRowDef);
+		thePanel.setLayout(theLayout);
 
-        thePanel.add(okButton, cons.xy(1, 1));
-        okButton.setText("Ok");
+		thePanel.add(okButton, cons.xy(1, 1));
+		okButton.setText("Ok");
 
-        thePanel.add(cancelButton, cons.xy(3, 1));
-        cancelButton.setText("Cancel");
+		thePanel.add(cancelButton, cons.xy(3, 1));
+		cancelButton.setText("Cancel");
 
-        add(thePanel, cons.xy(2, 4));*/
-    }
+		add(thePanel, cons.xy(2, 4));*/
+	}
 
-    public DefaultButton getOkButton() {
-        return okButton;
-    }
+	public DefaultButton getOkButton() {
+		return okButton;
+	}
 
-    public DefaultButton getCancelButton() {
-        return cancelButton;
-    }
+	public DefaultButton getCancelButton() {
+		return cancelButton;
+	}
 }

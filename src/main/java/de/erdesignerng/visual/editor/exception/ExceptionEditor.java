@@ -44,6 +44,7 @@ public class ExceptionEditor extends BaseEditor {
 
 	private final DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandClose();
 		}

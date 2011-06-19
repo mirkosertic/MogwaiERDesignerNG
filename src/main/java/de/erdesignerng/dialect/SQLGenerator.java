@@ -29,7 +29,7 @@ import java.util.Map;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  * @param <T>
- *            the dialect
+ *			the dialect
  */
 public abstract class SQLGenerator<T extends Dialect> {
 
@@ -141,7 +141,7 @@ public abstract class SQLGenerator<T extends Dialect> {
 	 * Create the DDL script for the whole model.
 	 * 
 	 * @param aModel
-	 *            the model
+	 *			the model
 	 * @return the lists of statements
 	 */
 	public StatementList createCreateAllObjects(Model aModel) {

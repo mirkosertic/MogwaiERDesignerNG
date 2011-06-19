@@ -101,7 +101,7 @@ public class ViewEditor extends BaseEditor {
 
 	@Override
 	protected void commandOk() {
-		if (viewBindingInfo.validate().size() == 0) {
+		if (viewBindingInfo.validate().isEmpty()) {
 
 			try {
 				// Test if every expression has an assigned alias

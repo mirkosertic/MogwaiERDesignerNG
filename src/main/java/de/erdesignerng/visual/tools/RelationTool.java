@@ -153,6 +153,7 @@ public class RelationTool extends BaseTool {
 		DefaultMenuItem theAddChildTableMenu = new DefaultMenuItem(theAddChildTableAction);
 		theAddChildTableAction.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graph.commandNewTableAndRelation(aLocation, aParentCell, true);
 			}
@@ -165,6 +166,7 @@ public class RelationTool extends BaseTool {
 		DefaultMenuItem theAddParentTableMenu = new DefaultMenuItem(theAddParentTableAction);
 		theAddParentTableMenu.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graph.commandNewTableAndRelation(aLocation, aParentCell, false);
 			}

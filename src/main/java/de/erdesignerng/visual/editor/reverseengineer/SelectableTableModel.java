@@ -44,64 +44,64 @@ public class SelectableTableModel extends DefaultTreeModel {
 		}
 	}
 
-    // Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
-    public void setSelected(final DefaultMutableTreeNode aRootNode, final Boolean isSelected) {
-        setSelected(aRootNode, isSelected, true);
-    }
+	// Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
+	public void setSelected(final DefaultMutableTreeNode aRootNode, final Boolean isSelected) {
+		setSelected(aRootNode, isSelected, true);
+	}
 
-    private void setSelected(final DefaultMutableTreeNode aRootNode, final Boolean isSelected, final boolean aRecursiveSelection) {
-        //change the direct selection-state of the appropriate leaf node
-        visitAll(aRootNode, new TreeVisitor() {
+	private void setSelected(final DefaultMutableTreeNode aRootNode, final Boolean isSelected, final boolean aRecursiveSelection) {
+		//change the direct selection-state of the appropriate leaf node
+		visitAll(aRootNode, new TreeVisitor() {
 
-            @Override
-            public boolean visit(Object aValue, DefaultMutableTreeNode aNode) {
-                if (aRecursiveSelection || aValue.equals(aRootNode.getUserObject()) ) {
-                    if (aValue instanceof SelectableWrapper) {
-                        SelectableWrapper theWrapper = (SelectableWrapper) aValue;
+			@Override
+			public boolean visit(Object aValue, DefaultMutableTreeNode aNode) {
+				if (aRecursiveSelection || aValue.equals(aRootNode.getUserObject()) ) {
+					if (aValue instanceof SelectableWrapper) {
+						SelectableWrapper theWrapper = (SelectableWrapper) aValue;
 
-                        if (isSelected == null) {
-                            theWrapper.invertSelection();
-                        } else {
-                            theWrapper.setSelected(isSelected);
-                        }
+						if (isSelected == null) {
+							theWrapper.invertSelection();
+						} else {
+							theWrapper.setSelected(isSelected);
+						}
 
-                        return true;
-                    }
+						return true;
+					}
 
-                    return false;
-                }
+					return false;
+				}
 
-                return !aRecursiveSelection;
-            }
-        });
+				return !aRecursiveSelection;
+			}
+		});
 
-        //check if the selection state of main nodes is affected indirectly by
-        //changing selection state of leaf nodes
-        if (aRootNode.isLeaf() && aRootNode.getUserObject() instanceof SelectableWrapper && ((SelectableWrapper) aRootNode.getUserObject()).getValue() instanceof TableEntry) {
-            boolean allSelected = true;
-            DefaultMutableTreeNode theMainNode = (DefaultMutableTreeNode) aRootNode.getParent(); 
+		//check if the selection state of main nodes is affected indirectly by
+		//changing selection state of leaf nodes
+		if (aRootNode.isLeaf() && aRootNode.getUserObject() instanceof SelectableWrapper && ((SelectableWrapper) aRootNode.getUserObject()).getValue() instanceof TableEntry) {
+			boolean allSelected = true;
+			DefaultMutableTreeNode theMainNode = (DefaultMutableTreeNode) aRootNode.getParent(); 
 
-            for (int i = 0; (allSelected && (i < theMainNode.getChildCount())); i++) {
-                allSelected &= (((SelectableWrapper) (((DefaultMutableTreeNode) theMainNode.getChildAt(i)).getUserObject())).isSelected());
-            }
+			for (int i = 0; (allSelected && (i < theMainNode.getChildCount())); i++) {
+				allSelected &= (((SelectableWrapper) (((DefaultMutableTreeNode) theMainNode.getChildAt(i)).getUserObject())).isSelected());
+			}
 
-            SelectableWrapper theMainWrapper = (SelectableWrapper) theMainNode.getUserObject();
-            if (theMainWrapper.isSelected() != allSelected) {
-                setSelected(theMainNode, allSelected, false);
-            }
-        }
-    }
+			SelectableWrapper theMainWrapper = (SelectableWrapper) theMainNode.getUserObject();
+			if (theMainWrapper.isSelected() != allSelected) {
+				setSelected(theMainNode, allSelected, false);
+			}
+		}
+	}
 
 	public void selectAll() {
-        setSelected((DefaultMutableTreeNode) getRoot(), true);
+		setSelected((DefaultMutableTreeNode) getRoot(), true);
 	}
 
 	public void deselectAll() {
-        setSelected((DefaultMutableTreeNode) getRoot(), false);
+		setSelected((DefaultMutableTreeNode) getRoot(), false);
 	}
 
 	public void invertSelection() {
-        setSelected((DefaultMutableTreeNode) getRoot(), null);
+		setSelected((DefaultMutableTreeNode) getRoot(), null);
 	}
 
 	public Collection getSelectedEntries() {

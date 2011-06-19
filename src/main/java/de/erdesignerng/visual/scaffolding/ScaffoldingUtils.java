@@ -53,7 +53,7 @@ public final class ScaffoldingUtils {
 				try {
 					return helper.getText(key.toUpperCase());
 				} catch (Exception e) {
-					return StringUtils.RESOURCE_KEY_NOT_FOUND_PREFIX + key + StringUtils.RESOURCE_KEY_NOT_FOUND_SUFFIX;					
+					return StringUtils.RESOURCE_KEY_NOT_FOUND_PREFIX + key + StringUtils.RESOURCE_KEY_NOT_FOUND_SUFFIX;
 				}
 			}
 		};

@@ -59,6 +59,7 @@ public class OpenXavaExportEditor extends BaseEditor {
 
 	protected final DefaultAction chooseSrcDirectoryAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandChooseSrcDirectory();
 		}
@@ -146,7 +147,7 @@ public class OpenXavaExportEditor extends BaseEditor {
 
 	@Override
 	protected void commandOk() {
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 
 			bindingInfo.view2model();
 

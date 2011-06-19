@@ -29,57 +29,57 @@ import java.util.UUID;
  */
 public final class ModelUtilities {
 
-    private ModelUtilities() {
-    }
+	private ModelUtilities() {
+	}
 
-    /**
-     * Check existence in a list.
-     *
-     * @param aVector  the list
-     * @param aName    the name
-     * @param aDialect the dialect
-     * @throws ElementAlreadyExistsException is thrown if name exists
-     */
-    public static void checkExistence(ModelItemVector aVector, String aName, Dialect aDialect)
-            throws ElementAlreadyExistsException {
+	/**
+	 * Check existence in a list.
+	 *
+	 * @param aVector  the list
+	 * @param aName	the name
+	 * @param aDialect the dialect
+	 * @throws ElementAlreadyExistsException is thrown if name exists
+	 */
+	public static void checkExistence(ModelItemVector aVector, String aName, Dialect aDialect)
+			throws ElementAlreadyExistsException {
 
-        boolean theCaseSensitive = false;
+		boolean theCaseSensitive = false;
 
-        if (aDialect != null) {
-            theCaseSensitive = aDialect.isCaseSensitive();
-        }
+		if (aDialect != null) {
+			theCaseSensitive = aDialect.isCaseSensitive();
+		}
 
-        if (aVector.elementExists(aName, theCaseSensitive)) {
-            throw new ElementAlreadyExistsException("Element '" + aName + "' already exists!");
-        }
+		if (aVector.elementExists(aName, theCaseSensitive)) {
+			throw new ElementAlreadyExistsException("Element '" + aName + "' already exists!");
+		}
 
-    }
+	}
 
-    /**
-     * Check the name of an item and its existence in a list.
-     *
-     * @param aVector  the list
-     * @param aItem    the item
-     * @param aDialect the dialect
-     * @throws ElementInvalidNameException   is thrown in case of an error
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     */
-    public static void checkNameAndExistence(ModelItemVector aVector, OwnedModelItem aItem, Dialect aDialect)
-            throws ElementInvalidNameException, ElementAlreadyExistsException {
+	/**
+	 * Check the name of an item and its existence in a list.
+	 *
+	 * @param aVector  the list
+	 * @param aItem	the item
+	 * @param aDialect the dialect
+	 * @throws ElementInvalidNameException   is thrown in case of an error
+	 * @throws ElementAlreadyExistsException is thrown in case of an error
+	 */
+	public static void checkNameAndExistence(ModelItemVector aVector, OwnedModelItem aItem, Dialect aDialect)
+			throws ElementInvalidNameException, ElementAlreadyExistsException {
 
-        if (aDialect != null) {
-            aItem.setName(aDialect.checkName(aItem.getName()));
-        }
+		if (aDialect != null) {
+			aItem.setName(aDialect.checkName(aItem.getName()));
+		}
 
-        checkExistence(aVector, aItem.getUniqueName(), aDialect);
-    }
+		checkExistence(aVector, aItem.getUniqueName(), aDialect);
+	}
 
-    /**
-     * Create a unique system id.
-     *
-     * @return the newly created id
-     */
-    public static String createSystemIdFor() {
-        return UUID.randomUUID().toString();
-    }
+	/**
+	 * Create a unique system id.
+	 *
+	 * @return the newly created id
+	 */
+	public static String createSystemIdFor() {
+		return UUID.randomUUID().toString();
+	}
 }

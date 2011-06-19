@@ -8,31 +8,31 @@ package de.erdesignerng.dialect;
  */
 public class TableEntry extends SchemaEntry {
 
-    private String tableName;
+	private String tableName;
 
-    private String tableType;
+	private String tableType;
 
-    public TableEntry(String aCatalogName, String aSchemaName, String aTableName, String aTableType) {
-        super(aCatalogName, aSchemaName);
-        tableName = aTableName;
-        tableType = aTableType;
-    }
+	public TableEntry(String aCatalogName, String aSchemaName, String aTableName, String aTableType) {
+		super(aCatalogName, aSchemaName);
+		tableName = aTableName;
+		tableType = aTableType;
+	}
 
-    public String getTableName() {
-        return tableName;
-    }
+	public String getTableName() {
+		return tableName;
+	}
 
-    public String getTableType() {
-        return tableType;
-    }
+	public String getTableType() {
+		return tableType;
+	}
 
-    @Override
-    public String toString() {
-        String theResult = super.toString();
-        if (theResult != null) {
-            return theResult + " " + tableName;
-        }
+	@Override
+	public String toString() {
+		String theResult = super.toString();
+		if (theResult != null) {
+			return theResult + " " + tableName;
+		}
 
-        return tableName;
-    }
+		return tableName;
+	}
 }

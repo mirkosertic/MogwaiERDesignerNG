@@ -89,6 +89,7 @@ public class SaveToRepositoryView extends JPanel {
 
 		existingNameBox.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				commandChangeRepositoryEntry();
 			}

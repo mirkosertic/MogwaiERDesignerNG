@@ -89,10 +89,11 @@ public class ERDesignerMainFrame extends DefaultFrame implements
 	}
 
 	@Override
-	public void initTitle() {
+	public final void initTitle() {
 		initTitle(null);
 	}
 
+	@Override
 	public DefaultToolbar getToolBar() {
 		return getDefaultFrameContent().getToolbar();
 	}
@@ -158,6 +159,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
 		theEditor.showModal();
 	}
 
+	@Override
 	public void exitApplication() {
 		ApplicationPreferences.getInstance().updateWindowDefinition(
 				WINDOW_ALIAS, ERDesignerMainFrame.this);

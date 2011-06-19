@@ -984,9 +984,9 @@
 			<Text lang="de">Zeige Daten in {0} über {1}</Text>
 			<Text lang="en">Show data in {0} using {1}</Text>
 		</Entry>
-        <Entry id="EDITROW">
-            <Text lang="de">Zeile bearbeiten</Text>
-            <Text lang="en">Edit row</Text>
-        </Entry>
+		<Entry id="EDITROW">
+			<Text lang="de">Zeile bearbeiten</Text>
+			<Text lang="en">Edit row</Text>
+		</Entry>
 	</Bundle>
 </Resource>

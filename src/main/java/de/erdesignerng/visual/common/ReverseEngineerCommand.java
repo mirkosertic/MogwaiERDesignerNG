@@ -149,6 +149,7 @@ public class ReverseEngineerCommand extends UICommand {
 						throws Exception {
 					ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
 
+						@Override
 						public void notifyMessage(String aResourceKey,
 								String... aValues) {
 							String theMessage = MessageFormat.format(component
