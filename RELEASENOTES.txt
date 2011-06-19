@@ -254,3 +254,7 @@ Release 2.7.0
 * Implemented FR 2895576 [ERDesignerNG] TableSelectEditor devide tables from views
 * Implemented FR 3158981 [ERDesignerNG] Add SQL Browser the the UI
 * Bug Fixing 3056071 [ERDesignerNG] postgres unkown datatype prevent reverse eng.
+
+Release 2.7.1
+
+* Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
