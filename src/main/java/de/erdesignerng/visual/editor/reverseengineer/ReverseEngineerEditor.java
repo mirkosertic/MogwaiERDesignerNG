@@ -107,11 +107,11 @@ public class ReverseEngineerEditor extends BaseEditor {
 			// initially preselect first *non-system* schema if possible
             if (schemaList.getSize() > 0) {
                 List<String> systemSchemas = model.getDialect().getSystemSchemas();
-                int selectedIndex = 0;
+                Integer selectedIndex = null;
 
                 if (systemSchemas != null) {
                     int i = 0;
-                    while ((i < schemaList.getSize()) && (selectedIndex == 0)) {
+                    while ((i < schemaList.getSize()) && (selectedIndex == null)) {
                         boolean isSystemSchema = false;
                         int j = 0;
                         while ((j < systemSchemas.size()) && (!isSystemSchema)) {
@@ -125,6 +125,10 @@ public class ReverseEngineerEditor extends BaseEditor {
 
                         i++;
                     }
+                }
+
+                if (selectedIndex == null) {
+                    selectedIndex = 0;
                 }
 
 				editingView.getSchemaList().setSelectedIndex(selectedIndex);
