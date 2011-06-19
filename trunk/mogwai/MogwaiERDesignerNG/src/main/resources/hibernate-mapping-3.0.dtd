@@ -1,8 +1,8 @@
 <!-- Hibernate Mapping DTD.
 
 <!DOCTYPE hibernate-mapping PUBLIC 
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 An instance of this XML document may contain mappings for an arbitrary 
 number of classes. The class mappings may contain associations to classes
@@ -23,11 +23,11 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	filter-def*,
 	import*,
 	(class|subclass|joined-subclass|union-subclass)*,
-    resultset*,
+	resultset*,
 	(query|sql-query)*,
 	filter-def*,
 	fetch-profile*,
-    database-object*
+	database-object*
 )>
 	<!ATTLIST hibernate-mapping schema CDATA #IMPLIED>									<!-- default: none -->
 	<!ATTLIST hibernate-mapping catalog CDATA #IMPLIED>									<!-- default: none -->
@@ -47,11 +47,11 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	<!ATTLIST meta inherit (true|false) "true">
 
 <!--
-    <identifier-generator.../> allows customized short-naming of IdentifierGenerator implementations.
+	<identifier-generator.../> allows customized short-naming of IdentifierGenerator implementations.
 -->
 <!ELEMENT identifier-generator EMPTY>
-    <!ATTLIST identifier-generator name CDATA #REQUIRED>
-    <!ATTLIST identifier-generator class CDATA #REQUIRED>
+	<!ATTLIST identifier-generator name CDATA #REQUIRED>
+	<!ATTLIST identifier-generator class CDATA #REQUIRED>
 
 <!--
 	<typedef.../> allows defining a customized type mapping for a Hibernate type. May
@@ -79,7 +79,7 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	cache?,
 	synchronize*,
 	comment?,
-    tuplizer*,
+	tuplizer*,
 	(id|composite-id),
 	discriminator?,
 	natural-id?,
@@ -88,12 +88,12 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	((join*,subclass*)|joined-subclass*|union-subclass*),
 	loader?,sql-insert?,sql-update?,sql-delete?,
 	filter*,
-    fetch-profile*,
-    resultset*,
+	fetch-profile*,
+	resultset*,
 	(query|sql-query)*
 )>
 	<!ATTLIST class entity-name CDATA #IMPLIED>
-	<!ATTLIST class name CDATA #IMPLIED>                            <!-- this is the class name -->
+	<!ATTLIST class name CDATA #IMPLIED>							<!-- this is the class name -->
 	<!ATTLIST class proxy CDATA #IMPLIED>							<!-- default: no proxy interface -->
 	<!ATTLIST class lazy (true|false) #IMPLIED>
 	<!ATTLIST class table CDATA #IMPLIED>							<!-- default: unqualified classname -->
@@ -116,11 +116,11 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	<!ATTLIST class node CDATA #IMPLIED>
 
 <!--
-    TUPLIZER element; defines tuplizer to use for a component/entity for a given entity-mode
+	TUPLIZER element; defines tuplizer to use for a component/entity for a given entity-mode
 -->
 <!ELEMENT tuplizer EMPTY>
-    <!ATTLIST tuplizer entity-mode (pojo|dom4j|dynamic-map) #IMPLIED>   <!-- entity mode for which tuplizer is in effect -->
-    <!ATTLIST tuplizer class CDATA #REQUIRED>                           <!-- the tuplizer class to use -->
+	<!ATTLIST tuplizer entity-mode (pojo|dom4j|dynamic-map) #IMPLIED>   <!-- entity mode for which tuplizer is in effect -->
+	<!ATTLIST tuplizer class CDATA #REQUIRED>						   <!-- the tuplizer class to use -->
 
 <!--
 	FILTER-DEF element; top-level filter definition.
@@ -147,19 +147,19 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 <!--
 -->
 <!ELEMENT fetch-profile (fetch*)>
-    <!ATTLIST fetch-profile name CDATA #REQUIRED>
+	<!ATTLIST fetch-profile name CDATA #REQUIRED>
 
 <!--
-    The <fetch> element defines a single path to which the fetch
-    refers, as well as the style of fetch to apply.  The 'root' of the
-    path is different depending upon the context in which the
-    containing <fetch-profile/> occurs; within a <class/> element,
-    the entity-name of the containing class mapping is assumed...
+	The <fetch> element defines a single path to which the fetch
+	refers, as well as the style of fetch to apply.  The 'root' of the
+	path is different depending upon the context in which the
+	containing <fetch-profile/> occurs; within a <class/> element,
+	the entity-name of the containing class mapping is assumed...
 -->
 <!ELEMENT fetch EMPTY>
-    <!ATTLIST fetch entity CDATA #IMPLIED> <!-- Implied as long as the containing fetch profile is contained in a class mapping -->
-    <!ATTLIST fetch association CDATA #REQUIRED>
-    <!ATTLIST fetch style (join|select) "join">
+	<!ATTLIST fetch entity CDATA #IMPLIED> <!-- Implied as long as the containing fetch profile is contained in a class mapping -->
+	<!ATTLIST fetch association CDATA #REQUIRED>
+	<!ATTLIST fetch style (join|select) "join">
 
 <!-- A join allows some properties of a class to be persisted to a second table -->
 
@@ -231,8 +231,8 @@ application through a property of the Java class. -->
 	<!ATTLIST version column CDATA #IMPLIED>
 	<!ATTLIST version type CDATA "integer">
 	<!ATTLIST version unsaved-value (null|negative|undefined) "undefined">
-    <!ATTLIST version generated (never|always) "never">
-    <!ATTLIST version insert (true|false) #IMPLIED>
+	<!ATTLIST version generated (never|always) "never">
+	<!ATTLIST version insert (true|false) #IMPLIED>
 
 <!ELEMENT timestamp (meta*)>
 	<!ATTLIST timestamp name CDATA #REQUIRED>
@@ -240,8 +240,8 @@ application through a property of the Java class. -->
 	<!ATTLIST timestamp column CDATA #IMPLIED>
 	<!ATTLIST timestamp access CDATA #IMPLIED>
 	<!ATTLIST timestamp unsaved-value (null|undefined) "null">
-    <!ATTLIST timestamp source (vm|db) "vm">
-    <!ATTLIST timestamp generated (never|always) "never">
+	<!ATTLIST timestamp source (vm|db) "vm">
+	<!ATTLIST timestamp generated (never|always) "never">
 
 
 <!--
@@ -252,14 +252,14 @@ application through a property of the Java class. -->
 -->
 <!ELEMENT subclass (
  	meta*,
-    tuplizer*,
+	tuplizer*,
 	synchronize*,
 	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|idbag|array|primitive-array)*,
 	join*, 
 	subclass*,
 	loader?,sql-insert?,sql-update?,sql-delete?,
-    fetch-profile*,
-    resultset*,
+	fetch-profile*,
+	resultset*,
 	(query|sql-query)*
 )>
 	<!ATTLIST subclass entity-name CDATA #IMPLIED>
@@ -286,13 +286,13 @@ application through a property of the Java class. -->
 	subselect?,
 	synchronize*,
 	comment?,
-    tuplizer*,
+	tuplizer*,
 	key,
 	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array)*, 
 	joined-subclass*,
 	loader?,sql-insert?,sql-update?,sql-delete?,
-    fetch-profile*,
-    resultset*,
+	fetch-profile*,
+	resultset*,
 	(query|sql-query)*
 )>
 	<!ATTLIST joined-subclass entity-name CDATA #IMPLIED>
@@ -323,12 +323,12 @@ application through a property of the Java class. -->
 	subselect?,
 	synchronize*,
 	comment?,
-    tuplizer*,
+	tuplizer*,
 	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array)*,
 	union-subclass*,
 	loader?,sql-insert?,sql-update?,sql-delete?,
-    fetch-profile*,
-    resultset*,
+	fetch-profile*,
+	resultset*,
 	(query|sql-query)*
 )>
 	<!ATTLIST union-subclass entity-name CDATA #IMPLIED>
@@ -370,7 +370,7 @@ JavaBeans style properties are mapped to table columns. -->
 	<!ATTLIST property optimistic-lock (true|false) "true">	<!-- only supported for properties of a class (not component) -->
 	<!ATTLIST property formula CDATA #IMPLIED>
 	<!ATTLIST property lazy (true|false) "false">
-    <!ATTLIST property generated (never|insert|always) "never">
+	<!ATTLIST property generated (never|insert|always) "never">
 
 <!-- Declares the type of the containing property (overrides an eventually existing type
 attribute of the property). May contain param elements to customize a ParametrizableType. -->
@@ -474,7 +474,7 @@ shared reference semantics. -->
 
 <!ELEMENT component (
 	meta*,
-    tuplizer*,
+	tuplizer*,
 	parent?,
 	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|array|primitive-array)*
 )>
@@ -915,9 +915,9 @@ mapping associations to classes with composite ids. -->
 	<!ATTLIST column sql-type CDATA #IMPLIED>					<!-- override default column type for hibernate type -->
 	<!ATTLIST column index CDATA #IMPLIED>
 	<!ATTLIST column check CDATA #IMPLIED>						<!-- default: no check constraint -->
-    <!ATTLIST column default CDATA #IMPLIED>                    <!-- default: no default value -->
-    <!ATTLIST column read CDATA #IMPLIED>                       <!-- default: column name -->
-    <!ATTLIST column write CDATA #IMPLIED>                      <!-- default: parameter placeholder ('?') -->
+	<!ATTLIST column default CDATA #IMPLIED>					<!-- default: no default value -->
+	<!ATTLIST column read CDATA #IMPLIED>					   <!-- default: column name -->
+	<!ATTLIST column write CDATA #IMPLIED>					  <!-- default: parameter placeholder ('?') -->
 
 <!-- The formula and subselect elements allow us to map derived properties and 
 entities. -->
@@ -951,22 +951,22 @@ an entity or collection -->
 	<!ATTLIST query fetch-size CDATA #IMPLIED>
 	<!ATTLIST query timeout CDATA #IMPLIED>
 	<!ATTLIST query cache-mode (get|ignore|normal|put|refresh) #IMPLIED>
-    <!ATTLIST query read-only (true|false) #IMPLIED>
-    <!ATTLIST query comment CDATA #IMPLIED>
+	<!ATTLIST query read-only (true|false) #IMPLIED>
+	<!ATTLIST query comment CDATA #IMPLIED>
 
 <!-- The sql-query element declares a named SQL query string -->
 
 <!ELEMENT sql-query (#PCDATA|return-scalar|return|return-join|load-collection|synchronize|query-param)*>
 	<!ATTLIST sql-query name CDATA #REQUIRED>
-    <!ATTLIST sql-query resultset-ref CDATA #IMPLIED>
+	<!ATTLIST sql-query resultset-ref CDATA #IMPLIED>
 	<!ATTLIST sql-query flush-mode (auto|never|always) #IMPLIED>
 	<!ATTLIST sql-query cacheable (true|false) "false">
 	<!ATTLIST sql-query cache-region CDATA #IMPLIED>
 	<!ATTLIST sql-query fetch-size CDATA #IMPLIED>
 	<!ATTLIST sql-query timeout CDATA #IMPLIED>
 	<!ATTLIST sql-query cache-mode (get|ignore|normal|put|refresh) #IMPLIED>
-    <!ATTLIST sql-query read-only (true|false) #IMPLIED>
-    <!ATTLIST sql-query comment CDATA #IMPLIED>
+	<!ATTLIST sql-query read-only (true|false) #IMPLIED>
+	<!ATTLIST sql-query comment CDATA #IMPLIED>
 	<!ATTLIST sql-query callable (true|false) "false">
 
 <!-- The query-param element is used only by tools that generate
@@ -1040,31 +1040,31 @@ finder methods for named queries -->
 	<!ATTLIST sql-delete-all check (none|rowcount|param) #IMPLIED>
 
 <!--
-    Element for defining "auxiliary" database objects.  Must be one of two forms:
+	Element for defining "auxiliary" database objects.  Must be one of two forms:
 
-    #1 :
-        <database-object>
-            <definition class="CustomClassExtendingAuxiliaryObject"/>
-        </database-object>
+	#1 :
+		<database-object>
+			<definition class="CustomClassExtendingAuxiliaryObject"/>
+		</database-object>
 
-    #2 :
-        <database-object>
-            <create>CREATE OR REPLACE ....</create>
-            <drop>DROP ....</drop>
-        </database-object>
+	#2 :
+		<database-object>
+			<create>CREATE OR REPLACE ....</create>
+			<drop>DROP ....</drop>
+		</database-object>
 -->
 <!ELEMENT database-object ( (definition|(create,drop)), dialect-scope* )>
 
 <!ELEMENT definition EMPTY>
-    <!ATTLIST definition class CDATA #REQUIRED>
+	<!ATTLIST definition class CDATA #REQUIRED>
 
 <!ELEMENT create (#PCDATA)>
 <!ELEMENT drop (#PCDATA)>
 
 <!--
-    dialect-scope element allows scoping auxiliary-objects to a particular
-    Hibernate dialect implementation.
+	dialect-scope element allows scoping auxiliary-objects to a particular
+	Hibernate dialect implementation.
 -->
 <!ELEMENT dialect-scope (#PCDATA)>
-    <!ATTLIST dialect-scope name CDATA #REQUIRED>
+	<!ATTLIST dialect-scope name CDATA #REQUIRED>
 

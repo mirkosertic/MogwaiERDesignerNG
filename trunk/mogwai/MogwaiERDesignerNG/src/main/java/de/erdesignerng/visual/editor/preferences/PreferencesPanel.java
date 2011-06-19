@@ -126,13 +126,14 @@ public class PreferencesPanel extends DefaultPanel implements
 	 */
 	public boolean applyValues() {
 
-		if (bindinginfo.validate().size() == 0) {
+		if (bindinginfo.validate().isEmpty()) {
 			bindinginfo.view2model();
 			return true;
 		}
 		return false;
 	}
 
+	@Override
 	public ResourceHelper getResourceHelper() {
 		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 	}

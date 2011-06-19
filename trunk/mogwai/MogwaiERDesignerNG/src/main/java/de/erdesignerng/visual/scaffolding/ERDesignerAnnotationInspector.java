@@ -30,38 +30,38 @@ import java.util.Map;
 import static org.metawidget.inspector.InspectionResultConstants.LOOKUP;
 
 public class ERDesignerAnnotationInspector extends
-        MetawidgetAnnotationInspector {
+		MetawidgetAnnotationInspector {
 
-    private final Model model;
+	private final Model model;
 
-    private int propertyCount;
+	private int propertyCount;
 
-    public ERDesignerAnnotationInspector(Model aModel) {
-        model = aModel;
-    }
+	public ERDesignerAnnotationInspector(Model aModel) {
+		model = aModel;
+	}
 
-    @Override
-    protected Map<String, String> inspectProperty(Property theProperty)
-            throws Exception {
+	@Override
+	protected Map<String, String> inspectProperty(Property theProperty)
+			throws Exception {
 
-        propertyCount++;
+		propertyCount++;
 
-        Map<String, String> theAttributes = super.inspectProperty(theProperty);
+		Map<String, String> theAttributes = super.inspectProperty(theProperty);
 
-        ERDesignerLookup theLookup = theProperty
-                .getAnnotation(ERDesignerLookup.class);
-        if (theLookup != null) {
-            List<String> theValues = new ArrayList<String>();
+		ERDesignerLookup theLookup = theProperty
+				.getAnnotation(ERDesignerLookup.class);
+		if (theLookup != null) {
+			List<String> theValues = new ArrayList<String>();
 
-            model.addElementPropertiesTo(theValues, theLookup.elementType(), theLookup.propertyName());
+			model.addElementPropertiesTo(theValues, theLookup.elementType(), theLookup.propertyName());
 
-            theAttributes.put(LOOKUP, ArrayUtils.toString(theValues.toArray(new String[theValues.size()])));
-        }
+			theAttributes.put(LOOKUP, ArrayUtils.toString(theValues.toArray(new String[theValues.size()])));
+		}
 
-        return theAttributes;
-    }
+		return theAttributes;
+	}
 
-    public int getPropertyCount() {
-        return propertyCount;
-    }
+	public int getPropertyCount() {
+		return propertyCount;
+	}
 }

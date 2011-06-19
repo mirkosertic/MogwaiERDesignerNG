@@ -23,7 +23,7 @@ package de.erdesignerng.model.utils;
  */
 public class RedefinedAttributeInfo extends RedefinedInfo {
 
-    public RedefinedAttributeInfo(String aWhat) {
-        super(aWhat);
-    }
+	public RedefinedAttributeInfo(String aWhat) {
+		super(aWhat);
+	}
 }

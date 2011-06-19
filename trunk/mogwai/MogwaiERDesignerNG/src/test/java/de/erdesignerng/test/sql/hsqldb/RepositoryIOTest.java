@@ -28,7 +28,7 @@ import java.sql.DriverManager;
 public class RepositoryIOTest extends AbstractReverseEngineeringTestImpl {
 
 	public void testLoadSaveRepository() throws
-            Exception {
+			Exception {
 
 		Class.forName("org.hsqldb.jdbc.JDBCDriver").newInstance();
 		Connection theConnection = null;

@@ -30,259 +30,255 @@ import javax.swing.*;
  */
 public class CustomTypeEditorView extends DefaultPanel {
 
-    private DefaultTabbedPane mainTabbedPane;
+	private DefaultTabbedPane mainTabbedPane;
 
-    private DefaultTabbedPaneTab attributesTab;
+	private DefaultTabbedPaneTab attributesTab;
 
-    private DefaultList typesList;
+	private DefaultList typesList;
 
-    private DefaultButton newButton;
+	private DefaultButton newButton;
 
-    private DefaultButton deleteButton;
+	private DefaultButton deleteButton;
 
-    private DefaultTabbedPane component15;
+	private DefaultTabbedPane component15;
 
-    private DefaultTabbedPaneTab attributesGeneralTab;
+	private DefaultTabbedPaneTab attributesGeneralTab;
 
-    private DefaultLabel component20;
+	private DefaultLabel component20;
 
-    private DefaultTextField typeName;
+	private DefaultTextField typeName;
 
-    private DefaultLabel component42;
+	private DefaultButton updateDomainButton;
 
-    private DefaultButton updateDomainButton;
+	private DefaultButton okButton;
 
-    private DefaultLabel label1;
+	private DefaultButton cancelButton;
 
-    private DefaultButton okButton;
+	private DefaultTextArea typeddl;
 
-    private DefaultButton cancelButton;
+	public CustomTypeEditorView() {
+		initialize();
+	}
 
-    private DefaultTextArea typeddl;
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-    public CustomTypeEditorView() {
-        initialize();
-    }
+		String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
+		String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		setLayout(layout);
 
-        String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+		CellConstraints cons = new CellConstraints();
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        setLayout(layout);
+		this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
+		this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
+		this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
-        CellConstraints cons = new CellConstraints();
+	}
 
-        this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
-        this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
-        this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
+	/**
+	 * Getter method for component MainTabbedPane.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultTabbedPane getMainTabbedPane() {
 
-    }
+		if (mainTabbedPane == null) {
+			mainTabbedPane = new DefaultTabbedPane();
+			mainTabbedPane.addTab(null, getTypesTab());
+			mainTabbedPane.setName("MainTabbedPane");
+			mainTabbedPane.setSelectedIndex(0);
+		}
 
-    /**
-     * Getter method for component MainTabbedPane.
-     *
-     * @return the initialized component
-     */
-    public DefaultTabbedPane getMainTabbedPane() {
+		return mainTabbedPane;
+	}
 
-        if (mainTabbedPane == null) {
-            mainTabbedPane = new DefaultTabbedPane();
-            mainTabbedPane.addTab(null, getTypesTab());
-            mainTabbedPane.setName("MainTabbedPane");
-            mainTabbedPane.setSelectedIndex(0);
-        }
+	/**
+	 * Getter method for component AttributesTab.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultTabbedPaneTab getTypesTab() {
 
-        return mainTabbedPane;
-    }
+		if (attributesTab == null) {
+			attributesTab = new DefaultTabbedPaneTab(mainTabbedPane,
+					ERDesignerBundle.TYPES);
 
-    /**
-     * Getter method for component AttributesTab.
-     *
-     * @return the initialized component
-     */
-    public DefaultTabbedPaneTab getTypesTab() {
+			String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
+			String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
-        if (attributesTab == null) {
-            attributesTab = new DefaultTabbedPaneTab(mainTabbedPane,
-                    ERDesignerBundle.TYPES);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			attributesTab.setLayout(layout);
 
-            String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
+			CellConstraints cons = new CellConstraints();
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            attributesTab.setLayout(layout);
+			// this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
+			// 1));
+			// this.m_attributestab.add(this.getDownButton(), cons
+			// .xywh(9, 2, 1, 1));
+			attributesTab.add(new DefaultScrollPane(getTypesList()), cons.xywh(
+					2, 4, 8, 3));
+			attributesTab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
+			attributesTab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
+			attributesTab.add(getComponent15(), cons.xywh(11, 2, 3, 5));
+			attributesTab.add(getUpdateTypeButton(), cons.xywh(13, 8, 1, 1));
+			attributesTab.setName("AttributesTab");
+		}
 
-            CellConstraints cons = new CellConstraints();
+		return attributesTab;
+	}
 
-            // this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
-            // 1));
-            // this.m_attributestab.add(this.getDownButton(), cons
-            // .xywh(9, 2, 1, 1));
-            attributesTab.add(new DefaultScrollPane(getTypesList()), cons.xywh(
-                    2, 4, 8, 3));
-            attributesTab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
-            attributesTab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
-            attributesTab.add(getComponent15(), cons.xywh(11, 2, 3, 5));
-            attributesTab.add(getUpdateTypeButton(), cons.xywh(13, 8, 1, 1));
-            attributesTab.setName("AttributesTab");
-        }
+	public DefaultList getTypesList() {
 
-        return attributesTab;
-    }
+		if (typesList == null) {
+			typesList = new DefaultList();
+			typesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
 
-    public DefaultList getTypesList() {
+		return typesList;
+	}
 
-        if (typesList == null) {
-            typesList = new DefaultList();
-            typesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        }
+	public JButton getNewButton() {
 
-        return typesList;
-    }
+		if (newButton == null) {
+			newButton = new DefaultButton(ERDesignerBundle.NEW);
+		}
 
-    public JButton getNewButton() {
+		return newButton;
+	}
 
-        if (newButton == null) {
-            newButton = new DefaultButton(ERDesignerBundle.NEW);
-        }
+	public JButton getDeleteButton() {
 
-        return newButton;
-    }
+		if (deleteButton == null) {
+			deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
+		}
 
-    public JButton getDeleteButton() {
+		return deleteButton;
+	}
 
-        if (deleteButton == null) {
-            deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
-        }
+	public DefaultTabbedPane getComponent15() {
 
-        return deleteButton;
-    }
+		if (component15 == null) {
+			component15 = new DefaultTabbedPane();
+			component15.addTab(null, getTypesGeneralTab());
+			component15.setName("Component_15");
+			component15.setSelectedIndex(0);
+		}
+
+		return component15;
+	}
 
-    public DefaultTabbedPane getComponent15() {
+	/**
+	 * Getter method for component AttributesGeneralTab.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultTabbedPaneTab getTypesGeneralTab() {
 
-        if (component15 == null) {
-            component15 = new DefaultTabbedPane();
-            component15.addTab(null, getTypesGeneralTab());
-            component15.setName("Component_15");
-            component15.setSelectedIndex(0);
-        }
-
-        return component15;
-    }
-
-    /**
-     * Getter method for component AttributesGeneralTab.
-     *
-     * @return the initialized component
-     */
-    public DefaultTabbedPaneTab getTypesGeneralTab() {
-
-        if (attributesGeneralTab == null) {
-            attributesGeneralTab = new DefaultTabbedPaneTab(component15,
-                    ERDesignerBundle.GENERAL);
-
-            String rowDef = "2dlu,p,2dlu,p,2dlu,fill:50dlu:grow";
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
-
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            attributesGeneralTab.setLayout(layout);
-
-            CellConstraints cons = new CellConstraints();
-
-            attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
-            attributesGeneralTab.add(getTypeName(), cons.xywh(4, 2, 1, 1));
-            attributesGeneralTab.add(
-                    new DefaultLabel(ERDesignerBundle.SQL), cons.xywh(2,
-                    4, 1, 1));
-
-            attributesGeneralTab.add(getTypeddl().getScrollPane(), cons.xywh(2, 6, 3, 1));
-
-            attributesGeneralTab.setName("AttributesGeneralTab");
-        }
-
-        return attributesGeneralTab;
-    }
-
-    /**
-     * Getter method for component Component_20.
-     *
-     * @return the initialized component
-     */
-    public JLabel getComponent20() {
-
-        if (component20 == null) {
-            component20 = new DefaultLabel(ERDesignerBundle.NAME);
-        }
-
-        return component20;
-    }
-
-    /**
-     * Getter method for component AttributeName.
-     *
-     * @return the initialized component
-     */
-    public DefaultTextField getTypeName() {
-
-        if (typeName == null) {
-            typeName = new DefaultTextField();
-            typeName.setName("AttributeName");
-        }
-
-        return typeName;
-    }
-
-    /**
-     * Getter method for component UpdateAttributeButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getUpdateTypeButton() {
-
-        if (updateDomainButton == null) {
-            updateDomainButton = new DefaultButton(ERDesignerBundle.UPDATE);
-        }
-
-        return updateDomainButton;
-    }
-
-    /**
-     * Getter method for component OkButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getOkButton() {
-
-        if (okButton == null) {
-            okButton = new DefaultButton(ERDesignerBundle.OK);
-        }
-
-        return okButton;
-    }
-
-    /**
-     * Getter method for component CancelButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getCancelButton() {
-
-        if (cancelButton == null) {
-            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
-        }
-
-        return cancelButton;
-    }
-
-    public DefaultTextArea getTypeddl() {
-        if (typeddl == null) {
-            typeddl = new DefaultTextArea();
-        }
-        return typeddl;
-    }
+		if (attributesGeneralTab == null) {
+			attributesGeneralTab = new DefaultTabbedPaneTab(component15,
+					ERDesignerBundle.GENERAL);
+
+			String rowDef = "2dlu,p,2dlu,p,2dlu,fill:50dlu:grow";
+			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
+
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			attributesGeneralTab.setLayout(layout);
+
+			CellConstraints cons = new CellConstraints();
+
+			attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
+			attributesGeneralTab.add(getTypeName(), cons.xywh(4, 2, 1, 1));
+			attributesGeneralTab.add(
+					new DefaultLabel(ERDesignerBundle.SQL), cons.xywh(2,
+					4, 1, 1));
+
+			attributesGeneralTab.add(getTypeddl().getScrollPane(), cons.xywh(2, 6, 3, 1));
+
+			attributesGeneralTab.setName("AttributesGeneralTab");
+		}
+
+		return attributesGeneralTab;
+	}
+
+	/**
+	 * Getter method for component Component_20.
+	 *
+	 * @return the initialized component
+	 */
+	public JLabel getComponent20() {
+
+		if (component20 == null) {
+			component20 = new DefaultLabel(ERDesignerBundle.NAME);
+		}
+
+		return component20;
+	}
+
+	/**
+	 * Getter method for component AttributeName.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultTextField getTypeName() {
+
+		if (typeName == null) {
+			typeName = new DefaultTextField();
+			typeName.setName("AttributeName");
+		}
+
+		return typeName;
+	}
+
+	/**
+	 * Getter method for component UpdateAttributeButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getUpdateTypeButton() {
+
+		if (updateDomainButton == null) {
+			updateDomainButton = new DefaultButton(ERDesignerBundle.UPDATE);
+		}
+
+		return updateDomainButton;
+	}
+
+	/**
+	 * Getter method for component OkButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getOkButton() {
+
+		if (okButton == null) {
+			okButton = new DefaultButton(ERDesignerBundle.OK);
+		}
+
+		return okButton;
+	}
+
+	/**
+	 * Getter method for component CancelButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getCancelButton() {
+
+		if (cancelButton == null) {
+			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
+		}
+
+		return cancelButton;
+	}
+
+	public DefaultTextArea getTypeddl() {
+		if (typeddl == null) {
+			typeddl = new DefaultTextArea();
+		}
+		return typeddl;
+	}
 }

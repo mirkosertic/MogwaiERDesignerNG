@@ -102,7 +102,7 @@ public class MigrationScriptEditor extends BaseEditor {
 	@Override
 	protected void commandOk() {
 
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 			bindingInfo.view2model();
 
 			MigrationScriptDataModel theModel = bindingInfo.getDefaultModel();

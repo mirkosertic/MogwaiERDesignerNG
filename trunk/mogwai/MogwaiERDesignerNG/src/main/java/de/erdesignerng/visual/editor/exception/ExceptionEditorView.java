@@ -31,92 +31,92 @@ import javax.swing.*;
  */
 public class ExceptionEditorView extends JPanel {
 
-    private JPanel buttonPanel;
+	private JPanel buttonPanel;
 
-    private DefaultButton closeButton;
+	private DefaultButton closeButton;
 
-    private DefaultTextArea exceptionText;
+	private DefaultTextArea exceptionText;
 
-    /**
-     * Constructor.
-     */
-    public ExceptionEditorView() {
-        initialize();
+	/**
+	 * Constructor.
+	 */
+	public ExceptionEditorView() {
+		initialize();
 
-        exceptionText.setEditable(false);
-    }
+		exceptionText.setEditable(false);
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-        String rowDef = "2dlu,fill:250dlu,10dlu,p,2dlu";
-        String colDef = "2dlu,250dlu,2dlu";
+		String rowDef = "2dlu,fill:250dlu,10dlu,p,2dlu";
+		String colDef = "2dlu,250dlu,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        setLayout(layout);
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        this.add(getButtonPanel(), cons.xywh(2, 4, 1, 1));
-        this.add(new JScrollPane(getExceptionText()), cons.xywh(2, 2, 1, 1));
-    }
+		this.add(getButtonPanel(), cons.xywh(2, 4, 1, 1));
+		this.add(new JScrollPane(getExceptionText()), cons.xywh(2, 2, 1, 1));
+	}
 
-    /**
-     * Getter method for component buttonpanel.
-     *
-     * @return the initialized component
-     */
-    public JPanel getButtonPanel() {
+	/**
+	 * Getter method for component buttonpanel.
+	 *
+	 * @return the initialized component
+	 */
+	public JPanel getButtonPanel() {
 
-        if (buttonPanel == null) {
-            buttonPanel = new JPanel();
+		if (buttonPanel == null) {
+			buttonPanel = new JPanel();
 
-            String rowDef = "p";
-            String colDef = "fill:60dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
+			String rowDef = "p";
+			String colDef = "fill:60dlu,2dlu:grow,fill:60dlu,2dlu,fill:60dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            buttonPanel.setLayout(layout);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			buttonPanel.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+			CellConstraints cons = new CellConstraints();
 
-            buttonPanel.add(getCloseButton(), cons.xywh(1, 1, 1, 1));
-            buttonPanel.setName("buttonpanel");
-        }
+			buttonPanel.add(getCloseButton(), cons.xywh(1, 1, 1, 1));
+			buttonPanel.setName("buttonpanel");
+		}
 
-        return buttonPanel;
-    }
+		return buttonPanel;
+	}
 
-    /**
-     * Getter method for component closebutton.
-     *
-     * @return the initialized component
-     */
-    public DefaultButton getCloseButton() {
+	/**
+	 * Getter method for component closebutton.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultButton getCloseButton() {
 
-        if (closeButton == null) {
-            closeButton = new DefaultButton();
-            closeButton.setActionCommand("Close");
-            closeButton.setName("closebutton");
-            closeButton.setText("Close");
-        }
+		if (closeButton == null) {
+			closeButton = new DefaultButton();
+			closeButton.setActionCommand("Close");
+			closeButton.setName("closebutton");
+			closeButton.setText("Close");
+		}
 
-        return closeButton;
-    }
+		return closeButton;
+	}
 
-    /**
-     * Getter method for component exceptiontext.
-     *
-     * @return the initialized component
-     */
-    public DefaultTextArea getExceptionText() {
+	/**
+	 * Getter method for component exceptiontext.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultTextArea getExceptionText() {
 
-        if (exceptionText == null) {
-            exceptionText = new DefaultTextArea();
-            exceptionText.setName("exceptiontext");
-        }
+		if (exceptionText == null) {
+			exceptionText = new DefaultTextArea();
+			exceptionText.setName("exceptiontext");
+		}
 
-        return exceptionText;
-    }
+		return exceptionText;
+	}
 }

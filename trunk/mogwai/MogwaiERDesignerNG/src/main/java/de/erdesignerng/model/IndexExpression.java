@@ -39,7 +39,7 @@ public class IndexExpression extends ModelItem implements
 	 * Setzt den Wert des Attributs <code>expression</code>.
 	 * 
 	 * @param expression
-	 *            Wert f�r das Attribut expression.
+	 *			Wert f�r das Attribut expression.
 	 */
 	public void setExpression(String expression) {
 		this.expression = expression;
@@ -58,7 +58,7 @@ public class IndexExpression extends ModelItem implements
 	 * Setzt den Wert des Attributs <code>attributeRef</code>.
 	 * 
 	 * @param attributeRef
-	 *            Wert f�r das Attribut attributeRef.
+	 *			Wert f�r das Attribut attributeRef.
 	 */
 	public void setAttributeRef(Attribute attributeRef) {
 		this.attributeRef = attributeRef;
@@ -93,10 +93,10 @@ public class IndexExpression extends ModelItem implements
 	 * Test if this expression is not equals to another expression.
 	 * 
 	 * @param aExpression
-	 *            the other expression
+	 *			the other expression
 	 * @param aUseName
-	 *            true if attribute check shall be done by name, not by system
-	 *            id
+	 *			true if attribute check shall be done by name, not by system
+	 *			id
 	 * @return true if they are not equals
 	 */
 	public boolean isModified(IndexExpression aExpression, boolean aUseName) {

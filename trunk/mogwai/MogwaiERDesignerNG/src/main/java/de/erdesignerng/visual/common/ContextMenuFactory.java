@@ -152,6 +152,7 @@ public final class ContextMenuFactory {
 				DefaultMenuItem theAddItem = new DefaultMenuItem(theHideAction);
 				theHideAction.addActionListener(new ActionListener() {
 
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						aComponent.commandHideSubjectArea(theSubjectArea);
 					}
@@ -196,6 +197,7 @@ public final class ContextMenuFactory {
 			DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
 			theAddAction.addActionListener(new ActionListener() {
 
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					aComponent
 							.commandAddToNewSubjectArea(theNewSubjectAreaItems);
@@ -213,6 +215,7 @@ public final class ContextMenuFactory {
 			DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
 			theDeleteAction.addActionListener(new ActionListener() {
 
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					aComponent.commandDelete(theItemsToBeDeleted);
 				}

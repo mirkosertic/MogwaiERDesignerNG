@@ -27,65 +27,65 @@ import java.awt.geom.Rectangle2D;
 
 public class VertexCellElement extends Element {
 
-    private Dimension size;
+	private Dimension size;
 
-    private final CellView view;
+	private final CellView view;
 
-    private Point forcePoint;
+	private Point forcePoint;
 
-    private Double radius;
+	private Double radius;
 
-    private Rectangle2D boundaries;
+	private Rectangle2D boundaries;
 
-    public VertexCellElement(CellView aView) {
-        view = aView;
-    }
+	public VertexCellElement(CellView aView) {
+		view = aView;
+	}
 
-    public GraphCell getCell() {
-        return (GraphCell) view.getCell();
-    }
+	public GraphCell getCell() {
+		return (GraphCell) view.getCell();
+	}
 
-    @Override
-    public Point getLocation() {
+	@Override
+	public Point getLocation() {
 
-        GraphCell theCell = getCell();
-        Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
-        return new Point((int) theBounds.getX(), (int) theBounds.getY());
-    }
+		GraphCell theCell = getCell();
+		Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+		return new Point((int) theBounds.getX(), (int) theBounds.getY());
+	}
 
-    @Override
-    public Dimension getSize() {
+	@Override
+	public Dimension getSize() {
 
-        if (size == null) {
-            GraphCell theCell = getCell();
-            Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
-            size = new Dimension((int) theBounds.getWidth(), (int) theBounds.getHeight());
-        }
-        return size;
+		if (size == null) {
+			GraphCell theCell = getCell();
+			Rectangle2D theBounds = GraphConstants.getBounds(theCell.getAttributes());
+			size = new Dimension((int) theBounds.getWidth(), (int) theBounds.getHeight());
+		}
+		return size;
 
-    }
+	}
 
-    @Override
-    public double computeRadius() {
-        if (radius == null) {
-            radius = super.computeRadius();
-        }
-        return radius;
-    }
+	@Override
+	public double computeRadius() {
+		if (radius == null) {
+			radius = super.computeRadius();
+		}
+		return radius;
+	}
 
-    @Override
-    public Rectangle2D getBoundaries() {
-        if (boundaries == null) {
-            boundaries = super.getBoundaries();
-        }
-        return boundaries;
-    }
+	@Override
+	public Rectangle2D getBoundaries() {
+		if (boundaries == null) {
+			boundaries = super.getBoundaries();
+		}
+		return boundaries;
+	}
 
-    @Override
-    public Point getForcePoint() {
-        if (forcePoint == null) {
-            forcePoint = super.getForcePoint();
-        }
-        return forcePoint;
-    }
+	@Override
+	public Point getForcePoint() {
+		if (forcePoint == null) {
+			forcePoint = super.getForcePoint();
+		}
+		return forcePoint;
+	}
 }

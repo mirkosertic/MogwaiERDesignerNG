@@ -35,15 +35,18 @@ public class ModelBasedConnectionProvider implements ConnectionProvider {
 		model = aModel;
 	}
 
+	@Override
 	public Connection createConnection() throws Exception {
 		return model.createConnection();
 	}
 
+	@Override
 	public String createScriptStatementSeparator() {
 		return model.getDialect().createSQLGenerator()
 				.createScriptStatementSeparator();
 	}
 
+	@Override
 	public boolean generatesManagedConnection() {
 		return model.getDialect().generatesManagedConnection();
 	}

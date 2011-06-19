@@ -33,6 +33,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	private final DefaultAction testAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+				@Override
 				public void processActionEvent(ActionEvent e) {
 					commandTest();
 				}
@@ -131,7 +132,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	@Override
 	protected void commandOk() {
 
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 
 			bindingInfo.view2model();
 
@@ -141,7 +142,7 @@ public class DatabaseConnectionEditor extends BaseEditor {
 
 	private void commandTest() {
 
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 
 			bindingInfo.view2model();
 

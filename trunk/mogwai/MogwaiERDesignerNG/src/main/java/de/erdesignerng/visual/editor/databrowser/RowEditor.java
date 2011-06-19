@@ -29,29 +29,29 @@ import java.sql.SQLException;
  */
 public class RowEditor extends BaseEditor {
 
-    public RowEditor(JComponent aParent, PaginationDataModel aModel, int aRow) throws SQLException {
-        super(aParent, ERDesignerBundle.EDITROW);
+	public RowEditor(JComponent aParent, PaginationDataModel aModel, int aRow) throws SQLException {
+		super(aParent, ERDesignerBundle.EDITROW);
 
-        initialize(aModel, aRow);
-    }
+		initialize(aModel, aRow);
+	}
 
-    private void initialize(PaginationDataModel aModel, int aRow) throws SQLException {
+	private void initialize(PaginationDataModel aModel, int aRow) throws SQLException {
 
-        RowEditorView view = new RowEditorView(aModel, aRow);
+		RowEditorView view = new RowEditorView(aModel, aRow);
 
-        view.getOkButton().setAction(okAction);
-        view.getCancelButton().setAction(cancelAction);
+		view.getOkButton().setAction(okAction);
+		view.getCancelButton().setAction(cancelAction);
 
-        setContentPane(view);
-        setResizable(true);
+		setContentPane(view);
+		setResizable(true);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(view);
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(view);
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 }

@@ -37,121 +37,121 @@ import java.util.Map;
  */
 public class ReverseEngineeringTest extends AbstractConnectionTest {
 
-    public void testReverseEngineerOracle() throws Exception {
+	public void testReverseEngineerOracle() throws Exception {
 
-        Connection theConnection = null;
-        try {
-            theConnection = createConnection();
+		Connection theConnection = null;
+		try {
+			theConnection = createConnection();
 
-            loadSQL(theConnection, "db.sql");
+			loadSQL(theConnection, "db.sql");
 
-            Dialect theDialect = new OracleDialect();
-            JDBCReverseEngineeringStrategy<OracleDialect> theST = theDialect.getReverseEngineeringStrategy();
+			Dialect theDialect = new OracleDialect();
+			JDBCReverseEngineeringStrategy<OracleDialect> theST = theDialect.getReverseEngineeringStrategy();
 
-            Model theModel = new Model();
-            theModel.setDialect(theDialect);
-            theModel.setModificationTracker(new HistoryModificationTracker(theModel));
+			Model theModel = new Model();
+			theModel.setDialect(theDialect);
+			theModel.setModificationTracker(new HistoryModificationTracker(theModel));
 
-            List<SchemaEntry> theAllSchemas = theST.getSchemaEntries(theConnection);
+			List<SchemaEntry> theAllSchemas = theST.getSchemaEntries(theConnection);
 
-            List<SchemaEntry> theSchemas = new ArrayList<SchemaEntry>();
-            for (SchemaEntry theEntry : theAllSchemas) {
-                System.out.println(theEntry.getSchemaName());
+			List<SchemaEntry> theSchemas = new ArrayList<SchemaEntry>();
+			for (SchemaEntry theEntry : theAllSchemas) {
+				System.out.println(theEntry.getSchemaName());
 
-                // Only dbo schemas
-                if ("MOGWAI".equals(theEntry.getSchemaName())) {
-                    theSchemas.add(theEntry);
-                }
-            }
+				// Only dbo schemas
+				if ("MOGWAI".equals(theEntry.getSchemaName())) {
+					theSchemas.add(theEntry);
+				}
+			}
 
-            ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
-            theOptions.setTableNaming(TableNamingEnum.STANDARD);
-            theOptions.getTableEntries().addAll(theST.getTablesForSchemas(theConnection, theSchemas));
+			ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+			theOptions.setTableNaming(TableNamingEnum.STANDARD);
+			theOptions.getTableEntries().addAll(theST.getTablesForSchemas(theConnection, theSchemas));
 
-            theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
-                    new EmptyReverseEngineeringNotifier());
+			theST.updateModelFromConnection(theModel, new EmptyWorldConnector(), theConnection, theOptions,
+					new EmptyReverseEngineeringNotifier());
 
-            // Implement Unit Tests here
-            Table theTable = theModel.getTables().findByName("TABLE1");
-            assertTrue(theTable != null);
-            Attribute theAttribute = theTable.getAttributes().findByName("TB2_1");
-            assertTrue(theAttribute != null);
-            assertTrue(theAttribute.isNullable() == false);
-            assertTrue(theAttribute.getDatatype().getName().equals("VARCHAR2"));
-            assertTrue(theAttribute.getSize() == 20);
-            theAttribute = theTable.getAttributes().findByName("TB2_2");
-            assertTrue(theAttribute != null);
-            assertTrue(theAttribute.isNullable());
-            assertTrue(theAttribute.getDatatype().getName().equals("VARCHAR2"));
-            assertTrue(theAttribute.getSize() == 100);
-            theAttribute = theTable.getAttributes().findByName("TB2_3");
-            assertTrue(theAttribute != null);
-            assertTrue(!theAttribute.isNullable());
-            assertTrue(theAttribute.getDatatype().getName().equals("NUMBER"));
-            assertTrue(theAttribute.getSize() == 20);
-            assertTrue(theAttribute.getFraction() == 5);
-            theAttribute = theTable.getAttributes().findByName("TB2_4");
-            assertTrue(theAttribute != null);
-            assertTrue(theAttribute.isNullable());
-            assertTrue(theAttribute.getDatatype().getName().equals("NUMBER"));
-            assertTrue(theAttribute.getSize() == 9);
-            assertTrue(theAttribute.getFraction() == 0);
+			// Implement Unit Tests here
+			Table theTable = theModel.getTables().findByName("TABLE1");
+			assertTrue(theTable != null);
+			Attribute theAttribute = theTable.getAttributes().findByName("TB2_1");
+			assertTrue(theAttribute != null);
+			assertTrue(theAttribute.isNullable() == false);
+			assertTrue(theAttribute.getDatatype().getName().equals("VARCHAR2"));
+			assertTrue(theAttribute.getSize() == 20);
+			theAttribute = theTable.getAttributes().findByName("TB2_2");
+			assertTrue(theAttribute != null);
+			assertTrue(theAttribute.isNullable());
+			assertTrue(theAttribute.getDatatype().getName().equals("VARCHAR2"));
+			assertTrue(theAttribute.getSize() == 100);
+			theAttribute = theTable.getAttributes().findByName("TB2_3");
+			assertTrue(theAttribute != null);
+			assertTrue(!theAttribute.isNullable());
+			assertTrue(theAttribute.getDatatype().getName().equals("NUMBER"));
+			assertTrue(theAttribute.getSize() == 20);
+			assertTrue(theAttribute.getFraction() == 5);
+			theAttribute = theTable.getAttributes().findByName("TB2_4");
+			assertTrue(theAttribute != null);
+			assertTrue(theAttribute.isNullable());
+			assertTrue(theAttribute.getDatatype().getName().equals("NUMBER"));
+			assertTrue(theAttribute.getSize() == 9);
+			assertTrue(theAttribute.getFraction() == 0);
 
-            theTable = theModel.getTables().findByName("TABLE2");
-            assertTrue(theTable != null);
-            theAttribute = theTable.getAttributes().findByName("TB3_1");
-            assertTrue(theAttribute != null);
-            theAttribute = theTable.getAttributes().findByName("TB3_2");
-            assertTrue(theAttribute != null);
-            theAttribute = theTable.getAttributes().findByName("TB3_3");
-            assertTrue(theAttribute != null);
+			theTable = theModel.getTables().findByName("TABLE2");
+			assertTrue(theTable != null);
+			theAttribute = theTable.getAttributes().findByName("TB3_1");
+			assertTrue(theAttribute != null);
+			theAttribute = theTable.getAttributes().findByName("TB3_2");
+			assertTrue(theAttribute != null);
+			theAttribute = theTable.getAttributes().findByName("TB3_3");
+			assertTrue(theAttribute != null);
 
-            Index thePK = theTable.getPrimarykey();
-            assertTrue(thePK != null);
-            assertTrue(thePK.getExpressions().findByAttributeName("TB3_1") != null);
+			Index thePK = theTable.getPrimarykey();
+			assertTrue(thePK != null);
+			assertTrue(thePK.getExpressions().findByAttributeName("TB3_1") != null);
 
-            View theView = theModel.getViews().findByName("VIEW1");
-            assertTrue(theView != null);
+			View theView = theModel.getViews().findByName("VIEW1");
+			assertTrue(theView != null);
 
-            Relation theRelation = theModel.getRelations().findByName("FK1");
-            assertTrue(theRelation != null);
-            assertTrue("TABLE1".equals(theRelation.getImportingTable().getName()));
-            assertTrue("TABLE2".equals(theRelation.getExportingTable().getName()));
+			Relation theRelation = theModel.getRelations().findByName("FK1");
+			assertTrue(theRelation != null);
+			assertTrue("TABLE1".equals(theRelation.getImportingTable().getName()));
+			assertTrue("TABLE2".equals(theRelation.getExportingTable().getName()));
 
-            assertTrue(theRelation.getMapping().size() == 1);
-            Map.Entry<IndexExpression, Attribute> theEntry = theRelation.getMapping().entrySet().iterator().next();
-            assertTrue("TB2_1".equals(theEntry.getValue().getName()));
-            assertTrue("TB3_1".equals(theEntry.getKey().getAttributeRef().getName()));
+			assertTrue(theRelation.getMapping().size() == 1);
+			Map.Entry<IndexExpression, Attribute> theEntry = theRelation.getMapping().entrySet().iterator().next();
+			assertTrue("TB2_1".equals(theEntry.getValue().getName()));
+			assertTrue("TB3_1".equals(theEntry.getKey().getAttributeRef().getName()));
 
-            SQLGenerator theGenerator = theDialect.createSQLGenerator();
-            String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
+			SQLGenerator theGenerator = theDialect.createSQLGenerator();
+			String theResult = statementListToString(theGenerator.createCreateAllObjects(theModel), theGenerator);
 
-            System.out.println(theResult);
+			System.out.println(theResult);
 
-            String theReference = readResourceFile("result.sql");
+			String theReference = readResourceFile("result.sql");
 
-            assertTrue(theResult.equals(theReference));
+			assertTrue(theResult.equals(theReference));
 
-        } finally {
-            if (theConnection != null) {
+		} finally {
+			if (theConnection != null) {
 
-                theConnection.close();
-            }
-        }
-    }
+				theConnection.close();
+			}
+		}
+	}
 
-    public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, SQLException, IOException {
-        Connection theConnection = null;
-        try {
-            theConnection = createConnection();
+	public void testReverseEngineeredSQL() throws InstantiationException, IllegalAccessException,
+			ClassNotFoundException, SQLException, IOException {
+		Connection theConnection = null;
+		try {
+			theConnection = createConnection();
 
-            loadSingleSQL(theConnection, "result.sql");
-        } finally {
-            if (theConnection != null) {
+			loadSingleSQL(theConnection, "result.sql");
+		} finally {
+			if (theConnection != null) {
 
-                theConnection.close();
-            }
-        }
-    }
+				theConnection.close();
+			}
+		}
+	}
 }

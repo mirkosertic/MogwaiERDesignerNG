@@ -26,7 +26,7 @@ import java.util.Map;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  * @param <T>
- *            the type
+ *			the type
  */
 public interface ModelCell<T> extends GraphCell {
 
@@ -41,7 +41,9 @@ public interface ModelCell<T> extends GraphCell {
 	 * Transfer the cell attributes to the model properties.
 	 * 
 	 * @param aAttributes
-	 *            the cell attributes.
+	 *			the cell attributes.
 	 */
 	void transferAttributesToProperties(Map aAttributes);
+	
+	void transferPropertiesToAttributes(T aObject);
 }

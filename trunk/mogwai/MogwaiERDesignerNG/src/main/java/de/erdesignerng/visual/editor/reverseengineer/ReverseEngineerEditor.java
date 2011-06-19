@@ -66,9 +66,9 @@ public class ReverseEngineerEditor extends BaseEditor {
 	 * Create a reverse engineering editor.
 	 * 
 	 * @param aModel
-	 *            the model
+	 *			the model
 	 * @param aParent
-	 *            the parent container
+	 *			the parent container
 	 */
 	public ReverseEngineerEditor(Model aModel, Component aParent) {
 		super(aParent, ERDesignerBundle.REVERSEENGINEER);
@@ -105,31 +105,31 @@ public class ReverseEngineerEditor extends BaseEditor {
 			// Bug Fixing 2899094 [ERDesignerNG] select first *non-system*
 			// schema in RevEngEd
 			// initially preselect first *non-system* schema if possible
-            if (schemaList.getSize() > 0) {
-                List<String> systemSchemas = model.getDialect().getSystemSchemas();
-                Integer selectedIndex = null;
+			if (schemaList.getSize() > 0) {
+				List<String> systemSchemas = model.getDialect().getSystemSchemas();
+				Integer selectedIndex = null;
 
-                if (systemSchemas != null) {
-                    int i = 0;
-                    while ((i < schemaList.getSize()) && (selectedIndex == null)) {
-                        boolean isSystemSchema = false;
-                        int j = 0;
-                        while ((j < systemSchemas.size()) && (!isSystemSchema)) {
-                            isSystemSchema = schemaList.get(i).getSchemaName().equals(systemSchemas.get(j));
-                            j++;
-                        }
+				if (systemSchemas != null) {
+					int i = 0;
+					while ((i < schemaList.getSize()) && (selectedIndex == null)) {
+						boolean isSystemSchema = false;
+						int j = 0;
+						while ((j < systemSchemas.size()) && (!isSystemSchema)) {
+							isSystemSchema = schemaList.get(i).getSchemaName().equals(systemSchemas.get(j));
+							j++;
+						}
 
-                        if (!isSystemSchema) {
-                            selectedIndex = i;
-                        }
+						if (!isSystemSchema) {
+							selectedIndex = i;
+						}
 
-                        i++;
-                    }
-                }
+						i++;
+					}
+				}
 
-                if (selectedIndex == null) {
-                    selectedIndex = 0;
-                }
+				if (selectedIndex == null) {
+					selectedIndex = 0;
+				}
 
 				editingView.getSchemaList().setSelectedIndex(selectedIndex);
 			}
@@ -169,7 +169,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 	@Override
 	protected void commandOk() {
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 			Object[] theSelectedValues = editingView.getSchemaList()
 					.getSelectedValues();
 			if (((theSelectedValues == null) || (theSelectedValues.length == 0))

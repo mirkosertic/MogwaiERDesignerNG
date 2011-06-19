@@ -76,6 +76,7 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
 
 						ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
 
+							@Override
 							public void notifyMessage(String aResourceKey,
 									String... aValues) {
 								String theMessage = MessageFormat.format(

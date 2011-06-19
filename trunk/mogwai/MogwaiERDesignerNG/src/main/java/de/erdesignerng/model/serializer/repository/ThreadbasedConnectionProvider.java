@@ -25,29 +25,34 @@ import java.util.Properties;
 
 public class ThreadbasedConnectionProvider implements ConnectionProvider {
 
-	private static final ThreadLocal<Connection> CONNECTION = new ThreadLocal<Connection>();
+	private static final ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
 
 	public static void initializeForThread(Connection aConnection) {
-		CONNECTION.set(aConnection);
+		connection.set(aConnection);
 	}
 
 	public static void cleanup() {
-		CONNECTION.set(null);
+		connection.set(null);
 	}
 
+	@Override
 	public void close() {
 	}
 
+	@Override
 	public void closeConnection(Connection conn) throws SQLException {
 	}
 
+	@Override
 	public void configure(Properties aProps) {
 	}
 
+	@Override
 	public Connection getConnection() throws SQLException {
-		return CONNECTION.get();
+		return connection.get();
 	}
 
+	@Override
 	public boolean supportsAggressiveRelease() {
 		return false;
 	}

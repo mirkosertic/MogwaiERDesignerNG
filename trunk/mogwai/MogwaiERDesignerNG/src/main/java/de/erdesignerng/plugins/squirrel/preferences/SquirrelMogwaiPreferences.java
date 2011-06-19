@@ -43,13 +43,16 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 		panel = new PreferencesPanel();
 	}
 
+	@Override
 	public void initialize(IApplication aApplication) {
 		panel.initValues();
 	}
 
+	@Override
 	public void uninitialize(IApplication aApplication) {
 	}
 
+	@Override
 	public void applyChanges() {
 		if (!panel.applyValues()) {
 			plugin.refreshPreferences();
@@ -58,14 +61,17 @@ public class SquirrelMogwaiPreferences implements IGlobalPreferencesPanel {
 		}
 	}
 
+	@Override
 	public String getHint() {
 		return "";
 	}
 
+	@Override
 	public Component getPanelComponent() {
 		return panel;
 	}
 
+	@Override
 	public String getTitle() {
 		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME)
 				.getText(ERDesignerBundle.TITLE);

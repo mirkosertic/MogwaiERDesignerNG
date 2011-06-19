@@ -30,184 +30,184 @@ import javax.swing.*;
  */
 public class ReverseEngineerView extends JPanel {
 
-    private JPanel schemaGrid;
+	private JPanel schemaGrid;
 
-    private DefaultList schemaList;
+	private DefaultList schemaList;
 
-    private DefaultButton schemaRefreshButton;
+	private DefaultButton schemaRefreshButton;
 
-    private DefaultButton startButton;
+	private DefaultButton startButton;
 
-    private DefaultButton cancelButton;
+	private DefaultButton cancelButton;
 
-    private JPanel engineeringOptions;
+	private JPanel engineeringOptions;
 
-    private DefaultLabel component9;
+	private DefaultLabel component9;
 
-    private DefaultComboBox naming;
+	private DefaultComboBox naming;
 
-    /**
-     * Constructor.
-     */
-    public ReverseEngineerView() {
-        this.initialize();
-    }
+	/**
+	 * Constructor.
+	 */
+	public ReverseEngineerView() {
+		this.initialize();
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,fill:60dlu:grow,fill:60dlu:grow,fill:60dlu:grow,2dlu";
+		String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
+		String colDef = "2dlu,fill:60dlu:grow,fill:60dlu:grow,fill:60dlu:grow,2dlu";
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        this.setLayout(layout);
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		this.setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
-        this.add(this.getSchemaGrid(), cons.xywh(2, 4, 3, 1));
-        this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
-        this.add(this.getStartButton(), cons.xywh(2, 10, 1, 1));
-        this.add(this.getCancelButton(), cons.xywh(4, 10, 1, 1));
-        this.add(this.getEngineeringOptions(), cons.xywh(2, 8, 3, 1));
-    }
+		this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
+		this.add(this.getSchemaGrid(), cons.xywh(2, 4, 3, 1));
+		this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
+		this.add(this.getStartButton(), cons.xywh(2, 10, 1, 1));
+		this.add(this.getCancelButton(), cons.xywh(4, 10, 1, 1));
+		this.add(this.getEngineeringOptions(), cons.xywh(2, 8, 3, 1));
+	}
 
-    /**
-     * Getter method for component schema grid.
-     *
-     * @return the initialized component
-     */
-    public JPanel getSchemaGrid() {
+	/**
+	 * Getter method for component schema grid.
+	 *
+	 * @return the initialized component
+	 */
+	public JPanel getSchemaGrid() {
 
-        if (schemaGrid == null) {
-            schemaGrid = new JPanel();
+		if (schemaGrid == null) {
+			schemaGrid = new JPanel();
 
-            String rowDef = "2dlu,80dlu,2dlu,p,2dlu";
-            String colDef = "40dlu:grow,2dlu,fill:70dlu";
+			String rowDef = "2dlu,80dlu,2dlu,p,2dlu";
+			String colDef = "40dlu:grow,2dlu,fill:70dlu";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            schemaGrid.setLayout(layout);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			schemaGrid.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+			CellConstraints cons = new CellConstraints();
 
-            schemaGrid.add(new JScrollPane(this.getSchemaList()), cons.xywh(1, 2, 3, 1));
-            schemaGrid.add(this.getRefreshButton(), cons.xywh(3, 4, 1, 1));
-            schemaGrid.setName("schemagrid");
-        }
+			schemaGrid.add(new JScrollPane(this.getSchemaList()), cons.xywh(1, 2, 3, 1));
+			schemaGrid.add(this.getRefreshButton(), cons.xywh(3, 4, 1, 1));
+			schemaGrid.setName("schemagrid");
+		}
 
-        return schemaGrid;
-    }
+		return schemaGrid;
+	}
 
-    /**
-     * Getter method for component schemaList.
-     *
-     * @return the initialized component
-     */
-    public DefaultList getSchemaList() {
+	/**
+	 * Getter method for component schemaList.
+	 *
+	 * @return the initialized component
+	 */
+	public DefaultList getSchemaList() {
 
-        if (schemaList == null) {
-            schemaList = new DefaultList();
-            schemaList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        }
+		if (schemaList == null) {
+			schemaList = new DefaultList();
+			schemaList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		}
 
-        return schemaList;
-    }
+		return schemaList;
+	}
 
-    /**
-     * Getter method for component refresh button.
-     *
-     * @return the initialized component
-     */
-    public JButton getRefreshButton() {
+	/**
+	 * Getter method for component refresh button.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getRefreshButton() {
 
-        if (schemaRefreshButton == null) {
-            schemaRefreshButton = new DefaultButton();
-        }
+		if (schemaRefreshButton == null) {
+			schemaRefreshButton = new DefaultButton();
+		}
 
-        return schemaRefreshButton;
-    }
+		return schemaRefreshButton;
+	}
 
-    /**
-     * Getter method for component start button.
-     *
-     * @return the initialized component
-     */
-    public JButton getStartButton() {
+	/**
+	 * Getter method for component start button.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getStartButton() {
 
-        if (startButton == null) {
-            startButton = new DefaultButton();
-        }
+		if (startButton == null) {
+			startButton = new DefaultButton();
+		}
 
-        return startButton;
-    }
+		return startButton;
+	}
 
-    /**
-     * Getter method for component cancel button.
-     *
-     * @return the initialized component
-     */
-    public JButton getCancelButton() {
+	/**
+	 * Getter method for component cancel button.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getCancelButton() {
 
-        if (cancelButton == null) {
-            cancelButton = new DefaultButton();
-        }
+		if (cancelButton == null) {
+			cancelButton = new DefaultButton();
+		}
 
-        return cancelButton;
-    }
+		return cancelButton;
+	}
 
-    /**
-     * Getter method for component engineeringoptions.
-     *
-     * @return the initialized component
-     */
-    public JPanel getEngineeringOptions() {
+	/**
+	 * Getter method for component engineeringoptions.
+	 *
+	 * @return the initialized component
+	 */
+	public JPanel getEngineeringOptions() {
 
-        if (engineeringOptions == null) {
-            engineeringOptions = new JPanel();
+		if (engineeringOptions == null) {
+			engineeringOptions = new JPanel();
 
-            String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu";
-            String colDef = "80dlu,2dlu,40dlu:grow";
+			String rowDef = "2dlu,p,2dlu,p,2dlu,p,2dlu";
+			String colDef = "80dlu,2dlu,40dlu:grow";
 
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            engineeringOptions.setLayout(layout);
+			FormLayout layout = new FormLayout(colDef, rowDef);
+			engineeringOptions.setLayout(layout);
 
-            CellConstraints cons = new CellConstraints();
+			CellConstraints cons = new CellConstraints();
 
-            engineeringOptions.add(this.getComponent9(), cons.xywh(1, 2, 1, 1));
-            engineeringOptions.add(this.getNaming(), cons.xywh(3, 2, 1, 1));
-            engineeringOptions.setName("engineeringoptions");
-        }
+			engineeringOptions.add(this.getComponent9(), cons.xywh(1, 2, 1, 1));
+			engineeringOptions.add(this.getNaming(), cons.xywh(3, 2, 1, 1));
+			engineeringOptions.setName("engineeringoptions");
+		}
 
-        return engineeringOptions;
-    }
+		return engineeringOptions;
+	}
 
-    /**
-     * Getter method for component Component_9.
-     *
-     * @return the initialized component
-     */
-    public JLabel getComponent9() {
+	/**
+	 * Getter method for component Component_9.
+	 *
+	 * @return the initialized component
+	 */
+	public JLabel getComponent9() {
 
-        if (component9 == null) {
-            component9 = new DefaultLabel(ERDesignerBundle.TABLEGENERATION);
-        }
+		if (component9 == null) {
+			component9 = new DefaultLabel(ERDesignerBundle.TABLEGENERATION);
+		}
 
-        return component9;
-    }
+		return component9;
+	}
 
-    /**
-     * Getter method for component Naming.
-     *
-     * @return the initialized component
-     */
-    public JComboBox getNaming() {
+	/**
+	 * Getter method for component Naming.
+	 *
+	 * @return the initialized component
+	 */
+	public JComboBox getNaming() {
 
-        if (naming == null) {
-            naming = new DefaultComboBox();
-        }
+		if (naming == null) {
+			naming = new DefaultComboBox();
+		}
 
-        return naming;
-    }
+		return naming;
+	}
 }

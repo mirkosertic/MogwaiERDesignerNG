@@ -124,14 +124,14 @@ public class SaveToRepositoryEditor extends BaseEditor {
 	protected void commandOk() {
 
 		if (view.getNewEntryButton().isSelected()) {
-			if (bindingInfo1.validate().size() == 0) {
+			if (bindingInfo1.validate().isEmpty()) {
 				bindingInfo1.view2model();
 				setModalResult(DialogConstants.MODAL_RESULT_OK);
 			}
 		}
 
 		if (view.getExistingEntryButton().isSelected()) {
-			if (bindingInfo2.validate().size() == 0) {
+			if (bindingInfo2.validate().isEmpty()) {
 				bindingInfo2.view2model();
 				setModalResult(DialogConstants.MODAL_RESULT_OK);
 			}

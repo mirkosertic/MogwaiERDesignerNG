@@ -34,141 +34,141 @@ import java.sql.Statement;
 import java.util.StringTokenizer;
 
 public abstract class AbstractReverseEngineeringTestImpl extends
-        BaseERDesignerTestCaseImpl {
+		BaseERDesignerTestCaseImpl {
 
-    public static class EmptyWorldConnector implements ERDesignerWorldConnector {
+	public static class EmptyWorldConnector implements ERDesignerWorldConnector {
 
-        @Override
-        public Model createNewModel() {
-            Model theNewModel = new Model();
-            theNewModel.setModificationTracker(new HistoryModificationTracker(
-                    theNewModel));
-            return theNewModel;
-        }
+		@Override
+		public Model createNewModel() {
+			Model theNewModel = new Model();
+			theNewModel.setModificationTracker(new HistoryModificationTracker(
+					theNewModel));
+			return theNewModel;
+		}
 
-        @Override
-        public void exitApplication() {
-        }
+		@Override
+		public void exitApplication() {
+		}
 
-        @Override
-        public DefaultToolbar getToolBar() {
-            return null;
-        }
+		@Override
+		public DefaultToolbar getToolBar() {
+			return null;
+		}
 
-        @Override
-        public void initTitle(String file) {
-        }
+		@Override
+		public void initTitle(String file) {
+		}
 
-        @Override
-        public void initTitle() {
-        }
+		@Override
+		public void initTitle() {
+		}
 
-        @Override
-        public void initializeLoadedModel(Model model) {
-            model.setModificationTracker(new HistoryModificationTracker(model));
-        }
+		@Override
+		public void initializeLoadedModel(Model model) {
+			model.setModificationTracker(new HistoryModificationTracker(model));
+		}
 
-        @Override
-        public void notifyAboutException(Exception exception) {
-            throw new RuntimeException(exception);
+		@Override
+		public void notifyAboutException(Exception exception) {
+			throw new RuntimeException(exception);
 
-        }
+		}
 
-        @Override
-        public void setStatusText(String theMessage) {
-        }
+		@Override
+		public void setStatusText(String theMessage) {
+		}
 
-        @Override
-        public boolean supportsClasspathEditor() {
-            return false;
-        }
+		@Override
+		public boolean supportsClasspathEditor() {
+			return false;
+		}
 
-        @Override
-        public boolean supportsConnectionEditor() {
-            return false;
-        }
+		@Override
+		public boolean supportsConnectionEditor() {
+			return false;
+		}
 
-        @Override
-        public boolean supportsExitApplication() {
-            return false;
-        }
+		@Override
+		public boolean supportsExitApplication() {
+			return false;
+		}
 
-        @Override
-        public boolean supportsPreferences() {
-            return false;
-        }
+		@Override
+		public boolean supportsPreferences() {
+			return false;
+		}
 
-        @Override
-        public boolean supportsRepositories() {
-            return false;
-        }
+		@Override
+		public boolean supportsRepositories() {
+			return false;
+		}
 
-        @Override
-        public boolean supportsHelp() {
-            return false;
-        }
+		@Override
+		public boolean supportsHelp() {
+			return false;
+		}
 
-        @Override
-        public boolean supportsReporting() {
-            return false;
-        }
-    }
+		@Override
+		public boolean supportsReporting() {
+			return false;
+		}
+	}
 
-    public static class EmptyReverseEngineeringNotifier implements
-            ReverseEngineeringNotifier {
+	public static class EmptyReverseEngineeringNotifier implements
+			ReverseEngineeringNotifier {
 
-        @Override
-        public void notifyMessage(String resourceKey, String... values) {
-            if (values != null) {
-                for (String aValue : values) {
-                    System.out.println(aValue);
-                }
-            }
-        }
-    }
+		@Override
+		public void notifyMessage(String resourceKey, String... values) {
+			if (values != null) {
+				for (String aValue : values) {
+					System.out.println(aValue);
+				}
+			}
+		}
+	}
 
-    protected void loadSQL(Connection aConnection, String aResource)
-            throws IOException, SQLException {
-        BufferedReader theReader = new BufferedReader(new InputStreamReader(
-                getClass().getResourceAsStream(aResource)));
-        Statement theStatement = aConnection.createStatement();
-        while (theReader.ready()) {
-            String theLine = theReader.readLine();
-            if (!StringUtils.isEmpty(theLine)) {
-                theLine = theLine.trim();
-            }
-            if (!StringUtils.isEmpty(theLine)) {
-                System.out.println(theLine);
-                theStatement.execute(theLine);
-            }
-        }
-        theStatement.close();
+	protected void loadSQL(Connection aConnection, String aResource)
+			throws IOException, SQLException {
+		BufferedReader theReader = new BufferedReader(new InputStreamReader(
+				getClass().getResourceAsStream(aResource)));
+		Statement theStatement = aConnection.createStatement();
+		while (theReader.ready()) {
+			String theLine = theReader.readLine();
+			if (!StringUtils.isEmpty(theLine)) {
+				theLine = theLine.trim();
+			}
+			if (!StringUtils.isEmpty(theLine)) {
+				System.out.println(theLine);
+				theStatement.execute(theLine);
+			}
+		}
+		theStatement.close();
 
-        theReader.close();
-    }
+		theReader.close();
+	}
 
-    protected void loadSingleSQL(Connection aConnection, String aResource)
-            throws IOException, SQLException {
+	protected void loadSingleSQL(Connection aConnection, String aResource)
+			throws IOException, SQLException {
 
-        String theSQL = readResourceFile(aResource);
+		String theSQL = readResourceFile(aResource);
 
-        Statement theStatement = aConnection.createStatement();
-        StringTokenizer theST = new StringTokenizer(theSQL, ";");
-        while (theST.hasMoreTokens()) {
-            String theSingleSQL = theST.nextToken();
-            if (!StringUtils.isEmpty(theSingleSQL)) {
-                theStatement.execute(theSingleSQL);
-            }
-        }
-        theStatement.close();
-    }
+		Statement theStatement = aConnection.createStatement();
+		StringTokenizer theST = new StringTokenizer(theSQL, ";");
+		while (theST.hasMoreTokens()) {
+			String theSingleSQL = theST.nextToken();
+			if (!StringUtils.isEmpty(theSingleSQL)) {
+				theStatement.execute(theSingleSQL);
+			}
+		}
+		theStatement.close();
+	}
 
-    public String getDBServerName() {
-        String theName = System.getProperty("mogwai.test.db.server.name");
-        if (StringUtils.isEmpty(theName)) {
-            theName = "127.0.0.1";
-        }
-        return theName;
-    }
+	public String getDBServerName() {
+		String theName = System.getProperty("mogwai.test.db.server.name");
+		if (StringUtils.isEmpty(theName)) {
+			theName = "127.0.0.1";
+		}
+		return theName;
+	}
 
 }

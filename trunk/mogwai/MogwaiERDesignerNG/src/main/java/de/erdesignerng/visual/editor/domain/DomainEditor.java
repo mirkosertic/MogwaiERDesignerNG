@@ -55,240 +55,245 @@ import java.util.List;
  */
 public class DomainEditor extends BaseEditor {
 
-    private final Model model;
+	private final Model model;
 
-    private DomainEditorView editingView;
+	private DomainEditorView editingView;
 
-    private final BindingInfo<Domain> domainBindingInfo = new BindingInfo<Domain>();
+	private final BindingInfo<Domain> domainBindingInfo = new BindingInfo<Domain>();
 
-    private final DefaultListModel domainListModel;
+	private final DefaultListModel domainListModel;
 
-    private final List<Domain> removedDomains = new ArrayList<Domain>();
+	private final List<Domain> removedDomains = new ArrayList<Domain>();
 
-    private final DefaultAction newDomainAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction newDomainAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandNewDomain(e);
-        }
-    }, this, ERDesignerBundle.NEW);
+		@Override
+		public void processActionEvent(ActionEvent e) {
+			commandNewDomain(e);
+		}
+	}, this, ERDesignerBundle.NEW);
 
-    private final DefaultAction deleteDomainAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction deleteDomainAction = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandDeleteDomain(e);
-        }
-    }, this, ERDesignerBundle.DELETE);
+		@Override
+		public void processActionEvent(ActionEvent e) {
+			commandDeleteDomain(e);
+		}
+	}, this, ERDesignerBundle.DELETE);
 
-    private final DefaultAction updateDomain = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction updateDomain = new DefaultAction(new ActionEventProcessor() {
 
-        public void processActionEvent(ActionEvent e) {
-            commandUpdateDomain();
-        }
-    }, this, ERDesignerBundle.UPDATE);
+		@Override
+		public void processActionEvent(ActionEvent e) {
+			commandUpdateDomain();
+		}
+	}, this, ERDesignerBundle.UPDATE);
 
-    private DomainProperties domainProperties;
+	private DomainProperties domainProperties;
 
-    private ScaffoldingWrapper domainPropertiesWrapper;
+	private ScaffoldingWrapper domainPropertiesWrapper;
 
-    public DomainEditor(Model aModel, Component aParent) {
-        super(aParent, ERDesignerBundle.DOMAINEDITOR);
-        initialize();
+	public DomainEditor(Model aModel, Component aParent) {
+		super(aParent, ERDesignerBundle.DOMAINEDITOR);
+		initialize();
 
-        editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
-        editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
+		editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
+		editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
 
-        DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
-        for (DataType theType : aModel.getDomainDataTypes()) {
-            theDataTypes.addElement(theType);
-        }
+		DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
+		for (DataType theType : aModel.getDomainDataTypes()) {
+			theDataTypes.addElement(theType);
+		}
 
-        editingView.getDataType().setModel(theDataTypes);
-        editingView.getDataType().addActionListener(new ActionListener() {
+		editingView.getDataType().setModel(theDataTypes);
+		editingView.getDataType().addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                setSpinnerState((DataType) editingView.getDataType().getSelectedItem());
-            }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setSpinnerState((DataType) editingView.getDataType().getSelectedItem());
+			}
 
-        });
+		});
 
-        domainListModel = editingView.getDomainList().getModel();
-        for (Domain theDomain : aModel.getDomains()) {
-            domainListModel.add(theDomain.clone());
-        }
+		domainListModel = editingView.getDomainList().getModel();
+		for (Domain theDomain : aModel.getDomains()) {
+			domainListModel.add(theDomain.clone());
+		}
 
-        model = aModel;
+		model = aModel;
 
-        domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
-        domainBindingInfo.addBinding("concreteType", editingView.getDataType(), true);
-        domainBindingInfo.addBinding("size", editingView.getSizeSpinner());
-        domainBindingInfo.addBinding("fraction", editingView.getFractionSpinner());
-        domainBindingInfo.addBinding("scale", editingView.getScaleSpinner());
-        domainBindingInfo.addBinding("nullable", editingView.getNullable());
-        domainBindingInfo.configure();
+		domainBindingInfo.addBinding("name", editingView.getDomainName(), true);
+		domainBindingInfo.addBinding("concreteType", editingView.getDataType(), true);
+		domainBindingInfo.addBinding("size", editingView.getSizeSpinner());
+		domainBindingInfo.addBinding("fraction", editingView.getFractionSpinner());
+		domainBindingInfo.addBinding("scale", editingView.getScaleSpinner());
+		domainBindingInfo.addBinding("nullable", editingView.getNullable());
+		domainBindingInfo.configure();
 
-        UIInitializer.getInstance().initialize(this);
-        updateDomainEditFields();
-    }
+		UIInitializer.getInstance().initialize(this);
+		updateDomainEditFields();
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new DomainEditorView();
-        editingView.getOkButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
-        editingView.getDomainList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+		editingView = new DomainEditorView();
+		editingView.getOkButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
+		editingView.getDomainList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 
-            public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-                commandAttributeListValueChanged(e);
-            }
-        });
-        editingView.getNewButton().setAction(newDomainAction);
-        editingView.getDeleteButton().setAction(deleteDomainAction);
-        editingView.getUpdateDomainButton().setAction(updateDomain);
+			@Override
+			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+				commandAttributeListValueChanged(e);
+			}
+		});
+		editingView.getNewButton().setAction(newDomainAction);
+		editingView.getDeleteButton().setAction(deleteDomainAction);
+		editingView.getUpdateDomainButton().setAction(updateDomain);
 
-        setContentPane(editingView);
+		setContentPane(editingView);
 
-        pack();
-    }
+		pack();
+	}
 
-    private void commandUpdateDomain() {
+	private void commandUpdateDomain() {
 
-        Domain theModel = domainBindingInfo.getDefaultModel();
-        List<ValidationError> theValidationResult = domainBindingInfo.validate();
-        if (theValidationResult.size() == 0) {
+		Domain theModel = domainBindingInfo.getDefaultModel();
+		List<ValidationError> theValidationResult = domainBindingInfo.validate();
+		if (theValidationResult.isEmpty()) {
 
-            domainPropertiesWrapper.save();
-            domainProperties.copyTo(theModel);
+			domainPropertiesWrapper.save();
+			domainProperties.copyTo(theModel);
 
-            domainBindingInfo.view2model();
+			domainBindingInfo.view2model();
 
-            if (!domainListModel.contains(theModel)) {
-                domainListModel.add(theModel);
-            }
+			if (!domainListModel.contains(theModel)) {
+				domainListModel.add(theModel);
+			}
 
-            updateDomainEditFields();
-        }
-    }
+			updateDomainEditFields();
+		}
+	}
 
-    private void setSpinnerState(DataType aValue) {
-        if (aValue != null) {
-            editingView.getSizeSpinner().setEnabled(aValue.supportsSize());
-            editingView.getFractionSpinner().setEnabled(aValue.supportsFraction());
-            editingView.getScaleSpinner().setEnabled(aValue.supportsScale());
-        } else {
-            editingView.getSizeSpinner().setEnabled(false);
-            editingView.getFractionSpinner().setEnabled(false);
-            editingView.getScaleSpinner().setEnabled(false);
-        }
-    }
+	private void setSpinnerState(DataType aValue) {
+		if (aValue != null) {
+			editingView.getSizeSpinner().setEnabled(aValue.supportsSize());
+			editingView.getFractionSpinner().setEnabled(aValue.supportsFraction());
+			editingView.getScaleSpinner().setEnabled(aValue.supportsScale());
+		} else {
+			editingView.getSizeSpinner().setEnabled(false);
+			editingView.getFractionSpinner().setEnabled(false);
+			editingView.getScaleSpinner().setEnabled(false);
+		}
+	}
 
-    private void updateDomainEditFields() {
+	private void updateDomainEditFields() {
 
-        Domain theValue = domainBindingInfo.getDefaultModel();
+		Domain theValue = domainBindingInfo.getDefaultModel();
 
-        if (theValue != null) {
-            DataType theDataType = theValue.getConcreteType();
+		if (theValue != null) {
+			DataType theDataType = theValue.getConcreteType();
 
-            boolean isNew = !domainListModel.contains(theValue);
+			boolean isNew = !domainListModel.contains(theValue);
 
-            editingView.getNewButton().setEnabled(true);
-            editingView.getDeleteButton().setEnabled(!isNew);
-            editingView.getDomainName().setEnabled(true);
-            editingView.getDataType().setEnabled(true);
-            editingView.getNullable().setEnabled(true);
-            setSpinnerState(theDataType);
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(!isNew);
+			editingView.getDomainName().setEnabled(true);
+			editingView.getDataType().setEnabled(true);
+			editingView.getNullable().setEnabled(true);
+			setSpinnerState(theDataType);
 
-        } else {
-            editingView.getNewButton().setEnabled(true);
-            editingView.getDeleteButton().setEnabled(false);
-            editingView.getDomainName().setEnabled(false);
-            editingView.getDataType().setEnabled(false);
-            editingView.getNullable().setEnabled(false);
-            setSpinnerState(null);
-        }
+		} else {
+			editingView.getNewButton().setEnabled(true);
+			editingView.getDeleteButton().setEnabled(false);
+			editingView.getDomainName().setEnabled(false);
+			editingView.getDataType().setEnabled(false);
+			editingView.getNullable().setEnabled(false);
+			setSpinnerState(null);
+		}
 
-        domainBindingInfo.model2view();
+		domainBindingInfo.model2view();
 
-        editingView.getDomainList().invalidate();
-        editingView.getDomainList().setSelectedValue(domainBindingInfo.getDefaultModel(), true);
+		editingView.getDomainList().invalidate();
+		editingView.getDomainList().setSelectedValue(domainBindingInfo.getDefaultModel(), true);
 
-    }
+	}
 
-    private void commandAttributeListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+	private void commandAttributeListValueChanged(javax.swing.event.ListSelectionEvent evt) {
 
-        int index = editingView.getDomainList().getSelectedIndex();
-        if (index >= 0) {
-            domainBindingInfo.setDefaultModel((Domain) domainListModel.get(index));
+		int index = editingView.getDomainList().getSelectedIndex();
+		if (index >= 0) {
+			domainBindingInfo.setDefaultModel((Domain) domainListModel.get(index));
 
-            initializeDomainEdit(domainBindingInfo.getDefaultModel());
-        }
+			initializeDomainEdit(domainBindingInfo.getDefaultModel());
+		}
 
-        updateDomainEditFields();
-    }
+		updateDomainEditFields();
+	}
 
-    private void initializeDomainEdit(Domain aDomain) {
-        domainProperties = model.getDialect().createDomainPropertiesFor(aDomain);
-        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
-        theTab.removeAll();
-        domainPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, domainProperties);
-        theTab.add(domainPropertiesWrapper.getComponent(), BorderLayout.CENTER);
-        editingView.disablePropertiesTab();
-        if (domainPropertiesWrapper.hasComponents()) {
-            editingView.enablePropertiesTab();
-            UIInitializer.getInstance().initialize(theTab);
-        }
-    }
+	private void initializeDomainEdit(Domain aDomain) {
+		domainProperties = model.getDialect().createDomainPropertiesFor(aDomain);
+		DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+		theTab.removeAll();
+		domainPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, domainProperties);
+		theTab.add(domainPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+		editingView.disablePropertiesTab();
+		if (domainPropertiesWrapper.hasComponents()) {
+			editingView.enablePropertiesTab();
+			UIInitializer.getInstance().initialize(theTab);
+		}
+	}
 
-    private void commandDeleteDomain(java.awt.event.ActionEvent aEvent) {
+	private void commandDeleteDomain(java.awt.event.ActionEvent aEvent) {
 
-        Domain theDomain = domainBindingInfo.getDefaultModel();
-        Table theTable = model.getTables().checkIfUsedByTable(theDomain);
-        if (theTable == null) {
+		Domain theDomain = domainBindingInfo.getDefaultModel();
+		Table theTable = model.getTables().checkIfUsedByTable(theDomain);
+		if (theTable == null) {
 
-            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-                domainListModel.remove(theDomain);
-                removedDomains.add(theDomain);
-            }
-        } else {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
-                    ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
-        }
-    }
+			if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+				domainListModel.remove(theDomain);
+				removedDomains.add(theDomain);
+			}
+		} else {
+			MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+					ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
+		}
+	}
 
-    private void commandNewDomain(java.awt.event.ActionEvent evt) {
-        domainBindingInfo.setDefaultModel(new Domain());
-        updateDomainEditFields();
+	private void commandNewDomain(java.awt.event.ActionEvent evt) {
+		domainBindingInfo.setDefaultModel(new Domain());
+		updateDomainEditFields();
 
-        initializeDomainEdit(domainBindingInfo.getDefaultModel());
-    }
+		initializeDomainEdit(domainBindingInfo.getDefaultModel());
+	}
 
-    @Override
-    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+	@Override
+	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-        for (Domain aDomain : removedDomains) {
-            model.removeDomain(aDomain);
-        }
+		for (Domain aDomain : removedDomains) {
+			model.removeDomain(aDomain);
+		}
 
-        for (int i = 0; i < domainListModel.getSize(); i++) {
-            Domain theDomain = (Domain) domainListModel.get(i);
+		for (int i = 0; i < domainListModel.getSize(); i++) {
+			Domain theDomain = (Domain) domainListModel.get(i);
 
-            Domain theOriginalDomain = model.getDomains().findBySystemId(theDomain.getSystemId());
-            if (theOriginalDomain == null) {
-                model.addDomain(theDomain);
-            } else {
-                theOriginalDomain.restoreFrom(theDomain);
-            }
-        }
-    }
+			Domain theOriginalDomain = model.getDomains().findBySystemId(theDomain.getSystemId());
+			if (theOriginalDomain == null) {
+				model.addDomain(theDomain);
+			} else {
+				theOriginalDomain.restoreFrom(theDomain);
+			}
+		}
+	}
 
-    /**
-     * Set the selected main.
-     *
-     * @param aDomain the selected domain
-     */
-    public void setSelectedDomain(Domain aDomain) {
-        editingView.getDomainList().setSelectedValue(aDomain, true);
-    }
+	/**
+	 * Set the selected main.
+	 *
+	 * @param aDomain the selected domain
+	 */
+	public void setSelectedDomain(Domain aDomain) {
+		editingView.getDomainList().setSelectedValue(aDomain, true);
+	}
 }

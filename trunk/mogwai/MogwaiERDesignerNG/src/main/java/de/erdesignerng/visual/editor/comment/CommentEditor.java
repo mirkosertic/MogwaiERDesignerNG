@@ -84,7 +84,7 @@ public class CommentEditor extends BaseEditor {
 
 	@Override
 	protected void commandOk() {
-		if (bindingInfo.validate().size() == 0) {
+		if (bindingInfo.validate().isEmpty()) {
 			setModalResult(MODAL_RESULT_OK);
 		}
 	}

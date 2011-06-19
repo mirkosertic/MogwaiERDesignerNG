@@ -93,6 +93,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
 
 		dialect.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				handleDialectChange((Dialect) dialect.getSelectedItem());
 			}
