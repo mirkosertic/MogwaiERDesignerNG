@@ -44,6 +44,7 @@ public class ClasspathEditor extends BaseEditor {
 	private final DefaultAction addAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+				@Override
 				public void processActionEvent(ActionEvent e) {
 					commandFolderAdd();
 				}
@@ -52,6 +53,7 @@ public class ClasspathEditor extends BaseEditor {
 	private final DefaultAction removeAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+				@Override
 				public void processActionEvent(ActionEvent e) {
 					commandFolderRemove();
 				}

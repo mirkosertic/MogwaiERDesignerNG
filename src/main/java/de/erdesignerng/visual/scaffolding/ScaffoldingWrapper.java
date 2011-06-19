@@ -28,7 +28,7 @@ public class ScaffoldingWrapper {
 
 	private final BeanUtilsBindingProcessor processor;
 
-    private boolean components;
+	private boolean components;
 
 	public ScaffoldingWrapper(SwingMetawidget aWidget, BeanUtilsBindingProcessor aProcessor,
 			boolean aComponents) {
@@ -36,7 +36,7 @@ public class ScaffoldingWrapper {
 		processor = aProcessor;
 		components = aComponents;
 
-        widget.getPreferredSize();
+		widget.getPreferredSize();
 	}
 
 	public JComponent getComponent() {

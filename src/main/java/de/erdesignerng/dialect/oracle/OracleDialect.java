@@ -27,7 +27,7 @@ import java.sql.Types;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:31 $
  */
-public class OracleDialect extends SQL92Dialect {
+public final class OracleDialect extends SQL92Dialect {
 
 	public OracleDialect() {
 		setSpacesAllowedInObjectNames(false);

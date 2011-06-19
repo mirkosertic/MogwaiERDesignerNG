@@ -41,6 +41,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
 	protected final DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandOk();
 		}
@@ -48,6 +49,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
 	protected final DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandCancel();
 		}
@@ -105,6 +107,7 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 		super.setVisible(false);
 	}
 
+	@Override
 	public int showModal() {
 		modalResult = DialogConstants.MODAL_RESULT_CANCEL;
 		setVisible(true);

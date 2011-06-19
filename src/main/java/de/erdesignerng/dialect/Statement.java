@@ -19,53 +19,53 @@ package de.erdesignerng.dialect;
 
 public class Statement {
 
-    private String sql;
+	private String sql;
 
-    private boolean executed;
+	private boolean executed;
 
-    private boolean saved;
+	private boolean saved;
 
-    public Statement(String aSQL) {
-        sql = aSQL;
-    }
+	public Statement(String aSQL) {
+		sql = aSQL;
+	}
 
-    /**
-     * @return the sql
-     */
-    public String getSql() {
-        return sql;
-    }
+	/**
+	 * @return the sql
+	 */
+	public String getSql() {
+		return sql;
+	}
 
-    /**
-     * @return the executed
-     */
-    public boolean isExecuted() {
-        return executed;
-    }
+	/**
+	 * @return the executed
+	 */
+	public boolean isExecuted() {
+		return executed;
+	}
 
-    /**
-     * @param executed the executed to set
-     */
-    public void setExecuted(boolean executed) {
-        this.executed = executed;
-    }
+	/**
+	 * @param executed the executed to set
+	 */
+	public void setExecuted(boolean executed) {
+		this.executed = executed;
+	}
 
-    /**
-     * @return the saved
-     */
-    public boolean isSaved() {
-        return saved;
-    }
+	/**
+	 * @return the saved
+	 */
+	public boolean isSaved() {
+		return saved;
+	}
 
-    /**
-     * @param saved the saved to set
-     */
-    public void setSaved(boolean saved) {
-        this.saved = saved;
-    }
+	/**
+	 * @param saved the saved to set
+	 */
+	public void setSaved(boolean saved) {
+		this.saved = saved;
+	}
 
-    @Override
-    public String toString() {
-        return sql;
-    }
+	@Override
+	public String toString() {
+		return sql;
+	}
 }

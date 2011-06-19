@@ -34,97 +34,97 @@ import java.awt.event.ActionListener;
  */
 public class TablesSelectEditor extends BaseEditor {
 
-    private final BindingInfo<ReverseEngineeringOptions> bindingInfo = new BindingInfo<ReverseEngineeringOptions>(
-            new ReverseEngineeringOptions());
+	private final BindingInfo<ReverseEngineeringOptions> bindingInfo = new BindingInfo<ReverseEngineeringOptions>(
+			new ReverseEngineeringOptions());
 
-    private TablesSelectEditorView editingView;
+	private TablesSelectEditorView editingView;
 
-    /**
-     * Create a table selection editor.
-     *
-     * @param aParent  the parent container
-     * @param aOptions the options
-     */
-    public TablesSelectEditor(ReverseEngineeringOptions aOptions,
-                              Component aParent) {
-        super(aParent, ERDesignerBundle.TABLESELECTION);
+	/**
+	 * Create a table selection editor.
+	 *
+	 * @param aParent  the parent container
+	 * @param aOptions the options
+	 */
+	public TablesSelectEditor(ReverseEngineeringOptions aOptions,
+							  Component aParent) {
+		super(aParent, ERDesignerBundle.TABLESELECTION);
 
-        initialize();
+		initialize();
 
-        bindingInfo.setDefaultModel(aOptions);
+		bindingInfo.setDefaultModel(aOptions);
 
-        bindingInfo.addBinding("tableEntries", new TableEntryPropertyAdapter(
-                editingView.getTableList()));
+		bindingInfo.addBinding("tableEntries", new TableEntryPropertyAdapter(
+				editingView.getTableList()));
 
-        bindingInfo.configure();
-        bindingInfo.model2view();
+		bindingInfo.configure();
+		bindingInfo.model2view();
 
-        for (int i = 0; i < editingView.getTableList().getRowCount(); i++) {
-            editingView.getTableList().expandRow(i);
-        }
-    }
+		for (int i = 0; i < editingView.getTableList().getRowCount(); i++) {
+			editingView.getTableList().expandRow(i);
+		}
+	}
 
-    /**
-     * This method initializes this.
-     */
-    private void initialize() {
+	/**
+	 * This method initializes this.
+	 */
+	private void initialize() {
 
-        editingView = new TablesSelectEditorView();
-        editingView.getOkButton().setAction(okAction);
-        editingView.getCancelButton().setAction(cancelAction);
+		editingView = new TablesSelectEditorView();
+		editingView.getOkButton().setAction(okAction);
+		editingView.getCancelButton().setAction(cancelAction);
 
-        DefaultAction theSelectAllAction = new DefaultAction(this,
-                ERDesignerBundle.SELECTALL);
-        theSelectAllAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SelectableTableModel theModel = (SelectableTableModel) editingView
-                        .getTableList().getModel();
-                theModel.selectAll();
-            }
-        });
-        DefaultAction theDeselectAllAction = new DefaultAction(this,
-                ERDesignerBundle.DESELECTALL);
-        theDeselectAllAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SelectableTableModel theModel = (SelectableTableModel) editingView
-                        .getTableList().getModel();
-                theModel.deselectAll();
-            }
-        });
-        DefaultAction theInvertSelectionAction = new DefaultAction(this,
-                ERDesignerBundle.INVERTSELECTION);
-        theInvertSelectionAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SelectableTableModel theModel = (SelectableTableModel) editingView
-                        .getTableList().getModel();
-                theModel.invertSelection();
-            }
-        });
+		DefaultAction theSelectAllAction = new DefaultAction(this,
+				ERDesignerBundle.SELECTALL);
+		theSelectAllAction.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SelectableTableModel theModel = (SelectableTableModel) editingView
+						.getTableList().getModel();
+				theModel.selectAll();
+			}
+		});
+		DefaultAction theDeselectAllAction = new DefaultAction(this,
+				ERDesignerBundle.DESELECTALL);
+		theDeselectAllAction.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SelectableTableModel theModel = (SelectableTableModel) editingView
+						.getTableList().getModel();
+				theModel.deselectAll();
+			}
+		});
+		DefaultAction theInvertSelectionAction = new DefaultAction(this,
+				ERDesignerBundle.INVERTSELECTION);
+		theInvertSelectionAction.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SelectableTableModel theModel = (SelectableTableModel) editingView
+						.getTableList().getModel();
+				theModel.invertSelection();
+			}
+		});
 
-        editingView.getSelectAll().setAction(theSelectAllAction);
-        editingView.getDeselectAll().setAction(theDeselectAllAction);
-        editingView.getInvertSelection().setAction(theInvertSelectionAction);
+		editingView.getSelectAll().setAction(theSelectAllAction);
+		editingView.getDeselectAll().setAction(theDeselectAllAction);
+		editingView.getInvertSelection().setAction(theInvertSelectionAction);
 
-        setContentPane(editingView);
-        setResizable(false);
+		setContentPane(editingView);
+		setResizable(false);
 
-        pack();
+		pack();
 
-        UIInitializer.getInstance().initialize(this);
-    }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-    @Override
-    protected void commandOk() {
-        if (bindingInfo.validate().size() == 0) {
-            bindingInfo.view2model();
-            setModalResult(MODAL_RESULT_OK);
-        }
-    }
+	@Override
+	protected void commandOk() {
+		if (bindingInfo.validate().isEmpty()) {
+			bindingInfo.view2model();
+			setModalResult(MODAL_RESULT_OK);
+		}
+	}
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+	@Override
+	public void applyValues() throws Exception {
+	}
 }

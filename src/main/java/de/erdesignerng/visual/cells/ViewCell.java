@@ -48,6 +48,7 @@ public class ViewCell extends DefaultGraphCell implements
 		addPort();
 	}
 
+	@Override
 	public void transferAttributesToProperties(Map aAttributes) {
 
 		View theTable = (View) getUserObject();
@@ -58,6 +59,7 @@ public class ViewCell extends DefaultGraphCell implements
 				theLocation);
 	}
 
+	@Override
 	public void transferPropertiesToAttributes(View aObject) {
 
 		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject

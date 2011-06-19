@@ -45,14 +45,17 @@ public class ConversionTableModel implements TableModel {
 		targetTypes = aTargetTypes;
 	}
 
+	@Override
 	public Class<Object> getColumnClass(int aColumn) {
 		return Object.class;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 2;
 	}
 
+	@Override
 	public String getColumnName(int aColumn) {
 		if (aColumn == 0) {
 			return sourceName;
@@ -60,10 +63,12 @@ public class ConversionTableModel implements TableModel {
 		return targetName;
 	}
 
+	@Override
 	public int getRowCount() {
 		return dataTypes.size();
 	}
 
+	@Override
 	public Object getValueAt(int aRow, int aColumn) {
 		if (aColumn == 1) {
 			return targetTypes[aRow];
@@ -71,17 +76,21 @@ public class ConversionTableModel implements TableModel {
 		return dataTypes.get(aRow);
 	}
 
+	@Override
 	public boolean isCellEditable(int aRow, int aColumn) {
 		return aColumn != 0;
 	}
 
+	@Override
 	public void setValueAt(Object aValue, int aRow, int aColumn) {
 		targetTypes[aRow] = (DataType) aValue;
 	}
 
+	@Override
 	public void addTableModelListener(TableModelListener l) {
 	}
 
+	@Override
 	public void removeTableModelListener(TableModelListener l) {
 	}
 }

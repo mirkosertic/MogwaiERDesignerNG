@@ -37,77 +37,77 @@ import java.util.List;
  */
 public class TableEntryPropertyAdapter extends PropertyAdapter {
 
-    private final ResourceHelper helper = ResourceHelper
-            .getResourceHelper(BindingBundle.BUNDLE_NAME);
+	private final ResourceHelper helper = ResourceHelper
+			.getResourceHelper(BindingBundle.BUNDLE_NAME);
 
-    public TableEntryPropertyAdapter(DefaultTree aComponent) {
-        super(aComponent, null);
-    }
+	public TableEntryPropertyAdapter(DefaultTree aComponent) {
+		super(aComponent, null);
+	}
 
-    @Override
-    public void model2view(Object aModel, String aPropertyName) {
+	@Override
+	public void model2view(Object aModel, String aPropertyName) {
 
-        DefaultTree theComponent = (DefaultTree) getComponent()[0];
+		DefaultTree theComponent = (DefaultTree) getComponent()[0];
 
-        ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
+		ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
 
-        DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
-        for (String theEntry : theModel.getAvailableTableTypes()) {
-            SelectableWrapper<String> theWrapper = new SelectableWrapper<String>(
-                    theEntry);
-            DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(
-                    theWrapper);
+		DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
+		for (String theEntry : theModel.getAvailableTableTypes()) {
+			SelectableWrapper<String> theWrapper = new SelectableWrapper<String>(
+					theEntry);
+			DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(
+					theWrapper);
 
-            for (TableEntry theTableEntry : theModel.getTableEntries()) {
-                if (theEntry.equals(theTableEntry.getTableType())) {
+			for (TableEntry theTableEntry : theModel.getTableEntries()) {
+				if (theEntry.equals(theTableEntry.getTableType())) {
 
-                    SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<TableEntry>(
-                            theTableEntry);
-                    DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
-                            theWrapper2);
+					SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<TableEntry>(
+							theTableEntry);
+					DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
+							theWrapper2);
 
-                    theNode.add(theNode2);
-                }
-            }
+					theNode.add(theNode2);
+				}
+			}
 
-            theRootNode.add(theNode);
-        }
+			theRootNode.add(theNode);
+		}
 
-        theComponent.setModel(new SelectableTableModel(theRootNode));
-    }
+		theComponent.setModel(new SelectableTableModel(theRootNode));
+	}
 
-    @Override
-    public void view2model(Object aModel, String aPropertyName) {
+	@Override
+	public void view2model(Object aModel, String aPropertyName) {
 
-        ReverseEngineeringOptions theDataModel = (ReverseEngineeringOptions) aModel;
+		ReverseEngineeringOptions theDataModel = (ReverseEngineeringOptions) aModel;
 
-        SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
-                .getModel();
+		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
+				.getModel();
 
-        Collection theSelectedEntries = theModel.getSelectedEntries();
-        theDataModel.getTableEntries().clear();
-        theDataModel.getTableEntries().addAll(theSelectedEntries);
-    }
+		Collection theSelectedEntries = theModel.getSelectedEntries();
+		theDataModel.getTableEntries().clear();
+		theDataModel.getTableEntries().addAll(theSelectedEntries);
+	}
 
-    @Override
-    public List<ValidationError> validate() {
-        List<ValidationError> theResult = new ArrayList<ValidationError>();
+	@Override
+	public List<ValidationError> validate() {
+		List<ValidationError> theResult = new ArrayList<ValidationError>();
 
-        SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
-                .getModel();
+		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
+				.getModel();
 
-        Collection theSelectedEntries = theModel.getSelectedEntries();
+		Collection theSelectedEntries = theModel.getSelectedEntries();
 
-        if (theSelectedEntries.size() == 0) {
-            theResult.add(new ValidationError(this, helper
-                    .getText(BindingBundle.MISSINGREQUIREDFIELD)));
-        }
-        if (theResult.size() > 0) {
-            markInvalid(theResult);
-        } else {
-            markValid();
-        }
+		if (theSelectedEntries.isEmpty()) {
+			theResult.add(new ValidationError(this, helper
+					.getText(BindingBundle.MISSINGREQUIREDFIELD)));
+		}
+		if (theResult.size() > 0) {
+			markInvalid(theResult);
+		} else {
+			markValid();
+		}
 
-        return theResult;
-    }
+		return theResult;
+	}
 }

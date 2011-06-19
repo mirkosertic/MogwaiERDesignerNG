@@ -107,6 +107,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 	 * 
 	 * @return Wert des Attributs name.
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -150,6 +151,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 		return theResult;
 	}
 
+	@Override
 	public String createTypeDefinitionFor(Attribute aAttribute) {
 		if (pattern == null) {
 			return name;
@@ -173,6 +175,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 		return name;
 	}
 
+	@Override
 	public boolean isIdentity() {
 		return identity;
 	}
@@ -181,18 +184,22 @@ public abstract class GenericDataTypeImpl implements DataType {
 		return maxOccursPerTable;
 	}
 
+	@Override
 	public boolean supportsFraction() {
 		return supportsFraction;
 	}
 
+	@Override
 	public boolean supportsScale() {
 		return supportsScale;
 	}
 
+	@Override
 	public boolean supportsSize() {
 		return supportsSize;
 	}
 
+	@Override
 	public boolean supportsExtra() {
 		return supportsExtra;
 	}
@@ -231,6 +238,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 	 * 
 	 * @return true if it is a string type, else false
 	 */
+	@Override
 	public boolean isJDBCStringType() {
 		for (int theType : jdbcType) {
 			switch (theType) {

@@ -50,6 +50,7 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
 	// Public methods
 	//
 
+	@Override
 	public String getValueProperty(Component component) {
 		if (component instanceof JComboBox)
 			return "selectedItem";
@@ -181,9 +182,9 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
 		return null;
 	}
 
-    protected String getActualClassOrType(String aElementName, Map<String, String> attributes) {
-        return WidgetBuilderUtils.getActualClassOrType(attributes);
-    }
+	protected String getActualClassOrType(String aElementName, Map<String, String> attributes) {
+		return WidgetBuilderUtils.getActualClassOrType(attributes);
+	}
 
 	@Override
 	protected JComponent buildActiveWidget(String elementName, Map<String, String> attributes,
@@ -229,7 +230,7 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
 				comboBox.addItem(null);
 
 			List<String> values = CollectionUtils.fromString(lookup);
-			BindingConverter converter = metawidget.getWidgetProcessor(BindingConverter.class);
+			BindingConverter converter = (BindingConverter) metawidget.getWidgetProcessor(BindingConverter.class);
 
 			for (String value : values) {
 				// Convert (if supported)

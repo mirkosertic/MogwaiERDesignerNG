@@ -32,38 +32,38 @@ import java.util.Map;
  */
 public class DictionaryCommentSerializer extends DictionaryBaseSerializer {
 
-    public static final DictionaryCommentSerializer SERIALIZER = new DictionaryCommentSerializer();
+	public static final DictionaryCommentSerializer SERIALIZER = new DictionaryCommentSerializer();
 
-    public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
+	public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity
-                .getComments());
+		Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getComments(), aDictionaryEntity
+				.getComments());
 
-        for (Comment theComment : aModel.getComments()) {
-            boolean existing = true;
-            CommentEntity theExisting = (CommentEntity) theComments.get(theComment.getSystemId());
-            if (theExisting == null) {
-                theExisting = new CommentEntity();
-                existing = false;
-            }
+		for (Comment theComment : aModel.getComments()) {
+			boolean existing = true;
+			CommentEntity theExisting = (CommentEntity) theComments.get(theComment.getSystemId());
+			if (theExisting == null) {
+				theExisting = new CommentEntity();
+				existing = false;
+			}
 
-            copyBaseAttributes(theComment, theExisting);
+			copyBaseAttributes(theComment, theExisting);
 
-            if (!existing) {
-                aDictionaryEntity.getComments().add(theExisting);
-            }
-        }
-    }
+			if (!existing) {
+				aDictionaryEntity.getComments().add(theExisting);
+			}
+		}
+	}
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (CommentEntity theCommentEntity : aRepositoryEntity.getComments()) {
+	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+		for (CommentEntity theCommentEntity : aRepositoryEntity.getComments()) {
 
-            Comment theComment = new Comment();
-            theComment.setOwner(aModel);
+			Comment theComment = new Comment();
+			theComment.setOwner(aModel);
 
-            copyBaseAttributes(theCommentEntity, theComment);
+			copyBaseAttributes(theCommentEntity, theComment);
 
-            aModel.getComments().add(theComment);
-        }
-    }
+			aModel.getComments().add(theComment);
+		}
+	}
 }

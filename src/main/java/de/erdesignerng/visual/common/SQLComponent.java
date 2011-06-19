@@ -86,7 +86,7 @@ public class SQLComponent extends DefaultPanel implements
 	 * Display the CREATE SQL Statements for a given set of model items.
 	 * 
 	 * @param aModelItems
-	 *            a set of model items
+	 *			a set of model items
 	 */
 	public void displaySQLFor(ModelItem[] aModelItems) {
 		resetDisplay();

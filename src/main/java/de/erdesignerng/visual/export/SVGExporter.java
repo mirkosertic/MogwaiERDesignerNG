@@ -38,6 +38,7 @@ import java.io.Writer;
  */
 public class SVGExporter implements Exporter {
 
+	@Override
 	public void fullExportToStream(ERDesignerGraph aGraph, OutputStream aStream) throws IOException {
 		Object[] cells = aGraph.getRoots();
 		Rectangle2D bounds = aGraph.toScreen(aGraph.getCellBounds(cells));
@@ -63,10 +64,12 @@ public class SVGExporter implements Exporter {
 		}
 	}
 
+	@Override
 	public String getFileExtension() {
 		return ".svg";
 	}
 
+	@Override
 	public void exportToStream(Component aComponent, OutputStream aStream) throws IOException {
 		DOMImplementation theDomImpl = GenericDOMImplementation.getDOMImplementation();
 		Document theDocument = theDomImpl.createDocument(null, "svg", null);

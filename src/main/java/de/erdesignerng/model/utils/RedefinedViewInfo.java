@@ -23,7 +23,7 @@ package de.erdesignerng.model.utils;
  */
 public class RedefinedViewInfo extends RedefinedInfo {
 
-    public RedefinedViewInfo(String aWhat) {
-        super(aWhat);
-    }
+	public RedefinedViewInfo(String aWhat) {
+		super(aWhat);
+	}
 }

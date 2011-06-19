@@ -27,116 +27,116 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Table extends OwnedModelItem<Model> {
 
-    private AttributeList attributes = new AttributeList();
+	private AttributeList attributes = new AttributeList();
 
-    private IndexList indexes = new IndexList();
+	private IndexList indexes = new IndexList();
 
-    private String schema;
+	private String schema;
 
-    /**
-     * Add an attribute to the table.
-     *
-     * @param aModel     the model
-     * @param aAttribute the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException   is thrown in case of an error
-     */
-    public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
-            ElementInvalidNameException {
+	/**
+	 * Add an attribute to the table.
+	 *
+	 * @param aModel	 the model
+	 * @param aAttribute the table
+	 * @throws ElementAlreadyExistsException is thrown in case of an error
+	 * @throws ElementInvalidNameException   is thrown in case of an error
+	 */
+	public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
+			ElementInvalidNameException {
 
-        ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
+		ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
 
-        aAttribute.setOwner(this);
-        attributes.add(aAttribute);
-    }
+		aAttribute.setOwner(this);
+		attributes.add(aAttribute);
+	}
 
-    /**
-     * Add an index to the table.
-     *
-     * @param aModel the model
-     * @param aIndex the table
-     * @throws ElementAlreadyExistsException is thrown in case of an error
-     * @throws ElementInvalidNameException   is thrown in case of an error
-     */
-    public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
+	/**
+	 * Add an index to the table.
+	 *
+	 * @param aModel the model
+	 * @param aIndex the table
+	 * @throws ElementAlreadyExistsException is thrown in case of an error
+	 * @throws ElementInvalidNameException   is thrown in case of an error
+	 */
+	public void addIndex(Model aModel, Index aIndex) throws ElementAlreadyExistsException, ElementInvalidNameException {
 
-        ModelUtilities.checkNameAndExistence(indexes, aIndex, aModel.getDialect());
-        aIndex.setOwner(this);
+		ModelUtilities.checkNameAndExistence(indexes, aIndex, aModel.getDialect());
+		aIndex.setOwner(this);
 
-        indexes.add(aIndex);
-    }
+		indexes.add(aIndex);
+	}
 
-    public AttributeList getAttributes() {
-        return attributes;
-    }
+	public AttributeList getAttributes() {
+		return attributes;
+	}
 
-    public boolean isForeignKey(Attribute aAttribute) {
-        Model theOwner = getOwner();
-        if (theOwner != null) {
-            return getOwner().getRelations().isForeignKeyAttribute(aAttribute);
-        }
-        return false;
-    }
+	public boolean isForeignKey(Attribute aAttribute) {
+		Model theOwner = getOwner();
+		if (theOwner != null) {
+			return getOwner().getRelations().isForeignKeyAttribute(aAttribute);
+		}
+		return false;
+	}
 
-    public IndexList getIndexes() {
-        return indexes;
-    }
+	public IndexList getIndexes() {
+		return indexes;
+	}
 
-    public Index getPrimarykey() {
-        for (Index theIndex : getIndexes()) {
-            if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
-                return theIndex;
-            }
-        }
-        return null;
-    }
+	public Index getPrimarykey() {
+		for (Index theIndex : getIndexes()) {
+			if (IndexType.PRIMARYKEY.equals(theIndex.getIndexType())) {
+				return theIndex;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Test if the Table has a primary key.
-     *
-     * @return true if yes, else false
-     */
-    public boolean hasPrimaryKey() {
-        Index theIndex = getPrimarykey();
-        if (theIndex != null) {
-            return theIndex.getExpressions().size() > 0;
-        }
-        return false;
-    }
+	/**
+	 * Test if the Table has a primary key.
+	 *
+	 * @return true if yes, else false
+	 */
+	public boolean hasPrimaryKey() {
+		Index theIndex = getPrimarykey();
+		if (theIndex != null) {
+			return theIndex.getExpressions().size() > 0;
+		}
+		return false;
+	}
 
-    /**
-     * Test if the attribute is part of the primary key-
-     *
-     * @param aAttribute the attribute
-     * @return true if yes, else false
-     */
-    public boolean isPrimaryKey(Attribute aAttribute) {
-        Index thePrimaryKey = getPrimarykey();
-        if (thePrimaryKey != null) {
-            return thePrimaryKey.getExpressions().findByAttribute(aAttribute) != null;
-        }
-        return false;
-    }
+	/**
+	 * Test if the attribute is part of the primary key-
+	 *
+	 * @param aAttribute the attribute
+	 * @return true if yes, else false
+	 */
+	public boolean isPrimaryKey(Attribute aAttribute) {
+		Index thePrimaryKey = getPrimarykey();
+		if (thePrimaryKey != null) {
+			return thePrimaryKey.getExpressions().findByAttribute(aAttribute) != null;
+		}
+		return false;
+	}
 
-    /**
-     * @return the schema
-     */
-    public String getSchema() {
-        return schema;
-    }
+	/**
+	 * @return the schema
+	 */
+	public String getSchema() {
+		return schema;
+	}
 
-    /**
-     * @param schema the schema to set
-     */
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
+	/**
+	 * @param schema the schema to set
+	 */
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 
-    @Override
-    public String getUniqueName() {
-        if (!StringUtils.isEmpty(schema)) {
-            return schema + "." + getName();
-        }
-        return super.getUniqueName();
-    }
+	@Override
+	public String getUniqueName() {
+		if (!StringUtils.isEmpty(schema)) {
+			return schema + "." + getName();
+		}
+		return super.getUniqueName();
+	}
 }

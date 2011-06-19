@@ -50,7 +50,7 @@ public class Domain extends OwnedModelItem<Model> implements
 
 	/**
 	 * @param size
-	 *            the size to set
+	 *			the size to set
 	 */
 	public void setSize(Integer size) {
 		this.size = size;
@@ -65,7 +65,7 @@ public class Domain extends OwnedModelItem<Model> implements
 
 	/**
 	 * @param fraction
-	 *            the fraction to set
+	 *			the fraction to set
 	 */
 	public void setFraction(int fraction) {
 		this.fraction = fraction;
@@ -80,7 +80,7 @@ public class Domain extends OwnedModelItem<Model> implements
 
 	/**
 	 * @param scale
-	 *            the scale to set
+	 *			the scale to set
 	 */
 	public void setScale(int scale) {
 		this.scale = scale;
@@ -95,7 +95,7 @@ public class Domain extends OwnedModelItem<Model> implements
 
 	/**
 	 * @param concreteType
-	 *            the concreteType to set
+	 *			the concreteType to set
 	 */
 	public void setConcreteType(DataType concreteType) {
 		this.concreteType = concreteType;
@@ -133,7 +133,7 @@ public class Domain extends OwnedModelItem<Model> implements
 	 * Restore the data from a clone.
 	 * 
 	 * @param aValue
-	 *            the clone
+	 *			the clone
 	 */
 	@Override
 	public void restoreFrom(Domain aValue) {
@@ -195,6 +195,7 @@ public class Domain extends OwnedModelItem<Model> implements
 		this.nullable = nullable;
 	}
 
+	@Override
 	public boolean isCustomType() {
 		return false;
 	}

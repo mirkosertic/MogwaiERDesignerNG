@@ -30,6 +30,7 @@ public class ResourceProviderPanel extends JPanel implements ResourceHelperProvi
 		setLayout(new BorderLayout());
 	}
 
+	@Override
 	public ResourceHelper getResourceHelper() {
 		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 	}

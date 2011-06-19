@@ -30,10 +30,10 @@ public interface ConnectionProvider {
 	 * Create a connection.
 	 * 
 	 * @param aPreferences
-	 *            the preferences
+	 *			the preferences
 	 * @return a connection
 	 * @throws Exception
-	 *             will be thrown in case of an error
+	 *			 will be thrown in case of an error
 	 */
 	Connection createConnection() throws Exception;
 

@@ -104,6 +104,6 @@ public class JGoodiesTableLayout implements Layout<JComponent, SwingMetawidget> 
 			aWidget.add(theEntry.component, cons.xy(4, theRow));
 			theRow += 2;
 		}
-        UIInitializer.getInstance().initialize(aWidget);
+		UIInitializer.getInstance().initialize(aWidget);
 	}
 }

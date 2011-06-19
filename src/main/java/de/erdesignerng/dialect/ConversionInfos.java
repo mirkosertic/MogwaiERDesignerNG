@@ -27,19 +27,19 @@ import java.util.Map;
  */
 public class ConversionInfos {
 
-    private Dialect targetDialect;
+	private Dialect targetDialect;
 
-    private Map<DataType, DataType> typeMapping = new HashMap<DataType, DataType>();
+	private Map<DataType, DataType> typeMapping = new HashMap<DataType, DataType>();
 
-    public Dialect getTargetDialect() {
-        return targetDialect;
-    }
+	public Dialect getTargetDialect() {
+		return targetDialect;
+	}
 
-    public void setTargetDialect(Dialect targetDialect) {
-        this.targetDialect = targetDialect;
-    }
+	public void setTargetDialect(Dialect targetDialect) {
+		this.targetDialect = targetDialect;
+	}
 
-    public Map<DataType, DataType> getTypeMapping() {
-        return typeMapping;
-    }
+	public Map<DataType, DataType> getTypeMapping() {
+		return typeMapping;
+	}
 }

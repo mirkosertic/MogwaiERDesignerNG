@@ -89,11 +89,11 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
 			}
 
 			ItemListener theItemListener = new ItemListener() {
-                @Override
+				@Override
 				public void itemStateChanged(ItemEvent itemEvent) {
 					if (stopCellEditing()) {
-                        SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
-                        theModel.setSelected(editingNode, theEditor.isSelected());
+						SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
+						theModel.setSelected(editingNode, theEditor.isSelected());
 						fireEditingStopped();
 					}
 				}

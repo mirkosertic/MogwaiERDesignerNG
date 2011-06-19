@@ -57,6 +57,7 @@ public class SQLEditor extends BaseEditor {
 	private final DefaultAction closeAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+		@Override
 				public void processActionEvent(ActionEvent e) {
 					commandClose();
 				}
@@ -65,6 +66,7 @@ public class SQLEditor extends BaseEditor {
 	private final DefaultAction executeAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+		@Override
 				public void processActionEvent(ActionEvent e) {
 					commandExecute();
 				}
@@ -73,6 +75,7 @@ public class SQLEditor extends BaseEditor {
 	private final DefaultAction saveToFileAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+		@Override
 				public void processActionEvent(ActionEvent e) {
 					commandSaveToFile();
 				}
@@ -81,6 +84,7 @@ public class SQLEditor extends BaseEditor {
 	private final DefaultAction deleteAction = new DefaultAction(
 			new ActionEventProcessor() {
 
+		@Override
 				public void processActionEvent(ActionEvent e) {
 					commandDeleteSelectedEntry();
 				}
@@ -114,6 +118,7 @@ public class SQLEditor extends BaseEditor {
 		view.getSqlList().setCellRenderer(new StatementRenderer());
 		view.getSqlList().addListSelectionListener(new ListSelectionListener() {
 
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				deleteAction
 						.setEnabled(view.getSqlList().getSelectedIndex() >= 0);

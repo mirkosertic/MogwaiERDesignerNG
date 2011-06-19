@@ -29,188 +29,188 @@ import org.apache.commons.lang.StringUtils;
  */
 public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 
-    public MSSQLSQLGenerator(MSSQLDialect aDialect) {
-        super(aDialect);
-    }
+	public MSSQLSQLGenerator(MSSQLDialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    public StatementList createRemoveRelationStatement(Relation aRelation) {
-        Table theImportingTable = aRelation.getImportingTable();
+	@Override
+	public StatementList createRemoveRelationStatement(Relation aRelation) {
+		Table theImportingTable = aRelation.getImportingTable();
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("ALTER TABLE "
-                + createUniqueTableName(theImportingTable)
-                + " DROP CONSTRAINT " + aRelation.getName()));
-        return theResult;
-    }
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("ALTER TABLE "
+				+ createUniqueTableName(theImportingTable)
+				+ " DROP CONSTRAINT " + aRelation.getName()));
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameTableStatement(Table aTable,
-                                                    String aNewName) {
+	@Override
+	public StatementList createRenameTableStatement(Table aTable,
+													String aNewName) {
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '"
-                + createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
-        return theResult;
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("EXEC sp_rename '"
+				+ createUniqueTableName(aTable) + "' , '" + aNewName + "'"));
+		return theResult;
 
-    }
+	}
 
-    @Override
-    public StatementList createRenameAttributeStatement(
-            Attribute anExistingAttribute, String aNewName) {
+	@Override
+	public StatementList createRenameAttributeStatement(
+			Attribute anExistingAttribute, String aNewName) {
 
-        Table theTable = anExistingAttribute.getOwner();
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        theResult.add(new Statement("EXEC sp_rename '" + theTable.getName()
-                + "." + anExistingAttribute.getName() + "' , '" + aNewName
-                + "' , 'COLUMN'"));
-        return theResult;
-    }
+		StatementList theResult = new StatementList();
+		theResult.add(new Statement("EXEC sp_rename '" + theTable.getName()
+				+ "." + anExistingAttribute.getName() + "' , '" + aNewName
+				+ "' , 'COLUMN'"));
+		return theResult;
+	}
 
-    @Override
-    public StatementList createChangeAttributeStatement(
-            Attribute anExistingAttribute, Attribute aNewAttribute) {
-        Table theTable = anExistingAttribute.getOwner();
+	@Override
+	public StatementList createChangeAttributeStatement(
+			Attribute anExistingAttribute, Attribute aNewAttribute) {
+		Table theTable = anExistingAttribute.getOwner();
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" ALTER COLUMN ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" ALTER COLUMN ");
 
-        theStatement.append(anExistingAttribute.getName());
-        theStatement.append(" ");
-        theStatement.append(createAttributeDataDefinition(aNewAttribute, true));
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" ");
+		theStatement.append(createAttributeDataDefinition(aNewAttribute, true));
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createAddIndexToTableStatement(Table aTable,
-                                                        Index aIndex) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+	@Override
+	public StatementList createAddIndexToTableStatement(Table aTable,
+														Index aIndex) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE ");
+		theStatement.append("CREATE ");
 
-        if (IndexType.UNIQUE.equals(aIndex.getIndexType())) {
-            theStatement.append("UNIQUE ");
-        }
+		if (IndexType.UNIQUE.equals(aIndex.getIndexType())) {
+			theStatement.append("UNIQUE ");
+		}
 
-        MSSQLIndexProperties theProperties = (MSSQLIndexProperties) getDialect()
-                .createIndexPropertiesFor(aIndex);
-        if (theProperties.getIndexType() != null) {
-            switch (theProperties.getIndexType()) {
-                case CLUSTERED:
-                    theStatement.append("CLUSTERED ");
-                    break;
-                case NONCLUSTERED:
-                    theStatement.append("NONCLUSTERED ");
-                    break;
-            }
-        }
+		MSSQLIndexProperties theProperties = (MSSQLIndexProperties) getDialect()
+				.createIndexPropertiesFor(aIndex);
+		if (theProperties.getIndexType() != null) {
+			switch (theProperties.getIndexType()) {
+				case CLUSTERED:
+					theStatement.append("CLUSTERED ");
+					break;
+				case NONCLUSTERED:
+					theStatement.append("NONCLUSTERED ");
+					break;
+			}
+		}
 
-        theStatement.append("INDEX ");
-        theStatement.append(aIndex.getName());
-        theStatement.append(" ON ");
-        theStatement.append(createUniqueTableName(aTable));
-        theStatement.append(" (");
+		theStatement.append("INDEX ");
+		theStatement.append(aIndex.getName());
+		theStatement.append(" ON ");
+		theStatement.append(createUniqueTableName(aTable));
+		theStatement.append(" (");
 
-        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-            IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+			IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
-            if (i > 0) {
-                theStatement.append(",");
-            }
+			if (i > 0) {
+				theStatement.append(",");
+			}
 
-            if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
-                theStatement.append(theIndexExpression.getExpression());
-            } else {
-                theStatement.append(theIndexExpression.getAttributeRef()
-                        .getName());
-            }
-        }
+			if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
+				theStatement.append(theIndexExpression.getExpression());
+			} else {
+				theStatement.append(theIndexExpression.getAttributeRef()
+						.getName());
+			}
+		}
 
-        theStatement.append(")");
+		theStatement.append(")");
 
-        if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
-            theStatement.append(" ON ");
-            theStatement.append("\"");
-            theStatement.append(theProperties.getFileGroup());
-            theStatement.append("\"");
-        }
+		if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
+			theStatement.append(" ON ");
+			theStatement.append("\"");
+			theStatement.append(theProperties.getFileGroup());
+			theStatement.append("\"");
+		}
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    protected String createCreateTableSuffix(Table aTable) {
-        MSSQLTableProperties theProperties = (MSSQLTableProperties) getDialect()
-                .createTablePropertiesFor(aTable);
+	@Override
+	protected String createCreateTableSuffix(Table aTable) {
+		MSSQLTableProperties theProperties = (MSSQLTableProperties) getDialect()
+				.createTablePropertiesFor(aTable);
 
-        StringBuilder theStatement = new StringBuilder();
-        if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
-            theStatement.append(" ON ");
-            theStatement.append("\"");
-            theStatement.append(theProperties.getFileGroup());
-            theStatement.append("\"");
-        }
+		StringBuilder theStatement = new StringBuilder();
+		if (!StringUtils.isEmpty(theProperties.getFileGroup())) {
+			theStatement.append(" ON ");
+			theStatement.append("\"");
+			theStatement.append(theProperties.getFileGroup());
+			theStatement.append("\"");
+		}
 
-        return theStatement.toString();
-    }
+		return theStatement.toString();
+	}
 
-    @Override
-    public StatementList createAddViewStatement(View aView) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
-        theStatement.append("CREATE VIEW ");
-        theStatement.append(createUniqueViewName(aView));
+	@Override
+	public StatementList createAddViewStatement(View aView) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
+		theStatement.append("CREATE VIEW ");
+		theStatement.append(createUniqueViewName(aView));
 
-        boolean first = true;
-        int counter = 0;
-        MSSQLViewProperties theProperties = (MSSQLViewProperties) getDialect()
-                .createViewPropertiesFor(aView);
-        if (Boolean.TRUE.equals(theProperties.getEncryption())) {
-            first = false;
-            theStatement.append("WITH ");
-            counter = 0;
-            theStatement.append("ENCRYPTION");
-            counter++;
-        }
-        if (Boolean.TRUE.equals(theProperties.getSchemaBinding())) {
-            if (first) {
-                first = false;
-                theStatement.append("WITH ");
-                counter = 0;
-            } else {
-                if (counter > 0) {
-                    theStatement.append(",");
-                }
-            }
-            theStatement.append("SCHEMABINDING");
-            counter++;
-        }
-        if (Boolean.TRUE.equals(theProperties.getViewMetaData())) {
-            if (first) {
-                theStatement.append("WITH ");
-            } else {
-                if (counter > 0) {
-                    theStatement.append(",");
-                }
-            }
-            theStatement.append("VIEW_METADATA");
-        }
+		boolean first = true;
+		int counter = 0;
+		MSSQLViewProperties theProperties = (MSSQLViewProperties) getDialect()
+				.createViewPropertiesFor(aView);
+		if (Boolean.TRUE.equals(theProperties.getEncryption())) {
+			first = false;
+			theStatement.append("WITH ");
+			counter = 0;
+			theStatement.append("ENCRYPTION");
+			counter++;
+		}
+		if (Boolean.TRUE.equals(theProperties.getSchemaBinding())) {
+			if (first) {
+				first = false;
+				theStatement.append("WITH ");
+				counter = 0;
+			} else {
+				if (counter > 0) {
+					theStatement.append(",");
+				}
+			}
+			theStatement.append("SCHEMABINDING");
+			counter++;
+		}
+		if (Boolean.TRUE.equals(theProperties.getViewMetaData())) {
+			if (first) {
+				theStatement.append("WITH ");
+			} else {
+				if (counter > 0) {
+					theStatement.append(",");
+				}
+			}
+			theStatement.append("VIEW_METADATA");
+		}
 
-        theStatement.append(" AS ");
-        theStatement.append(aView.getSql());
+		theStatement.append(" AS ");
+		theStatement.append(aView.getSql());
 
-        theResult.add(new Statement(theStatement.toString()));
-        return theResult;
-    }
+		theResult.add(new Statement(theStatement.toString()));
+		return theResult;
+	}
 }

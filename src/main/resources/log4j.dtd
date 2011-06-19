@@ -7,7 +7,7 @@
  (the "License"); you may not use this file except in compliance with
  the License.  You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+	  http://www.apache.org/licenses/LICENSE-2.0
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,31 +25,31 @@ elements,appender elements, categories and an optional root
 element. -->
 
 <!ELEMENT log4j:configuration (renderer*, throwableRenderer?,
-                               appender*,plugin*, (category|logger)*,root?,
-                               (categoryFactory|loggerFactory)?)>
+							   appender*,plugin*, (category|logger)*,root?,
+							   (categoryFactory|loggerFactory)?)>
 
 <!-- The "threshold" attribute takes a level value below which -->
 <!-- all logging statements are disabled. -->
 
 <!-- Setting the "debug" enable the printing of internal log4j logging   -->
-<!-- statements.                                                         -->
+<!-- statements.														 -->
 
 <!-- By default, debug attribute is "null", meaning that we not do touch -->
 <!-- internal log4j logging settings. The "null" value for the threshold -->
 <!-- attribute can be misleading. The threshold field of a repository	 -->
 <!-- cannot be set to null. The "null" value for the threshold attribute -->
 <!-- simply means don't touch the threshold field, the threshold field   --> 
-<!-- keeps its old value.                                                -->
-     
+<!-- keeps its old value.												-->
+	 
 <!ATTLIST log4j:configuration
-  xmlns:log4j              CDATA #FIXED "http://jakarta.apache.org/log4j/" 
-  threshold                (all|trace|debug|info|warn|error|fatal|off|null) "null"
-  debug                    (true|false|null)  "null"
-  reset                    (true|false) "false"
+  xmlns:log4j			  CDATA #FIXED "http://jakarta.apache.org/log4j/" 
+  threshold				(all|trace|debug|info|warn|error|fatal|off|null) "null"
+  debug					(true|false|null)  "null"
+  reset					(true|false) "false"
 >
 
 <!-- renderer elements allow the user to customize the conversion of  -->
-<!-- message objects to String.                                       -->
+<!-- message objects to String.									   -->
 
 <!ELEMENT renderer EMPTY>
 <!ATTLIST renderer
@@ -58,7 +58,7 @@ element. -->
 >
 
 <!--  throwableRenderer allows the user to customize the conversion
-         of exceptions to a string representation.  -->
+		 of exceptions to a string representation.  -->
 <!ELEMENT throwableRenderer (param*)>
 <!ATTLIST throwableRenderer
   class  CDATA #REQUIRED
@@ -69,8 +69,8 @@ element. -->
 <!-- Appenders may contain an error handler, a layout, optional parameters -->
 <!-- and filters. They may also reference (or include) other appenders. -->
 <!ELEMENT appender (errorHandler?, param*,
-      rollingPolicy?, triggeringPolicy?, connectionSource?,
-      layout?, filter*, appender-ref*)>
+	  rollingPolicy?, triggeringPolicy?, connectionSource?,
+	  layout?, filter*, appender-ref*)>
 <!ATTLIST appender
   name 		CDATA 	#REQUIRED
   class 	CDATA	#REQUIRED
@@ -91,7 +91,7 @@ element. -->
 
 <!ELEMENT errorHandler (param*, root-ref?, logger-ref*,  appender-ref?)> 
 <!ATTLIST errorHandler
-   class        CDATA   #REQUIRED 
+   class		CDATA   #REQUIRED 
 >
 
 <!ELEMENT root-ref EMPTY>
@@ -127,7 +127,7 @@ element. -->
 <!-- touch the level of the named category. -->
 <!ELEMENT category (param*,(priority|level)?,appender-ref*)>
 <!ATTLIST category
-  class         CDATA   #IMPLIED
+  class		 CDATA   #IMPLIED
   name		CDATA	#REQUIRED
   additivity	(true|false) "true"  
 >
@@ -136,7 +136,7 @@ element. -->
 <!-- touch the level of the named logger. -->
 <!ELEMENT logger (param*,level?,appender-ref*)>
 <!ATTLIST logger
-  class         CDATA   #IMPLIED
+  class		 CDATA   #IMPLIED
   name		CDATA	#REQUIRED
   additivity	(true|false) "true"  
 >
@@ -144,11 +144,11 @@ element. -->
 
 <!ELEMENT categoryFactory (param*)>
 <!ATTLIST categoryFactory 
-   class        CDATA #REQUIRED>
+   class		CDATA #REQUIRED>
 
 <!ELEMENT loggerFactory (param*)>
 <!ATTLIST loggerFactory
-   class        CDATA #REQUIRED>
+   class		CDATA #REQUIRED>
 
 <!ELEMENT appender-ref EMPTY>
 <!ATTLIST appender-ref
@@ -164,12 +164,12 @@ element. -->
 
 <!ELEMENT connectionSource (dataSource?, param*)>
 <!ATTLIST connectionSource
-  class        CDATA  #REQUIRED
+  class		CDATA  #REQUIRED
 >
 
 <!ELEMENT dataSource (param*)>
 <!ATTLIST dataSource
-  class        CDATA  #REQUIRED
+  class		CDATA  #REQUIRED
 >
 
 <!ELEMENT triggeringPolicy ((param|filter)*)>
@@ -192,27 +192,27 @@ element. -->
 
 
 <!-- ==================================================================== -->
-<!--                       A logging event                                -->
+<!--					   A logging event								-->
 <!-- ==================================================================== -->
 <!ELEMENT log4j:eventSet (log4j:event*)>
 <!ATTLIST log4j:eventSet
-  xmlns:log4j             CDATA #FIXED "http://jakarta.apache.org/log4j/" 
-  version                (1.1|1.2) "1.2" 
+  xmlns:log4j			 CDATA #FIXED "http://jakarta.apache.org/log4j/" 
+  version				(1.1|1.2) "1.2" 
   includesLocationInfo   (true|false) "true"
 >
 
 
 
 <!ELEMENT log4j:event (log4j:message, log4j:NDC?, log4j:throwable?, 
-                       log4j:locationInfo?, log4j:properties?) >
+					   log4j:locationInfo?, log4j:properties?) >
 
 <!-- The timestamp format is application dependent. -->
 <!ATTLIST log4j:event
-    logger     CDATA #REQUIRED
-    level      CDATA #REQUIRED
-    thread     CDATA #REQUIRED
-    timestamp  CDATA #REQUIRED
-    time       CDATA #IMPLIED
+	logger	 CDATA #REQUIRED
+	level	  CDATA #REQUIRED
+	thread	 CDATA #REQUIRED
+	timestamp  CDATA #REQUIRED
+	time	   CDATA #IMPLIED
 >
 
 <!ELEMENT log4j:message (#PCDATA)>

@@ -37,23 +37,23 @@ public class PaginationDataModel extends AbstractTableModel {
 	private int currentRow = -1;
 	private int rowCount = 1;
 	private List<List<Object>> cache = new ArrayList<List<Object>>();
-    private boolean lastRecordReached;
+	private boolean lastRecordReached;
 
-    public ResultSetMetaData getResultSetMetaData() {
-        return metadata;
-    }
+	public ResultSetMetaData getResultSetMetaData() {
+		return metadata;
+	}
 
-    public Map<String, Object> getRowData(int aRow) throws SQLException {
-        Map<String, Object> theRow = new HashMap<String, Object>();
-        List<Object> theRowData = cache.get(aRow);
-        for (int i=0;i<theRowData.size();i++) {
-            String theName = metadata.getColumnName(i+1);
-            theRow.put(theName, theRowData.get(i));
-        }
-        return theRow;
-    }
+	public Map<String, Object> getRowData(int aRow) throws SQLException {
+		Map<String, Object> theRow = new HashMap<String, Object>();
+		List<Object> theRowData = cache.get(aRow);
+		for (int i=0;i<theRowData.size();i++) {
+			String theName = metadata.getColumnName(i+1);
+			theRow.put(theName, theRowData.get(i));
+		}
+		return theRow;
+	}
 
-    public interface SeekListener {
+	public interface SeekListener {
 		void seeked();
 	}
 
@@ -122,10 +122,10 @@ public class PaginationDataModel extends AbstractTableModel {
 			seeked = true;
 		}
 
-        if (resultSet.isLast() && !lastRecordReached) {
-            rowCount--;
-            lastRecordReached = true;
-        }
+		if (resultSet.isLast() && !lastRecordReached) {
+			rowCount--;
+			lastRecordReached = true;
+		}
 
 		if (currentRow < aRowIndex) {
 			rowCount = currentRow + 1;

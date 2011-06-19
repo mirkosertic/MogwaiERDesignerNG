@@ -58,6 +58,7 @@ public class CustomTypeEditor extends BaseEditor {
 
 	private final DefaultAction newTypeAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandNewType(e);
 		}
@@ -65,6 +66,7 @@ public class CustomTypeEditor extends BaseEditor {
 
 	private final DefaultAction deleteTypeAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandDeleteType(e);
 		}
@@ -72,6 +74,7 @@ public class CustomTypeEditor extends BaseEditor {
 
 	private final DefaultAction updateTypeAction = new DefaultAction(new ActionEventProcessor() {
 
+		@Override
 		public void processActionEvent(ActionEvent e) {
 			commandUpdateType(e);
 		}
@@ -106,6 +109,7 @@ public class CustomTypeEditor extends BaseEditor {
 		editingView.getCancelButton().setAction(cancelAction);
 		editingView.getTypesList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
 
+			@Override
 			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 				commandAttributeListValueChanged(e);
 			}
@@ -123,7 +127,7 @@ public class CustomTypeEditor extends BaseEditor {
 
 		CustomType theModel = typeBindingInfo.getDefaultModel();
 		List<ValidationError> theValidationResult = typeBindingInfo.validate();
-		if (theValidationResult.size() == 0) {
+		if (theValidationResult.isEmpty()) {
 			
 			typeBindingInfo.view2model();
 

@@ -38,56 +38,56 @@ import java.util.List;
  */
 public class HandTool extends BaseTool {
 
-    private ERDesignerComponent component;
+	private ERDesignerComponent component;
 
-    public HandTool(ERDesignerComponent aComponent, ERDesignerGraph aGraph) {
-        super(aGraph);
-        component = aComponent;
-    }
+	public HandTool(ERDesignerComponent aComponent, ERDesignerGraph aGraph) {
+		super(aGraph);
+		component = aComponent;
+	}
 
-    @Override
-    public boolean isForceMarqueeEvent(MouseEvent e) {
+	@Override
+	public boolean isForceMarqueeEvent(MouseEvent e) {
 
-        return SwingUtilities.isRightMouseButton(e) && !e.isAltDown();
+		return SwingUtilities.isRightMouseButton(e) && !e.isAltDown();
 
-    }
+	}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (SwingUtilities.isRightMouseButton(e)) {
 
-            Object[] theSelectionCells = graph.getSelectionCells();
-            List<DefaultGraphCell> theList = new ArrayList<DefaultGraphCell>();
-            if (theSelectionCells != null) {
-                for (Object theCell : theSelectionCells) {
-                    if (theCell instanceof DefaultGraphCell) {
-                        theList.add((DefaultGraphCell) theCell);
-                    }
-                }
-            }
-            if (theList.size() > 0) {
-                DefaultPopupMenu menu = createPopupMenu(theList);
-                menu.show(graph, e.getX(), e.getY());
-                return;
-            }
-        }
-        super.mousePressed(e);
-    }
+			Object[] theSelectionCells = graph.getSelectionCells();
+			List<DefaultGraphCell> theList = new ArrayList<DefaultGraphCell>();
+			if (theSelectionCells != null) {
+				for (Object theCell : theSelectionCells) {
+					if (theCell instanceof DefaultGraphCell) {
+						theList.add((DefaultGraphCell) theCell);
+					}
+				}
+			}
+			if (theList.size() > 0) {
+				DefaultPopupMenu menu = createPopupMenu(theList);
+				menu.show(graph, e.getX(), e.getY());
+				return;
+			}
+		}
+		super.mousePressed(e);
+	}
 
-    public DefaultPopupMenu createPopupMenu(final List<DefaultGraphCell> aCells) {
+	public DefaultPopupMenu createPopupMenu(final List<DefaultGraphCell> aCells) {
 
-        DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
-                .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+		DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+				.getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-        List<ModelItem> theItems = new ArrayList<ModelItem>();
-        for (DefaultGraphCell theCell : aCells) {
-            theItems.add((ModelItem) theCell.getUserObject());
-        }
+		List<ModelItem> theItems = new ArrayList<ModelItem>();
+		for (DefaultGraphCell theCell : aCells) {
+			theItems.add((ModelItem) theCell.getUserObject());
+		}
 
-        ContextMenuFactory.addActionsToMenu(theMenu, theItems, component);
+		ContextMenuFactory.addActionsToMenu(theMenu, theItems, component);
 
-        UIInitializer.getInstance().initialize(theMenu);
+		UIInitializer.getInstance().initialize(theMenu);
 
-        return theMenu;
-    }
+		return theMenu;
+	}
 }

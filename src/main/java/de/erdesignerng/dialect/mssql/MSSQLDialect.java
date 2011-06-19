@@ -30,7 +30,7 @@ import java.sql.Types;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-02 14:20:18 $
  */
-public class MSSQLDialect extends SQL92Dialect {
+public final class MSSQLDialect extends SQL92Dialect {
 
 	public MSSQLDialect() {
 		setSpacesAllowedInObjectNames(false);

@@ -28,7 +28,7 @@ import java.sql.Types;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-15 17:04:23 $
  */
-public class PostgresDialect extends SQL92Dialect {
+public final class PostgresDialect extends SQL92Dialect {
 
 	public PostgresDialect() {
 		setSpacesAllowedInObjectNames(true);
@@ -39,6 +39,7 @@ public class PostgresDialect extends SQL92Dialect {
 		setSupportsDomains(true);
 		setSupportsCustomTypes(true);
 		setSupportsSchemaInformation(true);
+
 		addSystemSchema("information_schema");
 		addSystemSchema("pg_catalog");
 		addSystemSchema("pg_toast");
@@ -60,27 +61,20 @@ public class PostgresDialect extends SQL92Dialect {
 		registerType(createDataType("float8", "", Types.DOUBLE, Types.FLOAT));
 		registerType(createDataType("money", "", Types.DOUBLE));
 		registerType(createDataType("bpchar", "", Types.CHAR));
-		registerType(createDataType("varchar", "["
-				+ GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
+		registerType(createDataType("varchar", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
 		registerType(createDataType("date", "", Types.DATE));
 		registerType(createDataType("time", "", Types.TIME));
 		registerType(createDataType("timestamp", "", Types.TIMESTAMP));
 		registerType(createDataType("timestamptz", "", Types.TIMESTAMP));
-		registerType(createDataType("timestamp with time zone", "",
-				Types.TIMESTAMP));
+		registerType(createDataType("timestamp with time zone", "", Types.TIMESTAMP));
 		registerType(createDataType("timetz", "", Types.TIME));
 		registerType(createDataType("bit", "", Types.BIT));
-		registerType(createDataType("numeric", GenericDataTypeImpl.SIZE_TOKEN
-				+ "," + GenericDataTypeImpl.FRACTION_TOKEN, Types.NUMERIC,
-				Types.DECIMAL));
+		registerType(createDataType("numeric", GenericDataTypeImpl.SIZE_TOKEN + "," + GenericDataTypeImpl.FRACTION_TOKEN, Types.NUMERIC, Types.DECIMAL));
 
 		// Patch [ 2124875 ] Add Postgres data types
-		registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN,
-				Types.CHAR));
-		registerType(createDataType("character",
-				GenericDataTypeImpl.SIZE_TOKEN, Types.CHAR));
-		registerType(createDataType("character varying", "["
-				+ GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
+		registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN, Types.CHAR));
+		registerType(createDataType("character", GenericDataTypeImpl.SIZE_TOKEN, Types.CHAR));
+		registerType(createDataType("character varying", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
 		registerType(createDataType("boolean", "", Types.BOOLEAN));
 		registerType(createDataType("interval", "", Types.TIMESTAMP));
 		registerType(createDataType("smallint", "", Types.SMALLINT));
@@ -93,23 +87,28 @@ public class PostgresDialect extends SQL92Dialect {
 		registerType(createDataType("blob", "", Types.BLOB, Types.LONGVARBINARY));
 		registerType(createDataType("clob", "", Types.CLOB, Types.LONGVARCHAR));
 
-		// Patch [ 2874576 ] Reverse-Engineering unterstützt INET Datentyp
-		// nicht
-		// @see
+		// Patch [ 2874576 ] Reverse-Engineering unterstützt INET Datentyp nicht
 		// http://www.postgresql.org/docs/8.4/interactive/datatype-net-types.html#DATATYPE-INET
 		registerType(createDataType("inet", "", Types.VARCHAR, Types.NVARCHAR));
 
-		// Bug Fixing 2933615 [ERDesignerNG] UUID Datatype not Supported in
-		// PostgreSQL
+		// Bug Fixing 2933615 [ERDesignerNG] UUID Datatype not Supported in PostgreSQL
 		registerType(createDataType("uuid", "", Types.VARCHAR, Types.NVARCHAR));
 
 		// TODO [dr-death] add all missing datatypes according to
-		// @see
 		// http://www.postgresql.org/docs/8.4/interactive/datatype.html#DATATYPE-TABLE
 		// registerType(createDataType("_point", "", Types.OTHER));
 		// registerType(createDataType("point", "", Types.OTHER));
 		// registerType(createDataType("abstime", "", Types.OTHER));
 		// registerType(createDataType("_xml", "", Types.OTHER));
+
+		// Bug Fixing 3306174 [ERDesignerNG] Unknown datatype (2.7.0 release) (postgres + postgis)
+		// http://postgis.refractions.net/docs/reference.html#PostGIS_Types
+		registerType(createDataType("box2d", "", Types.OTHER));
+		registerType(createDataType("box3d", "", Types.OTHER));
+		registerType(createDataType("box3d_extent", "", Types.OTHER));
+		registerType(createDataType("geometry", "", Types.OTHER));
+		registerType(createDataType("geometry_dump", "", Types.OTHER));
+		registerType(createDataType("geography", "", Types.OTHER));
 
 		seal();
 	}

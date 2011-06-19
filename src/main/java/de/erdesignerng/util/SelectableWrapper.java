@@ -19,32 +19,32 @@ package de.erdesignerng.util;
 
 public class SelectableWrapper<T> {
 
-    private boolean selected;
+	private boolean selected;
 
-    private T value;
+	private T value;
 
-    public SelectableWrapper(T aValue) {
-        value = aValue;
-        selected = true;
-    }
+	public SelectableWrapper(T aValue) {
+		value = aValue;
+		selected = true;
+	}
 
-    public boolean isSelected() {
-        return selected;
-    }
+	public boolean isSelected() {
+		return selected;
+	}
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 
-    public T getValue() {
-        return value;
-    }
+	public T getValue() {
+		return value;
+	}
 
-    public void setValue(T value) {
-        this.value = value;
-    }
+	public void setValue(T value) {
+		this.value = value;
+	}
 
-    public void invertSelection() {
-        selected = !selected;
-    }
+	public void invertSelection() {
+		selected = !selected;
+	}
 }

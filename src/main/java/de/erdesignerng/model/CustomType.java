@@ -72,46 +72,57 @@ public class CustomType extends OwnedModelItem<Model> implements
 		setSqlDefinition(aCustomType.getSqlDefinition());
 	}
 
+	@Override
 	public boolean isDomain() {
 		return false;
 	}
 
+	@Override
 	public boolean isCustomType() {
 		return true;
 	}
 
+	@Override
 	public boolean supportsSize() {
 		return false;
 	}
 
+	@Override
 	public boolean supportsFraction() {
 		return false;
 	}
 
+	@Override
 	public boolean supportsScale() {
 		return false;
 	}
 
+	@Override
 	public boolean supportsExtra() {
 		return false;
 	}
 
+	@Override
 	public boolean isJDBCStringType() {
 		return false;
 	}
 
+	@Override
 	public String createTypeDefinitionFor(Attribute aAttribute) {
 		return getName();
 	}
 
+	@Override
 	public boolean isIdentity() {
 		return false;
 	}
 
+	@Override
 	public int[] getJDBCType() {
 		return new int[] { Types.OTHER };
 	}
 
+	@Override
 	public String getDefinition() {
 		return "";
 	}

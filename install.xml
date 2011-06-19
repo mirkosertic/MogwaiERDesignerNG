@@ -1,76 +1,76 @@
 <?xml version="1.0" encoding="iso-8859-15" standalone="yes"?>
 <installation version="1.0">
-    <info>
-        <appname>@name@</appname>
-        <appversion>@version@</appversion>
-        <authors>
-            <author name="Mirko Sertic" email="mirkosertic@users.sourceforge.net"/>
-            <author name="Elton Xia" email="eltonxia@users.sourceforge.net"/>
-            <author name="Owenm" email="owenm2001@users.sourceforge.net"/>
-            <author name="Dr. Death" email="dr-death@users.sourceforge.net"/>
-            <author name="Jonathan Luckcuck" email="jluckcuck@users.sourceforge.net"/>
+	<info>
+		<appname>@name@</appname>
+		<appversion>@version@</appversion>
+		<authors>
+			<author name="Mirko Sertic" email="mirkosertic@users.sourceforge.net"/>
+			<author name="Elton Xia" email="eltonxia@users.sourceforge.net"/>
+			<author name="Owenm" email="owenm2001@users.sourceforge.net"/>
+			<author name="Dr. Death" email="dr-death@users.sourceforge.net"/>
+			<author name="Jonathan Luckcuck" email="jluckcuck@users.sourceforge.net"/>
 
-        </authors>
-        <url>http://mogwai.sourceforge.net</url>
-        <javaversion>1.6</javaversion>
-        <requiresjdk>no</requiresjdk>
-        <run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
-    </info>
-    <guiprefs width="640" height="480" resizable="no">
-        <modifier key="useButtonIcons" value="no"/>
-        <modifier key="useLabelIcons" value="no"/>
-        <modifier key="labelGap" value="2"/>
-        <modifier key="layoutAnchor" value="NORTHWEST"/>
-        <modifier key="useHeadingPanel" value="yes"/>
-        <modifier key="headingImageOnLeft" value="yes"/>
-        <modifier key="headingLineCount" value="1"/>
-        <modifier key="headingFontSize" value="1.5"/>
-        <modifier key="headingBackgroundColor" value="0x00ffffff"/>
-        <modifier key="headingPanelCounter" value="text"/>
-        <modifier key="headingPanelCounterPos" value="inHeading"/>
-    </guiprefs>
-    <locale>
-        <langpack iso3="eng"/>
-    </locale>
-    <resources>
-        <res id="LicencePanel.licence" src="LICENSE_MOGWAI.txt"/>
-        <res src="install_shortcutspec.xml" id="shortcutSpec.xml"/>
-        <res src="install_unix_shortcutspec.xml" id="Unix_shortcutSpec.xml"/>
-    </resources>
-    <panels>
-        <panel classname="HelloPanel"/>
-        <panel classname="LicencePanel"/>
-        <panel classname="TargetPanel"/>
-        <panel classname="PacksPanel"/>
-        <panel classname="InstallPanel"/>
-        <panel classname="ShortcutPanel"/>
-        <panel classname="FinishPanel"/>
-    </panels>
-    <packs>
-        <pack name="Base" required="yes">
-            <description>Core</description>
-            <file src="LICENSE_MOGWAI.txt" targetdir="$INSTALL_PATH"/>
-            <file src="README_SQUIRREL.txt" targetdir="$INSTALL_PATH"/>
-            <file src="RELEASENOTES.txt" targetdir="$INSTALL_PATH"/>
-            <file src="run.bat" targetdir="$INSTALL_PATH"/>
-            <file src="run.sh" targetdir="$INSTALL_PATH" os="unix"/>
-            <file src="run.sh" targetdir="$INSTALL_PATH" os="mac"/>
-            <file src="lib" targetdir="$INSTALL_PATH"/>
-            <file src="reports" targetdir="$INSTALL_PATH"/>
-            <executable os="unix" targetfile="$INSTALL_PATH/run.sh"
-                        stage="never"/>
-            <executable os="mac" targetfile="$INSTALL_PATH/run.sh"
-                        stage="never"/>
-        </pack>
-        <pack name="Docs" required="yes" preselected="yes">
-            <description>The documentation</description>
-            <file src="userdoc" targetdir="$INSTALL_PATH"/>
-        </pack>
-        <pack name="Sources" required="no" preselected="yes">
-            <description>The sources</description>
-            <file src="src" targetdir="$INSTALL_PATH"/>
-        </pack>
-    </packs>
+		</authors>
+		<url>http://mogwai.sourceforge.net</url>
+		<javaversion>1.6</javaversion>
+		<requiresjdk>no</requiresjdk>
+		<run-privileged condition="izpack.windowsinstall.vista|izpack.macinstall"/>
+	</info>
+	<guiprefs width="640" height="480" resizable="no">
+		<modifier key="useButtonIcons" value="no"/>
+		<modifier key="useLabelIcons" value="no"/>
+		<modifier key="labelGap" value="2"/>
+		<modifier key="layoutAnchor" value="NORTHWEST"/>
+		<modifier key="useHeadingPanel" value="yes"/>
+		<modifier key="headingImageOnLeft" value="yes"/>
+		<modifier key="headingLineCount" value="1"/>
+		<modifier key="headingFontSize" value="1.5"/>
+		<modifier key="headingBackgroundColor" value="0x00ffffff"/>
+		<modifier key="headingPanelCounter" value="text"/>
+		<modifier key="headingPanelCounterPos" value="inHeading"/>
+	</guiprefs>
+	<locale>
+		<langpack iso3="eng"/>
+	</locale>
+	<resources>
+		<res id="LicencePanel.licence" src="LICENSE_MOGWAI.txt"/>
+		<res src="install_shortcutspec.xml" id="shortcutSpec.xml"/>
+		<res src="install_unix_shortcutspec.xml" id="Unix_shortcutSpec.xml"/>
+	</resources>
+	<panels>
+		<panel classname="HelloPanel"/>
+		<panel classname="LicencePanel"/>
+		<panel classname="TargetPanel"/>
+		<panel classname="PacksPanel"/>
+		<panel classname="InstallPanel"/>
+		<panel classname="ShortcutPanel"/>
+		<panel classname="FinishPanel"/>
+	</panels>
+	<packs>
+		<pack name="Base" required="yes">
+			<description>Core</description>
+			<file src="LICENSE_MOGWAI.txt" targetdir="$INSTALL_PATH"/>
+			<file src="README_SQUIRREL.txt" targetdir="$INSTALL_PATH"/>
+			<file src="RELEASENOTES.txt" targetdir="$INSTALL_PATH"/>
+			<file src="run.bat" targetdir="$INSTALL_PATH"/>
+			<file src="run.sh" targetdir="$INSTALL_PATH" os="unix"/>
+			<file src="run.sh" targetdir="$INSTALL_PATH" os="mac"/>
+			<file src="lib" targetdir="$INSTALL_PATH"/>
+			<file src="reports" targetdir="$INSTALL_PATH"/>
+			<executable os="unix" targetfile="$INSTALL_PATH/run.sh"
+						stage="never"/>
+			<executable os="mac" targetfile="$INSTALL_PATH/run.sh"
+						stage="never"/>
+		</pack>
+		<pack name="Docs" required="yes" preselected="yes">
+			<description>The documentation</description>
+			<file src="userdoc" targetdir="$INSTALL_PATH"/>
+		</pack>
+		<pack name="Sources" required="no" preselected="yes">
+			<description>The sources</description>
+			<file src="src" targetdir="$INSTALL_PATH"/>
+		</pack>
+	</packs>
 
-    <native type="izpack" name="ShellLink.dll"/>
+	<native type="izpack" name="ShellLink.dll"/>
 </installation>

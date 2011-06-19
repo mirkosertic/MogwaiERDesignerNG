@@ -181,7 +181,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a new table to the model.
 	 * 
 	 * @param aPoint
-	 *            the location
+	 *			the location
 	 */
 	public abstract void commandNewTable(Point2D aPoint);
 
@@ -189,7 +189,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a new view to the model.
 	 * 
 	 * @param aPoint
-	 *            the location
+	 *			the location
 	 */
 	public abstract void commandNewView(Point2D aPoint);
 
@@ -197,7 +197,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Create a new subject area for a set of cells.
 	 * 
 	 * @param aCells
-	 *            the cells to add to the subject area
+	 *			the cells to add to the subject area
 	 */
 	public void commandAddToNewSubjectArea(List<DefaultGraphCell> aCells) {
 
@@ -228,7 +228,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param displayComments
-	 *            the displayComments to set
+	 *			the displayComments to set
 	 */
 	public void setDisplayComments(boolean displayComments) {
 		this.displayComments = displayComments;
@@ -238,7 +238,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a new comment to the model.
 	 * 
 	 * @param aLocation
-	 *            the location
+	 *			the location
 	 */
 	public abstract void commandNewComment(Point2D aLocation);
 
@@ -246,9 +246,9 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Add a relation to the model.
 	 * 
 	 * @param aImportingCell
-	 *            - importing Cell
+	 *			- importing Cell
 	 * @param aExportingCell
-	 *            - exporting Cell
+	 *			- exporting Cell
 	 */
 	public abstract void commandNewRelation(TableCell aImportingCell,
 			TableCell aExportingCell);
@@ -262,7 +262,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param displayLevel
-	 *            the displayLevel to set
+	 *			the displayLevel to set
 	 */
 	public void setDisplayLevel(DisplayLevel displayLevel) {
 		this.displayLevel = displayLevel;
@@ -277,7 +277,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param displayOrder
-	 *            the displayOrder to set
+	 *			the displayOrder to set
 	 */
 	public void setDisplayOrder(DisplayOrder displayOrder) {
 		this.displayOrder = displayOrder;
@@ -292,7 +292,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
 	/**
 	 * @param dragging
-	 *            the dragging to set
+	 *			the dragging to set
 	 */
 	public void setDragging(boolean dragging) {
 		this.dragging = dragging;
@@ -308,7 +308,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Hide a list of specific cells.
 	 * 
 	 * @param aCellsToHide
-	 *            the cells to hide
+	 *			the cells to hide
 	 */
 	public abstract void commandHideCells(List<HideableCell> aCellsToHide);
 
@@ -316,11 +316,11 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Create a new table and add if to a new relation.
 	 * 
 	 * @param aLocation
-	 *            the location where the table should be created
+	 *			the location where the table should be created
 	 * @param aExportingTableCell
-	 *            the exporting table cell
+	 *			the exporting table cell
 	 * @param aNewTableIsChild
-	 *            true, if the new table should be the child of the new relation
+	 *			true, if the new table should be the child of the new relation
 	 */
 	public abstract void commandNewTableAndRelation(Point2D aLocation,
 			TableCell aExportingTableCell, boolean aNewTableIsChild);
@@ -329,7 +329,7 @@ public abstract class ERDesignerGraph extends JGraph {
 	 * Command to show a specific cell in the outline view.
 	 * 
 	 * @param aObject
-	 *            - object to locate
+	 *			- object to locate
 	 */
 	public abstract void commandLocateInOutline(Object aObject);
 

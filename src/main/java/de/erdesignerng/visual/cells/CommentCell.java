@@ -46,6 +46,7 @@ public class CommentCell extends DefaultGraphCell implements
 		GraphConstants.setEditable(getAttributes(), true);
 	}
 
+	@Override
 	public void transferAttributesToProperties(Map aAttributes) {
 
 		Comment theComment = (Comment) getUserObject();
@@ -56,6 +57,7 @@ public class CommentCell extends DefaultGraphCell implements
 				theLocation);
 	}
 
+	@Override
 	public void transferPropertiesToAttributes(Comment aObject) {
 
 		Point2D thePoint = TransferHelper.createPoint2DFromString(aObject

@@ -33,6 +33,7 @@ public abstract class LongRunningTask<T> extends Thread {
 
 	protected abstract class MySwingWorker<X> extends SwingWorker<X, String> implements MessagePublisher {
 
+		@Override
 		public void publishMessage(String aMessage) {
 			publish(aMessage );
 		}

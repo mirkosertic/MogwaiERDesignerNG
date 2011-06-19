@@ -29,40 +29,40 @@ import java.util.List;
 
 public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 
-    public IndexAttributesPropertyAdapter(DefaultList aComponent) {
-        super(aComponent, null);
-    }
+	public IndexAttributesPropertyAdapter(DefaultList aComponent) {
+		super(aComponent, null);
+	}
 
-    @Override
-    public void model2view(Object aModel, String aPropertyName) {
+	@Override
+	public void model2view(Object aModel, String aPropertyName) {
 
-        DefaultList theComponent = (DefaultList) getComponent()[0];
+		DefaultList theComponent = (DefaultList) getComponent()[0];
 
-        Index theIndex = (Index) aModel;
-        DefaultListModel theModel = theComponent.getModel();
-        theModel.clear();
-        for (IndexExpression theExpression : theIndex.getExpressions()) {
-            theModel.add(theExpression);
-        }
-    }
+		Index theIndex = (Index) aModel;
+		DefaultListModel theModel = theComponent.getModel();
+		theModel.clear();
+		for (IndexExpression theExpression : theIndex.getExpressions()) {
+			theModel.add(theExpression);
+		}
+	}
 
-    @Override
-    public void view2model(Object aModel, String aPropertyName) {
-        DefaultList theComponent = (DefaultList) getComponent()[0];
+	@Override
+	public void view2model(Object aModel, String aPropertyName) {
+		DefaultList theComponent = (DefaultList) getComponent()[0];
 
-        Index theIndex = (Index) aModel;
-        theIndex.getExpressions().clear();
-        DefaultListModel<IndexExpression> theModel = theComponent.getModel();
-        for (int i = 0; i < theModel.getSize(); i++) {
-            theIndex.getExpressions().add(theModel.get(i));
-        }
+		Index theIndex = (Index) aModel;
+		theIndex.getExpressions().clear();
+		DefaultListModel<IndexExpression> theModel = theComponent.getModel();
+		for (int i = 0; i < theModel.getSize(); i++) {
+			theIndex.getExpressions().add(theModel.get(i));
+		}
 
-    }
+	}
 
-    @Override
-    public List<ValidationError> validate() {
-        List<ValidationError> theResult = new ArrayList<ValidationError>();
-        markValid();
-        return theResult;
-    }
+	@Override
+	public List<ValidationError> validate() {
+		List<ValidationError> theResult = new ArrayList<ValidationError>();
+		markValid();
+		return theResult;
+	}
 }

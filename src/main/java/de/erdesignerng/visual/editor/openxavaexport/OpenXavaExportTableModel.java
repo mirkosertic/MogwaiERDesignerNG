@@ -51,14 +51,17 @@ public class OpenXavaExportTableModel implements TableModel {
 		stereoTypeName = aStereoTypeName;
 	}
 
+	@Override
 	public Class<Object> getColumnClass(int aColumn) {
 		return Object.class;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 3;
 	}
 
+	@Override
 	public String getColumnName(int aColumn) {
 		switch (aColumn) {
 		case 0:
@@ -70,10 +73,12 @@ public class OpenXavaExportTableModel implements TableModel {
 		}
 	}
 
+	@Override
 	public int getRowCount() {
 		return dataTypes.size();
 	}
 
+	@Override
 	public Object getValueAt(int aRow, int aColumn) {
 		switch (aColumn) {
 		case 0:
@@ -85,10 +90,12 @@ public class OpenXavaExportTableModel implements TableModel {
 		}
 	}
 
+	@Override
 	public boolean isCellEditable(int aRow, int aColumn) {
 		return aColumn != 0;
 	}
 
+	@Override
 	public void setValueAt(Object aValue, int aRow, int aColumn) {
 		switch (aColumn) {
 		case 1:
@@ -100,9 +107,11 @@ public class OpenXavaExportTableModel implements TableModel {
 		}
 	}
 
+	@Override
 	public void addTableModelListener(TableModelListener l) {
 	}
 
+	@Override
 	public void removeTableModelListener(TableModelListener l) {
 	}
 }

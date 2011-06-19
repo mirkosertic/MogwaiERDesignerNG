@@ -55,7 +55,7 @@ public abstract class UICommand implements ActionEventProcessor, ActionListener 
 	 * Refresh the display of a specific object.
 	 * 
 	 * @param aChangedObject
-	 *            the object to update
+	 *			the object to update
 	 */
 	public void refreshDisplayOf(Object aChangedObject) {
 		component.repaintGraph();

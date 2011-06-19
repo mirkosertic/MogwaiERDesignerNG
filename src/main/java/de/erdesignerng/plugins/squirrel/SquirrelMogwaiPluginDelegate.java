@@ -51,186 +51,193 @@ import java.util.prefs.BackingStoreException;
  */
 public class SquirrelMogwaiPluginDelegate extends DefaultSessionPlugin {
 
-    private final Hashtable<IIdentifier, SquirrelMogwaiController[]> controllersBySessionID = new Hashtable<IIdentifier, SquirrelMogwaiController[]>();
+	private final Hashtable<IIdentifier, SquirrelMogwaiController[]> controllersBySessionID = new Hashtable<IIdentifier, SquirrelMogwaiController[]>();
 
-    private SquirrelMogwaiPreferences preferencesPanel;
+	private SquirrelMogwaiPreferences preferencesPanel;
 
-    public SquirrelMogwaiPluginDelegate() {
-    }
+	public SquirrelMogwaiPluginDelegate() {
+	}
 
-    public String getInternalName() {
-        return "mogwai";
-    }
+	@Override
+	public String getInternalName() {
+		return "mogwai";
+	}
 
-    public String getDescriptiveName() {
-        return "Mogwai ERDesigner";
-    }
+	@Override
+	public String getDescriptiveName() {
+		return "Mogwai ERDesigner";
+	}
 
-    public String getVersion() {
-        return MavenPropertiesLocator.getERDesignerVersionInfo();
-    }
+	@Override
+	public String getVersion() {
+		return MavenPropertiesLocator.getERDesignerVersionInfo();
+	}
 
-    public String getAuthor() {
-        return "Mirko Sertic";
-    }
+	@Override
+	public String getAuthor() {
+		return "Mirko Sertic";
+	}
 
-    @Override
-    public String getChangeLogFileName() {
-        return "RELEASENOTES.txt";
-    }
+	@Override
+	public String getChangeLogFileName() {
+		return "RELEASENOTES.txt";
+	}
 
-    @Override
-    public String getHelpFileName() {
-        return "readme.html";
-    }
+	@Override
+	public String getHelpFileName() {
+		return "readme.html";
+	}
 
-    @Override
-    public String getLicenceFileName() {
-        return "licence.txt";
-    }
+	@Override
+	public String getLicenceFileName() {
+		return "licence.txt";
+	}
 
-    @Override
-    public synchronized void initialize() throws PluginException {
-        super.initialize();
+	@Override
+	public synchronized void initialize() throws PluginException {
+		super.initialize();
 
-        ApplicationPreferences thePreferences = ApplicationPreferences
-                .getInstance();
+		ApplicationPreferences thePreferences = ApplicationPreferences
+				.getInstance();
 
-        try {
-            // Initialize the application base directory
-            thePreferences.setBaseDir(getPluginAppSettingsFolder());
+		try {
+			// Initialize the application base directory
+			thePreferences.setBaseDir(getPluginAppSettingsFolder());
 
-            DataTypeIO.getInstance().loadUserTypes();
-        } catch (Exception e) {
-            throw new PluginException(e);
-        }
+			DataTypeIO.getInstance().loadUserTypes();
+		} catch (Exception e) {
+			throw new PluginException(e);
+		}
 
-        // Initialize Mogwai Looks
-        UIConfiguration theConfig = new UIConfiguration();
-        theConfig.setApplyConfiguration(false);
-        UIInitializer.getInstance(theConfig);
+		// Initialize Mogwai Looks
+		UIConfiguration theConfig = new UIConfiguration();
+		theConfig.setApplyConfiguration(false);
+		UIInitializer.getInstance(theConfig);
 
-        SquirrelMogwaiPluginResources resources = new SquirrelMogwaiPluginResources(
-                this);
+		SquirrelMogwaiPluginResources resources = new SquirrelMogwaiPluginResources(
+				this);
 
-        preferencesPanel = new SquirrelMogwaiPreferences(this);
+		preferencesPanel = new SquirrelMogwaiPreferences(this);
 
-        IApplication theApplication = getApplication();
+		IApplication theApplication = getApplication();
 
-        ActionCollection theActionCollection = theApplication
-                .getActionCollection();
-        theActionCollection.add(new StartMogwaiAction(theApplication,
-                resources, this));
-    }
+		ActionCollection theActionCollection = theApplication
+				.getActionCollection();
+		theActionCollection.add(new StartMogwaiAction(theApplication,
+				resources, this));
+	}
 
-    @Override
-    public IGlobalPreferencesPanel[] getGlobalPreferencePanels() {
-        return new IGlobalPreferencesPanel[]{preferencesPanel};
-    }
+	@Override
+	public IGlobalPreferencesPanel[] getGlobalPreferencePanels() {
+		return new IGlobalPreferencesPanel[]{preferencesPanel};
+	}
 
-    @Override
-    public void unload() {
-        try {
-            ApplicationPreferences.getInstance().store();
-        } catch (BackingStoreException e) {
-            // Nothing will happen here
-        }
-        super.unload();
-    }
+	@Override
+	public void unload() {
+		try {
+			ApplicationPreferences.getInstance().store();
+		} catch (BackingStoreException e) {
+			// Nothing will happen here
+		}
+		super.unload();
+	}
 
-    public PluginSessionCallback sessionStarted(final ISession session) {
+	@Override
+	public PluginSessionCallback sessionStarted(final ISession session) {
 
-        IObjectTreeAPI theAPI = session.getSessionInternalFrame()
-                .getObjectTreeAPI();
+		IObjectTreeAPI theAPI = session.getSessionInternalFrame()
+				.getObjectTreeAPI();
 
-        ActionCollection theActionCollection = getApplication()
-                .getActionCollection();
-        theAPI.addToPopup(DatabaseObjectType.CATALOG, theActionCollection
-                .get(StartMogwaiAction.class));
-        theAPI.addToPopup(DatabaseObjectType.SCHEMA, theActionCollection
-                .get(StartMogwaiAction.class));
+		ActionCollection theActionCollection = getApplication()
+				.getActionCollection();
+		theAPI.addToPopup(DatabaseObjectType.CATALOG, theActionCollection
+				.get(StartMogwaiAction.class));
+		theAPI.addToPopup(DatabaseObjectType.SCHEMA, theActionCollection
+				.get(StartMogwaiAction.class));
 
-        return new PluginSessionCallback() {
+		return new PluginSessionCallback() {
 
-            public void sqlInternalFrameOpened(
-                    SQLInternalFrame aSqlInternalFrame, ISession aSession) {
-            }
+			@Override
+			public void sqlInternalFrameOpened(
+					SQLInternalFrame aSqlInternalFrame, ISession aSession) {
+			}
 
-            public void objectTreeInternalFrameOpened(
-                    ObjectTreeInternalFrame aObjectTreeInternalFrame,
-                    ISession aSession) {
-            }
-        };
-    }
+			@Override
+			public void objectTreeInternalFrameOpened(
+					ObjectTreeInternalFrame aObjectTreeInternalFrame,
+					ISession aSession) {
+			}
+		};
+	}
 
-    @Override
-    public void sessionEnding(ISession session) {
-        SquirrelMogwaiController[] theControllers = controllersBySessionID
-                .remove(session.getIdentifier());
-        if (theControllers != null) {
-            for (SquirrelMogwaiController theController : theControllers) {
-                theController.sessionEnding();
-            }
-        }
-    }
+	@Override
+	public void sessionEnding(ISession session) {
+		SquirrelMogwaiController[] theControllers = controllersBySessionID
+				.remove(session.getIdentifier());
+		if (theControllers != null) {
+			for (SquirrelMogwaiController theController : theControllers) {
+				theController.sessionEnding();
+			}
+		}
+	}
 
-    public SquirrelMogwaiController[] getGraphControllers(ISession session) {
-        return controllersBySessionID.get(session.getIdentifier());
-    }
+	public SquirrelMogwaiController[] getGraphControllers(ISession session) {
+		return controllersBySessionID.get(session.getIdentifier());
+	}
 
-    public SquirrelMogwaiController createNewGraphControllerForSession(
-            ISession aSession, Dialect aDialect) {
+	public SquirrelMogwaiController createNewGraphControllerForSession(
+			ISession aSession, Dialect aDialect) {
 
-        SquirrelDialect theSquirrelDialect = new SquirrelDialect(aDialect,
-                aSession);
+		SquirrelDialect theSquirrelDialect = new SquirrelDialect(aDialect,
+				aSession);
 
-        SquirrelMogwaiController[] theControllers = controllersBySessionID
-                .get(aSession.getIdentifier());
+		SquirrelMogwaiController[] theControllers = controllersBySessionID
+				.get(aSession.getIdentifier());
 
-        List<SquirrelMogwaiController> theTemp = new ArrayList<SquirrelMogwaiController>();
-        if (null != theControllers) {
-            theTemp.addAll(Arrays.asList(theControllers));
-        }
-        SquirrelMogwaiController theResult = new SquirrelMogwaiController(
-                theSquirrelDialect, aSession, this);
-        theTemp.add(theResult);
+		List<SquirrelMogwaiController> theTemp = new ArrayList<SquirrelMogwaiController>();
+		if (null != theControllers) {
+			theTemp.addAll(Arrays.asList(theControllers));
+		}
+		SquirrelMogwaiController theResult = new SquirrelMogwaiController(
+				theSquirrelDialect, aSession, this);
+		theTemp.add(theResult);
 
-        theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp
-                .size()]);
-        controllersBySessionID.put(aSession.getIdentifier(), theControllers);
+		theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp
+				.size()]);
+		controllersBySessionID.put(aSession.getIdentifier(), theControllers);
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    public void removeGraphController(SquirrelMogwaiController toRemove,
-                                      ISession session) {
-        SquirrelMogwaiController[] theControllers = controllersBySessionID
-                .get(session.getIdentifier());
-        List<SquirrelMogwaiController> theTemp = new ArrayList<SquirrelMogwaiController>();
-        for (SquirrelMogwaiController theController : theControllers) {
-            if (!theController.equals(toRemove)) {
-                theTemp.add(theController);
-            }
-        }
+	public void removeGraphController(SquirrelMogwaiController toRemove,
+									  ISession session) {
+		SquirrelMogwaiController[] theControllers = controllersBySessionID
+				.get(session.getIdentifier());
+		List<SquirrelMogwaiController> theTemp = new ArrayList<SquirrelMogwaiController>();
+		for (SquirrelMogwaiController theController : theControllers) {
+			if (!theController.equals(toRemove)) {
+				theTemp.add(theController);
+			}
+		}
 
-        theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp
-                .size()]);
-        controllersBySessionID.put(session.getIdentifier(), theControllers);
-    }
+		theControllers = theTemp.toArray(new SquirrelMogwaiController[theTemp
+				.size()]);
+		controllersBySessionID.put(session.getIdentifier(), theControllers);
+	}
 
-    public void shutdownEditor() {
-    }
+	public void shutdownEditor() {
+	}
 
-    /**
-     * The preferences were changed, so they need to be published to all
-     * controllers.
-     */
-    public void refreshPreferences() {
-        for (SquirrelMogwaiController[] theControllers : controllersBySessionID
-                .values()) {
-            for (SquirrelMogwaiController theController : theControllers) {
-                theController.refreshPreferences();
-            }
-        }
-    }
+	/**
+	 * The preferences were changed, so they need to be published to all
+	 * controllers.
+	 */
+	public void refreshPreferences() {
+		for (SquirrelMogwaiController[] theControllers : controllersBySessionID
+				.values()) {
+			for (SquirrelMogwaiController theController : theControllers) {
+				theController.refreshPreferences();
+			}
+		}
+	}
 }

@@ -105,9 +105,11 @@ public class EmptyModelModificationTracker implements ModelModificationTracker {
 	public void removeDomain(Domain domain) throws VetoException {
 	}
 
+	@Override
 	public void addCustomType(CustomType aCustomType) throws VetoException {
 	}
 
+	@Override
 	public void removeCustomType(CustomType aCustomType) throws VetoException {
 	}
 }

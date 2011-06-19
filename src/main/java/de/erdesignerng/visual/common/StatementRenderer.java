@@ -30,6 +30,7 @@ public class StatementRenderer implements ListCellRenderer {
 
 	private final UIInitializer initializer = UIInitializer.getInstance();
 
+	@Override
 	public Component getListCellRendererComponent(JList aList, Object aValue, int aIndex, boolean isSelected,
 			boolean cellHasFocus) {
 		Statement theStatement = (Statement) aValue;
