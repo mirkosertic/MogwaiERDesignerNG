@@ -47,14 +47,13 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
 		boolean returnValue = false;
 		if (event instanceof MouseEvent) {
 			MouseEvent mouseEvent = (MouseEvent) event;
-			TreePath path = tree.getPathForLocation(mouseEvent.getX(),
-					mouseEvent.getY());
+			TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
 			if (path != null) {
 				Object node = path.getLastPathComponent();
 				if ((node != null) && (node instanceof DefaultMutableTreeNode)) {
 					DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
 					Object userObject = treeNode.getUserObject();
-					returnValue = ((treeNode.isLeaf()) && (userObject instanceof SelectableWrapper));
+					returnValue = (userObject instanceof SelectableWrapper);
 				}
 			}
 		}
@@ -90,13 +89,16 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
 			}
 
 			ItemListener theItemListener = new ItemListener() {
+                @Override
 				public void itemStateChanged(ItemEvent itemEvent) {
 					if (stopCellEditing()) {
-						theWrapper.setSelected(theEditor.isSelected());
+                        SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
+                        theModel.setSelected(editingNode, theEditor.isSelected());
 						fireEditingStopped();
 					}
 				}
 			};
+
 			theEditor.addItemListener(theItemListener);
 			return theEditor;
 		}
