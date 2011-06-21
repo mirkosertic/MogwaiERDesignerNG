@@ -19,7 +19,7 @@
 	</parent>
 	<developers>
 		<developer>
-			<id>dr-death</id>
+			<id>dr-death2</id>
 			<name>Thomas Winkler</name>
 			<roles>
 				<role>Developer</role>
@@ -69,20 +69,8 @@
 							</tasks>
 						</configuration>
 					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>net.sourceforge.mogwai</groupId>
-						<artifactId>mogwai-i18n</artifactId>
-						<version>2.14</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
+                    <execution>
 						<id>create-staging-area</id>
 						<phase>package</phase>
 						<goals>
@@ -139,12 +127,18 @@
 						</configuration>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.mogwai</groupId>
+						<artifactId>mogwai-i18n</artifactId>
+						<version>2.14</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin
-				</artifactId>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.0</version>
 				<executions>
 					<execution>
@@ -219,6 +213,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
 				<configuration>
 					<systemProperties>
 						<property>
