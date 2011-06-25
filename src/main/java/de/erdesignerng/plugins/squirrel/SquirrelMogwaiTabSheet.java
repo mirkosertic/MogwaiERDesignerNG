@@ -181,9 +181,6 @@ public class SquirrelMogwaiTabSheet extends BaseMainPanelTab implements
 
 	/**
 	 * The preferences were changed, so they need to be reloaded.
-	 * 
-	 * @param aPreferences
-	 *			the preferences
 	 */
 	public void refreshPreferences() {
 		component.refreshPreferences();

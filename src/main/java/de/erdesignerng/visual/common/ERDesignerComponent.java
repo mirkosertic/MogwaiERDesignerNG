@@ -1560,8 +1560,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
 	/**
 	 * The preferences where changed, so they need to be reloaded.
-	 *
-	 * @param aPreferences the preferences
 	 */
 	public void refreshPreferences() {
 		graph.setGridSize(ApplicationPreferences.getInstance().getGridSize());

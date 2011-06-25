@@ -76,8 +76,6 @@ public class SquirrelMogwaiController {
 
 	/**
 	 * The preferences were changed, so they need to be reconfigured.
-	 *
-	 * @param aPreferences the preferences
 	 */
 	public void refreshPreferences() {
 		tabsheet.refreshPreferences();
