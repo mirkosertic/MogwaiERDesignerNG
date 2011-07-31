@@ -80,7 +80,7 @@ class SQLSyntaxDocument extends DefaultStyledDocument {
 		sas[SQLScanner.TOKEN_WHITESPACE] = new SimpleAttributeSet();
 	}
 
-	public final String[] OracleKeywords = {"SELECT", "FROM", "WHERE",
+	public final String[] OracleKeywords = {"ADD", "SELECT", "FROM", "WHERE",
 			"UPDATE", "SET", "INSERT", "INTO", "CREATE", "REPLACE", "VALUES",
 			"DROP", "CASCADE", "DELETE", "PROCEDURE", "FUNCTION", "TABLE",
 			"VIEW", "PACKAGE", "BODY", "TRIGGER", "SEQUENCE", "AND", "OR",
@@ -101,7 +101,7 @@ class SQLSyntaxDocument extends DefaultStyledDocument {
 			"BULK", "COLLECT", "CLOB", "CLOSE", "RAW", "ROWID", "NCLOB",
 			"NCHAR", "UROWID", "RECORD", "VARRAY", "VARCHAR2", "DEC",
 			"DECIMAL", "DOUBLE", "PRECISION", "FLOAT", "INTEGER", "INT",
-			"NUMERIC", "REAL", "SMALLINT", "PLS_INTEGER", "USING"};
+			"NUMERIC", "REAL", "SMALLINT", "PLS_INTEGER", "USING", "CONSTRAINT"};
 
 	public final String[] OracleFunctions = {"ABS", "ACOS", "ADD_MONTHS",
 			"ATAN", "ATAN2", "CEIL", "COS", "COSH", "EXP", "FLOOR", "LN",
