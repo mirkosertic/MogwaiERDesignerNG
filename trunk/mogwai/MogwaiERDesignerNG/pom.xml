@@ -257,7 +257,7 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.apache.log4j</groupId>
+            <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
             <scope>compile</scope>
@@ -319,8 +319,6 @@
             <scope>test</scope>
             <type>jar</type>
         </dependency>
-
-<!-- TODO: Check if they are still needed
         <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -413,18 +411,17 @@
 			<artifactId>javassist</artifactId>
 			<version>3.4.GA</version>
 		</dependency>
+        <dependency>
+            <groupId>net.sourceforge.sqlparser</groupId>
+            <artifactId>sqlparser</artifactId>
+            <version>0.6.6</version>
+        </dependency>
 		<dependency>
 			<groupId>org.codehaus.izpack</groupId>
 			<artifactId>izpack-standalone-compiler</artifactId>
 			<version>${your.standalone-compiler.version}</version>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>xalan</groupId>
-			<artifactId>xalan</artifactId>
-			<version>2.7.1</version>
-		</dependency>
--->
     </dependencies>
     <properties>
         <mogwai.test.db.server.name>localhost</mogwai.test.db.server.name>
