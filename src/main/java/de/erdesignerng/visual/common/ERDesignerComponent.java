@@ -19,6 +19,7 @@ package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.*;
+import de.erdesignerng.model.check.ModelChecker;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -793,7 +794,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 		final DefaultCheckBox theCheckbox = new DefaultCheckBox(
 				ERDesignerBundle.INTELLIGENTLAYOUT);
 		theCheckbox.setSelected(ApplicationPreferences.getInstance()
-				.isIntelligentLayout());
+                .isIntelligentLayout());
 		theCheckbox.addActionListener(new ActionListener() {
 
 			@Override
@@ -820,10 +821,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 		if (model.getDialect() == null) {
 			MessagesHelper
 					.displayErrorMessage(
-							graph,
-							getResourceHelper()
-									.getText(
-											ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
+                            graph,
+                            getResourceHelper()
+                                    .getText(
+                                            ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
 			return false;
 		}
 
@@ -1331,6 +1332,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 			fillGraph(aModel);
 
 			OutlineComponent.getDefault().setModel(aModel);
+
+            ModelChecker theChecker = new ModelChecker();
+            theChecker.check(aModel);
 
 		} finally {
 
