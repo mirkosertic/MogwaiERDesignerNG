@@ -1297,11 +1297,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 				}
 
 				@Override
-				public void commandLocateInOutline(Object object) {
-					OutlineComponent.getDefault().locateObject(object);
-				}
-
-				@Override
 				public void refreshOutline() {
 					OutlineComponent.getDefault().refresh(model, null);
 				}
