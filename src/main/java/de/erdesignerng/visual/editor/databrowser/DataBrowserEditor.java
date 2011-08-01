@@ -351,7 +351,7 @@ public class DataBrowserEditor extends BaseEditor {
 					connection = currentModel.createConnection();
 				}
 				if (statement == null) {
-					statement = connection.createStatement();
+					statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				}
 
 				ResultSet theResult = statement.executeQuery(sqlBindingInfo

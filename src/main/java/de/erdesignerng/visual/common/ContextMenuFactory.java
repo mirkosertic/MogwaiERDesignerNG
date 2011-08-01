@@ -69,6 +69,23 @@ public final class ContextMenuFactory {
 
 				aMenu.add(theDataBrowserItem);
 
+                JMenuItem theHideRelationsItem = new JMenuItem();
+                theHideRelationsItem.setText(theHelper.getFormattedText(
+                        ERDesignerBundle.HIDEALLRELATIONSFOR, theTable.getName()));
+                theHideRelationsItem.addActionListener(new ShowHideTableRelationsCommand(
+                        aComponent, theTable, false));
+
+                aMenu.add(theHideRelationsItem);
+
+                JMenuItem theShowRelationsItem = new JMenuItem();
+                theShowRelationsItem.setText(theHelper.getFormattedText(
+                        ERDesignerBundle.SHOWALLRELATIONSFOR, theTable.getName()));
+                theShowRelationsItem.addActionListener(new ShowHideTableRelationsCommand(
+                        aComponent, theTable, true));
+
+                aMenu.add(theShowRelationsItem);
+
+
 				theNewSubjectAreaItems.add(theTable);
 				theItemsToBeDeleted.add(theTable);
 			}
