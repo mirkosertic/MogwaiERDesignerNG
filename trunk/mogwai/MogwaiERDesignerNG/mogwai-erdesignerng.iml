@@ -72,7 +72,6 @@
     <orderEntry type="module" module-name="mogwai-squirrelplugin" scope="RUNTIME" />
     <orderEntry type="library" name="Maven: net.java.dev:swing-worker:1.2" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.4.GA" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.sqlparser:sqlparser:0.6.6" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.izpack:izpack-standalone-compiler:4.2.1" level="project" />
   </component>
 </module>

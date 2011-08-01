@@ -326,14 +326,6 @@ public abstract class ERDesignerGraph extends JGraph {
 			TableCell aExportingTableCell, boolean aNewTableIsChild);
 
 	/**
-	 * Command to show a specific cell in the outline view.
-	 * 
-	 * @param aObject
-	 *			- object to locate
-	 */
-	public abstract void commandLocateInOutline(Object aObject);
-
-	/**
 	 * Update the outline.
 	 */
 	public abstract void refreshOutline();

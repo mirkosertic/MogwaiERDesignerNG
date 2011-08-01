@@ -988,5 +988,13 @@
 			<Text lang="de">Zeile bearbeiten</Text>
 			<Text lang="en">Edit row</Text>
 		</Entry>
+        <Entry id="HIDEALLRELATIONSFOR">
+            <Text lang="de">Alle Relationen für {0} verbergen</Text>
+            <Text lang="en">Hide all relationen for {0}</Text>
+        </Entry>
+        <Entry id="SHOWALLRELATIONSFOR">
+            <Text lang="de">Alle Relationen für {0} anzeigen</Text>
+            <Text lang="en">Show all relationen for {0}</Text>
+        </Entry>
 	</Bundle>
 </Resource>

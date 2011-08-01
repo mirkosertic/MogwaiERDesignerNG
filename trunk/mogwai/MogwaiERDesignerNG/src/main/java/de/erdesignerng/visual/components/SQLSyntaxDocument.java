@@ -80,7 +80,7 @@ class SQLSyntaxDocument extends DefaultStyledDocument {
 		sas[SQLScanner.TOKEN_WHITESPACE] = new SimpleAttributeSet();
 	}
 
-	public final String[] OracleKeywords = {"ADD", "SELECT", "FROM", "WHERE",
+	public final String[] OracleKeywords = {"UNIQUE", "ADD", "SELECT", "FROM", "WHERE",
 			"UPDATE", "SET", "INSERT", "INTO", "CREATE", "REPLACE", "VALUES",
 			"DROP", "CASCADE", "DELETE", "PROCEDURE", "FUNCTION", "TABLE",
 			"VIEW", "PACKAGE", "BODY", "TRIGGER", "SEQUENCE", "AND", "OR",

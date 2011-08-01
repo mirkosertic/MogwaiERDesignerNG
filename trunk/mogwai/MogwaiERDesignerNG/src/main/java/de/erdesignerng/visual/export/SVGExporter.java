@@ -20,6 +20,7 @@ package de.erdesignerng.visual.export;
 import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.visual.ERDesignerGraph;
 import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -43,8 +44,9 @@ public class SVGExporter implements Exporter {
 		Object[] cells = aGraph.getRoots();
 		Rectangle2D bounds = aGraph.toScreen(aGraph.getCellBounds(cells));
 		if (bounds != null) {
-			DOMImplementation theDomImpl = GenericDOMImplementation.getDOMImplementation();
-			Document theDocument = theDomImpl.createDocument(null, "svg", null);
+            DOMImplementation theDomImpl = SVGDOMImplementation.getDOMImplementation();
+            String svgNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
+            Document theDocument = theDomImpl.createDocument(svgNS, "svg", null);
 			SVGGraphics2D theSvgGenerator = new SVGGraphics2D(theDocument);
 			theSvgGenerator.translate(-bounds.getX() + 10, -bounds.getY() + 0);
 			RepaintManager theRepaintManager = RepaintManager.currentManager(aGraph);
