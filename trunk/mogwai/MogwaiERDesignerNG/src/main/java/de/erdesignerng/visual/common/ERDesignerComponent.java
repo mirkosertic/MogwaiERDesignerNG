@@ -437,6 +437,10 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 				new GenerateMigrationScriptCommand(this), this,
 				ERDesignerBundle.CREATEMIGRATIONSCRIPT);
 
+        DefaultAction theCkeckModelAction = new DefaultAction(
+                new ModelCheckCommand(this), this,
+                ERDesignerBundle.CHECKMODELFORERRORS);
+
 		DefaultAction theHelpAction = new DefaultAction(
 				new ActionEventProcessor() {
 
@@ -575,6 +579,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 		theDBMenu.addSeparator();
 		theDBMenu.add(new DefaultMenuItem(theGenerateChangelog));
 		theDBMenu.addSeparator();
+		theDBMenu.add(new DefaultMenuItem(theCkeckModelAction));
+        theDBMenu.addSeparator();
 		theDBMenu
 				.add(new DefaultMenuItem(theCompleteCompareWithDatabaseAction));
 		theDBMenu.add(new DefaultMenuItem(theCompleteCompareWithModelAction));
