@@ -996,5 +996,13 @@
             <Text lang="de">Alle Relationen für {0} anzeigen</Text>
             <Text lang="en">Show all relationen for {0}</Text>
         </Entry>
+        <Entry id="CHECKMODELFORERRORS">
+            <Text lang="de">Modell auf Fehler überprüfen</Text>
+            <Text lang="en">Check model for common errors</Text>
+        </Entry>
+        <Entry id="MODELCHECKRESULT">
+            <Text lang="de">Ergebnis der Überprüfung</Text>
+            <Text lang="en">Model check result</Text>
+        </Entry>
 	</Bundle>
 </Resource>

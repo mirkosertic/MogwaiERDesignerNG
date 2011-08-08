@@ -18,7 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Visual class SQLEditorView.
+ * Visual class ModelCheckEditorView.
  * <p/>
  * Created with Mogwai FormMaker 0.6.
  */
