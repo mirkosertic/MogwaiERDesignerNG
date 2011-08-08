@@ -8,7 +8,7 @@ import de.mogwai.common.client.looks.components.DefaultList;
 import javax.swing.*;
 
 /**
- * Visual class SQLEditorView.
+ * Visual class ModelCheckEditorView.
  * <p/>
  * Created with Mogwai FormMaker 0.6.
  */

@@ -17,21 +17,16 @@
  */
 package de.erdesignerng.model.check;
 
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+public class ModelError {
 
-/**
- * Check for Entities without a primary key.
- */
-public class TableWithPrimaryKeryCheck implements ModelCheck {
+    private String message;
+
+    public ModelError(String aMessage) {
+        message = aMessage;
+    }
+
     @Override
-    public void check(Model aModel, ModelChecker aChecker) {
-        for (Table theEntity : aModel.getTables()) {
-            Index theIndex = theEntity.getPrimarykey();
-            if (theIndex == null || theIndex.getExpressions().size() == 0) {
-                aChecker.addError(new ModelError("Table "+theEntity.getName()+" does not have a primary key"));
-            }
-        }
+    public String toString() {
+        return message;
     }
 }

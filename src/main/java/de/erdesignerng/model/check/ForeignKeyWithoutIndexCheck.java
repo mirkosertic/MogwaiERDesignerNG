@@ -47,7 +47,7 @@ public class ForeignKeyWithoutIndexCheck implements ModelCheck {
             }
 
             if (!containsValidIndex) {
-                aChecker.addError("Table " + theImportingTable.getName() + " does not have a matching index for " + theRelation.getName() + " " + theRelation.getExportingTable() + " ->  " + theRelation.getMapping().values());
+                aChecker.addError(new ModelError("Table " + theImportingTable.getName() + " does not have a matching index for " + theRelation.getName() + " " + theRelation.getExportingTable() + " ->  " + theRelation.getMapping().values()));
             }
         }
     }

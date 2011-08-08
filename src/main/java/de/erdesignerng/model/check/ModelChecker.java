@@ -28,7 +28,7 @@ import java.util.List;
 public class ModelChecker {
 
     private List<ModelCheck> checks = new ArrayList();
-    private List<String> errors = new ArrayList<String>();
+    private List<ModelError> errors = new ArrayList<ModelError>();
 
     public ModelChecker() {
         checks.add(new TableWithPrimaryKeryCheck());
@@ -41,8 +41,11 @@ public class ModelChecker {
         }
     }
 
-    public void addError(String anError) {
-        System.out.println(anError);
+    public void addError(ModelError anError) {
         errors.add(anError);
+    }
+
+    public List<ModelError> getErrors() {
+        return errors;
     }
 }
