@@ -17,31 +17,21 @@
  */
 package de.erdesignerng.model.check;
 
-public class ModelError {
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.modificationtracker.VetoException;
 
-    private String message;
+/**
+ * Common interface for all model quick fixes.
+ */
+public interface QuickFix {
 
-    private QuickFix quickFix;
-
-    public ModelError(String aMessage, QuickFix aQuickFix) {
-        message = aMessage;
-        quickFix = aQuickFix;
-    }
-
-    public ModelError(String aMessage) {
-        this(aMessage, null);
-    }
-
-    public void clearQuickFix() {
-        quickFix = null;
-    }
-
-    public QuickFix getQuickFix() {
-        return quickFix;
-    }
-
-    @Override
-    public String toString() {
-        return message;
-    }
+    /**
+     * Apply this quickfix to a model.
+     *
+     * Returns a list of the affected model objects.
+     */
+    Object[] applyTo(Model aModel) throws VetoException, ElementAlreadyExistsException,
+            ElementInvalidNameException;
 }
