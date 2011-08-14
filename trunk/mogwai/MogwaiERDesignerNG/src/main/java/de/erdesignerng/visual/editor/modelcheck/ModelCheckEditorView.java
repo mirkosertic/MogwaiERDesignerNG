@@ -20,6 +20,8 @@ public class ModelCheckEditorView extends JPanel {
 
 	private DefaultButton closeButton;
 
+    private DefaultButton quickFixButton;
+
 	/**
 	 * Constructor.
 	 */
@@ -77,18 +79,14 @@ public class ModelCheckEditorView extends JPanel {
 
 			CellConstraints cons = new CellConstraints();
 
-			buttonPanel.add(getCloseButton(), cons.xywh(1, 2, 1, 1));
+			buttonPanel.add(getQuickFixButton(), cons.xywh(1, 2, 1, 1));
+			buttonPanel.add(getCloseButton(), cons.xywh(5, 2, 1, 1));
 			buttonPanel.setName("buttonpanel");
 		}
 
 		return buttonPanel;
 	}
 
-	/**
-	 * Getter method for component closebutton.
-	 *
-	 * @return the initialized component
-	 */
 	public DefaultButton getCloseButton() {
 
 		if (closeButton == null) {
@@ -99,5 +97,17 @@ public class ModelCheckEditorView extends JPanel {
 		}
 
 		return closeButton;
+	}
+
+	public DefaultButton getQuickFixButton() {
+
+		if (quickFixButton == null) {
+			quickFixButton = new DefaultButton();
+			quickFixButton.setActionCommand("QuickFix");
+			quickFixButton.setName("QuickFix");
+			quickFixButton.setText("QuickFix");
+		}
+
+		return quickFixButton;
 	}
 }
