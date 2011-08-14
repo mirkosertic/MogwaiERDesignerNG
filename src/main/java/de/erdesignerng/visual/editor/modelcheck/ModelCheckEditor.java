@@ -31,6 +31,7 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -87,13 +88,14 @@ public class ModelCheckEditor extends BaseEditor {
             theModel.add(theError);
         }
         view.getErrorList().setCellRenderer(new ErrorRenderer());
+        view.getErrorList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         view.getErrorList().addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                ModelError theError = (ModelError) view.getErrorList().getSelectedValue();
+                Object[] theSelection = view.getErrorList().getSelectedValues();
                 quickFixAction
-                        .setEnabled(theError != null && theError.getQuickFix() != null);
+                        .setEnabled(theSelection != null && theSelection.length > 0);
             }
         });
 
@@ -124,20 +126,24 @@ public class ModelCheckEditor extends BaseEditor {
     }
 
     private void commandApplyQuickFix() {
-        ModelError theError = (ModelError) view.getErrorList().getSelectedValue();
-        QuickFix theFix = theError.getQuickFix();
-        try {
-            Object[] theAffectedObjects = theFix.applyTo(model);
-            for (Object theEntry : theAffectedObjects) {
-                OutlineComponent.getDefault().refresh(model, theEntry);
+        for (Object theEntry : view.getErrorList().getSelectedValues()) {
+            ModelError theError = (ModelError) theEntry;
+            QuickFix theFix = theError.getQuickFix();
+            if (theFix != null) {
+                try {
+                    Object[] theAffectedObjects = theFix.applyTo(model);
+                    for (Object theAffectedObject : theAffectedObjects) {
+                        OutlineComponent.getDefault().refresh(model, theAffectedObject);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    theError.clearQuickFix();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            theError.clearQuickFix();
-            view.getErrorList().clearSelection();
-            view.getErrorList().invalidate();
-            view.getErrorList().repaint();
         }
+        view.getErrorList().clearSelection();
+        view.getErrorList().invalidate();
+        view.getErrorList().repaint();
     }
 }
