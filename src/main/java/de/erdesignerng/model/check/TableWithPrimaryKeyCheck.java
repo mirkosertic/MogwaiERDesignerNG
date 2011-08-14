@@ -24,7 +24,7 @@ import de.erdesignerng.model.Table;
 /**
  * Check for Entities without a primary key.
  */
-public class TableWithPrimaryKeryCheck implements ModelCheck {
+public class TableWithPrimaryKeyCheck implements ModelCheck {
     @Override
     public void check(Model aModel, ModelChecker aChecker) {
         for (Table theEntity : aModel.getTables()) {
