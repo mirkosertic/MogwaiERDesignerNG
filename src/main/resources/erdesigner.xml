@@ -1004,5 +1004,9 @@
             <Text lang="de">Ergebnis der Überprüfung</Text>
             <Text lang="en">Model check result</Text>
         </Entry>
+        <Entry id="APPLYQUICKFIX">
+            <Text lang="de">Quickfix anwenden</Text>
+            <Text lang="en">Apply quickfix</Text>
+        </Entry>
 	</Bundle>
 </Resource>

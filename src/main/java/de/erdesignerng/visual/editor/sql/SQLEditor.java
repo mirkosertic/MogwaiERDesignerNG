@@ -27,7 +27,6 @@ import de.erdesignerng.util.JDBCUtils;
 import de.erdesignerng.visual.LongRunningTask;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.erdesignerng.visual.common.StatementRenderer;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
