@@ -31,7 +31,7 @@ public class ModelChecker {
     private List<ModelError> errors = new ArrayList<ModelError>();
 
     public ModelChecker() {
-        checks.add(new TableWithPrimaryKeryCheck());
+        checks.add(new TableWithPrimaryKeyCheck());
         checks.add(new ForeignKeyWithoutIndexCheck());
     }
 
