@@ -15,656 +15,682 @@ import java.awt.*;
  */
 public class TableEditorView extends DefaultPanel {
 
-	private DefaultLabel component1;
+    private DefaultLabel component1;
 
-	private DefaultTextField entityName;
+    private DefaultTextField entityName;
 
-	private DefaultTabbedPane mainTabbedPane;
+    private DefaultTabbedPane mainTabbedPane;
 
-	private DefaultTabbedPaneTab attributesTab;
+    private DefaultTabbedPaneTab attributesTab;
 
-	private DefaultList attributeList;
+    private DefaultList attributeList;
 
-	private DefaultButton newButton;
+    private DefaultButton newButton;
 
-	private DefaultButton deleteButton;
+    private DefaultButton deleteButton;
 
-	private DefaultTabbedPane component15;
+    private DefaultTabbedPane component15;
 
-	private DefaultTabbedPaneTab attributesGeneralTab;
+    private DefaultTabbedPaneTab attributesGeneralTab;
 
-	private DefaultLabel component20;
+    private DefaultLabel component20;
 
-	private DefaultTextField attributeName;
+    private DefaultTextField attributeName;
 
-	private DefaultCheckBox nullable;
+    private DefaultCheckBox nullable;
 
-	private DefaultLabel component42;
+    private DefaultLabel component42;
 
-	private DefaultTabbedPaneTab attributeCommentsTab;
+    private DefaultTabbedPaneTab attributeCommentsTab;
 
-	private DefaultTextArea attributeComments;
+    private DefaultTextArea attributeComments;
 
-	private DefaultButton updateAttributeButton;
+    private DefaultButton updateAttributeButton;
 
-	private DefaultTabbedPaneTab indexesTab;
+    private DefaultTabbedPaneTab indexesTab;
 
-	private DefaultList indexList;
+    private DefaultList indexList;
 
-	private DefaultButton newIndexButton;
+    private DefaultButton newIndexButton;
 
-	private DefaultButton deleteIndexButton;
+    private DefaultButton deleteIndexButton;
 
-	private DefaultTabbedPane indexTabbedPane;
+    private DefaultTabbedPane indexTabbedPane;
 
-	private DefaultTabbedPaneTab indexGeneralTab;
+    private DefaultTabbedPaneTab indexGeneralTab;
 
-	private DefaultLabel label1;
+    private DefaultLabel label1;
 
-	private DefaultTextField indexName;
+    private DefaultTextField indexName;
 
-	private DefaultTextField extra;
+    private DefaultTextField extra;
 
-	private DefaultRadioButton uniqueIndex;
+    private DefaultRadioButton uniqueIndex;
 
-	private DefaultRadioButton notUniqueIndex;
+    private DefaultRadioButton notUniqueIndex;
 
-	private DefaultRadioButton primaryKeyIndex;
+    private DefaultRadioButton primaryKeyIndex;
 
-	private DefaultList<IndexExpression> indexAttributesList;
+    private DefaultRadioButton spatialIndex;
 
-	private DefaultButton updateIndexButton;
+    private DefaultRadioButton fulltextIndex;
 
-	private DefaultTabbedPaneTab tableCommentsTab;
+    private DefaultList<IndexExpression> indexAttributesList;
 
-	private DefaultTextArea tableComment;
+    private DefaultButton updateIndexButton;
 
-	private DefaultButton okButton;
+    private DefaultTabbedPaneTab tableCommentsTab;
 
-	private DefaultButton cancelButton;
+    private DefaultTextArea tableComment;
 
-	private final DefaultComboBox dataType = new DefaultComboBox();
+    private DefaultButton okButton;
 
-	private final DefaultSpinner sizeSpinner = new DefaultSpinner();
+    private DefaultButton cancelButton;
 
-	private final DefaultSpinner fractionSpinner = new DefaultSpinner();
+    private final DefaultComboBox dataType = new DefaultComboBox();
 
-	private final DefaultSpinner scaleSpinner = new DefaultSpinner();
+    private final DefaultSpinner sizeSpinner = new DefaultSpinner();
 
-	private DefaultTextField defaultValue = new DefaultTextField();
+    private final DefaultSpinner fractionSpinner = new DefaultSpinner();
 
-	private final DefaultComboBox indexAttribute = new DefaultComboBox();
+    private final DefaultSpinner scaleSpinner = new DefaultSpinner();
 
-	private final DefaultTextField indexExpression = new DefaultTextField();
+    private DefaultTextField defaultValue = new DefaultTextField();
 
-	private final DefaultRadioButton addIndexAttribute = new DefaultRadioButton(ERDesignerBundle.ATTRIBUTE);
+    private final DefaultComboBox indexAttribute = new DefaultComboBox();
 
-	private final DefaultRadioButton addIndexExpression = new DefaultRadioButton(ERDesignerBundle.EXPRESSION);
+    private final DefaultTextField indexExpression = new DefaultTextField();
 
-	private DefaultButton addExpressionToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
+    private final DefaultRadioButton addIndexAttribute = new DefaultRadioButton(ERDesignerBundle.ATTRIBUTE);
 
-	private DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
+    private final DefaultRadioButton addIndexExpression = new DefaultRadioButton(ERDesignerBundle.EXPRESSION);
 
-	private final DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
+    private DefaultButton addExpressionToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
 
-	private DefaultTabbedPaneTab tablePropertiesTab;
+    private DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
 
-	private DefaultTabbedPaneTab indexPropertiesTab;
+    private final DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
 
-	public TableEditorView() {
-		initialize();
-	}
+    private DefaultTabbedPaneTab tablePropertiesTab;
 
-	private void initialize() {
+    private DefaultTabbedPaneTab indexPropertiesTab;
 
-		String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
-		String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+    public TableEditorView() {
+        initialize();
+    }
 
-		FormLayout layout = new FormLayout(colDef, rowDef);
-		setLayout(layout);
+    private void initialize() {
 
-		CellConstraints cons = new CellConstraints();
+        String rowDef = "2dlu,p,2dlu,p,fill:260dlu,p,20dlu,p,2dlu";
+        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-		this.add(getComponent1(), cons.xywh(2, 2, 1, 1));
-		this.add(getEntityName(), cons.xywh(4, 2, 4, 1));
-		this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
-		this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
-		this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
+        FormLayout layout = new FormLayout(colDef, rowDef);
+        setLayout(layout);
 
-		buildGroups();
+        CellConstraints cons = new CellConstraints();
 
-		getAddIndexAttribute().setSelected(true);
-		getRemoveFromIndexButton().setEnabled(false);
-	}
+        this.add(getComponent1(), cons.xywh(2, 2, 1, 1));
+        this.add(getEntityName(), cons.xywh(4, 2, 4, 1));
+        this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
+        this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
+        this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
-	public JLabel getComponent1() {
+        buildGroups();
 
-		if (component1 == null) {
-			component1 = new DefaultLabel(ERDesignerBundle.ENTITYNAME);
-		}
+        getAddIndexAttribute().setSelected(true);
+        getRemoveFromIndexButton().setEnabled(false);
+    }
 
-		return component1;
-	}
+    public JLabel getComponent1() {
 
-	public DefaultTextField getEntityName() {
+        if (component1 == null) {
+            component1 = new DefaultLabel(ERDesignerBundle.ENTITYNAME);
+        }
 
-		if (entityName == null) {
-			entityName = new DefaultTextField();
-			entityName.setName("Entity_name");
-		}
+        return component1;
+    }
 
-		return entityName;
-	}
+    public DefaultTextField getEntityName() {
 
-	public DefaultTabbedPane getMainTabbedPane() {
+        if (entityName == null) {
+            entityName = new DefaultTextField();
+            entityName.setName("Entity_name");
+        }
 
-		if (mainTabbedPane == null) {
-			mainTabbedPane = new DefaultTabbedPane();
-			mainTabbedPane.addTab(null, getAttributesTab());
-			mainTabbedPane.addTab(null, getIndexesTab());
-			mainTabbedPane.addTab(null, getTableCommentsTab());
-			mainTabbedPane.addTab(null, getTablePropertiesTab());
-			mainTabbedPane.setName("MainTabbedPane");
-			mainTabbedPane.setSelectedIndex(0);
-		}
+        return entityName;
+    }
 
-		return mainTabbedPane;
-	}
+    public DefaultTabbedPane getMainTabbedPane() {
 
-	public DefaultTabbedPaneTab getAttributesTab() {
+        if (mainTabbedPane == null) {
+            mainTabbedPane = new DefaultTabbedPane();
+            mainTabbedPane.addTab(null, getAttributesTab());
+            mainTabbedPane.addTab(null, getIndexesTab());
+            mainTabbedPane.addTab(null, getTableCommentsTab());
+            mainTabbedPane.addTab(null, getTablePropertiesTab());
+            mainTabbedPane.setName("MainTabbedPane");
+            mainTabbedPane.setSelectedIndex(0);
+        }
 
-		if (attributesTab == null) {
-			attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
+        return mainTabbedPane;
+    }
 
-			String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-			String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
+    public DefaultTabbedPaneTab getAttributesTab() {
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			attributesTab.setLayout(layout);
+        if (attributesTab == null) {
+            attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
 
-			CellConstraints cons = new CellConstraints();
+            String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
+            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
-			// this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
-			// 1));
-			// this.m_attributestab.add(this.getDownButton(), cons
-			// .xywh(9, 2, 1, 1));
-			attributesTab.add(new DefaultScrollPane(getAttributeList()), cons.xywh(2, 4, 8, 3));
-			attributesTab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
-			attributesTab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
-			attributesTab.add(getComponent15(), cons.xywh(11, 2, 3, 5));
-			attributesTab.add(getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
-			attributesTab.setName("AttributesTab");
-		}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            attributesTab.setLayout(layout);
 
-		return attributesTab;
-	}
+            CellConstraints cons = new CellConstraints();
 
-	public DefaultList getAttributeList() {
+            // this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
+            // 1));
+            // this.m_attributestab.add(this.getDownButton(), cons
+            // .xywh(9, 2, 1, 1));
+            attributesTab.add(new DefaultScrollPane(getAttributeList()), cons.xywh(2, 4, 8, 3));
+            attributesTab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
+            attributesTab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
+            attributesTab.add(getComponent15(), cons.xywh(11, 2, 3, 5));
+            attributesTab.add(getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
+            attributesTab.setName("AttributesTab");
+        }
 
-		if (attributeList == null) {
-			attributeList = new DefaultList();
-			attributeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
+        return attributesTab;
+    }
 
-		return attributeList;
-	}
+    public DefaultList getAttributeList() {
 
-	public JButton getNewButton() {
+        if (attributeList == null) {
+            attributeList = new DefaultList();
+            attributeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }
 
-		if (newButton == null) {
-			newButton = new DefaultButton(ERDesignerBundle.NEW);
-		}
+        return attributeList;
+    }
 
-		return newButton;
-	}
+    public JButton getNewButton() {
 
-	public JButton getDeleteButton() {
+        if (newButton == null) {
+            newButton = new DefaultButton(ERDesignerBundle.NEW);
+        }
 
-		if (deleteButton == null) {
-			deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
-		}
+        return newButton;
+    }
 
-		return deleteButton;
-	}
+    public JButton getDeleteButton() {
 
-	public DefaultTabbedPane getComponent15() {
+        if (deleteButton == null) {
+            deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
+        }
 
-		if (component15 == null) {
-			component15 = new DefaultTabbedPane();
-			component15.addTab(null, getAttributesGeneralTab());
-			component15.addTab(null, getAttributeCommentTab());
-			component15.setName("Component_15");
-			component15.setSelectedIndex(0);
-		}
+        return deleteButton;
+    }
 
-		return component15;
-	}
+    public DefaultTabbedPane getComponent15() {
 
-	public DefaultTabbedPaneTab getAttributesGeneralTab() {
+        if (component15 == null) {
+            component15 = new DefaultTabbedPane();
+            component15.addTab(null, getAttributesGeneralTab());
+            component15.addTab(null, getAttributeCommentTab());
+            component15.setName("Component_15");
+            component15.setSelectedIndex(0);
+        }
 
-		if (attributesGeneralTab == null) {
-			attributesGeneralTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.GENERAL);
+        return component15;
+    }
 
-			String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
-			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
+    public DefaultTabbedPaneTab getAttributesGeneralTab() {
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			attributesGeneralTab.setLayout(layout);
+        if (attributesGeneralTab == null) {
+            attributesGeneralTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.GENERAL);
 
-			CellConstraints cons = new CellConstraints();
+            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
+            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
-			attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
-			attributesGeneralTab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
-			attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DATATYPE), cons.xywh(2, 4, 1, 1));
-			attributesGeneralTab.add(getDataType(), cons.xywh(4, 4, 1, 1));
-			attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SIZE), cons.xywh(2, 6, 1, 1));
-			attributesGeneralTab.add(getSizeSpinner(), cons.xywh(4, 6, 1, 1));
-			attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.FRACTION), cons.xywh(2, 8, 1, 1));
-			attributesGeneralTab.add(getFractionSpinner(), cons.xywh(4, 8, 1, 1));
-			attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
-			attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            attributesGeneralTab.setLayout(layout);
 
-			attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
+            CellConstraints cons = new CellConstraints();
 
-			attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DEFAULT), cons.xywh(2, 14, 1, 1));
-			attributesGeneralTab.add(getDefault(), cons.xywh(4, 14, 1, 1));
-			attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.EXTRA), cons.xywh(2, 16, 1, 1));
-			attributesGeneralTab.add(getExtra(), cons.xywh(4, 16, 1, 1));
+            attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
+            attributesGeneralTab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DATATYPE), cons.xywh(2, 4, 1, 1));
+            attributesGeneralTab.add(getDataType(), cons.xywh(4, 4, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SIZE), cons.xywh(2, 6, 1, 1));
+            attributesGeneralTab.add(getSizeSpinner(), cons.xywh(4, 6, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.FRACTION), cons.xywh(2, 8, 1, 1));
+            attributesGeneralTab.add(getFractionSpinner(), cons.xywh(4, 8, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
+            attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
 
-			attributesGeneralTab.setName("AttributesGeneralTab");
-		}
+            attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
 
-		return attributesGeneralTab;
-	}
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DEFAULT), cons.xywh(2, 14, 1, 1));
+            attributesGeneralTab.add(getDefault(), cons.xywh(4, 14, 1, 1));
+            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.EXTRA), cons.xywh(2, 16, 1, 1));
+            attributesGeneralTab.add(getExtra(), cons.xywh(4, 16, 1, 1));
 
-	public JLabel getComponent20() {
+            attributesGeneralTab.setName("AttributesGeneralTab");
+        }
 
-		if (component20 == null) {
-			component20 = new DefaultLabel(ERDesignerBundle.NAME);
-		}
+        return attributesGeneralTab;
+    }
 
-		return component20;
-	}
+    public JLabel getComponent20() {
 
-	public DefaultTextField getAttributeName() {
+        if (component20 == null) {
+            component20 = new DefaultLabel(ERDesignerBundle.NAME);
+        }
 
-		if (attributeName == null) {
-			attributeName = new DefaultTextField();
-			attributeName.setName("AttributeName");
-		}
+        return component20;
+    }
 
-		return attributeName;
-	}
+    public DefaultTextField getAttributeName() {
 
-	public JCheckBox getNullable() {
+        if (attributeName == null) {
+            attributeName = new DefaultTextField();
+            attributeName.setName("AttributeName");
+        }
 
-		if (nullable == null) {
-			nullable = new DefaultCheckBox(ERDesignerBundle.NULLABLE);
-		}
+        return attributeName;
+    }
 
-		return nullable;
-	}
+    public JCheckBox getNullable() {
 
-	public DefaultTextField getDefault() {
+        if (nullable == null) {
+            nullable = new DefaultCheckBox(ERDesignerBundle.NULLABLE);
+        }
 
-		if (defaultValue == null) {
-			defaultValue = new DefaultTextField();
-		}
+        return nullable;
+    }
 
-		return defaultValue;
-	}
+    public DefaultTextField getDefault() {
 
-	public DefaultTextField getExtra() {
+        if (defaultValue == null) {
+            defaultValue = new DefaultTextField();
+        }
 
-		if (extra == null) {
-			extra = new DefaultTextField();
-		}
+        return defaultValue;
+    }
 
-		return extra;
-	}
+    public DefaultTextField getExtra() {
 
-	public DefaultTabbedPaneTab getAttributeCommentTab() {
+        if (extra == null) {
+            extra = new DefaultTextField();
+        }
 
-		if (attributeCommentsTab == null) {
-			attributeCommentsTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.COMMENTS);
+        return extra;
+    }
 
-			String rowDef = "2dlu,p,160dlu:grow,p,2dlu";
-			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
+    public DefaultTabbedPaneTab getAttributeCommentTab() {
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			attributeCommentsTab.setLayout(layout);
+        if (attributeCommentsTab == null) {
+            attributeCommentsTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.COMMENTS);
 
-			CellConstraints cons = new CellConstraints();
+            String rowDef = "2dlu,p,160dlu:grow,p,2dlu";
+            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
 
-			attributeCommentsTab.add(new DefaultScrollPane(getAttributeComment()), cons.xywh(2, 2, 3, 3));
-			attributeCommentsTab.setName("AttributeCommentTab");
-			attributeCommentsTab.setVisible(false);
-		}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            attributeCommentsTab.setLayout(layout);
 
-		return attributeCommentsTab;
-	}
+            CellConstraints cons = new CellConstraints();
 
-	public JTextArea getAttributeComment() {
+            attributeCommentsTab.add(new DefaultScrollPane(getAttributeComment()), cons.xywh(2, 2, 3, 3));
+            attributeCommentsTab.setName("AttributeCommentTab");
+            attributeCommentsTab.setVisible(false);
+        }
 
-		if (attributeComments == null) {
-			attributeComments = new DefaultTextArea();
-		}
+        return attributeCommentsTab;
+    }
 
-		return attributeComments;
-	}
+    public JTextArea getAttributeComment() {
 
-	public JButton getUpdateAttributeButton() {
+        if (attributeComments == null) {
+            attributeComments = new DefaultTextArea();
+        }
 
-		if (updateAttributeButton == null) {
-			updateAttributeButton = new DefaultButton(ERDesignerBundle.UPDATE);
-		}
+        return attributeComments;
+    }
 
-		return updateAttributeButton;
-	}
+    public JButton getUpdateAttributeButton() {
 
-	public DefaultTabbedPaneTab getIndexesTab() {
+        if (updateAttributeButton == null) {
+            updateAttributeButton = new DefaultButton(ERDesignerBundle.UPDATE);
+        }
 
-		if (indexesTab == null) {
-			indexesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.INDEXES);
+        return updateAttributeButton;
+    }
 
-			String rowDef = "2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-			String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
+    public DefaultTabbedPaneTab getIndexesTab() {
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			indexesTab.setLayout(layout);
+        if (indexesTab == null) {
+            indexesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.INDEXES);
 
-			CellConstraints cons = new CellConstraints();
+            String rowDef = "2dlu,p,185dlu:grow,p,2dlu,p,2dlu";
+            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
 
-			indexesTab.add(new DefaultScrollPane(getIndexList()), cons.xywh(2, 2, 8, 3));
-			indexesTab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
-			indexesTab.add(getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
-			indexesTab.add(getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
-			indexesTab.add(getUpdateIndexButton(), cons.xywh(13, 6, 1, 1));
-			indexesTab.setName("IndexesTab");
-			indexesTab.setVisible(false);
-		}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            indexesTab.setLayout(layout);
 
-		return indexesTab;
-	}
+            CellConstraints cons = new CellConstraints();
 
-	public DefaultList getIndexList() {
+            indexesTab.add(new DefaultScrollPane(getIndexList()), cons.xywh(2, 2, 8, 3));
+            indexesTab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
+            indexesTab.add(getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
+            indexesTab.add(getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
+            indexesTab.add(getUpdateIndexButton(), cons.xywh(13, 6, 1, 1));
+            indexesTab.setName("IndexesTab");
+            indexesTab.setVisible(false);
+        }
 
-		if (indexList == null) {
-			indexList = new DefaultList();
-			indexList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
+        return indexesTab;
+    }
 
-		return indexList;
-	}
+    public DefaultList getIndexList() {
 
-	public JButton getNewIndexButton() {
+        if (indexList == null) {
+            indexList = new DefaultList();
+            indexList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }
 
-		if (newIndexButton == null) {
-			newIndexButton = new DefaultButton(ERDesignerBundle.NEW);
-		}
+        return indexList;
+    }
 
-		return newIndexButton;
-	}
+    public JButton getNewIndexButton() {
 
-	public JButton getDeleteIndexButton() {
+        if (newIndexButton == null) {
+            newIndexButton = new DefaultButton(ERDesignerBundle.NEW);
+        }
 
-		if (deleteIndexButton == null) {
-			deleteIndexButton = new DefaultButton(ERDesignerBundle.DELETE);
-		}
+        return newIndexButton;
+    }
 
-		return deleteIndexButton;
-	}
+    public JButton getDeleteIndexButton() {
 
-	public DefaultTabbedPane getIndexTabbedPane() {
+        if (deleteIndexButton == null) {
+            deleteIndexButton = new DefaultButton(ERDesignerBundle.DELETE);
+        }
 
-		if (indexTabbedPane == null) {
-			indexTabbedPane = new DefaultTabbedPane();
-			indexTabbedPane.addTab(null, getIndexGeneralTab());
-			indexTabbedPane.addTab(null, getIndexPropertiesTab());
-			indexTabbedPane.setName("IndexTabbedPane");
-			indexTabbedPane.setSelectedIndex(0);
-		}
+        return deleteIndexButton;
+    }
 
-		return indexTabbedPane;
-	}
+    public DefaultTabbedPane getIndexTabbedPane() {
 
-	public DefaultTabbedPaneTab getIndexGeneralTab() {
+        if (indexTabbedPane == null) {
+            indexTabbedPane = new DefaultTabbedPane();
+            indexTabbedPane.addTab(null, getIndexGeneralTab());
+            indexTabbedPane.addTab(null, getIndexPropertiesTab());
+            indexTabbedPane.setName("IndexTabbedPane");
+            indexTabbedPane.setSelectedIndex(0);
+        }
 
-		if (indexGeneralTab == null) {
-			indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
+        return indexTabbedPane;
+    }
 
-			String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu,20dlu,2dlu";
-			String rowDef = "2dlu,p,2dlu,fill:20dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
+    public DefaultTabbedPaneTab getIndexGeneralTab() {
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			indexGeneralTab.setLayout(layout);
+        if (indexGeneralTab == null) {
+            indexGeneralTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.GENERAL);
 
-			CellConstraints cons = new CellConstraints();
+            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu,20dlu,2dlu";
+            String rowDef = "2dlu,p,2dlu,fill:40dlu:grow,2dlu,p,2dlu,p,2dlu,p,4dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
 
-			indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
-			indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 3, 1));
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            indexGeneralTab.setLayout(layout);
 
-			indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 5, 1));
+            CellConstraints cons = new CellConstraints();
 
-			indexGeneralTab.add(getRemoveFromIndexButton(), cons.xy(6, 6));
+            indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
+            indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 3, 1));
 
-			indexGeneralTab.add(getAddIndexAttribute(), cons.xy(2, 8));
-			indexGeneralTab.add(getIndexAttribute(), cons.xy(4, 8));
-			indexGeneralTab.add(getAddAttributeToIndexButton(), cons.xy(6, 8));
+            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 5, 1));
 
-			indexGeneralTab.add(getAddIndexExpression(), cons.xy(2, 10));
-			indexGeneralTab.add(getIndexExpression(), cons.xy(4, 10));
-			indexGeneralTab.add(getAddExpressionToIndexButton(), cons.xy(6, 10));
+            indexGeneralTab.add(getRemoveFromIndexButton(), cons.xy(6, 6));
 
-			indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 12, 3, 1));
-			indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 14, 3, 1));
-			indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 16, 3, 1));
-			indexGeneralTab.setName("IndexGeneralTab");
-		}
+            indexGeneralTab.add(getAddIndexAttribute(), cons.xy(2, 8));
+            indexGeneralTab.add(getIndexAttribute(), cons.xy(4, 8));
+            indexGeneralTab.add(getAddAttributeToIndexButton(), cons.xy(6, 8));
 
-		return indexGeneralTab;
-	}
+            indexGeneralTab.add(getAddIndexExpression(), cons.xy(2, 10));
+            indexGeneralTab.add(getIndexExpression(), cons.xy(4, 10));
+            indexGeneralTab.add(getAddExpressionToIndexButton(), cons.xy(6, 10));
 
-	public DefaultLabel getLabel1() {
+            indexGeneralTab.add(getPrimaryIndex(), cons.xywh(4, 12, 3, 1));
+            indexGeneralTab.add(getUniqueIndex(), cons.xywh(4, 14, 3, 1));
+            indexGeneralTab.add(getNotUniqueIndex(), cons.xywh(4, 16, 3, 1));
+            indexGeneralTab.add(getSpatialIndex(), cons.xywh(4, 18, 3, 1));
+            indexGeneralTab.add(getFulltextIndex(), cons.xywh(4, 20, 3, 1));
+            indexGeneralTab.setName("IndexGeneralTab");
+        }
 
-		if (label1 == null) {
-			label1 = new DefaultLabel(ERDesignerBundle.NAME);
-		}
+        return indexGeneralTab;
+    }
 
-		return label1;
-	}
+    public DefaultLabel getLabel1() {
 
-	public DefaultTextField getIndexName() {
+        if (label1 == null) {
+            label1 = new DefaultLabel(ERDesignerBundle.NAME);
+        }
 
-		if (indexName == null) {
-			indexName = new DefaultTextField();
-			indexName.setName("IndexName");
-		}
+        return label1;
+    }
 
-		return indexName;
-	}
+    public DefaultTextField getIndexName() {
 
-	public DefaultRadioButton getUniqueIndex() {
+        if (indexName == null) {
+            indexName = new DefaultTextField();
+            indexName.setName("IndexName");
+        }
 
-		if (uniqueIndex == null) {
-			uniqueIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISUNIQUE);
-		}
+        return indexName;
+    }
 
-		return uniqueIndex;
-	}
+    public DefaultRadioButton getUniqueIndex() {
 
-	public DefaultRadioButton getPrimaryIndex() {
+        if (uniqueIndex == null) {
+            uniqueIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISUNIQUE);
+        }
 
-		if (primaryKeyIndex == null) {
-			primaryKeyIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISPRIMARY);
-		}
+        return uniqueIndex;
+    }
 
-		return primaryKeyIndex;
-	}
+    public DefaultRadioButton getPrimaryIndex() {
 
-	public DefaultRadioButton getNotUniqueIndex() {
+        if (primaryKeyIndex == null) {
+            primaryKeyIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISPRIMARY);
+        }
 
-		if (notUniqueIndex == null) {
-			notUniqueIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISNOTUNIQUE);
-		}
+        return primaryKeyIndex;
+    }
 
-		return notUniqueIndex;
-	}
+    public DefaultRadioButton getNotUniqueIndex() {
 
-	public DefaultList<IndexExpression> getIndexFieldList() {
+        if (notUniqueIndex == null) {
+            notUniqueIndex = new DefaultRadioButton(ERDesignerBundle.INDEXISNOTUNIQUE);
+        }
 
-		if (indexAttributesList == null) {
-			indexAttributesList = new DefaultList<IndexExpression>();
-			indexAttributesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
+        return notUniqueIndex;
+    }
 
-		return indexAttributesList;
-	}
+    public DefaultRadioButton getSpatialIndex() {
 
-	public DefaultButton getUpdateIndexButton() {
+        if (spatialIndex == null) {
+            spatialIndex = new DefaultRadioButton(ERDesignerBundle.SPATIALINDEX);
+        }
 
-		if (updateIndexButton == null) {
-			updateIndexButton = new DefaultButton(ERDesignerBundle.UPDATE);
-		}
+        return spatialIndex;
+    }
 
-		return updateIndexButton;
-	}
+    public DefaultRadioButton getFulltextIndex() {
 
-	public DefaultTabbedPaneTab getTableCommentsTab() {
+        if (fulltextIndex == null) {
+            fulltextIndex = new DefaultRadioButton(ERDesignerBundle.FULLTEXTINDEX);
+        }
 
-		if (tableCommentsTab == null) {
-			tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
+        return fulltextIndex;
+    }
 
-			String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
-			String colDef = "2dlu,40dlu:grow,2dlu";
+    public DefaultList<IndexExpression> getIndexFieldList() {
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			tableCommentsTab.setLayout(layout);
+        if (indexAttributesList == null) {
+            indexAttributesList = new DefaultList<IndexExpression>();
+            indexAttributesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }
 
-			CellConstraints cons = new CellConstraints();
+        return indexAttributesList;
+    }
 
-			tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
-			tableCommentsTab.setName("MainCommentsTab");
-			tableCommentsTab.setVisible(false);
-		}
+    public DefaultButton getUpdateIndexButton() {
 
-		return tableCommentsTab;
-	}
+        if (updateIndexButton == null) {
+            updateIndexButton = new DefaultButton(ERDesignerBundle.UPDATE);
+        }
 
-	public DefaultTextArea getEntityComment() {
+        return updateIndexButton;
+    }
 
-		if (tableComment == null) {
-			tableComment = new DefaultTextArea();
-			tableComment.setName("EntityComment");
-		}
+    public DefaultTabbedPaneTab getTableCommentsTab() {
 
-		return tableComment;
-	}
+        if (tableCommentsTab == null) {
+            tableCommentsTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.COMMENTS);
 
-	public JButton getOkButton() {
+            String rowDef = "2dlu,p,100dlu:grow,p,2dlu";
+            String colDef = "2dlu,40dlu:grow,2dlu";
 
-		if (okButton == null) {
-			okButton = new DefaultButton(ERDesignerBundle.OK);
-		}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            tableCommentsTab.setLayout(layout);
 
-		return okButton;
-	}
+            CellConstraints cons = new CellConstraints();
 
-	public JButton getCancelButton() {
+            tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
+            tableCommentsTab.setName("MainCommentsTab");
+            tableCommentsTab.setVisible(false);
+        }
 
-		if (cancelButton == null) {
-			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
-		}
+        return tableCommentsTab;
+    }
 
-		return cancelButton;
-	}
+    public DefaultTextArea getEntityComment() {
 
-	/**
-	 * Initialize method.
-	 */
-	private void buildGroups() {
+        if (tableComment == null) {
+            tableComment = new DefaultTextArea();
+            tableComment.setName("EntityComment");
+        }
 
-		ButtonGroup theGroup = new ButtonGroup();
-		theGroup.add(getPrimaryIndex());
-		theGroup.add(getUniqueIndex());
-		theGroup.add(getNotUniqueIndex());
+        return tableComment;
+    }
 
-		ButtonGroup theGroup2 = new ButtonGroup();
-		theGroup2.add(getAddIndexAttribute());
-		theGroup2.add(getAddIndexExpression());
-	}
+    public JButton getOkButton() {
 
-	public DefaultComboBox getDataType() {
-		return dataType;
-	}
+        if (okButton == null) {
+            okButton = new DefaultButton(ERDesignerBundle.OK);
+        }
 
-	public DefaultSpinner getFractionSpinner() {
-		return fractionSpinner;
-	}
+        return okButton;
+    }
 
-	public DefaultSpinner getScaleSpinner() {
-		return scaleSpinner;
-	}
+    public JButton getCancelButton() {
 
-	public DefaultSpinner getSizeSpinner() {
-		return sizeSpinner;
-	}
+        if (cancelButton == null) {
+            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
+        }
 
-	public DefaultComboBox getIndexAttribute() {
-		return indexAttribute;
-	}
+        return cancelButton;
+    }
 
-	public DefaultRadioButton getAddIndexAttribute() {
-		return addIndexAttribute;
-	}
+    /**
+     * Initialize method.
+     */
+    private void buildGroups() {
 
-	public DefaultRadioButton getAddIndexExpression() {
-		return addIndexExpression;
-	}
+        ButtonGroup theGroup = new ButtonGroup();
+        theGroup.add(getPrimaryIndex());
+        theGroup.add(getUniqueIndex());
+        theGroup.add(getNotUniqueIndex());
+        theGroup.add(getSpatialIndex());
+        theGroup.add(getFulltextIndex());
 
-	public DefaultButton getAddExpressionToIndexButton() {
-		return addExpressionToIndexButton;
-	}
+        ButtonGroup theGroup2 = new ButtonGroup();
+        theGroup2.add(getAddIndexAttribute());
+        theGroup2.add(getAddIndexExpression());
+    }
 
-	public DefaultButton getAddAttributeToIndexButton() {
-		return addAttributeToIndexButton;
-	}
+    public DefaultComboBox getDataType() {
+        return dataType;
+    }
 
-	public DefaultTextField getIndexExpression() {
-		return indexExpression;
-	}
+    public DefaultSpinner getFractionSpinner() {
+        return fractionSpinner;
+    }
 
-	public DefaultButton getRemoveFromIndexButton() {
-		return removeFromIndexButton;
-	}
+    public DefaultSpinner getScaleSpinner() {
+        return scaleSpinner;
+    }
 
-	public DefaultTabbedPaneTab getTablePropertiesTab() {
-		if (tablePropertiesTab == null) {
-			tablePropertiesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
-			tablePropertiesTab.setLayout(new BorderLayout());
-		}
-		return tablePropertiesTab;
-	}
+    public DefaultSpinner getSizeSpinner() {
+        return sizeSpinner;
+    }
 
-	public DefaultTabbedPaneTab getIndexPropertiesTab() {
-		if (indexPropertiesTab == null) {
-			indexPropertiesTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.PROPERTIES);
-			indexPropertiesTab.setLayout(new BorderLayout());
-		}
-		return indexPropertiesTab;
-	}
+    public DefaultComboBox getIndexAttribute() {
+        return indexAttribute;
+    }
 
-	public void disableTablePropertiesTab() {
-		getMainTabbedPane().removeTabAt(3);
-	}
+    public DefaultRadioButton getAddIndexAttribute() {
+        return addIndexAttribute;
+    }
 
-	public void disableIndexPropertiesTab() {
-		if (getIndexTabbedPane().getTabCount() > 1) {
-			getIndexTabbedPane().removeTabAt(1);
-		}
-	}
+    public DefaultRadioButton getAddIndexExpression() {
+        return addIndexExpression;
+    }
 
-	public void enableIndexPropertiesTab() {
-		getIndexTabbedPane().addTab(null, getIndexPropertiesTab());
-	}
+    public DefaultButton getAddExpressionToIndexButton() {
+        return addExpressionToIndexButton;
+    }
+
+    public DefaultButton getAddAttributeToIndexButton() {
+        return addAttributeToIndexButton;
+    }
+
+    public DefaultTextField getIndexExpression() {
+        return indexExpression;
+    }
+
+    public DefaultButton getRemoveFromIndexButton() {
+        return removeFromIndexButton;
+    }
+
+    public DefaultTabbedPaneTab getTablePropertiesTab() {
+        if (tablePropertiesTab == null) {
+            tablePropertiesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.PROPERTIES);
+            tablePropertiesTab.setLayout(new BorderLayout());
+        }
+        return tablePropertiesTab;
+    }
+
+    public DefaultTabbedPaneTab getIndexPropertiesTab() {
+        if (indexPropertiesTab == null) {
+            indexPropertiesTab = new DefaultTabbedPaneTab(indexTabbedPane, ERDesignerBundle.PROPERTIES);
+            indexPropertiesTab.setLayout(new BorderLayout());
+        }
+        return indexPropertiesTab;
+    }
+
+    public void disableTablePropertiesTab() {
+        getMainTabbedPane().removeTabAt(3);
+    }
+
+    public void disableIndexPropertiesTab() {
+        if (getIndexTabbedPane().getTabCount() > 1) {
+            getIndexTabbedPane().removeTabAt(1);
+        }
+    }
+
+    public void enableIndexPropertiesTab() {
+        getIndexTabbedPane().addTab(null, getIndexPropertiesTab());
+    }
 }

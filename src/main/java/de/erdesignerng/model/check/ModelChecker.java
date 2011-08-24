@@ -33,6 +33,7 @@ public class ModelChecker {
     public ModelChecker() {
         checks.add(new TableWithPrimaryKeyCheck());
         checks.add(new ForeignKeyWithoutIndexCheck());
+        checks.add(new SpatialIndexWithoutSpatialType());
     }
 
     public void check(Model aModel) {
