@@ -27,32 +27,31 @@ import de.erdesignerng.visual.editor.customtypes.CustomTypeEditor;
  */
 public class EditCustomTypesCommand extends UICommand {
 
-	private final CustomType customType;
+    private final CustomType customType;
 
-	public EditCustomTypesCommand(ERDesignerComponent component) {
-		this(component, null);
-	}
+    public EditCustomTypesCommand() {
+        this(null);
+    }
 
-	public EditCustomTypesCommand(ERDesignerComponent component, CustomType aCustomType) {
-		super(component);
+    public EditCustomTypesCommand(CustomType aCustomType) {
+        customType = aCustomType;
+    }
 
-		customType = aCustomType;
-	}
+    @Override
+    public void execute() {
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        CustomTypeEditor theEditor = new CustomTypeEditor(component.getModel(), getDetailComponent());
+        if (customType != null) {
+            theEditor.setSelectedType(customType);
+        }
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
 
-	@Override
-	public void execute() {
-		CustomTypeEditor theEditor = new CustomTypeEditor(component.getModel(), getDetailComponent());
-		if (customType != null) {
-			theEditor.setSelectedType(customType);
-		}
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
-
-				refreshDisplayOf(null);
-			} catch (Exception e) {
-				getWorldConnector().notifyAboutException(e);
-			}
-		}
-	}
+                refreshDisplayOf(null);
+            } catch (Exception e) {
+                getWorldConnector().notifyAboutException(e);
+            }
+        }
+    }
 }

@@ -17,7 +17,12 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.repository.entities.IndexEntity;
 import de.erdesignerng.model.serializer.repository.entities.IndexExpressionEntity;
 import de.erdesignerng.model.serializer.repository.entities.TableEntity;
@@ -35,114 +40,114 @@ import java.util.Set;
  */
 public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
-	private static final int TYPE_UNIQUE = 0;
+    private static final int TYPE_UNIQUE = 0;
 
-	private static final int TYPE_NONUNIQUE = 1;
+    private static final int TYPE_NONUNIQUE = 1;
 
-	private static final int TYPE_PK = 2;
+    private static final int TYPE_PK = 2;
 
-	private static final int TYPE_UNDEFINED = -1;
+    private static final int TYPE_UNDEFINED = -1;
 
-	public static final DictionaryIndexSerializer SERIALIZER = new DictionaryIndexSerializer();
+    public static final DictionaryIndexSerializer SERIALIZER = new DictionaryIndexSerializer();
 
-	protected void copyExtendedAttributes(Index aSource, IndexEntity aDestination) {
-		switch (aSource.getIndexType()) {
-			case UNIQUE:
-				aDestination.setType(TYPE_UNIQUE);
-				break;
-			case NONUNIQUE:
-				aDestination.setType(TYPE_NONUNIQUE);
-				break;
-			case PRIMARYKEY:
-				aDestination.setType(TYPE_PK);
-				break;
-			default:
-				aDestination.setType(TYPE_UNDEFINED);
-		}
+    protected void copyExtendedAttributes(Index aSource, IndexEntity aDestination) {
+        switch (aSource.getIndexType()) {
+            case UNIQUE:
+                aDestination.setType(TYPE_UNIQUE);
+                break;
+            case NONUNIQUE:
+                aDestination.setType(TYPE_NONUNIQUE);
+                break;
+            case PRIMARYKEY:
+                aDestination.setType(TYPE_PK);
+                break;
+            default:
+                aDestination.setType(TYPE_UNDEFINED);
+        }
 
-		aDestination.getExpressions().clear();
-		for (IndexExpression theIndexExpression : aSource.getExpressions()) {
-			IndexExpressionEntity theEntity = new IndexExpressionEntity();
-			theEntity.setExpression(theIndexExpression.getExpression());
-			theEntity.setSystemId(theIndexExpression.getSystemId());
-			Attribute theRefAttribute = theIndexExpression.getAttributeRef();
-			if (theRefAttribute != null) {
-				theEntity.setAttributeId(theRefAttribute.getSystemId());
-			}
-			aDestination.getExpressions().add(theEntity);
-		}
-	}
+        aDestination.getExpressions().clear();
+        for (IndexExpression theIndexExpression : aSource.getExpressions()) {
+            IndexExpressionEntity theEntity = new IndexExpressionEntity();
+            theEntity.setExpression(theIndexExpression.getExpression());
+            theEntity.setSystemId(theIndexExpression.getSystemId());
+            Attribute theRefAttribute = theIndexExpression.getAttributeRef();
+            if (theRefAttribute != null) {
+                theEntity.setAttributeId(theRefAttribute.getSystemId());
+            }
+            aDestination.getExpressions().add(theEntity);
+        }
+    }
 
-	protected void copyExtendedAttributes(IndexEntity aSource, Index aDestination, Table aTable) {
-		switch (aSource.getType()) {
-			case TYPE_UNIQUE:
-				aDestination.setIndexType(IndexType.UNIQUE);
-				break;
-			case TYPE_NONUNIQUE:
-				aDestination.setIndexType(IndexType.NONUNIQUE);
-				break;
-			case TYPE_PK:
-				aDestination.setIndexType(IndexType.PRIMARYKEY);
-				break;
-			default:
-				throw new RuntimeException("Invalid index type : " + aSource.getType());
-		}
+    protected void copyExtendedAttributes(IndexEntity aSource, Index aDestination, Table aTable) {
+        switch (aSource.getType()) {
+            case TYPE_UNIQUE:
+                aDestination.setIndexType(IndexType.UNIQUE);
+                break;
+            case TYPE_NONUNIQUE:
+                aDestination.setIndexType(IndexType.NONUNIQUE);
+                break;
+            case TYPE_PK:
+                aDestination.setIndexType(IndexType.PRIMARYKEY);
+                break;
+            default:
+                throw new RuntimeException("Invalid index type : " + aSource.getType());
+        }
 
-		aDestination.getExpressions().clear();
-		for (IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
-			IndexExpression theExpression = new IndexExpression();
-			theExpression.setExpression(theExpressionEntity.getExpression());
-			theExpression.setSystemId(theExpressionEntity.getSystemId());
-			String theAttributeId = theExpressionEntity.getAttributeId();
-			if (!StringUtils.isEmpty(theAttributeId)) {
-				theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeId));
-			}
-			aDestination.getExpressions().add(theExpression);
-		}
-	}
+        aDestination.getExpressions().clear();
+        for (IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
+            IndexExpression theExpression = new IndexExpression();
+            theExpression.setExpression(theExpressionEntity.getExpression());
+            theExpression.setSystemId(theExpressionEntity.getSystemId());
+            String theAttributeId = theExpressionEntity.getAttributeId();
+            if (!StringUtils.isEmpty(theAttributeId)) {
+                theExpression.setAttributeRef(aTable.getAttributes().findBySystemId(theAttributeId));
+            }
+            aDestination.getExpressions().add(theExpression);
+        }
+    }
 
-	public void serialize(Table aTable, TableEntity aTableEntity) {
+    public void serialize(Table aTable, TableEntity aTableEntity) {
 
-		Set<IndexEntity> theRemovedIndexes = new HashSet<IndexEntity>();
-		Map<String, IndexEntity> theIndexes = new HashMap<String, IndexEntity>();
+        Set<IndexEntity> theRemovedIndexes = new HashSet<IndexEntity>();
+        Map<String, IndexEntity> theIndexes = new HashMap<String, IndexEntity>();
 
-		for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
-			Index theAttribute = aTable.getIndexes().findBySystemId(theIndexEntity.getSystemId());
-			if (theAttribute == null) {
-				theRemovedIndexes.add(theIndexEntity);
-			} else {
-				theIndexes.put(theIndexEntity.getSystemId(), theIndexEntity);
-			}
-		}
+        for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
+            Index theAttribute = aTable.getIndexes().findBySystemId(theIndexEntity.getSystemId());
+            if (theAttribute == null) {
+                theRemovedIndexes.add(theIndexEntity);
+            } else {
+                theIndexes.put(theIndexEntity.getSystemId(), theIndexEntity);
+            }
+        }
 
-		aTableEntity.getIndexes().remove(theRemovedIndexes);
+        aTableEntity.getIndexes().remove(theRemovedIndexes);
 
-		for (Index theIndex : aTable.getIndexes()) {
-			boolean existing = true;
-			IndexEntity theEntity = theIndexes.get(theIndex.getSystemId());
-			if (theEntity == null) {
-				theEntity = new IndexEntity();
-				existing = false;
-			}
+        for (Index theIndex : aTable.getIndexes()) {
+            boolean existing = true;
+            IndexEntity theEntity = theIndexes.get(theIndex.getSystemId());
+            if (theEntity == null) {
+                theEntity = new IndexEntity();
+                existing = false;
+            }
 
-			copyBaseAttributes(theIndex, theEntity);
-			copyExtendedAttributes(theIndex, theEntity);
+            copyBaseAttributes(theIndex, theEntity);
+            copyExtendedAttributes(theIndex, theEntity);
 
-			if (!existing) {
-				aTableEntity.getIndexes().add(theEntity);
-			}
-		}
-	}
+            if (!existing) {
+                aTableEntity.getIndexes().add(theEntity);
+            }
+        }
+    }
 
-	public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
-		for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
-			Index theIndex = new Index();
+    public void deserialize(Model aModel, Table aTable, TableEntity aTableEntity) {
+        for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
+            Index theIndex = new Index();
 
-			copyBaseAttributes(theIndexEntity, theIndex);
-			copyExtendedAttributes(theIndexEntity, theIndex, aTable);
+            copyBaseAttributes(theIndexEntity, theIndex);
+            copyExtendedAttributes(theIndexEntity, theIndex, aTable);
 
-			theIndex.setOwner(aTable);
-			aTable.getIndexes().add(theIndex);
-		}
-	}
+            theIndex.setOwner(aTable);
+            aTable.getIndexes().add(theIndex);
+        }
+    }
 }

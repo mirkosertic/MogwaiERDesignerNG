@@ -17,7 +17,11 @@
  */
 package de.erdesignerng.dialect.mssql;
 
-import de.erdesignerng.dialect.*;
+import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.IndexProperties;
+import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.TableProperties;
+import de.erdesignerng.dialect.ViewProperties;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;

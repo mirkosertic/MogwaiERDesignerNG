@@ -17,7 +17,11 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
@@ -32,84 +36,84 @@ import java.util.Map;
  */
 public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
 
-	public static final DictionarySubjectAreaSerializer SERIALIZER = new DictionarySubjectAreaSerializer();
+    public static final DictionarySubjectAreaSerializer SERIALIZER = new DictionarySubjectAreaSerializer();
 
-	protected void copyExtendedAttributes(SubjectArea aSource, SubjectAreaEntity aDestination) {
+    protected void copyExtendedAttributes(SubjectArea aSource, SubjectAreaEntity aDestination) {
 
-		aDestination.setColor(aSource.getColor().getRGB());
-		aDestination.setVisible(aSource.isVisible());
+        aDestination.setColor(aSource.getColor().getRGB());
+        aDestination.setVisible(aSource.isVisible());
 
-		aDestination.getTables().clear();
-		for (Table theTable : aSource.getTables()) {
-			aDestination.getTables().add(theTable.getSystemId());
-		}
+        aDestination.getTables().clear();
+        for (Table theTable : aSource.getTables()) {
+            aDestination.getTables().add(theTable.getSystemId());
+        }
 
-		aDestination.getComments().clear();
-		for (Comment theComment : aSource.getComments()) {
-			aDestination.getComments().add(theComment.getSystemId());
-		}
+        aDestination.getComments().clear();
+        for (Comment theComment : aSource.getComments()) {
+            aDestination.getComments().add(theComment.getSystemId());
+        }
 
-		aDestination.getViews().clear();
-		for (View theView : aSource.getViews()) {
-			aDestination.getViews().add(theView.getSystemId());
-		}
+        aDestination.getViews().clear();
+        for (View theView : aSource.getViews()) {
+            aDestination.getViews().add(theView.getSystemId());
+        }
 
-	}
+    }
 
-	protected void copyExtendedAttributes(SubjectAreaEntity aSource, SubjectArea aDestination, Model aModel) {
+    protected void copyExtendedAttributes(SubjectAreaEntity aSource, SubjectArea aDestination, Model aModel) {
 
-		aDestination.setColor(new Color(aSource.getColor()));
-		if (aSource.getVisible() != null) {
-			aDestination.setVisible(aSource.getVisible());
-		}
+        aDestination.setColor(new Color(aSource.getColor()));
+        if (aSource.getVisible() != null) {
+            aDestination.setVisible(aSource.getVisible());
+        }
 
-		aDestination.getTables().clear();
-		for (String theTable : aSource.getTables()) {
-			aDestination.getTables().add(aModel.getTables().findBySystemId(theTable));
-		}
+        aDestination.getTables().clear();
+        for (String theTable : aSource.getTables()) {
+            aDestination.getTables().add(aModel.getTables().findBySystemId(theTable));
+        }
 
-		aDestination.getComments().clear();
-		for (String theComment : aSource.getComments()) {
-			aDestination.getComments().add(aModel.getComments().findBySystemId(theComment));
-		}
+        aDestination.getComments().clear();
+        for (String theComment : aSource.getComments()) {
+            aDestination.getComments().add(aModel.getComments().findBySystemId(theComment));
+        }
 
-		aDestination.getViews().clear();
-		for (String theView : aSource.getViews()) {
-			aDestination.getViews().add(aModel.getViews().findBySystemId(theView));
-		}
-	}
+        aDestination.getViews().clear();
+        for (String theView : aSource.getViews()) {
+            aDestination.getViews().add(aModel.getViews().findBySystemId(theView));
+        }
+    }
 
-	public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
+    public void serialize(Model aModel, RepositoryEntity aDictionaryEntity) {
 
-		Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getSubjectAreas(), aDictionaryEntity
-				.getSubjectareas());
+        Map<String, ModelEntity> theComments = deletedRemovedInstances(aModel.getSubjectAreas(), aDictionaryEntity
+                .getSubjectareas());
 
-		for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
-			boolean existing = true;
-			SubjectAreaEntity theExisting = (SubjectAreaEntity) theComments.get(theSubjectArea.getSystemId());
-			if (theExisting == null) {
-				theExisting = new SubjectAreaEntity();
-				existing = false;
-			}
+        for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+            boolean existing = true;
+            SubjectAreaEntity theExisting = (SubjectAreaEntity) theComments.get(theSubjectArea.getSystemId());
+            if (theExisting == null) {
+                theExisting = new SubjectAreaEntity();
+                existing = false;
+            }
 
-			copyBaseAttributes(theSubjectArea, theExisting);
-			copyExtendedAttributes(theSubjectArea, theExisting);
+            copyBaseAttributes(theSubjectArea, theExisting);
+            copyExtendedAttributes(theSubjectArea, theExisting);
 
-			if (!existing) {
-				aDictionaryEntity.getSubjectareas().add(theExisting);
-			}
-		}
-	}
+            if (!existing) {
+                aDictionaryEntity.getSubjectareas().add(theExisting);
+            }
+        }
+    }
 
-	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-		for (SubjectAreaEntity theEntity : aRepositoryEntity.getSubjectareas()) {
+    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+        for (SubjectAreaEntity theEntity : aRepositoryEntity.getSubjectareas()) {
 
-			SubjectArea theSubjectArea = new SubjectArea();
+            SubjectArea theSubjectArea = new SubjectArea();
 
-			copyBaseAttributes(theEntity, theSubjectArea);
-			copyExtendedAttributes(theEntity, theSubjectArea, aModel);
+            copyBaseAttributes(theEntity, theSubjectArea);
+            copyExtendedAttributes(theEntity, theSubjectArea, aModel);
 
-			aModel.getSubjectAreas().add(theSubjectArea);
-		}
-	}
+            aModel.getSubjectAreas().add(theSubjectArea);
+        }
+    }
 }

@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -22,7 +22,11 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.MavenPropertiesLocator;
-import de.erdesignerng.visual.common.*;
+import de.erdesignerng.visual.common.DockingHelper;
+import de.erdesignerng.visual.common.ERDesignerComponent;
+import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+import de.erdesignerng.visual.common.OutlineComponent;
+import de.erdesignerng.visual.common.SQLComponent;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
@@ -33,163 +37,162 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * 
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-06 22:01:08 $
  */
 public class ERDesignerMainFrame extends DefaultFrame implements
-		ERDesignerWorldConnector {
+        ERDesignerWorldConnector {
 
-	private static final String WINDOW_ALIAS = "ERDesignerMainFrame";
+    private static final String WINDOW_ALIAS = "ERDesignerMainFrame";
 
-	private ERDesignerComponent component;
+    private ERDesignerComponent component;
 
-	private DockingHelper dockingHelper;
+    private DockingHelper dockingHelper;
 
-	public ERDesignerMainFrame() {
-		super(ERDesignerBundle.TITLE);
+    public ERDesignerMainFrame() {
+        super(ERDesignerBundle.TITLE);
 
-		initialize();
+        initialize();
 
-		setSize(800, 600);
-		setExtendedState(MAXIMIZED_BOTH);
+        setSize(800, 600);
+        setExtendedState(MAXIMIZED_BOTH);
 
-		addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
 
-			@Override
-			public void windowClosing(WindowEvent e) {
-				exitApplication();
-			}
-		});
+            @Override
+            public void windowClosing(WindowEvent e) {
+                exitApplication();
+            }
+        });
 
-		UIInitializer.getInstance().initialize(this);
-		initTitle();
-	}
+        UIInitializer.getInstance().initialize(this);
+        initTitle();
+    }
 
-	@Override
-	public ResourceHelper getResourceHelper() {
-		return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-	}
+    @Override
+    public ResourceHelper getResourceHelper() {
+        return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    }
 
-	private void initialize() {
+    private void initialize() {
 
-		component = ERDesignerComponent.initializeComponent(this);
-		OutlineComponent.initializeComponent();
-		SQLComponent.initializeComponent();
-		dockingHelper = new DockingHelper();
+        component = ERDesignerComponent.initializeComponent(this);
+        OutlineComponent.initializeComponent();
+        SQLComponent.initializeComponent();
+        dockingHelper = new DockingHelper();
 
-		try {
-			dockingHelper.initialize();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+        try {
+            dockingHelper.initialize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-		getDefaultFrameContent().setDetailComponent(
-				dockingHelper.getRootWindow());
-	}
+        getDefaultFrameContent().setDetailComponent(
+                dockingHelper.getRootWindow());
+    }
 
-	@Override
-	public final void initTitle() {
-		initTitle(null);
-	}
+    @Override
+    public final void initTitle() {
+        initTitle(null);
+    }
 
-	@Override
-	public DefaultToolbar getToolBar() {
-		return getDefaultFrameContent().getToolbar();
-	}
+    @Override
+    public DefaultToolbar getToolBar() {
+        return getDefaultFrameContent().getToolbar();
+    }
 
-	@Override
-	public void initTitle(String aFile) {
+    @Override
+    public void initTitle(String aFile) {
 
-		StringBuffer theTitle = new StringBuffer();
-		if (aFile != null) {
-			theTitle.append(" - ").append(aFile);
-		}
+        StringBuffer theTitle = new StringBuffer();
+        if (aFile != null) {
+            theTitle.append(" - ").append(aFile);
+        }
 
-		String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
-		setTitle(getResourceHelper().getText(getResourceBundleID()) + " "
-				+ theVersion + " " + theTitle);
-	}
+        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
+        setTitle(getResourceHelper().getText(getResourceBundleID()) + " "
+                + theVersion + " " + theTitle);
+    }
 
-	@Override
-	public void setStatusText(String aMessage) {
-		getDefaultFrameContent().getStatusBar().setText(aMessage);
-	}
+    @Override
+    public void setStatusText(String aMessage) {
+        getDefaultFrameContent().getStatusBar().setText(aMessage);
+    }
 
-	public void setModel(Model aModel) {
-		component.setModel(aModel);
-	}
+    public void setModel(Model aModel) {
+        component.setModel(aModel);
+    }
 
-	@Override
-	public boolean supportsClasspathEditor() {
-		return true;
-	}
+    @Override
+    public boolean supportsClasspathEditor() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsConnectionEditor() {
-		return true;
-	}
+    @Override
+    public boolean supportsConnectionEditor() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsExitApplication() {
-		return true;
-	}
+    @Override
+    public boolean supportsExitApplication() {
+        return true;
+    }
 
-	@Override
-	public Model createNewModel() {
-		Model theModel = new Model();
-		theModel
-				.setModificationTracker(new HistoryModificationTracker(theModel));
-		return theModel;
-	}
+    @Override
+    public Model createNewModel() {
+        Model theModel = new Model();
+        theModel
+                .setModificationTracker(new HistoryModificationTracker(theModel));
+        return theModel;
+    }
 
-	@Override
-	public boolean supportsPreferences() {
-		return true;
-	}
+    @Override
+    public boolean supportsPreferences() {
+        return true;
+    }
 
-	@Override
-	public void initializeLoadedModel(Model aModel) {
-		aModel.setModificationTracker(new HistoryModificationTracker(aModel));
-	}
+    @Override
+    public void initializeLoadedModel(Model aModel) {
+        aModel.setModificationTracker(new HistoryModificationTracker(aModel));
+    }
 
-	@Override
-	public void notifyAboutException(Exception aException) {
-		ExceptionEditor theEditor = new ExceptionEditor(this, aException);
-		theEditor.showModal();
-	}
+    @Override
+    public void notifyAboutException(Exception aException) {
+        ExceptionEditor theEditor = new ExceptionEditor(this, aException);
+        theEditor.showModal();
+    }
 
-	@Override
-	public void exitApplication() {
-		ApplicationPreferences.getInstance().updateWindowDefinition(
-				WINDOW_ALIAS, ERDesignerMainFrame.this);
-		dockingHelper.saveLayoutToPreferences();
-		component.savePreferences();
-		System.exit(0);
-	}
+    @Override
+    public void exitApplication() {
+        ApplicationPreferences.getInstance().updateWindowDefinition(
+                WINDOW_ALIAS, ERDesignerMainFrame.this);
+        dockingHelper.saveLayoutToPreferences();
+        component.savePreferences();
+        System.exit(0);
+    }
 
-	@Override
-	public void setVisible(boolean aVisible) {
-		super.setVisible(aVisible);
+    @Override
+    public void setVisible(boolean aVisible) {
+        super.setVisible(aVisible);
 
-		if (aVisible) {
-			ApplicationPreferences.getInstance().setWindowState(WINDOW_ALIAS,
-					this);
-		}
-	}
+        if (aVisible) {
+            ApplicationPreferences.getInstance().setWindowState(WINDOW_ALIAS,
+                    this);
+        }
+    }
 
-	@Override
-	public boolean supportsRepositories() {
-		return true;
-	}
+    @Override
+    public boolean supportsRepositories() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsHelp() {
-		return true;
-	}
+    @Override
+    public boolean supportsHelp() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsReporting() {
-		return true;
-	}
+    @Override
+    public boolean supportsReporting() {
+        return true;
+    }
 }

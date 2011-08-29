@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -31,60 +31,63 @@ import java.io.FileOutputStream;
 
 public class ExportGraphicsCommand extends UICommand {
 
-	private final Exporter exporter;
+    private final Exporter exporter;
 
-	private final ExportType exportType;
+    private final ExportType exportType;
 
-	public ExportGraphicsCommand(ERDesignerComponent component, Exporter aExporter, ExportType aExportType) {
-		super(component);
-		exporter = aExporter;
-		exportType = aExportType;
-	}
+    private JGraphEditor editor;
 
-	@Override
-	public void execute() {
-		if (exportType.equals(ExportType.ONE_PER_FILE)) {
+    public ExportGraphicsCommand(JGraphEditor aEditor, Exporter aExporter, ExportType aExportType) {
+        editor = aEditor;
+        exporter = aExporter;
+        exportType = aExportType;
+    }
 
-			JFileChooser theChooser = new JFileChooser();
-			theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
-				File theBaseDirectory = theChooser.getSelectedFile();
+    @Override
+    public void execute() {
 
-				CellView[] theViews = component.graph.getGraphLayoutCache().getAllViews();
-				for (CellView theView : theViews) {
-					if (theView instanceof TableCellView) {
-						TableCellView theItemCellView = (TableCellView) theView;
-						DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
-						ModelItem theItem = (ModelItem) theItemCell.getUserObject();
+        if (exportType.equals(ExportType.ONE_PER_FILE)) {
 
-						File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
-						try {
-							exporter.exportToStream(theItemCellView.getRendererComponent(component.graph, false, false,
-									false), new FileOutputStream(theOutputFile));
-						} catch (Exception e) {
-							getWorldConnector().notifyAboutException(e);
-						}
-					}
-				}
-			}
+            JFileChooser theChooser = new JFileChooser();
+            theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+                File theBaseDirectory = theChooser.getSelectedFile();
 
-		} else {
+                CellView[] theViews = editor.getGraph().getGraphLayoutCache().getAllViews();
+                for (CellView theView : theViews) {
+                    if (theView instanceof TableCellView) {
+                        TableCellView theItemCellView = (TableCellView) theView;
+                        DefaultGraphCell theItemCell = (DefaultGraphCell) theItemCellView.getCell();
+                        ModelItem theItem = (ModelItem) theItemCell.getUserObject();
 
-			JFileChooser theChooser = new JFileChooser();
-			GenericFileFilter theFilter = new GenericFileFilter(exporter.getFileExtension(), exporter
-					.getFileExtension()
-					+ " File");
-			theChooser.setFileFilter(theFilter);
-			if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+                        File theOutputFile = new File(theBaseDirectory, theItem.getName() + exporter.getFileExtension());
+                        try {
+                            exporter.exportToStream(theItemCellView.getRendererComponent(editor.getGraph(), false, false,
+                                    false), new FileOutputStream(theOutputFile));
+                        } catch (Exception e) {
+                            getWorldConnector().notifyAboutException(e);
+                        }
+                    }
+                }
+            }
 
-				File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
-				try {
-					exporter.fullExportToStream(component.graph, new FileOutputStream(theFile));
-				} catch (Exception e) {
-					getWorldConnector().notifyAboutException(e);
-				}
-			}
+        } else {
 
-		}
-	}
+            JFileChooser theChooser = new JFileChooser();
+            GenericFileFilter theFilter = new GenericFileFilter(exporter.getFileExtension(), exporter
+                    .getFileExtension()
+                    + " File");
+            theChooser.setFileFilter(theFilter);
+            if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+
+                File theFile = theFilter.getCompletedFile(theChooser.getSelectedFile());
+                try {
+                    exporter.fullExportToStream(editor.getGraph(), new FileOutputStream(theFile));
+                } catch (Exception e) {
+                    getWorldConnector().notifyAboutException(e);
+                }
+            }
+
+        }
+    }
 }

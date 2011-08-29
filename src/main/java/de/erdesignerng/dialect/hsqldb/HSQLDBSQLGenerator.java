@@ -20,7 +20,11 @@ package de.erdesignerng.dialect.hsqldb;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.dialect.sql92.SQL92SQLGenerator;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import org.apache.commons.lang.StringUtils;
 
 /**

@@ -24,12 +24,20 @@ import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.exception.ReverseEngineeringException;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.CascadeType;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author $Author: dr-death $

@@ -19,7 +19,13 @@ package de.erdesignerng.model.check;
 
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpressionList;
+import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 
 /**
@@ -54,7 +60,7 @@ public class ForeignKeyWithoutIndexCheck implements ModelCheck {
             }
             aModel.addIndexToTable(theImportingTable, theIndex);
 
-            return new Object[] {theImportingTable};
+            return new Object[]{theImportingTable};
         }
     }
 
