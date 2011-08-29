@@ -17,10 +17,13 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.ModelUtilities;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.cells.RelationEdge;
-import de.erdesignerng.visual.cells.TableCell;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 
@@ -28,79 +31,74 @@ import java.text.MessageFormat;
 
 public class AddRelationCommand extends UICommand {
 
-	private final TableCell exportingTable;
+    private final Table exportingTable;
 
-	private final TableCell importingTable;
+    private final Table importingTable;
 
-	public AddRelationCommand(ERDesignerComponent component,
-							  TableCell aImportingCell, TableCell aExportingCell) {
-		super(component);
-		exportingTable = aExportingCell;
-		importingTable = aImportingCell;
-	}
+    public AddRelationCommand(Table aImportingCell, Table aExportingCell) {
+        exportingTable = aExportingCell;
+        importingTable = aImportingCell;
+    }
 
-	@Override
-	public void execute() {
-		Table theImportingTable = (Table) importingTable.getUserObject();
-		Table theExportingTable = (Table) exportingTable.getUserObject();
+    @Override
+    public void execute() {
 
-		Relation theRelation = createPreparedRelationFor(theImportingTable,
-				theExportingTable);
+        Relation theRelation = createPreparedRelationFor(importingTable,
+                exportingTable);
 
-		RelationEditor theEditor = new RelationEditor(theImportingTable
-				.getOwner(), getDetailComponent());
-		theEditor.initializeFor(theRelation);
+        RelationEditor theEditor = new RelationEditor(importingTable
+                .getOwner(), getDetailComponent());
+        theEditor.initializeFor(theRelation);
 
-		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-			RelationEdge theEdge = new RelationEdge(theRelation,
-					importingTable, exportingTable);
+            try {
 
-			try {
-				theEditor.applyValues();
-				component.graph.getGraphLayoutCache().insert(theEdge);
+                theEditor.applyValues();
 
-				refreshDisplayOf(null);
-			} catch (Exception e) {
-				getWorldConnector().notifyAboutException(e);
-			}
-		}
-	}
+                ERDesignerComponent.getDefault().commandCreateRelation(theRelation);
 
-	private Relation createPreparedRelationFor(Table aSourceTable,
-											   Table aTargetTable) {
-		Relation theRelation = new Relation();
-		theRelation.setImportingTable(aSourceTable);
-		theRelation.setExportingTable(aTargetTable);
-		theRelation.setOnUpdate(ApplicationPreferences.getInstance()
-				.getOnUpdateDefault());
-		theRelation.setOnDelete(ApplicationPreferences.getInstance()
-				.getOnDeleteDefault());
+                refreshDisplayOf(null);
+            } catch (Exception e) {
+                getWorldConnector().notifyAboutException(e);
+            }
+        }
+    }
 
-		String thePattern = ApplicationPreferences.getInstance()
-				.getAutomaticRelationAttributePattern();
-		String theTargetTableName = component.getModel().getDialect()
-				.getCastType().cast(aTargetTable.getName());
+    private Relation createPreparedRelationFor(Table aSourceTable,
+                                               Table aTargetTable) {
+        Relation theRelation = new Relation();
+        theRelation.setImportingTable(aSourceTable);
+        theRelation.setExportingTable(aTargetTable);
+        theRelation.setOnUpdate(ApplicationPreferences.getInstance()
+                .getOnUpdateDefault());
+        theRelation.setOnDelete(ApplicationPreferences.getInstance()
+                .getOnDeleteDefault());
 
-		// Create the foreign key suggestions
-		Index thePrimaryKey = aTargetTable.getPrimarykey();
-		for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
-			Attribute theAttribute = theExpression.getAttributeRef();
-			if (theAttribute != null) {
-				String theNewname = MessageFormat.format(thePattern,
-						theTargetTableName, theAttribute.getName());
-				Attribute theNewAttribute = aSourceTable.getAttributes()
-						.findByName(theNewname);
-				if (theNewAttribute == null) {
-					theNewAttribute = theAttribute.clone();
-					theNewAttribute.setSystemId(ModelUtilities
-							.createSystemIdFor());
-					theNewAttribute.setOwner(null);
-					theNewAttribute.setName(theNewname);
-				}
-				theRelation.getMapping().put(theExpression, theNewAttribute);
-			}
-		}
-		return theRelation;
-	}
+        String thePattern = ApplicationPreferences.getInstance()
+                .getAutomaticRelationAttributePattern();
+        String theTargetTableName = ERDesignerComponent.getDefault().getModel().getDialect()
+                .getCastType().cast(aTargetTable.getName());
+
+        // Create the foreign key suggestions
+        Index thePrimaryKey = aTargetTable.getPrimarykey();
+        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
+            Attribute theAttribute = theExpression.getAttributeRef();
+            if (theAttribute != null) {
+                String theNewname = MessageFormat.format(thePattern,
+                        theTargetTableName, theAttribute.getName());
+                Attribute theNewAttribute = aSourceTable.getAttributes()
+                        .findByName(theNewname);
+                if (theNewAttribute == null) {
+                    theNewAttribute = theAttribute.clone();
+                    theNewAttribute.setSystemId(ModelUtilities
+                            .createSystemIdFor());
+                    theNewAttribute.setOwner(null);
+                    theNewAttribute.setName(theNewname);
+                }
+                theRelation.getMapping().put(theExpression, theNewAttribute);
+            }
+        }
+        return theRelation;
+    }
 }

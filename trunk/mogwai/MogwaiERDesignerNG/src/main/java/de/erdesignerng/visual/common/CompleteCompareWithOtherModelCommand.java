@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -32,53 +32,54 @@ import java.io.InputStream;
 
 public class CompleteCompareWithOtherModelCommand extends UICommand {
 
-	public CompleteCompareWithOtherModelCommand(ERDesignerComponent component) {
-		super(component);
-	}
+    public CompleteCompareWithOtherModelCommand() {
+    }
 
-	@Override
-	public void execute() {
-		Model theCurrentModel = component.getModel();
+    @Override
+    public void execute() {
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
 
-		ModelFileFilter theFiler = new ModelFileFilter();
+        Model theCurrentModel = component.getModel();
 
-		JFileChooser theChooser = new JFileChooser();
-		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		theChooser.setFileFilter(theFiler);
-		if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+        ModelFileFilter theFiler = new ModelFileFilter();
 
-			File theFile = theFiler.getCompletedFile(theChooser
-					.getSelectedFile());
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        theChooser.setFileFilter(theFiler);
+        if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-			InputStream theStream = null;
-			try {
+            File theFile = theFiler.getCompletedFile(theChooser
+                    .getSelectedFile());
 
-				theStream = new FileInputStream(theFile);
+            InputStream theStream = null;
+            try {
 
-				Model theNewModel = ModelIOUtilities.getInstance()
-						.deserializeModelFromXML(theStream);
+                theStream = new FileInputStream(theFile);
 
-				CompleteCompareEditor theCompare = new CompleteCompareEditor(
-						getDetailComponent(), theCurrentModel, theNewModel,
-						ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
-				theCompare.showModal();
+                Model theNewModel = ModelIOUtilities.getInstance()
+                        .deserializeModelFromXML(theStream);
 
-			} catch (Exception e) {
-				MessagesHelper.displayErrorMessage(getDetailComponent(),
-						component.getResourceHelper().getText(
-								ERDesignerBundle.ERRORLOADINGFILE));
+                CompleteCompareEditor theCompare = new CompleteCompareEditor(
+                        getDetailComponent(), theCurrentModel, theNewModel,
+                        ERDesignerBundle.COMPLETECOMPAREWITHOTHERMODEL);
+                theCompare.showModal();
 
-				getWorldConnector().notifyAboutException(e);
+            } catch (Exception e) {
+                MessagesHelper.displayErrorMessage(getDetailComponent(),
+                        component.getResourceHelper().getText(
+                                ERDesignerBundle.ERRORLOADINGFILE));
 
-			} finally {
-				if (theStream != null) {
-					try {
-						theStream.close();
-					} catch (IOException e) {
-						// Ignore this exception
-					}
-				}
-			}
-		}
-	}
+                getWorldConnector().notifyAboutException(e);
+
+            } finally {
+                if (theStream != null) {
+                    try {
+                        theStream.close();
+                    } catch (IOException e) {
+                        // Ignore this exception
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -31,67 +31,67 @@ import java.io.IOException;
 
 public class OpenFromFileCommand extends UICommand {
 
-	public OpenFromFileCommand(ERDesignerComponent component) {
-		super(component);
-	}
+    public OpenFromFileCommand() {
+    }
 
-	@Override
-	public void execute() {
-		ModelFileFilter theFiler = new ModelFileFilter();
+    @Override
+    public void execute() {
+        ModelFileFilter theFiler = new ModelFileFilter();
 
-		JFileChooser theChooser = new JFileChooser();
-		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		theChooser.setFileFilter(theFiler);
-		if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        theChooser.setFileFilter(theFiler);
+        if (theChooser.showOpenDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-			File theFile = theFiler.getCompletedFile(theChooser
-					.getSelectedFile());
+            File theFile = theFiler.getCompletedFile(theChooser
+                    .getSelectedFile());
 
-			execute(theFile);
-		}
-	}
+            execute(theFile);
+        }
+    }
 
-	void execute(File aFile) {
-		FileInputStream theStream = null;
+    void execute(File aFile) {
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        FileInputStream theStream = null;
 
-		try {
-			component.setIntelligentLayoutEnabled(false);
+        try {
+            component.setIntelligentLayoutEnabled(false);
 
-			theStream = new FileInputStream(aFile);
+            theStream = new FileInputStream(aFile);
 
-			Model theModel = ModelIOUtilities.getInstance()
-					.deserializeModelFromXML(theStream);
-			getWorldConnector().initializeLoadedModel(theModel);
+            Model theModel = ModelIOUtilities.getInstance()
+                    .deserializeModelFromXML(theStream);
+            getWorldConnector().initializeLoadedModel(theModel);
 
-			component.setModel(theModel);
+            component.setModel(theModel);
 
-			ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
+            ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
 
-			component.addCurrentConnectionToConnectionHistory();
+            component.addCurrentConnectionToConnectionHistory();
 
-			component.setupViewFor(aFile);
-			getWorldConnector().setStatusText(
-					component.getResourceHelper().getText(
-							ERDesignerBundle.FILELOADED));
+            component.setupViewFor(aFile);
+            getWorldConnector().setStatusText(
+                    component.getResourceHelper().getText(
+                            ERDesignerBundle.FILELOADED));
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			MessagesHelper.displayErrorMessage(getDetailComponent(), component
-					.getResourceHelper().getText(
-							ERDesignerBundle.ERRORLOADINGFILE));
+            MessagesHelper.displayErrorMessage(getDetailComponent(), component
+                    .getResourceHelper().getText(
+                            ERDesignerBundle.ERRORLOADINGFILE));
 
-			getWorldConnector().notifyAboutException(e);
-		} finally {
-			if (theStream != null) {
-				try {
-					theStream.close();
-				} catch (IOException e) {
-					// Ignore this exception
-				}
-			}
+            getWorldConnector().notifyAboutException(e);
+        } finally {
+            if (theStream != null) {
+                try {
+                    theStream.close();
+                } catch (IOException e) {
+                    // Ignore this exception
+                }
+            }
 
-			component.setIntelligentLayoutEnabled(ApplicationPreferences
-					.getInstance().isIntelligentLayout());
-		}
-	}
+            component.setIntelligentLayoutEnabled(ApplicationPreferences
+                    .getInstance().isIntelligentLayout());
+        }
+    }
 }

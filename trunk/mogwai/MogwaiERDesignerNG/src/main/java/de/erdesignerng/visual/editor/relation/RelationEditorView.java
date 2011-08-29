@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -20,7 +20,13 @@ package de.erdesignerng.visual.editor.relation;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
-import de.mogwai.common.client.looks.components.*;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultRadioButton;
+import de.mogwai.common.client.looks.components.DefaultSeparator;
+import de.mogwai.common.client.looks.components.DefaultTable;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 
 import javax.swing.*;
 
@@ -30,278 +36,278 @@ import javax.swing.*;
  */
 public class RelationEditorView extends JPanel {
 
-	private DefaultLabel component1;
+    private DefaultLabel component1;
 
-	private DefaultTextField relationName;
+    private DefaultTextField relationName;
 
-	private DefaultTable attributeMappingTable;
+    private DefaultTable attributeMappingTable;
 
-	private JPanel onDeleteContainer;
+    private JPanel onDeleteContainer;
 
-	private DefaultRadioButton onDeleteNothing;
+    private DefaultRadioButton onDeleteNothing;
 
-	private DefaultRadioButton onDeleteCascade;
+    private DefaultRadioButton onDeleteCascade;
 
-	private DefaultRadioButton onDeleteSetNull;
+    private DefaultRadioButton onDeleteSetNull;
 
-	private DefaultRadioButton onDeleteRestrict;
+    private DefaultRadioButton onDeleteRestrict;
 
-	private JPanel onUpdateContainer;
+    private JPanel onUpdateContainer;
 
-	private DefaultRadioButton onUpdateNothing;
+    private DefaultRadioButton onUpdateNothing;
 
-	private DefaultRadioButton onUpdateCascade;
+    private DefaultRadioButton onUpdateCascade;
 
-	private DefaultRadioButton onUpdateSetNull;
+    private DefaultRadioButton onUpdateSetNull;
 
-	private DefaultRadioButton onUpdateRestrict;
+    private DefaultRadioButton onUpdateRestrict;
 
-	private JPanel component8;
+    private JPanel component8;
 
-	private DefaultButton okButton;
+    private DefaultButton okButton;
 
-	private DefaultButton cancelButton;
-	
-	private final DefaultPanel propertiesPanel = new DefaultPanel();
-	
-	public RelationEditorView() {
-		initialize();
-	}
+    private DefaultButton cancelButton;
 
-	/**
-	 * Initialize method.
-	 */
-	private void initialize() {
+    private final DefaultPanel propertiesPanel = new DefaultPanel();
 
-		String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
-		String colDef = "2dlu,60dlu,2dlu,fill:150dlu:grow,2dlu";
+    public RelationEditorView() {
+        initialize();
+    }
 
-		FormLayout layout = new FormLayout(colDef, rowDef);
-		setLayout(layout);
+    /**
+     * Initialize method.
+     */
+    private void initialize() {
 
-		CellConstraints cons = new CellConstraints();
+        String rowDef = "2dlu,p,8dlu,p,8dlu,p,2dlu,fill:100dlu,8dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,20dlu,p,2dlu";
+        String colDef = "2dlu,60dlu,2dlu,fill:150dlu:grow,2dlu";
 
-		add(getComponent1(), cons.xywh(2, 4, 1, 1));
-		add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
-		add(getRelationName(), cons.xywh(4, 4, 1, 1));
-		add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(2, 6, 3, 1));
-		add(new JScrollPane(getAttributeMappingTable()), cons.xywh(2, 8, 3, 1));
-		add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(2, 10, 3, 1));
-		add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
-		add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
-		add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
+        FormLayout layout = new FormLayout(colDef, rowDef);
+        setLayout(layout);
 
-		add(getPropertiesPanel(), cons.xywh(2, 20, 3, 1));
-		
-		add(getComponent8(), cons.xywh(2, 22, 3, 1));
+        CellConstraints cons = new CellConstraints();
 
-		buildGroups();
-	}
+        add(getComponent1(), cons.xywh(2, 4, 1, 1));
+        add(new DefaultSeparator(ERDesignerBundle.RELATIONPROPERTIES), cons.xywh(2, 2, 3, 1));
+        add(getRelationName(), cons.xywh(4, 4, 1, 1));
+        add(new DefaultSeparator(ERDesignerBundle.ATTRIBUTEMAPPING), cons.xywh(2, 6, 3, 1));
+        add(new JScrollPane(getAttributeMappingTable()), cons.xywh(2, 8, 3, 1));
+        add(new DefaultSeparator(ERDesignerBundle.ONDELETEHANDLING), cons.xywh(2, 10, 3, 1));
+        add(getOnDeleteContainer(), cons.xywh(2, 12, 3, 1));
+        add(new DefaultSeparator(ERDesignerBundle.ONUPDATEHANDLING), cons.xywh(2, 14, 3, 1));
+        add(getOnUpdateContainer(), cons.xywh(2, 18, 3, 1));
 
-	public JLabel getComponent1() {
+        add(getPropertiesPanel(), cons.xywh(2, 20, 3, 1));
 
-		if (component1 == null) {
-			component1 = new DefaultLabel(ERDesignerBundle.RELATIONNAME);
-		}
+        add(getComponent8(), cons.xywh(2, 22, 3, 1));
 
-		return component1;
-	}
+        buildGroups();
+    }
 
-	public DefaultTextField getRelationName() {
+    public JLabel getComponent1() {
 
-		if (relationName == null) {
-			relationName = new DefaultTextField();
-		}
+        if (component1 == null) {
+            component1 = new DefaultLabel(ERDesignerBundle.RELATIONNAME);
+        }
 
-		return relationName;
-	}
+        return component1;
+    }
 
-	public DefaultTable getAttributeMappingTable() {
+    public DefaultTextField getRelationName() {
 
-		if (attributeMappingTable == null) {
-			attributeMappingTable = new DefaultTable();
-			attributeMappingTable.setName("Component_5");
-		}
+        if (relationName == null) {
+            relationName = new DefaultTextField();
+        }
 
-		return attributeMappingTable;
-	}
+        return relationName;
+    }
 
-	public JPanel getOnDeleteContainer() {
+    public DefaultTable getAttributeMappingTable() {
 
-		if (onDeleteContainer == null) {
-			onDeleteContainer = new JPanel();
+        if (attributeMappingTable == null) {
+            attributeMappingTable = new DefaultTable();
+            attributeMappingTable.setName("Component_5");
+        }
 
-			String rowDef = "p,2dlu";
-			String colDef = "p,p,p,p";
+        return attributeMappingTable;
+    }
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			onDeleteContainer.setLayout(layout);
+    public JPanel getOnDeleteContainer() {
 
-			CellConstraints cons = new CellConstraints();
+        if (onDeleteContainer == null) {
+            onDeleteContainer = new JPanel();
 
-			onDeleteContainer.add(getOnDeleteCascadeNothing(), cons.xywh(1, 1, 1, 1));
-			onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(2, 1, 1, 1));
-			onDeleteContainer.add(getOnDeleteRestrict(), cons.xywh(3, 1, 1, 1));
-			onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(4, 1, 1, 1));
-			onDeleteContainer.setName("Component_7");
-		}
+            String rowDef = "p,2dlu";
+            String colDef = "p,p,p,p";
 
-		return onDeleteContainer;
-	}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            onDeleteContainer.setLayout(layout);
 
-	public JPanel getOnUpdateContainer() {
+            CellConstraints cons = new CellConstraints();
 
-		if (onUpdateContainer == null) {
-			onUpdateContainer = new JPanel();
+            onDeleteContainer.add(getOnDeleteCascadeNothing(), cons.xywh(1, 1, 1, 1));
+            onDeleteContainer.add(getOnDeleteCascade(), cons.xywh(2, 1, 1, 1));
+            onDeleteContainer.add(getOnDeleteRestrict(), cons.xywh(3, 1, 1, 1));
+            onDeleteContainer.add(getOnDeleteSetNull(), cons.xywh(4, 1, 1, 1));
+            onDeleteContainer.setName("Component_7");
+        }
 
-			String rowDef = "p,2dlu";
-			String colDef = "p,p,p,p";
+        return onDeleteContainer;
+    }
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			onUpdateContainer.setLayout(layout);
+    public JPanel getOnUpdateContainer() {
 
-			CellConstraints cons = new CellConstraints();
+        if (onUpdateContainer == null) {
+            onUpdateContainer = new JPanel();
 
-			onUpdateContainer.add(getOnUpdateCascadeNothing(), cons.xywh(1, 1, 1, 1));
-			onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(2, 1, 1, 1));
-			onUpdateContainer.add(getOnUpdateRestrict(), cons.xywh(3, 1, 1, 1));
-			onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(4, 1, 1, 1));
-			onUpdateContainer.setName("Component_7");
-		}
+            String rowDef = "p,2dlu";
+            String colDef = "p,p,p,p";
 
-		return onUpdateContainer;
-	}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            onUpdateContainer.setLayout(layout);
 
-	public JRadioButton getOnDeleteCascadeNothing() {
+            CellConstraints cons = new CellConstraints();
 
-		if (onDeleteNothing == null) {
-			onDeleteNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
-		}
+            onUpdateContainer.add(getOnUpdateCascadeNothing(), cons.xywh(1, 1, 1, 1));
+            onUpdateContainer.add(getOnUpdateCascade(), cons.xywh(2, 1, 1, 1));
+            onUpdateContainer.add(getOnUpdateRestrict(), cons.xywh(3, 1, 1, 1));
+            onUpdateContainer.add(getOnUpdateSetNull(), cons.xywh(4, 1, 1, 1));
+            onUpdateContainer.setName("Component_7");
+        }
 
-		return onDeleteNothing;
-	}
+        return onUpdateContainer;
+    }
 
-	public JRadioButton getOnDeleteCascade() {
+    public JRadioButton getOnDeleteCascadeNothing() {
 
-		if (onDeleteCascade == null) {
-			onDeleteCascade = new DefaultRadioButton(ERDesignerBundle.CASCADE);
-		}
+        if (onDeleteNothing == null) {
+            onDeleteNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
+        }
 
-		return onDeleteCascade;
-	}
+        return onDeleteNothing;
+    }
 
-	public JRadioButton getOnDeleteRestrict() {
+    public JRadioButton getOnDeleteCascade() {
 
-		if (onDeleteRestrict == null) {
-			onDeleteRestrict = new DefaultRadioButton(ERDesignerBundle.RESTRICT);
-		}
+        if (onDeleteCascade == null) {
+            onDeleteCascade = new DefaultRadioButton(ERDesignerBundle.CASCADE);
+        }
 
-		return onDeleteRestrict;
-	}
+        return onDeleteCascade;
+    }
 
-	public JRadioButton getOnDeleteSetNull() {
+    public JRadioButton getOnDeleteRestrict() {
 
-		if (onDeleteSetNull == null) {
-			onDeleteSetNull = new DefaultRadioButton(ERDesignerBundle.SETNULL);
-		}
+        if (onDeleteRestrict == null) {
+            onDeleteRestrict = new DefaultRadioButton(ERDesignerBundle.RESTRICT);
+        }
 
-		return onDeleteSetNull;
-	}
+        return onDeleteRestrict;
+    }
 
-	public JRadioButton getOnUpdateCascadeNothing() {
+    public JRadioButton getOnDeleteSetNull() {
 
-		if (onUpdateNothing == null) {
-			onUpdateNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
-		}
+        if (onDeleteSetNull == null) {
+            onDeleteSetNull = new DefaultRadioButton(ERDesignerBundle.SETNULL);
+        }
 
-		return onUpdateNothing;
-	}
+        return onDeleteSetNull;
+    }
 
-	public JRadioButton getOnUpdateCascade() {
+    public JRadioButton getOnUpdateCascadeNothing() {
 
-		if (onUpdateCascade == null) {
-			onUpdateCascade = new DefaultRadioButton(ERDesignerBundle.CASCADE);
-		}
+        if (onUpdateNothing == null) {
+            onUpdateNothing = new DefaultRadioButton(ERDesignerBundle.DATABASEDEFAULT);
+        }
 
-		return onUpdateCascade;
-	}
+        return onUpdateNothing;
+    }
 
-	public JRadioButton getOnUpdateRestrict() {
+    public JRadioButton getOnUpdateCascade() {
 
-		if (onUpdateRestrict == null) {
-			onUpdateRestrict = new DefaultRadioButton(ERDesignerBundle.RESTRICT);
-		}
+        if (onUpdateCascade == null) {
+            onUpdateCascade = new DefaultRadioButton(ERDesignerBundle.CASCADE);
+        }
 
-		return onUpdateRestrict;
-	}
+        return onUpdateCascade;
+    }
 
-	public JRadioButton getOnUpdateSetNull() {
+    public JRadioButton getOnUpdateRestrict() {
 
-		if (onUpdateSetNull == null) {
-			onUpdateSetNull = new DefaultRadioButton(ERDesignerBundle.SETNULL);
-		}
+        if (onUpdateRestrict == null) {
+            onUpdateRestrict = new DefaultRadioButton(ERDesignerBundle.RESTRICT);
+        }
 
-		return onUpdateSetNull;
-	}
+        return onUpdateRestrict;
+    }
 
-	public JPanel getComponent8() {
+    public JRadioButton getOnUpdateSetNull() {
 
-		if (component8 == null) {
-			component8 = new JPanel();
+        if (onUpdateSetNull == null) {
+            onUpdateSetNull = new DefaultRadioButton(ERDesignerBundle.SETNULL);
+        }
 
-			String rowDef = "p";
-			String colDef = "60dlu,2dlu:grow,60dlu";
+        return onUpdateSetNull;
+    }
 
-			FormLayout layout = new FormLayout(colDef, rowDef);
-			component8.setLayout(layout);
+    public JPanel getComponent8() {
 
-			CellConstraints cons = new CellConstraints();
+        if (component8 == null) {
+            component8 = new JPanel();
 
-			component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
-			component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
-			component8.setName("Component_8");
-		}
+            String rowDef = "p";
+            String colDef = "60dlu,2dlu:grow,60dlu";
 
-		return component8;
-	}
+            FormLayout layout = new FormLayout(colDef, rowDef);
+            component8.setLayout(layout);
 
-	public DefaultButton getOKButton() {
+            CellConstraints cons = new CellConstraints();
 
-		if (okButton == null) {
-			okButton = new DefaultButton(ERDesignerBundle.OK);
-		}
+            component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
+            component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
+            component8.setName("Component_8");
+        }
 
-		return okButton;
-	}
+        return component8;
+    }
 
-	public DefaultButton getCancelButton() {
+    public DefaultButton getOKButton() {
 
-		if (cancelButton == null) {
-			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
-		}
+        if (okButton == null) {
+            okButton = new DefaultButton(ERDesignerBundle.OK);
+        }
 
-		return cancelButton;
-	}
+        return okButton;
+    }
 
-	/**
-	 * Initialize method.
-	 */
-	private void buildGroups() {
+    public DefaultButton getCancelButton() {
 
-		ButtonGroup theGroup1 = new ButtonGroup();
-		theGroup1.add(getOnDeleteCascadeNothing());
-		theGroup1.add(getOnDeleteCascade());
-		theGroup1.add(getOnDeleteSetNull());
-		theGroup1.add(getOnDeleteRestrict());
+        if (cancelButton == null) {
+            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
+        }
 
-		ButtonGroup theGroup2 = new ButtonGroup();
-		theGroup2.add(getOnUpdateCascadeNothing());
-		theGroup2.add(getOnUpdateCascade());
-		theGroup2.add(getOnUpdateSetNull());
-		theGroup2.add(getOnUpdateRestrict());
-	}
+        return cancelButton;
+    }
 
-	public DefaultPanel getPropertiesPanel() {
-		return propertiesPanel;
-	}
+    /**
+     * Initialize method.
+     */
+    private void buildGroups() {
+
+        ButtonGroup theGroup1 = new ButtonGroup();
+        theGroup1.add(getOnDeleteCascadeNothing());
+        theGroup1.add(getOnDeleteCascade());
+        theGroup1.add(getOnDeleteSetNull());
+        theGroup1.add(getOnDeleteRestrict());
+
+        ButtonGroup theGroup2 = new ButtonGroup();
+        theGroup2.add(getOnUpdateCascadeNothing());
+        theGroup2.add(getOnUpdateCascade());
+        theGroup2.add(getOnUpdateSetNull());
+        theGroup2.add(getOnUpdateRestrict());
+    }
+
+    public DefaultPanel getPropertiesPanel() {
+        return propertiesPanel;
+    }
 }
