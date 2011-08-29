@@ -41,7 +41,6 @@ import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
-import org.jgraph.graph.DefaultGraphCell;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -718,24 +717,6 @@ public class OutlineComponent extends DefaultPanel implements
     @Override
     public ResourceHelper getResourceHelper() {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
-    }
-
-    /**
-     * Locate a specific object in the tree.
-     *
-     * @param aObject the object to locate
-     */
-    public void locateObject(Object aObject) {
-        DefaultGraphCell theCell = (DefaultGraphCell) aObject;
-        DefaultMutableTreeNode theNode = userObjectMap.get(theCell
-                .getUserObject());
-        if (theNode != null) {
-            TreeNode[] theNodes = theNode.getPath();
-            TreePath thePath = new TreePath(theNodes);
-            tree.setSelectionPath(thePath);
-            tree.scrollPathToVisible(thePath);
-
-        }
     }
 
     /**
