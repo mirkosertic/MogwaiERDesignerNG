@@ -27,11 +27,11 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.LongRunningTask;
-import de.erdesignerng.visual.cells.views.TableCellView;
-import de.erdesignerng.visual.cells.views.ViewCellView;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
+import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
+import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
 
 import javax.swing.*;
 import java.awt.*;
