@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -39,112 +39,115 @@ import java.util.Date;
 
 public class SaveToFileCommand extends UICommand {
 
-	public SaveToFileCommand(ERDesignerComponent component) {
-		super(component);
-	}
+    public SaveToFileCommand() {
+    }
 
-	@Override
-	public void execute() {
-		if (component.currentEditingFile != null) {
-			executeSaveToFile(component.currentEditingFile);
-		} else {
-			executeSaveFileAs();
-		}
-	}
+    @Override
+    public void execute() {
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
 
-	public void executeSaveFileAs() {
+        if (component.currentEditingFile != null) {
+            executeSaveToFile(component.currentEditingFile);
+        } else {
+            executeSaveFileAs();
+        }
+    }
 
-		ModelFileFilter theFiler = new ModelFileFilter();
+    public void executeSaveFileAs() {
 
-		JFileChooser theChooser = new JFileChooser();
-		theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		theChooser.setFileFilter(theFiler);
-		theChooser.setSelectedFile(component.currentEditingFile);
-		if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        ModelFileFilter theFiler = new ModelFileFilter();
 
-			File theFile = theFiler.getCompletedFile(theChooser
-					.getSelectedFile());
-			executeSaveToFile(theFile);
+        JFileChooser theChooser = new JFileChooser();
+        theChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        theChooser.setFileFilter(theFiler);
+        theChooser.setSelectedFile(component.currentEditingFile);
+        if (theChooser.showSaveDialog(getDetailComponent()) == JFileChooser.APPROVE_OPTION) {
 
-		}
-	}
+            File theFile = theFiler.getCompletedFile(theChooser
+                    .getSelectedFile());
+            executeSaveToFile(theFile);
 
-	private void executeSaveToFile(File aFile) {
+        }
+    }
 
-		DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-		Date theNow = new Date();
+    private void executeSaveToFile(File aFile) {
 
-		PrintWriter theWriter = null;
-		try {
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date theNow = new Date();
 
-			Model theModel = component.getModel();
+        PrintWriter theWriter = null;
+        try {
 
-			component.setIntelligentLayoutEnabled(false);
+            Model theModel = component.getModel();
 
-			if (aFile.exists()) {
-				File theBakFile = new File(aFile.toString() + "_"
-						+ theFormat.format(theNow));
-				aFile.renameTo(theBakFile);
-			}
+            component.setIntelligentLayoutEnabled(false);
 
-			ModelIOUtilities.getInstance().serializeModelToXML(
-					theModel,
-					new OutputStreamWriter(new FileOutputStream(aFile),
-							PlatformConfig.getXMLEncoding()));
+            if (aFile.exists()) {
+                File theBakFile = new File(aFile.toString() + "_"
+                        + theFormat.format(theNow));
+                aFile.renameTo(theBakFile);
+            }
 
-			getWorldConnector().initTitle();
+            ModelIOUtilities.getInstance().serializeModelToXML(
+                    theModel,
+                    new OutputStreamWriter(new FileOutputStream(aFile),
+                            PlatformConfig.getXMLEncoding()));
 
-			ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
+            getWorldConnector().initTitle();
 
-			component.updateRecentlyUsedMenuEntries();
+            ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
 
-			if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
-				HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel
-						.getModificationTracker();
-				StatementList theStatements = theTracker
-						.getNotSavedStatements();
-				if (theStatements.size() > 0) {
-					StringBuilder theFileName = new StringBuilder(aFile
-							.toString());
-					int p = theFileName.lastIndexOf(".");
-					if (p > 0) {
+            component.updateRecentlyUsedMenuEntries();
 
-						SQLGenerator theGenerator = theModel.getDialect()
-								.createSQLGenerator();
+            if (theModel.getModificationTracker() instanceof HistoryModificationTracker) {
+                HistoryModificationTracker theTracker = (HistoryModificationTracker) theModel
+                        .getModificationTracker();
+                StatementList theStatements = theTracker
+                        .getNotSavedStatements();
+                if (theStatements.size() > 0) {
+                    StringBuilder theFileName = new StringBuilder(aFile
+                            .toString());
+                    int p = theFileName.lastIndexOf(".");
+                    if (p > 0) {
 
-						theFileName = new StringBuilder(theFileName.substring(
-								0, p));
+                        SQLGenerator theGenerator = theModel.getDialect()
+                                .createSQLGenerator();
 
-						theFileName.insert(p, "_" + theFormat.format(theNow));
-						theFileName.append(".sql");
+                        theFileName = new StringBuilder(theFileName.substring(
+                                0, p));
 
-						theWriter = new PrintWriter(new File(theFileName
-								.toString()));
-						for (Statement theStatement : theStatements) {
-							theWriter.print(theStatement.getSql());
-							theWriter.println(theGenerator
-									.createScriptStatementSeparator());
-							theStatement.setSaved(true);
+                        theFileName.insert(p, "_" + theFormat.format(theNow));
+                        theFileName.append(".sql");
 
-						}
-					}
-				}
-			}
+                        theWriter = new PrintWriter(new File(theFileName
+                                .toString()));
+                        for (Statement theStatement : theStatements) {
+                            theWriter.print(theStatement.getSql());
+                            theWriter.println(theGenerator
+                                    .createScriptStatementSeparator());
+                            theStatement.setSaved(true);
 
-			component.setupViewFor(aFile);
-			getWorldConnector().setStatusText(
-					component.getResourceHelper().getText(
-							ERDesignerBundle.FILESAVED));
+                        }
+                    }
+                }
+            }
 
-		} catch (Exception e) {
-			getWorldConnector().notifyAboutException(e);
-		} finally {
-			if (theWriter != null) {
-				theWriter.close();
-			}
+            component.setupViewFor(aFile);
+            getWorldConnector().setStatusText(
+                    component.getResourceHelper().getText(
+                            ERDesignerBundle.FILESAVED));
 
-			component.setIntelligentLayoutEnabled(ApplicationPreferences
-					.getInstance().isIntelligentLayout());
-		}
-	}
+        } catch (Exception e) {
+            getWorldConnector().notifyAboutException(e);
+        } finally {
+            if (theWriter != null) {
+                theWriter.close();
+            }
+
+            component.setIntelligentLayoutEnabled(ApplicationPreferences
+                    .getInstance().isIntelligentLayout());
+        }
+    }
 }

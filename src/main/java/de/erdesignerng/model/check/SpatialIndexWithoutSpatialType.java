@@ -17,7 +17,13 @@
  */
 package de.erdesignerng.model.check;
 
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.IndexExpressionList;
+import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
 
 /**
  * Check for Foreign keys without an index (performance problem).

@@ -25,7 +25,11 @@ import de.erdesignerng.dialect.sql92.SQL92Dialect;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.Locale;
 
 /**

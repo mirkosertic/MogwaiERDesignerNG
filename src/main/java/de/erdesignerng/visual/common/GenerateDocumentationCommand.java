@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -33,55 +33,56 @@ import java.io.OutputStreamWriter;
 
 public class GenerateDocumentationCommand extends UICommand {
 
-	private final File JRXMLFile;
+    private final File JRXMLFile;
 
-	public GenerateDocumentationCommand(ERDesignerComponent component, File aJRXMLFile) {
-		super(component);
-		JRXMLFile = aJRXMLFile;
-	}
+    public GenerateDocumentationCommand(File aJRXMLFile) {
+        JRXMLFile = aJRXMLFile;
+    }
 
-	@Override
-	public void execute() {
-		if (!component.checkForValidConnection()) {
-			return;
-		}
+    @Override
+    public void execute() {
+        final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
-		LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(getWorldConnector()) {
+        if (!component.checkForValidConnection()) {
+            return;
+        }
 
-			@Override
-			public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
+        LongRunningTask<JasperPrint> theTask = new LongRunningTask<JasperPrint>(getWorldConnector()) {
 
-				aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
+            @Override
+            public JasperPrint doWork(MessagePublisher aMessagePublisher) throws Exception {
 
-				ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
-				File theTempFile = File.createTempFile("mogwai", ".mxm");
-				theUtils.serializeModelToXML(component.getModel(), new OutputStreamWriter(new FileOutputStream(theTempFile),PlatformConfig.getXMLEncoding()));
+                aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP1));
 
-				aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
+                ModelIOUtilities theUtils = ModelIOUtilities.getInstance();
+                File theTempFile = File.createTempFile("mogwai", ".mxm");
+                theUtils.serializeModelToXML(component.getModel(), new OutputStreamWriter(new FileOutputStream(theTempFile), PlatformConfig.getXMLEncoding()));
 
-				JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, JRXMLFile);
+                aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP2));
 
-				aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
+                JasperPrint thePrint = JasperUtils.runJasperReport(theTempFile, JRXMLFile);
 
-				return thePrint;
-			}
+                aMessagePublisher.publishMessage(component.getResourceHelper().getText(ERDesignerBundle.DOCSTEP3));
 
-			@Override
-			public void handleResult(JasperPrint aResult) {
+                return thePrint;
+            }
 
-				JRViewer theViewer = new JRViewer(aResult);
+            @Override
+            public void handleResult(JasperPrint aResult) {
 
-				DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
-						ERDesignerBundle.CREATEDBDOCUMENTATION);
-				theResult.setContentPane(theViewer);
-				theResult.setMinimumSize(new Dimension(640, 480));
-				theResult.pack();
-				theViewer.setFitPageZoomRatio();
+                JRViewer theViewer = new JRViewer(aResult);
 
-				theResult.setVisible(true);
-			}
+                DefaultDialog theResult = new DefaultDialog(getDetailComponent(), component.getResourceHelper(),
+                        ERDesignerBundle.CREATEDBDOCUMENTATION);
+                theResult.setContentPane(theViewer);
+                theResult.setMinimumSize(new Dimension(640, 480));
+                theResult.pack();
+                theViewer.setFitPageZoomRatio();
 
-		};
-		theTask.start();
-	}
+                theResult.setVisible(true);
+            }
+
+        };
+        theTask.start();
+    }
 }
