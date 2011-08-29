@@ -278,28 +278,24 @@
             <artifactId>mogwai-looks</artifactId>
             <version>1.9.1-SNAPSHOT</version>
             <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-layout</artifactId>
             <version>1.2</version>
             <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>squirrelsql</groupId>
             <artifactId>squirrelsql-fw</artifactId>
             <version>2.6.6</version>
             <scope>provided</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>squirrelsql</groupId>
             <artifactId>squirrelsql-client</artifactId>
             <version>2.6.6</version>
             <scope>provided</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

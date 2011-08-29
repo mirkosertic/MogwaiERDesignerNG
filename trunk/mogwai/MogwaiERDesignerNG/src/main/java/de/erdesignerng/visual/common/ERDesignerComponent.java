@@ -32,12 +32,11 @@ import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
-import de.erdesignerng.visual.ExportType;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.export.Exporter;
-import de.erdesignerng.visual.export.ImageExporter;
-import de.erdesignerng.visual.export.SVGExporter;
-import de.erdesignerng.visual.tools.ToolEnum;
+import de.erdesignerng.visual.jgraph.JGraphEditor;
+import de.erdesignerng.visual.jgraph.export.Exporter;
+import de.erdesignerng.visual.jgraph.export.ImageExporter;
+import de.erdesignerng.visual.jgraph.export.SVGExporter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultCheckBox;
 import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
@@ -72,9 +71,9 @@ import java.util.Map;
  */
 public class ERDesignerComponent implements ResourceHelperProvider {
 
-    File currentEditingFile;
+    protected File currentEditingFile;
 
-    RepositoryEntryDescriptor currentRepositoryEntry;
+    protected RepositoryEntryDescriptor currentRepositoryEntry;
 
     private volatile Model model;
 
@@ -117,7 +116,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             new EditCustomTypesCommand(), this,
             ERDesignerBundle.CUSTOMTYPEEDITOR);
 
-    private JGraphEditor editor = new JGraphEditor();
+    private GenericModelEditor editor;
 
     private static ERDesignerComponent DEFAULT;
 
@@ -136,6 +135,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private ERDesignerComponent(ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
+
+        // Here we can switch to other editors
+        editor = new JGraphEditor();
 
         initActions();
 
@@ -389,7 +391,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 .getValue(DefaultAction.HOTKEY_KEY);
         if (theStroke != null) {
             theSaveItem.setAccelerator(theStroke);
-            editor.registerKeyboardAction(theSaveAction, theStroke,
+            getDetailComponent().registerKeyboardAction(theSaveAction, theStroke,
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
         }
 
@@ -664,8 +666,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         DefaultComboBoxModel theZoomModel = new DefaultComboBoxModel();
         theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
-        for (int i = 9; i > 0; i--) {
-            theZoomModel.addElement(new ZoomInfo(i * 10 + " %", ((double) i)
+        for (int i = 95; i > 0; i -= 5) {
+            theZoomModel.addElement(new ZoomInfo(i + " %", ((double) i)
                     / (double) 10));
         }
         zoomBox.setPreferredSize(new Dimension(100, 21));
@@ -731,7 +733,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         setupViewForNothing();
 
-        UIInitializer.getInstance().initialize(editor);
+        UIInitializer.getInstance().initialize(editor.getDetailComponent());
     }
 
     protected boolean checkForValidConnection() {
@@ -739,7 +741,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (model.getDialect() == null) {
             MessagesHelper
                     .displayErrorMessage(
-                            editor,
+                            getDetailComponent(),
                             getResourceHelper()
                                     .getText(
                                             ERDesignerBundle.PLEASEDEFINEADATABASECONNECTIONFIRST));
@@ -797,7 +799,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     /**
      * Update the subject area menu.
      */
-    protected void updateSubjectAreasMenu() {
+    public void updateSubjectAreasMenu() {
         subjectAreas.removeAll();
         subjectAreas.add(new DefaultMenuItem(new DefaultAction(
                 new ActionEventProcessor() {
@@ -1030,26 +1032,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
-
-        DefaultAction theAllInOneAction = new DefaultAction(
-                ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ALLINONEFILE);
-        DefaultMenuItem theAllInOneItem = new DefaultMenuItem(theAllInOneAction);
-        theAllInOneAction.addActionListener(new ExportGraphicsCommand(editor,
-                aExporter, ExportType.ALL_IN_ONE));
-        aMenu.add(theAllInOneItem);
-
-        DefaultAction theOnePerTableAction = new DefaultAction(
-                ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.ONEFILEPERTABLE);
-        DefaultMenuItem theOnePerTable = new DefaultMenuItem(
-                theOnePerTableAction);
-        theOnePerTableAction.addActionListener(new ExportGraphicsCommand(editor,
-                aExporter, ExportType.ONE_PER_FILE));
-
-        aMenu.add(theOnePerTable);
+        editor.addExportEntries(aMenu, aExporter);
     }
 
     public JComponent getDetailComponent() {
-        return editor;
+        return editor.getDetailComponent();
     }
 
     /**
