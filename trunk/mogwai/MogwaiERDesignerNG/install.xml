@@ -9,7 +9,6 @@
 			<author name="Owenm" email="owenm2001@users.sourceforge.net"/>
 			<author name="Dr. Death" email="dr-death2@users.sourceforge.net"/>
 			<author name="Jonathan Luckcuck" email="jluckcuck@users.sourceforge.net"/>
-
 		</authors>
 		<url>http://mogwai.sourceforge.net</url>
 		<javaversion>1.6</javaversion>
@@ -50,12 +49,15 @@
 		<pack name="Base" required="yes">
 			<description>Core</description>
 			<file src="LICENSE_MOGWAI.txt" targetdir="$INSTALL_PATH"/>
-			<file src="README_SQUIRREL.txt" targetdir="$INSTALL_PATH"/>
 			<file src="RELEASENOTES.txt" targetdir="$INSTALL_PATH"/>
 			<file src="run.bat" targetdir="$INSTALL_PATH"/>
+            <file src="run64.bat" targetdir="$INSTALL_PATH"/>
 			<file src="run.sh" targetdir="$INSTALL_PATH" os="unix"/>
+            <file src="run64.sh" targetdir="$INSTALL_PATH" os="unix"/>
 			<file src="run.sh" targetdir="$INSTALL_PATH" os="mac"/>
+            <file src="run64.sh" targetdir="$INSTALL_PATH" os="mac"/>
 			<file src="lib" targetdir="$INSTALL_PATH"/>
+            <file src="java3d" targetdir="$INSTALL_PATH"/>
 			<file src="reports" targetdir="$INSTALL_PATH"/>
 			<executable os="unix" targetfile="$INSTALL_PATH/run.sh"
 						stage="never"/>

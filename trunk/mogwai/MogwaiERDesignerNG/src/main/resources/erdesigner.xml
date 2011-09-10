@@ -796,9 +796,13 @@
             <Text lang="de">Neue Eltern Tabelle hier erstellen und verbinden</Text>
             <Text lang="en">Create new parent Table here and connect it</Text>
         </Entry>
-        <Entry id="EDITOR">
-            <Text lang="de">Editor</Text>
-            <Text lang="en">Editor</Text>
+        <Entry id="EDITOR2D">
+            <Text lang="de">2D Editor</Text>
+            <Text lang="en">2D Editor</Text>
+        </Entry>
+        <Entry id="EDITOR3D">
+            <Text lang="de">3D Editor</Text>
+            <Text lang="en">3D Editor</Text>
         </Entry>
         <Entry id="OUTLINE">
             <Text lang="de">Modellübersicht</Text>
@@ -1015,6 +1019,14 @@
         <Entry id="FULLTEXTINDEX">
             <Text lang="de">Volltext</Text>
             <Text lang="en">Fulltext</Text>
+        </Entry>
+        <Entry id="INCLUDEINCOMINGRELATIONS">
+            <Text lang="de">Zeige eingehende Relationen</Text>
+            <Text lang="en">Include incoming relations</Text>
+        </Entry>
+        <Entry id="INCLUDEOUTGOINGRELATIONS">
+            <Text lang="de">Zeige ausgehende Relationen</Text>
+            <Text lang="en">Include outgoing relations</Text>
         </Entry>
     </Bundle>
 </Resource>

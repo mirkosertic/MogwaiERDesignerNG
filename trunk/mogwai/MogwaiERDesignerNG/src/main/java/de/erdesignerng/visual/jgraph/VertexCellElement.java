@@ -18,12 +18,12 @@
 package de.erdesignerng.visual.jgraph;
 
 import de.mogwai.layout.graph.Element;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class VertexCellElement extends Element {
 

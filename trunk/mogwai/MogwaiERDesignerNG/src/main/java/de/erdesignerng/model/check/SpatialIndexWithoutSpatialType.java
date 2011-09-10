@@ -17,16 +17,10 @@
  */
 package de.erdesignerng.model.check;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.IndexExpressionList;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 
 /**
- * Check for Foreign keys without an index (performance problem).
+ * Check for spatial indexes without spatial datatype).
  */
 public class SpatialIndexWithoutSpatialType implements ModelCheck {
 
@@ -34,19 +28,21 @@ public class SpatialIndexWithoutSpatialType implements ModelCheck {
     public void check(Model aModel, ModelChecker aChecker) {
         for (Table theEntity : aModel.getTables()) {
             Index theIndex = theEntity.getPrimarykey();
-            if (theIndex.getIndexType().equals(IndexType.SPATIAL)) {
-                boolean hasSpatialType = false;
-                IndexExpressionList theExpressions = theIndex.getExpressions();
-                for (IndexExpression theExpression : theExpressions) {
-                    Attribute theAttribute = theExpression.getAttributeRef();
-                    if (theAttribute != null) {
-                        if (theAttribute.getDatatype().isSpatial()) {
-                            hasSpatialType = true;
+            if (theIndex != null) {
+                if (theIndex.getIndexType().equals(IndexType.SPATIAL)) {
+                    boolean hasSpatialType = false;
+                    IndexExpressionList theExpressions = theIndex.getExpressions();
+                    for (IndexExpression theExpression : theExpressions) {
+                        Attribute theAttribute = theExpression.getAttributeRef();
+                        if (theAttribute != null) {
+                            if (theAttribute.getDatatype().isSpatial()) {
+                                hasSpatialType = true;
+                            }
                         }
                     }
-                }
-                if (!hasSpatialType) {
-                    aChecker.addError(new ModelError("Spatial Index " + theEntity.getName() + "." + theIndex.getName() + " does not point to a spacial attribute"));
+                    if (!hasSpatialType) {
+                        aChecker.addError(new ModelError("Spatial Index " + theEntity.getName() + "." + theIndex.getName() + " does not point to a spacial attribute"));
+                    }
                 }
             }
         }

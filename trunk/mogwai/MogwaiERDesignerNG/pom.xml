@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sourceforge.mogwai</groupId>
     <artifactId>mogwai-erdesignerng</artifactId>
-    <name>MogwaiERDesignerNG</name>
-    <version>2.8.0-SNAPSHOT</version>
+    <name>Mogwai ERDesignerNG</name>
+    <version>3.0.0-M1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>Mogwai ER-Designer is an entity relationship design tool.</description>
     <parent>
@@ -105,6 +105,12 @@
                                         <include name="**/*.pdf"/>
                                     </fileset>
                                 </copy>
+                                <copy todir="${staging.dir}/java3d">
+                                    <fileset dir="${basedir}/java3d">
+                                        <include name="**/*.dll"/>
+                                        <include name="**/*.so"/>
+                                    </fileset>
+                                </copy>
                                 <copy todir="${staging.dir}/reports">
                                     <fileset dir="${basedir}/reports">
                                         <include name="**/*.jasper"/>
@@ -141,7 +147,6 @@
                         </goals>
                         <configuration>
                             <excludeGroupIds>org.codehaus.izpack</excludeGroupIds>
-                            <excludeArtifactIds>mogwai-squirrelplugin</excludeArtifactIds>
                             <outputDirectory>${staging.dir}/lib</outputDirectory>
                             <includeScope>runtime</includeScope>
                         </configuration>
@@ -178,7 +183,6 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>assembly-squirrelplugin.xml</descriptor>
                         <descriptor>assembly-plain.xml</descriptor>
                     </descriptors>
                 </configuration>
@@ -217,6 +221,21 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>j3d-core</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>j3d-core-utils</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>vecmath</artifactId>
+            <version>1.5.2</version>
+        </dependency>
         <dependency>
             <groupId>batik</groupId>
             <artifactId>batik-svggen</artifactId>
