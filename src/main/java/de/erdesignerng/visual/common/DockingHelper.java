@@ -98,6 +98,10 @@ public class DockingHelper extends DockingWindowAdapter implements
                     if (!(theSplit.getLeftWindow() instanceof TabWindow)) {
                         layoutRestored = false;
                         LOGGER.warn("Workbench layout will be defaulted");
+                    } else {
+                        TabWindow theWindow = (TabWindow) theSplit.getLeftWindow();
+                        theWindow.getTabWindowProperties().getCloseButtonProperties().setVisible(false);
+                        theWindow.getTabWindowProperties().getUndockButtonProperties().setVisible(false);
                     }
                 }
 
@@ -106,7 +110,10 @@ public class DockingHelper extends DockingWindowAdapter implements
                             theViews[1], theViews[2]);
 
                     TabWindow theLeftWindow = new TabWindow(new DockingWindow[] {theViews[0], theViews[3]});
-                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
+                    theLeftWindow.getTabWindowProperties().getCloseButtonProperties().setVisible(false);
+                    theLeftWindow.getTabWindowProperties().getUndockButtonProperties().setVisible(false);
+
+                    theLeftWindow.getTabWindowProperties().getCloseButtonProperties().setVisible(false);                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
                             theLeftWindow, theRightWindow);
                     rootWindow.setWindow(theSplitWindow);
                 }
