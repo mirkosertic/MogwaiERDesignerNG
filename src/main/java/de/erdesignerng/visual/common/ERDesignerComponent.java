@@ -666,7 +666,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theZoomModel.addElement(ZOOMSCALE_HUNDREDPERCENT);
         for (int i = 95; i > 0; i -= 5) {
             theZoomModel.addElement(new ZoomInfo(i + " %", ((double) i)
-                    / (double) 10));
+                    / (double) 100));
         }
         zoomBox.setPreferredSize(new Dimension(100, 21));
         zoomBox.setMaximumSize(new Dimension(100, 21));
