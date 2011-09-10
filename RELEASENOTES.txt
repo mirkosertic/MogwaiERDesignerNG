@@ -255,8 +255,9 @@ Release 2.7.0
 * Implemented FR 3158981 [ERDesignerNG] Add SQL Browser the the UI
 * Bug Fixing 3056071 [ERDesignerNG] postgres unkown datatype prevent reverse eng.
 
-Release 2.8.0
+Release 3.0.0
 
+* Added first version of 3D Model Editor
 * Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
 * Implemented FR 2895576 [ERDesignerNG] TableSelectEditor devide tab
 * Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd (re-introduced by buggy commit in v1072)

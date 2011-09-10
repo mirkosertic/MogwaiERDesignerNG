@@ -17,28 +17,15 @@
  */
 package de.erdesignerng.visual.jgraph;
 
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
+import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.erdesignerng.visual.editor.comment.CommentEditor;
-import de.erdesignerng.visual.editor.relation.RelationEditor;
-import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
-import de.erdesignerng.visual.editor.table.TableEditor;
-import de.erdesignerng.visual.editor.view.ViewEditor;
-import de.erdesignerng.visual.jgraph.cells.CommentCell;
-import de.erdesignerng.visual.jgraph.cells.RelationEdge;
-import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
-import de.erdesignerng.visual.jgraph.cells.TableCell;
-import de.erdesignerng.visual.jgraph.cells.ViewCell;
+import de.erdesignerng.visual.jgraph.cells.*;
+import java.awt.Component;
+import java.util.EventObject;
+import javax.swing.JComponent;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphCellEditor;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.EventObject;
 
 /**
  * @author $Author: mirkosertic $
@@ -52,36 +39,28 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
             TableCell theCell = (TableCell) aValue;
 
             Table theTable = (Table) theCell.getUserObject();
-            TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
-            theEditor.initializeFor(theTable);
-            return theEditor;
+            return EditorFactory.createEditorFor(theTable, aParent);
         }
 
         if (aValue instanceof ViewCell) {
             ViewCell theCell = (ViewCell) aValue;
 
             View theTable = (View) theCell.getUserObject();
-            ViewEditor theEditor = new ViewEditor(theTable.getOwner(), aParent);
-            theEditor.initializeFor(theTable);
-            return theEditor;
+            return EditorFactory.createEditorFor(theTable, aParent);
         }
 
         if (aValue instanceof SubjectAreaCell) {
             SubjectAreaCell theCell = (SubjectAreaCell) aValue;
 
             SubjectArea theSubjectArea = (SubjectArea) theCell.getUserObject();
-            SubjectAreaEditor theEditor = new SubjectAreaEditor(aParent);
-            theEditor.initializeFor(theSubjectArea);
-            return theEditor;
+            return EditorFactory.createEditorFor(theSubjectArea, aParent);
         }
 
         if (aValue instanceof CommentCell) {
             CommentCell theCell = (CommentCell) aValue;
 
             Comment theComment = (Comment) theCell.getUserObject();
-            CommentEditor theEditor = new CommentEditor(theComment.getOwner(), aParent);
-            theEditor.initializeFor(theComment);
-            return theEditor;
+            return EditorFactory.createEditorFor(theComment, aParent);
         }
 
         if (aValue instanceof RelationEdge) {
@@ -89,13 +68,10 @@ public class CellEditorFactory extends DefaultGraphCellEditor {
 
             Relation theRelation = (Relation) theCell.getUserObject();
 
-            RelationEditor theEditor = new RelationEditor(theRelation.getOwner(), aParent);
-            theEditor.initializeFor(theRelation);
-
-            return theEditor;
+            return EditorFactory.createEditorFor(theRelation, aParent);
         }
 
-        throw new IllegalArgumentException("Cannot create editor for " + aValue.getClass());
+        throw new IllegalArgumentException("Cannot create editor for " + aValue);
     }
 
     @Override
