@@ -18,6 +18,7 @@ This software uses or is based on the following libraries:
   Apache Batik ( www.apache.org )  
   JGraph ( www.jgraph.com )  
   JGoodies ( www.jgoodies.com )
+  Java3D
   JasperReports ( http://jasperforge.org )  
   Some stuff from java.net ( https://www.dev.java.net )
   InfoNode Docking Windows GPL Version ( http://www.infonode.net/index.html?idw )
