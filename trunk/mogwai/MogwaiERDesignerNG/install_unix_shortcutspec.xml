@@ -3,7 +3,7 @@
 	<programGroup defaultName="Mogwai/ER-DesignerNG"
 		location="startMenu" />
 
-	<shortcut name="ERDesigner NG" programGroup="yes" desktop="no"
+	<shortcut name="ERDesigner NG for 32 Bit Systems" programGroup="yes" desktop="no"
 		applications="no" startMenu="yes" startup="no"
 		target="$INSTALL_PATH/run.sh" commandLine=""
 		workingDirectory="$INSTALL_PATH" description="" type="Application"
@@ -11,6 +11,15 @@
 		initialState="normal">
 		<createForPack name="Base" />
 	</shortcut>
+
+    <shortcut name="ERDesigner NG for 64 Bit Systems" programGroup="yes" desktop="no"
+        applications="no" startMenu="yes" startup="no"
+        target="$INSTALL_PATH/run64.sh" commandLine=""
+        workingDirectory="$INSTALL_PATH" description="" type="Application"
+        encoding="UTF-8" terminal="true" KdeSubstUID="false"
+        initialState="normal">
+        <createForPack name="Base" />
+    </shortcut>
 
 	<shortcut name="Documentation" programGroup="yes" desktop="no"
 		applications="no" startMenu="yes" startup="no" target="acroread"
