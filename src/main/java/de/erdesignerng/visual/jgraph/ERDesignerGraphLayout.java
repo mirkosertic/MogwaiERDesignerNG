@@ -25,18 +25,12 @@ import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
 import de.erdesignerng.visual.jgraph.cells.views.RelationEdgeView;
 import de.mogwai.layout.ElectricSpringLayout;
 import de.mogwai.layout.graph.Spring;
+import java.awt.geom.Rectangle2D;
+import java.util.*;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
-
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElement, CellView> {
 
