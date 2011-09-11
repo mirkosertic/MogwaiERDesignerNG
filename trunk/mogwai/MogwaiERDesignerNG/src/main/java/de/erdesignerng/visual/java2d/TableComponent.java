@@ -68,6 +68,7 @@ public class TableComponent extends JPanel {
         FontMetrics theMetrics = getFontMetrics(getFont());
 
         theGraphics.setColor(Color.blue);
+
         theGraphics.drawRect(10, 10, theSize.width - 10, theSize.height - 10);
         theGraphics.drawRect(10, 10, theSize.width - 10, 10 + theMetrics.getAscent());
 
