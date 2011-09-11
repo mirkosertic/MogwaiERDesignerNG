@@ -35,22 +35,21 @@ import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
+import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
+import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.i18n.ResourceHelper;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.media.j3d.*;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.vecmath.Color3f;
 import javax.vecmath.Color4f;
 import javax.vecmath.Point3d;
@@ -75,6 +74,7 @@ public class Java3DEditor {
     private JLabel currentElement;
     private Model model;
     private ModelItem selectedModelItem;
+    private BufferedImage selectedModelItemRendererComponent;
     private Texture nodeTexture;
 
     private class UserObjectInfo {
@@ -87,6 +87,117 @@ public class Java3DEditor {
             zlevel = aZLevel;
         }
 
+    }
+
+    private class MouseNavigationBehavior extends Behavior {
+
+        private WakeupCondition wakeupCondition;
+
+        public MouseNavigationBehavior() {
+            WakeupOnAWTEvent mouseMoveCondition = new WakeupOnAWTEvent(MouseEvent.MOUSE_MOVED);
+            WakeupOnAWTEvent mouseClickCondition = new WakeupOnAWTEvent(MouseEvent.MOUSE_CLICKED);
+            wakeupCondition = new WakeupOr(new WakeupCriterion[]{mouseMoveCondition, mouseClickCondition});
+        }
+
+        @Override
+        public void initialize() {
+            wakeupOn(wakeupCondition);
+        }
+
+        @Override
+        public void processStimulus(Enumeration enumeration) {
+            WakeupCriterion wakeup;
+            AWTEvent[] events;
+            MouseEvent evt;
+
+            while (enumeration.hasMoreElements()) {
+                wakeup = (WakeupCriterion) enumeration.nextElement();
+                if (wakeup instanceof WakeupOnAWTEvent) {
+                    events = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
+                    if (events.length > 0) {
+                        evt = (MouseEvent) events[events.length - 1];
+                        doProcess(evt);
+                    }
+                }
+            }
+            wakeupOn(wakeupCondition);
+        }
+
+        private void doProcess(MouseEvent e) {
+            switch (e.getID()) {
+                case MouseEvent.MOUSE_MOVED:
+                    mouseMoved(e);
+                    break;
+                case MouseEvent.MOUSE_CLICKED:
+                    mouseClicked(e);
+                    break;
+            }
+        }
+
+        private void mouseClicked(MouseEvent e) {
+
+            pickCanvas.setShapeLocation(e);
+            PickResult result = pickCanvas.pickClosest();
+            if (result != null) {
+                Primitive p = (Primitive) result.getNode(PickResult.PRIMITIVE);
+                if (p != null) {
+                    if (p.getUserData() instanceof UserObjectInfo) {
+                        UserObjectInfo theItem = (UserObjectInfo) p.getUserData();
+                        if (!SwingUtilities.isRightMouseButton(e)) {
+                            if (e.getClickCount() == 2) {
+                                editModelItem(theItem.item);
+                            } else {
+                                OutlineComponent.getDefault().setSelectedItem(theItem.item);
+                            }
+                        } else {
+                            // Context Menue anzeigen
+                        }
+                    }
+                }
+            }
+        }
+
+        private void mouseMoved(MouseEvent e) {
+
+            selectedModelItemRendererComponent = null;
+            currentElement.setText("");
+
+            pickCanvas.setShapeLocation(e);
+            PickResult result = pickCanvas.pickClosest();
+            if (result != null) {
+                Primitive p = (Primitive) result.getNode(PickResult.PRIMITIVE);
+                if (p != null) {
+                    if (p.getUserData() instanceof UserObjectInfo) {
+                        UserObjectInfo theItem = (UserObjectInfo) p.getUserData();
+                        currentElement.setText(theItem.item.getName());
+
+                        JComponent theRenderer = null;
+                        if (theItem.item instanceof Table) {
+                            theRenderer = new TableCellView.MyRenderer().getRendererComponent((Table) theItem.item);
+                        }
+                        if (theItem.item instanceof View) {
+                            theRenderer = new ViewCellView.MyRenderer().getRendererComponent((View) theItem.item);
+                        }
+
+                        if (theRenderer != null) {
+                            Dimension theComponentSize = theRenderer.getPreferredSize();
+                            theRenderer.setSize(theComponentSize);
+                            theRenderer.setOpaque(false);
+
+                            selectedModelItemRendererComponent = new BufferedImage(theComponentSize.width, theComponentSize.height,
+                                    BufferedImage.TYPE_INT_RGB);
+                            Graphics2D theFrontGraphics = (Graphics2D) selectedModelItemRendererComponent.getGraphics();
+                            theRenderer.paint(theFrontGraphics);
+                        }
+                    }
+                }
+            }
+
+            // Repaint triggern
+            Transform3D theTransform = new Transform3D();
+            modelGroup.getTransform(theTransform);
+            modelGroup.setTransform(theTransform);
+        }
     }
 
     public Java3DEditor() {
@@ -105,12 +216,26 @@ public class Java3DEditor {
                 String theTitle = "(c) " + resourceHelper.getText(ERDesignerBundle.TITLE) + " "
                         + theVersion + " ";
 
-
                 g.setFont(new Font("Helvetica", Font.PLAIN, 12));
                 g.drawString(theTitle, 10, 20);
+
+                if (selectedModelItemRendererComponent != null && false) {
+                    int width = canvas.getWidth() / 2;
+                    int height = canvas.getHeight() / 2;
+
+                    int imageWidth = selectedModelItemRendererComponent.getWidth();
+                    int imageHeight = selectedModelItemRendererComponent.getHeight();
+                    width -= imageWidth / 2;
+                    height -= imageHeight / 2;
+
+                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
+                    g.drawImage(selectedModelItemRendererComponent, width, height, null);
+                }
+
                 g.flush(true);
             }
         };
+        canvas.setDoubleBufferEnable(true);
 
         // Create the universe
         universe = new SimpleUniverse(canvas);
@@ -132,10 +257,14 @@ public class Java3DEditor {
 
         rootGroup.addChild(modelGroup);
 
-        MouseRotate theRotate = new MouseRotate();
-        theRotate.setSchedulingBounds(new BoundingSphere());
-        theRotate.setTransformGroup(modelGroup);
-        rootGroup.addChild(theRotate);
+        MouseRotate theRotationBehavior = new MouseRotate();
+        theRotationBehavior.setSchedulingBounds(new BoundingSphere());
+        theRotationBehavior.setTransformGroup(modelGroup);
+        rootGroup.addChild(theRotationBehavior);
+
+        MouseNavigationBehavior theNavigationBehavior = new MouseNavigationBehavior();
+        theNavigationBehavior.setSchedulingBounds(new BoundingSphere());
+        rootGroup.addChild(theNavigationBehavior);
 
         rootGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         rootGroup.setCapability(Group.ALLOW_CHILDREN_READ);
@@ -153,57 +282,6 @@ public class Java3DEditor {
 
         pickCanvas = new PickCanvas(canvas, rootGroup);
         pickCanvas.setMode(PickCanvas.GEOMETRY);
-
-        canvas.addMouseMotionListener(new MouseAdapter() {
-
-            @Override
-            public void mouseMoved(final MouseEvent me) {
-                super.mouseMoved(me);
-
-                currentElement.setText("");
-
-                pickCanvas.setShapeLocation(me);
-                PickResult result = pickCanvas.pickClosest();
-                if (result != null) {
-                    Primitive p = (Primitive) result.getNode(PickResult.PRIMITIVE);
-                    if (p != null) {
-                        if (p.getUserData() instanceof UserObjectInfo) {
-                            UserObjectInfo theItem = (UserObjectInfo) p.getUserData();
-                            currentElement.setText(theItem.item.getName());
-                        }
-                    }
-                }
-            }
-        });
-        canvas.addMouseListener(new MouseAdapter() {
-
-            private void handle(MouseEvent e, ModelItem aItem) {
-                if (!SwingUtilities.isRightMouseButton(e)) {
-                    if (e.getClickCount() == 2) {
-                        editModelItem(aItem);
-                    } else {
-                        OutlineComponent.getDefault().setSelectedItem(aItem);
-                    }
-                } else {
-                    // Context Menue anzeigen
-                }
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                pickCanvas.setShapeLocation(e);
-                PickResult result = pickCanvas.pickClosest();
-                if (result != null) {
-                    Primitive p = (Primitive) result.getNode(PickResult.PRIMITIVE);
-                    if (p != null) {
-                        if (p.getUserData() instanceof UserObjectInfo) {
-                            UserObjectInfo theItem = (UserObjectInfo) p.getUserData();
-                            handle(e, theItem.item);
-                        }
-                    }
-                }
-            }
-        });
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -229,7 +307,7 @@ public class Java3DEditor {
         includeOutgoing.setSelected(true);
         includeOutgoing.addActionListener(theUpdateActionListener);
 
-        currentElement.setMinimumSize(new Dimension(300,21));
+        currentElement.setMinimumSize(new Dimension(300, 21));
         currentElement.setPreferredSize(new Dimension(300, 21));
 
         bottom.add(currentElement);
@@ -299,7 +377,7 @@ public class Java3DEditor {
 
         int height = (int) aSize.getHeight();
         int width = (int) aSize.getWidth();
-        int padding = (width - (int)theDimension.getWidth()) / 2;
+        int padding = (width - (int) theDimension.getWidth()) / 2;
 
         BufferedImage theFrontImage = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_RGB);
@@ -315,7 +393,7 @@ public class Java3DEditor {
 
         if (nodeTexture == null) {
             TextureLoader theTextureLoader = new TextureLoader(theFrontImage, "RGB",
-                TextureLoader.ALLOW_NON_POWER_OF_TWO);
+                    TextureLoader.ALLOW_NON_POWER_OF_TWO);
             nodeTexture = theTextureLoader.getTexture();
             nodeTexture.setBoundaryModeS(Texture.CLAMP_TO_BOUNDARY);
             nodeTexture.setBoundaryModeT(Texture.CLAMP_TO_BOUNDARY);
@@ -438,6 +516,7 @@ public class Java3DEditor {
 
         model = aModel;
         selectedModelItem = null;
+        selectedModelItemRendererComponent = null;
 
         if (aSelectedObject instanceof Table) {
 

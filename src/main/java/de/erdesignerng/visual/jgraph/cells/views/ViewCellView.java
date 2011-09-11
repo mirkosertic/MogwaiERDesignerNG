@@ -24,22 +24,18 @@ import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.cells.ViewCell;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.commons.lang.StringUtils;
-import org.jgraph.JGraph;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.CellViewRenderer;
-import org.jgraph.graph.GraphCellEditor;
-import org.jgraph.graph.VertexRenderer;
-import org.jgraph.graph.VertexView;
-
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.swing.JComponent;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
+import org.jgraph.JGraph;
+import org.jgraph.graph.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -227,7 +223,7 @@ public class ViewCellView extends VertexView {
             return this;
         }
 
-        public Component getRendererComponent(View aView) {
+        public JComponent getRendererComponent(View aView) {
             view = aView;
             selected = false;
 
