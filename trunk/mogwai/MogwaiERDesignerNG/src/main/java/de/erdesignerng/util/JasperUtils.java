@@ -17,22 +17,17 @@
  */
 package de.erdesignerng.util;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JRQuery;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Utility class to deal with jasper reports.
@@ -44,22 +39,24 @@ public final class JasperUtils {
 
     private static void findReports(Map<File, String> aReportMap, File aDirectory) throws JRException {
         Thread.currentThread().setContextClassLoader(JasperUtils.class.getClassLoader());
-        for (File theFile : aDirectory.listFiles()) {
-            String theName = theFile.getName();
-            if (theName.endsWith(".jrxml") && (theName.indexOf("_") < 0)) {
-                try {
-                    JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theFile));
-                    String theReportName = theDesign.getName();
-                    if (!StringUtils.isEmpty(theReportName)) {
-                        aReportMap.put(theFile, theReportName);
+        if (aDirectory != null && aDirectory.exists() && aDirectory.canRead()) {
+            for (File theFile : aDirectory.listFiles()) {
+                String theName = theFile.getName();
+                if (theName.endsWith(".jrxml") && (theName.indexOf("_") < 0)) {
+                    try {
+                        JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theFile));
+                        String theReportName = theDesign.getName();
+                        if (!StringUtils.isEmpty(theReportName)) {
+                            aReportMap.put(theFile, theReportName);
+                        }
+                    } catch (FileNotFoundException e) {
+                        // This cannot happen
                     }
-                } catch (FileNotFoundException e) {
-                    // This cannot happen
-                }
 
-            } else {
-                if ((theFile.isDirectory()) && (!".".equals(theName)) && (!"..".equals(theName))) {
-                    findReports(aReportMap, theFile);
+                } else {
+                    if ((theFile.isDirectory()) && (!".".equals(theName)) && (!"..".equals(theName))) {
+                        findReports(aReportMap, theFile);
+                    }
                 }
             }
         }
