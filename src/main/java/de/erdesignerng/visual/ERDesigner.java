@@ -19,12 +19,11 @@ package de.erdesignerng.visual;
 
 import de.erdesignerng.dialect.DataTypeIO;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
-import org.xml.sax.SAXException;
-
-import javax.swing.*;
+import java.io.IOException;
+import javax.swing.JFrame;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.IOException;
+import org.xml.sax.SAXException;
 
 /**
  * @author $Author: mirkosertic $
@@ -42,7 +41,7 @@ public final class ERDesigner {
 			SAXException {
 
 		// Disable D3D rendering pipeline
-		System.setProperty("sun.java2d.d3d", "false");
+		//System.setProperty("sun.java2d.d3d", "false");
 
 		DefaultSplashScreen theScreen = new DefaultSplashScreen(
 				"/de/erdesignerng/splashscreen.jpg");
