@@ -75,6 +75,7 @@ public class Java3DEditor {
     private JLabel currentElement;
     private Model model;
     private ModelItem selectedModelItem;
+    private Texture nodeTexture;
 
     private class UserObjectInfo {
 
@@ -267,16 +268,14 @@ public class Java3DEditor {
         return mainPanel;
     }
 
-    public Node createElement(ModelItem aItem, List<ModelItem> aOnSameLevel, float aZLevel) {
-
+    private Dimension computeDimensionFor(ModelItem aItem, List<Table> aItems) {
         Font theFont = new Font("Helvetica", Font.PLAIN, 60);
         FontMetrics theMetrics = canvas.getFontMetrics(theFont);
         Rectangle2D theDimension = theMetrics.getStringBounds(aItem.getName(), canvas.getGraphics());
         int maxWidth = (int) theDimension.getWidth();
-        int mywidth = maxWidth;
         int maxHeight = (int) theDimension.getHeight();
-        if (aOnSameLevel != null) {
-            for (ModelItem theItem : aOnSameLevel) {
+        if (aItems != null) {
+            for (ModelItem theItem : aItems) {
                 theDimension = theMetrics.getStringBounds(theItem.getName(), canvas.getGraphics());
                 if (theDimension.getWidth() > maxWidth) {
                     maxWidth = (int) theDimension.getWidth();
@@ -286,11 +285,21 @@ public class Java3DEditor {
                 }
             }
         }
-
-
         int height = 80;
         int width = 80 + (height * maxWidth / maxHeight);
-        int padding = (width - mywidth) / 2;
+
+        return new Dimension(width, height);
+    }
+
+    public Node createElement(ModelItem aItem, Dimension aSize, float aZLevel) {
+
+        Font theFont = new Font("Helvetica", Font.PLAIN, 60);
+        FontMetrics theMetrics = canvas.getFontMetrics(theFont);
+        Rectangle2D theDimension = theMetrics.getStringBounds(aItem.getName(), canvas.getGraphics());
+
+        int height = (int) aSize.getHeight();
+        int width = (int) aSize.getWidth();
+        int padding = (width - (int)theDimension.getWidth()) / 2;
 
         BufferedImage theFrontImage = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_RGB);
@@ -299,36 +308,38 @@ public class Java3DEditor {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         GradientPaint theBackgroundPaint = new GradientPaint(0, 0, new Color(0, 148, 255), width, height,
-                new Color(0, 38, 255));
+                new Color(0, 38, 255), false);
         theFrontGraphics.setPaint(theBackgroundPaint);
         theFrontGraphics.fillRect(0, 0, width, height);
         theFrontGraphics.setPaint(Color.black);
 
-        TextureLoader theTextureLoader = new TextureLoader(theFrontImage, "RGB",
+        if (nodeTexture == null) {
+            TextureLoader theTextureLoader = new TextureLoader(theFrontImage, "RGB",
                 TextureLoader.ALLOW_NON_POWER_OF_TWO);
-        Texture theBackTexture = theTextureLoader.getTexture();
-        theBackTexture.setBoundaryModeS(Texture.CLAMP_TO_BOUNDARY);
-        theBackTexture.setBoundaryModeT(Texture.CLAMP_TO_BOUNDARY);
-        theBackTexture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.5f, 0f));
+            nodeTexture = theTextureLoader.getTexture();
+            nodeTexture.setBoundaryModeS(Texture.CLAMP_TO_BOUNDARY);
+            nodeTexture.setBoundaryModeT(Texture.CLAMP_TO_BOUNDARY);
+            nodeTexture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.5f, 0f));
+        }
 
         TextureAttributes theBackTextureAttribute = new TextureAttributes();
         theBackTextureAttribute.setTextureMode(TextureAttributes.MODULATE);
 
         Appearance theBackAppearance = new Appearance();
         theBackAppearance.setTextureAttributes(theBackTextureAttribute);
-        theBackAppearance.setTexture(theBackTexture);
+        theBackAppearance.setTexture(nodeTexture);
 
         // Vordergrund mit Text
         theFrontGraphics.setFont(theFont);
         theFrontGraphics.setColor(new Color(229, 235, 232));
         theFrontGraphics.drawString(aItem.getName(), padding, theMetrics.getAscent());
 
-        theTextureLoader = new TextureLoader(theFrontImage, "RGB",
+        TextureLoader theTextureLoader = new TextureLoader(theFrontImage, "RGB",
                 TextureLoader.ALLOW_NON_POWER_OF_TWO);
         Texture theFrontTexture = theTextureLoader.getTexture();
-        theBackTexture.setBoundaryModeS(Texture.CLAMP_TO_BOUNDARY);
-        theBackTexture.setBoundaryModeT(Texture.CLAMP_TO_BOUNDARY);
-        theBackTexture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.5f, 0f));
+        theFrontTexture.setBoundaryModeS(Texture.CLAMP_TO_BOUNDARY);
+        theFrontTexture.setBoundaryModeT(Texture.CLAMP_TO_BOUNDARY);
+        theFrontTexture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.5f, 0f));
 
         TextureAttributes theFrontTextureAttribute = new TextureAttributes();
         theFrontTextureAttribute.setTextureMode(TextureAttributes.MODULATE);
@@ -401,15 +412,22 @@ public class Java3DEditor {
         return theReturn;
     }
 
-
-    private List<ModelItem> getRelationsFor(Model aModel, ModelItem aTable, List<ModelItem> aElementsToIgnore) {
-        List<ModelItem> theResult = new ArrayList<ModelItem>();
-        for (Relation theRelation : aModel.getRelations()) {
-            if (includeIncoming.isSelected() && theRelation.getImportingTable() == aTable && !aElementsToIgnore.contains(theRelation.getExportingTable()) && !theResult.contains(theRelation.getExportingTable())) {
-                theResult.add(theRelation.getExportingTable());
+    private List<Table> getRelationsFor(Model aModel, Table aTable, List<Table> aElementsToIgnore) {
+        List<Table> theResult = new ArrayList<Table>();
+        if (includeIncoming.isSelected()) {
+            for (Relation theRelation : aModel.getRelations().getForeignKeysFor(aTable)) {
+                Table theTable = theRelation.getExportingTable();
+                if (!aElementsToIgnore.contains(theTable) && !theResult.contains(theTable)) {
+                    theResult.add(theTable);
+                }
             }
-            if (includeOutgoing.isSelected() && theRelation.getExportingTable() == aTable && !aElementsToIgnore.contains(theRelation.getImportingTable()) && !theResult.contains(theRelation.getImportingTable())) {
-                theResult.add(theRelation.getImportingTable());
+        }
+        if (includeOutgoing.isSelected()) {
+            for (Relation theRelation : aModel.getRelations().getExportedKeysFor(aTable)) {
+                Table theTable = theRelation.getImportingTable();
+                if (!aElementsToIgnore.contains(theTable) && !theResult.contains(theTable)) {
+                    theResult.add(theTable);
+                }
             }
         }
         return theResult;
@@ -426,9 +444,10 @@ public class Java3DEditor {
             Table theTable = (Table) aSelectedObject;
             selectedModelItem = theTable;
 
-            modelGroup.addChild(Helper.addElementAt(createElement(theTable, null, 0f), new Vector3f(0f, 0f, 0f), 1f));
+            Dimension theSizeLevel0 = computeDimensionFor(theTable, null);
+            modelGroup.addChild(Helper.addElementAt(createElement(theTable, theSizeLevel0, 0f), new Vector3f(0f, 0f, 0f), 1f));
 
-            List<ModelItem> theObjectsToIgnore = new ArrayList<ModelItem>();
+            List<Table> theObjectsToIgnore = new ArrayList<Table>();
             theObjectsToIgnore.add(theTable);
 
             float r1 = 0.5f;
@@ -443,10 +462,10 @@ public class Java3DEditor {
             float connectorR2 = 0.0025f;
 
             // 1. Ordnung
-            List<ModelItem> theRelations = getRelationsFor(aModel, theTable, theObjectsToIgnore);
+            List<Table> theRelations = getRelationsFor(aModel, theTable, theObjectsToIgnore);
             if (theRelations.size() > 0) {
 
-                List<ModelItem> theObjectsToIgnore2 = new ArrayList<ModelItem>();
+                List<Table> theObjectsToIgnore2 = new ArrayList<Table>();
                 theObjectsToIgnore2.addAll(theObjectsToIgnore);
                 theObjectsToIgnore2.addAll(theRelations);
 
@@ -465,8 +484,10 @@ public class Java3DEditor {
                     increment = 180 / maxLevel1;
                 }
 
-                for (ModelItem theDependentTable : theRelations) {
-                    Node theButton2 = createElement(theDependentTable, theRelations, zLevel1);
+                Dimension theSizeLevel1 = computeDimensionFor(theTable, theRelations);
+
+                for (Table theDependentTable : theRelations) {
+                    Node theButton2 = createElement(theDependentTable, theSizeLevel1, zLevel1);
                     double mx = Math.cos(Math.toRadians(-i)) * r1;
                     double my = Math.sin(Math.toRadians(-i)) * r1;
                     modelGroup.addChild(Helper.addElementAt(theButton2, new Vector3f((float) mx, (float) my, zLevel1), s1));
@@ -477,7 +498,10 @@ public class Java3DEditor {
                     modelGroup.addChild(createConnector(new Vector3f((float) mx2, (float) my2, zLevel1), r1, (int) (i + 90), connectorR1));
 
                     // 2. Ordnung
-                    List<ModelItem> theRelations2 = getRelationsFor(aModel, theDependentTable, theObjectsToIgnore2);
+                    List<Table> theRelations2 = getRelationsFor(aModel, theDependentTable, theObjectsToIgnore2);
+
+                    Dimension theSizeLevel2 = computeDimensionFor(theDependentTable, theRelations2);
+
                     if (theRelations2.size() > 0) {
 
                         float theMinAngle = i;
@@ -494,9 +518,9 @@ public class Java3DEditor {
                             }
                         }
 
-                        for (ModelItem theDependentTable2 : theRelations2) {
+                        for (Table theDependentTable2 : theRelations2) {
 
-                            Node theButton3 = createElement(theDependentTable2, theRelations2, zLevel2);
+                            Node theButton3 = createElement(theDependentTable2, theSizeLevel2, zLevel2);
 
                             double mx1 = mx + Math.cos(Math.toRadians(-theMinAngle)) * r2;
                             double my1 = my + Math.sin(Math.toRadians(-theMinAngle)) * r2;
@@ -539,7 +563,9 @@ public class Java3DEditor {
 
             selectedModelItem = theView;
 
-            modelGroup.addChild(Helper.addElementAt(createElement(theView, null, 0f), new Vector3f(0f, 0f, 0f), 1f));
+            Dimension theSizeLevel0 = computeDimensionFor(theView, null);
+
+            modelGroup.addChild(Helper.addElementAt(createElement(theView, theSizeLevel0, 0f), new Vector3f(0f, 0f, 0f), 1f));
         }
     }
 }
