@@ -43,6 +43,7 @@ public class TestFrame extends JFrame {
 
         Table theTable = model.getTables().findByName("CAPITIMEPOINT");
         theTable = model.getTables().findByName("GRUNDSTUECK");
+        theTable = model.getTables().findByName("DIENSTBARKEIT_M_M_GEBAEUDE");
 
         editor.setSelectedObject(theTable);
     }

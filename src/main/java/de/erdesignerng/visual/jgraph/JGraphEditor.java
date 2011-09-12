@@ -443,7 +443,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
             @Override
             public void refreshOutline() {
-                OutlineComponent.getDefault().refresh(model, null);
+                OutlineComponent.getDefault().refresh(model);
             }
         };
 

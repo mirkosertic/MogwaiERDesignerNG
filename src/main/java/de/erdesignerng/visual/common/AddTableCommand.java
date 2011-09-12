@@ -74,7 +74,7 @@ public class AddTableCommand extends UICommand {
                     }
                 }
 
-                refreshDisplayOf(null);
+                refreshDisplayAndOutline();
 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

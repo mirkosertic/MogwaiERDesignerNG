@@ -48,7 +48,7 @@ public class EditCustomTypesCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-                refreshDisplayOf(null);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

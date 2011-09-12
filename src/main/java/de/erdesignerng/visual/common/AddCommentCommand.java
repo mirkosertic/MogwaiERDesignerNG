@@ -51,7 +51,7 @@ public class AddCommentCommand extends UICommand {
 
                 theComponent.commandCreateComment(theComment, location);
 
-                refreshDisplayOf(null);
+                refreshDisplayAndOutline();
 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);

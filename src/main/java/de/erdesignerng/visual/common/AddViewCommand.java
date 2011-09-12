@@ -55,7 +55,7 @@ public class AddViewCommand extends UICommand {
 
                 component.commandCreateView(theView, location);
 
-                refreshDisplayOf(null);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

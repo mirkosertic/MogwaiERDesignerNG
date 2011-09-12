@@ -58,7 +58,7 @@ public class AddRelationCommand extends UICommand {
 
                 ERDesignerComponent.getDefault().commandCreateRelation(theRelation);
 
-                refreshDisplayOf(null);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

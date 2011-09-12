@@ -38,7 +38,7 @@ public class EditRelationCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-                refreshDisplayOf(relation);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

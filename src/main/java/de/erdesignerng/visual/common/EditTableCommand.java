@@ -59,7 +59,7 @@ public class EditTableCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-                refreshDisplayOf(table);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

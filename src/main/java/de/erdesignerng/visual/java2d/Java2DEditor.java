@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.java2d;
 
+import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Comment;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
@@ -26,14 +27,19 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
-import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.common.ToolEnum;
 import de.erdesignerng.visual.common.ZoomInfo;
 import de.erdesignerng.visual.jgraph.export.Exporter;
+import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
+import de.mogwai.common.i18n.ResourceHelper;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,25 +53,66 @@ public class Java2DEditor implements GenericModelEditor {
 
     private Model model;
     private ModelItem currentModelItem;
+    private JPanel mainPanel;
+    private JCheckBox includeIncoming;
+    private JCheckBox includeOutgoing;
+    private JLabel currentElement;
     private EditorPanel editorPanel;
 
     public Java2DEditor() {
         editorPanel = new EditorPanel() {
             @Override
-            public void componentClicked(EditorComponent aComponent) {
-                Java2DEditor.this.componentClicked(aComponent);
+            public void componentClicked(EditorComponent aComponent, MouseEvent aEvent) {
+                Java2DEditor.this.componentClicked(aComponent, aEvent);
             }
         };
+
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(editorPanel, BorderLayout.CENTER);
+
+        ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new FlowLayout(FlowLayout.LEFT));
+        includeIncoming = new JCheckBox(theHelper.getText(ERDesignerBundle.INCLUDEINCOMINGRELATIONS));
+        includeOutgoing = new JCheckBox(theHelper.getText(ERDesignerBundle.INCLUDEOUTGOINGRELATIONS));
+        currentElement = new JLabel();
+
+        ActionListener theUpdateActionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setSelectedObject(currentModelItem);
+            }
+        };
+
+        includeIncoming.setSelected(true);
+        includeIncoming.addActionListener(theUpdateActionListener);
+        includeOutgoing.setSelected(false);
+        includeOutgoing.addActionListener(theUpdateActionListener);
+
+        currentElement.setMinimumSize(new Dimension(300, 21));
+        currentElement.setPreferredSize(new Dimension(300, 21));
+
+        bottom.add(currentElement);
+        bottom.add(includeIncoming);
+        bottom.add(includeOutgoing);
+
+        mainPanel.add(bottom, BorderLayout.SOUTH);
+
+        UIInitializer.getInstance().initialize(mainPanel);
     }
 
-    protected void componentClicked(EditorPanel.EditorComponent aComponent) {
+    protected void componentClicked(EditorPanel.EditorComponent aComponent, MouseEvent aEvent) {
         setSelectedObject((ModelItem) aComponent.userObject);
     }
 
     @Override
     public void repaintGraph() {
+        mainPanel.invalidate();
         editorPanel.invalidate();
-        editorPanel.repaint();
+        mainPanel.doLayout();
+        mainPanel.repaint();
     }
 
     @Override
@@ -95,6 +142,8 @@ public class Java2DEditor implements GenericModelEditor {
     @Override
     public void setModel(Model aModel) {
         model = aModel;
+        includeIncoming.setSelected(true);
+        includeOutgoing.setSelected(false);
         setSelectedObject(null);
     }
 
@@ -124,6 +173,9 @@ public class Java2DEditor implements GenericModelEditor {
         editorPanel.cleanup();
         if (aItem instanceof Table) {
             generateGraphFor((Table) aItem);
+        }
+        if (aItem instanceof View) {
+            generateGraphFor((View) aItem);
         }
     }
 
@@ -157,7 +209,7 @@ public class Java2DEditor implements GenericModelEditor {
 
     @Override
     public JComponent getDetailComponent() {
-        return editorPanel;
+        return mainPanel;
     }
 
     @Override
@@ -180,9 +232,13 @@ public class Java2DEditor implements GenericModelEditor {
         theAlreadyKnown.add(aTable);
 
         // Level 1
-        List<Relation> theIncomingRelationsLevel1 = model.getRelations().getForeignKeysFor(aTable);
-        //List<Relation> theOutgoingRelationsLevel1 = model.getRelations().getExportedKeysFor(aTable);
-        //theIncomingRelationsLevel1.addAll(theOutgoingRelationsLevel1);
+        List<Relation> theIncomingRelationsLevel1 = new ArrayList<Relation>();
+        if (includeIncoming.isSelected()) {
+            theIncomingRelationsLevel1.addAll(model.getRelations().getForeignKeysFor(aTable));
+        }
+        if (includeOutgoing.isSelected()) {
+            theIncomingRelationsLevel1.addAll(model.getRelations().getExportedKeysFor(aTable));
+        }
         List<Table> theTablesLevel1 = new ArrayList<Table>();
         for (Relation theRelation : theIncomingRelationsLevel1) {
             if (!theTablesLevel1.contains(theRelation.getExportingTable()) && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
@@ -220,6 +276,17 @@ public class Java2DEditor implements GenericModelEditor {
                 }
             }
         }
+
+        editorPanel.invalidate();
+        editorPanel.repaint();
+        editorPanel.explodeAnimation();
+    }
+
+    private void generateGraphFor(View aView) {
+
+        ViewComponent theButton = new ViewComponent(aView);
+        EditorPanel.EditorComponent theRoot = new EditorPanel.EditorComponent(aView, 0, 0, theButton, true);
+        editorPanel.add(theRoot);
 
         editorPanel.invalidate();
         editorPanel.repaint();
