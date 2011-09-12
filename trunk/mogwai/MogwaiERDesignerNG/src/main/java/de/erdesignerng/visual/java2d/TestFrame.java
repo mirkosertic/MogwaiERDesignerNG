@@ -20,13 +20,12 @@ package de.erdesignerng.visual.java2d;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.model.Table;
-import org.xml.sax.SAXException;
-
-import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.swing.JFrame;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class TestFrame extends JFrame {
 
@@ -34,7 +33,8 @@ public class TestFrame extends JFrame {
     private Java2DEditor editor;
 
     public TestFrame() throws ParserConfigurationException, IOException, SAXException {
-        InputStream theStream = new FileInputStream("U:\\Eigene Dateien\\Capitastra_6_5_0.mxm");
+        //InputStream theStream = new FileInputStream("U:\\Eigene Dateien\\Capitastra_6_5_0.mxm");
+        InputStream theStream = new FileInputStream("D:\\Temp\\Capitastra_6_5_0.mxm");
         model = ModelIOUtilities.getInstance().deserializeModelFromXML(theStream);
         editor = new Java2DEditor();
         editor.setModel(model);
@@ -42,8 +42,8 @@ public class TestFrame extends JFrame {
         setContentPane(editor.getDetailComponent());
 
         Table theTable = model.getTables().findByName("CAPITIMEPOINT");
-        theTable = model.getTables().findByName("GRUNDSTUECK");
-        theTable = model.getTables().findByName("DIENSTBARKEIT_M_M_GEBAEUDE");
+        //theTable = model.getTables().findByName("GRUNDSTUECK");
+        //theTable = model.getTables().findByName("DIENSTBARKEIT_M_M_GEBAEUDE");
 
         editor.setSelectedObject(theTable);
     }

@@ -17,14 +17,14 @@
  */
 package de.erdesignerng.visual.java2d;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class EditorPanel extends JPanel {
 
@@ -69,9 +69,63 @@ public class EditorPanel extends JPanel {
     private List<EditorComponent> components = new ArrayList<EditorComponent>();
     private List<Connector> connectors = new ArrayList<Connector>();
     private Point lastMouseLocation;
+    private JComponent componentToHighlight;
+    private int componentToHighlightPosition;
+    private boolean componentToHighlightFadeOut;
+    private Timer componentToHighlightTimer;
+    private Timer componentToHighlightWaitTimer;
+    private JComponent componentToHighlightNext;
+    private EditorComponent fadingComponent;
+
 
     public EditorPanel() {
         setBackground(Color.black);
+
+        componentToHighlightTimer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (componentToHighlightFadeOut) {
+                    if (componentToHighlightPosition > 0) {
+                        componentToHighlightPosition -= 40;
+                    } else {
+                        componentToHighlightFadeOut = false;
+                        componentToHighlight = componentToHighlightNext;
+                    }
+                } else {
+                    if (componentToHighlightNext != null) {
+                        componentToHighlight = componentToHighlightNext;
+                        componentToHighlightNext = null;
+                    }
+                    if (componentToHighlight != null) {
+                        Dimension theSize = componentToHighlight.getSize();
+                        if (componentToHighlightPosition < theSize.width + 10) {
+                            int theStep = theSize.width + 10 - componentToHighlightPosition;
+                            if (theStep > 40) {
+                                theStep = 40;
+                            }
+                            componentToHighlightPosition += theStep;
+                        } else {
+                            componentToHighlightTimer.stop();
+                        }
+                    } else {
+                        componentToHighlightTimer.stop();
+                    }
+                }
+
+                invalidate();
+                repaint();
+            }
+        });
+        componentToHighlightWaitTimer = new Timer(300, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                componentToHighlightTimer.start();
+            }
+        });
+        componentToHighlightWaitTimer.setRepeats(false);
+
+
         addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -99,6 +153,26 @@ public class EditorPanel extends JPanel {
                 if (theSelected != null) {
                     componentClicked(theSelected, e);
                 }
+            }
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                EditorComponent theSelected = findEditorComponentAt(e.getPoint());
+                if (theSelected != null) {
+                    if (theSelected != fadingComponent) {
+                        componentToHighlightFadeOut = componentToHighlight != null;
+                        componentToHighlightNext = getHighlightComponentFor(theSelected);
+                    }
+                } else {
+                    componentToHighlightFadeOut = true;
+                    componentToHighlightNext = null;
+                }
+                fadingComponent = theSelected;
+
+                componentToHighlightWaitTimer.stop();
+                componentToHighlightWaitTimer.start();
             }
         });
         addMouseMotionListener(new MouseAdapter() {
@@ -143,6 +217,10 @@ public class EditorPanel extends JPanel {
     @Override
     public void setBackground(Color bg) {
         super.setBackground(Color.black);
+    }
+
+    protected JComponent getHighlightComponentFor(EditorComponent aComponent) {
+        return null;
     }
 
     private EditorComponent findEditorComponentAt(Point aPoint) {
@@ -334,6 +412,14 @@ public class EditorPanel extends JPanel {
             g.translate(tX, ty);
             theComponent.paintComponent.paint(g);
             g.translate(-tX, -ty);
+        }
+
+        if (componentToHighlight != null) {
+            Graphics2D theGraphics = (Graphics2D) g;
+            g.translate(theSize.width - componentToHighlightPosition, 10);
+            theGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                    0.85f));
+            componentToHighlight.paint(g);
         }
     }
 

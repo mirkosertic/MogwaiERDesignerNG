@@ -19,16 +19,21 @@ package de.erdesignerng.visual.java2d;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Table;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class TableComponent extends BaseRendererComponent {
 
     private Table table;
+    private boolean fullMode;
 
     public TableComponent(Table aTable) {
         table = aTable;
+    }
+
+    public TableComponent(Table aTable, boolean aFullmode) {
+        table = aTable;
+        fullMode = aFullmode;
     }
 
     @Override
@@ -40,13 +45,26 @@ public class TableComponent extends BaseRendererComponent {
         theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
 
         for (Attribute theAttriute : table.getAttributes()) {
-            if (!theAttriute.isForeignKey() && !theAttriute.isNullable()) {
-                theStringSize = theMetrics.getStringBounds(theAttriute.getName(), null);
+            boolean theInclude = true;
+            if (!fullMode) {
+                theInclude = !theAttriute.isForeignKey() && !theAttriute.isNullable();
+            }
+            if (theInclude) {
+                String theText = theAttriute.getName();
+                if (fullMode) {
+                    theText += ":";
+                    theText += theAttriute.getLogicalDeclaration();
+                }
+                theStringSize = theMetrics.getStringBounds(theText, null);
                 theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
             }
         }
 
         theSize.width += 20;
+        if (fullMode) {
+            theSize.width += 10;
+        }
+
         theSize.height += 25;
 
         return theSize;
@@ -82,8 +100,29 @@ public class TableComponent extends BaseRendererComponent {
         int y = 18 + theMetrics.getAscent();
 
         for (Attribute theAttriute : table.getAttributes()) {
-            if (!theAttriute.isForeignKey() && !theAttriute.isNullable()) {
-                theGraphics.drawString(theAttriute.getName(), 15, y + theMetrics.getAscent());
+
+            g.setColor(Color.white);
+
+            boolean theInclude = true;
+            if (!fullMode) {
+                theInclude = !theAttriute.isForeignKey() && !theAttriute.isNullable();
+            }
+            if (theInclude) {
+                String theText = theAttriute.getName();
+                if (fullMode) {
+                    theText += ":";
+                    theText += theAttriute.getLogicalDeclaration();
+
+                    if (theAttriute.isNullable()) {
+                        theGraphics.drawString("N", theSize.width - 10, y + theMetrics.getAscent());
+                    }
+                }
+                if (theAttriute.isForeignKey()) {
+                    g.setColor(Color.green);
+                }
+
+                theGraphics.drawString(theText, 15, y + theMetrics.getAscent());
+
                 y += theMetrics.getAscent();
             }
         }
