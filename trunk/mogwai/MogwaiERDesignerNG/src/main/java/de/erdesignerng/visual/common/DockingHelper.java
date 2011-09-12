@@ -22,9 +22,11 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
+
 import net.infonode.docking.*;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.ViewMap;
@@ -44,7 +46,7 @@ public class DockingHelper extends DockingWindowAdapter implements
         final ViewMap theViewMap = new ViewMap();
         final View[] theViews = new View[4];
         theViews[0] = new View(getResourceHelper().getFormattedText(
-                ERDesignerBundle.EDITOR2D), null, ERDesignerComponent
+                ERDesignerBundle.EDITOR), null, ERDesignerComponent
                 .getDefault().getDetailComponent());
         theViews[0].getWindowProperties().setCloseEnabled(false);
         theViews[0].getWindowProperties().setUndockEnabled(false);
@@ -59,16 +61,9 @@ public class DockingHelper extends DockingWindowAdapter implements
         theViews[2].getWindowProperties().setCloseEnabled(false);
         theViews[2].getWindowProperties().setUndockEnabled(false);
         theViews[2].getWindowProperties().setUndockOnDropEnabled(false);
-        theViews[3] = new View(getResourceHelper().getFormattedText(
-                ERDesignerBundle.EDITOR3D), null, ERDesignerComponent
-                .getDefault().getEditor3D().getEditorComponent());
-        theViews[3].getWindowProperties().setCloseEnabled(false);
-        theViews[3].getWindowProperties().setUndockEnabled(false);
-        theViews[3].getWindowProperties().setUndockOnDropEnabled(false);
         theViewMap.addView(0, theViews[0]);
         theViewMap.addView(1, theViews[1]);
         theViewMap.addView(2, theViews[2]);
-        theViewMap.addView(3, theViews[3]);
 
         Runnable theRunnable = new Runnable() {
 
@@ -93,28 +88,11 @@ public class DockingHelper extends DockingWindowAdapter implements
                     }
                 }
 
-                if (layoutRestored) {
-                    SplitWindow theSplit = (SplitWindow) rootWindow.getWindow();
-                    if (!(theSplit.getLeftWindow() instanceof TabWindow)) {
-                        layoutRestored = false;
-                        LOGGER.warn("Workbench layout will be defaulted");
-                    } else {
-                        TabWindow theWindow = (TabWindow) theSplit.getLeftWindow();
-                        theWindow.getTabWindowProperties().getCloseButtonProperties().setVisible(false);
-                        theWindow.getTabWindowProperties().getUndockButtonProperties().setVisible(false);
-                    }
-                }
-
                 if (!layoutRestored) {
                     SplitWindow theRightWindow = new SplitWindow(false, 0.8f,
                             theViews[1], theViews[2]);
-
-                    TabWindow theLeftWindow = new TabWindow(new DockingWindow[] {theViews[0], theViews[3]});
-                    theLeftWindow.getTabWindowProperties().getCloseButtonProperties().setVisible(false);
-                    theLeftWindow.getTabWindowProperties().getUndockButtonProperties().setVisible(false);
-
-                    theLeftWindow.getTabWindowProperties().getCloseButtonProperties().setVisible(false);                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
-                            theLeftWindow, theRightWindow);
+                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
+                            theViews[0], theRightWindow);
                     rootWindow.setWindow(theSplitWindow);
                 }
 
@@ -137,7 +115,6 @@ public class DockingHelper extends DockingWindowAdapter implements
         theViews[0].addListener(this);
         theViews[1].addListener(this);
         theViews[2].addListener(this);
-        theViews[3].addListener(this);
     }
 
     public RootWindow getRootWindow() {

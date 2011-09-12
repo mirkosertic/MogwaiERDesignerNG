@@ -36,7 +36,7 @@ public class EditorPanel extends JPanel {
         float angle;
         JComponent paintComponent;
         boolean center;
-        Object userObject;
+        public Object userObject;
 
         public EditorComponent(Object aUserObject, float aAngle, int aRadius, JComponent aPaintComponent) {
             finalRadius = aRadius;
@@ -73,6 +73,7 @@ public class EditorPanel extends JPanel {
     private Point lastMouseLocation;
 
     public EditorPanel() {
+        setBackground(Color.black);
         addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -141,6 +142,11 @@ public class EditorPanel extends JPanel {
             }
         });
         setDoubleBuffered(true);
+    }
+
+    @Override
+    public void setBackground(Color bg) {
+        super.setBackground(Color.black);
     }
 
     private EditorComponent findEditorComponentAt(Point aPoint) {
