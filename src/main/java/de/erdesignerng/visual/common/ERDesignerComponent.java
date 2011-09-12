@@ -18,7 +18,13 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.model.check.ModelChecker;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -26,7 +32,10 @@ import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
+import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.editor.BaseEditor;
+import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.java2d.EditorPanel;
 import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
@@ -35,7 +44,11 @@ import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.erdesignerng.visual.jgraph.export.ImageExporter;
 import de.erdesignerng.visual.jgraph.export.SVGExporter;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.*;
+import de.mogwai.common.client.looks.components.DefaultCheckBox;
+import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultToggleButton;
+import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -44,15 +57,16 @@ import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -149,8 +163,29 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     protected void setEditor2DInteractive() {
         setEditor(new Java2DEditor() {
             @Override
-            protected void componentClicked(EditorPanel.EditorComponent aComponent) {
-                OutlineComponent.getDefault().setSelectedItem((ModelItem) aComponent.userObject);
+            protected void componentClicked(EditorPanel.EditorComponent aComponent, MouseEvent aEvent) {
+                if (!SwingUtilities.isRightMouseButton(aEvent)) {
+                    if (aEvent.getClickCount() == 1) {
+                        OutlineComponent.getDefault().setSelectedItem((ModelItem) aComponent.userObject);
+                    } else {
+                        ModelItem theItem = (ModelItem) aComponent.userObject;
+                        BaseEditor theEditor = EditorFactory.createEditorFor(theItem, editorPanel);
+                        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                            try {
+                                theEditor.applyValues();
+
+                                ERDesignerComponent.getDefault().updateSubjectAreasMenu();
+
+                                OutlineComponent.getDefault().refresh(ERDesignerComponent.getDefault().getModel());
+
+                                setSelectedObject(theItem);
+                            } catch (Exception e1) {
+                                ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e1);
+                            }
+                        }
+                    }
+                }
+
             }
         });
     }
@@ -938,7 +973,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         UIInitializer.getInstance().initialize(subjectAreas);
 
-        OutlineComponent.getDefault().refresh(model, null);
+        OutlineComponent.getDefault().refresh(model);
     }
 
     protected void updateRecentlyUsedMenuEntries() {

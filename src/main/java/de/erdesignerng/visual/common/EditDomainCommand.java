@@ -44,7 +44,7 @@ public class EditDomainCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-                refreshDisplayOf(null);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

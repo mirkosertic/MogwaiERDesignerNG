@@ -38,7 +38,7 @@ public class EditViewCommand extends UICommand {
             try {
                 theEditor.applyValues();
 
-                refreshDisplayOf(view);
+                refreshDisplayAndOutline();
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
             }

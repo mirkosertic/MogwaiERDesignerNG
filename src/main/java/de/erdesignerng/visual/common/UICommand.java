@@ -50,13 +50,10 @@ public abstract class UICommand implements ActionEventProcessor, ActionListener 
 
     /**
      * Refresh the display of a specific object.
-     *
-     * @param aChangedObject the object to update
      */
-    public void refreshDisplayOf(Object aChangedObject) {
+    public void refreshDisplayAndOutline() {
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         component.repaintGraph();
-        OutlineComponent.getDefault().refresh(component.getModel(),
-                aChangedObject);
+        OutlineComponent.getDefault().refresh(component.getModel());
     }
 }

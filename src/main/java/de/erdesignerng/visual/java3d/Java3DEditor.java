@@ -26,7 +26,11 @@ import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.MavenPropertiesLocator;
@@ -47,6 +51,29 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
 
+import javax.media.j3d.Appearance;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.Group;
+import javax.media.j3d.J3DGraphics2D;
+import javax.media.j3d.Node;
+import javax.media.j3d.Texture;
+import javax.media.j3d.TextureAttributes;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.WakeupCondition;
+import javax.media.j3d.WakeupCriterion;
+import javax.media.j3d.WakeupOnAWTEvent;
+import javax.media.j3d.WakeupOr;
+import javax.swing.*;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3f;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,12 +84,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import javax.media.j3d.*;
-import javax.swing.*;
-import javax.vecmath.Color3f;
-import javax.vecmath.Color4f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3f;
 
 /**
  * Editor to show model as a 3D Scene.
@@ -336,7 +357,7 @@ public class Java3DEditor implements GenericModelEditor {
 
                 ERDesignerComponent.getDefault().updateSubjectAreasMenu();
 
-                OutlineComponent.getDefault().refresh(ERDesignerComponent.getDefault().getModel(), aItem);
+                OutlineComponent.getDefault().refresh(ERDesignerComponent.getDefault().getModel());
 
                 setSelectedObject(selectedModelItem);
             } catch (Exception e1) {

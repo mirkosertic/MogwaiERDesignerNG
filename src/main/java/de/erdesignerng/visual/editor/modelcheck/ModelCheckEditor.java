@@ -133,7 +133,7 @@ public class ModelCheckEditor extends BaseEditor {
                 try {
                     Object[] theAffectedObjects = theFix.applyTo(model);
                     for (Object theAffectedObject : theAffectedObjects) {
-                        OutlineComponent.getDefault().refresh(model, theAffectedObject);
+                        OutlineComponent.getDefault().refresh(model);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
