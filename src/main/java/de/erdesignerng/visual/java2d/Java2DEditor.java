@@ -18,13 +18,7 @@
 package de.erdesignerng.visual.java2d;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.common.GenericModelEditor;
@@ -34,9 +28,9 @@ import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -45,6 +39,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Editor for Java2D Interactive Mode.
@@ -64,6 +62,18 @@ public class Java2DEditor implements GenericModelEditor {
             @Override
             public void componentClicked(EditorComponent aComponent, MouseEvent aEvent) {
                 Java2DEditor.this.componentClicked(aComponent, aEvent);
+            }
+
+            @Override
+            protected JComponent getHighlightComponentFor(EditorComponent aComponent) {
+                ModelItem theItem = (ModelItem) aComponent.userObject;
+                if (theItem instanceof Table) {
+                    return new TableComponent((Table) theItem, true);
+                }
+                if (theItem instanceof View) {
+                    return new ViewComponent((View) theItem);
+                }
+                throw new IllegalArgumentException();
             }
         };
 
