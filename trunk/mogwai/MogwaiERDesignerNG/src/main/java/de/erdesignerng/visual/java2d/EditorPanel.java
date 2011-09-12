@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.java2d;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,9 +25,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class EditorPanel extends JPanel {
 
@@ -97,11 +95,9 @@ public class EditorPanel extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    EditorComponent theSelected = findEditorComponentAt(e.getPoint());
-                    if (theSelected != null) {
-                        componentClicked(theSelected);
-                    }
+                EditorComponent theSelected = findEditorComponentAt(e.getPoint());
+                if (theSelected != null) {
+                    componentClicked(theSelected, e);
                 }
             }
         });
@@ -171,7 +167,7 @@ public class EditorPanel extends JPanel {
         return theSelected;
     }
 
-    public void componentClicked(EditorComponent aComponent) {
+    public void componentClicked(EditorComponent aComponent, MouseEvent aEvent) {
     }
 
     public void cleanup() {

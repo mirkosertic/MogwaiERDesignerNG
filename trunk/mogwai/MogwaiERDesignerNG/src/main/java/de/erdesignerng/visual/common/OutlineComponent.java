@@ -102,7 +102,7 @@ public class OutlineComponent extends DefaultPanel implements
         @Override
         public void actionPerformed(ActionEvent e) {
             filterField.setText("");
-            refresh(ERDesignerComponent.getDefault().getModel(), null);
+            refresh(ERDesignerComponent.getDefault().getModel());
         }
     }
 
@@ -127,7 +127,7 @@ public class OutlineComponent extends DefaultPanel implements
                             @Override
                             public void run() {
                                 refresh(ERDesignerComponent.getDefault()
-                                        .getModel(), null);
+                                        .getModel());
                             }
                         });
                     } catch (Exception e) {
@@ -722,10 +722,9 @@ public class OutlineComponent extends DefaultPanel implements
     /**
      * Refresh the model tree as there were changes.
      *
-     * @param aModel   - model
-     * @param aElement - element
+     * @param aModel - model
      */
-    public void refresh(Model aModel, Object aElement) {
+    public void refresh(Model aModel) {
 
         if (aModel != null) {
 

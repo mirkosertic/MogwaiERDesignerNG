@@ -17,18 +17,18 @@
  */
 package de.erdesignerng.visual.java2d;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
+import de.erdesignerng.model.ViewAttribute;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-public class TableComponent extends BaseRendererComponent {
+public class ViewComponent extends BaseRendererComponent {
 
-    private Table table;
+    private View view;
 
-    public TableComponent(Table aTable) {
-        table = aTable;
+    public ViewComponent(View aView) {
+        view = aView;
     }
 
     @Override
@@ -36,14 +36,12 @@ public class TableComponent extends BaseRendererComponent {
         Dimension theSize = new Dimension(0, 0);
         FontMetrics theMetrics = getFontMetrics(getFont());
 
-        Rectangle2D theStringSize = theMetrics.getStringBounds(table.getName(), null);
+        Rectangle2D theStringSize = theMetrics.getStringBounds(view.getName(), null);
         theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
 
-        for (Attribute theAttriute : table.getAttributes()) {
-            if (!theAttriute.isForeignKey() && !theAttriute.isNullable()) {
-                theStringSize = theMetrics.getStringBounds(theAttriute.getName(), null);
-                theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
-            }
+        for (ViewAttribute theAttriute : view.getAttributes()) {
+            theStringSize = theMetrics.getStringBounds(theAttriute.getName(), null);
+            theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
         }
 
         theSize.width += 20;
@@ -77,16 +75,13 @@ public class TableComponent extends BaseRendererComponent {
 
         theGraphics.setColor(Color.white);
 
-        theGraphics.drawString(table.getName(), 15, 10 + theMetrics.getAscent());
+        theGraphics.drawString(view.getName(), 15, 10 + theMetrics.getAscent());
 
         int y = 18 + theMetrics.getAscent();
 
-        for (Attribute theAttriute : table.getAttributes()) {
-            if (!theAttriute.isForeignKey() && !theAttriute.isNullable()) {
-                theGraphics.drawString(theAttriute.getName(), 15, y + theMetrics.getAscent());
-                y += theMetrics.getAscent();
-            }
+        for (ViewAttribute theAttriute : view.getAttributes()) {
+            theGraphics.drawString(theAttriute.getName(), 15, y + theMetrics.getAscent());
+            y += theMetrics.getAscent();
         }
     }
-
 }
