@@ -796,13 +796,9 @@
             <Text lang="de">Neue Eltern Tabelle hier erstellen und verbinden</Text>
             <Text lang="en">Create new parent Table here and connect it</Text>
         </Entry>
-        <Entry id="EDITOR2D">
-            <Text lang="de">2D Editor</Text>
-            <Text lang="en">2D Editor</Text>
-        </Entry>
-        <Entry id="EDITOR3D">
-            <Text lang="de">3D Editor</Text>
-            <Text lang="en">3D Editor</Text>
+        <Entry id="EDITOR">
+            <Text lang="de">Editor / Browser</Text>
+            <Text lang="en">Editor / Browser</Text>
         </Entry>
         <Entry id="OUTLINE">
             <Text lang="de">Modellübersicht</Text>
@@ -1027,6 +1023,22 @@
         <Entry id="INCLUDEOUTGOINGRELATIONS">
             <Text lang="de">Zeige ausgehende Relationen</Text>
             <Text lang="en">Include outgoing relations</Text>
+        </Entry>
+        <Entry id="VIEWMODE">
+            <Text lang="de">Anzeigemodus</Text>
+            <Text lang="en">View mode</Text>
+        </Entry>
+        <Entry id="VIEWMODE2DDIAGRAM">
+            <Text lang="de">2D Diagram Modus</Text>
+            <Text lang="en">2D diagram mode</Text>
+        </Entry>
+        <Entry id="VIEWMODE2DINTERACTIVE">
+            <Text lang="de">2D Interaktiv Modus</Text>
+            <Text lang="en">2D interactive mode</Text>
+        </Entry>
+        <Entry id="VIEWMODE3DINTERACTIVE">
+            <Text lang="de">3D Interaktiv Modus</Text>
+            <Text lang="en">3D interactive mode</Text>
         </Entry>
     </Bundle>
 </Resource>

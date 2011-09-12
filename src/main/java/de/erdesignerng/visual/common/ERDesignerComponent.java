@@ -27,6 +27,8 @@ import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.java2d.EditorPanel;
+import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.erdesignerng.visual.jgraph.export.Exporter;
@@ -41,8 +43,8 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import java.awt.Desktop;
-import java.awt.Dimension;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -108,8 +110,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             ERDesignerBundle.CUSTOMTYPEEDITOR);
 
     private GenericModelEditor editor;
+    private ModelItem selectedObject;
 
-    private Java3DEditor editor3D;
+    private JPanel editorPanel;
 
     private static ERDesignerComponent DEFAULT;
 
@@ -129,10 +132,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     private ERDesignerComponent(ERDesignerWorldConnector aConnector) {
         worldConnector = aConnector;
 
-        // Here we can switch to other editors
-        editor = new JGraphEditor();
-        editor3D = new Java3DEditor();
+        editorPanel = new JPanel(new BorderLayout());
 
+        setEditor2DInteractive();
         initActions();
 
         if (ApplicationPreferences.getInstance().isIntelligentLayout()) {
@@ -140,11 +142,49 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         }
     }
 
-    public Java3DEditor getEditor3D() {
-        return editor3D;
+    protected void setEditor2DDiagram() {
+        setEditor(new JGraphEditor());
+    }
+
+    protected void setEditor2DInteractive() {
+        setEditor(new Java2DEditor() {
+            @Override
+            protected void componentClicked(EditorPanel.EditorComponent aComponent) {
+                OutlineComponent.getDefault().setSelectedItem((ModelItem) aComponent.userObject);
+            }
+        });
+    }
+
+    protected void setEditor3DInteractive() {
+        setEditor(new Java3DEditor());
+    }
+
+    protected void setEditor(GenericModelEditor aEditor) {
+        editor = aEditor;
+        if (model != null) {
+            editor.setModel(model);
+            editor.setSelectedObject(selectedObject);
+        }
+
+        JComponent theDetail = aEditor.getDetailComponent();
+
+        editorPanel.removeAll();
+        editorPanel.add(theDetail, BorderLayout.CENTER);
+
+        theDetail.invalidate();
+        theDetail.doLayout();
+
+        editorPanel.invalidate();
+        editorPanel.doLayout();
+        editorPanel.repaint();
+
+        aEditor.repaintGraph();
     }
 
     protected final void initActions() {
+
+        // Required by Java3D
+        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
         DefaultAction theReverseEngineerAction = new DefaultAction(
                 new ReverseEngineerCommand(), this,
@@ -511,6 +551,58 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         ERDesignerToolbarEntry theViewMenu = new ERDesignerToolbarEntry(
                 ERDesignerBundle.VIEW);
+
+        DefaultMenu theViewModeMenu = new DefaultMenu(this,
+                ERDesignerBundle.VIEWMODE);
+
+        DefaultAction theViewMode2DDiagramAction = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        setEditor2DDiagram();
+                    }
+
+                }, this, ERDesignerBundle.VIEWMODE2DDIAGRAM);
+        DefaultAction theViewMode2DInteractiveAction = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        setEditor2DInteractive();
+                    }
+
+                }, this, ERDesignerBundle.VIEWMODE2DINTERACTIVE);
+        DefaultAction theViewMode3DInteractiveAction = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        setEditor3DInteractive();
+                    }
+
+                }, this, ERDesignerBundle.VIEWMODE3DINTERACTIVE);
+
+
+        DefaultCheckboxMenuItem theViewMode2DDiagram = new DefaultCheckboxMenuItem(
+                theViewMode2DDiagramAction);
+        DefaultCheckboxMenuItem theViewMode2DInteractive = new DefaultCheckboxMenuItem(
+                theViewMode2DInteractiveAction);
+        DefaultCheckboxMenuItem theViewMode3DInteractive = new DefaultCheckboxMenuItem(
+                theViewMode3DInteractiveAction);
+        theViewModeMenu.add(theViewMode2DDiagram);
+        theViewModeMenu.add(theViewMode2DInteractive);
+        theViewModeMenu.add(theViewMode3DInteractive);
+
+        ButtonGroup theDisplayModeGroup = new ButtonGroup();
+        theDisplayModeGroup.add(theViewMode2DDiagram);
+        theDisplayModeGroup.add(theViewMode2DInteractive);
+        theDisplayModeGroup.add(theViewMode3DInteractive);
+
+        theViewMode2DInteractive.setSelected(true);
+
+        theViewMenu.add(theViewModeMenu);
+        UIInitializer.getInstance().initialize(theViewModeMenu);
 
         DefaultAction theDisplayCommentsAction = new DefaultAction(
                 new ActionEventProcessor() {
@@ -989,6 +1081,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             editor.setIntelligentLayoutEnabled(false);
 
             model = aModel;
+            selectedObject = null;
 
             editor.setModel(model);
 
@@ -1008,7 +1101,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             editor.commandSetDisplayCommentsState(false);
 
             OutlineComponent.getDefault().setModel(aModel);
-            editor3D.resetDisplay(aModel);
+            editor.setModel(model);
 
             ModelChecker theChecker = new ModelChecker();
             theChecker.check(aModel);
@@ -1035,7 +1128,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     public JComponent getDetailComponent() {
-        return editor.getDetailComponent();
+        return editorPanel;
     }
 
     /**
@@ -1062,8 +1155,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     public void setSelectedObject(ModelItem aObject) {
+        selectedObject = aObject;
         editor.setSelectedObject(aObject);
-        editor3D.setSelectedObject(model, aObject);
     }
 
     public void refreshPreferences() {

@@ -12,7 +12,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sourceforge.mogwai:mogwai-squirrelplugin:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core-utils:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:vecmath:1.5.2" level="project" />
@@ -60,7 +59,7 @@
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.8.2" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: jgoodies:forms:1.2.1" level="project" />
-    <orderEntry type="module" module-name="mogwai-layout" />
+    <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-layout:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: squirrelsql:squirrelsql-fw:2.6.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: squirrelsql:squirrelsql-client:2.6.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.2" level="project" />
@@ -72,7 +71,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: net.sourceforge.jtds:jtds:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: oracle:ojdbc:14" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hsqldb:hsqldb:2.0.0" level="project" />
-    <orderEntry type="module" module-name="mogwai-smartstart" />
+    <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-smartstart:1.1" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev:swing-worker:1.2" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.4.GA" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.izpack:izpack-standalone-compiler:4.2.1" level="project" />

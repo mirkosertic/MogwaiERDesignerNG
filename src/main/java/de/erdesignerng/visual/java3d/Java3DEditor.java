@@ -30,19 +30,28 @@ import de.erdesignerng.model.*;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.MavenPropertiesLocator;
+import de.erdesignerng.visual.DisplayLevel;
+import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.common.ERDesignerComponent;
+import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.common.OutlineComponent;
+import de.erdesignerng.visual.common.ToolEnum;
+import de.erdesignerng.visual.common.ZoomInfo;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
 import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
+import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -60,7 +69,7 @@ import javax.vecmath.Vector3f;
  * <p/>
  * Allows Navigation & Browsing.
  */
-public class Java3DEditor {
+public class Java3DEditor implements GenericModelEditor {
 
     private JPanel mainPanel;
     private Canvas3D canvas;
@@ -298,7 +307,7 @@ public class Java3DEditor {
         ActionListener theUpdateActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setSelectedObject(model, selectedModelItem);
+                setSelectedObject(selectedModelItem);
             }
         };
 
@@ -329,21 +338,11 @@ public class Java3DEditor {
 
                 OutlineComponent.getDefault().refresh(ERDesignerComponent.getDefault().getModel(), aItem);
 
-                setSelectedObject(model, selectedModelItem);
+                setSelectedObject(selectedModelItem);
             } catch (Exception e1) {
                 ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e1);
             }
         }
-    }
-
-    public void resetDisplay(Model aModel) {
-        setSelectedObject(aModel, null);
-        includeIncoming.setSelected(true);
-        includeOutgoing.setSelected(true);
-    }
-
-    public Component getEditorComponent() {
-        return mainPanel;
     }
 
     private Dimension computeDimensionFor(ModelItem aItem, List<Table> aItems) {
@@ -490,10 +489,10 @@ public class Java3DEditor {
         return theReturn;
     }
 
-    private List<Table> getRelationsFor(Model aModel, Table aTable, List<Table> aElementsToIgnore) {
+    private List<Table> getRelationsFor(Table aTable, List<Table> aElementsToIgnore) {
         List<Table> theResult = new ArrayList<Table>();
         if (includeIncoming.isSelected()) {
-            for (Relation theRelation : aModel.getRelations().getForeignKeysFor(aTable)) {
+            for (Relation theRelation : model.getRelations().getForeignKeysFor(aTable)) {
                 Table theTable = theRelation.getExportingTable();
                 if (!aElementsToIgnore.contains(theTable) && !theResult.contains(theTable)) {
                     theResult.add(theTable);
@@ -501,7 +500,7 @@ public class Java3DEditor {
             }
         }
         if (includeOutgoing.isSelected()) {
-            for (Relation theRelation : aModel.getRelations().getExportedKeysFor(aTable)) {
+            for (Relation theRelation : model.getRelations().getExportedKeysFor(aTable)) {
                 Table theTable = theRelation.getImportingTable();
                 if (!aElementsToIgnore.contains(theTable) && !theResult.contains(theTable)) {
                     theResult.add(theTable);
@@ -511,10 +510,9 @@ public class Java3DEditor {
         return theResult;
     }
 
-    public void setSelectedObject(Model aModel, ModelItem aSelectedObject) {
+    public void setSelectedObject(ModelItem aSelectedObject) {
         modelGroup.removeAllChildren();
 
-        model = aModel;
         selectedModelItem = null;
         selectedModelItemRendererComponent = null;
 
@@ -541,7 +539,7 @@ public class Java3DEditor {
             float connectorR2 = 0.0025f;
 
             // 1. Ordnung
-            List<Table> theRelations = getRelationsFor(aModel, theTable, theObjectsToIgnore);
+            List<Table> theRelations = getRelationsFor(theTable, theObjectsToIgnore);
             if (theRelations.size() > 0) {
 
                 List<Table> theObjectsToIgnore2 = new ArrayList<Table>();
@@ -577,7 +575,7 @@ public class Java3DEditor {
                     modelGroup.addChild(createConnector(new Vector3f((float) mx2, (float) my2, zLevel1), r1, (int) (i + 90), connectorR1));
 
                     // 2. Ordnung
-                    List<Table> theRelations2 = getRelationsFor(aModel, theDependentTable, theObjectsToIgnore2);
+                    List<Table> theRelations2 = getRelationsFor(theDependentTable, theObjectsToIgnore2);
 
                     Dimension theSizeLevel2 = computeDimensionFor(theDependentTable, theRelations2);
 
@@ -646,5 +644,108 @@ public class Java3DEditor {
 
             modelGroup.addChild(Helper.addElementAt(createElement(theView, theSizeLevel0, 0f), new Vector3f(0f, 0f, 0f), 1f));
         }
+    }
+
+    @Override
+    public void repaintGraph() {
+        // Repaint triggern
+        Transform3D theTransform = new Transform3D();
+        modelGroup.getTransform(theTransform);
+        modelGroup.setTransform(theTransform);
+
+        mainPanel.invalidate();
+        canvas.invalidate();
+        mainPanel.doLayout();
+        mainPanel.repaint();
+    }
+
+    @Override
+    public void commandSetDisplayLevel(DisplayLevel aLevel) {
+    }
+
+    @Override
+    public void commandSetDisplayOrder(DisplayOrder aOrder) {
+    }
+
+    @Override
+    public void commandHideSubjectArea(SubjectArea aArea) {
+    }
+
+    @Override
+    public void commandShowSubjectArea(SubjectArea aArea) {
+    }
+
+    @Override
+    public void commandSetTool(ToolEnum aTool) {
+    }
+
+    @Override
+    public void commandSetZoom(ZoomInfo aZoomInfo) {
+    }
+
+    @Override
+    public void setModel(Model aModel) {
+        model = aModel;
+        includeIncoming.setSelected(true);
+        includeOutgoing.setSelected(true);
+        setSelectedObject(null);
+    }
+
+    @Override
+    public void commandSetDisplayCommentsState(boolean aState) {
+    }
+
+    @Override
+    public void commandSetDisplayGridState(boolean aState) {
+    }
+
+    @Override
+    public void refreshPreferences() {
+    }
+
+    @Override
+    public void commandNotifyAboutEdit() {
+        setSelectedObject(selectedModelItem);
+    }
+
+    @Override
+    public void setIntelligentLayoutEnabled(boolean aStatus) {
+    }
+
+    @Override
+    public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
+    }
+
+    @Override
+    public void commandDelete(List<ModelItem> aItems) {
+    }
+
+    @Override
+    public void commandCreateComment(Comment aComment, Point2D aLocation) {
+    }
+
+    @Override
+    public void commandCreateRelation(Relation aRelation) {
+    }
+
+    @Override
+    public void commandCreateTable(Table aTable, Point2D aLocation) {
+    }
+
+    @Override
+    public void commandCreateView(View aView, Point2D aLocation) {
+    }
+
+    @Override
+    public void commandShowOrHideRelationsFor(Table aTable, boolean aShow) {
+    }
+
+    @Override
+    public JComponent getDetailComponent() {
+        return mainPanel;
+    }
+
+    @Override
+    public void addExportEntries(DefaultMenu aMenu, Exporter aExporter) {
     }
 }
