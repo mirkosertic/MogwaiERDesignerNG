@@ -19,6 +19,7 @@ package de.erdesignerng.visual.java2d;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Table;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
@@ -47,7 +48,7 @@ public class TableComponent extends BaseRendererComponent {
         for (Attribute theAttriute : table.getAttributes()) {
             boolean theInclude = true;
             if (!fullMode) {
-                theInclude = !theAttriute.isForeignKey() && !theAttriute.isNullable();
+                theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
             }
             if (theInclude) {
                 String theText = theAttriute.getName();
@@ -105,7 +106,7 @@ public class TableComponent extends BaseRendererComponent {
 
             boolean theInclude = true;
             if (!fullMode) {
-                theInclude = !theAttriute.isForeignKey() && !theAttriute.isNullable();
+                theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
             }
             if (theInclude) {
                 String theText = theAttriute.getName();
