@@ -435,11 +435,13 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
 
+        List<Object> theCellsToInsert = new ArrayList<Object>();
+
         for (Table theTable : aModel.getTables()) {
             TableCell theCell = new TableCell(theTable);
             theCell.transferPropertiesToAttributes(theTable);
 
-            graph.getGraphLayoutCache().insert(theCell);
+            theCellsToInsert.add(theCell);
 
             theInfo.modelTableCells.put(theTable, theCell);
         }
@@ -455,7 +457,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
             ViewCell theCell = new ViewCell(theView);
             theCell.transferPropertiesToAttributes(theView);
 
-            graph.getGraphLayoutCache().insert(theCell);
+            theCellsToInsert.add(theCell);
 
             theInfo.modelViewCells.put(theView, theCell);
         }
@@ -464,7 +466,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
             CommentCell theCell = new CommentCell(theComment);
             theCell.transferPropertiesToAttributes(theComment);
 
-            graph.getGraphLayoutCache().insert(theCell);
+            theCellsToInsert.add(theCell);
 
             theInfo.modelCommentCells.put(theComment, theCell);
         }
@@ -480,8 +482,10 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                     theImportingCell, theExportingCell);
             theCell.transferPropertiesToAttributes(theRelation);
 
-            graph.getGraphLayoutCache().insert(theCell);
+            theCellsToInsert.add(theCell);
         }
+
+        graph.getGraphLayoutCache().insert(theCellsToInsert.toArray());
 
         for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
 
