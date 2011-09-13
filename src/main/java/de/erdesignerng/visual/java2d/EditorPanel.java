@@ -17,14 +17,19 @@
  */
 package de.erdesignerng.visual.java2d;
 
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.util.MavenPropertiesLocator;
+import de.erdesignerng.visual.FadeInFadeOutHelper;
+import de.mogwai.common.i18n.ResourceHelper;
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 public class EditorPanel extends JPanel {
 
@@ -69,62 +74,20 @@ public class EditorPanel extends JPanel {
     private List<EditorComponent> components = new ArrayList<EditorComponent>();
     private List<Connector> connectors = new ArrayList<Connector>();
     private Point lastMouseLocation;
-    private JComponent componentToHighlight;
-    private int componentToHighlightPosition;
-    private boolean componentToHighlightFadeOut;
-    private Timer componentToHighlightTimer;
-    private Timer componentToHighlightWaitTimer;
-    private JComponent componentToHighlightNext;
     private EditorComponent fadingComponent;
-
+    private FadeInFadeOutHelper fadingHelper;
+    private ResourceHelper resourceHelper;
 
     public EditorPanel() {
         setBackground(Color.black);
-
-        componentToHighlightTimer = new Timer(50, new ActionListener() {
+        resourceHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+        fadingHelper = new FadeInFadeOutHelper() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if (componentToHighlightFadeOut) {
-                    if (componentToHighlightPosition > 0) {
-                        componentToHighlightPosition -= 40;
-                    } else {
-                        componentToHighlightFadeOut = false;
-                        componentToHighlight = componentToHighlightNext;
-                    }
-                } else {
-                    if (componentToHighlightNext != null) {
-                        componentToHighlight = componentToHighlightNext;
-                        componentToHighlightNext = null;
-                    }
-                    if (componentToHighlight != null) {
-                        Dimension theSize = componentToHighlight.getSize();
-                        if (componentToHighlightPosition < theSize.width + 10) {
-                            int theStep = theSize.width + 10 - componentToHighlightPosition;
-                            if (theStep > 40) {
-                                theStep = 40;
-                            }
-                            componentToHighlightPosition += theStep;
-                        } else {
-                            componentToHighlightTimer.stop();
-                        }
-                    } else {
-                        componentToHighlightTimer.stop();
-                    }
-                }
-
+            public void doRepaint() {
                 invalidate();
                 repaint();
             }
-        });
-        componentToHighlightWaitTimer = new Timer(300, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentToHighlightTimer.start();
-            }
-        });
-        componentToHighlightWaitTimer.setRepeats(false);
-
+        };
 
         addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -162,17 +125,16 @@ public class EditorPanel extends JPanel {
                 EditorComponent theSelected = findEditorComponentAt(e.getPoint());
                 if (theSelected != null) {
                     if (theSelected != fadingComponent) {
-                        componentToHighlightFadeOut = componentToHighlight != null;
-                        componentToHighlightNext = getHighlightComponentFor(theSelected);
+                        fadingHelper.setComponentToHighlightFadeOut(fadingHelper.getComponentToHighlight() != null);
+                        fadingHelper.setComponentToHighlightNext(getHighlightComponentFor(theSelected));
                     }
                 } else {
-                    componentToHighlightFadeOut = true;
-                    componentToHighlightNext = null;
+                    fadingHelper.setComponentToHighlightFadeOut(true);
+                    fadingHelper.setComponentToHighlightNext(null);
                 }
                 fadingComponent = theSelected;
 
-                componentToHighlightWaitTimer.stop();
-                componentToHighlightWaitTimer.start();
+                fadingHelper.startWaitTimer();
             }
         });
         addMouseMotionListener(new MouseAdapter() {
@@ -324,6 +286,15 @@ public class EditorPanel extends JPanel {
         int centerX = theSize.width / 2;
         int centerY = theSize.height / 2;
 
+        String theVersion = MavenPropertiesLocator.getERDesignerVersionInfo();
+        String theTitle = "(c) " + resourceHelper.getText(ERDesignerBundle.TITLE) + " "
+                + theVersion + " ";
+
+        g.setColor(Color.white);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 12));
+        g.drawString(theTitle, 10, 20);
+
+
         int outerRadius = -1;
         for (Connector theConnector : connectors) {
 
@@ -414,12 +385,12 @@ public class EditorPanel extends JPanel {
             g.translate(-tX, -ty);
         }
 
-        if (componentToHighlight != null) {
+        if (fadingHelper.getComponentToHighlight() != null) {
             Graphics2D theGraphics = (Graphics2D) g;
-            g.translate(theSize.width - componentToHighlightPosition, 10);
+            g.translate(theSize.width - fadingHelper.getComponentToHighlightPosition(), 10);
             theGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                     0.85f));
-            componentToHighlight.paint(g);
+            fadingHelper.getComponentToHighlight().paint(g);
         }
     }
 
