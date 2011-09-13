@@ -37,6 +37,7 @@ import de.erdesignerng.util.MavenPropertiesLocator;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
+import de.erdesignerng.visual.FadeInFadeOutHelper;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.common.OutlineComponent;
@@ -44,8 +45,8 @@ import de.erdesignerng.visual.common.ToolEnum;
 import de.erdesignerng.visual.common.ZoomInfo;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
-import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
-import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
+import de.erdesignerng.visual.java2d.TableComponent;
+import de.erdesignerng.visual.java2d.ViewComponent;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -104,8 +105,9 @@ public class Java3DEditor implements GenericModelEditor {
     private JLabel currentElement;
     private Model model;
     private ModelItem selectedModelItem;
-    private BufferedImage selectedModelItemRendererComponent;
     private Texture nodeTexture;
+    private FadeInFadeOutHelper fadingHelper;
+    private UserObjectInfo fadingComponent;
 
     private class UserObjectInfo {
 
@@ -189,9 +191,9 @@ public class Java3DEditor implements GenericModelEditor {
 
         private void mouseMoved(MouseEvent e) {
 
-            selectedModelItemRendererComponent = null;
             currentElement.setText("");
 
+            UserObjectInfo pickedObject = null;
             pickCanvas.setShapeLocation(e);
             PickResult result = pickCanvas.pickClosest();
             if (result != null) {
@@ -199,40 +201,54 @@ public class Java3DEditor implements GenericModelEditor {
                 if (p != null) {
                     if (p.getUserData() instanceof UserObjectInfo) {
                         UserObjectInfo theItem = (UserObjectInfo) p.getUserData();
-                        currentElement.setText(theItem.item.getName());
-
-                        JComponent theRenderer = null;
-                        if (theItem.item instanceof Table) {
-                            theRenderer = new TableCellView.MyRenderer().getRendererComponent((Table) theItem.item);
-                        }
-                        if (theItem.item instanceof View) {
-                            theRenderer = new ViewCellView.MyRenderer().getRendererComponent((View) theItem.item);
-                        }
-
-                        if (theRenderer != null) {
-                            Dimension theComponentSize = theRenderer.getPreferredSize();
-                            theRenderer.setSize(theComponentSize);
-                            theRenderer.setOpaque(false);
-
-                            selectedModelItemRendererComponent = new BufferedImage(theComponentSize.width, theComponentSize.height,
-                                    BufferedImage.TYPE_INT_RGB);
-                            Graphics2D theFrontGraphics = (Graphics2D) selectedModelItemRendererComponent.getGraphics();
-                            theRenderer.paint(theFrontGraphics);
-                        }
+                        pickedObject = theItem;
                     }
                 }
             }
+
+            if (pickedObject != null) {
+                currentElement.setText(pickedObject.item.getName());
+                if (pickedObject != fadingComponent) {
+                    fadingHelper.setComponentToHighlightFadeOut(fadingHelper.getComponentToHighlight() != null);
+                    fadingHelper.setComponentToHighlightNext(getHighlightComponentFor(pickedObject));
+                }
+            } else {
+                fadingHelper.setComponentToHighlightFadeOut(true);
+                fadingHelper.setComponentToHighlightNext(null);
+            }
+            fadingComponent = pickedObject;
+
+            fadingHelper.startWaitTimer();
 
             // Repaint triggern
             Transform3D theTransform = new Transform3D();
             modelGroup.getTransform(theTransform);
             modelGroup.setTransform(theTransform);
         }
+
+        private JComponent getHighlightComponentFor(UserObjectInfo aComponent) {
+            if (aComponent.item instanceof Table) {
+                return new TableComponent((Table) aComponent.item, true);
+            }
+            if (aComponent.item instanceof View) {
+                return new ViewComponent((View) aComponent.item);
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public Java3DEditor() {
 
         resourceHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+        fadingHelper = new FadeInFadeOutHelper() {
+            @Override
+            public void doRepaint() {
+                // Repaint triggern
+                Transform3D theTransform = new Transform3D();
+                modelGroup.getTransform(theTransform);
+                modelGroup.setTransform(theTransform);
+            }
+        };
 
         canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration()) {
 
@@ -246,20 +262,26 @@ public class Java3DEditor implements GenericModelEditor {
                 String theTitle = "(c) " + resourceHelper.getText(ERDesignerBundle.TITLE) + " "
                         + theVersion + " ";
 
+                g.setColor(Color.white);
                 g.setFont(new Font("Helvetica", Font.PLAIN, 12));
                 g.drawString(theTitle, 10, 20);
 
-                if (selectedModelItemRendererComponent != null && false) {
-                    int width = canvas.getWidth() / 2;
-                    int height = canvas.getHeight() / 2;
+                if (fadingHelper.getComponentToHighlight() != null) {
 
-                    int imageWidth = selectedModelItemRendererComponent.getWidth();
-                    int imageHeight = selectedModelItemRendererComponent.getHeight();
-                    width -= imageWidth / 2;
-                    height -= imageHeight / 2;
+                    int x = canvas.getWidth() - fadingHelper.getComponentToHighlightPosition();
+                    int y = 10;
 
-                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-                    g.drawImage(selectedModelItemRendererComponent, width, height, null);
+                    Composite theOld = g.getComposite();
+                    Paint theOldPaint = g.getPaint();
+
+                    g.translate(x, y);
+                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                            0.85f));
+                    fadingHelper.getComponentToHighlight().paint(g);
+
+                    g.translate(-x, -y);
+                    g.setComposite(theOld);
+                    g.setPaint(theOldPaint);
                 }
 
                 g.flush(true);
@@ -535,7 +557,6 @@ public class Java3DEditor implements GenericModelEditor {
         modelGroup.removeAllChildren();
 
         selectedModelItem = null;
-        selectedModelItemRendererComponent = null;
 
         if (aSelectedObject instanceof Table) {
 
