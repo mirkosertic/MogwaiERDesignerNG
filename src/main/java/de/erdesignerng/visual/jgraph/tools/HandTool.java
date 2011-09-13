@@ -20,16 +20,16 @@ package de.erdesignerng.visual.jgraph.tools;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.visual.common.ContextMenuFactory;
+import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.i18n.ResourceHelper;
-import org.jgraph.graph.DefaultGraphCell;
-
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SwingUtilities;
+import org.jgraph.graph.DefaultGraphCell;
 
 /**
  * @author $Author: mirkosertic $
@@ -37,8 +37,11 @@ import java.util.List;
  */
 public class HandTool extends BaseTool {
 
-    public HandTool(ERDesignerGraph aGraph) {
+    private GenericModelEditor editor;
+
+    public HandTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
         super(aGraph);
+        editor = aEditor;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class HandTool extends BaseTool {
             theItems.add((ModelItem) theCell.getUserObject());
         }
 
-        ContextMenuFactory.addActionsToMenu(theMenu, theItems);
+        ContextMenuFactory.addActionsToMenu(editor, theMenu, theItems);
 
         UIInitializer.getInstance().initialize(theMenu);
 

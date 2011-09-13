@@ -18,24 +18,16 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 /**
  * Factory for context menues.
@@ -47,7 +39,8 @@ public final class ContextMenuFactory {
     private ContextMenuFactory() {
     }
 
-    public static void addActionsToMenu(JPopupMenu aMenu,
+    public static void addActionsToMenu(GenericModelEditor aEditor,
+                                        JPopupMenu aMenu,
                                         List<ModelItem> aItemList) {
 
         ResourceHelper theHelper = ResourceHelper
@@ -75,20 +68,21 @@ public final class ContextMenuFactory {
 
                 aMenu.add(theDataBrowserItem);
 
-                JMenuItem theHideRelationsItem = new JMenuItem();
-                theHideRelationsItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.HIDEALLRELATIONSFOR, theTable.getName()));
-                theHideRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, false));
+                if (aEditor.supportShowingAndHidingOfRelations()) {
+                    JMenuItem theHideRelationsItem = new JMenuItem();
+                    theHideRelationsItem.setText(theHelper.getFormattedText(
+                            ERDesignerBundle.HIDEALLRELATIONSFOR, theTable.getName()));
+                    theHideRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, false));
 
-                aMenu.add(theHideRelationsItem);
+                    aMenu.add(theHideRelationsItem);
 
-                JMenuItem theShowRelationsItem = new JMenuItem();
-                theShowRelationsItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.SHOWALLRELATIONSFOR, theTable.getName()));
-                theShowRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, true));
+                    JMenuItem theShowRelationsItem = new JMenuItem();
+                    theShowRelationsItem.setText(theHelper.getFormattedText(
+                            ERDesignerBundle.SHOWALLRELATIONSFOR, theTable.getName()));
+                    theShowRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, true));
 
-                aMenu.add(theShowRelationsItem);
-
+                    aMenu.add(theShowRelationsItem);
+                }
 
                 theNewSubjectAreaItems.add(theTable);
                 theItemsToBeDeleted.add(theTable);
@@ -202,7 +196,7 @@ public final class ContextMenuFactory {
             }
         }
 
-        if (theNewSubjectAreaItems.size() > 0) {
+        if (theNewSubjectAreaItems.size() > 0 && aEditor.supportsSubjectAreas()) {
 
             DefaultAction theAddAction = new DefaultAction(
                     ERDesignerBundle.BUNDLE_NAME,
@@ -221,7 +215,7 @@ public final class ContextMenuFactory {
             aMenu.add(theAddItem);
         }
 
-        if (theItemsToBeDeleted.size() > 0) {
+        if (theItemsToBeDeleted.size() > 0 && aEditor.supportsDeletionOfObjects()) {
 
             DefaultAction theDeleteAction = new DefaultAction(
                     ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);

@@ -17,21 +17,15 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
-
-import javax.swing.*;
+import de.mogwai.common.i18n.ResourceHelperProvider;
 import java.awt.geom.Point2D;
 import java.util.List;
+import javax.swing.JComponent;
 
 /**
  * Interface for Model editors.
@@ -143,4 +137,32 @@ public interface GenericModelEditor {
     JComponent getDetailComponent();
 
     void addExportEntries(DefaultMenu aMenu, Exporter aExporter);
+
+    boolean supportsZoom();
+
+    boolean supportsHandAction();
+
+    boolean supportsRelationAction();
+
+    boolean supportsCommentAction();
+
+    boolean supportsViewAction();
+
+    boolean supportsIntelligentLayout();
+
+    void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu);
+
+    boolean supportsEntityAction();
+
+    boolean supportsGrid();
+
+    boolean supportsDisplayLevel();
+
+    boolean supportsSubjectAreas();
+
+    boolean supportsAttributeOrder();
+
+    boolean supportsDeletionOfObjects();
+
+    boolean supportShowingAndHidingOfRelations();
 }
