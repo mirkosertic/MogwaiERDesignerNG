@@ -28,6 +28,7 @@ import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
+import de.mogwai.common.i18n.ResourceHelperProvider;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -224,6 +225,76 @@ public class Java2DEditor implements GenericModelEditor {
 
     @Override
     public void addExportEntries(DefaultMenu aMenu, Exporter aExporter) {
+    }
+
+    @Override
+    public boolean supportsZoom() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsHandAction() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsRelationAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsCommentAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsViewAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsIntelligentLayout() {
+        return false;
+    }
+
+    @Override
+    public void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu) {
+        aExportMenu.setEnabled(false);
+    }
+
+    @Override
+    public boolean supportsEntityAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsGrid() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsDisplayLevel() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSubjectAreas() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsAttributeOrder() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsDeletionOfObjects() {
+        return false;
+    }
+
+    @Override
+    public boolean supportShowingAndHidingOfRelations() {
+        return false;
     }
 
     private void generateGraphFor(Table aTable) {

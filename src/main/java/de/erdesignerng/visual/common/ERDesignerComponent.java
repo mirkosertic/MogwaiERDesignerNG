@@ -18,13 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.check.ModelChecker;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -40,15 +34,8 @@ import de.erdesignerng.visual.java2d.EditorPanel;
 import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
-import de.erdesignerng.visual.jgraph.export.Exporter;
-import de.erdesignerng.visual.jgraph.export.ImageExporter;
-import de.erdesignerng.visual.jgraph.export.SVGExporter;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultCheckBox;
-import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultToggleButton;
-import de.mogwai.common.client.looks.components.DefaultToolbar;
+import de.mogwai.common.client.looks.components.*;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -56,17 +43,19 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -116,8 +105,38 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private final DefaultComboBox zoomBox = new DefaultComboBox();
 
+    private DefaultAction theZoomInAction;
+
+    private DefaultAction theZoomOutAction;
+
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo(
             "100%", 1);
+
+    private DefaultAction theHandAction;
+
+    private DefaultAction theEntityAction;
+
+    private DefaultAction theRelationAction;
+
+    private DefaultAction theCommentAction;
+
+    private DefaultAction theViewAction;
+
+    private DefaultCheckBox theIntelligentLayoutCheckbox;
+
+    private DefaultMenu theExportMenu;
+
+    private DefaultAction theExportOpenXavaAction;
+
+    private DefaultAction theDisplayCommentsAction;
+
+    private DefaultAction theDisplayGridAction;
+
+    private DefaultMenu theDisplayLevelMenu;
+
+    private DefaultMenu theDisplayOrderMenu;
+
+    private ToolEnum currentTool = ToolEnum.HAND;
 
     private final DefaultAction editCustomTypes = new DefaultAction(
             new EditCustomTypesCommand(), this,
@@ -148,8 +167,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         editorPanel = new JPanel(new BorderLayout());
 
-        setEditor2DInteractive();
         initActions();
+
+        setEditor2DInteractive();
 
         if (ApplicationPreferences.getInstance().isIntelligentLayout()) {
             editor.setIntelligentLayoutEnabled(true);
@@ -184,8 +204,18 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                             }
                         }
                     }
-                }
+                } else {
+                    DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+                            .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
+                    List<ModelItem> theItems = new ArrayList<ModelItem>();
+                    theItems.add((ModelItem) aComponent.userObject);
+                    ContextMenuFactory.addActionsToMenu(this, theMenu, theItems);
+
+                    UIInitializer.getInstance().initialize(theMenu);
+
+                    theMenu.show(editorPanel, aEvent.getX(), aEvent.getY());
+                }
             }
         });
     }
@@ -198,7 +228,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         editor = aEditor;
         if (model != null) {
             editor.setModel(model);
-            editor.setSelectedObject(selectedObject);
+            if (selectedObject != null) {
+                editor.setSelectedObject(selectedObject);
+            }
         }
 
         JComponent theDetail = aEditor.getDetailComponent();
@@ -213,7 +245,40 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         editorPanel.doLayout();
         editorPanel.repaint();
 
+        // Enable / Disable buttons
+        zoomBox.setEnabled(aEditor.supportsZoom());
+        theZoomInAction.setEnabled(aEditor.supportsZoom());
+        theZoomOutAction.setEnabled(aEditor.supportsZoom());
+        theHandAction.setEnabled(aEditor.supportsHandAction());
+        theEntityAction.setEnabled(aEditor.supportsEntityAction());
+        theRelationAction.setEnabled(aEditor.supportsRelationAction());
+        theCommentAction.setEnabled(aEditor.supportsCommentAction());
+        theViewAction.setEnabled(aEditor.supportsViewAction());
+        theIntelligentLayoutCheckbox.setEnabled(aEditor.supportsIntelligentLayout());
+        theDisplayCommentsAction.setEnabled(aEditor.supportsCommentAction());
+        theDisplayGridAction.setEnabled(aEditor.supportsGrid());
+        theDisplayLevelMenu.setEnabled(aEditor.supportsDisplayLevel());
+        subjectAreas.setEnabled(aEditor.supportsSubjectAreas());
+        theDisplayOrderMenu.setEnabled(aEditor.supportsAttributeOrder());
+
+        theExportMenu.removeAll();
+        aEditor.initExportEntries(this, theExportMenu);
+        theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
+
+        editor.commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
+        editor.commandSetDisplayGridState(displayGridMenuItem.isSelected());
+
+        editor.commandSetTool(currentTool);
+
+        UIInitializer.getInstance().initialize(theExportMenu);
+        UIInitializer.getInstance().initialize(editor.getDetailComponent());
+
         aEditor.repaintGraph();
+    }
+
+    private void commandSetTool(ToolEnum aTool) {
+        currentTool = aTool;
+        editor.commandSetTool(aTool);
     }
 
     protected final void initActions() {
@@ -249,12 +314,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 new SaveToRepositoryCommand(), this,
                 ERDesignerBundle.SAVEMODELTODB);
 
-        DefaultAction theRelationAction = new DefaultAction(
+        theRelationAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        editor.commandSetTool(ToolEnum.RELATION);
+                        commandSetTool(ToolEnum.RELATION);
                         if (!relationButton.isSelected()) {
                             relationButton.setSelected(true);
                         }
@@ -277,12 +342,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         DefaultAction theLoadAction = new DefaultAction(
                 new OpenFromFileCommand(), this, ERDesignerBundle.LOADMODEL);
 
-        DefaultAction theHandAction = new DefaultAction(
+        theHandAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        editor.commandSetTool(ToolEnum.HAND);
+                        commandSetTool(ToolEnum.HAND);
 
                         if (!handButton.isSelected()) {
                             handButton.setSelected(true);
@@ -291,12 +356,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.HAND);
 
-        DefaultAction theCommentAction = new DefaultAction(
+        theCommentAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        editor.commandSetTool(ToolEnum.COMMENT);
+                        commandSetTool(ToolEnum.COMMENT);
                         if (!commentButton.isSelected()) {
                             commentButton.setSelected(true);
                         }
@@ -304,15 +369,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.COMMENT);
 
-        DefaultAction theExportSVGAction = new DefaultAction(this,
-                ERDesignerBundle.ASSVG);
-
-        DefaultAction theEntityAction = new DefaultAction(
+        theEntityAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        editor.commandSetTool(ToolEnum.ENTITY);
+                        commandSetTool(ToolEnum.ENTITY);
                         if (!entityButton.isSelected()) {
                             entityButton.setSelected(true);
                         }
@@ -320,12 +382,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.ENTITY);
 
-        DefaultAction theViewAction = new DefaultAction(
+        theViewAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        editor.commandSetTool(ToolEnum.VIEW);
+                        commandSetTool(ToolEnum.VIEW);
                         if (!viewButton.isSelected()) {
                             viewButton.setSelected(true);
                         }
@@ -371,7 +433,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }, this, ERDesignerBundle.ZOOM);
 
-        DefaultAction theZoomInAction = new DefaultAction(
+        theZoomInAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -386,7 +448,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.ZOOMIN);
 
-        DefaultAction theZoomOutAction = new DefaultAction(
+        theZoomOutAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -439,7 +501,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.HELP);
 
-        DefaultAction theExportOpenXavaAction = new DefaultAction(
+        theExportOpenXavaAction = new DefaultAction(
                 new OpenXavaExportExportCommand(), this,
                 ERDesignerBundle.OPENXAVAEXPORT);
 
@@ -494,40 +556,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.addSeparator();
         }
 
-        DefaultMenu theExportMenu = new DefaultMenu(theExportAction);
-
-        List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
-        if (theSupportedFormats.contains("IMAGE/PNG")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-                    ERDesignerBundle.ASPNG);
-            theExportMenu.add(theSingleExportMenu);
-
-            addExportEntries(theSingleExportMenu, new ImageExporter("png"));
-        }
-        if (theSupportedFormats.contains("IMAGE/JPEG")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-                    ERDesignerBundle.ASJPEG);
-            theExportMenu.add(theSingleExportMenu);
-
-            addExportEntries(theSingleExportMenu, new ImageExporter("jpg"));
-        }
-        if (theSupportedFormats.contains("IMAGE/BMP")) {
-            DefaultMenu theSingleExportMenu = new DefaultMenu(this,
-                    ERDesignerBundle.ASBMP);
-            theExportMenu.add(theSingleExportMenu);
-
-            addExportEntries(theSingleExportMenu, new ImageExporter("bmp"));
-        }
-
-        DefaultMenu theSVGExportMenu = new DefaultMenu(theExportSVGAction);
-
-        theExportMenu.add(theSVGExportMenu);
-        addExportEntries(theSVGExportMenu, new SVGExporter());
-
-        theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
-
-        UIInitializer.getInstance().initialize(theExportMenu);
-
+        theExportMenu = new DefaultMenu(theExportAction);
         theFileMenu.add(theExportMenu);
 
         theFileMenu.addSeparator();
@@ -639,7 +668,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(theViewModeMenu);
         UIInitializer.getInstance().initialize(theViewModeMenu);
 
-        DefaultAction theDisplayCommentsAction = new DefaultAction(
+        theDisplayCommentsAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -656,7 +685,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         displayCommentsMenuItem.setSelected(false);
         theViewMenu.add(displayCommentsMenuItem);
 
-        DefaultAction theDisplayGridAction = new DefaultAction(
+        theDisplayGridAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -671,7 +700,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         displayGridMenuItem = new DefaultCheckboxMenuItem(theDisplayGridAction);
         theViewMenu.add(displayGridMenuItem);
 
-        DefaultMenu theDisplayLevelMenu = new DefaultMenu(this,
+        theDisplayLevelMenu = new DefaultMenu(this,
                 ERDesignerBundle.DISPLAYLEVEL);
         theViewMenu.add(theDisplayLevelMenu);
 
@@ -722,7 +751,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         UIInitializer.getInstance().initialize(theDisplayLevelMenu);
 
-        DefaultMenu theDisplayOrderMenu = new DefaultMenu(this,
+        theDisplayOrderMenu = new DefaultMenu(this,
                 ERDesignerBundle.DISPLAYORDER);
         theViewMenu.add(theDisplayOrderMenu);
 
@@ -837,28 +866,26 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.add(commentButton);
         theToolBar.add(viewButton);
 
-        final DefaultCheckBox theCheckbox = new DefaultCheckBox(
+        theIntelligentLayoutCheckbox = new DefaultCheckBox(
                 ERDesignerBundle.INTELLIGENTLAYOUT);
-        theCheckbox.setSelected(ApplicationPreferences.getInstance()
+        theIntelligentLayoutCheckbox.setSelected(ApplicationPreferences.getInstance()
                 .isIntelligentLayout());
-        theCheckbox.addActionListener(new ActionListener() {
+        theIntelligentLayoutCheckbox.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                editor.setIntelligentLayoutEnabled(theCheckbox.isSelected());
+                editor.setIntelligentLayoutEnabled(theIntelligentLayoutCheckbox.isSelected());
             }
         });
 
         theToolBar.addSeparator();
-        theToolBar.add(theCheckbox);
+        theToolBar.add(theIntelligentLayoutCheckbox);
 
         worldConnector.initTitle();
 
         updateRecentlyUsedMenuEntries();
 
         setupViewForNothing();
-
-        UIInitializer.getInstance().initialize(editor.getDetailComponent());
     }
 
     protected boolean checkForValidConnection() {
@@ -1145,7 +1172,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
             zoomBox.setSelectedItem(ZOOMSCALE_HUNDREDPERCENT);
             editor.commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
-            editor.commandSetTool(ToolEnum.HAND);
+            commandSetTool(ToolEnum.HAND);
 
             updateSubjectAreasMenu();
 
@@ -1156,10 +1183,6 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     public Model getModel() {
         return model;
-    }
-
-    protected void addExportEntries(DefaultMenu aMenu, final Exporter aExporter) {
-        editor.addExportEntries(aMenu, aExporter);
     }
 
     public JComponent getDetailComponent() {
@@ -1228,5 +1251,9 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     public void commandShowOrHideRelationsFor(Table aTable, boolean aShow) {
         editor.commandShowOrHideRelationsFor(aTable, aShow);
+    }
+
+    public GenericModelEditor getEditor() {
+        return editor;
     }
 }
