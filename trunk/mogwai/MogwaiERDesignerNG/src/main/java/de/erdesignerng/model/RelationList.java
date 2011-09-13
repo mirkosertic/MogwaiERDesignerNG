@@ -17,10 +17,7 @@
  */
 package de.erdesignerng.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -31,10 +28,26 @@ public class RelationList extends ModelItemVector<Relation> {
     private static final long serialVersionUID = 330168987165235683L;
 
     // Just a cache for all foreign keys in the model
-    private final Map<Attribute, Boolean> foreignKeyCache = new HashMap<Attribute, Boolean>();
+    private Set<Attribute> foreignKeyCache = new HashSet<Attribute>();
 
     private Map<Table, List<Relation>> relationsByImportingTable = new HashMap<Table, List<Relation>>();
     private Map<Table, List<Relation>> relationsByExportingTable = new HashMap<Table, List<Relation>>();
+
+    private void updateForeignKeyCache() {
+        synchronized (foreignKeyCache) {
+            foreignKeyCache.clear();
+            for (Relation theRelation : this) {
+                addToForeignKeyCache(theRelation);
+            }
+        }
+    }
+
+    private void addToForeignKeyCache(Relation theRelation) {
+        synchronized (foreignKeyCache) {
+            Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
+            foreignKeyCache.addAll(theMap.values());
+        }
+    }
 
     /**
      * Test if an attribute is a foreign key attribute.
@@ -44,23 +57,9 @@ public class RelationList extends ModelItemVector<Relation> {
      */
     public boolean isForeignKeyAttribute(Attribute aAttribute) {
 
-        Boolean theResult = foreignKeyCache.get(aAttribute);
-        if (theResult != null) {
-            return theResult;
+        synchronized (foreignKeyCache) {
+            return foreignKeyCache.contains(aAttribute);
         }
-
-        theResult = false;
-        for (Relation theRelation : this) {
-            Map<IndexExpression, Attribute> theMap = theRelation.getMapping();
-            if (theMap.containsValue(aAttribute)) {
-                theResult = true;
-                break;
-            }
-        }
-
-        foreignKeyCache.put(aAttribute, theResult);
-
-        return theResult;
     }
 
     /**
@@ -80,7 +79,7 @@ public class RelationList extends ModelItemVector<Relation> {
             }
         }
         removeAll(theRelationsToRemove);
-        foreignKeyCache.clear();
+        updateForeignKeyCache();
     }
 
     public List<Relation> getForeignKeysFor(Table aTable) {
@@ -102,8 +101,8 @@ public class RelationList extends ModelItemVector<Relation> {
     }
 
     @Override
-    public synchronized boolean add(Relation e) {
-        foreignKeyCache.clear();
+    public boolean add(Relation e) {
+
         List<Relation> byImporting = relationsByImportingTable.get(e.getImportingTable());
         if (byImporting == null) {
             byImporting = new ArrayList<Relation>();
@@ -122,21 +121,28 @@ public class RelationList extends ModelItemVector<Relation> {
             byExporting.add(e);
         }
 
-        return super.add(e);
+        boolean theResult = super.add(e);
+
+        addToForeignKeyCache(e);
+
+        return theResult;
     }
 
     @Override
     public boolean remove(Object o) {
-        foreignKeyCache.clear();
         if (o instanceof Relation) {
             Relation theRelation = (Relation) o;
             relationsByExportingTable.remove(theRelation.getExportingTable());
             relationsByImportingTable.remove(theRelation.getImportingTable());
         }
-        return super.remove(o);
+        boolean theResult = super.remove(o);
+
+        updateForeignKeyCache();
+
+        return theResult;
     }
 
     public void clearCache() {
-        foreignKeyCache.clear();
+        updateForeignKeyCache();
     }
 }
