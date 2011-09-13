@@ -26,11 +26,7 @@ import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.MavenPropertiesLocator;
@@ -38,43 +34,17 @@ import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.FadeInFadeOutHelper;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.GenericModelEditor;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.ToolEnum;
-import de.erdesignerng.visual.common.ZoomInfo;
+import de.erdesignerng.visual.common.*;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.java2d.TableComponent;
 import de.erdesignerng.visual.java2d.ViewComponent;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import javax.media.j3d.Appearance;
-import javax.media.j3d.Behavior;
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.DirectionalLight;
-import javax.media.j3d.Group;
-import javax.media.j3d.J3DGraphics2D;
-import javax.media.j3d.Node;
-import javax.media.j3d.Texture;
-import javax.media.j3d.TextureAttributes;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.WakeupCondition;
-import javax.media.j3d.WakeupCriterion;
-import javax.media.j3d.WakeupOnAWTEvent;
-import javax.media.j3d.WakeupOr;
-import javax.swing.*;
-import javax.vecmath.Color3f;
-import javax.vecmath.Color4f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3f;
+import de.mogwai.common.i18n.ResourceHelperProvider;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -85,6 +55,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import javax.media.j3d.*;
+import javax.swing.*;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3f;
 
 /**
  * Editor to show model as a 3D Scene.
@@ -182,7 +158,16 @@ public class Java3DEditor implements GenericModelEditor {
                                 OutlineComponent.getDefault().setSelectedItem(theItem.item);
                             }
                         } else {
-                            // Context Menue anzeigen
+                            DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+                                    .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+
+                            List<ModelItem> theItems = new ArrayList<ModelItem>();
+                            theItems.add(theItem.item);
+                            ContextMenuFactory.addActionsToMenu(Java3DEditor.this, theMenu, theItems);
+
+                            UIInitializer.getInstance().initialize(theMenu);
+
+                            theMenu.show(mainPanel, e.getX(), e.getY());
                         }
                     }
                 }
@@ -789,5 +774,75 @@ public class Java3DEditor implements GenericModelEditor {
 
     @Override
     public void addExportEntries(DefaultMenu aMenu, Exporter aExporter) {
+    }
+
+    @Override
+    public boolean supportsZoom() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsHandAction() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsRelationAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsCommentAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsViewAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsIntelligentLayout() {
+        return false;
+    }
+
+    @Override
+    public void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu) {
+        aExportMenu.setEnabled(false);
+    }
+
+    @Override
+    public boolean supportsEntityAction() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsGrid() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsDisplayLevel() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSubjectAreas() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsAttributeOrder() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsDeletionOfObjects() {
+        return false;
+    }
+
+    @Override
+    public boolean supportShowingAndHidingOfRelations() {
+        return false;
     }
 }

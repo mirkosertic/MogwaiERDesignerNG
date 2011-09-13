@@ -18,58 +18,25 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.OwnedModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.IconFactory;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultTextField;
-import de.mogwai.common.client.looks.components.DefaultTree;
+import de.mogwai.common.client.looks.components.*;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.lang.StringUtils;
-
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import java.util.List;
+import java.util.Timer;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.tree.*;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.lang.StringUtils;
 
 public class OutlineComponent extends DefaultPanel implements
         ResourceHelperProvider {
@@ -847,7 +814,7 @@ public class OutlineComponent extends DefaultPanel implements
         List<ModelItem> theItemList = new ArrayList<ModelItem>();
         if (theUserObject instanceof ModelItem) {
             theItemList.add((ModelItem) theUserObject);
-            ContextMenuFactory.addActionsToMenu(aMenu, theItemList);
+            ContextMenuFactory.addActionsToMenu(ERDesignerComponent.getDefault().getEditor(), aMenu, theItemList);
         }
 
         if (aNode.getParent() != null) {
