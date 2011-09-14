@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><Model version="3.0">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Model version="3.0">
 <Configuration>
 <Property name="dialect" value="MySQLInnoDBDialect"/>
 <Property name="ALIAS" value=""/>

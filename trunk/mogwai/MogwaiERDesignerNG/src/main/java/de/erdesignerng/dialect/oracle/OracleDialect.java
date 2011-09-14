@@ -20,7 +20,6 @@ package de.erdesignerng.dialect.oracle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
-
 import java.sql.Types;
 
 /**
@@ -94,7 +93,7 @@ public final class OracleDialect extends SQL92Dialect {
 
     @Override
     public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.Oracle8iDialect.class;
+        return org.hibernate.dialect.Oracle10gDialect.class;
     }
 
     @Override
