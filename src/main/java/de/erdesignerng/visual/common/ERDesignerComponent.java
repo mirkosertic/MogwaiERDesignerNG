@@ -18,7 +18,13 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.model.check.ModelChecker;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
@@ -35,7 +41,12 @@ import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.*;
+import de.mogwai.common.client.looks.components.DefaultCheckBox;
+import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
+import de.mogwai.common.client.looks.components.DefaultToggleButton;
+import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -43,9 +54,9 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,7 +66,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -225,18 +235,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void setEditor(GenericModelEditor aEditor) {
-        editor = aEditor;
-        if (model != null) {
-            editor.setModel(model);
-            if (selectedObject != null) {
-                editor.setSelectedObject(selectedObject);
-            }
-        }
 
         JComponent theDetail = aEditor.getDetailComponent();
 
         editorPanel.removeAll();
         editorPanel.add(theDetail, BorderLayout.CENTER);
+        UIInitializer.getInstance().initialize(theDetail);
 
         theDetail.invalidate();
         theDetail.doLayout();
@@ -244,6 +248,14 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         editorPanel.invalidate();
         editorPanel.doLayout();
         editorPanel.repaint();
+
+        editor = aEditor;
+        if (model != null) {
+            editor.setModel(model);
+            if (selectedObject != null) {
+                editor.setSelectedObject(selectedObject);
+            }
+        }
 
         // Enable / Disable buttons
         zoomBox.setEnabled(aEditor.supportsZoom());
@@ -264,14 +276,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theExportMenu.removeAll();
         aEditor.initExportEntries(this, theExportMenu);
         theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
+        UIInitializer.getInstance().initialize(theExportMenu);
 
         editor.commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
         editor.commandSetDisplayGridState(displayGridMenuItem.isSelected());
 
         editor.commandSetTool(currentTool);
-
-        UIInitializer.getInstance().initialize(theExportMenu);
-        UIInitializer.getInstance().initialize(editor.getDetailComponent());
 
         aEditor.repaintGraph();
     }
