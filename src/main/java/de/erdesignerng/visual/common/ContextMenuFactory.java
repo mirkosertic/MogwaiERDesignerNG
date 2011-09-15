@@ -24,6 +24,7 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JMenuItem;
@@ -58,8 +59,19 @@ public final class ContextMenuFactory {
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITTABLE, theTable.getName()));
                 theEditItem.addActionListener(new EditTableCommand(theTable));
-
                 aMenu.add(theEditItem);
+
+                Table theClone = theTable.createCopy();
+
+                Point2D theNewLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX() + 20, (int) theNewLocation.getY() + 20);
+
+                JMenuItem theCloneItem = new JMenuItem();
+                theCloneItem.setText(theHelper.getFormattedText(
+                        ERDesignerBundle.CLONETABLE, theClone.getName()));
+                theCloneItem.addActionListener(new EditTableCommand(theClone));
+
+                aMenu.add(theCloneItem);
 
                 JMenuItem theDataBrowserItem = new JMenuItem();
                 theDataBrowserItem.setText(theHelper.getFormattedText(
@@ -95,6 +107,18 @@ public final class ContextMenuFactory {
                 theEditItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.EDITVIEW, theView.getName()));
                 theEditItem.addActionListener(new EditViewCommand(theView));
+
+                View theClone = theView.createCopy();
+
+                Point2D theNewLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX() + 20, (int) theNewLocation.getY() + 20);
+
+                JMenuItem theCloneItem = new JMenuItem();
+                theCloneItem.setText(theHelper.getFormattedText(
+                        ERDesignerBundle.CLONEVIEW, theClone.getName()));
+                theCloneItem.addActionListener(new EditViewCommand(theClone));
+
+                aMenu.add(theCloneItem);
 
                 JMenuItem theDataBrowserItem = new JMenuItem();
                 theDataBrowserItem.setText(theHelper.getFormattedText(

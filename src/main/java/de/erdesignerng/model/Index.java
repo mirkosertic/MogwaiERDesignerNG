@@ -47,7 +47,7 @@ public class Index extends OwnedModelItem<Table> implements
         theIndex.setOwner(getOwner());
         theIndex.setName(getName());
         theIndex.setIndexType(getIndexType());
-        theIndex.getProperties().setProperties(getProperties().getProperties());
+        theIndex.getProperties().copyFrom(getProperties());
 
         for (IndexExpression theExpression : expressions) {
             theIndex.getExpressions().add(theExpression.clone());
@@ -60,7 +60,7 @@ public class Index extends OwnedModelItem<Table> implements
         setName(aValue.getName());
         setIndexType(aValue.getIndexType());
         setOwner(aValue.getOwner());
-        getProperties().setProperties(aValue.getProperties().getProperties());
+        getProperties().copyFrom(aValue.getProperties());
 
         expressions.clear();
 

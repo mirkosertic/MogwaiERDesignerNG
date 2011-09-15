@@ -1039,4 +1039,12 @@ public interface ERDesignerBundle {
      * \u0054\u0061\u0062\u006c\u0065\u0073\u0070\u0061\u0063\u0065.
      */
     String TABLESPACE = "TABLESPACE";
+    /**
+     * \u0043\u006c\u006f\u006e\u0065\u0020\u0074\u0061\u0062\u006c\u0065\u0020\u007b\u0030\u007d.
+     */
+    String CLONETABLE = "CLONETABLE";
+    /**
+     * \u0043\u006c\u006f\u006e\u0065\u0020\u0076\u0069\u0065\u0077\u0020\u007b\u0030\u007d.
+     */
+    String CLONEVIEW = "CLONEVIEW";
 }

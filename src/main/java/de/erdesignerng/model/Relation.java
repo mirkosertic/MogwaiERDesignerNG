@@ -103,7 +103,7 @@ public class Relation extends OwnedModelItem<Model> implements
         theClone.setExportingTable(getExportingTable());
         theClone.setOnDelete(getOnDelete());
         theClone.setOnUpdate(getOnUpdate());
-        theClone.getProperties().setProperties(getProperties().getProperties());
+        theClone.getProperties().copyFrom(getProperties());
         for (IndexExpression theExpression : getMapping().keySet()) {
             theClone.getMapping().put(theExpression,
                     getMapping().get(theExpression));
@@ -118,7 +118,7 @@ public class Relation extends OwnedModelItem<Model> implements
         setExportingTable(aValue.getExportingTable());
         setOnDelete(aValue.getOnDelete());
         setOnUpdate(aValue.getOnUpdate());
-        getProperties().setProperties(aValue.getProperties().getProperties());
+        getProperties().copyFrom(aValue.getProperties());
         for (IndexExpression theExpression : aValue.getMapping().keySet()) {
             mapping.put(theExpression, aValue.getMapping().get(theExpression));
         }
