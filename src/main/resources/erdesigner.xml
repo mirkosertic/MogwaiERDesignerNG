@@ -1040,5 +1040,9 @@
             <Text lang="de">3D Interaktiv Modus</Text>
             <Text lang="en">3D interactive mode</Text>
         </Entry>
+        <Entry id="TABLESPACE">
+            <Text lang="de">Tablespace</Text>
+            <Text lang="en">Tablespace</Text>
+        </Entry>
     </Bundle>
 </Resource>
