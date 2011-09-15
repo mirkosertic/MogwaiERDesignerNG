@@ -259,6 +259,7 @@ Release 2.7.0
 Release 3.0.0
 
 * Added first version of 3D Model Editor
+* Added first version of 2D Interactive Model Editor
 * Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
 * Implemented FR 2895576 [ERDesignerNG] TableSelectEditor devide tab
 * Implemented FR 2924838 [ERDesignerNG] Using Oracle' tablespace
