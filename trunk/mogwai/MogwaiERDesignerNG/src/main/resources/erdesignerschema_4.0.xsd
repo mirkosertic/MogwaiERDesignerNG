@@ -1,284 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xs:element name="Model">
-		<xs:annotation>
-			<xs:documentation>The database model</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="Configuration">
-					<xs:annotation>
-						<xs:documentation>Comment describing your root element</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Property" type="PropertyType">
-								<xs:annotation>
-									<xs:documentation>A model property</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="CustomTypes" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>The list of user-defined datatypes for this model</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="CustomType">
-								<xs:annotation>
-									<xs:documentation>A definition for a user-defined datatype</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="Comment" type="CommentType" minOccurs="0" maxOccurs="1">
-											<xs:annotation>
-												<xs:documentation>The comment</xs:documentation>
-											</xs:annotation>
-										</xs:element>
-										<xs:element name="SqlDefinition" type="xs:string" minOccurs="0"/>	
-									</xs:sequence>
-									<xs:attribute name="schema" use="required"/>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Domains" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>The list of domains defined for this model</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Domain">
-								<xs:annotation>
-									<xs:documentation>A definition for a domain</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:attribute name="size" use="required"/>
-									<xs:attribute name="fraction" use="required"/>
-									<xs:attribute name="scale" use="required"/>
-									<xs:attribute name="datatype" use="required"/>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-									<xs:attribute name="nullable" use="optional"/>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Tables" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>The list of Tables defined for this model</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Table">
-								<xs:annotation>
-									<xs:documentation>A definition for a table</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>A property</xs:documentation>
-											</xs:annotation>
-										</xs:element>
-										<xs:element name="Comment" type="CommentType" minOccurs="0" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>The comment</xs:documentation>
-											</xs:annotation>
-										</xs:element>
-										<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>Definition of an attribute</xs:documentation>
-											</xs:annotation>
-											<xs:complexType>
-												<xs:sequence minOccurs="0" maxOccurs="unbounded">
-													<xs:element name="Comment">
-														<xs:annotation>
-															<xs:documentation>Comment describing your root element</xs:documentation>
-														</xs:annotation>
-														<xs:simpleType>
-															<xs:restriction base="xs:string"/>
-														</xs:simpleType>
-													</xs:element>
-												</xs:sequence>
-												<xs:attribute name="size" use="optional"/>
-												<xs:attribute name="fraction" use="required"/>
-												<xs:attribute name="scale" use="required"/>
-												<xs:attribute name="datatype" use="required"/>
-												<xs:attribute name="defaultvalue" use="optional"/>
-												<xs:attribute name="extra" use="optional"/>												
-												<xs:attribute name="id" use="required"/>
-												<xs:attribute name="name" use="required"/>
-												<xs:attribute name="nullable" use="required"/>
-											</xs:complexType>
-										</xs:element>
-										<xs:element name="Index" minOccurs="0" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>Definition of an index</xs:documentation>
-											</xs:annotation>
-											<xs:complexType>
-												<xs:sequence minOccurs="0" maxOccurs="unbounded">
-													<xs:element name="Indexattribute">
-														<xs:annotation>
-															<xs:documentation>Definition of an index attribute</xs:documentation>
-														</xs:annotation>
-														<xs:complexType>
-															<xs:attribute name="id" use="required"/>
-															<xs:attribute name="attributerefid"/>
-															<xs:attribute name="expression"/>
-														</xs:complexType>
-													</xs:element>
-												</xs:sequence>
-												<xs:attribute name="id" use="required"/>
-												<xs:attribute name="indextype" use="required"/>
-												<xs:attribute name="name" use="required"/>
-											</xs:complexType>
-										</xs:element>
-									</xs:sequence>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-									<xs:attribute name="schema" use="optional"/>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Relations" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>Definition of relations</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Relation">
-								<xs:annotation>
-									<xs:documentation>A relation</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:sequence minOccurs="0" maxOccurs="unbounded">
-										<xs:sequence minOccurs="0" maxOccurs="unbounded">
-											<xs:element name="Property" type="PropertyType">
-												<xs:annotation>
-													<xs:documentation>A relation layout property</xs:documentation>
-												</xs:annotation>
-											</xs:element>
-										</xs:sequence>
-										<xs:element name="Comment" type="CommentType" minOccurs="0"/>
-										<xs:element name="Mapping" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>A mapping element</xs:documentation>
-											</xs:annotation>
-											<xs:complexType>
-												<xs:attribute name="exportingexpressionrefid" use="required"/>
-												<xs:attribute name="importingattributerefid" use="required"/>
-											</xs:complexType>
-										</xs:element>
-									</xs:sequence>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-									<xs:attribute name="ondelete" use="required"/>
-									<xs:attribute name="onupdate" use="required"/>
-									<xs:attribute name="exportingtablerefid" use="required"/>
-									<xs:attribute name="importingtablerefid" use="required"/>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Views" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>Definition of views</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="View">
-								<xs:annotation>
-									<xs:documentation>A view</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:sequence minOccurs="0" maxOccurs="unbounded">
-										<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
-										<xs:element name="Comment" type="CommentType" minOccurs="0"/>
-										<xs:element name="Sql" type="xs:string" minOccurs="0"/>
-									</xs:sequence>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-									<xs:attribute name="schema" use="optional"/>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>				
-				<xs:element name="Subjectareas" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>Definition of subject areas</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Subjectarea">
-								<xs:annotation>
-									<xs:documentation>A subject area</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:sequence minOccurs="0" maxOccurs="unbounded">
-										<xs:element name="Item" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>A mapping element</xs:documentation>
-											</xs:annotation>
-											<xs:complexType>
-												<xs:attribute name="tablerefid"/>
-												<xs:attribute name="viewrefid"/>
-												<xs:attribute name="commentrefid"/>
-											</xs:complexType>
-										</xs:element>
-									</xs:sequence>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="required"/>
-									<xs:attribute name="visible" use="optional"/>
-									<xs:attribute name="color" use="required"/>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				
-				<xs:element name="Comments" minOccurs="0" maxOccurs="unbounded">
-					<xs:annotation>
-						<xs:documentation>Definition of comments</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="ModelComment">
-								<xs:annotation>
-									<xs:documentation>A comment</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:sequence minOccurs="0" maxOccurs="unbounded">
-										<xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
-										<xs:element name="Comment" type="CommentType" minOccurs="0"/>
-									</xs:sequence>
-									<xs:attribute name="id" use="required"/>
-									<xs:attribute name="name" use="optional"/>									
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>				
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="Model">
+        <xs:annotation>
+            <xs:documentation>The database model</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Configuration">
+                    <xs:annotation>
+                        <xs:documentation>Comment describing your root element</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Property" type="PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CustomTypes" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The list of user-defined datatypes for this model</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="CustomType" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>A definition for a user-defined datatype</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Comment" type="CommentType" minOccurs="0"/>
+                                        <xs:element name="SqlDefinition" type="xs:string" minOccurs="0"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="schema" use="required"/>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Domains" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The list of domains defined for this model</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Domain" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>A definition for a domain</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                    maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="size" use="required"/>
+                                    <xs:attribute name="fraction" use="required"/>
+                                    <xs:attribute name="scale" use="required"/>
+                                    <xs:attribute name="datatype" use="required"/>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="required"/>
+                                    <xs:attribute name="nullable" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Tables" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The list of Tables defined for this model</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="Table">
+                                <xs:annotation>
+                                    <xs:documentation>A definition for a table</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                    maxOccurs="unbounded"/>
+                                        <xs:element name="Comment" type="CommentType" minOccurs="0"/>
+                                        <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Definition of an attribute</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Comment" type="CommentType" minOccurs="0"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="size" use="optional"/>
+                                                <xs:attribute name="fraction" use="required"/>
+                                                <xs:attribute name="scale" use="required"/>
+                                                <xs:attribute name="datatype" use="required"/>
+                                                <xs:attribute name="defaultvalue" use="optional"/>
+                                                <xs:attribute name="extra" use="optional"/>
+                                                <xs:attribute name="id" use="required"/>
+                                                <xs:attribute name="name" use="required"/>
+                                                <xs:attribute name="nullable" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="Index" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Definition of an index</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                                maxOccurs="unbounded"/>
+                                                    <xs:element name="Indexattribute" minOccurs="0"
+                                                                maxOccurs="unbounded">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Definition of an index attribute
+                                                            </xs:documentation>
+                                                        </xs:annotation>
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" use="required"/>
+                                                            <xs:attribute name="attributerefid"/>
+                                                            <xs:attribute name="expression"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" use="required"/>
+                                                <xs:attribute name="indextype" use="required"/>
+                                                <xs:attribute name="name" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="required"/>
+                                    <xs:attribute name="schema" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Relations" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Definition of relations</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Relation" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>A relation</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                    maxOccurs="unbounded"/>
+                                        <xs:element name="Comment" type="CommentType" minOccurs="0"/>
+                                        <xs:element name="Mapping" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>A mapping element</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attribute name="exportingexpressionrefid" use="required"/>
+                                                <xs:attribute name="importingattributerefid" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="required"/>
+                                    <xs:attribute name="ondelete" use="required"/>
+                                    <xs:attribute name="onupdate" use="required"/>
+                                    <xs:attribute name="exportingtablerefid" use="required"/>
+                                    <xs:attribute name="importingtablerefid" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Views" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Definition of views</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="View" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>A view</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                    maxOccurs="unbounded"/>
+                                        <xs:element name="Comment" type="CommentType" minOccurs="0"/>
+                                        <xs:element name="Sql" type="xs:string" minOccurs="0"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="required"/>
+                                    <xs:attribute name="schema" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Subjectareas" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Definition of subject areas</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Subjectarea" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>A subject area</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Item" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>A mapping element</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attribute name="tablerefid"/>
+                                                <xs:attribute name="viewrefid"/>
+                                                <xs:attribute name="commentrefid"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="required"/>
+                                    <xs:attribute name="visible" use="optional"/>
+                                    <xs:attribute name="color" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
 
-			</xs:sequence>
-			<xs:attribute name="version" type="xs:string" use="required"/>
-		</xs:complexType>
-	</xs:element>
-	<xs:complexType name="PropertyType">
-		<xs:attribute name="name" type="xs:string" use="required"/>
-		<xs:attribute name="value" type="xs:string" use="required"/>
-	</xs:complexType>
-	<xs:simpleType name="CommentType">
-		<xs:restriction base="xs:string"/>
-	</xs:simpleType>
+                <xs:element name="Comments" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Definition of comments</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ModelComment" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>A comment</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                    maxOccurs="unbounded"/>
+                                        <xs:element name="Comment" type="CommentType" minOccurs="0"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" use="required"/>
+                                    <xs:attribute name="name" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="PropertyType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:simpleType name="CommentType">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
 </xs:schema>
