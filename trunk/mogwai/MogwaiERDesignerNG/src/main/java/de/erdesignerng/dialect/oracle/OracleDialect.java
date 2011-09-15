@@ -18,8 +18,12 @@
 package de.erdesignerng.dialect.oracle;
 
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.NameCastType;
+import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.Table;
 import java.sql.Types;
 
 /**
@@ -109,5 +113,19 @@ public final class OracleDialect extends SQL92Dialect {
     @Override
     public boolean supportsSpatialIndexes() {
         return true;
+    }
+
+    @Override
+    public IndexProperties createIndexPropertiesFor(Index aIndex) {
+        OracleIndexProperties theProperties = new OracleIndexProperties();
+        theProperties.initializeFrom(aIndex);
+        return theProperties;
+    }
+
+    @Override
+    public TableProperties createTablePropertiesFor(Table aTable) {
+        OracleTableProperties theProperties = new OracleTableProperties();
+        theProperties.initializeFrom(aTable);
+        return theProperties;
     }
 }
