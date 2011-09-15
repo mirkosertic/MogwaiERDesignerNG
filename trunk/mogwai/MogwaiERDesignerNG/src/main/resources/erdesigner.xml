@@ -1044,5 +1044,13 @@
             <Text lang="de">Tablespace</Text>
             <Text lang="en">Tablespace</Text>
         </Entry>
+        <Entry id="CLONETABLE">
+            <Text lang="de">Tabelle {0} clonen</Text>
+            <Text lang="en">Clone table {0}</Text>
+        </Entry>
+        <Entry id="CLONEVIEW">
+            <Text lang="de">View {0} clonen</Text>
+            <Text lang="en">Clone view {0}</Text>
+        </Entry>
     </Bundle>
 </Resource>

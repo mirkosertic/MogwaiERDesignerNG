@@ -1,5 +1,6 @@
 package de.erdesignerng.model;
 
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
@@ -42,6 +43,47 @@ public class ModelProperties implements Serializable {
         return Boolean.parseBoolean(properties.get(aName));
     }
 
+    public void setPointProperty(String aKey, int x, int y) {
+        String theLocation = ((int) x) + ":"
+                + ((int) y);
+        setProperty(aKey, theLocation);
+    }
+
+    /**
+     * Convert a Point2D to a String.
+     *
+     * @param aPoint
+     * @return
+     */
+    public static String toString(Point2D aPoint) {
+        return "" + (int) aPoint.getX() + ":" + (int) aPoint.getY();
+
+    }
+
+    /**
+     * Convert a String to a Point2D.
+     *
+     * @param aValue
+     * @return
+     */
+    public static Point2D toPoint2D(String aValue) {
+
+        if (aValue == null) {
+            return null;
+        }
+
+        int theP = aValue.indexOf(":");
+        int theX = Integer.parseInt(aValue.substring(0, theP));
+        int theY = Integer.parseInt(aValue.substring(theP + 1));
+
+        return new Point2D.Double(theX, theY);
+    }
+
+    public Point2D getPoint2DProperty(String aKey) {
+        return toPoint2D(getProperty(aKey));
+    }
+
+
     public void copyFrom(Model aModel) {
         setProperties(aModel.getProperties().getProperties());
     }
@@ -75,5 +117,11 @@ public class ModelProperties implements Serializable {
         }
 
         return false;
+    }
+
+    public void copyFrom(ModelProperties aProperties) {
+        for (Map.Entry<String, String> theEntry : aProperties.properties.entrySet()) {
+            properties.put(theEntry.getKey(), theEntry.getValue());
+        }
     }
 }

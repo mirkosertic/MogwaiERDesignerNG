@@ -28,15 +28,15 @@
  */
 package de.erdesignerng.visual.jgraph.cells;
 
+import de.erdesignerng.model.ModelProperties;
 import de.erdesignerng.model.Relation;
-import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.GraphConstants;
-
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * @author $Author: mirkosertic $
@@ -67,15 +67,13 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         // PROPERTY_TEXT_OFFSET
         Point2D theOffset = GraphConstants.getOffset(aAttributes);
         if (theOffset != null) {
-            theLocation = ((int) theOffset.getX()) + ":" + ((int) theOffset.getY());
-            theRelation.getProperties().setProperty(Relation.PROPERTY_TEXT_OFFSET, theLocation);
+            theRelation.getProperties().setPointProperty(Relation.PROPERTY_TEXT_OFFSET, (int) theOffset.getX(), (int) theOffset.getY());
         }
 
         // PROPERTY_LABEL_POSITION
         Point2D theLabelPosition = GraphConstants.getLabelPosition(aAttributes);
         if (theLabelPosition != null) {
-            theLocation = ((int) theLabelPosition.getX()) + ":" + ((int) theLabelPosition.getY());
-            theRelation.getProperties().setProperty(Relation.PROPERTY_LABEL_POSITION, theLocation);
+            theRelation.getProperties().setPointProperty(Relation.PROPERTY_LABEL_POSITION, (int) theLabelPosition.getX(), (int) theLabelPosition.getY());
         }
 
         // PROPERTY_POINTS
@@ -88,9 +86,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
                     theBuffer.append(",");
                 }
 
-                theBuffer.append((int) thePoint.getX());
-                theBuffer.append(":");
-                theBuffer.append((int) thePoint.getY());
+                theBuffer.append(ModelProperties.toString(thePoint));
             }
 
             String thePointBuffer = theBuffer.toString();
@@ -105,16 +101,16 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         // PROPERTY_TEXT_OFFSET
         // skip processing of the offset-property, instead remove it from
         // relation to be compatible to earlier versions
-        thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(
-                Relation.PROPERTY_TEXT_OFFSET));
+        thePoint = aRelation.getProperties().getPoint2DProperty(
+                Relation.PROPERTY_TEXT_OFFSET);
         if (thePoint != null) {
             GraphConstants.setOffset(getAttributes(), thePoint);
         }
 
         // PROPERTY_LABEL_POSITION)
         // instead of storing the offset, store the location of the label now
-        thePoint = TransferHelper.createPoint2DFromString(aRelation.getProperties().getProperty(
-                Relation.PROPERTY_LABEL_POSITION));
+        thePoint = aRelation.getProperties().getPoint2DProperty(
+                Relation.PROPERTY_LABEL_POSITION);
         if (thePoint != null) {
             GraphConstants.setLabelPosition(getAttributes(), thePoint);
         }
@@ -125,7 +121,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
             List<Point2D> thePointList = new ArrayList<Point2D>();
 
             for (StringTokenizer theSt = new StringTokenizer(thePoints, ","); theSt.hasMoreTokens(); ) {
-                thePoint = TransferHelper.createPoint2DFromString(theSt.nextToken());
+                thePoint = ModelProperties.toPoint2D(theSt.nextToken());
                 thePointList.add(thePoint);
             }
 
