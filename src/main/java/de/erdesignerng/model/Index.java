@@ -22,83 +22,89 @@ package de.erdesignerng.model;
  * @version $Date: 2009-03-09 19:07:29 $
  */
 public class Index extends OwnedModelItem<Table> implements
-		ModelItemCloneable<Index> {
+        ModelItemCloneable<Index> {
 
-	private IndexType indexType = IndexType.UNIQUE;
+    private IndexType indexType = IndexType.UNIQUE;
 
-	private IndexExpressionList expressions = new IndexExpressionList();
+    private IndexExpressionList expressions = new IndexExpressionList();
 
-	public IndexExpressionList getExpressions() {
-		return expressions;
-	}
+    public IndexExpressionList getExpressions() {
+        return expressions;
+    }
 
-	public IndexType getIndexType() {
-		return indexType;
-	}
+    public IndexType getIndexType() {
+        return indexType;
+    }
 
-	public void setIndexType(IndexType aIndexType) {
-		indexType = aIndexType;
-	}
+    public void setIndexType(IndexType aIndexType) {
+        indexType = aIndexType;
+    }
 
-	@Override
-	public Index clone() {
-		Index theIndex = new Index();
-		theIndex.setSystemId(getSystemId());
-		theIndex.setOwner(getOwner());
-		theIndex.setName(getName());
-		theIndex.setIndexType(getIndexType());
+    @Override
+    public Index clone() {
+        Index theIndex = new Index();
+        theIndex.setSystemId(getSystemId());
+        theIndex.setOwner(getOwner());
+        theIndex.setName(getName());
+        theIndex.setIndexType(getIndexType());
+        theIndex.getProperties().setProperties(getProperties().getProperties());
 
-		for (IndexExpression theExpression : expressions) {
-			theIndex.getExpressions().add(theExpression.clone());
-		}
-		return theIndex;
-	}
+        for (IndexExpression theExpression : expressions) {
+            theIndex.getExpressions().add(theExpression.clone());
+        }
+        return theIndex;
+    }
 
-	@Override
-	public void restoreFrom(Index aValue) {
-		setName(aValue.getName());
-		setIndexType(aValue.getIndexType());
-		setOwner(aValue.getOwner());
+    @Override
+    public void restoreFrom(Index aValue) {
+        setName(aValue.getName());
+        setIndexType(aValue.getIndexType());
+        setOwner(aValue.getOwner());
+        getProperties().setProperties(aValue.getProperties().getProperties());
 
-		expressions.clear();
+        expressions.clear();
 
-		for (IndexExpression theAttribute : aValue.getExpressions()) {
-			expressions.add(theAttribute);
-		}
-	}
+        for (IndexExpression theAttribute : aValue.getExpressions()) {
+            expressions.add(theAttribute);
+        }
+    }
 
-	public boolean isModified(Index aIndex, boolean aUseName) {
+    public boolean isModified(Index aIndex, boolean aUseName) {
 
-		if (!getName().equals(aIndex.getName())) {
-			return true;
-		}
+        if (!getName().equals(aIndex.getName())) {
+            return true;
+        }
 
-		if (!indexType.equals(aIndex.getIndexType())) {
-			return true;
-		}
+        if (!indexType.equals(aIndex.getIndexType())) {
+            return true;
+        }
 
-		if (expressions.size() != aIndex.getExpressions().size()) {
-			return true;
-		}
+        if (expressions.size() != aIndex.getExpressions().size()) {
+            return true;
+        }
 
-		for (int i = 0; i < expressions.size(); i++) {
-			IndexExpression theMyExpression = expressions.get(i);
-			IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
+        if (getProperties().isModified(aIndex.getProperties())) {
+            return true;
+        }
 
-			if (theMyExpression.isModified(theOtherExpression, aUseName)) {
-				return true;
-			}
-		}
+        for (int i = 0; i < expressions.size(); i++) {
+            IndexExpression theMyExpression = expressions.get(i);
+            IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
 
-		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-			IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
-			IndexExpression theMyExpression = expressions.get(i);
+            if (theMyExpression.isModified(theOtherExpression, aUseName)) {
+                return true;
+            }
+        }
 
-			if (theMyExpression.isModified(theOtherExpression, aUseName)) {
-				return true;
-			}
-		}
+        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+            IndexExpression theOtherExpression = aIndex.getExpressions().get(i);
+            IndexExpression theMyExpression = expressions.get(i);
 
-		return false;
-	}
+            if (theMyExpression.isModified(theOtherExpression, aUseName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -21,18 +21,9 @@ import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import org.apache.commons.lang.StringUtils;
-
+import de.erdesignerng.model.*;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @param <T> the dialect
@@ -147,6 +138,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         }
 
         theStatement.append(")");
+        theStatement.append(createCreateIndexSuffix(aIndex));
 
         theResult.add(new Statement(theStatement.toString()));
 
@@ -372,6 +364,15 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         return theResult;
     }
 
+    protected String createCreatePrimaryKeySuffix(Index aIndex) {
+        return "";
+    }
+
+
+    protected String createCreateIndexSuffix(Index aIndex) {
+        return "";
+    }
+
     protected String createCreateTableSuffix(Table aTable) {
         return "";
     }
@@ -421,6 +422,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             }
         }
         theStatement.append(")");
+        theStatement.append(createCreatePrimaryKeySuffix(aIndex));
         theResult.add(new Statement(theStatement.toString()));
 
         return theResult;

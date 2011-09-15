@@ -261,6 +261,7 @@ Release 3.0.0
 * Added first version of 3D Model Editor
 * Implemented FR 3317539 [ERDesignerNG] TableSelectEditor: (De)select whole subtrees
 * Implemented FR 2895576 [ERDesignerNG] TableSelectEditor devide tab
+* Implemented FR 2924838 [ERDesignerNG] Using Oracle' tablespace
 * Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd (re-introduced by buggy commit in v1072)
 * Bug Fixing 2975206 [ERDesignerNG] Unknown data type during revers engineering
 * Bug Fixing 3306174 [ERDesignerNG] Unknown datatype (2.7.0 release)
