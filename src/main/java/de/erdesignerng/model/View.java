@@ -25,53 +25,68 @@ import org.apache.commons.lang.StringUtils;
  */
 public class View extends OwnedModelItem<Model> {
 
-	private String sql;
+    private String sql;
 
-	private ViewAttributeList attributes = new ViewAttributeList();
+    private ViewAttributeList attributes = new ViewAttributeList();
 
-	private String schema;
+    private String schema;
 
-	public String getSql() {
-		return sql;
-	}
+    public String getSql() {
+        return sql;
+    }
 
-	public void setSql(String sql) {
-		this.sql = sql;
-	}
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
 
-	public ViewAttributeList getAttributes() {
-		return attributes;
-	}
+    public ViewAttributeList getAttributes() {
+        return attributes;
+    }
 
-	/**
-	 * Test if the view was modified(compare it with another view).
-	 *
-	 * @param aView the view to test against with
-	 * @return true if it was modified, else false
-	 */
-	public boolean isModified(View aView) {
-		return !StringUtils.equals(sql, aView.getSql());
-	}
+    /**
+     * Test if the view was modified(compare it with another view).
+     *
+     * @param aView the view to test against with
+     * @return true if it was modified, else false
+     */
+    public boolean isModified(View aView) {
+        return !StringUtils.equals(sql, aView.getSql());
+    }
 
-	/**
-	 * @return the schema
-	 */
-	public String getSchema() {
-		return schema;
-	}
+    /**
+     * @return the schema
+     */
+    public String getSchema() {
+        return schema;
+    }
 
-	/**
-	 * @param schema the schema to set
-	 */
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
+    /**
+     * @param schema the schema to set
+     */
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
 
-	@Override
-	public String getUniqueName() {
-		if (!StringUtils.isEmpty(schema)) {
-			return schema + "." + getName();
-		}
-		return super.getUniqueName();
-	}
+    @Override
+    public String getUniqueName() {
+        if (!StringUtils.isEmpty(schema)) {
+            return schema + "." + getName();
+        }
+        return super.getUniqueName();
+    }
+
+    public View createCopy() {
+        View theCopy = new View();
+        theCopy.setSchema(getSchema());
+        theCopy.setSql(getSql());
+        theCopy.setName(getName());
+        theCopy.setOriginalName(getOriginalName());
+        theCopy.getProperties().copyFrom(getProperties());
+        for (ViewAttribute theAttribute : attributes) {
+            ViewAttribute theClone = theAttribute.clone();
+            theClone.setSystemId(ModelUtilities.createSystemIdFor());
+            theCopy.getAttributes().add(theClone);
+        }
+        return theCopy;
+    }
 }

@@ -19,13 +19,12 @@ package de.erdesignerng.visual.jgraph.cells;
 
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.GraphConstants;
-
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * A table cell.
@@ -53,17 +52,15 @@ public class TableCell extends DefaultGraphCell implements
 
         Table theTable = (Table) getUserObject();
         Rectangle2D theBounds = GraphConstants.getBounds(aAttributes);
-        String theLocation = ((int) theBounds.getX()) + ":"
-                + ((int) theBounds.getY());
-        theTable.getProperties().setProperty(ModelItem.PROPERTY_LOCATION,
-                theLocation);
+        theTable.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION,
+                (int) theBounds.getX(), (int) theBounds.getY());
     }
 
     @Override
     public void transferPropertiesToAttributes(Table aObject) {
 
-        Point2D thePoint = TransferHelper.createPoint2DFromString(aObject
-                .getProperties().getProperty(ModelItem.PROPERTY_LOCATION));
+        Point2D thePoint = aObject
+                .getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
         if (thePoint != null) {
             GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(
                     thePoint.getX(), thePoint.getY(), -1, -1));
