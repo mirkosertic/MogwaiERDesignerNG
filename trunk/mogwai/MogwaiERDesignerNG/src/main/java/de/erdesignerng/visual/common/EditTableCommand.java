@@ -44,6 +44,9 @@ public class EditTableCommand extends UICommand {
         index = aIndex;
     }
 
+    protected void beforeRefresh() {
+    }
+
     @Override
     public void execute() {
         ERDesignerComponent component = ERDesignerComponent.getDefault();
@@ -58,6 +61,8 @@ public class EditTableCommand extends UICommand {
         if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
             try {
                 theEditor.applyValues();
+
+                beforeRefresh();
 
                 refreshDisplayAndOutline();
             } catch (Exception e) {

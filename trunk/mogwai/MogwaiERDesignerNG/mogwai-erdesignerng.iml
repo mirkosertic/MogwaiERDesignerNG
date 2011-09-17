@@ -10,10 +10,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-layout:1.2" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-smartstart:1.1" level="project" />
+    <orderEntry type="library" name="Java3D" level="application" />
     <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core-utils:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:vecmath:1.5.2" level="project" />
