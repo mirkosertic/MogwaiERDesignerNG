@@ -127,10 +127,29 @@ public class PostgresReverseEngineeringStrategy extends
         // 'e' -> enumerations (java.sql.Types.ARRAY)
 
         // TODO: [mirkosertic] implement valid way to retrieve type ddl from db
-        String theQuery = "SELECT NULL AS type_cat, n.nspname AS type_schem, t.typname AS type_name, NULL AS class_name, CASE WHEN t.typtype = 'c' THEN 2002 WHEN t.typtype = 'e' THEN 2003 ELSE 2001 END AS data_type, pg_catalog.Obj_description(t.oid, 'pg_type') AS remarks, NULL AS base_type " +
-                "FROM pg_catalog.pg_type t inner join pg_catalog.pg_namespace n on t.typnamespace = n.oid inner join pg_catalog.pg_authid a on t.typowner = a.oid " +
-                "WHERE t.typtype IN ( 'c', 'e' ) AND n.nspname = ? AND a.rolname = 'postgres' " +
-                "ORDER BY data_type, type_schem, type_name ";
+        String theQuery = "SELECT " +
+								"t.typcategory AS type_cat, " +
+								"n.nspname AS type_schem, " +
+								"t.typname AS type_name, " +
+								"ct.relname AS class_name, " +
+								"CASE " +
+									"WHEN t.typtype = 'c' THEN 2002 " +
+									"WHEN t.typtype = 'e' THEN 2003 " +
+									"ELSE 2001 " +
+								"END AS data_type, " +
+								"d.description AS remarks, " +
+								"b.typname AS base_type " +
+//								", t.oid, t.*, format_type(t.oid, null) AS alias, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid " +
+							"FROM pg_type t " +
+								"LEFT OUTER JOIN pg_type e ON e.oid = t.typelem " +
+								"LEFT OUTER JOIN pg_class ct ON ct.oid = t.typrelid AND ct.relkind <> 'c' " +
+								"LEFT OUTER JOIN pg_description d ON d.objoid = t.oid " +
+								"LEFT OUTER JOIN pg_catalog.pg_namespace n ON t.typnamespace = n.oid " +
+								"LEFT OUTER JOIN pg_type b ON t.typbasetype = b.oid " +
+							"WHERE " +
+								"t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%' AND n.nspname = ? AND ct.oid IS NULL " +
+							"ORDER BY t.typname";
+
         PreparedStatement theStatement;
 
         for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
