@@ -20,8 +20,15 @@ package de.erdesignerng.visual.java2d;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Table;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
+import java.text.AttributedString;
 
 public class TableComponent extends BaseRendererComponent {
 
@@ -122,7 +129,17 @@ public class TableComponent extends BaseRendererComponent {
                     g.setColor(Color.green);
                 }
 
-                theGraphics.drawString(theText, 15, y + theMetrics.getAscent());
+                if (theAttriute.isPrimaryKey()) {
+                    // Primarx key has underline
+                    AttributedString as = new AttributedString(theText);
+                    as.addAttribute(TextAttribute.FONT, theGraphics.getFont());
+                    as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, 0,
+                            theText.length());
+
+                    theGraphics.drawString(as.getIterator(), 15, y + theMetrics.getAscent());
+                } else {
+                    theGraphics.drawString(theText, 15, y + theMetrics.getAscent());
+                }
 
                 y += theMetrics.getAscent();
             }
