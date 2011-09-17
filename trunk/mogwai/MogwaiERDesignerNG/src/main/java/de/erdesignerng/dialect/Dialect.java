@@ -448,7 +448,7 @@ public abstract class Dialect {
     /**
      * Does this dialect support spatial indexes?
      *
-     * @return
+     * @return true, if spatial indexes are supported, false else
      */
     public boolean supportsSpatialIndexes() {
         return false;
@@ -457,7 +457,7 @@ public abstract class Dialect {
     /**
      * Does this dialect support fulltext indexes?
      *
-     * @return
+     * @return true, if fulltext indexes are supported, false else
      */
     public boolean supportsFulltextIndexes() {
         return false;
