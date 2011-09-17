@@ -53,7 +53,7 @@ public class ModelProperties implements Serializable {
      * Convert a Point2D to a String.
      *
      * @param aPoint
-     * @return
+     * @return string, containing coordinates; separated by colon
      */
     public static String toString(Point2D aPoint) {
         return "" + (int) aPoint.getX() + ":" + (int) aPoint.getY();
@@ -64,7 +64,7 @@ public class ModelProperties implements Serializable {
      * Convert a String to a Point2D.
      *
      * @param aValue
-     * @return
+     * @return Point2D representation of a string containing coordinates
      */
     public static Point2D toPoint2D(String aValue) {
 
