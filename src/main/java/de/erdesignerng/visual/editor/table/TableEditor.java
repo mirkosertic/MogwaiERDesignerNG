@@ -47,8 +47,9 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -804,12 +805,19 @@ public class TableEditor extends BaseEditor {
             tableBindingInfo.view2model();
 
             // The table is new, so just add it
+            // In case of a clone, we have to check it is not already added
             for (int i = 0; i < attributeListModel.getSize(); i++) {
-                theTable.addAttribute(model, (Attribute) attributeListModel.get(i));
+                Attribute theAttribute = (Attribute) attributeListModel.get(i);
+                if (!theTable.getAttributes().contains(theAttribute)) {
+                    theTable.addAttribute(model, (Attribute) attributeListModel.get(i));
+                }
             }
 
             for (int i = 0; i < indexListModel.getSize(); i++) {
-                theTable.addIndex(model, (Index) indexListModel.get(i));
+                Index theIndex = (Index) indexListModel.get(i);
+                if (!theTable.getIndexes().contains(theIndex)) {
+                    theTable.addIndex(model, (Index) indexListModel.get(i));
+                }
             }
 
             model.addTable(theTable);

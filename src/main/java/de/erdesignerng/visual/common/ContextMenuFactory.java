@@ -18,17 +18,26 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
+import de.erdesignerng.model.Domain;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 /**
  * Factory for context menues.
@@ -61,15 +70,21 @@ public final class ContextMenuFactory {
                 theEditItem.addActionListener(new EditTableCommand(theTable));
                 aMenu.add(theEditItem);
 
-                Table theClone = theTable.createCopy();
+                final Table theClone = theTable.createCopy();
 
-                Point2D theNewLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
-                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX() + 20, (int) theNewLocation.getY() + 20);
+                Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+                final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
+                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
 
                 JMenuItem theCloneItem = new JMenuItem();
                 theCloneItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.CLONETABLE, theClone.getName()));
-                theCloneItem.addActionListener(new EditTableCommand(theClone));
+                theCloneItem.addActionListener(new EditTableCommand(theClone) {
+                    @Override
+                    protected void beforeRefresh() {
+                        ERDesignerComponent.getDefault().commandCreateTable(theClone, theNewLocation);
+                    }
+                });
 
                 aMenu.add(theCloneItem);
 
@@ -108,15 +123,21 @@ public final class ContextMenuFactory {
                         ERDesignerBundle.EDITVIEW, theView.getName()));
                 theEditItem.addActionListener(new EditViewCommand(theView));
 
-                View theClone = theView.createCopy();
+                final View theClone = theView.createCopy();
 
-                Point2D theNewLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
-                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX() + 20, (int) theNewLocation.getY() + 20);
+                Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+                final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
+                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
 
                 JMenuItem theCloneItem = new JMenuItem();
                 theCloneItem.setText(theHelper.getFormattedText(
                         ERDesignerBundle.CLONEVIEW, theClone.getName()));
-                theCloneItem.addActionListener(new EditViewCommand(theClone));
+                theCloneItem.addActionListener(new EditViewCommand(theClone) {
+                    @Override
+                    protected void beforeRefresh() {
+                        ERDesignerComponent.getDefault().commandCreateView(theClone, theNewLocation);
+                    }
+                });
 
                 aMenu.add(theCloneItem);
 

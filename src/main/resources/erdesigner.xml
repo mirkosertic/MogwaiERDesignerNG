@@ -248,8 +248,8 @@
             <Text lang="en">General</Text>
         </Entry>
         <Entry id="COMMENTS">
-            <Text lang="de">Kommentare</Text>
-            <Text lang="en">Comments</Text>
+            <Text lang="de">Kommentar</Text>
+            <Text lang="en">Comment</Text>
         </Entry>
         <Entry id="ATTRIBUTES">
             <Text lang="de">Attribute</Text>
