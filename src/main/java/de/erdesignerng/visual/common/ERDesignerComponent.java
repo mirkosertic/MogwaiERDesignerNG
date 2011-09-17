@@ -25,7 +25,6 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.model.check.ModelChecker;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
@@ -55,8 +54,20 @@ import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -115,36 +126,36 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
     private final DefaultComboBox zoomBox = new DefaultComboBox();
 
-    private DefaultAction theZoomInAction;
+    private DefaultAction zoomInAction;
 
-    private DefaultAction theZoomOutAction;
+    private DefaultAction zoomOutAction;
 
     private static final ZoomInfo ZOOMSCALE_HUNDREDPERCENT = new ZoomInfo(
             "100%", 1);
 
-    private DefaultAction theHandAction;
+    private DefaultAction handAction;
 
-    private DefaultAction theEntityAction;
+    private DefaultAction entityAction;
 
-    private DefaultAction theRelationAction;
+    private DefaultAction relationAction;
 
-    private DefaultAction theCommentAction;
+    private DefaultAction commentAction;
 
-    private DefaultAction theViewAction;
+    private DefaultAction viewAction;
 
-    private DefaultCheckBox theIntelligentLayoutCheckbox;
+    private DefaultCheckBox intelligentLayoutCheckbox;
 
-    private DefaultMenu theExportMenu;
+    private DefaultMenu exportMenu;
 
-    private DefaultAction theExportOpenXavaAction;
+    private DefaultAction exportOpenXavaAction;
 
-    private DefaultAction theDisplayCommentsAction;
+    private DefaultAction displayCommentsAction;
 
-    private DefaultAction theDisplayGridAction;
+    private DefaultAction displayGridAction;
 
-    private DefaultMenu theDisplayLevelMenu;
+    private DefaultMenu displayLevelMenu;
 
-    private DefaultMenu theDisplayOrderMenu;
+    private DefaultMenu displayOrderMenu;
 
     private ToolEnum currentTool = ToolEnum.HAND;
 
@@ -184,6 +195,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         if (ApplicationPreferences.getInstance().isIntelligentLayout()) {
             editor.setIntelligentLayoutEnabled(true);
         }
+
+        handAction.actionPerformed(new ActionEvent(editorPanel, MouseEvent.MOUSE_CLICKED, null));
     }
 
     protected void setEditor2DDiagram() {
@@ -259,24 +272,24 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         // Enable / Disable buttons
         zoomBox.setEnabled(aEditor.supportsZoom());
-        theZoomInAction.setEnabled(aEditor.supportsZoom());
-        theZoomOutAction.setEnabled(aEditor.supportsZoom());
-        theHandAction.setEnabled(aEditor.supportsHandAction());
-        theEntityAction.setEnabled(aEditor.supportsEntityAction());
-        theRelationAction.setEnabled(aEditor.supportsRelationAction());
-        theCommentAction.setEnabled(aEditor.supportsCommentAction());
-        theViewAction.setEnabled(aEditor.supportsViewAction());
-        theIntelligentLayoutCheckbox.setEnabled(aEditor.supportsIntelligentLayout());
-        theDisplayCommentsAction.setEnabled(aEditor.supportsCommentAction());
-        theDisplayGridAction.setEnabled(aEditor.supportsGrid());
-        theDisplayLevelMenu.setEnabled(aEditor.supportsDisplayLevel());
+        zoomInAction.setEnabled(aEditor.supportsZoom());
+        zoomOutAction.setEnabled(aEditor.supportsZoom());
+        handAction.setEnabled(aEditor.supportsHandAction());
+        entityAction.setEnabled(aEditor.supportsEntityAction());
+        relationAction.setEnabled(aEditor.supportsRelationAction());
+        commentAction.setEnabled(aEditor.supportsCommentAction());
+        viewAction.setEnabled(aEditor.supportsViewAction());
+        intelligentLayoutCheckbox.setEnabled(aEditor.supportsIntelligentLayout());
+        displayCommentsAction.setEnabled(aEditor.supportsCommentAction());
+        displayGridAction.setEnabled(aEditor.supportsGrid());
+        displayLevelMenu.setEnabled(aEditor.supportsDisplayLevel());
         subjectAreas.setEnabled(aEditor.supportsSubjectAreas());
-        theDisplayOrderMenu.setEnabled(aEditor.supportsAttributeOrder());
+        displayOrderMenu.setEnabled(aEditor.supportsAttributeOrder());
 
-        theExportMenu.removeAll();
-        aEditor.initExportEntries(this, theExportMenu);
-        theExportMenu.add(new DefaultMenuItem(theExportOpenXavaAction));
-        UIInitializer.getInstance().initialize(theExportMenu);
+        exportMenu.removeAll();
+        aEditor.initExportEntries(this, exportMenu);
+        exportMenu.add(new DefaultMenuItem(exportOpenXavaAction));
+        UIInitializer.getInstance().initialize(exportMenu);
 
         editor.commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
         editor.commandSetDisplayGridState(displayGridMenuItem.isSelected());
@@ -324,7 +337,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 new SaveToRepositoryCommand(), this,
                 ERDesignerBundle.SAVEMODELTODB);
 
-        theRelationAction = new DefaultAction(
+        relationAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -352,7 +365,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         DefaultAction theLoadAction = new DefaultAction(
                 new OpenFromFileCommand(), this, ERDesignerBundle.LOADMODEL);
 
-        theHandAction = new DefaultAction(
+        handAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -366,7 +379,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.HAND);
 
-        theCommentAction = new DefaultAction(
+        commentAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -379,7 +392,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.COMMENT);
 
-        theEntityAction = new DefaultAction(
+        entityAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -392,7 +405,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.ENTITY);
 
-        theViewAction = new DefaultAction(
+        viewAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -443,7 +456,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                     }
                 }, this, ERDesignerBundle.ZOOM);
 
-        theZoomInAction = new DefaultAction(
+        zoomInAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -458,7 +471,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.ZOOMIN);
 
-        theZoomOutAction = new DefaultAction(
+        zoomOutAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -511,7 +524,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.HELP);
 
-        theExportOpenXavaAction = new DefaultAction(
+        exportOpenXavaAction = new DefaultAction(
                 new OpenXavaExportExportCommand(), this,
                 ERDesignerBundle.OPENXAVAEXPORT);
 
@@ -566,8 +579,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             theFileMenu.addSeparator();
         }
 
-        theExportMenu = new DefaultMenu(theExportAction);
-        theFileMenu.add(theExportMenu);
+        exportMenu = new DefaultMenu(theExportAction);
+        theFileMenu.add(exportMenu);
 
         theFileMenu.addSeparator();
         theFileMenu.add(lruMenu);
@@ -678,7 +691,7 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(theViewModeMenu);
         UIInitializer.getInstance().initialize(theViewModeMenu);
 
-        theDisplayCommentsAction = new DefaultAction(
+        displayCommentsAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -691,11 +704,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
                 }, this, ERDesignerBundle.DISPLAYCOMMENTS);
 
         displayCommentsMenuItem = new DefaultCheckboxMenuItem(
-                theDisplayCommentsAction);
+                displayCommentsAction);
         displayCommentsMenuItem.setSelected(false);
         theViewMenu.add(displayCommentsMenuItem);
 
-        theDisplayGridAction = new DefaultAction(
+        displayGridAction = new DefaultAction(
                 new ActionEventProcessor() {
 
                     @Override
@@ -707,12 +720,12 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
                 }, this, ERDesignerBundle.DISPLAYGRID);
 
-        displayGridMenuItem = new DefaultCheckboxMenuItem(theDisplayGridAction);
+        displayGridMenuItem = new DefaultCheckboxMenuItem(displayGridAction);
         theViewMenu.add(displayGridMenuItem);
 
-        theDisplayLevelMenu = new DefaultMenu(this,
+        displayLevelMenu = new DefaultMenu(this,
                 ERDesignerBundle.DISPLAYLEVEL);
-        theViewMenu.add(theDisplayLevelMenu);
+        theViewMenu.add(displayLevelMenu);
 
         DefaultAction theDisplayAllAction = new DefaultAction(
                 new ActionEventProcessor() {
@@ -755,15 +768,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDisplayLevelGroup.add(thePKOnlyItem);
         theDisplayLevelGroup.add(thePKAndFKItem);
 
-        theDisplayLevelMenu.add(displayAllMenuItem);
-        theDisplayLevelMenu.add(thePKOnlyItem);
-        theDisplayLevelMenu.add(thePKAndFKItem);
+        displayLevelMenu.add(displayAllMenuItem);
+        displayLevelMenu.add(thePKOnlyItem);
+        displayLevelMenu.add(thePKAndFKItem);
 
-        UIInitializer.getInstance().initialize(theDisplayLevelMenu);
+        UIInitializer.getInstance().initialize(displayLevelMenu);
 
-        theDisplayOrderMenu = new DefaultMenu(this,
+        displayOrderMenu = new DefaultMenu(this,
                 ERDesignerBundle.DISPLAYORDER);
-        theViewMenu.add(theDisplayOrderMenu);
+        theViewMenu.add(displayOrderMenu);
 
         DefaultAction theDisplayNaturalOrderAction = new DefaultAction(
                 new ActionEventProcessor() {
@@ -807,11 +820,11 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theDisplayOrderGroup.add(theAscendingItem);
         theDisplayOrderGroup.add(theDescendingItem);
 
-        theDisplayOrderMenu.add(displayNaturalOrderMenuItem);
-        theDisplayOrderMenu.add(theAscendingItem);
-        theDisplayOrderMenu.add(theDescendingItem);
+        displayOrderMenu.add(displayNaturalOrderMenuItem);
+        displayOrderMenu.add(theAscendingItem);
+        displayOrderMenu.add(theDescendingItem);
 
-        UIInitializer.getInstance().initialize(theDisplayOrderMenu);
+        UIInitializer.getInstance().initialize(displayOrderMenu);
 
         subjectAreas = new DefaultMenu(this, ERDesignerBundle.MENUSUBJECTAREAS);
 
@@ -820,8 +833,8 @@ public class ERDesignerComponent implements ResourceHelperProvider {
 
         theViewMenu.addSeparator();
 
-        theViewMenu.add(new DefaultMenuItem(theZoomInAction));
-        theViewMenu.add(new DefaultMenuItem(theZoomOutAction));
+        theViewMenu.add(new DefaultMenuItem(zoomInAction));
+        theViewMenu.add(new DefaultMenuItem(zoomOutAction));
 
         if (worldConnector.supportsHelp()) {
             theViewMenu.addSeparator();
@@ -853,15 +866,15 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.addSeparator();
         theToolBar.add(zoomBox);
         theToolBar.addSeparator();
-        theToolBar.add(theZoomInAction);
-        theToolBar.add(theZoomOutAction);
+        theToolBar.add(zoomInAction);
+        theToolBar.add(zoomOutAction);
         theToolBar.addSeparator();
 
-        handButton = new DefaultToggleButton(theHandAction);
-        relationButton = new DefaultToggleButton(theRelationAction);
-        entityButton = new DefaultToggleButton(theEntityAction);
-        commentButton = new DefaultToggleButton(theCommentAction);
-        viewButton = new DefaultToggleButton(theViewAction);
+        handButton = new DefaultToggleButton(handAction);
+        relationButton = new DefaultToggleButton(relationAction);
+        entityButton = new DefaultToggleButton(entityAction);
+        commentButton = new DefaultToggleButton(commentAction);
+        viewButton = new DefaultToggleButton(viewAction);
 
         ButtonGroup theGroup = new ButtonGroup();
         theGroup.add(handButton);
@@ -876,20 +889,20 @@ public class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.add(commentButton);
         theToolBar.add(viewButton);
 
-        theIntelligentLayoutCheckbox = new DefaultCheckBox(
+        intelligentLayoutCheckbox = new DefaultCheckBox(
                 ERDesignerBundle.INTELLIGENTLAYOUT);
-        theIntelligentLayoutCheckbox.setSelected(ApplicationPreferences.getInstance()
+        intelligentLayoutCheckbox.setSelected(ApplicationPreferences.getInstance()
                 .isIntelligentLayout());
-        theIntelligentLayoutCheckbox.addActionListener(new ActionListener() {
+        intelligentLayoutCheckbox.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                editor.setIntelligentLayoutEnabled(theIntelligentLayoutCheckbox.isSelected());
+                editor.setIntelligentLayoutEnabled(intelligentLayoutCheckbox.isSelected());
             }
         });
 
         theToolBar.addSeparator();
-        theToolBar.add(theIntelligentLayoutCheckbox);
+        theToolBar.add(intelligentLayoutCheckbox);
 
         worldConnector.initTitle();
 
@@ -1173,16 +1186,13 @@ public class ERDesignerComponent implements ResourceHelperProvider {
             editor.commandSetDisplayCommentsState(false);
 
             OutlineComponent.getDefault().setModel(aModel);
-            editor.setModel(model);
-
-            ModelChecker theChecker = new ModelChecker();
-            theChecker.check(aModel);
 
         } finally {
 
             zoomBox.setSelectedItem(ZOOMSCALE_HUNDREDPERCENT);
             editor.commandSetZoom(ZOOMSCALE_HUNDREDPERCENT);
-            commandSetTool(ToolEnum.HAND);
+
+            handAction.actionPerformed(new ActionEvent(editorPanel, MouseEvent.MOUSE_CLICKED, null));
 
             updateSubjectAreasMenu();
 

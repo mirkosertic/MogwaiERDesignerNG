@@ -147,19 +147,22 @@ public class Table extends OwnedModelItem<Model> {
         Table theCopy = new Table();
         theCopy.setComment(getComment());
         theCopy.setSchema(getSchema());
-        theCopy.setName(getName());
+        theCopy.setName(getName() + "_CLONE");
         theCopy.setOriginalName(getOriginalName());
         theCopy.getProperties().copyFrom(getProperties());
         for (Attribute theAttribute : attributes) {
             Attribute theClone = theAttribute.clone();
             theClone.setSystemId(ModelUtilities.createSystemIdFor());
+            theClone.setOwner(theCopy);
             theCopy.getAttributes().add(theClone);
         }
         for (Index theIndex : indexes) {
             Index theClone = theIndex.clone();
+            theClone.setName(theClone.getName() + "_CLONE");
+            theClone.setOwner(theCopy);
             theClone.setSystemId(ModelUtilities.createSystemIdFor());
             for (IndexExpression theExpression : theClone.getExpressions()) {
-                theIndex.setSystemId(ModelUtilities.createSystemIdFor());
+                theExpression.setSystemId(ModelUtilities.createSystemIdFor());
                 if (theExpression.getAttributeRef() != null) {
                     theExpression.setAttributeRef(theCopy.getAttributes().findByName(theExpression.getAttributeRef().getName()));
                 }

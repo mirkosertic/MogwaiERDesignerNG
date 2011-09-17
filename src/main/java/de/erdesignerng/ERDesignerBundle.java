@@ -244,7 +244,7 @@ public interface ERDesignerBundle {
      */
     String GENERAL = "GENERAL";
     /**
-     * \u0043\u006f\u006d\u006d\u0065\u006e\u0074\u0073.
+     * \u0043\u006f\u006d\u006d\u0065\u006e\u0074.
      */
     String COMMENTS = "COMMENTS";
     /**
