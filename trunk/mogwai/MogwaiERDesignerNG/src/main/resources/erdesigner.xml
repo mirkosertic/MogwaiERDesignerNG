@@ -315,11 +315,15 @@
             <Text lang="de">Reverseengineering von benutzerdefiniertem Datentyp {0}</Text>
             <Text lang="en">Reverse engineering of user-defined datatype {0}</Text>
         </Entry>
-        <Entry id="ENGINEERINGFINISHED">
+        <Entry id="ENGINEERINGCUSTOMTYPESNOTSUPPORTED">
+            <Text lang="de">Reverseengineering von benutzerdefinierten Datentypen wird für diese Version der Datenbank nicht unterstützt. Versuchen Sie eine aktuellere Version als v{0}!</Text>
+            <Text lang="en">Error reverse engineering CustomTypes is not supported for this version of the database. Try using a newer version of PostgreSQL than v {0}!</Text>
+        </Entry>
+		<Entry id="ENGINEERINGFINISHED">
             <Text lang="de">Reverseengineering beendet</Text>
             <Text lang="en">Reverse engineering finished</Text>
         </Entry>
-        <Entry id="RELATIONPROPERTIES">
+		<Entry id="RELATIONPROPERTIES">
             <Text lang="de">Eigenschaften der Relation</Text>
             <Text lang="en">Relation properties</Text>
         </Entry>

@@ -30,7 +30,7 @@ public class TableEntry extends SchemaEntry {
 	public String toString() {
 		String theResult = super.toString();
 		if (theResult != null) {
-			return theResult + " " + tableName;
+			return theResult + "." + tableName;
 		}
 
 		return tableName;
