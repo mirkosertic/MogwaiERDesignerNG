@@ -69,7 +69,7 @@ public final class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("timestamp with time zone", "", Types.TIMESTAMP));
         registerType(createDataType("timetz", "", Types.TIME));
         registerType(createDataType("bit", "", Types.BIT));
-        registerType(createDataType("numeric", GenericDataTypeImpl.SIZE_TOKEN + "," + GenericDataTypeImpl.FRACTION_TOKEN, Types.NUMERIC, Types.DECIMAL));
+        registerType(createDataType("numeric", "[" + GenericDataTypeImpl.SIZE_TOKEN + "], [" + GenericDataTypeImpl.FRACTION_TOKEN + "]", Types.NUMERIC, Types.DECIMAL));
 
         // Patch [ 2124875 ] Add Postgres data types
         registerType(createDataType("char", GenericDataTypeImpl.SIZE_TOKEN, Types.CHAR));

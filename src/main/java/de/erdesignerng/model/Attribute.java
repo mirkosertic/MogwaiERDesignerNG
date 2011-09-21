@@ -32,7 +32,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 
 	private Integer size = null;
 
-	private int fraction;
+	private Integer fraction = null;
 
 	private int scale = DEFAULT_SCALE;
 
@@ -103,11 +103,11 @@ public class Attribute extends OwnedModelItem<Table> implements
 		}
 	}
 
-	public int getFraction() {
+	public Integer getFraction() {
 		return fraction;
 	}
 
-	public void setFraction(int fraction) {
+	public void setFraction(Integer fraction) {
 		synchronized (this) {
 			this.fraction = fraction;
 		}
