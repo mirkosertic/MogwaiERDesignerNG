@@ -86,7 +86,7 @@ import java.util.Map;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class ERDesignerComponent implements ResourceHelperProvider {
+public final class ERDesignerComponent implements ResourceHelperProvider {
 
     protected File currentEditingFile;
 
