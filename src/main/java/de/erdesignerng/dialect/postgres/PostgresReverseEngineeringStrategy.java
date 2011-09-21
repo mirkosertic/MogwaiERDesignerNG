@@ -209,20 +209,20 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 							try {
 								theAttributesResult = theAttributesStatement.executeQuery();
 								while (theAttributesResult.next()) {
-									String theTypeName = null;
+									String theAttributeTypeName = null;
 									String theAttributeName = null;
 									Integer theTypeProperties = null;
 									Integer theSize = null; //in pg called "precision"
 									Integer theFraction = null; //in pg called "scale"
 
 									try {
-										theTypeName = theAttributesResult.getString("typname");
+										theAttributeTypeName = theAttributesResult.getString("typname");
 									} catch (Exception e) {
 									}
 
-									DataType theDataType = aModel.getDialect().getDataTypes().findByName(theTypeName);
+									DataType theDataType = aModel.getDialect().getDataTypes().findByName(theAttributeTypeName);
 									if (theDataType == null) {
-										throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for CustomType " + theCustomType.getName());
+										throw new ReverseEngineeringException("Unknown data type " + theAttributeTypeName + " for CustomType " + theCustomType.getName());
 									}
 
 									try {
