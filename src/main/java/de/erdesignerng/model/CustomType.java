@@ -19,6 +19,8 @@ package de.erdesignerng.model;
 
 import de.erdesignerng.dialect.DataType;
 
+import de.erdesignerng.exception.ElementAlreadyExistsException;
+import de.erdesignerng.exception.ElementInvalidNameException;
 import java.sql.Types;
 
 /**
@@ -27,8 +29,7 @@ import java.sql.Types;
  * @author $Author: dr-death $
  * @version $Date: 2010-03-30 20:00:00 $
  */
-public class CustomType extends OwnedModelItem<Model> implements
-        ModelItemCloneable<CustomType>, DataType {
+public class CustomType extends OwnedModelItem<Model> implements ModelItemCloneable<CustomType>, DataType {
 
     // The schema of the custom type
     private String schema;
@@ -36,6 +37,13 @@ public class CustomType extends OwnedModelItem<Model> implements
     // The DDL Part to create the custom type, the part after the
     // "CREATE TYPE <name> AS "
     private String sqlDefinition;
+
+	private String alias;
+
+	// The type of the CustomType
+	private CustomTypeType type;
+
+	private AttributeList attributes = new AttributeList();
 
     public CustomType() {
     }
@@ -48,20 +56,101 @@ public class CustomType extends OwnedModelItem<Model> implements
         this.schema = schema;
     }
 
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
     public String getSqlDefinition() {
-        return sqlDefinition;
+		StringBuilder theSQL = new StringBuilder();
+
+		switch (this.type) {
+			case ENUMERATION:
+				if (attributes.size() > 0) {
+					theSQL.append("ENUM (");
+					for (int i = 0; i < attributes.size(); i++) {
+						Attribute theAttribute = attributes.elementAt(i);
+
+						if (i > 0) {
+							theSQL.append(",");
+						}
+						theSQL.append("\n  '");
+						theSQL.append(theAttribute.getName());
+						theSQL.append("'");
+					}
+					theSQL.append("\n)");
+				}
+				break;
+
+			case COMPOSITE:
+				if (attributes.size() > 0) {
+					theSQL.append("(");
+					for (int i = 0; i < attributes.size(); i++) {
+						Attribute theAttribute = attributes.elementAt(i);
+
+						if (i > 0) {
+							theSQL.append(",");
+						}
+						theSQL.append("\n  ");
+						theSQL.append(theAttribute.getName());
+						theSQL.append(" ");
+						theSQL.append(theAttribute.getDatatype().createTypeDefinitionFor(theAttribute));
+					}
+					theSQL.append("\n)");
+				}
+				break;
+
+			case EXTERNAL:
+				//TODO [dr-death] implement SQL-Definition for "external" CustomTypes
+				theSQL.append("TODO: This is not implemented yet. Feel free to do this.");
+				break;
+
+			default:
+		}
+
+        return theSQL.toString();
     }
 
     public void setSqlDefinition(String sqlDefinition) {
         this.sqlDefinition = sqlDefinition;
+	}
+
+	public void setType(CustomTypeType type) {
+		this.type = type;
+	}
+
+	public CustomTypeType getType() {
+		return type;
+	}
+
+    public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
+            ElementInvalidNameException {
+
+        ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
+
+//        aAttribute.setOwner(this);
+        attributes.add(aAttribute);
     }
+
+    public AttributeList getAttributes() {
+        return attributes;
+	}
+
+	public void setAttributes(AttributeList attributes) {
+		this.attributes = attributes;
+	}
 
     @Override
     public CustomType clone() {
         CustomType theCustomType = new CustomType();
         theCustomType.setSystemId(getSystemId());
         theCustomType.setName(getName());
-        theCustomType.setSqlDefinition(getSqlDefinition());
+		theCustomType.setAttributes(getAttributes());
+		theCustomType.setType(getType());
+
         return theCustomType;
     }
 
@@ -69,7 +158,8 @@ public class CustomType extends OwnedModelItem<Model> implements
     public void restoreFrom(CustomType aCustomType) {
         setSystemId(aCustomType.getSystemId());
         setName(aCustomType.getName());
-        setSqlDefinition(aCustomType.getSqlDefinition());
+		setAttributes(aCustomType.getAttributes());
+		setType(aCustomType.getType());
     }
 
     @Override

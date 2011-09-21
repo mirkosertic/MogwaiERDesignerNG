@@ -511,7 +511,11 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             StatementList theList = new StatementList();
             StringBuilder theBuilder = new StringBuilder();
             theBuilder.append("CREATE TYPE ");
-            theBuilder.append(aCustomType.getName());
+			if (aCustomType.getAlias() != null) {
+				theBuilder.append(aCustomType.getAlias());
+			} else {
+				theBuilder.append(aCustomType.getName());
+			}
             theBuilder.append(" AS ");
             theBuilder.append(aCustomType.getSqlDefinition());
             theList.add(new Statement(theBuilder.toString()));
@@ -528,7 +532,11 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             StatementList theList = new StatementList();
             StringBuilder theBuilder = new StringBuilder();
             theBuilder.append("DROP TYPE ");
-            theBuilder.append(aCustomType.getName());
+			if (aCustomType.getAlias() != null) {
+				theBuilder.append(aCustomType.getAlias());
+			} else {
+				theBuilder.append(aCustomType.getName());
+			}
             theList.add(new Statement(theBuilder.toString()));
             return theList;
         }
