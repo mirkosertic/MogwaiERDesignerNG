@@ -32,7 +32,7 @@ public class RepositoryEntity extends ModelEntity {
 
 	private List<DomainEntity> domains = new ArrayList<DomainEntity>();
 	
-	private List<CustomTypeEntity> customType = new ArrayList<CustomTypeEntity>();	
+	private List<CustomTypeEntity> customTypes = new ArrayList<CustomTypeEntity>();	
 
 	private List<TableEntity> tables = new ArrayList<TableEntity>();
 
@@ -42,7 +42,7 @@ public class RepositoryEntity extends ModelEntity {
 
 	private List<ViewEntity> views = new ArrayList<ViewEntity>();
 
-	private List<SubjectAreaEntity> subjectareas = new ArrayList<SubjectAreaEntity>();
+	private List<SubjectAreaEntity> subjectAreas = new ArrayList<SubjectAreaEntity>();
 
 	private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
 
@@ -79,11 +79,11 @@ public class RepositoryEntity extends ModelEntity {
 	}
 
 	public List<SubjectAreaEntity> getSubjectareas() {
-		return subjectareas;
+		return subjectAreas;
 	}
 
 	public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
-		this.subjectareas = subjectareas;
+		this.subjectAreas = subjectareas;
 	}
 
 	public List<ChangeEntity> getChanges() {
@@ -111,11 +111,11 @@ public class RepositoryEntity extends ModelEntity {
 	}
 	
 	public List<CustomTypeEntity> getCustomType() {
-		return customType;
+		return customTypes;
 	}
 
 	public void setCustomType(List<CustomTypeEntity> customType) {
-		this.customType = customType;
+		this.customTypes = customType;
 	}
 
 	/**
