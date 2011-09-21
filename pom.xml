@@ -345,12 +345,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>pgsql</groupId>
-            <artifactId>pgsqljdbc3</artifactId>
-            <version>8.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>connector</artifactId>
             <version>5.1.5</version>
