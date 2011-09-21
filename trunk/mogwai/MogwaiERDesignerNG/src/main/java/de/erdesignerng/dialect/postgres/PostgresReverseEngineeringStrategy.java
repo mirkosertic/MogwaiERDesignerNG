@@ -42,7 +42,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.postgresql.util.PSQLException;
 
 /**
  * @author $Author: mirkosertic $
@@ -115,8 +114,8 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 	protected void reverseEngineerCustomTypes(Model aModel, ReverseEngineeringOptions aOptions,	ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException, ReverseEngineeringException {
 		// TODO: [mirkosertic] implement valid way to retrieve type ddl from db
 
-		PSQLException thePreviousException = null;
-		PSQLException theCurrentException = null;
+		SQLException thePreviousException = null;
+		SQLException theCurrentException = null;
 		PreparedStatement theStatement;
 
 		String theQuery = "SELECT t.oid, t.typcategory, n.nspname, t.typname, format_type(t.oid, null) AS alias, c.relname, t.typrelid, t.typelem, d.description "
@@ -274,8 +273,6 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 											throw new ReverseEngineeringException(e.getMessage(), e);
 										}
 									}
-								} catch(PSQLException e) {
-									System.out.println(e.getMessage());
 								} finally {
 									if (theAttributesResult != null) {
 										theAttributesResult.close();
@@ -299,11 +296,11 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
 						reverseEngineerCustomType(aModel, theCustomType, aOptions, aNotifier, aConnection);
 					}
-				} catch(PSQLException e) {
+				} catch(SQLException e) {
 					// older pg-versions like v8.1.23 do not support typcategories other than
 					// COMPOSITE ('C') so the column t.typcategory is not present there
 					// a probably missing column will be defined here, explicitly containing 'C'
-					if (thePreviousException == null || !thePreviousException.getMessage().equals(e.getMessage())) {
+					if ((e.getClass().getName().equals("org.postgresql.util.PSQLException")) && (thePreviousException == null || !thePreviousException.getMessage().equals(e.getMessage()))) {
 						String theMessage = e.getMessage();
 						int theFieldNameStart = theMessage.lastIndexOf(".");
 						int theFieldNameEnd = theMessage.indexOf(" ", theFieldNameStart);
