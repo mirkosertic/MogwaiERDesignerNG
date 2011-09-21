@@ -66,7 +66,7 @@ public abstract class GenericDataTypeImpl implements DataType {
         jdbcType = aJdbcType;
 
         for (StringTokenizer theST = new StringTokenizer(aDefinition.trim(), ","); theST.hasMoreTokens(); ) {
-            String theToken = theST.nextToken();
+            String theToken = theST.nextToken().trim();
 
             // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
             // max-length wrong
@@ -122,7 +122,7 @@ public abstract class GenericDataTypeImpl implements DataType {
     protected String patternToType(Attribute aAttribute) {
         Map<String, String> theMapping = new HashMap<String, String>();
         theMapping.put(SIZE_TOKEN, ((aAttribute.getSize() == null) ? null : "" + aAttribute.getSize()));
-        theMapping.put(FRACTION_TOKEN, "" + aAttribute.getFraction());
+        theMapping.put(FRACTION_TOKEN, ((aAttribute.getFraction() == null) ? null : "" + aAttribute.getFraction()));
         theMapping.put(SCALE_TOKEN, "" + aAttribute.getScale());
         theMapping.put(EXTRA_TOKEN, "" + aAttribute.getExtra());
 
@@ -131,7 +131,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 
         while (theSt.hasMoreTokens()) {
             boolean isOptional = false;
-            String theToken = theSt.nextToken();
+            String theToken = theSt.nextToken().trim();
             if (theToken.startsWith("[")) {
                 isOptional = true;
                 theToken = theToken.replace("[", "").replace("]", "");
@@ -143,7 +143,7 @@ public abstract class GenericDataTypeImpl implements DataType {
                     throw new RuntimeException("No value for required token " + theToken);
                 }
             } else {
-                theResult += ((theResult.length() > 0) ? "," : "") + theValue;
+                theResult += ((theResult.length() > 0) ? ", " : "") + theValue;
             }
         }
 
