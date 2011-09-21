@@ -32,6 +32,7 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
+import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -831,12 +832,14 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                                           ReverseEngineeringNotifier aNotifier) throws SQLException,
             ReverseEngineeringException {
 
+		Exception theUDTError = null;
+
         if (aModel.getDialect().isSupportsCustomTypes()) {
             try {
                 reverseEngineerCustomTypes(aModel, aOptions, aNotifier, aConnection);
-            } catch (Exception e) {
-                LOGGER.warn("Error retrieving custom types", e);
-            }
+            } catch (ReverseEngineeringException e) {
+                theUDTError = e;
+			}
         }
 
         if (aModel.getDialect().isSupportsDomains()) {
@@ -862,6 +865,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
         }
 
         aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGFINISHED, "");
+
+		if (theUDTError != null) {
+			MessagesHelper.displayInfoMessage(null, theUDTError.getMessage());
+		}
     }
 
     protected void reverseEngineerCustomTypes(Model aModel,
