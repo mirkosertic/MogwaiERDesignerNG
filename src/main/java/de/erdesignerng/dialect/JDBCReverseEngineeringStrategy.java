@@ -267,7 +267,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
                 String theColumnName = null;
                 String theTypeName = null;
                 Integer theSize = null;
-                int theFraction = 0;
+                Integer theFraction = null;
                 int theRadix = 0;
                 int theNullable = 0;
                 String theDefaultValue = null;
