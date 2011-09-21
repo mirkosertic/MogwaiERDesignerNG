@@ -30,7 +30,7 @@ public class Domain extends OwnedModelItem<Model> implements
 
     private Integer size;
 
-    private int fraction;
+    private Integer fraction;
 
     private int scale = 10;
 
@@ -58,14 +58,14 @@ public class Domain extends OwnedModelItem<Model> implements
     /**
      * @return the fraction
      */
-    public int getFraction() {
+    public Integer getFraction() {
         return fraction;
     }
 
     /**
      * @param fraction the fraction to set
      */
-    public void setFraction(int fraction) {
+    public void setFraction(Integer fraction) {
         this.fraction = fraction;
     }
 
