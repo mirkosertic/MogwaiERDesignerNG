@@ -18,6 +18,7 @@
 package de.erdesignerng.dialect.postgres;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -26,6 +27,7 @@ import de.erdesignerng.dialect.TableEntry;
 import de.erdesignerng.exception.ReverseEngineeringException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CustomType;
+import de.erdesignerng.model.CustomTypeType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
@@ -44,189 +46,286 @@ import java.util.List;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:30 $
  */
-public class PostgresReverseEngineeringStrategy extends
-        JDBCReverseEngineeringStrategy<PostgresDialect> {
+public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<PostgresDialect> {
 
-    public PostgresReverseEngineeringStrategy(PostgresDialect aDialect) {
-        super(aDialect);
-    }
+	public PostgresReverseEngineeringStrategy(PostgresDialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    public List<SchemaEntry> getSchemaEntries(Connection aConnection)
-            throws SQLException {
+	@Override
+	public List<SchemaEntry> getSchemaEntries(Connection aConnection)
+			throws SQLException {
 
-        List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+		List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
 
-        DatabaseMetaData theMetadata = aConnection.getMetaData();
-        ResultSet theResult = theMetadata.getSchemas();
+		DatabaseMetaData theMetadata = aConnection.getMetaData();
+		ResultSet theResult = theMetadata.getSchemas();
 
-        while (theResult.next()) {
-            String theSchemaName = theResult.getString("TABLE_SCHEM");
-            String theCatalogName = null;
+		while (theResult.next()) {
+			String theSchemaName = theResult.getString("TABLE_SCHEM");
+			String theCatalogName = null;
 
-            theList.add(new SchemaEntry(theCatalogName, theSchemaName));
-        }
+			theList.add(new SchemaEntry(theCatalogName, theSchemaName));
+		}
 
-        return theList;
-    }
+		return theList;
+	}
 
-    // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length
-    // wrong
-    @Override
-    protected void reverseEngineerAttribute(Attribute aAttribute,
-                                            TableEntry aTableEntry,
-                                            Connection aConnection) throws SQLException {
+	// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length
+	// wrong
+	@Override
+	protected void reverseEngineerAttribute(Attribute aAttribute,
+			TableEntry aTableEntry,
+			Connection aConnection) throws SQLException {
 
-        if ((aAttribute.getDatatype().getName().equalsIgnoreCase("varchar"))
-                || (aAttribute.getDatatype().getName()
-                .equalsIgnoreCase("character varying"))) {
-            // PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR
-            // ohne Parameter definiert wurde, obwohl 1073741823 korrekt
-            // wäre
-            if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
-                aAttribute.setSize(null);
-            }
-        }
-    }
+		if ((aAttribute.getDatatype().getName().equalsIgnoreCase("varchar"))
+				|| (aAttribute.getDatatype().getName().equalsIgnoreCase("character varying"))) {
+			// PostgreSQL liefert Integer.MAX_VALUE (2147483647), wenn VARCHAR
+			// ohne Parameter definiert wurde, obwohl 1073741823 korrekt
+			// wäre
+			if (new Integer(Integer.MAX_VALUE).equals(aAttribute.getSize())) {
+				aAttribute.setSize(null);
+			}
+		}
+	}
 
-    // Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows
-    // VARCHAR(0)
-    @Override
-    protected void reverseEngineerDomain(Model aModel, Domain aDomain,
-                                         ReverseEngineeringOptions aOptions,
-                                         ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+	// Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows
+	// VARCHAR(0)
+	@Override
+	protected void reverseEngineerDomain(Model aModel, Domain aDomain,
+			ReverseEngineeringOptions aOptions,
+			ReverseEngineeringNotifier aNotifier, Connection aConnection) {
 
-        if ((aDomain.getConcreteType().getName().equalsIgnoreCase("varchar"))
-                || (aDomain.getConcreteType().getName()
-                .equalsIgnoreCase("character varying"))) {
-            // PostgreSQL liefert 0, wenn VARCHAR ohne Parameter definiert wurde
-            if (((Integer) 0).equals(aDomain.getSize())) {
-                aDomain.setSize(null);
-            }
-        }
-    }
+		if ((aDomain.getConcreteType().getName().equalsIgnoreCase("varchar"))
+				|| (aDomain.getConcreteType().getName().equalsIgnoreCase("character varying"))) {
+			// PostgreSQL liefert 0, wenn VARCHAR ohne Parameter definiert wurde
+			if (((Integer) 0).equals(aDomain.getSize())) {
+				aDomain.setSize(null);
+			}
+		}
+	}
 
-    // Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
-    // Bug Fixing 2952877 [ERDesignerNG] Custom Types
-    // Bug Fixing 3056071 [ERDesignerNG] postgres unkown datatype prevent reverse eng.
-    // TODO: [dr-death] reverse engineere details of custom types and create DDL
-    @Override
-    protected void reverseEngineerCustomTypes(Model aModel,
-                                              ReverseEngineeringOptions aOptions,
-                                              ReverseEngineeringNotifier aNotifier, Connection aConnection)
-            throws SQLException, ReverseEngineeringException {
+	// Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
+	// Bug Fixing 2952877 [ERDesignerNG] Custom Types
+	// Bug Fixing 3056071 [ERDesignerNG] postgres unkown datatype prevent reverse eng.
+	// TODO: [dr-death] reverse engineere details of custom types and create DDL
+	@Override
+	protected void reverseEngineerCustomTypes(Model aModel,
+			ReverseEngineeringOptions aOptions,
+			ReverseEngineeringNotifier aNotifier, Connection aConnection)
+			throws SQLException, ReverseEngineeringException {
 
-        // This query is reverse engineered from the original
-        // aConnection.getMetaData().getUDTs() method which unfortunately
-        // supports only the typtypes 'c' and 'd'
-        // It is altered to support the typtypes 'c' and 'e'
-        // The support of typtype 'd' (extended basic types) is removed because
-        // it is just another representation of domains.
-        // 'c' -> complex datatypes (java.sql.Types.STRUCT)
-        // 'd' -> domains (java.sql.Types.DISTINCT)
-        // 'e' -> enumerations (java.sql.Types.ARRAY)
+		// TODO: [mirkosertic] implement valid way to retrieve type ddl from db
+		String theQuery = "SELECT t.oid, t.typcategory, n.nspname, t.typname, format_type(t.oid, null) AS alias, c.relname, t.typrelid, t.typelem, d.description "
+						+ "FROM pg_type t LEFT OUTER JOIN pg_type e ON e.oid = t.typelem LEFT OUTER JOIN pg_class c ON c.oid = t.typrelid AND c.relkind <> 'c' LEFT OUTER JOIN pg_description d ON d.objoid = t.oid LEFT OUTER JOIN pg_catalog.pg_namespace n ON t.typnamespace = n.oid LEFT OUTER JOIN pg_type b ON t.typbasetype = b.oid "
+						+ "WHERE t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%' AND n.nspname = ? AND c.oid IS NULL "
+						+ "ORDER BY t.typname";
 
-        // TODO: [mirkosertic] implement valid way to retrieve type ddl from db
-        String theQuery = "SELECT " +
-								"t.typcategory AS type_cat, " +
-								"n.nspname AS type_schem, " +
-								"t.typname AS type_name, " +
-								"ct.relname AS class_name, " +
-								"CASE " +
-									"WHEN t.typtype = 'c' THEN 2002 " +
-									"WHEN t.typtype = 'e' THEN 2003 " +
-									"ELSE 2001 " +
-								"END AS data_type, " +
-								"d.description AS remarks, " +
-								"b.typname AS base_type " +
-//								", t.oid, t.*, format_type(t.oid, null) AS alias, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid " +
-							"FROM pg_type t " +
-								"LEFT OUTER JOIN pg_type e ON e.oid = t.typelem " +
-								"LEFT OUTER JOIN pg_class ct ON ct.oid = t.typrelid AND ct.relkind <> 'c' " +
-								"LEFT OUTER JOIN pg_description d ON d.objoid = t.oid " +
-								"LEFT OUTER JOIN pg_catalog.pg_namespace n ON t.typnamespace = n.oid " +
-								"LEFT OUTER JOIN pg_type b ON t.typbasetype = b.oid " +
-							"WHERE " +
-								"t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%' AND n.nspname = ? AND ct.oid IS NULL " +
-							"ORDER BY t.typname";
+		PreparedStatement theStatement;
 
-        PreparedStatement theStatement;
+		for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
+			theStatement = aConnection.prepareStatement(theQuery);
+			theStatement.setString(1, theEntry.getSchemaName());
+			ResultSet theResult = null;
 
-        for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
-            theStatement = aConnection.prepareStatement(theQuery);
-            theStatement.setString(1, theEntry.getSchemaName());
-            ResultSet theResult = null;
+			try {
+				theResult = theStatement.executeQuery();
+				while (theResult.next()) {
+					String theTypeType = theResult.getString("typcategory");
+					String theSchemaName = theResult.getString("nspname");
+					String theTypeName = theResult.getString("typname");
+					String theTypeNameAlias = theResult.getString("alias");
+					String theDescription = theResult.getString("description");
 
-            try {
-                theResult = theStatement.executeQuery();
-                while (theResult.next()) {
-                    String theSchemaName = theResult.getString("TYPE_SCHEM");
-                    String theCustomTypeName = theResult.getString("TYPE_NAME");
-                    String theRemarks = theResult.getString("REMARKS");
+					aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE, theTypeName);
 
-                    aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGCUSTOMTYPE, theCustomTypeName);
+					CustomType theCustomType = aModel.getCustomTypes().findByNameAndSchema(theTypeName, theSchemaName);
+					if (theCustomType != null) {
+						throw new ReverseEngineeringException("Duplicate custom datatype found: " + theTypeName);
+					}
 
-                    CustomType theCustomType = aModel.getCustomTypes().findByNameAndSchema(theCustomTypeName, theSchemaName);
-                    if (theCustomType != null) {
-                        throw new ReverseEngineeringException("Duplicate custom datatype found : " + theCustomTypeName);
-                    }
+					theCustomType = new CustomType();
+					theCustomType.setName(theTypeName);
+					theCustomType.setAlias(theTypeNameAlias);
+					theCustomType.setSchema(theSchemaName);
 
-                    theCustomType = new CustomType();
-                    theCustomType.setName(theCustomTypeName);
-                    theCustomType.setSchema(theSchemaName);
+					if (!StringUtils.isEmpty(theDescription)) {
+						theCustomType.setComment(theDescription);
+					}
 
-                    if (!StringUtils.isEmpty(theRemarks)) {
-                        theCustomType.setComment(theRemarks);
-                    }
+					if (!StringUtils.isEmpty(theTypeType)) {
+//enumeration
+						if (theTypeType.equals("E")) {
+							theCustomType.setType(CustomTypeType.ENUMERATION);
 
-                    try {
-                        aModel.addCustomType(theCustomType);
-                    } catch (VetoException e) {
-                        throw new ReverseEngineeringException(e.getMessage(), e);
-                    }
+							String theAttributesQuery = "SELECT enumlabel "
+													  + "FROM pg_enum "
+													  + "WHERE enumtypid = ?";
+							PreparedStatement theAttributesStatement;
+							theAttributesStatement = aConnection.prepareStatement(theAttributesQuery);
+							theAttributesStatement.setInt(1, theResult.getInt("oid"));
+							ResultSet theAttributesResult = null;
 
-                    reverseEngineerCustomType(aModel, theCustomType, aOptions, aNotifier, aConnection);
-                }
-            } finally {
-                if (theResult != null) {
-                    theResult.close();
-                }
+							try {
+								theAttributesResult = theAttributesStatement.executeQuery();
+								while (theAttributesResult.next()) {
+									String theAttributeName = null;
 
-                theStatement.close();
-            }
-        }
-    }
+									try {
+										theAttributeName = theAttributesResult.getString("enumlabel");
+									} catch (Exception e) {
+									}
 
-    // Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
-    // Bug Fixing 2952877 [ERDesignerNG] Custom Types
-    @Override
-    protected void reverseEngineerCustomType(Model aModel,
-                                             CustomType aCustomType, ReverseEngineeringOptions aOptions,
-                                             ReverseEngineeringNotifier aNotifier, Connection aConnection) {
-        // TODO [mirko sertic]: Grab custom type ddl from information_schema
-    }
+									Attribute theAttribute = new Attribute();
+									theAttribute.setName(theAttributeName);
+									theAttribute.setDatatype(null);
 
-    @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry,
-                                            Connection aConnection, View aView) throws SQLException {
-        PreparedStatement theStatement = aConnection
-                .prepareStatement("SELECT * FROM information_schema.views WHERE table_name = ?");
-        theStatement.setString(1, aViewEntry.getTableName());
-        ResultSet theResult = null;
-        try {
-            theResult = theStatement.executeQuery();
-            if (theResult.next()) {
-                String theViewDefinition = theResult
-                        .getString("view_definition");
-                theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
-                return theViewDefinition;
-            }
-            return null;
-        } finally {
-            if (theResult != null) {
-                theResult.close();
-            }
-            theStatement.close();
-        }
-    }
+									try {
+										theCustomType.addAttribute(aModel, theAttribute);
+									} catch (Exception e) {
+										throw new ReverseEngineeringException(e.getMessage(), e);
+									}
+								}
+							} finally {
+								if (theAttributesResult != null) {
+									theAttributesResult.close();
+								}
+
+								theAttributesStatement.close();
+							}
+//composite
+						} else if (theTypeType.equals("C")) {
+							theCustomType.setType(CustomTypeType.COMPOSITE);
+
+							String theAttributesQuery = "SELECT a.attname, format_type(t.oid,NULL) AS typname, a.attndims, a.atttypmod, n.nspname, t.typcategory "
+													  + "FROM pg_attribute a JOIN pg_type t ON t.oid = a.atttypid JOIN pg_namespace n ON t.typnamespace = n.oid LEFT OUTER JOIN pg_type b ON t.typelem = b.oid "
+													  + "WHERE a.attrelid = ? "
+													  + "ORDER BY a.attnum, a.attname";
+							PreparedStatement theAttributesStatement;
+							theAttributesStatement = aConnection.prepareStatement(theAttributesQuery);
+							theAttributesStatement.setInt(1, theResult.getInt("typrelid"));
+							ResultSet theAttributesResult = null;
+
+							try {
+								theAttributesResult = theAttributesStatement.executeQuery();
+								while (theAttributesResult.next()) {
+									String theTypeName = null;
+									String theAttributeName = null;
+									Integer theTypeProperties = null;
+									Integer theSize = null; //in pg called "precision"
+									Integer theFraction = null; //in pg called "scale"
+
+									try {
+										theTypeName = theAttributesResult.getString("typname");
+									} catch (Exception e) {
+									}
+
+									DataType theDataType = aModel.getDialect().getDataTypes().findByName(theTypeName);
+									if (theDataType == null) {
+										throw new ReverseEngineeringException("Unknown data type " + theTypeName + " for CustomType " + theCustomType.getName());
+									}
+
+									try {
+										theAttributeName = theAttributesResult.getString("attname");
+									} catch (Exception e) {
+									}
+
+									try {
+										theTypeProperties = theAttributesResult.getInt("atttypmod");
+										String theTypeCategory = theAttributesResult.getString("typcategory");
+										int theTemp = (theTypeProperties % 65536);
+										int theSizeTemp = (theTypeProperties / 65536);
+
+										if (theTypeCategory.equals("N")) {
+											if (theTemp > -1) {
+												theFraction = new Integer(theTemp - 4);
+											}
+											theSize = new Integer(theSizeTemp);	
+										} else if (theTypeCategory.equals("S")) {
+											theSize = new Integer(theTemp - 4);
+										}
+									} catch (Exception e) {
+									}
+
+									Attribute theAttribute = new Attribute();
+									theAttribute.setName(theAttributeName);
+									theAttribute.setDatatype(theDataType);
+
+									if ((theDataType.supportsSize())&& (theSize != null) && (theSize > 0)) {
+										theAttribute.setSize(theSize);
+									}
+
+									if ((theDataType.supportsFraction()) && (theFraction != null) && (theFraction > 0)) {
+										theAttribute.setFraction(theFraction);
+									}
+
+									try {
+										theCustomType.addAttribute(aModel, theAttribute);
+									} catch (Exception e) {
+										throw new ReverseEngineeringException(e.getMessage(), e);
+									}
+								}
+							} finally {
+								if (theAttributesResult != null) {
+									theAttributesResult.close();
+								}
+
+								theAttributesStatement.close();
+							}
+//TODO: implement rev-eng of "external" UDTs 
+//						} else if (theType.equals("X")) { // are external types really represented by "X"?
+//							theCustomType.setType(CustomTypeType.EXTERNAL);
+						} else {
+							theCustomType.setType(null);
+						}
+					}
+
+					try {
+						aModel.addCustomType(theCustomType);
+					} catch (VetoException e) {
+						throw new ReverseEngineeringException(e.getMessage(), e);
+					}
+
+					reverseEngineerCustomType(aModel, theCustomType, aOptions, aNotifier, aConnection);
+				}
+			} finally {
+				if (theResult != null) {
+					theResult.close();
+				}
+
+				theStatement.close();
+			}
+		}
+	}
+
+	// Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
+	// Bug Fixing 2952877 [ERDesignerNG] Custom Types
+	@Override
+	protected void reverseEngineerCustomType(Model aModel,
+			CustomType aCustomType, ReverseEngineeringOptions aOptions,
+			ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+		// TODO [mirko sertic]: Grab custom type ddl from information_schema
+	}
+
+	@Override
+	protected String reverseEngineerViewSQL(TableEntry aViewEntry,
+			Connection aConnection, View aView) throws SQLException {
+		PreparedStatement theStatement = aConnection.prepareStatement("SELECT * FROM information_schema.views WHERE table_name = ?");
+		theStatement.setString(1, aViewEntry.getTableName());
+		ResultSet theResult = null;
+		try {
+			theResult = theStatement.executeQuery();
+			if (theResult.next()) {
+				String theViewDefinition = theResult.getString("view_definition");
+				theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
+				return theViewDefinition;
+			}
+			return null;
+		} finally {
+			if (theResult != null) {
+				theResult.close();
+			}
+			theStatement.close();
+		}
+	}
 }
