@@ -271,3 +271,4 @@ Release 3.0.0
 * Bug Fixing 3161426 [ERDesignerNG] Error saving/loading projet
 * Working on support for Spatial Datatypes & Fulltext indexes
 * Added support for model validation & quick fixes
+* Bug Fixing 3317547 [ERDesignerNG] Error during RevEnging Postgres-DB ('Cannot find table in model')
