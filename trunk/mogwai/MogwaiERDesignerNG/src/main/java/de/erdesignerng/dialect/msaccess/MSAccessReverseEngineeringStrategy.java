@@ -17,8 +17,6 @@
  */
 package de.erdesignerng.dialect.msaccess;
 
-import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.query.Query;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
@@ -32,17 +30,14 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
-import java.io.File;
-import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
 
 /**
  * @author $Author: dr-death $
@@ -189,59 +184,35 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
     @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException {
-		//if (aViewEntry.getTableType().equals(TableType.VIEW_TABLE_TYPE)) {
-			try {
-				Database db = Database.open(new File("Q:\\edv\\Coding\\MSAccess\\WaWi\\WaWi.mdb"));
-				List<Query> theQueries = db.getQueries();
+        String theViewSQL;
 
-				for (Query theQuery : theQueries) {
-					if (theQuery.getName().equals(aView.getName())) {
-						try {
-							return theQuery.toSQLString();
-						} catch (UnsupportedOperationException e) {
-							LOGGER.error(e.getMessage());
-							return theQuery.getName() + ": <unsupportet_query_type>";
-						}
-					}
-				}
-			} catch (IOException ex) {
-				throw new SQLException(ex);
-				//LOGGER.fatal(ex.getMessage());
-			}
-//		} else {
-//			throw new SQLException("Only VIEWS can be reverse engineered here.");
-//		}
-			return "daswarwohlnix";
+        QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
+        QueryFragment theFields = getSQLInputFields(aConnection, aViewEntry.getTableName());
+        QueryFragment theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
+        QueryFragment theFrom = getSQLFromJoinExpression(aConnection, aViewEntry.getTableName());
+        if (StringUtils.isEmpty(theFrom.getLeadingSQL())) {
+            theFrom = getSQLFromTables(aConnection, aViewEntry.getTableName());
+        }
 
-//        String theViewSQL;
-//
-//        QueryFragment theCommand = getSQLQuery(aConnection, aViewEntry.getTableName());
-//        QueryFragment theFields = getSQLInputFields(aConnection, aViewEntry.getTableName());
-//        QueryFragment theOptions = getSQLQueryOptions(aConnection, aViewEntry.getTableName());
-//        QueryFragment theFrom = getSQLFromJoinExpression(aConnection, aViewEntry.getTableName());
-//        if (StringUtils.isEmpty(theFrom.getLeadingSQL())) {
-//            theFrom = getSQLFromTables(aConnection, aViewEntry.getTableName());
-//        }
-//
-//        QueryFragment theWhere = getSQLWhereExpression(aConnection, aViewEntry.getTableName());
-//        QueryFragment theGroupBy = getSQLGroupByExpression(aConnection, aViewEntry.getTableName());
-//        QueryFragment theHaving = new QueryFragment("");
-//        if (theGroupBy != null) {
-//            theHaving = getSQLHavingExpression(aConnection, aViewEntry.getTableName());
-//        }
-//
-//        theViewSQL = mergeRight("\n" + theCommand.getLeadingSQL(), SPACE, theOptions.getLeadingSQL());
-//        theViewSQL = mergeRight(theViewSQL, SPACE, theFields.getLeadingSQL());
-//        if (!theCommand.getLeadingSQL().endsWith(theOptions.getTrailingSQL())) {
-//            theViewSQL = mergeRight(theViewSQL, COMMA, theOptions.getTrailingSQL());
-//        }
-//
-//        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theFrom.getLeadingSQL());
-//        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theWhere.getLeadingSQL());
-//        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theGroupBy.getLeadingSQL());
-//        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theHaving.getLeadingSQL());
-//
-//        return theViewSQL;
+        QueryFragment theWhere = getSQLWhereExpression(aConnection, aViewEntry.getTableName());
+        QueryFragment theGroupBy = getSQLGroupByExpression(aConnection, aViewEntry.getTableName());
+        QueryFragment theHaving = new QueryFragment("");
+        if (theGroupBy != null) {
+            theHaving = getSQLHavingExpression(aConnection, aViewEntry.getTableName());
+        }
+
+        theViewSQL = mergeRight("\n" + theCommand.getLeadingSQL(), SPACE, theOptions.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, theFields.getLeadingSQL());
+        if (!theCommand.getLeadingSQL().endsWith(theOptions.getTrailingSQL())) {
+            theViewSQL = mergeRight(theViewSQL, COMMA, theOptions.getTrailingSQL());
+        }
+
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theFrom.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theWhere.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theGroupBy.getLeadingSQL());
+        theViewSQL = mergeRight(theViewSQL, SPACE, "\n" + theHaving.getLeadingSQL());
+
+        return theViewSQL;
 
     }
 
