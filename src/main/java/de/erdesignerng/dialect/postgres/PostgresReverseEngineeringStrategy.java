@@ -42,6 +42,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * @author $Author: mirkosertic $
@@ -357,4 +358,23 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 			theStatement.close();
 		}
 	}
+
+	// Bug Fixing 3317547 [ERDesignerNG] Error during RevEnging Postgres-DB ('Cannot find table in model')
+	@Override
+	protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
+        String thePrefix = aMetaData.getSearchStringEscape();
+
+		//related to a bug in some PostgreSQL JDBC driver versions
+		//see: http://archives.postgresql.org/pgsql-bugs/2007-03/msg00035.php
+		if (thePrefix.length() > 1){
+			thePrefix = StringEscapeUtils.unescapeJava(thePrefix) ;
+		}
+
+        if (!StringUtils.isEmpty(thePrefix) && !StringUtils.isEmpty(aValue)) {
+            aValue = aValue.replace("_", thePrefix + "_");
+            aValue = aValue.replace("%", thePrefix + "%");
+        }
+
+        return aValue;
+    }
 }
