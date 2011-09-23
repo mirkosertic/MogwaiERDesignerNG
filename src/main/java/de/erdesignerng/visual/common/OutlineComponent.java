@@ -883,5 +883,8 @@ public class OutlineComponent extends DefaultPanel implements
         } else {
             tree.clearSelection();
         }
+
+        tree.invalidate();
+        tree.repaint();
     }
 }
