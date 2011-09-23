@@ -109,7 +109,9 @@ public class Java3DEditor implements GenericModelEditor {
             WakeupOnAWTEvent mouseMoveCondition = new WakeupOnAWTEvent(MouseEvent.MOUSE_MOVED);
             WakeupOnAWTEvent mouseClickCondition = new WakeupOnAWTEvent(MouseEvent.MOUSE_CLICKED);
             WakeupOnAWTEvent mouseWheel = new WakeupOnAWTEvent(MouseEvent.MOUSE_WHEEL);
-            wakeupCondition = new WakeupOr(new WakeupCriterion[]{mouseMoveCondition, mouseClickCondition, mouseWheel});
+            WakeupOnAWTEvent mouseDrag = new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED);
+            WakeupOnAWTEvent mouseReleased = new WakeupOnAWTEvent(MouseEvent.MOUSE_RELEASED);
+            wakeupCondition = new WakeupOr(new WakeupCriterion[]{mouseMoveCondition, mouseClickCondition, mouseWheel, mouseDrag, mouseReleased});
         }
 
         @Override
@@ -147,6 +149,46 @@ public class Java3DEditor implements GenericModelEditor {
                 case MouseEvent.MOUSE_WHEEL:
                     mouseWheel((MouseWheelEvent) e);
                     break;
+                case MouseEvent.MOUSE_DRAGGED:
+                    mouseDragged(e);
+                    break;
+                case MouseEvent.MOUSE_RELEASED:
+                    mouseReleased(e);
+                    break;
+            }
+        }
+
+        private Point lastMouseDragLocation;
+
+        private void mouseReleased(MouseEvent e) {
+            lastMouseDragLocation = null;
+
+        }
+
+        private void mouseDragged(MouseEvent e) {
+            if (SwingUtilities.isRightMouseButton(e)) {
+                if (lastMouseDragLocation != null) {
+                    int my = lastMouseDragLocation.y - e.getY();
+
+                    Transform3D theTransform = new Transform3D();
+                    modelGroup.getTransform(theTransform);
+
+                    if (my > 0) {
+                        theTransform.setScale(theTransform.getScale() + my * 0.01);
+                    } else {
+                        theTransform.setScale(theTransform.getScale() + my * 0.01);
+                    }
+
+                    if (theTransform.getScale() > 4.5) {
+                        theTransform.setScale(4.5);
+                    }
+                    if (theTransform.getScale() < 0.3) {
+                        theTransform.setScale(0.3);
+                    }
+
+                    modelGroup.setTransform(theTransform);
+                }
+                lastMouseDragLocation = e.getPoint();
             }
         }
 
@@ -162,6 +204,8 @@ public class Java3DEditor implements GenericModelEditor {
         }
 
         private void mouseClicked(MouseEvent e) {
+
+            lastMouseDragLocation = null;
 
             pickCanvas.setShapeLocation(e);
             PickResult[] thePickResult = pickCanvas.pickAllSorted();
