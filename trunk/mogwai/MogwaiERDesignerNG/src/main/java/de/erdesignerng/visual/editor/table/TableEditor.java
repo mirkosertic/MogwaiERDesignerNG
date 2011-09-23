@@ -24,13 +24,7 @@ import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -46,8 +40,6 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
-
-import javax.swing.DefaultComboBoxModel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -56,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  * @author $Author: mirkosertic $
@@ -175,6 +168,12 @@ public class TableEditor extends BaseEditor {
 
         editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
         editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
+
+        editingView.getFractionSpinner().setModel(new NullsafeSpinnerModel());
+        editingView.getFractionSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getFractionSpinner()));
+
+        editingView.getScaleSpinner().setModel(new NullsafeSpinnerModel());
+        editingView.getScaleSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getScaleSpinner()));
 
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
         for (DataType theType : aModel.getAvailableDataTypes()) {
