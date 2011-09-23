@@ -193,10 +193,10 @@ public class Java3DEditor implements GenericModelEditor {
         }
 
         private void mouseWheel(MouseWheelEvent e) {
-            if (e.getWheelRotation() > 0 && currentLayer < maxLayer - 1) {
+            if (e.getWheelRotation() < 0 && currentLayer < maxLayer - 1) {
                 currentLayer++;
             }
-            if (e.getWheelRotation() < 0 && currentLayer > 0) {
+            if (e.getWheelRotation() > 0 && currentLayer > 0) {
                 currentLayer--;
             }
 
