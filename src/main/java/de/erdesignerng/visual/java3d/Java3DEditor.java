@@ -26,11 +26,7 @@ import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.MavenPropertiesLocator;
@@ -38,12 +34,7 @@ import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.FadeInFadeOutHelper;
-import de.erdesignerng.visual.common.ContextMenuFactory;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.GenericModelEditor;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.ToolEnum;
-import de.erdesignerng.visual.common.ZoomInfo;
+import de.erdesignerng.visual.common.*;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.java2d.TableComponent;
@@ -54,48 +45,19 @@ import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-
-import javax.media.j3d.Appearance;
-import javax.media.j3d.Behavior;
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.DirectionalLight;
-import javax.media.j3d.Group;
-import javax.media.j3d.J3DGraphics2D;
-import javax.media.j3d.LineArray;
-import javax.media.j3d.LineAttributes;
-import javax.media.j3d.Node;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.Texture;
-import javax.media.j3d.TextureAttributes;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.TransparencyAttributes;
-import javax.media.j3d.WakeupCondition;
-import javax.media.j3d.WakeupCriterion;
-import javax.media.j3d.WakeupOnAWTEvent;
-import javax.media.j3d.WakeupOr;
-import javax.swing.*;
-import javax.vecmath.Color3f;
-import javax.vecmath.Color4f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.media.j3d.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.vecmath.*;
 
 /**
  * Editor to show model as a 3D Scene.
@@ -104,12 +66,16 @@ import java.util.Set;
  */
 public class Java3DEditor implements GenericModelEditor {
 
+    private static final float ZDISTANCE = 0.5f;
+
     private JPanel mainPanel;
     private Canvas3D canvas;
     private SimpleUniverse universe;
     private PickCanvas pickCanvas;
     private BranchGroup rootGroup;
     private TransformGroup modelGroup;
+    private TransformGroup moveGroup;
+    private Switch switchGroup;
     private ResourceHelper resourceHelper;
     private JLabel currentElement;
     private Model model;
@@ -117,6 +83,11 @@ public class Java3DEditor implements GenericModelEditor {
     private Texture nodeTexture;
     private FadeInFadeOutHelper fadingHelper;
     private UserObjectInfo fadingComponent;
+    private int currentLayer;
+    private int maxLayer;
+    private List<List<ModelItem>> theLayers;
+    private BranchGroup connectorGroup;
+    private Map<ModelItem, Point3d> theItemPositions;
 
     private class UserObjectInfo {
 
@@ -180,6 +151,14 @@ public class Java3DEditor implements GenericModelEditor {
         }
 
         private void mouseWheel(MouseWheelEvent e) {
+            if (e.getWheelRotation() > 0 && currentLayer < maxLayer - 1) {
+                currentLayer++;
+            }
+            if (e.getWheelRotation() < 0 && currentLayer > 0) {
+                currentLayer--;
+            }
+
+            setCurrentLayer(currentLayer);
         }
 
         private void mouseClicked(MouseEvent e) {
@@ -345,7 +324,16 @@ public class Java3DEditor implements GenericModelEditor {
         modelGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         modelGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
+        moveGroup = new TransformGroup();
+        moveGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        moveGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        moveGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        moveGroup.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+        moveGroup.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+        moveGroup.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+
         rootGroup.addChild(modelGroup);
+        modelGroup.addChild(moveGroup);
 
         MouseRotate theRotationBehavior = new MouseRotate();
         theRotationBehavior.setSchedulingBounds(new BoundingSphere());
@@ -359,8 +347,7 @@ public class Java3DEditor implements GenericModelEditor {
         MouseWheelZoom theZoom = new MouseWheelZoom();
         theZoom.setSchedulingBounds(new BoundingSphere());
         theZoom.setTransformGroup(modelGroup);
-        rootGroup.addChild(theZoom);
-
+        //rootGroup.addChild(theZoom);
 
         rootGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         rootGroup.setCapability(Group.ALLOW_CHILDREN_READ);
@@ -382,8 +369,6 @@ public class Java3DEditor implements GenericModelEditor {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(canvas, BorderLayout.CENTER);
-
-        ResourceHelper theHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
         JPanel bottom = new JPanel();
         bottom.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -414,6 +399,80 @@ public class Java3DEditor implements GenericModelEditor {
                 ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e1);
             }
         }
+    }
+
+    private void setCurrentLayer(int aCurrentLayer) {
+
+        currentLayer = aCurrentLayer;
+
+        BitSet visibleNodes = switchGroup.getChildMask();
+
+        visibleNodes.clear();
+        for (int i = 0; i < switchGroup.numChildren(); i++) {
+            if (i >= currentLayer) {
+                visibleNodes.set(i);
+            }
+        }
+
+        switchGroup.setChildMask(visibleNodes);
+
+        // Finally, we build the connectors between the items
+        connectorGroup.removeAllChildren();
+
+        Set<ModelItem> theAlreadyKnown = new HashSet<ModelItem>();
+        for (int theLayer = currentLayer; theLayer < maxLayer; theLayer++) {
+            theAlreadyKnown.addAll(theLayers.get(theLayer));
+        }
+
+        Appearance theLineAppearance = new Appearance();
+        theLineAppearance.setColoringAttributes(new ColoringAttributes(1f, 0, 0, ColoringAttributes.NICEST));
+        LineAttributes theLineAttributes = new LineAttributes();
+        theLineAttributes.setLineWidth(4.0f);
+        theLineAppearance.setLineAttributes(theLineAttributes);
+        theLineAppearance.setTransparencyAttributes(new TransparencyAttributes(TransparencyAttributes.NICEST, 0.80f));
+
+        Set<String> theProcessed = new HashSet<String>();
+        for (ModelItem theItem : theAlreadyKnown) {
+            if (theItem instanceof Table) {
+                // Only tables can have connectors
+                for (Relation theRelation : model.getRelations().getForeignKeysFor((Table) theItem)) {
+                    Table theExportingTable = theRelation.getExportingTable();
+                    if (theExportingTable != theItem && theAlreadyKnown.contains(theExportingTable)) {
+                        // We do not display self references
+
+                        boolean add = true;
+                        String theSearch1 = theItem.getName() + " " + theExportingTable.getName();
+                        String theSearch2 = theExportingTable.getName() + " " + theItem.getName();
+                        if (theProcessed.contains(theSearch1) || theProcessed.contains(theSearch2)) {
+                            add = false;
+                        }
+
+                        if (add) {
+                            Point3d[] theLinePoints = new Point3d[2];
+                            theLinePoints[0] = theItemPositions.get(theItem);
+                            theLinePoints[1] = theItemPositions.get(theExportingTable);
+                            LineArray theLineArray = new LineArray(2, LineArray.COORDINATES);
+                            theLineArray.setCoordinates(0, theLinePoints);
+                            Shape3D theLineShape = new Shape3D(theLineArray, theLineAppearance);
+
+                            BranchGroup theGroup = new BranchGroup();
+                            theGroup.setCapability(BranchGroup.ALLOW_DETACH);
+                            theGroup.addChild(theLineShape);
+                            connectorGroup.addChild(theGroup);
+
+                            theProcessed.add(theSearch1);
+                            theProcessed.add(theSearch2);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        Transform3D theTransform = new Transform3D();
+        moveGroup.getTransform(theTransform);
+        theTransform.setTranslation(new Vector3d(0, 0, aCurrentLayer * ZDISTANCE));
+        moveGroup.setTransform(theTransform);
     }
 
     public Node createElement(ModelItem aItem) {
@@ -492,11 +551,11 @@ public class Java3DEditor implements GenericModelEditor {
     }
 
     public void setSelectedObject(ModelItem aSelectedObject) {
-        modelGroup.removeAllChildren();
+        moveGroup.removeAllChildren();
 
         selectedModelItem = null;
 
-        List<List<ModelItem>> theLayers = new ArrayList<List<ModelItem>>();
+        theLayers = new ArrayList<List<ModelItem>>();
         List<ModelItem> theAlreadyKnown = new ArrayList<ModelItem>();
 
         if (aSelectedObject != null) {
@@ -533,12 +592,21 @@ public class Java3DEditor implements GenericModelEditor {
             }
         }
 
-        Map<ModelItem, Point3d> theItemPositions = new HashMap<ModelItem, Point3d>();
+        maxLayer = theLayers.size();
+
+        theItemPositions = new HashMap<ModelItem, Point3d>();
+
+        switchGroup = new Switch(Switch.CHILD_MASK);
+        switchGroup.setCapability(Switch.ALLOW_SWITCH_WRITE);
+        switchGroup.setCapability(Switch.ALLOW_SWITCH_READ);
+
+        Font3D f3d = new Font3D(mainPanel.getFont(), new FontExtrusion());
 
         // Now we iterate over the known layers and build them as 3d objects
         for (int theLayer = 0; theLayer < theLayers.size(); theLayer++) {
 
-            float theZOffset = -0.5f * theLayer;
+            BranchGroup theLayerGroup = new BranchGroup();
+            float theZOffset = -ZDISTANCE * theLayer;
 
             // Starting with the layer object itself
             Transform3D theTransform = new Transform3D();
@@ -546,7 +614,7 @@ public class Java3DEditor implements GenericModelEditor {
             TransformGroup theRoot = new TransformGroup(theTransform);
 
             Appearance theAppearance = new Appearance();
-            theAppearance.setColoringAttributes(new ColoringAttributes(1f, 1f, 0.94f, ColoringAttributes.SHADE_GOURAUD));
+            theAppearance.setColoringAttributes(new ColoringAttributes(1f, 1f, 0.94f, ColoringAttributes.NICEST));
 
             theAppearance.setTransparencyAttributes(new TransparencyAttributes(TransparencyAttributes.NICEST, 0.95f));
             PolygonAttributes thePa = new PolygonAttributes();
@@ -559,7 +627,22 @@ public class Java3DEditor implements GenericModelEditor {
             BranchGroup theGroup = new BranchGroup();
             theGroup.setCapability(BranchGroup.ALLOW_DETACH);
             theGroup.addChild(theRoot);
-            modelGroup.addChild(theGroup);
+            theLayerGroup.addChild(theGroup);
+
+            Transform3D theTextTrans = new Transform3D();
+            theTextTrans.setScale(0.01f);
+            theTextTrans.setTranslation(new Vector3d(-0.9, 0.8, 0));
+            TransformGroup theTextTransform = new TransformGroup(theTextTrans);
+            Text3D theLayerText = new Text3D(f3d, "Layer " + (theLayer + 1) + " / " + maxLayer, new Point3f(
+                    0, 0, 0));
+            theLayerText.setCapability(Geometry.ALLOW_INTERSECT);
+            Shape3D s3D1 = new Shape3D();
+            s3D1.setGeometry(theLayerText);
+
+            theTextTransform.addChild(s3D1);
+
+            theRoot.addChild(theTextTransform);
+
 
             // And with the layer objects
             // For now, we use radial layout
@@ -578,58 +661,29 @@ public class Java3DEditor implements GenericModelEditor {
                 Node theButton2 = createElement(theItem);
                 double mx = Math.cos(theCurrentAngle) * theRadius;
                 double my = Math.sin(theCurrentAngle) * theRadius;
-                modelGroup.addChild(Helper.addElementAt(theButton2, new Vector3f((float) mx, (float) my, theZOffset), 1f));
+                theLayerGroup.addChild(Helper.addElementAt(theButton2, new Vector3f((float) mx, (float) my, theZOffset), 1f));
 
                 theCurrentAngle += theIncrement;
 
                 theItemPositions.put(theItem, new Point3d(mx, my, theZOffset));
             }
+
+            switchGroup.addChild(theLayerGroup);
         }
 
-        // Finally, we build the connectors between the items
-        Appearance theLineAppearance = new Appearance();
-        theLineAppearance.setColoringAttributes(new ColoringAttributes(1f, 0, 0, ColoringAttributes.NICEST));
-        LineAttributes theLineAttributes = new LineAttributes();
-        theLineAttributes.setLineWidth(4.0f);
-        theLineAppearance.setLineAttributes(theLineAttributes);
-        theLineAppearance.setTransparencyAttributes(new TransparencyAttributes(TransparencyAttributes.NICEST, 0.80f));
+        BranchGroup theSwitchGroup = new BranchGroup();
+        theSwitchGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        theSwitchGroup.addChild(switchGroup);
+        moveGroup.addChild(theSwitchGroup);
 
-        Set<String> theProcessed = new HashSet<String>();
-        for (ModelItem theItem : theAlreadyKnown) {
-            if (theItem instanceof Table) {
-                // Only tables can have connectors
-                for (Relation theRelation : model.getRelations().getForeignKeysFor((Table) theItem)) {
-                    Table theExportingTable = theRelation.getExportingTable();
-                    if (theExportingTable != theItem) {
-                        // We do not display self references
+        connectorGroup = new BranchGroup();
+        connectorGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        connectorGroup.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+        connectorGroup.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+        connectorGroup.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+        moveGroup.addChild(connectorGroup);
 
-                        boolean add = true;
-                        String theSearch1 = theItem.getName() + " " + theExportingTable.getName();
-                        String theSearch2 = theExportingTable.getName() + " " + theItem.getName();
-                        if (theProcessed.contains(theSearch1) || theProcessed.contains(theSearch2)) {
-                            add = false;
-                        }
-
-                        if (add) {
-                            Point3d[] theLinePoints = new Point3d[2];
-                            theLinePoints[0] = theItemPositions.get(theItem);
-                            theLinePoints[1] = theItemPositions.get(theExportingTable);
-                            LineArray theLineArray = new LineArray(2, LineArray.COORDINATES);
-                            theLineArray.setCoordinates(0, theLinePoints);
-                            Shape3D theLineShape = new Shape3D(theLineArray, theLineAppearance);
-
-                            BranchGroup theGroup = new BranchGroup();
-                            theGroup.setCapability(BranchGroup.ALLOW_DETACH);
-                            theGroup.addChild(theLineShape);
-                            modelGroup.addChild(theGroup);
-
-                            theProcessed.add(theSearch1);
-                            theProcessed.add(theSearch2);
-                        }
-                    }
-                }
-            }
-        }
+        setCurrentLayer(0);
     }
 
     @Override
