@@ -85,9 +85,9 @@ public class Java3DEditor implements GenericModelEditor {
     private UserObjectInfo fadingComponent;
     private int currentLayer;
     private int maxLayer;
-    private List<List<ModelItem>> theLayers;
+    private List<List<ModelItem>> modelLayers;
     private BranchGroup connectorGroup;
-    private Map<ModelItem, Point3d> theItemPositions;
+    private Map<ModelItem, Point3d> modelItemPositions;
 
     private class UserObjectInfo {
 
@@ -421,7 +421,7 @@ public class Java3DEditor implements GenericModelEditor {
 
         Set<ModelItem> theAlreadyKnown = new HashSet<ModelItem>();
         for (int theLayer = currentLayer; theLayer < maxLayer; theLayer++) {
-            theAlreadyKnown.addAll(theLayers.get(theLayer));
+            theAlreadyKnown.addAll(modelLayers.get(theLayer));
         }
 
         Appearance theLineAppearance = new Appearance();
@@ -449,8 +449,8 @@ public class Java3DEditor implements GenericModelEditor {
 
                         if (add) {
                             Point3d[] theLinePoints = new Point3d[2];
-                            theLinePoints[0] = theItemPositions.get(theItem);
-                            theLinePoints[1] = theItemPositions.get(theExportingTable);
+                            theLinePoints[0] = modelItemPositions.get(theItem);
+                            theLinePoints[1] = modelItemPositions.get(theExportingTable);
                             LineArray theLineArray = new LineArray(2, LineArray.COORDINATES);
                             theLineArray.setCoordinates(0, theLinePoints);
                             Shape3D theLineShape = new Shape3D(theLineArray, theLineAppearance);
@@ -555,7 +555,7 @@ public class Java3DEditor implements GenericModelEditor {
 
         selectedModelItem = null;
 
-        theLayers = new ArrayList<List<ModelItem>>();
+        modelLayers = new ArrayList<List<ModelItem>>();
         List<ModelItem> theAlreadyKnown = new ArrayList<ModelItem>();
 
         if (aSelectedObject != null) {
@@ -564,7 +564,7 @@ public class Java3DEditor implements GenericModelEditor {
             List<ModelItem> layer1 = new ArrayList<ModelItem>();
             layer1.add(aSelectedObject);
             theAlreadyKnown.add(aSelectedObject);
-            theLayers.add(layer1);
+            modelLayers.add(layer1);
 
             if (aSelectedObject instanceof Table) {
                 // Tables can have multiple layers
@@ -586,15 +586,15 @@ public class Java3DEditor implements GenericModelEditor {
                     }
 
                     if (nextLayer.size() > 0) {
-                        theLayers.add(nextLayer);
+                        modelLayers.add(nextLayer);
                     }
                 }
             }
         }
 
-        maxLayer = theLayers.size();
+        maxLayer = modelLayers.size();
 
-        theItemPositions = new HashMap<ModelItem, Point3d>();
+        modelItemPositions = new HashMap<ModelItem, Point3d>();
 
         switchGroup = new Switch(Switch.CHILD_MASK);
         switchGroup.setCapability(Switch.ALLOW_SWITCH_WRITE);
@@ -603,7 +603,7 @@ public class Java3DEditor implements GenericModelEditor {
         Font3D f3d = new Font3D(mainPanel.getFont(), new FontExtrusion());
 
         // Now we iterate over the known layers and build them as 3d objects
-        for (int theLayer = 0; theLayer < theLayers.size(); theLayer++) {
+        for (int theLayer = 0; theLayer < modelLayers.size(); theLayer++) {
 
             BranchGroup theLayerGroup = new BranchGroup();
             float theZOffset = -ZDISTANCE * theLayer;
@@ -646,7 +646,7 @@ public class Java3DEditor implements GenericModelEditor {
 
             // And with the layer objects
             // For now, we use radial layout
-            List<ModelItem> theItems = theLayers.get(theLayer);
+            List<ModelItem> theItems = modelLayers.get(theLayer);
 
             double theIncrement = Math.toRadians(360) / theItems.size();
             double theCurrentAngle = 0;
@@ -665,7 +665,7 @@ public class Java3DEditor implements GenericModelEditor {
 
                 theCurrentAngle += theIncrement;
 
-                theItemPositions.put(theItem, new Point3d(mx, my, theZOffset));
+                modelItemPositions.put(theItem, new Point3d(mx, my, theZOffset));
             }
 
             switchGroup.addChild(theLayerGroup);
