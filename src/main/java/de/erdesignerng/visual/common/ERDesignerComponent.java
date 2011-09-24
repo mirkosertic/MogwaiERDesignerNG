@@ -244,7 +244,17 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void setEditor3DInteractive() {
-        setEditor(new Java3DEditor());
+		Java3DEditor theEditor = null;
+
+		try {
+			theEditor = new Java3DEditor();
+		} catch (UnsatisfiedLinkError ule) {
+			MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(ERDesignerBundle.NOSUPPORTEDOPENGLVENDOR), getResourceHelper().getText(ERDesignerBundle.ERRORINITIALIZING3DMODE));
+		}
+
+		if (theEditor != null) {
+			setEditor(theEditor);
+		}
     }
 
     protected void setEditor(GenericModelEditor aEditor) {
