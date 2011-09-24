@@ -22,6 +22,7 @@ import de.mogwai.common.i18n.ResourceHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public final class MessagesHelper {
 
@@ -33,21 +34,31 @@ public final class MessagesHelper {
 	}
 
 	public static void displayErrorMessage(Component aParent, String aMessage) {
-
 		String theErrorText = getResourceHelper().getText(ERDesignerBundle.ERROR);
-		JOptionPane.showMessageDialog(aParent, aMessage, theErrorText, JOptionPane.ERROR_MESSAGE);
+		displayErrorMessage(aParent, aMessage, theErrorText);
+	}
+
+	public static void displayErrorMessage(Component aParent, String aMessage, String aErrorText) {
+		JOptionPane.showMessageDialog(aParent, StringEscapeUtils.unescapeJava(aMessage), aErrorText, JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static void displayInfoMessage(Component aParent, String aMessage) {
-
 		String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
-		JOptionPane.showMessageDialog(aParent, aMessage, theInfoText, JOptionPane.INFORMATION_MESSAGE);
+		displayErrorMessage(aParent, aMessage, theInfoText);
+	}
+
+	public static void displayInfoMessage(Component aParent, String aMessage, String anInfoText) {
+		JOptionPane.showMessageDialog(aParent, StringEscapeUtils.unescapeJava(aMessage), anInfoText, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public static boolean displayQuestionMessage(Component aParent, String aMessageKey, Object... aReplacementValues) {
 		String theQuestionText = getResourceHelper().getText(ERDesignerBundle.QUESTION);
 		String theMessage = getResourceHelper().getFormattedText(aMessageKey, aReplacementValues);
-		return JOptionPane.showConfirmDialog(aParent, theMessage, theQuestionText, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
+		return displayQuestionMessage(aParent, theMessage, theQuestionText, aMessageKey, aReplacementValues);
+	}
+
+	public static boolean displayQuestionMessage(Component aParent, String aMessage, String aQuestionText, String aMessageKey, Object... aReplacementValues) {
+		return JOptionPane.showConfirmDialog(aParent, StringEscapeUtils.unescapeJava(aMessage), StringEscapeUtils.unescapeJava(aQuestionText), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 	}
 }
