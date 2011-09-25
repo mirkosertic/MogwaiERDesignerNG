@@ -59,6 +59,7 @@ public class Java2DEditor implements GenericModelEditor {
     private EditorPanel editorPanel;
 
     public Java2DEditor() {
+
         editorPanel = new EditorPanel() {
             @Override
             public void componentClicked(EditorComponent aComponent, MouseEvent aEvent) {
@@ -180,13 +181,35 @@ public class Java2DEditor implements GenericModelEditor {
 
     @Override
     public void setSelectedObject(ModelItem aItem) {
-        currentModelItem = aItem;
         editorPanel.cleanup();
-        if (aItem instanceof Table) {
-            generateGraphFor((Table) aItem);
+
+        // We only show views and tables as the center of attention in the editor.
+        if (aItem instanceof Index) {
+            aItem = ((Index) aItem).getOwner();
         }
-        if (aItem instanceof View) {
-            generateGraphFor((View) aItem);
+        if (aItem instanceof Attribute) {
+            aItem = ((Attribute) aItem).getOwner();
+        }
+        if (aItem instanceof Relation) {
+            aItem = ((Relation) aItem).getImportingTable();
+        }
+        if (!(aItem instanceof Table) && !(aItem instanceof View)) {
+            aItem = null;
+        }
+
+        if (aItem != currentModelItem) {
+            currentModelItem = aItem;
+
+            if (aItem instanceof Table) {
+                generateGraphFor((Table) aItem);
+            }
+            if (aItem instanceof View) {
+                generateGraphFor((View) aItem);
+            }
+
+            editorPanel.invalidate();
+            mainPanel.invalidate();
+            mainPanel.repaint();
         }
     }
 

@@ -294,6 +294,12 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>net.sourceforge.anaglyphcanvas3</groupId>
+            <artifactId>anaglyphcanvas3</artifactId>
+            <version>0.87</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-looks</artifactId>
             <version>1.9.1</version>
