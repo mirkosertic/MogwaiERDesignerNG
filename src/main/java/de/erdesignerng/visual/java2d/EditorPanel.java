@@ -21,17 +21,25 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.MavenPropertiesLocator;
 import de.erdesignerng.visual.FadeInFadeOutHelper;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class EditorPanel extends JPanel {
+
+    private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+
+    private String helpHTML;
+    private BufferedImage helpImage;
 
     public static class EditorComponent {
         int currentRadius;
@@ -79,6 +87,29 @@ public class EditorPanel extends JPanel {
     private ResourceHelper resourceHelper;
 
     public EditorPanel() {
+
+        StringBuilder theHelpHtml = new StringBuilder();
+        theHelpHtml.append("<html>");
+        theHelpHtml.append("<h1>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D3D_EDITOR_1));
+        theHelpHtml.append("</h1>");
+        theHelpHtml.append("<ul>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D_EDITOR_1));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D_EDITOR_2));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D_EDITOR_3));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D_EDITOR_4));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("</ul>");
+        theHelpHtml.append("</html>");
+        helpHTML = theHelpHtml.toString();
+
         setBackground(Color.black);
         resourceHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
         fadingHelper = new FadeInFadeOutHelper() {
@@ -294,6 +325,30 @@ public class EditorPanel extends JPanel {
         g.setFont(new Font("Helvetica", Font.PLAIN, 12));
         g.drawString(theTitle, 10, 20);
 
+        // If we do not have something to display, display the help text
+        if (components.size() == 0) {
+
+            if (helpImage == null) {
+                Dimension theHelpSize = new Dimension(600, 300);
+
+                JLabel theHelpLabel = new JLabel(helpHTML);
+                theHelpLabel.setFont(g.getFont());
+                theHelpLabel.setSize(theHelpSize);
+                theHelpLabel.setForeground(Color.white);
+
+                helpImage = new BufferedImage((int) theHelpSize.getWidth(), (int) theHelpSize.getHeight(),
+                        BufferedImage.TYPE_INT_RGB);
+                Graphics2D theHelpGraphics = (Graphics2D) helpImage.getGraphics();
+                theHelpGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+                theHelpLabel.paint(theHelpGraphics);
+            }
+
+            int xp = centerX - helpImage.getWidth() / 2;
+            int yp = centerY - helpImage.getHeight() / 2;
+
+            g.drawImage(helpImage, xp, yp, null);
+        }
 
         int outerRadius = -1;
         for (Connector theConnector : connectors) {
