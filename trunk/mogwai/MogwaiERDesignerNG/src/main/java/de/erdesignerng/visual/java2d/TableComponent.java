@@ -18,30 +18,39 @@
 package de.erdesignerng.visual.java2d;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import de.erdesignerng.visual.IconFactory;
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.text.AttributedString;
+import javax.swing.ImageIcon;
 
 public class TableComponent extends BaseRendererComponent {
 
     private Table table;
     private boolean fullMode;
+    private boolean showSelfReference;
 
     public TableComponent(Table aTable) {
         table = aTable;
+        initFlags();
     }
 
     public TableComponent(Table aTable, boolean aFullmode) {
         table = aTable;
         fullMode = aFullmode;
+        initFlags();
+    }
+
+    private void initFlags() {
+        showSelfReference = false;
+        for (Relation theRelation : table.getOwner().getRelations().getForeignKeysFor(table)) {
+            if (theRelation.getExportingTable().equals(table)) {
+                showSelfReference = true;
+            }
+        }
     }
 
     @Override
@@ -142,6 +151,13 @@ public class TableComponent extends BaseRendererComponent {
                 }
 
                 y += theMetrics.getAscent();
+            }
+            if (showSelfReference) {
+                ImageIcon theIcon = IconFactory.getSelfReference();
+                int xp = theSize.width - theIcon.getIconWidth() - 4;
+                int yp = 14;
+
+                theIcon.paintIcon(this, theGraphics, xp, yp);
             }
         }
     }
