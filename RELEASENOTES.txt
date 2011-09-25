@@ -272,6 +272,7 @@ Release 3.0.0
 * Bug Fixing 3184767 [ERDesignerNG] SQL server 2008 reengineering exception
 * Bug Fixing 3161426 [ERDesignerNG] Error saving/loading projet
 * Bug Fixing 3317547 [ERDesignerNG] Error during RevEnging Postgres-DB ('Cannot find table in model')
+* Bug Fixing 3413026 [ERDesignerNG] the new 3D view does not support loops
 * Working on support for Spatial Datatypes & Fulltext indexes
 * Added support for model validation & quick fixes
 * Added support for anaglyphic 3d mode
