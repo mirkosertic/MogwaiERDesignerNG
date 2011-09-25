@@ -19,6 +19,7 @@ This software uses or is based on the following libraries:
   JGraph ( www.jgraph.com )  
   JGoodies ( www.jgoodies.com )
   Java3D
+  AnaglyphCanvas3D (http://sourceforge.net/projects/anaglyphcanvas3)
   JasperReports ( http://jasperforge.org )  
   Some stuff from java.net ( https://www.dev.java.net )
   InfoNode Docking Windows GPL Version ( http://www.infonode.net/index.html?idw )
@@ -273,3 +274,4 @@ Release 3.0.0
 * Bug Fixing 3317547 [ERDesignerNG] Error during RevEnging Postgres-DB ('Cannot find table in model')
 * Working on support for Spatial Datatypes & Fulltext indexes
 * Added support for model validation & quick fixes
+* Added support for anaglyphic 3d mode

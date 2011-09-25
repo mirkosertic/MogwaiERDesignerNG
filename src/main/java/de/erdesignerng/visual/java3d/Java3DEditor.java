@@ -17,8 +17,10 @@
  */
 package de.erdesignerng.visual.java3d;
 
+import anaglyphcanvas3d.AnaglyphCanvas3D;
+import anaglyphcanvas3d.AnaglyphMode;
+import anaglyphcanvas3d.StereoMode;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
-import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.image.TextureLoader;
@@ -41,11 +43,16 @@ import de.erdesignerng.visual.java2d.TableComponent;
 import de.erdesignerng.visual.java2d.ViewComponent;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
@@ -53,10 +60,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import javax.media.j3d.*;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.vecmath.*;
 
 /**
@@ -66,10 +70,12 @@ import javax.vecmath.*;
  */
 public class Java3DEditor implements GenericModelEditor {
 
+    private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+
     private static final float ZDISTANCE = 0.5f;
 
     private JPanel mainPanel;
-    private Canvas3D canvas;
+    private AnaglyphCanvas3D canvas;
     private SimpleUniverse universe;
     private PickCanvas pickCanvas;
     private BranchGroup rootGroup;
@@ -88,6 +94,31 @@ public class Java3DEditor implements GenericModelEditor {
     private List<List<ModelItem>> modelLayers;
     private BranchGroup connectorGroup;
     private Map<ModelItem, Point3d> modelItemPositions;
+    private String helpHTML;
+    private BufferedImage helpImage;
+
+    private class DisplayPanel extends DefaultPanel implements ResourceHelperProvider {
+        @Override
+        public ResourceHelper getResourceHelper() {
+            return HELPER;
+        }
+    }
+
+    private class NameValuePair {
+
+        Object value;
+        String key;
+
+        public NameValuePair(Object aValue, String aKey) {
+            value = aValue;
+            key = aKey;
+        }
+
+        @Override
+        public String toString() {
+            return HELPER.getText(key);
+        }
+    }
 
     private class UserObjectInfo {
 
@@ -139,22 +170,25 @@ public class Java3DEditor implements GenericModelEditor {
         }
 
         private void doProcess(MouseEvent e) {
-            switch (e.getID()) {
-                case MouseEvent.MOUSE_MOVED:
-                    mouseMoved(e);
-                    break;
-                case MouseEvent.MOUSE_CLICKED:
-                    mouseClicked(e);
-                    break;
-                case MouseEvent.MOUSE_WHEEL:
-                    mouseWheel((MouseWheelEvent) e);
-                    break;
-                case MouseEvent.MOUSE_DRAGGED:
-                    mouseDragged(e);
-                    break;
-                case MouseEvent.MOUSE_RELEASED:
-                    mouseReleased(e);
-                    break;
+            // We only handle events if there is something selected
+            if (selectedModelItem != null) {
+                switch (e.getID()) {
+                    case MouseEvent.MOUSE_MOVED:
+                        mouseMoved(e);
+                        break;
+                    case MouseEvent.MOUSE_CLICKED:
+                        mouseClicked(e);
+                        break;
+                    case MouseEvent.MOUSE_WHEEL:
+                        mouseWheel((MouseWheelEvent) e);
+                        break;
+                    case MouseEvent.MOUSE_DRAGGED:
+                        mouseDragged(e);
+                        break;
+                    case MouseEvent.MOUSE_RELEASED:
+                        mouseReleased(e);
+                        break;
+                }
             }
         }
 
@@ -300,6 +334,31 @@ public class Java3DEditor implements GenericModelEditor {
 
     public Java3DEditor() {
 
+        StringBuilder theHelpHtml = new StringBuilder();
+        theHelpHtml.append("<html>");
+        theHelpHtml.append("<h1>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_2D3D_EDITOR_1));
+        theHelpHtml.append("</h1>");
+        theHelpHtml.append("<ul>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_3D_EDITOR_1));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_3D_EDITOR_2));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_3D_EDITOR_3));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_3D_EDITOR_4));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("<li>");
+        theHelpHtml.append(HELPER.getText(ERDesignerBundle.HELPTEXT_3D_EDITOR_5));
+        theHelpHtml.append("</li>");
+        theHelpHtml.append("</ul>");
+        theHelpHtml.append("</html>");
+        helpHTML = theHelpHtml.toString();
+
         resourceHelper = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
         fadingHelper = new FadeInFadeOutHelper() {
             @Override
@@ -311,7 +370,9 @@ public class Java3DEditor implements GenericModelEditor {
             }
         };
 
-        canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration()) {
+        mainPanel = new DisplayPanel();
+
+        canvas = new AnaglyphCanvas3D(SimpleUniverse.getPreferredConfiguration(), mainPanel) {
 
             @Override
             public void postRender() {
@@ -326,6 +387,30 @@ public class Java3DEditor implements GenericModelEditor {
                 g.setColor(Color.white);
                 g.setFont(new Font("Helvetica", Font.PLAIN, 12));
                 g.drawString(theTitle, 10, 20);
+
+                if (selectedModelItem == null) {
+
+                    if (helpImage == null) {
+                        Dimension theHelpSize = new Dimension(600, 300);
+
+                        JLabel theHelpLabel = new JLabel(helpHTML);
+                        theHelpLabel.setFont(g.getFont());
+                        theHelpLabel.setSize(theHelpSize);
+                        theHelpLabel.setForeground(Color.white);
+
+                        helpImage = new BufferedImage((int) theHelpSize.getWidth(), (int) theHelpSize.getHeight(),
+                                BufferedImage.TYPE_INT_RGB);
+                        Graphics2D theHelpGraphics = (Graphics2D) helpImage.getGraphics();
+                        theHelpGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);
+                        theHelpLabel.paint(theHelpGraphics);
+                    }
+
+                    int xp = canvas.getWidth() / 2 - helpImage.getWidth() / 2;
+                    int yp = canvas.getHeight() / 2 - helpImage.getHeight() / 2;
+
+                    g.drawImage(helpImage, xp, yp, null);
+                }
 
                 if (fadingHelper.getComponentToHighlight() != null) {
 
@@ -348,7 +433,6 @@ public class Java3DEditor implements GenericModelEditor {
                 g.flush(true);
             }
         };
-        canvas.setDoubleBufferEnable(true);
 
         // Create the universe
         universe = new SimpleUniverse(canvas);
@@ -388,11 +472,6 @@ public class Java3DEditor implements GenericModelEditor {
         theNavigationBehavior.setSchedulingBounds(new BoundingSphere());
         rootGroup.addChild(theNavigationBehavior);
 
-        MouseWheelZoom theZoom = new MouseWheelZoom();
-        theZoom.setSchedulingBounds(new BoundingSphere());
-        theZoom.setTransformGroup(modelGroup);
-        //rootGroup.addChild(theZoom);
-
         rootGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         rootGroup.setCapability(Group.ALLOW_CHILDREN_READ);
         rootGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
@@ -410,18 +489,48 @@ public class Java3DEditor implements GenericModelEditor {
         pickCanvas = new PickCanvas(canvas, rootGroup);
         pickCanvas.setMode(PickCanvas.GEOMETRY);
 
-        mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(canvas, BorderLayout.CENTER);
+
+        // Set the stereo mode
+        canvas.setAnaglyphMode(AnaglyphMode.REDGREEN_ANAGLYPHS);
+        canvas.setStereoMode(StereoMode.OFF);
 
         JPanel bottom = new JPanel();
         bottom.setLayout(new FlowLayout(FlowLayout.LEFT));
         currentElement = new JLabel();
-
         currentElement.setMinimumSize(new Dimension(300, 21));
         currentElement.setPreferredSize(new Dimension(300, 21));
 
         bottom.add(currentElement);
+        bottom.add(new DefaultLabel(ERDesignerBundle.STEREOMODE));
+
+        final DefaultComboBox theStereoModeSelector = new DefaultComboBox();
+        DefaultComboBoxModel theStereoModeModel = new DefaultComboBoxModel();
+        theStereoModeModel.addElement(new NameValuePair(null, ERDesignerBundle.STEREOMODE_OFF));
+        theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.REDGREEN_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_RED_GREEN));
+        theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.REDBLUE_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_RED_BLUE));
+        theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.GRAY_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_GRAY));
+        theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.COLOR_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_FULLCOLOR));
+        theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.HALFCOLOR_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_HALFCOLOR));
+        theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.OPTIMIZED_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_OPTIMIZED));
+        theStereoModeSelector.setModel(theStereoModeModel);
+        theStereoModeSelector.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int theIndex = theStereoModeSelector.getSelectedIndex();
+                if (theIndex == 0) {
+                    canvas.setStereoMode(StereoMode.OFF);
+                } else {
+                    NameValuePair thePair = (NameValuePair) theStereoModeSelector.getSelectedItem();
+
+                    canvas.setAnaglyphMode((AnaglyphMode) thePair.value);
+                    canvas.setStereoMode(StereoMode.ANAGLYPH);
+                }
+            }
+        });
+
+        bottom.add(theStereoModeSelector);
 
         mainPanel.add(bottom, BorderLayout.SOUTH);
 
@@ -519,7 +628,7 @@ public class Java3DEditor implements GenericModelEditor {
         moveGroup.setTransform(theTransform);
     }
 
-    public Node createElement(ModelItem aItem) {
+    private Node createElement(ModelItem aItem) {
 
         int offset = 10;
 
@@ -597,12 +706,32 @@ public class Java3DEditor implements GenericModelEditor {
     public void setSelectedObject(ModelItem aSelectedObject) {
         moveGroup.removeAllChildren();
 
-        selectedModelItem = null;
-
         modelLayers = new ArrayList<List<ModelItem>>();
         List<ModelItem> theAlreadyKnown = new ArrayList<ModelItem>();
 
+        // We only show views and tables as the center of attention in the editor.
+        if (aSelectedObject instanceof Index) {
+            aSelectedObject = ((Index) aSelectedObject).getOwner();
+        }
+        if (aSelectedObject instanceof Attribute) {
+            aSelectedObject = ((Attribute) aSelectedObject).getOwner();
+        }
+        if (aSelectedObject instanceof Relation) {
+            aSelectedObject = ((Relation) aSelectedObject).getImportingTable();
+        }
+        if (!(aSelectedObject instanceof Table) && !(aSelectedObject instanceof View)) {
+            aSelectedObject = null;
+        }
+
+        if (aSelectedObject == selectedModelItem) {
+            return;
+        }
+
+        selectedModelItem = null;
+
         if (aSelectedObject != null) {
+
+            selectedModelItem = aSelectedObject;
 
             // There is always one layer in the graph
             List<ModelItem> layer1 = new ArrayList<ModelItem>();
@@ -611,6 +740,7 @@ public class Java3DEditor implements GenericModelEditor {
             modelLayers.add(layer1);
 
             if (aSelectedObject instanceof Table) {
+
                 // Tables can have multiple layers
                 Table theTable = (Table) aSelectedObject;
 

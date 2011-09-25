@@ -52,6 +52,7 @@
     <orderEntry type="library" name="Maven: jgraph:jgraph:5.13.0.0" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: org.metawidget:metawidget:0.85" level="project" />
+    <orderEntry type="library" name="Maven: net.sourceforge.anaglyphcanvas3:anaglyphcanvas3:0.87" level="project" />
     <orderEntry type="module" module-name="mogwai-looks" />
     <orderEntry type="module" module-name="mogwai-databinding" />
     <orderEntry type="module" module-name="mogwai-i18n" />
