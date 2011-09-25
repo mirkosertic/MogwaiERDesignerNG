@@ -17,18 +17,11 @@
  */
 package de.erdesignerng.dialect;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import org.apache.commons.lang.StringUtils;
-
+import de.erdesignerng.model.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Base class for all SQL generators.
@@ -153,9 +146,16 @@ public abstract class SQLGenerator<T extends Dialect> {
 
         StatementList theResult = new StatementList();
 
-        List<String> theSchemas = aModel.getUsedSchemas();
-        for (String theSchema : theSchemas) {
-            theResult.addAll(createAddSchemaStatement(theSchema));
+        List<String> theSystemSchemas = new ArrayList<String>();
+        List<String> theSchemasFromDialect = dialect.getSystemSchemas();
+        if (theSchemasFromDialect != null) {
+            theSystemSchemas.addAll(theSchemasFromDialect);
+        }
+        for (String theSchema : aModel.getUsedSchemas()) {
+            // We will not create the statements for system schemas.
+            if (!theSystemSchemas.contains(theSchema)) {
+                theResult.addAll(createAddSchemaStatement(theSchema));
+            }
         }
         for (Domain theDomain : aModel.getDomains()) {
             theResult.addAll(createAddDomainStatement(theDomain));

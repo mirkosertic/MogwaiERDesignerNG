@@ -19,18 +19,14 @@ package de.erdesignerng.dialect;
 
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import org.apache.commons.lang.StringUtils;
-
+import de.erdesignerng.model.*;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author $Author: mirkosertic $
@@ -366,11 +362,11 @@ public abstract class Dialect {
         this.supportsSchemaInformation = supportsSchemaInformation;
     }
 
-    public ArrayList<String> getSystemSchemas() {
+    public List<String> getSystemSchemas() {
         if (supportsSchemaInformation) {
             return systemSchemas;
         }
-        return null;
+        return new ArrayList<String>();
     }
 
     public void addSystemSchema(String aSystemSchemaName) {
