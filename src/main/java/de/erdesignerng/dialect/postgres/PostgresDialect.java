@@ -21,7 +21,6 @@ import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.GenericDataTypeImpl;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.sql92.SQL92Dialect;
-
 import java.sql.Types;
 
 /**
@@ -109,6 +108,9 @@ public final class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("geometry", "", SPATIAL_COLUMN_TYPE));
         registerType(createDataType("geometry_dump", "", SPATIAL_COLUMN_TYPE));
         registerType(createDataType("geography", "", SPATIAL_COLUMN_TYPE));
+
+        registerType(createDataType("tsvector", "", Types.OTHER));
+        registerType(createDataType("tsquery", "", Types.OTHER));
 
         seal();
     }
