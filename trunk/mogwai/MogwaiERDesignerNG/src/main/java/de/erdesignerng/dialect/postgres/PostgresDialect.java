@@ -45,6 +45,7 @@ public final class PostgresDialect extends SQL92Dialect {
         addSystemSchema("pg_toast_temp");
         addSystemSchema("pg_toast_temp_1");
         addSystemSchema("pg_temp_1");
+        addSystemSchema("public");
 
         registerType(createDataType("bool", "", Types.BIT));
         registerType(createDataType("bytea", "", Types.BINARY, Types.VARBINARY));
