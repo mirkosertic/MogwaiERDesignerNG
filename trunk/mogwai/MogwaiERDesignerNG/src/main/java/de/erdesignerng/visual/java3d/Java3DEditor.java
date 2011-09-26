@@ -703,6 +703,7 @@ public class Java3DEditor implements GenericModelEditor {
         return theBox;
     }
 
+	@Override
     public void setSelectedObject(ModelItem aSelectedObject) {
         moveGroup.removeAllChildren();
 
