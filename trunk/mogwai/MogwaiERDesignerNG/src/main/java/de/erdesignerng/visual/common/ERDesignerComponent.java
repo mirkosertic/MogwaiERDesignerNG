@@ -18,13 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
@@ -40,12 +34,7 @@ import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultCheckBox;
-import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultPopupMenu;
-import de.mogwai.common.client.looks.components.DefaultToggleButton;
-import de.mogwai.common.client.looks.components.DefaultToolbar;
+import de.mogwai.common.client.looks.components.*;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -53,9 +42,9 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -63,10 +52,9 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -102,6 +90,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu documentationMenu;
 
+    private DefaultMenu layoutMenu;
+
     private DefaultCheckboxMenuItem displayCommentsMenuItem;
 
     private DefaultCheckboxMenuItem displayGridMenuItem;
@@ -132,8 +122,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     private DefaultAction commentAction;
 
     private DefaultAction viewAction;
-
-    private DefaultCheckBox intelligentLayoutCheckbox;
 
     private DefaultMenu exportMenu;
 
@@ -181,10 +169,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         initActions();
 
         setEditor2DInteractive();
-
-        if (ApplicationPreferences.getInstance().isIntelligentLayout()) {
-            editor.setIntelligentLayoutEnabled(true);
-        }
 
         handAction.actionPerformed(new ActionEvent(editorPanel, MouseEvent.MOUSE_CLICKED, null));
     }
@@ -279,7 +263,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         relationAction.setEnabled(aEditor.supportsRelationAction());
         commentAction.setEnabled(aEditor.supportsCommentAction());
         viewAction.setEnabled(aEditor.supportsViewAction());
-        intelligentLayoutCheckbox.setEnabled(aEditor.supportsIntelligentLayout());
         displayCommentsAction.setEnabled(aEditor.supportsCommentAction());
         displayGridAction.setEnabled(aEditor.supportsGrid());
         displayLevelMenu.setEnabled(aEditor.supportsDisplayLevel());
@@ -290,6 +273,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         aEditor.initExportEntries(this, exportMenu);
         exportMenu.add(new DefaultMenuItem(exportOpenXavaAction));
         UIInitializer.getInstance().initialize(exportMenu);
+
+        layoutMenu.removeAll();
+        aEditor.initLayoutMenu(this, layoutMenu);
+        UIInitializer.getInstance().initialize(layoutMenu);
 
         editor.commandSetDisplayCommentsState(displayCommentsMenuItem.isSelected());
         editor.commandSetDisplayGridState(displayGridMenuItem.isSelected());
@@ -827,9 +814,14 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         UIInitializer.getInstance().initialize(displayOrderMenu);
 
         subjectAreas = new DefaultMenu(this, ERDesignerBundle.MENUSUBJECTAREAS);
-
         UIInitializer.getInstance().initialize(subjectAreas);
         theViewMenu.add(subjectAreas);
+
+        theViewMenu.addSeparator();
+
+        layoutMenu = new DefaultMenu(this, ERDesignerBundle.LAYOUT);
+        UIInitializer.getInstance().initialize(layoutMenu);
+        theViewMenu.add(layoutMenu);
 
         theViewMenu.addSeparator();
 
@@ -888,21 +880,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theToolBar.add(relationButton);
         theToolBar.add(commentButton);
         theToolBar.add(viewButton);
-
-        intelligentLayoutCheckbox = new DefaultCheckBox(
-                ERDesignerBundle.INTELLIGENTLAYOUT);
-        intelligentLayoutCheckbox.setSelected(ApplicationPreferences.getInstance()
-                .isIntelligentLayout());
-        intelligentLayoutCheckbox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editor.setIntelligentLayoutEnabled(intelligentLayoutCheckbox.isSelected());
-            }
-        });
-
-        theToolBar.addSeparator();
-        theToolBar.add(intelligentLayoutCheckbox);
 
         worldConnector.initTitle();
 
@@ -1155,130 +1132,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
     }
 
-    private List<Set<Table>> buildHierarchy(Model aModel) {
-        // Try to build a hierarchy
-        List<Set<Table>> theLayers = new ArrayList<Set<Table>>();
-        Set<Table> theCurrentLayer = new HashSet<Table>();
-        Set<Table> theAlreadyKnown = new HashSet<Table>();
-        for (Table theTable : model.getTables()) {
-            boolean isTopLevel = true;
-            List<Relation> theRelations = model.getRelations().getExportedKeysFor(theTable);
-            if (theRelations.size() == 0) {
-                isTopLevel = true;
-            } else {
-                for (Relation theRelation : theRelations) {
-                    if (theRelation.getImportingTable() != theTable) {
-                        isTopLevel = false;
-                    }
-                }
-            }
-            if (isTopLevel) {
-                theCurrentLayer.add(theTable);
-                theAlreadyKnown.add(theTable);
-            }
-        }
-
-        // Top Level components
-        theLayers.add(theCurrentLayer);
-
-        Set<Table> theTablesToSearch = new HashSet<Table>();
-        theTablesToSearch.addAll(theCurrentLayer);
-        while (theTablesToSearch.size() > 0) {
-            theCurrentLayer = new HashSet<Table>();
-            for (Table theTable : theTablesToSearch) {
-                for (Relation theRelation : model.getRelations().getForeignKeysFor(theTable)) {
-                    if (theRelation.getExportingTable() != theTable && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
-                        theCurrentLayer.add(theRelation.getExportingTable());
-                        theAlreadyKnown.add(theRelation.getExportingTable());
-                    }
-                }
-            }
-            if (theCurrentLayer.size() > 0) {
-
-                Set<Table> theTablesToRemove = new HashSet<Table>();
-
-                for (Table theTable : theCurrentLayer) {
-                    boolean isUsedInSameLayer = false;
-                    for (Relation theRelation : model.getRelations().getExportedKeysFor(theTable)) {
-                        if (theRelation.getImportingTable() != theTable && theCurrentLayer.contains(theRelation.getImportingTable())) {
-                            isUsedInSameLayer = true;
-                        }
-                    }
-                    if (isUsedInSameLayer) {
-                        theTablesToRemove.add(theTable);
-                    }
-                }
-
-                theCurrentLayer.removeAll(theTablesToRemove);
-                theAlreadyKnown.removeAll(theTablesToRemove);
-
-                theLayers.add(theCurrentLayer);
-                theTablesToSearch = theCurrentLayer;
-            } else {
-                theTablesToSearch.clear();
-            }
-        }
-        return theLayers;
-    }
-
-    private void performTreeLayout(Model aModel) {
-        List<Set<Table>> theLayers = buildHierarchy(aModel);
-
-        int layer = 1;
-        int yp = 20;
-        for (Set<Table> theEntry : theLayers) {
-            int xp = 20;
-            for (Table theTable : theEntry) {
-
-                theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
-                xp += 500;
-            }
-
-            layer++;
-            yp += 500;
-        }
-        int xp = 20;
-        for (View theView : aModel.getViews()) {
-            theView.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
-            xp += 500;
-        }
-    }
-
-    private void performRadialLayout(Model aModel) {
-        List<Set<Table>> theLayers = buildHierarchy(aModel);
-
-        int centerx = 500 * (theLayers.size() + 1);
-        int centery = 500 * (theLayers.size() + 1);
-        int theRadius = 500;
-        for (int theLayer = theLayers.size() - 1; theLayer >= 0; theLayer--) {
-            Set<Table> theLayerTables = theLayers.get(theLayer);
-            if (theLayerTables.size() > 0) {
-
-                double theIncrement = Math.toDegrees(360 / theLayerTables.size());
-                double theAngle = 0;
-
-                for (Table theTable : theLayerTables) {
-                    int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
-                    int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
-                    theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theXP, theYP);
-                    theAngle += theIncrement;
-                }
-                theRadius += 500;
-            }
-        }
-
-        if (model.getViews().size() > 0) {
-            double theIncrement = Math.toDegrees(360 / model.getViews().size());
-            double theAngle = 0;
-            for (View theView : aModel.getViews()) {
-                int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
-                int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
-                theView.getProperties().setPointProperty(View.PROPERTY_LOCATION, theXP, theYP);
-                theAngle += theIncrement;
-            }
-        }
-    }
-
     /**
      * Set the current editing model.
      *
@@ -1287,12 +1140,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     public void setModel(Model aModel) {
 
         try {
-            editor.setIntelligentLayoutEnabled(false);
-
             model = aModel;
             selectedObject = null;
-
-            performRadialLayout(model);
 
             editor.setModel(model);
 
@@ -1321,9 +1170,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             handAction.actionPerformed(new ActionEvent(editorPanel, MouseEvent.MOUSE_CLICKED, null));
 
             updateSubjectAreasMenu();
-
-            editor.setIntelligentLayoutEnabled(ApplicationPreferences.getInstance()
-                    .isIntelligentLayout());
         }
     }
 
@@ -1352,10 +1198,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
     public void repaintGraph() {
         editor.repaintGraph();
-    }
-
-    public void setIntelligentLayoutEnabled(boolean b) {
-        editor.setIntelligentLayoutEnabled(b);
     }
 
     public void setSelectedObject(ModelItem aObject) {

@@ -17,10 +17,11 @@
  */
 package de.erdesignerng.visual;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JComponent;
+import javax.swing.Timer;
 
 public abstract class FadeInFadeOutHelper {
 
@@ -67,7 +68,7 @@ public abstract class FadeInFadeOutHelper {
                 doRepaint();
             }
         });
-        componentToHighlightWaitTimer = new Timer(300, new ActionListener() {
+        componentToHighlightWaitTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 componentToHighlightTimer.start();

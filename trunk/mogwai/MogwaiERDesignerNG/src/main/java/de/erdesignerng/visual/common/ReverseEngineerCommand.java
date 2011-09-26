@@ -32,14 +32,14 @@ import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
 import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
 import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 
 public class ReverseEngineerCommand extends UICommand {
 
@@ -63,8 +63,6 @@ public class ReverseEngineerCommand extends UICommand {
             final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
                     theModel, getDetailComponent());
             if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-
-                ERDesignerComponent.getDefault().setIntelligentLayoutEnabled(false);
 
                 try {
 
@@ -102,10 +100,6 @@ public class ReverseEngineerCommand extends UICommand {
 
                 } catch (Exception e) {
                     getWorldConnector().notifyAboutException(e);
-                } finally {
-                    component
-                            .setIntelligentLayoutEnabled(ApplicationPreferences
-                                    .getInstance().isIntelligentLayout());
                 }
             }
         } else {
@@ -126,9 +120,6 @@ public class ReverseEngineerCommand extends UICommand {
 
             } catch (Exception e) {
                 getWorldConnector().notifyAboutException(e);
-            } finally {
-                component.setIntelligentLayoutEnabled(ApplicationPreferences
-                        .getInstance().isIntelligentLayout());
             }
         }
     }
