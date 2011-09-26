@@ -38,6 +38,7 @@ public final class PostgresDialect extends SQL92Dialect {
         setSupportsDomains(true);
         setSupportsCustomTypes(true);
         setSupportsSchemaInformation(true);
+		setDefaultSchemaName("public");
 
         addSystemSchema("information_schema");
         addSystemSchema("pg_catalog");
