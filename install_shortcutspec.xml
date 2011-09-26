@@ -1,33 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <shortcuts>
-	<skipIfNotSupported />
-	<programGroup defaultName="Mogwai\ER-DesignerNG"
-		location="startMenu" />
-	<shortcut name="ERDesigner NG for 32 Bit Systems"
-		target="$INSTALL_PATH\run.bat"
-		commandLine="" workingDirectory="$INSTALL_PATH"
-		description=""
-		initialState="normal"
-		programGroup="yes" desktop="no" applications="no"
-		startMenu="yes" startup="no">
-		<createForPack name="Base" />
-	</shortcut>
-    <shortcut name="ERDesigner NG for 64 Bit Systems"
-        target="$INSTALL_PATH\run64.bat"
-        commandLine="" workingDirectory="$INSTALL_PATH"
-        description=""
-        initialState="normal"
-        programGroup="yes" desktop="no" applications="no"
-        startMenu="yes" startup="no">
-        <createForPack name="Base" />
+    <skipIfNotSupported/>
+    <programGroup defaultName="Mogwai\ER-DesignerNG"
+                  location="startMenu"/>
+    <shortcut name="ERDesigner NG"
+              target="$INSTALL_PATH\run.bat"
+              commandLine="" workingDirectory="$INSTALL_PATH"
+              description=""
+              initialState="normal"
+              programGroup="yes" desktop="no" applications="no"
+              startMenu="yes" startup="no">
+        <createForPack name="Base"/>
     </shortcut>
-	<shortcut name="Documentation"
-		target="$INSTALL_PATH\userdoc\Mogwai ERDesigner NG.pdf"
-		commandLine="" workingDirectory="$INSTALL_PATH"
-		description=""
-		initialState="normal"
-		programGroup="yes" desktop="no" applications="no"
-		startMenu="yes" startup="no">
-		<createForPack name="Docs" />
-	</shortcut>
+    <shortcut name="Documentation"
+              target="$INSTALL_PATH\userdoc\Mogwai ERDesigner NG.pdf"
+              commandLine="" workingDirectory="$INSTALL_PATH"
+              description=""
+              initialState="normal"
+              programGroup="yes" desktop="no" applications="no"
+              startMenu="yes" startup="no">
+        <createForPack name="Docs"/>
+    </shortcut>
 </shortcuts>
