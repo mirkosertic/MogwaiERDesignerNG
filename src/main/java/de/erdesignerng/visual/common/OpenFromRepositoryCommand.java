@@ -28,7 +28,6 @@ import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -53,9 +52,6 @@ public class OpenFromRepositoryCommand extends UICommand {
         Dialect theDialect = DialectFactory.getInstance().getDialect(
                 theRepositoryConnection.getDialect());
         try {
-
-            component.setIntelligentLayoutEnabled(false);
-
             theConnection = theDialect.createConnection(ApplicationPreferences
                     .getInstance().createDriverClassLoader(),
                     theRepositoryConnection.getDriver(),

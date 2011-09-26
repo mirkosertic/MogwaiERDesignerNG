@@ -21,6 +21,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.*;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
+import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.common.ToolEnum;
 import de.erdesignerng.visual.common.ZoomInfo;
@@ -176,10 +177,6 @@ public class Java2DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void setIntelligentLayoutEnabled(boolean aStatus) {
-    }
-
-    @Override
     public void setSelectedObject(ModelItem aItem) {
         editorPanel.cleanup();
 
@@ -272,11 +269,6 @@ public class Java2DEditor implements GenericModelEditor {
 
     @Override
     public boolean supportsViewAction() {
-        return false;
-    }
-
-    @Override
-    public boolean supportsIntelligentLayout() {
         return false;
     }
 
@@ -395,5 +387,10 @@ public class Java2DEditor implements GenericModelEditor {
         editorPanel.invalidate();
         editorPanel.repaint();
         editorPanel.explodeAnimation();
+    }
+
+    @Override
+    public void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu) {
+        aLayoutMenu.setEnabled(false);
     }
 }

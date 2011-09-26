@@ -102,13 +102,6 @@ public interface GenericModelEditor {
     void commandNotifyAboutEdit();
 
     /**
-     * Set the status of the intelligent layout functionality.
-     *
-     * @param aStatus true if enabled, else false
-     */
-    void setIntelligentLayoutEnabled(boolean aStatus);
-
-    /**
      * Set the currently selected cell depending on its user object.
      *
      * @param aItem the user object.
@@ -148,8 +141,6 @@ public interface GenericModelEditor {
 
     boolean supportsViewAction();
 
-    boolean supportsIntelligentLayout();
-
     void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu);
 
     boolean supportsEntityAction();
@@ -165,4 +156,6 @@ public interface GenericModelEditor {
     boolean supportsDeletionOfObjects();
 
     boolean supportShowingAndHidingOfRelations();
+
+    void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu);
 }
