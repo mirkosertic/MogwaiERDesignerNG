@@ -51,7 +51,6 @@
             <file src="LICENSE_MOGWAI.txt" targetdir="$INSTALL_PATH"/>
             <file src="RELEASENOTES.txt" targetdir="$INSTALL_PATH"/>
             <file src="run.bat" targetdir="$INSTALL_PATH"/>
-            <file src="run64.bat" targetdir="$INSTALL_PATH"/>
             <file src="run.sh" targetdir="$INSTALL_PATH" os="unix"/>
             <file src="run64.sh" targetdir="$INSTALL_PATH" os="unix"/>
             <file src="run.sh" targetdir="$INSTALL_PATH" os="mac"/>
