@@ -703,7 +703,7 @@ public class Java3DEditor implements GenericModelEditor {
         return theBox;
     }
 
-	@Override
+    @Override
     public void setSelectedObject(ModelItem aSelectedObject) {
         moveGroup.removeAllChildren();
 
@@ -922,10 +922,6 @@ public class Java3DEditor implements GenericModelEditor {
     }
 
     @Override
-    public void setIntelligentLayoutEnabled(boolean aStatus) {
-    }
-
-    @Override
     public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
     }
 
@@ -988,11 +984,6 @@ public class Java3DEditor implements GenericModelEditor {
     }
 
     @Override
-    public boolean supportsIntelligentLayout() {
-        return false;
-    }
-
-    @Override
     public void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu) {
         aExportMenu.setEnabled(false);
     }
@@ -1030,5 +1021,10 @@ public class Java3DEditor implements GenericModelEditor {
     @Override
     public boolean supportShowingAndHidingOfRelations() {
         return false;
+    }
+
+    @Override
+    public void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu) {
+        aLayoutMenu.setEnabled(false);
     }
 }

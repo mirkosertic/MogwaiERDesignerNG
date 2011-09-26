@@ -756,10 +756,6 @@
             <Text lang="de">Schema berücksichtigen</Text>
             <Text lang="en">Respect database schema</Text>
         </Entry>
-        <Entry id="INTELLIGENTLAYOUT">
-            <Text lang="de">Intelligent Layout (BETA)</Text>
-            <Text lang="en">Intelligent layout (BETA)</Text>
-        </Entry>
         <Entry id="DELETENOTUSEDATTRIBUTES">
             <Text lang="de">Wollen Sie das nicht mehr benötigte Attribut {0} in Tabelle {1} löschen?</Text>
             <Text lang="en">Do you want to delete the no longer used attribute {0} of table {1}?</Text>
@@ -1065,9 +1061,11 @@
             <Text lang="en">Error initializing 3D mode.</Text>
         </Entry>
         <Entry id="NOSUPPORTEDOPENGLVENDOR">
-            <Text lang="de">Möglicherweise ist 'Java 3D' nicht auf Ihrem System installiert!\nLaden Sie die aktuelle Version von 'http://java3d.java.net/binary-builds.html' herunter und installieren Sie sie.
+            <Text lang="de">Möglicherweise ist 'Java 3D' nicht auf Ihrem System installiert!\nLaden Sie die aktuelle
+                Version von 'http://java3d.java.net/binary-builds.html' herunter und installieren Sie sie.
             </Text>
-            <Text lang="en">Possibly 'Java 3D' is not installed on your system.\nDownload from 'http://java3d.java.net/binary-builds.html' and install it.
+            <Text lang="en">Possibly 'Java 3D' is not installed on your system.\nDownload from
+                'http://java3d.java.net/binary-builds.html' and install it.
             </Text>
         </Entry>
         <Entry id="STEREOMODE">
@@ -1141,6 +1139,18 @@
         <Entry id="HELPTEXT_2D_EDITOR_4">
             <Text lang="de">Durck Doppelklick auf einen Element können Sie dieses editieren</Text>
             <Text lang="en">Edit an item by double-clicking on it</Text>
+        </Entry>
+        <Entry id="LAYOUT">
+            <Text lang="de">Layout</Text>
+            <Text lang="en">Layout</Text>
+        </Entry>
+        <Entry id="LAYOUTTREE">
+            <Text lang="de">Treelayout</Text>
+            <Text lang="en">Treelayout</Text>
+        </Entry>
+        <Entry id="LAYOUTRADIAL">
+            <Text lang="de">Radiallayout</Text>
+            <Text lang="en">Radiallayout</Text>
         </Entry>
     </Bundle>
 </Resource>

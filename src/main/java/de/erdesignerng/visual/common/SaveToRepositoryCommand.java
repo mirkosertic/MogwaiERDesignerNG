@@ -28,7 +28,6 @@ import de.erdesignerng.util.JDBCUtils;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -53,9 +52,6 @@ public class SaveToRepositoryCommand extends UICommand {
         Dialect theDialect = DialectFactory.getInstance().getDialect(
                 theRepositoryConnection.getDialect());
         try {
-
-            component.setIntelligentLayoutEnabled(false);
-
             theConnection = theDialect.createConnection(ApplicationPreferences
                     .getInstance().createDriverClassLoader(),
                     theRepositoryConnection.getDriver(),
@@ -92,9 +88,6 @@ public class SaveToRepositoryCommand extends UICommand {
                     && !theDialect.generatesManagedConnection()) {
                 JDBCUtils.closeQuietly(theConnection);
             }
-
-            component.setIntelligentLayoutEnabled(ApplicationPreferences
-                    .getInstance().isIntelligentLayout());
         }
     }
 }

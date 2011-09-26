@@ -30,21 +30,25 @@ import de.erdesignerng.visual.common.*;
 import de.erdesignerng.visual.jgraph.cells.*;
 import de.erdesignerng.visual.jgraph.cells.views.CellViewFactory;
 import de.erdesignerng.visual.jgraph.cells.views.RelationEdgeView;
+import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
+import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.erdesignerng.visual.jgraph.export.ImageExporter;
 import de.erdesignerng.visual.jgraph.export.SVGExporter;
 import de.erdesignerng.visual.jgraph.plaf.basic.ERDesignerGraphUI;
 import de.erdesignerng.visual.jgraph.tools.*;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
+import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 import org.apache.commons.lang.ArrayUtils;
 import org.jgraph.event.*;
 import org.jgraph.graph.*;
@@ -120,41 +124,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         }
     }
 
-    private final class LayoutThread extends Thread {
-        @Override
-        public void run() {
-            while (!isInterrupted()) {
-                try {
-                    long theDuration = System.currentTimeMillis();
-
-                    if (layout.preEvolveLayout()) {
-                        layout.evolveLayout();
-
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            @Override
-                            public void run() {
-                                layout.postEvolveLayout();
-                            }
-                        });
-                    }
-                    theDuration = System.currentTimeMillis() - theDuration;
-
-                    // Assume 30 Frames / Second animation speed
-                    long theDifference = (1000 - (theDuration * 30)) / 30;
-                    if (theDifference > 0) {
-                        sleep(theDifference);
-                    } else {
-                        sleep(40);
-                    }
-                } catch (InterruptedException e) {
-                    return;
-                } catch (Exception e) {
-                    ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e);
-                }
-            }
-        }
-    }
-
     private static final class GraphModelMappingInfo {
         final Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
 
@@ -165,11 +134,8 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
 
     private ERDesignerGraph graph;
-    private ERDesignerGraphLayout layout;
-    private LayoutThread layoutThread;
 
     public JGraphEditor() {
-        layout = new ERDesignerGraphLayout(this);
     }
 
     public ERDesignerGraph getGraph() {
@@ -562,21 +528,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public final void setIntelligentLayoutEnabled(boolean aStatus) {
-        if (!aStatus) {
-            if (layoutThread != null) {
-                layoutThread.interrupt();
-                while (layoutThread.getState() != Thread.State.TERMINATED) {
-                }
-            }
-        } else {
-            layoutThread = new LayoutThread();
-            layoutThread.start();
-        }
-        ApplicationPreferences.getInstance().setIntelligentLayout(aStatus);
-    }
-
-    @Override
     public void setSelectedObject(ModelItem aItem) {
         DefaultGraphCell theCell = findCellforObject(aItem);
         if (theCell != null) {
@@ -790,11 +741,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
-    public boolean supportsIntelligentLayout() {
-        return true;
-    }
-
-    @Override
     public void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu) {
         aExportMenu.setEnabled(true);
         List<String> theSupportedFormats = ImageExporter.getSupportedFormats();
@@ -863,5 +809,222 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     @Override
     public boolean supportShowingAndHidingOfRelations() {
         return true;
+    }
+
+    @Override
+    public void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu) {
+        aLayoutMenu.setEnabled(true);
+
+        DefaultAction layoutTreeAction = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performTreeLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTTREE);
+
+        DefaultAction layoutRadialAction = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performRadialLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTRADIAL);
+
+        aLayoutMenu.add(layoutTreeAction);
+        aLayoutMenu.add(layoutRadialAction);
+    }
+
+    private List<Set<Table>> buildHierarchy(Model aModel) {
+        // Try to build a hierarchy
+        List<Set<Table>> theLayers = new ArrayList<Set<Table>>();
+        Set<Table> theCurrentLayer = new HashSet<Table>();
+        Set<Table> theAlreadyKnown = new HashSet<Table>();
+        for (Table theTable : aModel.getTables()) {
+            boolean isTopLevel = true;
+            List<Relation> theRelations = aModel.getRelations().getExportedKeysFor(theTable);
+            if (theRelations.size() == 0) {
+                isTopLevel = true;
+            } else {
+                for (Relation theRelation : theRelations) {
+                    if (theRelation.getImportingTable() != theTable) {
+                        isTopLevel = false;
+                    }
+                }
+            }
+            if (isTopLevel) {
+                theCurrentLayer.add(theTable);
+                theAlreadyKnown.add(theTable);
+            }
+        }
+
+        // Top Level components
+        theLayers.add(theCurrentLayer);
+
+        Set<Table> theTablesToSearch = new HashSet<Table>();
+        theTablesToSearch.addAll(theCurrentLayer);
+        while (theTablesToSearch.size() > 0) {
+            theCurrentLayer = new HashSet<Table>();
+            for (Table theTable : theTablesToSearch) {
+                for (Relation theRelation : aModel.getRelations().getForeignKeysFor(theTable)) {
+                    if (theRelation.getExportingTable() != theTable && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
+                        theCurrentLayer.add(theRelation.getExportingTable());
+                        theAlreadyKnown.add(theRelation.getExportingTable());
+                    }
+                }
+            }
+            if (theCurrentLayer.size() > 0) {
+
+                Set<Table> theTablesToRemove = new HashSet<Table>();
+
+                for (Table theTable : theCurrentLayer) {
+                    boolean isUsedInSameLayer = false;
+                    for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
+                        if (theRelation.getImportingTable() != theTable && theCurrentLayer.contains(theRelation.getImportingTable())) {
+                            isUsedInSameLayer = true;
+                        }
+                    }
+                    if (isUsedInSameLayer) {
+                        theTablesToRemove.add(theTable);
+                    }
+                }
+
+                theCurrentLayer.removeAll(theTablesToRemove);
+                theAlreadyKnown.removeAll(theTablesToRemove);
+
+                theLayers.add(theCurrentLayer);
+                theTablesToSearch = theCurrentLayer;
+            } else {
+                theTablesToSearch.clear();
+            }
+        }
+        return theLayers;
+    }
+
+    private void updatePositions() {
+        Map<Object, Map> theModificatios = new HashMap<Object, Map>();
+        for (CellView theView : graph.getGraphLayoutCache().getAllViews()) {
+
+            if (theView.getCell() instanceof ModelCellWithPosition) {
+
+                ModelCellWithPosition theCell = (ModelCellWithPosition) theView.getCell();
+                theCell.transferPropertiesToAttributes(theCell.getUserObject());
+
+                theModificatios.put(theCell, theCell.getAttributes());
+            }
+        }
+
+        if (theModificatios.size() > 0) {
+            graph.getGraphLayoutCache().edit(theModificatios);
+        }
+    }
+
+    private void performTreeLayout() {
+
+        Model theModel = graph.getDBModel();
+
+        List<Set<Table>> theLayers = buildHierarchy(theModel);
+
+        int yp = 20;
+        for (Set<Table> theEntry : theLayers) {
+
+            TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
+            int xp = 20;
+            int maxHeight = 0;
+            for (Table theTable : theEntry) {
+
+                theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
+
+                JComponent theRenderComponent = theRenderer.getRendererComponent(theTable);
+                Dimension theSize = theRenderComponent.getPreferredSize();
+
+                maxHeight = Math.max(maxHeight, (int) theSize.getHeight());
+
+                xp += theSize.getWidth() + 20;
+            }
+
+            if (theEntry.size() > 0) {
+                yp += maxHeight + 20;
+            }
+        }
+
+        ViewCellView.MyRenderer theRenderer = new ViewCellView.MyRenderer();
+
+        int xp = 20;
+        for (View theView : theModel.getViews()) {
+
+            theView.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
+
+            JComponent theRenderComponent = theRenderer.getRendererComponent(theView);
+            Dimension theSize = theRenderComponent.getPreferredSize();
+
+            xp += theSize.getWidth() + 20;
+        }
+
+        updatePositions();
+
+        repaintGraph();
+    }
+
+    private void performRadialLayout() {
+
+        Model theModel = graph.getDBModel();
+
+        List<Set<Table>> theLayers = buildHierarchy(theModel);
+
+        int centerx = 500 * (theLayers.size() + 1);
+        int centery = 500 * (theLayers.size() + 1);
+        int theRadius = 0;
+        for (int theLayer = theLayers.size() - 1; theLayer >= 0; theLayer--) {
+            Set<Table> theLayerTables = theLayers.get(theLayer);
+            if (theLayerTables.size() > 0) {
+
+                TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
+                double thePerimeter = 0;
+                double theMinRadius = 0;
+                for (Table theTable : theLayerTables) {
+                    JComponent theRendererComponent = theRenderer.getRendererComponent(theTable);
+                    Dimension theSize = theRendererComponent.getPreferredSize();
+                    double theR = Math.sqrt(theSize.width * theSize.width + theSize.height * theSize.height);
+                    thePerimeter += theR;
+
+                    theMinRadius = Math.max(theMinRadius, theR);
+                }
+                thePerimeter += theLayerTables.size() * 40;
+
+                double theRadiusIncrement = (thePerimeter / (Math.PI * 2)) - theRadius;
+                theRadius += Math.max(theRadiusIncrement, theMinRadius);
+
+                double theIncrement = Math.toDegrees(360 / theLayerTables.size());
+                double theAngle = 0;
+
+                for (Table theTable : theLayerTables) {
+                    int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
+                    int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
+                    theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theXP, theYP);
+                    theAngle += theIncrement;
+                }
+                theRadius += 500;
+            }
+        }
+
+        if (theModel.getViews().size() > 0) {
+            double theIncrement = Math.toDegrees(360 / theModel.getViews().size());
+            double theAngle = 0;
+            for (View theView : theModel.getViews()) {
+                int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
+                int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
+                theView.getProperties().setPointProperty(View.PROPERTY_LOCATION, theXP, theYP);
+                theAngle += theIncrement;
+            }
+        }
+
+        updatePositions();
+
+        repaintGraph();
     }
 }
