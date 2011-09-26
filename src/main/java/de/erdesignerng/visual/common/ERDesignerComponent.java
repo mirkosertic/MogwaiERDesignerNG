@@ -54,20 +54,8 @@ import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -75,8 +63,10 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The ERDesigner Editing Component.
@@ -244,17 +234,17 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected void setEditor3DInteractive() {
-		Java3DEditor theEditor = null;
+        Java3DEditor theEditor = null;
 
-		try {
-			theEditor = new Java3DEditor();
-		} catch (UnsatisfiedLinkError ule) {
-			MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(ERDesignerBundle.NOSUPPORTEDOPENGLVENDOR), getResourceHelper().getText(ERDesignerBundle.ERRORINITIALIZING3DMODE));
-		}
+        try {
+            theEditor = new Java3DEditor();
+        } catch (UnsatisfiedLinkError ule) {
+            MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(ERDesignerBundle.NOSUPPORTEDOPENGLVENDOR), getResourceHelper().getText(ERDesignerBundle.ERRORINITIALIZING3DMODE));
+        }
 
-		if (theEditor != null) {
-			setEditor(theEditor);
-		}
+        if (theEditor != null) {
+            setEditor(theEditor);
+        }
     }
 
     protected void setEditor(GenericModelEditor aEditor) {
@@ -1165,6 +1155,130 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
     }
 
+    private List<Set<Table>> buildHierarchy(Model aModel) {
+        // Try to build a hierarchy
+        List<Set<Table>> theLayers = new ArrayList<Set<Table>>();
+        Set<Table> theCurrentLayer = new HashSet<Table>();
+        Set<Table> theAlreadyKnown = new HashSet<Table>();
+        for (Table theTable : model.getTables()) {
+            boolean isTopLevel = true;
+            List<Relation> theRelations = model.getRelations().getExportedKeysFor(theTable);
+            if (theRelations.size() == 0) {
+                isTopLevel = true;
+            } else {
+                for (Relation theRelation : theRelations) {
+                    if (theRelation.getImportingTable() != theTable) {
+                        isTopLevel = false;
+                    }
+                }
+            }
+            if (isTopLevel) {
+                theCurrentLayer.add(theTable);
+                theAlreadyKnown.add(theTable);
+            }
+        }
+
+        // Top Level components
+        theLayers.add(theCurrentLayer);
+
+        Set<Table> theTablesToSearch = new HashSet<Table>();
+        theTablesToSearch.addAll(theCurrentLayer);
+        while (theTablesToSearch.size() > 0) {
+            theCurrentLayer = new HashSet<Table>();
+            for (Table theTable : theTablesToSearch) {
+                for (Relation theRelation : model.getRelations().getForeignKeysFor(theTable)) {
+                    if (theRelation.getExportingTable() != theTable && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
+                        theCurrentLayer.add(theRelation.getExportingTable());
+                        theAlreadyKnown.add(theRelation.getExportingTable());
+                    }
+                }
+            }
+            if (theCurrentLayer.size() > 0) {
+
+                Set<Table> theTablesToRemove = new HashSet<Table>();
+
+                for (Table theTable : theCurrentLayer) {
+                    boolean isUsedInSameLayer = false;
+                    for (Relation theRelation : model.getRelations().getExportedKeysFor(theTable)) {
+                        if (theRelation.getImportingTable() != theTable && theCurrentLayer.contains(theRelation.getImportingTable())) {
+                            isUsedInSameLayer = true;
+                        }
+                    }
+                    if (isUsedInSameLayer) {
+                        theTablesToRemove.add(theTable);
+                    }
+                }
+
+                theCurrentLayer.removeAll(theTablesToRemove);
+                theAlreadyKnown.removeAll(theTablesToRemove);
+
+                theLayers.add(theCurrentLayer);
+                theTablesToSearch = theCurrentLayer;
+            } else {
+                theTablesToSearch.clear();
+            }
+        }
+        return theLayers;
+    }
+
+    private void performTreeLayout(Model aModel) {
+        List<Set<Table>> theLayers = buildHierarchy(aModel);
+
+        int layer = 1;
+        int yp = 20;
+        for (Set<Table> theEntry : theLayers) {
+            int xp = 20;
+            for (Table theTable : theEntry) {
+
+                theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
+                xp += 500;
+            }
+
+            layer++;
+            yp += 500;
+        }
+        int xp = 20;
+        for (View theView : aModel.getViews()) {
+            theView.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
+            xp += 500;
+        }
+    }
+
+    private void performRadialLayout(Model aModel) {
+        List<Set<Table>> theLayers = buildHierarchy(aModel);
+
+        int centerx = 500 * (theLayers.size() + 1);
+        int centery = 500 * (theLayers.size() + 1);
+        int theRadius = 500;
+        for (int theLayer = theLayers.size() - 1; theLayer >= 0; theLayer--) {
+            Set<Table> theLayerTables = theLayers.get(theLayer);
+            if (theLayerTables.size() > 0) {
+
+                double theIncrement = Math.toDegrees(360 / theLayerTables.size());
+                double theAngle = 0;
+
+                for (Table theTable : theLayerTables) {
+                    int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
+                    int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
+                    theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theXP, theYP);
+                    theAngle += theIncrement;
+                }
+                theRadius += 500;
+            }
+        }
+
+        if (model.getViews().size() > 0) {
+            double theIncrement = Math.toDegrees(360 / model.getViews().size());
+            double theAngle = 0;
+            for (View theView : aModel.getViews()) {
+                int theXP = centerx + (int) (Math.cos(theAngle) * theRadius);
+                int theYP = centery + (int) (Math.sin(theAngle) * theRadius);
+                theView.getProperties().setPointProperty(View.PROPERTY_LOCATION, theXP, theYP);
+                theAngle += theIncrement;
+            }
+        }
+    }
+
     /**
      * Set the current editing model.
      *
@@ -1177,6 +1291,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
             model = aModel;
             selectedObject = null;
+
+            performRadialLayout(model);
 
             editor.setModel(model);
 
