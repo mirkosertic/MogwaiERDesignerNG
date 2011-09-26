@@ -66,6 +66,8 @@ public abstract class Dialect {
 
     private ArrayList<String> systemSchemas = null;
 
+	private String defaultSchemaName = null;
+
     /**
      * @return the caseSensitive
      */
@@ -458,4 +460,20 @@ public abstract class Dialect {
     public boolean supportsFulltextIndexes() {
         return false;
     }
+
+	/**
+     * Returns the default schema name
+     *
+     * @return default schema name
+     */
+	public String getDefaultSchemaName() {
+		return defaultSchemaName;
+	}
+
+	/**
+	 * @param defaultSchemaName the name of the default schema
+	 */
+	public void setDefaultSchemaName(String defaultSchemaName) {
+		this.defaultSchemaName = defaultSchemaName;
+	}
 }
