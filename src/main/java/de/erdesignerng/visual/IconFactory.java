@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -71,8 +71,16 @@ public final class IconFactory {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/cancel.png"));
     }
 
-    public static ImageIcon getSelfReference() {
+    public static ImageIcon getSelfReferenceIcon() {
         return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/self_reference.png"));
+    }
+
+    public static ImageIcon getExpandIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/bullet_toggle_plus.png"));
+    }
+
+    public static ImageIcon getCollapseIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/bullet_toggle_minus.png"));
     }
 
 }

@@ -209,6 +209,8 @@
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
+                                        <xs:element name="Property" type="PropertyType" minOccurs="0"
+                                                    maxOccurs="unbounded"/>
                                         <xs:element name="Item" minOccurs="0" maxOccurs="unbounded">
                                             <xs:annotation>
                                                 <xs:documentation>A mapping element</xs:documentation>

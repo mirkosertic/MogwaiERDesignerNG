@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.jgraph.cells.views;
 
 import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
 import org.jgraph.JGraph;
@@ -27,7 +28,9 @@ import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 /**
@@ -49,9 +52,19 @@ public class SubjectAreaCellView extends VertexView {
 
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
+        final static float dash1[] = {10.0f};
+        private final static BasicStroke DASHED_STROKE = new BasicStroke(1.0f,
+                BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER,
+                10.0f, dash1, 0.0f);
+
+        private final static BasicStroke NORMAL_STROKE = new BasicStroke(1);
+
+
         private SubjectArea subjectArea;
 
         private boolean selected;
+        private boolean collapsed;
 
         public MyRenderer() {
             setBackground(Color.white);
@@ -60,22 +73,59 @@ public class SubjectAreaCellView extends VertexView {
         @Override
         public void paint(Graphics aGraphics) {
 
+            Graphics2D theGraphics = (Graphics2D) aGraphics;
+
             Dimension theSize = getSize();
             int theWidth = theSize.width;
             int theHeight = theSize.height;
 
-            aGraphics.setColor(subjectArea.getColor());
+            GradientPaint thePaint = new GradientPaint(0, 0, subjectArea.getColor(), theWidth, theHeight,
+                    getBackground(), false);
+            theGraphics.setPaint(thePaint);
             aGraphics.fillRect(0, 0, theWidth - 1, theHeight - 1);
 
             aGraphics.setColor(selected ? Color.blue : Color.black);
+            if (!collapsed) {
+                theGraphics.setStroke(DASHED_STROKE);
+            } else {
+                theGraphics.setStroke(NORMAL_STROKE);
+            }
             aGraphics.drawRect(0, 0, theWidth - 1, theHeight - 1);
+
+            theGraphics.setStroke(NORMAL_STROKE);
 
             aGraphics.setColor(Color.black);
 
             FontMetrics theMetrics = aGraphics.getFontMetrics();
             int theYOffset = theMetrics.getHeight();
 
-            aGraphics.drawString(subjectArea.getName(), 5, theYOffset);
+            aGraphics.setFont(getFont().deriveFont(Font.BOLD));
+
+            if (!collapsed) {
+                ImageIcon theIcon = IconFactory.getCollapseIcon();
+                theIcon.paintIcon(this, theGraphics, -5, -5);
+                aGraphics.drawString(subjectArea.getName(), 24, theYOffset);
+            } else {
+                Rectangle2D theTextSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
+
+                int xp = (int) (theWidth / 2 - theTextSize.getWidth() / 2);
+                int yp = theHeight / 2;
+
+                ImageIcon theIcon = IconFactory.getExpandIcon();
+                theIcon.paintIcon(this, theGraphics, -5, -5);
+                aGraphics.drawString(subjectArea.getName(), xp, yp);
+            }
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            if (collapsed) {
+                FontMetrics theMetrics = getFontMetrics(getFont());
+                Rectangle2D theSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
+                return new Dimension((int) theSize.getWidth() + 40, theMetrics.getHeight() * 2);
+            } else {
+                return super.getPreferredSize();
+            }
         }
 
         @Override
@@ -83,8 +133,10 @@ public class SubjectAreaCellView extends VertexView {
                                               boolean aPreview) {
 
             SubjectAreaCellView theView = (SubjectAreaCellView) aView;
+            SubjectAreaCell theCell = (SubjectAreaCell) aView.getCell();
             subjectArea = (SubjectArea) ((SubjectAreaCell) theView.getCell()).getUserObject();
             selected = aSelected;
+            collapsed = theCell.isCollapsed();
 
             return this;
         }

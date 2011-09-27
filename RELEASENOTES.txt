@@ -266,6 +266,7 @@ Release 3.0.0
 * Implemented FR 2924838 [ERDesignerNG] Using Oracle' tablespace
 * Implemented FR 2880756 [ERDesignerNG] Allow copying of entities and views
 * Implemented FR 3413307 [ERDesignerNG] Error changing view 2D -> 3D
+* Implemented FR 2895223 [ERDesignerNG] SubjectAreas handling
 * Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd (re-introduced by buggy commit in v1072)
 * Bug Fixing 2975206 [ERDesignerNG] Unknown data type during revers engineering
 * Bug Fixing 3306174 [ERDesignerNG] Unknown datatype (2.7.0 release)

@@ -43,6 +43,10 @@ public class ModelProperties implements Serializable {
         return Boolean.parseBoolean(properties.get(aName));
     }
 
+    public void setBooleanProperty(String aName, boolean aState) {
+        properties.put(aName, Boolean.toString(aState));
+    }
+
     public void setPointProperty(String aKey, int x, int y) {
         String theLocation = ((int) x) + ":"
                 + ((int) y);
