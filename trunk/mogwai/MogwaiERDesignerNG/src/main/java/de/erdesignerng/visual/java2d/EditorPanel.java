@@ -326,7 +326,7 @@ public class EditorPanel extends JPanel {
         g.drawString(theTitle, 10, 20);
 
         // If we do not have something to display, display the help text
-        if (components.size() == 0) {
+        if (components.isEmpty()) {
 
             if (helpImage == null) {
                 Dimension theHelpSize = new Dimension(600, 300);
