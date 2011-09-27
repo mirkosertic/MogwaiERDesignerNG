@@ -1,25 +1,31 @@
+/**
+ * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 package de.erdesignerng.visual.editor.table;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.model.IndexExpression;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultCheckBox;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultList;
-import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultRadioButton;
-import de.mogwai.common.client.looks.components.DefaultScrollPane;
-import de.mogwai.common.client.looks.components.DefaultSpinner;
-import de.mogwai.common.client.looks.components.DefaultTabbedPane;
-import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
-import de.mogwai.common.client.looks.components.DefaultTextArea;
-import de.mogwai.common.client.looks.components.DefaultTextField;
-
+import de.mogwai.common.client.looks.components.*;
+import de.mogwai.common.client.looks.components.renderer.DefaultCellRenderer;
+import java.awt.BorderLayout;
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -35,29 +41,9 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultTabbedPaneTab attributesTab;
 
-    private DefaultList attributeList;
-
     private DefaultButton newButton;
 
     private DefaultButton deleteButton;
-
-    private DefaultTabbedPane component15;
-
-    private DefaultTabbedPaneTab attributesGeneralTab;
-
-    private DefaultLabel component20;
-
-    private DefaultTextField attributeName;
-
-    private DefaultCheckBox nullable;
-
-    private DefaultLabel component42;
-
-    private DefaultTabbedPaneTab attributeCommentsTab;
-
-    private DefaultTextArea attributeComments;
-
-    private DefaultButton updateAttributeButton;
 
     private DefaultTabbedPaneTab indexesTab;
 
@@ -101,14 +87,6 @@ public class TableEditorView extends DefaultPanel {
 
     private final DefaultComboBox dataType = new DefaultComboBox();
 
-    private final DefaultSpinner sizeSpinner = new DefaultSpinner();
-
-    private final DefaultSpinner fractionSpinner = new DefaultSpinner();
-
-    private final DefaultSpinner scaleSpinner = new DefaultSpinner();
-
-    private DefaultTextField defaultValue = new DefaultTextField();
-
     private final DefaultComboBox indexAttribute = new DefaultComboBox();
 
     private final DefaultTextField indexExpression = new DefaultTextField();
@@ -126,6 +104,10 @@ public class TableEditorView extends DefaultPanel {
     private DefaultTabbedPaneTab tablePropertiesTab;
 
     private DefaultTabbedPaneTab indexPropertiesTab;
+
+    private DefaultTable attributesTable = new DefaultTable();
+
+    private AttributeTableModel attributeTableModel = new AttributeTableModel();
 
     public TableEditorView() {
         initialize();
@@ -151,6 +133,14 @@ public class TableEditorView extends DefaultPanel {
 
         getAddIndexAttribute().setSelected(true);
         getRemoveFromIndexButton().setEnabled(false);
+    }
+
+    public AttributeTableModel getAttributeTableModel() {
+        return attributeTableModel;
+    }
+
+    public DefaultTable getAttributesTable() {
+        return attributesTable;
     }
 
     public JLabel getComponent1() {
@@ -192,37 +182,38 @@ public class TableEditorView extends DefaultPanel {
         if (attributesTab == null) {
             attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
 
-            String rowDef = "2dlu,p,2dlu,p,165dlu:grow,p,2dlu,p,2dlu";
-            String colDef = "2dlu,50dlu:grow,2dlu,50dlu:grow,2dlu,50dlu:grow,11dlu:grow,2dlu,11dlu:grow,2dlu,80dlu:grow,2dlu,70dlu:grow,2dlu";
-
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            attributesTab.setLayout(layout);
+            FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,50dlu,2dlu,50dlu", "fill:10dlu:grow,2dlu,p");
+            attributesTab.setLayout(theLayout);
 
             CellConstraints cons = new CellConstraints();
 
-            // this.m_attributestab.add(this.getUpButton(), cons.xywh(7, 2, 1,
-            // 1));
-            // this.m_attributestab.add(this.getDownButton(), cons
-            // .xywh(9, 2, 1, 1));
-            attributesTab.add(new DefaultScrollPane(getAttributeList()), cons.xywh(2, 4, 8, 3));
-            attributesTab.add(getNewButton(), cons.xywh(2, 8, 1, 1));
-            attributesTab.add(getDeleteButton(), cons.xywh(6, 8, 4, 1));
-            attributesTab.add(getComponent15(), cons.xywh(11, 2, 3, 5));
-            attributesTab.add(getUpdateAttributeButton(), cons.xywh(13, 8, 1, 1));
-            attributesTab.setName("AttributesTab");
+            attributesTable.setModel(attributeTableModel);
+            attributesTable.getColumnModel().getColumn(0).setPreferredWidth(140);
+            attributesTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+            attributesTable.getColumnModel().getColumn(2).setPreferredWidth(60);
+            attributesTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+            attributesTable.getColumnModel().getColumn(4).setPreferredWidth(60);
+            attributesTable.getColumnModel().getColumn(5).setPreferredWidth(50);
+            attributesTable.getColumnModel().getColumn(6).setPreferredWidth(100);
+            attributesTable.getColumnModel().getColumn(7).setPreferredWidth(100);
+            attributesTable.getColumnModel().getColumn(8).setPreferredWidth(100);
+            attributesTable.getTableHeader().setResizingAllowed(true);
+            attributesTable.getTableHeader().setReorderingAllowed(false);
+            attributesTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
+            attributesTable.setRowHeight(22);
+
+            attributesTable.setDefaultEditor(DataType.class, new DefaultCellEditor(getDataType()));
+            attributesTable.setDefaultRenderer(DataType.class, DefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(String.class, DefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(Integer.class, DefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(Boolean.class, CheckboxCellRenderer.getInstance());
+
+            attributesTab.add(attributesTable.getScrollPane(), cons.xywh(1, 1, 5, 1));
+            attributesTab.add(getNewButton(), cons.xy(3, 3));
+            attributesTab.add(getDeleteButton(), cons.xy(5, 3));
         }
 
         return attributesTab;
-    }
-
-    public DefaultList getAttributeList() {
-
-        if (attributeList == null) {
-            attributeList = new DefaultList();
-            attributeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        }
-
-        return attributeList;
     }
 
     public JButton getNewButton() {
@@ -243,141 +234,6 @@ public class TableEditorView extends DefaultPanel {
         return deleteButton;
     }
 
-    public DefaultTabbedPane getComponent15() {
-
-        if (component15 == null) {
-            component15 = new DefaultTabbedPane();
-            component15.addTab(null, getAttributesGeneralTab());
-            component15.addTab(null, getAttributeCommentTab());
-            component15.setName("Component_15");
-            component15.setSelectedIndex(0);
-        }
-
-        return component15;
-    }
-
-    public DefaultTabbedPaneTab getAttributesGeneralTab() {
-
-        if (attributesGeneralTab == null) {
-            attributesGeneralTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.GENERAL);
-
-            String rowDef = "2dlu,p,2dlu,p,10dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu,p,2dlu";
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
-
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            attributesGeneralTab.setLayout(layout);
-
-            CellConstraints cons = new CellConstraints();
-
-            attributesGeneralTab.add(getComponent20(), cons.xywh(2, 2, 1, 1));
-            attributesGeneralTab.add(getAttributeName(), cons.xywh(4, 2, 1, 1));
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DATATYPE), cons.xywh(2, 4, 1, 1));
-            attributesGeneralTab.add(getDataType(), cons.xywh(4, 4, 1, 1));
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SIZE), cons.xywh(2, 6, 1, 1));
-            attributesGeneralTab.add(getSizeSpinner(), cons.xywh(4, 6, 1, 1));
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.FRACTION), cons.xywh(2, 8, 1, 1));
-            attributesGeneralTab.add(getFractionSpinner(), cons.xywh(4, 8, 1, 1));
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.SCALE), cons.xywh(2, 10, 1, 1));
-            attributesGeneralTab.add(getScaleSpinner(), cons.xywh(4, 10, 1, 1));
-
-            attributesGeneralTab.add(getNullable(), cons.xywh(4, 12, 1, 1));
-
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.DEFAULT), cons.xywh(2, 14, 1, 1));
-            attributesGeneralTab.add(getDefault(), cons.xywh(4, 14, 1, 1));
-            attributesGeneralTab.add(new DefaultLabel(ERDesignerBundle.EXTRA), cons.xywh(2, 16, 1, 1));
-            attributesGeneralTab.add(getExtra(), cons.xywh(4, 16, 1, 1));
-
-            attributesGeneralTab.setName("AttributesGeneralTab");
-        }
-
-        return attributesGeneralTab;
-    }
-
-    public JLabel getComponent20() {
-
-        if (component20 == null) {
-            component20 = new DefaultLabel(ERDesignerBundle.NAME);
-        }
-
-        return component20;
-    }
-
-    public DefaultTextField getAttributeName() {
-
-        if (attributeName == null) {
-            attributeName = new DefaultTextField();
-            attributeName.setName("AttributeName");
-        }
-
-        return attributeName;
-    }
-
-    public JCheckBox getNullable() {
-
-        if (nullable == null) {
-            nullable = new DefaultCheckBox(ERDesignerBundle.NULLABLE);
-        }
-
-        return nullable;
-    }
-
-    public DefaultTextField getDefault() {
-
-        if (defaultValue == null) {
-            defaultValue = new DefaultTextField();
-        }
-
-        return defaultValue;
-    }
-
-    public DefaultTextField getExtra() {
-
-        if (extra == null) {
-            extra = new DefaultTextField();
-        }
-
-        return extra;
-    }
-
-    public DefaultTabbedPaneTab getAttributeCommentTab() {
-
-        if (attributeCommentsTab == null) {
-            attributeCommentsTab = new DefaultTabbedPaneTab(component15, ERDesignerBundle.COMMENTS);
-
-            String rowDef = "2dlu,p,160dlu:grow,p,2dlu";
-            String colDef = "2dlu,left:40dlu,2dlu,60dlu:grow,2dlu";
-
-            FormLayout layout = new FormLayout(colDef, rowDef);
-            attributeCommentsTab.setLayout(layout);
-
-            CellConstraints cons = new CellConstraints();
-
-            attributeCommentsTab.add(new DefaultScrollPane(getAttributeComment()), cons.xywh(2, 2, 3, 3));
-            attributeCommentsTab.setName("AttributeCommentTab");
-            attributeCommentsTab.setVisible(false);
-        }
-
-        return attributeCommentsTab;
-    }
-
-    public JTextArea getAttributeComment() {
-
-        if (attributeComments == null) {
-            attributeComments = new DefaultTextArea();
-        }
-
-        return attributeComments;
-    }
-
-    public JButton getUpdateAttributeButton() {
-
-        if (updateAttributeButton == null) {
-            updateAttributeButton = new DefaultButton(ERDesignerBundle.UPDATE);
-        }
-
-        return updateAttributeButton;
-    }
-
     public DefaultTabbedPaneTab getIndexesTab() {
 
         if (indexesTab == null) {
@@ -391,7 +247,7 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            indexesTab.add(new DefaultScrollPane(getIndexList()), cons.xywh(2, 2, 8, 3));
+            indexesTab.add(getIndexList().getScrollPane(), cons.xywh(2, 2, 8, 3));
             indexesTab.add(getNewIndexButton(), cons.xywh(2, 6, 1, 1));
             indexesTab.add(getDeleteIndexButton(), cons.xywh(6, 6, 4, 1));
             indexesTab.add(getIndexTabbedPane(), cons.xywh(11, 2, 3, 3));
@@ -460,7 +316,7 @@ public class TableEditorView extends DefaultPanel {
             indexGeneralTab.add(getLabel1(), cons.xywh(2, 2, 1, 1));
             indexGeneralTab.add(getIndexName(), cons.xywh(4, 2, 3, 1));
 
-            indexGeneralTab.add(new DefaultScrollPane(getIndexFieldList()), cons.xywh(2, 4, 5, 1));
+            indexGeneralTab.add(getIndexFieldList().getScrollPane(), cons.xywh(2, 4, 5, 1));
 
             indexGeneralTab.add(getRemoveFromIndexButton(), cons.xy(6, 6));
 
@@ -579,7 +435,7 @@ public class TableEditorView extends DefaultPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            tableCommentsTab.add(new DefaultScrollPane(getEntityComment()), cons.xywh(2, 2, 1, 3));
+            tableCommentsTab.add(getEntityComment().getScrollPane(), cons.xywh(2, 2, 1, 3));
             tableCommentsTab.setName("MainCommentsTab");
             tableCommentsTab.setVisible(false);
         }
@@ -634,18 +490,6 @@ public class TableEditorView extends DefaultPanel {
 
     public DefaultComboBox getDataType() {
         return dataType;
-    }
-
-    public DefaultSpinner getFractionSpinner() {
-        return fractionSpinner;
-    }
-
-    public DefaultSpinner getScaleSpinner() {
-        return scaleSpinner;
-    }
-
-    public DefaultSpinner getSizeSpinner() {
-        return sizeSpinner;
     }
 
     public DefaultComboBox getIndexAttribute() {

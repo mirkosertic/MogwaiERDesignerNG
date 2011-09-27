@@ -28,8 +28,6 @@ import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
-import de.erdesignerng.visual.editor.NullsafeSpinnerEditor;
-import de.erdesignerng.visual.editor.NullsafeSpinnerModel;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -49,6 +47,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -62,15 +62,11 @@ public class TableEditor extends BaseEditor {
 
     private final BindingInfo<Table> tableBindingInfo = new BindingInfo<Table>();
 
-    private final BindingInfo<Attribute> attributeBindingInfo = new BindingInfo<Attribute>();
-
     private final BindingInfo<Index> indexBindingInfo = new BindingInfo<Index>();
 
     private final BindingInfo<IndexValueModel> indexExpressionBindingInfo = new BindingInfo<IndexValueModel>();
 
     private final BindingInfo<IndexValueModel> indexExpressionBindingInfo2 = new BindingInfo<IndexValueModel>();
-
-    private final DefaultListModel attributeListModel;
 
     private final DefaultListModel indexListModel;
 
@@ -97,14 +93,6 @@ public class TableEditor extends BaseEditor {
             commandDeleteAttribute(e);
         }
     }, this, ERDesignerBundle.DELETE);
-
-    private final DefaultAction updateAttribute = new DefaultAction(new ActionEventProcessor() {
-
-        @Override
-        public void processActionEvent(ActionEvent e) {
-            commandUpdateAttribute();
-        }
-    }, this, ERDesignerBundle.UPDATE);
 
     private final DefaultAction newIndexAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -166,55 +154,26 @@ public class TableEditor extends BaseEditor {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
 
-        editingView.getSizeSpinner().setModel(new NullsafeSpinnerModel());
-        editingView.getSizeSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getSizeSpinner()));
-
-        editingView.getFractionSpinner().setModel(new NullsafeSpinnerModel());
-        editingView.getFractionSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getFractionSpinner()));
-
-        editingView.getScaleSpinner().setModel(new NullsafeSpinnerModel());
-        editingView.getScaleSpinner().setEditor(new NullsafeSpinnerEditor(editingView.getScaleSpinner()));
-
         DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
         for (DataType theType : aModel.getAvailableDataTypes()) {
             theDataTypes.addElement(theType);
         }
 
         editingView.getDataType().setModel(theDataTypes);
-        editingView.getDataType().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DataType theType = (DataType) editingView.getDataType().getSelectedItem();
-                setSpinnerState(theType);
-                if (theType != null && theType.isDomain()) {
-                    editingView.getNullable().setSelected(((Domain) theType).isNullable());
-                }
-            }
-
-        });
-
-        attributeListModel = editingView.getAttributeList().getModel();
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
-        editingView.getAttributeList().setCellRenderer(new AttributeListCellRenderer(this));
+        editingView.getAttributesTable().getColumnModel().getColumn(0).setCellRenderer(new AttributeListCellRenderer(this));
+        editingView.getAttributesTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                updateAttributeEditFields();
+            }
+        });
 
         tableBindingInfo.addBinding("name", editingView.getEntityName(), true);
         tableBindingInfo.addBinding("comment", editingView.getEntityComment());
         tableBindingInfo.configure();
-
-        attributeBindingInfo.addBinding("name", editingView.getAttributeName(), true);
-        attributeBindingInfo.addBinding("comment", editingView.getAttributeComment());
-        attributeBindingInfo.addBinding("nullable", editingView.getNullable());
-        attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
-        attributeBindingInfo.addBinding("datatype", editingView.getDataType(), true);
-        attributeBindingInfo.addBinding("size", editingView.getSizeSpinner());
-        attributeBindingInfo.addBinding("fraction", editingView.getFractionSpinner(), true);
-        attributeBindingInfo.addBinding("scale", editingView.getScaleSpinner(), true);
-        attributeBindingInfo.addBinding("defaultValue", editingView.getDefault());
-        attributeBindingInfo.addBinding("extra", editingView.getExtra());
-        attributeBindingInfo.configure();
 
         indexBindingInfo.addBinding("name", editingView.getIndexName(), true);
         indexBindingInfo.addBinding("attributes", new IndexAttributesPropertyAdapter(editingView.getIndexFieldList()
@@ -260,16 +219,8 @@ public class TableEditor extends BaseEditor {
                 commandTabStateChange();
             }
         });
-        editingView.getAttributeList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-
-            @Override
-            public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-                commandAttributeListValueChanged(e);
-            }
-        });
         editingView.getNewButton().setAction(newAttributeAction);
         editingView.getDeleteButton().setAction(deleteAttributeAction);
-        editingView.getUpdateAttributeButton().setAction(updateAttribute);
         editingView.getUpdateIndexButton().setAction(updateIndex);
         editingView.getNewIndexButton().setAction(newIndexAction);
         editingView.getDeleteIndexButton().setAction(deleteIndexAction);
@@ -330,7 +281,7 @@ public class TableEditor extends BaseEditor {
 
             Attribute theClone = theAttribute.clone();
 
-            attributeListModel.add(theClone);
+            editingView.getAttributeTableModel().add(theClone);
             knownAttributeValues.put(theClone.getSystemId(), theClone);
         }
         for (Index theIndex : aTable.getIndexes()) {
@@ -352,18 +303,10 @@ public class TableEditor extends BaseEditor {
         } else {
             UIInitializer.getInstance().initialize(theTab);
         }
-
-        commandNewAttribute();
     }
 
     @Override
     protected void commandOk() {
-
-        if (attributeBindingInfo.isChanged()) {
-            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
-                    ERDesignerBundle.SAVEATTRIBUTECHANGESFIRST));
-            return;
-        }
 
         if (editingView.getAddExpressionToIndexButton().isEnabled() && indexExpressionBindingInfo.isChanged()) {
             MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
@@ -384,7 +327,7 @@ public class TableEditor extends BaseEditor {
         }
 
         if (tableBindingInfo.validate().isEmpty()) {
-            if (attributeListModel.getSize() == 0) {
+            if (editingView.getAttributeTableModel().getRowCount() == 0) {
                 MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
                         ERDesignerBundle.TABLEMUSTHAVEATLEASTONEATTRIBUTE));
                 return;
@@ -402,23 +345,22 @@ public class TableEditor extends BaseEditor {
 
     private void commandTabStateChange() {
         int theIndex = editingView.getMainTabbedPane().getSelectedIndex();
-        if (theIndex == 0) {
-            commandNewAttribute();
-        }
         if (theIndex == 1) {
             commandNewIndex();
         }
     }
 
     private void commandUpdateAttribute() {
-        Attribute theAttribute = attributeBindingInfo.getDefaultModel();
+        //TODO MSE: Fix this
+
+/*        Attribute theAttribute = attributeBindingInfo.getDefaultModel();
         List<ValidationError> theValidationResult = attributeBindingInfo.validate();
         if (theValidationResult.isEmpty()) {
 
             Dialect theDialect = model.getDialect();
 
-            for (int i = 0; i < attributeListModel.getSize(); i++) {
-                Attribute theTempAttribute = (Attribute) attributeListModel.get(i);
+            for (int i = 0; i < attributeListModel.getRowCount(); i++) {
+                Attribute theTempAttribute = (Attribute) attributeListModel.getRow(i);
                 try {
                     if (theDialect.checkName(theTempAttribute.getName()).equals(
                             theDialect.checkName(editingView.getAttributeName().getText()))
@@ -442,59 +384,16 @@ public class TableEditor extends BaseEditor {
             }
 
             updateAttributeEditFields();
-        }
-    }
-
-    private void setSpinnerState(DataType aValue) {
-        if (aValue != null) {
-            editingView.getSizeSpinner().setEnabled(aValue.supportsSize() && !aValue.isDomain());
-            editingView.getFractionSpinner().setEnabled(aValue.supportsFraction() && !aValue.isDomain());
-            editingView.getScaleSpinner().setEnabled(aValue.supportsScale() && !aValue.isDomain());
-        } else {
-            editingView.getSizeSpinner().setEnabled(false);
-            editingView.getFractionSpinner().setEnabled(false);
-            editingView.getScaleSpinner().setEnabled(false);
-        }
+        }*/
     }
 
     private void updateAttributeEditFields() {
-
-        Attribute theValue = attributeBindingInfo.getDefaultModel();
-
-        if (theValue != null) {
-            DataType theDataType = theValue.getDatatype();
-
-            boolean isNew = !attributeListModel.contains(theValue);
-
-            editingView.getNewButton().setEnabled(true);
-            editingView.getDeleteButton().setEnabled(!isNew);
-            editingView.getAttributeName().setEnabled(true);
-            editingView.getNullable().setEnabled(true);
-            editingView.getDefault().setEnabled(true);
-            if (model.getDialect() != null) {
-                editingView.getExtra().setEnabled(model.getDialect().isSupportsColumnExtra());
-            } else {
-                editingView.getExtra().setEnabled(false);
-            }
-            editingView.getDataType().setEnabled(true);
-            setSpinnerState(theDataType);
-
+        int theRow = editingView.getAttributesTable().getSelectedRow();
+        if (theRow > 0) {
+            deleteAttributeAction.setEnabled(true);
         } else {
-            editingView.getNewButton().setEnabled(true);
-            editingView.getDeleteButton().setEnabled(false);
-            editingView.getAttributeName().setEnabled(false);
-            editingView.getNullable().setEnabled(false);
-            editingView.getDefault().setEnabled(false);
-            editingView.getExtra().setEnabled(false);
-            editingView.getDataType().setEnabled(false);
-            setSpinnerState(null);
+            deleteAttributeAction.setEnabled(false);
         }
-
-        attributeBindingInfo.model2view();
-
-        editingView.getAttributeList().invalidate();
-        editingView.getAttributeList().setSelectedValue(attributeBindingInfo.getDefaultModel(), true);
-
     }
 
     private void updateIndexEditFields() {
@@ -529,8 +428,8 @@ public class TableEditor extends BaseEditor {
         }
 
         DefaultComboBoxModel theAttModel = new DefaultComboBoxModel();
-        for (int i = 0; i < attributeListModel.getSize(); i++) {
-            theAttModel.addElement(attributeListModel.get(i));
+        for (int i = 0; i < editingView.getAttributeTableModel().getRowCount(); i++) {
+            theAttModel.addElement(editingView.getAttributeTableModel().getRow(i));
         }
         editingView.getIndexAttribute().setModel(theAttModel);
 
@@ -566,17 +465,6 @@ public class TableEditor extends BaseEditor {
             indexExpressionBindingInfo.setDefaultModel(theModel);
             indexExpressionBindingInfo.model2view();
         }
-
-    }
-
-    private void commandAttributeListValueChanged(javax.swing.event.ListSelectionEvent evt) {
-
-        int index = editingView.getAttributeList().getSelectedIndex();
-        if (index >= 0) {
-            attributeBindingInfo.setDefaultModel((Attribute) attributeListModel.get(index));
-        }
-
-        updateAttributeEditFields();
     }
 
     private void commandIndexFieldListValueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -620,7 +508,8 @@ public class TableEditor extends BaseEditor {
 
     private void commandDeleteAttribute(java.awt.event.ActionEvent aEvent) {
 
-        Attribute theAttribute = attributeBindingInfo.getDefaultModel();
+        int theRow = editingView.getAttributesTable().getSelectedRow();
+        Attribute theAttribute = editingView.getAttributeTableModel().getRow(theRow);
 
         if (model.checkIfUsedAsForeignKey(tableBindingInfo.getDefaultModel(), theAttribute)) {
 
@@ -640,17 +529,19 @@ public class TableEditor extends BaseEditor {
 
         if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
             knownAttributeValues.remove(theAttribute.getSystemId());
-            attributeListModel.remove(theAttribute);
+            editingView.getAttributeTableModel().remove(theAttribute);
 
             removedAttributes.add(theAttribute);
         }
     }
 
     private void commandNewAttribute() {
-        attributeBindingInfo.setDefaultModel(new Attribute());
-        updateAttributeEditFields();
+        Attribute theNewAttribute = new Attribute();
+        editingView.getAttributeTableModel().add(theNewAttribute);
+        int theRow = editingView.getAttributeTableModel().getRowCount();
+        editingView.getAttributesTable().setRowSelectionInterval(theRow - 1, theRow - 1);
 
-        editingView.getAttributeList().clearSelection();
+        knownAttributeValues.put(theNewAttribute.getSystemId(), theNewAttribute);
     }
 
     private void commandDeleteIndex() {
@@ -805,10 +696,10 @@ public class TableEditor extends BaseEditor {
 
             // The table is new, so just add it
             // In case of a clone, we have to check it is not already added
-            for (int i = 0; i < attributeListModel.getSize(); i++) {
-                Attribute theAttribute = (Attribute) attributeListModel.get(i);
+            for (int i = 0; i < editingView.getAttributeTableModel().getRowCount(); i++) {
+                Attribute theAttribute = (Attribute) editingView.getAttributeTableModel().getRow(i);
                 if (!theTable.getAttributes().contains(theAttribute)) {
-                    theTable.addAttribute(model, (Attribute) attributeListModel.get(i));
+                    theTable.addAttribute(model, (Attribute) editingView.getAttributeTableModel().getRow(i));
                 }
             }
 
@@ -919,7 +810,8 @@ public class TableEditor extends BaseEditor {
      * @param aAttribute the attribute
      */
     public void setSelectedAttribute(Attribute aAttribute) {
-        editingView.getAttributeList().setSelectedValue(aAttribute, true);
+        int theIndex = editingView.getAttributeTableModel().getRowIndex(aAttribute);
+        editingView.getAttributesTable().setRowSelectionInterval(theIndex, theIndex);
     }
 
     /**
