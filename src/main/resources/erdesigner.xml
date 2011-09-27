@@ -240,8 +240,8 @@
             <Text lang="en">Default</Text>
         </Entry>
         <Entry id="NULLABLE">
-            <Text lang="de">Ist NULLABLE</Text>
-            <Text lang="en">Is NULLABLE</Text>
+            <Text lang="de">Nullable</Text>
+            <Text lang="en">Nullable</Text>
         </Entry>
         <Entry id="GENERAL">
             <Text lang="de">Allgemeines</Text>
@@ -772,10 +772,6 @@
             <Text lang="de">Voreinstelling für ONUPDATE</Text>
             <Text lang="en">Default for ONUPDATE</Text>
         </Entry>
-        <Entry id="SAVEATTRIBUTECHANGESFIRST">
-            <Text lang="de">Bitte speichern Sie zuerst Ihre Änderungen an dem Attribut!</Text>
-            <Text lang="en">Please save your Attribute changes first!</Text>
-        </Entry>
         <Entry id="NAMEINVALID">
             <Text lang="de">Der eingebenene Elementname ist ungültig!</Text>
             <Text lang="en">The entered element name is invalid</Text>
@@ -1062,10 +1058,10 @@
         </Entry>
         <Entry id="NOSUPPORTEDOPENGLVENDOR">
             <Text lang="de">Möglicherweise ist 'Java 3D' nicht auf Ihrem System installiert!\nLaden Sie die aktuelle
-				Version von 'http://java3d.java.net/binary-builds.html' herunter und installieren Sie sie.
+                Version von 'http://java3d.java.net/binary-builds.html' herunter und installieren Sie sie.
             </Text>
             <Text lang="en">Possibly 'Java 3D' is not installed on your system.\nDownload from
-				'http://java3d.java.net/binary-builds.html' and install it.
+                'http://java3d.java.net/binary-builds.html' and install it.
             </Text>
         </Entry>
         <Entry id="STEREOMODE">
