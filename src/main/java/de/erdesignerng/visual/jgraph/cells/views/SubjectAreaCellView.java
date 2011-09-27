@@ -21,17 +21,12 @@ import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
-import org.jgraph.JGraph;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.CellViewRenderer;
-import org.jgraph.graph.GraphCellEditor;
-import org.jgraph.graph.VertexRenderer;
-import org.jgraph.graph.VertexView;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
+import javax.swing.ImageIcon;
+import org.jgraph.JGraph;
+import org.jgraph.graph.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -64,7 +59,7 @@ public class SubjectAreaCellView extends VertexView {
         private SubjectArea subjectArea;
 
         private boolean selected;
-        private boolean collapsed;
+        private boolean expanded;
 
         public MyRenderer() {
             setBackground(Color.white);
@@ -85,7 +80,7 @@ public class SubjectAreaCellView extends VertexView {
             aGraphics.fillRect(0, 0, theWidth - 1, theHeight - 1);
 
             aGraphics.setColor(selected ? Color.blue : Color.black);
-            if (!collapsed) {
+            if (expanded) {
                 theGraphics.setStroke(DASHED_STROKE);
             } else {
                 theGraphics.setStroke(NORMAL_STROKE);
@@ -101,7 +96,7 @@ public class SubjectAreaCellView extends VertexView {
 
             aGraphics.setFont(getFont().deriveFont(Font.BOLD));
 
-            if (!collapsed) {
+            if (expanded) {
                 ImageIcon theIcon = IconFactory.getCollapseIcon();
                 theIcon.paintIcon(this, theGraphics, -5, -5);
                 aGraphics.drawString(subjectArea.getName(), 24, theYOffset);
@@ -119,7 +114,7 @@ public class SubjectAreaCellView extends VertexView {
 
         @Override
         public Dimension getPreferredSize() {
-            if (collapsed) {
+            if (!expanded) {
                 FontMetrics theMetrics = getFontMetrics(getFont());
                 Rectangle2D theSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
                 return new Dimension((int) theSize.getWidth() + 40, theMetrics.getHeight() * 2);
@@ -136,7 +131,7 @@ public class SubjectAreaCellView extends VertexView {
             SubjectAreaCell theCell = (SubjectAreaCell) aView.getCell();
             subjectArea = (SubjectArea) ((SubjectAreaCell) theView.getCell()).getUserObject();
             selected = aSelected;
-            collapsed = theCell.isCollapsed();
+            expanded = theCell.isExpanded();
 
             return this;
         }
