@@ -27,64 +27,74 @@ import java.awt.*;
  */
 public final class SubjectArea extends OwnedModelItem<Model> {
 
-	private Color color;
+    public static final String PROPERTY_EXPANDED = "EXPANDED";
 
-	private TableList tables = new TableList();
+    private Color color;
 
-	private ViewList views = new ViewList();
+    private TableList tables = new TableList();
 
-	private CommentList comments = new CommentList();
+    private ViewList views = new ViewList();
 
-	private boolean visible = true;
+    private CommentList comments = new CommentList();
 
-	public SubjectArea() {
-		setName("Subject Area");
-		setColor(Color.lightGray);
-	}
+    private boolean visible = true;
 
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
+    public SubjectArea() {
+        setName("Subject Area");
+        setColor(Color.lightGray);
+    }
 
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
+    /**
+     * @return the color
+     */
+    public Color getColor() {
+        return color;
+    }
 
-	/**
-	 * @return the tables
-	 */
-	public TableList getTables() {
-		return tables;
-	}
+    /**
+     * @param color the color to set
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
-	public CommentList getComments() {
-		return comments;
-	}
+    /**
+     * @return the tables
+     */
+    public TableList getTables() {
+        return tables;
+    }
 
-	/**
-	 * Test, if this subject area contains any item.
-	 *
-	 * @return true if it is empty, else false
-	 */
-	public boolean isEmpty() {
-		return (comments.isEmpty()) && (tables.isEmpty()) && (views.isEmpty());
-	}
+    public CommentList getComments() {
+        return comments;
+    }
 
-	public ViewList getViews() {
-		return views;
-	}
+    /**
+     * Test, if this subject area contains any item.
+     *
+     * @return true if it is empty, else false
+     */
+    public boolean isEmpty() {
+        return (comments.isEmpty()) && (tables.isEmpty()) && (views.isEmpty());
+    }
 
-	public boolean isVisible() {
-		return visible;
-	}
+    public ViewList getViews() {
+        return views;
+    }
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isExpanded() {
+        return getProperties().getBooleanProperty(PROPERTY_EXPANDED);
+    }
+
+    public void setExpanded(boolean aState) {
+        getProperties().setBooleanProperty(PROPERTY_EXPANDED, aState);
+    }
 }

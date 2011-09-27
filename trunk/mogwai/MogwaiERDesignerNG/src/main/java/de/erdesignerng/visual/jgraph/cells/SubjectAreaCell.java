@@ -38,6 +38,7 @@ public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<Subje
         GraphConstants.setEditable(getAttributes(), true);
         GraphConstants.setInset(getAttributes(), 20);
         GraphConstants.setGroupOpaque(getAttributes(), true);
+        GraphConstants.setEditable(getAttributes(), false);
     }
 
     @Override
@@ -46,5 +47,15 @@ public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<Subje
 
     @Override
     public void transferPropertiesToAttributes(SubjectArea aObject) {
+    }
+
+    public boolean isCollapsed() {
+        SubjectArea theArea = (SubjectArea) getUserObject();
+        return !theArea.isExpanded();
+    }
+
+    public void setCollapsed(boolean collapsed) {
+        SubjectArea theArea = (SubjectArea) getUserObject();
+        theArea.setExpanded(!collapsed);
     }
 }
