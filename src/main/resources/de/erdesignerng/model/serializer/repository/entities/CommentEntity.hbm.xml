@@ -15,7 +15,7 @@
         <property column="elementcomment" name="comment" not-null="false"
                   type="org.hibernate.type.MaterializedClobType"/>
         <list cascade="all-delete-orphan" name="properties" table="mogrep_comments_props">
-            <key column="tableid" foreign-key="mogrep_comments_props_fk1"/>
+            <key column="commentid" foreign-key="mogrep_comments_props_fk1"/>
             <list-index column="listindex"/>
             <composite-element class="StringKeyValuePair">
                 <property column="propname" name="key" not-null="true"/>
