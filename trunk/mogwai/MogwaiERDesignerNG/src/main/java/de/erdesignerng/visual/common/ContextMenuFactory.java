@@ -18,26 +18,17 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 /**
  * Factory for context menues.
@@ -201,18 +192,20 @@ public final class ContextMenuFactory {
 
                 aMenu.add(theEditItem);
 
-                DefaultAction theHideAction = new DefaultAction(
-                        ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
-                DefaultMenuItem theAddItem = new DefaultMenuItem(theHideAction);
-                theHideAction.addActionListener(new ActionListener() {
+                if (theSubjectArea.isVisible()) {
+                    DefaultAction theHideAction = new DefaultAction(
+                            ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
+                    DefaultMenuItem theHideMenuItem = new DefaultMenuItem(theHideAction);
+                    theHideAction.addActionListener(new ActionListener() {
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea);
-                    }
-                });
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea);
+                        }
+                    });
 
-                aMenu.add(theAddItem);
+                    aMenu.add(theHideMenuItem);
+                }
 
             }
             if (theUserObject instanceof Attribute) {

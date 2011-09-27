@@ -21,15 +21,10 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultTextField;
-
-import javax.swing.*;
+import de.mogwai.common.client.looks.components.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JPanel;
 
 public class RepositoryConnectionEditorView extends DefaultPanel {
 
@@ -41,7 +36,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
 
     private final DefaultTextField user = new DefaultTextField();
 
-    private final DefaultTextField password = new DefaultTextField();
+    private final DefaultPasswordField password = new DefaultPasswordField();
 
     private final DefaultButton testButton = new DefaultButton();
 
@@ -115,7 +110,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
         return driver;
     }
 
-    public DefaultTextField getPassword() {
+    public DefaultPasswordField getPassword() {
         return password;
     }
 
