@@ -20,5 +20,13 @@
         <property name="fraction" not-null="true"/>
         <property name="scale" not-null="true"/>
         <property name="nullable" not-null="true"/>
+        <list cascade="all-delete-orphan" name="properties" table="mogrep_domains_props">
+            <key column="domainid" foreign-key="mogrep_domains_props_fk1"/>
+            <list-index column="listindex"/>
+            <composite-element class="StringKeyValuePair">
+                <property column="propname" name="key" not-null="true"/>
+                <property column="propvalue" name="value" not-null="false"/>
+            </composite-element>
+        </list>
     </class>
 </hibernate-mapping>
