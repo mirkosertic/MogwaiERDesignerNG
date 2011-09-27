@@ -17,6 +17,7 @@
                   type="org.hibernate.type.MaterializedClobType"/>
         <property name="color" not-null="true"/>
         <property name="visible" not-null="false"/>
+        <property name="visible" not-null="false"/>
         <list cascade="all-delete-orphan" name="tables" table="mogrep_sa_tables">
             <key column="indexid" foreign-key="mogrep_sa_tables_fk1"/>
             <list-index column="listindex"/>
@@ -31,6 +32,14 @@
             <key column="indexid" foreign-key="mogrep_sa_comments_fk1"/>
             <list-index column="listindex"/>
             <element column="commentid" not-null="true" type="string"/>
+        </list>
+        <list cascade="all-delete-orphan" name="properties" table="mogrep_sa_props">
+            <key column="said" foreign-key="mogrep_sa_props_fk1"/>
+            <list-index column="listindex"/>
+            <composite-element class="StringKeyValuePair">
+                <property column="propname" name="key" not-null="true"/>
+                <property column="propvalue" name="value" not-null="false"/>
+            </composite-element>
         </list>
     </class>
 </hibernate-mapping>

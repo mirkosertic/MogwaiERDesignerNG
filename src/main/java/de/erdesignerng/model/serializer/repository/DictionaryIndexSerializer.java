@@ -50,7 +50,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
     public static final DictionaryIndexSerializer SERIALIZER = new DictionaryIndexSerializer();
 
-    protected void copyExtendedAttributes(Index aSource, IndexEntity aDestination) {
+    private void copyExtendedAttributes(Index aSource, IndexEntity aDestination) {
         switch (aSource.getIndexType()) {
             case UNIQUE:
                 aDestination.setType(TYPE_UNIQUE);
@@ -78,7 +78,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
         }
     }
 
-    protected void copyExtendedAttributes(IndexEntity aSource, Index aDestination, Table aTable) {
+    private void copyExtendedAttributes(IndexEntity aSource, Index aDestination, Table aTable) {
         switch (aSource.getType()) {
             case TYPE_UNIQUE:
                 aDestination.setIndexType(IndexType.UNIQUE);

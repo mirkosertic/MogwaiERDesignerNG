@@ -126,7 +126,6 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
             }
 
             copyBaseAttributes(theRelation, theExisting);
-
             copyExtendedAttributes(theRelation, theExisting);
 
             if (!existing) {
@@ -142,7 +141,6 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
             theRelation.setOwner(aModel);
 
             copyBaseAttributes(theRelationEntity, theRelation);
-
             copyExtendedAttributes(theRelationEntity, theRelation, aModel);
 
             aModel.getRelations().add(theRelation);
