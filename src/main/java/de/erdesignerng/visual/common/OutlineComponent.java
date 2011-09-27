@@ -437,16 +437,22 @@ public class OutlineComponent extends DefaultPanel implements
         Comparator<OwnedModelItem> theComparator = new BeanComparator("name");
 
         // Add the user-defined datatypes
-        List<CustomType> theCustomTypes = new ArrayList<CustomType>();
-        theCustomTypes.addAll(aModel.getCustomTypes());
-        Collections.sort(theCustomTypes, theComparator);
-        buildCustomTypesChildren(aModel, theRoot, theCustomTypes);
+        if (aModel.getDialect() != null) {
+            if (aModel.getDialect().isSupportsCustomTypes()) {
+                List<CustomType> theCustomTypes = new ArrayList<CustomType>();
+                theCustomTypes.addAll(aModel.getCustomTypes());
+                Collections.sort(theCustomTypes, theComparator);
+                buildCustomTypesChildren(aModel, theRoot, theCustomTypes);
+            }
 
-        // Add the domains
-        List<Domain> theDomains = new ArrayList<Domain>();
-        theDomains.addAll(aModel.getDomains());
-        Collections.sort(theDomains, theComparator);
-        buildDomainsChildren(aModel, theRoot, theDomains);
+            // Add the domains
+            if (aModel.getDialect().isSupportsDomains()) {
+                List<Domain> theDomains = new ArrayList<Domain>();
+                theDomains.addAll(aModel.getDomains());
+                Collections.sort(theDomains, theComparator);
+                buildDomainsChildren(aModel, theRoot, theDomains);
+            }
+        }
 
         // Add the Tables
         List<Table> theTables = new ArrayList<Table>();
