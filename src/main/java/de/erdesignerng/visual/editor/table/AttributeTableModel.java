@@ -50,14 +50,13 @@ public class AttributeTableModel implements TableModel {
     public void add(Attribute aAttribute) {
         if (!rowData.contains(aAttribute)) {
             rowData.add(aAttribute);
-
-            fireTableChanged(new TableModelEvent(this, TableModelEvent.HEADER_ROW));
+            fireTableChanged(new TableModelEvent(this));
         }
     }
 
     public void remove(Attribute aAttribute) {
         if (rowData.remove(aAttribute)) {
-            fireTableChanged(new TableModelEvent(this, TableModelEvent.HEADER_ROW));
+            fireTableChanged(new TableModelEvent(this));
         }
     }
 
