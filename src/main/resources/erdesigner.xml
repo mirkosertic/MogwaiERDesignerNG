@@ -319,8 +319,8 @@
             <Text lang="de">Reverseengineering von benutzerdefinierten Datentypen wird für diese Version der Datenbank
                 nicht unterstützt. Versuchen Sie eine aktuellere Version als v{0}!
             </Text>
-            <Text lang="en">Error reverse engineering CustomTypes is not supported for this version of the database. Try
-                using a newer version of PostgreSQL than v {0}!
+            <Text lang="en">Reverse engineering CustomTypes is not supported for this version of the database. Try
+                using a newer version of PostgreSQL than v{0}!
             </Text>
         </Entry>
         <Entry id="ENGINEERINGFINISHED">
@@ -1062,10 +1062,10 @@
         </Entry>
         <Entry id="NOSUPPORTEDOPENGLVENDOR">
             <Text lang="de">Möglicherweise ist 'Java 3D' nicht auf Ihrem System installiert!\nLaden Sie die aktuelle
-                Version von 'http://java3d.java.net/binary-builds.html' herunter und installieren Sie sie.
+				Version von 'http://java3d.java.net/binary-builds.html' herunter und installieren Sie sie.
             </Text>
             <Text lang="en">Possibly 'Java 3D' is not installed on your system.\nDownload from
-                'http://java3d.java.net/binary-builds.html' and install it.
+				'http://java3d.java.net/binary-builds.html' and install it.
             </Text>
         </Entry>
         <Entry id="STEREOMODE">
