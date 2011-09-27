@@ -177,6 +177,8 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     private ERDesignerGraph graph;
 
     public JGraphEditor() {
+        // We have to initialize the graph object.
+        setModel(null);
     }
 
     public ERDesignerGraph getGraph() {
@@ -430,7 +432,9 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         refreshPreferences();
 
-        fillGraph(model);
+        if (model != null) {
+            fillGraph(model);
+        }
     }
 
     private GraphModelMappingInfo fillGraph(Model aModel) {

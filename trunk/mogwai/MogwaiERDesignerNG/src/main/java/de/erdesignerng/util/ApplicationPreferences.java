@@ -18,23 +18,26 @@
 package de.erdesignerng.util;
 
 import de.erdesignerng.model.CascadeType;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.Window;
+import de.erdesignerng.visual.EditorMode;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import javax.swing.JFrame;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Class for handling application preferences, LRU-files and so on.
@@ -79,6 +82,8 @@ public class ApplicationPreferences {
 
     private static final String LAYOUT = "layout";
 
+    private static final String EDITORMODE = "editormode";
+
     private final int size;
 
     private final List<File> recentlyUsedFiles = new ArrayList<File>();
@@ -99,8 +104,6 @@ public class ApplicationPreferences {
 
     private File baseDir;
 
-    private boolean intelligentLayout = true;
-
     private String automaticRelationAttributePattern;
 
     private CascadeType onUpdateDefault;
@@ -110,6 +113,8 @@ public class ApplicationPreferences {
     private byte[] windowLayout;
 
     private int gridWidthAfterReverseEngineering;
+
+    private EditorMode editorMode;
 
     private static ApplicationPreferences me;
 
@@ -202,6 +207,13 @@ public class ApplicationPreferences {
                 CascadeType.NOTHING.getType()));
         onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT,
                 CascadeType.NOTHING.getType()));
+
+        String theMode = preferences.get(EDITORMODE, null);
+        if (theMode == null) {
+            editorMode = EditorMode.CLASSIC;
+        } else {
+            editorMode = EditorMode.valueOf(theMode);
+        }
     }
 
     /**
@@ -343,6 +355,8 @@ public class ApplicationPreferences {
                 .entrySet()) {
             preferences.put(theWindowEntry.getKey(), theWindowEntry.getValue());
         }
+
+        preferences.put(EDITORMODE, editorMode.toString());
 
         preferences.flush();
     }
@@ -579,5 +593,13 @@ public class ApplicationPreferences {
 
     public void setXmlIndentation(int xmlIndentation) {
         this.xmlIndentation = xmlIndentation;
+    }
+
+    public EditorMode getEditorMode() {
+        return editorMode;
+    }
+
+    public void setEditorMode(EditorMode editorMode) {
+        this.editorMode = editorMode;
     }
 }

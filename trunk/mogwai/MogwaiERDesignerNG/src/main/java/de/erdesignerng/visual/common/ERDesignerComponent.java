@@ -18,7 +18,13 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
@@ -26,6 +32,7 @@ import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
+import de.erdesignerng.visual.EditorMode;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
@@ -34,7 +41,11 @@ import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.*;
+import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
+import de.mogwai.common.client.looks.components.DefaultToggleButton;
+import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -42,9 +53,9 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -54,7 +65,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -135,6 +145,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
     private DefaultMenu displayOrderMenu;
 
+    private DefaultCheckboxMenuItem viewMode2DDiagramMenuItem;
+    private DefaultCheckboxMenuItem viewMode2DInteractiveMenuItem;
+    private DefaultCheckboxMenuItem viewMode3DInteractiveMenuItem;
+
     private ToolEnum currentTool = ToolEnum.HAND;
 
     private final DefaultAction editCustomTypes = new DefaultAction(
@@ -168,13 +182,26 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         initActions();
 
-        setEditor2DInteractive();
+        switch (ApplicationPreferences.getInstance().getEditorMode()) {
+            case CLASSIC:
+                setEditor2DDiagram();
+                break;
+            case INTERACTIVE_2D:
+                setEditor2DInteractive();
+                break;
+            case INTERACTIVE_3D:
+                setEditor3DInteractive();
+                break;
+
+        }
 
         handAction.actionPerformed(new ActionEvent(editorPanel, MouseEvent.MOUSE_CLICKED, null));
     }
 
     protected void setEditor2DDiagram() {
         setEditor(new JGraphEditor());
+        viewMode2DDiagramMenuItem.setSelected(true);
+        ApplicationPreferences.getInstance().setEditorMode(EditorMode.CLASSIC);
     }
 
     protected void setEditor2DInteractive() {
@@ -215,6 +242,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 }
             }
         });
+        viewMode2DInteractiveMenuItem.setSelected(true);
+        ApplicationPreferences.getInstance().setEditorMode(EditorMode.INTERACTIVE_2D);
     }
 
     protected void setEditor3DInteractive() {
@@ -228,6 +257,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         if (theEditor != null) {
             setEditor(theEditor);
+
+            viewMode3DInteractiveMenuItem.setSelected(true);
+            ApplicationPreferences.getInstance().setEditorMode(EditorMode.INTERACTIVE_3D);
         }
     }
 
@@ -658,22 +690,23 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 }, this, ERDesignerBundle.VIEWMODE3DINTERACTIVE);
 
 
-        DefaultCheckboxMenuItem theViewMode2DDiagram = new DefaultCheckboxMenuItem(
+        viewMode2DDiagramMenuItem = new DefaultCheckboxMenuItem(
                 theViewMode2DDiagramAction);
-        DefaultCheckboxMenuItem theViewMode2DInteractive = new DefaultCheckboxMenuItem(
+        viewMode2DInteractiveMenuItem = new DefaultCheckboxMenuItem(
                 theViewMode2DInteractiveAction);
-        DefaultCheckboxMenuItem theViewMode3DInteractive = new DefaultCheckboxMenuItem(
+        viewMode3DInteractiveMenuItem = new DefaultCheckboxMenuItem(
                 theViewMode3DInteractiveAction);
-        theViewModeMenu.add(theViewMode2DDiagram);
-        theViewModeMenu.add(theViewMode2DInteractive);
-        theViewModeMenu.add(theViewMode3DInteractive);
+
+        theViewModeMenu.add(viewMode2DDiagramMenuItem);
+        theViewModeMenu.add(viewMode2DInteractiveMenuItem);
+        theViewModeMenu.add(viewMode3DInteractiveMenuItem);
 
         ButtonGroup theDisplayModeGroup = new ButtonGroup();
-        theDisplayModeGroup.add(theViewMode2DDiagram);
-        theDisplayModeGroup.add(theViewMode2DInteractive);
-        theDisplayModeGroup.add(theViewMode3DInteractive);
+        theDisplayModeGroup.add(viewMode2DDiagramMenuItem);
+        theDisplayModeGroup.add(viewMode2DInteractiveMenuItem);
+        theDisplayModeGroup.add(viewMode3DInteractiveMenuItem);
 
-        theViewMode2DInteractive.setSelected(true);
+        viewMode2DInteractiveMenuItem.setSelected(true);
 
         theViewMenu.add(theViewModeMenu);
         UIInitializer.getInstance().initialize(theViewModeMenu);
