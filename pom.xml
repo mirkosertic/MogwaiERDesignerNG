@@ -303,7 +303,6 @@
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-looks</artifactId>
             <version>1.9.2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>squirrelsql</groupId>
@@ -328,8 +327,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.1</version>
-            <scope>test</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

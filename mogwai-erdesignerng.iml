@@ -63,7 +63,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: squirrelsql:squirrelsql-fw:2.6.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: squirrelsql:squirrelsql-client:2.6.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-io:commons-io:1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:1.2.126" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: pgsql:pgsqljdbc3:8.3" level="project" />

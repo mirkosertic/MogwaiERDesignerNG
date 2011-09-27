@@ -17,7 +17,6 @@
                   type="org.hibernate.type.MaterializedClobType"/>
         <property name="color" not-null="true"/>
         <property name="visible" not-null="false"/>
-        <property name="visible" not-null="false"/>
         <list cascade="all-delete-orphan" name="tables" table="mogrep_sa_tables">
             <key column="indexid" foreign-key="mogrep_sa_tables_fk1"/>
             <list-index column="listindex"/>

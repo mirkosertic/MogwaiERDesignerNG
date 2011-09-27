@@ -26,17 +26,17 @@ import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.erdesignerng.visual.jgraph.cells.ModelCell;
 import de.erdesignerng.visual.jgraph.cells.RelationEdge;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
+import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.plaf.basic.BasicGraphUI;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Rectangle2D;
 
 /**
  * @author $Author: mirkosertic $
@@ -180,12 +180,12 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         // Subject areas are not editable by mouse click, they just expand and collapse
         if (cell instanceof SubjectAreaCell) {
             SubjectAreaCell theCell = (SubjectAreaCell) cell;
-            if (theCell.isCollapsed()) {
+            if (!theCell.isExpanded()) {
                 graph.getGraphLayoutCache().expand(new Object[]{cell});
-                theCell.setCollapsed(false);
+                theCell.setExpanded(true);
             } else {
                 graph.getGraphLayoutCache().collapse(new Object[]{cell});
-                theCell.setCollapsed(true);
+                theCell.setExpanded(false);
 
                 // Toggle repaint
                 graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());

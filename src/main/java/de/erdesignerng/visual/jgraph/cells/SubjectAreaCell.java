@@ -18,10 +18,9 @@
 package de.erdesignerng.visual.jgraph.cells;
 
 import de.erdesignerng.model.SubjectArea;
+import java.util.Map;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
-
-import java.util.Map;
 
 /**
  * A subject area.
@@ -49,13 +48,13 @@ public class SubjectAreaCell extends DefaultGraphCell implements ModelCell<Subje
     public void transferPropertiesToAttributes(SubjectArea aObject) {
     }
 
-    public boolean isCollapsed() {
+    public boolean isExpanded() {
         SubjectArea theArea = (SubjectArea) getUserObject();
-        return !theArea.isExpanded();
+        return theArea.isExpanded();
     }
 
-    public void setCollapsed(boolean collapsed) {
+    public void setExpanded(boolean aExpanded) {
         SubjectArea theArea = (SubjectArea) getUserObject();
-        theArea.setExpanded(!collapsed);
+        theArea.setExpanded(aExpanded);
     }
 }
