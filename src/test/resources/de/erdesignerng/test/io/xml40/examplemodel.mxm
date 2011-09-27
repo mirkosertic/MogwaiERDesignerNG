@@ -14,7 +14,7 @@
     </Domains>
     <Tables>
         <Table id="f7c0db65-0ece-4ae6-ab9a-7c1763da508a" name="TABLE1" schema="">
-            <Property name="LOCATION" value="506:159"/>
+            <Property name="LOCATION" value="388:153"/>
             <Comment>Comment of Table 1</Comment>
             <Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="89dc0dbb-4997-47e6-818a-9421caeb0bd9" name="TB1_AT1" nullable="true" scale="10" size="0">
                 <Comment>Comment of At1</Comment>
@@ -53,7 +53,7 @@
             </Index>
         </Table>
         <Table id="a90c364b-96d0-444d-a3b5-3db2b1b7a85e" name="TABLE3" schema="">
-            <Property name="LOCATION" value="935:233"/>
+            <Property name="LOCATION" value="899:420"/>
             <Comment/>
             <Attribute datatype="BIGINT" defaultvalue="" extra="" fraction="0" id="2157ee17-199e-481f-9f57-d191c189e26a" name="TB3_AT1" nullable="true" scale="10" size="0">
                 <Comment/>
@@ -95,16 +95,17 @@
     </Relations>
     <Views>
         <View id="0056f37b-83c2-4426-83c5-a6f25ac59bb9" name="VIEW1">
-            <Property name="LOCATION" value="762:350"/>
+            <Property name="LOCATION" value="869:289"/>
             <Comment/>
             <Sql>SELECT 1 FROM SYSDATE</Sql>
         </View>
     </Views>
     <Subjectareas>
         <Subjectarea color="-3342388" id="9dec6d2b-56eb-4a7b-9885-61897debd6e1" name="Test Info" visible="true">
-            <Property name="EXPANDED" value="false"/>
+            <Property name="EXPANDED" value="true"/>
             <Item tablerefid="dd36a167-9b62-40e8-b643-2ddd2edda09b"/>
             <Item tablerefid="a90c364b-96d0-444d-a3b5-3db2b1b7a85e"/>
+            <Item viewrefid="0056f37b-83c2-4426-83c5-a6f25ac59bb9"/>
         </Subjectarea>
     </Subjectareas>
     <Comments/>
