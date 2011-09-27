@@ -25,6 +25,7 @@ import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.erdesignerng.visual.jgraph.cells.ModelCell;
 import de.erdesignerng.visual.jgraph.cells.RelationEdge;
+import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -175,6 +176,21 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     @Override
     protected boolean startEditing(Object cell, MouseEvent event) {
         completeEditing();
+
+        // Subject areas are not editable by mouse click, they just expand and collapse
+        if (cell instanceof SubjectAreaCell) {
+            SubjectAreaCell theCell = (SubjectAreaCell) cell;
+            if (theCell.isCollapsed()) {
+                graph.getGraphLayoutCache().expand(new Object[]{cell});
+                theCell.setCollapsed(false);
+            } else {
+                graph.getGraphLayoutCache().collapse(new Object[]{cell});
+                theCell.setCollapsed(true);
+
+                // Toggle repaint
+                graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());
+            }
+        }
 
         if (graph.isCellEditable(cell)) {
             CellView tmp = graphLayoutCache.getMapping(cell, false);

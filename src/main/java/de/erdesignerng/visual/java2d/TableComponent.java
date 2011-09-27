@@ -21,11 +21,12 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.IconFactory;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.text.AttributedString;
-import javax.swing.ImageIcon;
 
 public class TableComponent extends BaseRendererComponent {
 
@@ -153,7 +154,7 @@ public class TableComponent extends BaseRendererComponent {
                 y += theMetrics.getAscent();
             }
             if (showSelfReference) {
-                ImageIcon theIcon = IconFactory.getSelfReference();
+                ImageIcon theIcon = IconFactory.getSelfReferenceIcon();
                 int xp = theSize.width - theIcon.getIconWidth() - 4;
                 int yp = 14;
 
