@@ -23,6 +23,8 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.visual.editor.CheckboxCellRenderer;
+import de.erdesignerng.visual.editor.ModelItemDefaultCellRenderer;
 import de.mogwai.common.client.looks.components.*;
 import java.awt.BorderLayout;
 import javax.swing.*;
@@ -85,7 +87,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultButton cancelButton;
 
-    private DefaultComboBox dataType;
+    private DefaultComboBoxModel dataTypeModel = new DefaultComboBoxModel();
 
     private final DefaultComboBox indexAttribute = new DefaultComboBox();
 
@@ -217,14 +219,13 @@ public class TableEditorView extends DefaultPanel {
             attributesTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
             attributesTable.setRowHeight(22);
 
-            ComboBoxModel theModel = getDataType().getModel();
             DefaultComboBox theBox = new DefaultComboBox();
             theBox.setBorder(BorderFactory.createEmptyBorder());
-            theBox.setModel(theModel);
+            theBox.setModel(dataTypeModel);
             attributesTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));
-            attributesTable.setDefaultRenderer(DataType.class, AttributeListDefaultCellRenderer.getInstance());
-            attributesTable.setDefaultRenderer(String.class, AttributeListDefaultCellRenderer.getInstance());
-            attributesTable.setDefaultRenderer(Integer.class, AttributeListDefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(DataType.class, ModelItemDefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(String.class, ModelItemDefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(Integer.class, ModelItemDefaultCellRenderer.getInstance());
             attributesTable.setDefaultRenderer(Boolean.class, CheckboxCellRenderer.getInstance());
 
             attributesTab.add(attributesTable.getScrollPane(), cons.xywh(1, 1, 5, 1));
@@ -507,12 +508,8 @@ public class TableEditorView extends DefaultPanel {
         theGroup2.add(getAddIndexExpression());
     }
 
-    public DefaultComboBox getDataType() {
-        if (dataType == null) {
-            dataType = new DefaultComboBox();
-            dataType.setModel(new DefaultComboBoxModel());
-        }
-        return dataType;
+    public DefaultComboBoxModel getDataTypeModel() {
+        return dataTypeModel;
     }
 
     public DefaultComboBox getIndexAttribute() {
