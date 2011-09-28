@@ -17,6 +17,15 @@
  */
 package de.erdesignerng.visual.jgraph;
 
+import com.jgraph.layout.JGraphFacade;
+import com.jgraph.layout.JGraphLayout;
+import com.jgraph.layout.hierarchical.JGraphHierarchicalLayout;
+import com.jgraph.layout.organic.JGraphFastOrganicLayout;
+import com.jgraph.layout.organic.JGraphOrganicLayout;
+import com.jgraph.layout.organic.JGraphSelfOrganizingOrganicLayout;
+import com.jgraph.layout.simple.SimpleGridLayout;
+import com.jgraph.layout.tree.JGraphRadialTreeLayout;
+import com.jgraph.layout.tree.JGraphTreeLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
@@ -49,6 +58,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import javax.swing.JComponent;
+import javax.swing.SwingConstants;
 import org.apache.commons.lang.ArrayUtils;
 import org.jgraph.event.*;
 import org.jgraph.graph.*;
@@ -845,6 +855,86 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         aLayoutMenu.add(layoutTreeAction);
         aLayoutMenu.add(layoutRadialAction);
+        aLayoutMenu.addSeparator();
+
+        DefaultAction layoutGrid = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphSimpleGridLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTGRID);
+
+        DefaultAction layoutSelfOrganizing = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphSelfOrganizingLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTSELFORGANIZING);
+
+        DefaultAction layoutOrganic = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphOrganicLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTORGANIC);
+
+        DefaultAction layoutFastOrganic = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphFastOrganicLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTFASTORGANIC);
+
+        DefaultAction layoutRadialTree = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphRadialTreeLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTRADIALTREE);
+
+        DefaultAction layoutTree2 = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphTreeLayout2();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTTREE2);
+
+        DefaultAction layoutHierarchical = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performJGraphHierarchicalLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTHIERARCHICAL);
+
+
+        aLayoutMenu.add(layoutGrid);
+        aLayoutMenu.add(layoutSelfOrganizing);
+        aLayoutMenu.add(layoutOrganic);
+        aLayoutMenu.add(layoutFastOrganic);
+        aLayoutMenu.add(layoutRadialTree);
+        aLayoutMenu.add(layoutTree2);
+        aLayoutMenu.add(layoutHierarchical);
     }
 
     private List<Set<Table>> buildHierarchy(Model aModel) {
@@ -929,6 +1019,64 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         if (theModificatios.size() > 0) {
             graph.getGraphLayoutCache().edit(theModificatios);
         }
+    }
+
+    private void performJGraphLayout(JGraphLayout aLayout) {
+        final JGraphFacade facade = new JGraphFacade(graph);
+        facade.run(aLayout, true);
+
+        Map nested = facade.createNestedMap(true, true); // Obtain a mapof the resulting attribute changes from the facade
+        graph.getGraphLayoutCache().edit(nested); // Apply the results tothe actual graph
+    }
+
+    private void performJGraphSelfOrganizingLayout() {
+        JGraphSelfOrganizingOrganicLayout theLayout = new JGraphSelfOrganizingOrganicLayout();
+        theLayout.setMinRadius(150);
+        theLayout.setStartRadius(300);
+        performJGraphLayout(theLayout);
+    }
+
+    private void performJGraphSimpleGridLayout() {
+        SimpleGridLayout theLayout = new SimpleGridLayout();
+        theLayout.setNumCellsPerRow(10);
+        theLayout.setHeightSpacing(20);
+        theLayout.setWidthSpacing(20);
+        theLayout.setActOnUnconnectedVerticesOnly(false);
+        theLayout.setOffsetX(10);
+        theLayout.setOffsetY(10);
+        theLayout.setOrdered(true);
+        performJGraphLayout(theLayout);
+    }
+
+    private void performJGraphOrganicLayout() {
+        JGraphOrganicLayout theLayout = new JGraphOrganicLayout();
+        theLayout.setOptimizeEdgeCrossing(true);
+        theLayout.setOptimizeNodeDistribution(true);
+        theLayout.setNodeDistributionCostFactor(500000);
+        performJGraphLayout(theLayout);
+    }
+
+    private void performJGraphRadialTreeLayout() {
+        JGraphRadialTreeLayout theLayout = new JGraphRadialTreeLayout();
+        theLayout.setAutoRadius(true);
+        performJGraphLayout(theLayout);
+    }
+
+    private void performJGraphHierarchicalLayout() {
+        JGraphHierarchicalLayout theLayout = new JGraphHierarchicalLayout();
+        performJGraphLayout(theLayout);
+    }
+
+    private void performJGraphTreeLayout2() {
+        JGraphTreeLayout theLayout = new JGraphTreeLayout();
+        theLayout.setAlignment(SwingConstants.TOP);
+        theLayout.setPositionMultipleTrees(true);
+        performJGraphLayout(theLayout);
+    }
+
+    private void performJGraphFastOrganicLayout() {
+        JGraphFastOrganicLayout theLayout = new JGraphFastOrganicLayout();
+        performJGraphLayout(theLayout);
     }
 
     private void performTreeLayout() {
