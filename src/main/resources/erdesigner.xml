@@ -1141,12 +1141,40 @@
             <Text lang="en">Layout</Text>
         </Entry>
         <Entry id="LAYOUTTREE">
-            <Text lang="de">Treelayout</Text>
-            <Text lang="en">Treelayout</Text>
+            <Text lang="de">Tree Layout(beta)</Text>
+            <Text lang="en">Tree Layout(beta)</Text>
         </Entry>
         <Entry id="LAYOUTRADIAL">
-            <Text lang="de">Radiallayout</Text>
-            <Text lang="en">Radiallayout</Text>
+            <Text lang="de">Radial Layout(beta)</Text>
+            <Text lang="en">Radial Layout(beta)</Text>
+        </Entry>
+        <Entry id="LAYOUTSELFORGANIZING">
+            <Text lang="de">Self organizing layout</Text>
+            <Text lang="en">Self organizing layout</Text>
+        </Entry>
+        <Entry id="LAYOUTGRID">
+            <Text lang="de">Grid layout</Text>
+            <Text lang="en">Grid layout</Text>
+        </Entry>
+        <Entry id="LAYOUTORGANIC">
+            <Text lang="de">Organic layout</Text>
+            <Text lang="en">Organic layout</Text>
+        </Entry>
+        <Entry id="LAYOUTFASTORGANIC">
+            <Text lang="de">Fast organic layout</Text>
+            <Text lang="en">Fast organic layout</Text>
+        </Entry>
+        <Entry id="LAYOUTRADIALTREE">
+            <Text lang="de">Radial tree layout</Text>
+            <Text lang="en">Radial tree layout</Text>
+        </Entry>
+        <Entry id="LAYOUTHIERARCHICAL">
+            <Text lang="de">Hierarchical layout</Text>
+            <Text lang="en">Hierarchical layout</Text>
+        </Entry>
+        <Entry id="LAYOUTTREE2">
+            <Text lang="de">Tree layout</Text>
+            <Text lang="en">Tree layout</Text>
         </Entry>
     </Bundle>
 </Resource>
