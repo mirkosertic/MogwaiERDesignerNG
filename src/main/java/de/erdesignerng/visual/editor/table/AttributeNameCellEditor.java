@@ -21,9 +21,11 @@ import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.exception.ElementInvalidNameException;
 import de.erdesignerng.model.Attribute;
 import de.mogwai.common.client.looks.components.DefaultTextField;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
 
 public class AttributeNameCellEditor extends DefaultCellEditor {
 
@@ -44,7 +46,6 @@ public class AttributeNameCellEditor extends DefaultCellEditor {
 
         DefaultTextField theTextfield = (DefaultTextField) getComponent();
         theTextfield.setBorder(BorderFactory.createLineBorder(Color.black));
-        theTextfield.requestFocus();
 
         return super.getTableCellEditorComponent(table, value, isSelected, row, column);
     }
@@ -74,15 +75,6 @@ public class AttributeNameCellEditor extends DefaultCellEditor {
             }
         }
         return true;
-    }
-
-    @Override
-    public void cancelCellEditing() {
-        if (currentAttribute.getName() == null) {
-            // It is a newly created attribute
-            editor.removeAttribute(currentAttribute);
-        }
-        super.cancelCellEditing();
     }
 
     @Override
