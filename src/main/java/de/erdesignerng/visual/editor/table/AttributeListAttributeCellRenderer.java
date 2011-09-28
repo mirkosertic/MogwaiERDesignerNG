@@ -31,7 +31,7 @@ import javax.swing.table.TableCellRenderer;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-06-13 16:49:00 $
  */
-public class AttributeListCellRenderer implements TableCellRenderer {
+public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 
     private static final ImageIcon KEYICON = IconFactory.getKeyIcon();
 
@@ -45,7 +45,7 @@ public class AttributeListCellRenderer implements TableCellRenderer {
 
     private TableEditor editor;
 
-    public AttributeListCellRenderer(TableEditor aEditor) {
+    public AttributeListAttributeCellRenderer(TableEditor aEditor) {
 
         editor = aEditor;
 
@@ -102,7 +102,6 @@ public class AttributeListCellRenderer implements TableCellRenderer {
             keyLabel.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
             keyLabel.setForeground(initializer.getConfiguration().getDefaultListNonSelectionForeground());
         }
-
 
         return panel;
     }
