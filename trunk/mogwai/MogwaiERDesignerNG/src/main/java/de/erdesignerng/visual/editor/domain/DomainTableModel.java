@@ -15,25 +15,22 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.table;
+package de.erdesignerng.visual.editor.domain;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
-import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.visual.editor.ModelItemTableModel;
 
-public class AttributeTableModel extends ModelItemTableModel<Attribute> {
+public class DomainTableModel extends ModelItemTableModel<Domain> {
 
-    public AttributeTableModel() {
+    public DomainTableModel() {
         columnNames.add(HELPER.getText(ERDesignerBundle.NAME));
         columnNames.add(HELPER.getText(ERDesignerBundle.DATATYPE));
         columnNames.add(HELPER.getText(ERDesignerBundle.SIZE));
         columnNames.add(HELPER.getText(ERDesignerBundle.FRACTION));
         columnNames.add(HELPER.getText(ERDesignerBundle.SCALE));
         columnNames.add(HELPER.getText(ERDesignerBundle.NULLABLE));
-        columnNames.add(HELPER.getText(ERDesignerBundle.DEFAULT));
-        columnNames.add(HELPER.getText(ERDesignerBundle.EXTRA));
         columnNames.add(HELPER.getText(ERDesignerBundle.COMMENTS));
     }
 
@@ -59,12 +56,6 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                 // nullable
                 return Boolean.class;
             case 6:
-                // default
-                return String.class;
-            case 7:
-                // extra
-                return String.class;
-            case 8:
                 // comment
                 return String.class;
         }
@@ -73,8 +64,8 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        Attribute theAttribute = rowData.get(rowIndex);
-        DataType theDataType = theAttribute.getDatatype();
+        Domain theDomain = rowData.get(rowIndex);
+        DataType theDataType = theDomain.getConcreteType();
         switch (columnIndex) {
             case 0:
                 // name
@@ -89,7 +80,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                     // this until a datatype was chosen
                     return false;
                 }
-                if (theDataType.supportsSize() && !theDataType.isDomain()) {
+                if (theDataType.supportsSize()) {
                     return true;
                 }
                 return false;
@@ -100,7 +91,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                     // this until a datatype was chosen
                     return false;
                 }
-                if (theDataType.supportsFraction() && !theDataType.isDomain()) {
+                if (theDataType.supportsFraction()) {
                     return true;
                 }
                 return false;
@@ -111,7 +102,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                     // this until a datatype was chosen
                     return false;
                 }
-                if (theDataType.supportsScale() && !theDataType.isDomain()) {
+                if (theDataType.supportsScale()) {
                     return true;
                 }
                 return false;
@@ -119,21 +110,6 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                 // nullable
                 return true;
             case 6:
-                // default
-                return true;
-            case 7:
-                // extra
-                if (theDataType == null) {
-                    // In case of an new attribute disable
-                    // this until a datatype was chosen
-                    return false;
-                }
-
-                if (theDataType.supportsExtra()) {
-                    return true;
-                }
-                return false;
-            case 8:
                 // comment
                 return true;
         }
@@ -142,15 +118,15 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Attribute theAttribute = rowData.get(rowIndex);
-        DataType theDataType = theAttribute.getDatatype();
+        Domain theDomain = rowData.get(rowIndex);
+        DataType theDataType = theDomain.getConcreteType();
         switch (columnIndex) {
             case 0:
                 // name
-                return theAttribute.getName();
+                return theDomain.getName();
             case 1:
                 // type
-                return theAttribute.getDatatype();
+                return theDataType;
             case 2:
                 // size
                 if (theDataType == null) {
@@ -160,7 +136,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                 }
 
                 if (theDataType.supportsSize() && !theDataType.isDomain()) {
-                    return theAttribute.getSize();
+                    return theDomain.getSize();
                 }
                 return null;
             case 3:
@@ -172,7 +148,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                 }
 
                 if (theDataType.supportsFraction() && !theDataType.isDomain()) {
-                    return theAttribute.getFraction();
+                    return theDomain.getFraction();
                 }
                 return null;
             case 4:
@@ -184,37 +160,22 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                 }
 
                 if (theDataType.supportsScale() && !theDataType.isDomain()) {
-                    return theAttribute.getScale();
+                    return theDomain.getScale();
                 }
                 return null;
             case 5:
                 // nullable
-                return theAttribute.isNullable();
+                return theDomain.isNullable();
             case 6:
-                // default
-                return theAttribute.getDefaultValue();
-            case 7:
-                // extra
-                if (theDataType == null) {
-                    // In case of an new attribute show nothing
-                    // until a datatype was chosen
-                    return null;
-                }
-
-                if (theDataType.supportsExtra()) {
-                    return theAttribute.getExtra();
-                }
-                return null;
-            case 8:
                 // comment
-                return theAttribute.getComment();
+                return theDomain.getComment();
         }
         throw new IllegalArgumentException("Wrong columnIndex : " + columnIndex);
     }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        Attribute theAttribute = rowData.get(rowIndex);
+        Domain theAttribute = rowData.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 // name
@@ -223,11 +184,7 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
             case 1:
                 // type
                 DataType theType = (DataType) aValue;
-                theAttribute.setDatatype(theType);
-                if (theType != null && theType.isDomain()) {
-                    // If the new datatype is a domain, set the nullable flag according to the domain
-                    theAttribute.setNullable(((Domain) theType).isNullable());
-                }
+                theAttribute.setConcreteType(theType);
                 break;
             case 2:
                 // size
@@ -246,14 +203,6 @@ public class AttributeTableModel extends ModelItemTableModel<Attribute> {
                 theAttribute.setNullable((Boolean) aValue);
                 break;
             case 6:
-                // default
-                theAttribute.setDefaultValue((String) aValue);
-                break;
-            case 7:
-                // extra
-                theAttribute.setExtra((String) aValue);
-                break;
-            case 8:
                 // comment
                 theAttribute.setComment((String) aValue);
                 break;

@@ -15,48 +15,49 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package de.erdesignerng.visual.editor.table;
+package de.erdesignerng.visual.editor;
 
 import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.renderer.DefaultRenderer;
+import java.awt.Color;
 import java.awt.Component;
-import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-public final class CheckboxCellRenderer extends JCheckBox implements TableCellRenderer {
+public class ModelItemDefaultCellRenderer extends DefaultRenderer implements TableCellRenderer {
 
-    private static CheckboxCellRenderer me = new CheckboxCellRenderer();
+    public static ModelItemDefaultCellRenderer ME = new ModelItemDefaultCellRenderer();
 
     private UIInitializer initializer;
 
-    public static CheckboxCellRenderer getInstance() {
-
-        return me;
+    public static ModelItemDefaultCellRenderer getInstance() {
+        return ME;
     }
 
-    private CheckboxCellRenderer() {
-        setOpaque(true);
-        setVerticalAlignment(TOP);
-        setHorizontalAlignment(CENTER);
+    private ModelItemDefaultCellRenderer() {
 
         initializer = UIInitializer.getInstance();
-        initializer.initializeComponent(this);
     }
 
-
+    @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
 
-        if (value != null) {
-            setSelected((Boolean) value);
-        } else {
-            setSelected(false);
-        }
+        setText(objectToString(value));
+        setIcon(objectToIcon(value));
         if (isSelected) {
-            setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
+            if (table.isCellEditable(row, column)) {
+                setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
+            } else {
+                setBackground(Color.lightGray);
+            }
             setForeground(initializer.getConfiguration().getDefaultListSelectionForeground());
         } else {
-            setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
+            if (table.isCellEditable(row, column)) {
+                setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
+            } else {
+                setBackground(Color.lightGray);
+            }
             setForeground(initializer.getConfiguration().getDefaultListNonSelectionForeground());
         }
         return this;

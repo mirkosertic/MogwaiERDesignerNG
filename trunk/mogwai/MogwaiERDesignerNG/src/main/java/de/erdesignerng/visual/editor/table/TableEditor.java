@@ -28,6 +28,7 @@ import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
+import de.erdesignerng.visual.editor.ModelItemNameCellEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.binding.BindingInfo;
@@ -150,13 +151,13 @@ public class TableEditor extends BaseEditor {
 
     private ScaffoldingWrapper indexPropertiesWrapper;
 
-    private AttributeNameCellEditor attributeEditor;
+    private ModelItemNameCellEditor<Attribute> attributeEditor;
 
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
 
-        DefaultComboBoxModel dataTypesModel = (DefaultComboBoxModel) editingView.getDataType().getModel();
+        DefaultComboBoxModel dataTypesModel = editingView.getDataTypeModel();
 
         for (DataType theType : aModel.getAvailableDataTypes()) {
             dataTypesModel.addElement(theType);
@@ -165,7 +166,7 @@ public class TableEditor extends BaseEditor {
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
-        attributeEditor = new AttributeNameCellEditor(this);
+        attributeEditor = new ModelItemNameCellEditor<Attribute>(model.getDialect());
         editingView.getAttributesTable().getColumnModel().getColumn(0).setCellRenderer(new AttributeListAttributeCellRenderer(this));
         editingView.getAttributesTable().getColumnModel().getColumn(0).setCellEditor(attributeEditor);
         editingView.getAttributesTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -204,6 +205,8 @@ public class TableEditor extends BaseEditor {
         if (!model.getDialect().supportsFulltextIndexes()) {
             editingView.getFulltextIndex().setVisible(false);
         }
+
+        updateAttributeEditFields();
 
         UIInitializer.getInstance().initialize(this);
     }
@@ -367,7 +370,7 @@ public class TableEditor extends BaseEditor {
 
     private void updateAttributeEditFields() {
         int theRow = editingView.getAttributesTable().getSelectedRow();
-        if (theRow > 0) {
+        if (theRow >= 0) {
             deleteAttributeAction.setEnabled(true);
         } else {
             deleteAttributeAction.setEnabled(false);
@@ -809,10 +812,9 @@ public class TableEditor extends BaseEditor {
      *
      * @param aAttribute
      */
-    public void removeAttribute(Attribute aAttribute) {
+    private void removeAttribute(Attribute aAttribute) {
         knownAttributeValues.remove(aAttribute.getSystemId());
 
-        AttributeTableModel theModel = (AttributeTableModel) editingView.getAttributesTable().getModel();
-        theModel.remove(aAttribute);
+        editingView.getAttributeTableModel().remove(aAttribute);
     }
 }

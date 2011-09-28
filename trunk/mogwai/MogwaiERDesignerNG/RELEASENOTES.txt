@@ -278,4 +278,5 @@ Release 3.0.0
 * Working on support for Spatial Datatypes & Fulltext indexes
 * Added support for model validation & quick fixes
 * Added support for anaglyphic 3d mode
-* Enhanced usability of table editor
+* Improved usability of table editor
+* Improved usability of domain editor
