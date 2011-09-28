@@ -21,22 +21,11 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
+import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.IndexExpression;
-import de.mogwai.common.client.looks.components.DefaultButton;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultLabel;
-import de.mogwai.common.client.looks.components.DefaultList;
-import de.mogwai.common.client.looks.components.DefaultPanel;
-import de.mogwai.common.client.looks.components.DefaultRadioButton;
-import de.mogwai.common.client.looks.components.DefaultTabbedPane;
-import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
-import de.mogwai.common.client.looks.components.DefaultTable;
-import de.mogwai.common.client.looks.components.DefaultTextArea;
-import de.mogwai.common.client.looks.components.DefaultTextField;
-import de.mogwai.common.client.looks.components.renderer.DefaultCellRenderer;
-
+import de.mogwai.common.client.looks.components.*;
+import java.awt.BorderLayout;
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -96,7 +85,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultButton cancelButton;
 
-    private final DefaultComboBox dataType = new DefaultComboBox();
+    private DefaultComboBox dataType;
 
     private final DefaultComboBox indexAttribute = new DefaultComboBox();
 
@@ -116,12 +105,27 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultTabbedPaneTab indexPropertiesTab;
 
-    private DefaultTable attributesTable = new DefaultTable();
+    private DefaultTable attributesTable = new DefaultTable() {
+        @Override
+        public void removeEditor() {
+            super.removeEditor();
+
+            Attribute theAttribute = attributeTableModel.getRow(getSelectedRow());
+            attributeEditorRemoved(theAttribute);
+
+            invalidate();
+            repaint();
+        }
+    };
 
     private AttributeTableModel attributeTableModel = new AttributeTableModel();
 
     public TableEditorView() {
         initialize();
+    }
+
+    protected void attributeEditorRemoved(Attribute aAttribute) {
+
     }
 
     private void initialize() {
@@ -218,9 +222,9 @@ public class TableEditorView extends DefaultPanel {
             theBox.setBorder(BorderFactory.createEmptyBorder());
             theBox.setModel(theModel);
             attributesTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));
-            attributesTable.setDefaultRenderer(DataType.class, DefaultCellRenderer.getInstance());
-            attributesTable.setDefaultRenderer(String.class, DefaultCellRenderer.getInstance());
-            attributesTable.setDefaultRenderer(Integer.class, DefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(DataType.class, AttributeListDefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(String.class, AttributeListDefaultCellRenderer.getInstance());
+            attributesTable.setDefaultRenderer(Integer.class, AttributeListDefaultCellRenderer.getInstance());
             attributesTable.setDefaultRenderer(Boolean.class, CheckboxCellRenderer.getInstance());
 
             attributesTab.add(attributesTable.getScrollPane(), cons.xywh(1, 1, 5, 1));
@@ -504,6 +508,10 @@ public class TableEditorView extends DefaultPanel {
     }
 
     public DefaultComboBox getDataType() {
+        if (dataType == null) {
+            dataType = new DefaultComboBox();
+            dataType.setModel(new DefaultComboBoxModel());
+        }
         return dataType;
     }
 

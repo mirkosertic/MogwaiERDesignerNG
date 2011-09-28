@@ -190,6 +190,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 // Toggle repaint
                 graph.getGraphLayoutCache().editCell(theCell, theCell.getAttributes());
             }
+            event.consume();
         }
 
         if (graph.isCellEditable(cell)) {
@@ -231,6 +232,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 }
 
                 BaseEditor theDialog = (BaseEditor) editingComponent;
+                event.consume();
                 if (theDialog.showModal() == DialogConstants.MODAL_RESULT_OK) {
                     try {
                         theDialog.applyValues();

@@ -24,12 +24,7 @@ import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -43,17 +38,17 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -155,22 +150,24 @@ public class TableEditor extends BaseEditor {
 
     private ScaffoldingWrapper indexPropertiesWrapper;
 
-    private DefaultComboBoxModel dataTypesModel = new DefaultComboBoxModel();
+    private AttributeNameCellEditor attributeEditor;
 
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
 
+        DefaultComboBoxModel dataTypesModel = (DefaultComboBoxModel) editingView.getDataType().getModel();
+
         for (DataType theType : aModel.getAvailableDataTypes()) {
             dataTypesModel.addElement(theType);
         }
 
-        editingView.getDataType().setModel(dataTypesModel);
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
-        editingView.getAttributesTable().getColumnModel().getColumn(0).setCellRenderer(new AttributeListCellRenderer(this));
-        editingView.getAttributesTable().getColumnModel().getColumn(0).setCellEditor(new AttributeNameCellEditor(this));
+        attributeEditor = new AttributeNameCellEditor(this);
+        editingView.getAttributesTable().getColumnModel().getColumn(0).setCellRenderer(new AttributeListAttributeCellRenderer(this));
+        editingView.getAttributesTable().getColumnModel().getColumn(0).setCellEditor(attributeEditor);
         editingView.getAttributesTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -216,7 +213,14 @@ public class TableEditor extends BaseEditor {
      */
     private void initialize() {
 
-        editingView = new TableEditorView();
+        editingView = new TableEditorView() {
+            @Override
+            protected void attributeEditorRemoved(Attribute aAttribute) {
+                if (aAttribute.getName() == null) {
+                    removeAttribute(aAttribute);
+                }
+            }
+        };
         editingView.getOkButton().setAction(okAction);
         editingView.getCancelButton().setAction(cancelAction);
         editingView.getMainTabbedPane().addChangeListener(new javax.swing.event.ChangeListener() {
@@ -517,6 +521,7 @@ public class TableEditor extends BaseEditor {
         knownAttributeValues.put(theNewAttribute.getSystemId(), theNewAttribute);
 
         editingView.getAttributesTable().editCellAt(theRow - 1, 0);
+        attributeEditor.getComponent().requestFocus();
     }
 
     private void commandDeleteIndex() {
@@ -805,7 +810,7 @@ public class TableEditor extends BaseEditor {
      * @param aAttribute
      */
     public void removeAttribute(Attribute aAttribute) {
-        knownAttributeValues.remove(aAttribute);
+        knownAttributeValues.remove(aAttribute.getSystemId());
 
         AttributeTableModel theModel = (AttributeTableModel) editingView.getAttributesTable().getModel();
         theModel.remove(aAttribute);
