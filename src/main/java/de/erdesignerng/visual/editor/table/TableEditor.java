@@ -24,7 +24,12 @@ import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -38,17 +43,17 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
-import java.awt.BorderLayout;
-import java.awt.Component;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -150,20 +155,22 @@ public class TableEditor extends BaseEditor {
 
     private ScaffoldingWrapper indexPropertiesWrapper;
 
+    private DefaultComboBoxModel dataTypesModel = new DefaultComboBoxModel();
+
     public TableEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.ENTITYEDITOR);
         initialize();
 
-        DefaultComboBoxModel theDataTypes = new DefaultComboBoxModel();
         for (DataType theType : aModel.getAvailableDataTypes()) {
-            theDataTypes.addElement(theType);
+            dataTypesModel.addElement(theType);
         }
 
-        editingView.getDataType().setModel(theDataTypes);
+        editingView.getDataType().setModel(dataTypesModel);
         indexListModel = editingView.getIndexList().getModel();
 
         model = aModel;
         editingView.getAttributesTable().getColumnModel().getColumn(0).setCellRenderer(new AttributeListCellRenderer(this));
+        editingView.getAttributesTable().getColumnModel().getColumn(0).setCellEditor(new AttributeNameCellEditor(this));
         editingView.getAttributesTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -350,41 +357,8 @@ public class TableEditor extends BaseEditor {
         }
     }
 
-    private void commandUpdateAttribute() {
-        //TODO MSE: Fix this
-
-/*        Attribute theAttribute = attributeBindingInfo.getDefaultModel();
-        List<ValidationError> theValidationResult = attributeBindingInfo.validate();
-        if (theValidationResult.isEmpty()) {
-
-            Dialect theDialect = model.getDialect();
-
-            for (int i = 0; i < attributeListModel.getRowCount(); i++) {
-                Attribute theTempAttribute = (Attribute) attributeListModel.getRow(i);
-                try {
-                    if (theDialect.checkName(theTempAttribute.getName()).equals(
-                            theDialect.checkName(editingView.getAttributeName().getText()))
-                            && !theTempAttribute.getSystemId().equals(theAttribute.getSystemId())) {
-                        MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(
-                                ERDesignerBundle.ATTRIBUTEALREADYEXISTS));
-                        return;
-                    }
-                } catch (ElementInvalidNameException e) {
-                    MessagesHelper.displayErrorMessage(this, getResourceHelper().getText(ERDesignerBundle.NAMEINVALID));
-                    return;
-                }
-            }
-
-            attributeBindingInfo.view2model();
-
-            if (!attributeListModel.contains(theAttribute)) {
-
-                attributeListModel.add(theAttribute);
-                knownAttributeValues.put(theAttribute.getSystemId(), theAttribute);
-            }
-
-            updateAttributeEditFields();
-        }*/
+    public Model getModel() {
+        return model;
     }
 
     private void updateAttributeEditFields() {
@@ -540,8 +514,9 @@ public class TableEditor extends BaseEditor {
         editingView.getAttributeTableModel().add(theNewAttribute);
         int theRow = editingView.getAttributeTableModel().getRowCount();
         editingView.getAttributesTable().setRowSelectionInterval(theRow - 1, theRow - 1);
-
         knownAttributeValues.put(theNewAttribute.getSystemId(), theNewAttribute);
+
+        editingView.getAttributesTable().editCellAt(theRow - 1, 0);
     }
 
     private void commandDeleteIndex() {
@@ -697,9 +672,9 @@ public class TableEditor extends BaseEditor {
             // The table is new, so just add it
             // In case of a clone, we have to check it is not already added
             for (int i = 0; i < editingView.getAttributeTableModel().getRowCount(); i++) {
-                Attribute theAttribute = (Attribute) editingView.getAttributeTableModel().getRow(i);
+                Attribute theAttribute = editingView.getAttributeTableModel().getRow(i);
                 if (!theTable.getAttributes().contains(theAttribute)) {
-                    theTable.addAttribute(model, (Attribute) editingView.getAttributeTableModel().getRow(i));
+                    theTable.addAttribute(model, editingView.getAttributeTableModel().getRow(i));
                 }
             }
 
@@ -822,5 +797,17 @@ public class TableEditor extends BaseEditor {
     public void setSelectedIndex(Index aIndex) {
         editingView.getMainTabbedPane().setSelectedIndex(1);
         editingView.getIndexList().setSelectedValue(aIndex, true);
+    }
+
+    /**
+     * Will be called if editing of an attribute name was canceled and the name is null or empty.
+     *
+     * @param aAttribute
+     */
+    public void removeAttribute(Attribute aAttribute) {
+        knownAttributeValues.remove(aAttribute);
+
+        AttributeTableModel theModel = (AttributeTableModel) editingView.getAttributesTable().getModel();
+        theModel.remove(aAttribute);
     }
 }
