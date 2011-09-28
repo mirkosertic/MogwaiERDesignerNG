@@ -22,10 +22,21 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.model.IndexExpression;
-import de.mogwai.common.client.looks.components.*;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultList;
+import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultRadioButton;
+import de.mogwai.common.client.looks.components.DefaultTabbedPane;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
+import de.mogwai.common.client.looks.components.DefaultTable;
+import de.mogwai.common.client.looks.components.DefaultTextArea;
+import de.mogwai.common.client.looks.components.DefaultTextField;
 import de.mogwai.common.client.looks.components.renderer.DefaultCellRenderer;
-import java.awt.BorderLayout;
+
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -182,11 +193,11 @@ public class TableEditorView extends DefaultPanel {
         if (attributesTab == null) {
             attributesTab = new DefaultTabbedPaneTab(mainTabbedPane, ERDesignerBundle.ATTRIBUTES);
 
-            FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,50dlu,2dlu,50dlu", "fill:10dlu:grow,2dlu,p");
+            FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
             attributesTab.setLayout(theLayout);
 
             CellConstraints cons = new CellConstraints();
-
+            attributesTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
             attributesTable.setModel(attributeTableModel);
             attributesTable.getColumnModel().getColumn(0).setPreferredWidth(140);
             attributesTable.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -202,7 +213,11 @@ public class TableEditorView extends DefaultPanel {
             attributesTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
             attributesTable.setRowHeight(22);
 
-            attributesTable.setDefaultEditor(DataType.class, new DefaultCellEditor(getDataType()));
+            ComboBoxModel theModel = getDataType().getModel();
+            DefaultComboBox theBox = new DefaultComboBox();
+            theBox.setBorder(BorderFactory.createEmptyBorder());
+            theBox.setModel(theModel);
+            attributesTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));
             attributesTable.setDefaultRenderer(DataType.class, DefaultCellRenderer.getInstance());
             attributesTable.setDefaultRenderer(String.class, DefaultCellRenderer.getInstance());
             attributesTable.setDefaultRenderer(Integer.class, DefaultCellRenderer.getInstance());
