@@ -19,10 +19,10 @@ package de.erdesignerng.visual.editor;
 
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.renderer.DefaultRenderer;
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.JTable;
+
+import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 
 public class ModelItemDefaultCellRenderer extends DefaultRenderer implements TableCellRenderer {
 
