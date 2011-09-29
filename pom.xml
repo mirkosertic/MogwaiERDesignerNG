@@ -171,6 +171,7 @@
                     <outputDirectoryName>webstart</outputDirectoryName>
                     <excludeTransitive>false</excludeTransitive>
                     <libPath>lib</libPath>
+                    <resourcesDirectory>${project.basedir}/java3d</resourcesDirectory>
                     <jnlp>
                         <outputFile>erdesignerng.jnlp</outputFile>
                         <mainClass>de.erdesignerng.visual.ERDesigner</mainClass>
@@ -193,9 +194,37 @@
                         </keystoreConfig>
                     </sign>
                     <outputJarVersions>false</outputJarVersions>
-                    <verbose>true</verbose>
                     <unsign>true</unsign>
                     <verifyjar>false</verifyjar>
+                    <verbose>false</verbose>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <archiveDirectory>${project.build.directory}/jnlp</archiveDirectory>
+                    <includes>
+                        <include>**/*so.jar</include>
+                        <include>**/*dll.jar</include>
+                    </includes>
+                    <keystore>${project.build.directory}/erdesignerkeystore</keystore>
+                    <keypass>mogwai</keypass>
+                    <storepass>mogwai</storepass>
+                    <alias>ERDesignerNG</alias>
+                    <verbose>false</verbose>
+                    <processAttachedArtifacts>false</processAttachedArtifacts>
+                    <processMainArtifact>false</processMainArtifact>
                 </configuration>
             </plugin>
 
@@ -280,26 +309,6 @@
         <dependency>
             <groupId>java3d</groupId>
             <artifactId>vecmath</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>java3d</groupId>
-            <artifactId>j3d-native-win32</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>java3d</groupId>
-            <artifactId>j3d-native-win64</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>java3d</groupId>
-            <artifactId>j3d-native-linux32</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>java3d</groupId>
-            <artifactId>j3d-native-linux64</artifactId>
             <version>1.5.2</version>
         </dependency>
         <dependency>
