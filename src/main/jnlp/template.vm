@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="6.0+" codebase="http://mogwai.sourceforge.net/erdesignerng" href="$outputFile" version="$project.version">
+<jnlp spec="1.0+" codebase="http://mogwai.sourceforge.net/erdesignerng" href="$outputFile">
     <information>
         <title>Mogwai ERDesignerNG</title>
         <vendor>Project Mogwai</vendor>
@@ -19,29 +19,22 @@
         $dependencies
     </resources>
     <resources os="Windows" arch="x86">
-        <nativelib href="java3d/win32/j3dcore-d3d.dll"/>
-        <nativelib href="java3d/win32/j3dcore-ogl.dll"/>
-        <nativelib href="java3d/win32/j3dcore-ogl-cg.dll"/>
-        <nativelib href="java3d/win32/j3dcore-ogl-chk.dll"/>
+        <nativelib href="lib/j3d-native-win32-1.5.2.jar"/>
     </resources>
     <resources os="Windows" arch="x86_64">
-        <nativelib href="java3d/win32/j3dcore-d3d.dll"/>
-        <nativelib href="java3d/win32/j3dcore-ogl.dll"/>
-        <nativelib href="java3d/win32/j3dcore-ogl-cg.dll"/>
-        <nativelib href="java3d/win32/j3dcore-ogl-chk.dll"/>
+        <nativelib href="lib/j3d-native-win64-1.5.2.jar"/>
     </resources>
     <resources os="Windows" arch="amd64">
-        <nativelib href="java3d/win64/j3dcore-ogl.dll"/>
+        <nativelib href="lib/j3d-native-win64-1.5.2.jar"/>
     </resources>
     <resources os="Linux" arch="x86">
-        <nativelib href="java3d/linux32/j3dcore-ogl.dll"/>
-        <nativelib href="java3d/linux32/j3dcore-ogl-cg.dll"/>
+        <nativelib href="lib/j3d-native-linux32-1.5.2.jar"/>
     </resources>
     <resources os="Linux" arch="amd64">
-        <nativelib href="java3d/linux64/j3dcore-ogl.dll"/>
+        <nativelib href="lib/j3d-native-linux64-1.5.2.jar"/>
     </resources>
     <resources os="Linux" arch="x86_64">
-        <nativelib href="java3d/linux64/j3dcore-ogl.dll"/>
+        <nativelib href="lib/j3d-native-linux64-1.5.2.jar"/>
     </resources>
     <application-desc main-class="$mainClass"/>
 </jnlp>
