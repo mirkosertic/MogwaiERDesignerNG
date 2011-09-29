@@ -154,6 +154,52 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo.webstart</groupId>
+                <artifactId>webstart-maven-plugin</artifactId>
+                <version>1.0-beta-2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jnlp-inline</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectoryName>webstart</outputDirectoryName>
+                    <excludeTransitive>false</excludeTransitive>
+                    <libPath>lib</libPath>
+                    <resourcesDirectory>java3d</resourcesDirectory>
+                    <jnlp>
+                        <outputFile>erdesignerng.jnlp</outputFile>
+                        <mainClass>de.erdesignerng.visual.ERDesigner</mainClass>
+                    </jnlp>
+                    <sign>
+                        <keystore>${project.build.directory}/erdesignerkeystore</keystore>
+                        <keypass>mogwai</keypass>
+                        <storepass>mogwai</storepass>
+                        <alias>ERDesignerNG</alias>
+                        <dnameCn>Mogwai ERDesignerNG</dnameCn>
+                        <dnameOu></dnameOu>
+                        <dnameO>Project Mogwai</dnameO>
+                        <dnameL></dnameL>
+                        <dnameSt></dnameSt>
+                        <dnameC>DE</dnameC>
+                        <verify>false</verify>
+                        <keystoreConfig>
+                            <delete>true</delete>
+                            <gen>true</gen>
+                        </keystoreConfig>
+                    </sign>
+                    <outputJarVersions>true</outputJarVersions>
+                    <verbose>true</verbose>
+                    <unsign>true</unsign>
+                    <verifyjar>false</verifyjar>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.izpack</groupId>
                 <artifactId>izpack-maven-plugin</artifactId>
