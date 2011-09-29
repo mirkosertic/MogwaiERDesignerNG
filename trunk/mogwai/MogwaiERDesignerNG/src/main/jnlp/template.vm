@@ -19,22 +19,57 @@
         $dependencies
     </resources>
     <resources os="Windows" arch="x86">
-        <nativelib href="lib/j3d-native-win32-1.5.2.jar"/>
+        <nativelib href="win32/j3dcore-ogl-chk_dll.jar" download="eager"/>
+        <nativelib href="win32/j3dcore-ogl_dll.jar" download="eager"/>
+        <nativelib href="win32/j3dcore-d3d_dll.jar" download="eager"/>
     </resources>
-    <resources os="Windows" arch="x86_64">
-        <nativelib href="lib/j3d-native-win64-1.5.2.jar"/>
-    </resources>
+
     <resources os="Windows" arch="amd64">
-        <nativelib href="lib/j3d-native-win64-1.5.2.jar"/>
+        <nativelib href="win64/j3dcore-ogl_dll.jar" download="eager"/>
     </resources>
+
+    <resources os="Linux" arch="i386">
+        <nativelib href="linux32/lib_j3dcore-ogl_so.jar" download="eager"/>
+    </resources>
+
     <resources os="Linux" arch="x86">
-        <nativelib href="lib/j3d-native-linux32-1.5.2.jar"/>
+        <nativelib href="linux32/lib_j3dcore-ogl_so.jar" download="eager"/>
     </resources>
+
     <resources os="Linux" arch="amd64">
-        <nativelib href="lib/j3d-native-linux64-1.5.2.jar"/>
+        <nativelib href="linux64/lib_j3dcore-ogl_so.jar" download="eager"/>
     </resources>
+
     <resources os="Linux" arch="x86_64">
-        <nativelib href="lib/j3d-native-linux64-1.5.2.jar"/>
+        <nativelib href="linux64/lib_j3dcore-ogl_so.jar" download="eager"/>
     </resources>
+
+    <resources os="SunOS" arch="sparc">
+        <nativelib href="solaris-sparc/lib_j3dcore-ogl_so.jar" download="eager"/>
+    </resources>
+
+    <resources os="SunOS" arch="sparcv9">
+        <nativelib href="solaris-sparc-v9/lib_j3dcore-ogl_so.jar" download="eager"/>
+    </resources>
+
+    <resources os="SunOS" arch="x86">
+        <nativelib href="solaris-x86/lib_j3dcore-ogl_so.jar" download="eager"/>
+    </resources>
+
+    <resources os="SunOS" arch="amd64">
+        <nativelib href="solaris-x86-amd64/lib_j3dcore-ogl_so.jar" download="eager"/>
+    </resources>
+
+    <resources os="SunOS" arch="x86_64">
+        <nativelib href="solaris-x86-amd64/lib_j3dcore-ogl_so.jar" download="eager"/>
+    </resources>
+
+    <!--
+    This needs to be implemented!!!
+    <resources os="Mac OS X">
+        <property name="j3d.rend" value="jogl"/>
+        <extension name="jogl"
+                   href="http://download.java.net/media/jogl/builds/archive/jsr-231-webstart-current/jogl.jnlp"/>
+    </resources>-->
     <application-desc main-class="$mainClass"/>
 </jnlp>

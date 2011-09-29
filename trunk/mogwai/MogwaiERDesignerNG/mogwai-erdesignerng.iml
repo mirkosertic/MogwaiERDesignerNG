@@ -16,10 +16,6 @@
     <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core-utils:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:vecmath:1.5.2" level="project" />
-    <orderEntry type="library" name="Maven: java3d:j3d-native-win32:1.5.2" level="project" />
-    <orderEntry type="library" name="Maven: java3d:j3d-native-win64:1.5.2" level="project" />
-    <orderEntry type="library" name="Maven: java3d:j3d-native-linux32:1.5.2" level="project" />
-    <orderEntry type="library" name="Maven: java3d:j3d-native-linux64:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: batik:batik-svggen:1.6-1" level="project" />
     <orderEntry type="library" name="Maven: batik:batik-gvt:1.6-1" level="project" />
     <orderEntry type="library" name="Maven: batik:batik-awt-util:1.6-1" level="project" />
