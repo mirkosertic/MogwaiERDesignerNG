@@ -19,25 +19,23 @@ package de.erdesignerng.util;
 
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.visual.EditorMode;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.apache.log4j.Logger;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import javax.swing.JFrame;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Class for handling application preferences, LRU-files and so on.
@@ -507,6 +505,22 @@ public class ApplicationPreferences {
      */
     public File getReportsDirectory() {
         return getRelativeFile("reports");
+    }
+
+    /**
+     * Test if we are running in development mode.
+     *
+     * @return
+     */
+    public boolean isInDevelopmentMode() {
+        String theVersionNumber = MavenPropertiesLocator
+                .getERDesignerVersionInfo();
+        if (theVersionNumber
+                .equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

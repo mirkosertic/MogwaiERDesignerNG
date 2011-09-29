@@ -20,25 +20,18 @@ package de.erdesignerng.dialect;
 import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.XMLUtils;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class DataTypeIO {
 
@@ -124,14 +117,20 @@ public final class DataTypeIO {
                     }
                 }
             } else {
-                LOGGER.info("Loading types from " + theDatatypeFile);
-                InputStream theStream = null;
-                try {
-                    theStream = new FileInputStream(theDatatypeFile);
-                    deserializeDataTypesFrom(theDialect, theStream);
-                } finally {
-                    if (theStream != null) {
-                        theStream.close();
+                if (ApplicationPreferences.getInstance().isInDevelopmentMode()) {
+                    // In Development Mode we want the configuration
+                    // given by the dialect, and not the version from filesystem.
+                    LOGGER.warn("We are running in development mode. Skipping loading of user types");
+                } else {
+                    LOGGER.info("Loading types from " + theDatatypeFile);
+                    InputStream theStream = null;
+                    try {
+                        theStream = new FileInputStream(theDatatypeFile);
+                        deserializeDataTypesFrom(theDialect, theStream);
+                    } finally {
+                        if (theStream != null) {
+                            theStream.close();
+                        }
                     }
                 }
             }
