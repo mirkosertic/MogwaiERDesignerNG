@@ -550,7 +550,7 @@ public class OutlineComponent extends DefaultPanel implements
                 buildTablesChildren(aModel, theAreaNode, theSATables);
 
                 List<View> theSAViews = new ArrayList<View>();
-                theSAViews.addAll(aModel.getViews());
+                theSAViews.addAll(theArea.getViews());
                 Collections.sort(theSAViews, new BeanComparator("name"));
                 buildViewsChildren(aModel, theAreaNode, theSAViews);
 
