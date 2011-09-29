@@ -24,10 +24,12 @@ import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.visual.editor.CheckboxCellRenderer;
 import de.erdesignerng.visual.editor.ModelItemDefaultCellRenderer;
+import de.erdesignerng.visual.editor.TableHelper;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultTable;
+
 import javax.swing.*;
 
 /**
@@ -58,15 +60,13 @@ public class DomainEditorView extends DefaultPanel {
 
             invalidate();
             repaint();
+
+            TableHelper.processEditorRemovel(this);
         }
     };
 
     private DomainTableModel domainTableModel = new DomainTableModel();
 
-
-    /**
-     * Constructor.
-     */
     public DomainEditorView() {
         initialize();
     }
@@ -89,6 +89,8 @@ public class DomainEditorView extends DefaultPanel {
 
         String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
         String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+
+        domainTable.setCellSelectionEnabled(true);
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
@@ -145,13 +147,13 @@ public class DomainEditorView extends DefaultPanel {
             CellConstraints cons = new CellConstraints();
             domainTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
             domainTable.setModel(domainTableModel);
-            domainTable.getColumnModel().getColumn(0).setPreferredWidth(140);
+            domainTable.getColumnModel().getColumn(0).setPreferredWidth(200);
             domainTable.getColumnModel().getColumn(1).setPreferredWidth(100);
             domainTable.getColumnModel().getColumn(2).setPreferredWidth(60);
             domainTable.getColumnModel().getColumn(3).setPreferredWidth(60);
             domainTable.getColumnModel().getColumn(4).setPreferredWidth(60);
             domainTable.getColumnModel().getColumn(5).setPreferredWidth(50);
-            domainTable.getColumnModel().getColumn(6).setPreferredWidth(100);
+            domainTable.getColumnModel().getColumn(6).setPreferredWidth(300);
             domainTable.getTableHeader().setResizingAllowed(true);
             domainTable.getTableHeader().setReorderingAllowed(false);
             domainTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);

@@ -21,6 +21,7 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.generator.openxava.OpenXavaOptions;
 import de.erdesignerng.generator.openxava.OpenXavaTypeMap;
+import de.erdesignerng.visual.editor.ModelItemDefaultCellRenderer;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
@@ -73,6 +74,10 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
         OpenXavaExportTableModel theModel = new OpenXavaExportTableModel(theCurrentTypeName, theTargetTypeName,
                 theStereoTypeName, theCurrentTypes, theTargetTypes, theStereoTypes);
         theTable.setModel(theModel);
+
+        theTable.getColumnModel().getColumn(0).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
+        theTable.getColumnModel().getColumn(1).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
+        theTable.getColumnModel().getColumn(2).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
 
         DefaultComboBox theTargetTypesEditor = new DefaultComboBox();
         theTargetTypesEditor.setBorder(BorderFactory.createEmptyBorder());

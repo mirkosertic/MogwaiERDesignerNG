@@ -75,7 +75,7 @@ public class OpenXavaExportEditorView extends JPanel {
         add(new DefaultLabel(ERDesignerBundle.PACKAGENAME), cons.xywh(2, 6, 1, 1));
         add(getPackageName(), cons.xywh(4, 6, 3, 1));
         add(new DefaultSeparator(ERDesignerBundle.DATATYPEMAPPING), cons.xywh(2, 8, 5, 1));
-        add(new JScrollPane(getMappingTable()), cons.xywh(2, 10, 5, 1));
+        add(getMappingTable().getScrollPane(), cons.xywh(2, 10, 5, 1));
 
         add(getComponent8(), cons.xywh(2, 12, 5, 1));
     }
@@ -89,6 +89,9 @@ public class OpenXavaExportEditorView extends JPanel {
 
         if (mappingTable == null) {
             mappingTable = new DefaultTable();
+            mappingTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+            mappingTable.setRowHeight(22);
+            mappingTable.setCellSelectionEnabled(true);
             mappingTable.setName("Component_5");
         }
 

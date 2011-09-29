@@ -25,9 +25,21 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.visual.editor.CheckboxCellRenderer;
 import de.erdesignerng.visual.editor.ModelItemDefaultCellRenderer;
-import de.mogwai.common.client.looks.components.*;
-import java.awt.BorderLayout;
+import de.erdesignerng.visual.editor.TableHelper;
+import de.mogwai.common.client.looks.components.DefaultButton;
+import de.mogwai.common.client.looks.components.DefaultComboBox;
+import de.mogwai.common.client.looks.components.DefaultLabel;
+import de.mogwai.common.client.looks.components.DefaultList;
+import de.mogwai.common.client.looks.components.DefaultPanel;
+import de.mogwai.common.client.looks.components.DefaultRadioButton;
+import de.mogwai.common.client.looks.components.DefaultTabbedPane;
+import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
+import de.mogwai.common.client.looks.components.DefaultTable;
+import de.mogwai.common.client.looks.components.DefaultTextArea;
+import de.mogwai.common.client.looks.components.DefaultTextField;
+
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -108,6 +120,7 @@ public class TableEditorView extends DefaultPanel {
     private DefaultTabbedPaneTab indexPropertiesTab;
 
     private DefaultTable attributesTable = new DefaultTable() {
+
         @Override
         public void removeEditor() {
             super.removeEditor();
@@ -117,6 +130,8 @@ public class TableEditorView extends DefaultPanel {
 
             invalidate();
             repaint();
+
+            TableHelper.processEditorRemovel(this);
         }
     };
 
@@ -137,6 +152,8 @@ public class TableEditorView extends DefaultPanel {
 
         FormLayout layout = new FormLayout(colDef, rowDef);
         setLayout(layout);
+
+        attributesTable.setCellSelectionEnabled(true);
 
         CellConstraints cons = new CellConstraints();
 
@@ -205,7 +222,7 @@ public class TableEditorView extends DefaultPanel {
             CellConstraints cons = new CellConstraints();
             attributesTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
             attributesTable.setModel(attributeTableModel);
-            attributesTable.getColumnModel().getColumn(0).setPreferredWidth(140);
+            attributesTable.getColumnModel().getColumn(0).setPreferredWidth(200);
             attributesTable.getColumnModel().getColumn(1).setPreferredWidth(100);
             attributesTable.getColumnModel().getColumn(2).setPreferredWidth(60);
             attributesTable.getColumnModel().getColumn(3).setPreferredWidth(60);
@@ -213,7 +230,7 @@ public class TableEditorView extends DefaultPanel {
             attributesTable.getColumnModel().getColumn(5).setPreferredWidth(50);
             attributesTable.getColumnModel().getColumn(6).setPreferredWidth(100);
             attributesTable.getColumnModel().getColumn(7).setPreferredWidth(100);
-            attributesTable.getColumnModel().getColumn(8).setPreferredWidth(100);
+            attributesTable.getColumnModel().getColumn(8).setPreferredWidth(300);
             attributesTable.getTableHeader().setResizingAllowed(true);
             attributesTable.getTableHeader().setReorderingAllowed(false);
             attributesTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
