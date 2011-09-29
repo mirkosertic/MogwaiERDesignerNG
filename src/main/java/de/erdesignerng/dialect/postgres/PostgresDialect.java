@@ -38,7 +38,7 @@ public final class PostgresDialect extends SQL92Dialect {
         setSupportsDomains(true);
         setSupportsCustomTypes(true);
         setSupportsSchemaInformation(true);
-		setDefaultSchemaName("public");
+        setDefaultSchemaName("public");
 
         addSystemSchema("information_schema");
         addSystemSchema("pg_catalog");
@@ -61,7 +61,7 @@ public final class PostgresDialect extends SQL92Dialect {
         registerType(createDataType("float4", "", Types.REAL));
         registerType(createDataType("float8", "", Types.DOUBLE, Types.FLOAT));
         registerType(createDataType("money", "", Types.DOUBLE));
-        registerType(createDataType("bpchar", "", Types.CHAR));
+        registerType(createDataType("bpchar", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.CHAR));
         registerType(createDataType("varchar", "[" + GenericDataTypeImpl.SIZE_TOKEN + "]", Types.VARCHAR));
         registerType(createDataType("date", "", Types.DATE));
         registerType(createDataType("time", "", Types.TIME));
