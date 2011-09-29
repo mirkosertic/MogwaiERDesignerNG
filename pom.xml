@@ -171,7 +171,6 @@
                     <outputDirectoryName>webstart</outputDirectoryName>
                     <excludeTransitive>false</excludeTransitive>
                     <libPath>lib</libPath>
-                    <resourcesDirectory>java3d</resourcesDirectory>
                     <jnlp>
                         <outputFile>erdesignerng.jnlp</outputFile>
                         <mainClass>de.erdesignerng.visual.ERDesigner</mainClass>
