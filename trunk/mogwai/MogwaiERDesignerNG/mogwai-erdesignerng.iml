@@ -12,9 +12,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-smartstart:1.1" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core-utils:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:vecmath:1.5.2" level="project" />
+    <orderEntry type="library" name="Maven: java3d:j3d-native-win32:1.5.2" level="project" />
+    <orderEntry type="library" name="Maven: java3d:j3d-native-win64:1.5.2" level="project" />
+    <orderEntry type="library" name="Maven: java3d:j3d-native-linux32:1.5.2" level="project" />
+    <orderEntry type="library" name="Maven: java3d:j3d-native-linux64:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: batik:batik-svggen:1.6-1" level="project" />
     <orderEntry type="library" name="Maven: batik:batik-gvt:1.6-1" level="project" />
     <orderEntry type="library" name="Maven: batik:batik-awt-util:1.6-1" level="project" />
@@ -69,7 +74,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: net.sourceforge.jtds:jtds:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: oracle:ojdbc:14" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hsqldb:hsqldb:2.2.4" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-smartstart:1.1" level="project" />
+    <orderEntry type="module" module-name="mogwai-smartstart" />
     <orderEntry type="library" name="Maven: net.java.dev:swing-worker:1.2" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.4.GA" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.izpack:izpack-standalone-compiler:4.2.1" level="project" />

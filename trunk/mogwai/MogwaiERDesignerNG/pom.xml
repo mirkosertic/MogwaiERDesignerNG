@@ -193,7 +193,7 @@
                             <gen>true</gen>
                         </keystoreConfig>
                     </sign>
-                    <outputJarVersions>true</outputJarVersions>
+                    <outputJarVersions>false</outputJarVersions>
                     <verbose>true</verbose>
                     <unsign>true</unsign>
                     <verifyjar>false</verifyjar>
@@ -281,6 +281,26 @@
         <dependency>
             <groupId>java3d</groupId>
             <artifactId>vecmath</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>j3d-native-win32</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>j3d-native-win64</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>j3d-native-linux32</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>java3d</groupId>
+            <artifactId>j3d-native-linux64</artifactId>
             <version>1.5.2</version>
         </dependency>
         <dependency>
