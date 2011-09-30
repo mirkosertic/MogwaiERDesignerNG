@@ -33,62 +33,62 @@ import de.erdesignerng.modificationtracker.VetoException;
  */
 public class ForeignKeyWithoutIndexCheck implements ModelCheck {
 
-    private static class CreateIndexForRelationQuickFix implements QuickFix {
+	private static class CreateIndexForRelationQuickFix implements QuickFix {
 
-        private Relation relation;
+		private Relation relation;
 
-        private CreateIndexForRelationQuickFix(Relation aRelation) {
-            relation = aRelation;
-        }
+		private CreateIndexForRelationQuickFix(Relation aRelation) {
+			relation = aRelation;
+		}
 
-        @Override
-        public Object[] applyTo(Model aModel) throws VetoException, ElementAlreadyExistsException,
-                ElementInvalidNameException {
-            Table theImportingTable = relation.getImportingTable();
-            Index theIndex = new Index();
-            boolean validName = false;
-            int counter = 1;
-            while (!validName) {
-                theIndex.setName(theImportingTable.getName() + "_FK" + counter++);
-                if (theImportingTable.getIndexes().findByName(theIndex.getName()) == null) {
-                    validName = true;
-                }
-            }
-            theIndex.setIndexType(IndexType.NONUNIQUE);
-            for (Attribute theAttribute : relation.getMapping().values()) {
-                theIndex.getExpressions().addExpressionFor(theAttribute);
-            }
-            aModel.addIndexToTable(theImportingTable, theIndex);
+		@Override
+		public Object[] applyTo(Model aModel) throws VetoException, ElementAlreadyExistsException,
+				ElementInvalidNameException {
+			Table theImportingTable = relation.getImportingTable();
+			Index theIndex = new Index();
+			boolean validName = false;
+			int counter = 1;
+			while (!validName) {
+				theIndex.setName(theImportingTable.getName() + "_FK" + counter++);
+				if (theImportingTable.getIndexes().findByName(theIndex.getName()) == null) {
+					validName = true;
+				}
+			}
+			theIndex.setIndexType(IndexType.NONUNIQUE);
+			for (Attribute<Table> theAttribute : relation.getMapping().values()) {
+				theIndex.getExpressions().addExpressionFor(theAttribute);
+			}
+			aModel.addIndexToTable(theImportingTable, theIndex);
 
-            return new Object[]{theImportingTable};
-        }
-    }
+			return new Object[]{theImportingTable};
+		}
+	}
 
-    @Override
-    public void check(Model aModel, ModelChecker aChecker) {
-        for (Relation theRelation : aModel.getRelations()) {
-            Table theImportingTable = theRelation.getImportingTable();
+	@Override
+	public void check(Model aModel, ModelChecker aChecker) {
+		for (Relation theRelation : aModel.getRelations()) {
+			Table theImportingTable = theRelation.getImportingTable();
 
-            boolean containsValidIndex = false;
+			boolean containsValidIndex = false;
 
-            IndexExpressionList theList = new IndexExpressionList();
-            for (Attribute theAttribute : theRelation.getMapping().values()) {
-                try {
-                    theList.addExpressionFor(theAttribute);
-                } catch (ElementAlreadyExistsException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+			IndexExpressionList theList = new IndexExpressionList();
+			for (Attribute<Table> theAttribute : theRelation.getMapping().values()) {
+				try {
+					theList.addExpressionFor(theAttribute);
+				} catch (ElementAlreadyExistsException e) {
+					throw new RuntimeException(e);
+				}
+			}
 
-            for (Index theIndex : theImportingTable.getIndexes()) {
-                if (theIndex.getExpressions().containsAllExpressions(theList)) {
-                    containsValidIndex = true;
-                }
-            }
+			for (Index theIndex : theImportingTable.getIndexes()) {
+				if (theIndex.getExpressions().containsAllExpressions(theList)) {
+					containsValidIndex = true;
+				}
+			}
 
-            if (!containsValidIndex) {
-                aChecker.addError(new ModelError("Table " + theImportingTable.getName() + " does not have a matching index for " + theRelation.getName() + " " + theRelation.getExportingTable() + " ->  " + theRelation.getMapping().values(), new CreateIndexForRelationQuickFix(theRelation)));
-            }
-        }
-    }
+			if (!containsValidIndex) {
+				aChecker.addError(new ModelError("Table " + theImportingTable.getName() + " does not have a matching index for " + theRelation.getName() + " " + theRelation.getExportingTable() + " ->  " + theRelation.getMapping().values(), new CreateIndexForRelationQuickFix(theRelation)));
+			}
+		}
+	}
 }

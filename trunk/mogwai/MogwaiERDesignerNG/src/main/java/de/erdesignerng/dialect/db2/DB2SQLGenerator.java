@@ -54,8 +54,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
-
+	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
 		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();
@@ -65,7 +64,7 @@ public class DB2SQLGenerator extends SQL92SQLGenerator<DB2Dialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
+	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
 		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();

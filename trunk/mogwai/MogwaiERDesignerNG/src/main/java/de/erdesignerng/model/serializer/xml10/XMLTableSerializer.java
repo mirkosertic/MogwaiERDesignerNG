@@ -42,7 +42,7 @@ public class XMLTableSerializer extends AbstractXMLTableSerializer {
 		serializeCommentElement(aDocument, theTableElement, aTable);
 
 		// Attribute serialisieren
-		for (Attribute theAttribute : aTable.getAttributes()) {
+		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
 			getXMLModelSerializer().getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
 		}
 

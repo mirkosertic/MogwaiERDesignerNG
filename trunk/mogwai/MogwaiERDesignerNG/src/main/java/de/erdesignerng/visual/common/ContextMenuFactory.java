@@ -37,236 +37,237 @@ import javax.swing.JPopupMenu;
  */
 public final class ContextMenuFactory {
 
-    private ContextMenuFactory() {
-    }
+	private ContextMenuFactory() {
+	}
 
-    public static void addActionsToMenu(GenericModelEditor aEditor,
-                                        JPopupMenu aMenu,
-                                        List<ModelItem> aItemList) {
+	public static void addActionsToMenu(GenericModelEditor aEditor,
+										JPopupMenu aMenu,
+										List<ModelItem> aItemList) {
 
-        ResourceHelper theHelper = ResourceHelper
-                .getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+		ResourceHelper theHelper = ResourceHelper
+				.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-        final List<ModelItem> theNewSubjectAreaItems = new ArrayList<ModelItem>();
-        final List<ModelItem> theItemsToBeDeleted = new ArrayList<ModelItem>();
+		final List<ModelItem> theNewSubjectAreaItems = new ArrayList<ModelItem>();
+		final List<ModelItem> theItemsToBeDeleted = new ArrayList<ModelItem>();
 
-        for (final ModelItem theUserObject : aItemList) {
-            if (theUserObject instanceof Table) {
+		for (final ModelItem theUserObject : aItemList) {
+			if (theUserObject instanceof Table) {
 
-                Table theTable = (Table) theUserObject;
+				Table theTable = (Table) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITTABLE, theTable.getName()));
-                theEditItem.addActionListener(new EditTableCommand(theTable));
-                aMenu.add(theEditItem);
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITTABLE, theTable.getName()));
+				theEditItem.addActionListener(new EditTableCommand(theTable));
+				aMenu.add(theEditItem);
 
-                final Table theClone = theTable.createCopy();
+				final Table theClone = theTable.createCopy();
 
-                Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
-                final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
-                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
+				Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+				final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
+				theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
 
-                JMenuItem theCloneItem = new JMenuItem();
-                theCloneItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.CLONETABLE, theClone.getName()));
-                theCloneItem.addActionListener(new EditTableCommand(theClone) {
-                    @Override
-                    protected void beforeRefresh() {
-                        ERDesignerComponent.getDefault().commandCreateTable(theClone, theNewLocation);
-                    }
-                });
+				JMenuItem theCloneItem = new JMenuItem();
+				theCloneItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.CLONETABLE, theClone.getName()));
+				theCloneItem.addActionListener(new EditTableCommand(theClone) {
+					@Override
+					protected void beforeRefresh() {
+						ERDesignerComponent.getDefault().commandCreateTable(theClone, theNewLocation);
+					}
+				});
 
-                aMenu.add(theCloneItem);
+				aMenu.add(theCloneItem);
 
-                JMenuItem theDataBrowserItem = new JMenuItem();
-                theDataBrowserItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.SHOWDATAOF, theTable.getName()));
-                theDataBrowserItem.addActionListener(new DataBrowserCommand(theTable));
+				JMenuItem theDataBrowserItem = new JMenuItem();
+				theDataBrowserItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.SHOWDATAOF, theTable.getName()));
+				theDataBrowserItem.addActionListener(new DataBrowserCommand(theTable));
 
-                aMenu.add(theDataBrowserItem);
+				aMenu.add(theDataBrowserItem);
 
-                if (aEditor.supportShowingAndHidingOfRelations()) {
-                    JMenuItem theHideRelationsItem = new JMenuItem();
-                    theHideRelationsItem.setText(theHelper.getFormattedText(
-                            ERDesignerBundle.HIDEALLRELATIONSFOR, theTable.getName()));
-                    theHideRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, false));
+				if (aEditor.supportShowingAndHidingOfRelations()) {
+					JMenuItem theHideRelationsItem = new JMenuItem();
+					theHideRelationsItem.setText(theHelper.getFormattedText(
+							ERDesignerBundle.HIDEALLRELATIONSFOR, theTable.getName()));
+					theHideRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, false));
 
-                    aMenu.add(theHideRelationsItem);
+					aMenu.add(theHideRelationsItem);
 
-                    JMenuItem theShowRelationsItem = new JMenuItem();
-                    theShowRelationsItem.setText(theHelper.getFormattedText(
-                            ERDesignerBundle.SHOWALLRELATIONSFOR, theTable.getName()));
-                    theShowRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, true));
+					JMenuItem theShowRelationsItem = new JMenuItem();
+					theShowRelationsItem.setText(theHelper.getFormattedText(
+							ERDesignerBundle.SHOWALLRELATIONSFOR, theTable.getName()));
+					theShowRelationsItem.addActionListener(new ShowHideTableRelationsCommand(theTable, true));
 
-                    aMenu.add(theShowRelationsItem);
-                }
+					aMenu.add(theShowRelationsItem);
+				}
 
-                theNewSubjectAreaItems.add(theTable);
-                theItemsToBeDeleted.add(theTable);
-            }
-            if (theUserObject instanceof View) {
+				theNewSubjectAreaItems.add(theTable);
+				theItemsToBeDeleted.add(theTable);
+			}
+			if (theUserObject instanceof View) {
 
-                View theView = (View) theUserObject;
+				View theView = (View) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITVIEW, theView.getName()));
-                theEditItem.addActionListener(new EditViewCommand(theView));
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITVIEW, theView.getName()));
+				theEditItem.addActionListener(new EditViewCommand(theView));
 
-                final View theClone = theView.createCopy();
+				final View theClone = theView.createCopy();
 
-                Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
-                final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
-                theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
+				Point2D theLocation = theClone.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+				final Point2D theNewLocation = new Point2D.Double(theLocation.getX() + 20, theLocation.getY() + 20);
+				theClone.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) theNewLocation.getX(), (int) theNewLocation.getY());
 
-                JMenuItem theCloneItem = new JMenuItem();
-                theCloneItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.CLONEVIEW, theClone.getName()));
-                theCloneItem.addActionListener(new EditViewCommand(theClone) {
-                    @Override
-                    protected void beforeRefresh() {
-                        ERDesignerComponent.getDefault().commandCreateView(theClone, theNewLocation);
-                    }
-                });
+				JMenuItem theCloneItem = new JMenuItem();
+				theCloneItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.CLONEVIEW, theClone.getName()));
+				theCloneItem.addActionListener(new EditViewCommand(theClone) {
+					@Override
+					protected void beforeRefresh() {
+						ERDesignerComponent.getDefault().commandCreateView(theClone, theNewLocation);
+					}
+				});
 
-                aMenu.add(theCloneItem);
+				aMenu.add(theCloneItem);
 
-                JMenuItem theDataBrowserItem = new JMenuItem();
-                theDataBrowserItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.SHOWDATAOF, theView.getName()));
-                theDataBrowserItem.addActionListener(new DataBrowserCommand(theView));
+				JMenuItem theDataBrowserItem = new JMenuItem();
+				theDataBrowserItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.SHOWDATAOF, theView.getName()));
+				theDataBrowserItem.addActionListener(new DataBrowserCommand(theView));
 
-                aMenu.add(theDataBrowserItem);
+				aMenu.add(theDataBrowserItem);
 
-                aMenu.add(theEditItem);
+				aMenu.add(theEditItem);
 
-                theNewSubjectAreaItems.add(theView);
-                theItemsToBeDeleted.add(theView);
-            }
-            if (theUserObject instanceof Relation) {
+				theNewSubjectAreaItems.add(theView);
+				theItemsToBeDeleted.add(theView);
+			}
+			if (theUserObject instanceof Relation) {
 
-                Relation theRelation = (Relation) theUserObject;
+				Relation theRelation = (Relation) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITRELATION, theRelation.getName()));
-                theEditItem.addActionListener(new EditRelationCommand(theRelation));
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITRELATION, theRelation.getName()));
+				theEditItem.addActionListener(new EditRelationCommand(theRelation));
 
-                aMenu.add(theEditItem);
-                theItemsToBeDeleted.add(theRelation);
-            }
-            if (theUserObject instanceof CustomType) {
+				aMenu.add(theEditItem);
+				theItemsToBeDeleted.add(theRelation);
+			}
+			if (theUserObject instanceof CustomType) {
 
-                CustomType theCustomType = (CustomType) theUserObject;
+				CustomType theCustomType = (CustomType) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITCUSTOMTYPE, theCustomType
-                        .getName()));
-                theEditItem.addActionListener(new EditCustomTypesCommand(theCustomType));
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITCUSTOMTYPE, theCustomType
+						.getName()));
+				theEditItem.addActionListener(new EditCustomTypesCommand(theCustomType));
 
-                aMenu.add(theEditItem);
+				aMenu.add(theEditItem);
 
-            }
-            if (theUserObject instanceof Domain) {
+			}
+			if (theUserObject instanceof Domain) {
 
-                Domain theDomain = (Domain) theUserObject;
+				Domain theDomain = (Domain) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITDOMAIN, theDomain.getName()));
-                theEditItem.addActionListener(new EditDomainCommand(theDomain));
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITDOMAIN, theDomain.getName()));
+				theEditItem.addActionListener(new EditDomainCommand(theDomain));
 
-                aMenu.add(theEditItem);
+				aMenu.add(theEditItem);
 
-            }
-            if (theUserObject instanceof SubjectArea) {
+			}
+			if (theUserObject instanceof SubjectArea) {
 
-                final SubjectArea theSubjectArea = (SubjectArea) theUserObject;
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITSUBJECTAREA, theSubjectArea
-                        .getName()));
-                theEditItem.addActionListener(new EditSubjectAreaCommand(theSubjectArea));
+				final SubjectArea theSubjectArea = (SubjectArea) theUserObject;
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITSUBJECTAREA, theSubjectArea
+						.getName()));
+				theEditItem.addActionListener(new EditSubjectAreaCommand(theSubjectArea));
 
-                aMenu.add(theEditItem);
+				aMenu.add(theEditItem);
 
-                if (theSubjectArea.isVisible()) {
-                    DefaultAction theHideAction = new DefaultAction(
-                            ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
-                    DefaultMenuItem theHideMenuItem = new DefaultMenuItem(theHideAction);
-                    theHideAction.addActionListener(new ActionListener() {
+				if (theSubjectArea.isVisible()) {
+					DefaultAction theHideAction = new DefaultAction(
+							ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
+					DefaultMenuItem theHideMenuItem = new DefaultMenuItem(theHideAction);
+					theHideAction.addActionListener(new ActionListener() {
 
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea);
-                        }
-                    });
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea);
+						}
+					});
 
-                    aMenu.add(theHideMenuItem);
-                }
+					aMenu.add(theHideMenuItem);
+				}
 
-            }
-            if (theUserObject instanceof Attribute) {
+			}
 
-                Attribute theAttribute = (Attribute) theUserObject;
+			if (theUserObject instanceof Attribute) {
+				Attribute theAttribute = (Attribute) theUserObject;
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem
-                        .setText(theHelper.getFormattedText(
-                                ERDesignerBundle.EDITATTRIBUTE, theAttribute
-                                .getName()));
-                theEditItem.addActionListener(new EditTableCommand(theAttribute.getOwner(), theAttribute));
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(ERDesignerBundle.EDITATTRIBUTE, theAttribute.getName()));
+				ModelItem theOwner = theAttribute.getOwner();
+				if (theOwner instanceof Table) {
+					theEditItem.addActionListener(new EditTableCommand((Table) theOwner, theAttribute));
+				}
 
-                aMenu.add(theEditItem);
-            }
-            if (theUserObject instanceof Index) {
+				aMenu.add(theEditItem);
+			}
 
-                Index theIndex = (Index) theUserObject;
+			if (theUserObject instanceof Index) {
 
-                JMenuItem theEditItem = new JMenuItem();
-                theEditItem.setText(theHelper.getFormattedText(
-                        ERDesignerBundle.EDITINDEX, theIndex.getName()));
-                theEditItem.addActionListener(new EditTableCommand(theIndex.getOwner(), theIndex));
+				Index theIndex = (Index) theUserObject;
 
-                aMenu.add(theEditItem);
-            }
-        }
+				JMenuItem theEditItem = new JMenuItem();
+				theEditItem.setText(theHelper.getFormattedText(
+						ERDesignerBundle.EDITINDEX, theIndex.getName()));
+				theEditItem.addActionListener(new EditTableCommand(theIndex.getOwner(), theIndex));
 
-        if (theNewSubjectAreaItems.size() > 0 && aEditor.supportsSubjectAreas()) {
+				aMenu.add(theEditItem);
+			}
+		}
 
-            DefaultAction theAddAction = new DefaultAction(
-                    ERDesignerBundle.BUNDLE_NAME,
-                    ERDesignerBundle.ADDTONEWSUBJECTAREA);
-            DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
-            theAddAction.addActionListener(new ActionListener() {
+		if (theNewSubjectAreaItems.size() > 0 && aEditor.supportsSubjectAreas()) {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ERDesignerComponent.getDefault()
-                            .commandAddToNewSubjectArea(theNewSubjectAreaItems);
-                }
-            });
+			DefaultAction theAddAction = new DefaultAction(
+					ERDesignerBundle.BUNDLE_NAME,
+					ERDesignerBundle.ADDTONEWSUBJECTAREA);
+			DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
+			theAddAction.addActionListener(new ActionListener() {
 
-            aMenu.addSeparator();
-            aMenu.add(theAddItem);
-        }
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ERDesignerComponent.getDefault()
+							.commandAddToNewSubjectArea(theNewSubjectAreaItems);
+				}
+			});
 
-        if (theItemsToBeDeleted.size() > 0 && aEditor.supportsDeletionOfObjects()) {
+			aMenu.addSeparator();
+			aMenu.add(theAddItem);
+		}
 
-            DefaultAction theDeleteAction = new DefaultAction(
-                    ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
-            DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
-            theDeleteAction.addActionListener(new ActionListener() {
+		if (theItemsToBeDeleted.size() > 0 && aEditor.supportsDeletionOfObjects()) {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ERDesignerComponent.getDefault().commandDelete(theItemsToBeDeleted);
-                }
-            });
-            aMenu.addSeparator();
-            aMenu.add(theDeleteItem);
-        }
-    }
+			DefaultAction theDeleteAction = new DefaultAction(
+					ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
+			DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
+			theDeleteAction.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ERDesignerComponent.getDefault().commandDelete(theItemsToBeDeleted);
+				}
+			});
+			aMenu.addSeparator();
+			aMenu.add(theDeleteItem);
+		}
+	}
 }

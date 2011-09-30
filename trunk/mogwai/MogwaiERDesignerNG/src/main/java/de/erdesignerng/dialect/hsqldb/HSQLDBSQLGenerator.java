@@ -33,162 +33,158 @@ import org.apache.commons.lang.StringUtils;
  */
 public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 
-    public HSQLDBSQLGenerator(HSQLDBDialect aDialect) {
-        super(aDialect);
-    }
+	public HSQLDBSQLGenerator(HSQLDBDialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    protected void addAdditionalInformationToPreCreateTableStatement(
-            Table aTable, StringBuilder aStatement) {
-    }
+	@Override
+	protected void addAdditionalInformationToPreCreateTableStatement(
+			Table aTable, StringBuilder aStatement) {
+	}
 
-    @Override
-    public StatementList createAddViewStatement(View aView) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
-        theStatement.append("CREATE ");
+	@Override
+	public StatementList createAddViewStatement(View aView) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
+		theStatement.append("CREATE ");
 
-        theStatement.append("VIEW ");
-        theStatement.append(createUniqueViewName(aView));
-        theStatement.append(" AS ");
-        theStatement.append(aView.getSql());
-        theResult.add(new Statement(theStatement.toString()));
-        return theResult;
-    }
+		theStatement.append("VIEW ");
+		theStatement.append(createUniqueViewName(aView));
+		theStatement.append(" AS ");
+		theStatement.append(aView.getSql());
+		theResult.add(new Statement(theStatement.toString()));
+		return theResult;
+	}
 
-    @Override
-    public StatementList createAddIndexToTableStatement(Table aTable,
-                                                        Index aIndex) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+	@Override
+	public StatementList createAddIndexToTableStatement(Table aTable,
+														Index aIndex) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("CREATE ");
+		theStatement.append("CREATE ");
 
-        switch (aIndex.getIndexType()) {
-            case NONUNIQUE:
-                break;
-            default:
-                theStatement.append(aIndex.getIndexType().getType()).append(" ");
-                break;
-        }
+		switch (aIndex.getIndexType()) {
+			case NONUNIQUE:
+				break;
+			default:
+				theStatement.append(aIndex.getIndexType().getType()).append(" ");
+				break;
+		}
 
-        theStatement.append("INDEX ");
-        theStatement.append(aIndex.getName());
-        theStatement.append(" ON ");
-        theStatement.append(createUniqueTableName(aTable));
-        theStatement.append(" (");
+		theStatement.append("INDEX ");
+		theStatement.append(aIndex.getName());
+		theStatement.append(" ON ");
+		theStatement.append(createUniqueTableName(aTable));
+		theStatement.append(" (");
 
-        for (int i = 0; i < aIndex.getExpressions().size(); i++) {
-            IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
+		for (int i = 0; i < aIndex.getExpressions().size(); i++) {
+			IndexExpression theIndexExpression = aIndex.getExpressions().get(i);
 
-            if (i > 0) {
-                theStatement.append(",");
-            }
+			if (i > 0) {
+				theStatement.append(",");
+			}
 
-            if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
-                theStatement.append(theIndexExpression.getExpression());
-            } else {
-                theStatement.append(theIndexExpression.getAttributeRef()
-                        .getName());
-            }
-        }
+			if (!StringUtils.isEmpty(theIndexExpression.getExpression())) {
+				theStatement.append(theIndexExpression.getExpression());
+			} else {
+				theStatement.append(theIndexExpression.getAttributeRef()
+						.getName());
+			}
+		}
 
-        theStatement.append(")");
-        theResult.add(new Statement(theStatement.toString()));
-        return theResult;
-    }
+		theStatement.append(")");
+		theResult.add(new Statement(theStatement.toString()));
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRemoveIndexFromTableStatement(Table aTable,
-                                                             Index aIndex) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+	@Override
+	public StatementList createRemoveIndexFromTableStatement(Table aTable,
+															 Index aIndex) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("DROP INDEX ");
-        theStatement.append(aIndex.getName());
+		theStatement.append("DROP INDEX ");
+		theStatement.append(aIndex.getName());
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameTableStatement(Table aTable,
-                                                    String aNewName) {
+	@Override
+	public StatementList createRenameTableStatement(Table aTable,
+													String aNewName) {
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(aTable));
-        theStatement.append(" RENAME TO ");
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(aTable));
+		theStatement.append(" RENAME TO ");
 
-        theStatement.append(aNewName);
+		theStatement.append(aNewName);
 
-        theResult.add(new Statement(theStatement.toString()));
+		theResult.add(new Statement(theStatement.toString()));
 
-        return theResult;
-    }
+		return theResult;
+	}
 
-    @Override
-    public StatementList createRenameAttributeStatement(
-            Attribute anExistingAttribute, String aNewName) {
+	@Override
+	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
+		Table theTable = anExistingAttribute.getOwner();
 
-        Table theTable = anExistingAttribute.getOwner();
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
 
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" ALTER COLUMN ");
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" RENAME TO ");
+		theStatement.append(aNewName);
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" ALTER COLUMN ");
-        theStatement.append(anExistingAttribute.getName());
-        theStatement.append(" RENAME TO ");
-        theStatement.append(aNewName);
+		theResult.add(new Statement(theStatement.toString()));
 
-        theResult.add(new Statement(theStatement.toString()));
+		return theResult;
+	}
 
-        return theResult;
-    }
+	@Override
+	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
+		Table theTable = anExistingAttribute.getOwner();
 
-    @Override
-    public StatementList createChangeAttributeStatement(
-            Attribute anExistingAttribute, Attribute aNewAttribute) {
+		StatementList theResult = new StatementList();
 
-        Table theTable = anExistingAttribute.getOwner();
+		StringBuilder theStatement = new StringBuilder();
 
-        StatementList theResult = new StatementList();
+		theStatement.append("ALTER TABLE ");
+		theStatement.append(createUniqueTableName(theTable));
+		theStatement.append(" ALTER COLUMN ");
+		theStatement.append(anExistingAttribute.getName());
+		theStatement.append(" ");
+		theStatement.append(aNewAttribute.getPhysicalDeclaration());
 
-        StringBuilder theStatement = new StringBuilder();
+		boolean isNullable = aNewAttribute.isNullable();
 
-        theStatement.append("ALTER TABLE ");
-        theStatement.append(createUniqueTableName(theTable));
-        theStatement.append(" ALTER COLUMN ");
-        theStatement.append(anExistingAttribute.getName());
-        theStatement.append(" ");
-        theStatement.append(aNewAttribute.getPhysicalDeclaration());
+		if (!isNullable) {
+			theStatement.append(" NOT NULL");
+		} else {
+			theStatement.append(" NULL");
+		}
 
-        boolean isNullable = aNewAttribute.isNullable();
+		theResult.add(new Statement(theStatement.toString()));
 
-        if (!isNullable) {
-            theStatement.append(" NOT NULL");
-        } else {
-            theStatement.append(" NULL");
-        }
+		return theResult;
+	}
 
-        theResult.add(new Statement(theStatement.toString()));
-
-        return theResult;
-    }
-
-    @Override
-    public StatementList createAddSchemaStatement(String aSchema) {
-        StatementList theResult = new StatementList();
-        StringBuilder theStatement = new StringBuilder();
-        theStatement.append("CREATE SCHEMA ");
-        theStatement.append(createUniqueSchemaName(aSchema));
-        theStatement.append(" authorization SA");
-        theResult.add(new Statement(theStatement.toString()));
-        return theResult;
-    }
+	@Override
+	public StatementList createAddSchemaStatement(String aSchema) {
+		StatementList theResult = new StatementList();
+		StringBuilder theStatement = new StringBuilder();
+		theStatement.append("CREATE SCHEMA ");
+		theStatement.append(createUniqueSchemaName(aSchema));
+		theStatement.append(" authorization SA");
+		theResult.add(new Statement(theStatement.toString()));
+		return theResult;
+	}
 }

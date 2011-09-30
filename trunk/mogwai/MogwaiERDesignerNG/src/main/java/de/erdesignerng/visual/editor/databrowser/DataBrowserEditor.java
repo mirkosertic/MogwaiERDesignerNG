@@ -56,371 +56,368 @@ import java.util.Map;
  */
 public class DataBrowserEditor extends BaseEditor {
 
-    private DataBrowserEditorView view = new DataBrowserEditorView();
+	private DataBrowserEditorView view = new DataBrowserEditorView();
 
-    private Model currentModel;
-    private Dialect currentDialect;
+	private Model currentModel;
+	private Dialect currentDialect;
 
-    private BindingInfo<DataBrowserModel> sqlBindingInfo = new BindingInfo<DataBrowserModel>();
-    private Connection connection;
-    private Statement statement;
+	private BindingInfo<DataBrowserModel> sqlBindingInfo = new BindingInfo<DataBrowserModel>();
+	private Connection connection;
+	private Statement statement;
 
-    private PaginationDataModel dataModel;
+	private PaginationDataModel dataModel;
 
-    public DataBrowserEditor(Component aParent) {
-        super(aParent, ERDesignerBundle.DATABROWSER);
+	public DataBrowserEditor(Component aParent) {
+		super(aParent, ERDesignerBundle.DATABROWSER);
 
-        DefaultAction closeAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction closeAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandClose();
-                    }
-                }, this, ERDesignerBundle.CLOSE);
+					@Override
+					public void processActionEvent(ActionEvent e) {
+						commandClose();
+					}
+				}, this, ERDesignerBundle.CLOSE);
 
-        view.getCloseButton().setAction(closeAction);
+		view.getCloseButton().setAction(closeAction);
 
-        DefaultAction queryAction = new DefaultAction(
-                new ActionEventProcessor() {
+		DefaultAction queryAction = new DefaultAction(
+				new ActionEventProcessor() {
 
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandQuery();
-                    }
-                }, this, ERDesignerBundle.QUERY);
-        view.getQueryButton().setAction(queryAction);
-        view.getData().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+					@Override
+					public void processActionEvent(ActionEvent e) {
+						commandQuery();
+					}
+				}, this, ERDesignerBundle.QUERY);
+		view.getQueryButton().setAction(queryAction);
+		view.getData().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        initialize();
+		initialize();
 
-        sqlBindingInfo.setDefaultModel(new DataBrowserModel());
-        sqlBindingInfo.addBinding("sql", view.getSql(), true);
-        sqlBindingInfo.configure();
-    }
+		sqlBindingInfo.setDefaultModel(new DataBrowserModel());
+		sqlBindingInfo.addBinding("sql", view.getSql(), true);
+		sqlBindingInfo.configure();
+	}
 
-    public void initializeFor(final Table aTable) {
+	public void initializeFor(final Table aTable) {
 
-        currentModel = aTable.getOwner();
-        currentDialect = aTable.getOwner().getDialect();
+		currentModel = aTable.getOwner();
+		currentDialect = aTable.getOwner().getDialect();
 
-        Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
+		Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
 
-        DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
-        theModel.setSql(currentDialect.createSQLGenerator()
-                .createSelectAllScriptFor(aTable, theWhereValues));
-        sqlBindingInfo.model2view();
+		DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+		theModel.setSql(currentDialect.createSQLGenerator()
+				.createSelectAllScriptFor(aTable, theWhereValues));
+		sqlBindingInfo.model2view();
 
-        initializeContextMenu(aTable);
+		initializeContextMenu(aTable);
 
-        final String theSQL = theModel.getSql();
+		final String theSQL = theModel.getSql();
 
-        view.addBreadCrumb(aTable.getName(), new ActionListener() {
+		view.addBreadCrumb(aTable.getName(), new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-                sqlBindingInfo.getDefaultModel().setSql(theSQL);
-                sqlBindingInfo.model2view();
-                commandQuery();
+				sqlBindingInfo.getDefaultModel().setSql(theSQL);
+				sqlBindingInfo.model2view();
+				commandQuery();
 
-                initializeContextMenu(aTable);
-            }
-        });
+				initializeContextMenu(aTable);
+			}
+		});
 
-        commandQuery();
-    }
+		commandQuery();
+	}
 
-    private void initializeContextMenu(final Table aTable) {
-        DefaultPopupMenu theMenu = new DefaultPopupMenu();
+	private void initializeContextMenu(final Table aTable) {
+		DefaultPopupMenu theMenu = new DefaultPopupMenu();
 
-        Map<Table, JMenu> theMap = new HashMap<Table, JMenu>();
+		Map<Table, JMenu> theMap = new HashMap<Table, JMenu>();
 
-        for (Relation theRelation : currentModel.getRelations()
-                .getForeignKeysFor(aTable)) {
+		for (Relation theRelation : currentModel.getRelations()
+				.getForeignKeysFor(aTable)) {
 
-            final Relation theFinalRelation = theRelation;
+			final Relation theFinalRelation = theRelation;
 
-            Table theNavigationTarget = theRelation.getExportingTable();
+			Table theNavigationTarget = theRelation.getExportingTable();
 
-            JMenuItem theItem = new JMenuItem();
-            theItem.setText(getResourceHelper().getFormattedText(
-                    ERDesignerBundle.SHOWDATAOFUSING,
-                    theNavigationTarget.getName(), theFinalRelation.getName()));
+			JMenuItem theItem = new JMenuItem();
+			theItem.setText(getResourceHelper().getFormattedText(
+					ERDesignerBundle.SHOWDATAOFUSING,
+					theNavigationTarget.getName(), theFinalRelation.getName()));
 
-            theItem.addActionListener(new ActionListener() {
+			theItem.addActionListener(new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    navigateToWithForeignKey(theFinalRelation);
-                }
-            });
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					navigateToWithForeignKey(theFinalRelation);
+				}
+			});
 
-            JMenu theMenuToAdd = theMap.get(theNavigationTarget);
-            if (theMenuToAdd == null) {
-                theMenuToAdd = new JMenu(theNavigationTarget.getName());
-                theMap.put(theNavigationTarget, theMenuToAdd);
-            }
-            theMenuToAdd.add(theItem);
-        }
-
-        for (Relation theRelation : currentModel.getRelations()
-                .getExportedKeysFor(aTable)) {
-
-            final Relation theFinalRelation = theRelation;
-            Table theNavigationTarget = theRelation.getImportingTable();
-
-            JMenuItem theItem = new JMenuItem();
-            theItem.setText(getResourceHelper().getFormattedText(
-                    ERDesignerBundle.SHOWDATAOFUSING,
-                    theNavigationTarget.getName(), theFinalRelation.getName()));
-
-            theItem.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    navigateToWithImportingKey(theFinalRelation);
-                }
-            });
-
-            JMenu theMenuToAdd = theMap.get(theNavigationTarget);
-            if (theMenuToAdd == null) {
-                theMenuToAdd = new JMenu(theNavigationTarget.getName());
-                theMap.put(theNavigationTarget, theMenuToAdd);
-            }
-            theMenuToAdd.add(theItem);
-
-        }
-
-        if (theMap.size() > 0) {
-            for (Map.Entry<Table, JMenu> theEntry : theMap.entrySet()) {
-                theMenu.add(theEntry.getValue());
-            }
-        }
-        final JMenuItem theItem = new JMenuItem(getResourceHelper().getText(ERDesignerBundle.EDITROW));
-        theItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
-                    theEditor.setVisible(true);
-                } catch (SQLException ex) {
-                    logFatalError(ex);
-                }
-            }
-        });
-
-
-        // Deactivatred, will be available in future version
-        //if (theMap.size() > 0) {
-        //	theMenu.addSeparator();
-        //}
-        //theMenu.add(theItem);
-
-        view.getData().setContextMenu(theMenu);
-    }
-
-    public void initializeFor(View aView) {
-
-        currentModel = aView.getOwner();
-        currentDialect = aView.getOwner().getDialect();
-
-        DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
-        theModel.setSql(currentDialect.createSQLGenerator()
-                .createSelectAllScriptFor(aView));
-        sqlBindingInfo.model2view();
-
-        commandQuery();
-    }
-
-    private void navigateToWithForeignKey(final Relation aRelation) {
-        int theCurrentRow = view.getData().getSelectedRow();
-        if (theCurrentRow >= 0) {
-
-            Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
-            for (Map.Entry<IndexExpression, Attribute> theEntry : aRelation
-                    .getMapping().entrySet()) {
-
-                Attribute theAttribute = theEntry.getValue();
-                int theIndex = theAttribute.getOwner().getAttributes().indexOf(
-                        theAttribute);
-
-                Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
-
-                Attribute theKey = theEntry.getKey().getAttributeRef();
-                if (theKey != null) {
-                    theWhereValues.put(theKey, theValue);
-                }
-            }
+			JMenu theMenuToAdd = theMap.get(theNavigationTarget);
+			if (theMenuToAdd == null) {
+				theMenuToAdd = new JMenu(theNavigationTarget.getName());
+				theMap.put(theNavigationTarget, theMenuToAdd);
+			}
+			theMenuToAdd.add(theItem);
+		}
+
+		for (Relation theRelation : currentModel.getRelations()
+				.getExportedKeysFor(aTable)) {
+
+			final Relation theFinalRelation = theRelation;
+			Table theNavigationTarget = theRelation.getImportingTable();
+
+			JMenuItem theItem = new JMenuItem();
+			theItem.setText(getResourceHelper().getFormattedText(
+					ERDesignerBundle.SHOWDATAOFUSING,
+					theNavigationTarget.getName(), theFinalRelation.getName()));
+
+			theItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					navigateToWithImportingKey(theFinalRelation);
+				}
+			});
+
+			JMenu theMenuToAdd = theMap.get(theNavigationTarget);
+			if (theMenuToAdd == null) {
+				theMenuToAdd = new JMenu(theNavigationTarget.getName());
+				theMap.put(theNavigationTarget, theMenuToAdd);
+			}
+			theMenuToAdd.add(theItem);
+
+		}
+
+		if (theMap.size() > 0) {
+			for (Map.Entry<Table, JMenu> theEntry : theMap.entrySet()) {
+				theMenu.add(theEntry.getValue());
+			}
+		}
+		final JMenuItem theItem = new JMenuItem(getResourceHelper().getText(ERDesignerBundle.EDITROW));
+		theItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
+					theEditor.setVisible(true);
+				} catch (SQLException ex) {
+					logFatalError(ex);
+				}
+			}
+		});
+
+
+		// Deactivatred, will be available in future version
+		//if (theMap.size() > 0) {
+		//	theMenu.addSeparator();
+		//}
+		//theMenu.add(theItem);
+
+		view.getData().setContextMenu(theMenu);
+	}
+
+	public void initializeFor(View aView) {
+
+		currentModel = aView.getOwner();
+		currentDialect = aView.getOwner().getDialect();
+
+		DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+		theModel.setSql(currentDialect.createSQLGenerator()
+				.createSelectAllScriptFor(aView));
+		sqlBindingInfo.model2view();
+
+		commandQuery();
+	}
 
-            DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
-            theModel.setSql(currentDialect.createSQLGenerator()
-                    .createSelectAllScriptFor(aRelation.getExportingTable(),
-                            theWhereValues));
-            sqlBindingInfo.model2view();
-
-            initializeContextMenu(aRelation.getExportingTable());
+	private void navigateToWithForeignKey(final Relation aRelation) {
+		int theCurrentRow = view.getData().getSelectedRow();
+		if (theCurrentRow >= 0) {
 
-            commandQuery();
+			Map<Attribute<Table>, Object> theWhereValues = new HashMap<Attribute<Table>, Object>();
+			for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation
+					.getMapping().entrySet()) {
 
-            final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
+				Attribute<Table> theAttribute = theEntry.getValue();
+				int theIndex = theAttribute.getOwner().getAttributes().indexOf(
+						theAttribute);
 
-            view.addBreadCrumb(aRelation.getExportingTable().getName(),
-                    new ActionListener() {
+				Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
 
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+				Attribute<Table> theKey = theEntry.getKey().getAttributeRef();
+				if (theKey != null) {
+					theWhereValues.put(theKey, theValue);
+				}
+			}
 
-                            sqlBindingInfo.getDefaultModel().setSql(theSQL);
-                            sqlBindingInfo.model2view();
-                            commandQuery();
+			DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+			theModel.setSql(currentDialect.createSQLGenerator()
+					.createSelectAllScriptFor(aRelation.getExportingTable(),
+							theWhereValues));
+			sqlBindingInfo.model2view();
 
-                            initializeContextMenu(aRelation.getExportingTable());
-                        }
-                    });
+			initializeContextMenu(aRelation.getExportingTable());
 
-        }
-    }
-
-    private void navigateToWithImportingKey(final Relation aRelation) {
-        int theCurrentRow = view.getData().getSelectedRow();
-        if (theCurrentRow >= 0) {
+			commandQuery();
 
-            Map<Attribute, Object> theWhereValues = new HashMap<Attribute, Object>();
-            for (Map.Entry<IndexExpression, Attribute> theEntry : aRelation
-                    .getMapping().entrySet()) {
-                Attribute theAttribute = theEntry.getKey().getAttributeRef();
-                if (theAttribute != null) {
-                    int theIndex = theAttribute.getOwner().getAttributes()
-                            .indexOf(theAttribute);
-                    Object theValue = dataModel.getValueAt(theCurrentRow,
-                            theIndex);
+			final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
 
-                    theWhereValues.put(theEntry.getValue(), theValue);
-                }
-            }
+			view.addBreadCrumb(aRelation.getExportingTable().getName(),
+					new ActionListener() {
 
-            DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
-            theModel.setSql(currentDialect.createSQLGenerator()
-                    .createSelectAllScriptFor(aRelation.getImportingTable(),
-                            theWhereValues));
-            sqlBindingInfo.model2view();
+						@Override
+						public void actionPerformed(ActionEvent e) {
 
-            initializeContextMenu(aRelation.getImportingTable());
+							sqlBindingInfo.getDefaultModel().setSql(theSQL);
+							sqlBindingInfo.model2view();
+							commandQuery();
 
-            commandQuery();
+							initializeContextMenu(aRelation.getExportingTable());
+						}
+					});
 
-            final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
+		}
+	}
 
-            view.addBreadCrumb(aRelation.getImportingTable().getName(),
-                    new ActionListener() {
+	private void navigateToWithImportingKey(final Relation aRelation) {
+		int theCurrentRow = view.getData().getSelectedRow();
+		if (theCurrentRow >= 0) {
 
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+			Map<Attribute<Table>, Object> theWhereValues = new HashMap<Attribute<Table>, Object>();
+			for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation.getMapping().entrySet()) {
+				Attribute<Table> theAttribute = theEntry.getKey().getAttributeRef();
+				if (theAttribute != null) {
+					int theIndex = theAttribute.getOwner().getAttributes().indexOf(theAttribute);
+					Object theValue = dataModel.getValueAt(theCurrentRow, theIndex);
 
-                            sqlBindingInfo.getDefaultModel().setSql(theSQL);
-                            sqlBindingInfo.model2view();
-                            commandQuery();
+					theWhereValues.put(theEntry.getValue(), theValue);
+				}
+			}
 
-                            initializeContextMenu(aRelation.getImportingTable());
-                        }
-                    });
-        }
-    }
+			DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
+			theModel.setSql(currentDialect.createSQLGenerator()
+					.createSelectAllScriptFor(aRelation.getImportingTable(),
+							theWhereValues));
+			sqlBindingInfo.model2view();
 
-    private void initialize() {
+			initializeContextMenu(aRelation.getImportingTable());
 
-        setContentPane(view);
-        setResizable(true);
+			commandQuery();
 
-        pack();
+			final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
 
-        ApplicationPreferences.getInstance().setWindowSize(
-                getClass().getSimpleName(), this);
+			view.addBreadCrumb(aRelation.getImportingTable().getName(),
+					new ActionListener() {
 
-        UIInitializer.getInstance().initialize(this);
-    }
+						@Override
+						public void actionPerformed(ActionEvent e) {
 
-    @Override
-    public void applyValues() throws Exception {
-    }
+							sqlBindingInfo.getDefaultModel().setSql(theSQL);
+							sqlBindingInfo.model2view();
+							commandQuery();
 
-    private void commandQuery() {
+							initializeContextMenu(aRelation.getImportingTable());
+						}
+					});
+		}
+	}
 
-        if (sqlBindingInfo.validate().isEmpty()) {
+	private void initialize() {
 
-            sqlBindingInfo.view2model();
+		setContentPane(view);
+		setResizable(true);
 
-            try {
-                if (connection == null) {
-                    connection = currentModel.createConnection();
-                }
-                if (statement == null) {
-                    statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                }
+		pack();
 
-                ResultSet theResult = statement.executeQuery(sqlBindingInfo
-                        .getDefaultModel().getSql());
+		ApplicationPreferences.getInstance().setWindowSize(
+				getClass().getSimpleName(), this);
 
-                if (dataModel != null) {
-                    dataModel.cleanup();
-                }
+		UIInitializer.getInstance().initialize(this);
+	}
 
-                dataModel = new PaginationDataModel(currentDialect, view
-                        .getData(), theResult);
-                dataModel.seekToRow(5);
+	@Override
+	public void applyValues() throws Exception {
+	}
 
-                view.getData().setModel(dataModel);
-                view.getData().getTableHeader().setReorderingAllowed(false);
+	private void commandQuery() {
 
-                dataModel
-                        .addSeekListener(new PaginationDataModel.SeekListener() {
+		if (sqlBindingInfo.validate().isEmpty()) {
 
-                            @Override
-                            public void seeked() {
-                                updateTableColumnWIdth();
-                            }
-                        });
+			sqlBindingInfo.view2model();
 
-                updateTableColumnWIdth();
+			try {
+				if (connection == null) {
+					connection = currentModel.createConnection();
+				}
+				if (statement == null) {
+					statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				}
 
-            } catch (Exception e) {
-                logFatalError(e);
-            }
-        }
+				ResultSet theResult = statement.executeQuery(sqlBindingInfo
+						.getDefaultModel().getSql());
 
-    }
+				if (dataModel != null) {
+					dataModel.cleanup();
+				}
 
-    private void updateTableColumnWIdth() {
-        FontMetrics theMetrics = getFontMetrics(getFont());
-        int theWWidth = theMetrics.stringWidth("W");
+				dataModel = new PaginationDataModel(currentDialect, view
+						.getData(), theResult);
+				dataModel.seekToRow(5);
 
-        for (int i = 0; i < dataModel.getColumnCount(); i++) {
+				view.getData().setModel(dataModel);
+				view.getData().getTableHeader().setReorderingAllowed(false);
 
-            TableColumn theColumn = view.getData().getColumnModel()
-                    .getColumn(i);
+				dataModel
+						.addSeekListener(new PaginationDataModel.SeekListener() {
 
-            theColumn.setCellRenderer(DefaultCellRenderer.getInstance());
+							@Override
+							public void seeked() {
+								updateTableColumnWIdth();
+							}
+						});
 
-            int theTextWidth = dataModel.computeColumnWidth(i);
-            int theHeaderWidth = theColumn.getHeaderValue().toString().length();
+				updateTableColumnWIdth();
 
-            theColumn.setPreferredWidth(theWWidth
-                    * Math.max(theTextWidth, theHeaderWidth));
-        }
-    }
+			} catch (Exception e) {
+				logFatalError(e);
+			}
+		}
 
-    private void commandClose() {
+	}
 
-        if (dataModel != null) {
-            dataModel.cleanup();
-        }
+	private void updateTableColumnWIdth() {
+		FontMetrics theMetrics = getFontMetrics(getFont());
+		int theWWidth = theMetrics.stringWidth("W");
 
-        JDBCUtils.closeQuietly(statement);
-        JDBCUtils.closeQuietly(connection);
+		for (int i = 0; i < dataModel.getColumnCount(); i++) {
 
-        ApplicationPreferences.getInstance().updateWindowSize(
-                getClass().getSimpleName(), this);
-        setModalResult(DialogConstants.MODAL_RESULT_OK);
-    }
+			TableColumn theColumn = view.getData().getColumnModel()
+					.getColumn(i);
+
+			theColumn.setCellRenderer(DefaultCellRenderer.getInstance());
+
+			int theTextWidth = dataModel.computeColumnWidth(i);
+			int theHeaderWidth = theColumn.getHeaderValue().toString().length();
+
+			theColumn.setPreferredWidth(theWWidth
+					* Math.max(theTextWidth, theHeaderWidth));
+		}
+	}
+
+	private void commandClose() {
+
+		if (dataModel != null) {
+			dataModel.cleanup();
+		}
+
+		JDBCUtils.closeQuietly(statement);
+		JDBCUtils.closeQuietly(connection);
+
+		ApplicationPreferences.getInstance().updateWindowSize(
+				getClass().getSimpleName(), this);
+		setModalResult(DialogConstants.MODAL_RESULT_OK);
+	}
 }

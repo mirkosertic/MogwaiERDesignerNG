@@ -31,74 +31,73 @@ import java.text.MessageFormat;
 
 public class AddRelationCommand extends UICommand {
 
-    private final Table exportingTable;
+	private final Table exportingTable;
 
-    private final Table importingTable;
+	private final Table importingTable;
 
-    public AddRelationCommand(Table aImportingCell, Table aExportingCell) {
-        exportingTable = aExportingCell;
-        importingTable = aImportingCell;
-    }
+	public AddRelationCommand(Table aImportingCell, Table aExportingCell) {
+		exportingTable = aExportingCell;
+		importingTable = aImportingCell;
+	}
 
-    @Override
-    public void execute() {
+	@Override
+	public void execute() {
 
-        Relation theRelation = createPreparedRelationFor(importingTable,
-                exportingTable);
+		Relation theRelation = createPreparedRelationFor(importingTable,
+				exportingTable);
 
-        RelationEditor theEditor = new RelationEditor(importingTable
-                .getOwner(), getDetailComponent());
-        theEditor.initializeFor(theRelation);
+		RelationEditor theEditor = new RelationEditor(importingTable
+				.getOwner(), getDetailComponent());
+		theEditor.initializeFor(theRelation);
 
-        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+		if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 
-            try {
+			try {
 
-                theEditor.applyValues();
+				theEditor.applyValues();
 
-                ERDesignerComponent.getDefault().commandCreateRelation(theRelation);
+				ERDesignerComponent.getDefault().commandCreateRelation(theRelation);
 
-                refreshDisplayAndOutline();
-            } catch (Exception e) {
-                getWorldConnector().notifyAboutException(e);
-            }
-        }
-    }
+				refreshDisplayAndOutline();
+			} catch (Exception e) {
+				getWorldConnector().notifyAboutException(e);
+			}
+		}
+	}
 
-    private Relation createPreparedRelationFor(Table aSourceTable,
-                                               Table aTargetTable) {
-        Relation theRelation = new Relation();
-        theRelation.setImportingTable(aSourceTable);
-        theRelation.setExportingTable(aTargetTable);
-        theRelation.setOnUpdate(ApplicationPreferences.getInstance()
-                .getOnUpdateDefault());
-        theRelation.setOnDelete(ApplicationPreferences.getInstance()
-                .getOnDeleteDefault());
+	private Relation createPreparedRelationFor(Table aSourceTable,
+											   Table aTargetTable) {
+		Relation theRelation = new Relation();
+		theRelation.setImportingTable(aSourceTable);
+		theRelation.setExportingTable(aTargetTable);
+		theRelation.setOnUpdate(ApplicationPreferences.getInstance()
+				.getOnUpdateDefault());
+		theRelation.setOnDelete(ApplicationPreferences.getInstance()
+				.getOnDeleteDefault());
 
-        String thePattern = ApplicationPreferences.getInstance()
-                .getAutomaticRelationAttributePattern();
-        String theTargetTableName = ERDesignerComponent.getDefault().getModel().getDialect()
-                .getCastType().cast(aTargetTable.getName());
+		String thePattern = ApplicationPreferences.getInstance()
+				.getAutomaticRelationAttributePattern();
+		String theTargetTableName = ERDesignerComponent.getDefault().getModel().getDialect()
+				.getCastType().cast(aTargetTable.getName());
 
-        // Create the foreign key suggestions
-        Index thePrimaryKey = aTargetTable.getPrimarykey();
-        for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
-            Attribute theAttribute = theExpression.getAttributeRef();
-            if (theAttribute != null) {
-                String theNewname = MessageFormat.format(thePattern,
-                        theTargetTableName, theAttribute.getName());
-                Attribute theNewAttribute = aSourceTable.getAttributes()
-                        .findByName(theNewname);
-                if (theNewAttribute == null) {
-                    theNewAttribute = theAttribute.clone();
-                    theNewAttribute.setSystemId(ModelUtilities
-                            .createSystemIdFor());
-                    theNewAttribute.setOwner(null);
-                    theNewAttribute.setName(theNewname);
-                }
-                theRelation.getMapping().put(theExpression, theNewAttribute);
-            }
-        }
-        return theRelation;
-    }
+		// Create the foreign key suggestions
+		Index thePrimaryKey = aTargetTable.getPrimarykey();
+		for (IndexExpression theExpression : thePrimaryKey.getExpressions()) {
+			Attribute<Table> theAttribute = theExpression.getAttributeRef();
+			if (theAttribute != null) {
+				String theNewname = MessageFormat.format(thePattern,
+						theTargetTableName, theAttribute.getName());
+				Attribute<Table> theNewAttribute = aSourceTable.getAttributes().findByName(theNewname);
+				if (theNewAttribute == null) {
+					theNewAttribute = theAttribute.clone();
+					theNewAttribute.setSystemId(ModelUtilities
+							.createSystemIdFor());
+					theNewAttribute.setOwner(null);
+					theNewAttribute.setName(theNewname);
+				}
+				theRelation.getMapping().put(theExpression, theNewAttribute);
+			}
+		}
+		return theRelation;
+	}
 }

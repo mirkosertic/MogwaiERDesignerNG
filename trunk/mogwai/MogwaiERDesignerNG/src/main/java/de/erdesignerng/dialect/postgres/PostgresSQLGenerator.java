@@ -65,8 +65,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
-
+	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
 		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();
@@ -85,8 +84,7 @@ public class PostgresSQLGenerator extends SQL92SQLGenerator<PostgresDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
-
+	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
 		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();
