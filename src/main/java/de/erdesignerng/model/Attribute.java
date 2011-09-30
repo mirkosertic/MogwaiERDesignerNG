@@ -23,8 +23,7 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
-public class Attribute extends OwnedModelItem<Table> implements
-		ModelItemCloneable<Attribute> {
+public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements ModelItemCloneable<Attribute<T>> {
 
 	public static final int DEFAULT_SCALE = 10;
 
@@ -55,9 +54,10 @@ public class Attribute extends OwnedModelItem<Table> implements
 	 * @return true if yes, else false
 	 */
 	public boolean isForeignKey() {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			return theOwner.isForeignKey(this);
+		ModelItem theOwner = getOwner();
+
+		if ((theOwner != null) && (theOwner instanceof Table)) {
+			return ((Table) theOwner).isForeignKey((Attribute<Table>) this);
 		}
 
 		return false;
@@ -69,9 +69,10 @@ public class Attribute extends OwnedModelItem<Table> implements
 	 * @return true if yes, else false
 	 */
 	public boolean isPrimaryKey() {
-		Table theOwner = getOwner();
-		if (theOwner != null) {
-			return theOwner.isPrimaryKey(this);
+		ModelItem theOwner = getOwner();
+
+		if ((theOwner != null) && (theOwner instanceof Table)) {
+			return ((Table) theOwner).isPrimaryKey((Attribute<Table>)this);
 		}
 
 		return false;
@@ -140,8 +141,9 @@ public class Attribute extends OwnedModelItem<Table> implements
 	}
 
 	@Override
-	public Attribute clone() {
-		Attribute theAttribute = new Attribute();
+	public Attribute<T> clone() {
+		Attribute<T> theAttribute = new Attribute<T>();
+
 		theAttribute.setSystemId(getSystemId());
 		theAttribute.setOwner(getOwner());
 		theAttribute.setName(getName());
@@ -153,11 +155,12 @@ public class Attribute extends OwnedModelItem<Table> implements
 		theAttribute.setDefaultValue(getDefaultValue());
 		theAttribute.setComment(getComment());
 		theAttribute.setExtra(getExtra());
+
 		return theAttribute;
 	}
 
 	@Override
-	public void restoreFrom(Attribute aValue) {
+	public void restoreFrom(Attribute<T> aValue) {
 		setName(aValue.getName());
 		setDatatype(aValue.getDatatype());
 		setSize(aValue.getSize());
@@ -170,7 +173,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 		setOwner(aValue.getOwner());
 	}
 
-	public boolean isModified(Attribute aAttribute, boolean aUseConcreteDataType) {
+	public boolean isModified(Attribute<T> aAttribute, boolean aUseConcreteDataType) {
 
 		if (!getName().equals(aAttribute.getName())) {
 			return true;
@@ -247,7 +250,7 @@ public class Attribute extends OwnedModelItem<Table> implements
 	 * @param aAttribute the new attribute
 	 * @return true if it was renamed, else false
 	 */
-	public boolean isRenamed(Attribute aAttribute) {
+	public boolean isRenamed(Attribute<T> aAttribute) {
 		return !getName().equals(aAttribute.getName());
 	}
 

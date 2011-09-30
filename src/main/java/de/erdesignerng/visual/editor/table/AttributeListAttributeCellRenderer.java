@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.editor.table;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.IconFactory;
 import de.mogwai.common.client.looks.UIInitializer;
 import java.awt.*;
@@ -33,76 +34,76 @@ import javax.swing.table.TableCellRenderer;
  */
 public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 
-    private static final ImageIcon KEYICON = IconFactory.getKeyIcon();
+	private static final ImageIcon KEYICON = IconFactory.getKeyIcon();
 
-    private final JPanel panel;
+	private final JPanel panel;
 
-    private final JPanel labelPanel;
+	private final JPanel labelPanel;
 
-    private final JLabel label;
+	private final JLabel label;
 
-    private final JLabel keyLabel;
+	private final JLabel keyLabel;
 
-    private TableEditor editor;
+	private TableEditor editor;
 
-    public AttributeListAttributeCellRenderer(TableEditor aEditor) {
+	public AttributeListAttributeCellRenderer(TableEditor aEditor) {
 
-        editor = aEditor;
+		editor = aEditor;
 
-        panel = new JPanel(new BorderLayout());
-        labelPanel = new JPanel(new BorderLayout());
+		panel = new JPanel(new BorderLayout());
+		labelPanel = new JPanel(new BorderLayout());
 
-        label = new JLabel();
-        label.setFont(label.getFont().deriveFont(Font.PLAIN));
-        labelPanel.add(label);
+		label = new JLabel();
+		label.setFont(label.getFont().deriveFont(Font.PLAIN));
+		labelPanel.add(label);
 
-        panel.add(labelPanel);
-        panel.setOpaque(true);
-        labelPanel.setOpaque(true);
+		panel.add(labelPanel);
+		panel.setOpaque(true);
+		labelPanel.setOpaque(true);
 
-        JPanel theLeft = new JPanel(new BorderLayout());
-        keyLabel = new JLabel(KEYICON);
-        theLeft.add(keyLabel);
-        theLeft.setSize(20, 10);
-        theLeft.setPreferredSize(new Dimension(10, 10));
-        theLeft.setOpaque(false);
+		JPanel theLeft = new JPanel(new BorderLayout());
+		keyLabel = new JLabel(KEYICON);
+		theLeft.add(keyLabel);
+		theLeft.setSize(20, 10);
+		theLeft.setPreferredSize(new Dimension(10, 10));
+		theLeft.setOpaque(false);
 
-        panel.add(theLeft, BorderLayout.WEST);
+		panel.add(theLeft, BorderLayout.WEST);
 
-        labelPanel.setBackground(new Color(221, 221, 233));
-    }
+		labelPanel.setBackground(new Color(221, 221, 233));
+	}
 
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-        AttributeTableModel theModel = (AttributeTableModel) table.getModel();
-        Attribute theAttribute = theModel.getRow(row);
+		AttributeTableModel theModel = (AttributeTableModel) table.getModel();
+		Attribute<Table> theAttribute = theModel.getRow(row);
 
-        label.setText(theAttribute.getName());
-        label.setForeground(Color.black);
+		label.setText(theAttribute.getName());
+		label.setForeground(Color.black);
 
-        boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
+		boolean isPrimaryKey = editor.isPrimaryKey(theAttribute);
 
-        if (isPrimaryKey || theAttribute.isForeignKey()) {
-            label.setForeground(Color.red);
-        }
+		if (isPrimaryKey || theAttribute.isForeignKey()) {
+			label.setForeground(Color.red);
+		}
 
-        keyLabel.setVisible(isPrimaryKey);
+		keyLabel.setVisible(isPrimaryKey);
 
-        UIInitializer initializer = UIInitializer.getInstance();
+		UIInitializer initializer = UIInitializer.getInstance();
 
-        if (isSelected) {
-            labelPanel.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
-            labelPanel.setForeground(initializer.getConfiguration().getDefaultListSelectionForeground());
-            keyLabel.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
-            keyLabel.setForeground(initializer.getConfiguration().getDefaultListSelectionForeground());
-        } else {
-            labelPanel.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
-            labelPanel.setForeground(initializer.getConfiguration().getDefaultListNonSelectionForeground());
-            keyLabel.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
-            keyLabel.setForeground(initializer.getConfiguration().getDefaultListNonSelectionForeground());
-        }
+		if (isSelected) {
+			labelPanel.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
+			labelPanel.setForeground(initializer.getConfiguration().getDefaultListSelectionForeground());
+			keyLabel.setBackground(initializer.getConfiguration().getDefaultListSelectionBackground());
+			keyLabel.setForeground(initializer.getConfiguration().getDefaultListSelectionForeground());
+		} else {
+			labelPanel.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
+			labelPanel.setForeground(initializer.getConfiguration().getDefaultListNonSelectionForeground());
+			keyLabel.setBackground(initializer.getConfiguration().getDefaultListNonSelectionBackground());
+			keyLabel.setForeground(initializer.getConfiguration().getDefaultListNonSelectionForeground());
+		}
 
-        return panel;
-    }
+		return panel;
+	}
 }

@@ -31,30 +31,30 @@ import java.sql.Types;
  */
 public class CustomType extends OwnedModelItem<Model> implements ModelItemCloneable<CustomType>, DataType {
 
-    // The schema of the custom type
-    private String schema;
+	// The schema of the custom type
+	private String schema;
 
-    // The DDL Part to create the custom type, the part after the
-    // "CREATE TYPE <name> AS "
-    private String sqlDefinition;
+	// The DDL Part to create the custom type, the part after the
+	// "CREATE TYPE <name> AS "
+	private String sqlDefinition;
 
 	private String alias;
 
 	// The type of the CustomType
 	private CustomTypeType type;
 
-	private AttributeList attributes = new AttributeList();
+	private AttributeList<CustomType> attributes = new AttributeList<CustomType>();
 
-    public CustomType() {
-    }
+	public CustomType() {
+	}
 
-    public String getSchema() {
-        return schema;
-    }
+	public String getSchema() {
+		return schema;
+	}
 
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 
 	public String getAlias() {
 		return alias;
@@ -64,7 +64,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		this.alias = alias;
 	}
 
-    public String getSqlDefinition() {
+	public String getSqlDefinition() {
 		StringBuilder theSQL = new StringBuilder();
 
 		switch (this.type) {
@@ -72,7 +72,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 				if (attributes.size() > 0) {
 					theSQL.append("ENUM (");
 					for (int i = 0; i < attributes.size(); i++) {
-						Attribute theAttribute = attributes.elementAt(i);
+						Attribute<CustomType> theAttribute = attributes.elementAt(i);
 
 						if (i > 0) {
 							theSQL.append(",");
@@ -89,7 +89,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 				if (attributes.size() > 0) {
 					theSQL.append("(");
 					for (int i = 0; i < attributes.size(); i++) {
-						Attribute theAttribute = attributes.elementAt(i);
+						Attribute<CustomType> theAttribute = attributes.elementAt(i);
 
 						if (i > 0) {
 							theSQL.append(",");
@@ -111,11 +111,12 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 			default:
 		}
 
-        return theSQL.toString();
-    }
+		return theSQL.toString();
+	}
 
-    public void setSqlDefinition(String sqlDefinition) {
-        this.sqlDefinition = sqlDefinition;
+	@Deprecated
+	public void setSqlDefinition(String sqlDefinition) {
+		this.sqlDefinition = sqlDefinition;
 	}
 
 	public void setType(CustomTypeType type) {
@@ -126,94 +127,92 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		return type;
 	}
 
-    public void addAttribute(Model aModel, Attribute aAttribute) throws ElementAlreadyExistsException,
-            ElementInvalidNameException {
+	public void addAttribute(Model aModel, Attribute<CustomType> aAttribute) throws ElementAlreadyExistsException, ElementInvalidNameException {
+		ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
 
-        ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
+		aAttribute.setOwner(this);
+		attributes.add(aAttribute);
+	}
 
-//        aAttribute.setOwner(this);
-        attributes.add(aAttribute);
-    }
-
-    public AttributeList getAttributes() {
-        return attributes;
+	public AttributeList getAttributes() {
+		return attributes;
 	}
 
 	public void setAttributes(AttributeList attributes) {
 		this.attributes = attributes;
 	}
 
-    @Override
-    public CustomType clone() {
-        CustomType theCustomType = new CustomType();
-        theCustomType.setSystemId(getSystemId());
-        theCustomType.setName(getName());
+	@Override
+	public CustomType clone() {
+		CustomType theCustomType = new CustomType();
+		theCustomType.setSystemId(getSystemId());
+		theCustomType.setName(getName());
 		theCustomType.setAttributes(getAttributes());
 		theCustomType.setType(getType());
 
-        return theCustomType;
-    }
+		return theCustomType;
+	}
 
-    @Override
-    public void restoreFrom(CustomType aCustomType) {
-        setSystemId(aCustomType.getSystemId());
-        setName(aCustomType.getName());
+	@Override
+	public void restoreFrom(CustomType aCustomType) {
+		setSystemId(aCustomType.getSystemId());
+		setName(aCustomType.getName());
 		setAttributes(aCustomType.getAttributes());
 		setType(aCustomType.getType());
-    }
+	}
 
-    @Override
-    public boolean isDomain() {
-        return false;
-    }
+	@Override
+	public boolean isDomain() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsSize() {
-        return false;
-    }
+	@Override
+	public boolean supportsSize() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsFraction() {
-        return false;
-    }
+	@Override
+	public boolean supportsFraction() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsScale() {
-        return false;
-    }
+	@Override
+	public boolean supportsScale() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsExtra() {
-        return false;
-    }
+	@Override
+	public boolean supportsExtra() {
+		return false;
+	}
 
-    @Override
-    public boolean isJDBCStringType() {
-        return false;
-    }
+	@Override
+	public boolean isJDBCStringType() {
+		return false;
+	}
 
-    @Override
-    public String createTypeDefinitionFor(Attribute aAttribute) {
-        return getName();
-    }
+	@Override
+	public String createTypeDefinitionFor(Attribute aAttribute) {
+		return getName();
+	}
 
-    @Override
-    public boolean isIdentity() {
-        return false;
-    }
+	@Override
+	public boolean isIdentity() {
+		return false;
+	}
 
-    @Override
-    public int[] getJDBCType() {
-        return new int[]{Types.OTHER};
-    }
+	@Override
+	public int[] getJDBCType() {
+		return new int[]{Types.OTHER};
+	}
 
-    @Override
-    public String getDefinition() {
-        return "";
-    }
+	@Override
+	public String getDefinition() {
+		return "";
+	}
 
-    @Override
-    public boolean isSpatial() {
-        return false;
-    }
+	@Override
+	public boolean isSpatial() {
+		return false;
+	}
 }

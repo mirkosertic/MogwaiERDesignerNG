@@ -74,7 +74,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 			// Implement Unit Tests here
 			Table theTable = theModel.getTables().findByName("Table1");
 			assertTrue(theTable != null);
-			Attribute theAttribute = theTable.getAttributes().findByName("tb2_1");
+			Attribute<Table> theAttribute = theTable.getAttributes().findByName("tb2_1");
 			assertTrue(theAttribute != null);
 			assertTrue(!theAttribute.isNullable());
 			assertTrue(theAttribute.getDatatype().getName().equals("varchar"));
@@ -113,7 +113,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 			assertTrue("Table2".equals(theRelation.getExportingTable().getName()));
 
 			assertTrue(theRelation.getMapping().size() == 1);
-			Map.Entry<IndexExpression, Attribute> theEntry = theRelation.getMapping().entrySet().iterator().next();
+			Map.Entry<IndexExpression, Attribute<Table>> theEntry = theRelation.getMapping().entrySet().iterator().next();
 			assertTrue("tb2_1".equals(theEntry.getValue().getName()));
 			assertTrue("tb3_1".equals(theEntry.getKey().getAttributeRef().getName()));
 

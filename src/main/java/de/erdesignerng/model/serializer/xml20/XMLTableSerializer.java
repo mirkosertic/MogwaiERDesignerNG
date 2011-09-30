@@ -45,7 +45,7 @@ public class XMLTableSerializer extends de.erdesignerng.model.serializer.xml10.X
 		theTableElement.setAttribute(SCHEMA, aTable.getSchema());
 
 		// Attribute serialisieren
-		for (Attribute theAttribute : aTable.getAttributes()) {
+		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
 			getXMLModelSerializer().getXMLAttributeSerializer().serialize(theAttribute, aDocument, theTableElement);
 		}
 

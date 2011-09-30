@@ -20,6 +20,7 @@ package de.erdesignerng.visual.editor.relation;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 
+import de.erdesignerng.model.Table;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -31,14 +32,14 @@ public class AttributeTableModel implements TableModel {
 
 	private final Index primaryKey;
 
-	private final Attribute[] assignedAttributes;
+	private final Attribute<Table>[] assignedAttributes;
 
 	private final String primaryKeyTableName;
 
 	private final String assignedTableName;
 
 	public AttributeTableModel(String aPrimaryEntityName, String aSecondaryEntityName, Index aPrimaryKey,
-			Attribute[] aSecondaryKey) {
+			Attribute<Table>[] aSecondaryKey) {
 		primaryKey = aPrimaryKey;
 		assignedAttributes = aSecondaryKey;
 		primaryKeyTableName = aPrimaryEntityName;
@@ -83,7 +84,7 @@ public class AttributeTableModel implements TableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int aRow, int aColumn) {
-		assignedAttributes[aRow] = (Attribute) aValue;
+		assignedAttributes[aRow] = (Attribute<Table>) aValue;
 	}
 
 	@Override

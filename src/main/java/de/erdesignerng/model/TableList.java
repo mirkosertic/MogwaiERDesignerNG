@@ -32,9 +32,9 @@ public class TableList extends ModelItemVector<Table> {
 	 *			the system id
 	 * @return the attribute or null if nothing was found
 	 */
-	public Attribute findAttributeBySystemId(String aSystemId) {
+	public Attribute<Table> findAttributeBySystemId(String aSystemId) {
 		for (Table theTable : this) {
-			Attribute theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
+			Attribute<Table> theAttribute = theTable.getAttributes().findBySystemId(aSystemId);
 			if (theAttribute != null) {
 				return theAttribute;
 			}

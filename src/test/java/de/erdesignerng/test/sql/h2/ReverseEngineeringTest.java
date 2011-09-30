@@ -63,7 +63,7 @@ public class ReverseEngineeringTest extends AbstractReverseEngineeringTestImpl {
 			// Implement Unit Tests here
 			Table theTable = theModel.getTables().findByNameAndSchema("TABLE1", "SCHEMAA");
 			assertTrue(theTable != null);
-			Attribute theAttribute = theTable.getAttributes().findByName("TB1_1");
+			Attribute<Table> theAttribute = theTable.getAttributes().findByName("TB1_1");
 			assertTrue(theAttribute != null);
 			assertTrue(!theAttribute.isNullable());
 			assertTrue(theAttribute.getDatatype().getName().equals("varchar"));

@@ -25,7 +25,7 @@ import de.erdesignerng.dialect.DataType;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-15 19:22:43 $
  */
-public class AttributeList extends ModelItemVector<Attribute> {
+public class AttributeList<T extends ModelItem> extends ModelItemVector<Attribute<T>> {
 
 	private static final long serialVersionUID = 890361971577085178L;
 
@@ -37,7 +37,7 @@ public class AttributeList extends ModelItemVector<Attribute> {
 	 * @return true if yes, else false
 	 */
 	public boolean isDomainInUse(Domain aDomain) {
-		for (Attribute theAttribute : this) {
+		for (Attribute<T> theAttribute : this) {
 			DataType theType = theAttribute.getDatatype();
 			if (theType.isDomain()) {
 				if (aDomain.getSystemId().equals(((Domain) theType).getSystemId())) {
