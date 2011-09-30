@@ -19,12 +19,11 @@ package de.erdesignerng.model;
 
 import org.apache.commons.lang.StringUtils;
 
-public class IndexExpression extends ModelItem implements
-		ModelItemCloneable<IndexExpression> {
+public class IndexExpression extends ModelItem implements ModelItemCloneable<IndexExpression> {
 
 	private String expression;
 
-	private Attribute attributeRef;
+	private Attribute<Table> attributeRef;
 
 	/**
 	 * Gibt den Wert des Attributs <code>expression</code> zur�ck.
@@ -50,7 +49,7 @@ public class IndexExpression extends ModelItem implements
 	 * 
 	 * @return Wert des Attributs attributeRef.
 	 */
-	public Attribute getAttributeRef() {
+	public Attribute<Table> getAttributeRef() {
 		return attributeRef;
 	}
 
@@ -60,7 +59,7 @@ public class IndexExpression extends ModelItem implements
 	 * @param attributeRef
 	 *			Wert f�r das Attribut attributeRef.
 	 */
-	public void setAttributeRef(Attribute attributeRef) {
+	public void setAttributeRef(Attribute<Table> attributeRef) {
 		this.attributeRef = attributeRef;
 	}
 
@@ -79,9 +78,9 @@ public class IndexExpression extends ModelItem implements
 	public void restoreFrom(IndexExpression aValue) {
 		expression = aValue.getExpression();
 		setSystemId(aValue.getSystemId());
-		Attribute theAttributeRef = aValue.getAttributeRef();
+		Attribute<Table> theAttributeRef = aValue.getAttributeRef();
 		if (theAttributeRef != null) {
-			Attribute theNewAttribute = new Attribute();
+			Attribute<Table> theNewAttribute = new Attribute<Table>();
 			theNewAttribute.restoreFrom(theAttributeRef);
 			attributeRef = theNewAttribute;
 		} else {

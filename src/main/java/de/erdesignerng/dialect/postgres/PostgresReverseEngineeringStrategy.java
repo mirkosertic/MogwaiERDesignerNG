@@ -30,6 +30,7 @@ import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.CustomTypeType;
 import de.erdesignerng.model.Domain;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.mogwai.common.i18n.ResourceHelper;
@@ -76,9 +77,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 	// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length
 	// wrong
 	@Override
-	protected void reverseEngineerAttribute(Attribute aAttribute,
-			TableEntry aTableEntry,
-			Connection aConnection) throws SQLException {
+	protected void reverseEngineerAttribute(Attribute<Table> aAttribute, TableEntry aTableEntry, Connection aConnection) throws SQLException {
 
 		if ((aAttribute.getDatatype().getName().equalsIgnoreCase("varchar"))
 				|| (aAttribute.getDatatype().getName().equalsIgnoreCase("character varying"))) {
@@ -182,7 +181,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 										} catch (Exception e) {
 										}
 
-										Attribute theAttribute = new Attribute();
+										Attribute<CustomType> theAttribute = new Attribute<CustomType>();
 										theAttribute.setName(theAttributeName);
 										theAttribute.setDatatype(null);
 
@@ -256,7 +255,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 										} catch (Exception e) {
 										}
 
-										Attribute theAttribute = new Attribute();
+										Attribute<CustomType> theAttribute = new Attribute<CustomType>();
 										theAttribute.setName(theAttributeName);
 										theAttribute.setDatatype(theDataType);
 
@@ -362,7 +361,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 	// Bug Fixing 3317547 [ERDesignerNG] Error during RevEnging Postgres-DB ('Cannot find table in model')
 	@Override
 	protected String getEscapedPattern(DatabaseMetaData aMetaData, String aValue) throws SQLException {
-        String thePrefix = aMetaData.getSearchStringEscape();
+		String thePrefix = aMetaData.getSearchStringEscape();
 
 		//related to a bug in some PostgreSQL JDBC driver versions
 		//see: http://archives.postgresql.org/pgsql-bugs/2007-03/msg00035.php
@@ -370,11 +369,11 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 			thePrefix = StringEscapeUtils.unescapeJava(thePrefix) ;
 		}
 
-        if (!StringUtils.isEmpty(thePrefix) && !StringUtils.isEmpty(aValue)) {
-            aValue = aValue.replace("_", thePrefix + "_");
-            aValue = aValue.replace("%", thePrefix + "%");
-        }
+		if (!StringUtils.isEmpty(thePrefix) && !StringUtils.isEmpty(aValue)) {
+			aValue = aValue.replace("_", thePrefix + "_");
+			aValue = aValue.replace("%", thePrefix + "%");
+		}
 
-        return aValue;
-    }
+		return aValue;
+	}
 }

@@ -58,7 +58,7 @@ public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml
 		for (int j = 0; j < theAttributes.getLength(); j++) {
 			Element theAttributeElement = (Element) theAttributes.item(j);
 
-			Attribute theAttribute = new Attribute();
+			Attribute<Table> theAttribute = new Attribute<Table>();
 			theAttribute.setOwner(aTable);
 
 			deserializeProperties(theAttributeElement, theAttribute);

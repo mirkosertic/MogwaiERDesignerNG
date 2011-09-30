@@ -25,17 +25,18 @@ package de.erdesignerng.model;
  */
 public class ViewAttribute extends ModelItem {
 
-    /**
-     * Clone the view attribute.
-     *
-     * @return the attribute.
-     */
-    public ViewAttribute clone() {
-        ViewAttribute theAttribute = new ViewAttribute();
-        theAttribute.setSystemId(getSystemId());
-        theAttribute.setComment(getComment());
-        theAttribute.setName(getName());
-        theAttribute.setOriginalName(getOriginalName());
-        return theAttribute;
-    }
+	/**
+	 * Clone the view attribute.
+	 *
+	 * @return the attribute.
+	 */
+	@Override
+	public ViewAttribute clone() {
+		ViewAttribute theAttribute = new ViewAttribute();
+		theAttribute.setSystemId(getSystemId());
+		theAttribute.setComment(getComment());
+		theAttribute.setName(getName());
+		theAttribute.setOriginalName(getOriginalName());
+		return theAttribute;
+	}
 }

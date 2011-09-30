@@ -38,7 +38,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	@Override
 	public StatementList createAddPrimaryKeyToTable(Table aTable, Index aIndex) {
 		boolean theHasAutoIncrement = false;
-		for (Attribute theAttribute : aTable.getAttributes()) {
+		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
 			String theExtra = theAttribute.getExtra();
 			if (theExtra != null) {
 				if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
@@ -74,7 +74,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	public StatementList createRemovePrimaryKeyStatement(Table aTable, Index aIndex) {
 
 		boolean theHasAutoIncrement = false;
-		for (Attribute theAttribute : aTable.getAttributes()) {
+		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
 			String theExtra = theAttribute.getExtra();
 			if (theExtra != null) {
 				if (theExtra.toUpperCase().contains("AUTO_INCREMENT")) {
@@ -99,7 +99,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createRenameAttributeStatement(Attribute anExistingAttribute, String aNewName) {
+	public StatementList createRenameAttributeStatement(Attribute<Table> anExistingAttribute, String aNewName) {
 		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();
@@ -129,7 +129,7 @@ public class MySQLSQLGenerator extends SQL92SQLGenerator<MySQLDialect> {
 	}
 
 	@Override
-	public StatementList createChangeAttributeStatement(Attribute anExistingAttribute, Attribute aNewAttribute) {
+	public StatementList createChangeAttributeStatement(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) {
 		Table theTable = anExistingAttribute.getOwner();
 
 		StatementList theResult = new StatementList();

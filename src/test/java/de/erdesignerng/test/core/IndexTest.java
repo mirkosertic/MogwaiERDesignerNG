@@ -22,11 +22,12 @@ import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexType;
+import de.erdesignerng.model.Table;
 
 public class IndexTest extends TestCase {
 
 	public void testModified() throws ElementAlreadyExistsException {
-		Attribute theAttribute = new Attribute();
+		Attribute<Table> theAttribute = new Attribute<Table>();
 		theAttribute.setName("TEST");
 
 		Index theIndex = new Index();

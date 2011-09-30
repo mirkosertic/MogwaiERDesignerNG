@@ -31,7 +31,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 */
 	public IndexExpression findByAttributeName(String aAttributeName) {
 		for (IndexExpression theExpression : this) {
-			Attribute theAttribute = theExpression.getAttributeRef();
+			Attribute<Table> theAttribute = theExpression.getAttributeRef();
 			if (theAttribute != null) {
 				if (aAttributeName.equals(theAttribute.getName())) {
 					return theExpression;
@@ -48,7 +48,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 *			the attribute
 	 * @return the expression or null if nothing was found
 	 */
-	public IndexExpression findByAttribute(Attribute aAttribute) {
+	public IndexExpression findByAttribute(Attribute<Table> aAttribute) {
 		for (IndexExpression theExpression : this) {
 			if (aAttribute.equals(theExpression.getAttributeRef())) {
 				return theExpression;
@@ -66,7 +66,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * @throws ElementAlreadyExistsException
 	 *			 is thrown is the attribute is already part of this index
 	 */
-	public IndexExpression addExpressionFor(Attribute aAttribute)
+	public IndexExpression addExpressionFor(Attribute<Table> aAttribute)
 			throws ElementAlreadyExistsException {
 		for (IndexExpression theExpression : this) {
 			if (aAttribute.equals(theExpression.getAttributeRef())) {
@@ -100,7 +100,7 @@ public class IndexExpressionList extends ModelItemVector<IndexExpression> {
 	 * @param aAttribute
 	 *			the attribute to remove
 	 */
-	public void removeAttribute(Attribute aAttribute) {
+	public void removeAttribute(Attribute<Table> aAttribute) {
 		IndexExpression theExpression = findByAttribute(aAttribute);
 		if (theExpression != null) {
 			remove(theExpression);

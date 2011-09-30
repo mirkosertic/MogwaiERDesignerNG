@@ -42,279 +42,278 @@ import org.jgraph.graph.*;
  */
 public abstract class ERDesignerGraph extends JGraph {
 
-    private final Model model;
+	private final Model model;
 
-    private boolean displayComments;
+	private boolean displayComments;
 
-    private boolean dragging;
+	private boolean dragging;
 
-    private DisplayLevel displayLevel = DisplayLevel.ALL;
+	private DisplayLevel displayLevel = DisplayLevel.ALL;
 
-    private DisplayOrder displayOrder = DisplayOrder.NATURAL;
+	private DisplayOrder displayOrder = DisplayOrder.NATURAL;
 
-    public ERDesignerGraph(Model aDBModel, GraphModel aModel,
-                           GraphLayoutCache aLayoutCache) {
-        super(aModel, aLayoutCache);
-        model = aDBModel;
+	public ERDesignerGraph(Model aDBModel, GraphModel aModel,
+						   GraphLayoutCache aLayoutCache) {
+		super(aModel, aLayoutCache);
+		model = aDBModel;
 
-        setMoveIntoGroups(true);
-        setMoveOutOfGroups(true);
-    }
+		setMoveIntoGroups(true);
+		setMoveOutOfGroups(true);
+	}
 
-    /**
-     * @return the model
-     */
-    public Model getDBModel() {
-        return model;
-    }
+	/**
+	 * @return the model
+	 */
+	public Model getDBModel() {
+		return model;
+	}
 
-    public void setTool(BaseTool aTool) {
-        setMarqueeHandler(aTool);
-    }
+	public void setTool(BaseTool aTool) {
+		setMarqueeHandler(aTool);
+	}
 
-    public void commandDeleteCells(List<DefaultGraphCell> aCells)
-            throws VetoException {
+	public void commandDeleteCells(List<DefaultGraphCell> aCells)
+			throws VetoException {
 
-        GraphModel theModel = getModel();
+		GraphModel theModel = getModel();
 
-        List<DefaultGraphCell> theObjectsToRemove = new ArrayList<DefaultGraphCell>();
+		List<DefaultGraphCell> theObjectsToRemove = new ArrayList<DefaultGraphCell>();
 
-        for (DefaultGraphCell theSingleCell : aCells) {
+		for (DefaultGraphCell theSingleCell : aCells) {
 
-            if (!theObjectsToRemove.contains(theSingleCell)) {
-                if (theSingleCell instanceof RelationEdge) {
-                    RelationEdge theEdge = (RelationEdge) theSingleCell;
+			if (!theObjectsToRemove.contains(theSingleCell)) {
+				if (theSingleCell instanceof RelationEdge) {
+					RelationEdge theEdge = (RelationEdge) theSingleCell;
 
-                    Relation theRelation = (Relation) theEdge.getUserObject();
+					Relation theRelation = (Relation) theEdge.getUserObject();
 
-                    getDBModel().removeRelation(theRelation);
-                    theModel.remove(new Object[]{theEdge});
+					getDBModel().removeRelation(theRelation);
+					theModel.remove(new Object[]{theEdge});
 
-                    for (Map.Entry<IndexExpression, Attribute> theEntry : theRelation
-                            .getMapping().entrySet()) {
-                        Attribute theImportingAttribute = theEntry.getValue();
+					for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
+						Attribute<Table> theImportingAttribute = theEntry.getValue();
 
-                        if (!(theImportingAttribute.isForeignKey() || theImportingAttribute
-                                .isPrimaryKey())) {
-                            // Only attributes not used in foreign keys or
-                            // primary keys can
-                            // be dropped, as other things might corrupt the
-                            // database if the
-                            // update script is run against a filled database
-                            if (MessagesHelper.displayQuestionMessage(this,
-                                    ERDesignerBundle.DELETENOTUSEDATTRIBUTES,
-                                    theImportingAttribute.getName(),
-                                    theImportingAttribute.getOwner().getName())) {
-                                try {
-                                    getDBModel().removeAttributeFromTable(
-                                            theRelation.getImportingTable(),
-                                            theImportingAttribute);
-                                } catch (ElementInvalidNameException e) {
-                                    throw new VetoException(
-                                            "Cannot recreate existing index", e);
-                                } catch (ElementAlreadyExistsException e) {
-                                    throw new VetoException(
-                                            "Cannot recreate existing index", e);
-                                }
-                            }
-                        }
-                    }
-                }
+						if (!(theImportingAttribute.isForeignKey() || theImportingAttribute
+								.isPrimaryKey())) {
+							// Only attributes not used in foreign keys or
+							// primary keys can
+							// be dropped, as other things might corrupt the
+							// database if the
+							// update script is run against a filled database
+							if (MessagesHelper.displayQuestionMessage(this,
+									ERDesignerBundle.DELETENOTUSEDATTRIBUTES,
+									theImportingAttribute.getName(),
+									theImportingAttribute.getOwner().getName())) {
+								try {
+									getDBModel().removeAttributeFromTable(
+											theRelation.getImportingTable(),
+											theImportingAttribute);
+								} catch (ElementInvalidNameException e) {
+									throw new VetoException(
+											"Cannot recreate existing index", e);
+								} catch (ElementAlreadyExistsException e) {
+									throw new VetoException(
+											"Cannot recreate existing index", e);
+								}
+							}
+						}
+					}
+				}
 
-                if (theSingleCell instanceof CommentCell) {
-                    CommentCell theComment = (CommentCell) theSingleCell;
+				if (theSingleCell instanceof CommentCell) {
+					CommentCell theComment = (CommentCell) theSingleCell;
 
-                    getDBModel().removeComment(
-                            (Comment) theComment.getUserObject());
-                    theModel.remove(new Object[]{theComment});
-                }
+					getDBModel().removeComment(
+							(Comment) theComment.getUserObject());
+					theModel.remove(new Object[]{theComment});
+				}
 
-                if (theSingleCell instanceof ViewCell) {
-                    ViewCell theViewCell = (ViewCell) theSingleCell;
+				if (theSingleCell instanceof ViewCell) {
+					ViewCell theViewCell = (ViewCell) theSingleCell;
 
-                    getDBModel().removeView((View) theViewCell.getUserObject());
-                    theModel.remove(new Object[]{theViewCell});
-                }
+					getDBModel().removeView((View) theViewCell.getUserObject());
+					theModel.remove(new Object[]{theViewCell});
+				}
 
-                if (theSingleCell instanceof TableCell) {
-                    TableCell theCell = (TableCell) theSingleCell;
-                    Table theTable = (Table) theCell.getUserObject();
+				if (theSingleCell instanceof TableCell) {
+					TableCell theCell = (TableCell) theSingleCell;
+					Table theTable = (Table) theCell.getUserObject();
 
-                    theObjectsToRemove.add(theCell);
+					theObjectsToRemove.add(theCell);
 
-                    CellView[] theViews = getGraphLayoutCache().getAllViews();
-                    for (CellView theView : theViews) {
-                        if (theView instanceof RelationEdgeView) {
-                            RelationEdgeView theRelationView = (RelationEdgeView) theView;
-                            RelationEdge theEdge = (RelationEdge) theRelationView
-                                    .getCell();
-                            TableCell theSource = (TableCell) ((DefaultPort) theEdge
-                                    .getSource()).getParent();
-                            TableCell theDestination = (TableCell) ((DefaultPort) theEdge
-                                    .getTarget()).getParent();
+					CellView[] theViews = getGraphLayoutCache().getAllViews();
+					for (CellView theView : theViews) {
+						if (theView instanceof RelationEdgeView) {
+							RelationEdgeView theRelationView = (RelationEdgeView) theView;
+							RelationEdge theEdge = (RelationEdge) theRelationView
+									.getCell();
+							TableCell theSource = (TableCell) ((DefaultPort) theEdge
+									.getSource()).getParent();
+							TableCell theDestination = (TableCell) ((DefaultPort) theEdge
+									.getTarget()).getParent();
 
-                            if (theTable.equals(theSource.getUserObject())) {
-                                getDBModel().removeRelation(
-                                        (Relation) theEdge.getUserObject());
-                                theObjectsToRemove.add(theEdge);
-                            } else {
-                                if (theTable.equals(theDestination
-                                        .getUserObject())) {
-                                    getDBModel().removeRelation(
-                                            (Relation) theEdge.getUserObject());
-                                    theObjectsToRemove.add(theEdge);
-                                }
-                            }
-                        }
-                    }
+							if (theTable.equals(theSource.getUserObject())) {
+								getDBModel().removeRelation(
+										(Relation) theEdge.getUserObject());
+								theObjectsToRemove.add(theEdge);
+							} else {
+								if (theTable.equals(theDestination
+										.getUserObject())) {
+									getDBModel().removeRelation(
+											(Relation) theEdge.getUserObject());
+									theObjectsToRemove.add(theEdge);
+								}
+							}
+						}
+					}
 
-                    getDBModel().removeTable(theTable);
-                }
-            }
-        }
+					getDBModel().removeTable(theTable);
+				}
+			}
+		}
 
-        theModel.remove(theObjectsToRemove.toArray());
+		theModel.remove(theObjectsToRemove.toArray());
 
-        refreshOutline();
-    }
+		refreshOutline();
+	}
 
-    /**
-     * Add a new table to the model.
-     *
-     * @param aPoint the location
-     */
-    public abstract void commandNewTable(Point2D aPoint);
+	/**
+	 * Add a new table to the model.
+	 *
+	 * @param aPoint the location
+	 */
+	public abstract void commandNewTable(Point2D aPoint);
 
-    /**
-     * Add a new view to the model.
-     *
-     * @param aPoint the location
-     */
-    public abstract void commandNewView(Point2D aPoint);
+	/**
+	 * Add a new view to the model.
+	 *
+	 * @param aPoint the location
+	 */
+	public abstract void commandNewView(Point2D aPoint);
 
-    /**
-     * Create a new subject area for a set of cells.
-     *
-     * @param aCells the cells to add to the subject area
-     */
-    public void commandAddToNewSubjectArea(List<DefaultGraphCell> aCells) {
+	/**
+	 * Create a new subject area for a set of cells.
+	 *
+	 * @param aCells the cells to add to the subject area
+	 */
+	public void commandAddToNewSubjectArea(List<DefaultGraphCell> aCells) {
 
-        SubjectArea theArea = new SubjectArea();
-        theArea.setExpanded(true);
-        SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
-        for (DefaultGraphCell theCell : aCells) {
-            Object theUserObject = theCell.getUserObject();
-            if (theUserObject instanceof Table) {
-                theArea.getTables().add((Table) theUserObject);
-            }
-            if (theUserObject instanceof View) {
-                theArea.getViews().add((View) theUserObject);
-            }
-        }
+		SubjectArea theArea = new SubjectArea();
+		theArea.setExpanded(true);
+		SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(theArea);
+		for (DefaultGraphCell theCell : aCells) {
+			Object theUserObject = theCell.getUserObject();
+			if (theUserObject instanceof Table) {
+				theArea.getTables().add((Table) theUserObject);
+			}
+			if (theUserObject instanceof View) {
+				theArea.getViews().add((View) theUserObject);
+			}
+		}
 
-        getGraphLayoutCache().insertGroup(theSubjectAreaCell, aCells.toArray());
+		getGraphLayoutCache().insertGroup(theSubjectAreaCell, aCells.toArray());
 
-        model.addSubjectArea(theArea);
-        getGraphLayoutCache().toBack(new Object[]{theSubjectAreaCell});
-    }
+		model.addSubjectArea(theArea);
+		getGraphLayoutCache().toBack(new Object[]{theSubjectAreaCell});
+	}
 
-    /**
-     * @return the displayComments
-     */
-    public boolean isDisplayComments() {
-        return displayComments;
-    }
+	/**
+	 * @return the displayComments
+	 */
+	public boolean isDisplayComments() {
+		return displayComments;
+	}
 
-    /**
-     * @param displayComments the displayComments to set
-     */
-    public void setDisplayComments(boolean displayComments) {
-        this.displayComments = displayComments;
-    }
+	/**
+	 * @param displayComments the displayComments to set
+	 */
+	public void setDisplayComments(boolean displayComments) {
+		this.displayComments = displayComments;
+	}
 
-    /**
-     * Add a new comment to the model.
-     *
-     * @param aLocation the location
-     */
-    public abstract void commandNewComment(Point2D aLocation);
+	/**
+	 * Add a new comment to the model.
+	 *
+	 * @param aLocation the location
+	 */
+	public abstract void commandNewComment(Point2D aLocation);
 
-    /**
-     * Add a relation to the model.
-     *
-     * @param aImportingCell - importing Cell
-     * @param aExportingCell - exporting Cell
-     */
-    public abstract void commandNewRelation(TableCell aImportingCell,
-                                            TableCell aExportingCell);
+	/**
+	 * Add a relation to the model.
+	 *
+	 * @param aImportingCell - importing Cell
+	 * @param aExportingCell - exporting Cell
+	 */
+	public abstract void commandNewRelation(TableCell aImportingCell,
+											TableCell aExportingCell);
 
-    /**
-     * @return the displayLevel
-     */
-    public DisplayLevel getDisplayLevel() {
-        return displayLevel;
-    }
+	/**
+	 * @return the displayLevel
+	 */
+	public DisplayLevel getDisplayLevel() {
+		return displayLevel;
+	}
 
-    /**
-     * @param displayLevel the displayLevel to set
-     */
-    public void setDisplayLevel(DisplayLevel displayLevel) {
-        this.displayLevel = displayLevel;
-    }
+	/**
+	 * @param displayLevel the displayLevel to set
+	 */
+	public void setDisplayLevel(DisplayLevel displayLevel) {
+		this.displayLevel = displayLevel;
+	}
 
-    /**
-     * @return the displayOrder
-     */
-    public DisplayOrder getDisplayOrder() {
-        return displayOrder;
-    }
+	/**
+	 * @return the displayOrder
+	 */
+	public DisplayOrder getDisplayOrder() {
+		return displayOrder;
+	}
 
-    /**
-     * @param displayOrder the displayOrder to set
-     */
-    public void setDisplayOrder(DisplayOrder displayOrder) {
-        this.displayOrder = displayOrder;
-    }
+	/**
+	 * @param displayOrder the displayOrder to set
+	 */
+	public void setDisplayOrder(DisplayOrder displayOrder) {
+		this.displayOrder = displayOrder;
+	}
 
-    /**
-     * @return the dragging
-     */
-    public boolean isDragging() {
-        return dragging;
-    }
+	/**
+	 * @return the dragging
+	 */
+	public boolean isDragging() {
+		return dragging;
+	}
 
-    /**
-     * @param dragging the dragging to set
-     */
-    public void setDragging(boolean dragging) {
-        this.dragging = dragging;
-    }
+	/**
+	 * @param dragging the dragging to set
+	 */
+	public void setDragging(boolean dragging) {
+		this.dragging = dragging;
+	}
 
-    @Override
-    public void repaint() {
-        addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
-        super.repaint();
-    }
+	@Override
+	public void repaint() {
+		addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
+		super.repaint();
+	}
 
-    /**
-     * Hide a list of specific cells.
-     *
-     * @param aCellsToHide the cells to hide
-     */
-    public abstract void commandHideCells(List<HideableCell> aCellsToHide);
+	/**
+	 * Hide a list of specific cells.
+	 *
+	 * @param aCellsToHide the cells to hide
+	 */
+	public abstract void commandHideCells(List<HideableCell> aCellsToHide);
 
-    /**
-     * Create a new table and add if to a new relation.
-     *
-     * @param aLocation           the location where the table should be created
-     * @param aExportingTableCell the exporting table cell
-     * @param aNewTableIsChild    true, if the new table should be the child of the new relation
-     */
-    public abstract void commandNewTableAndRelation(Point2D aLocation,
-                                                    TableCell aExportingTableCell, boolean aNewTableIsChild);
+	/**
+	 * Create a new table and add if to a new relation.
+	 *
+	 * @param aLocation		   the location where the table should be created
+	 * @param aExportingTableCell the exporting table cell
+	 * @param aNewTableIsChild	true, if the new table should be the child of the new relation
+	 */
+	public abstract void commandNewTableAndRelation(Point2D aLocation,
+													TableCell aExportingTableCell, boolean aNewTableIsChild);
 
-    /**
-     * Update the outline.
-     */
-    public abstract void refreshOutline();
+	/**
+	 * Update the outline.
+	 */
+	public abstract void refreshOutline();
 }

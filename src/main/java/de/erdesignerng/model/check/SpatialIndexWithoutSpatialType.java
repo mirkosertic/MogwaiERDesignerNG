@@ -24,27 +24,27 @@ import de.erdesignerng.model.*;
  */
 public class SpatialIndexWithoutSpatialType implements ModelCheck {
 
-    @Override
-    public void check(Model aModel, ModelChecker aChecker) {
-        for (Table theEntity : aModel.getTables()) {
-            Index theIndex = theEntity.getPrimarykey();
-            if (theIndex != null) {
-                if (theIndex.getIndexType().equals(IndexType.SPATIAL)) {
-                    boolean hasSpatialType = false;
-                    IndexExpressionList theExpressions = theIndex.getExpressions();
-                    for (IndexExpression theExpression : theExpressions) {
-                        Attribute theAttribute = theExpression.getAttributeRef();
-                        if (theAttribute != null) {
-                            if (theAttribute.getDatatype().isSpatial()) {
-                                hasSpatialType = true;
-                            }
-                        }
-                    }
-                    if (!hasSpatialType) {
-                        aChecker.addError(new ModelError("Spatial Index " + theEntity.getName() + "." + theIndex.getName() + " does not point to a spacial attribute"));
-                    }
-                }
-            }
-        }
-    }
+	@Override
+	public void check(Model aModel, ModelChecker aChecker) {
+		for (Table theEntity : aModel.getTables()) {
+			Index theIndex = theEntity.getPrimarykey();
+			if (theIndex != null) {
+				if (theIndex.getIndexType().equals(IndexType.SPATIAL)) {
+					boolean hasSpatialType = false;
+					IndexExpressionList theExpressions = theIndex.getExpressions();
+					for (IndexExpression theExpression : theExpressions) {
+						Attribute<Table> theAttribute = theExpression.getAttributeRef();
+						if (theAttribute != null) {
+							if (theAttribute.getDatatype().isSpatial()) {
+								hasSpatialType = true;
+							}
+						}
+					}
+					if (!hasSpatialType) {
+						aChecker.addError(new ModelError("Spatial Index " + theEntity.getName() + "." + theIndex.getName() + " does not point to a spacial attribute"));
+					}
+				}
+			}
+		}
+	}
 }

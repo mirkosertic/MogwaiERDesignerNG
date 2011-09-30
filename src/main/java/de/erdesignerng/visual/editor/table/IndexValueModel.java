@@ -18,12 +18,13 @@
 package de.erdesignerng.visual.editor.table;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Table;
 
 public class IndexValueModel {
 
 	private String expression;
 
-	private Attribute attribute;
+	private Attribute<Table> attribute;
 
 	public String getExpression() {
 		return expression;
@@ -33,11 +34,11 @@ public class IndexValueModel {
 		this.expression = expression;
 	}
 
-	public Attribute getAttribute() {
+	public Attribute<Table> getAttribute() {
 		return attribute;
 	}
 
-	public void setAttribute(Attribute attribute) {
+	public void setAttribute(Attribute<Table> attribute) {
 		this.attribute = attribute;
 	}
 }
