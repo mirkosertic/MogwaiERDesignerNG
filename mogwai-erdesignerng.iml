@@ -13,6 +13,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-smartstart:1.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sourceforge.anaglyphcanvas3:anaglyphcanvas3:0.87" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core-utils:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:vecmath:1.5.2" level="project" />
