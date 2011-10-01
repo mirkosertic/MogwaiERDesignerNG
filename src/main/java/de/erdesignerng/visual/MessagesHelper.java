@@ -44,7 +44,7 @@ public final class MessagesHelper {
 
 	public static void displayInfoMessage(Component aParent, String aMessage) {
 		String theInfoText = getResourceHelper().getText(ERDesignerBundle.INFORMATION);
-		displayErrorMessage(aParent, aMessage, theInfoText);
+		displayInfoMessage(aParent, aMessage, theInfoText);
 	}
 
 	public static void displayInfoMessage(Component aParent, String aMessage, String anInfoText) {
