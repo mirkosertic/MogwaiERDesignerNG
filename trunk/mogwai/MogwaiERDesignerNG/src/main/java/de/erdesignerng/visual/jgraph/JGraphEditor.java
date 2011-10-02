@@ -93,6 +93,7 @@ import org.jgraph.graph.GraphModel;
 
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
@@ -175,6 +176,41 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         }
     }
 
+    private final class LayoutThread extends Thread {
+        @Override
+        public void run() {
+            while (!isInterrupted()) {
+                try {
+                    long theDuration = System.currentTimeMillis();
+
+                    if (layout.preEvolveLayout()) {
+                        layout.evolveLayout();
+
+                        SwingUtilities.invokeAndWait(new Runnable() {
+                            @Override
+                            public void run() {
+                                layout.postEvolveLayout();
+                            }
+                        });
+                    }
+                    theDuration = System.currentTimeMillis() - theDuration;
+
+                    // Assume 30 Frames / Second animation speed
+                    long theDifference = (1000 - (theDuration * 30)) / 30;
+                    if (theDifference > 0) {
+                        sleep(theDifference);
+                    } else {
+                        sleep(40);
+                    }
+                } catch (InterruptedException e) {
+                    return;
+                } catch (Exception e) {
+                    ERDesignerComponent.getDefault().getWorldConnector().notifyAboutException(e);
+                }
+            }
+        }
+    }
+
     private static final class GraphModelMappingInfo {
         final Map<Table, TableCell> modelTableCells = new HashMap<Table, TableCell>();
 
@@ -185,8 +221,11 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
 
     private ERDesignerGraph graph;
+    private ERDesignerGraphLayout layout;
+    private LayoutThread layoutThread;
 
     public JGraphEditor() {
+        layout = new ERDesignerGraphLayout(this);
         // We have to initialize the graph object.
         setModel(null);
     }
@@ -589,6 +628,21 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     @Override
+    public final void setIntelligentLayoutEnabled(boolean aStatus) {
+        if (!aStatus) {
+            if (layoutThread != null) {
+                layoutThread.interrupt();
+                while (layoutThread.getState() != Thread.State.TERMINATED) {
+                }
+            }
+        } else {
+            layoutThread = new LayoutThread();
+            layoutThread.start();
+        }
+        ApplicationPreferences.getInstance().setIntelligentLayout(aStatus);
+    }
+
+    @Override
     public void setSelectedObject(ModelItem aItem) {
         DefaultGraphCell theCell = findCellforObject(aItem);
         if (theCell != null) {
@@ -798,6 +852,11 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public boolean supportsViewAction() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsIntelligentLayout() {
         return true;
     }
 

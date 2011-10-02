@@ -13,7 +13,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: net.sourceforge.mogwai:mogwai-smartstart:1.1" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.anaglyphcanvas3:anaglyphcanvas3:0.87" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:j3d-core-utils:1.5.2" level="project" />
     <orderEntry type="library" name="Maven: java3d:vecmath:1.5.2" level="project" />
@@ -60,6 +59,7 @@
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.8.2" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: jgoodies:forms:1.2.1" level="project" />
+    <orderEntry type="module" module-name="mogwai-layout" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: squirrelsql:squirrelsql-fw:2.6.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: squirrelsql:squirrelsql-client:2.6.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.2" level="project" />

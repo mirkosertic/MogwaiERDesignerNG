@@ -17,15 +17,22 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Comment;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelperProvider;
+
+import javax.swing.JComponent;
 import java.awt.geom.Point2D;
 import java.util.List;
-import javax.swing.JComponent;
 
 /**
  * Interface for Model editors.
@@ -102,6 +109,13 @@ public interface GenericModelEditor {
     void commandNotifyAboutEdit();
 
     /**
+     * Set the status of the intelligent layout functionality.
+     *
+     * @param aStatus true if enabled, else false
+     */
+    void setIntelligentLayoutEnabled(boolean aStatus);
+
+    /**
      * Set the currently selected cell depending on its user object.
      *
      * @param aItem the user object.
@@ -140,6 +154,8 @@ public interface GenericModelEditor {
     boolean supportsCommentAction();
 
     boolean supportsViewAction();
+
+    boolean supportsIntelligentLayout();
 
     void initExportEntries(ResourceHelperProvider aProvider, DefaultMenu aExportMenu);
 
