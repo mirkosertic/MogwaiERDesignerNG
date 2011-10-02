@@ -1215,6 +1215,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
      */
     public void setModel(Model aModel) {
 
+        //SubjectAreaHelper theHelper = new SubjectAreaHelper();
+        //theHelper.computeCluster(aModel);
+
         try {
             editor.setIntelligentLayoutEnabled(false);
 
