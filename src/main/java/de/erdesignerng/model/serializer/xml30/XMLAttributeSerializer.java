@@ -27,60 +27,63 @@ import org.w3c.dom.NodeList;
 
 public class XMLAttributeSerializer extends de.erdesignerng.model.serializer.xml10.XMLAttributeSerializer {
 
-	@Override
-	public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
+    @Override
+    public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
 
-		Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
+        Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
 
-		// Basisdaten des Modelelementes speichern
-		serializeProperties(aDocument, theAttributeElement, aAttribute);
+        // Basisdaten des Modelelementes speichern
+        serializeProperties(aDocument, theAttributeElement, aAttribute);
 
-		theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
+        theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
 
-		// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-		// max-length wrong
-		theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null) ? aAttribute.getSize() : ""));
+        // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+        // max-length wrong
+        theAttributeElement.setAttribute(SIZE, "" + ((aAttribute.getSize() != null) ? aAttribute.getSize() : ""));
 
-		theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
-		theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
-		theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
-		theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
+        theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
+        theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
+        theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
+        theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
 
-		setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
+        setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
 
-		serializeCommentElement(aDocument, theAttributeElement, aAttribute);
-	}
+        serializeCommentElement(aDocument, theAttributeElement, aAttribute);
+    }
 
-	@Override
-	public void deserialize(Model aModel, Table aTable, Element aElement) {
-		// Parse the Attributes
-		NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
-		for (int j = 0; j < theAttributes.getLength(); j++) {
-			Element theAttributeElement = (Element) theAttributes.item(j);
+    @Override
+    public void deserialize(Model aModel, Table aTable, Element aElement) {
+        // Parse the Attributes
+        NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
+        for (int j = 0; j < theAttributes.getLength(); j++) {
+            Element theAttributeElement = (Element) theAttributes.item(j);
 
-			Attribute<Table> theAttribute = new Attribute<Table>();
-			theAttribute.setOwner(aTable);
+            Attribute<Table> theAttribute = new Attribute<Table>();
+            theAttribute.setOwner(aTable);
 
-			deserializeProperties(theAttributeElement, theAttribute);
-			deserializeCommentElement(theAttributeElement, theAttribute);
+            deserializeProperties(theAttributeElement, theAttribute);
+            deserializeCommentElement(theAttributeElement, theAttribute);
 
-			theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(
-					theAttributeElement.getAttribute(DATATYPE)));
-			theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
+            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(
+                    theAttributeElement.getAttribute(DATATYPE)));
+            theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
 
-			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-			// max-length wrong
-			String theAttributeString = theAttributeElement.getAttribute(SIZE);
-			theAttribute
-					.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
-							: Integer.parseInt(theAttributeString));
+            // Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
+            // max-length wrong
+            String theAttributeString = theAttributeElement.getAttribute(SIZE);
+            theAttribute
+                    .setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
+                            : Integer.parseInt(theAttributeString));
 
-			theAttribute.setFraction(Integer.parseInt(theAttributeElement.getAttribute(FRACTION)));
-			theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
-			theAttribute.setNullable(TRUE.equals(theAttributeElement.getAttribute(NULLABLE)));
-			theAttribute.setExtra(theAttributeElement.getAttribute(EXTRA));
+            String theFraction = theAttributeElement.getAttribute(FRACTION);
+            if (!StringUtils.isEmpty(theFraction) && !"null".equals(theFraction)) {
+                theAttribute.setFraction(Integer.parseInt(theFraction));
+            }
+            theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
+            theAttribute.setNullable(TRUE.equals(theAttributeElement.getAttribute(NULLABLE)));
+            theAttribute.setExtra(theAttributeElement.getAttribute(EXTRA));
 
-			aTable.getAttributes().add(theAttribute);
-		}
-	}
+            aTable.getAttributes().add(theAttribute);
+        }
+    }
 }
