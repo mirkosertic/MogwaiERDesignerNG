@@ -730,7 +730,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     public void commandCreateRelation(Relation aRelation) {
 
         TableCell theImportingCell = (TableCell) findCellforObject(aRelation.getImportingTable());
-        TableCell theExportingCell = (TableCell) findCellforObject(aRelation.getImportingTable());
+        TableCell theExportingCell = (TableCell) findCellforObject(aRelation.getExportingTable());
 
         RelationEdge theEdge = new RelationEdge(aRelation,
                 theImportingCell, theExportingCell);
