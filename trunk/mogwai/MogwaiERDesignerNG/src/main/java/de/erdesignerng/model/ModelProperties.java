@@ -48,8 +48,7 @@ public class ModelProperties implements Serializable {
     }
 
     public void setPointProperty(String aKey, int x, int y) {
-        String theLocation = ((int) x) + ":"
-                + ((int) y);
+        String theLocation = x + ":" + y;
         setProperty(aKey, theLocation);
     }
 

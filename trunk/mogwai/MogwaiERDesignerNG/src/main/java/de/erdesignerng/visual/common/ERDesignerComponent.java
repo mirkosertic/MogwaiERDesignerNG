@@ -277,12 +277,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected boolean setEditor3DInteractive() {
-        Java3DEditor theEditor = null;
-
         try {
-            theEditor = new Java3DEditor();
-
-            setEditor(theEditor);
+            setEditor(new Java3DEditor());
 
             viewMode3DInteractiveMenuItem.setSelected(true);
             ApplicationPreferences.getInstance().setEditorMode(EditorMode.INTERACTIVE_3D);

@@ -30,13 +30,14 @@ package de.erdesignerng.visual.jgraph.cells;
 
 import de.erdesignerng.model.ModelProperties;
 import de.erdesignerng.model.Relation;
+import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.GraphConstants;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.GraphConstants;
 
 /**
  * @author $Author: mirkosertic $
@@ -62,7 +63,6 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
     @Override
     public void transferAttributesToProperties(Map aAttributes) {
         Relation theRelation = (Relation) getUserObject();
-        String theLocation;
 
         // PROPERTY_TEXT_OFFSET
         Point2D theOffset = GraphConstants.getOffset(aAttributes);
