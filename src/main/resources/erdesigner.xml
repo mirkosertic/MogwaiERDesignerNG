@@ -756,6 +756,10 @@
             <Text lang="de">Schema berücksichtigen</Text>
             <Text lang="en">Respect database schema</Text>
         </Entry>
+        <Entry id="INTELLIGENTLAYOUT">
+            <Text lang="de">Intelligent Layout (BETA)</Text>
+            <Text lang="en">Intelligent layout (BETA)</Text>
+        </Entry>
         <Entry id="DELETENOTUSEDATTRIBUTES">
             <Text lang="de">Wollen Sie das nicht mehr benötigte Attribut {0} in Tabelle {1} löschen?</Text>
             <Text lang="en">Do you want to delete the no longer used attribute {0} of table {1}?</Text>
