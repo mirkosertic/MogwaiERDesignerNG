@@ -28,59 +28,59 @@ import javax.swing.text.*;
  */
 class SQLSyntaxDocument extends DefaultStyledDocument {
 
-    /**
-     * Document root.
-     */
-    private Element root;
+	/**
+	 * Document root.
+	 */
+	private Element root;
 
-    /**
-     * Tokens highlighting attributes.
-     */
-    private SimpleAttributeSet[] sas = new SimpleAttributeSet[SQLScanner.TOKEN_COUNT];
+	/**
+	 * Tokens highlighting attributes.
+	 */
+	private SimpleAttributeSet[] sas = new SimpleAttributeSet[SQLScanner.TOKEN_COUNT];
 
-    /**
-     * Scanner used to find out tokens.
-     */
-    private SQLScanner scanner = new SQLScanner();
+	/**
+	 * Scanner used to find out tokens.
+	 */
+	private SQLScanner scanner = new SQLScanner();
 
-    /**
-     * For each and every eoln in the text this array contains the token being
-     * scanned when the scanner lookaheads that eoln.
-     */
-    private ExpandingArray lineToks = new ExpandingArray(1);
+	/**
+	 * For each and every eoln in the text this array contains the token being
+	 * scanned when the scanner lookaheads that eoln.
+	 */
+	private ExpandingArray lineToks = new ExpandingArray(1);
 
-    /**
-     * Constructs document with SQL syntax highlighting.
-     */
-    public SQLSyntaxDocument() {
-        root = this.getDefaultRootElement();
+	/**
+	 * Constructs document with SQL syntax highlighting.
+	 */
+	public SQLSyntaxDocument() {
+		root = this.getDefaultRootElement();
 
-        scanner.setKeywords(SQLKEYWORDS);
-        scanner.setBuiltinFunctions(SQLFUNCTIONS);
+		scanner.setKeywords(SQLKEYWORDS);
+		scanner.setBuiltinFunctions(SQLFUNCTIONS);
 
-        StyleConstants.setForeground(
-                sas[SQLScanner.TOKEN_STRING] = new SimpleAttributeSet(),
-                Color.lightGray);
-        StyleConstants.setForeground(
-                sas[SQLScanner.TOKEN_COMMENT_ML] = new SimpleAttributeSet(),
-                Color.red);
-        StyleConstants.setForeground(
-                sas[SQLScanner.TOKEN_COMMENT_SL] = new SimpleAttributeSet(),
-                Color.red);
-        StyleConstants.setForeground(
-                sas[SQLScanner.TOKEN_KEYWORD] = new SimpleAttributeSet(),
-                Color.blue);
-        StyleConstants.setForeground(
-                sas[SQLScanner.TOKEN_QUOTED_ID] = new SimpleAttributeSet(),
-                Color.gray);
-        StyleConstants
-                .setForeground(
-                        sas[SQLScanner.TOKEN_BUILTIN_FUNCTION] = new SimpleAttributeSet(),
-                        new Color(100, 0, 200));
-        sas[SQLScanner.TOKEN_WHITESPACE] = new SimpleAttributeSet();
-    }
+		StyleConstants.setForeground(
+				sas[SQLScanner.TOKEN_STRING] = new SimpleAttributeSet(),
+				Color.lightGray);
+		StyleConstants.setForeground(
+				sas[SQLScanner.TOKEN_COMMENT_ML] = new SimpleAttributeSet(),
+				Color.red);
+		StyleConstants.setForeground(
+				sas[SQLScanner.TOKEN_COMMENT_SL] = new SimpleAttributeSet(),
+				Color.red);
+		StyleConstants.setForeground(
+				sas[SQLScanner.TOKEN_KEYWORD] = new SimpleAttributeSet(),
+				Color.blue);
+		StyleConstants.setForeground(
+				sas[SQLScanner.TOKEN_QUOTED_ID] = new SimpleAttributeSet(),
+				Color.gray);
+		StyleConstants
+				.setForeground(
+						sas[SQLScanner.TOKEN_BUILTIN_FUNCTION] = new SimpleAttributeSet(),
+						new Color(100, 0, 200));
+		sas[SQLScanner.TOKEN_WHITESPACE] = new SimpleAttributeSet();
+	}
 
-    public final String[] SQLKEYWORDS = {"ABORT", "ACCESS", "ACCESSIBLE", "ACL",
+	public final String[] SQLKEYWORDS = {"ABORT", "ACCESS", "ACCESSIBLE", "ACL",
 		"ADD", "AFTER", "AGGREGATE", "ALL", "ALTER", "ANALYZE", "AND", "ANY",
 		"APPEND", "ARCH_STORE2", "ARCHIVE", "ARITH_OVERFLOW", "AS",
 		"ASENSITIVE", "AUDIT", "AUTHID", "BACKWARD", "BEFORE", "BEGIN",
@@ -95,7 +95,7 @@ class SQLSyntaxDocument extends DefaultStyledDocument {
 		"DECLARE", "DEFAULT", "DEFERRED", "DEFFERABLE", "DELAYED", "DELETE",
 		"DELIMITER", "DELIMITERS", "DETERMINISTIC", "DISK", "DISTINCTROW",
 		"DIV", "DO", "DOUBLE", "DROP", "DUAL", "DUMMY", "DUMP", "EACH", "ELSE",
-		"ELSEIF", "ELSIF", "ENCLOSED", "END", "ENDTRAN", "ERRLVL", "ERRORDATA",
+		"ELSEIF", "ELSIF", "ENCLOSED", "END", "ENDTRAN", "ENUM", "ERRLVL", "ERRORDATA",
 		"ERROREXIT", "ESCAPED", "EXCEPTION", "EXCLUSIVE", "EXECUTE", "EXISTS",
 		"EXIT", "EXPLAIN", "EXTEND", "FALSE", "FILE", "FILLFACTOR", "FIRST",
 		"FLOAT", "FLOAT4", "FLOAT8", "FOR", "FORCE", "FOREIGN", "FORWARD",
@@ -176,170 +176,170 @@ class SQLSyntaxDocument extends DefaultStyledDocument {
 		"VALUE", "VARIANCE", "VSIZE", "WEEK", "WEEKDAY", "XMLATTR", "XMLCDATA",
 		"XMLCOMMENT", "XMLNODE", "XMLSTARTDOC", "XMLTEXT", "YEAR", "ZERO"};
 
-    private void Highlight(SQLScanner.Token token) {
-        setCharacterAttributes(token.start, token.end - token.start + 1,
-                sas[token.id], true);
-    }
+	private void Highlight(SQLScanner.Token token) {
+		setCharacterAttributes(token.start, token.end - token.start + 1,
+				sas[token.id], true);
+	}
 
-    /**
-     * Scans the text from scanBegin to scanEnd augmenting scanned portion of
-     * text if necessary.
-     *
-     * @param scanBegin      must be index of the first character of the firstLine to scan
-     * @param scanEnd        must be index of the last character of the last line to scan
-     *                       (eoln or one character after end of the text)
-     * @param highlightBegin highlighting starts when index highlightBegin is reached (an
-     *                       optimalization).
-     * @param firstLine      auxiliary information which can be dervied from scanBegin
-     */
-    private void HighlightAffectedText(int scanBegin, int scanEnd,
-                                       int highlightBegin, int firstLine) {
+	/**
+	 * Scans the text from scanBegin to scanEnd augmenting scanned portion of
+	 * text if necessary.
+	 *
+	 * @param scanBegin	  must be index of the first character of the firstLine to scan
+	 * @param scanEnd		must be index of the last character of the last line to scan
+	 *					   (eoln or one character after end of the text)
+	 * @param highlightBegin highlighting starts when index highlightBegin is reached (an
+	 *					   optimalization).
+	 * @param firstLine	  auxiliary information which can be dervied from scanBegin
+	 */
+	private void HighlightAffectedText(int scanBegin, int scanEnd,
+									   int highlightBegin, int firstLine) {
 
-        SQLScanner.Token token; // scanned token
-        SQLScanner.Token last_line_tok = null; // last line tok affected by scan
-        // cycle
-        int last_line_idx; // the index of the line of last_line_tok
-        boolean eot = false;
-        int current_pos = 0;
+		SQLScanner.Token token; // scanned token
+		SQLScanner.Token last_line_tok = null; // last line tok affected by scan
+		// cycle
+		int last_line_idx; // the index of the line of last_line_tok
+		boolean eot = false;
+		int current_pos = 0;
 
-        // sets document content and interval to be scanned:
-        scanner.setDocument(this);
-        scanner.setInterval(scanBegin, scanEnd);
+		// sets document content and interval to be scanned:
+		scanner.setDocument(this);
+		scanner.setInterval(scanBegin, scanEnd);
 
-        // loads state from line token associated to the end of line before
-        // first_line:
-        if (firstLine > 0 && lineToks.items[firstLine - 1] != null) {
-            SQLScanner.Token t = (SQLScanner.Token) lineToks.items[firstLine - 1];
-            scanner.setState(t.id, t.start);
-        }
+		// loads state from line token associated to the end of line before
+		// first_line:
+		if (firstLine > 0 && lineToks.items[firstLine - 1] != null) {
+			SQLScanner.Token t = (SQLScanner.Token) lineToks.items[firstLine - 1];
+			scanner.setState(t.id, t.start);
+		}
 
-        for (; ; ) {
-            while (scanner.nextToken()) {
-                token = scanner.getToken();
-                eot = scanner.eot();
-                current_pos = scanner.getCurrentPos();
+		for (; ; ) {
+			while (scanner.nextToken()) {
+				token = scanner.getToken();
+				eot = scanner.eot();
+				current_pos = scanner.getCurrentPos();
 
-                // highlight token:
-                if (current_pos >= highlightBegin)
-                    Highlight(token);
+				// highlight token:
+				if (current_pos >= highlightBegin)
+					Highlight(token);
 
-                // update line toks for every eoln contained by scanned token:
-                if (token.isMultiline()) {
-                    int fline = root.getElementIndex(token.start);
-                    int lline = root.getElementIndex(token.end) - 1;
+				// update line toks for every eoln contained by scanned token:
+				if (token.isMultiline()) {
+					int fline = root.getElementIndex(token.start);
+					int lline = root.getElementIndex(token.end) - 1;
 
-                    // if the token is not terminated (we are at the end of the
-                    // text):
-                    if (eot)
-                        lline++;
+					// if the token is not terminated (we are at the end of the
+					// text):
+					if (eot)
+						lline++;
 
-                    lineToks.fill(fline, lline, new SQLScanner.Token(token.id,
-                            token.start, token.end));
-                }
+					lineToks.fill(fline, lline, new SQLScanner.Token(token.id,
+							token.start, token.end));
+				}
 
-                // mark eoln by empty token:
-                if (!eot && scanner.eoln()) {
-                    last_line_idx = root.getElementIndex(token.end);
-                    last_line_tok = (SQLScanner.Token) lineToks.items[last_line_idx];
-                    lineToks.items[last_line_idx] = null;
-                }
-            }
-            // assertion: scanner.lookahead=='\n' || scanner.lookahead=='\0'
-            // scan cycle ends when it visits all the lines between its starting
-            // pos and ending pos,
-            // eoln and end of token is reached.
+				// mark eoln by empty token:
+				if (!eot && scanner.eoln()) {
+					last_line_idx = root.getElementIndex(token.end);
+					last_line_tok = (SQLScanner.Token) lineToks.items[last_line_idx];
+					lineToks.items[last_line_idx] = null;
+				}
+			}
+			// assertion: scanner.lookahead=='\n' || scanner.lookahead=='\0'
+			// scan cycle ends when it visits all the lines between its starting
+			// pos and ending pos,
+			// eoln and end of token is reached.
 
-            // The token associated with eoln of last scanned line was changed
-            // by previous
-            // scan cycle. Former token was saved in last_line_tok.
-            // We should continue scanning until this token ends.
-            if (last_line_tok != null) {
-                // end of the text:
-                if (eot)
-                    break;
+			// The token associated with eoln of last scanned line was changed
+			// by previous
+			// scan cycle. Former token was saved in last_line_tok.
+			// We should continue scanning until this token ends.
+			if (last_line_tok != null) {
+				// end of the text:
+				if (eot)
+					break;
 
-                // Start pos: we can increment position because we are on \n
-                // (optimalization)
-                // End pos: sets the end of scanning to the end of last line
-                // containing last_line_tok token:
-                scanner
-                        .setInterval(current_pos + 1, root.getElement(
-                                root.getElementIndex(last_line_tok.end))
-                                .getEndOffset() - 1);
-            } else
-                break;
-        }
-    }
+				// Start pos: we can increment position because we are on \n
+				// (optimalization)
+				// End pos: sets the end of scanning to the end of last line
+				// containing last_line_tok token:
+				scanner
+						.setInterval(current_pos + 1, root.getElement(
+								root.getElementIndex(last_line_tok.end))
+								.getEndOffset() - 1);
+			} else
+				break;
+		}
+	}
 
-    /**
-     * Overrides any text insertion in the document. Inserted text is
-     * highlighted.
-     */
-    @Override
-    public void insertString(int offset, String str, AttributeSet a)
-            throws BadLocationException {
-        Element line = root.getElement(root.getElementIndex(offset)); // line
-        // where
-        // insertion
-        // started
-        int length = str.length(); // length of inserted text
-        int former_line_count = root.getElementCount(); // the number of lines
-        // before the insertion
-        int scan_begin = line.getStartOffset(); // start scanning at the boln of
-        // first affected line
-        int scan_end = line.getEndOffset() + length - 1; // end scanning at the
-        // eoln of last
-        // affected line
-        // (after insertion)
+	/**
+	 * Overrides any text insertion in the document. Inserted text is
+	 * highlighted.
+	 */
+	@Override
+	public void insertString(int offset, String str, AttributeSet a)
+			throws BadLocationException {
+		Element line = root.getElement(root.getElementIndex(offset)); // line
+		// where
+		// insertion
+		// started
+		int length = str.length(); // length of inserted text
+		int former_line_count = root.getElementCount(); // the number of lines
+		// before the insertion
+		int scan_begin = line.getStartOffset(); // start scanning at the boln of
+		// first affected line
+		int scan_end = line.getEndOffset() + length - 1; // end scanning at the
+		// eoln of last
+		// affected line
+		// (after insertion)
 
-        // insert attribute-free text:
-        super.insertString(offset, str, sas[SQLScanner.TOKEN_WHITESPACE]);
+		// insert attribute-free text:
+		super.insertString(offset, str, sas[SQLScanner.TOKEN_WHITESPACE]);
 
-        int line_count = root.getElementCount(); // the number of lines after
-        // the insertion
-        int first_line = root.getElementIndex(scan_begin); // the first affected
-        // line index
-        int lines_inserted = line_count - former_line_count; // the number of
-        // inserted
-        // eolns
+		int line_count = root.getElementCount(); // the number of lines after
+		// the insertion
+		int first_line = root.getElementIndex(scan_begin); // the first affected
+		// line index
+		int lines_inserted = line_count - former_line_count; // the number of
+		// inserted
+		// eolns
 
-        // one or more eolns were added:
-        if (lines_inserted > 0)
-            lineToks.shift(first_line, lines_inserted);
+		// one or more eolns were added:
+		if (lines_inserted > 0)
+			lineToks.shift(first_line, lines_inserted);
 
-        // highlight:
-        HighlightAffectedText(scan_begin, scan_end, offset, first_line);
-    }
+		// highlight:
+		HighlightAffectedText(scan_begin, scan_end, offset, first_line);
+	}
 
-    @Override
-    public void remove(int offset, int length) throws BadLocationException {
-        int former_line_count = root.getElementCount(); // the number of lines
-        // before the insertion
+	@Override
+	public void remove(int offset, int length) throws BadLocationException {
+		int former_line_count = root.getElementCount(); // the number of lines
+		// before the insertion
 
-        // delete:
-        super.remove(offset, length);
+		// delete:
+		super.remove(offset, length);
 
-        Element line = root.getElement(root.getElementIndex(offset)); // line
-        // where
-        // deletion
-        // started
-        int scan_begin = line.getStartOffset(); // start scanning at the boln of
-        // first affected line
-        int scan_end = line.getEndOffset() - 1; // end scanning at the eoln of
-        // last affected line (after
-        // deleteion)
-        int line_count = root.getElementCount(); // the number of lines after
-        // the insertion
-        int first_line = root.getElementIndex(scan_begin); // the first affected
-        // line index
-        int lines_deleted = former_line_count - line_count; // the number of
-        // inserted eolns
+		Element line = root.getElement(root.getElementIndex(offset)); // line
+		// where
+		// deletion
+		// started
+		int scan_begin = line.getStartOffset(); // start scanning at the boln of
+		// first affected line
+		int scan_end = line.getEndOffset() - 1; // end scanning at the eoln of
+		// last affected line (after
+		// deleteion)
+		int line_count = root.getElementCount(); // the number of lines after
+		// the insertion
+		int first_line = root.getElementIndex(scan_begin); // the first affected
+		// line index
+		int lines_deleted = former_line_count - line_count; // the number of
+		// inserted eolns
 
-        // one or more eolns were deleted:
-        if (lines_deleted > 0)
-            lineToks.unshift(first_line, lines_deleted);
+		// one or more eolns were deleted:
+		if (lines_deleted > 0)
+			lineToks.unshift(first_line, lines_deleted);
 
-        // highlight:
-        HighlightAffectedText(scan_begin, scan_end, offset, first_line);
-    }
+		// highlight:
+		HighlightAffectedText(scan_begin, scan_end, offset, first_line);
+	}
 }
