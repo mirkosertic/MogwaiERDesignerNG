@@ -32,11 +32,21 @@ import org.metawidget.util.WidgetBuilderUtils;
 import org.metawidget.widgetbuilder.iface.WidgetBuilderException;
 import org.metawidget.widgetbuilder.impl.BaseWidgetBuilder;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.awt.Component;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -241,7 +251,7 @@ public class MogwaiWidgetBuilder extends BaseWidgetBuilder<JComponent, SwingMeta
                 comboBox.addItem(null);
 
             List<String> values = CollectionUtils.fromString(lookup);
-            BindingConverter converter = (BindingConverter) metawidget.getWidgetProcessor(BindingConverter.class);
+            BindingConverter converter = metawidget.getWidgetProcessor(BindingConverter.class);
 
             for (String value : values) {
                 // Convert (if supported)
