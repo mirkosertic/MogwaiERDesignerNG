@@ -423,11 +423,18 @@ public class Model extends ModelItem {
 		DataTypeList theResult = new DataTypeList();
 		if (dialect != null) {
 			theResult.addAll(dialect.getDataTypes());
+
+			if (dialect.isSupportsCustomTypes()) {
+				theResult.addAll(customTypes);
+			}
+
+			if (dialect.isSupportsDomains()) {
+				theResult.addAll(domains);
+			}
 		}
 
-		theResult.addAll(customTypes);
-		theResult.addAll(domains);
 		Collections.sort(theResult, new BeanComparator("name"));
+
 		return theResult;
 	}
 
