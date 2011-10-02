@@ -15,15 +15,16 @@ License
 This software uses or is based on the following libraries:
 
   Apache Commons ( www.apache.org )
-  Apache Batik ( www.apache.org )  
-  JGraph ( www.jgraph.com )  
+  Apache Batik ( www.apache.org )
+  JGraph ( www.jgraph.com )
   JGoodies ( www.jgoodies.com )
   Java3D
   AnaglyphCanvas3D (http://sourceforge.net/projects/anaglyphcanvas3)
-  JasperReports ( http://jasperforge.org )  
+  JasperReports ( http://jasperforge.org )
   Some stuff from java.net ( https://www.dev.java.net )
   InfoNode Docking Windows GPL Version ( http://www.infonode.net/index.html?idw )
-  Metawidget ( http://www.metawidget.org )  
+  Metawidget ( http://www.metawidget.org )
+  Mark James ( http://www.famfamfam.com/lab/icons/silk/ )
   ... Many more ...
   
  Thanks to the following contributors
