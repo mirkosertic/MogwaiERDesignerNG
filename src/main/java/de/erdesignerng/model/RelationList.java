@@ -17,7 +17,12 @@
  */
 package de.erdesignerng.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author $Author: mirkosertic $
@@ -25,124 +30,124 @@ import java.util.*;
  */
 public class RelationList extends ModelItemVector<Relation> {
 
-	private static final long serialVersionUID = 330168987165235683L;
+    private static final long serialVersionUID = 330168987165235683L;
 
-	// Just a cache for all foreign keys in the model
-	private Set<Attribute<Table>> foreignKeyCache = new HashSet<Attribute<Table>>();
+    // Just a cache for all foreign keys in the model
+    private final Set<Attribute<Table>> foreignKeyCache = new HashSet<Attribute<Table>>();
 
-	private Map<Table, List<Relation>> relationsByImportingTable = new HashMap<Table, List<Relation>>();
-	private Map<Table, List<Relation>> relationsByExportingTable = new HashMap<Table, List<Relation>>();
+    private Map<Table, List<Relation>> relationsByImportingTable = new HashMap<Table, List<Relation>>();
+    private Map<Table, List<Relation>> relationsByExportingTable = new HashMap<Table, List<Relation>>();
 
-	private void updateForeignKeyCache() {
-		synchronized (foreignKeyCache) {
-			foreignKeyCache.clear();
-			for (Relation theRelation : this) {
-				addToForeignKeyCache(theRelation);
-			}
-		}
-	}
+    private void updateForeignKeyCache() {
+        synchronized (foreignKeyCache) {
+            foreignKeyCache.clear();
+            for (Relation theRelation : this) {
+                addToForeignKeyCache(theRelation);
+            }
+        }
+    }
 
-	private void addToForeignKeyCache(Relation theRelation) {
-		synchronized (foreignKeyCache) {
-			Map<IndexExpression, Attribute<Table>> theMap = theRelation.getMapping();
-			foreignKeyCache.addAll(theMap.values());
-		}
-	}
+    private void addToForeignKeyCache(Relation theRelation) {
+        synchronized (foreignKeyCache) {
+            Map<IndexExpression, Attribute<Table>> theMap = theRelation.getMapping();
+            foreignKeyCache.addAll(theMap.values());
+        }
+    }
 
-	/**
-	 * Test if an attribute is a foreign key attribute.
-	 *
-	 * @param aAttribute the attribute
-	 * @return true if yes, else false
-	 */
-	public boolean isForeignKeyAttribute(Attribute<Table> aAttribute) {
+    /**
+     * Test if an attribute is a foreign key attribute.
+     *
+     * @param aAttribute the attribute
+     * @return true if yes, else false
+     */
+    public boolean isForeignKeyAttribute(Attribute<Table> aAttribute) {
 
-		synchronized (foreignKeyCache) {
-			return foreignKeyCache.contains(aAttribute);
-		}
-	}
+        synchronized (foreignKeyCache) {
+            return foreignKeyCache.contains(aAttribute);
+        }
+    }
 
-	/**
-	 * Remove all relations that are connected to a given table.
-	 *
-	 * @param aTable the table
-	 */
-	public void removeByTable(Table aTable) {
-		List<Relation> theRelationsToRemove = new ArrayList<Relation>();
-		for (Relation theRelation : this) {
-			if (theRelation.getImportingTable().equals(aTable)) {
-				theRelationsToRemove.add(theRelation);
-			} else {
-				if (theRelation.getExportingTable().equals(aTable)) {
-					theRelationsToRemove.add(theRelation);
-				}
-			}
-		}
-		removeAll(theRelationsToRemove);
-		updateForeignKeyCache();
-	}
+    /**
+     * Remove all relations that are connected to a given table.
+     *
+     * @param aTable the table
+     */
+    public void removeByTable(Table aTable) {
+        List<Relation> theRelationsToRemove = new ArrayList<Relation>();
+        for (Relation theRelation : this) {
+            if (theRelation.getImportingTable().equals(aTable)) {
+                theRelationsToRemove.add(theRelation);
+            } else {
+                if (theRelation.getExportingTable().equals(aTable)) {
+                    theRelationsToRemove.add(theRelation);
+                }
+            }
+        }
+        removeAll(theRelationsToRemove);
+        updateForeignKeyCache();
+    }
 
-	public List<Relation> getForeignKeysFor(Table aTable) {
-		List<Relation> theResult = new ArrayList<Relation>();
-		List<Relation> theByImportingTable = relationsByImportingTable.get(aTable);
-		if (theByImportingTable != null) {
-			theResult.addAll(theByImportingTable);
-		}
-		return theResult;
-	}
+    public List<Relation> getForeignKeysFor(Table aTable) {
+        List<Relation> theResult = new ArrayList<Relation>();
+        List<Relation> theByImportingTable = relationsByImportingTable.get(aTable);
+        if (theByImportingTable != null) {
+            theResult.addAll(theByImportingTable);
+        }
+        return theResult;
+    }
 
-	public List<Relation> getExportedKeysFor(Table aTable) {
-		List<Relation> theResult = new ArrayList<Relation>();
-		List<Relation> theByExportingTable = relationsByExportingTable.get(aTable);
-		if (theByExportingTable != null) {
-			theResult.addAll(theByExportingTable);
-		}
-		return theResult;
-	}
+    public List<Relation> getExportedKeysFor(Table aTable) {
+        List<Relation> theResult = new ArrayList<Relation>();
+        List<Relation> theByExportingTable = relationsByExportingTable.get(aTable);
+        if (theByExportingTable != null) {
+            theResult.addAll(theByExportingTable);
+        }
+        return theResult;
+    }
 
-	@Override
-	public boolean add(Relation e) {
+    @Override
+    public boolean add(Relation e) {
 
-		List<Relation> byImporting = relationsByImportingTable.get(e.getImportingTable());
-		if (byImporting == null) {
-			byImporting = new ArrayList<Relation>();
-			relationsByImportingTable.put(e.getImportingTable(), byImporting);
-		}
-		if (!byImporting.contains(e)) {
-			byImporting.add(e);
-		}
+        List<Relation> byImporting = relationsByImportingTable.get(e.getImportingTable());
+        if (byImporting == null) {
+            byImporting = new ArrayList<Relation>();
+            relationsByImportingTable.put(e.getImportingTable(), byImporting);
+        }
+        if (!byImporting.contains(e)) {
+            byImporting.add(e);
+        }
 
-		List<Relation> byExporting = relationsByExportingTable.get(e.getExportingTable());
-		if (byExporting == null) {
-			byExporting = new ArrayList<Relation>();
-			relationsByExportingTable.put(e.getExportingTable(), byExporting);
-		}
-		if (!byExporting.contains(e)) {
-			byExporting.add(e);
-		}
+        List<Relation> byExporting = relationsByExportingTable.get(e.getExportingTable());
+        if (byExporting == null) {
+            byExporting = new ArrayList<Relation>();
+            relationsByExportingTable.put(e.getExportingTable(), byExporting);
+        }
+        if (!byExporting.contains(e)) {
+            byExporting.add(e);
+        }
 
-		boolean theResult = super.add(e);
+        boolean theResult = super.add(e);
 
-		addToForeignKeyCache(e);
+        addToForeignKeyCache(e);
 
-		return theResult;
-	}
+        return theResult;
+    }
 
-	@Override
-	public boolean remove(Object o) {
-		if (o instanceof Relation) {
-			Relation theRelation = (Relation) o;
-			relationsByExportingTable.remove(theRelation.getExportingTable());
-			relationsByImportingTable.remove(theRelation.getImportingTable());
-		}
-		boolean theResult = super.remove(o);
+    @Override
+    public boolean remove(Object o) {
+        if (o instanceof Relation) {
+            Relation theRelation = (Relation) o;
+            relationsByExportingTable.remove(theRelation.getExportingTable());
+            relationsByImportingTable.remove(theRelation.getImportingTable());
+        }
+        boolean theResult = super.remove(o);
 
-		updateForeignKeyCache();
+        updateForeignKeyCache();
 
-		return theResult;
-	}
+        return theResult;
+    }
 
-	public void clearCache() {
-		updateForeignKeyCache();
-	}
+    public void clearCache() {
+        updateForeignKeyCache();
+    }
 }
