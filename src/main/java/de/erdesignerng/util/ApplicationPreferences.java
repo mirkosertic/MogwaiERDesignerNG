@@ -19,6 +19,11 @@ package de.erdesignerng.util;
 
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.visual.EditorMode;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.Logger;
+
+import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -29,13 +34,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import javax.swing.JFrame;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Class for handling application preferences, LRU-files and so on.
@@ -78,6 +83,8 @@ public class ApplicationPreferences {
 
     private static final String WINDOWHEIGHTPREFIX = "windowheight_";
 
+    private static final String INTELLIGENTLAYOUT = "intelligentlayout_";
+
     private static final String LAYOUT = "layout";
 
     private static final String EDITORMODE = "editormode";
@@ -101,6 +108,8 @@ public class ApplicationPreferences {
     private final Map<String, String> windowDefinitions = new HashMap<String, String>();
 
     private File baseDir;
+
+    private boolean intelligentLayout = true;
 
     private String automaticRelationAttributePattern;
 
@@ -194,6 +203,7 @@ public class ApplicationPreferences {
 
         size = 20;
         gridSize = preferences.getInt(GRIDSIZE, 10);
+        intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
         automaticRelationAttributePattern = preferences.get(
                 AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
         windowLayout = preferences.getByteArray(LAYOUT, new byte[0]);
@@ -331,6 +341,7 @@ public class ApplicationPreferences {
         preferences.putInt(XMLINDENTATION, xmlIndentation);
         preferences.put(AUTOMATICRELATIONATTRIBUTEPATTERN,
                 automaticRelationAttributePattern);
+        preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
         preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
         preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
         preferences.putByteArray(LAYOUT, windowLayout);
@@ -489,6 +500,20 @@ public class ApplicationPreferences {
      */
     public void setBaseDir(File baseDir) {
         this.baseDir = baseDir;
+    }
+
+    /**
+     * @return the intelligentLayout
+     */
+    public boolean isIntelligentLayout() {
+        return intelligentLayout;
+    }
+
+    /**
+     * @param intelligentLayout the intelligentLayout to set
+     */
+    public void setIntelligentLayout(boolean intelligentLayout) {
+        this.intelligentLayout = intelligentLayout;
     }
 
     public File getRelativeFile(String aName) {
