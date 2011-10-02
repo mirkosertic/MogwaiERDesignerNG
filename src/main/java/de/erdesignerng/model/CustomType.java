@@ -134,7 +134,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 		attributes.add(aAttribute);
 	}
 
-	public AttributeList getAttributes() {
+	public AttributeList<CustomType> getAttributes() {
 		return attributes;
 	}
 
