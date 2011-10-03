@@ -171,7 +171,7 @@ public class SubjectAreaHelper {
                     LOGGER.info("Creating new subject area for cluster " + theCluster.root + " with " + theCluster.nodes.size() + " nodes : " + theCluster.nodes);
 
                     SubjectArea theArea = new SubjectArea();
-                    theArea.setExpanded(true);
+                    theArea.setExpanded(false);
                     theArea.setName(theCluster.root.getName());
                     if (theCluster.root != null) {
                         theArea.getTables().add(theCluster.root);
