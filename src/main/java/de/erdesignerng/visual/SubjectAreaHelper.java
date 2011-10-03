@@ -24,14 +24,19 @@ import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,10 +45,37 @@ import java.util.Set;
  */
 public class SubjectAreaHelper {
 
+    private static final Logger LOGGER = Logger.getLogger(SubjectAreaHelper.class);
+
     private class Cluster {
         Table root;
         Set<ModelItem> nodes = new HashSet<ModelItem>();
+        Map<ModelItem, Integer> hierarchyLevel = new HashMap<ModelItem, Integer>();
+        int maxLevel;
+
+        List<Set<Table>> computeHierarchy() {
+
+            List<ModelItem> theAllNodes = new ArrayList<ModelItem>();
+            if (root != null) {
+                theAllNodes.add(root);
+            }
+            theAllNodes.addAll(nodes);
+
+            List<Set<Table>> theResult = new ArrayList<Set<Table>>();
+            for (int i = 0; i <= maxLevel; i++) {
+                Set<Table> theLevel = new HashSet<Table>();
+                for (ModelItem theItem : theAllNodes) {
+                    if (hierarchyLevel.get(theItem) == i) {
+                        theLevel.add((Table) theItem);
+                    }
+                }
+                theResult.add(theLevel);
+            }
+            return theResult;
+        }
     }
+
+    private Set<ModelItem> alreadyProcessed = new HashSet<ModelItem>();
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         FileInputStream theStream = new FileInputStream("C:\\TEMP\\Capitastra_6_5_0.mxm");
@@ -57,83 +89,129 @@ public class SubjectAreaHelper {
 
     }
 
-    private void buildTree(Model aModel, Table aNode, Cluster aCluster) {
+    private void buildTree(Model aModel, Table aNode, Cluster aCluster, int aLevel) {
         for (Relation theRelation : aModel.getRelations().getForeignKeysFor(aNode)) {
-            if (!aNode.equals(theRelation.getExportingTable()) && !aCluster.nodes.contains(theRelation.getExportingTable())) {
-                aCluster.nodes.add(theRelation.getExportingTable());
-                buildTree(aModel, theRelation.getExportingTable(), aCluster);
+            Table theExp = theRelation.getExportingTable();
+            if (!aNode.equals(theExp) && !aCluster.nodes.contains(theExp) && !alreadyProcessed.contains(theExp)) {
+                aCluster.nodes.add(theExp);
+                aCluster.hierarchyLevel.put(theExp, aLevel);
+                aCluster.maxLevel = Math.max(aCluster.maxLevel, aLevel);
+                buildTree(aModel, theExp, aCluster, aLevel + 1);
             }
         }
     }
 
     public void computeCluster(Model aModel) {
 
+        LOGGER.info("Destroying all subject areas");
+
+        long theDuration = System.currentTimeMillis();
+
         // Destroy all subject areas in the model
         aModel.getSubjectAreas().clear();
 
-        // Step 1. Identify the Root Nodes
-        List<Cluster> theRoots = new ArrayList<Cluster>();
-        for (Table theTable : aModel.getTables()) {
-            boolean isRoot = true;
-            for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
-                // Check for self references
-                if (!theRelation.getImportingTable().equals(theTable)) {
-                    isRoot = false;
-                }
-            }
-            if (isRoot) {
-                Cluster theCluster = new Cluster();
-                theCluster.root = theTable;
-                theRoots.add(theCluster);
-            }
-        }
-        // Step 2. Build the tree for every root node
-        for (Cluster theCluster : theRoots) {
-            buildTree(aModel, theCluster.root, theCluster);
-        }
+        boolean continueRun = true;
 
-        // Step 3. Remove nodes that are assigned to more than one cluster
-        for (Cluster theCluster : theRoots) {
-            for (Cluster theCluster2 : theRoots) {
-                if (theCluster != theCluster2) {
-                    theCluster.nodes.remove(theCluster2.root);
-                    theCluster2.nodes.remove(theCluster.root);
-                    theCluster.nodes.removeAll(theCluster2.nodes);
-                    theCluster2.nodes.removeAll(theCluster.nodes);
-                }
-            }
-        }
+        Point theStart = new Point(60, 60);
+        List<Table> theAllTables = new ArrayList<Table>();
+        theAllTables.addAll(aModel.getTables());
+        int maxHeight = 0;
 
-        // One Cluster contains all of the views
-        Cluster theViewCluster = new Cluster();
-        theViewCluster.nodes.addAll(aModel.getViews());
-        theRoots.add(theViewCluster);
+        while (continueRun) {
 
-        int counter = 1;
+            LOGGER.info("Starting with build cluster run");
 
-        // Now, we have the top level clusters
-        // Every cluster might result in a new subject area
-        for (Cluster theCluster : theRoots) {
-            // A cluster should have more than 1 element including the root
-            if (theCluster.nodes.size() > 0) {
-                System.out.println("Cluster with " + theCluster.root + " " + theCluster.nodes.size() + " " + theCluster.nodes);
+            continueRun = false;
 
-                SubjectArea theArea = new SubjectArea();
-                theArea.setExpanded(false);
-                theArea.setName("Subject Area " + counter++);
-                if (theCluster.root != null) {
-                    theArea.getTables().add(theCluster.root);
-                }
-                for (ModelItem theItem : theCluster.nodes) {
-                    if (theItem instanceof Table) {
-                        theArea.getTables().add((Table) theItem);
+            // Step 1. Identify the Root Nodes
+            List<Cluster> theRoots = new ArrayList<Cluster>();
+            for (Table theTable : aModel.getTables()) {
+                if (!alreadyProcessed.contains(theTable)) {
+                    boolean isRoot = true;
+                    for (Relation theRelation : aModel.getRelations().getExportedKeysFor(theTable)) {
+                        // Check for self references
+                        if (!theRelation.getImportingTable().equals(theTable)) {
+                            isRoot = false;
+                        }
                     }
-                    if (theItem instanceof View) {
-                        theArea.getViews().add((View) theItem);
+                    if (isRoot) {
+                        Cluster theCluster = new Cluster();
+                        theCluster.root = theTable;
+                        theRoots.add(theCluster);
                     }
                 }
-                aModel.getSubjectAreas().add(theArea);
+            }
+
+            LOGGER.info("Found " + theRoots.size() + " root nodes : " + theRoots);
+
+            // Step 2. Build the tree for every root node
+            for (Cluster theCluster : theRoots) {
+                theCluster.hierarchyLevel.put(theCluster.root, 0);
+                theCluster.maxLevel = 0;
+                buildTree(aModel, theCluster.root, theCluster, 1);
+            }
+
+            // Step 3. Remove nodes that are assigned to more than one cluster
+            for (Cluster theCluster : theRoots) {
+                for (Cluster theCluster2 : theRoots) {
+                    if (theCluster != theCluster2) {
+                        theCluster.nodes.remove(theCluster2.root);
+                        theCluster2.nodes.remove(theCluster.root);
+                        theCluster.nodes.removeAll(theCluster2.nodes);
+                        theCluster2.nodes.removeAll(theCluster.nodes);
+                    }
+                }
+            }
+
+            // Now, we have the top level clusters
+            // Every cluster might result in a new subject area
+            for (Cluster theCluster : theRoots) {
+                // A cluster should have more than 1 element including the root
+                if (theCluster.nodes.size() > 0) {
+                    LOGGER.info("Creating new subject area for cluster " + theCluster.root + " with " + theCluster.nodes.size() + " nodes : " + theCluster.nodes);
+
+                    SubjectArea theArea = new SubjectArea();
+                    theArea.setExpanded(true);
+                    theArea.setName(theCluster.root.getName());
+                    if (theCluster.root != null) {
+                        theArea.getTables().add(theCluster.root);
+                        alreadyProcessed.add(theCluster.root);
+                        theAllTables.remove(theCluster.root);
+                    }
+                    for (ModelItem theItem : theCluster.nodes) {
+                        alreadyProcessed.add(theItem);
+                        if (theItem instanceof Table) {
+                            theArea.getTables().add((Table) theItem);
+                            theAllTables.remove(theItem);
+                        }
+                        if (theItem instanceof View) {
+                            theArea.getViews().add((View) theItem);
+                        }
+                    }
+
+                    // We layout every subject area initially as a tree
+                    Dimension theSize = LayoutHelper.performTreeLayout(theStart, theCluster.computeHierarchy(), theArea.getViews());
+                    theStart.x += theSize.width + 60;
+
+                    maxHeight = Math.max(maxHeight, theSize.height);
+
+                    aModel.getSubjectAreas().add(theArea);
+
+                    // We continue as long as we find new subject areas
+                    continueRun = true;
+                }
             }
         }
+
+        // Now, we recompute the position of the remaining tables
+        theStart = new Point(60, 120 + maxHeight);
+        for (Table theTable : theAllTables) {
+            theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, theStart.x, theStart.y);
+            theStart.x += 120 + 60;
+        }
+
+        theDuration = System.currentTimeMillis() - theDuration;
+
+        LOGGER.info("Cluster run finished in " + theDuration + "ms");
     }
 }

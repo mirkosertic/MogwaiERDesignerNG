@@ -40,6 +40,7 @@ import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.ExportType;
+import de.erdesignerng.visual.LayoutHelper;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.common.AddCommentCommand;
 import de.erdesignerng.visual.common.AddRelationCommand;
@@ -63,7 +64,6 @@ import de.erdesignerng.visual.jgraph.cells.ViewCell;
 import de.erdesignerng.visual.jgraph.cells.views.CellViewFactory;
 import de.erdesignerng.visual.jgraph.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
-import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
 import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.erdesignerng.visual.jgraph.export.ImageExporter;
 import de.erdesignerng.visual.jgraph.export.SVGExporter;
@@ -95,6 +95,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -1187,41 +1188,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         List<Set<Table>> theLayers = buildHierarchy(theModel);
 
-        int yp = 20;
-        for (Set<Table> theEntry : theLayers) {
-
-            TableCellView.MyRenderer theRenderer = new TableCellView.MyRenderer();
-            int xp = 20;
-            int maxHeight = 0;
-            for (Table theTable : theEntry) {
-
-                theTable.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
-
-                JComponent theRenderComponent = theRenderer.getRendererComponent(theTable);
-                Dimension theSize = theRenderComponent.getPreferredSize();
-
-                maxHeight = Math.max(maxHeight, (int) theSize.getHeight());
-
-                xp += theSize.getWidth() + 20;
-            }
-
-            if (theEntry.size() > 0) {
-                yp += maxHeight + 20;
-            }
-        }
-
-        ViewCellView.MyRenderer theRenderer = new ViewCellView.MyRenderer();
-
-        int xp = 20;
-        for (View theView : theModel.getViews()) {
-
-            theView.getProperties().setPointProperty(Table.PROPERTY_LOCATION, xp, yp);
-
-            JComponent theRenderComponent = theRenderer.getRendererComponent(theView);
-            Dimension theSize = theRenderComponent.getPreferredSize();
-
-            xp += theSize.getWidth() + 20;
-        }
+        LayoutHelper.performTreeLayout(new Point(20, 20), theLayers, theModel.getViews());
 
         updatePositions();
 
