@@ -18,9 +18,10 @@
 package de.erdesignerng.visual.jgraph.cells;
 
 import de.erdesignerng.model.SubjectArea;
-import java.util.Map;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
+
+import java.util.Map;
 
 /**
  * A subject area.
