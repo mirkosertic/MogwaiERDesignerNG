@@ -128,7 +128,6 @@ public class MSAccessDialect extends SQL92Dialect {
         setMaxObjectNameLength(64);
         setNullablePrimaryKeyAllowed(false);
         setCastType(NameCastType.NOTHING);
-        setSupportsDomains(false);
         setSupportsCustomTypes(false);
         setSupportsSchemaInformation(false);
 
