@@ -23,8 +23,6 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
-import de.erdesignerng.visual.jgraph.cells.ModelCell;
-import de.erdesignerng.visual.jgraph.cells.RelationEdge;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -125,14 +123,16 @@ public class ERDesignerGraphUI extends BasicGraphUI {
             ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(false);
 
+            /*
+             This should not be neccesary
             if (focus != null && focus.getCell() instanceof ModelCell) {
                 ModelCell theCell = (ModelCell) focus.getCell();
                 if (theCell instanceof RelationEdge) {
                     theCell.transferAttributesToProperties(focus.getAttributes());
                 } else {
-                    theCell.transferAttributesToProperties(focus.getAllAttributes());
+                    // theCell.transferAttributesToProperties(focus.getAllAttributes());
                 }
-            }
+            } */
         }
 
         @Override

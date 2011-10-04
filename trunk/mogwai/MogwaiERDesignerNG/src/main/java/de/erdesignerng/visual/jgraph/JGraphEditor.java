@@ -477,14 +477,17 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         commandSetDisplayLevel(DisplayLevel.ALL);
         commandSetDisplayOrder(DisplayOrder.NATURAL);
 
-        getViewport().removeAll();
-        getViewport().add(graph);
-
         refreshPreferences();
 
         if (model != null) {
             fillGraph(model);
         }
+
+        getViewport().removeAll();
+        getViewport().add(graph);
+
+        invalidate();
+        repaint();
     }
 
     private GraphModelMappingInfo fillGraph(Model aModel) {
@@ -578,8 +581,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
             if (!theSubjectArea.isExpanded()) {
                 graph.setSubjectAreaCellCollapsed(theSubjectAreaCell);
-            } else {
-                graph.setSubjectAreaCellExpanded(theSubjectAreaCell);
             }
         }
 
