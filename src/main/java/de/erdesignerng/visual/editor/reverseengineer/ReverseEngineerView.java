@@ -26,7 +26,11 @@ import de.mogwai.common.client.looks.components.DefaultLabel;
 import de.mogwai.common.client.looks.components.DefaultList;
 import de.mogwai.common.client.looks.components.DefaultSeparator;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 
 /**
  * @author $Author: mirkosertic $
@@ -54,7 +58,7 @@ public class ReverseEngineerView extends JPanel {
      * Constructor.
      */
     public ReverseEngineerView() {
-        this.initialize();
+        initialize();
     }
 
     /**
@@ -66,16 +70,16 @@ public class ReverseEngineerView extends JPanel {
         String colDef = "2dlu,fill:60dlu:grow,fill:60dlu:grow,fill:60dlu:grow,2dlu";
 
         FormLayout layout = new FormLayout(colDef, rowDef);
-        this.setLayout(layout);
+        setLayout(layout);
 
         CellConstraints cons = new CellConstraints();
 
-        this.add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
-        this.add(this.getSchemaGrid(), cons.xywh(2, 4, 3, 1));
-        this.add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
-        this.add(this.getStartButton(), cons.xywh(2, 10, 1, 1));
-        this.add(this.getCancelButton(), cons.xywh(4, 10, 1, 1));
-        this.add(this.getEngineeringOptions(), cons.xywh(2, 8, 3, 1));
+        add(new DefaultSeparator(ERDesignerBundle.SCHEMAOPTIONS), cons.xywh(2, 2, 3, 1));
+        add(getSchemaGrid(), cons.xywh(2, 4, 3, 1));
+        add(new DefaultSeparator(ERDesignerBundle.ENGINEERINGOPTIONS), cons.xywh(2, 6, 3, 1));
+        add(getStartButton(), cons.xywh(2, 10, 1, 1));
+        add(getCancelButton(), cons.xywh(4, 10, 1, 1));
+        add(getEngineeringOptions(), cons.xywh(2, 8, 3, 1));
     }
 
     /**
@@ -96,8 +100,8 @@ public class ReverseEngineerView extends JPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            schemaGrid.add(new JScrollPane(this.getSchemaList()), cons.xywh(1, 2, 3, 1));
-            schemaGrid.add(this.getRefreshButton(), cons.xywh(3, 4, 1, 1));
+            schemaGrid.add(getSchemaList().getScrollPane(), cons.xywh(1, 2, 3, 1));
+            schemaGrid.add(getRefreshButton(), cons.xywh(3, 4, 1, 1));
             schemaGrid.setName("schemagrid");
         }
 
@@ -179,8 +183,8 @@ public class ReverseEngineerView extends JPanel {
 
             CellConstraints cons = new CellConstraints();
 
-            engineeringOptions.add(this.getComponent9(), cons.xywh(1, 2, 1, 1));
-            engineeringOptions.add(this.getNaming(), cons.xywh(3, 2, 1, 1));
+            engineeringOptions.add(getComponent9(), cons.xywh(1, 2, 1, 1));
+            engineeringOptions.add(getNaming(), cons.xywh(3, 2, 1, 1));
             engineeringOptions.setName("engineeringoptions");
         }
 

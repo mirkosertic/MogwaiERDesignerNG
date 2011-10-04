@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -31,117 +31,120 @@ import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
+import org.apache.log4j.Logger;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 
 /**
- * 
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ViewEditor extends BaseEditor {
 
-	private final Model model;
+    private static final Logger LOGGER = Logger.getLogger(ViewEditor.class);
 
-	private ViewEditorView editingView;
+    private final Model model;
 
-	private final BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
+    private ViewEditorView editingView;
 
-	private ViewProperties viewProperties;
+    private final BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
 
-	private ScaffoldingWrapper viewPropertiesWrapper;
+    private ViewProperties viewProperties;
 
-	public ViewEditor(Model aModel, Component aParent) {
-		super(aParent, ERDesignerBundle.VIEWEDITOR);
+    private ScaffoldingWrapper viewPropertiesWrapper;
 
-		initialize();
+    public ViewEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.VIEWEDITOR);
 
-		// Connection initialisieren
+        initialize();
 
-		model = aModel;
+        // Connection initialisieren
 
-		viewBindingInfo.addBinding("name", editingView.getEntityName(), true);
-		viewBindingInfo.addBinding("sql", editingView.getSqlText(), true);
-		viewBindingInfo.addBinding("comment", editingView.getEntityComment());
-		viewBindingInfo.configure();
+        model = aModel;
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        viewBindingInfo.addBinding("name", editingView.getEntityName(), true);
+        viewBindingInfo.addBinding("sql", editingView.getSqlText(), true);
+        viewBindingInfo.addBinding("comment", editingView.getEntityComment());
+        viewBindingInfo.configure();
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
+        UIInitializer.getInstance().initialize(this);
+    }
 
-		editingView = new ViewEditorView();
-		editingView.getOkButton().setAction(okAction);
-		editingView.getCancelButton().setAction(cancelAction);
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
 
-		setContentPane(editingView);
+        editingView = new ViewEditorView();
+        editingView.getOkButton().setAction(okAction);
+        editingView.getCancelButton().setAction(cancelAction);
 
-		pack();
-	}
+        setContentPane(editingView);
 
-	public void initializeFor(View aView) {
+        pack();
+    }
 
-		viewProperties = model.getDialect().createViewPropertiesFor(aView);
-		DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
-		viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(
-				model, viewProperties);
-		theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
-		if (!viewPropertiesWrapper.hasComponents()) {
-			editingView.disablePropertiesTab();
-		} else {
-			UIInitializer.getInstance().initialize(theTab);
-		}
+    public void initializeFor(View aView) {
 
-		viewBindingInfo.setDefaultModel(aView);
-		viewBindingInfo.model2view();
-	}
+        viewProperties = model.getDialect().createViewPropertiesFor(aView);
+        DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
+        viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(
+                model, viewProperties);
+        theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+        if (!viewPropertiesWrapper.hasComponents()) {
+            editingView.disablePropertiesTab();
+        } else {
+            UIInitializer.getInstance().initialize(theTab);
+        }
 
-	@Override
-	protected void commandOk() {
-		if (viewBindingInfo.validate().isEmpty()) {
+        viewBindingInfo.setDefaultModel(aView);
+        viewBindingInfo.model2view();
+    }
 
-			try {
-				// Test if every expression has an assigned alias
-				SQLUtils.updateViewAttributesFromSQL(new View(), editingView
-						.getSqlText().getText());
+    @Override
+    protected void commandOk() {
+        if (viewBindingInfo.validate().isEmpty()) {
 
-				setModalResult(MODAL_RESULT_OK);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            try {
+                // Test if every expression has an assigned alias
+                SQLUtils.updateViewAttributesFromSQL(new View(), editingView
+                        .getSqlText().getText());
 
-	@Override
-	public void applyValues() throws ElementAlreadyExistsException,
-			ElementInvalidNameException, VetoException {
+                setModalResult(MODAL_RESULT_OK);
+            } catch (Exception e) {
+                LOGGER.error("Error inspecting view : " + editingView.getSqlText().getText(), e);
+            }
+        }
+    }
 
-		View theView = viewBindingInfo.getDefaultModel();
+    @Override
+    public void applyValues() throws ElementAlreadyExistsException,
+            ElementInvalidNameException, VetoException {
 
-		viewPropertiesWrapper.save();
-		viewProperties.copyTo(theView);
+        View theView = viewBindingInfo.getDefaultModel();
 
-		viewBindingInfo.view2model();
+        viewPropertiesWrapper.save();
+        viewProperties.copyTo(theView);
 
-		theView.getAttributes().clear();
+        viewBindingInfo.view2model();
 
-		try {
-			SQLUtils.updateViewAttributesFromSQL(theView, editingView
-					.getSqlText().getText());
-		} catch (Exception e) {
-			// This exception is checked in commandOk before
-		}
+        theView.getAttributes().clear();
 
-		if (!model.getViews().contains(theView)) {
+        try {
+            SQLUtils.updateViewAttributesFromSQL(theView, editingView
+                    .getSqlText().getText());
+        } catch (Exception e) {
+            // This exception is checked in commandOk before
+        }
 
-			model.addView(theView);
+        if (!model.getViews().contains(theView)) {
 
-		} else {
+            model.addView(theView);
 
-			model.changeView(theView);
-		}
-	}
+        } else {
+
+            model.changeView(theView);
+        }
+    }
 }

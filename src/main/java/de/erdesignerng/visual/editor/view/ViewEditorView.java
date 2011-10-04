@@ -14,9 +14,10 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.text.EditorKit;
-import java.awt.*;
+import java.awt.BorderLayout;
 
 /**
  * @author $Author: mirkosertic $
@@ -63,11 +64,11 @@ public class ViewEditorView extends DefaultPanel {
 
         CellConstraints cons = new CellConstraints();
 
-        this.add(getComponent1(), cons.xywh(2, 2, 1, 1));
-        this.add(getEntityName(), cons.xywh(4, 2, 4, 1));
-        this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
-        this.add(getOkButton(), cons.xywh(5, 7, 1, 1));
-        this.add(getCancelButton(), cons.xywh(7, 7, 1, 1));
+        add(getComponent1(), cons.xywh(2, 2, 1, 1));
+        add(getEntityName(), cons.xywh(4, 2, 4, 1));
+        add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
+        add(getOkButton(), cons.xywh(5, 7, 1, 1));
+        add(getCancelButton(), cons.xywh(7, 7, 1, 1));
     }
 
     public JLabel getComponent1() {

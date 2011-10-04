@@ -26,7 +26,7 @@ public enum IndexType {
 
     private final String type;
 
-    private IndexType(String aType) {
+    IndexType(String aType) {
         type = aType;
     }
 

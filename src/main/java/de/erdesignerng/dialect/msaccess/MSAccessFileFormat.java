@@ -197,7 +197,7 @@ public final class MSAccessFileFormat {
     private static int getTableCount(Connection aConnection,
                                      String aTableName) throws SQLException {
 
-        final String theColumnName = "theCount";
+        String theColumnName = "theCount";
         short theResult = 0;
         String theSQL = "SELECT Count(MSysObjects.Id) AS " + theColumnName
                 + " " + "FROM MSysObjects "

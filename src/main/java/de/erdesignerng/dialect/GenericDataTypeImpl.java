@@ -221,7 +221,7 @@ public abstract class GenericDataTypeImpl implements DataType {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DataType other = (DataType) obj;
+        DataType other = (DataType) obj;
         if (name == null) {
             if (other.getName() != null) {
                 return false;

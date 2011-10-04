@@ -30,11 +30,12 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
+import org.apache.log4j.Logger;
 
-import javax.swing.*;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 /**
@@ -44,6 +45,8 @@ import java.awt.event.ActionEvent;
  * @version $Date: 2009-03-09 19:07:29 $
  */
 public class ModelCheckEditor extends BaseEditor {
+
+    private static final Logger LOGGER = Logger.getLogger(ModelCheckEditor.class);
 
     private final DefaultAction closeAction = new DefaultAction(
             new ActionEventProcessor() {
@@ -131,12 +134,10 @@ public class ModelCheckEditor extends BaseEditor {
             QuickFix theFix = theError.getQuickFix();
             if (theFix != null) {
                 try {
-                    Object[] theAffectedObjects = theFix.applyTo(model);
-                    for (Object theAffectedObject : theAffectedObjects) {
-                        OutlineComponent.getDefault().refresh(model);
-                    }
+                    theFix.applyTo(model);
+                    OutlineComponent.getDefault().refresh(model);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage(), e);
                 } finally {
                     theError.clearQuickFix();
                 }

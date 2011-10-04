@@ -165,7 +165,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     @Override
     public void exitApplication() {
         ApplicationPreferences.getInstance().updateWindowDefinition(
-                WINDOW_ALIAS, ERDesignerMainFrame.this);
+                WINDOW_ALIAS, this);
         dockingHelper.saveLayoutToPreferences();
         component.savePreferences();
         System.exit(0);
