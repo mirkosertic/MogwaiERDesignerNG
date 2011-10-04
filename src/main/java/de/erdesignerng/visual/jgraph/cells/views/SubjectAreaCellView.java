@@ -17,16 +17,31 @@
  */
 package de.erdesignerng.visual.jgraph.cells.views;
 
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
-import java.awt.*;
+import org.jgraph.JGraph;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.GraphCellEditor;
+import org.jgraph.graph.VertexRenderer;
+import org.jgraph.graph.VertexView;
+
+import javax.swing.ImageIcon;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
-import javax.swing.ImageIcon;
-import org.jgraph.JGraph;
-import org.jgraph.graph.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -140,5 +155,25 @@ public class SubjectAreaCellView extends VertexView {
     @Override
     public GraphCellEditor getEditor() {
         return new CellEditorFactory();
+    }
+
+    @Override
+    public void translate(double dx, double dy) {
+        super.translate(dx, dy);
+
+        SubjectAreaCell theCell = (SubjectAreaCell) getCell();
+        //if (!theCell.isExpanded()) {
+        // Invisible childs are not automatically translated
+        // if a collapsed subject area is moved, so we have to do that by hand.
+        SubjectArea theArea = (SubjectArea) theCell.getUserObject();
+        for (ModelItem theItem : theArea.getTables()) {
+            Point2D theLocation = theItem.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+            theItem.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) (theLocation.getX() + dx), (int) (theLocation.getY() + dy));
+        }
+        for (ModelItem theItem : theArea.getViews()) {
+            Point2D theLocation = theItem.getProperties().getPoint2DProperty(ModelItem.PROPERTY_LOCATION);
+            theItem.getProperties().setPointProperty(ModelItem.PROPERTY_LOCATION, (int) (theLocation.getX() + dx), (int) (theLocation.getY() + dy));
+        }
+        //}
     }
 }
