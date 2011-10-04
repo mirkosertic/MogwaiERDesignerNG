@@ -80,6 +80,7 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.jgraph.event.GraphLayoutCacheEvent;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
@@ -107,6 +108,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class JGraphEditor extends DefaultScrollPane implements GenericModelEditor {
+
+    private static final Logger LOGGER = Logger.getLogger(JGraphEditor.class);
 
     private static final class ERDesignerGraphSelectionListener implements
             GraphSelectionListener {
@@ -364,20 +367,22 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public void commandSetTool(ToolEnum aTool) {
-        if (aTool.equals(ToolEnum.HAND)) {
-            graph.setTool(new HandTool(this, graph));
-        }
-        if (aTool.equals(ToolEnum.ENTITY)) {
-            graph.setTool(new EntityTool(graph));
-        }
-        if (aTool.equals(ToolEnum.RELATION)) {
-            graph.setTool(new RelationTool(graph));
-        }
-        if (aTool.equals(ToolEnum.COMMENT)) {
-            graph.setTool(new CommentTool(graph));
-        }
-        if (aTool.equals(ToolEnum.VIEW)) {
-            graph.setTool(new ViewTool(graph));
+        switch (aTool) {
+            case HAND:
+                graph.setTool(new HandTool(this, graph));
+                break;
+            case ENTITY:
+                graph.setTool(new EntityTool(graph));
+                break;
+            case RELATION:
+                graph.setTool(new RelationTool(graph));
+                break;
+            case COMMENT:
+                graph.setTool(new CommentTool(graph));
+                break;
+            case VIEW:
+                graph.setTool(new ViewTool(graph));
+                break;
         }
     }
 
@@ -515,7 +520,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
             try {
                 SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("Error inspecting sql : " + theView.getSql(), e);
             }
 
             ViewCell theCell = new ViewCell(theView);
@@ -1137,7 +1142,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     private void performJGraphLayout(JGraphLayout aLayout) {
-        final JGraphFacade facade = new JGraphFacade(graph);
+        JGraphFacade facade = new JGraphFacade(graph);
         facade.run(aLayout, true);
 
         Map nested = facade.createNestedMap(true, true); // Obtain a mapof the resulting attribute changes from the facade

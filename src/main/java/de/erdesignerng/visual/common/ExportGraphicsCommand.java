@@ -26,7 +26,7 @@ import de.erdesignerng.visual.jgraph.export.Exporter;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -47,7 +47,7 @@ public class ExportGraphicsCommand extends UICommand {
     @Override
     public void execute() {
 
-        if (exportType.equals(ExportType.ONE_PER_FILE)) {
+        if (exportType == ExportType.ONE_PER_FILE) {
 
             JFileChooser theChooser = new JFileChooser();
             theChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

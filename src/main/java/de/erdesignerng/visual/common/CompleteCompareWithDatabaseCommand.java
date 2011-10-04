@@ -46,7 +46,7 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
 
         final Model theModel = component.getModel();
 
-        final ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
+        ReverseEngineerEditor theEditor = new ReverseEngineerEditor(
                 theModel, getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
 

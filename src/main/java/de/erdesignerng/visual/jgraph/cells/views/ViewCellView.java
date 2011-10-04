@@ -24,18 +24,28 @@ import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.cells.ViewCell;
-import java.awt.*;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
+import org.jgraph.JGraph;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.GraphCellEditor;
+import org.jgraph.graph.VertexRenderer;
+import org.jgraph.graph.VertexView;
+
+import javax.swing.JComponent;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.swing.JComponent;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.commons.lang.StringUtils;
-import org.jgraph.JGraph;
-import org.jgraph.graph.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -167,7 +177,7 @@ public class ViewCellView extends VertexView {
             int theMaxX = 150;
             int theMaxY = 8;
 
-            FontMetrics theMetrics = this.getFontMetrics(this.getFont());
+            FontMetrics theMetrics = getFontMetrics(getFont());
 
             int theYOffset = theMetrics.getHeight();
             int theXTextOffset = 30;

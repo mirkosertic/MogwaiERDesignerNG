@@ -18,5 +18,5 @@
 package de.erdesignerng.visual;
 
 public enum EditorMode {
-    CLASSIC, INTERACTIVE_2D, INTERACTIVE_3D;
+    CLASSIC, INTERACTIVE_2D, INTERACTIVE_3D
 }

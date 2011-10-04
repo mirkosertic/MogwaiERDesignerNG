@@ -59,7 +59,7 @@ public final class ContextMenuFactory {
         final List<ModelItem> theNewSubjectAreaItems = new ArrayList<ModelItem>();
         final List<ModelItem> theItemsToBeDeleted = new ArrayList<ModelItem>();
 
-        for (final ModelItem theUserObject : aItemList) {
+        for (ModelItem theUserObject : aItemList) {
             if (theUserObject instanceof Table) {
 
                 Table theTable = (Table) theUserObject;

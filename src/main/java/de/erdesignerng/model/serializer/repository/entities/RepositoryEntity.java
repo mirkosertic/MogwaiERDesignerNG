@@ -1,16 +1,16 @@
 /**
  * Mogwai ERDesigner. Copyright (C) 2002 The Mogwai Project.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -28,117 +28,115 @@ import java.util.List;
  */
 public class RepositoryEntity extends ModelEntity {
 
-	private String dialect;
+    private String dialect;
 
-	private List<DomainEntity> domains = new ArrayList<DomainEntity>();
-	
-	private List<CustomTypeEntity> customTypes = new ArrayList<CustomTypeEntity>();	
+    private List<DomainEntity> domains = new ArrayList<DomainEntity>();
 
-	private List<TableEntity> tables = new ArrayList<TableEntity>();
+    private List<CustomTypeEntity> customTypes = new ArrayList<CustomTypeEntity>();
 
-	private List<RelationEntity> relations = new ArrayList<RelationEntity>();
+    private List<TableEntity> tables = new ArrayList<TableEntity>();
 
-	private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+    private List<RelationEntity> relations = new ArrayList<RelationEntity>();
 
-	private List<ViewEntity> views = new ArrayList<ViewEntity>();
+    private List<CommentEntity> comments = new ArrayList<CommentEntity>();
 
-	private List<SubjectAreaEntity> subjectAreas = new ArrayList<SubjectAreaEntity>();
+    private List<ViewEntity> views = new ArrayList<ViewEntity>();
 
-	private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
+    private List<SubjectAreaEntity> subjectAreas = new ArrayList<SubjectAreaEntity>();
 
-	public List<DomainEntity> getDomains() {
-		return domains;
-	}
+    private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
 
-	public void setDomains(List<DomainEntity> domains) {
-		this.domains = domains;
-	}
+    public List<DomainEntity> getDomains() {
+        return domains;
+    }
 
-	public List<TableEntity> getTables() {
-		return tables;
-	}
+    public void setDomains(List<DomainEntity> domains) {
+        this.domains = domains;
+    }
 
-	public void setTables(List<TableEntity> tables) {
-		this.tables = tables;
-	}
+    public List<TableEntity> getTables() {
+        return tables;
+    }
 
-	public List<RelationEntity> getRelations() {
-		return relations;
-	}
+    public void setTables(List<TableEntity> tables) {
+        this.tables = tables;
+    }
 
-	public void setRelations(List<RelationEntity> relations) {
-		this.relations = relations;
-	}
+    public List<RelationEntity> getRelations() {
+        return relations;
+    }
 
-	public List<CommentEntity> getComments() {
-		return comments;
-	}
+    public void setRelations(List<RelationEntity> relations) {
+        this.relations = relations;
+    }
 
-	public void setComments(List<CommentEntity> comments) {
-		this.comments = comments;
-	}
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
 
-	public List<SubjectAreaEntity> getSubjectareas() {
-		return subjectAreas;
-	}
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
+    }
 
-	public void setSubjectareas(List<SubjectAreaEntity> subjectareas) {
-		this.subjectAreas = subjectareas;
-	}
+    public List<SubjectAreaEntity> getSubjectareas() {
+        return subjectAreas;
+    }
 
-	public List<ChangeEntity> getChanges() {
-		return changes;
-	}
+    public void setSubjectareas(List<SubjectAreaEntity> aAreas) {
+        subjectAreas = aAreas;
+    }
 
-	public void setChanges(List<ChangeEntity> changes) {
-		this.changes = changes;
-	}
+    public List<ChangeEntity> getChanges() {
+        return changes;
+    }
 
-	public String getDialect() {
-		return dialect;
-	}
+    public void setChanges(List<ChangeEntity> changes) {
+        this.changes = changes;
+    }
 
-	public void setDialect(String dialect) {
-		this.dialect = dialect;
-	}
+    public String getDialect() {
+        return dialect;
+    }
 
-	public List<ViewEntity> getViews() {
-		return views;
-	}
+    public void setDialect(String dialect) {
+        this.dialect = dialect;
+    }
 
-	public void setViews(List<ViewEntity> views) {
-		this.views = views;
-	}
-	
-	public List<CustomTypeEntity> getCustomType() {
-		return customTypes;
-	}
+    public List<ViewEntity> getViews() {
+        return views;
+    }
 
-	public void setCustomType(List<CustomTypeEntity> customType) {
-		this.customTypes = customType;
-	}
+    public void setViews(List<ViewEntity> views) {
+        this.views = views;
+    }
 
-	/**
-	 * Create a changelog.
-	 * 
-	 * @param aSource
-	 *			the source change ( included )
-	 * @param aDestination
-	 *			the destination change ( included )
-	 * @return the statements
-	 */
-	public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {
-		StatementList theStatements = new StatementList();
+    public List<CustomTypeEntity> getCustomType() {
+        return customTypes;
+    }
 
-		int a = changes.indexOf(aSource);
-		int b = changes.indexOf(aDestination);
-		for (int i = a; i <= b; i++) {
-			ChangeEntity theChange = changes.get(i);
-			for (String theStm : theChange.getStatements()) {
-				theStatements.add(new Statement(theStm));
-			}
-		}
+    public void setCustomType(List<CustomTypeEntity> customType) {
+        customTypes = customType;
+    }
 
-		return theStatements;
-	}
+    /**
+     * Create a changelog.
+     *
+     * @param aSource      the source change ( included )
+     * @param aDestination the destination change ( included )
+     * @return the statements
+     */
+    public StatementList createChangeLog(ChangeEntity aSource, ChangeEntity aDestination) {
+        StatementList theStatements = new StatementList();
+
+        int a = changes.indexOf(aSource);
+        int b = changes.indexOf(aDestination);
+        for (int i = a; i <= b; i++) {
+            ChangeEntity theChange = changes.get(i);
+            for (String theStm : theChange.getStatements()) {
+                theStatements.add(new Statement(theStm));
+            }
+        }
+
+        return theStatements;
+    }
 }

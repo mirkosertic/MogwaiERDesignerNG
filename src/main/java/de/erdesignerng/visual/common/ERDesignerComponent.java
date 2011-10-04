@@ -1010,7 +1010,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                     .findReportsInDirectory(theReportsFile);
             for (Map.Entry<File, String> theEntry : theReports.entrySet()) {
 
-                final File theJRXMLFile = theEntry.getKey();
+                File theJRXMLFile = theEntry.getKey();
                 JMenuItem theItem = new JMenuItem();
                 theItem.setText(theEntry.getValue());
                 theItem.addActionListener(new GenerateDocumentationCommand(
