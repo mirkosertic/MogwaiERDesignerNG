@@ -937,6 +937,16 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     public void initLayoutMenu(ERDesignerComponent aComponent, DefaultMenu aLayoutMenu) {
         aLayoutMenu.setEnabled(true);
 
+        DefaultAction layoutCluster = new DefaultAction(
+                new ActionEventProcessor() {
+
+                    @Override
+                    public void processActionEvent(ActionEvent e) {
+                        performClusterLayout();
+                    }
+
+                }, aComponent, ERDesignerBundle.LAYOUTCLUSTER);
+
         DefaultAction layoutTreeAction = new DefaultAction(
                 new ActionEventProcessor() {
 
@@ -957,6 +967,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                 }, aComponent, ERDesignerBundle.LAYOUTRADIAL);
 
+        aLayoutMenu.add(layoutCluster);
         aLayoutMenu.add(layoutTreeAction);
         aLayoutMenu.add(layoutRadialAction);
         aLayoutMenu.addSeparator();
@@ -1183,13 +1194,23 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
         performJGraphLayout(theLayout);
     }
 
+    private void performClusterLayout() {
+        Model theModel = graph.getDBModel();
+
+        LayoutHelper theHelper = new LayoutHelper();
+        theHelper.performClusterLayout(theModel);
+
+        ERDesignerComponent.getDefault().setModel(theModel);
+    }
+
     private void performTreeLayout() {
 
         Model theModel = graph.getDBModel();
 
         List<Set<Table>> theLayers = buildHierarchy(theModel);
 
-        LayoutHelper.performTreeLayout(new Point(20, 20), theLayers, theModel.getViews());
+        LayoutHelper theHelper = new LayoutHelper();
+        theHelper.performTreeLayout(new Point(20, 20), theLayers, theModel.getViews());
 
         updatePositions();
 
