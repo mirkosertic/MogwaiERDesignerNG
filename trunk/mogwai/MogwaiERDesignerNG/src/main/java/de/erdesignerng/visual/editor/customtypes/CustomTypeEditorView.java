@@ -30,7 +30,9 @@ import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import de.mogwai.common.client.looks.components.DefaultTextArea;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.ListSelectionModel;
 
 /**
  * @author $Author: mirkosertic $
@@ -81,9 +83,9 @@ public class CustomTypeEditorView extends DefaultPanel {
 
         CellConstraints cons = new CellConstraints();
 
-        this.add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
-        this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
-        this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
+        add(getMainTabbedPane(), cons.xywh(2, 4, 6, 2));
+        add(getOkButton(), cons.xywh(5, 8, 1, 1));
+        add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
     }
 

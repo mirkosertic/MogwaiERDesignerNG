@@ -227,7 +227,7 @@ public class Model extends ModelItem {
 
     public void removeIndex(Table aTable, Index aIndex) throws VetoException {
 
-        if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
+        if (IndexType.PRIMARYKEY == aIndex.getIndexType()) {
             modificationTracker.removePrimaryKeyFromTable(aTable, aIndex);
         } else {
             modificationTracker.removeIndexFromTable(aTable, aIndex);
@@ -253,7 +253,7 @@ public class Model extends ModelItem {
             throws VetoException, ElementAlreadyExistsException,
             ElementInvalidNameException {
 
-        if (IndexType.PRIMARYKEY.equals(aIndex.getIndexType())) {
+        if (IndexType.PRIMARYKEY == aIndex.getIndexType()) {
             modificationTracker.addPrimaryKeyToTable(aTable, aIndex);
         } else {
             modificationTracker.addIndexToTable(aTable, aIndex);

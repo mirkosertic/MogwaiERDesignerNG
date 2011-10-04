@@ -21,7 +21,20 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.util.MavenPropertiesLocator;
 import de.erdesignerng.visual.FadeInFadeOutHelper;
 import de.mogwai.common.i18n.ResourceHelper;
-import java.awt.*;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -29,10 +42,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class EditorPanel extends JPanel {
 
@@ -131,8 +140,8 @@ public class EditorPanel extends JPanel {
                         }
                     }
                 }
-                EditorPanel.this.invalidate();
-                EditorPanel.this.repaint();
+                invalidate();
+                repaint();
             }
         });
         addMouseListener(new MouseAdapter() {
@@ -172,7 +181,7 @@ public class EditorPanel extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
 
-                Dimension theCenter = EditorPanel.this.getSize();
+                Dimension theCenter = getSize();
                 int theX = theCenter.width / 2;
                 int theY = theCenter.height / 2;
 
@@ -197,8 +206,8 @@ public class EditorPanel extends JPanel {
                             theComponent.angle += newAngle - oldAngle;
                         }
                     }
-                    EditorPanel.this.invalidate();
-                    EditorPanel.this.repaint();
+                    invalidate();
+                    repaint();
 
                     lastMouseLocation = theCurrentLocation;
                 }
@@ -467,8 +476,8 @@ public class EditorPanel extends JPanel {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            EditorPanel.this.invalidate();
-                            EditorPanel.this.repaint();
+                            invalidate();
+                            repaint();
                         }
                     });
 

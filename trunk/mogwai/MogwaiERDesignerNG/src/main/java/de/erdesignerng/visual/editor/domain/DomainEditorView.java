@@ -30,7 +30,11 @@ import de.mogwai.common.client.looks.components.DefaultComboBox;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultTable;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  * @author $Author: mirkosertic $
@@ -97,9 +101,9 @@ public class DomainEditorView extends DefaultPanel {
 
         CellConstraints cons = new CellConstraints();
 
-        this.add(getComponent15(), cons.xywh(2, 4, 6, 2));
-        this.add(getOkButton(), cons.xywh(5, 8, 1, 1));
-        this.add(getCancelButton(), cons.xywh(7, 8, 1, 1));
+        add(getComponent15(), cons.xywh(2, 4, 6, 2));
+        add(getOkButton(), cons.xywh(5, 8, 1, 1));
+        add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
     }
 

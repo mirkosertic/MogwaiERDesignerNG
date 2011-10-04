@@ -75,7 +75,7 @@ public class Index extends OwnedModelItem<Table> implements
             return true;
         }
 
-        if (!indexType.equals(aIndex.getIndexType())) {
+        if (!(indexType == aIndex.getIndexType())) {
             return true;
         }
 

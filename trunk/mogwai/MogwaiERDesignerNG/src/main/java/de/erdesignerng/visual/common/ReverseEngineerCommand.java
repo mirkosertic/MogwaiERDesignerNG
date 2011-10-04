@@ -32,6 +32,8 @@ import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
 import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
 import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
+
+import javax.swing.SwingUtilities;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.sql.Connection;
@@ -39,7 +41,6 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.SwingUtilities;
 
 public class ReverseEngineerCommand extends UICommand {
 
@@ -90,7 +91,7 @@ public class ReverseEngineerCommand extends UICommand {
 
                         @Override
                         public void handleResult(
-                                final ReverseEngineeringOptions theOptions) {
+                                ReverseEngineeringOptions theOptions) {
                             showTablesSelectEditor(theStrategy, theModel,
                                     theConnection, theOptions);
                         }
@@ -105,11 +106,11 @@ public class ReverseEngineerCommand extends UICommand {
         } else {
             try {
 
-                final Connection theConnection = theModel.createConnection();
+                Connection theConnection = theModel.createConnection();
                 if (theConnection == null) {
                     return;
                 }
-                final ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
+                ReverseEngineeringOptions theOptions = new ReverseEngineeringOptions();
                 theOptions.setTableNaming(TableNamingEnum.STANDARD);
                 theOptions.getTableEntries().addAll(
                         theStrategy.getTablesForSchemas(theConnection,
