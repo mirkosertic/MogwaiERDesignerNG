@@ -183,7 +183,7 @@
                         <mainClass>de.erdesignerng.visual.ERDesigner</mainClass>
                     </jnlp>
                     <sign>
-                        <keystore>${project.build.directory}/erdesignerkeystore</keystore>
+                        <keystore>keystore/erdesignerkeystore</keystore>
                         <keypass>mogwai</keypass>
                         <storepass>mogwai</storepass>
                         <alias>ERDesignerNG</alias>
@@ -195,8 +195,8 @@
                         <dnameC>DE</dnameC>
                         <verify>false</verify>
                         <keystoreConfig>
-                            <delete>true</delete>
-                            <gen>true</gen>
+                            <delete>false</delete>
+                            <gen>false</gen>
                         </keystoreConfig>
                     </sign>
                     <outputJarVersions>false</outputJarVersions>
@@ -224,7 +224,7 @@
                         <include>**/*so.jar</include>
                         <include>**/*dll.jar</include>
                     </includes>
-                    <keystore>${project.build.directory}/erdesignerkeystore</keystore>
+                    <keystore>keystore/erdesignerkeystore</keystore>
                     <keypass>mogwai</keypass>
                     <storepass>mogwai</storepass>
                     <alias>ERDesignerNG</alias>
