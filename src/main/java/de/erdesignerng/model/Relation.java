@@ -17,11 +17,10 @@
  */
 package de.erdesignerng.model;
 
-import org.apache.commons.collections.map.ListOrderedMap;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections.map.ListOrderedMap;
 
 /**
  * @author $Author: mirkosertic $
@@ -161,5 +160,52 @@ public class Relation extends OwnedModelItem<Model> implements
         }
 
         return false;
+    }
+
+    /**
+     * Check if it is a one to one relation.
+     * <p/>
+     * It is one to one if the referecing columns of the importing table are also the primary key,
+     * so for every entry of the exporting table there can only be zero to one entries in the
+     * importing table.
+     *
+     * @return true if is a one to one relation.
+     */
+    public boolean isOneToOne() {
+        boolean isOneToOne = false;
+        Index thePrimaryKey = importingTable.getPrimarykey();
+        if (thePrimaryKey != null) {
+            int thePrimaryKeyLength = thePrimaryKey.getExpressions().size();
+            if (thePrimaryKeyLength == mapping.size()) {
+                isOneToOne = true;
+                for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : mapping.entrySet()) {
+                    if (!theEntry.getValue().isPrimaryKey()) {
+                        isOneToOne = false;
+                    }
+                }
+            }
+        }
+        return isOneToOne;
+    }
+
+    /**
+     * Check if the relation is identifying.
+     * <p/>
+     * A relation is identifying if referencing columns of the importing table are not nullable.
+     * so every entry of the importing table references one entry of the exporting table.
+     * If one referencing column of the importing table is nullable, then every entry of
+     * the importing table can reference the exporting table, so it is zero to one and not identifying.
+     *
+     * @return true if the relation is identifying.
+     */
+    public boolean isIdentifying() {
+        boolean isIdentifying = true;
+        for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : mapping.entrySet()) {
+            if (theEntry.getValue().isNullable()) {
+                isIdentifying = false;
+            }
+        }
+
+        return isIdentifying;
     }
 }
