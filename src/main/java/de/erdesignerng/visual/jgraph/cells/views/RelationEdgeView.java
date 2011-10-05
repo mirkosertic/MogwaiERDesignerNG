@@ -17,10 +17,17 @@
  */
 package de.erdesignerng.visual.jgraph.cells.views;
 
+import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.cells.RelationEdge;
+import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.EdgeRenderer;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphCellEditor;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 
 /**
  * @author $Author: mirkosertic $
@@ -28,8 +35,55 @@ import org.jgraph.graph.GraphCellEditor;
  */
 public class RelationEdgeView extends EdgeView {
 
+    private static final MyRenderer RENDERER = new MyRenderer();
+
     public RelationEdgeView(RelationEdge aRelation) {
         super(aRelation);
+    }
+
+    @Override
+    public CellViewRenderer getRenderer() {
+        return RENDERER;
+    }
+
+    public static class MyRenderer extends EdgeRenderer {
+
+        @Override
+        protected Shape createLineEnd(int size, int style, Point2D src, Point2D dst) {
+
+            /*if (style == RelationEdge.LINE_BEGIN) {
+                return createLineBeginShape(src, dst);
+            }
+            if (style == RelationEdge.LINE_END) {
+                return createLineEndShape(src, dst);
+            } */
+
+            return super.createLineEnd(size, style, src, dst);
+        }
+
+        private Shape createLineBeginShape(Point2D aSrc, Point2D aDst) {
+            RelationEdge theEdge = (RelationEdge) view.getCell();
+            Relation theRelation = (Relation) theEdge.getUserObject();
+
+            Path2D thePath = new Path2D.Double();
+            thePath.moveTo(aSrc.getX(), aSrc.getY() + 5);
+            thePath.lineTo(aSrc.getX() - 5, aSrc.getY() + 5);
+            thePath.lineTo(aSrc.getX() + 5, aSrc.getY() + 5);
+            return thePath;
+        }
+
+        private Shape createLineEndShape(Point2D aSrc, Point2D aDst) {
+            RelationEdge theEdge = (RelationEdge) view.getCell();
+            Relation theRelation = (Relation) theEdge.getUserObject();
+
+            Path2D thePath = new Path2D.Double();
+            thePath.moveTo(0, -5);
+            thePath.lineTo(0, 5);
+            thePath.moveTo(-5, 0);
+            thePath.lineTo(5, 0);
+            return thePath;
+        }
+
     }
 
     @Override

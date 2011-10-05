@@ -34,13 +34,8 @@ import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
-import javax.swing.JComponent;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +52,7 @@ public class ViewCellView extends VertexView {
 
     private static final Comparator REVERSE_NAME_COMPARATOR = new ReverseComparator(NAME_COMPARATOR);
 
-    private static final MyRenderer renderer = new MyRenderer();
+    private static final MyRenderer RENDERER = new MyRenderer();
 
     public ViewCellView(ViewCell aCell) {
         super(aCell);
@@ -65,7 +60,7 @@ public class ViewCellView extends VertexView {
 
     @Override
     public CellViewRenderer getRenderer() {
-        return renderer;
+        return RENDERER;
     }
 
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
