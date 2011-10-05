@@ -56,6 +56,10 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
         GraphConstants.setBendable(getAttributes(), true);
 
+//        GraphConstants.setLineBegin(getAttributes(), LINE_BEGIN);
+//        GraphConstants.setLineEnd(getAttributes(), LINE_END);
+
+
         setSource(aImporting.getChildAt(0));
         setTarget(aExporting.getChildAt(0));
     }

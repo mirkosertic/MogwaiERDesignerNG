@@ -39,7 +39,7 @@ import java.io.Serializable;
  */
 public class CommentCellView extends VertexView {
 
-    private static final MyRenderer renderer = new MyRenderer();
+    private static final MyRenderer RENDERER = new MyRenderer();
 
     public CommentCellView(CommentCell aCell) {
         super(aCell);
@@ -47,7 +47,7 @@ public class CommentCellView extends VertexView {
 
     @Override
     public CellViewRenderer getRenderer() {
-        return renderer;
+        return RENDERER;
     }
 
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
