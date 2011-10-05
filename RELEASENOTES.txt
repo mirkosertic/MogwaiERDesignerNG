@@ -281,3 +281,4 @@ Release 3.0.0
 * Added support for anaglyphic 3d mode
 * Improved usability of table editor
 * Improved usability of domain editor
+* Added support for crowfoot notation
