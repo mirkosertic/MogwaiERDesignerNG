@@ -29,16 +29,8 @@ import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
-import javax.swing.ImageIcon;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
@@ -49,7 +41,7 @@ import java.io.Serializable;
  */
 public class SubjectAreaCellView extends VertexView {
 
-    private static final MyRenderer renderer = new MyRenderer();
+    private static final MyRenderer RENDERER = new MyRenderer();
 
     public SubjectAreaCellView(SubjectAreaCell aCell) {
         super(aCell);
@@ -57,7 +49,7 @@ public class SubjectAreaCellView extends VertexView {
 
     @Override
     public CellViewRenderer getRenderer() {
-        return renderer;
+        return RENDERER;
     }
 
     public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
