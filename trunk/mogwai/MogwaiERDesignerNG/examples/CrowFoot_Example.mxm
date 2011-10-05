@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Model version="4.0">
+    <Configuration>
+        <Property name="dialect" value="PostgresDialect"/>
+        <Property name="ALIAS" value="Postgres Lokal"/>
+        <Property name="DRIVER" value="org.postgresql.Driver"/>
+        <Property name="PASSWORD" value="mogwai"/>
+        <Property name="PROMPTFORPASSWORD" value="false"/>
+        <Property name="URL" value="jdbc:postgresql://localhost/mogwai"/>
+        <Property name="USER" value="mogwai"/>
+    </Configuration>
+    <CustomTypes/>
+    <Domains/>
+    <Tables>
+        <Table id="d6f8b12a-a99c-487f-a798-fb3777c6b914" name="EXAMPLE1_MASTER" schema="">
+            <Property name="LOCATION" value="200:117"/>
+            <Comment/>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="1e795d5d-71cf-46bc-9920-0268fdb5d0b2" name="AT1" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="7ea5d1fe-e179-4a76-ab95-3070fc8b8d05" name="AT2" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Index id="0e9951e4-8e4e-4497-8ad4-0834a1f28e45" indextype="PRIMARYKEY" name="PK">
+                <Indexattribute attributerefid="1e795d5d-71cf-46bc-9920-0268fdb5d0b2" id="006f7262-46a5-4b5a-8403-d1a9a90762d0"/>
+            </Index>
+        </Table>
+        <Table id="13990161-5357-49e5-9004-132cbbf72c4c" name="EXAMPLE1_DETAIL" schema="">
+            <Property name="LOCATION" value="718:117"/>
+            <Comment/>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="7eb8409f-c9e7-4768-b420-01a4c621c10f" name="AT1" nullable="false" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="4ebe2c60-5237-4a5a-8152-e962880a561e" name="AT2" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Index id="f3ef6c6a-d8ae-4d55-9307-82208929c24e" indextype="PRIMARYKEY" name="PK_CLONE">
+                <Indexattribute attributerefid="7eb8409f-c9e7-4768-b420-01a4c621c10f" id="0002a34a-7ee0-46c7-8b2f-9d313ec63125"/>
+            </Index>
+        </Table>
+        <Table id="750dfa08-c68b-4114-9c85-d57a8b658695" name="EXAMPLE2_MASTER" schema="">
+            <Property name="LOCATION" value="198:213"/>
+            <Comment/>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="996fa80f-53b3-4173-9ddc-622fabcc5fdd" name="AT1" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="6d055451-16b8-4711-9d4d-e78a66ca0ecb" name="AT2" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Index id="94df08c0-51a1-4b52-8c77-25f42845859c" indextype="PRIMARYKEY" name="PK_CLONE">
+                <Indexattribute attributerefid="996fa80f-53b3-4173-9ddc-622fabcc5fdd" id="1345780c-9f28-46ea-9942-b4dd7db58cc9"/>
+            </Index>
+        </Table>
+        <Table id="f19f8b54-0ab0-4943-880e-d9162e3a8e6d" name="EXAMPLE2_DETAIL" schema="">
+            <Property name="LOCATION" value="722:214"/>
+            <Comment/>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="ac830bb5-d469-479b-95ca-ffca26c3c136" name="AT1" nullable="false" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="9450cc96-8b13-457a-b301-1bd3c64feb8b" name="AT2" nullable="false" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Index id="5fb4d564-099d-4c07-b85e-17902a5059b9" indextype="PRIMARYKEY" name="PK_CLONE_CLONE">
+                <Indexattribute attributerefid="ac830bb5-d469-479b-95ca-ffca26c3c136" id="dd7e8df0-d38a-4174-9705-4d5a66ca133c"/>
+            </Index>
+        </Table>
+        <Table id="7bbd32f9-7ec5-4555-baf5-fcc8a1dc3f00" name="EXAMPLE3_MASTER" schema="">
+            <Property name="LOCATION" value="193:302"/>
+            <Comment/>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="89b7de28-a5d6-4e6b-a0ce-2258146d8356" name="AT1" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="dbb1adc0-6e50-4783-a10b-a8504612002e" name="AT2" nullable="true" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Index id="9df13e21-c8b2-49ca-a067-171a0624be62" indextype="PRIMARYKEY" name="PK_CLONE_CLONE">
+                <Indexattribute attributerefid="89b7de28-a5d6-4e6b-a0ce-2258146d8356" id="c41f880b-fc5e-4841-8b9f-e5ce7cbc4782"/>
+            </Index>
+        </Table>
+        <Table id="cb5bd8a4-63f3-406a-96a7-f3ab7ab0dfdd" name="EXAMPLE3_DETAIL" schema="">
+            <Property name="LOCATION" value="724:308"/>
+            <Comment/>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="fb8e7456-357f-4668-9313-11cff9f9433c" name="AT1" nullable="false" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="bigint" defaultvalue="" extra="" fraction="null" id="9d6cd631-89a7-435e-ae54-b881e47475f3" name="AT2" nullable="false" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Index id="190c1f8e-0828-4755-939e-cc346771a6fb" indextype="PRIMARYKEY" name="PK_CLONE_CLONE_CLONE">
+                <Indexattribute attributerefid="fb8e7456-357f-4668-9313-11cff9f9433c" id="98c8a6d4-a8ed-4b86-9757-1700a50517da"/>
+            </Index>
+        </Table>
+    </Tables>
+    <Relations>
+        <Relation exportingtablerefid="d6f8b12a-a99c-487f-a798-fb3777c6b914" id="150cc136-e829-4972-b0fc-e41f8b92eb16" importingtablerefid="13990161-5357-49e5-9004-132cbbf72c4c" name="FK1" ondelete="nothing" onupdate="nothing">
+            <Comment/>
+            <Mapping exportingexpressionrefid="006f7262-46a5-4b5a-8403-d1a9a90762d0" importingattributerefid="4ebe2c60-5237-4a5a-8152-e962880a561e"/>
+        </Relation>
+        <Relation exportingtablerefid="750dfa08-c68b-4114-9c85-d57a8b658695" id="388b06d9-f66c-4be2-ba93-a91312a498ac" importingtablerefid="f19f8b54-0ab0-4943-880e-d9162e3a8e6d" name="FK2" ondelete="nothing" onupdate="nothing">
+            <Comment/>
+            <Mapping exportingexpressionrefid="1345780c-9f28-46ea-9942-b4dd7db58cc9" importingattributerefid="9450cc96-8b13-457a-b301-1bd3c64feb8b"/>
+        </Relation>
+        <Relation exportingtablerefid="7bbd32f9-7ec5-4555-baf5-fcc8a1dc3f00" id="5abe1c3c-9396-45da-9da9-8e829db87079" importingtablerefid="cb5bd8a4-63f3-406a-96a7-f3ab7ab0dfdd" name="FK3" ondelete="nothing" onupdate="nothing">
+            <Comment/>
+            <Mapping exportingexpressionrefid="c41f880b-fc5e-4841-8b9f-e5ce7cbc4782" importingattributerefid="fb8e7456-357f-4668-9313-11cff9f9433c"/>
+        </Relation>
+    </Relations>
+    <Views/>
+    <Subjectareas/>
+    <Comments/>
+</Model>

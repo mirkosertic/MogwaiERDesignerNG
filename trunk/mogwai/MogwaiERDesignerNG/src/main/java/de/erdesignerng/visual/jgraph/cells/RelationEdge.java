@@ -30,20 +30,22 @@ package de.erdesignerng.visual.jgraph.cells;
 
 import de.erdesignerng.model.ModelProperties;
 import de.erdesignerng.model.Relation;
-import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.GraphConstants;
-
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008/06/13 16:48:59 $
  */
 public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
+
+    public static final int LINE_BEGIN = 1000;
+    public static final int LINE_END = 1001;
 
     public RelationEdge(Relation aRelation, TableCell aImporting, TableCell aExporting) {
 
@@ -52,13 +54,11 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         GraphConstants.setLineStyle(getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
         GraphConstants.setConnectable(getAttributes(), false);
         GraphConstants.setDisconnectable(getAttributes(), false);
-        GraphConstants.setLineBegin(getAttributes(), GraphConstants.ARROW_DIAMOND);
-        GraphConstants.setLineEnd(getAttributes(), GraphConstants.ARROW_LINE);
         GraphConstants.setBendable(getAttributes(), true);
 
-//        GraphConstants.setLineBegin(getAttributes(), LINE_BEGIN);
-//        GraphConstants.setLineEnd(getAttributes(), LINE_END);
-
+        GraphConstants.setLineWidth(getAttributes(), 1);
+        GraphConstants.setLineBegin(getAttributes(), LINE_BEGIN);
+        GraphConstants.setLineEnd(getAttributes(), LINE_END);
 
         setSource(aImporting.getChildAt(0));
         setTarget(aExporting.getChildAt(0));
