@@ -4,7 +4,6 @@
         <title>Mogwai ERDesignerNG</title>
         <vendor>Project Mogwai</vendor>
         <homepage href="http://mogwai.sourceforge.net"/>
-        <offline-allowed/>
         <shortcut online="false">
             <desktop/>
             <menu submenu="Project Mogwai"/>
