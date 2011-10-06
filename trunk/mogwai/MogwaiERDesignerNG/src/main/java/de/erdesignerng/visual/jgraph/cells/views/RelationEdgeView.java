@@ -20,13 +20,14 @@ package de.erdesignerng.visual.jgraph.cells.views;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.cells.RelationEdge;
-import java.awt.Shape;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.EdgeRenderer;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphCellEditor;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 
 /**
  * @author $Author: mirkosertic $
@@ -51,16 +52,16 @@ public class RelationEdgeView extends EdgeView {
         protected Shape createLineEnd(int size, int style, Point2D src, Point2D dst) {
 
             if (style == RelationEdge.LINE_BEGIN) {
-                return createLineBeginShape(src, dst);
+                return createLineBeginShape(dst, src);
             }
             if (style == RelationEdge.LINE_END) {
-                return createLineEndShape(src, dst);
+                return createLineEndShape(dst, src);
             }
 
             return super.createLineEnd(size, style, src, dst);
         }
 
-        private Shape createLineBeginShape(Point2D aSrc, Point2D aDst) {
+        private Shape createLineEndShape(Point2D aSrc, Point2D aDst) {
             RelationEdge theEdge = (RelationEdge) view.getCell();
             Relation theRelation = (Relation) theEdge.getUserObject();
 
@@ -81,7 +82,7 @@ public class RelationEdgeView extends EdgeView {
             return theHelper.getPath();
         }
 
-        private Shape createLineEndShape(Point2D aSrc, Point2D aDst) {
+        private Shape createLineBeginShape(Point2D aSrc, Point2D aDst) {
             RelationEdge theEdge = (RelationEdge) view.getCell();
             Relation theRelation = (Relation) theEdge.getUserObject();
 

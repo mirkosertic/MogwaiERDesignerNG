@@ -27,9 +27,8 @@ import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
 import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
 import org.apache.log4j.Logger;
 
-import javax.swing.JComponent;
-import java.awt.Dimension;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,9 +44,9 @@ public class LayoutHelper {
 
     private static final int OFFSETY = 60;
 
-    private static final int DISTANCEX = 60;
+    private static final int DISTANCEX = 120;
 
-    private static final int DISTANCEY = 60;
+    private static final int DISTANCEY = 120;
 
     private static final int MAXWIDTH = 6000;
 
@@ -276,14 +275,14 @@ public class LayoutHelper {
 
                 maxHeight = Math.max(maxHeight, (int) theSize.getHeight());
 
-                xp += theSize.getWidth() + 60;
+                xp += theSize.getWidth() + DISTANCEX;
 
                 maxx = Math.max(xp, maxx);
                 maxy = Math.max(yp + maxHeight, maxy);
             }
 
             if (theEntry.size() > 0) {
-                yp += maxHeight + 60;
+                yp += maxHeight + DISTANCEY;
             }
         }
 
@@ -297,7 +296,7 @@ public class LayoutHelper {
             JComponent theRenderComponent = theRenderer.getRendererComponent(theView);
             Dimension theSize = theRenderComponent.getPreferredSize();
 
-            xp += theSize.getWidth() + 60;
+            xp += theSize.getWidth() + DISTANCEX;
 
             maxx = Math.max(xp, maxx);
             maxy = Math.max(yp + theSize.height, maxy);

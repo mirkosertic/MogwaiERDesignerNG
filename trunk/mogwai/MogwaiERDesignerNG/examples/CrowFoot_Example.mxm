@@ -93,10 +93,14 @@
     </Tables>
     <Relations>
         <Relation exportingtablerefid="d6f8b12a-a99c-487f-a798-fb3777c6b914" id="150cc136-e829-4972-b0fc-e41f8b92eb16" importingtablerefid="13990161-5357-49e5-9004-132cbbf72c4c" name="FK1" ondelete="nothing" onupdate="nothing">
+            <Property name="labelposition" value="500:0"/>
+            <Property name="points" value="718:117,446:65,358:117"/>
             <Comment/>
             <Mapping exportingexpressionrefid="006f7262-46a5-4b5a-8403-d1a9a90762d0" importingattributerefid="4ebe2c60-5237-4a5a-8152-e962880a561e"/>
         </Relation>
         <Relation exportingtablerefid="750dfa08-c68b-4114-9c85-d57a8b658695" id="388b06d9-f66c-4be2-ba93-a91312a498ac" importingtablerefid="f19f8b54-0ab0-4943-880e-d9162e3a8e6d" name="FK2" ondelete="nothing" onupdate="nothing">
+            <Property name="labelposition" value="500:0"/>
+            <Property name="points" value="722:214,610:178,460:175,356:213"/>
             <Comment/>
             <Mapping exportingexpressionrefid="1345780c-9f28-46ea-9942-b4dd7db58cc9" importingattributerefid="9450cc96-8b13-457a-b301-1bd3c64feb8b"/>
         </Relation>
