@@ -17,20 +17,11 @@
  */
 package de.erdesignerng.visual.jgraph.tools;
 
-import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.visual.common.ContextMenuFactory;
 import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
-import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultPopupMenu;
-import de.mogwai.common.i18n.ResourceHelper;
-import org.jgraph.graph.DefaultGraphCell;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
@@ -38,56 +29,12 @@ import java.util.List;
  */
 public class HandTool extends BaseTool {
 
-    private GenericModelEditor editor;
-
     public HandTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
-        super(aGraph);
-        editor = aEditor;
+        super(aEditor, aGraph);
     }
 
     @Override
     public boolean isForceMarqueeEvent(MouseEvent e) {
-
         return SwingUtilities.isRightMouseButton(e) && !e.isAltDown();
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
-
-            Object[] theSelectionCells = graph.getSelectionCells();
-            List<DefaultGraphCell> theList = new ArrayList<DefaultGraphCell>();
-            if (theSelectionCells != null) {
-                for (Object theCell : theSelectionCells) {
-                    if (theCell instanceof DefaultGraphCell) {
-                        theList.add((DefaultGraphCell) theCell);
-                    }
-                }
-            }
-            if (theList.size() > 0) {
-                DefaultPopupMenu menu = createPopupMenu(theList);
-                menu.show(graph, e.getX(), e.getY());
-                return;
-            }
-        }
-        super.mousePressed(e);
-    }
-
-    public DefaultPopupMenu createPopupMenu(List<DefaultGraphCell> aCells) {
-
-        DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
-                .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
-
-        List<ModelItem> theItems = new ArrayList<ModelItem>();
-        for (DefaultGraphCell theCell : aCells) {
-            theItems.add((ModelItem) theCell.getUserObject());
-        }
-
-        ContextMenuFactory.addActionsToMenu(editor, theMenu, theItems);
-
-        UIInitializer.getInstance().initialize(theMenu);
-
-        return theMenu;
     }
 }

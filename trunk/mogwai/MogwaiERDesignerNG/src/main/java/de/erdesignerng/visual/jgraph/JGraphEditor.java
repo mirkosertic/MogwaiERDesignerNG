@@ -92,11 +92,8 @@ import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
-import javax.swing.JComponent;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -372,16 +369,16 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
                 graph.setTool(new HandTool(this, graph));
                 break;
             case ENTITY:
-                graph.setTool(new EntityTool(graph));
+                graph.setTool(new EntityTool(this, graph));
                 break;
             case RELATION:
-                graph.setTool(new RelationTool(graph));
+                graph.setTool(new RelationTool(this, graph));
                 break;
             case COMMENT:
-                graph.setTool(new CommentTool(graph));
+                graph.setTool(new CommentTool(this, graph));
                 break;
             case VIEW:
-                graph.setTool(new ViewTool(graph));
+                graph.setTool(new ViewTool(this, graph));
                 break;
         }
     }
