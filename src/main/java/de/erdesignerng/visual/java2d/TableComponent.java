@@ -21,146 +21,145 @@ import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.IconFactory;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.text.AttributedString;
+import javax.swing.ImageIcon;
 
 public class TableComponent extends BaseRendererComponent {
 
-	private Table table;
-	private boolean fullMode;
-	private boolean showSelfReference;
+    private Table table;
+    private boolean fullMode;
+    private boolean showSelfReference;
 
-	public TableComponent(Table aTable) {
-		table = aTable;
-		initFlags();
-	}
+    public TableComponent(Table aTable) {
+        table = aTable;
+        initFlags();
+    }
 
-	public TableComponent(Table aTable, boolean aFullmode) {
-		table = aTable;
-		fullMode = aFullmode;
-		initFlags();
-	}
+    public TableComponent(Table aTable, boolean aFullmode) {
+        table = aTable;
+        fullMode = aFullmode;
+        initFlags();
+    }
 
-	private void initFlags() {
-		showSelfReference = false;
-		for (Relation theRelation : table.getOwner().getRelations().getForeignKeysFor(table)) {
-			if (theRelation.getExportingTable().equals(table)) {
-				showSelfReference = true;
-			}
-		}
-	}
+    private void initFlags() {
+        showSelfReference = false;
+        for (Relation theRelation : table.getOwner().getRelations().getForeignKeysFor(table)) {
+            if (theRelation.isSelfReference()) {
+                showSelfReference = true;
+            }
+        }
+    }
 
-	@Override
-	public Dimension getSize() {
-		Dimension theSize = new Dimension(0, 0);
-		FontMetrics theMetrics = getFontMetrics(getFont());
+    @Override
+    public Dimension getSize() {
+        Dimension theSize = new Dimension(0, 0);
+        FontMetrics theMetrics = getFontMetrics(getFont());
 
-		Rectangle2D theStringSize = theMetrics.getStringBounds(table.getName(), null);
-		theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
+        Rectangle2D theStringSize = theMetrics.getStringBounds(table.getName(), null);
+        theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
 
-		for (Attribute<Table> theAttriute : table.getAttributes()) {
-			boolean theInclude = true;
-			if (!fullMode) {
-				theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
-			}
-			if (theInclude) {
-				String theText = theAttriute.getName();
-				if (fullMode) {
-					theText += ":";
-					theText += theAttriute.getLogicalDeclaration();
-				}
-				theStringSize = theMetrics.getStringBounds(theText, null);
-				theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
-			}
-		}
+        for (Attribute<Table> theAttriute : table.getAttributes()) {
+            boolean theInclude = true;
+            if (!fullMode) {
+                theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
+            }
+            if (theInclude) {
+                String theText = theAttriute.getName();
+                if (fullMode) {
+                    theText += ":";
+                    theText += theAttriute.getLogicalDeclaration();
+                }
+                theStringSize = theMetrics.getStringBounds(theText, null);
+                theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
+            }
+        }
 
-		theSize.width += 20;
-		if (fullMode) {
-			theSize.width += 10;
-		}
+        theSize.width += 20;
+        if (fullMode) {
+            theSize.width += 10;
+        }
 
-		theSize.height += 25;
+        theSize.height += 25;
 
-		return theSize;
-	}
+        return theSize;
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
 
-		Graphics2D theGraphics = (Graphics2D) g;
-		Dimension theSize = getSize();
-		FontMetrics theMetrics = getFontMetrics(getFont());
+        Graphics2D theGraphics = (Graphics2D) g;
+        Dimension theSize = getSize();
+        FontMetrics theMetrics = getFontMetrics(getFont());
 
-		theGraphics.setColor(Color.blue);
+        theGraphics.setColor(Color.blue);
 
-		theGraphics.drawRect(10, 10, theSize.width - 10, theSize.height - 10);
-		theGraphics.drawRect(10, 10, theSize.width - 10, 10 + theMetrics.getAscent());
+        theGraphics.drawRect(10, 10, theSize.width - 10, theSize.height - 10);
+        theGraphics.drawRect(10, 10, theSize.width - 10, 10 + theMetrics.getAscent());
 
-		GradientPaint thePaint = new GradientPaint(0, 0, Color.blue, theSize.width - 35, theSize.height,
-				Color.black, false);
-		theGraphics.setPaint(thePaint);
-		theGraphics.fillRect(11, 11, theSize.width - 10 - 1, 10 + theMetrics.getAscent() - 1);
+        GradientPaint thePaint = new GradientPaint(0, 0, Color.blue, theSize.width - 35, theSize.height,
+                Color.black, false);
+        theGraphics.setPaint(thePaint);
+        theGraphics.fillRect(11, 11, theSize.width - 10 - 1, 10 + theMetrics.getAscent() - 1);
 
-		thePaint = new GradientPaint(0, 0, new Color(90, 90, 90), theSize.width - 35, theSize.height,
-				Color.black, false);
-		theGraphics.setPaint(thePaint);
-		theGraphics.fillRect(11, 19 + theMetrics.getAscent(), theSize.width - 10 - 1, theSize.height - 32);
+        thePaint = new GradientPaint(0, 0, new Color(90, 90, 90), theSize.width - 35, theSize.height,
+                Color.black, false);
+        theGraphics.setPaint(thePaint);
+        theGraphics.fillRect(11, 19 + theMetrics.getAscent(), theSize.width - 10 - 1, theSize.height - 32);
 
-		theGraphics.setColor(Color.white);
+        theGraphics.setColor(Color.white);
 
-		theGraphics.drawString(table.getName(), 15, 10 + theMetrics.getAscent());
+        theGraphics.drawString(table.getName(), 15, 10 + theMetrics.getAscent());
 
-		int y = 18 + theMetrics.getAscent();
+        int y = 18 + theMetrics.getAscent();
 
-		for (Attribute<Table> theAttriute : table.getAttributes()) {
+        for (Attribute<Table> theAttriute : table.getAttributes()) {
 
-			g.setColor(Color.white);
+            g.setColor(Color.white);
 
-			boolean theInclude = true;
-			if (!fullMode) {
-				theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
-			}
-			if (theInclude) {
-				String theText = theAttriute.getName();
-				if (fullMode) {
-					theText += ":";
-					theText += theAttriute.getLogicalDeclaration();
+            boolean theInclude = true;
+            if (!fullMode) {
+                theInclude = theAttriute.isForeignKey() || !theAttriute.isNullable();
+            }
+            if (theInclude) {
+                String theText = theAttriute.getName();
+                if (fullMode) {
+                    theText += ":";
+                    theText += theAttriute.getLogicalDeclaration();
 
-					if (theAttriute.isNullable()) {
-						theGraphics.drawString("N", theSize.width - 10, y + theMetrics.getAscent());
-					}
-				}
-				if (theAttriute.isForeignKey()) {
-					g.setColor(Color.green);
-				}
+                    if (theAttriute.isNullable()) {
+                        theGraphics.drawString("N", theSize.width - 10, y + theMetrics.getAscent());
+                    }
+                }
+                if (theAttriute.isForeignKey()) {
+                    g.setColor(Color.green);
+                }
 
-				if (theAttriute.isPrimaryKey()) {
-					// Primarx key has underline
-					AttributedString as = new AttributedString(theText);
-					as.addAttribute(TextAttribute.FONT, theGraphics.getFont());
-					as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, 0,
-							theText.length());
+                if (theAttriute.isPrimaryKey()) {
+                    // Primarx key has underline
+                    AttributedString as = new AttributedString(theText);
+                    as.addAttribute(TextAttribute.FONT, theGraphics.getFont());
+                    as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, 0,
+                            theText.length());
 
-					theGraphics.drawString(as.getIterator(), 15, y + theMetrics.getAscent());
-				} else {
-					theGraphics.drawString(theText, 15, y + theMetrics.getAscent());
-				}
+                    theGraphics.drawString(as.getIterator(), 15, y + theMetrics.getAscent());
+                } else {
+                    theGraphics.drawString(theText, 15, y + theMetrics.getAscent());
+                }
 
-				y += theMetrics.getAscent();
-			}
-			if (showSelfReference) {
-				ImageIcon theIcon = IconFactory.getSelfReferenceIcon();
-				int xp = theSize.width - theIcon.getIconWidth() - 4;
-				int yp = 14;
+                y += theMetrics.getAscent();
+            }
+            if (showSelfReference) {
+                ImageIcon theIcon = IconFactory.getSelfReferenceIcon();
+                int xp = theSize.width - theIcon.getIconWidth() - 4;
+                int yp = 14;
 
-				theIcon.paintIcon(this, theGraphics, xp, yp);
-			}
-		}
-	}
+                theIcon.paintIcon(this, theGraphics, xp, yp);
+            }
+        }
+    }
 
 }

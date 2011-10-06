@@ -208,4 +208,13 @@ public class Relation extends OwnedModelItem<Model> implements
 
         return isIdentifying;
     }
+
+    /**
+     * Check if the relation is self referencing.
+     *
+     * @return true if yes
+     */
+    public boolean isSelfReference() {
+        return importingTable == exportingTable;
+    }
 }
