@@ -101,36 +101,38 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         @Override
         public void graphChanged(GraphModelEvent aEvent) {
-            GraphLayoutCacheEvent.GraphLayoutCacheChange theChange = aEvent.getChange();
+            if (!filling) {
+                GraphLayoutCacheEvent.GraphLayoutCacheChange theChange = aEvent.getChange();
 
-            Object[] theChangedObjects = theChange.getChanged();
-            Map theChangedAttributes = theChange.getPreviousAttributes();
+                Object[] theChangedObjects = theChange.getChanged();
+                Map theChangedAttributes = theChange.getPreviousAttributes();
 
-            if (theChangedAttributes != null) {
-                for (Object theChangedObject : theChangedObjects) {
-                    Map theAttributes = (Map) theChangedAttributes
-                            .get(theChangedObject);
+                if (theChangedAttributes != null) {
+                    for (Object theChangedObject : theChangedObjects) {
+                        Map theAttributes = (Map) theChangedAttributes
+                                .get(theChangedObject);
 
-                    if (theChangedObject instanceof ModelCell) {
+                        if (theChangedObject instanceof ModelCell) {
 
-                        ModelCell theCell = (ModelCell) theChangedObject;
-                        if (theAttributes != null) {
-                            theCell
-                                    .transferAttributesToProperties(theAttributes);
+                            ModelCell theCell = (ModelCell) theChangedObject;
+                            if (theAttributes != null) {
+                                theCell
+                                        .transferAttributesToProperties(theAttributes);
+                            }
+                        }
+
+                        if (theChangedObject instanceof SubjectAreaCell) {
+
+                            SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
+                            if (theCell.getChildCount() == 0) {
+                                commandRemoveSubjectArea(theCell);
+                            } else {
+                                commandUpdateSubjectArea(theCell);
+                            }
                         }
                     }
-
-                    if (theChangedObject instanceof SubjectAreaCell) {
-
-                        SubjectAreaCell theCell = (SubjectAreaCell) theChangedObject;
-                        if (theCell.getChildCount() == 0) {
-                            commandRemoveSubjectArea(theCell);
-                        } else {
-                            commandUpdateSubjectArea(theCell);
-                        }
-                    }
+                    graph.setSelectionCells(graph.getSelectionCells());
                 }
-                graph.setSelectionCells(graph.getSelectionCells());
             }
         }
     }
@@ -182,6 +184,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     private ERDesignerGraph graph;
     private ERDesignerGraphLayout layout;
     private LayoutThread layoutThread;
+    private boolean filling;
 
     public JGraphEditor() {
         layout = new ERDesignerGraphLayout(this);
@@ -452,99 +455,114 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     private GraphModelMappingInfo fillGraph(Model aModel) {
 
-        GraphModel theGraphModel = createNewGraphModel();
+        filling = true;
+        try {
 
-        graph.setModel(theGraphModel);
-        graph.setGraphLayoutCache(createNewGraphlayoutCache(theGraphModel));
+            GraphModel theGraphModel = createNewGraphModel();
 
-        GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
+            graph.setModel(theGraphModel);
+            graph.setGraphLayoutCache(createNewGraphlayoutCache(theGraphModel));
 
-        List<Object> theCellsToInsert = new ArrayList<Object>();
+            GraphModelMappingInfo theInfo = new GraphModelMappingInfo();
 
-        for (Table theTable : aModel.getTables()) {
-            TableCell theCell = new TableCell(theTable);
-            theCell.transferPropertiesToAttributes(theTable);
+            List<Object> theCellsToInsert = new ArrayList<Object>();
 
-            theCellsToInsert.add(theCell);
+            for (Table theTable : aModel.getTables()) {
+                TableCell theCell = new TableCell(theTable);
+                theCell.transferPropertiesToAttributes(theTable);
 
-            theInfo.modelTableCells.put(theTable, theCell);
+                theCellsToInsert.add(theCell);
+
+                theInfo.modelTableCells.put(theTable, theCell);
+            }
+
+            for (View theView : aModel.getViews()) {
+
+                try {
+                    SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
+                } catch (Exception e) {
+                    LOGGER.error("Error inspecting sql : " + theView.getSql(), e);
+                }
+
+                ViewCell theCell = new ViewCell(theView);
+                theCell.transferPropertiesToAttributes(theView);
+
+                theCellsToInsert.add(theCell);
+
+                theInfo.modelViewCells.put(theView, theCell);
+            }
+
+            for (Comment theComment : aModel.getComments()) {
+                CommentCell theCell = new CommentCell(theComment);
+                theCell.transferPropertiesToAttributes(theComment);
+
+                theCellsToInsert.add(theCell);
+
+                theInfo.modelCommentCells.put(theComment, theCell);
+            }
+
+            for (Relation theRelation : aModel.getRelations()) {
+
+                TableCell theImportingCell = theInfo.modelTableCells
+                        .get(theRelation.getImportingTable());
+                TableCell theExportingCell = theInfo.modelTableCells
+                        .get(theRelation.getExportingTable());
+
+                RelationEdge theCell = new RelationEdge(theRelation,
+                        theImportingCell, theExportingCell);
+                theCell.transferPropertiesToAttributes(theRelation);
+
+                theCellsToInsert.add(theCell);
+            }
+
+            graph.getGraphLayoutCache().insert(theCellsToInsert.toArray());
+
+            List<SubjectAreaCell> theSACells = new ArrayList<SubjectAreaCell>();
+
+            for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
+
+                SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(
+                        theSubjectArea);
+                List<ModelCell> theTableCells = new ArrayList<ModelCell>();
+
+                for (Table theTable : theSubjectArea.getTables()) {
+                    theTableCells.add(theInfo.modelTableCells.get(theTable));
+                }
+
+                for (View theView : theSubjectArea.getViews()) {
+                    theTableCells.add(theInfo.modelViewCells.get(theView));
+                }
+
+                for (Comment theComment : theSubjectArea.getComments()) {
+                    theTableCells.add(theInfo.modelCommentCells.get(theComment));
+                }
+
+                graph.getGraphLayoutCache().insertGroup(theSubjectAreaCell,
+                        theTableCells.toArray());
+
+                theSACells.add(theSubjectAreaCell);
+
+                if (!theSubjectArea.isVisible()) {
+                    commandHideSubjectArea(theSubjectArea);
+                }
+
+                if (!theSubjectArea.isExpanded()) {
+                    graph.setSubjectAreaCellCollapsed(theSubjectAreaCell);
+                }
+            }
+
+            if (theSACells.size() > 0) {
+                graph.getGraphLayoutCache().toBack(
+                        theSACells.toArray(new Object[theSACells.size()]));
+            }
+
+            ERDesignerComponent.getDefault().updateSubjectAreasMenu();
+
+            return theInfo;
+
+        } finally {
+            filling = false;
         }
-
-        for (View theView : aModel.getViews()) {
-
-            try {
-                SQLUtils.updateViewAttributesFromSQL(theView, theView.getSql());
-            } catch (Exception e) {
-                LOGGER.error("Error inspecting sql : " + theView.getSql(), e);
-            }
-
-            ViewCell theCell = new ViewCell(theView);
-            theCell.transferPropertiesToAttributes(theView);
-
-            theCellsToInsert.add(theCell);
-
-            theInfo.modelViewCells.put(theView, theCell);
-        }
-
-        for (Comment theComment : aModel.getComments()) {
-            CommentCell theCell = new CommentCell(theComment);
-            theCell.transferPropertiesToAttributes(theComment);
-
-            theCellsToInsert.add(theCell);
-
-            theInfo.modelCommentCells.put(theComment, theCell);
-        }
-
-        for (Relation theRelation : aModel.getRelations()) {
-
-            TableCell theImportingCell = theInfo.modelTableCells
-                    .get(theRelation.getImportingTable());
-            TableCell theExportingCell = theInfo.modelTableCells
-                    .get(theRelation.getExportingTable());
-
-            RelationEdge theCell = new RelationEdge(theRelation,
-                    theImportingCell, theExportingCell);
-            theCell.transferPropertiesToAttributes(theRelation);
-
-            theCellsToInsert.add(theCell);
-        }
-
-        graph.getGraphLayoutCache().insert(theCellsToInsert.toArray());
-
-        for (SubjectArea theSubjectArea : aModel.getSubjectAreas()) {
-
-            SubjectAreaCell theSubjectAreaCell = new SubjectAreaCell(
-                    theSubjectArea);
-            List<ModelCell> theTableCells = new ArrayList<ModelCell>();
-
-            for (Table theTable : theSubjectArea.getTables()) {
-                theTableCells.add(theInfo.modelTableCells.get(theTable));
-            }
-
-            for (View theView : theSubjectArea.getViews()) {
-                theTableCells.add(theInfo.modelViewCells.get(theView));
-            }
-
-            for (Comment theComment : theSubjectArea.getComments()) {
-                theTableCells.add(theInfo.modelCommentCells.get(theComment));
-            }
-
-            graph.getGraphLayoutCache().insertGroup(theSubjectAreaCell,
-                    theTableCells.toArray());
-
-            graph.getGraphLayoutCache().toBack(
-                    new Object[]{theSubjectAreaCell});
-
-            if (!theSubjectArea.isVisible()) {
-                commandHideSubjectArea(theSubjectArea);
-            }
-
-            if (!theSubjectArea.isExpanded()) {
-                graph.setSubjectAreaCellCollapsed(theSubjectAreaCell);
-            }
-        }
-
-        return theInfo;
     }
 
     /**
@@ -641,6 +659,7 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
         if (theCells.size() > 0) {
             graph.commandAddToNewSubjectArea(theCells);
+            ERDesignerComponent.getDefault().updateSubjectAreasMenu();
         }
     }
 
