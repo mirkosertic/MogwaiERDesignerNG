@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.jgraph.tools;
 
+import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 
 import java.awt.event.MouseEvent;
@@ -30,8 +31,8 @@ import java.awt.geom.Point2D;
  */
 public class CommentTool extends BaseTool {
 
-    public CommentTool(ERDesignerGraph aGraph) {
-        super(aGraph);
+    public CommentTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+        super(aEditor, aGraph);
     }
 
     @Override
@@ -40,7 +41,8 @@ public class CommentTool extends BaseTool {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public boolean startCreateNew(MouseEvent e) {
         graph.commandNewComment(graph.fromScreen(new Point2D.Double(e.getX(), e.getY())));
+        return true;
     }
 }
