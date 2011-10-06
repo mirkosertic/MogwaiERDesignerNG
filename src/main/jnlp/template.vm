@@ -92,19 +92,19 @@
     </resources>
 
     <resources os="Mac OS X" arch="ppc">
-        <property name="j3d.rend" value="jogl"/>
+        <property name="j3d.rend" value="ogl"/>
         <nativelib href="macos-ppc/jogl-natives-macosx-ppc.jar" download="eager"/>
         <nativelib href="macos-ppc/gluegen-rt-natives-macosx-ppc.jar" download="eager"/>
     </resources>
 
     <resources os="Mac OS X" arch="i386">
-        <property name="j3d.rend" value="jogl"/>
+        <property name="j3d.rend" value="ogl"/>
         <nativelib href="macos-universal/jogl-natives-macosx-universal.jar" download="eager"/>
         <nativelib href="macos-universal/gluegen-rt-natives-macosx-universal.jar" download="eager"/>
     </resources>
 
     <resources os="Mac OS X" arch="x86_64">
-        <property name="j3d.rend" value="jogl"/>
+        <property name="j3d.rend" value="ogl"/>
         <nativelib href="macos-universal/jogl-natives-macosx-universal.jar" download="eager"/>
         <nativelib href="macos-universal/gluegen-rt-natives-macosx-universal.jar" download="eager"/>
     </resources>
