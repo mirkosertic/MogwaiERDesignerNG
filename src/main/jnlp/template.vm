@@ -4,7 +4,7 @@
         <title>Mogwai ERDesignerNG</title>
         <vendor>Project Mogwai</vendor>
         <homepage href="http://mogwai.sourceforge.net"/>
-        <shortcut online="false">
+        <shortcut>
             <desktop/>
             <menu submenu="Project Mogwai"/>
         </shortcut>
@@ -21,46 +21,92 @@
         <nativelib href="win32/j3dcore-ogl-chk_dll.jar" download="eager"/>
         <nativelib href="win32/j3dcore-ogl_dll.jar" download="eager"/>
         <nativelib href="win32/j3dcore-d3d_dll.jar" download="eager"/>
+        <nativelib href="win32/jogl-natives-windows-i586.jar" download="eager"/>
+        <nativelib href="win32/gluegen-rt-natives-windows-i586.jar" download="eager"/>
     </resources>
 
     <resources os="Windows" arch="amd64">
         <nativelib href="win64/j3dcore-ogl_dll.jar" download="eager"/>
+        <nativelib href="win64/jogl-natives-windows-amd64.jar" download="eager"/>
+        <nativelib href="win64/gluegen-rt-natives-windows-amd64.jar" download="eager"/>
+    </resources>
+
+    <resources os="Windows" arch="x86_64">
+        <nativelib href="win64/j3dcore-ogl_dll.jar" download="eager"/>
+        <nativelib href="win64/jogl-natives-windows-amd64.jar" download="eager"/>
+        <nativelib href="win64/gluegen-rt-natives-windows-amd64.jar" download="eager"/>
     </resources>
 
     <resources os="Linux" arch="i386">
         <nativelib href="linux32/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="linux32/jogl-natives-linux-i586.jar" download="eager"/>
+        <nativelib href="linux32/gluegen-rt-natives-linux-i586.jar" download="eager"/>
     </resources>
 
     <resources os="Linux" arch="x86">
         <nativelib href="linux32/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="linux32/jogl-natives-linux-i586.jar" download="eager"/>
+        <nativelib href="linux32/gluegen-rt-natives-linux-i586.jar" download="eager"/>
     </resources>
 
     <resources os="Linux" arch="amd64">
         <nativelib href="linux64/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="linux64/jogl-natives-linux-amd64.jar" download="eager"/>
+        <nativelib href="linux64/gluegen-rt-natives-linux-amd64.jar" download="eager"/>
     </resources>
 
     <resources os="Linux" arch="x86_64">
         <nativelib href="linux64/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="linux64/jogl-natives-linux-amd64.jar" download="eager"/>
+        <nativelib href="linux64/gluegen-rt-natives-linux-amd64.jar" download="eager"/>
     </resources>
 
     <resources os="SunOS" arch="sparc">
         <nativelib href="solaris-sparc/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="solaris-sparc/jogl-natives-solaris-sparc.jar" download="eager"/>
+        <nativelib href="solaris-sparc/gluegen-rt-natives-solaris-sparc.jar" download="eager"/>
     </resources>
 
     <resources os="SunOS" arch="sparcv9">
         <nativelib href="solaris-sparc-v9/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="solaris-sparc-v9/jogl-natives-solaris-sparcv9.jar" download="eager"/>
+        <nativelib href="solaris-sparc-v9/gluegen-rt-natives-solaris-sparcv9.jar" download="eager"/>
     </resources>
 
     <resources os="SunOS" arch="x86">
         <nativelib href="solaris-x86/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="solaris-x86/jogl-natives-solaris-i586.jar" download="eager"/>
+        <nativelib href="solaris-x86/gluegen-rt-natives-solaris-i586.jar" download="eager"/>
     </resources>
 
     <resources os="SunOS" arch="amd64">
         <nativelib href="solaris-x86-amd64/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="solaris-x86-amd64/jogl-natives-solaris-amd64.jar" download="eager"/>
+        <nativelib href="solaris-x86-amd64/gluegen-rt-natives-solaris-amd64.jar" download="eager"/>
     </resources>
 
     <resources os="SunOS" arch="x86_64">
         <nativelib href="solaris-x86-amd64/lib_j3dcore-ogl_so.jar" download="eager"/>
+        <nativelib href="solaris-x86-amd64/jogl-natives-solaris-amd64.jar" download="eager"/>
+        <nativelib href="solaris-x86-amd64/gluegen-rt-natives-solaris-amd64.jar" download="eager"/>
+    </resources>
+
+    <resources os="Mac OS X" arch="ppc">
+        <property name="j3d.rend" value="jogl"/>
+        <nativelib href="macos-ppc/jogl-natives-macosx-ppc.jar" download="eager"/>
+        <nativelib href="macos-ppc/gluegen-rt-natives-macosx-ppc.jar" download="eager"/>
+    </resources>
+
+    <resources os="Mac OS X" arch="i386">
+        <property name="j3d.rend" value="jogl"/>
+        <nativelib href="macos-universal/jogl-natives-macosx-universal.jar" download="eager"/>
+        <nativelib href="macos-universal/gluegen-rt-natives-macosx-universal.jar" download="eager"/>
+    </resources>
+
+    <resources os="Mac OS X" arch="x86_64">
+        <property name="j3d.rend" value="jogl"/>
+        <nativelib href="macos-universal/jogl-natives-macosx-universal.jar" download="eager"/>
+        <nativelib href="macos-universal/gluegen-rt-natives-macosx-universal.jar" download="eager"/>
     </resources>
 
     <!--

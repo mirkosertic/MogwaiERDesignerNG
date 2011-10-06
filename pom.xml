@@ -45,6 +45,10 @@
             <id>mogwai-repository</id>
             <url>http://mogwai.sourceforge.net/repository/maven2</url>
         </repository>
+        <repository>
+            <id>java-net-repository</id>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
     </repositories>
     <build>
         <defaultGoal>package</defaultGoal>
@@ -221,8 +225,7 @@
                 <configuration>
                     <archiveDirectory>${project.build.directory}/jnlp</archiveDirectory>
                     <includes>
-                        <include>**/*so.jar</include>
-                        <include>**/*dll.jar</include>
+                        <include>**/*.jar</include>
                     </includes>
                     <keystore>keystore/erdesignerkeystore</keystore>
                     <keypass>mogwai</keypass>
@@ -312,6 +315,20 @@
             <artifactId>j3d-core-utils</artifactId>
             <version>1.5.2</version>
         </dependency>
+        <!--
+            Required by MacOS X
+        -->
+        <dependency>
+            <groupId>net.java.dev.jogl</groupId>
+            <artifactId>jogl</artifactId>
+            <version>1.1.1-rc6</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>1.0b05</version>
+        </dependency>
+
         <dependency>
             <groupId>java3d</groupId>
             <artifactId>vecmath</artifactId>
