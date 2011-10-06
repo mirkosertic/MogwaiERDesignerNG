@@ -17,24 +17,14 @@
  */
 package de.erdesignerng.visual;
 
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
 import de.erdesignerng.visual.jgraph.cells.views.ViewCellView;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.*;
+import javax.swing.JComponent;
 import org.apache.log4j.Logger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class LayoutHelper {
 
@@ -145,6 +135,8 @@ public class LayoutHelper {
                 buildTree(aModel, theCluster.root, theCluster, 1);
             }
 
+            Set<ModelItem> theClusteredTables = new HashSet<ModelItem>();
+
             // Step 3. Remove nodes that are assigned to more than one cluster
             for (Cluster theCluster : theRoots) {
                 for (Cluster theCluster2 : theRoots) {
@@ -153,6 +145,31 @@ public class LayoutHelper {
                         theCluster2.nodes.remove(theCluster.root);
                         theCluster.nodes.removeAll(theCluster2.nodes);
                         theCluster2.nodes.removeAll(theCluster.nodes);
+
+                        theClusteredTables.addAll(theCluster.nodes);
+                        theClusteredTables.addAll(theCluster2.nodes);
+                    }
+                }
+            }
+
+            // Check for clustes with only one root
+            for (Cluster theCluster : theRoots) {
+                if (theCluster.nodes.size() == 0) {
+                    Set<Table> theDependentTables = new HashSet<Table>();
+                    for (Relation theRelation : aModel.getRelations().getForeignKeysFor(theCluster.root)) {
+                        if (!theRelation.isSelfReference()) {
+                            theDependentTables.add(theRelation.getExportingTable());
+                        }
+                    }
+                    if (theDependentTables.size() > 0) {
+                        // Map the root node of the cluster to the cluster that contains all the referenced
+                        // tables
+                        for (Cluster theCluster2 : theRoots) {
+                            if (theCluster2.nodes.containsAll(theDependentTables)) {
+                                theCluster2.nodes.add(theCluster.root);
+                                theCluster2.hierarchyLevel.put(theCluster.root, theCluster2.maxLevel);
+                            }
+                        }
                     }
                 }
             }
