@@ -17,6 +17,9 @@
  */
 package de.erdesignerng.visual.jgraph.plaf.basic;
 
+import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.model.ModelItem;
+import de.erdesignerng.visual.common.ContextMenuFactory;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
@@ -24,18 +27,23 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
+import de.erdesignerng.visual.jgraph.tools.BaseTool;
+import de.mogwai.common.client.looks.UIInitializer;
+import de.mogwai.common.client.looks.components.DefaultPopupMenu;
+import de.mogwai.common.i18n.ResourceHelper;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
-import javax.swing.SwingUtilities;
-import java.awt.Component;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author $Author: mirkosertic $
@@ -122,42 +130,56 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
             ERDesignerGraph theGraph = (ERDesignerGraph) graph;
             theGraph.setDragging(false);
-
-            /*
-             This should not be neccesary
-            if (focus != null && focus.getCell() instanceof ModelCell) {
-                ModelCell theCell = (ModelCell) focus.getCell();
-                if (theCell instanceof RelationEdge) {
-                    theCell.transferAttributesToProperties(focus.getAttributes());
-                } else {
-                    // theCell.transferAttributesToProperties(focus.getAllAttributes());
-                }
-            } */
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == graph.getEditClickCount()) {
 
-                int s = graph.getTolerance();
+            int s = graph.getTolerance();
 
-                Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
-                        2 * s));
-                lastFocus = focus;
-                focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
-                cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
-                if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
-                    CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
-                    if (theTemp != null) {
-                        cell = theTemp;
-                    }
+            Rectangle2D theRectangle = graph.fromScreen(new Rectangle2D.Double(e.getX() - s, e.getY() - s, 2 * s,
+                    2 * s));
+            lastFocus = focus;
+            focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
+            cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
+            if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
+                CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
+                if (theTemp != null) {
+                    cell = theTemp;
                 }
-                if (focus == null) {
-                    focus = cell;
-                }
+            }
+            if (focus == null) {
+                focus = cell;
+            }
+
+            if (e.getClickCount() == graph.getEditClickCount() && !SwingUtilities.isRightMouseButton(e)) {
 
                 if (cell != null) {
                     if (handleEditTrigger(cell.getCell(), e)) {
+                        e.consume();
+                    }
+                }
+            }
+
+            if (cell != null) {
+                graph.scrollCellToVisible(cell.getCell());
+
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    List<DefaultGraphCell> theSelectionList = new ArrayList<DefaultGraphCell>();
+                    for (Object theSelection : graph.getSelectionCells()) {
+                        if (theSelection instanceof DefaultGraphCell) {
+                            theSelectionList.add((DefaultGraphCell) theSelection);
+                        }
+                    }
+
+                    DefaultPopupMenu theMenu = createPopupMenu(theSelectionList);
+                    theMenu.show(graph, e.getX(), e.getY());
+                }
+                e.consume();
+            } else {
+                if (marquee instanceof BaseTool) {
+                    BaseTool theTool = (BaseTool) marquee;
+                    if (theTool.startCreateNew(e)) {
                         e.consume();
                     }
                 }
@@ -167,6 +189,23 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         @Override
         protected void postProcessSelection(MouseEvent aEvent, Object aCell, boolean aWasSelected) {
         }
+    }
+
+    private DefaultPopupMenu createPopupMenu(List<DefaultGraphCell> aCells) {
+
+        DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
+                .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
+
+        List<ModelItem> theItems = new ArrayList<ModelItem>();
+        for (DefaultGraphCell theCell : aCells) {
+            theItems.add((ModelItem) theCell.getUserObject());
+        }
+
+        ContextMenuFactory.addActionsToMenu(erdesigner, theMenu, theItems);
+
+        UIInitializer.getInstance().initialize(theMenu);
+
+        return theMenu;
     }
 
     @Override

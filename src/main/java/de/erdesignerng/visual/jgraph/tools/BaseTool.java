@@ -18,9 +18,12 @@
 package de.erdesignerng.visual.jgraph.tools;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.mogwai.common.i18n.ResourceHelper;
 import org.jgraph.graph.BasicMarqueeHandler;
+
+import java.awt.event.MouseEvent;
 
 /**
  * @author $Author: mirkosertic $
@@ -30,11 +33,18 @@ public abstract class BaseTool extends BasicMarqueeHandler {
 
     protected final ERDesignerGraph graph;
 
-    public BaseTool(ERDesignerGraph aGraph) {
+    protected final GenericModelEditor editor;
+
+    public BaseTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
         graph = aGraph;
+        editor = aEditor;
     }
 
     protected ResourceHelper getResourceHelper() {
         return ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    }
+
+    public boolean startCreateNew(MouseEvent e) {
+        return true;
     }
 }

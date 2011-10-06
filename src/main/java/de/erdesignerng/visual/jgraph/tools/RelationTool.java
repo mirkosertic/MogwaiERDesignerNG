@@ -20,6 +20,7 @@ package de.erdesignerng.visual.jgraph.tools;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.cells.TableCell;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -33,10 +34,8 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.Port;
 import org.jgraph.graph.PortView;
 
-import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -57,8 +56,8 @@ public class RelationTool extends BaseTool {
 
     protected PortView firstPort;
 
-    public RelationTool(ERDesignerGraph aGraph) {
-        super(aGraph);
+    public RelationTool(GenericModelEditor aEditor, ERDesignerGraph aGraph) {
+        super(aEditor, aGraph);
     }
 
     @Override
@@ -141,13 +140,14 @@ public class RelationTool extends BaseTool {
                     menu.show(graph, e.getX(), e.getY());
                 }
             }
-            graph.repaint();
         }
         firstPort = null;
         port = null;
         start = null;
         current = null;
         super.mouseReleased(e);
+
+        graph.repaint();
     }
 
     private DefaultPopupMenu createPopupMenu(final Point2D aLocation, final TableCell aParentCell) {
@@ -223,6 +223,7 @@ public class RelationTool extends BaseTool {
             Table theTargetTable = (Table) ((TableCell) theTargetCell).getUserObject();
             if (theTargetTable.hasPrimaryKey()) {
                 graph.commandNewRelation((TableCell) theSourceCell, (TableCell) theTargetCell);
+                graph.repaint();
             } else {
                 MessagesHelper.displayErrorMessage(graph, getResourceHelper().getText(
                         ERDesignerBundle.EXPORTINGTABLENEEDSPRIMARYKEY));
