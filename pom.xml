@@ -335,6 +335,11 @@
             <version>1.5.2</version>
         </dependency>
         <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
             <groupId>batik</groupId>
             <artifactId>batik-svggen</artifactId>
             <version>1.6-1</version>
