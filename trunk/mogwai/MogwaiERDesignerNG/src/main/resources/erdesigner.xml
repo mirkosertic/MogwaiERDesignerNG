@@ -1200,6 +1200,10 @@
             <Text lang="de">Nein, Danke</Text>
             <Text lang="en">No, thanks</Text>
         </Entry>
+        <Entry id="NOTHANKSANDDONTASKAGAIN">
+            <Text lang="de">Nein, Danke, und nicht nochmal fragen</Text>
+            <Text lang="en">No, thanks, and don't ask me again</Text>
+        </Entry>
         <Entry id="YESIWANT">
             <Text lang="de">Ja, ich will!</Text>
             <Text lang="en">Yes, i want!</Text>
