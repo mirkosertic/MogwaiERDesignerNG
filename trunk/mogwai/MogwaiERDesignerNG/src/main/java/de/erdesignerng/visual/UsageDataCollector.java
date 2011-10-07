@@ -18,6 +18,7 @@
 package de.erdesignerng.visual;
 
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.util.MavenPropertiesLocator;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -204,7 +205,7 @@ public class UsageDataCollector {
 
             StringBuilder theBuilder = new StringBuilder();
             // Session information
-            theBuilder.append("S").append(COLUMN_SEPARATOR).append(ApplicationPreferences.getInstance().getInstallationId()).append(ROW_SEPARATOR);
+            theBuilder.append("S").append(COLUMN_SEPARATOR).append(ApplicationPreferences.getInstance().getInstallationId()).append(COLUMN_SEPARATOR).append("Mogwai ERDesignerNG ").append(MavenPropertiesLocator.getERDesignerVersionInfo()).append(ROW_SEPARATOR);
             // Properties
             theBuilder.append("P").append(COLUMN_SEPARATOR).append("Usage Time In Minutes").append(COLUMN_SEPARATOR).append(theDuration).append(ROW_SEPARATOR);
             theBuilder.append("P").append(COLUMN_SEPARATOR).append("User Language").append(COLUMN_SEPARATOR).append(SystemUtils.USER_LANGUAGE).append(ROW_SEPARATOR);
