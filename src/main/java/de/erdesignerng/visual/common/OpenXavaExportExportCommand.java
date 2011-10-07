@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.openxavaexport.OpenXavaExportEditor;
 
@@ -28,6 +29,9 @@ public class OpenXavaExportExportCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.OPENXAVA_EXPORT);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         OpenXavaExportEditor theEditor = new OpenXavaExportEditor(component.getModel(), getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {

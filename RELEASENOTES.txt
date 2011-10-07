@@ -285,3 +285,4 @@ Release 3.0.0
 * Improved usability of table editor
 * Improved usability of domain editor
 * Added support for crowfoot notation
+* Added usage data collector

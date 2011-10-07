@@ -24,51 +24,52 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class EditTableCommand extends UICommand {
 
-	private Table table;
+    private Table table;
 
-	private Attribute<Table> attribute;
+    private Attribute<Table> attribute;
 
-	private Index index;
+    private Index index;
 
-	public EditTableCommand(Table aTable) {
-		table = aTable;
-	}
+    public EditTableCommand(Table aTable) {
+        table = aTable;
+    }
 
-	public EditTableCommand(Table aTable, Attribute<Table> aAttribute) {
-		table = aTable;
-		attribute = aAttribute;
-	}
+    public EditTableCommand(Table aTable, Attribute<Table> aAttribute) {
+        table = aTable;
+        attribute = aAttribute;
+    }
 
-	public EditTableCommand(Table aTable, Index aIndex) {
-		table = aTable;
-		index = aIndex;
-	}
+    public EditTableCommand(Table aTable, Index aIndex) {
+        table = aTable;
+        index = aIndex;
+    }
 
-	protected void beforeRefresh() {
-	}
+    protected void beforeRefresh() {
+    }
 
-	@Override
-	public void execute() {
-		ERDesignerComponent component = ERDesignerComponent.getDefault();
-		TableEditor theEditor = new TableEditor(component.getModel(), component.getDetailComponent());
-		theEditor.initializeFor(table);
-		if (attribute != null) {
-			theEditor.setSelectedAttribute(attribute);
-		}
-		if (index != null) {
-			theEditor.setSelectedIndex(index);
-		}
-		if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
-			try {
-				theEditor.applyValues();
+    @Override
+    public void execute() {
 
-				beforeRefresh();
+        ERDesignerComponent component = ERDesignerComponent.getDefault();
+        TableEditor theEditor = new TableEditor(component.getModel(), component.getDetailComponent());
+        theEditor.initializeFor(table);
+        if (attribute != null) {
+            theEditor.setSelectedAttribute(attribute);
+        }
+        if (index != null) {
+            theEditor.setSelectedIndex(index);
+        }
+        if (theEditor.showModal() == TableEditor.MODAL_RESULT_OK) {
+            try {
+                theEditor.applyValues();
 
-				refreshDisplayAndOutline();
-			} catch (Exception e) {
-				getWorldConnector().notifyAboutException(e);
-			}
-		}
-	}
+                beforeRefresh();
+
+                refreshDisplayAndOutline();
+            } catch (Exception e) {
+                getWorldConnector().notifyAboutException(e);
+            }
+        }
+    }
 
 }

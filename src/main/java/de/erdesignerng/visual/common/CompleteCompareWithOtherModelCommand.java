@@ -22,6 +22,7 @@ import de.erdesignerng.io.ModelFileFilter;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 
 import javax.swing.*;
@@ -37,6 +38,9 @@ public class CompleteCompareWithOtherModelCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.COMPLETE_COMPARE_WITH_MODEL);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         Model theCurrentModel = component.getModel();

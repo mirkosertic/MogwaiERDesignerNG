@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.common;
 
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.modelcheck.ModelCheckEditor;
 
 public class ModelCheckCommand extends UICommand {
@@ -26,6 +27,8 @@ public class ModelCheckCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.PERFORM_MODEL_CHECK);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 

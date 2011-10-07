@@ -34,6 +34,7 @@ import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.EditorMode;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.java2d.EditorPanel;
@@ -216,11 +217,13 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         setEditor(new JGraphEditor() {
             @Override
             public void commandZoomOneLevelIn() {
+                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ZOOM_IN);
                 zoomIn();
             }
 
             @Override
             public void commandZoomOneLevelOut() {
+                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ZOOM_OUT);
                 zoomOut();
             }
         });

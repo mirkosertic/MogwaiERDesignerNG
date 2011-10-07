@@ -27,11 +27,14 @@ import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.common.SQLComponent;
+import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
+import de.erdesignerng.visual.editor.usagedata.UsageDataEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.i18n.ResourceHelper;
+import org.apache.log4j.Logger;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -42,6 +45,8 @@ import java.awt.event.WindowEvent;
  */
 public class ERDesignerMainFrame extends DefaultFrame implements
         ERDesignerWorldConnector {
+
+    private static final Logger LOGGER = Logger.getLogger(ERDesignerMainFrame.class);
 
     private static final String WINDOW_ALIAS = "ERDesignerMainFrame";
 
@@ -168,16 +173,30 @@ public class ERDesignerMainFrame extends DefaultFrame implements
                 WINDOW_ALIAS, this);
         dockingHelper.saveLayoutToPreferences();
         component.savePreferences();
-        System.exit(0);
+        setVisible(false);
     }
 
     @Override
     public void setVisible(boolean aVisible) {
+
+        if (aVisible == false) {
+            UsageDataEditor theEditor = new UsageDataEditor(this);
+            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                try {
+                    theEditor.applyValues();
+                } catch (Exception e1) {
+                    LOGGER.error(e1.getMessage(), e1);
+                }
+            }
+        }
+
         super.setVisible(aVisible);
 
         if (aVisible) {
             ApplicationPreferences.getInstance().setWindowState(WINDOW_ALIAS,
                     this);
+        } else {
+            System.exit(0);
         }
     }
 

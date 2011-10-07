@@ -19,6 +19,7 @@ package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.convertmodel.ConvertModelEditor;
 
@@ -29,6 +30,9 @@ public class ConvertModelCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.CONVERT_MODEL);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {

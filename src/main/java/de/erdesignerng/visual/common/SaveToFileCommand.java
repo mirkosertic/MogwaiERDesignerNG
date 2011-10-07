@@ -27,6 +27,9 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
+import de.erdesignerng.visual.UsageDataCollector;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -34,7 +37,6 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JFileChooser;
 
 public class SaveToFileCommand extends UICommand {
 
@@ -43,6 +45,9 @@ public class SaveToFileCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SAVE_TO_FILE);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (component.currentEditingFile != null) {

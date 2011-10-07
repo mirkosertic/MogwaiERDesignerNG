@@ -32,6 +32,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.ModelItemNameCellEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
@@ -45,11 +46,10 @@ import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -215,6 +215,7 @@ public class TableEditor extends BaseEditor {
         updateAttributeEditFields();
 
         UIInitializer.getInstance().initialize(this);
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_TABLE);
     }
 
     /**

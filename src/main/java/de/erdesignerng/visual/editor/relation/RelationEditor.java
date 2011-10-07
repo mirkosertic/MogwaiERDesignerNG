@@ -25,6 +25,7 @@ import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
@@ -42,122 +43,124 @@ import java.util.Map;
  */
 public class RelationEditor extends BaseEditor {
 
-	private final Model model;
+    private final Model model;
 
-	private final BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
+    private final BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
 
-	private RelationEditorView editingView;
+    private RelationEditorView editingView;
 
-	private RelationProperties relationProperties;
+    private RelationProperties relationProperties;
 
-	private ScaffoldingWrapper relationPropertiesWrapper;
+    private ScaffoldingWrapper relationPropertiesWrapper;
 
 
-	/**
-	 * Create a relation editor.
-	 *
-	 * @param aModel  the model
-	 * @param aParent the parent container
-	 */
-	public RelationEditor(Model aModel, Component aParent) {
-		super(aParent, ERDesignerBundle.RELATIONEDITOR);
+    /**
+     * Create a relation editor.
+     *
+     * @param aModel  the model
+     * @param aParent the parent container
+     */
+    public RelationEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.RELATIONEDITOR);
 
-		initialize();
+        initialize();
 
-		model = aModel;
+        model = aModel;
 
-		bindingInfo.addBinding("name", editingView.getRelationName(), true);
-		bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(),
-				getResourceHelper()));
+        bindingInfo.addBinding("name", editingView.getRelationName(), true);
+        bindingInfo.addBinding("mapping", new RelationAttributesPropertyAdapter(editingView.getAttributeMappingTable(),
+                getResourceHelper()));
 
-		RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
-		theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
-		theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView.getOnDeleteCascade());
-		theOnDeleteAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnDeleteSetNull());
-		theOnDeleteAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnDeleteRestrict());
-		bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
+        RadioButtonAdapter theOnDeleteAdapter = new RadioButtonAdapter();
+        theOnDeleteAdapter.addMapping(CascadeType.NOTHING, editingView.getOnDeleteCascadeNothing());
+        theOnDeleteAdapter.addMapping(CascadeType.CASCADE, editingView.getOnDeleteCascade());
+        theOnDeleteAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnDeleteSetNull());
+        theOnDeleteAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnDeleteRestrict());
+        bindingInfo.addBinding("onDelete", theOnDeleteAdapter);
 
-		RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
-		theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView.getOnUpdateCascadeNothing());
-		theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView.getOnUpdateCascade());
-		theOnUpdateAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnUpdateSetNull());
-		theOnUpdateAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnUpdateRestrict());
-		bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
+        RadioButtonAdapter theOnUpdateAdapter = new RadioButtonAdapter();
+        theOnUpdateAdapter.addMapping(CascadeType.NOTHING, editingView.getOnUpdateCascadeNothing());
+        theOnUpdateAdapter.addMapping(CascadeType.CASCADE, editingView.getOnUpdateCascade());
+        theOnUpdateAdapter.addMapping(CascadeType.SET_NULL, editingView.getOnUpdateSetNull());
+        theOnUpdateAdapter.addMapping(CascadeType.RESTRICT, editingView.getOnUpdateRestrict());
+        bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
 
-		bindingInfo.configure();
-	}
+        bindingInfo.configure();
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_RELATION);
+    }
 
-		editingView = new RelationEditorView();
-		editingView.getOKButton().setAction(okAction);
-		editingView.getCancelButton().setAction(cancelAction);
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
 
-		setContentPane(editingView);
-		setResizable(false);
+        editingView = new RelationEditorView();
+        editingView.getOKButton().setAction(okAction);
+        editingView.getCancelButton().setAction(cancelAction);
 
-		pack();
+        setContentPane(editingView);
+        setResizable(false);
 
-		UIInitializer.getInstance().initialize(this);
-	}
+        pack();
 
-	public void initializeFor(Relation aRelation) {
-		bindingInfo.setDefaultModel(aRelation);
-		bindingInfo.model2view();
+        UIInitializer.getInstance().initialize(this);
+    }
 
-		relationProperties = model.getDialect().createRelationPropertiesFor(aRelation);
-		DefaultPanel theProperties = editingView.getPropertiesPanel();
-		relationPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, relationProperties);
+    public void initializeFor(Relation aRelation) {
+        bindingInfo.setDefaultModel(aRelation);
+        bindingInfo.model2view();
 
-		theProperties.setLayout(new BorderLayout());
-		theProperties.add(relationPropertiesWrapper.getComponent(), BorderLayout.CENTER);
+        relationProperties = model.getDialect().createRelationPropertiesFor(aRelation);
+        DefaultPanel theProperties = editingView.getPropertiesPanel();
+        relationPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, relationProperties);
 
-		UIInitializer.getInstance().initialize(theProperties);
+        theProperties.setLayout(new BorderLayout());
+        theProperties.add(relationPropertiesWrapper.getComponent(), BorderLayout.CENTER);
 
-		pack();
-	}
+        UIInitializer.getInstance().initialize(theProperties);
 
-	@Override
-	protected void commandOk() {
-		if (bindingInfo.validate().isEmpty()) {
-			setModalResult(MODAL_RESULT_OK);
-		}
-	}
+        pack();
+    }
 
-	@Override
-	public void applyValues() throws Exception {
-		Relation theRelation = bindingInfo.getDefaultModel();
+    @Override
+    protected void commandOk() {
+        if (bindingInfo.validate().isEmpty()) {
+            setModalResult(MODAL_RESULT_OK);
+        }
+    }
 
-		relationPropertiesWrapper.save();
-		relationProperties.copyTo(theRelation);
+    @Override
+    public void applyValues() throws Exception {
+        Relation theRelation = bindingInfo.getDefaultModel();
 
-		if (!model.getRelations().contains(theRelation)) {
+        relationPropertiesWrapper.save();
+        relationProperties.copyTo(theRelation);
 
-			bindingInfo.view2model();
+        if (!model.getRelations().contains(theRelation)) {
 
-			// Try to detect if there were foreign key suggestions used
-			for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
-				Attribute<Table> theAttribute = theEntry.getValue();
-				if (theAttribute.getOwner() == null) {
-					// A suggested foreign key was used, so add it to the table
-					model.addAttributeToTable(theRelation.getImportingTable(), theAttribute);
-				}
-			}
+            bindingInfo.view2model();
 
-			model.addRelation(theRelation);
+            // Try to detect if there were foreign key suggestions used
+            for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : theRelation.getMapping().entrySet()) {
+                Attribute<Table> theAttribute = theEntry.getValue();
+                if (theAttribute.getOwner() == null) {
+                    // A suggested foreign key was used, so add it to the table
+                    model.addAttributeToTable(theRelation.getImportingTable(), theAttribute);
+                }
+            }
 
-		} else {
+            model.addRelation(theRelation);
 
-			Relation theTempRelation = theRelation.clone();
-			bindingInfo.setDefaultModel(theTempRelation);
-			bindingInfo.view2model();
+        } else {
 
-			if (theRelation.isModified(theTempRelation, false)) {
-				model.changeRelation(theRelation, theTempRelation);
-			}
-		}
-	}
+            Relation theTempRelation = theRelation.clone();
+            bindingInfo.setDefaultModel(theTempRelation);
+            bindingInfo.view2model();
+
+            if (theRelation.isModified(theTempRelation, false)) {
+                model.changeRelation(theRelation, theTempRelation);
+            }
+        }
+    }
 }

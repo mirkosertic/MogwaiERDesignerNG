@@ -23,6 +23,7 @@ import de.erdesignerng.dialect.ReverseEngineeringNotifier;
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.LongRunningTask;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.completecompare.CompleteCompareEditor;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
@@ -38,6 +39,9 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.COMPLETE_COMPARE_WITH_DATABASE);
+
         final ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {
