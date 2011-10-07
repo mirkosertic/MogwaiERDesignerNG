@@ -175,13 +175,18 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     public void setVisible(boolean aVisible) {
 
         if (aVisible == false) {
-            if (ApplicationPreferences.getInstance().isUsageDataCollector()) {
-                UsageDataEditor theEditor = new UsageDataEditor(this);
-                if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                    try {
-                        theEditor.applyValues();
-                    } catch (Exception e1) {
-                        LOGGER.error(e1.getMessage(), e1);
+            ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
+            if (thePreferences.isUsageDataCollector()) {
+                if (thePreferences.isUsageDataCollectorAlways()) {
+                    UsageDataCollector.getInstance().flush();
+                } else {
+                    UsageDataEditor theEditor = new UsageDataEditor(this);
+                    if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                        try {
+                            theEditor.applyValues();
+                        } catch (Exception e1) {
+                            LOGGER.error(e1.getMessage(), e1);
+                        }
                     }
                 }
                 component.savePreferences();
