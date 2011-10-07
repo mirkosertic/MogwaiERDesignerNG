@@ -55,20 +55,8 @@ import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -225,7 +213,17 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     protected boolean setEditor2DDiagram() {
-        setEditor(new JGraphEditor());
+        setEditor(new JGraphEditor() {
+            @Override
+            public void commandZoomOneLevelIn() {
+                zoomIn();
+            }
+
+            @Override
+            public void commandZoomOneLevelOut() {
+                zoomOut();
+            }
+        });
         viewMode2DDiagramMenuItem.setSelected(true);
         ApplicationPreferences.getInstance().setEditorMode(EditorMode.CLASSIC);
 
@@ -508,12 +506,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        int theIndex = zoomBox.getSelectedIndex();
-                        if (theIndex > 0) {
-                            theIndex--;
-                            zoomBox.setSelectedIndex(theIndex);
-                            editor.commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
-                        }
+                        zoomIn();
                     }
 
                 }, this, ERDesignerBundle.ZOOMIN);
@@ -523,12 +516,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        int theIndex = zoomBox.getSelectedIndex();
-                        if (theIndex < zoomBox.getItemCount() - 1) {
-                            theIndex++;
-                            zoomBox.setSelectedIndex(theIndex);
-                            editor.commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
-                        }
+                        zoomOut();
                     }
 
                 }, this, ERDesignerBundle.ZOOMOUT);
@@ -962,6 +950,24 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         updateRecentlyUsedMenuEntries();
 
         setupViewForNothing();
+    }
+
+    private void zoomOut() {
+        int theIndex = zoomBox.getSelectedIndex();
+        if (theIndex < zoomBox.getItemCount() - 1) {
+            theIndex++;
+            zoomBox.setSelectedIndex(theIndex);
+            editor.commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+        }
+    }
+
+    private void zoomIn() {
+        int theIndex = zoomBox.getSelectedIndex();
+        if (theIndex > 0) {
+            theIndex--;
+            zoomBox.setSelectedIndex(theIndex);
+            editor.commandSetZoom((ZoomInfo) zoomBox.getSelectedItem());
+        }
     }
 
     protected boolean checkForValidConnection() {
