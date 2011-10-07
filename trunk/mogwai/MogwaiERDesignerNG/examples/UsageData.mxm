@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Model version="4.0">
+    <Configuration>
+        <Property name="dialect" value="MySQLDialect"/>
+        <Property name="ALIAS" value="Sourceforge Usage Data"/>
+        <Property name="DRIVER" value="com.mysql.jdbc.Driver"/>
+        <Property name="PASSWORD" value="usagedata"/>
+        <Property name="PROMPTFORPASSWORD" value="false"/>
+        <Property name="URL" value="jdbc:mysql://localhost/usagedata"/>
+        <Property name="USER" value="usagedata"/>
+    </Configuration>
+    <CustomTypes/>
+    <Domains/>
+    <Tables>
+        <Table id="5a8bf03f-1498-4912-8f22-36897d713e29" name="USAGEDATA_PROPERTIES" schema="">
+            <Property name="LOCATION" value="31:250"/>
+            <Property name="engine" value="MyISAM"/>
+            <Comment>User properties for every session and installation id</Comment>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="1613ccd7-0117-4815-9323-9cb7ec7cfb7c" name="PROPERTYNAME" nullable="true" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="94f601e5-c1bb-4857-896f-7dc5956551c2" name="PROPERTYVALUE" nullable="true" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="c2446bf6-3ffe-4102-aef3-216663fc600a" name="SESSIONID" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+        </Table>
+        <Table id="52c4263a-1725-4e54-a324-f1b0920c1174" name="USAGEDATA_USECASES" schema="">
+            <Property name="LOCATION" value="672:241"/>
+            <Property name="engine" value="MyISAM"/>
+            <Comment/>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="e1708f8f-1054-4ff1-a1f6-c9bd1df95459" name="SESSIONID" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="b0f5403e-cfa1-40da-92f8-caef2d1d5554" name="USECASE" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="NUMERIC" defaultvalue="" extra="" fraction="0" id="d90cf1ab-811a-4788-a61f-6f3251a8fcc3" name="NUMOFEXECUTIONS" nullable="false" scale="10" size="19">
+                <Comment/>
+            </Attribute>
+        </Table>
+        <Table id="c45e83b5-df8b-42b9-b15c-ed9255db3ca3" name="USAGEDATA_DATABASES" schema="">
+            <Property name="LOCATION" value="353:336"/>
+            <Property name="engine" value="MyISAM"/>
+            <Comment/>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="69da57c1-9e11-43ad-aa5d-93afc873207e" name="SESSIONID" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="e5994efa-19f6-462d-9122-bbe88ffa8e58" name="DATABASENAME" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="032e465f-d7c7-4b9c-8bb0-4e4189de7dce" name="DATABASEVERSION" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="134f409a-741f-42da-b807-4514acef3ca7" name="DRIVERNAME" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="0ff5cfc1-1568-4b45-83fb-58093bbddd9d" name="DRIVERVERSION" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+        </Table>
+        <Table id="4e3617c5-9722-456c-b4cf-7469c8e6749a" name="USAGEDATA_SESSION" schema="">
+            <Property name="LOCATION" value="358:21"/>
+            <Property name="engine" value="MyISAM"/>
+            <Comment/>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="498d5b2f-4e0a-49f5-b0fc-c9f14643bfd6" name="SESSIONID" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="1a35fa5a-1126-47e6-8d98-6c91fdb63041" name="INSTALLATIONID" nullable="false" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="TIMESTAMP" defaultvalue="" extra="" fraction="null" id="986ca85f-a3a4-4d13-a4d7-b542d3468e3c" name="SESSIONTIME" nullable="false" scale="10" size="">
+                <Comment/>
+            </Attribute>
+            <Attribute datatype="VARCHAR" defaultvalue="" extra="" fraction="null" id="b76a07cb-0788-42ee-8269-139ea9d13dc1" name="APPLICATIONNAME" nullable="true" scale="10" size="255">
+                <Comment/>
+            </Attribute>
+            <Index id="6762ac96-3733-4e46-b5b0-8561d9d57e05" indextype="PRIMARYKEY" name="PK">
+                <Indexattribute attributerefid="498d5b2f-4e0a-49f5-b0fc-c9f14643bfd6" id="92d70ddd-5b19-4839-8fbe-7a08d290ad64"/>
+            </Index>
+        </Table>
+    </Tables>
+    <Relations>
+        <Relation exportingtablerefid="4e3617c5-9722-456c-b4cf-7469c8e6749a" id="197bdaee-4e12-47d9-80bb-be1a2c89bec0" importingtablerefid="5a8bf03f-1498-4912-8f22-36897d713e29" name="USAGEDATA_PROPERTIES_FK1" ondelete="cascade" onupdate="cascade">
+            <Comment/>
+            <Mapping exportingexpressionrefid="92d70ddd-5b19-4839-8fbe-7a08d290ad64" importingattributerefid="c2446bf6-3ffe-4102-aef3-216663fc600a"/>
+        </Relation>
+        <Relation exportingtablerefid="4e3617c5-9722-456c-b4cf-7469c8e6749a" id="e1d8326d-2062-4621-8eca-714864d64ff8" importingtablerefid="c45e83b5-df8b-42b9-b15c-ed9255db3ca3" name="USAGEDATA_DATABASES_FK1" ondelete="cascade" onupdate="cascade">
+            <Comment/>
+            <Mapping exportingexpressionrefid="92d70ddd-5b19-4839-8fbe-7a08d290ad64" importingattributerefid="69da57c1-9e11-43ad-aa5d-93afc873207e"/>
+        </Relation>
+        <Relation exportingtablerefid="4e3617c5-9722-456c-b4cf-7469c8e6749a" id="8a3f9eac-3985-437e-b5f8-10396d5209df" importingtablerefid="52c4263a-1725-4e54-a324-f1b0920c1174" name="USAGEDATA_USECASES_FK1" ondelete="cascade" onupdate="cascade">
+            <Comment/>
+            <Mapping exportingexpressionrefid="92d70ddd-5b19-4839-8fbe-7a08d290ad64" importingattributerefid="e1708f8f-1054-4ff1-a1f6-c9bd1df95459"/>
+        </Relation>
+    </Relations>
+    <Views/>
+    <Subjectareas/>
+    <Comments/>
+</Model>
