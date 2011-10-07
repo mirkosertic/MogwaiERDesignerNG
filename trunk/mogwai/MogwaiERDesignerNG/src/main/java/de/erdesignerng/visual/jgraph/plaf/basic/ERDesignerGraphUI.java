@@ -27,6 +27,7 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
+import de.erdesignerng.visual.jgraph.cells.views.SubjectAreaCellView;
 import de.erdesignerng.visual.jgraph.tools.BaseTool;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
@@ -35,12 +36,14 @@ import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.EdgeView;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +155,32 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 focus = cell;
             }
 
+            // Check for single click on a cell
+            if (e.getClickCount() == 1 && !SwingUtilities.isRightMouseButton(e)) {
+                // Check if the user clicked a subject area
+                if (cell instanceof SubjectAreaCellView) {
+                    SubjectAreaCellView theView = (SubjectAreaCellView) cell;
+                    SubjectAreaCell theCell = (SubjectAreaCell) theView.getCell();
+
+                    Rectangle2D theBounds = theView.getBounds();
+                    Point2D theClickPoint = graph.fromScreen(e.getPoint());
+
+                    // Check if user clicked on top left corner
+                    if ((theClickPoint.getX() > theBounds.getX() + 5 && theClickPoint.getX() < theBounds.getX() + 20)
+                            && (theClickPoint.getY() > theBounds.getY() + 5 && theClickPoint.getY() < theBounds.getY() + 20)) {
+
+                        ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+
+                        // Yes, so toggle collapsed / expanded state
+                        if (!theCell.isExpanded()) {
+                            theGraph.setSubjectAreaCellExpanded(theCell);
+                        } else {
+                            theGraph.setSubjectAreaCellCollapsed(theCell);
+                        }
+                    }
+                }
+            }
+
             if (e.getClickCount() == graph.getEditClickCount() && !SwingUtilities.isRightMouseButton(e)) {
 
                 if (cell != null) {
@@ -216,18 +245,6 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     @Override
     protected boolean startEditing(Object cell, MouseEvent event) {
         completeEditing();
-
-        // Subject areas are not editable by mouse click, they just expand and collapse
-        if (cell instanceof SubjectAreaCell) {
-            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
-            SubjectAreaCell theCell = (SubjectAreaCell) cell;
-            if (!theCell.isExpanded()) {
-                theGraph.setSubjectAreaCellExpanded(theCell);
-            } else {
-                theGraph.setSubjectAreaCellCollapsed(theCell);
-            }
-            event.consume();
-        }
 
         if (graph.isCellEditable(cell)) {
             CellView tmp = graphLayoutCache.getMapping(cell, false);
@@ -300,5 +317,45 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     @Override
     public boolean isEditing(JGraph aGraph) {
         return false;
+    }
+
+    /**
+     * We draw the edges on top of the other elements.
+     *
+     * @param g
+     * @param realClipBounds
+     */
+    @Override
+    protected void paintCells(Graphics g, Rectangle2D realClipBounds) {
+        CellView[] views = graphLayoutCache.getRoots();
+        List<CellView> edges = new ArrayList<CellView>();
+
+        // Draw everything except of edges
+        for (CellView theView : views) {
+            if (theView instanceof EdgeView) {
+                edges.add(theView);
+            } else {
+                Rectangle2D bounds = theView.getBounds();
+                if (bounds != null) {
+                    if (realClipBounds == null) {
+                        paintCell(g, theView, bounds, false);
+                    } else if (bounds.intersects(realClipBounds)) {
+                        paintCell(g, theView, bounds, false);
+                    }
+                }
+            }
+        }
+
+        // Finally draw the edges
+        for (CellView theView : edges) {
+            Rectangle2D bounds = theView.getBounds();
+            if (bounds != null) {
+                if (realClipBounds == null) {
+                    paintCell(g, theView, bounds, false);
+                } else if (bounds.intersects(realClipBounds)) {
+                    paintCell(g, theView, bounds, false);
+                }
+            }
+        }
     }
 }
