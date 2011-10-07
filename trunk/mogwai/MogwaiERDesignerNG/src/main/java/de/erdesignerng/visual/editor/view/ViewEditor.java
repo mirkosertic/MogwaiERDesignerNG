@@ -25,6 +25,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
@@ -33,8 +34,7 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
 import org.apache.log4j.Logger;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -69,6 +69,7 @@ public class ViewEditor extends BaseEditor {
         viewBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_VIEW);
     }
 
     /**

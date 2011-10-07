@@ -35,6 +35,7 @@ public class EditDomainCommand extends UICommand {
 
     @Override
     public void execute() {
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         DomainEditor theEditor = new DomainEditor(component.getModel(), getDetailComponent());
         if (domain != null) {

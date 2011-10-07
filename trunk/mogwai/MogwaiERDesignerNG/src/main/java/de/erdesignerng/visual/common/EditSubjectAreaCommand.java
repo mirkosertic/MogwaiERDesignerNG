@@ -31,6 +31,7 @@ public class EditSubjectAreaCommand extends UICommand {
 
     @Override
     public void execute() {
+
         SubjectAreaEditor theEditor = new SubjectAreaEditor(getDetailComponent());
         theEditor.initializeFor(area);
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {

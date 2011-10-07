@@ -42,6 +42,7 @@ import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.FadeInFadeOutHelper;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.common.ContextMenuFactory;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.GenericModelEditor;
@@ -588,6 +589,8 @@ public class Java3DEditor implements GenericModelEditor {
         mainPanel.add(bottom, BorderLayout.SOUTH);
 
         UIInitializer.getInstance().initialize(mainPanel);
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDITOR_3DINTERACTIVE_MODE);
     }
 
     private void editModelItem(ModelItem aItem) {

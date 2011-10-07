@@ -39,6 +39,7 @@ public class EditCustomTypesCommand extends UICommand {
 
     @Override
     public void execute() {
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         CustomTypeEditor theEditor = new CustomTypeEditor(component.getModel(), getDetailComponent());
         if (customType != null) {

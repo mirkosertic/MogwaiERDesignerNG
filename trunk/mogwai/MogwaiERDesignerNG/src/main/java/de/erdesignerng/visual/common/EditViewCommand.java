@@ -34,6 +34,7 @@ public class EditViewCommand extends UICommand {
 
     @Override
     public void execute() {
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         ViewEditor theEditor = new ViewEditor(component.getModel(), component.getDetailComponent());
         theEditor.initializeFor(view);

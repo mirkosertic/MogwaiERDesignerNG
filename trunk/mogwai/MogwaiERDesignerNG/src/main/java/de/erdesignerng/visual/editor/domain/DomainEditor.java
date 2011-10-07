@@ -26,19 +26,21 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.ModelItemDefaultCellRenderer;
 import de.erdesignerng.visual.editor.ModelItemNameCellEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
-import java.awt.Component;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  * The domain editor.
@@ -100,6 +102,8 @@ public class DomainEditor extends BaseEditor {
         updateDomainEditFields();
 
         UIInitializer.getInstance().initialize(this);
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_DOMAINS);
     }
 
     private void updateDomainEditFields() {

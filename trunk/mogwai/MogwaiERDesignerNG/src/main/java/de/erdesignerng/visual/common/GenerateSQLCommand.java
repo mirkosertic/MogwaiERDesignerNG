@@ -21,6 +21,7 @@ import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelBasedConnectionProvider;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 
 public class GenerateSQLCommand extends UICommand {
@@ -30,6 +31,9 @@ public class GenerateSQLCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.GENERATE_COMPLETE_SQL);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 
         if (!component.checkForValidConnection()) {

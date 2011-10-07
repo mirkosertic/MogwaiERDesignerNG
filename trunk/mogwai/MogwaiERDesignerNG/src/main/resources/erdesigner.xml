@@ -1184,5 +1184,25 @@
             <Text lang="de">Tree layout</Text>
             <Text lang="en">Tree layout</Text>
         </Entry>
+        <Entry id="USAGEDATACOLLECTOR">
+            <Text lang="de">Usage Data Collector</Text>
+            <Text lang="en">Usage Data Collector</Text>
+        </Entry>
+        <Entry id="USAGEDATACOLLECTOR_INFO">
+            <Text lang="de">Wollen Sie die folgenden Informationen dem Projekt Mogwai zur Verfügung stellen, damit wir
+                das Werkzeug noch besser machen können?
+            </Text>
+            <Text lang="en">Do you want to contribute the following information to Project Mogwai helping us to support
+                and enhance the tool?
+            </Text>
+        </Entry>
+        <Entry id="NOTHANKS">
+            <Text lang="de">Nein, Danke</Text>
+            <Text lang="en">No, thanks</Text>
+        </Entry>
+        <Entry id="YESIWANT">
+            <Text lang="de">Ja, ich will!</Text>
+            <Text lang="en">Yes, i want!</Text>
+        </Entry>
     </Bundle>
 </Resource>

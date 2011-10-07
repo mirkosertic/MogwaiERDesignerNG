@@ -31,6 +31,7 @@ public class EditRelationCommand extends UICommand {
 
     @Override
     public void execute() {
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         RelationEditor theEditor = new RelationEditor(component.getModel(), component.getDetailComponent());
         theEditor.initializeFor(relation);

@@ -26,8 +26,10 @@ import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.repository.LoadFromRepositoryEditor;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -39,6 +41,9 @@ public class OpenFromRepositoryCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.OPEN_FROM_REPOSITORY);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         ConnectionDescriptor theRepositoryConnection = ApplicationPreferences
                 .getInstance().getRepositoryConnection();
