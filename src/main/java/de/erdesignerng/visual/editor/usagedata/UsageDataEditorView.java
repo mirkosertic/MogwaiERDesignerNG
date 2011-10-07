@@ -23,9 +23,9 @@ import de.erdesignerng.ERDesignerBundle;
 import de.mogwai.common.client.looks.components.DefaultButton;
 import de.mogwai.common.client.looks.components.DefaultPanel;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class UsageDataEditorView extends DefaultPanel {
 
@@ -34,6 +34,8 @@ public class UsageDataEditorView extends DefaultPanel {
     private DefaultButton okButton;
 
     private DefaultButton cancelButton;
+
+    private DefaultButton dontAskAgain;
 
     private JLabel textArea;
 
@@ -68,7 +70,7 @@ public class UsageDataEditorView extends DefaultPanel {
             component8 = new JPanel();
 
             String rowDef = "p";
-            String colDef = "60dlu,2dlu:grow,60dlu";
+            String colDef = "60dlu,2dlu:grow,60dlu,2dlu,120dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             component8.setLayout(layout);
@@ -77,6 +79,7 @@ public class UsageDataEditorView extends DefaultPanel {
 
             component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
             component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
+            component8.add(getDontAskAgain(), cons.xywh(5, 1, 1, 1));
             component8.setName("Component_8");
         }
 
@@ -99,5 +102,14 @@ public class UsageDataEditorView extends DefaultPanel {
         }
 
         return cancelButton;
+    }
+
+    public DefaultButton getDontAskAgain() {
+
+        if (dontAskAgain == null) {
+            dontAskAgain = new DefaultButton(ERDesignerBundle.NOTHANKSANDDONTASKAGAIN);
+        }
+
+        return dontAskAgain;
     }
 }

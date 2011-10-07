@@ -22,11 +22,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.MavenPropertiesLocator;
-import de.erdesignerng.visual.common.DockingHelper;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.ERDesignerWorldConnector;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.SQLComponent;
+import de.erdesignerng.visual.common.*;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.erdesignerng.visual.editor.usagedata.UsageDataEditor;
@@ -34,10 +30,9 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.i18n.ResourceHelper;
-import org.apache.log4j.Logger;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import org.apache.log4j.Logger;
 
 /**
  * @author $Author: mirkosertic $
@@ -180,13 +175,16 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     public void setVisible(boolean aVisible) {
 
         if (aVisible == false) {
-            UsageDataEditor theEditor = new UsageDataEditor(this);
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                try {
-                    theEditor.applyValues();
-                } catch (Exception e1) {
-                    LOGGER.error(e1.getMessage(), e1);
+            if (ApplicationPreferences.getInstance().isUsageDataCollector()) {
+                UsageDataEditor theEditor = new UsageDataEditor(this);
+                if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                    try {
+                        theEditor.applyValues();
+                    } catch (Exception e1) {
+                        LOGGER.error(e1.getMessage(), e1);
+                    }
                 }
+                component.savePreferences();
             }
         }
 

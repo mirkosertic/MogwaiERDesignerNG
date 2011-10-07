@@ -18,14 +18,14 @@
 package de.erdesignerng.visual.editor.usagedata;
 
 import de.erdesignerng.ERDesignerBundle;
+import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 /**
@@ -51,6 +51,15 @@ public class UsageDataEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.NOTHANKS);
 
+    protected final DefaultAction noThanksDontAskAgainAction = new DefaultAction(new ActionEventProcessor() {
+
+        @Override
+        public void processActionEvent(ActionEvent e) {
+            ApplicationPreferences.getInstance().setUsageDataCollector(false);
+            commandCancel();
+        }
+    }, this, ERDesignerBundle.NOTHANKS);
+
 
     public UsageDataEditor(Component aParent) {
         super(aParent, ERDesignerBundle.USAGEDATACOLLECTOR);
@@ -63,6 +72,7 @@ public class UsageDataEditor extends BaseEditor {
         editorView = new UsageDataEditorView();
         editorView.getOKButton().setAction(iWantAction);
         editorView.getCancelButton().setAction(noThanksAction);
+        editorView.getDontAskAgain().setAction(noThanksDontAskAgainAction);
         setContentPane(editorView);
 
         StringBuilder theInfo = new StringBuilder("<html>");
