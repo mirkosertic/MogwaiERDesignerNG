@@ -89,30 +89,14 @@ import javax.media.j3d.WakeupCondition;
 import javax.media.j3d.WakeupCriterion;
 import javax.media.j3d.WakeupOnAWTEvent;
 import javax.media.j3d.WakeupOr;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.vecmath.Color3f;
 import javax.vecmath.Color4f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
-import java.awt.AWTEvent;
-import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -269,37 +253,41 @@ public class Java3DEditor implements GenericModelEditor {
                 if (lastMouseDragLocation != null) {
                     int my = lastMouseDragLocation.y - e.getY();
 
-                    Transform3D theTransform = new Transform3D();
-                    modelGroup.getTransform(theTransform);
-
-                    if (my > 0) {
-                        theTransform.setScale(theTransform.getScale() + my * 0.01);
-                    } else {
-                        theTransform.setScale(theTransform.getScale() + my * 0.01);
-                    }
-
-                    if (theTransform.getScale() > 4.5) {
-                        theTransform.setScale(4.5);
-                    }
-                    if (theTransform.getScale() < 0.3) {
-                        theTransform.setScale(0.3);
-                    }
-
-                    modelGroup.setTransform(theTransform);
+                    scaleByAmount(my * 0.01);
                 }
                 lastMouseDragLocation = e.getPoint();
             }
         }
 
-        private void mouseWheel(MouseWheelEvent e) {
-            if (e.getWheelRotation() < 0 && currentLayer < maxLayer - 1) {
-                currentLayer++;
+        private void scaleByAmount(double aAmount) {
+            Transform3D theTransform = new Transform3D();
+            modelGroup.getTransform(theTransform);
+
+            theTransform.setScale(theTransform.getScale() + aAmount);
+
+            if (theTransform.getScale() > 4.5) {
+                theTransform.setScale(4.5);
             }
-            if (e.getWheelRotation() > 0 && currentLayer > 0) {
-                currentLayer--;
+            if (theTransform.getScale() < 0.3) {
+                theTransform.setScale(0.3);
             }
 
-            setCurrentLayer(currentLayer);
+            modelGroup.setTransform(theTransform);
+        }
+
+        private void mouseWheel(MouseWheelEvent e) {
+            if (!e.isControlDown()) {
+                if (e.getWheelRotation() < 0 && currentLayer < maxLayer - 1) {
+                    currentLayer++;
+                }
+                if (e.getWheelRotation() > 0 && currentLayer > 0) {
+                    currentLayer--;
+                }
+
+                setCurrentLayer(currentLayer);
+            } else {
+                scaleByAmount(e.getUnitsToScroll() * -0.1);
+            }
         }
 
         private void mouseClicked(MouseEvent e) {
