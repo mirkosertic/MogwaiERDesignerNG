@@ -43,6 +43,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -62,7 +64,34 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         erdesigner = aComponent;
     }
 
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+        if (mouseListener instanceof MouseWheelListener) {
+            graph.addMouseWheelListener((MouseWheelListener) mouseListener);
+        }
+    }
+
+    @Override
+    protected void uninstallListeners() {
+        super.uninstallListeners();
+        if (mouseListener instanceof MouseWheelListener) {
+            graph.removeMouseWheelListener((MouseWheelListener) mouseListener);
+        }
+    }
+
     public class MyMouseHandler extends MouseHandler {
+
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            if (e.isControlDown()) {
+                if (e.getWheelRotation() < 0) {
+                    erdesigner.commandZoomOneLevelIn();
+                } else {
+                    erdesigner.commandZoomOneLevelOut();
+                }
+            }
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {
