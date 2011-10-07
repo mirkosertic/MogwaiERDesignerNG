@@ -1208,5 +1208,9 @@
             <Text lang="de">Ja, ich will!</Text>
             <Text lang="en">Yes, i want!</Text>
         </Entry>
+        <Entry id="YESIWANTANDDONTASKAGAIN">
+            <Text lang="de">Ja, und nicht mehr fragen!</Text>
+            <Text lang="en">Yes, and don't ask me again!</Text>
+        </Entry>
     </Bundle>
 </Resource>

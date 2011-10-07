@@ -43,6 +43,15 @@ public class UsageDataEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.YESIWANT);
 
+    protected final DefaultAction iWantAlways = new DefaultAction(new ActionEventProcessor() {
+
+        @Override
+        public void processActionEvent(ActionEvent e) {
+            ApplicationPreferences.getInstance().setUsageDataCollectorAlways(true);
+            commandOk();
+        }
+    }, this, ERDesignerBundle.YESIWANTANDDONTASKAGAIN);
+
     protected final DefaultAction noThanksAction = new DefaultAction(new ActionEventProcessor() {
 
         @Override
@@ -71,6 +80,7 @@ public class UsageDataEditor extends BaseEditor {
 
         editorView = new UsageDataEditorView();
         editorView.getOKButton().setAction(iWantAction);
+        editorView.getOkDontAskAgainButton().setAction(iWantAlways);
         editorView.getCancelButton().setAction(noThanksAction);
         editorView.getDontAskAgain().setAction(noThanksDontAskAgainAction);
         setContentPane(editorView);

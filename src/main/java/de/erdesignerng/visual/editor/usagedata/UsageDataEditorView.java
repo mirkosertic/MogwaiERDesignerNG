@@ -33,6 +33,8 @@ public class UsageDataEditorView extends DefaultPanel {
 
     private DefaultButton okButton;
 
+    private DefaultButton okDontAskAgainButton;
+
     private DefaultButton cancelButton;
 
     private DefaultButton dontAskAgain;
@@ -70,7 +72,7 @@ public class UsageDataEditorView extends DefaultPanel {
             component8 = new JPanel();
 
             String rowDef = "p";
-            String colDef = "60dlu,2dlu:grow,60dlu,2dlu,120dlu";
+            String colDef = "60dlu,2dlu,120dlu,2dlu:grow,60dlu,2dlu,120dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             component8.setLayout(layout);
@@ -78,8 +80,9 @@ public class UsageDataEditorView extends DefaultPanel {
             CellConstraints cons = new CellConstraints();
 
             component8.add(getOKButton(), cons.xywh(1, 1, 1, 1));
-            component8.add(getCancelButton(), cons.xywh(3, 1, 1, 1));
-            component8.add(getDontAskAgain(), cons.xywh(5, 1, 1, 1));
+            component8.add(getOkDontAskAgainButton(), cons.xywh(3, 1, 1, 1));
+            component8.add(getCancelButton(), cons.xywh(5, 1, 1, 1));
+            component8.add(getDontAskAgain(), cons.xywh(7, 1, 1, 1));
             component8.setName("Component_8");
         }
 
@@ -93,6 +96,15 @@ public class UsageDataEditorView extends DefaultPanel {
         }
 
         return okButton;
+    }
+
+    public DefaultButton getOkDontAskAgainButton() {
+
+        if (okDontAskAgainButton == null) {
+            okDontAskAgainButton = new DefaultButton(ERDesignerBundle.YESIWANTANDDONTASKAGAIN);
+        }
+
+        return okDontAskAgainButton;
     }
 
     public DefaultButton getCancelButton() {
