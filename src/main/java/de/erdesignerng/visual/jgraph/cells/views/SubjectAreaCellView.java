@@ -121,12 +121,18 @@ public class SubjectAreaCellView extends VertexView {
 
         @Override
         public Dimension getPreferredSize() {
+            FontMetrics theMetrics = getFontMetrics(getFont());
+            Rectangle2D theSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
+
             if (!expanded) {
-                FontMetrics theMetrics = getFontMetrics(getFont());
-                Rectangle2D theSize = theMetrics.getStringBounds(subjectArea.getName(), getGraphics());
                 return new Dimension((int) theSize.getWidth() + 40, theMetrics.getHeight() * 2);
             } else {
-                return super.getPreferredSize();
+                // TODO MSE: Compute the size of subject areas the right ays
+                Dimension theGroupSize = super.getPreferredSize();
+                if (theGroupSize.width < theSize.getWidth() + 40) {
+                    theGroupSize = new Dimension((int) theSize.getWidth() + 40, (int) theGroupSize.getHeight());
+                }
+                return theGroupSize;
             }
         }
 
