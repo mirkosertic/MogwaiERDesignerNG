@@ -19,11 +19,12 @@ package de.erdesignerng.visual;
 
 import de.erdesignerng.dialect.DataTypeIO;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
-import java.io.IOException;
-import javax.swing.JFrame;
+import org.xml.sax.SAXException;
+
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
+import java.io.IOException;
 
 /**
  * @author $Author: mirkosertic $
@@ -31,35 +32,38 @@ import org.xml.sax.SAXException;
  */
 public final class ERDesigner {
 
-	private ERDesigner() {
-	}
+    private ERDesigner() {
+    }
 
-	public static void main(String[] args)
-			throws
-			IllegalAccessException,
-			TransformerException, IOException, ParserConfigurationException,
-			SAXException {
+    public static void main(String[] args)
+            throws
+            IllegalAccessException,
+            TransformerException, IOException, ParserConfigurationException,
+            SAXException {
 
-		// Disable D3D rendering pipeline
-		//System.setProperty("sun.java2d.d3d", "false");
+        // Initialize the usage collection system
+        UsageDataCollector.getInstance().initialize();
 
-		DefaultSplashScreen theScreen = new DefaultSplashScreen(
-				"/de/erdesignerng/splashscreen.jpg");
-		theScreen.setVisible(true);
+        // Disable D3D rendering pipeline
+        //System.setProperty("sun.java2d.d3d", "false");
 
-		DataTypeIO.getInstance().loadUserTypes();
+        DefaultSplashScreen theScreen = new DefaultSplashScreen(
+                "/de/erdesignerng/splashscreen.jpg");
+        theScreen.setVisible(true);
 
-		ERDesignerMainFrame frame = new ERDesignerMainFrame();
-		frame.setModel(frame.createNewModel());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        DataTypeIO.getInstance().loadUserTypes();
 
-		try {
-			Thread.sleep(1000);
-		} catch (Exception e) {
-			// Just wait here :-)
-		}
+        final ERDesignerMainFrame frame = new ERDesignerMainFrame();
+        frame.setModel(frame.createNewModel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		theScreen.setVisible(false);
-		frame.setVisible(true);
-	}
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            // Just wait here :-)
+        }
+
+        theScreen.setVisible(false);
+        frame.setVisible(true);
+    }
 }

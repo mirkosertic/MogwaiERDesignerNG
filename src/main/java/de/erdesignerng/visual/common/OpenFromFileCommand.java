@@ -23,10 +23,12 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.MessagesHelper;
+import de.erdesignerng.visual.UsageDataCollector;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javax.swing.JFileChooser;
 
 public class OpenFromFileCommand extends UICommand {
 
@@ -35,6 +37,7 @@ public class OpenFromFileCommand extends UICommand {
 
     @Override
     public void execute() {
+
         ModelFileFilter theFiler = new ModelFileFilter();
 
         JFileChooser theChooser = new JFileChooser();
@@ -50,6 +53,9 @@ public class OpenFromFileCommand extends UICommand {
     }
 
     void execute(File aFile) {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.OPEN_FROM_FILE);
+
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         FileInputStream theStream = null;
 

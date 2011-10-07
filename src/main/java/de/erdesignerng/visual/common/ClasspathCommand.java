@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.common;
 
+import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.classpath.ClasspathEditor;
 
@@ -27,6 +28,9 @@ public class ClasspathCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_CLASSPATH);
+
         ClasspathEditor theEditor = new ClasspathEditor(getDetailComponent());
         if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
             try {

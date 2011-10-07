@@ -24,6 +24,7 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+import de.erdesignerng.visual.UsageDataCollector;
 import org.apache.commons.lang.StringUtils;
 
 import java.sql.Connection;
@@ -234,7 +235,9 @@ public abstract class Dialect {
         theProperties.put("user", aUser);
         theProperties.put("password", aPassword);
 
-        return theDriver.connect(aUrl, theProperties);
+        Connection theConnection = theDriver.connect(aUrl, theProperties);
+        UsageDataCollector.getInstance().addConnectedDatabase(theConnection.getMetaData());
+        return theConnection;
     }
 
     public boolean isSupportsSchemaInformation() {

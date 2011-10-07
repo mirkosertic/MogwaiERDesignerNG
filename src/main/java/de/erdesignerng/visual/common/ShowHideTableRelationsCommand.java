@@ -1,6 +1,7 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.Table;
+import de.erdesignerng.visual.UsageDataCollector;
 
 /**
  * Command to show or hide all relations of a given table.
@@ -17,6 +18,9 @@ public class ShowHideTableRelationsCommand extends UICommand {
 
     @Override
     public void execute() {
+
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SHOW_HIDE_RELATONS_FOR_TABLE);
+
         ERDesignerComponent.getDefault().commandShowOrHideRelationsFor(table, show);
     }
 }
