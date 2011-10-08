@@ -18,15 +18,7 @@
 package de.erdesignerng.visual.java2d;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.UsageDataCollector;
@@ -39,9 +31,9 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -50,6 +42,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Editor for Java2D Interactive Mode.
@@ -185,39 +181,44 @@ public class Java2DEditor implements GenericModelEditor {
 
     @Override
     public void setSelectedObject(ModelItem aItem) {
-        editorPanel.cleanup();
-
-        // We only show views and tables as the center of attention in the editor.
-        if (aItem instanceof Index) {
-            aItem = ((Index) aItem).getOwner();
-        }
-        if (aItem instanceof Attribute) {
-            ModelItem theOwner = ((Attribute) aItem).getOwner();
-
-            if (theOwner instanceof Table) {
-                aItem = theOwner;
+        if (aItem == null) {
+            editorPanel.cleanup();
+        } else {
+            // We only show views and tables as the center of attention in the editor.
+            if (aItem instanceof Index) {
+                aItem = ((Index) aItem).getOwner();
             }
-        }
-        if (aItem instanceof Relation) {
-            aItem = ((Relation) aItem).getImportingTable();
-        }
-        if (!(aItem instanceof Table) && !(aItem instanceof View)) {
-            aItem = null;
-        }
+            if (aItem instanceof Attribute) {
+                ModelItem theOwner = ((Attribute) aItem).getOwner();
 
-        if (aItem != currentModelItem) {
-            currentModelItem = aItem;
-
-            if (aItem instanceof Table) {
-                generateGraphFor((Table) aItem);
+                if (theOwner instanceof Table) {
+                    aItem = theOwner;
+                }
             }
-            if (aItem instanceof View) {
-                generateGraphFor((View) aItem);
+            if (aItem instanceof Relation) {
+                aItem = ((Relation) aItem).getImportingTable();
+            }
+            if (!(aItem instanceof Table) && !(aItem instanceof View)) {
+                aItem = null;
             }
 
-            editorPanel.invalidate();
-            mainPanel.invalidate();
-            mainPanel.repaint();
+            if (aItem != currentModelItem) {
+
+                editorPanel.cleanup();
+
+                currentModelItem = aItem;
+
+                if (aItem instanceof Table) {
+                    generateGraphFor((Table) aItem);
+                }
+                if (aItem instanceof View) {
+                    generateGraphFor((View) aItem);
+                }
+
+                editorPanel.invalidate();
+                mainPanel.invalidate();
+                mainPanel.repaint();
+            }
         }
     }
 
