@@ -17,9 +17,7 @@
  */
 package de.erdesignerng.visual.java2d;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.IconFactory;
 import java.awt.*;
 import java.awt.font.TextAttribute;
@@ -76,6 +74,21 @@ public class TableComponent extends BaseRendererComponent {
                 theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
             }
         }
+        if (table.getIndexes().size() > 0 && fullMode) {
+            for (Index theIndex : table.getIndexes()) {
+                if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
+                    String theName = theIndex.getName();
+                    theStringSize = theMetrics.getStringBounds(theName, null);
+                    theSize = update(theSize, (int) theStringSize.getWidth(), theMetrics.getAscent());
+                    for (IndexExpression theExpression : theIndex.getExpressions()) {
+                        theName = theExpression.toString();
+                        theStringSize = theMetrics.getStringBounds(theName, null);
+                        theSize = update(theSize, (int) theStringSize.getWidth() + 20, theMetrics.getAscent());
+                    }
+                }
+            }
+        }
+
 
         theSize.width += 20;
         if (fullMode) {
@@ -158,6 +171,28 @@ public class TableComponent extends BaseRendererComponent {
                 int yp = 14;
 
                 theIcon.paintIcon(this, theGraphics, xp, yp);
+            }
+        }
+        if (table.getIndexes().size() > 0 && fullMode) {
+            boolean lineDrawn = false;
+            for (Index theIndex : table.getIndexes()) {
+                if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
+                    if (!lineDrawn) {
+                        y += 3;
+                        theGraphics.setColor(Color.blue);
+                        theGraphics.drawLine(10, y, theSize.width, y);
+                        lineDrawn = true;
+                    }
+                    String theName = theIndex.getName();
+                    theGraphics.setColor(Color.white);
+                    theGraphics.drawString(theName, 15, y + theMetrics.getAscent());
+                    y += theMetrics.getAscent();
+                    for (IndexExpression theExpression : theIndex.getExpressions()) {
+                        theName = theExpression.toString();
+                        theGraphics.drawString(theName, 20, y + theMetrics.getAscent());
+                        y += theMetrics.getAscent();
+                    }
+                }
             }
         }
     }

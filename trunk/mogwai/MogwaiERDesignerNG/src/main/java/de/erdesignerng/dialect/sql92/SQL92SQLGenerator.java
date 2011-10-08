@@ -17,22 +17,13 @@
  */
 package de.erdesignerng.dialect.sql92;
 
-import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.dialect.SQLGenerator;
 import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import org.apache.commons.lang.StringUtils;
-
+import de.erdesignerng.model.*;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 
 /**
  * @param <T> the dialect
@@ -329,7 +320,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
         theStatement.append("TABLE ");
         theStatement.append(createUniqueTableName(aTable));
         theStatement.append(" (");
-        theStatement.append(PlatformConfig.getLineSeparator());
+        theStatement.append(SystemUtils.LINE_SEPARATOR);
 
         for (int i = 0; i < aTable.getAttributes().size(); i++) {
             Attribute<Table> theAttribute = aTable.getAttributes().get(i);
@@ -342,7 +333,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                 theStatement.append(",");
             }
 
-            theStatement.append(PlatformConfig.getLineSeparator());
+            theStatement.append(SystemUtils.LINE_SEPARATOR);
         }
         theStatement.append(")");
         theStatement.append(createCreateTableSuffix(aTable));

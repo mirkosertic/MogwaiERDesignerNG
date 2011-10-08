@@ -17,32 +17,26 @@
  */
 package de.erdesignerng.visual.jgraph.cells.views;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.IconFactory;
 import de.erdesignerng.visual.jgraph.CellEditorFactory;
 import de.erdesignerng.visual.jgraph.ERDesignerGraph;
 import de.erdesignerng.visual.jgraph.cells.TableCell;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.commons.lang.StringUtils;
-import org.jgraph.JGraph;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.CellViewRenderer;
-import org.jgraph.graph.GraphCellEditor;
-import org.jgraph.graph.VertexRenderer;
-import org.jgraph.graph.VertexView;
-
-import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
+import org.jgraph.JGraph;
+import org.jgraph.graph.*;
 
 /**
  * @author $Author: mirkosertic $
@@ -223,6 +217,31 @@ public class TableCellView extends VertexView {
                 }
             }
 
+            if (table.getIndexes().size() > 0 && DisplayLevel.ALL == displayLevel) {
+                boolean lineDrawn = false;
+                for (Index theIndex : table.getIndexes()) {
+                    if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
+                        if (!lineDrawn) {
+                            aGraphics.setColor(Color.black);
+                            aGraphics.drawLine(0, theYOffset, theWidth - 5, theYOffset);
+                            lineDrawn = true;
+                        }
+                        String theName = getConvertedName(theIndex);
+
+                        aGraphics.setColor(Color.black);
+                        aGraphics.drawString(theName, theTextXOffset, theYOffset + theMetrics.getAscent());
+                        aGraphics.setColor(Color.black);
+                        theYOffset += theMetrics.getHeight();
+
+                        for (IndexExpression theExpression : theIndex.getExpressions()) {
+                            String theExpressionText = theExpression.toString();
+                            aGraphics.drawString(theExpressionText, theTextXOffset + 5, theYOffset + theMetrics.getAscent());
+
+                            theYOffset += theMetrics.getHeight();
+                        }
+                    }
+                }
+            }
         }
 
         @Override
@@ -287,6 +306,32 @@ public class TableCellView extends VertexView {
                         }
 
                         theYOffset += theMetrics.getHeight();
+                    }
+                }
+            }
+
+            if (table.getIndexes().size() > 0 && DisplayLevel.ALL == displayLevel) {
+                for (Index theIndex : table.getIndexes()) {
+                    if (theIndex.getIndexType() != IndexType.PRIMARYKEY) {
+                        String theName = getConvertedName(theIndex);
+
+                        theLength = theMetrics.stringWidth(theName);
+                        if (theLength + theXTextOffset > theMaxX) {
+                            theMaxX = theLength + theXTextOffset;
+                        }
+
+                        theYOffset += theMetrics.getHeight();
+
+                        for (IndexExpression theExpression : theIndex.getExpressions()) {
+                            String theExpressionText = theExpression.toString();
+
+                            theLength = theMetrics.stringWidth(theExpressionText);
+                            if (theLength + theXTextOffset + 5 > theMaxX) {
+                                theMaxX = theLength + theXTextOffset + 5;
+                            }
+
+                            theYOffset += theMetrics.getHeight();
+                        }
                     }
                 }
             }

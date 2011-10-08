@@ -1145,8 +1145,8 @@
             <Text lang="en">Layout</Text>
         </Entry>
         <Entry id="LAYOUTCLUSTER">
-            <Text lang="de">Cluster Layout(beta)</Text>
-            <Text lang="en">Cluster Layout(beta)</Text>
+            <Text lang="de">Subject Area Cluster Layout(beta)</Text>
+            <Text lang="en">Subject Area Cluster Layout(beta)</Text>
         </Entry>
         <Entry id="LAYOUTTREE">
             <Text lang="de">Tree Layout(beta)</Text>
