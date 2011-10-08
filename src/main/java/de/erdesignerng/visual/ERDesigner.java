@@ -19,18 +19,22 @@ package de.erdesignerng.visual;
 
 import de.erdesignerng.dialect.DataTypeIO;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
-import org.xml.sax.SAXException;
-
-import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JFrame;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.IOException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-17 20:53:55 $
  */
 public final class ERDesigner {
+
+    private static final Logger LOGGER = Logger.getLogger(ERDesigner.class);
 
     private ERDesigner() {
     }
@@ -40,6 +44,24 @@ public final class ERDesigner {
             IllegalAccessException,
             TransformerException, IOException, ParserConfigurationException,
             SAXException {
+
+        String theFilenameToOpen = null;
+        if (args != null) {
+            for (String theArgument : args) {
+                LOGGER.info("Was called with argument :" + theArgument);
+            }
+            // In WebStart mode or standalone, there can be two options
+            // -open <filename>
+            // -print <filename>
+            if (args.length == 2) {
+                if ("-open".equals(args[0])) {
+                    theFilenameToOpen = args[1];
+                }
+                if ("-print".equals(args[0])) {
+                    theFilenameToOpen = args[1];
+                }
+            }
+        }
 
         // Initialize the usage collection system
         UsageDataCollector.getInstance().initialize();
@@ -65,5 +87,9 @@ public final class ERDesigner {
 
         theScreen.setVisible(false);
         frame.setVisible(true);
+
+        if (!StringUtils.isEmpty(theFilenameToOpen)) {
+            frame.commandOpenFile(new File(theFilenameToOpen));
+        }
     }
 }
