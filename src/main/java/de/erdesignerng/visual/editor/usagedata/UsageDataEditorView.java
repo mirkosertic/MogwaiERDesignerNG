@@ -72,7 +72,7 @@ public class UsageDataEditorView extends DefaultPanel {
             component8 = new JPanel();
 
             String rowDef = "p";
-            String colDef = "60dlu,2dlu,120dlu,2dlu:grow,60dlu,2dlu,120dlu";
+            String colDef = "60dlu,2dlu,60dlu,2dlu:grow,60dlu,2dlu,60dlu";
 
             FormLayout layout = new FormLayout(colDef, rowDef);
             component8.setLayout(layout);
