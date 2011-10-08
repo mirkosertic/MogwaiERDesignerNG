@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="6.0+" codebase="http://mogwai.sourceforge.net/erdesignerng2" href="$outputFile"
+<jnlp spec="6.0+" codebase="http://mogwai.sourceforge.net/erdesignerng" href="$outputFile"
       version="$explicitTimestampUTC">
     <information>
         <title>Mogwai ERDesignerNG $project.version</title>
