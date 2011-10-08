@@ -32,6 +32,7 @@ import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.i18n.ResourceHelper;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import org.apache.log4j.Logger;
 
 /**
@@ -216,5 +217,14 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     @Override
     public boolean supportsReporting() {
         return true;
+    }
+
+    /**
+     * Open a specific file in the editor.
+     *
+     * @param aFile
+     */
+    public void commandOpenFile(File aFile) {
+        component.commandOpenFile(aFile);
     }
 }
