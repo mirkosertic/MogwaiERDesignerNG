@@ -20,6 +20,7 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.OwnedModelItem;
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,11 +54,13 @@ public abstract class CommonAbstractXMLSerializer<T extends OwnedModelItem> impl
 	}
 
 	protected void serializeCommentElement(Document aDocument, Element aElement, ModelItem aItem) {
-		Element theCommentElement = aDocument.createElement(COMMENT);
-		if (aItem.getComment() != null) {
-			theCommentElement.appendChild(aDocument.createTextNode(aItem.getComment()));
+		if (!StringUtils.isEmpty(aItem.getComment())) {
+			Element theCommentElement = aDocument.createElement(COMMENT);
+			if (aItem.getComment() != null) {
+				theCommentElement.appendChild(aDocument.createTextNode(aItem.getComment()));
+			}
+			aElement.appendChild(theCommentElement);
 		}
-		aElement.appendChild(theCommentElement);
 	}
 
 	protected void deserializeCommentElement(Element aElement, ModelItem aItem) {
