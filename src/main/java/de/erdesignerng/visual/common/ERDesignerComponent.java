@@ -18,23 +18,12 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JasperUtils;
-import de.erdesignerng.visual.DisplayLevel;
-import de.erdesignerng.visual.DisplayOrder;
-import de.erdesignerng.visual.EditorFactory;
-import de.erdesignerng.visual.EditorMode;
-import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
+import de.erdesignerng.visual.*;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.java2d.EditorPanel;
@@ -42,12 +31,7 @@ import de.erdesignerng.visual.java2d.Java2DEditor;
 import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.DefaultCheckBox;
-import de.mogwai.common.client.looks.components.DefaultCheckboxMenuItem;
-import de.mogwai.common.client.looks.components.DefaultComboBox;
-import de.mogwai.common.client.looks.components.DefaultPopupMenu;
-import de.mogwai.common.client.looks.components.DefaultToggleButton;
-import de.mogwai.common.client.looks.components.DefaultToolbar;
+import de.mogwai.common.client.looks.components.*;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
@@ -55,18 +39,21 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -1101,8 +1088,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new OpenFromFileCommand()
-                            .execute(theFile);
+                    commandOpenFile(theFile);
                 }
             });
 
@@ -1340,5 +1326,45 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
     public GenericModelEditor getEditor() {
         return editor;
+    }
+
+    public void commandOpenFile(File aFile) {
+        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.OPEN_FROM_FILE);
+
+        FileInputStream theStream = null;
+
+        try {
+            theStream = new FileInputStream(aFile);
+
+            Model theModel = ModelIOUtilities.getInstance()
+                    .deserializeModelFromXML(theStream);
+            getWorldConnector().initializeLoadedModel(theModel);
+
+            setModel(theModel);
+
+            ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
+
+            addCurrentConnectionToConnectionHistory();
+
+            setupViewFor(aFile);
+            getWorldConnector().setStatusText(
+                    getResourceHelper().getText(
+                            ERDesignerBundle.FILELOADED));
+
+        } catch (Exception e) {
+
+            MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(
+                    ERDesignerBundle.ERRORLOADINGFILE));
+
+            getWorldConnector().notifyAboutException(e);
+        } finally {
+            if (theStream != null) {
+                try {
+                    theStream.close();
+                } catch (IOException e) {
+                    // Ignore this exception
+                }
+            }
+        }
     }
 }

@@ -17,18 +17,9 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.io.ModelFileFilter;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelIOUtilities;
-import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
-
-import javax.swing.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.swing.JFileChooser;
 
 public class OpenFromFileCommand extends UICommand {
 
@@ -48,50 +39,8 @@ public class OpenFromFileCommand extends UICommand {
             File theFile = theFiler.getCompletedFile(theChooser
                     .getSelectedFile());
 
-            execute(theFile);
-        }
-    }
-
-    void execute(File aFile) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.OPEN_FROM_FILE);
-
-        ERDesignerComponent component = ERDesignerComponent.getDefault();
-        FileInputStream theStream = null;
-
-        try {
-            theStream = new FileInputStream(aFile);
-
-            Model theModel = ModelIOUtilities.getInstance()
-                    .deserializeModelFromXML(theStream);
-            getWorldConnector().initializeLoadedModel(theModel);
-
-            component.setModel(theModel);
-
-            ApplicationPreferences.getInstance().addRecentlyUsedFile(aFile);
-
-            component.addCurrentConnectionToConnectionHistory();
-
-            component.setupViewFor(aFile);
-            getWorldConnector().setStatusText(
-                    component.getResourceHelper().getText(
-                            ERDesignerBundle.FILELOADED));
-
-        } catch (Exception e) {
-
-            MessagesHelper.displayErrorMessage(getDetailComponent(), component
-                    .getResourceHelper().getText(
-                            ERDesignerBundle.ERRORLOADINGFILE));
-
-            getWorldConnector().notifyAboutException(e);
-        } finally {
-            if (theStream != null) {
-                try {
-                    theStream.close();
-                } catch (IOException e) {
-                    // Ignore this exception
-                }
-            }
+            ERDesignerComponent component = ERDesignerComponent.getDefault();
+            component.commandOpenFile(theFile);
         }
     }
 }

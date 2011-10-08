@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://mogwai.sourceforge.net/erdesignerng" href="$outputFile">
+<jnlp spec="6.0+" codebase="http://mogwai.sourceforge.net/erdesignerng2" href="$outputFile"
+      version="$explicitTimestampUTC">
     <information>
-        <title>Mogwai ERDesignerNG</title>
+        <title>Mogwai ERDesignerNG $project.version</title>
         <vendor>Project Mogwai</vendor>
         <homepage href="http://mogwai.sourceforge.net"/>
-        <shortcut>
+        <shortcut online="false">
             <desktop/>
             <menu submenu="Project Mogwai"/>
         </shortcut>
+        <association mime-type="application-x/erdesignerng-file" extensions="mxm"/>
     </information>
     <update check="timeout" policy="always"/>
     <security>
         <all-permissions/>
     </security>
     <resources>
-        <j2se version="1.6+" java-vm-args="-Xmx512M"/>
+        <java version="1.6+" max-heap-size="512m"/>
         $dependencies
     </resources>
     <resources os="Windows" arch="x86">
