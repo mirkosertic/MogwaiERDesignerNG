@@ -1196,21 +1196,37 @@
                 and enhance the tool?
             </Text>
         </Entry>
+        <Entry id="USAGEDATACOLLECTOR_INFO2">
+            <Text lang="de">ERDesigner NG kann die Benutzung der Applikation, die verwendeten Funktionalitäten wie auch
+                die benutzten Datenbankdialekte und Details zur&lt;br/&gt;
+                verwendeten Java Version aufzeichnen, und diese dem Projekt zur Verfügung stellen. Wenn Sie der
+                Übertragung der Daten zustimmen, helfen Sie aktiv &lt;br/&gt;
+                bei der Verbesserung des Produktes und somit auch der Open Source Community. &lt;br/&gt;&lt;br/&gt;Wollen
+                Sie diese Funktionalität aktivieren?
+            </Text>
+            <Text lang="en">ERDesignerNG can record the usage of the application, the used functionalities, database
+                dialects and details of the installed Java version,&lt;br/&gt;
+                and send the records back to the Project. By approving the data transfer, you will help the development
+                team to improve the Product &lt;br/&gt;
+                and you will also help the whole Open Source Community. &lt;br/&gt;&lt;br/&gt;Do you want to enable this
+                feature?
+            </Text>
+        </Entry>
         <Entry id="NOTHANKS">
-            <Text lang="de">Nein, Danke</Text>
-            <Text lang="en">No, thanks</Text>
+            <Text lang="de">Nein</Text>
+            <Text lang="en">No</Text>
         </Entry>
         <Entry id="NOTHANKSANDDONTASKAGAIN">
-            <Text lang="de">Nein, Danke, und nicht nochmal fragen</Text>
-            <Text lang="en">No, thanks, and don't ask me again</Text>
+            <Text lang="de">Nein, niemals</Text>
+            <Text lang="en">No, never</Text>
         </Entry>
         <Entry id="YESIWANT">
-            <Text lang="de">Ja, ich will!</Text>
-            <Text lang="en">Yes, i want!</Text>
+            <Text lang="de">Ja</Text>
+            <Text lang="en">Yes</Text>
         </Entry>
         <Entry id="YESIWANTANDDONTASKAGAIN">
-            <Text lang="de">Ja, und nicht mehr fragen!</Text>
-            <Text lang="en">Yes, and don't ask me again!</Text>
+            <Text lang="de">Ja, immer</Text>
+            <Text lang="en">Yes, always</Text>
         </Entry>
     </Bundle>
 </Resource>
