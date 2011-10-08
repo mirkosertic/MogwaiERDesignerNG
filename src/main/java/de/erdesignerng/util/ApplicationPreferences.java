@@ -90,6 +90,8 @@ public class ApplicationPreferences {
 
     private static final String USAGEDATACOLLECTORALWAYS = "usageDataCollectorAlways";
 
+    private static final String USAGEDATACOLLECTORASKEDFORPERMISSION = "usageDataCollectorAskedForPermission";
+
     private final int size;
 
     private final List<File> recentlyUsedFiles = new ArrayList<File>();
@@ -112,11 +114,15 @@ public class ApplicationPreferences {
 
     private String installationId;
 
+    private boolean askedForUsageDataCollection = false;
+
     private boolean intelligentLayout = true;
 
     private boolean usageDataCollector = true;
 
     private boolean usageDataCollectorAlways = false;
+
+    private boolean usageDataCollectorNoThisTime = false;
 
     private String automaticRelationAttributePattern;
 
@@ -213,6 +219,7 @@ public class ApplicationPreferences {
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
         usageDataCollector = preferences.getBoolean(USAGEDATACOLLECTOR, true);
         usageDataCollectorAlways = preferences.getBoolean(USAGEDATACOLLECTORALWAYS, false);
+        askedForUsageDataCollection = preferences.getBoolean(USAGEDATACOLLECTORASKEDFORPERMISSION, false);
         installationId = preferences.get(INSTALLATIONID, UUID.randomUUID().toString());
         automaticRelationAttributePattern = preferences.get(
                 AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
@@ -354,6 +361,7 @@ public class ApplicationPreferences {
         preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
         preferences.putBoolean(USAGEDATACOLLECTOR, usageDataCollector);
         preferences.putBoolean(USAGEDATACOLLECTORALWAYS, usageDataCollectorAlways);
+        preferences.putBoolean(USAGEDATACOLLECTORASKEDFORPERMISSION, askedForUsageDataCollection);
         preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
         preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
         preferences.putByteArray(LAYOUT, windowLayout);
@@ -667,11 +675,16 @@ public class ApplicationPreferences {
         return usageDataCollector;
     }
 
-    public void setUsageDataCollector(boolean usageDataCollector) {
-        this.usageDataCollector = usageDataCollector;
-        if (!usageDataCollector) {
+    public void setUsageDataCollector(boolean aState) {
+        if (!aState) {
             usageDataCollectorAlways = false;
+        } else {
+            if (aState != usageDataCollector) {
+                // If the usage data collector is reenabled, we have to ask again for permission
+                askedForUsageDataCollection = false;
+            }
         }
+        usageDataCollector = aState;
     }
 
     public boolean isUsageDataCollectorAlways() {
@@ -680,5 +693,21 @@ public class ApplicationPreferences {
 
     public void setUsageDataCollectorAlways(boolean usageDataCollectorAlways) {
         this.usageDataCollectorAlways = usageDataCollectorAlways;
+    }
+
+    public boolean isUsageDataCollectorNoThisTime() {
+        return usageDataCollectorNoThisTime;
+    }
+
+    public void setUsageDataCollectorNoThisTime(boolean usageDataCollectorNoThisTime) {
+        this.usageDataCollectorNoThisTime = usageDataCollectorNoThisTime;
+    }
+
+    public boolean isAskedForUsageDataCollection() {
+        return askedForUsageDataCollection;
+    }
+
+    public void setAskedForUsageDataCollection(boolean askedForUsageDataCollection) {
+        this.askedForUsageDataCollection = askedForUsageDataCollection;
     }
 }
