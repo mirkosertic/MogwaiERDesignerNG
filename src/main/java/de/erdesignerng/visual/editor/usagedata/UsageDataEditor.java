@@ -56,6 +56,7 @@ public class UsageDataEditor extends BaseEditor {
 
         @Override
         public void processActionEvent(ActionEvent e) {
+            ApplicationPreferences.getInstance().setUsageDataCollectorNoThisTime(true);
             commandCancel();
         }
     }, this, ERDesignerBundle.NOTHANKS);
@@ -69,14 +70,17 @@ public class UsageDataEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.NOTHANKS);
 
+    private boolean demoMode;
 
-    public UsageDataEditor(Component aParent) {
+    public UsageDataEditor(Component aParent, boolean aDemoMode) {
         super(aParent, ERDesignerBundle.USAGEDATACOLLECTOR);
 
-        initialize();
+        initialize(aDemoMode);
+
+        demoMode = aDemoMode;
     }
 
-    private void initialize() {
+    private void initialize(boolean aDemoMode) {
 
         editorView = new UsageDataEditorView();
         editorView.getOKButton().setAction(iWantAction);
@@ -87,10 +91,14 @@ public class UsageDataEditor extends BaseEditor {
 
         StringBuilder theInfo = new StringBuilder("<html>");
         theInfo.append("<b>");
-        theInfo.append(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.USAGEDATACOLLECTOR_INFO));
+        if (aDemoMode) {
+            theInfo.append(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.USAGEDATACOLLECTOR_INFO2));
+        } else {
+            theInfo.append(ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME).getText(ERDesignerBundle.USAGEDATACOLLECTOR_INFO));
+        }
         theInfo.append("</b>");
 
-        UsageDataCollector.getInstance().getHTMLSummary(theInfo);
+        UsageDataCollector.getInstance().getHTMLSummary(theInfo, aDemoMode);
 
         theInfo.append("</html>");
 
@@ -103,6 +111,8 @@ public class UsageDataEditor extends BaseEditor {
 
     @Override
     public void applyValues() throws Exception {
-        UsageDataCollector.getInstance().flush();
+        if (!demoMode) {
+            UsageDataCollector.getInstance().flush();
+        }
     }
 }

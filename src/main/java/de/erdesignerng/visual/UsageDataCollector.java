@@ -127,7 +127,7 @@ public class UsageDataCollector {
     }
 
 
-    public void getHTMLSummary(StringBuilder aBuilder) {
+    public void getHTMLSummary(StringBuilder aBuilder, boolean aDemoMode) {
 
         long theDuration = (System.currentTimeMillis() - createdTimestamp) / 1000 / 60;
 
@@ -164,36 +164,38 @@ public class UsageDataCollector {
         aBuilder.append("&nbsp;");
         aBuilder.append(SystemUtils.JAVA_RUNTIME_VERSION);
         aBuilder.append("<br/>");
-        aBuilder.append("<b>Usage Time&nbsp;:&nbsp;</b>");
-        aBuilder.append(theDuration);
-        aBuilder.append("&nbsp;minutes");
-        aBuilder.append("<br/>");
-        aBuilder.append("<br/>");
-        aBuilder.append("<br/>");
-        aBuilder.append("<table><tr><td><b>Executed Usecases</b></td><td></td></tr>");
-        for (Map.Entry<Usecase, UsageData> theEntry : executedUsecase.entrySet()) {
-            aBuilder.append("<tr><td>");
-            aBuilder.append(theEntry.getKey());
-            aBuilder.append("</td><td>");
-            aBuilder.append(theEntry.getValue().counter);
-            aBuilder.append("&nbsp;time(s)");
-            aBuilder.append("</<td></tr>");
+        if (!aDemoMode) {
+            aBuilder.append("<b>Usage Time&nbsp;:&nbsp;</b>");
+            aBuilder.append(theDuration);
+            aBuilder.append("&nbsp;minutes");
+            aBuilder.append("<br/>");
+            aBuilder.append("<br/>");
+            aBuilder.append("<br/>");
+            aBuilder.append("<table><tr><td><b>Executed Usecases</b></td><td></td></tr>");
+            for (Map.Entry<Usecase, UsageData> theEntry : executedUsecase.entrySet()) {
+                aBuilder.append("<tr><td>");
+                aBuilder.append(theEntry.getKey());
+                aBuilder.append("</td><td>");
+                aBuilder.append(theEntry.getValue().counter);
+                aBuilder.append("&nbsp;time(s)");
+                aBuilder.append("</td></tr>");
+            }
+            aBuilder.append("</table>");
+            aBuilder.append("<br/>");
+            aBuilder.append("<table><tr><td><b>Database Product</b></td><td><b>Database Version</b></td><td><b>Driver name</b></td><td><b>Driver Version</b></td></tr>");
+            for (DatabaseConnectionInfo theEntry : connectedDatabases) {
+                aBuilder.append("<tr><td>");
+                aBuilder.append(theEntry.databaseProductName);
+                aBuilder.append("</td></td>");
+                aBuilder.append(theEntry.databaseProductVersion);
+                aBuilder.append("</td></td>");
+                aBuilder.append(theEntry.driverName);
+                aBuilder.append("</td></td>");
+                aBuilder.append(theEntry.driverVersion);
+                aBuilder.append("</td></tr>");
+            }
+            aBuilder.append("</table>");
         }
-        aBuilder.append("</table>");
-        aBuilder.append("<br/>");
-        aBuilder.append("<table><tr><td><b>Database Product</b></td><td><b>Database Version</b></td><td><b>Driver name</b></td><td><b>Driver Version</b></td></tr>");
-        for (DatabaseConnectionInfo theEntry : connectedDatabases) {
-            aBuilder.append("<tr><td>");
-            aBuilder.append(theEntry.databaseProductName);
-            aBuilder.append("</td></td>");
-            aBuilder.append(theEntry.databaseProductVersion);
-            aBuilder.append("</td></td>");
-            aBuilder.append(theEntry.driverName);
-            aBuilder.append("</td></td>");
-            aBuilder.append(theEntry.driverVersion);
-            aBuilder.append("</td></tr>");
-        }
-        aBuilder.append("</table>");
     }
 
     public void flush() {

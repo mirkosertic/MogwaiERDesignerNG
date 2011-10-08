@@ -175,18 +175,21 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     @Override
     public void setVisible(boolean aVisible) {
 
+        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
+
         if (aVisible == false) {
-            ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
             if (thePreferences.isUsageDataCollector()) {
                 if (thePreferences.isUsageDataCollectorAlways()) {
                     UsageDataCollector.getInstance().flush();
                 } else {
-                    UsageDataEditor theEditor = new UsageDataEditor(this);
-                    if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                        try {
-                            theEditor.applyValues();
-                        } catch (Exception e1) {
-                            LOGGER.error(e1.getMessage(), e1);
+                    if (!thePreferences.isUsageDataCollectorNoThisTime()) {
+                        UsageDataEditor theEditor = new UsageDataEditor(this, false);
+                        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                            try {
+                                theEditor.applyValues();
+                            } catch (Exception e1) {
+                                LOGGER.error(e1.getMessage(), e1);
+                            }
                         }
                     }
                 }
@@ -196,10 +199,23 @@ public class ERDesignerMainFrame extends DefaultFrame implements
 
         super.setVisible(aVisible);
 
+        if (aVisible && !thePreferences.isAskedForUsageDataCollection()) {
+            UsageDataEditor theEditor = new UsageDataEditor(this, true);
+            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
+                try {
+                    theEditor.applyValues();
+                } catch (Exception e1) {
+                    LOGGER.error(e1.getMessage(), e1);
+                }
+            }
+            thePreferences.setAskedForUsageDataCollection(true);
+        }
+
         if (aVisible) {
             ApplicationPreferences.getInstance().setWindowState(WINDOW_ALIAS,
                     this);
         } else {
+            component.savePreferences();
             System.exit(0);
         }
     }
