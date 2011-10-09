@@ -88,15 +88,48 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 		}
 	}
 
-	// Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows
-	// VARCHAR(0)
 	@Override
 	protected void reverseEngineerDomain(Model aModel, Domain aDomain, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) {
+		// Bug Fixing 2895202 [ERDesignerNG] RevEng PostgreSQL domains shows VARCHAR(0)
 		if (("varchar".equalsIgnoreCase(aDomain.getConcreteType().getName()))
 				|| ("character varying".equalsIgnoreCase(aDomain.getConcreteType().getName()))) {
 			// PostgreSQL liefert 0, wenn VARCHAR ohne Parameter definiert wurde
 			if (((Integer) 0).equals(aDomain.getSize())) {
 				aDomain.setSize(null);
+			}
+		}
+
+		//Bug Fixing 3420937 [ERDesignerNG] PostgreSQL: comments of domains not RevEnged
+		PreparedStatement theStatement;
+
+		String theQuery = "SELECT t.oid, n.nspname, t.typname, format_type(t.oid, null) AS alias, d.description "
+						+ "FROM pg_type t LEFT OUTER JOIN pg_description d ON d.objoid = t.oid LEFT OUTER JOIN pg_catalog.pg_namespace n ON t.typnamespace = n.oid "
+						+ "WHERE t.typcategory = 'N' AND n.nspname = ? AND t.typname = ?";
+
+		for (SchemaEntry theEntry : aOptions.getSchemaEntries()) {
+			try {
+				theStatement = aConnection.prepareStatement(theQuery);
+				theStatement.setString(1, theEntry.getSchemaName());
+				theStatement.setString(2, aDomain.getName());
+				ResultSet theResult = null;
+
+				try {
+					theResult = theStatement.executeQuery();
+					if (theResult.next()) {
+						String theDescription = theResult.getString("description");
+						if (!StringUtils.isEmpty(theDescription)) {
+							aDomain.setComment(theDescription);
+						}
+					}
+				} finally {
+					if (theResult != null) {
+						theResult.close();
+					}
+
+					theStatement.close();
+				}
+			} catch(SQLException e) {
+
 			}
 		}
 	}
@@ -318,8 +351,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
 					theStatement.close();
 				}
-			}
-			while ((theCurrentException != null) && ((thePreviousException == null) || (thePreviousException.getMessage().equalsIgnoreCase(theCurrentException.getMessage()))));
+			} while ((theCurrentException != null) && ((thePreviousException == null) || (thePreviousException.getMessage().equalsIgnoreCase(theCurrentException.getMessage()))));
 		}
 	}
 
