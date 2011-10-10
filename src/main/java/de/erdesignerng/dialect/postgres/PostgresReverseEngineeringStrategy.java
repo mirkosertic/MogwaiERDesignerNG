@@ -137,7 +137,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 	// Bug Fixing 2949508 [ERDesignerNG] Rev Eng not handling UDTs in PostgreSQL
 	// Bug Fixing 2952877 [ERDesignerNG] Custom Types
 	// Bug Fixing 3056071 [ERDesignerNG] postgres unkown datatype prevent reverse eng.
-	// TODO: [dr-death] reverse engineere details of custom types and create DDL
+	// TODO: [dr-death2] reverse engineere details of custom types and create DDL
 	@Override
 	protected void reverseEngineerCustomTypes(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, Connection aConnection) throws SQLException, ReverseEngineeringException {
 		// TODO: [mirkosertic] implement valid way to retrieve type ddl from db

@@ -270,6 +270,7 @@ Release 3.0.0
 * Implemented FR 2895223 [ERDesignerNG] SubjectAreas handling
 * Implemented FR 3413009 [ERDesignerNG] Show only the appropriate main-nodes in tree
 * Implemented FR 3414698 [ERDesignerNG] let CTRL+Mousewheel zoom diagram
+* Implemented FR 3412908 [ERDesignerNG] Reverse engineer Details of UDTs
 * Bug Fixing 2899094 [ERDesignerNG] select first *non-system* schema in RevEngEd (re-introduced by buggy commit in v1072)
 * Bug Fixing 2975206 [ERDesignerNG] Unknown data type during revers engineering
 * Bug Fixing 3306174 [ERDesignerNG] Unknown datatype (2.7.0 release)
