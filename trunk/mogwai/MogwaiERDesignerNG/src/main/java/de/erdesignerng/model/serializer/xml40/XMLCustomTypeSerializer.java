@@ -20,15 +20,20 @@ package de.erdesignerng.model.serializer.xml40;
 import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.AbstractXMLCustomTypeSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLModelSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2010-04-04 01:15:00 $
  */
 public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
+
+	public XMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+		super(xmlModelSerializer);
+	}
 
 	@Override
 	public void serialize(CustomType aCustomType, Document aDocument, Element aRootElement) {
@@ -38,9 +43,6 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
 		serializeCommentElement(aDocument, theCustomTypeElement, aCustomType);
 
 		theCustomTypeElement.setAttribute(SCHEMA, aCustomType.getSchema());
-
-		Element theSQLElement = addElement(aDocument, theCustomTypeElement, SQLDEFINITION);
-		theSQLElement.appendChild(aDocument.createTextNode(aCustomType.getSqlDefinition()));
 	}
 
 	@Override
@@ -57,12 +59,6 @@ public class XMLCustomTypeSerializer extends AbstractXMLCustomTypeSerializer {
 			deserializeCommentElement(theElement, theCustomType);
 
 			theCustomType.setSchema(theElement.getAttribute(SCHEMA));
-
-			NodeList theSQL = theElement.getElementsByTagName(SQLDEFINITION);
-			for (int j = 0; j < theSQL.getLength(); j++) {
-				Element theSQLElement = (Element) theSQL.item(j);
-				theCustomType.setSqlDefinition(theSQLElement.getChildNodes().item(0).getNodeValue());
-			}
 
 			aModel.getCustomTypes().add(theCustomType);
 		}

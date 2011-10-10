@@ -20,7 +20,7 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.Domain;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLDomainSerializer extends CommonAbstractXMLSerializer<Domain> {
@@ -32,5 +32,7 @@ public abstract class AbstractXMLDomainSerializer extends CommonAbstractXMLSeria
 	protected static final String SCALE = "scale";
 
 	protected static final String SIZE = "size";
+
+	protected static final String NULLABLE = "nullable";
 
 }

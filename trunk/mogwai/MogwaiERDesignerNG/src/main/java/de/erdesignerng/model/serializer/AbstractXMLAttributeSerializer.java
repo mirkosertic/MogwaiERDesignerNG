@@ -19,12 +19,12 @@ package de.erdesignerng.model.serializer;
 
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.ModelItem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLAttributeSerializer extends CommonAbstractXMLSerializer<Attribute> {
@@ -43,7 +43,7 @@ public abstract class AbstractXMLAttributeSerializer extends CommonAbstractXMLSe
 
 	protected static final String SIZE = "size";
 
-	public abstract void deserialize(Model aModel, Table aTable, Element aElement);
+	public abstract void deserialize(Model aModel, ModelItem aTableOrCustomType, Element aElement);
 
 	@Override
 	@Deprecated

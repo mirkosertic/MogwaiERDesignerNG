@@ -20,7 +20,7 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.View;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLViewSerializer extends CommonAbstractXMLSerializer<View> {

@@ -20,11 +20,14 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.Table;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLTableSerializer extends CommonAbstractXMLSerializer<Table> {
+
 	protected static final String TABLE = "Table";
+
+	protected static final String SCHEMA = "schema";
 
 	private AbstractXMLModelSerializer xmlModelSerializer = null;
 
