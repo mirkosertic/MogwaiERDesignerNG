@@ -25,119 +25,119 @@ import java.io.Serializable;
  */
 public abstract class ModelItem implements Serializable {
 
-    public static final String PROPERTY_LOCATION = "LOCATION";
+	public static final String PROPERTY_LOCATION = "LOCATION";
 
-    private String systemId = ModelUtilities.createSystemIdFor();
+	private String systemId = ModelUtilities.createSystemIdFor();
 
-    private String name;
+	private String name;
 
-    private String originalName;
+	private String originalName;
 
-    private String comment;
+	private String comment;
 
-    private ModelProperties properties = new ModelProperties();
+	private ModelProperties properties = new ModelProperties();
 
-    /**
-     * Get the name.
-     *
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Get the name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Set the name.
-     *
-     * @param aName the name to set
-     */
-    public void setName(String aName) {
-        name = aName;
-    }
+	/**
+	 * Set the name.
+	 *
+	 * @param aName the name to set
+	 */
+	public void setName(String aName) {
+		name = aName;
+	}
 
-    /**
-     * @return the systemId
-     */
-    public String getSystemId() {
-        return systemId;
-    }
+	/**
+	 * @return the systemId
+	 */
+	public String getSystemId() {
+		return systemId;
+	}
 
-    /**
-     * @param aSystemId the systemId to set
-     */
-    public void setSystemId(String aSystemId) {
-        systemId = aSystemId;
-    }
+	/**
+	 * @param aSystemId the systemId to set
+	 */
+	public void setSystemId(String aSystemId) {
+		systemId = aSystemId;
+	}
 
-    public ModelProperties getProperties() {
-        return properties;
-    }
+	public ModelProperties getProperties() {
+		return properties;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString() {
+		return name;
+	}
 
-    public String getComment() {
-        return comment;
-    }
+	public String getComment() {
+		return comment;
+	}
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
-    public boolean isRenamed(String aName) {
-        if (name == null) {
-            return aName != null;
-        }
-        return !name.equals(aName);
-    }
+	public boolean isRenamed(String aName) {
+		if (name == null) {
+			return aName != null;
+		}
+		return !name.equals(aName);
+	}
 
-    public boolean isCommentChanged(String aComment) {
-        return isStringModified(comment, aComment);
-    }
+	public boolean isCommentChanged(String aComment) {
+		return isStringModified(comment, aComment);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ModelItem)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ModelItem)) return false;
 
-        ModelItem modelItem = (ModelItem) o;
+		ModelItem modelItem = (ModelItem) o;
 
-        if (systemId != null ? !systemId.equals(modelItem.systemId) : modelItem.systemId != null) return false;
+		if (systemId != null ? !systemId.equals(modelItem.systemId) : modelItem.systemId != null) return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return systemId != null ? systemId.hashCode() : 0;
-    }
+	@Override
+	public int hashCode() {
+		return systemId != null ? systemId.hashCode() : 0;
+	}
 
-    protected boolean isStringModified(String aValue1, String aValue2) {
-        if (aValue1 == null) {
-            aValue1 = "";
-        }
-        if (aValue2 == null) {
-            aValue2 = "";
-        }
-        return !aValue1.equals(aValue2);
-    }
+	protected boolean isStringModified(String aValue1, String aValue2) {
+		if (aValue1 == null) {
+			aValue1 = "";
+		}
+		if (aValue2 == null) {
+			aValue2 = "";
+		}
+		return !aValue1.equals(aValue2);
+	}
 
-    public String getOriginalName() {
-        return originalName;
-    }
+	public String getOriginalName() {
+		return originalName;
+	}
 
-    public void setOriginalName(String originalName) {
-        this.originalName = originalName;
-    }
+	public void setOriginalName(String originalName) {
+		this.originalName = originalName;
+	}
 
-    /**
-     * Get the unique name of the model item.
-     *
-     * @return the name
-     */
-    public String getUniqueName() {
-        return getName();
-    }
+	/**
+	 * Get the unique name of the model item.
+	 *
+	 * @return the name
+	 */
+	public String getUniqueName() {
+		return getName();
+	}
 }
