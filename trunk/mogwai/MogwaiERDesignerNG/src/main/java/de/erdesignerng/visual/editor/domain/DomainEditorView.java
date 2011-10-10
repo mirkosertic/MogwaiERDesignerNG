@@ -42,173 +42,173 @@ import javax.swing.JPanel;
  */
 public class DomainEditorView extends DefaultPanel {
 
-    private DefaultButton newButton;
+	private DefaultButton newButton;
 
-    private DefaultButton deleteButton;
+	private DefaultButton deleteButton;
 
-    private JPanel component15;
+	private JPanel component15;
 
-    private DefaultButton okButton;
+	private DefaultButton okButton;
 
-    private DefaultButton cancelButton;
+	private DefaultButton cancelButton;
 
-    private final DefaultComboBoxModel dataTypesModel = new DefaultComboBoxModel();
+	private final DefaultComboBoxModel dataTypesModel = new DefaultComboBoxModel();
 
-    private DefaultTable domainTable = new DefaultTable() {
-        @Override
-        public void removeEditor() {
-            super.removeEditor();
+	private DefaultTable domainTable = new DefaultTable() {
+		@Override
+		public void removeEditor() {
+			super.removeEditor();
 
-            Domain theAttribute = domainTableModel.getRow(getSelectedRow());
-            domainEditorRemoved(theAttribute);
+			Domain theAttribute = domainTableModel.getRow(getSelectedRow());
+			domainEditorRemoved(theAttribute);
 
-            invalidate();
-            repaint();
+			invalidate();
+			repaint();
 
-            TableHelper.processEditorRemovel(this);
-        }
-    };
+			TableHelper.processEditorRemovel(this);
+		}
+	};
 
-    private DomainTableModel domainTableModel = new DomainTableModel();
+	private DomainTableModel domainTableModel = new DomainTableModel();
 
-    public DomainEditorView() {
-        initialize();
-    }
+	public DomainEditorView() {
+		initialize();
+	}
 
-    public DomainTableModel getDomainTableModel() {
-        return domainTableModel;
-    }
+	public DomainTableModel getDomainTableModel() {
+		return domainTableModel;
+	}
 
-    public DefaultTable getDomainTable() {
-        return domainTable;
-    }
+	public DefaultTable getDomainTable() {
+		return domainTable;
+	}
 
-    protected void domainEditorRemoved(Domain aDomain) {
-    }
+	protected void domainEditorRemoved(Domain aDomain) {
+	}
 
-    /**
-     * Initialize method.
-     */
-    private void initialize() {
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
 
-        String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
-        String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
+		String rowDef = "2dlu,p,2dlu,p,fill:220dlu,p,20dlu,p,2dlu";
+		String colDef = "2dlu,left:45dlu,2dlu,fill:140dlu:grow,fill:60dlu,2dlu,fill:60dlu,2dlu";
 
-        domainTable.setCellSelectionEnabled(true);
+		domainTable.setCellSelectionEnabled(true);
 
-        FormLayout layout = new FormLayout(colDef, rowDef);
-        setLayout(layout);
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		setLayout(layout);
 
-        CellConstraints cons = new CellConstraints();
+		CellConstraints cons = new CellConstraints();
 
-        add(getComponent15(), cons.xywh(2, 4, 6, 2));
-        add(getOkButton(), cons.xywh(5, 8, 1, 1));
-        add(getCancelButton(), cons.xywh(7, 8, 1, 1));
+		add(getComponent15(), cons.xywh(2, 4, 6, 2));
+		add(getOkButton(), cons.xywh(5, 8, 1, 1));
+		add(getCancelButton(), cons.xywh(7, 8, 1, 1));
 
-    }
+	}
 
-    /**
-     * Getter method for component NewButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getNewButton() {
+	/**
+	 * Getter method for component NewButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getNewButton() {
 
-        if (newButton == null) {
-            newButton = new DefaultButton(ERDesignerBundle.NEW);
-        }
+		if (newButton == null) {
+			newButton = new DefaultButton(ERDesignerBundle.NEW);
+		}
 
-        return newButton;
-    }
+		return newButton;
+	}
 
-    /**
-     * Getter method for component DeleteButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getDeleteButton() {
+	/**
+	 * Getter method for component DeleteButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getDeleteButton() {
 
-        if (deleteButton == null) {
-            deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
-        }
+		if (deleteButton == null) {
+			deleteButton = new DefaultButton(ERDesignerBundle.DELETE);
+		}
 
-        return deleteButton;
-    }
+		return deleteButton;
+	}
 
-    /**
-     * Getter method for component Component_15.
-     *
-     * @return the initialized component
-     */
-    public JPanel getComponent15() {
+	/**
+	 * Getter method for component Component_15.
+	 *
+	 * @return the initialized component
+	 */
+	public JPanel getComponent15() {
 
-        if (component15 == null) {
-            component15 = new JPanel();
+		if (component15 == null) {
+			component15 = new JPanel();
 
-            FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
-            component15.setLayout(theLayout);
+			FormLayout theLayout = new FormLayout("fill:10dlu:grow,2dlu,60dlu,2dlu,60dlu", "fill:10dlu:grow,2dlu,p");
+			component15.setLayout(theLayout);
 
-            CellConstraints cons = new CellConstraints();
-            domainTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-            domainTable.setModel(domainTableModel);
-            domainTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-            domainTable.getColumnModel().getColumn(1).setPreferredWidth(100);
-            domainTable.getColumnModel().getColumn(2).setPreferredWidth(60);
-            domainTable.getColumnModel().getColumn(3).setPreferredWidth(60);
-            domainTable.getColumnModel().getColumn(4).setPreferredWidth(60);
-            domainTable.getColumnModel().getColumn(5).setPreferredWidth(50);
-            domainTable.getColumnModel().getColumn(6).setPreferredWidth(300);
-            domainTable.getTableHeader().setResizingAllowed(true);
-            domainTable.getTableHeader().setReorderingAllowed(false);
-            domainTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
-            domainTable.setRowHeight(22);
+			CellConstraints cons = new CellConstraints();
+			domainTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+			domainTable.setModel(domainTableModel);
+			domainTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+			domainTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+			domainTable.getColumnModel().getColumn(2).setPreferredWidth(60);
+			domainTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+			domainTable.getColumnModel().getColumn(4).setPreferredWidth(60);
+			domainTable.getColumnModel().getColumn(5).setPreferredWidth(50);
+			domainTable.getColumnModel().getColumn(6).setPreferredWidth(300);
+			domainTable.getTableHeader().setResizingAllowed(true);
+			domainTable.getTableHeader().setReorderingAllowed(false);
+			domainTable.setAutoResizeMode(DefaultTable.AUTO_RESIZE_OFF);
+			domainTable.setRowHeight(22);
 
-            DefaultComboBox theBox = new DefaultComboBox();
-            theBox.setBorder(BorderFactory.createEmptyBorder());
-            theBox.setModel(dataTypesModel);
-            domainTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));
-            domainTable.setDefaultRenderer(DataType.class, ModelItemDefaultCellRenderer.getInstance());
-            domainTable.setDefaultRenderer(String.class, ModelItemDefaultCellRenderer.getInstance());
-            domainTable.setDefaultRenderer(Integer.class, ModelItemDefaultCellRenderer.getInstance());
-            domainTable.setDefaultRenderer(Boolean.class, CheckboxCellRenderer.getInstance());
+			DefaultComboBox theBox = new DefaultComboBox();
+			theBox.setBorder(BorderFactory.createEmptyBorder());
+			theBox.setModel(dataTypesModel);
+			domainTable.setDefaultEditor(DataType.class, new DefaultCellEditor(theBox));
+			domainTable.setDefaultRenderer(DataType.class, ModelItemDefaultCellRenderer.getInstance());
+			domainTable.setDefaultRenderer(String.class, ModelItemDefaultCellRenderer.getInstance());
+			domainTable.setDefaultRenderer(Integer.class, ModelItemDefaultCellRenderer.getInstance());
+			domainTable.setDefaultRenderer(Boolean.class, CheckboxCellRenderer.getInstance());
 
-            component15.add(domainTable.getScrollPane(), cons.xywh(1, 1, 5, 1));
-            component15.add(getNewButton(), cons.xy(3, 3));
-            component15.add(getDeleteButton(), cons.xy(5, 3));
-        }
+			component15.add(domainTable.getScrollPane(), cons.xywh(1, 1, 5, 1));
+			component15.add(getNewButton(), cons.xy(3, 3));
+			component15.add(getDeleteButton(), cons.xy(5, 3));
+		}
 
-        return component15;
-    }
+		return component15;
+	}
 
-    /**
-     * Getter method for component OkButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getOkButton() {
+	/**
+	 * Getter method for component OkButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getOkButton() {
 
-        if (okButton == null) {
-            okButton = new DefaultButton(ERDesignerBundle.OK);
-        }
+		if (okButton == null) {
+			okButton = new DefaultButton(ERDesignerBundle.OK);
+		}
 
-        return okButton;
-    }
+		return okButton;
+	}
 
-    /**
-     * Getter method for component CancelButton.
-     *
-     * @return the initialized component
-     */
-    public JButton getCancelButton() {
+	/**
+	 * Getter method for component CancelButton.
+	 *
+	 * @return the initialized component
+	 */
+	public JButton getCancelButton() {
 
-        if (cancelButton == null) {
-            cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
-        }
+		if (cancelButton == null) {
+			cancelButton = new DefaultButton(ERDesignerBundle.CANCEL);
+		}
 
-        return cancelButton;
-    }
+		return cancelButton;
+	}
 
-    public DefaultComboBoxModel getDataTypesModel() {
-        return dataTypesModel;
-    }
+	public DefaultComboBoxModel getDataTypesModel() {
+		return dataTypesModel;
+	}
 }
