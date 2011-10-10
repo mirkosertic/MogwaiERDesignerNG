@@ -20,7 +20,7 @@ package de.erdesignerng.model;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2010-03-30 20:00:00 $
  */
 public class CustomTypeList extends ModelItemVector<CustomType> {

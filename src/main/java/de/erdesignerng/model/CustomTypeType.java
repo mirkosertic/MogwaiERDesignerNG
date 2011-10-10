@@ -24,18 +24,5 @@ package de.erdesignerng.model;
  * @version $Date: 2011-09-17 21:45:00 $
  */
 public enum CustomTypeType {
-    COMPOSITE("Composite"),
-	ENUMERATION("Enumeration"),
-	EXTERNAL("External");
-
-	private final String typeName;
-
-	CustomTypeType(String typeName) {
-        this.typeName = typeName;
-    }
-
-	@Override
-	public String toString() {
-		return typeName;
-	}
+	COMPOSITE, ENUMERATION, EXTERNAL;
 }

@@ -26,193 +26,186 @@ import java.sql.Types;
 /**
  * A custom datatype.
  *
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2010-03-30 20:00:00 $
  */
 public class CustomType extends OwnedModelItem<Model> implements ModelItemCloneable<CustomType>, DataType {
 
-    // The schema of the custom type
-    private String schema;
+	// The schema of the custom type
+	private String schema;
 
-    // The DDL Part to create the custom type, the part after the
-    // "CREATE TYPE <name> AS "
-    private String sqlDefinition;
+	private String alias;
 
-    private String alias;
+	// The type of the CustomType
+	private CustomTypeType type;
 
-    // The type of the CustomType
-    private CustomTypeType type;
+	private AttributeList<CustomType> attributes = new AttributeList<CustomType>();
 
-    private AttributeList<CustomType> attributes = new AttributeList<CustomType>();
+	public CustomType() {
+	}
 
-    public CustomType() {
-    }
+	public String getSchema() {
+		return schema;
+	}
 
-    public String getSchema() {
-        return schema;
-    }
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public String getAlias() {
-        return alias;
-    }
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+	public String getSqlDefinition() {
+		StringBuilder theSQL = new StringBuilder();
 
-    public String getSqlDefinition() {
-        StringBuilder theSQL = new StringBuilder();
+		switch (type) {
+			case ENUMERATION:
+				if (attributes.size() > 0) {
+					theSQL.append("ENUM (");
+					for (int i = 0; i < attributes.size(); i++) {
+						Attribute<CustomType> theAttribute = attributes.elementAt(i);
 
-        switch (type) {
-            case ENUMERATION:
-                if (attributes.size() > 0) {
-                    theSQL.append("ENUM (");
-                    for (int i = 0; i < attributes.size(); i++) {
-                        Attribute<CustomType> theAttribute = attributes.elementAt(i);
+						if (i > 0) {
+							theSQL.append(",");
+						}
+						theSQL.append("\n  '");
+						theSQL.append(theAttribute.getName());
+						theSQL.append("'");
+					}
+					theSQL.append("\n)");
+				}
+				break;
 
-                        if (i > 0) {
-                            theSQL.append(",");
-                        }
-                        theSQL.append("\n  '");
-                        theSQL.append(theAttribute.getName());
-                        theSQL.append("'");
-                    }
-                    theSQL.append("\n)");
-                }
-                break;
+			case COMPOSITE:
+				if (attributes.size() > 0) {
+					theSQL.append("(");
+					for (int i = 0; i < attributes.size(); i++) {
+						Attribute<CustomType> theAttribute = attributes.elementAt(i);
 
-            case COMPOSITE:
-                if (attributes.size() > 0) {
-                    theSQL.append("(");
-                    for (int i = 0; i < attributes.size(); i++) {
-                        Attribute<CustomType> theAttribute = attributes.elementAt(i);
+						if (i > 0) {
+							theSQL.append(",");
+						}
+						theSQL.append("\n  ");
+						theSQL.append(theAttribute.getName());
+						theSQL.append(" ");
+						theSQL.append(theAttribute.getDatatype().createTypeDefinitionFor(theAttribute));
+					}
+					theSQL.append("\n)");
+				}
+				break;
 
-                        if (i > 0) {
-                            theSQL.append(",");
-                        }
-                        theSQL.append("\n  ");
-                        theSQL.append(theAttribute.getName());
-                        theSQL.append(" ");
-                        theSQL.append(theAttribute.getDatatype().createTypeDefinitionFor(theAttribute));
-                    }
-                    theSQL.append("\n)");
-                }
-                break;
+			case EXTERNAL:
+				//TODO [dr-death2] implement SQL-Definition for "external" CustomTypes
+				theSQL.append("TODO: This is not implemented yet. Feel free to do this.");
+				break;
 
-            case EXTERNAL:
-                //TODO [dr-death] implement SQL-Definition for "external" CustomTypes
-                theSQL.append("TODO: This is not implemented yet. Feel free to do this.");
-                break;
+			default:
+		}
 
-            default:
-        }
+		return theSQL.toString();
+	}
 
-        return theSQL.toString();
-    }
+	public void setType(CustomTypeType type) {
+		this.type = type;
+	}
 
-    @Deprecated
-    public void setSqlDefinition(String sqlDefinition) {
-        this.sqlDefinition = sqlDefinition;
-    }
+	public CustomTypeType getType() {
+		return type;
+	}
 
-    public void setType(CustomTypeType type) {
-        this.type = type;
-    }
+	public void addAttribute(Model aModel, Attribute<CustomType> aAttribute) throws ElementAlreadyExistsException, ElementInvalidNameException {
+		ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
 
-    public CustomTypeType getType() {
-        return type;
-    }
+		aAttribute.setOwner(this);
+		attributes.add(aAttribute);
+	}
 
-    public void addAttribute(Model aModel, Attribute<CustomType> aAttribute) throws ElementAlreadyExistsException, ElementInvalidNameException {
-        ModelUtilities.checkNameAndExistence(attributes, aAttribute, aModel.getDialect());
+	public AttributeList<CustomType> getAttributes() {
+		return attributes;
+	}
 
-        aAttribute.setOwner(this);
-        attributes.add(aAttribute);
-    }
+	public void setAttributes(AttributeList attributes) {
+		this.attributes = attributes;
+	}
 
-    public AttributeList<CustomType> getAttributes() {
-        return attributes;
-    }
+	@Override
+	public CustomType clone() {
+		CustomType theCustomType = new CustomType();
+		theCustomType.setSystemId(getSystemId());
+		theCustomType.setName(getName());
+		theCustomType.setAttributes(getAttributes());
+		theCustomType.setType(getType());
+		theCustomType.setComment(getComment());
 
-    public void setAttributes(AttributeList attributes) {
-        this.attributes = attributes;
-    }
+		return theCustomType;
+	}
 
-    @Override
-    public CustomType clone() {
-        CustomType theCustomType = new CustomType();
-        theCustomType.setSystemId(getSystemId());
-        theCustomType.setName(getName());
-        theCustomType.setAttributes(getAttributes());
-        theCustomType.setType(getType());
+	@Override
+	public void restoreFrom(CustomType aCustomType) {
+		setSystemId(aCustomType.getSystemId());
+		setName(aCustomType.getName());
+		setAttributes(aCustomType.getAttributes());
+		setType(aCustomType.getType());
+		setComment(aCustomType.getComment());
+	}
 
-        return theCustomType;
-    }
+	@Override
+	public boolean isDomain() {
+		return false;
+	}
 
-    @Override
-    public void restoreFrom(CustomType aCustomType) {
-        setSystemId(aCustomType.getSystemId());
-        setName(aCustomType.getName());
-        setAttributes(aCustomType.getAttributes());
-        setType(aCustomType.getType());
-    }
+	@Override
+	public boolean supportsSize() {
+		return false;
+	}
 
-    @Override
-    public boolean isDomain() {
-        return false;
-    }
+	@Override
+	public boolean supportsFraction() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsSize() {
-        return false;
-    }
+	@Override
+	public boolean supportsScale() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsFraction() {
-        return false;
-    }
+	@Override
+	public boolean supportsExtra() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsScale() {
-        return false;
-    }
+	@Override
+	public boolean isJDBCStringType() {
+		return false;
+	}
 
-    @Override
-    public boolean supportsExtra() {
-        return false;
-    }
+	@Override
+	public String createTypeDefinitionFor(Attribute aAttribute) {
+		return getName();
+	}
 
-    @Override
-    public boolean isJDBCStringType() {
-        return false;
-    }
+	@Override
+	public boolean isIdentity() {
+		return false;
+	}
 
-    @Override
-    public String createTypeDefinitionFor(Attribute aAttribute) {
-        return getName();
-    }
+	@Override
+	public int[] getJDBCType() {
+		return new int[]{Types.OTHER};
+	}
 
-    @Override
-    public boolean isIdentity() {
-        return false;
-    }
+	@Override
+	public String getDefinition() {
+		return "";
+	}
 
-    @Override
-    public int[] getJDBCType() {
-        return new int[]{Types.OTHER};
-    }
-
-    @Override
-    public String getDefinition() {
-        return "";
-    }
-
-    @Override
-    public boolean isSpatial() {
-        return false;
-    }
+	@Override
+	public boolean isSpatial() {
+		return false;
+	}
 }
