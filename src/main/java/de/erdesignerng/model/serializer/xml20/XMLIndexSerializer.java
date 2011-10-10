@@ -28,8 +28,6 @@ import org.w3c.dom.NodeList;
 
 public class XMLIndexSerializer extends de.erdesignerng.model.serializer.xml10.XMLIndexSerializer {
 
-	protected static final String ATTRIBUTEEXPRESSION = "expression";
-
 	@Override
 	public void serialize(Index aIndex, Document aDocument, Element aRootElement) {
 		Element theIndexElement = addElement(aDocument, aRootElement, INDEX);

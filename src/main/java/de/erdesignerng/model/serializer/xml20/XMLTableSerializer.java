@@ -28,8 +28,6 @@ import org.w3c.dom.NodeList;
 
 public class XMLTableSerializer extends de.erdesignerng.model.serializer.xml10.XMLTableSerializer {
 
-	protected static final String SCHEMA = "schema";
-
 	public XMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
 		super(xmlModelSerializer);
 	}

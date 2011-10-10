@@ -30,8 +30,6 @@ import org.w3c.dom.NodeList;
 
 public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml10.XMLRelationSerializer {
 
-	protected static final String EXPORTINGEXPRESSIONREFID = "exportingexpressionrefid";
-
 	@Override
 	public void serialize(Relation aRelation, Document aDocument, Element aRootElement) {
 		Element theRelationElement = addElement(aDocument, aRootElement, RELATION);

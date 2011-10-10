@@ -35,88 +35,84 @@ import java.awt.*;
  */
 public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.xml10.XMLSubjectAreaSerializer {
 
-    protected static final String VIEWREFID = "viewrefid";
+	@Override
+	public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
 
-    protected static final String VISIBLE = "visible";
+		Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
 
-    @Override
-    public void serialize(SubjectArea aArea, Document aDocument, Element aRootElement) {
+		// Basisdaten des Modelelementes speichern
+		serializeProperties(aDocument, theSubjectAreaElement, aArea);
+		theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
+		setBooleanAttribute(theSubjectAreaElement, VISIBLE, aArea.isVisible());
 
-        Element theSubjectAreaElement = addElement(aDocument, aRootElement, SUBJECTAREA);
+		for (Table theTable : aArea.getTables()) {
+			Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
+		}
 
-        // Basisdaten des Modelelementes speichern
-        serializeProperties(aDocument, theSubjectAreaElement, aArea);
-        theSubjectAreaElement.setAttribute(COLOR, "" + aArea.getColor().getRGB());
-        setBooleanAttribute(theSubjectAreaElement, VISIBLE, aArea.isVisible());
+		for (View theView : aArea.getViews()) {
+			Element theViewElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			theViewElement.setAttribute(VIEWREFID, theView.getSystemId());
+		}
 
-        for (Table theTable : aArea.getTables()) {
-            Element theTableElement = addElement(aDocument, theSubjectAreaElement, ITEM);
-            theTableElement.setAttribute(TABLEREFID, theTable.getSystemId());
-        }
+		for (Comment theComment : aArea.getComments()) {
+			Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
+			theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
+		}
+	}
 
-        for (View theView : aArea.getViews()) {
-            Element theViewElement = addElement(aDocument, theSubjectAreaElement, ITEM);
-            theViewElement.setAttribute(VIEWREFID, theView.getSystemId());
-        }
+	@Override
+	public void deserialize(Model aModel, Document aDocument) {
 
-        for (Comment theComment : aArea.getComments()) {
-            Element theCommentElement = addElement(aDocument, theSubjectAreaElement, ITEM);
-            theCommentElement.setAttribute(COMMENTREFID, theComment.getSystemId());
-        }
-    }
+		NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
+		for (int i = 0; i < theElements.getLength(); i++) {
+			Element theElement = (Element) theElements.item(i);
 
-    @Override
-    public void deserialize(Model aModel, Document aDocument) {
+			SubjectArea theSubjectArea = new SubjectArea();
+			deserializeProperties(theElement, theSubjectArea);
 
-        NodeList theElements = aDocument.getElementsByTagName(SUBJECTAREA);
-        for (int i = 0; i < theElements.getLength(); i++) {
-            Element theElement = (Element) theElements.item(i);
+			theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
+			if (theElement.hasAttribute(VISIBLE)) {
+				theSubjectArea.setVisible(TRUE.equals(theElement.getAttribute(VISIBLE)));
+			}
 
-            SubjectArea theSubjectArea = new SubjectArea();
-            deserializeProperties(theElement, theSubjectArea);
+			NodeList theTables = theElement.getElementsByTagName(ITEM);
+			for (int j = 0; j < theTables.getLength(); j++) {
 
-            theSubjectArea.setColor(new Color(Integer.parseInt(theElement.getAttribute(COLOR))));
-            if (theElement.hasAttribute(VISIBLE)) {
-                theSubjectArea.setVisible(TRUE.equals(theElement.getAttribute(VISIBLE)));
-            }
+				Element theItemElement = (Element) theTables.item(j);
+				String theTableId = theItemElement.getAttribute(TABLEREFID);
+				String theViewId = theItemElement.getAttribute(VIEWREFID);
+				String theCommentId = theItemElement.getAttribute(COMMENTREFID);
 
-            NodeList theTables = theElement.getElementsByTagName(ITEM);
-            for (int j = 0; j < theTables.getLength(); j++) {
+				if (!StringUtils.isEmpty(theTableId)) {
+					Table theTable = aModel.getTables().findBySystemId(theTableId);
+					if (theTable == null) {
+						throw new IllegalArgumentException("Cannot find table with id " + theTableId);
+					}
 
-                Element theItemElement = (Element) theTables.item(j);
-                String theTableId = theItemElement.getAttribute(TABLEREFID);
-                String theViewId = theItemElement.getAttribute(VIEWREFID);
-                String theCommentId = theItemElement.getAttribute(COMMENTREFID);
+					theSubjectArea.getTables().add(theTable);
+				}
 
-                if (!StringUtils.isEmpty(theTableId)) {
-                    Table theTable = aModel.getTables().findBySystemId(theTableId);
-                    if (theTable == null) {
-                        throw new IllegalArgumentException("Cannot find table with id " + theTableId);
-                    }
+				if (!StringUtils.isEmpty(theViewId)) {
+					View theView = aModel.getViews().findBySystemId(theViewId);
+					if (theView == null) {
+						throw new IllegalArgumentException("Cannot find view with id " + theTableId);
+					}
 
-                    theSubjectArea.getTables().add(theTable);
-                }
+					theSubjectArea.getViews().add(theView);
+				}
 
-                if (!StringUtils.isEmpty(theViewId)) {
-                    View theView = aModel.getViews().findBySystemId(theViewId);
-                    if (theView == null) {
-                        throw new IllegalArgumentException("Cannot find view with id " + theTableId);
-                    }
+				if (!StringUtils.isEmpty(theCommentId)) {
+					Comment theComment = aModel.getComments().findBySystemId(theCommentId);
+					if (theComment == null) {
+						throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
+					}
 
-                    theSubjectArea.getViews().add(theView);
-                }
+					theSubjectArea.getComments().add(theComment);
+				}
+			}
 
-                if (!StringUtils.isEmpty(theCommentId)) {
-                    Comment theComment = aModel.getComments().findBySystemId(theCommentId);
-                    if (theComment == null) {
-                        throw new IllegalArgumentException("Cannot find comment with id " + theCommentId);
-                    }
-
-                    theSubjectArea.getComments().add(theComment);
-                }
-            }
-
-            aModel.getSubjectAreas().add(theSubjectArea);
-        }
-    }
+			aModel.getSubjectAreas().add(theSubjectArea);
+		}
+	}
 }

@@ -73,6 +73,8 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     private AbstractXMLTableSerializer xmlTableSerializer = null;
 
+	private AbstractXMLViewSerializer xmlViewSerializer = null;
+
     private XMLUtils utils = null;
 
     protected AbstractXMLModelSerializer(XMLUtils aUtils) {
@@ -183,7 +185,7 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlCommentSerializer;
     }
 
-    protected AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer() {
+    protected AbstractXMLCustomTypeSerializer getXMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
         return xmlCustomTypeSerializer;
     }
 
@@ -203,8 +205,12 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         return xmlSubjectAreaSerializer;
     }
 
-    protected AbstractXMLTableSerializer getXMLTableSerializer() {
+    protected AbstractXMLTableSerializer getXMLTableSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
         return xmlTableSerializer;
+    }
+
+	protected AbstractXMLViewSerializer getXMLViewSerializer() {
+        return xmlViewSerializer;
     }
 
     protected void setXMLAttributeSerializer(AbstractXMLAttributeSerializer xmlAttributeSerializer) {
@@ -237,5 +243,9 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
 
     protected void setXMLTableSerializer(AbstractXMLTableSerializer xmlTableSerializer) {
         this.xmlTableSerializer = xmlTableSerializer;
+    }
+
+	protected void setXMLViewSerializer(AbstractXMLViewSerializer xmlViewSerializer) {
+        this.xmlViewSerializer = xmlViewSerializer;
     }
 }

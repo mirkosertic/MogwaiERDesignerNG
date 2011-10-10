@@ -56,9 +56,8 @@ public abstract class CommonAbstractXMLSerializer<T extends OwnedModelItem> impl
 	protected void serializeCommentElement(Document aDocument, Element aElement, ModelItem aItem) {
 		if (!StringUtils.isEmpty(aItem.getComment())) {
 			Element theCommentElement = aDocument.createElement(COMMENT);
-			if (aItem.getComment() != null) {
-				theCommentElement.appendChild(aDocument.createTextNode(aItem.getComment()));
-			}
+			theCommentElement.appendChild(aDocument.createTextNode(aItem.getComment()));
+
 			aElement.appendChild(theCommentElement);
 		}
 	}
