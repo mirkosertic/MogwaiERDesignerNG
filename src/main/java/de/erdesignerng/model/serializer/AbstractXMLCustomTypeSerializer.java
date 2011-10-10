@@ -20,7 +20,7 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.CustomType;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2010-04-04 01:15:00 $
  */
 public abstract class AbstractXMLCustomTypeSerializer extends CommonAbstractXMLSerializer<CustomType> {
@@ -28,6 +28,18 @@ public abstract class AbstractXMLCustomTypeSerializer extends CommonAbstractXMLS
 	protected static final String CUSTOMTYPE = "CustomType";
 
 	protected static final String SCHEMA = "schema";
-	
-	protected static final String SQLDEFINITION = "SqlDefinition";	
+
+	protected static final String TYPE = "type";
+
+	protected static final String ALIAS = "alias";
+
+	private AbstractXMLModelSerializer xmlModelSerializer = null;
+
+	public AbstractXMLCustomTypeSerializer(AbstractXMLModelSerializer xmlModelSerializer) {
+		this.xmlModelSerializer = xmlModelSerializer;
+	}
+
+	protected AbstractXMLModelSerializer getXMLModelSerializer() {
+		return xmlModelSerializer;
+	}
 }

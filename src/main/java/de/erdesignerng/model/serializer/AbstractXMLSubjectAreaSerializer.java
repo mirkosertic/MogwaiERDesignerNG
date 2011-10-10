@@ -20,7 +20,7 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.SubjectArea;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLSubjectAreaSerializer extends CommonAbstractXMLSerializer<SubjectArea> {
@@ -33,5 +33,11 @@ public abstract class AbstractXMLSubjectAreaSerializer extends CommonAbstractXML
 	protected static final String SUBJECTAREA = "Subjectarea";
 
 	protected static final String TABLEREFID = "tablerefid";
+
+	protected static final String VIEWREFID = "viewrefid";
+
+	protected static final String VISIBLE = "visible";
+
+	protected static final String EXPANDED = "expanded";
 
 }

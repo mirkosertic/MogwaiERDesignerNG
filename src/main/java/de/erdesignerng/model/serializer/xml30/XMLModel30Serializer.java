@@ -17,11 +17,13 @@
  */
 package de.erdesignerng.model.serializer.xml30;
 
+import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
+import de.erdesignerng.model.serializer.AbstractXMLDomainSerializer;
 import de.erdesignerng.model.serializer.xml20.XMLModel20Serializer;
 import de.erdesignerng.util.XMLUtils;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-21 10:00:00 $
  */
 public class XMLModel30Serializer extends XMLModel20Serializer {
@@ -44,5 +46,23 @@ public class XMLModel30Serializer extends XMLModel20Serializer {
 	@Override
 	public String getVersion() {
 		return CURRENT_VERSION;
+	}
+
+	@Override
+	public AbstractXMLAttributeSerializer getXMLAttributeSerializer() {
+		if (super.getXMLAttributeSerializer() == null) {
+			setXMLAttributeSerializer(new XMLAttributeSerializer());
+		}
+
+		return super.getXMLAttributeSerializer();
+	}
+
+	@Override
+	public AbstractXMLDomainSerializer getXMLDomainSerializer() {
+		if (super.getXMLDomainSerializer() == null) {
+			setXMLDomainSerializer(new XMLDomainSerializer());
+		}
+
+		return super.getXMLDomainSerializer();
 	}
 }

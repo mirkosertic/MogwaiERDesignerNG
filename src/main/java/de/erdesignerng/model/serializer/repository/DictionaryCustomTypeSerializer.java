@@ -33,54 +33,51 @@ import java.util.Map;
  */
 public class DictionaryCustomTypeSerializer extends DictionaryBaseSerializer {
 
-    public static final DictionaryCustomTypeSerializer SERIALIZER = new DictionaryCustomTypeSerializer();
+	public static final DictionaryCustomTypeSerializer SERIALIZER = new DictionaryCustomTypeSerializer();
 
-    private void copyExtendedAttributes(CustomType aSource, CustomTypeEntity aDestination) {
-        aDestination.setSystemId(aSource.getSystemId());
-        aDestination.setName(aSource.getName());
-        aDestination.setSchema(aSource.getSchema());
-        aDestination.setAlias(aSource.getAlias());
-        aDestination.setSqlDefinition(aSource.getSqlDefinition());
-    }
+	private void copyExtendedAttributes(CustomType aSource, CustomTypeEntity aDestination) {
+		aDestination.setSystemId(aSource.getSystemId());
+		aDestination.setName(aSource.getName());
+		aDestination.setSchema(aSource.getSchema());
+		aDestination.setAlias(aSource.getAlias());
+	}
 
-    private void copyExtendedAttributes(CustomTypeEntity aSource, CustomType aDestination) {
-        aDestination.setSystemId(aSource.getSystemId());
-        aDestination.setName(aSource.getName());
-        aDestination.setSchema(aSource.getSchema());
-        aDestination.setSqlDefinition(aSource.getSqlDefinition());
-        aDestination.setAlias(aSource.getAlias());
-    }
+	private void copyExtendedAttributes(CustomTypeEntity aSource, CustomType aDestination) {
+		aDestination.setSystemId(aSource.getSystemId());
+		aDestination.setName(aSource.getName());
+		aDestination.setSchema(aSource.getSchema());
+		aDestination.setAlias(aSource.getAlias());
+	}
 
-    public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
+	public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
 
-        Map<String, ModelEntity> theCustomTypes = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity
-                .getCustomType());
+		Map<String, ModelEntity> theCustomTypes = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getCustomType());
 
-        for (CustomType theType : aModel.getCustomTypes()) {
-            boolean existing = true;
-            CustomTypeEntity theExisting = (CustomTypeEntity) theCustomTypes.get(theType.getSystemId());
-            if (theExisting == null) {
-                theExisting = new CustomTypeEntity();
-                existing = false;
-            }
+		for (CustomType theType : aModel.getCustomTypes()) {
+			boolean existing = true;
+			CustomTypeEntity theExisting = (CustomTypeEntity) theCustomTypes.get(theType.getSystemId());
+			if (theExisting == null) {
+				theExisting = new CustomTypeEntity();
+				existing = false;
+			}
 
-            copyBaseAttributes(theType, theExisting);
-            copyExtendedAttributes(theType, theExisting);
+			copyBaseAttributes(theType, theExisting);
+			copyExtendedAttributes(theType, theExisting);
 
-            if (!existing) {
-                aDictionaryEntity.getCustomType().add(theExisting);
-            }
-        }
-    }
+			if (!existing) {
+				aDictionaryEntity.getCustomType().add(theExisting);
+			}
+		}
+	}
 
-    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-        for (CustomTypeEntity theEntity : aRepositoryEntity.getCustomType()) {
+	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+		for (CustomTypeEntity theEntity : aRepositoryEntity.getCustomType()) {
 
-            CustomType theType = new CustomType();
-            copyBaseAttributes(theEntity, theType);
-            copyExtendedAttributes(theEntity, theType);
+			CustomType theType = new CustomType();
+			copyBaseAttributes(theEntity, theType);
+			copyExtendedAttributes(theEntity, theType);
 
-            aModel.getCustomTypes().add(theType);
-        }
-    }
+			aModel.getCustomTypes().add(theType);
+		}
+	}
 }

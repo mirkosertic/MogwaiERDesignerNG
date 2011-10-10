@@ -18,7 +18,9 @@
 package de.erdesignerng.model.serializer.xml10;
 
 import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.CustomType;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelItem;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.serializer.AbstractXMLAttributeSerializer;
 import org.apache.commons.lang.StringUtils;
@@ -28,52 +30,65 @@ import org.w3c.dom.NodeList;
 
 public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 
-    @Override
-    public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
+	@Override
+	public void serialize(Attribute aAttribute, Document aDocument, Element aRootElement) {
 
-        Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
+		Element theAttributeElement = addElement(aDocument, aRootElement, ATTRIBUTE);
 
-        // Basisdaten des Modelelementes speichern
-        serializeProperties(aDocument, theAttributeElement, aAttribute);
+		// Basisdaten des Modelelementes speichern
+		serializeProperties(aDocument, theAttributeElement, aAttribute);
 
-        theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
-        theAttributeElement.setAttribute(SIZE, "" + aAttribute.getSize());
-        theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
-        theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
-        theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
-        theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
+		theAttributeElement.setAttribute(DATATYPE, aAttribute.getDatatype().getName());
+		theAttributeElement.setAttribute(SIZE, "" + aAttribute.getSize());
+		theAttributeElement.setAttribute(FRACTION, "" + aAttribute.getFraction());
+		theAttributeElement.setAttribute(SCALE, "" + aAttribute.getScale());
+		theAttributeElement.setAttribute(DEFAULTVALUE, aAttribute.getDefaultValue());
+		theAttributeElement.setAttribute(EXTRA, aAttribute.getExtra());
 
-        setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
+		setBooleanAttribute(theAttributeElement, NULLABLE, aAttribute.isNullable());
 
-        serializeCommentElement(aDocument, theAttributeElement, aAttribute);
-    }
+		serializeCommentElement(aDocument, theAttributeElement, aAttribute);
+	}
 
-    @Override
-    public void deserialize(Model aModel, Table aTable, Element aElement) {
-        // Parse the Attributes
-        NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
-        for (int j = 0; j < theAttributes.getLength(); j++) {
-            Element theAttributeElement = (Element) theAttributes.item(j);
+	@Override
+	public void deserialize(Model aModel, ModelItem aTableOrCustomType, Element aElement) {
+		// Parse the Attributes
+		NodeList theAttributes = aElement.getElementsByTagName(ATTRIBUTE);
+		for (int j = 0; j < theAttributes.getLength(); j++) {
+			Element theAttributeElement = (Element) theAttributes.item(j);
+			boolean isCustomType = "CustomType".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
+			boolean isTable = "Table".equalsIgnoreCase(theAttributeElement.getParentNode().getNodeName());
 
-            Attribute<Table> theAttribute = new Attribute<Table>();
-            theAttribute.setOwner(aTable);
+			Attribute theAttribute = null;
 
-            deserializeProperties(theAttributeElement, theAttribute);
-            deserializeCommentElement(theAttributeElement, theAttribute);
+			if (isTable) {
+				theAttribute = new Attribute<Table>();
+				theAttribute.setOwner((Table)aTableOrCustomType);
+			} else if(isCustomType) {
+				theAttribute = new Attribute<CustomType>();
+				theAttribute.setOwner((CustomType)aTableOrCustomType);
+			}
 
-            theAttribute.setDatatype(aModel.getAvailableDataTypes().findByName(
-                    theAttributeElement.getAttribute(DATATYPE)));
-            theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
-            theAttribute.setSize(Integer.parseInt(theAttributeElement.getAttribute(SIZE)));
-            String theFraction = theAttributeElement.getAttribute(FRACTION);
-            if (!StringUtils.isEmpty(theFraction) && !"null".equals(theFraction)) {
-                theAttribute.setFraction(Integer.parseInt(theFraction));
-            }
-            theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
-            theAttribute.setNullable(TRUE.equals(theAttributeElement.getAttribute(NULLABLE)));
-            theAttribute.setExtra(theAttributeElement.getAttribute(EXTRA));
+			deserializeProperties(theAttributeElement, theAttribute);
+			deserializeCommentElement(theAttributeElement, theAttribute);
 
-            aTable.getAttributes().add(theAttribute);
-        }
-    }
+			String theDatatypeName = theAttributeElement.getAttribute(DATATYPE);
+			theAttribute.setDatatype((StringUtils.isEmpty(theDatatypeName)? null : aModel.getAvailableDataTypes().findByName(theDatatypeName)));
+			theAttribute.setDefaultValue(theAttributeElement.getAttribute(DEFAULTVALUE));
+			theAttribute.setSize(Integer.parseInt(theAttributeElement.getAttribute(SIZE)));
+			String theFraction = theAttributeElement.getAttribute(FRACTION);
+			if (!StringUtils.isEmpty(theFraction) && !"null".equals(theFraction)) {
+				theAttribute.setFraction(Integer.parseInt(theFraction));
+			}
+			theAttribute.setScale(Integer.parseInt(theAttributeElement.getAttribute(SCALE)));
+			theAttribute.setNullable(TRUE.equals(theAttributeElement.getAttribute(NULLABLE)));
+			theAttribute.setExtra(theAttributeElement.getAttribute(EXTRA));
+
+			if (isTable) {
+				((Table)aTableOrCustomType).getAttributes().add(theAttribute);
+			} else if(isCustomType) {
+				((CustomType)aTableOrCustomType).getAttributes().add(theAttribute);
+			}
+		}
+	}
 }

@@ -24,33 +24,23 @@ package de.erdesignerng.model.serializer.repository.entities;
  */
 public class CustomTypeEntity extends ModelEntity {
 
-    private String schema;
+	private String schema;
 
-    private String sqlDefinition;
+	private String alias;
 
-    private String alias;
+	public String getSchema() {
+		return schema;
+	}
 
-    public String getSqlDefinition() {
-        return sqlDefinition;
-    }
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
 
-    public void setSqlDefinition(String sqlDefinition) {
-        this.sqlDefinition = sqlDefinition;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public String getSchema() {
-        return schema;
-    }
-
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 }

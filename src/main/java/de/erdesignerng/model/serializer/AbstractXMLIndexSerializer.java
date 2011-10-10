@@ -24,7 +24,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLIndexSerializer extends CommonAbstractXMLSerializer<Index> {
@@ -33,6 +33,8 @@ public abstract class AbstractXMLIndexSerializer extends CommonAbstractXMLSerial
 	protected static final String INDEXATTRIBUTE = "Indexattribute";
 
 	protected static final String INDEXTYPE = "indextype";
+
+	protected static final String ATTRIBUTEEXPRESSION = "expression";
 
 	public abstract void deserialize(Table aTable, Element aElement);
 

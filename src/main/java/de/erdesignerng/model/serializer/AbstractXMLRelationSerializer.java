@@ -20,7 +20,7 @@ package de.erdesignerng.model.serializer;
 import de.erdesignerng.model.Relation;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-10-25 02:50:00 $
  */
 public abstract class AbstractXMLRelationSerializer extends CommonAbstractXMLSerializer<Relation> {
@@ -39,5 +39,7 @@ public abstract class AbstractXMLRelationSerializer extends CommonAbstractXMLSer
 	protected static final String ONUPDATE = "onupdate";
 
 	protected static final String RELATION = "Relation";
+
+	protected static final String EXPORTINGEXPRESSIONREFID = "exportingexpressionrefid";
 
 }

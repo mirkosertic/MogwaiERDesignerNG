@@ -25,25 +25,21 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * @author $Author: dr-death $
+ * @author $Author: dr-death2 $
  * @version $Date: 2009-11-06 17:15:00 $
  */
 public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.XMLDomainSerializer {
-
-	protected static final String NULLABLE = "nullable";
 
 	@Override
 	public void serialize(Domain aDomain, Document aDocument, Element aRootElement) {
 		Element theDomainElement = addElement(aDocument, aRootElement, DOMAIN);
 
 		// Basisdaten des Modelelementes speichern
-		theDomainElement.setAttribute(ID, aDomain.getSystemId());
-		theDomainElement.setAttribute(NAME, aDomain.getName());
+		serializeProperties(aDocument, theDomainElement, aDomain);
 
 		theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
 
-		// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-		// max-length wrong
+		// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
 		theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null) ? aDomain.getSize() : ""));
 
 		theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
@@ -58,12 +54,10 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml10.
 			Element theDomainElement = (Element) theElements.item(i);
 
 			Domain theDomain = new Domain();
-			theDomain.setSystemId(theDomainElement.getAttribute(ID));
-			theDomain.setName(theDomainElement.getAttribute(NAME));
+			deserializeProperties(theDomainElement, theDomain);
 			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
 
-			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR
-			// max-length wrong
+			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
 			String theAttributeString = theDomainElement.getAttribute(SIZE);
 			theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null
 					: Integer.parseInt(theAttributeString));
