@@ -141,7 +141,7 @@
                     <dependency>
                         <groupId>net.sourceforge.mogwai</groupId>
                         <artifactId>mogwai-i18n</artifactId>
-                        <version>2.14.2</version>
+                        <version>2.14.3</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -404,7 +404,7 @@
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-looks</artifactId>
-            <version>1.9.2</version>
+            <version>1.9.3</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
@@ -481,7 +481,7 @@
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-databinding</artifactId>
-            <version>1.8.2</version>
+            <version>1.8.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
