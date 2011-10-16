@@ -38,6 +38,7 @@ public class XMLModel50Serializer extends XMLModel40Serializer {
 		super(utils);
 		setXMLCustomTypeSerializer(new XMLCustomTypeSerializer(this));
 		setXMLDomainSerializer(new XMLDomainSerializer());
+		setXMLSubjectAreaSerializer(new XMLSubjectAreaSerializer());
 	}
 
 	@Override

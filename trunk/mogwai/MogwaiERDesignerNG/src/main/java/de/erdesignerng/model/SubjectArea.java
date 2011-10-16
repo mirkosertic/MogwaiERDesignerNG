@@ -27,8 +27,6 @@ import java.awt.*;
  */
 public final class SubjectArea extends OwnedModelItem<Model> {
 
-	public static final String PROPERTY_EXPANDED = "EXPANDED";
-
 	private Color color;
 
 	private TableList tables = new TableList();
@@ -38,6 +36,8 @@ public final class SubjectArea extends OwnedModelItem<Model> {
 	private CommentList comments = new CommentList();
 
 	private boolean visible = true;
+
+	private boolean expanded = true;
 
 	public SubjectArea() {
 		setName("Subject Area");
@@ -91,10 +91,11 @@ public final class SubjectArea extends OwnedModelItem<Model> {
 	}
 
 	public boolean isExpanded() {
-		return getProperties().getBooleanProperty(PROPERTY_EXPANDED);
+		return expanded;
 	}
 
-	public void setExpanded(boolean aState) {
-		getProperties().setBooleanProperty(PROPERTY_EXPANDED, aState);
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
 	}
+
 }
