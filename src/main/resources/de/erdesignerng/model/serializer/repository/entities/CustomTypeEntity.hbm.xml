@@ -15,7 +15,6 @@
         <property name="name" not-null="true"/>
         <property column="elementcomment" name="comment" not-null="false"
                   type="org.hibernate.type.MaterializedClobType"/>
-        <property name="sqlDefinition" not-null="true" type="org.hibernate.type.MaterializedClobType"/>
         <property column="dbschema" name="schema" not-null="false"/>
         <property column="alias" name="alias" not-null="false"/>
         <list cascade="all-delete-orphan" name="properties" table="mogrep_custtype_props">
