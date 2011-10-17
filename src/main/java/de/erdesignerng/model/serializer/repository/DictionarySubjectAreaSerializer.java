@@ -17,16 +17,11 @@
  */
 package de.erdesignerng.model.serializer.repository;
 
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
 import de.erdesignerng.model.serializer.repository.entities.SubjectAreaEntity;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.Map;
 
 /**
@@ -42,6 +37,7 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
 
         aDestination.setColor(aSource.getColor().getRGB());
         aDestination.setVisible(aSource.isVisible());
+        aDestination.setExpanded(aSource.isExpanded());
 
         aDestination.getTables().clear();
         for (Table theTable : aSource.getTables()) {
@@ -65,6 +61,9 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         aDestination.setColor(new Color(aSource.getColor()));
         if (aSource.getVisible() != null) {
             aDestination.setVisible(aSource.getVisible());
+        }
+        if (aSource.getExpanded() != null) {
+            aDestination.setExpanded(aSource.getVisible());
         }
 
         aDestination.getTables().clear();
