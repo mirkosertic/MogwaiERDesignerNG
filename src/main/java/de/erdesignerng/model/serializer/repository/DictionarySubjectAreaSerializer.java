@@ -62,8 +62,9 @@ public class DictionarySubjectAreaSerializer extends DictionaryBaseSerializer {
         if (aSource.getVisible() != null) {
             aDestination.setVisible(aSource.getVisible());
         }
+
         if (aSource.getExpanded() != null) {
-            aDestination.setExpanded(aSource.getVisible());
+            aDestination.setExpanded(aSource.getExpanded());
         }
 
         aDestination.getTables().clear();
