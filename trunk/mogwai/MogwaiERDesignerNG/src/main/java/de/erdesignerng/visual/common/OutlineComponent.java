@@ -240,17 +240,21 @@ public class OutlineComponent extends DefaultPanel implements
                 }
                 if (theUserObject instanceof CustomType) {
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
-                    switch (((CustomType) theUserObject).getType()) {
-                        case COMPOSITE:
-                            theLabel.setIcon(IconFactory.getCustomTypeComposite());
-                            break;
-                        case ENUMERATION:
-                            theLabel.setIcon(IconFactory.getCustomTypeEnumeration());
-                            break;
-                        case EXTERNAL:
-                            break;
-                        default:
-                    }
+					CustomTypeType theCustomTypeType = ((CustomType) theUserObject).getType();
+					if (theCustomTypeType != null) {
+						switch (theCustomTypeType) {
+							case COMPOSITE:
+								theLabel.setIcon(IconFactory.getCustomTypeComposite());
+								break;
+							case ENUMERATION:
+								theLabel.setIcon(IconFactory.getCustomTypeEnumeration());
+								break;
+							case EXTERNAL:
+//								theLabel.setIcon(IconFactory.getCustomTypeExternal());
+								break;
+							default:
+						}
+					}
                 }
                 if (theUserObject instanceof Domain) {
                     theLabel.setFont(theLabel.getFont().deriveFont(Font.BOLD));
@@ -269,17 +273,21 @@ public class OutlineComponent extends DefaultPanel implements
                     if (theOwner instanceof Table) {
                         theLabel.setIcon(IconFactory.getAttributeIcon());
                     } else if (theOwner instanceof CustomType) {
-                        switch (((CustomType) theOwner).getType()) {
-                            case COMPOSITE:
-                                theLabel.setIcon(IconFactory.getCustomTypeCompositeElement());
-                                break;
-                            case ENUMERATION:
-                                theLabel.setIcon(IconFactory.getCustomTypeEnumerationElement());
-                                break;
-                            case EXTERNAL:
-                                break;
-                            default:
-                        }
+						CustomTypeType theCustomTypeType = ((CustomType) theOwner).getType();
+						if (theCustomTypeType != null) {
+							switch (theCustomTypeType) {
+								case COMPOSITE:
+									theLabel.setIcon(IconFactory.getCustomTypeCompositeElement());
+									break;
+								case ENUMERATION:
+									theLabel.setIcon(IconFactory.getCustomTypeEnumerationElement());
+									break;
+								case EXTERNAL:
+	//								theLabel.setIcon(IconFactory.getCustomTypeExternalElement());
+									break;
+								default:
+							}
+						}
                     }
                 }
                 if (theUserObject instanceof Index) {
