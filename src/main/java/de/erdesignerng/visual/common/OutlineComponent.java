@@ -250,7 +250,7 @@ public class OutlineComponent extends DefaultPanel implements
 								theLabel.setIcon(IconFactory.getCustomTypeEnumeration());
 								break;
 							case EXTERNAL:
-//								theLabel.setIcon(IconFactory.getCustomTypeExternal());
+								theLabel.setIcon(IconFactory.getCustomTypeExternal());
 								break;
 							default:
 						}
@@ -283,7 +283,7 @@ public class OutlineComponent extends DefaultPanel implements
 									theLabel.setIcon(IconFactory.getCustomTypeEnumerationElement());
 									break;
 								case EXTERNAL:
-	//								theLabel.setIcon(IconFactory.getCustomTypeExternalElement());
+									theLabel.setIcon(IconFactory.getCustomTypeExternalElement());
 									break;
 								default:
 							}
