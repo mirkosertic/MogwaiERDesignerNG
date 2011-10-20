@@ -46,6 +46,8 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 
 	private static final int CASCADE_NOTHING = 2;
 
+	private static final int CASCADE_RESTRICT = 3;
+
 	protected int cascadeTypeToInt(CascadeType aType) {
 		switch (aType) {
 			case CASCADE:
@@ -54,6 +56,8 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 				return CASCADE_SETNULL;
 			case NOTHING:
 				return CASCADE_NOTHING;
+			case RESTRICT:
+				return CASCADE_RESTRICT;
 			default:
 				throw new RuntimeException("Unknown cascade type : " + aType);
 		}
@@ -67,6 +71,8 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 				return CascadeType.SET_NULL;
 			case CASCADE_NOTHING:
 				return CascadeType.NOTHING;
+			case CASCADE_RESTRICT:
+				return CascadeType.RESTRICT;
 			default:
 				throw new RuntimeException("Invalid cascade type : " + aType);
 		}
