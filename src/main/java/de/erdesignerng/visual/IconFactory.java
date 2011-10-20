@@ -17,7 +17,7 @@
  */
 package de.erdesignerng.visual;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * @author $Author: mirkosertic $
@@ -88,6 +88,10 @@ public final class IconFactory {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_enumeration.png"));
 	}
 
+	public static ImageIcon getCustomTypeExternal() {
+		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_external.png"));
+	}
+
 	public static ImageIcon getCustomTypeCompositeElement() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_composite_element.png"));
 	}
@@ -95,4 +99,9 @@ public final class IconFactory {
 	public static ImageIcon getCustomTypeEnumerationElement() {
 		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_enumeration_element.png"));
 	}
+
+	public static ImageIcon getCustomTypeExternalElement() {
+		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_external_element.png"));
+	}
+
 }
