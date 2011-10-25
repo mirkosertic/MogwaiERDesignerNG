@@ -80,7 +80,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			case DatabaseMetaData.importedKeyNoAction:
 				return CascadeType.NOTHING;
 			case DatabaseMetaData.importedKeySetNull:
-				return CascadeType.SET_NULL;
+				return CascadeType.SETNULL;
 			case DatabaseMetaData.importedKeyCascade:
 				return CascadeType.CASCADE;
 			case DatabaseMetaData.importedKeyRestrict:

@@ -40,49 +40,11 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 
 	public static final DictionaryRelationSerializer SERIALIZER = new DictionaryRelationSerializer();
 
-	private static final int CASCADE_INT = 0;
-
-	private static final int CASCADE_SETNULL = 1;
-
-	private static final int CASCADE_NOTHING = 2;
-
-	private static final int CASCADE_RESTRICT = 3;
-
-	protected int cascadeTypeToInt(CascadeType aType) {
-		switch (aType) {
-			case CASCADE:
-				return CASCADE_INT;
-			case SET_NULL:
-				return CASCADE_SETNULL;
-			case NOTHING:
-				return CASCADE_NOTHING;
-			case RESTRICT:
-				return CASCADE_RESTRICT;
-			default:
-				throw new RuntimeException("Unknown cascade type : " + aType);
-		}
-	}
-
-	protected CascadeType intToCascadeType(int aType) {
-		switch (aType) {
-			case CASCADE_INT:
-				return CascadeType.CASCADE;
-			case CASCADE_SETNULL:
-				return CascadeType.SET_NULL;
-			case CASCADE_NOTHING:
-				return CascadeType.NOTHING;
-			case CASCADE_RESTRICT:
-				return CascadeType.RESTRICT;
-			default:
-				throw new RuntimeException("Invalid cascade type : " + aType);
-		}
-	}
-
 	private void copyExtendedAttributes(Relation aSource, RelationEntity aDestination) {
 		aDestination.setImportingTable(aSource.getImportingTable().getSystemId());
 		aDestination.setExportingTable(aSource.getExportingTable().getSystemId());
-		aDestination.setOnUpdate(cascadeTypeToInt(aSource.getOnUpdate()));
-		aDestination.setOnDelete(cascadeTypeToInt(aSource.getOnDelete()));
+		aDestination.setOnUpdate(aSource.getOnUpdate().getId());
+		aDestination.setOnDelete(aSource.getOnDelete().getId());
 
 		aDestination.getMapping().clear();
 		for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aSource.getMapping().entrySet()) {
@@ -96,8 +58,8 @@ public class DictionaryRelationSerializer extends DictionaryBaseSerializer {
 	private void copyExtendedAttributes(RelationEntity aSource, Relation aDestination, Model aModel) {
 		aDestination.setImportingTable(aModel.getTables().findBySystemId(aSource.getImportingTable()));
 		aDestination.setExportingTable(aModel.getTables().findBySystemId(aSource.getExportingTable()));
-		aDestination.setOnUpdate(intToCascadeType(aSource.getOnUpdate()));
-		aDestination.setOnDelete(intToCascadeType(aSource.getOnDelete()));
+		aDestination.setOnUpdate(CascadeType.fromId(aSource.getOnUpdate()));
+		aDestination.setOnDelete(CascadeType.fromId(aSource.getOnDelete()));
 
 		aDestination.getMapping().clear();
 		Index thePrimaryKey = aDestination.getExportingTable().getPrimarykey();

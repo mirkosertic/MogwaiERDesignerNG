@@ -228,10 +228,8 @@ public class ApplicationPreferences {
                 TABLEGRIDWIDTHAFTERREVERSEENGINEERING, 8);
         xmlIndentation = preferences.getInt(XMLINDENTATION, 4);
 
-        onUpdateDefault = CascadeType.fromType(preferences.get(ONUPDATEDEFAULT,
-                CascadeType.NOTHING.getType()));
-        onDeleteDefault = CascadeType.fromType(preferences.get(ONDELETEDEFAULT,
-                CascadeType.NOTHING.getType()));
+        onUpdateDefault = CascadeType.fromString(preferences.get(ONUPDATEDEFAULT, CascadeType.NOTHING.toString()));
+        onDeleteDefault = CascadeType.fromString(preferences.get(ONDELETEDEFAULT, CascadeType.NOTHING.toString()));
 
         String theMode = preferences.get(EDITORMODE, null);
         if (theMode == null) {
@@ -362,8 +360,8 @@ public class ApplicationPreferences {
         preferences.putBoolean(USAGEDATACOLLECTOR, usageDataCollector);
         preferences.putBoolean(USAGEDATACOLLECTORALWAYS, usageDataCollectorAlways);
         preferences.putBoolean(USAGEDATACOLLECTORASKEDFORPERMISSION, askedForUsageDataCollection);
-        preferences.put(ONUPDATEDEFAULT, onUpdateDefault.getType());
-        preferences.put(ONDELETEDEFAULT, onDeleteDefault.getType());
+        preferences.put(ONUPDATEDEFAULT, onUpdateDefault.toString());
+        preferences.put(ONDELETEDEFAULT, onDeleteDefault.toString());
         preferences.putByteArray(LAYOUT, windowLayout);
         preferences.putInt(TABLEGRIDWIDTHAFTERREVERSEENGINEERING,
                 gridWidthAfterReverseEngineering);

@@ -41,8 +41,8 @@ public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml1
 		theRelationElement.setAttribute(IMPORTINGTABLEREFID, aRelation.getImportingTable().getSystemId());
 		theRelationElement.setAttribute(EXPORTINGTABLEREFID, aRelation.getExportingTable().getSystemId());
 
-		theRelationElement.setAttribute(ONDELETE, aRelation.getOnDelete().getType());
-		theRelationElement.setAttribute(ONUPDATE, aRelation.getOnUpdate().getType());
+		theRelationElement.setAttribute(ONDELETE, aRelation.getOnDelete().toString());
+		theRelationElement.setAttribute(ONUPDATE, aRelation.getOnUpdate().toString());
 
 		serializeCommentElement(aDocument, theRelationElement, aRelation);
 
@@ -70,8 +70,8 @@ public class XMLRelationSerializer extends de.erdesignerng.model.serializer.xml1
 			deserializeProperties(theElement, theRelation);
 			deserializeCommentElement(theElement, theRelation);
 
-			theRelation.setOnDelete(CascadeType.fromType(theElement.getAttribute(ONDELETE)));
-			theRelation.setOnUpdate(CascadeType.fromType(theElement.getAttribute(ONUPDATE)));
+			theRelation.setOnDelete(CascadeType.fromString(theElement.getAttribute(ONDELETE)));
+			theRelation.setOnUpdate(CascadeType.fromString(theElement.getAttribute(ONUPDATE)));
 
 			String theStartTableID = theElement.getAttribute(IMPORTINGTABLEREFID);
 			String theEndTableID = theElement.getAttribute(EXPORTINGTABLEREFID);
