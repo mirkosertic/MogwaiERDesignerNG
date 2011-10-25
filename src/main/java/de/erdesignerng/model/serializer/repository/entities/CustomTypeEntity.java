@@ -17,6 +17,9 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Entity for custom types.
  *
@@ -27,6 +30,8 @@ public class CustomTypeEntity extends ModelEntity {
 	private String schema;
 
 	private String alias;
+
+	private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
 
 	public String getSchema() {
 		return schema;
@@ -43,4 +48,13 @@ public class CustomTypeEntity extends ModelEntity {
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
+
+	public List<AttributeEntity> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<AttributeEntity> attributes) {
+		this.attributes = attributes;
+	}
+
 }

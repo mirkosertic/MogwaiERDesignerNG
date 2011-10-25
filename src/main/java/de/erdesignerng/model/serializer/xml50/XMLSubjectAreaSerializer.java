@@ -22,16 +22,17 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.SubjectArea;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+
+import java.awt.Color;
+
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.awt.*;
-
 /**
- * @author $Author: mirkosertic $
- * @version $Date: 2009-03-09 19:07:30 $
+ * @author $Author: dr-death2 $
+ * @version $Date: 2011-10-08 20:00:00 $
  */
 public class XMLSubjectAreaSerializer extends de.erdesignerng.model.serializer.xml20.XMLSubjectAreaSerializer {
 
