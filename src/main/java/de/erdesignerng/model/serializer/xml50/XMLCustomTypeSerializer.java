@@ -45,7 +45,7 @@ public class XMLCustomTypeSerializer extends de.erdesignerng.model.serializer.xm
 		serializeCommentElement(aDocument, theCustomTypeElement, aCustomType);
 
 		theCustomTypeElement.setAttribute(SCHEMA, aCustomType.getSchema());
-		theCustomTypeElement.setAttribute(TYPE, aCustomType.getType().name());
+		theCustomTypeElement.setAttribute(TYPE, aCustomType.getType().toString());
 		theCustomTypeElement.setAttribute(ALIAS, aCustomType.getAlias());
 
 		// Attribute serialisieren
@@ -69,7 +69,7 @@ public class XMLCustomTypeSerializer extends de.erdesignerng.model.serializer.xm
 			deserializeCommentElement(theElement, theCustomType);
 
 			theCustomType.setSchema(theElement.getAttribute(SCHEMA));
-			theCustomType.setType(CustomTypeType.valueOf(theElement.getAttribute(TYPE)));
+			theCustomType.setType(CustomTypeType.fromString(theElement.getAttribute(TYPE)));
 			theCustomType.setSchema(theElement.getAttribute(ALIAS));
 
 			getXMLModelSerializer().getXMLAttributeSerializer().deserialize(aModel, theCustomType, theElement);

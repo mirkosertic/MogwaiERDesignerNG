@@ -24,5 +24,44 @@ package de.erdesignerng.model;
  * @version $Date: 2011-09-17 21:45:00 $
  */
 public enum CustomTypeType {
-	COMPOSITE, ENUMERATION, EXTERNAL;
+	COMPOSITE(0),
+	ENUMERATION(1),
+	EXTERNAL(2);
+
+	private final int id;
+
+	CustomTypeType(final int id) {
+		this.id = id;
+	}
+
+	public final int getId() {
+		return id;
+	}
+
+	/**
+	 * Returns the enum constant of this type with the specified id.
+	 *
+	 * @param id the id to return the enum constant for
+	 * @return the enum constant with the specified id
+	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
+	 */
+	public static CustomTypeType fromId(int id) {
+
+		for(CustomTypeType aCustomTypeType : CustomTypeType.values()) { 
+			if (aCustomTypeType.getId() == id) {
+				return aCustomTypeType;
+			}
+		}
+
+		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
+	}
+
+	public static CustomTypeType fromString(String aConstantName) {
+		return CustomTypeType.valueOf(aConstantName.toUpperCase());
+	}
+
+	@Override
+	public final String toString() {
+		return super.toString().toUpperCase();
+	}
 }
