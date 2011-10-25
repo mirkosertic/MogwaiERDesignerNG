@@ -68,7 +68,7 @@ public class HSQLDBSQLGenerator extends SQL92SQLGenerator<HSQLDBDialect> {
 			case NONUNIQUE:
 				break;
 			default:
-				theStatement.append(aIndex.getIndexType().getType()).append(" ");
+				theStatement.append(aIndex.getIndexType().toString()).append(" ");
 				break;
 		}
 

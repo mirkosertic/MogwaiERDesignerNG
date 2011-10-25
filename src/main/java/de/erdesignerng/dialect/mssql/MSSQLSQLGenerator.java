@@ -103,7 +103,7 @@ public class MSSQLSQLGenerator extends SQL92SQLGenerator<MSSQLDialect> {
 			case NONUNIQUE:
 				break;
 			default:
-				theStatement.append(aIndex.getIndexType().getType()).append(" ");
+				theStatement.append(aIndex.getIndexType().toString()).append(" ");
 				break;
 		}
 

@@ -32,7 +32,7 @@ public class XMLIndexSerializer extends AbstractXMLIndexSerializer {
 	public void serialize(Index aIndex, Document aDocument, Element aRootElement) {
 		Element theIndexElement = addElement(aDocument, aRootElement, INDEX);
 
-		theIndexElement.setAttribute(INDEXTYPE, aIndex.getIndexType().getType());
+		theIndexElement.setAttribute(INDEXTYPE, aIndex.getIndexType().toString());
 
 		serializeProperties(aDocument, theIndexElement, aIndex);
 
@@ -55,7 +55,7 @@ public class XMLIndexSerializer extends AbstractXMLIndexSerializer {
 			theIndex.setOwner(aTable);
 			deserializeProperties(theIndexElement, theIndex);
 
-			theIndex.setIndexType(IndexType.fromType(theIndexElement.getAttribute(INDEXTYPE)));
+			theIndex.setIndexType(IndexType.fromString(theIndexElement.getAttribute(INDEXTYPE)));
 
 			NodeList theAttributes = theIndexElement.getElementsByTagName(INDEXATTRIBUTE);
 			for (int k = 0; k < theAttributes.getLength(); k++) {
