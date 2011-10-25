@@ -22,31 +22,46 @@ package de.erdesignerng.model;
  * @version $Date: 2008-01-15 19:22:43 $
  */
 public enum CascadeType {
-    NOTHING("nothing"), CASCADE("cascade"), SET_NULL("setnull"), RESTRICT("restrict");
+    CASCADE(0),
+	SETNULL(1),
+	NOTHING(2),
+	RESTRICT(3);
 
-    private final String type;
+    private final int id;
 
-    CascadeType(String aType) {
-        type = aType;
+    CascadeType(final int id) {
+        this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public final int getId() {
+        return id;
     }
 
-    public static CascadeType fromType(String aType) {
-        if (NOTHING.getType().equals(aType)) {
-            return NOTHING;
-        }
-        if (CASCADE.getType().equals(aType)) {
-            return CASCADE;
-        }
-        if (SET_NULL.getType().equals(aType)) {
-            return SET_NULL;
-        }
-        if (RESTRICT.getType().equals(aType)) {
-            return RESTRICT;
-        }
-        throw new IllegalArgumentException("Invalid type " + aType);
-    }
+	/**
+	 * Returns the enum constant of this type with the specified id.
+	 *
+	 * @param id the id to return the enum constant for
+	 * @return the enum constant with the specified id
+	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
+	 */
+	public static CascadeType fromId(int id) {
+
+		for(CascadeType aCascadeType : CascadeType.values()) { 
+			if (aCascadeType.getId() == id) {
+				return aCascadeType;
+			}
+		}
+
+		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
+	}
+
+	public static CascadeType fromString(String aConstantName) {
+		return CascadeType.valueOf(aConstantName.toUpperCase());
+	}
+
+	@Override
+	public final String toString() {
+		return super.toString().toUpperCase();
+	}
+
 }

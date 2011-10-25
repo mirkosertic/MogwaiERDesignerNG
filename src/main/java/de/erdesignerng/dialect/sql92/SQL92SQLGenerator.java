@@ -194,7 +194,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                         theStatement.append(" ON DELETE NO ACTION");
                     }
                     break;
-                case SET_NULL:
+                case SETNULL:
                     theStatement.append(" ON DELETE SET NULL");
                     break;
                 default:
@@ -214,7 +214,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
                         theStatement.append(" ON UPDATE NO ACTION");
                     }
                     break;
-                case SET_NULL:
+                case SETNULL:
                     theStatement.append(" ON UPDATE SET NULL");
                     break;
                 default:
