@@ -40,31 +40,10 @@ import java.util.Set;
  */
 public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
-	private static final int TYPE_UNIQUE = 0;
-
-	private static final int TYPE_NONUNIQUE = 1;
-
-	private static final int TYPE_PK = 2;
-
-	private static final int TYPE_UNDEFINED = -1;
-
 	public static final DictionaryIndexSerializer SERIALIZER = new DictionaryIndexSerializer();
 
 	private void copyExtendedAttributes(Index aSource, IndexEntity aDestination) {
-		switch (aSource.getIndexType()) {
-			case UNIQUE:
-				aDestination.setType(TYPE_UNIQUE);
-				break;
-			case NONUNIQUE:
-				aDestination.setType(TYPE_NONUNIQUE);
-				break;
-			case PRIMARYKEY:
-				aDestination.setType(TYPE_PK);
-				break;
-			default:
-				aDestination.setType(TYPE_UNDEFINED);
-		}
-
+		aDestination.setType(aSource.getIndexType().getId());
 		aDestination.getExpressions().clear();
 		for (IndexExpression theIndexExpression : aSource.getExpressions()) {
 			IndexExpressionEntity theEntity = new IndexExpressionEntity();
@@ -79,20 +58,7 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 	}
 
 	private void copyExtendedAttributes(IndexEntity aSource, Index aDestination, Table aTable) {
-		switch (aSource.getType()) {
-			case TYPE_UNIQUE:
-				aDestination.setIndexType(IndexType.UNIQUE);
-				break;
-			case TYPE_NONUNIQUE:
-				aDestination.setIndexType(IndexType.NONUNIQUE);
-				break;
-			case TYPE_PK:
-				aDestination.setIndexType(IndexType.PRIMARYKEY);
-				break;
-			default:
-				throw new RuntimeException("Invalid index type : " + aSource.getType());
-		}
-
+		aDestination.setIndexType(IndexType.fromId(aSource.getType()));
 		aDestination.getExpressions().clear();
 		for (IndexExpressionEntity theExpressionEntity : aSource.getExpressions()) {
 			IndexExpression theExpression = new IndexExpression();

@@ -108,7 +108,7 @@ public class SQL92SQLGenerator<T extends SQL92Dialect> extends SQLGenerator<T> {
             case NONUNIQUE:
                 break;
             default:
-                theStatement.append(aIndex.getIndexType().getType()).append(" ");
+                theStatement.append(aIndex.getIndexType().toString()).append(" ");
                 break;
         }
 
