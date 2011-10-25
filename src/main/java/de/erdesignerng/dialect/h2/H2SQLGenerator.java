@@ -90,7 +90,7 @@ public class H2SQLGenerator extends SQL92SQLGenerator<H2Dialect> {
 			case NONUNIQUE:
 				break;
 			default:
-				theStatement.append(aIndex.getIndexType().getType()).append(" ");
+				theStatement.append(aIndex.getIndexType().toString()).append(" ");
 				break;
 		}
 

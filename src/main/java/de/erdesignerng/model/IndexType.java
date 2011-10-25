@@ -22,28 +22,47 @@ package de.erdesignerng.model;
  * @version $Date: 2008-01-15 19:22:43 $
  */
 public enum IndexType {
-    UNIQUE("UNIQUE"), NONUNIQUE("NONUNIQUE"), PRIMARYKEY("PRIMARYKEY"), SPATIAL("SPATIAL"), FULLTEXT("FULLTEXT");
+    UNDEFINED(-1),
+	UNIQUE(0),
+	NONUNIQUE(1),
+	PRIMARYKEY(2),
+	SPATIAL(3),
+	FULLTEXT(4);
 
-    private final String type;
+    private final int id;
 
-    IndexType(String aType) {
-        type = aType;
+    IndexType(final int id) {
+        this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public final int getId() {
+        return id;
     }
 
-    public static IndexType fromType(String aType) {
-        if (UNIQUE.getType().equals(aType)) {
-            return UNIQUE;
-        }
-        if (NONUNIQUE.getType().equals(aType)) {
-            return NONUNIQUE;
-        }
-        if (PRIMARYKEY.getType().equals(aType)) {
-            return PRIMARYKEY;
-        }
-        throw new IllegalArgumentException("Invalid type " + aType);
-    }
+	/**
+	 * Returns the enum constant of this type with the specified id.
+	 *
+	 * @param id the id to return the enum constant for
+	 * @return the enum constant with the specified id
+	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
+	 */
+	public static IndexType fromId(int id) {
+
+		for(IndexType aIndexType : IndexType.values()) { 
+			if (aIndexType.getId() == id) {
+				return aIndexType;
+			}
+		}
+
+		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
+	}
+
+	public static IndexType fromString(String aConstantName) {
+		return IndexType.valueOf(aConstantName.toUpperCase());
+	}
+
+	@Override
+	public final String toString() {
+		return super.toString().toUpperCase();
+	}
 }
