@@ -65,13 +65,13 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
     }
 
     @Override
-    protected boolean isValidTable(String aTableName, String aTableType) {
+    protected boolean isValidTable(String aTableName) {
         // Check for recycle bin tables
         return (!aTableName.startsWith("BIN$")) && (aTableName.indexOf("/") < 0);
     }
 
     @Override
-    protected boolean isValidView(String aViewName, String aTableType) {
+    protected boolean isValidView(String aViewName) {
         return aViewName.indexOf("/") < 0 && aViewName.indexOf("==") < 0;
     }
 
@@ -116,11 +116,6 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
             throw new ReverseEngineeringException("Cannot find index column information for " + aColumnName + " index "
                     + aIndex.getName() + " table " + aTable.getName());
         }
-    }
-
-    @Override
-    protected boolean isTableTypeView(String aTableType) {
-        return VIEW_TABLE_TYPE.equals(aTableType);
     }
 
     @Override

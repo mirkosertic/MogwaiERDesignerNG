@@ -19,6 +19,7 @@ package de.erdesignerng.visual.editor.reverseengineer;
 
 import de.erdesignerng.dialect.ReverseEngineeringOptions;
 import de.erdesignerng.dialect.TableEntry;
+import de.erdesignerng.model.TableType;
 import de.erdesignerng.util.SelectableWrapper;
 import de.mogwai.common.client.binding.BindingBundle;
 import de.mogwai.common.client.binding.PropertyAdapter;
@@ -52,14 +53,12 @@ public class TableEntryPropertyAdapter extends PropertyAdapter {
 		ReverseEngineeringOptions theModel = (ReverseEngineeringOptions) aModel;
 
 		DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
-		for (String theEntry : theModel.getAvailableTableTypes()) {
-			SelectableWrapper<String> theWrapper = new SelectableWrapper<String>(
-					theEntry);
-			DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(
-					theWrapper);
+		for (TableType theTableType : theModel.getAvailableTableTypes()) {
+			SelectableWrapper<String> theWrapper = new SelectableWrapper<String>(theTableType.toString());
+			DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(theWrapper);
 
 			for (TableEntry theTableEntry : theModel.getTableEntries()) {
-				if (theEntry.equals(theTableEntry.getTableType())) {
+				if (theTableType.equals(theTableEntry.getTableType())) {
 
 					SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<TableEntry>(
 							theTableEntry);

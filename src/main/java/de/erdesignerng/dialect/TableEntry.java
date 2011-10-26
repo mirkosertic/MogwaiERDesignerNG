@@ -1,5 +1,7 @@
 package de.erdesignerng.dialect;
 
+import de.erdesignerng.model.TableType;
+
 /**
  * Descriptor for a table.
  *
@@ -10,9 +12,9 @@ public class TableEntry extends SchemaEntry {
 
 	private String tableName;
 
-	private String tableType;
+	private TableType tableType;
 
-	public TableEntry(String aCatalogName, String aSchemaName, String aTableName, String aTableType) {
+	public TableEntry(String aCatalogName, String aSchemaName, String aTableName, TableType aTableType) {
 		super(aCatalogName, aSchemaName);
 		tableName = aTableName;
 		tableType = aTableType;
@@ -22,7 +24,7 @@ public class TableEntry extends SchemaEntry {
 		return tableName;
 	}
 
-	public String getTableType() {
+	public TableType getTableType() {
 		return tableType;
 	}
 

@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.dialect;
 
+import de.erdesignerng.model.TableType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,12 +62,12 @@ public class ReverseEngineeringOptions {
         tableEntries = tableNames;
     }
 
-    public List<String> getAvailableTableTypes() {
-        List<String> theResult = new ArrayList<String>();
+    public List<TableType> getAvailableTableTypes() {
+        List<TableType> theResult = new ArrayList<TableType>();
         for (TableEntry theEntry : tableEntries) {
             if (!theResult.contains(theEntry.getTableType())) {
                 theResult.add(theEntry.getTableType());
-            }
+			}
         }
         return theResult;
     }

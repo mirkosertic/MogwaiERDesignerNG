@@ -29,6 +29,7 @@ import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
+import de.erdesignerng.model.TableType;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
@@ -156,7 +157,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		ResultSet theViewsResultSet = theMetaData.getTables(aViewEntry
 				.getCatalogName(), theSchemaPattern, theTablePattern,
-				new String[]{aViewEntry.getTableType()});
+				new String[]{aViewEntry.getTableType().toString()});
 		while (theViewsResultSet.next()) {
 
 			String theViewRemarks = theViewsResultSet.getString("REMARKS");
@@ -239,7 +240,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		ResultSet theTablesResultSet = theMetaData.getTables(aTableEntry
 				.getCatalogName(), theSchemaPattern, theTablePattern,
-				new String[]{aTableEntry.getTableType()});
+				new String[]{aTableEntry.getTableType().toString()});
 		while (theTablesResultSet.next()) {
 
 			String theTableRemarks = theTablesResultSet.getString("REMARKS");
@@ -795,23 +796,13 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	}
 
 	/**
-	 * Test if a table type is a view.
-	 *
-	 * @param aTableType the table type
-	 * @return true if yes, else false
-	 */
-	protected boolean isTableTypeView(String aTableType) {
-		return VIEW_TABLE_TYPE.equals(aTableType);
-	}
-
-	/**
 	 * Check if the table is a valid table for reverse engineering.
 	 *
 	 * @param aTableName the table name
 	 * @param aTableType the table type
 	 * @return true if the table is valid, else false
 	 */
-	protected boolean isValidTable(String aTableName, String aTableType) {
+	protected boolean isValidTable(String aTableName) {
 		return true;
 	}
 
@@ -822,7 +813,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * @param aTableType the table type
 	 * @return true if the table is valid, else false
 	 */
-	protected boolean isValidView(String aTableName, String aTableType) {
+	protected boolean isValidView(String aTableName) {
 		return true;
 	}
 
@@ -847,7 +838,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		}
 
 		for (TableEntry theTable : aOptions.getTableEntries()) {
-			if (isTableTypeView(theTable.getTableType())) {
+			if (TableType.VIEW.equals(theTable.getTableType())) {
 				reverseEngineerView(aModel, aOptions, aNotifier, theTable,
 						aConnection);
 			} else {
@@ -858,7 +849,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		for (TableEntry theTableEntry : aOptions.getTableEntries()) {
 			// Reverse engineer only relations for tables, not for views!
-			if (TABLE_TABLE_TYPE.equals(theTableEntry.getTableType())) {
+			if (TableType.TABLE.equals(theTableEntry.getTableType())) {
 				reverseEngineerRelations(aModel, aOptions, aNotifier,
 						theTableEntry, aConnection);
 			}
@@ -1002,19 +993,17 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		while (theTablesResultSet.next()) {
 
-			String theTableType = theTablesResultSet.getString("TABLE_TYPE");
+			TableType theTableType = TableType.fromString(theTablesResultSet.getString("TABLE_TYPE"));
 			String theTableName = theTablesResultSet.getString("TABLE_NAME");
 
-			if (isTableTypeView(theTableType)) {
-				if (isValidView(theTableName, theTableType)) {
-					TableEntry theEntry = new TableEntry(theCatalogName,
-							theSchemaName, theTableName, theTableType);
+			if (TableType.VIEW.equals(theTableType)) {
+				if (isValidView(theTableName)) {
+					TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
 					theResult.add(theEntry);
 				}
 			} else {
-				if (isValidTable(theTableName, theTableType)) {
-					TableEntry theEntry = new TableEntry(theCatalogName,
-							theSchemaName, theTableName, theTableType);
+				if (isValidTable(theTableName)) {
+					TableEntry theEntry = new TableEntry(theCatalogName, theSchemaName, theTableName, theTableType);
 					theResult.add(theEntry);
 				}
 			}
