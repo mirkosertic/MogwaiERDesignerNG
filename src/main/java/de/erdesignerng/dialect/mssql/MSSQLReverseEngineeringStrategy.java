@@ -47,11 +47,6 @@ public class MSSQLReverseEngineeringStrategy extends
     }
 
     @Override
-    protected boolean isTableTypeView(String aTableType) {
-        return VIEW_TABLE_TYPE.equals(aTableType);
-    }
-
-    @Override
     protected String reverseEngineerViewSQL(TableEntry aViewEntry,
                                             Connection aConnection, View aView) throws SQLException {
         PreparedStatement theStatement = aConnection
