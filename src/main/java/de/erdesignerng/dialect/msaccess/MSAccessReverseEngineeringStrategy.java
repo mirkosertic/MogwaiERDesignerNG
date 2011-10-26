@@ -150,7 +150,7 @@ public class MSAccessReverseEngineeringStrategy extends JDBCReverseEngineeringSt
                 if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_DELETE_CASCADE)) {
                     theNewRelation.setOnDelete(CascadeType.CASCADE);
                 } else if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_DELETE_SET_NULL)) {
-                    theNewRelation.setOnDelete(CascadeType.SET_NULL);
+                    theNewRelation.setOnDelete(CascadeType.SETNULL);
                 }
 
                 if (containsFlag(theNewRelationAttributes, RelationAttributeEnum.DB_RELATION_UPDATE_CASCADE)) {
