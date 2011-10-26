@@ -18,24 +18,60 @@
 package de.erdesignerng.dialect;
 
 /**
+ * A name cast type.
+ *
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-15 19:22:42 $
  */
 public enum NameCastType {
-    NOTHING(1), UPPERCASE(2);
+    NOTHING(1),
+	UPPERCASE(2),
+	LOWERCASE(3);
 
-    private final int mode;
+    private final int id;
 
-    NameCastType(int aMode) {
-        mode = aMode;
+    NameCastType(final int id) {
+        this.id = id;
     }
 
-    public String cast(String aValue) {
-        switch (mode) {
+	public final int getId() {
+        return id;
+    }
+	/**
+	 * Returns the enum constant of this type with the specified id.
+	 *
+	 * @param id the id to return the enum constant for
+	 * @return the enum constant with the specified id
+	 * @throws IllegalArgumentException if this enum type has no constant with the specified id
+	 */
+	public static NameCastType fromId(int id) {
+
+		for(NameCastType aNameCastType : NameCastType.values()) { 
+			if (aNameCastType.getId() == id) {
+				return aNameCastType;
+			}
+		}
+
+		throw new IllegalArgumentException("Unknown type \"" + id + "\"!");
+	}
+
+	public static NameCastType fromString(String aConstantName) {
+		return NameCastType.valueOf(aConstantName.toUpperCase());
+	}
+
+	@Override
+	public final String toString() {
+		return super.toString().toUpperCase();
+	}
+
+    public final String cast(String aValue) {
+        switch (id) {
             case 1:
                 return aValue;
             case 2:
                 return aValue.toUpperCase();
+			case 3:
+                return aValue.toLowerCase();
             default:
                 throw new IllegalStateException();
         }
