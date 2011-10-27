@@ -22,21 +22,28 @@ package de.erdesignerng.dialect;
  *
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-15 19:22:42 $
+ * 
+ * TODO: [dr-death2] extend this enum from abstract enum implementing the
+ * methods and the property "id" if inheritance of enums is supported in java 8
  */
 public enum NameCastType {
-    NOTHING(1),
+
+	// Do *not* rename the constants or change their ids! Their spelling is
+	// used to store the model to *.mxm files and their ids are used to store
+	// the model to the repository. Loading older models would fail then.
+	NOTHING(1),
 	UPPERCASE(2),
 	LOWERCASE(3);
 
-    private final int id;
+	private final int id;
 
-    NameCastType(final int id) {
-        this.id = id;
-    }
+	NameCastType(final int id) {
+		this.id = id;
+	}
 
 	public final int getId() {
-        return id;
-    }
+		return id;
+	}
 	/**
 	 * Returns the enum constant of this type with the specified id.
 	 *
@@ -64,16 +71,17 @@ public enum NameCastType {
 		return super.toString().toUpperCase();
 	}
 
-    public final String cast(String aValue) {
-        switch (id) {
-            case 1:
-                return aValue;
-            case 2:
-                return aValue.toUpperCase();
+	public final String cast(String aValue) {
+		switch (id) {
+			case 1:
+				return aValue;
+			case 2:
+				return aValue.toUpperCase();
 			case 3:
-                return aValue.toLowerCase();
-            default:
-                throw new IllegalStateException();
-        }
-    }
+				return aValue.toLowerCase();
+			default:
+				throw new IllegalStateException();
+		}
+	}
+
 }

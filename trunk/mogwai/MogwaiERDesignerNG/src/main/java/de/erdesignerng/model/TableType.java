@@ -22,8 +22,15 @@ package de.erdesignerng.model;
  *
  * @author $Author: dr-death2 $
  * @version $Date: 2011-09-26 01:30:00 $
+ * 
+ * TODO: [dr-death2] extend this enum from abstract enum implementing the
+ * methods and the property "id" if inheritance of enums is supported in java 8
  */
 public enum TableType {
+
+	// Do *not* rename the constants or change their ids! Their spelling is
+	// used to store the model to *.mxm files and their ids are used to store
+	// the model to the repository. Loading older models would fail then.
 	TABLE(0),
 	VIEW(1);
 
@@ -63,4 +70,5 @@ public enum TableType {
 	public final String toString() {
 		return super.toString().toUpperCase();
 	}
+
 }

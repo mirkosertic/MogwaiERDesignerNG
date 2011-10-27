@@ -18,26 +18,35 @@
 package de.erdesignerng.model;
 
 /**
+ * An index type.
+ *
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-15 19:22:43 $
+ * 
+ * TODO: [dr-death2] extend this enum from abstract enum implementing the
+ * methods and the property "id" if inheritance of enums is supported in java 8
  */
 public enum IndexType {
-    UNDEFINED(-1),
+
+	// Do *not* rename the constants or change their ids! Their spelling is
+	// used to store the model to *.mxm files and their ids are used to store
+	// the model to the repository. Loading older models would fail then.
+	UNDEFINED(-1),
 	UNIQUE(0),
 	NONUNIQUE(1),
 	PRIMARYKEY(2),
 	SPATIAL(3),
 	FULLTEXT(4);
 
-    private final int id;
+	private final int id;
 
-    IndexType(final int id) {
-        this.id = id;
-    }
+	IndexType(final int id) {
+		this.id = id;
+	}
 
-    public final int getId() {
-        return id;
-    }
+	public final int getId() {
+		return id;
+	}
 
 	/**
 	 * Returns the enum constant of this type with the specified id.
@@ -65,4 +74,5 @@ public enum IndexType {
 	public final String toString() {
 		return super.toString().toUpperCase();
 	}
+
 }
