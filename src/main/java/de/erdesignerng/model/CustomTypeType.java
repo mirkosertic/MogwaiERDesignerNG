@@ -22,8 +22,15 @@ package de.erdesignerng.model;
  *
  * @author $Author: dr-death2 $
  * @version $Date: 2011-09-17 21:45:00 $
+ * 
+ * TODO: [dr-death2] extend this enum from abstract enum implementing the
+ * methods and the property "id" if inheritance of enums is supported in java 8
  */
 public enum CustomTypeType {
+
+	// Do *not* rename the constants or change their ids! Their spelling is
+	// used to store the model to *.mxm files and their ids are used to store
+	// the model to the repository. Loading older models would fail then.
 	COMPOSITE(0),
 	ENUMERATION(1),
 	EXTERNAL(2);
@@ -64,4 +71,5 @@ public enum CustomTypeType {
 	public final String toString() {
 		return super.toString().toUpperCase();
 	}
+
 }
