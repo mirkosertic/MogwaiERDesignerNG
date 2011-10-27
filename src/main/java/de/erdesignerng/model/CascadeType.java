@@ -18,24 +18,33 @@
 package de.erdesignerng.model;
 
 /**
+ * A cascade type.
+ *
  * @author $Author: mirkosertic $
  * @version $Date: 2008-01-15 19:22:43 $
+ * 
+ * TODO: [dr-death2] extend this enum from abstract enum implementing the
+ * methods and the property "id" if inheritance of enums is supported in java 8
  */
 public enum CascadeType {
-    CASCADE(0),
+
+	// Do *not* rename the constants or change their ids! Their spelling is
+	// used to store the model to *.mxm files and their ids are used to store
+	// the model to the repository. Loading older models would fail then.
+	CASCADE(0),
 	SETNULL(1),
 	NOTHING(2),
 	RESTRICT(3);
 
-    private final int id;
+	private final int id;
 
-    CascadeType(final int id) {
-        this.id = id;
-    }
+	CascadeType(final int id) {
+		this.id = id;
+	}
 
-    public final int getId() {
-        return id;
-    }
+	public final int getId() {
+		return id;
+	}
 
 	/**
 	 * Returns the enum constant of this type with the specified id.
