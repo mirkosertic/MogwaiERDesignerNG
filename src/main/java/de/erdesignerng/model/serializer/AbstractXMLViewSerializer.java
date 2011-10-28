@@ -27,6 +27,4 @@ public abstract class AbstractXMLViewSerializer extends CommonAbstractXMLSeriali
 
 	public static final String SQL = "Sql";
 
-	public static final String VIEW = "View";
-
 }
