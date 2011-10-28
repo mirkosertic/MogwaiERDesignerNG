@@ -71,4 +71,14 @@ public enum TableType {
 		return super.toString().toUpperCase();
 	}
 
+	public static String[] toArray(){
+		String[] theArray = new String[TableType.values().length];
+		int i = 0;
+
+		for (TableType aTableType : TableType.values()) { 
+			theArray[i++] = aTableType.toString();
+		}
+
+		return theArray;
+	}
 }
