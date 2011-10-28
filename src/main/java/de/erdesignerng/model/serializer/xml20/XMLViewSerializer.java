@@ -18,6 +18,7 @@
 package de.erdesignerng.model.serializer.xml20;
 
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.TableType;
 import de.erdesignerng.model.View;
 import de.erdesignerng.model.serializer.AbstractXMLViewSerializer;
 import org.w3c.dom.Document;
@@ -28,7 +29,7 @@ public class XMLViewSerializer extends AbstractXMLViewSerializer {
 
 	@Override
 	public void serialize(View aView, Document aDocument, Element aRootElement) {
-		Element theRelationElement = addElement(aDocument, aRootElement, VIEW);
+		Element theRelationElement = addElement(aDocument, aRootElement, TableType.VIEW.toString());
 
 		serializeProperties(aDocument, theRelationElement, aView);
 		serializeCommentElement(aDocument, theRelationElement, aView);
@@ -39,8 +40,8 @@ public class XMLViewSerializer extends AbstractXMLViewSerializer {
 
 	@Override
 	public void deserialize(Model aModel, Document aDocument) {
+		NodeList theElements = aDocument.getElementsByTagName(TableType.VIEW.toString());
 
-		NodeList theElements = aDocument.getElementsByTagName(VIEW);
 		for (int i = 0; i < theElements.getLength(); i++) {
 			Element theElement = (Element) theElements.item(i);
 
