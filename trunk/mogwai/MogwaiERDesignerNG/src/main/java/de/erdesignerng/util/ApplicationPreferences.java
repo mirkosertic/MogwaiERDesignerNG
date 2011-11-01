@@ -554,13 +554,12 @@ public class ApplicationPreferences {
     /**
      * Test if we are running in development mode.
      *
-     * @return
+     * @return true, if in development mode; false else
      */
     public boolean isInDevelopmentMode() {
-        String theVersionNumber = MavenPropertiesLocator
-                .getERDesignerVersionInfo();
-        if (theVersionNumber
-                .equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
+        String theVersionNumber = MavenPropertiesLocator.getERDesignerVersionInfo();
+
+        if (theVersionNumber.equals(MavenPropertiesLocator.CANNOT_IDENTIFY_VERSION)) {
             return true;
         }
 

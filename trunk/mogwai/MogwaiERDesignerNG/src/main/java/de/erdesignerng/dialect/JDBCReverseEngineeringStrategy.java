@@ -757,7 +757,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * Check if the table is a valid table for reverse engineering.
 	 *
 	 * @param aTableName the table name
-	 * @param aTableType the table type
 	 * @return true if the table is valid, else false
 	 */
 	protected boolean isValidTable(String aTableName) {
@@ -768,7 +767,6 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	 * Check if the table is a valid view for reverse engineering.
 	 *
 	 * @param aTableName the table name
-	 * @param aTableType the table type
 	 * @return true if the table is valid, else false
 	 */
 	protected boolean isValidView(String aTableName) {
