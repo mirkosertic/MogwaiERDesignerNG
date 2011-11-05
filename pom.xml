@@ -343,63 +343,60 @@
             <groupId>batik</groupId>
             <artifactId>batik-svggen</artifactId>
             <version>1.6-1</version>
-            <scope>compile</scope>
             <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>3.5.6-Final</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.infonode</groupId>
             <artifactId>idw-gpl</artifactId>
             <version>1.6.1</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>3.5.3</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.google.code.javaparser</groupId>
             <artifactId>javaparser</artifactId>
             <version>1.0.8</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>jgraph</groupId>
             <artifactId>jgraph</artifactId>
             <version>5.13.0.0</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.metawidget</groupId>
             <artifactId>metawidget</artifactId>
             <version>0.85</version>
-            <scope>compile</scope>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.anaglyphcanvas3</groupId>
             <artifactId>anaglyphcanvas3</artifactId>
             <version>0.87</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
@@ -482,19 +479,16 @@
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-databinding</artifactId>
             <version>1.8.3</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.mogwai</groupId>
             <artifactId>mogwai-smartstart</artifactId>
             <version>1.1</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.java.dev</groupId>
             <artifactId>swing-worker</artifactId>
             <version>1.2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-digester</groupId>
@@ -515,7 +509,6 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.1.1</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -534,11 +527,16 @@
             <version>${your.standalone-compiler.version}</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.1</version>
+        </dependency>
     </dependencies>
     <properties>
         <mogwai.test.db.server.name>localhost</mogwai.test.db.server.name>
         <staging.dir>${project.build.directory}/staging</staging.dir>
-        <your.standalone-compiler.version>4.2.1</your.standalone-compiler.version>
+        <your.standalone-compiler.version>4.3.4</your.standalone-compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>
