@@ -18,26 +18,17 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CustomType;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 /**
  * Factory for context menues.
@@ -165,6 +156,17 @@ public final class ContextMenuFactory {
                 aMenu.add(theEditItem);
                 theItemsToBeDeleted.add(theRelation);
             }
+            if (theUserObject instanceof Comment) {
+                Comment theComment = (Comment) theUserObject;
+                JMenuItem theEditItem = new JMenuItem();
+                theEditItem.setText(theHelper.getFormattedText(
+                        ERDesignerBundle.EDITCOMMENT, theComment.getName()));
+                theEditItem.addActionListener(new EditCommentCommand(aEditor, theComment));
+
+                aMenu.add(theEditItem);
+                theItemsToBeDeleted.add(theComment);
+            }
+
             if (theUserObject instanceof CustomType) {
 
                 CustomType theCustomType = (CustomType) theUserObject;

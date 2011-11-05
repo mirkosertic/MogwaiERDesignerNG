@@ -283,6 +283,7 @@ Release 3.0.0
 * Bug Fixing 3420950 [ERDesignerNG] DomainEditor: comments not stored
 * Bug Fixing 3420937 [ERDesignerNG] PostgreSQL: comments of domains not RevEnged
 * Bug Fixing 3426409 [ERDesignerNG] Recent builds won't install on Windows Server 2008 R2 x64
+* Bug Fixing 3429294 [ERDesignerNG] Cannot Delete Comment
 * Working on support for Spatial Datatypes & Fulltext indexes
 * Added support for model validation & quick fixes
 * Added support for anaglyphic 3d mode
