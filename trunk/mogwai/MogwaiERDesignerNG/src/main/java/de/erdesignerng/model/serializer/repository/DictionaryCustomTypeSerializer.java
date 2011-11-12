@@ -22,9 +22,8 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.serializer.repository.entities.CustomTypeEntity;
 import de.erdesignerng.model.serializer.repository.entities.ModelEntity;
 import de.erdesignerng.model.serializer.repository.entities.RepositoryEntity;
-import org.hibernate.Session;
-
 import java.util.Map;
+import org.hibernate.Session;
 
 /**
  * Serializer for custom types.
@@ -33,51 +32,57 @@ import java.util.Map;
  */
 public class DictionaryCustomTypeSerializer extends DictionaryBaseSerializer {
 
-	public static final DictionaryCustomTypeSerializer SERIALIZER = new DictionaryCustomTypeSerializer();
+    public static final DictionaryCustomTypeSerializer SERIALIZER = new DictionaryCustomTypeSerializer();
 
-	private void copyExtendedAttributes(CustomType aSource, CustomTypeEntity aDestination) {
-		aDestination.setSystemId(aSource.getSystemId());
-		aDestination.setName(aSource.getName());
-		aDestination.setSchema(aSource.getSchema());
-		aDestination.setAlias(aSource.getAlias());
-	}
+    private void copyExtendedAttributes(CustomType aSource, CustomTypeEntity aDestination) {
+        aDestination.setSystemId(aSource.getSystemId());
+        aDestination.setName(aSource.getName());
+        aDestination.setSchema(aSource.getSchema());
+        aDestination.setType(aSource.getType());
+        aDestination.setAlias(aSource.getAlias());
 
-	private void copyExtendedAttributes(CustomTypeEntity aSource, CustomType aDestination) {
-		aDestination.setSystemId(aSource.getSystemId());
-		aDestination.setName(aSource.getName());
-		aDestination.setSchema(aSource.getSchema());
-		aDestination.setAlias(aSource.getAlias());
-	}
+        DictionaryAttributeSerializer.SERIALIZER.serialize(aSource, aDestination);
+    }
 
-	public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
+    private void copyExtendedAttributes(Model aModel, CustomTypeEntity aSource, CustomType aDestination) {
+        aDestination.setSystemId(aSource.getSystemId());
+        aDestination.setName(aSource.getName());
+        aDestination.setSchema(aSource.getSchema());
+        aDestination.setAlias(aSource.getAlias());
+        aDestination.setType(aSource.getType());
 
-		Map<String, ModelEntity> theCustomTypes = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getCustomType());
+        DictionaryAttributeSerializer.SERIALIZER.deserialize(aModel, aDestination, aSource);
+    }
 
-		for (CustomType theType : aModel.getCustomTypes()) {
-			boolean existing = true;
-			CustomTypeEntity theExisting = (CustomTypeEntity) theCustomTypes.get(theType.getSystemId());
-			if (theExisting == null) {
-				theExisting = new CustomTypeEntity();
-				existing = false;
-			}
+    public void serialize(Model aModel, Session aSession, RepositoryEntity aDictionaryEntity) {
 
-			copyBaseAttributes(theType, theExisting);
-			copyExtendedAttributes(theType, theExisting);
+        Map<String, ModelEntity> theCustomTypes = deletedRemovedInstances(aModel.getDomains(), aDictionaryEntity.getCustomType());
 
-			if (!existing) {
-				aDictionaryEntity.getCustomType().add(theExisting);
-			}
-		}
-	}
+        for (CustomType theType : aModel.getCustomTypes()) {
+            boolean existing = true;
+            CustomTypeEntity theExisting = (CustomTypeEntity) theCustomTypes.get(theType.getSystemId());
+            if (theExisting == null) {
+                theExisting = new CustomTypeEntity();
+                existing = false;
+            }
 
-	public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
-		for (CustomTypeEntity theEntity : aRepositoryEntity.getCustomType()) {
+            copyBaseAttributes(theType, theExisting);
+            copyExtendedAttributes(theType, theExisting);
 
-			CustomType theType = new CustomType();
-			copyBaseAttributes(theEntity, theType);
-			copyExtendedAttributes(theEntity, theType);
+            if (!existing) {
+                aDictionaryEntity.getCustomType().add(theExisting);
+            }
+        }
+    }
 
-			aModel.getCustomTypes().add(theType);
-		}
-	}
+    public void deserialize(Model aModel, RepositoryEntity aRepositoryEntity) {
+        for (CustomTypeEntity theEntity : aRepositoryEntity.getCustomType()) {
+
+            CustomType theType = new CustomType();
+            copyBaseAttributes(theEntity, theType);
+            copyExtendedAttributes(aModel, theEntity, theType);
+
+            aModel.getCustomTypes().add(theType);
+        }
+    }
 }

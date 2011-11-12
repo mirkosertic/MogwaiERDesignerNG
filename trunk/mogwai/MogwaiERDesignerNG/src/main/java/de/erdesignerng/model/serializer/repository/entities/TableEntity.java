@@ -25,35 +25,35 @@ import java.util.List;
  *
  * @author mirkosertic
  */
-public class TableEntity extends ModelEntity {
+public class TableEntity extends ModelEntity implements AttributeEntityProvider {
 
-	private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
 
-	private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
+    private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
 
-	private String schema;
+    private String schema;
 
-	public List<AttributeEntity> getAttributes() {
-		return attributes;
-	}
+    public List<AttributeEntity> getAttributes() {
+        return attributes;
+    }
 
-	public List<IndexEntity> getIndexes() {
-		return indexes;
-	}
+    public List<IndexEntity> getIndexes() {
+        return indexes;
+    }
 
-	public String getSchema() {
-		return schema;
-	}
+    public String getSchema() {
+        return schema;
+    }
 
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
 
-	public void setAttributes(List<AttributeEntity> attributes) {
-		this.attributes = attributes;
-	}
+    public void setAttributes(List<AttributeEntity> attributes) {
+        this.attributes = attributes;
+    }
 
-	public void setIndexes(List<IndexEntity> indexes) {
-		this.indexes = indexes;
-	}
+    public void setIndexes(List<IndexEntity> indexes) {
+        this.indexes = indexes;
+    }
 }
