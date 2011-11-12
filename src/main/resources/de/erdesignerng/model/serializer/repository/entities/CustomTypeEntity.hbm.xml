@@ -17,6 +17,12 @@
                   type="org.hibernate.type.MaterializedClobType"/>
         <property column="dbschema" name="schema" not-null="false"/>
         <property column="alias" name="alias" not-null="false"/>
+        <property column="custtype" name="type" not-null="false"/>
+        <list cascade="all-delete-orphan" name="attributes">
+            <key column="custtypeid" foreign-key="mogrep_attributes_fk2" not-null="false"/>
+            <list-index column="listindex"/>
+            <one-to-many class="AttributeEntity"/>
+        </list>
         <list cascade="all-delete-orphan" name="properties" table="mogrep_custtype_props">
             <key column="custtypeid" foreign-key="mogrep_custtype_props_fk1"/>
             <list-index column="listindex"/>

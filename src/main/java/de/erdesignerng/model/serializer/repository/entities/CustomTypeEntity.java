@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.model.serializer.repository.entities;
 
+import de.erdesignerng.model.CustomTypeType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,36 +26,45 @@ import java.util.List;
  *
  * @author Mirko Sertic
  */
-public class CustomTypeEntity extends ModelEntity {
+public class CustomTypeEntity extends ModelEntity implements AttributeEntityProvider {
 
-	private String schema;
+    private String schema;
 
-	private String alias;
+    private String alias;
 
-	private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
 
-	public String getSchema() {
-		return schema;
-	}
+    private CustomTypeType type;
 
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
+    public String getSchema() {
+        return schema;
+    }
 
-	public String getAlias() {
-		return alias;
-	}
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
 
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
+    public String getAlias() {
+        return alias;
+    }
 
-	public List<AttributeEntity> getAttributes() {
-		return attributes;
-	}
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
-	public void setAttributes(List<AttributeEntity> attributes) {
-		this.attributes = attributes;
-	}
+    public List<AttributeEntity> getAttributes() {
+        return attributes;
+    }
 
+    public void setAttributes(List<AttributeEntity> attributes) {
+        this.attributes = attributes;
+    }
+
+    public CustomTypeType getType() {
+        return type;
+    }
+
+    public void setType(CustomTypeType type) {
+        this.type = type;
+    }
 }
