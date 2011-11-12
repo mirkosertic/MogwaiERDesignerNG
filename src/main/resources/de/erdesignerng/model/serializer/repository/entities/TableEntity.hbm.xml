@@ -16,7 +16,7 @@
         <property column="elementcomment" name="comment" not-null="false"
                   type="org.hibernate.type.MaterializedClobType"/>
         <list cascade="all-delete-orphan" name="attributes">
-            <key column="tableid" foreign-key="mogrep_attributes_fk1"/>
+            <key column="tableid" foreign-key="mogrep_attributes_fk1" not-null="false"/>
             <list-index column="listindex"/>
             <one-to-many class="AttributeEntity"/>
         </list>

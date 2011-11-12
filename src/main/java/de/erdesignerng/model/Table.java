@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
  */
-public class Table extends OwnedModelItem<Model> {
+public class Table extends OwnedModelItem<Model> implements AttributeProvider<Table> {
 
     private AttributeList<Table> attributes = new AttributeList<Table>();
 
@@ -173,5 +173,12 @@ public class Table extends OwnedModelItem<Model> {
             theCopy.getIndexes().add(theClone);
         }
         return theCopy;
+    }
+
+    @Override
+    public Attribute<Table> createNewAttribute() {
+        Attribute<Table> theNewAttribute = new Attribute<Table>();
+        attributes.add(theNewAttribute);
+        return theNewAttribute;
     }
 }
