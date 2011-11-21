@@ -38,11 +38,15 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
     private <T extends ModelItem> void copyExtendedAttributes(Attribute<T> aSource, AttributeEntity aDestination) {
         aDestination.setDatatype(null);
         aDestination.setDomainId(null);
-        if (!(aSource.getDatatype().isDomain())) {
-            aDestination.setDatatype(aSource.getDatatype().getName());
+        if (aSource.getDatatype() != null) {
+            if (!(aSource.getDatatype().isDomain())) {
+                aDestination.setDatatype(aSource.getDatatype().getName());
+            } else {
+                Domain theDomain = (Domain) aSource.getDatatype();
+                aDestination.setDomainId(theDomain.getSystemId());
+            }
         } else {
-            Domain theDomain = (Domain) aSource.getDatatype();
-            aDestination.setDomainId(theDomain.getSystemId());
+            // in this case we are deserializing a custom type attribute
         }
         aDestination.setSize(aSource.getSize());
         aDestination.setFraction(aSource.getFraction());
@@ -56,7 +60,12 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
         if (!StringUtils.isEmpty(aSource.getDomainId())) {
             aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomainId()));
         } else {
-            aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+            if (!StringUtils.isEmpty(aSource.getDatatype())) {
+                aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+            } else {
+                // In this case we are deserializing a custom type attribute
+                aDestination.setDatatype(null);
+            }
         }
         aDestination.setSize(aSource.getSize());
         aDestination.setFraction(aSource.getFraction());
