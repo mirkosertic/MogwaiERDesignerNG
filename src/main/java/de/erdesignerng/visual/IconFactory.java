@@ -25,83 +25,87 @@ import javax.swing.ImageIcon;
  */
 public final class IconFactory {
 
-	private IconFactory() {
-	}
+    private IconFactory() {
+    }
 
-	public static ImageIcon getKeyIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/key.gif"));
-	}
+    public static ImageIcon getKeyIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/key.gif"));
+    }
 
-	public static ImageIcon getMissingIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/fatalerror_obj.gif"));
-	}
+    public static ImageIcon getERDesignerIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/erdesigner_16x16.png"));
+    }
 
-	public static ImageIcon getMatchingIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/ok_st_obj.gif"));
-	}
+    public static ImageIcon getMissingIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/fatalerror_obj.gif"));
+    }
 
-	public static ImageIcon getEntityIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/entity_small.gif"));
-	}
+    public static ImageIcon getMatchingIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/ok_st_obj.gif"));
+    }
 
-	public static ImageIcon getViewIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/view_small.gif"));
-	}
+    public static ImageIcon getEntityIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/entity_small.gif"));
+    }
 
-	public static ImageIcon getRelationIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/relation1_small.gif"));
-	}
+    public static ImageIcon getViewIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/view_small.gif"));
+    }
 
-	public static ImageIcon getAttributeIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/attribute_small.gif"));
-	}
+    public static ImageIcon getRelationIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/relation1_small.gif"));
+    }
 
-	public static ImageIcon getExpressionIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/expression_small.gif"));
-	}
+    public static ImageIcon getAttributeIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/attribute_small.gif"));
+    }
 
-	public static ImageIcon getIndexIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/index_small.gif"));
-	}
+    public static ImageIcon getExpressionIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/expression_small.gif"));
+    }
 
-	public static ImageIcon getCancelIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/cancel.png"));
-	}
+    public static ImageIcon getIndexIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/index_small.gif"));
+    }
 
-	public static ImageIcon getSelfReferenceIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/self_reference.png"));
-	}
+    public static ImageIcon getCancelIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/cancel.png"));
+    }
 
-	public static ImageIcon getExpandIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/bullet_toggle_plus.png"));
-	}
+    public static ImageIcon getSelfReferenceIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/self_reference.png"));
+    }
 
-	public static ImageIcon getCollapseIcon() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/bullet_toggle_minus.png"));
-	}
+    public static ImageIcon getExpandIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/bullet_toggle_plus.png"));
+    }
 
-	public static ImageIcon getCustomTypeComposite() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_composite.png"));
-	}
+    public static ImageIcon getCollapseIcon() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/bullet_toggle_minus.png"));
+    }
 
-	public static ImageIcon getCustomTypeEnumeration() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_enumeration.png"));
-	}
+    public static ImageIcon getCustomTypeComposite() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_composite.png"));
+    }
 
-	public static ImageIcon getCustomTypeExternal() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_external.png"));
-	}
+    public static ImageIcon getCustomTypeEnumeration() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_enumeration.png"));
+    }
 
-	public static ImageIcon getCustomTypeCompositeElement() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_composite_element.png"));
-	}
+    public static ImageIcon getCustomTypeExternal() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_external.png"));
+    }
 
-	public static ImageIcon getCustomTypeEnumerationElement() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_enumeration_element.png"));
-	}
+    public static ImageIcon getCustomTypeCompositeElement() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_composite_element.png"));
+    }
 
-	public static ImageIcon getCustomTypeExternalElement() {
-		return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_external_element.png"));
-	}
+    public static ImageIcon getCustomTypeEnumerationElement() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_enumeration_element.png"));
+    }
+
+    public static ImageIcon getCustomTypeExternalElement() {
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/customtype_external_element.png"));
+    }
 
 }

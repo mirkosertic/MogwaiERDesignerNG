@@ -10,6 +10,7 @@
             <menu submenu="Project Mogwai"/>
         </shortcut>
         <association mime-type="application-x/erdesignerng-file" extensions="mxm"/>
+        <icon href="icons/erdesigner_48x48.png"/>
     </information>
     <update check="timeout" policy="always"/>
     <security>

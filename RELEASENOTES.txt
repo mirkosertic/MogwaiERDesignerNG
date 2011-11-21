@@ -31,6 +31,7 @@ This software uses or is based on the following libraries:
  
   Thomas Breitkreuz for his H2 dialect, report templates and many good feature requests
   Thomas Winkler for his MSAccess dialect, testing, several bugfixes, usability enhancements, feature requests and implementation of CustomTypes
+  Meo Bogliolo for providing the ERDesignerNG icons
 
 Release 1.0
 
