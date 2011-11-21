@@ -61,7 +61,7 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
             aDestination.setDatatype(aModel.getDomains().findBySystemId(aSource.getDomainId()));
         } else {
             if (!StringUtils.isEmpty(aSource.getDatatype())) {
-                aDestination.setDatatype(aModel.getDialect().getDataTypes().findByName(aSource.getDatatype()));
+                aDestination.setDatatype(aModel.getAvailableDataTypes().findByName(aSource.getDatatype()));
             } else {
                 // In this case we are deserializing a custom type attribute
                 aDestination.setDatatype(null);
