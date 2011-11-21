@@ -57,6 +57,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
 
         setSize(800, 600);
         setExtendedState(MAXIMIZED_BOTH);
+        setIconImage(IconFactory.getERDesignerIcon().getImage());
 
         addWindowListener(new WindowAdapter() {
 
