@@ -116,6 +116,11 @@
                                         <include name="**/*.pdf"/>
                                     </fileset>
                                 </copy>
+                                <copy todir="${staging.dir}/icons">
+                                    <fileset dir="${basedir}/src/main/resources/de/erdesignerng/icons">
+                                        <include name="**/erdesigner_*.png"/>
+                                    </fileset>
+                                </copy>
                                 <copy todir="${staging.dir}/java3d">
                                     <fileset dir="${basedir}/java3d">
                                         <include name="**/*.dll"/>
