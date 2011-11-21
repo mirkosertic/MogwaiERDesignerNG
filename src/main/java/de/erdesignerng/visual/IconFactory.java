@@ -33,7 +33,7 @@ public final class IconFactory {
     }
 
     public static ImageIcon getERDesignerIcon() {
-        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/erdesigner_16x16.png"));
+        return new ImageIcon(IconFactory.class.getClassLoader().getResource("de/erdesignerng/icons/erdesigner_48x48.png"));
     }
 
     public static ImageIcon getMissingIcon() {
