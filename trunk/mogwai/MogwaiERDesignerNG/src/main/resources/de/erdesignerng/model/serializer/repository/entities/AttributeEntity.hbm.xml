@@ -18,7 +18,7 @@
         <property name="datatype" not-null="false"/>
         <property name="domainId" not-null="false"/>
         <property column="attributesize" name="size" not-null="false"/>
-        <property name="fraction" not-null="true"/>
+        <property name="fraction" not-null="false"/>
         <property name="scale" not-null="true"/>
         <property name="nullable" not-null="true"/>
         <property name="defaultValue" not-null="false"/>

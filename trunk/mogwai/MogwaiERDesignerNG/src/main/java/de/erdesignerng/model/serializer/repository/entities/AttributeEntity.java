@@ -40,7 +40,7 @@ public class AttributeEntity extends ModelEntity {
 
     private Integer size = null;
 
-    private int fraction;
+    private Integer fraction = null;
 
     private int scale = DEFAULT_SCALE;
 
@@ -95,14 +95,14 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @return the fraction
      */
-    public int getFraction() {
+    public Integer getFraction() {
         return fraction;
     }
 
     /**
      * @param fraction the fraction to set
      */
-    public void setFraction(int fraction) {
+    public void setFraction(Integer fraction) {
         this.fraction = fraction;
     }
 
