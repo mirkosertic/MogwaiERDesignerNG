@@ -131,6 +131,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
     @Override
     public Attribute<CustomType> createNewAttribute() {
         Attribute<CustomType> theNewAttribute = new Attribute<CustomType>();
+        theNewAttribute.setOwner(this);
         attributes.add(theNewAttribute);
         return theNewAttribute;
     }
