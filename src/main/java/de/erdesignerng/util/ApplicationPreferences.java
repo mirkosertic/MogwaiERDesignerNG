@@ -25,6 +25,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
@@ -597,9 +598,8 @@ public class ApplicationPreferences {
      *
      * @return the file
      */
-    public File getOnlineHelpPDFFile() {
-        File theDocFile = getRelativeFile("userdoc");
-        return new File(theDocFile, "Mogwai ERDesigner NG.pdf");
+    public URI getOnlineHelpPDFFile() throws Exception {
+        return new URL("http://mogwai.sourceforge.net/userdoc/MogwaiERDesignerNG.pdf").toURI();
     }
 
     public String getAutomaticRelationAttributePattern() {
