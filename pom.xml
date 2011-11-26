@@ -111,11 +111,6 @@
                                         <include name="**/*.sql"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="${staging.dir}/userdoc">
-                                    <fileset dir="${basedir}/userdoc">
-                                        <include name="**/*.pdf"/>
-                                    </fileset>
-                                </copy>
                                 <copy todir="${staging.dir}/icons">
                                     <fileset dir="${basedir}/src/main/resources/de/erdesignerng/icons">
                                         <include name="**/erdesigner_*.png"/>

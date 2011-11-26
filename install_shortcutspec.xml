@@ -12,13 +12,4 @@
               startMenu="yes" startup="no">
         <createForPack name="Base"/>
     </shortcut>
-    <shortcut name="Documentation"
-              target="$INSTALL_PATH\userdoc\Mogwai ERDesigner NG.pdf"
-              commandLine="" workingDirectory="$INSTALL_PATH"
-              description=""
-              initialState="normal"
-              programGroup="yes" desktop="no" applications="no"
-              startMenu="yes" startup="no">
-        <createForPack name="Docs"/>
-    </shortcut>
 </shortcuts>
