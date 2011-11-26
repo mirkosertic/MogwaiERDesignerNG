@@ -178,6 +178,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
     @Override
     public Attribute<Table> createNewAttribute() {
         Attribute<Table> theNewAttribute = new Attribute<Table>();
+        theNewAttribute.setOwner(this);
         attributes.add(theNewAttribute);
         return theNewAttribute;
     }
