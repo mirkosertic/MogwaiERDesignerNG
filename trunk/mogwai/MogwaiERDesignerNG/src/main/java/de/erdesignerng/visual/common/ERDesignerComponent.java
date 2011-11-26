@@ -50,6 +50,7 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -1190,9 +1191,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
      */
     protected void commandShowHelp() {
         try {
-            File theFile = ApplicationPreferences.getInstance()
+            URI theFile = ApplicationPreferences.getInstance()
                     .getOnlineHelpPDFFile();
-            Desktop.getDesktop().open(theFile);
+            Desktop.getDesktop().browse(theFile);
         } catch (Exception e) {
             worldConnector.notifyAboutException(e);
         }

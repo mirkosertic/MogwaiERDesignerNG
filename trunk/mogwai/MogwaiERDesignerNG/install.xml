@@ -75,10 +75,6 @@
             <executable os="mac" targetfile="$INSTALL_PATH/java3d/linux64/libj3dcore-ogl.so"
                         stage="never"/>
         </pack>
-        <pack name="Docs" required="yes" preselected="yes">
-            <description>The documentation</description>
-            <file src="userdoc" targetdir="$INSTALL_PATH"/>
-        </pack>
         <pack name="Sources" required="no" preselected="yes">
             <description>The sources</description>
             <file src="src" targetdir="$INSTALL_PATH"/>
