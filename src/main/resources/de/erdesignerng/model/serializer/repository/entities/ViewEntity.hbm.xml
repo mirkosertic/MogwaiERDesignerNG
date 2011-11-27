@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-lazy="false" package="de.erdesignerng.model.serializer.repository.entities">
-    <class name="ViewEntity" select-before-update="true" table="mogrep_views">
-        <id name="id">
-            <generator class="native"/>
-        </id>
-        <version name="version"/>
-        <property name="systemId" not-null="true"/>
-        <property name="creationUser" not-null="false"/>
-        <property name="creationDate" not-null="false"/>
-        <property name="lastModificationUser" not-null="false"/>
-        <property name="lastModificationDate" not-null="false"/>
-        <property name="name" not-null="true"/>
-        <property column="elementcomment" name="comment" not-null="false"
-                  type="org.hibernate.type.MaterializedClobType"/>
-        <property name="sqlstatement" not-null="true" type="org.hibernate.type.MaterializedClobType"/>
-        <list cascade="all-delete-orphan" name="properties" table="mogrep_view_props">
-            <key column="tableid" foreign-key="mogrep_view_props_fk1"/>
-            <list-index column="listindex"/>
-            <composite-element class="StringKeyValuePair">
-                <property column="propname" name="key" not-null="true"/>
-                <property column="propvalue" name="value" not-null="false"/>
-            </composite-element>
-        </list>
-        <property column="dbschema" name="schema" not-null="false"/>
-    </class>
+	<class name="ViewEntity" select-before-update="true" table="mogrep_views">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<version name="version"/>
+		<property name="systemId" not-null="true"/>
+		<property name="creationUser" not-null="false"/>
+		<property name="creationDate" not-null="false"/>
+		<property name="lastModificationUser" not-null="false"/>
+		<property name="lastModificationDate" not-null="false"/>
+		<property name="name" not-null="true"/>
+		<property column="elementcomment" name="comment" not-null="false" type="org.hibernate.type.MaterializedClobType"/>
+		<property name="sqlstatement" not-null="true" type="org.hibernate.type.MaterializedClobType"/>
+		<list cascade="all-delete-orphan" name="properties" table="mogrep_view_props">
+			<key column="tableid" foreign-key="mogrep_view_props_fk1"/>
+			<list-index column="listindex"/>
+			<composite-element class="StringKeyValuePair">
+				<property column="propname" name="key" not-null="true"/>
+				<property column="propvalue" name="value" not-null="false"/>
+			</composite-element>
+		</list>
+		<property column="dbschema" name="schema" not-null="false"/>
+	</class>
 </hibernate-mapping>
