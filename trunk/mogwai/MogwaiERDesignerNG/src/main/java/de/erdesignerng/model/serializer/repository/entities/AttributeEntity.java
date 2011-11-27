@@ -109,14 +109,14 @@ public class AttributeEntity extends ModelEntity {
     /**
      * @return the scale
      */
-    public int getScale() {
+    public Integer getScale() {
         return scale;
     }
 
     /**
      * @param scale the scale to set
      */
-    public void setScale(int scale) {
+    public void setScale(Integer scale) {
         this.scale = scale;
     }
 

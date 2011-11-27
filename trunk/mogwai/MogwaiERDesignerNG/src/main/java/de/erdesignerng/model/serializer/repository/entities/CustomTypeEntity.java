@@ -52,6 +52,7 @@ public class CustomTypeEntity extends ModelEntity implements AttributeEntityProv
         this.alias = alias;
     }
 
+	@Override
     public List<AttributeEntity> getAttributes() {
         return attributes;
     }
