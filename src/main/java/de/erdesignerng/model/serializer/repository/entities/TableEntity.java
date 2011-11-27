@@ -33,6 +33,7 @@ public class TableEntity extends ModelEntity implements AttributeEntityProvider 
 
     private String schema;
 
+	@Override
     public List<AttributeEntity> getAttributes() {
         return attributes;
     }
