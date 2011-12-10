@@ -25,8 +25,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 
@@ -230,7 +232,15 @@ public class UsageDataCollector {
                 theBuilder.append("D").append(COLUMN_SEPARATOR).append(theEntry.databaseProductName).append(COLUMN_SEPARATOR).append(theEntry.databaseProductVersion).append(COLUMN_SEPARATOR).append(theEntry.driverName).append(COLUMN_SEPARATOR).append(theEntry.driverVersion).append(ROW_SEPARATOR);
             }
 
+            HostConfiguration theConfiguration = new HostConfiguration();
+            String theProxyHost = System.getProperty("http.proxyHost");
+            String theProxyPort = System.getProperty("http.proxyPort");
+            if (!StringUtils.isEmpty(theProxyHost)) {
+                theConfiguration.setProxy(theProxyHost, Integer.valueOf(theProxyPort));
+            }
+
             HttpClient theClient = new HttpClient();
+            theClient.setHostConfiguration(theConfiguration);
             PostMethod thePost = new PostMethod(POST_URL.toString());
             thePost.setParameter("data", theBuilder.toString());
             int theCode = theClient.executeMethod(thePost);
