@@ -39,9 +39,9 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.client.looks.components.menu.DefaultRadioButtonMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -54,7 +54,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
 
 /**
  * The ERDesigner Editing Component.
@@ -205,13 +204,11 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         setEditor(new JGraphEditor() {
             @Override
             public void commandZoomOneLevelIn() {
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ZOOM_IN);
                 zoomIn();
             }
 
             @Override
             public void commandZoomOneLevelOut() {
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ZOOM_OUT);
                 zoomOut();
             }
         });
@@ -1330,8 +1327,6 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     public void commandOpenFile(File aFile) {
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.OPEN_FROM_FILE);
-
         FileInputStream theStream = null;
 
         try {

@@ -27,7 +27,6 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.UsageDataCollector;
 
 import javax.swing.*;
 import java.io.File;
@@ -45,8 +44,6 @@ public class SaveToFileCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SAVE_TO_FILE);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 

@@ -19,7 +19,6 @@ package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.databrowser.DataBrowserEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 
@@ -38,8 +37,6 @@ public class DataBrowserCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.DATABROWSER);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         DataBrowserEditor theEditor = new DataBrowserEditor(component

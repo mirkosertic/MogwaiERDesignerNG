@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.common;
 
 import de.erdesignerng.util.ConnectionDescriptor;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.connection.DatabaseConnectionEditor;
 
@@ -35,8 +34,6 @@ public class DBConnectionCommand extends UICommand {
     }
 
     public void execute(ConnectionDescriptor aConnection) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_DB_CONNECTION);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
         DatabaseConnectionEditor theEditor = new DatabaseConnectionEditor(

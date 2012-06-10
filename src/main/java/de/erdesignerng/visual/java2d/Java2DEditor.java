@@ -21,7 +21,6 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.*;
 import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.common.ERDesignerComponent;
 import de.erdesignerng.visual.common.GenericModelEditor;
 import de.erdesignerng.visual.common.ToolEnum;
@@ -31,9 +30,9 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -42,10 +41,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * Editor for Java2D Interactive Mode.
@@ -115,8 +110,6 @@ public class Java2DEditor implements GenericModelEditor {
         mainPanel.add(bottom, BorderLayout.SOUTH);
 
         UIInitializer.getInstance().initialize(mainPanel);
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDITOR_2DINTERACTIVE_MODE);
     }
 
     protected void componentClicked(EditorPanel.EditorComponent aComponent, MouseEvent aEvent) {

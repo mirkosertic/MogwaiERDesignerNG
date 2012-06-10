@@ -17,7 +17,6 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.connection.RepositoryConnectionEditor;
 
@@ -28,8 +27,6 @@ public class RepositoryConnectionCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_REPOSITORY);
 
         RepositoryConnectionEditor theEditor = new RepositoryConnectionEditor(
                 getDetailComponent());

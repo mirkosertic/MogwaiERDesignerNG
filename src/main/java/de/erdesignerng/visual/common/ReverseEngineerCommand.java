@@ -27,7 +27,6 @@ import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.LongRunningTask;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.reverseengineer.ReverseEngineerEditor;
 import de.erdesignerng.visual.editor.reverseengineer.TablesSelectEditor;
@@ -49,8 +48,6 @@ public class ReverseEngineerCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.REVERSE_ENGINEER);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 
