@@ -19,7 +19,6 @@ package de.erdesignerng.visual.editor.subjectarea;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
@@ -49,8 +48,6 @@ public class SubjectAreaEditor extends BaseEditor {
         bindingInfo.addBinding("name", editingView.getSubjectAreaName(), true);
 
         bindingInfo.configure();
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_SUBJECT_AREA);
     }
 
     /**

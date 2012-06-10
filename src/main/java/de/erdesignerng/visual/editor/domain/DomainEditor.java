@@ -26,7 +26,6 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.ModelItemDefaultCellRenderer;
 import de.erdesignerng.visual.editor.ModelItemNameCellEditor;
@@ -50,158 +49,156 @@ import java.util.List;
  */
 public class DomainEditor extends BaseEditor {
 
-	private final Model model;
+    private final Model model;
 
-	private DomainEditorView editingView;
+    private DomainEditorView editingView;
 
-	private final List<Domain> removedDomains = new ArrayList<Domain>();
+    private final List<Domain> removedDomains = new ArrayList<Domain>();
 
-	private final DefaultAction newDomainAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction newDomainAction = new DefaultAction(new ActionEventProcessor() {
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandNewDomain();
-		}
-	}, this, ERDesignerBundle.NEW);
+        @Override
+        public void processActionEvent(ActionEvent e) {
+            commandNewDomain();
+        }
+    }, this, ERDesignerBundle.NEW);
 
-	private final DefaultAction deleteDomainAction = new DefaultAction(new ActionEventProcessor() {
+    private final DefaultAction deleteDomainAction = new DefaultAction(new ActionEventProcessor() {
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandDeleteDomain(e);
-		}
-	}, this, ERDesignerBundle.DELETE);
+        @Override
+        public void processActionEvent(ActionEvent e) {
+            commandDeleteDomain(e);
+        }
+    }, this, ERDesignerBundle.DELETE);
 
-	private ModelItemNameCellEditor<Domain> domainEditor;
+    private ModelItemNameCellEditor<Domain> domainEditor;
 
-	public DomainEditor(Model aModel, Component aParent) {
-		super(aParent, ERDesignerBundle.DOMAINEDITOR);
-		initialize();
+    public DomainEditor(Model aModel, Component aParent) {
+        super(aParent, ERDesignerBundle.DOMAINEDITOR);
+        initialize();
 
-		DefaultComboBoxModel theDataTypes = editingView.getDataTypesModel();
-		for (DataType theType : aModel.getDomainDataTypes()) {
-			theDataTypes.addElement(theType);
-		}
+        DefaultComboBoxModel theDataTypes = editingView.getDataTypesModel();
+        for (DataType theType : aModel.getDomainDataTypes()) {
+            theDataTypes.addElement(theType);
+        }
 
-		DomainTableModel theModel = editingView.getDomainTableModel();
-		for (Domain theDomain : aModel.getDomains()) {
-			theModel.add(theDomain.clone());
-		}
+        DomainTableModel theModel = editingView.getDomainTableModel();
+        for (Domain theDomain : aModel.getDomains()) {
+            theModel.add(theDomain.clone());
+        }
 
-		model = aModel;
-		domainEditor = new ModelItemNameCellEditor<Domain>(model.getDialect());
-		editingView.getDomainTable().getColumnModel().getColumn(0).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
-		editingView.getDomainTable().getColumnModel().getColumn(0).setCellEditor(domainEditor);
-		editingView.getDomainTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				updateDomainEditFields();
-			}
-		});
+        model = aModel;
+        domainEditor = new ModelItemNameCellEditor<Domain>(model.getDialect());
+        editingView.getDomainTable().getColumnModel().getColumn(0).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
+        editingView.getDomainTable().getColumnModel().getColumn(0).setCellEditor(domainEditor);
+        editingView.getDomainTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                updateDomainEditFields();
+            }
+        });
 
-		updateDomainEditFields();
+        updateDomainEditFields();
 
-		UIInitializer.getInstance().initialize(this);
+        UIInitializer.getInstance().initialize(this);
+    }
 
-		UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_DOMAINS);
-	}
+    private void updateDomainEditFields() {
+        int theRow = editingView.getDomainTable().getSelectedRow();
+        if (theRow >= 0) {
+            deleteDomainAction.setEnabled(true);
+        } else {
+            deleteDomainAction.setEnabled(false);
+        }
+    }
 
-	private void updateDomainEditFields() {
-		int theRow = editingView.getDomainTable().getSelectedRow();
-		if (theRow >= 0) {
-			deleteDomainAction.setEnabled(true);
-		} else {
-			deleteDomainAction.setEnabled(false);
-		}
-	}
+    /**
+     * This method initializes this.
+     */
+    private void initialize() {
 
-	/**
-	 * This method initializes this.
-	 */
-	private void initialize() {
+        editingView = new DomainEditorView() {
+            @Override
+            protected void domainEditorRemoved(Domain aDomain) {
+                if (aDomain.getName() == null) {
+                    removeDomain(aDomain);
+                }
+            }
+        };
+        editingView.getOkButton().setAction(okAction);
+        editingView.getCancelButton().setAction(cancelAction);
 
-		editingView = new DomainEditorView() {
-			@Override
-			protected void domainEditorRemoved(Domain aDomain) {
-				if (aDomain.getName() == null) {
-					removeDomain(aDomain);
-				}
-			}
-		};
-		editingView.getOkButton().setAction(okAction);
-		editingView.getCancelButton().setAction(cancelAction);
+        editingView.getNewButton().setAction(newDomainAction);
+        editingView.getDeleteButton().setAction(deleteDomainAction);
 
-		editingView.getNewButton().setAction(newDomainAction);
-		editingView.getDeleteButton().setAction(deleteDomainAction);
+        setContentPane(editingView);
 
-		setContentPane(editingView);
+        pack();
+    }
 
-		pack();
-	}
+    private void commandDeleteDomain(java.awt.event.ActionEvent aEvent) {
 
-	private void commandDeleteDomain(java.awt.event.ActionEvent aEvent) {
+        Domain theDomain = editingView.getDomainTableModel().getRow(editingView.getDomainTable().getSelectedRow());
+        Table theTable = model.getTables().checkIfUsedByTable(theDomain);
+        if (theTable == null) {
 
-		Domain theDomain = editingView.getDomainTableModel().getRow(editingView.getDomainTable().getSelectedRow());
-		Table theTable = model.getTables().checkIfUsedByTable(theDomain);
-		if (theTable == null) {
+            if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
+                editingView.getDomainTableModel().remove(theDomain);
+                removedDomains.add(theDomain);
+            }
+        } else {
+            MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
+                    ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
+        }
+    }
 
-			if (MessagesHelper.displayQuestionMessage(this, ERDesignerBundle.DOYOUREALLYWANTTODELETE)) {
-				editingView.getDomainTableModel().remove(theDomain);
-				removedDomains.add(theDomain);
-			}
-		} else {
-			MessagesHelper.displayErrorMessage(this, getResourceHelper().getFormattedText(
-					ERDesignerBundle.DOMAINISINUSEBYTABLE, theTable.getName()));
-		}
-	}
+    private void commandNewDomain() {
 
-	private void commandNewDomain() {
+        Domain theNewAttribute = new Domain();
+        editingView.getDomainTableModel().add(theNewAttribute);
+        int theRow = editingView.getDomainTableModel().getRowCount();
+        editingView.getDomainTable().setRowSelectionInterval(theRow - 1, theRow - 1);
 
-		Domain theNewAttribute = new Domain();
-		editingView.getDomainTableModel().add(theNewAttribute);
-		int theRow = editingView.getDomainTableModel().getRowCount();
-		editingView.getDomainTable().setRowSelectionInterval(theRow - 1, theRow - 1);
+        editingView.getDomainTable().editCellAt(theRow - 1, 0);
+        domainEditor.getComponent().requestFocus();
+    }
 
-		editingView.getDomainTable().editCellAt(theRow - 1, 0);
-		domainEditor.getComponent().requestFocus();
-	}
+    @Override
+    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
-	@Override
-	public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
+        for (Domain aDomain : removedDomains) {
+            model.removeDomain(aDomain);
+        }
 
-		for (Domain aDomain : removedDomains) {
-			model.removeDomain(aDomain);
-		}
+        DomainTableModel theModel = editingView.getDomainTableModel();
+        for (int i = 0; i < theModel.getRowCount(); i++) {
+            Domain theDomain = theModel.getRow(i);
 
-		DomainTableModel theModel = editingView.getDomainTableModel();
-		for (int i = 0; i < theModel.getRowCount(); i++) {
-			Domain theDomain = theModel.getRow(i);
+            Domain theOriginalDomain = model.getDomains().findBySystemId(theDomain.getSystemId());
+            if (theOriginalDomain == null) {
+                model.addDomain(theDomain);
+            } else {
+                theOriginalDomain.restoreFrom(theDomain);
+            }
+        }
+    }
 
-			Domain theOriginalDomain = model.getDomains().findBySystemId(theDomain.getSystemId());
-			if (theOriginalDomain == null) {
-				model.addDomain(theDomain);
-			} else {
-				theOriginalDomain.restoreFrom(theDomain);
-			}
-		}
-	}
+    /**
+     * Set the selected domain.
+     *
+     * @param aDomain the selected domain
+     */
+    public void setSelectedDomain(Domain aDomain) {
+        int theIndex = editingView.getDomainTableModel().getRowIndex(aDomain);
+        editingView.getDomainTable().setRowSelectionInterval(theIndex, theIndex);
+    }
 
-	/**
-	 * Set the selected domain.
-	 *
-	 * @param aDomain the selected domain
-	 */
-	public void setSelectedDomain(Domain aDomain) {
-		int theIndex = editingView.getDomainTableModel().getRowIndex(aDomain);
-		editingView.getDomainTable().setRowSelectionInterval(theIndex, theIndex);
-	}
-
-	/**
-	 * Will be called if editing of a domain name was canceled and the name is null or empty.
-	 *
-	 * @param aDomain
-	 */
-	private void removeDomain(Domain aDomain) {
-		editingView.getDomainTableModel().remove(aDomain);
-	}
+    /**
+     * Will be called if editing of a domain name was canceled and the name is null or empty.
+     *
+     * @param aDomain
+     */
+    private void removeDomain(Domain aDomain) {
+        editingView.getDomainTableModel().remove(aDomain);
+    }
 }

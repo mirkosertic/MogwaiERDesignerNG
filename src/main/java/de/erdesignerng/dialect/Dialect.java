@@ -19,12 +19,7 @@ package de.erdesignerng.dialect;
 
 import de.erdesignerng.DialogUtils;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Domain;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
-import de.erdesignerng.visual.UsageDataCollector;
+import de.erdesignerng.model.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.sql.Connection;
@@ -235,9 +230,7 @@ public abstract class Dialect {
         theProperties.put("user", aUser);
         theProperties.put("password", aPassword);
 
-        Connection theConnection = theDriver.connect(aUrl, theProperties);
-        UsageDataCollector.getInstance().addConnectedDatabase(theConnection.getMetaData());
-        return theConnection;
+        return theDriver.connect(aUrl, theProperties);
     }
 
     public boolean isSupportsSchemaInformation() {

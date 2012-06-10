@@ -25,7 +25,6 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.validator.ValidationError;
@@ -98,8 +97,6 @@ public class CustomTypeEditor extends BaseEditor {
 
         UIInitializer.getInstance().initialize(this);
         updateTypeEditFields();
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_CUSTOM_TYPES);
     }
 
     /**

@@ -27,7 +27,6 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JDBCUtils;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.repository.MigrationScriptEditor;
 
 import java.sql.Connection;
@@ -39,8 +38,6 @@ public class GenerateMigrationScriptCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.GENERATE_MIGRATION_SCRIPT);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 

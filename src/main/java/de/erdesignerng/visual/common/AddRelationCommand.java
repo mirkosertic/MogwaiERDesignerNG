@@ -17,14 +17,8 @@
  */
 package de.erdesignerng.visual.common;
 
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.ModelUtilities;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 import de.erdesignerng.util.ApplicationPreferences;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.relation.RelationEditor;
 
@@ -43,8 +37,6 @@ public class AddRelationCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ADD_RELATION);
 
         Relation theRelation = createPreparedRelationFor(importingTable,
                 exportingTable);

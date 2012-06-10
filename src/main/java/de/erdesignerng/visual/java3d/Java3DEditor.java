@@ -28,13 +28,7 @@ import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
+import de.erdesignerng.model.*;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
 import de.erdesignerng.util.MavenPropertiesLocator;
@@ -42,13 +36,7 @@ import de.erdesignerng.visual.DisplayLevel;
 import de.erdesignerng.visual.DisplayOrder;
 import de.erdesignerng.visual.EditorFactory;
 import de.erdesignerng.visual.FadeInFadeOutHelper;
-import de.erdesignerng.visual.UsageDataCollector;
-import de.erdesignerng.visual.common.ContextMenuFactory;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.GenericModelEditor;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.ToolEnum;
-import de.erdesignerng.visual.common.ZoomInfo;
+import de.erdesignerng.visual.common.*;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.java2d.TableComponent;
@@ -63,40 +51,9 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 
-import javax.media.j3d.Appearance;
-import javax.media.j3d.Behavior;
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.DirectionalLight;
-import javax.media.j3d.Font3D;
-import javax.media.j3d.FontExtrusion;
-import javax.media.j3d.Geometry;
-import javax.media.j3d.Group;
-import javax.media.j3d.J3DGraphics2D;
-import javax.media.j3d.LineArray;
-import javax.media.j3d.LineAttributes;
-import javax.media.j3d.Node;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.Switch;
-import javax.media.j3d.Text3D;
-import javax.media.j3d.Texture;
-import javax.media.j3d.TextureAttributes;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.TransparencyAttributes;
-import javax.media.j3d.WakeupCondition;
-import javax.media.j3d.WakeupCriterion;
-import javax.media.j3d.WakeupOnAWTEvent;
-import javax.media.j3d.WakeupOr;
+import javax.media.j3d.*;
 import javax.swing.*;
-import javax.vecmath.Color3f;
-import javax.vecmath.Color4f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
+import javax.vecmath.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -104,14 +61,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Editor to show model as a 3D Scene.
@@ -589,8 +540,6 @@ public class Java3DEditor implements GenericModelEditor {
         mainPanel.add(bottom, BorderLayout.SOUTH);
 
         UIInitializer.getInstance().initialize(mainPanel);
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDITOR_3DINTERACTIVE_MODE);
     }
 
     private void editModelItem(ModelItem aItem) {

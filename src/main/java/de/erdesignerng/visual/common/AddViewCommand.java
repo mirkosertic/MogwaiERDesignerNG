@@ -19,7 +19,6 @@ package de.erdesignerng.visual.common;
 
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.view.ViewEditor;
 
@@ -35,8 +34,6 @@ public class AddViewCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ADD_VIEW);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 

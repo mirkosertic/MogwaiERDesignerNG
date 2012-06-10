@@ -23,17 +23,16 @@ import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.MavenPropertiesLocator;
 import de.erdesignerng.visual.common.*;
-import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
-import de.erdesignerng.visual.editor.usagedata.UsageDataEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultFrame;
 import de.mogwai.common.client.looks.components.DefaultToolbar;
 import de.mogwai.common.i18n.ResourceHelper;
+import org.apache.log4j.Logger;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import org.apache.log4j.Logger;
 
 /**
  * @author $Author: mirkosertic $
@@ -176,41 +175,7 @@ public class ERDesignerMainFrame extends DefaultFrame implements
     @Override
     public void setVisible(boolean aVisible) {
 
-        ApplicationPreferences thePreferences = ApplicationPreferences.getInstance();
-
-        if (aVisible == false) {
-            if (thePreferences.isUsageDataCollector()) {
-                if (thePreferences.isUsageDataCollectorAlways()) {
-                    UsageDataCollector.getInstance().flush();
-                } else {
-                    if (!thePreferences.isUsageDataCollectorNoThisTime()) {
-                        UsageDataEditor theEditor = new UsageDataEditor(this, false);
-                        if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                            try {
-                                theEditor.applyValues();
-                            } catch (Exception e1) {
-                                LOGGER.error(e1.getMessage(), e1);
-                            }
-                        }
-                    }
-                }
-                component.savePreferences();
-            }
-        }
-
         super.setVisible(aVisible);
-
-        if (aVisible && !thePreferences.isAskedForUsageDataCollection()) {
-            UsageDataEditor theEditor = new UsageDataEditor(this, true);
-            if (theEditor.showModal() == DialogConstants.MODAL_RESULT_OK) {
-                try {
-                    theEditor.applyValues();
-                } catch (Exception e1) {
-                    LOGGER.error(e1.getMessage(), e1);
-                }
-            }
-            thePreferences.setAskedForUsageDataCollection(true);
-        }
 
         if (aVisible) {
             ApplicationPreferences.getInstance().setWindowState(WINDOW_ALIAS,

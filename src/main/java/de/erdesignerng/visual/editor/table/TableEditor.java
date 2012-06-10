@@ -24,15 +24,9 @@ import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
 import de.erdesignerng.exception.ElementInvalidNameException;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.Index;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.IndexType;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Table;
+import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.ModelItemNameCellEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
@@ -215,7 +209,6 @@ public class TableEditor extends BaseEditor {
         updateAttributeEditFields();
 
         UIInitializer.getInstance().initialize(this);
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_TABLE);
     }
 
     /**

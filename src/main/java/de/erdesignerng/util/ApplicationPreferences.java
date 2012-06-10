@@ -19,10 +19,12 @@ package de.erdesignerng.util;
 
 import de.erdesignerng.model.CascadeType;
 import de.erdesignerng.visual.EditorMode;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.Window;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -31,12 +33,9 @@ import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
+import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import javax.swing.JFrame;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Class for handling application preferences, LRU-files and so on.
@@ -85,14 +84,6 @@ public class ApplicationPreferences {
 
     private static final String EDITORMODE = "editormode";
 
-    private static final String INSTALLATIONID = "installationId";
-
-    private static final String USAGEDATACOLLECTOR = "usageDataCollector";
-
-    private static final String USAGEDATACOLLECTORALWAYS = "usageDataCollectorAlways";
-
-    private static final String USAGEDATACOLLECTORASKEDFORPERMISSION = "usageDataCollectorAskedForPermission";
-
     private final int size;
 
     private final List<File> recentlyUsedFiles = new ArrayList<File>();
@@ -113,17 +104,7 @@ public class ApplicationPreferences {
 
     private File baseDir;
 
-    private String installationId;
-
-    private boolean askedForUsageDataCollection = false;
-
     private boolean intelligentLayout = true;
-
-    private boolean usageDataCollector = true;
-
-    private boolean usageDataCollectorAlways = false;
-
-    private boolean usageDataCollectorNoThisTime = false;
 
     private String automaticRelationAttributePattern;
 
@@ -218,10 +199,6 @@ public class ApplicationPreferences {
         size = 20;
         gridSize = preferences.getInt(GRIDSIZE, 10);
         intelligentLayout = preferences.getBoolean(INTELLIGENTLAYOUT, true);
-        usageDataCollector = preferences.getBoolean(USAGEDATACOLLECTOR, true);
-        usageDataCollectorAlways = preferences.getBoolean(USAGEDATACOLLECTORALWAYS, false);
-        askedForUsageDataCollection = preferences.getBoolean(USAGEDATACOLLECTORASKEDFORPERMISSION, false);
-        installationId = preferences.get(INSTALLATIONID, UUID.randomUUID().toString());
         automaticRelationAttributePattern = preferences.get(
                 AUTOMATICRELATIONATTRIBUTEPATTERN, "FK_{0}_{1}");
         windowLayout = preferences.getByteArray(LAYOUT, new byte[0]);
@@ -358,9 +335,6 @@ public class ApplicationPreferences {
         preferences.put(AUTOMATICRELATIONATTRIBUTEPATTERN,
                 automaticRelationAttributePattern);
         preferences.putBoolean(INTELLIGENTLAYOUT, intelligentLayout);
-        preferences.putBoolean(USAGEDATACOLLECTOR, usageDataCollector);
-        preferences.putBoolean(USAGEDATACOLLECTORALWAYS, usageDataCollectorAlways);
-        preferences.putBoolean(USAGEDATACOLLECTORASKEDFORPERMISSION, askedForUsageDataCollection);
         preferences.put(ONUPDATEDEFAULT, onUpdateDefault.toString());
         preferences.put(ONDELETEDEFAULT, onDeleteDefault.toString());
         preferences.putByteArray(LAYOUT, windowLayout);
@@ -385,7 +359,6 @@ public class ApplicationPreferences {
         }
 
         preferences.put(EDITORMODE, editorMode.toString());
-        preferences.put(INSTALLATIONID, installationId);
 
         preferences.flush();
     }
@@ -658,53 +631,5 @@ public class ApplicationPreferences {
 
     public void setEditorMode(EditorMode editorMode) {
         this.editorMode = editorMode;
-    }
-
-    public String getInstallationId() {
-        return installationId;
-    }
-
-    public void setInstallationId(String installationId) {
-        this.installationId = installationId;
-    }
-
-    public boolean isUsageDataCollector() {
-        return usageDataCollector;
-    }
-
-    public void setUsageDataCollector(boolean aState) {
-        if (!aState) {
-            usageDataCollectorAlways = false;
-        } else {
-            if (aState != usageDataCollector) {
-                // If the usage data collector is reenabled, we have to ask again for permission
-                askedForUsageDataCollection = false;
-            }
-        }
-        usageDataCollector = aState;
-    }
-
-    public boolean isUsageDataCollectorAlways() {
-        return usageDataCollectorAlways;
-    }
-
-    public void setUsageDataCollectorAlways(boolean usageDataCollectorAlways) {
-        this.usageDataCollectorAlways = usageDataCollectorAlways;
-    }
-
-    public boolean isUsageDataCollectorNoThisTime() {
-        return usageDataCollectorNoThisTime;
-    }
-
-    public void setUsageDataCollectorNoThisTime(boolean usageDataCollectorNoThisTime) {
-        this.usageDataCollectorNoThisTime = usageDataCollectorNoThisTime;
-    }
-
-    public boolean isAskedForUsageDataCollection() {
-        return askedForUsageDataCollection;
-    }
-
-    public void setAskedForUsageDataCollection(boolean askedForUsageDataCollection) {
-        this.askedForUsageDataCollection = askedForUsageDataCollection;
     }
 }
