@@ -26,7 +26,6 @@ import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.ConnectionDescriptor;
 import de.erdesignerng.util.JDBCUtils;
 import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.erdesignerng.visual.editor.repository.SaveToRepositoryEditor;
 
@@ -40,8 +39,6 @@ public class SaveToRepositoryCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SAVE_TO_REPOSITORY);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 

@@ -25,7 +25,6 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
@@ -69,7 +68,6 @@ public class ViewEditor extends BaseEditor {
         viewBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_VIEW);
     }
 
     /**

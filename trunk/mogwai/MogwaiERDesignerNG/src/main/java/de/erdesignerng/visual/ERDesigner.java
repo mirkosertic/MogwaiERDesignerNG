@@ -19,14 +19,15 @@ package de.erdesignerng.visual;
 
 import de.erdesignerng.dialect.DataTypeIO;
 import de.mogwai.common.client.looks.components.DefaultSplashScreen;
-import java.io.File;
-import java.io.IOException;
-import javax.swing.JFrame;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author $Author: mirkosertic $
@@ -62,9 +63,6 @@ public final class ERDesigner {
                 }
             }
         }
-
-        // Initialize the usage collection system
-        UsageDataCollector.getInstance().initialize();
 
         // Disable D3D rendering pipeline
         //System.setProperty("sun.java2d.d3d", "false");

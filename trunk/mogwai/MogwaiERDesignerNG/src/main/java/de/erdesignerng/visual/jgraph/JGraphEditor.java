@@ -27,41 +27,13 @@ import com.jgraph.layout.simple.SimpleGridLayout;
 import com.jgraph.layout.tree.JGraphRadialTreeLayout;
 import com.jgraph.layout.tree.JGraphTreeLayout;
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.model.Comment;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.ModelItem;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.SubjectArea;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.model.View;
+import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.util.SQLUtils;
-import de.erdesignerng.visual.DisplayLevel;
-import de.erdesignerng.visual.DisplayOrder;
-import de.erdesignerng.visual.ExportType;
-import de.erdesignerng.visual.LayoutHelper;
-import de.erdesignerng.visual.MessagesHelper;
-import de.erdesignerng.visual.UsageDataCollector;
-import de.erdesignerng.visual.common.AddCommentCommand;
-import de.erdesignerng.visual.common.AddRelationCommand;
-import de.erdesignerng.visual.common.AddTableCommand;
-import de.erdesignerng.visual.common.AddViewCommand;
-import de.erdesignerng.visual.common.ERDesignerComponent;
-import de.erdesignerng.visual.common.ExportGraphicsCommand;
-import de.erdesignerng.visual.common.GenericModelEditor;
-import de.erdesignerng.visual.common.OutlineComponent;
-import de.erdesignerng.visual.common.SQLComponent;
-import de.erdesignerng.visual.common.ToolEnum;
-import de.erdesignerng.visual.common.ZoomInfo;
-import de.erdesignerng.visual.jgraph.cells.CommentCell;
-import de.erdesignerng.visual.jgraph.cells.HideableCell;
-import de.erdesignerng.visual.jgraph.cells.ModelCell;
-import de.erdesignerng.visual.jgraph.cells.ModelCellWithPosition;
-import de.erdesignerng.visual.jgraph.cells.RelationEdge;
-import de.erdesignerng.visual.jgraph.cells.SubjectAreaCell;
-import de.erdesignerng.visual.jgraph.cells.TableCell;
-import de.erdesignerng.visual.jgraph.cells.ViewCell;
+import de.erdesignerng.visual.*;
+import de.erdesignerng.visual.common.*;
+import de.erdesignerng.visual.jgraph.cells.*;
 import de.erdesignerng.visual.jgraph.cells.views.CellViewFactory;
 import de.erdesignerng.visual.jgraph.cells.views.RelationEdgeView;
 import de.erdesignerng.visual.jgraph.cells.views.TableCellView;
@@ -69,11 +41,7 @@ import de.erdesignerng.visual.jgraph.export.Exporter;
 import de.erdesignerng.visual.jgraph.export.ImageExporter;
 import de.erdesignerng.visual.jgraph.export.SVGExporter;
 import de.erdesignerng.visual.jgraph.plaf.basic.ERDesignerGraphUI;
-import de.erdesignerng.visual.jgraph.tools.CommentTool;
-import de.erdesignerng.visual.jgraph.tools.EntityTool;
-import de.erdesignerng.visual.jgraph.tools.HandTool;
-import de.erdesignerng.visual.jgraph.tools.RelationTool;
-import de.erdesignerng.visual.jgraph.tools.ViewTool;
+import de.erdesignerng.visual.jgraph.tools.*;
 import de.mogwai.common.client.looks.components.DefaultScrollPane;
 import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
@@ -82,28 +50,16 @@ import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelperProvider;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.jgraph.event.GraphLayoutCacheEvent;
-import org.jgraph.event.GraphModelEvent;
-import org.jgraph.event.GraphModelListener;
-import org.jgraph.event.GraphSelectionEvent;
-import org.jgraph.event.GraphSelectionListener;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultGraphModel;
-import org.jgraph.graph.GraphLayoutCache;
-import org.jgraph.graph.GraphModel;
+import org.jgraph.event.*;
+import org.jgraph.graph.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class JGraphEditor extends DefaultScrollPane implements GenericModelEditor {
 
@@ -231,8 +187,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     public JGraphEditor() {
 
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDITOR_DIAGRAM_MODE);
-
         layout = new ERDesignerGraphLayout(this);
         setWheelScrollingEnabled(false);
         // We have to initialize the graph object.
@@ -244,8 +198,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     }
 
     protected void commandRemoveSubjectArea(SubjectAreaCell aCell) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.REMOVE_SUBJECT_AREA);
 
         graph.getGraphLayoutCache().remove(new Object[]{aCell});
 
@@ -294,8 +246,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     @Override
     public void commandSetDisplayLevel(DisplayLevel aLevel) {
 
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SET_DISPLAY_LEVEL);
-
         graph.setDisplayLevel(aLevel);
         repaintGraph();
     }
@@ -303,16 +253,12 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     @Override
     public void commandSetDisplayOrder(DisplayOrder aOrder) {
 
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SET_DISPLAY_ORDER);
-
         graph.setDisplayOrder(aOrder);
         repaintGraph();
     }
 
     @Override
     public void commandHideSubjectArea(SubjectArea aArea) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.HIDE_SUBJECT_AREA);
 
         for (Object theItem : graph.getGraphLayoutCache().getVisibleSet()) {
             if (theItem instanceof SubjectAreaCell) {
@@ -330,8 +276,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public void commandShowSubjectArea(SubjectArea aArea) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SHOW_SUBJECT_AREA);
 
         for (CellView theCellView : graph.getGraphLayoutCache()
                 .getHiddenCellViews()) {
@@ -389,23 +333,18 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     public void commandSetTool(ToolEnum aTool) {
         switch (aTool) {
             case HAND:
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.USE_TOOL_HAND);
                 graph.setTool(new HandTool(this, graph));
                 break;
             case ENTITY:
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.USE_TOOL_ENTITY);
                 graph.setTool(new EntityTool(this, graph));
                 break;
             case RELATION:
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.USE_TOOL_RELATION);
                 graph.setTool(new RelationTool(this, graph));
                 break;
             case COMMENT:
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.USE_TOOL_COMMENT);
                 graph.setTool(new CommentTool(this, graph));
                 break;
             case VIEW:
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.USE_TOOL_VIEW);
                 graph.setTool(new ViewTool(this, graph));
                 break;
         }
@@ -413,8 +352,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public void commandSetZoom(ZoomInfo aZoomInfo) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.SET_ZOOMLEVEL);
 
         graph.setScale(aZoomInfo.getValue());
 
@@ -479,8 +416,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
             @Override
             public void commandAddToNewSubjectArea(
                     List<DefaultGraphCell> aCells) {
-
-                UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ADD_TO_NEW_SUBJECTAREA);
 
                 super.commandAddToNewSubjectArea(aCells);
                 ERDesignerComponent.getDefault().updateSubjectAreasMenu();
@@ -659,16 +594,12 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     @Override
     public void commandSetDisplayCommentsState(boolean aState) {
 
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.CHANGE_DISPLAY_COMMENTS_STATE);
-
         graph.setDisplayComments(aState);
         repaintGraph();
     }
 
     @Override
     public void commandSetDisplayGridState(boolean aState) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.CHANGE_DISPLAY_GRID_STATE);
 
         graph.setGridEnabled(aState);
         graph.setGridVisible(aState);
@@ -688,7 +619,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public final void setIntelligentLayoutEnabled(boolean aStatus) {
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.CHANGE_INTELLIGENT_LAYOUT_STATE);
         if (!aStatus) {
             if (layoutThread != null) {
                 layoutThread.interrupt();
@@ -735,8 +665,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
     @Override
     public void commandAddToNewSubjectArea(List<ModelItem> aItems) {
 
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.ADD_TO_NEW_SUBJECTAREA);
-
         List<DefaultGraphCell> theCells = getCellsFor(aItems);
 
         if (theCells.size() > 0) {
@@ -747,8 +675,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
     @Override
     public void commandDelete(List<ModelItem> aItems) {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.DELETE_MODEL_ELEMENT);
 
         List<DefaultGraphCell> theCells = getCellsFor(aItems);
 
@@ -1005,7 +931,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_CLUSTER);
                         performClusterLayout();
                     }
 
@@ -1016,7 +941,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_TREE);
                         performTreeLayout();
                     }
 
@@ -1027,7 +951,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_RADIAL);
                         performRadialLayout();
                     }
 
@@ -1043,7 +966,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_GRID);
                         performJGraphSimpleGridLayout();
                     }
 
@@ -1054,7 +976,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_SELF_ORGANIZING);
                         performJGraphSelfOrganizingLayout();
                     }
 
@@ -1065,7 +986,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_ORGANIC);
                         performJGraphOrganicLayout();
                     }
 
@@ -1076,7 +996,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_FAST_ORGANIC);
                         performJGraphFastOrganicLayout();
                     }
 
@@ -1087,7 +1006,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_RADIAL_TREE);
                         performJGraphRadialTreeLayout();
                     }
 
@@ -1098,7 +1016,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_TREE2);
                         performJGraphTreeLayout2();
                     }
 
@@ -1109,7 +1026,6 @@ public class JGraphEditor extends DefaultScrollPane implements GenericModelEdito
 
                     @Override
                     public void processActionEvent(ActionEvent e) {
-                        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.LAYOUT_HIERARCHICAL);
                         performJGraphHierarchicalLayout();
                     }
 

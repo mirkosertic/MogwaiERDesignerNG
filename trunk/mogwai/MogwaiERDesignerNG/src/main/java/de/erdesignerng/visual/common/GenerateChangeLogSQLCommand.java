@@ -20,7 +20,6 @@ package de.erdesignerng.visual.common;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.ModelBasedConnectionProvider;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.erdesignerng.visual.editor.sql.SQLEditor;
 
 public class GenerateChangeLogSQLCommand extends UICommand {
@@ -34,8 +33,6 @@ public class GenerateChangeLogSQLCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.GENERATE_CHANGELOG);
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
 

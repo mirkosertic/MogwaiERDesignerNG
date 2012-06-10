@@ -22,7 +22,6 @@ import de.erdesignerng.PlatformConfig;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.util.JasperUtils;
 import de.erdesignerng.visual.LongRunningTask;
-import de.erdesignerng.visual.UsageDataCollector;
 import de.mogwai.common.client.looks.components.DefaultDialog;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
@@ -42,8 +41,6 @@ public class GenerateDocumentationCommand extends UICommand {
 
     @Override
     public void execute() {
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.GENERATE_DOCUMENTATION);
 
         final ERDesignerComponent component = ERDesignerComponent.getDefault();
 

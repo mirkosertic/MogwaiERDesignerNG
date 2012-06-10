@@ -19,13 +19,7 @@ package de.erdesignerng.visual.editor.relation;
 
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.RelationProperties;
-import de.erdesignerng.model.Attribute;
-import de.erdesignerng.model.CascadeType;
-import de.erdesignerng.model.IndexExpression;
-import de.erdesignerng.model.Model;
-import de.erdesignerng.model.Relation;
-import de.erdesignerng.model.Table;
-import de.erdesignerng.visual.UsageDataCollector;
+import de.erdesignerng.model.*;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.scaffolding.ScaffoldingUtils;
 import de.erdesignerng.visual.scaffolding.ScaffoldingWrapper;
@@ -85,8 +79,6 @@ public class RelationEditor extends BaseEditor {
         bindingInfo.addBinding("onUpdate", theOnUpdateAdapter);
 
         bindingInfo.configure();
-
-        UsageDataCollector.getInstance().addExecutedUsecase(UsageDataCollector.Usecase.EDIT_RELATION);
     }
 
     /**
