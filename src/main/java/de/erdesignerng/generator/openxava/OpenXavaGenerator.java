@@ -28,20 +28,9 @@ import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.PackageDeclaration;
-import japa.parser.ast.body.BodyDeclaration;
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.MethodDeclaration;
-import japa.parser.ast.body.ModifierSet;
-import japa.parser.ast.body.Parameter;
-import japa.parser.ast.body.TypeDeclaration;
-import japa.parser.ast.expr.AssignExpr;
+import japa.parser.ast.body.*;
+import japa.parser.ast.expr.*;
 import japa.parser.ast.expr.AssignExpr.Operator;
-import japa.parser.ast.expr.BooleanLiteralExpr;
-import japa.parser.ast.expr.IntegerLiteralExpr;
-import japa.parser.ast.expr.MemberValuePair;
-import japa.parser.ast.expr.NameExpr;
-import japa.parser.ast.expr.StringLiteralExpr;
 import japa.parser.ast.stmt.BlockStmt;
 import japa.parser.ast.stmt.ReturnStmt;
 import japa.parser.ast.type.ClassOrInterfaceType;
@@ -50,12 +39,7 @@ import japa.parser.ast.visitor.VoidVisitorAdapter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,11 +197,11 @@ public class OpenXavaGenerator {
                 List<MemberValuePair> theValues = new ArrayList<MemberValuePair>();
                 theValues.add(new MemberValuePair("name", new StringLiteralExpr(theAttribute.getName())));
 
-                if (theDataType.supportsSize()) {
+                if (theDataType.supportsSize() && theAttribute.getSize() != null) {
                     theValues.add(new MemberValuePair("length", new IntegerLiteralExpr(Integer.toString(theAttribute
                             .getSize()))));
                 }
-                if (theDataType.supportsFraction()) {
+                if (theDataType.supportsFraction() && theAttribute.getFraction() != null) {
                     theValues.add(new MemberValuePair("precision", new IntegerLiteralExpr(Integer.toString(theAttribute
                             .getFraction()))));
                 }
