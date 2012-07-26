@@ -98,9 +98,21 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
         return datatype;
     }
 
-    public void setDatatype(DataType datatype) {
+    public void setDatatype(DataType aDataType) {
         synchronized (this) {
-            this.datatype = datatype;
+            if (aDataType != null && aDataType != datatype) {
+                // Set the default values
+                if (aDataType.supportsSize()) {
+                    setSize(10);
+                }
+                if (aDataType.supportsFraction()) {
+                    setFraction(2);
+                }
+                if (aDataType.supportsScale()) {
+                    setScale(10);
+                }
+            }
+            datatype = aDataType;
         }
     }
 
