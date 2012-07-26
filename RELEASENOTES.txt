@@ -292,3 +292,4 @@ Release 3.0.0
 * Improved usability of domain editor
 * Added support for crowfoot notation
 * Added usage data collector
+* Bug Fixing 3547370 [ERDesignerNG] i can't open prederence
