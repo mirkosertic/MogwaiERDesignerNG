@@ -294,3 +294,4 @@ Release 3.0.0
 * Added usage data collector
 * Bug Fixing 3547370 [ERDesignerNG] i can't open prederence
 * Bug Fixing 3546245 [ERDesignerNG] NUMBER type without fraction -> error
+* Bug Fixing 3438699 [ERDesignerNG] NoClassError at creating documentation

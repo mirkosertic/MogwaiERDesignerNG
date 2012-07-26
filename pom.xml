@@ -364,10 +364,9 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>jasperreports</groupId>
+            <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>3.5.3</version>
-            <type>jar</type>
+            <version>4.6.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.javaparser</groupId>
