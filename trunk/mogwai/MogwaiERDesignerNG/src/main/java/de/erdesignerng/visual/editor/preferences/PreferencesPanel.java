@@ -27,7 +27,8 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.*;
 import de.mogwai.common.i18n.ResourceHelper;
 import de.mogwai.common.i18n.ResourceHelperProvider;
-import javax.swing.DefaultComboBoxModel;
+
+import javax.swing.*;
 
 public class PreferencesPanel extends DefaultPanel implements
         ResourceHelperProvider {
@@ -43,8 +44,6 @@ public class PreferencesPanel extends DefaultPanel implements
     private final DefaultSpinner gridWidth = new DefaultSpinner();
 
     private final DefaultSpinner xmlIndentation = new DefaultSpinner();
-
-    private final DefaultCheckBox usageDataCollector = new DefaultCheckBox("");
 
     private BindingInfo<ApplicationPreferences> bindinginfo;
 
@@ -95,9 +94,6 @@ public class PreferencesPanel extends DefaultPanel implements
         add(new DefaultLabel(ERDesignerBundle.XMLINDENTATION), cons.xy(2, 12));
         add(xmlIndentation, cons.xywh(4, 12, 3, 1));
 
-        add(new DefaultLabel(ERDesignerBundle.USAGEDATACOLLECTOR), cons.xy(2, 14));
-        add(usageDataCollector, cons.xywh(4, 14, 3, 1));
-
         UIInitializer.getInstance().initialize(this);
 
         bindinginfo = new BindingInfo<ApplicationPreferences>();
@@ -109,7 +105,6 @@ public class PreferencesPanel extends DefaultPanel implements
         bindinginfo.addBinding("gridWidthAfterReverseEngineering", gridWidth,
                 true);
         bindinginfo.addBinding("xmlIndentation", xmlIndentation, true);
-        bindinginfo.addBinding("usageDataCollector", usageDataCollector, true);
 
         bindinginfo.configure();
     }
