@@ -202,8 +202,8 @@ public class ModelComparator {
 
 				if (theViewFromDB.isModified(theView)) {
 					// View was redefined
-					theModelSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(theViewName));
-					theModelSideRootNode.add(theModelSideTableNode);
+					theDBSideTableNode = new DefaultMutableTreeNode(new RedefinedViewInfo(theViewName));
+					theDBSideRootNode.add(theDBSideTableNode);
 
 				} else {
 					// View exists in db
