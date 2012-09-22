@@ -88,7 +88,7 @@ public final class JasperUtils {
             throw new RuntimeException("Cannot extract query from Jasper template");
         }
 
-        Map<Object, Object> theParams = new HashMap<Object, Object>();
+        Map<String, Object> theParams = new HashMap<String, Object>();
         theParams.put(JRParameter.REPORT_LOCALE, Locale.getDefault());
 
         String theSubreportDir = theTemplateFile.getParent();
