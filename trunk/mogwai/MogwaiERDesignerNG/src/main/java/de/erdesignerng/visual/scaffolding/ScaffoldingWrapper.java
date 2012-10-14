@@ -26,17 +26,8 @@ public class ScaffoldingWrapper {
 
 	private final SwingMetawidget widget;
 
-	private final BeanUtilsBindingProcessor processor;
-
-	private boolean components;
-
-	public ScaffoldingWrapper(SwingMetawidget aWidget, BeanUtilsBindingProcessor aProcessor,
-			boolean aComponents) {
+	public ScaffoldingWrapper(SwingMetawidget aWidget) {
 		widget = aWidget;
-		processor = aProcessor;
-		components = aComponents;
-
-		widget.getPreferredSize();
 	}
 
 	public JComponent getComponent() {
@@ -44,10 +35,10 @@ public class ScaffoldingWrapper {
 	}
 
 	public void save() {
-		processor.save(widget);
+        widget.getWidgetProcessor(BeanUtilsBindingProcessor.class).save(widget);
 	}
 
 	public boolean hasComponents() {
-		return components;
+        return widget.getComponentCount() > 0;
 	}
 }

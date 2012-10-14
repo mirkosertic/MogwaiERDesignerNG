@@ -20,12 +20,8 @@ package de.erdesignerng.visual.scaffolding;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.Model;
 import de.mogwai.common.i18n.ResourceHelper;
-import org.metawidget.inspector.composite.CompositeInspector;
-import org.metawidget.inspector.composite.CompositeInspectorConfig;
-import org.metawidget.inspector.iface.Inspector;
-import org.metawidget.inspector.java5.Java5Inspector;
-import org.metawidget.inspector.propertytype.PropertyTypeInspector;
 import org.metawidget.swing.SwingMetawidget;
+import org.metawidget.swing.widgetbuilder.SwingWidgetBuilder;
 import org.metawidget.swing.widgetprocessor.binding.beanutils.BeanUtilsBindingProcessor;
 import org.metawidget.util.simple.StringUtils;
 
@@ -38,10 +34,6 @@ public final class ScaffoldingUtils {
 
 	public static ScaffoldingWrapper createScaffoldingPanelFor(
 			Model aModel, Object aObject) {
-
-		ERDesignerAnnotationInspector theInspector = new ERDesignerAnnotationInspector(
-				aModel);
-		BeanUtilsBindingProcessor theProcessor = new ERDesignerBeanUtilsBindingProcessor();
 
 		SwingMetawidget theMetaWidget = new SwingMetawidget() {
 
@@ -61,16 +53,25 @@ public final class ScaffoldingUtils {
 		theMetaWidget.setBundle(ResourceBundle
 				.getBundle(ERDesignerBundle.BUNDLE_NAME));
 
-		CompositeInspectorConfig inspectorConfig = new CompositeInspectorConfig().setInspectors(new Inspector[] {theInspector, new PropertyTypeInspector(), new Java5Inspector()});
-		theMetaWidget.setInspector(new CompositeInspector(inspectorConfig));
-		theMetaWidget.addWidgetProcessor(theProcessor);
-		theMetaWidget.setMetawidgetLayout(new JGoodiesTableLayout());
-		theMetaWidget.setWidgetBuilder(new MogwaiWidgetBuilder());
-		theMetaWidget.setToInspect(aObject);
 
-		// Force the computation of the widgets
-		theMetaWidget.getPreferredSize();
+        BeanUtilsBindingProcessor theProcessor = new BeanUtilsBindingProcessor() {
+            @Override
+            public Object convertFromString(String aValue, Class<?> aExpectedType) {
+                if (aValue == null) {
+                    return null;
+                }
+                if (aExpectedType.isEnum()) {
+                    Class theType = aExpectedType;
+                    return Enum.valueOf(theType, aValue);
+                }
+                return super.convertFromString(aValue, aExpectedType);
+            }
+        };
 
-		return new ScaffoldingWrapper(theMetaWidget, theProcessor, theInspector.getPropertyCount() > 0);
+        theMetaWidget.setWidgetBuilder(new SwingWidgetBuilder());
+        theMetaWidget.addWidgetProcessor(theProcessor);
+        theMetaWidget.setToInspect(aObject);
+
+		return new ScaffoldingWrapper(theMetaWidget);
 	}
 }
