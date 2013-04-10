@@ -296,3 +296,4 @@ Release 3.0.0
 * Bug Fixing 3546245 [ERDesignerNG] NUMBER type without fraction -> error
 * Bug Fixing 3438699 [ERDesignerNG] NoClassError at creating documentation
 * Bug Fixing 3537462 [ERDesignerNG] OpenXava generator fails on postgres varchar()
+* Bug Fixing NPE during domain loading
