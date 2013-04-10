@@ -35,9 +35,9 @@ public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 		theDomainElement.setAttribute(NAME, aDomain.getName());
 
 		theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
-		theDomainElement.setAttribute(SIZE, "" + aDomain.getSize());
-		theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
-		theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
+		theDomainElement.setAttribute(SIZE, safeString(aDomain.getSize()));
+		theDomainElement.setAttribute(FRACTION, safeString(aDomain.getFraction()));
+		theDomainElement.setAttribute(SCALE, safeString(aDomain.getScale()));
 	}
 
 	@Override
@@ -50,9 +50,9 @@ public class XMLDomainSerializer extends AbstractXMLDomainSerializer {
 			theDomain.setSystemId(theElement.getAttribute(ID));
 			theDomain.setName(theElement.getAttribute(NAME));
 			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theElement.getAttribute(DATATYPE)));
-			theDomain.setSize(Integer.parseInt(theElement.getAttribute(SIZE)));
-			theDomain.setFraction(Integer.parseInt(theElement.getAttribute(FRACTION)));
-			theDomain.setScale(Integer.parseInt(theElement.getAttribute(SCALE)));
+			theDomain.setSize(safeInteger(theElement.getAttribute(SIZE)));
+			theDomain.setFraction(safeInteger(theElement.getAttribute(FRACTION)));
+			theDomain.setScale(safeInteger(theElement.getAttribute(SCALE)));
 
 			aModel.getDomains().add(theDomain);
 		}
