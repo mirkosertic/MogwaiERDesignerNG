@@ -41,11 +41,10 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml30.
 		theDomainElement.setAttribute(DATATYPE, aDomain.getConcreteType().getName());
 
 		// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-		theDomainElement.setAttribute(SIZE, "" + ((aDomain.getSize() != null) ? aDomain.getSize() : ""));
-
-		theDomainElement.setAttribute(FRACTION, "" + aDomain.getFraction());
-		theDomainElement.setAttribute(SCALE, "" + aDomain.getScale());
-		theDomainElement.setAttribute(NULLABLE, "" + aDomain.isNullable());
+		theDomainElement.setAttribute(SIZE, safeString(aDomain.getSize()));
+		theDomainElement.setAttribute(FRACTION, safeString(aDomain.getFraction()));
+		theDomainElement.setAttribute(SCALE, safeString(aDomain.getScale()));
+		theDomainElement.setAttribute(NULLABLE, safeString(aDomain.isNullable()));
 	}
 
 	@Override
@@ -62,10 +61,9 @@ public class XMLDomainSerializer extends de.erdesignerng.model.serializer.xml30.
 			theDomain.setConcreteType(aModel.getDomainDataTypes().findByName(theDomainElement.getAttribute(DATATYPE)));
 
 			// Bug Fixing 2876916 [ERDesignerNG] Reverse-Eng. PgSQL VARCHAR max-length wrong
-			String theAttributeString = theDomainElement.getAttribute(SIZE);
-			theDomain.setSize((StringUtils.isEmpty(theAttributeString) || ("null".equals(theAttributeString))) ? null : Integer.parseInt(theAttributeString));
-			theDomain.setFraction(Integer.parseInt(theDomainElement.getAttribute(FRACTION)));
-			theDomain.setScale(Integer.parseInt(theDomainElement.getAttribute(SCALE)));
+			theDomain.setSize(safeInteger(theDomainElement.getAttribute(SIZE)));
+			theDomain.setFraction(safeInteger(theDomainElement.getAttribute(FRACTION)));
+			theDomain.setScale(safeInteger(theDomainElement.getAttribute(SCALE)));
 
 			String theNullable = theDomainElement.getAttribute(NULLABLE);
 			if (!StringUtils.isEmpty(theNullable)) {

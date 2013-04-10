@@ -11,7 +11,7 @@
             <author name="Jonathan Luckcuck" email="jluckcuck@users.sourceforge.net"/>
         </authors>
         <url>http://mogwai.sourceforge.net</url>
-        <javaversion>1.6</javaversion>
+        <javaversion>1.7</javaversion>
         <requiresjdk>no</requiresjdk>
         <run-privileged condition="izpack.windowsinstall|izpack.macinstall"/>
     </info>
