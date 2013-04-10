@@ -234,6 +234,7 @@
                     <verbose>false</verbose>
                     <processAttachedArtifacts>false</processAttachedArtifacts>
                     <processMainArtifact>false</processMainArtifact>
+                    <removeExistingSignatures>true</removeExistingSignatures>
                 </configuration>
             </plugin>
 
