@@ -44,7 +44,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author $Author: mirkosertic $
@@ -405,14 +404,4 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 		return aValue;
 	}
 
-	@Override
-	protected String convertColumnTypeToRealType(String aTypeName) {
-		for (Map.Entry<String, String> theAliasEntry : dialect.getDataTypeAliases().entrySet()) {
-			if (theAliasEntry.getKey().equalsIgnoreCase(aTypeName)) {
-				return theAliasEntry.getValue();
-			}
-		}
-
-		return aTypeName;
-	}
 }

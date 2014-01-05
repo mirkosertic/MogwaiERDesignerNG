@@ -20,14 +20,17 @@ package de.erdesignerng.dialect.postgres;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.GenericDataTypeImpl;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.dialect.Dialect;
 import java.sql.Types;
+import java.util.Map;
 
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-15 17:04:23 $
  */
-public final class PostgresDialect extends SQL92Dialect {
+public final class PostgresDialect extends Dialect {
+
+	public static final String ARRAY_INDICATOR = "[]";
 
 	public PostgresDialect() {
 		setSpacesAllowedInObjectNames(true);
@@ -169,7 +172,51 @@ public final class PostgresDialect extends SQL92Dialect {
 	}
 
 	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+		return new PostgresDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
+	}
+
+	@Override
 	public boolean supportsSpatialIndexes() {
 		return true;
 	}
+
+	@Override
+	protected void registerType(DataType aType) {
+		String anArrayDataTypeName = aType.getName() + ARRAY_INDICATOR;
+		String anArrayDataTypeNameAlias = "_" + aType.getName();
+
+		//register a common type, e.g. "integer"
+		super.registerType(aType);
+		//also register a common type as array of common type, e.g. "integer[]"...
+		super.registerType(createDataType(anArrayDataTypeName, aType.getDefinition(), aType.isIdentity(), true, aType.getJDBCType()));
+		//... and the appropriate system alias of the array of common type, e.g. "_integer" for "integer[]"
+		super.addDataTypeAlias(anArrayDataTypeNameAlias, anArrayDataTypeName);
+	}
+
+	@Override
+	public void addDataTypeAlias(String aDataTypeAlias, String aBaseDataTypeName) {
+		String aDataTypeAliasArrayName = aDataTypeAlias + ARRAY_INDICATOR;
+		String aDataTypeAliasArrayAliasName = "_" + aDataTypeAlias;
+		String aBaseDataTypeArrayName = aBaseDataTypeName + ARRAY_INDICATOR;
+
+		//register an alias of a real data type, e.g. "int4" for "integer"
+		super.addDataTypeAlias(aDataTypeAlias, aBaseDataTypeName);
+		//also register an array of alias, e.g. "int4[]" for "integer[]"...
+		super.addDataTypeAlias(aDataTypeAliasArrayName, aBaseDataTypeArrayName);
+		//... and the appropriate system alias of the array of alias, e.g. "_int4" for "integer[]"...
+		super.addDataTypeAlias(aDataTypeAliasArrayAliasName, aBaseDataTypeArrayName);
+	}
+
+	@Override
+	protected String convertTypeNameToRealTypeName(String aTypeName) {
+		for (Map.Entry<String, String> theAliasEntry : getDataTypeAliases().entrySet()) {
+			if (theAliasEntry.getKey().equalsIgnoreCase(aTypeName)) {
+				return theAliasEntry.getValue();
+			}
+		}
+
+		return aTypeName;
+	}
+
 }

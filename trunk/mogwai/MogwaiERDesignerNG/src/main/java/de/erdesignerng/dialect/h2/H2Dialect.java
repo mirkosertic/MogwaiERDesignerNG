@@ -22,7 +22,7 @@ import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.TableProperties;
 import de.erdesignerng.dialect.ViewProperties;
-import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.model.Index;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
@@ -33,103 +33,111 @@ import java.sql.Types;
  * @author $Author: gniddelgesicht $
  * @version $Date: 2008/11/15 17:04:23 $
  */
-public final class H2Dialect extends SQL92Dialect {
+public final class H2Dialect extends Dialect {
 
-    public H2Dialect() {
-        setSpacesAllowedInObjectNames(false);
-        setCaseSensitive(true);
-        setMaxObjectNameLength(255);
-        setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.UPPERCASE);
-        setSupportsColumnExtra(true);
+	public H2Dialect() {
+		setSpacesAllowedInObjectNames(false);
+		setCaseSensitive(true);
+		setMaxObjectNameLength(255);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.UPPERCASE);
+		setSupportsColumnExtra(true);
 
-        // registerType(new H2DataType("array", "", Types.ARRAY));
-        registerType(createDataType("bigint", "", Types.BIGINT));
-        registerType(createDataType("binary", "$size", Types.BINARY));
-        registerType(createDataType("blob", "$size", Types.BLOB));
-        registerType(createDataType("boolean", "", Types.BOOLEAN, Types.BIT));
-        registerType(createDataType("char", "$size", Types.CHAR));
-        registerType(createDataType("clob", "$size", Types.CLOB));
-        registerType(createDataType("date", "", Types.DATE));
-        registerType(createDataType("decimal", "$size,$fraction", Types.NUMERIC));
-        registerType(createDataType("double", "", Types.DOUBLE));
-        registerType(createDataType("float", "", Types.FLOAT));
-        registerType(createDataType("identity", "", true, Types.BIGINT));
-        registerType(createDataType("integer", "", Types.INTEGER));
-        registerType(createDataType("longvarbinary", "$size", Types.LONGVARBINARY, Types.SQLXML));
-        registerType(createDataType("longvarchar", "$size", Types.LONGVARCHAR));
-        registerType(createDataType("numeric", "$size,$fraction", Types.NUMERIC, Types.DECIMAL));
-        registerType(createDataType("real", "", Types.REAL));
-        registerType(createDataType("smallint", "", Types.SMALLINT));
-        registerType(createDataType("time", "", Types.TIME));
-        registerType(createDataType("timestamp", "", Types.TIMESTAMP));
-        registerType(createDataType("tinyint", "", Types.TINYINT));
-        registerType(createDataType("uuid", "$size", true, Types.BINARY));
-        registerType(createDataType("varbinary", "$size", Types.VARBINARY));
-        registerType(createDataType("varchar", "$size", Types.VARCHAR));
-        registerType(createDataType("varchar_ignorecase", "$size", Types.VARCHAR));
+		// registerType(new H2DataType("array", "", Types.ARRAY));
+		registerType(createDataType("bigint", "", Types.BIGINT));
+		registerType(createDataType("binary", "$size", Types.BINARY));
+		registerType(createDataType("blob", "$size", Types.BLOB));
+		registerType(createDataType("boolean", "", Types.BOOLEAN, Types.BIT));
+		registerType(createDataType("char", "$size", Types.CHAR));
+		registerType(createDataType("clob", "$size", Types.CLOB));
+		registerType(createDataType("date", "", Types.DATE));
+		registerType(createDataType("decimal", "$size,$fraction", Types.NUMERIC));
+		registerType(createDataType("double", "", Types.DOUBLE));
+		registerType(createDataType("float", "", Types.FLOAT));
+		registerType(createDataType("identity", "", true, Types.BIGINT));
+		registerType(createDataType("integer", "", Types.INTEGER));
+		registerType(createDataType("longvarbinary", "$size", Types.LONGVARBINARY, Types.SQLXML));
+		registerType(createDataType("longvarchar", "$size", Types.LONGVARCHAR));
+		registerType(createDataType("numeric", "$size,$fraction", Types.NUMERIC, Types.DECIMAL));
+		registerType(createDataType("real", "", Types.REAL));
+		registerType(createDataType("smallint", "", Types.SMALLINT));
+		registerType(createDataType("time", "", Types.TIME));
+		registerType(createDataType("timestamp", "", Types.TIMESTAMP));
+		registerType(createDataType("tinyint", "", Types.TINYINT));
+		registerType(createDataType("uuid", "$size", true, Types.BINARY));
+		registerType(createDataType("varbinary", "$size", Types.VARBINARY));
+		registerType(createDataType("varchar", "$size", Types.VARCHAR));
+		registerType(createDataType("varchar_ignorecase", "$size", Types.VARCHAR));
 
-        seal();
-    }
+		seal();
+	}
 
-    @Override
-    public H2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new H2ReverseEngineeringStrategy(this);
-    }
+	@Override
+	public H2ReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new H2ReverseEngineeringStrategy(this);
+	}
 
-    @Override
-    public String getUniqueName() {
-        return "H2Dialect";
-    }
+	@Override
+	public String getUniqueName() {
+		return "H2Dialect";
+	}
 
-    @Override
-    public String getDriverClassName() {
-        return "org.h2.Driver";
-    }
+	@Override
+	public String getDriverClassName() {
+		return "org.h2.Driver";
+	}
 
-    @Override
-    public String getDriverURLTemplate() {
-        return "jdbc:h2:<Path to database directory>";
-    }
+	@Override
+	public String getDriverURLTemplate() {
+		return "jdbc:h2:<Path to database directory>";
+	}
 
-    @Override
-    public H2SQLGenerator createSQLGenerator() {
-        return new H2SQLGenerator(this);
-    }
+	@Override
+	public H2SQLGenerator createSQLGenerator() {
+		return new H2SQLGenerator(this);
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        return org.hibernate.dialect.H2Dialect.class;
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		return org.hibernate.dialect.H2Dialect.class;
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
-        return new H2DataType(aName, aDefinition, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+		return new H2DataType(aName, aDefinition, aJdbcType);
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
-        return new H2DataType(aName, aDefinition, anIdentity, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+		return new H2DataType(aName, aDefinition, anIdentity, aJdbcType);
+	}
 
-    @Override
-    public TableProperties createTablePropertiesFor(Table aTable) {
-        H2TableProperties theResult = new H2TableProperties();
-        theResult.initializeFrom(aTable);
-        return theResult;
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+		return new H2DataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
+	}
 
-    @Override
-    public ViewProperties createViewPropertiesFor(View aView) {
-        H2ViewProperties theResult = new H2ViewProperties();
-        theResult.initializeFrom(aView);
-        return theResult;
-    }
+	@Override
+	public TableProperties createTablePropertiesFor(Table aTable) {
+		H2TableProperties theResult = new H2TableProperties();
+		theResult.initializeFrom(aTable);
 
-    @Override
-    public IndexProperties createIndexPropertiesFor(Index aIndex) {
-        H2IndexProperties theResult = new H2IndexProperties();
-        theResult.initializeFrom(aIndex);
-        return theResult;
-    }
+		return theResult;
+	}
+
+	@Override
+	public ViewProperties createViewPropertiesFor(View aView) {
+		H2ViewProperties theResult = new H2ViewProperties();
+		theResult.initializeFrom(aView);
+
+		return theResult;
+	}
+
+	@Override
+	public IndexProperties createIndexPropertiesFor(Index aIndex) {
+		H2IndexProperties theResult = new H2IndexProperties();
+		theResult.initializeFrom(aIndex);
+
+		return theResult;
+	}
 }

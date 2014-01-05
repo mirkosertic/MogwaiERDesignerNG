@@ -19,7 +19,7 @@ package de.erdesignerng.dialect.db2;
 
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.NameCastType;
-import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.dialect.Dialect;
 
 import java.sql.Types;
 
@@ -28,7 +28,7 @@ import java.sql.Types;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-02 14:20:18 $
  */
-public final class DB2Dialect extends SQL92Dialect {
+public final class DB2Dialect extends Dialect {
 
 	public DB2Dialect() {
 		setSpacesAllowedInObjectNames(false);
@@ -93,7 +93,13 @@ public final class DB2Dialect extends SQL92Dialect {
 	}
 
 	@Override
-	public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-		return new DB2DataType(aName, aDefinition, aIdentity, aJdbcType);
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+		return new DB2DataType(aName, aDefinition, anIdentity, aJdbcType);
 	}
+
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+		return new DB2DataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
+	}
+
 }
