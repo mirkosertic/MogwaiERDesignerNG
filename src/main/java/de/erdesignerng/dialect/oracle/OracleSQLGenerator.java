@@ -137,7 +137,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
 	@Override
 	protected String createCreateTableSuffix(Table aTable) {
-		StringBuffer theResult = new StringBuffer();
+		StringBuilder theResult = new StringBuilder();
 		OracleTableProperties theProperties = (OracleTableProperties) getDialect().createTablePropertiesFor(aTable);
 		if (!StringUtils.isEmpty(theProperties.getTableSpace())) {
 			theResult.append(" TABLESPACE ").append(theProperties.getTableSpace());
@@ -147,7 +147,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
 	@Override
 	protected String createCreateIndexSuffix(Index aIndex) {
-		StringBuffer theResult = new StringBuffer();
+		StringBuilder theResult = new StringBuilder();
 		OracleIndexProperties theProperties = (OracleIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
 		if (!StringUtils.isEmpty(theProperties.getTableSpace())) {
 			theResult.append(" TABLESPACE ").append(theProperties.getTableSpace());
@@ -157,7 +157,7 @@ public class OracleSQLGenerator extends SQL92SQLGenerator<OracleDialect> {
 
 	@Override
 	protected String createCreatePrimaryKeySuffix(Index aIndex) {
-		StringBuffer theResult = new StringBuffer();
+		StringBuilder theResult = new StringBuilder();
 		OracleIndexProperties theProperties = (OracleIndexProperties) getDialect().createIndexPropertiesFor(aIndex);
 		if (!StringUtils.isEmpty(theProperties.getTableSpace())) {
 			theResult.append(" TABLESPACE ").append(theProperties.getTableSpace());

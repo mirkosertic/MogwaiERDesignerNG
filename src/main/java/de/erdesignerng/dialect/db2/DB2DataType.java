@@ -30,11 +30,12 @@ public class DB2DataType extends GenericDataTypeImpl {
 		super(aName, aDefinition, aJdbcType);
 	}
 
-	public DB2DataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-		super(aName, aDefinition, aJdbcType);
-		identity = aIdentity;
-		if (aIdentity) {
-			maxOccursPerTable = 1;
-		}
+	public DB2DataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+		super(aName, aDefinition, anIdentity, aJdbcType);
 	}
+
+	public DB2DataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+		super(aName, aDefinition, anIdentity, anArray, aJdbcType);
+	}
+
 }

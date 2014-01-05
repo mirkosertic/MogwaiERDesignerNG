@@ -36,61 +36,62 @@ import java.util.List;
  */
 public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy<H2Dialect> {
 
-    public H2ReverseEngineeringStrategy(H2Dialect aDialect) {
-        super(aDialect);
-    }
+	public H2ReverseEngineeringStrategy(H2Dialect aDialect) {
+		super(aDialect);
+	}
 
-    @Override
-    public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
+	@Override
+	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
+		List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
 
-        List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+		DatabaseMetaData theMetadata = aConnection.getMetaData();
+		ResultSet theResult = theMetadata.getSchemas();
 
-        DatabaseMetaData theMetadata = aConnection.getMetaData();
-        ResultSet theResult = theMetadata.getSchemas();
+		while (theResult.next()) {
+			String theSchemaName = theResult.getString("TABLE_SCHEM");
+			String theCatalogName = null;
 
-        while (theResult.next()) {
-            String theSchemaName = theResult.getString("TABLE_SCHEM");
-            String theCatalogName = null;
+			theList.add(new SchemaEntry(theCatalogName, theSchemaName));
+		}
 
-            theList.add(new SchemaEntry(theCatalogName, theSchemaName));
-        }
+		return theList;
+	}
 
-        return theList;
-    }
+	@Override
+	protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView) throws SQLException {
+		PreparedStatement theStatement = null;
+		ResultSet theResult = null;
 
-    @Override
-    protected String reverseEngineerViewSQL(TableEntry aViewEntry, Connection aConnection, View aView)
-            throws SQLException {
-        PreparedStatement theStatement = null;
-        ResultSet theResult = null;
-        try {
-            theStatement = aConnection
-                    .prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?");
-            theStatement.setString(1, aViewEntry.getTableName());
-            theStatement.setString(2, aViewEntry.getSchemaName());
+		try {
+			theStatement = aConnection.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?");
+			theStatement.setString(1, aViewEntry.getTableName());
+			theStatement.setString(2, aViewEntry.getSchemaName());
 
-            theResult = theStatement.executeQuery();
-            if (theResult.next()) {
-                String theViewDefinition = theResult.getString("VIEW_DEFINITION");
-                theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
-                return theViewDefinition;
-            }
-            return null;
-        } finally {
-            if (theStatement != null) {
-                try {
-                    theStatement.close();
-                } catch (Exception e) {
-                    // ignore this
-                }
-            }
-            if (theResult != null) {
-                try {
-                    theResult.close();
-                } catch (Exception e) {
-                    // Ignore this
-                }
-            }
-        }
-    }
+			theResult = theStatement.executeQuery();
+			if (theResult.next()) {
+				String theViewDefinition = theResult.getString("VIEW_DEFINITION");
+				theViewDefinition = extractSelectDDLFromViewDefinition(theViewDefinition);
+				return theViewDefinition;
+			}
+
+			return null;
+
+		} finally {
+			if (theStatement != null) {
+				try {
+					theStatement.close();
+				} catch (SQLException e) {
+					// ignore this
+				}
+			}
+
+			if (theResult != null) {
+				try {
+					theResult.close();
+				} catch (SQLException e) {
+					// Ignore this
+				}
+			}
+		}
+	}
 }
