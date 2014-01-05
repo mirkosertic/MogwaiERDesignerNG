@@ -73,6 +73,10 @@ public abstract class ModelItem implements Serializable {
 		return properties;
 	}
 
+	public void setProperties(ModelProperties properties) {
+		this.properties = properties;
+	}
+
 	@Override
 	public String toString() {
 		return name;

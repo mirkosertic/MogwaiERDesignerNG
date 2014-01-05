@@ -29,7 +29,9 @@ import de.erdesignerng.model.Index;
 import de.erdesignerng.model.IndexExpression;
 import de.erdesignerng.model.IndexType;
 import de.erdesignerng.model.Model;
+import de.erdesignerng.model.ModelProperties;
 import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.RelationList;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.TableType;
 import de.erdesignerng.model.View;
@@ -37,6 +39,7 @@ import de.erdesignerng.modificationtracker.VetoException;
 import de.erdesignerng.util.SQLUtils;
 import de.erdesignerng.visual.MessagesHelper;
 import de.erdesignerng.visual.common.ERDesignerWorldConnector;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -46,8 +49,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -138,8 +143,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 			View theView = new View();
 
-			theView.setName(dialect.getCastType().cast(
-					aViewEntry.getTableName()));
+			theView.setName(dialect.getCastType().cast(aViewEntry.getTableName()));
 			theView.setOriginalName(aViewEntry.getTableName());
 			switch (aOptions.getTableNaming()) {
 				case INCLUDE_SCHEMA:
@@ -152,14 +156,12 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 				theView.setComment(theViewRemarks);
 			}
 
-			String theStatement = reverseEngineerViewSQL(aViewEntry,
-					aConnection, theView);
+			String theStatement = reverseEngineerViewSQL(aViewEntry, aConnection, theView);
 
 			try {
 				SQLUtils.updateViewAttributesFromSQL(theView, theStatement);
 			} catch (Exception e) {
-				LOGGER.warn("View " + theView.getName()
-						+ " has a strange SQL : " + theStatement);
+				LOGGER.warn("View " + theView.getName() + " has a strange SQL : " + theStatement);
 			}
 
 			theView.setSql(theStatement);
@@ -189,16 +191,19 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	/**
 	 * Reverse engineer an existing table.
 	 *
-	 * @param aModel	the model
-	 * @param aOptions	the options
-	 * @param aNotifier the notifier
+	 * @param aModel	  the model
+	 * @param aOptions	  the options
+	 * @param aNotifier   the notifier
 	 * @param aTableEntry the table
 	 * @param aConnection the connection
+	 * 
+	 * @return a Map of former ModelProperties of model items in case they have been replaced during reverse engineering into an existing model
+	 * 
 	 * @throws SQLException	is thrown in case of an error
 	 * @throws ReverseEngineeringException is thrown in case of an error
 	 */
-	protected final void reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
-
+	protected final  Map<String, ModelProperties> reverseEngineerTable(Model aModel, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier, TableEntry aTableEntry, Connection aConnection) throws SQLException, ReverseEngineeringException {
+		Map<String, ModelProperties> theExistingModelItemProperties = null;
 		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGTABLE, aTableEntry.getTableName());
 
 		DatabaseMetaData theMetaData = aConnection.getMetaData();
@@ -214,8 +219,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 			Table theNewTable = new Table();
 
-			theNewTable.setName(dialect.getCastType().cast(
-					aTableEntry.getTableName()));
+			theNewTable.setName(dialect.getCastType().cast(aTableEntry.getTableName()));
 			theNewTable.setOriginalName(aTableEntry.getTableName());
 			switch (aOptions.getTableNaming()) {
 				case INCLUDE_SCHEMA:
@@ -291,8 +295,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					theAttribute.setComment(theColumnRemarks);
 				}
 
-				// Search for the datatype in the domains, the dialect
-				// specific and the user defined datatypes
+				// Search for the datatype in the domains, the dialect specific and the user defined datatypes
 				DataType theDataType = aModel.getAvailableDataTypes().findByName(dialect.convertTypeNameToRealTypeName(theTypeName));
 
 				if (theDataType == null) {
@@ -342,13 +345,42 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			// We are done here
 			try {
 				aModel.addTable(theNewTable);
-			} catch (ElementAlreadyExistsException | ElementInvalidNameException | VetoException e) {
-				throw new ReverseEngineeringException(e.getMessage(), e);
-			}
+			} catch (ElementAlreadyExistsException e1) {
+				//this manages the reverse engineering into an existing model and cares only about the table names of the model that conflict with the new table names from the connection
+				//TODO: also care about tables that are no longer part of the connection, but still exist in the local model. E.g. show a dialog and ask the user what to do (delete/keep)
+				try {
+					//buffer the properties (e.g. position in model) of the existing table and its relations (e.g. the offset of the title) that are going to be replaced
+					Table theExistingTable = aModel.getTables().findByName(theNewTable.getName());
+					RelationList theExistingRelations = aModel.getRelations().getAllRelataionsOf(theExistingTable);
 
+					if (theExistingModelItemProperties == null) {
+						theExistingModelItemProperties = new HashMap<String, ModelProperties>();
+					}
+
+					//store former layouting data for the table and its relations in the old graph
+					theExistingModelItemProperties.put(theExistingTable.getName(), theExistingTable.getProperties());
+					LOGGER.info("graph layout properties for table '" + theExistingTable.getName() + "' taken from previous item.");
+					for (Relation anExistingRelation : theExistingRelations) {
+						theExistingModelItemProperties.put(anExistingRelation.getName(), anExistingRelation.getProperties());
+						LOGGER.info("graph layout properties for relation '" + anExistingRelation.getName() + "' taken from previous item.");
+					}
+
+					//remove old table and its relations
+					aModel.removeTable(theExistingTable);
+
+					//add the new table without relations
+					aModel.addTable(theNewTable);
+				} catch (ElementAlreadyExistsException | ElementInvalidNameException | VetoException e2) {
+					throw new ReverseEngineeringException(e2.getMessage());
+				}
+			} catch (ElementInvalidNameException | VetoException e3) {
+				 throw new ReverseEngineeringException(e3.getMessage());
+			}
 		}
 
 		theTablesResultSet.close();
+
+		return theExistingModelItemProperties;
 	}
 
 	protected void reverseEngineerPrimaryKey(Model aModel, TableEntry aTableEntry, DatabaseMetaData aMetaData, Table aTable) throws SQLException, ReverseEngineeringException {
@@ -364,13 +396,11 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			if (thePrimaryKeyIndex == null) {
 				thePrimaryKeyIndex = new Index();
 				thePrimaryKeyIndex.setIndexType(IndexType.PRIMARYKEY);
-				thePrimaryKeyIndex.setName(convertIndexNameFor(aTable,
-						thePKName));
+				thePrimaryKeyIndex.setName(convertIndexNameFor(aTable, thePKName));
 				thePrimaryKeyIndex.setOriginalName(thePKName);
 				if (StringUtils.isEmpty(thePrimaryKeyIndex.getName())) {
 					// Assume the default name is TABLE_NAME+"_PK"
-					thePrimaryKeyIndex.setName(aTableEntry.getTableName()
-							+ "_PK");
+					thePrimaryKeyIndex.setName(aTableEntry.getTableName() + "_PK");
 				}
 
 				try {
@@ -380,15 +410,13 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 				}
 			}
 
-			Attribute<Table> theIndexAttribute = aTable.getAttributes().findByName(
-					dialect.getCastType().cast(theColumnName));
+			Attribute<Table> theIndexAttribute = aTable.getAttributes().findByName(dialect.getCastType().cast(theColumnName));
 			if (theIndexAttribute == null) {
 				throw new ReverseEngineeringException("Cannot find attribute " + theColumnName + " in table " + aTable.getName());
 			}
 
 			try {
-				thePrimaryKeyIndex.getExpressions().addExpressionFor(
-						theIndexAttribute);
+				thePrimaryKeyIndex.getExpressions().addExpressionFor(theIndexAttribute);
 			} catch (ElementAlreadyExistsException e) {
 				throw new ReverseEngineeringException("Error adding index attribute", e);
 			}
@@ -495,8 +523,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			try {
 				aIndex.getExpressions().addExpressionFor(theIndexAttribute);
 			} catch (ElementAlreadyExistsException e) {
-				throw new ReverseEngineeringException(
-						"Error adding index attribute", e);
+				throw new ReverseEngineeringException("Error adding index attribute", e);
 			}
 		}
 	}
@@ -664,8 +691,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 				try {
 					aModel.addRelation(theRelation);
 				} catch (ElementAlreadyExistsException e) {
-					// This might happen for instance on DB2 databases
-					// We will try to generate a new name here!!!
+					// This might happen for instance on DB2 databases. We will try to generate a new name here!!!
 					int counter = 0;
 					String theNewName = null;
 					while (counter == 0 || aModel.getRelations().findByName(dialect.getCastType().cast(theNewName)) != null) {
@@ -704,7 +730,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	}
 
 	public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
-
+		Map<String, ModelProperties> theGlobalPreviousModelItemProperties =  new HashMap<String, ModelProperties>();
 		Exception theUDTError = null;
 
 		if (aModel.getDialect().isSupportsCustomTypes()) {
@@ -723,7 +749,10 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			if (TableType.VIEW.equals(theTable.getTableType())) {
 				reverseEngineerView(aModel, aOptions, aNotifier, theTable, aConnection);
 			} else {
-				reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);
+				Map<String, ModelProperties> theLocalPreviousModelItemProperties = reverseEngineerTable(aModel, aOptions, aNotifier, theTable, aConnection);
+				if (theLocalPreviousModelItemProperties != null) {
+					theGlobalPreviousModelItemProperties.putAll(theLocalPreviousModelItemProperties);
+				}
 			}
 		}
 
@@ -731,6 +760,22 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 			// Reverse engineer only relations for tables, not for views!
 			if (TableType.TABLE.equals(theTableEntry.getTableType())) {
 				reverseEngineerRelations(aModel, aOptions, aNotifier, theTableEntry, aConnection);
+			}
+		}
+
+		//transfer the properties of formerly removed tables/relations to the newly added tables/relations in case their types and names match
+		for (Map.Entry pairs : theGlobalPreviousModelItemProperties.entrySet()) {
+			String modelItemName = (String)pairs.getKey();
+			ModelProperties modelItemProperties = (ModelProperties)pairs.getValue();
+
+			Table theNewTable = aModel.getTables().findByName(modelItemName);
+			if (theNewTable != null) {
+				theNewTable.setProperties(modelItemProperties);
+			} else {
+				Relation theNewRelation = aModel.getRelations().findByName(modelItemName);
+				if (theNewRelation != null) {
+					theNewRelation.setProperties(modelItemProperties);
+				}
 			}
 		}
 
@@ -771,7 +816,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					if (theTemp != null) {
 						theSize = theTemp;
 					}
-				} catch (Exception e) {
+				} catch (SQLException e) {
 				}
 				try {
 					Integer theTemp = theResult.getInt("CHARACTER_MAXIMUM_LENGTH");
@@ -806,8 +851,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 						throw new ReverseEngineeringException(e.getMessage(), e);
 					}
 				} else {
-					throw new ReverseEngineeringException("Unknown data type "
-							+ theDataType + " for domain " + theDomainName);
+					throw new ReverseEngineeringException("Unknown data type " + theDataType + " for domain " + theDomainName);
 				}
 
 				reverseEngineerDomain(aModel, theDomain, aOptions, aNotifier, aConnection);
