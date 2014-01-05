@@ -300,5 +300,7 @@ Release 3.0.0
 
 Release 3.1.0
 
-* Implemented FR #212 [ERDesignerNG] Datatypes not reverse engineered correctly
 * Bug Fixing #181 Unknown data type: Integer[]
+* Implemented FR #166 [ERDesignerNG] support PgSQL datatype arrays (nestet sets) 
+* Implemented FR #212 [ERDesignerNG] Datatypes not reverse engineered correctly
+* Added support for reverse engineering into an existing model, preserving the in graph location of previous tables and relations
