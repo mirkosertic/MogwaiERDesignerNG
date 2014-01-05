@@ -23,27 +23,29 @@ import java.io.Serializable;
 
 public interface DataType extends Serializable {
 
-    String getName();
+	String getName();
 
-    boolean isDomain();
+	boolean isDomain();
 
-    boolean supportsSize();
+	boolean supportsSize();
 
-    boolean supportsFraction();
+	boolean supportsFraction();
 
-    boolean supportsScale();
+	boolean supportsScale();
 
-    boolean supportsExtra();
+	boolean supportsExtra();
 
-    boolean isJDBCStringType();
+	boolean isJDBCStringType();
 
-    String createTypeDefinitionFor(Attribute aAttribute);
+	String createTypeDefinitionFor(Attribute aAttribute);
 
-    boolean isIdentity();
+	boolean isIdentity();
 
-    int[] getJDBCType();
+	boolean isArray();
 
-    String getDefinition();
+	int[] getJDBCType();
 
-    boolean isSpatial();
+	String getDefinition();
+
+	boolean isSpatial();
 }

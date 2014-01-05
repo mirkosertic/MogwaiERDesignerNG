@@ -30,11 +30,12 @@ public class MySQLDataType extends GenericDataTypeImpl {
 		super(aName, aDefinition, aSQLType);
 	}
 
-	public MySQLDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-		super(aName, aDefinition, aJdbcType);
-		identity = aIdentity;
-		if (aIdentity) {
-			maxOccursPerTable = 1;
-		}
+	public MySQLDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+		super(aName, aDefinition, anIdentity, aJdbcType);
 	}
+
+	public MySQLDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+		super(aName, aDefinition, anIdentity, anArray, aJdbcDataType);
+	}
+
 }

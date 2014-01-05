@@ -30,11 +30,11 @@ public class HSQLDBDataType extends GenericDataTypeImpl {
 	}
 
 	public HSQLDBDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
-		super(aName, aDefinition, aJdbcDataType);
-
-		identity = anIdentity;
-		if (anIdentity) {
-			maxOccursPerTable = 1;
-		}
+		super(aName, aDefinition, anIdentity, aJdbcDataType);
 	}
+
+	public HSQLDBDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+		super(aName, aDefinition, anIdentity, anArray, aJdbcDataType);
+	}
+
 }

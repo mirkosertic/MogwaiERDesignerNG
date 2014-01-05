@@ -194,4 +194,9 @@ public class Domain extends OwnedModelItem<Model> implements ModelItemCloneable<
 	public void setNullable(boolean nullable) {
 		this.nullable = nullable;
 	}
+
+	@Override
+	public boolean isArray() {
+		return false;
+	}
 }

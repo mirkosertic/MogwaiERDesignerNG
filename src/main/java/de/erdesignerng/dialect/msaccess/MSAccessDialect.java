@@ -21,7 +21,7 @@ import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
 import de.erdesignerng.dialect.NameCastType;
 import de.erdesignerng.dialect.SQLGenerator;
-import de.erdesignerng.dialect.sql92.SQL92Dialect;
+import de.erdesignerng.dialect.Dialect;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -55,144 +55,149 @@ import java.util.Locale;
  * @see http://www.microsoft.com/downloads/details.aspx?FamilyID=
  *      7554f536-8c28-4598-9b72-ef94e038c891
  */
-public class MSAccessDialect extends SQL92Dialect {
+public final class MSAccessDialect extends Dialect {
 
-    private static final int ERROR_FILE_NOT_FOUND = -1811;
+	private static final int ERROR_FILE_NOT_FOUND = -1811;
 
-    private static final int ERROR_FILE_TOO_NEW = -1028;
+	private static final int ERROR_FILE_TOO_NEW = -1028;
 
-    @Override
-    public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+	@Override
+	public Connection createConnection(ClassLoader aClassLoader, String aDriver, String aUrl, String aUser, String aPassword, boolean aPromptForPassword) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
 
-        File workgroupFile;
-        String systemDB;
+		File workgroupFile;
+		String systemDB;
 
-        try {
-            workgroupFile = new File(getClass().getResource("/de/erdesignerng/System.mdw").toURI());
-            systemDB = "SystemDB=" + workgroupFile.getAbsoluteFile() + ";";
-        } catch (URISyntaxException ex) {
-            throw new RuntimeException("File '" + aUrl + "' not found!");
-        }
+		try {
+			workgroupFile = new File(getClass().getResource("/de/erdesignerng/System.mdw").toURI());
+			systemDB = "SystemDB=" + workgroupFile.getAbsoluteFile() + ";";
+		} catch (URISyntaxException ex) {
+			throw new RuntimeException("File '" + aUrl + "' not found!");
+		}
 
-        String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
-        Connection connection;
+		String database = "jdbc:odbc:Driver={" + aDriver + "};DBQ=" + aUrl + ";ExtendedAnsiSQL=1" + ";" + systemDB;
+		Connection connection;
 
-        try {
-            connection = DriverManager.getConnection(database, aUser, aPassword);
+		try {
+			connection = DriverManager.getConnection(database, aUser, aPassword);
 
-            // Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
-            // im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
-            // Um die Einstellungen der "echten" System.mdw in
-            // %APPDATA%\Microsoft\Access\System.mdw
-            // nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
-            Statement statement = connection.createStatement();
-            statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
-            statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
-            statement.execute("GRANT SELECT ON TABLE MSysQueries TO " + aUser);
+			// Schreibt die Berechtigung zum Lesen der angegebenen Tabellen in die
+			// im DSN-Parameter 'SystemDB' angegebene *.mdw Datei.
+			// Um die Einstellungen der "echten" System.mdw in
+			// %APPDATA%\Microsoft\Access\System.mdw
+			// nicht zu überschreiben wird eine "eigene" System.mdw benutzt.
+			Statement statement = connection.createStatement();
+			statement.execute("GRANT SELECT ON TABLE MSysObjects TO " + aUser);
+			statement.execute("GRANT SELECT ON TABLE MSysRelationships TO " + aUser);
+			statement.execute("GRANT SELECT ON TABLE MSysQueries TO " + aUser);
 
-        } catch (SQLException e) {
-            switch (e.getErrorCode()) {
-                case ERROR_FILE_TOO_NEW:
-                    int theVersion = MSAccessFormats.getVersion(aUrl);
+		} catch (SQLException e) {
+			switch (e.getErrorCode()) {
+				case ERROR_FILE_TOO_NEW:
+					int theVersion = MSAccessFormats.getVersion(aUrl);
 
-                    if (theVersion == MSAccessFormats.VERSION_2007) {
-                        throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu Öffnen.\n" +
-                                "Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
-                                "Diese können sie hier herunterladen:\n" +
-                                "http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage() + "\n" +
-                                "http://www.microsoft.com/downloads/details.aspx?FamilyID=6f4edeed-d83f-4c31-ae67-458ae365d420&displaylang=" + Locale.getDefault().getLanguage());
-                    } else if ((theVersion == MSAccessFormats.VERSION_200X) || (theVersion == MSAccessFormats.VERSION_2000) || (theVersion == MSAccessFormats.VERSION_2002) || (theVersion == MSAccessFormats.VERSION_2003)) {
-                        throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu �ffnen.\n" +
-                                "Dazu ben�tigen sie mindestens die Jet 4.0 Engine.\n\n" +
-                                "Diese k�nnen sie hier herunterladen:\n" +
-                                "http://www.microsoft.com/downloads/details.aspx?familyid=2deddec4-350e-4cd0-a12a-d7f70a153156&displaylang=" + Locale.getDefault().getLanguage());
-                    }
-                    break;
+					if (theVersion == MSAccessFormats.VERSION_2007) {
+						throw new SQLException("Sie versuchen eine Access 2007 Datenbank zu Öffnen.\n" +
+								"Dazu benötigen sie entweder eine Office 2007 Installtion oder die Office 2007 Datenkonnektivitätskomponenten.\n\n" +
+								"Diese können sie hier herunterladen:\n" +
+								"http://www.microsoft.com/downloads/details.aspx?FamilyID=7554F536-8C28-4598-9B72-EF94E038C891&displaylang=" + Locale.getDefault().getLanguage() + "\n" +
+								"http://www.microsoft.com/downloads/details.aspx?FamilyID=6f4edeed-d83f-4c31-ae67-458ae365d420&displaylang=" + Locale.getDefault().getLanguage());
+					} else if ((theVersion == MSAccessFormats.VERSION_200X) || (theVersion == MSAccessFormats.VERSION_2000) || (theVersion == MSAccessFormats.VERSION_2002) || (theVersion == MSAccessFormats.VERSION_2003)) {
+						throw new SQLException("Sie versuchen eine Access 2000+ Datenbank zu �ffnen.\n" +
+								"Dazu ben�tigen sie mindestens die Jet 4.0 Engine.\n\n" +
+								"Diese k�nnen sie hier herunterladen:\n" +
+								"http://www.microsoft.com/downloads/details.aspx?familyid=2deddec4-350e-4cd0-a12a-d7f70a153156&displaylang=" + Locale.getDefault().getLanguage());
+					}
+					break;
 
-                case ERROR_FILE_NOT_FOUND:
-                    throw new SQLException("Die Datei '" + aUrl + "' konnte nicht gefunden werden!");
+				case ERROR_FILE_NOT_FOUND:
+					throw new SQLException("Die Datei '" + aUrl + "' konnte nicht gefunden werden!");
 
-                default:
-                    throw new SQLException(e.getMessage());
-            }
+				default:
+					throw new SQLException(e.getMessage());
+			}
 
-            throw new SQLException(e.getMessage());
-        }
+			throw new SQLException(e.getMessage());
+		}
 
-        return connection;
-    }
+		return connection;
+	}
 
-    public MSAccessDialect() {
-        setSpacesAllowedInObjectNames(true);
-        setCaseSensitive(false);
-        setMaxObjectNameLength(64);
-        setNullablePrimaryKeyAllowed(false);
-        setCastType(NameCastType.NOTHING);
-        setSupportsCustomTypes(false);
-        setSupportsSchemaInformation(false);
+	public MSAccessDialect() {
+		setSpacesAllowedInObjectNames(true);
+		setCaseSensitive(false);
+		setMaxObjectNameLength(64);
+		setNullablePrimaryKeyAllowed(false);
+		setCastType(NameCastType.NOTHING);
+		setSupportsCustomTypes(false);
+		setSupportsSchemaInformation(false);
 
-        // @see http://msdn.microsoft.com/en-us/library/bb177899.aspx
-        registerType(createDataType("integer", "", Types.INTEGER)); // LONG
-        registerType(createDataType("varchar", "$size", Types.VARCHAR)); // TEXT
-        registerType(createDataType("counter", "", true, Types.INTEGER)); // AUTOINCREMENT
-        registerType(createDataType("datetime", "", Types.DATE)); // DATE
-        registerType(createDataType("byte", "", Types.TINYINT)); // BYTE
-        registerType(createDataType("bit", "", Types.BOOLEAN)); // YESNO
-        registerType(createDataType("longchar", "", Types.LONGNVARCHAR)); // MEMO
-        registerType(createDataType("smallint", "", Types.SMALLINT)); // INTEGER
-        registerType(createDataType("double", "", Types.DOUBLE)); // DOUBLE
-        registerType(createDataType("real", "", Types.REAL)); // SINGLE
-        registerType(createDataType("currency", "", Types.BIGINT)); // CURRENCY
-        registerType(createDataType("longbinary", "", Types.BLOB)); // OLE-Object
-        registerType(createDataType("decimal", "", Types.DECIMAL)); // DECIMAL
+		// @see http://msdn.microsoft.com/en-us/library/bb177899.aspx
+		registerType(createDataType("integer", "", Types.INTEGER)); // LONG
+		registerType(createDataType("varchar", "$size", Types.VARCHAR)); // TEXT
+		registerType(createDataType("counter", "", true, Types.INTEGER)); // AUTOINCREMENT
+		registerType(createDataType("datetime", "", Types.DATE)); // DATE
+		registerType(createDataType("byte", "", Types.TINYINT)); // BYTE
+		registerType(createDataType("bit", "", Types.BOOLEAN)); // YESNO
+		registerType(createDataType("longchar", "", Types.LONGNVARCHAR)); // MEMO
+		registerType(createDataType("smallint", "", Types.SMALLINT)); // INTEGER
+		registerType(createDataType("double", "", Types.DOUBLE)); // DOUBLE
+		registerType(createDataType("real", "", Types.REAL)); // SINGLE
+		registerType(createDataType("currency", "", Types.BIGINT)); // CURRENCY
+		registerType(createDataType("longbinary", "", Types.BLOB)); // OLE-Object
+		registerType(createDataType("decimal", "", Types.DECIMAL)); // DECIMAL
 
-        seal();
+		seal();
 
-    }
+	}
 
-    @Override
-    public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
-        return new MSAccessReverseEngineeringStrategy(this);
-    }
+	@Override
+	public JDBCReverseEngineeringStrategy getReverseEngineeringStrategy() {
+		return new MSAccessReverseEngineeringStrategy(this);
+	}
 
-    @Override
-    public String getUniqueName() {
-        return "MSAccessDialect (experimental)";
-    }
+	@Override
+	public String getUniqueName() {
+		return "MSAccessDialect (experimental)";
+	}
 
-    @Override
-    public String getDefaultUserName() {
-        return "Admin";
-    }
+	@Override
+	public String getDefaultUserName() {
+		return "Admin";
+	}
 
-    @Override
-    public String getDriverClassName() {
-        return "Microsoft Access Driver (*.mdb)";
-    }
+	@Override
+	public String getDriverClassName() {
+		return "Microsoft Access Driver (*.mdb)";
+	}
 
-    @Override
-    public String getDriverURLTemplate() {
-        return "C:\\<filename.mdb>";
-    }
+	@Override
+	public String getDriverURLTemplate() {
+		return "C:\\<filename.mdb>";
+	}
 
-    @Override
-    public SQLGenerator createSQLGenerator() {
-        return new MSAccessSQLGenerator(this);
-    }
+	@Override
+	public SQLGenerator createSQLGenerator() {
+		return new MSAccessSQLGenerator(this);
+	}
 
-    @Override
-    public Class getHibernateDialectClass() {
-        throw new UnsupportedOperationException("MSAccessDialect.getHibernateDialectClass() is not supported yet.");
-    }
+	@Override
+	public Class getHibernateDialectClass() {
+		throw new UnsupportedOperationException("MSAccessDialect.getHibernateDialectClass() is not supported yet.");
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
-        return new MSAccessDataType(aName, aDefinition, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, int... aJdbcType) {
+		return new MSAccessDataType(aName, aDefinition, aJdbcType);
+	}
 
-    @Override
-    public DataType createDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcType) {
-        return new MSAccessDataType(aName, aDefinition, aIdentity, aJdbcType);
-    }
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcType) {
+		return new MSAccessDataType(aName, aDefinition, anIdentity, aJdbcType);
+	}
+
+	@Override
+	public DataType createDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcType) {
+		return new MSAccessDataType(aName, aDefinition, anIdentity, anArray, aJdbcType);
+	}
 
 }

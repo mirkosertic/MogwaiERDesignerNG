@@ -18,6 +18,7 @@
 package de.erdesignerng.dialect.postgres;
 
 import de.erdesignerng.dialect.GenericDataTypeImpl;
+import de.erdesignerng.model.Attribute;
 
 /**
  * A DataType for PostgreSQL.
@@ -30,14 +31,49 @@ public class PostgresDataType extends GenericDataTypeImpl {
 		super(aName, aDefinition, aJdbcDataType);
 	}
 
-	public PostgresDataType(String aName, String aDefinition, boolean aIdentity, int... aJdbcDataType) {
-		super(aName, aDefinition, aJdbcDataType);
+	public PostgresDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
+		super(aName, aDefinition, anIdentity, aJdbcDataType);
+	}
 
-		identity = aIdentity;
-		if (aIdentity) {
-			maxOccursPerTable = 1;
+	public PostgresDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+		super(aName, aDefinition, anIdentity, anArray, aJdbcDataType);
+	}
+
+	@Override
+	public String createTypeDefinitionFor(Attribute aAttribute) {
+		String theBaseName;
+		String theReturn;
+
+		//first: remove the array indicating square brackets, if necessary
+		if (isArray()) {
+			theBaseName = name.replace(PostgresDialect.ARRAY_INDICATOR, "");
+		} else {
+			theBaseName = name;
 		}
 
+		//second: construct type parameters
+		if (definition == null) {
+			theReturn = theBaseName;
+		} else {
+			String theAppend = patternToType(aAttribute);
+			if (theAppend.length() == 0) {
+				theReturn = theBaseName;
+			} else {
+				int p = theBaseName.indexOf("(");
+				if (p > 0) {
+					theReturn = new StringBuilder(theBaseName).insert(p + 1, theAppend).toString();
+				} else {
+					theReturn = theBaseName + "(" + theAppend + ")";
+				}
+			}
+		}
+
+		//third: append array indicating square brackets again, if necessary
+		if (isArray()) {
+			theReturn = theReturn + PostgresDialect.ARRAY_INDICATOR;
+		}
+
+		return theReturn;
 	}
 
 }

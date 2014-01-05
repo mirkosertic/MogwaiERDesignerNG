@@ -30,11 +30,12 @@ public class OracleDataType extends GenericDataTypeImpl {
 		super(aName, aDefinition, aJdbcDataType);
 	}
 
-	public OracleDataType(String aName, String aDefinition, boolean aUseOnlyOnce, int... aJdbcDataType) {
-		super(aName, aDefinition, aJdbcDataType);
-		if (aUseOnlyOnce) {
-			maxOccursPerTable = 1;
-		}
+	public OracleDataType(String aName, String aDefinition, boolean anIdentity, int... aJdbcDataType) {
+		super(aName, aDefinition, anIdentity, aJdbcDataType);
+	}
+
+	public OracleDataType(String aName, String aDefinition, boolean anIdentity, boolean anArray, int... aJdbcDataType) {
+		super(aName, aDefinition, anIdentity, anArray, aJdbcDataType);
 	}
 
 }
