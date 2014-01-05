@@ -359,10 +359,8 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 					//store former layouting data for the table and its relations in the old graph
 					theExistingModelItemProperties.put(theExistingTable.getName(), theExistingTable.getProperties());
-					LOGGER.info("graph layout properties for table '" + theExistingTable.getName() + "' taken from previous item.");
 					for (Relation anExistingRelation : theExistingRelations) {
 						theExistingModelItemProperties.put(anExistingRelation.getName(), anExistingRelation.getProperties());
-						LOGGER.info("graph layout properties for relation '" + anExistingRelation.getName() + "' taken from previous item.");
 					}
 
 					//remove old table and its relations
