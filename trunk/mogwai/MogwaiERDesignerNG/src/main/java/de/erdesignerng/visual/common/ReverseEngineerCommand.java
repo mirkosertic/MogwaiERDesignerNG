@@ -41,8 +41,11 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class ReverseEngineerCommand extends UICommand {
+
+	private static final Logger LOGGER = Logger.getLogger(JDBCReverseEngineeringStrategy.class);
 
 	public ReverseEngineerCommand() {
 	}
@@ -160,6 +163,8 @@ public class ReverseEngineerCommand extends UICommand {
 						if (theItem.getProperties().getProperty(ModelItem.PROPERTY_LOCATION) == null) {
 							String theLocation = xoffset + ":" + yoffset;
 							theItem.getProperties().setProperty(ModelItem.PROPERTY_LOCATION, theLocation);
+						} else {
+							LOGGER.info("graph layout properties for item '" + theItem.getName() + "' taken from previous model.");
 						}
 
 						maxheight = Math.max(maxheight, theSize.height);
