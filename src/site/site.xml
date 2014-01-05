@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="Mogwai Java Tools">
+	<body>
+		<menu name="Mogwai ERDesignerNG">
+			<item name="About" href="index.html" />
+			<item name="Downloads" href="http://sourceforge.net/projects/mogwai/files/Mogwai%20ER-Designer%20NG/" />
+			<item name="SourceForge Project" href="http://sourceforge.net/projects/mogwai/" />
+			<item name="Mogwai" href="http://mogwai.sourceforge.net/" />
+		</menu>
+
+		<menu name="Libraries">
+			<item name="Apache Commons" href="www.apache.org" />
+			<item name="Apache Batik" href="www.apache.org" />
+			<item name="JGraph" href="www.jgraph.com" />
+			<item name="JGoodies" href="www.jgoodies.com" />
+			<item name="AnaglyphCanvas3D" href="http://sourceforge.net/projects/anaglyphcanvas3" />
+			<item name="JasperReports" href="http://jasperforge.org" />
+			<item name="InfoNode Docking Windows GPL Version" href="http://www.infonode.net/index.html?idw" />
+			<item name="Metawidget" href="http://www.metawidget.org" />
+<!--
+			<item name="Jackcess" href="http://jackcess.sourceforge.net/" />
+			<item name="Jackcess Encrypt" href="http://jackcessencrypt.sourceforge.net/" />
+-->
+		</menu>
+
+		<menu ref="reports"/>
+	</body>
+</project>
