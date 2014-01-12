@@ -90,16 +90,24 @@ public class VersionString implements Comparable<VersionString> {
 		return compareTo(other.version);
 	}
 
-	public boolean isLowerThan(String other) {
-		return (compareTo(other) < 0);
+	public boolean isEqual(String other) {
+		return (compareTo(other) == 0);
 	}
 
 	public boolean isHigherThan(String other) {
 		return (compareTo(other) > 0);
 	}
 
-	public boolean equals(String other) {
-		return (compareTo(other) == 0);
+	public boolean isHigherThanOrEqual(String other) {
+		return (compareTo(other) >= 0);
+	}
+
+	public boolean isLowerThan(String other) {
+		return (compareTo(other) < 0);
+	}
+
+	public boolean isLowerThanOrEqual(String other) {
+		return (compareTo(other) <= 0);
 	}
 
 }
