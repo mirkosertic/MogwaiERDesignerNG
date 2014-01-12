@@ -141,7 +141,7 @@ public final class SQLUtils {
 		}
 
 		theCurrentToken = theCurrentToken.trim();
-		if (!StringUtils.isEmpty(theCurrentToken)) {
+		if (StringUtils.isNotEmpty(theCurrentToken)) {
 			addViewAttribute(theCurrentToken, aView);
 		}
 	}

@@ -35,59 +35,59 @@ import java.io.IOException;
  */
 public final class ERDesigner {
 
-    private static final Logger LOGGER = Logger.getLogger(ERDesigner.class);
+	private static final Logger LOGGER = Logger.getLogger(ERDesigner.class);
 
-    private ERDesigner() {
-    }
+	private ERDesigner() {
+	}
 
-    public static void main(String[] args)
-            throws
-            IllegalAccessException,
-            TransformerException, IOException, ParserConfigurationException,
-            SAXException {
+	public static void main(String[] args)
+			throws
+			IllegalAccessException,
+			TransformerException, IOException, ParserConfigurationException,
+			SAXException {
 
-        String theFilenameToOpen = null;
-        if (args != null) {
-            for (String theArgument : args) {
-                LOGGER.info("Was called with argument :" + theArgument);
-            }
-            // In WebStart mode or standalone, there can be two options
-            // -open <filename>
-            // -print <filename>
-            if (args.length == 2) {
-                if ("-open".equals(args[0])) {
-                    theFilenameToOpen = args[1];
-                }
-                if ("-print".equals(args[0])) {
-                    theFilenameToOpen = args[1];
-                }
-            }
-        }
+		String theFilenameToOpen = null;
+		if (args != null) {
+			for (String theArgument : args) {
+				LOGGER.info("Was called with argument :" + theArgument);
+			}
+			// In WebStart mode or standalone, there can be two options
+			// -open <filename>
+			// -print <filename>
+			if (args.length == 2) {
+				if ("-open".equals(args[0])) {
+					theFilenameToOpen = args[1];
+				}
+				if ("-print".equals(args[0])) {
+					theFilenameToOpen = args[1];
+				}
+			}
+		}
 
-        // Disable D3D rendering pipeline
-        //System.setProperty("sun.java2d.d3d", "false");
+		// Disable D3D rendering pipeline
+		//System.setProperty("sun.java2d.d3d", "false");
 
-        DefaultSplashScreen theScreen = new DefaultSplashScreen(
-                "/de/erdesignerng/splashscreen.jpg");
-        theScreen.setVisible(true);
+		DefaultSplashScreen theScreen = new DefaultSplashScreen(
+				"/de/erdesignerng/splashscreen.jpg");
+		theScreen.setVisible(true);
 
-        DataTypeIO.getInstance().loadUserTypes();
+		DataTypeIO.getInstance().loadUserTypes();
 
-        final ERDesignerMainFrame frame = new ERDesignerMainFrame();
-        frame.setModel(frame.createNewModel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final ERDesignerMainFrame frame = new ERDesignerMainFrame();
+		frame.setModel(frame.createNewModel());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            // Just wait here :-)
-        }
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// Just wait here :-)
+		}
 
-        theScreen.setVisible(false);
-        frame.setVisible(true);
+		theScreen.setVisible(false);
+		frame.setVisible(true);
 
-        if (!StringUtils.isEmpty(theFilenameToOpen)) {
-            frame.commandOpenFile(new File(theFilenameToOpen));
-        }
-    }
+		if (StringUtils.isNotEmpty(theFilenameToOpen)) {
+			frame.commandOpenFile(new File(theFilenameToOpen));
+		}
+	}
 }
