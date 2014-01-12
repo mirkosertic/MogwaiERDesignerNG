@@ -48,199 +48,199 @@ import java.util.List;
  */
 public class ViewCellView extends VertexView {
 
-    private static final Comparator NAME_COMPARATOR = new BeanComparator("name", String.CASE_INSENSITIVE_ORDER);
+	private static final Comparator NAME_COMPARATOR = new BeanComparator("name", String.CASE_INSENSITIVE_ORDER);
 
-    private static final Comparator REVERSE_NAME_COMPARATOR = new ReverseComparator(NAME_COMPARATOR);
+	private static final Comparator REVERSE_NAME_COMPARATOR = new ReverseComparator(NAME_COMPARATOR);
 
-    private static final MyRenderer RENDERER = new MyRenderer();
+	private static final MyRenderer RENDERER = new MyRenderer();
 
-    public ViewCellView(ViewCell aCell) {
-        super(aCell);
-    }
+	public ViewCellView(ViewCell aCell) {
+		super(aCell);
+	}
 
-    @Override
-    public CellViewRenderer getRenderer() {
-        return RENDERER;
-    }
+	@Override
+	public CellViewRenderer getRenderer() {
+		return RENDERER;
+	}
 
-    public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
+	public static class MyRenderer extends VertexRenderer implements CellViewRenderer, Serializable {
 
-        private View view;
+		private View view;
 
-        private boolean selected;
+		private boolean selected;
 
-        private boolean includeComments;
+		private boolean includeComments;
 
-        private DisplayOrder displayOrder;
+		private DisplayOrder displayOrder;
 
-        public MyRenderer() {
-            setBackground(Color.white);
-        }
+		public MyRenderer() {
+			setBackground(Color.white);
+		}
 
-        private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
+		private void fillRect(Graphics aGraphics, int aX1, int aY1, int aWidth, int aHeight) {
 
-            aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
-        }
+			aGraphics.fillRect(aX1, aY1, aWidth, aHeight);
+		}
 
-        private void drawRect(Graphics aGraphics, int aY1, int aWidth, int aHeight) {
+		private void drawRect(Graphics aGraphics, int aY1, int aWidth, int aHeight) {
 
-            aGraphics.drawRect(0, aY1, aWidth, aHeight);
-        }
+			aGraphics.drawRect(0, aY1, aWidth, aHeight);
+		}
 
-        protected String getConvertedName(ModelItem aItem) {
-            String theText = aItem.getUniqueName();
-            if (includeComments) {
-                if (!StringUtils.isEmpty(aItem.getComment())) {
-                    theText += " (" + aItem.getComment() + ")";
-                }
-            }
-            return theText;
-        }
+		protected String getConvertedName(ModelItem aItem) {
+			String theText = aItem.getUniqueName();
+			if (includeComments) {
+				if (StringUtils.isNotEmpty(aItem.getComment())) {
+					theText += " (" + aItem.getComment() + ")";
+				}
+			}
+			return theText;
+		}
 
-        @Override
-        public void paint(Graphics aGraphics) {
+		@Override
+		public void paint(Graphics aGraphics) {
 
-            Dimension theSize = getSize();
-            int theWidth = theSize.width;
-            int theHeight = theSize.height;
+			Dimension theSize = getSize();
+			int theWidth = theSize.width;
+			int theHeight = theSize.height;
 
-            aGraphics.setFont(getFont());
-            aGraphics.setColor(getBackground());
+			aGraphics.setFont(getFont());
+			aGraphics.setColor(getBackground());
 
-            FontMetrics theMetrics = aGraphics.getFontMetrics();
+			FontMetrics theMetrics = aGraphics.getFontMetrics();
 
-            aGraphics.setColor(Color.black);
-            String theString = getConvertedName(view);
+			aGraphics.setColor(Color.black);
+			String theString = getConvertedName(view);
 
-            aGraphics.drawString(theString, 0, theMetrics.getAscent());
+			aGraphics.drawString(theString, 0, theMetrics.getAscent());
 
-            int theYOffset = theMetrics.getHeight();
+			int theYOffset = theMetrics.getHeight();
 
-            aGraphics.setColor(selected ? Color.blue : Color.black);
+			aGraphics.setColor(selected ? Color.blue : Color.black);
 
-            fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight - theYOffset - 5);
+			fillRect(aGraphics, 5, theYOffset + 5, theWidth - 5, theHeight - theYOffset - 5);
 
-            aGraphics.setColor(new Color(212, 255, 255));
+			aGraphics.setColor(new Color(212, 255, 255));
 
-            fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
+			fillRect(aGraphics, 0, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
-            aGraphics.setColor(selected ? Color.blue : Color.black);
+			aGraphics.setColor(selected ? Color.blue : Color.black);
 
-            drawRect(aGraphics, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
+			drawRect(aGraphics, theYOffset, theWidth - 5, theHeight - theYOffset - 6);
 
-            int theTextXOffset = 15;
+			int theTextXOffset = 15;
 
-            List<ViewAttribute> theTempList = new ArrayList<ViewAttribute>();
-            theTempList.addAll(view.getAttributes());
+			List<ViewAttribute> theTempList = new ArrayList<ViewAttribute>();
+			theTempList.addAll(view.getAttributes());
 
-            switch (displayOrder) {
-                case NATURAL:
-                    break;
-                case ASCENDING:
-                    Collections.sort(theTempList, NAME_COMPARATOR);
-                    break;
-                case DESCENDING:
-                    Collections.sort(theTempList, REVERSE_NAME_COMPARATOR);
-                    break;
-                default:
-                    throw new IllegalStateException("Unknown display order");
-            }
+			switch (displayOrder) {
+				case NATURAL:
+					break;
+				case ASCENDING:
+					Collections.sort(theTempList, NAME_COMPARATOR);
+					break;
+				case DESCENDING:
+					Collections.sort(theTempList, REVERSE_NAME_COMPARATOR);
+					break;
+				default:
+					throw new IllegalStateException("Unknown display order");
+			}
 
-            List<ViewAttribute> theAllAttributes = new ArrayList<ViewAttribute>();
-            theAllAttributes.addAll(theTempList);
+			List<ViewAttribute> theAllAttributes = new ArrayList<ViewAttribute>();
+			theAllAttributes.addAll(theTempList);
 
-            // Only do the following if there are any not primary key
-            // attributes
-            if (theAllAttributes.size() > 0) {
+			// Only do the following if there are any not primary key
+			// attributes
+			if (theAllAttributes.size() > 0) {
 
-                // Draw the attributes
-                for (ViewAttribute theAttribute : theAllAttributes) {
+				// Draw the attributes
+				for (ViewAttribute theAttribute : theAllAttributes) {
 
-                    theString = getConvertedName(theAttribute);
+					theString = getConvertedName(theAttribute);
 
-                    aGraphics.setColor(Color.black);
+					aGraphics.setColor(Color.black);
 
-                    aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
-                    theYOffset += theMetrics.getHeight();
-                }
-            }
-        }
+					aGraphics.drawString(theString, theTextXOffset, theYOffset + theMetrics.getAscent());
+					theYOffset += theMetrics.getHeight();
+				}
+			}
+		}
 
-        @Override
-        public Dimension getPreferredSize() {
+		@Override
+		public Dimension getPreferredSize() {
 
-            int theMaxX = 150;
-            int theMaxY = 8;
+			int theMaxX = 150;
+			int theMaxY = 8;
 
-            FontMetrics theMetrics = getFontMetrics(getFont());
+			FontMetrics theMetrics = getFontMetrics(getFont());
 
-            int theYOffset = theMetrics.getHeight();
-            int theXTextOffset = 30;
+			int theYOffset = theMetrics.getHeight();
+			int theXTextOffset = 30;
 
-            String theString = getConvertedName(view);
+			String theString = getConvertedName(view);
 
-            int theLength = theMetrics.stringWidth(theString);
-            if (theLength > theMaxX) {
-                theMaxX = theLength + 5;
-            }
+			int theLength = theMetrics.stringWidth(theString);
+			if (theLength > theMaxX) {
+				theMaxX = theLength + 5;
+			}
 
-            List<ViewAttribute> theAllAttributes = new ArrayList<ViewAttribute>();
-            theAllAttributes.addAll(view.getAttributes());
+			List<ViewAttribute> theAllAttributes = new ArrayList<ViewAttribute>();
+			theAllAttributes.addAll(view.getAttributes());
 
-            for (ViewAttribute theAttribute : theAllAttributes) {
+			for (ViewAttribute theAttribute : theAllAttributes) {
 
-                String theText = getConvertedName(theAttribute);
+				String theText = getConvertedName(theAttribute);
 
-                theLength = theMetrics.stringWidth(theText);
-                if (theLength + theXTextOffset > theMaxX) {
-                    theMaxX = theLength + theXTextOffset;
-                }
+				theLength = theMetrics.stringWidth(theText);
+				if (theLength + theXTextOffset > theMaxX) {
+					theMaxX = theLength + theXTextOffset;
+				}
 
-                theYOffset += theMetrics.getHeight();
-            }
+				theYOffset += theMetrics.getHeight();
+			}
 
-            theYOffset += 8;
-            theMaxX += 8;
+			theYOffset += 8;
+			theMaxX += 8;
 
-            Insets theInsets = getInsets();
-            theMaxX += theInsets.left + theInsets.right;
-            theMaxY += theInsets.top + theInsets.bottom;
+			Insets theInsets = getInsets();
+			theMaxX += theInsets.left + theInsets.right;
+			theMaxY += theInsets.top + theInsets.bottom;
 
-            if (theYOffset > theMaxY) {
-                theMaxY = theYOffset;
-            }
+			if (theYOffset > theMaxY) {
+				theMaxY = theYOffset;
+			}
 
-            return new Dimension(theMaxX, theMaxY);
-        }
+			return new Dimension(theMaxX, theMaxY);
+		}
 
-        @Override
-        public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
-                                              boolean aPreview) {
+		@Override
+		public Component getRendererComponent(JGraph aGraph, CellView aView, boolean aSelected, boolean aHasFocus,
+											  boolean aPreview) {
 
-            ViewCellView theView = (ViewCellView) aView;
-            view = (View) ((ViewCell) theView.getCell()).getUserObject();
-            selected = aSelected;
+			ViewCellView theView = (ViewCellView) aView;
+			view = (View) ((ViewCell) theView.getCell()).getUserObject();
+			selected = aSelected;
 
-            ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
-            displayOrder = theGraph.getDisplayOrder();
-            includeComments = theGraph.isDisplayComments();
+			ERDesignerGraph theGraph = (ERDesignerGraph) aGraph;
+			displayOrder = theGraph.getDisplayOrder();
+			includeComments = theGraph.isDisplayComments();
 
-            return this;
-        }
+			return this;
+		}
 
-        public JComponent getRendererComponent(View aView) {
-            view = aView;
-            selected = false;
+		public JComponent getRendererComponent(View aView) {
+			view = aView;
+			selected = false;
 
-            displayOrder = DisplayOrder.NATURAL;
-            includeComments = false;
+			displayOrder = DisplayOrder.NATURAL;
+			includeComments = false;
 
-            return this;
-        }
-    }
+			return this;
+		}
+	}
 
-    @Override
-    public GraphCellEditor getEditor() {
-        return new CellEditorFactory();
-    }
+	@Override
+	public GraphCellEditor getEditor() {
+		return new CellEditorFactory();
+	}
 }

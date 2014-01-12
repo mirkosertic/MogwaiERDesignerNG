@@ -229,7 +229,6 @@ public class DatabaseConnectionEditor extends BaseEditor {
 	}
 
 	private String getSetting(String aPrimarySetting, String aSecondarySetting) {
-		return !StringUtils.isEmpty(aPrimarySetting) ? aPrimarySetting
-				: aSecondarySetting;
+		return StringUtils.isNotEmpty(aPrimarySetting) ? aPrimarySetting : aSecondarySetting;
 	}
 }

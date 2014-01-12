@@ -134,10 +134,10 @@ public abstract class AbstractReverseEngineeringTestImpl extends
 		Statement theStatement = aConnection.createStatement();
 		while (theReader.ready()) {
 			String theLine = theReader.readLine();
-			if (!StringUtils.isEmpty(theLine)) {
+			if (StringUtils.isNotEmpty(theLine)) {
 				theLine = theLine.trim();
 			}
-			if (!StringUtils.isEmpty(theLine)) {
+			if (StringUtils.isNotEmpty(theLine)) {
 				System.out.println(theLine);
 				theStatement.execute(theLine);
 			}
@@ -156,7 +156,7 @@ public abstract class AbstractReverseEngineeringTestImpl extends
 		StringTokenizer theST = new StringTokenizer(theSQL, ";");
 		while (theST.hasMoreTokens()) {
 			String theSingleSQL = theST.nextToken();
-			if (!StringUtils.isEmpty(theSingleSQL)) {
+			if (StringUtils.isNotEmpty(theSingleSQL)) {
 				theStatement.execute(theSingleSQL);
 			}
 		}
