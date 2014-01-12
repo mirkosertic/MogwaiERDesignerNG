@@ -86,7 +86,7 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 			"DAY_MICROSECOND", "DAY_MINUTE", "DAY_SECOND", "DBCC", "DEC", "DECIMAL",
 			"DECLARE", "DEFAULT", "DEFERRED", "DEFFERABLE", "DELAYED", "DELETE",
 			"DELIMITER", "DELIMITERS", "DETERMINISTIC", "DISK", "DISTINCTROW",
-			"DIV", "DO", "DOUBLE", "DROP", "DUAL", "DUMMY", "DUMP", "EACH", "ELSE",
+			"DIV", "DO", "DOMAIN", "DOUBLE", "DROP", "DUAL", "DUMMY", "DUMP", "EACH", "ELSE",
 			"ELSEIF", "ELSIF", "ENCLOSED", "END", "ENDTRAN", "ENUM", "ERRLVL", "ERRORDATA",
 			"ERROREXIT", "ESCAPED", "EXCEPTION", "EXCLUSIVE", "EXECUTE", "EXISTS",
 			"EXIT", "EXPLAIN", "EXTEND", "FALSE", "FILE", "FILLFACTOR", "FIRST",
@@ -252,6 +252,9 @@ public final class SQLSyntaxDocument extends DefaultStyledDocument {
 	/**
 	 * Overrides any text insertion in the document. Inserted text is
 	 * highlighted.
+	 * 
+	 * @param offset
+	 * @throws javax.swing.text.BadLocationException
 	 */
 	@Override
 	public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
