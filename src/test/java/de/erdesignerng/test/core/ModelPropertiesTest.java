@@ -26,14 +26,14 @@ public class ModelPropertiesTest extends TestCase {
         ModelProperties theProperties = new ModelProperties();
         theProperties.setProperty("K1", "V1");
         theProperties.setProperty("K2", "V2");
-        assert (theProperties.isModified(theProperties) == false);
+        assert (!theProperties.isModified(theProperties));
     }
 
     public void testNotModified1() {
         ModelProperties theProperties = new ModelProperties();
         theProperties.setProperty("K1", null);
         theProperties.setProperty("K2", "V2");
-        assert (theProperties.isModified(theProperties) == false);
+        assert (!theProperties.isModified(theProperties));
     }
 
     public void testModified1() {

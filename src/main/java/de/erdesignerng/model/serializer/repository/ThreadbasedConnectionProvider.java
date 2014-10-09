@@ -25,7 +25,7 @@ import java.util.Properties;
 
 public class ThreadbasedConnectionProvider implements ConnectionProvider {
 
-	private static final ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
+	private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
 	public static void initializeForThread(Connection aConnection) {
 		connection.set(aConnection);

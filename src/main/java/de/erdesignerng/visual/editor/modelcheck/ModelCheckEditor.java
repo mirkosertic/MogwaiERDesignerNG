@@ -27,7 +27,6 @@ import de.erdesignerng.visual.common.OutlineComponent;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 import org.apache.log4j.Logger;
@@ -36,7 +35,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
+import java.util.List;
 
 /**
  * Editor for model checks.
@@ -49,27 +48,15 @@ public class ModelCheckEditor extends BaseEditor {
     private static final Logger LOGGER = Logger.getLogger(ModelCheckEditor.class);
 
     private final DefaultAction closeAction = new DefaultAction(
-            new ActionEventProcessor() {
-
-                @Override
-                public void processActionEvent(ActionEvent e) {
-                    commandClose();
-                }
-            }, this, ERDesignerBundle.CLOSE);
+            e -> commandClose(), this, ERDesignerBundle.CLOSE);
 
     private final DefaultAction quickFixAction = new DefaultAction(
-            new ActionEventProcessor() {
-
-                @Override
-                public void processActionEvent(ActionEvent e) {
-                    commandApplyQuickFix();
-                }
-            }, this, ERDesignerBundle.APPLYQUICKFIX);
+            e -> commandApplyQuickFix(), this, ERDesignerBundle.APPLYQUICKFIX);
 
 
-    private ModelCheckEditorView view = new ModelCheckEditorView();
+    private final ModelCheckEditorView view = new ModelCheckEditorView();
 
-    private Model model;
+    private final Model model;
 
     public ModelCheckEditor(Component aParent, Model aModel) {
         super(aParent, ERDesignerBundle.MODELCHECKRESULT);
@@ -87,18 +74,16 @@ public class ModelCheckEditor extends BaseEditor {
         theChecker.check(model);
 
         DefaultListModel theModel = view.getErrorList().getModel();
-        for (ModelError theError : theChecker.getErrors()) {
-            theModel.add(theError);
-        }
+        theChecker.getErrors().forEach(theModel::add);
         view.getErrorList().setCellRenderer(new ErrorRenderer());
         view.getErrorList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         view.getErrorList().addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                Object[] theSelection = view.getErrorList().getSelectedValues();
+                List<Object> theSelection = view.getErrorList().getSelectedValuesList();
                 quickFixAction
-                        .setEnabled(theSelection != null && theSelection.length > 0);
+                        .setEnabled(theSelection != null && theSelection.size() > 0);
             }
         });
 
@@ -129,7 +114,7 @@ public class ModelCheckEditor extends BaseEditor {
     }
 
     private void commandApplyQuickFix() {
-        for (Object theEntry : view.getErrorList().getSelectedValues()) {
+        for (Object theEntry : view.getErrorList().getSelectedValuesList()) {
             ModelError theError = (ModelError) theEntry;
             QuickFix theFix = theError.getQuickFix();
             if (theFix != null) {

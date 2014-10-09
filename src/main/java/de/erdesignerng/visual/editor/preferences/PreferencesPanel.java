@@ -96,7 +96,7 @@ public class PreferencesPanel extends DefaultPanel implements
 
         UIInitializer.getInstance().initialize(this);
 
-        bindinginfo = new BindingInfo<ApplicationPreferences>();
+        bindinginfo = new BindingInfo<>();
         bindinginfo.addBinding("gridSize", gridSize, true);
         bindinginfo.addBinding("automaticRelationAttributePattern",
                 automaticRelationAttributePattern, true);

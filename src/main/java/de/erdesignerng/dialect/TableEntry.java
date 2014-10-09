@@ -10,9 +10,9 @@ import de.erdesignerng.model.TableType;
  */
 public class TableEntry extends SchemaEntry {
 
-	private String tableName;
+	private final String tableName;
 
-	private TableType tableType;
+	private final TableType tableType;
 
 	public TableEntry(String aCatalogName, String aSchemaName, String aTableName, TableType aTableType) {
 		super(aCatalogName, aSchemaName);

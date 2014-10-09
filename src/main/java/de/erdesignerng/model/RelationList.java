@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author $Author: mirkosertic $
@@ -33,17 +34,15 @@ public class RelationList extends ModelItemVector<Relation> {
 	private static final long serialVersionUID = 330168987165235683L;
 
 	// Just a cache for all foreign keys in the model
-	private final Set<Attribute<Table>> foreignKeyCache = new HashSet<Attribute<Table>>();
+	private final Set<Attribute<Table>> foreignKeyCache = new HashSet<>();
 
-	private Map<Table, List<Relation>> relationsByImportingTable = new HashMap<Table, List<Relation>>();
-	private Map<Table, List<Relation>> relationsByExportingTable = new HashMap<Table, List<Relation>>();
+	private final Map<Table, List<Relation>> relationsByImportingTable = new HashMap<>();
+	private final Map<Table, List<Relation>> relationsByExportingTable = new HashMap<>();
 
 	private void updateForeignKeyCache() {
 		synchronized (foreignKeyCache) {
 			foreignKeyCache.clear();
-			for (Relation theRelation : this) {
-				addToForeignKeyCache(theRelation);
-			}
+            this.forEach(this::addToForeignKeyCache);
 		}
 	}
 
@@ -72,7 +71,7 @@ public class RelationList extends ModelItemVector<Relation> {
 	 * @param aTable the table
 	 */
 	public void removeByTable(Table aTable) {
-		List<Relation> theRelationsToRemove = new ArrayList<Relation>();
+		List<Relation> theRelationsToRemove = new ArrayList<>();
 
 		for (Relation theRelation : this) {
 			if (theRelation.getImportingTable().equals(aTable)) {
@@ -89,19 +88,13 @@ public class RelationList extends ModelItemVector<Relation> {
 	}
 
 	public RelationList getAllRelataionsOf(Table aTable) {
-		RelationList theResult = new RelationList();
+		RelationList theResult = this.stream().filter(theRelation -> (theRelation.getImportingTable().getName().equalsIgnoreCase(aTable.getName())) || (theRelation.getExportingTable().getName().equalsIgnoreCase(aTable.getName()))).collect(Collectors.toCollection(() -> new RelationList()));
 
-		for (Relation theRelation : this) {
-			if ((theRelation.getImportingTable().getName().equalsIgnoreCase(aTable.getName())) || (theRelation.getExportingTable().getName().equalsIgnoreCase(aTable.getName()))) {
-				theResult.add(theRelation);
-			}
-		}
-
-		return theResult;
+        return theResult;
 	}
 
 	public List<Relation> getForeignKeysFor(Table aTable) {
-		List<Relation> theResult = new ArrayList<Relation>();
+		List<Relation> theResult = new ArrayList<>();
 		List<Relation> theByImportingTable = relationsByImportingTable.get(aTable);
 
 		if (theByImportingTable != null) {
@@ -112,7 +105,7 @@ public class RelationList extends ModelItemVector<Relation> {
 	}
 
 	public List<Relation> getExportedKeysFor(Table aTable) {
-		List<Relation> theResult = new ArrayList<Relation>();
+		List<Relation> theResult = new ArrayList<>();
 		List<Relation> theByExportingTable = relationsByExportingTable.get(aTable);
 
 		if (theByExportingTable != null) {
@@ -127,7 +120,7 @@ public class RelationList extends ModelItemVector<Relation> {
 		List<Relation> byImporting = relationsByImportingTable.get(e.getImportingTable());
 
 		if (byImporting == null) {
-			byImporting = new ArrayList<Relation>();
+			byImporting = new ArrayList<>();
 			relationsByImportingTable.put(e.getImportingTable(), byImporting);
 		}
 
@@ -138,7 +131,7 @@ public class RelationList extends ModelItemVector<Relation> {
 		List<Relation> byExporting = relationsByExportingTable.get(e.getExportingTable());
 
 		if (byExporting == null) {
-			byExporting = new ArrayList<Relation>();
+			byExporting = new ArrayList<>();
 			relationsByExportingTable.put(e.getExportingTable(), byExporting);
 		}
 

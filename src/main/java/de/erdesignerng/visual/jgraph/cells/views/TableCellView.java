@@ -129,7 +129,7 @@ public class TableCellView extends VertexView {
 
 			int theTextXOffset = 15;
 
-			List<Attribute<Table>> theTempList = new ArrayList<Attribute<Table>>();
+			List<Attribute<Table>> theTempList = new ArrayList<>();
 			theTempList.addAll(table.getAttributes());
 
 			switch (displayOrder) {
@@ -145,7 +145,7 @@ public class TableCellView extends VertexView {
 					throw new IllegalStateException("Unknown display order");
 			}
 
-			List<Attribute<Table>> theAllAttributes = new ArrayList<Attribute<Table>>();
+			List<Attribute<Table>> theAllAttributes = new ArrayList<>();
 			theAllAttributes.addAll(theTempList);
 
 			boolean hasPrimaryKey = false;
@@ -262,7 +262,7 @@ public class TableCellView extends VertexView {
 				theMaxX = theLength + 5;
 			}
 
-			List<Attribute<Table>> theAllAttributes = new ArrayList<Attribute<Table>>();
+			List<Attribute<Table>> theAllAttributes = new ArrayList<>();
 			theAllAttributes.addAll(table.getAttributes());
 
 			for (Attribute<Table> theAttribute : table.getAttributes()) {

@@ -74,8 +74,8 @@ public class DictionaryIndexSerializer extends DictionaryBaseSerializer {
 
 	public void serialize(Table aTable, TableEntity aTableEntity) {
 
-		Set<IndexEntity> theRemovedIndexes = new HashSet<IndexEntity>();
-		Map<String, IndexEntity> theIndexes = new HashMap<String, IndexEntity>();
+		Set<IndexEntity> theRemovedIndexes = new HashSet<>();
+		Map<String, IndexEntity> theIndexes = new HashMap<>();
 
 		for (IndexEntity theIndexEntity : aTableEntity.getIndexes()) {
 			Index theAttribute = aTable.getIndexes().findBySystemId(theIndexEntity.getSystemId());

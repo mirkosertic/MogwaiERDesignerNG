@@ -17,6 +17,8 @@
  */
 package de.erdesignerng.model;
 
+import java.util.stream.Collectors;
+
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:29 $
@@ -26,7 +28,7 @@ public class Index extends OwnedModelItem<Table> implements
 
     private IndexType indexType = IndexType.UNIQUE;
 
-    private IndexExpressionList expressions = new IndexExpressionList();
+    private final IndexExpressionList expressions = new IndexExpressionList();
 
     public IndexExpressionList getExpressions() {
         return expressions;
@@ -64,9 +66,7 @@ public class Index extends OwnedModelItem<Table> implements
 
         expressions.clear();
 
-        for (IndexExpression theAttribute : aValue.getExpressions()) {
-            expressions.add(theAttribute);
-        }
+        expressions.addAll(aValue.getExpressions().stream().collect(Collectors.toList()));
     }
 
     public boolean isModified(Index aIndex, boolean aUseName) {

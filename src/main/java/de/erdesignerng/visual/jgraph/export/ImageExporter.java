@@ -37,7 +37,7 @@ public class ImageExporter implements Exporter {
 
     public static List<String> getSupportedFormats() {
 
-        List<String> theKnown = new ArrayList<String>();
+        List<String> theKnown = new ArrayList<>();
         String[] theList = ImageIO.getWriterMIMETypes();
         for (String theEntry : theList) {
             theKnown.add(theEntry.toUpperCase());

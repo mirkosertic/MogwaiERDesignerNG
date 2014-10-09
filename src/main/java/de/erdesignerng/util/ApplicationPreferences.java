@@ -86,11 +86,11 @@ public class ApplicationPreferences {
 
 	private final int size;
 
-	private final List<File> recentlyUsedFiles = new ArrayList<File>();
+	private final List<File> recentlyUsedFiles = new ArrayList<>();
 
-	private final List<File> classpathfiles = new ArrayList<File>();
+	private final List<File> classpathfiles = new ArrayList<>();
 
-	private final List<ConnectionDescriptor> recentlyUsedConnections = new ArrayList<ConnectionDescriptor>();
+	private final List<ConnectionDescriptor> recentlyUsedConnections = new ArrayList<>();
 
 	private final Preferences preferences;
 
@@ -100,7 +100,7 @@ public class ApplicationPreferences {
 
 	private ConnectionDescriptor repositoryConnection;
 
-	private final Map<String, String> windowDefinitions = new HashMap<String, String>();
+	private final Map<String, String> windowDefinitions = new HashMap<>();
 
 	private File baseDir;
 
@@ -375,14 +375,8 @@ public class ApplicationPreferences {
 		}
 
 		return AccessController
-				.doPrivileged(new PrivilegedAction<ClassLoader>() {
-
-					@Override
-					public ClassLoader run() {
-						return new URLClassLoader(theUrls, Thread
-								.currentThread().getContextClassLoader());
-					}
-				});
+				.doPrivileged((PrivilegedAction<ClassLoader>) () -> new URLClassLoader(theUrls, Thread
+                        .currentThread().getContextClassLoader()));
 	}
 
 	/**

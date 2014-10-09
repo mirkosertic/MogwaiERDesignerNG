@@ -55,14 +55,14 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         thePrimaryKey.setName(aName + "_PK");
         thePrimaryKey.setIndexType(IndexType.PRIMARYKEY);
 
-        Attribute<Table> thePK1Attribute = new Attribute<Table>();
+        Attribute<Table> thePK1Attribute = new Attribute<>();
         thePK1Attribute.setName("PK1");
         thePK1Attribute.setDatatype(textDataType);
         thePK1Attribute.setSize(10);
         thePK1Attribute.setNullable(false);
         theTable.addAttribute(aModel, thePK1Attribute);
 
-        Attribute<Table> thePK2Attribute = new Attribute<Table>();
+        Attribute<Table> thePK2Attribute = new Attribute<>();
         thePK2Attribute.setName("PK2");
         thePK2Attribute.setDatatype(intDataType);
         thePK2Attribute.setNullable(false);
@@ -77,7 +77,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         }
 
         // No PK attribute
-        Attribute<Table> theAt1 = new Attribute<Table>();
+        Attribute<Table> theAt1 = new Attribute<>();
         theAt1.setName("AT1");
         theAt1.setDatatype(textDataType);
         theAt1.setSize(5);
@@ -85,7 +85,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theTable.addAttribute(aModel, theAt1);
 
         // Non Unique Indexed attribute
-        Attribute<Table> theAt2 = new Attribute<Table>();
+        Attribute<Table> theAt2 = new Attribute<>();
         theAt2.setName("AT2");
         theAt2.setDatatype(textDataType);
         theAt2.setSize(5);
@@ -102,7 +102,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         }
 
         // Unique Indexed attribute
-        Attribute<Table> theAt3 = new Attribute<Table>();
+        Attribute<Table> theAt3 = new Attribute<>();
         theAt3.setName("AT3");
         theAt3.setDatatype(textDataType);
         theAt3.setSize(5);
@@ -184,7 +184,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theModel.setModificationTracker(theTracker);
 
         // Modify the model here
-        Attribute<Table> theAt1 = new Attribute<Table>();
+        Attribute<Table> theAt1 = new Attribute<>();
         theAt1.setName("AT5");
         theAt1.setDatatype(textDataType);
         theAt1.setSize(5);
@@ -273,7 +273,7 @@ public abstract class AbstractDialectTestCase extends BaseERDesignerTestCaseImpl
         theModel.setModificationTracker(theTracker);
 
         // Modify the model here
-        Attribute<Table> theNewInfo = new Attribute<Table>();
+        Attribute<Table> theNewInfo = new Attribute<>();
         theNewInfo.setName("ATTX");
         theNewInfo.setNullable(false);
         theNewInfo.setDatatype(intDataType);

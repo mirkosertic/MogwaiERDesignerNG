@@ -29,7 +29,7 @@ public class IndexEntity extends ModelEntity {
 
 	private int type;
 
-	private List<IndexExpressionEntity> expressions = new ArrayList<IndexExpressionEntity>();
+	private List<IndexExpressionEntity> expressions = new ArrayList<>();
 
 	/**
 	 * @return the type

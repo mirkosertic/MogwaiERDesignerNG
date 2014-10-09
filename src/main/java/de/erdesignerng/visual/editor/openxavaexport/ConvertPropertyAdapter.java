@@ -58,7 +58,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
         String[] theTargetTypes = new String[theOptions.getTypeMapping().keySet().size()];
         String[] theStereoTypes = new String[theOptions.getTypeMapping().keySet().size()];
 
-        List<DataType> theCurrentTypes = new ArrayList<DataType>();
+        List<DataType> theCurrentTypes = new ArrayList<>();
         theCurrentTypes.addAll(theOptions.getTypeMapping().keySet());
 
         Collections.sort(theCurrentTypes, new BeanComparator("name"));
@@ -109,7 +109,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
     @Override
     public List<ValidationError> validate() {
         DefaultTable theTable = (DefaultTable) getComponent()[0];
-        List<ValidationError> theErrors = new ArrayList<ValidationError>();
+        List<ValidationError> theErrors = new ArrayList<>();
         OpenXavaExportTableModel theTableModel = (OpenXavaExportTableModel) theTable.getModel();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
             // A Datatype mapping must be there, the other things are optional

@@ -33,11 +33,11 @@ public class SubjectAreaEntity extends ModelEntity {
 
     private Boolean expanded;
 
-    private List<String> tables = new ArrayList<String>();
+    private List<String> tables = new ArrayList<>();
 
-    private List<String> comments = new ArrayList<String>();
+    private List<String> comments = new ArrayList<>();
 
-    private List<String> views = new ArrayList<String>();
+    private List<String> views = new ArrayList<>();
 
     /**
      * @return the color

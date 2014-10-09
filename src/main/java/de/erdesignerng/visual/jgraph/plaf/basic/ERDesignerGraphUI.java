@@ -49,6 +49,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author $Author: mirkosertic $
@@ -223,7 +224,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 graph.scrollCellToVisible(cell.getCell());
 
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    List<DefaultGraphCell> theSelectionList = new ArrayList<DefaultGraphCell>();
+                    List<DefaultGraphCell> theSelectionList = new ArrayList<>();
                     for (Object theSelection : graph.getSelectionCells()) {
                         if (theSelection instanceof DefaultGraphCell) {
                             theSelectionList.add((DefaultGraphCell) theSelection);
@@ -254,10 +255,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
                 .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-        List<ModelItem> theItems = new ArrayList<ModelItem>();
-        for (DefaultGraphCell theCell : aCells) {
-            theItems.add((ModelItem) theCell.getUserObject());
-        }
+        List<ModelItem> theItems = aCells.stream().map(theCell -> (ModelItem) theCell.getUserObject()).collect(Collectors.toList());
 
         ContextMenuFactory.addActionsToMenu(erdesigner, theMenu, theItems);
 
@@ -357,7 +355,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
     @Override
     protected void paintCells(Graphics g, Rectangle2D realClipBounds) {
         CellView[] views = graphLayoutCache.getRoots();
-        List<CellView> edges = new ArrayList<CellView>();
+        List<CellView> edges = new ArrayList<>();
 
         // Draw everything except of edges
         for (CellView theView : views) {

@@ -26,9 +26,9 @@ import java.awt.*;
 
 public class ModelItemDefaultCellRenderer extends DefaultRenderer implements TableCellRenderer {
 
-    public static ModelItemDefaultCellRenderer ME = new ModelItemDefaultCellRenderer();
+    public static final ModelItemDefaultCellRenderer ME = new ModelItemDefaultCellRenderer();
 
-    private UIInitializer initializer;
+    private final UIInitializer initializer;
 
     public static ModelItemDefaultCellRenderer getInstance() {
         return ME;

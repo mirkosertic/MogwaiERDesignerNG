@@ -29,7 +29,7 @@ public class ConversionInfos {
 
 	private Dialect targetDialect;
 
-	private Map<DataType, DataType> typeMapping = new HashMap<DataType, DataType>();
+	private final Map<DataType, DataType> typeMapping = new HashMap<>();
 
 	public Dialect getTargetDialect() {
 		return targetDialect;

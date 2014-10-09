@@ -50,11 +50,11 @@ public class CustomTypeEditor extends BaseEditor {
 
     private CustomTypeEditorView editingView;
 
-    private final BindingInfo<CustomType> typeBindingInfo = new BindingInfo<CustomType>();
+    private final BindingInfo<CustomType> typeBindingInfo = new BindingInfo<>();
 
     private final DefaultListModel typeListModel;
 
-    private final List<CustomType> removedTypes = new ArrayList<CustomType>();
+    private final List<CustomType> removedTypes = new ArrayList<>();
 
     private final DefaultAction newTypeAction = new DefaultAction(new ActionEventProcessor() {
 

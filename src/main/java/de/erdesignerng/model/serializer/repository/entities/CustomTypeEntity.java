@@ -32,7 +32,7 @@ public class CustomTypeEntity extends ModelEntity implements AttributeEntityProv
 
     private String alias;
 
-    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+    private List<AttributeEntity> attributes = new ArrayList<>();
 
     private CustomTypeType type;
 

@@ -47,7 +47,7 @@ public class ViewEditor extends BaseEditor {
 
     private ViewEditorView editingView;
 
-    private final BindingInfo<View> viewBindingInfo = new BindingInfo<View>();
+    private final BindingInfo<View> viewBindingInfo = new BindingInfo<>();
 
     private ViewProperties viewProperties;
 

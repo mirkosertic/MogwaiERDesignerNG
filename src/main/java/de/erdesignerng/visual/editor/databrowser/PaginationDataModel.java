@@ -32,11 +32,11 @@ import java.util.Map;
 
 public class PaginationDataModel extends AbstractTableModel {
 
-	private ResultSet resultSet;
+	private final ResultSet resultSet;
 	private ResultSetMetaData metadata;
 	private int currentRow = -1;
 	private int rowCount = 1;
-	private List<List<Object>> cache = new ArrayList<List<Object>>();
+	private final List<List<Object>> cache = new ArrayList<>();
 	private boolean lastRecordReached;
 
 	public ResultSetMetaData getResultSetMetaData() {
@@ -44,7 +44,7 @@ public class PaginationDataModel extends AbstractTableModel {
 	}
 
 	public Map<String, Object> getRowData(int aRow) throws SQLException {
-		Map<String, Object> theRow = new HashMap<String, Object>();
+		Map<String, Object> theRow = new HashMap<>();
 		List<Object> theRowData = cache.get(aRow);
 		for (int i=0;i<theRowData.size();i++) {
 			String theName = metadata.getColumnName(i+1);
@@ -57,8 +57,8 @@ public class PaginationDataModel extends AbstractTableModel {
 		void seeked();
 	}
 
-	private List<SeekListener> seekListener = new ArrayList<SeekListener>();
-	private JTable owner;
+	private final List<SeekListener> seekListener = new ArrayList<>();
+	private final JTable owner;
 	private Dialect dialect;
 
 	public PaginationDataModel(Dialect aDialect, JTable aTable,
@@ -110,7 +110,7 @@ public class PaginationDataModel extends AbstractTableModel {
 		boolean seeked = false;
 		while (currentRow < aRowIndex && resultSet.next()) {
 
-			List<Object> theRow = new ArrayList<Object>();
+			List<Object> theRow = new ArrayList<>();
 			for (int i = 1; i <= metadata.getColumnCount(); i++) {
 				theRow.add(resultSet.getObject(i));
 			}

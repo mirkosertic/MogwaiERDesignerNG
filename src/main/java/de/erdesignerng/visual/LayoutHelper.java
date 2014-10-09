@@ -42,21 +42,21 @@ public class LayoutHelper {
 
     private class Cluster {
         Table root;
-        Set<ModelItem> nodes = new HashSet<ModelItem>();
-        Map<ModelItem, Integer> hierarchyLevel = new HashMap<ModelItem, Integer>();
+        final Set<ModelItem> nodes = new HashSet<>();
+        final Map<ModelItem, Integer> hierarchyLevel = new HashMap<>();
         int maxLevel;
 
         List<Set<Table>> computeHierarchy() {
 
-            List<ModelItem> theAllNodes = new ArrayList<ModelItem>();
+            List<ModelItem> theAllNodes = new ArrayList<>();
             if (root != null) {
                 theAllNodes.add(root);
             }
             theAllNodes.addAll(nodes);
 
-            List<Set<Table>> theResult = new ArrayList<Set<Table>>();
+            List<Set<Table>> theResult = new ArrayList<>();
             for (int i = 0; i <= maxLevel; i++) {
-                Set<Table> theLevel = new HashSet<Table>();
+                Set<Table> theLevel = new HashSet<>();
                 for (ModelItem theItem : theAllNodes) {
                     if (hierarchyLevel.get(theItem) == i) {
                         theLevel.add((Table) theItem);
@@ -68,7 +68,7 @@ public class LayoutHelper {
         }
     }
 
-    private Set<ModelItem> alreadyProcessed = new HashSet<ModelItem>();
+    private final Set<ModelItem> alreadyProcessed = new HashSet<>();
 
     public LayoutHelper() {
     }
@@ -97,7 +97,7 @@ public class LayoutHelper {
         boolean continueRun = true;
 
         Point theStart = new Point(OFFSETX, OFFSETY);
-        List<Table> theAllTables = new ArrayList<Table>();
+        List<Table> theAllTables = new ArrayList<>();
         theAllTables.addAll(aModel.getTables());
         int maxHeight = 0;
 
@@ -108,7 +108,7 @@ public class LayoutHelper {
             continueRun = false;
 
             // Step 1. Identify the Root Nodes
-            List<Cluster> theRoots = new ArrayList<Cluster>();
+            List<Cluster> theRoots = new ArrayList<>();
             for (Table theTable : aModel.getTables()) {
                 if (!alreadyProcessed.contains(theTable)) {
                     boolean isRoot = true;
@@ -135,7 +135,7 @@ public class LayoutHelper {
                 buildTree(aModel, theCluster.root, theCluster, 1);
             }
 
-            Set<ModelItem> theClusteredTables = new HashSet<ModelItem>();
+            Set<ModelItem> theClusteredTables = new HashSet<>();
 
             // Step 3. Remove nodes that are assigned to more than one cluster
             for (Cluster theCluster : theRoots) {
@@ -155,7 +155,7 @@ public class LayoutHelper {
             // Check for clustes with only one root
             for (Cluster theCluster : theRoots) {
                 if (theCluster.nodes.size() == 0) {
-                    Set<Table> theDependentTables = new HashSet<Table>();
+                    Set<Table> theDependentTables = new HashSet<>();
                     for (Relation theRelation : aModel.getRelations().getForeignKeysFor(theCluster.root)) {
                         if (!theRelation.isSelfReference()) {
                             theDependentTables.add(theRelation.getExportingTable());

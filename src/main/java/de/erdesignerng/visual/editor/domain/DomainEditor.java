@@ -53,7 +53,7 @@ public class DomainEditor extends BaseEditor {
 
     private DomainEditorView editingView;
 
-    private final List<Domain> removedDomains = new ArrayList<Domain>();
+    private final List<Domain> removedDomains = new ArrayList<>();
 
     private final DefaultAction newDomainAction = new DefaultAction(new ActionEventProcessor() {
 
@@ -71,7 +71,7 @@ public class DomainEditor extends BaseEditor {
         }
     }, this, ERDesignerBundle.DELETE);
 
-    private ModelItemNameCellEditor<Domain> domainEditor;
+    private final ModelItemNameCellEditor<Domain> domainEditor;
 
     public DomainEditor(Model aModel, Component aParent) {
         super(aParent, ERDesignerBundle.DOMAINEDITOR);
@@ -88,7 +88,7 @@ public class DomainEditor extends BaseEditor {
         }
 
         model = aModel;
-        domainEditor = new ModelItemNameCellEditor<Domain>(model.getDialect());
+        domainEditor = new ModelItemNameCellEditor<>(model.getDialect());
         editingView.getDomainTable().getColumnModel().getColumn(0).setCellRenderer(ModelItemDefaultCellRenderer.getInstance());
         editingView.getDomainTable().getColumnModel().getColumn(0).setCellEditor(domainEditor);
         editingView.getDomainTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {

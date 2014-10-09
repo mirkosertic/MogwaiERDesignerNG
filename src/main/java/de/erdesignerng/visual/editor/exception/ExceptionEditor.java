@@ -21,12 +21,10 @@ import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -42,13 +40,7 @@ public class ExceptionEditor extends BaseEditor {
 
 	private final ExceptionEditorView view = new ExceptionEditorView();
 
-	private final DefaultAction closeAction = new DefaultAction(new ActionEventProcessor() {
-
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandClose();
-		}
-	}, this, ERDesignerBundle.CLOSE);
+	private final DefaultAction closeAction = new DefaultAction(e -> commandClose(), this, ERDesignerBundle.CLOSE);
 
 	public ExceptionEditor(Component aParent, Exception aException) {
 		super(aParent, ERDesignerBundle.EXCEPTIONWINDOW);

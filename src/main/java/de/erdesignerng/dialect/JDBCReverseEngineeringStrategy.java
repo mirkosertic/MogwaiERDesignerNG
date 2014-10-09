@@ -288,7 +288,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 				} catch (SQLException e) {
 				}
 
-				Attribute<Table> theAttribute = new Attribute<Table>();
+				Attribute<Table> theAttribute = new Attribute<>();
 
 				theAttribute.setName(dialect.getCastType().cast(theColumnName));
 				if (!StringUtils.isEmpty(theColumnRemarks)) {
@@ -354,7 +354,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 					RelationList theExistingRelations = aModel.getRelations().getAllRelataionsOf(theExistingTable);
 
 					if (theExistingModelItemProperties == null) {
-						theExistingModelItemProperties = new HashMap<String, ModelProperties>();
+						theExistingModelItemProperties = new HashMap<>();
 					}
 
 					//store former layouting data for the table and its relations in the old graph
@@ -481,7 +481,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 		// Remove duplicate unique indexes
 		Index thePrimaryKey = aTable.getPrimarykey();
 		if (thePrimaryKey != null) {
-			Set<Index> theDuplicateIndexes = new HashSet<Index>();
+			Set<Index> theDuplicateIndexes = new HashSet<>();
 			for (Index theInd : aTable.getIndexes()) {
 				if ((theInd.getIndexType() == IndexType.UNIQUE) && (thePrimaryKey.getExpressions().containsAllExpressions(theInd.getExpressions()))) {
 					theDuplicateIndexes.add(theInd);
@@ -550,7 +550,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 		int theSysCounter = 0;
 
-		List<Relation> theNewRelations = new ArrayList<Relation>();
+		List<Relation> theNewRelations = new ArrayList<>();
 
 		String theImportingTableName = aModel.getDialect().getCastType().cast(aTableEntry.getTableName());
 		aNotifier.notifyMessage(ERDesignerBundle.ENGINEERINGRELATION, theImportingTableName);
@@ -728,7 +728,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	}
 
 	public void updateModelFromConnection(Model aModel, ERDesignerWorldConnector aConnector, Connection aConnection, ReverseEngineeringOptions aOptions, ReverseEngineeringNotifier aNotifier) throws SQLException, ReverseEngineeringException {
-		Map<String, ModelProperties> theGlobalPreviousModelItemProperties =  new HashMap<String, ModelProperties>();
+		Map<String, ModelProperties> theGlobalPreviousModelItemProperties =  new HashMap<>();
 		Exception theUDTError = null;
 
 		if (aModel.getDialect().isSupportsCustomTypes()) {
@@ -862,7 +862,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	}
 
 	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
-		List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+		List<SchemaEntry> theList = new ArrayList<>();
 
 		DatabaseMetaData theMetadata = aConnection.getMetaData();
 		ResultSet theResult = theMetadata.getSchemas();
@@ -878,7 +878,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	}
 
 	protected List<TableEntry> getTablesForSchemaEntry(Connection aConnection, SchemaEntry aEntry) throws SQLException {
-		List<TableEntry> theResult = new ArrayList<TableEntry>();
+		List<TableEntry> theResult = new ArrayList<>();
 
 		DatabaseMetaData theMetaData = aConnection.getMetaData();
 
@@ -918,7 +918,7 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 	}
 
 	public List<TableEntry> getTablesForSchemas(Connection aConnection, List<SchemaEntry> aSchemaEntries) throws SQLException {
-		List<TableEntry> theResult = new ArrayList<TableEntry>();
+		List<TableEntry> theResult = new ArrayList<>();
 
 		if (dialect.isSupportsSchemaInformation()) {
 			for (SchemaEntry theEntry : aSchemaEntries) {

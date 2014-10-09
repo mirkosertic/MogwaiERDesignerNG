@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author $Author: mirkosertic $
@@ -96,7 +97,7 @@ public abstract class ERDesignerGraph extends JGraph {
 
         GraphModel theModel = getModel();
 
-        List<DefaultGraphCell> theObjectsToRemove = new ArrayList<DefaultGraphCell>();
+        List<DefaultGraphCell> theObjectsToRemove = new ArrayList<>();
 
         for (DefaultGraphCell theSingleCell : aCells) {
 
@@ -338,18 +339,14 @@ public abstract class ERDesignerGraph extends JGraph {
 
     private void toggleVisibilityOfRelationsInSubjectArea(SubjectAreaCell aCell, boolean aVisibilityState) {
 
-        Set<Relation> theRelationDoWork = new HashSet<Relation>();
+        Set<Relation> theRelationDoWork = new HashSet<>();
 
         SubjectArea theSA = (SubjectArea) aCell.getUserObject();
         for (Table theTable : theSA.getTables()) {
-            for (Relation theRelation : model.getRelations().getForeignKeysFor(theTable)) {
-                if (theSA.getTables().contains(theRelation.getExportingTable())) {
-                    theRelationDoWork.add(theRelation);
-                }
-            }
+            theRelationDoWork.addAll(model.getRelations().getForeignKeysFor(theTable).stream().filter(theRelation -> theSA.getTables().contains(theRelation.getExportingTable())).collect(Collectors.toList()));
         }
 
-        Set<DefaultGraphCell> theCellsToWork = new HashSet<DefaultGraphCell>();
+        Set<DefaultGraphCell> theCellsToWork = new HashSet<>();
 
         for (CellView theView : getGraphLayoutCache().getAllViews()) {
             if (theView instanceof RelationEdgeView) {

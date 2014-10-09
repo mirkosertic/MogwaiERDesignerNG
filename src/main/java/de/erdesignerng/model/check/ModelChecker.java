@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class ModelChecker {
 
-    private List<ModelCheck> checks = new ArrayList();
-    private List<ModelError> errors = new ArrayList<ModelError>();
+    private final List<ModelCheck> checks = new ArrayList();
+    private final List<ModelError> errors = new ArrayList<>();
 
     public ModelChecker() {
         checks.add(new TableWithPrimaryKeyCheck());

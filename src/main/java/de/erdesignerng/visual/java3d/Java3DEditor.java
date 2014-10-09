@@ -55,8 +55,6 @@ import javax.media.j3d.*;
 import javax.swing.*;
 import javax.vecmath.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
@@ -75,27 +73,27 @@ public class Java3DEditor implements GenericModelEditor {
 
     private static final float ZDISTANCE = 0.5f;
 
-    private JPanel mainPanel;
+    private final JPanel mainPanel;
     private AnaglyphCanvas3D canvas;
-    private SimpleUniverse universe;
-    private PickCanvas pickCanvas;
-    private BranchGroup rootGroup;
+    private final SimpleUniverse universe;
+    private final PickCanvas pickCanvas;
+    private final BranchGroup rootGroup;
     private TransformGroup modelGroup;
-    private TransformGroup moveGroup;
+    private final TransformGroup moveGroup;
     private Switch switchGroup;
-    private ResourceHelper resourceHelper;
-    private JLabel currentElement;
+    private final ResourceHelper resourceHelper;
+    private final JLabel currentElement;
     private Model model;
     private ModelItem selectedModelItem;
     private Texture nodeTexture;
-    private FadeInFadeOutHelper fadingHelper;
+    private final FadeInFadeOutHelper fadingHelper;
     private UserObjectInfo fadingComponent;
     private int currentLayer;
     private int maxLayer;
     private List<List<ModelItem>> modelLayers;
     private BranchGroup connectorGroup;
     private Map<ModelItem, Point3d> modelItemPositions;
-    private String helpHTML;
+    private final String helpHTML;
     private BufferedImage helpImage;
 
     private class DisplayPanel extends DefaultPanel implements ResourceHelperProvider {
@@ -107,8 +105,8 @@ public class Java3DEditor implements GenericModelEditor {
 
     private class NameValuePair {
 
-        Object value;
-        String key;
+        final Object value;
+        final String key;
 
         public NameValuePair(Object aValue, String aKey) {
             value = aValue;
@@ -123,8 +121,8 @@ public class Java3DEditor implements GenericModelEditor {
 
     private class UserObjectInfo {
 
-        ModelItem item;
-        float zlevel;
+        final ModelItem item;
+        final float zlevel;
 
         public UserObjectInfo(ModelItem aItem, float aZLevel) {
             item = aItem;
@@ -135,7 +133,7 @@ public class Java3DEditor implements GenericModelEditor {
 
     private class MouseNavigationBehavior extends Behavior {
 
-        private WakeupCondition wakeupCondition;
+        private final WakeupCondition wakeupCondition;
 
         public MouseNavigationBehavior() {
             WakeupOnAWTEvent mouseMoveCondition = new WakeupOnAWTEvent(MouseEvent.MOUSE_MOVED);
@@ -267,7 +265,7 @@ public class Java3DEditor implements GenericModelEditor {
                                     DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
                                             .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-                                    List<ModelItem> theItems = new ArrayList<ModelItem>();
+                                    List<ModelItem> theItems = new ArrayList<>();
                                     theItems.add(theItem.item);
                                     ContextMenuFactory.addActionsToMenu(Java3DEditor.this, theMenu, theItems);
 
@@ -520,18 +518,15 @@ public class Java3DEditor implements GenericModelEditor {
         theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.HALFCOLOR_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_HALFCOLOR));
         theStereoModeModel.addElement(new NameValuePair(AnaglyphMode.OPTIMIZED_ANAGLYPHS, ERDesignerBundle.STEREOMODE_ANAGLYPH_OPTIMIZED));
         theStereoModeSelector.setModel(theStereoModeModel);
-        theStereoModeSelector.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int theIndex = theStereoModeSelector.getSelectedIndex();
-                if (theIndex == 0) {
-                    canvas.setStereoMode(StereoMode.OFF);
-                } else {
-                    NameValuePair thePair = (NameValuePair) theStereoModeSelector.getSelectedItem();
+        theStereoModeSelector.addActionListener(e -> {
+            int theIndex = theStereoModeSelector.getSelectedIndex();
+            if (theIndex == 0) {
+                canvas.setStereoMode(StereoMode.OFF);
+            } else {
+                NameValuePair thePair = (NameValuePair) theStereoModeSelector.getSelectedItem();
 
-                    canvas.setAnaglyphMode((AnaglyphMode) thePair.value);
-                    canvas.setStereoMode(StereoMode.ANAGLYPH);
-                }
+                canvas.setAnaglyphMode((AnaglyphMode) thePair.value);
+                canvas.setStereoMode(StereoMode.ANAGLYPH);
             }
         });
 
@@ -577,7 +572,7 @@ public class Java3DEditor implements GenericModelEditor {
         // Finally, we build the connectors between the items
         connectorGroup.removeAllChildren();
 
-        Set<ModelItem> theAlreadyKnown = new HashSet<ModelItem>();
+        Set<ModelItem> theAlreadyKnown = new HashSet<>();
         for (int theLayer = currentLayer; theLayer < maxLayer; theLayer++) {
             theAlreadyKnown.addAll(modelLayers.get(theLayer));
         }
@@ -589,7 +584,7 @@ public class Java3DEditor implements GenericModelEditor {
         theLineAppearance.setLineAttributes(theLineAttributes);
         theLineAppearance.setTransparencyAttributes(new TransparencyAttributes(TransparencyAttributes.NICEST, 0.80f));
 
-        Set<String> theProcessed = new HashSet<String>();
+        Set<String> theProcessed = new HashSet<>();
         for (ModelItem theItem : theAlreadyKnown) {
             if (theItem instanceof Table) {
                 // Only tables can have connectors
@@ -712,8 +707,8 @@ public class Java3DEditor implements GenericModelEditor {
     public void setSelectedObject(ModelItem aSelectedObject) {
         moveGroup.removeAllChildren();
 
-        modelLayers = new ArrayList<List<ModelItem>>();
-        List<ModelItem> theAlreadyKnown = new ArrayList<ModelItem>();
+        modelLayers = new ArrayList<>();
+        List<ModelItem> theAlreadyKnown = new ArrayList<>();
 
         // We only show views and tables as the center of attention in the editor.
         if (aSelectedObject instanceof Index) {
@@ -744,7 +739,7 @@ public class Java3DEditor implements GenericModelEditor {
             selectedModelItem = aSelectedObject;
 
             // There is always one layer in the graph
-            List<ModelItem> layer1 = new ArrayList<ModelItem>();
+            List<ModelItem> layer1 = new ArrayList<>();
             layer1.add(aSelectedObject);
             theAlreadyKnown.add(aSelectedObject);
             modelLayers.add(layer1);
@@ -756,13 +751,11 @@ public class Java3DEditor implements GenericModelEditor {
 
                 List<Relation> theIncomingRelations = model.getRelations().getForeignKeysFor(theTable);
                 while (theIncomingRelations.size() > 0) {
-                    List<ModelItem> nextLayer = new ArrayList<ModelItem>();
-                    for (Relation theRelation : theIncomingRelations) {
-                        if (!nextLayer.contains(theRelation.getExportingTable()) && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
-                            nextLayer.add(theRelation.getExportingTable());
-                            theAlreadyKnown.add(theRelation.getExportingTable());
-                        }
-                    }
+                    List<ModelItem> nextLayer = new ArrayList<>();
+                    theIncomingRelations.stream().filter(theRelation -> !nextLayer.contains(theRelation.getExportingTable()) && !theAlreadyKnown.contains(theRelation.getExportingTable())).forEach(theRelation -> {
+                        nextLayer.add(theRelation.getExportingTable());
+                        theAlreadyKnown.add(theRelation.getExportingTable());
+                    });
 
                     theIncomingRelations.clear();
                     for (ModelItem theItem : nextLayer) {
@@ -778,7 +771,7 @@ public class Java3DEditor implements GenericModelEditor {
 
         maxLayer = modelLayers.size();
 
-        modelItemPositions = new HashMap<ModelItem, Point3d>();
+        modelItemPositions = new HashMap<>();
 
         switchGroup = new Switch(Switch.CHILD_MASK);
         switchGroup.setCapability(Switch.ALLOW_SWITCH_WRITE);

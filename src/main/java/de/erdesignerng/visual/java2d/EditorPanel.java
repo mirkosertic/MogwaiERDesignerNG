@@ -37,8 +37,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,16 +45,16 @@ public class EditorPanel extends JPanel {
 
     private static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-    private String helpHTML;
+    private final String helpHTML;
     private BufferedImage helpImage;
 
     public static class EditorComponent {
         int currentRadius;
-        int finalRadius;
+        final int finalRadius;
         float angle;
-        JComponent paintComponent;
+        final JComponent paintComponent;
         boolean center;
-        public Object userObject;
+        public final Object userObject;
 
         public EditorComponent(Object aUserObject, float aAngle, int aRadius, JComponent aPaintComponent) {
             finalRadius = aRadius;
@@ -76,9 +74,9 @@ public class EditorPanel extends JPanel {
 
     public static class Connector {
 
-        EditorComponent from;
-        EditorComponent to;
-        Color color;
+        final EditorComponent from;
+        final EditorComponent to;
+        final Color color;
 
         public Connector(EditorComponent aFrom, EditorComponent aTo) {
             from = aFrom;
@@ -88,12 +86,12 @@ public class EditorPanel extends JPanel {
         }
     }
 
-    private List<EditorComponent> components = new ArrayList<EditorComponent>();
-    private List<Connector> connectors = new ArrayList<Connector>();
+    private final List<EditorComponent> components = new ArrayList<>();
+    private final List<Connector> connectors = new ArrayList<>();
     private Point lastMouseLocation;
     private EditorComponent fadingComponent;
-    private FadeInFadeOutHelper fadingHelper;
-    private ResourceHelper resourceHelper;
+    private final FadeInFadeOutHelper fadingHelper;
+    private final ResourceHelper resourceHelper;
 
     public EditorPanel() {
 
@@ -129,20 +127,15 @@ public class EditorPanel extends JPanel {
             }
         };
 
-        addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                for (EditorComponent theComponent : components) {
-                    if (!theComponent.center) {
-                        int aAmount = e.getUnitsToScroll() * 2;
-                        if (theComponent.currentRadius + aAmount > 0) {
-                            theComponent.currentRadius += aAmount;
-                        }
-                    }
+        addMouseWheelListener(e -> {
+            components.stream().filter(theComponent -> !theComponent.center).forEach(theComponent -> {
+                int aAmount = e.getUnitsToScroll() * 2;
+                if (theComponent.currentRadius + aAmount > 0) {
+                    theComponent.currentRadius += aAmount;
                 }
-                invalidate();
-                repaint();
-            }
+            });
+            invalidate();
+            repaint();
         });
         addMouseListener(new MouseAdapter() {
             @Override
@@ -201,11 +194,9 @@ public class EditorPanel extends JPanel {
                     float oldAngle = getAngle(mx1, my1);
                     float newAngle = getAngle(mx2, my2);
 
-                    for (EditorComponent theComponent : components) {
-                        if (!theComponent.center) {
-                            theComponent.angle += newAngle - oldAngle;
-                        }
-                    }
+                    components.stream().filter(theComponent -> !theComponent.center).forEach(theComponent -> {
+                        theComponent.angle += newAngle - oldAngle;
+                    });
                     invalidate();
                     repaint();
 
@@ -473,12 +464,9 @@ public class EditorPanel extends JPanel {
                         }
                     }
 
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            invalidate();
-                            repaint();
-                        }
+                    SwingUtilities.invokeLater(() -> {
+                        invalidate();
+                        repaint();
                     });
 
                     try {

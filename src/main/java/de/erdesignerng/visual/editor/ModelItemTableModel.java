@@ -28,11 +28,11 @@ import javax.swing.table.TableModel;
 
 public abstract class ModelItemTableModel<T extends ModelItem> implements TableModel {
 
-    public static ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
+    public static final ResourceHelper HELPER = ResourceHelper.getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-    protected List<T> rowData = new ArrayList<T>();
-    protected List<String> columnNames = new ArrayList<String>();
-    protected List<TableModelListener> listener = new ArrayList<TableModelListener>();
+    protected final List<T> rowData = new ArrayList<>();
+    protected final List<String> columnNames = new ArrayList<>();
+    protected final List<TableModelListener> listener = new ArrayList<>();
 
     public void add(T aAttribute) {
         if (!rowData.contains(aAttribute)) {

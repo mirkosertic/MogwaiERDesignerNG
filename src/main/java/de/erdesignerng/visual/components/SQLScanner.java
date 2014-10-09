@@ -103,8 +103,7 @@ class SQLScanner {
 	 */
 	public void setKeywords(String[] keywords) {
 		keywordHashtable = new Hashtable(keywords.length);
-		for (int i = 0; i < keywords.length; i++)
-			keywordHashtable.put(keywords[i], True);
+        for (String keyword : keywords) keywordHashtable.put(keyword, True);
 	}
 
 	/**
@@ -114,8 +113,7 @@ class SQLScanner {
 	 */
 	public void setBuiltinFunctions(String[] functions) {
 		builtinFunctionsHashtable = new Hashtable(functions.length);
-		for (int i = 0; i < functions.length; i++)
-			builtinFunctionsHashtable.put(functions[i], True);
+        for (String function : functions) builtinFunctionsHashtable.put(function, True);
 	}
 
 	/**
@@ -212,7 +210,7 @@ class SQLScanner {
 	private Hashtable builtinFunctionsHashtable;
 
 	// current token being scanned:
-	private Token token = new Token();
+	private final Token token = new Token();
 
 	private boolean isKeyword(String word) {
 		return keywordHashtable.containsKey(word.toUpperCase());

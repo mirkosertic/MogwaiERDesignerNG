@@ -31,7 +31,7 @@ import java.awt.*;
  */
 public class SubjectAreaEditor extends BaseEditor {
 
-    private final BindingInfo<SubjectArea> bindingInfo = new BindingInfo<SubjectArea>();
+    private final BindingInfo<SubjectArea> bindingInfo = new BindingInfo<>();
 
     private SubjectAreaEditorView editingView;
 

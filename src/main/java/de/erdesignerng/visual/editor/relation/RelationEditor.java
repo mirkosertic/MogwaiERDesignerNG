@@ -39,7 +39,7 @@ public class RelationEditor extends BaseEditor {
 
     private final Model model;
 
-    private final BindingInfo<Relation> bindingInfo = new BindingInfo<Relation>();
+    private final BindingInfo<Relation> bindingInfo = new BindingInfo<>();
 
     private RelationEditorView editingView;
 

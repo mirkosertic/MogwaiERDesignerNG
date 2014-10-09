@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 
 public class TableComponent extends BaseRendererComponent {
 
-    private Table table;
+    private final Table table;
     private boolean fullMode;
     private boolean showSelfReference;
 

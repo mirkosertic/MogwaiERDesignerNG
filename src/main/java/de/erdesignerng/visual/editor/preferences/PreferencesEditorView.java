@@ -28,9 +28,9 @@ public class PreferencesEditorView extends JPanel {
 
 	private PreferencesPanel preferences;
 
-	private DefaultButton okButton = new DefaultButton();
+	private final DefaultButton okButton = new DefaultButton();
 
-	private DefaultButton cancelButton = new DefaultButton();
+	private final DefaultButton cancelButton = new DefaultButton();
 
 	public PreferencesEditorView() {
 		initialize();

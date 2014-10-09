@@ -56,7 +56,7 @@ public final class OpenXavaASTHelper {
         if (aDeclaration.getAnnotations() != null) {
             aDeclaration.getAnnotations().add(aAnnotation);
         } else {
-            List<AnnotationExpr> theExpressions = new ArrayList<AnnotationExpr>();
+            List<AnnotationExpr> theExpressions = new ArrayList<>();
             theExpressions.add(aAnnotation);
             aDeclaration.setAnnotations(theExpressions);
         }
