@@ -52,28 +52,24 @@ public class SelectableTableModel extends DefaultTreeModel {
 
     private void setSelected(final DefaultMutableTreeNode aRootNode, final Boolean isSelected, final boolean aRecursiveSelection) {
         //change the direct selection-state of the appropriate leaf node
-        visitAll(aRootNode, new TreeVisitor() {
+        visitAll(aRootNode, (aValue, aNode) -> {
+            if (aRecursiveSelection || aValue.equals(aRootNode.getUserObject())) {
+                if (aValue instanceof SelectableWrapper) {
+                    SelectableWrapper theWrapper = (SelectableWrapper) aValue;
 
-            @Override
-            public boolean visit(Object aValue, DefaultMutableTreeNode aNode) {
-                if (aRecursiveSelection || aValue.equals(aRootNode.getUserObject())) {
-                    if (aValue instanceof SelectableWrapper) {
-                        SelectableWrapper theWrapper = (SelectableWrapper) aValue;
-
-                        if (isSelected == null) {
-                            theWrapper.invertSelection();
-                        } else {
-                            theWrapper.setSelected(isSelected);
-                        }
-
-                        return true;
+                    if (isSelected == null) {
+                        theWrapper.invertSelection();
+                    } else {
+                        theWrapper.setSelected(isSelected);
                     }
 
-                    return false;
+                    return true;
                 }
 
-                return !aRecursiveSelection;
+                return false;
             }
+
+            return !aRecursiveSelection;
         });
 
         //check if the selection state of main nodes is affected indirectly by
@@ -108,19 +104,15 @@ public class SelectableTableModel extends DefaultTreeModel {
     public Collection getSelectedEntries() {
         final Set theResult = new HashSet();
 
-        visitAll((DefaultMutableTreeNode) getRoot(), new TreeVisitor() {
-
-            @Override
-            public boolean visit(Object aValue, DefaultMutableTreeNode aNode) {
-                if (aValue instanceof SelectableWrapper) {
-                    SelectableWrapper theWrapper = (SelectableWrapper) aValue;
-                    if (theWrapper.isSelected() && (theWrapper.getValue() instanceof TableEntry)) {
-                        theResult.add(theWrapper.getValue());
-                    }
+        visitAll((DefaultMutableTreeNode) getRoot(), (aValue, aNode) -> {
+            if (aValue instanceof SelectableWrapper) {
+                SelectableWrapper theWrapper = (SelectableWrapper) aValue;
+                if (theWrapper.isSelected() && (theWrapper.getValue() instanceof TableEntry)) {
+                    theResult.add(theWrapper.getValue());
                 }
-
-                return false;
             }
+
+            return false;
         });
 
         return theResult;

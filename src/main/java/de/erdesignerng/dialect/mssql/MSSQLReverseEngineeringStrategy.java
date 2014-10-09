@@ -94,9 +94,8 @@ public class MSSQLReverseEngineeringStrategy extends
                                               ReverseEngineeringNotifier aNotifier, Connection aConnection)
             throws SQLException, ReverseEngineeringException {
         String theQuery = "select b.principal_id,b.name,a.* from sys.types a,sys.schemas b where a.schema_id = b.schema_id and a.is_table_type = 0 and a.is_user_defined = 1";
-        PreparedStatement theStatement = aConnection.prepareStatement(theQuery);
         ResultSet theResult = null;
-        try {
+        try (PreparedStatement theStatement = aConnection.prepareStatement(theQuery)) {
             theResult = theStatement.executeQuery();
             while (theResult.next()) {
                 String theCustomTypeName = theResult.getString("name");
@@ -128,7 +127,7 @@ public class MSSQLReverseEngineeringStrategy extends
             if (theResult != null) {
                 theResult.close();
             }
-            theStatement.close();
+
         }
     }
 }

@@ -76,9 +76,9 @@ public class DictionaryAttributeSerializer extends DictionaryBaseSerializer {
     }
 
     public <T extends ModelItem> void serialize(AttributeProvider<T> aTable, AttributeEntityProvider aTableEntity) {
-        Set<AttributeEntity> theRemovedAttributes = new HashSet<AttributeEntity>();
+        Set<AttributeEntity> theRemovedAttributes = new HashSet<>();
 
-        Map<String, AttributeEntity> theAttributes = new HashMap<String, AttributeEntity>();
+        Map<String, AttributeEntity> theAttributes = new HashMap<>();
         for (AttributeEntity theAttributeEntity : aTableEntity.getAttributes()) {
             Attribute<T> theAttribute = aTable.getAttributes().findBySystemId(theAttributeEntity.getSystemId());
             if (theAttribute == null) {

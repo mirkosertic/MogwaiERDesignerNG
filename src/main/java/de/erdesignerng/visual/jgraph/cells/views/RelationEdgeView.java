@@ -114,11 +114,11 @@ public class RelationEdgeView extends EdgeView {
 
     private static class Path2DRotatedHelper {
 
-        private double ox;
-        private double oy;
-        private Path2D.Double path;
-        private double cosAngle;
-        private double sinAngle;
+        private final double ox;
+        private final double oy;
+        private final Path2D.Double path;
+        private final double cosAngle;
+        private final double sinAngle;
 
         public Path2DRotatedHelper(double aOx, double aOy, double angle) {
             path = new Path2D.Double();

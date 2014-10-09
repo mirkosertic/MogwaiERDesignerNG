@@ -28,13 +28,11 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.binding.adapter.ComboboxModelAdapter;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 	private final Model model;
 
-	private final BindingInfo<ReverseEngineerDataModel> bindingInfo = new BindingInfo<ReverseEngineerDataModel>(
+	private final BindingInfo<ReverseEngineerDataModel> bindingInfo = new BindingInfo<>(
 			new ReverseEngineerDataModel());
 
 	private ReverseEngineerView editingView;
@@ -54,13 +52,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 	private final DefaultListModel<SchemaEntry> schemaList;
 
 	private final DefaultAction updateAction = new DefaultAction(
-			new ActionEventProcessor() {
-
-				@Override
-				public void processActionEvent(ActionEvent e) {
-					commandUpdate();
-				}
-			}, this, ERDesignerBundle.UPDATE);
+            e -> commandUpdate(), this, ERDesignerBundle.UPDATE);
 
 	/**
 	 * Create a reverse engineering editor.
@@ -177,9 +169,9 @@ public class ReverseEngineerEditor extends BaseEditor {
 	@Override
 	protected void commandOk() {
 		if (bindingInfo.validate().isEmpty()) {
-			Object[] theSelectedValues = editingView.getSchemaList()
-					.getSelectedValues();
-			if (((theSelectedValues == null) || (theSelectedValues.length == 0))
+			List<Object> theSelectedValues = editingView.getSchemaList()
+					.getSelectedValuesList();
+			if (((theSelectedValues == null) || (theSelectedValues.size() == 0))
 					&& (model.getDialect().isSupportsSchemaInformation())) {
 				MessagesHelper.displayErrorMessage(this, getResourceHelper()
 						.getText(ERDesignerBundle.CHOOSEONESCHEMA));
@@ -209,9 +201,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 				List<SchemaEntry> theEntries = theStrategy
 						.getSchemaEntries(theConnection);
-				for (SchemaEntry theEntry : theEntries) {
-					schemaList.add(theEntry);
-				}
+                theEntries.forEach(schemaList::add);
 
 			} catch (Exception e) {
 				MessagesHelper.displayErrorMessage(this, e.getMessage());
@@ -241,7 +231,7 @@ public class ReverseEngineerEditor extends BaseEditor {
 
 		if (model.getDialect().isSupportsSchemaInformation()) {
 			for (Object theEntry : editingView.getSchemaList()
-					.getSelectedValues()) {
+					.getSelectedValuesList()) {
 				theOptions.getSchemaEntries().add((SchemaEntry) theEntry);
 			}
 		}

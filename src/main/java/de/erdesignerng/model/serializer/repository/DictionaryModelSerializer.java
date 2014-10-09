@@ -168,7 +168,7 @@ public class DictionaryModelSerializer extends DictionaryBaseSerializer {
 		return (List<RepositoryEntryDescriptor>) new HibernateTemplate(aDialectClass, aConnection) {
 			@Override
 			public Object doInSession(Session aSession) {
-				List<RepositoryEntryDescriptor> theResult = new ArrayList<RepositoryEntryDescriptor>();
+				List<RepositoryEntryDescriptor> theResult = new ArrayList<>();
 
 				Criteria theCriteria = aSession.createCriteria(RepositoryEntity.class);
 				theCriteria.setProjection(Projections.projectionList().add(Projections.property("id")).add(

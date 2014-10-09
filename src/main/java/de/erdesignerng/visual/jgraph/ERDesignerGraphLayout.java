@@ -46,13 +46,13 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         component = aComponent;
     }
 
-    private final List<VertexCellElement> elements = new ArrayList<VertexCellElement>();
+    private final List<VertexCellElement> elements = new ArrayList<>();
 
-    private final List<Spring<CellView, VertexCellElement>> springs = new ArrayList<Spring<CellView, VertexCellElement>>();
+    private final List<Spring<CellView, VertexCellElement>> springs = new ArrayList<>();
 
-    private final Map<Object, Map> modelModifications = new HashMap<Object, Map>();
+    private final Map<Object, Map> modelModifications = new HashMap<>();
 
-    private final Set<ModelItem> elementsToIgnore = new HashSet<ModelItem>();
+    private final Set<ModelItem> elementsToIgnore = new HashSet<>();
 
     @Override
     public boolean preEvolveLayout() {
@@ -74,18 +74,16 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
                     elementsToIgnore.add((ModelItem) theTableCell.getUserObject());
                 }
                 if (theCell instanceof SubjectAreaCell) {
-                    for (Object theChildCell : ((SubjectAreaCell) theCell).getChildren()) {
-                        if (theChildCell instanceof ModelCellWithPosition) {
-                            DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
-                            elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
-                        }
-                    }
+                    ((SubjectAreaCell) theCell).getChildren().stream().filter(theChildCell -> theChildCell instanceof ModelCellWithPosition).forEach(theChildCell -> {
+                        DefaultGraphCell theGraphCell = (DefaultGraphCell) theChildCell;
+                        elementsToIgnore.add((ModelItem) theGraphCell.getUserObject());
+                    });
                 }
             }
         }
 
-        Map<ModelItem, VertexCellElement> theTables = new HashMap<ModelItem, VertexCellElement>();
-        Set<RelationEdgeView> theRelations = new HashSet<RelationEdgeView>();
+        Map<ModelItem, VertexCellElement> theTables = new HashMap<>();
+        Set<RelationEdgeView> theRelations = new HashSet<>();
 
         for (CellView theView : component.getGraph().getGraphLayoutCache().getAllViews()) {
 
@@ -115,7 +113,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
 
             if (!elementsToIgnore.contains(theRelation.getExportingTable())
                     && (!elementsToIgnore.contains(theRelation.getImportingTable()))) {
-                Spring<CellView, VertexCellElement> theSpring = new Spring<CellView, VertexCellElement>(theTables
+                Spring<CellView, VertexCellElement> theSpring = new Spring<>(theTables
                         .get(theRelation.getExportingTable()), theTables.get(theRelation.getImportingTable()),
                         theRelationView);
                 springs.add(theSpring);
@@ -133,7 +131,7 @@ public class ERDesignerGraphLayout extends ElectricSpringLayout<VertexCellElemen
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
 
-        List<DefaultGraphCell> theCells = new ArrayList<DefaultGraphCell>();
+        List<DefaultGraphCell> theCells = new ArrayList<>();
 
         for (CellView theView : component.getGraph().getGraphLayoutCache().getAllViews()) {
 

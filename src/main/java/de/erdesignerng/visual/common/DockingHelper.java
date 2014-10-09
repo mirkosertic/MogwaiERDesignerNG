@@ -65,42 +65,37 @@ public class DockingHelper extends DockingWindowAdapter implements
         theViewMap.addView(1, theViews[1]);
         theViewMap.addView(2, theViews[2]);
 
-        Runnable theRunnable = new Runnable() {
+        Runnable theRunnable = () -> {
 
-            @Override
-            public void run() {
+            Thread.currentThread().setContextClassLoader(
+                    DockingHelper.class.getClassLoader());
 
-                Thread.currentThread().setContextClassLoader(
-                        DockingHelper.class.getClassLoader());
-
-                rootWindow = DockingUtil.createRootWindow(theViewMap, true);
-                byte[] windowLayout = ApplicationPreferences.getInstance()
-                        .getWindowLayout();
-                boolean layoutRestored = false;
-                if (windowLayout != null && windowLayout.length > 0) {
-                    try {
-                        rootWindow.read(new ObjectInputStream(
-                                new ByteArrayInputStream(windowLayout)));
-                        layoutRestored = true;
-                        LOGGER.info("Workbench layout restored");
-                    } catch (Exception e) {
-                        LOGGER.error("Failed to restore window state", e);
-                    }
+            rootWindow = DockingUtil.createRootWindow(theViewMap, true);
+            byte[] windowLayout = ApplicationPreferences.getInstance()
+                    .getWindowLayout();
+            boolean layoutRestored = false;
+            if (windowLayout != null && windowLayout.length > 0) {
+                try {
+                    rootWindow.read(new ObjectInputStream(
+                            new ByteArrayInputStream(windowLayout)));
+                    layoutRestored = true;
+                    LOGGER.info("Workbench layout restored");
+                } catch (Exception e) {
+                    LOGGER.error("Failed to restore window state", e);
                 }
-
-                if (!layoutRestored) {
-                    SplitWindow theRightWindow = new SplitWindow(false, 0.8f,
-                            theViews[1], theViews[2]);
-                    SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
-                            theViews[0], theRightWindow);
-                    rootWindow.setWindow(theSplitWindow);
-                }
-
-                rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
-                rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(
-                        false);
             }
 
+            if (!layoutRestored) {
+                SplitWindow theRightWindow = new SplitWindow(false, 0.8f,
+                        theViews[1], theViews[2]);
+                SplitWindow theSplitWindow = new SplitWindow(true, 0.8f,
+                        theViews[0], theRightWindow);
+                rootWindow.setWindow(theSplitWindow);
+            }
+
+            rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
+            rootWindow.getRootWindowProperties().setRecursiveTabsEnabled(
+                    false);
         };
 
         // The Docking initialization must be performed in the EDT. If we are

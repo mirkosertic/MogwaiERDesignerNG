@@ -29,7 +29,7 @@ public class OpenXavaOptions {
 			"BOLD_LABEL", "TIME", "DATETIME", "IMAGE_GALLERY", "ZEROS_FILLED", "HTML_TEXT", "IMAGE_LABEL", "EMAIL",
 			"TELEPHONE", "WEBURL", "IP", "ISBN", "CREDIT_CARD", "EMAIL_LIST" };
 
-	private Map<DataType, OpenXavaTypeMap> typeMapping = new HashMap<DataType, OpenXavaTypeMap>();
+	private Map<DataType, OpenXavaTypeMap> typeMapping = new HashMap<>();
 
 	private String srcDirectory;
 

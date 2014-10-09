@@ -42,7 +42,7 @@ public class H2ReverseEngineeringStrategy extends JDBCReverseEngineeringStrategy
 
 	@Override
 	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
-		List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+		List<SchemaEntry> theList = new ArrayList<>();
 
 		DatabaseMetaData theMetadata = aConnection.getMetaData();
 		ResultSet theResult = theMetadata.getSchemas();

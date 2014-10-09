@@ -131,17 +131,15 @@ public abstract class SQLGenerator<T extends Dialect> {
 
 		StatementList theResult = new StatementList();
 
-		List<String> theSystemSchemas = new ArrayList<String>();
+		List<String> theSystemSchemas = new ArrayList<>();
 		List<String> theSchemasFromDialect = dialect.getSystemSchemas();
 		if (theSchemasFromDialect != null) {
 			theSystemSchemas.addAll(theSchemasFromDialect);
 		}
-		for (String theSchema : aModel.getUsedSchemas()) {
-			// We will not create the statements for system schemas.
-			if (!theSystemSchemas.contains(theSchema)) {
-				theResult.addAll(createAddSchemaStatement(theSchema));
-			}
-		}
+        // We will not create the statements for system schemas.
+        aModel.getUsedSchemas().stream().filter(theSchema -> !theSystemSchemas.contains(theSchema)).forEach(theSchema -> {
+            theResult.addAll(createAddSchemaStatement(theSchema));
+        });
 		for (Domain theDomain : aModel.getDomains()) {
 			theResult.addAll(createAddDomainStatement(theDomain));
 		}

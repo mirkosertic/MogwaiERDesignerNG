@@ -65,7 +65,7 @@ public final class ERDesigner {
 		}
 
 		// Disable D3D rendering pipeline
-		//System.setProperty("sun.java2d.d3d", "false");
+		System.setProperty("sun.java2d.d3d", "false");
 
 		DefaultSplashScreen theScreen = new DefaultSplashScreen(
 				"/de/erdesignerng/splashscreen.jpg");

@@ -56,11 +56,7 @@ public class ModelComparator {
 		TableList theAllTables = new TableList();
 		theAllTables.addAll(aCurrentModel.getTables());
 
-		for (Table theTable : aDatabaseModel.getTables()) {
-			if (theAllTables.findByName(theTable.getName()) == null) {
-				theAllTables.add(theTable);
-			}
-		}
+        aDatabaseModel.getTables().stream().filter(theTable -> theAllTables.findByName(theTable.getName()) == null).forEach(theAllTables::add);
 
 		for (Table theTable : theAllTables) {
 
@@ -114,21 +110,9 @@ public class ModelComparator {
 			}
 
 			if (theTableFromDB != null) {
-				for (Attribute<Table> theAttribute : theTableFromDB.getAttributes()) {
-					if (theAllAttributes.findByName(theAttribute.getName()) == null) {
-						theAllAttributes.add(theAttribute);
-					}
-				}
-				for (Index theIndex : theTableFromDB.getIndexes()) {
-					if (theAllIndexes.findByName(theIndex.getName()) == null) {
-						theAllIndexes.add(theIndex);
-					}
-				}
-				for (Relation theRelation : aDatabaseModel.getRelations().getForeignKeysFor(theTableFromDB)) {
-					if (theAllRelations.findByName(theRelation.getName()) == null) {
-						theAllRelations.add(theRelation);
-					}
-				}
+                theTableFromDB.getAttributes().stream().filter(theAttribute -> theAllAttributes.findByName(theAttribute.getName()) == null).forEach(theAllAttributes::add);
+                theTableFromDB.getIndexes().stream().filter(theIndex -> theAllIndexes.findByName(theIndex.getName()) == null).forEach(theAllIndexes::add);
+                aDatabaseModel.getRelations().getForeignKeysFor(theTableFromDB).stream().filter(theRelation -> theAllRelations.findByName(theRelation.getName()) == null).forEach(theAllRelations::add);
 			}
 
 			generateAttributesForTable(theModelSideTableNode, theDBSideTableNode, theTableFromModel, theTableFromDB,
@@ -161,11 +145,7 @@ public class ModelComparator {
 		ViewList theAllViews = new ViewList();
 		theAllViews.addAll(aCurrentModel.getViews());
 
-		for (View theView : aDatabaseModel.getViews()) {
-			if (theAllViews.findByName(theView.getName()) == null) {
-				theAllViews.add(theView);
-			}
-		}
+        aDatabaseModel.getViews().stream().filter(theView -> theAllViews.findByName(theView.getName()) == null).forEach(theAllViews::add);
 
 		for (View theView : theAllViews) {
 

@@ -29,9 +29,9 @@ import java.awt.*;
 public class CheckboxTreeCellRenderer extends JCheckBox implements
 		TreeCellRenderer {
 
-	private static CheckboxTreeCellRenderer ME = new CheckboxTreeCellRenderer();
+	private static final CheckboxTreeCellRenderer ME = new CheckboxTreeCellRenderer();
 
-	private UIInitializer initializer;
+	private final UIInitializer initializer;
 
 	public static CheckboxTreeCellRenderer getInstance() {
 		return ME;

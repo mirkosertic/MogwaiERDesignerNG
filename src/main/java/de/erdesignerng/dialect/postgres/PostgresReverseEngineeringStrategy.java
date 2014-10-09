@@ -59,7 +59,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 	public List<SchemaEntry> getSchemaEntries(Connection aConnection)
 			throws SQLException {
 
-		List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+		List<SchemaEntry> theList = new ArrayList<>();
 
 		DatabaseMetaData theMetadata = aConnection.getMetaData();
 		ResultSet theResult = theMetadata.getSchemas();
@@ -208,7 +208,7 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 										} catch (Exception e) {
 										}
 
-										Attribute<CustomType> theAttribute = new Attribute<CustomType>();
+										Attribute<CustomType> theAttribute = new Attribute<>();
 										theAttribute.setName(theAttributeName);
 										theAttribute.setDatatype(null);
 
@@ -272,17 +272,17 @@ public class PostgresReverseEngineeringStrategy extends JDBCReverseEngineeringSt
 
 												if (theTypeProperties >= 65536) {
 													// more than one parameter is set, so is must be "numeric" data type?
-													theFraction = new Integer(theTemp - 4);
-													theSize = new Integer(theSizeTemp);
+													theFraction = theTemp - 4;
+													theSize = theSizeTemp;
 												} else {
 													// varchar data type
-													theSize = new Integer(theTemp - 4);
+													theSize = theTemp - 4;
 												}
 											}
 										} catch (Exception e) {
 										}
 
-										Attribute<CustomType> theAttribute = new Attribute<CustomType>();
+										Attribute<CustomType> theAttribute = new Attribute<>();
 										theAttribute.setName(theAttributeName);
 										theAttribute.setDatatype(theDataType);
 

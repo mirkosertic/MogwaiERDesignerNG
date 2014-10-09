@@ -31,7 +31,7 @@ public class ModelItemNameCellEditor<T extends ModelItem> extends DefaultCellEdi
 
     private ModelItemTableModel<T> model;
     private T currentAttribute;
-    private Dialect dialect;
+    private final Dialect dialect;
 
     public ModelItemNameCellEditor(Dialect aDialect) {
         super(new DefaultTextField());

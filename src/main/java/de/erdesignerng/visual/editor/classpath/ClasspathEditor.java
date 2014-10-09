@@ -22,13 +22,11 @@ import de.erdesignerng.io.GenericFileFilter;
 import de.erdesignerng.util.ApplicationPreferences;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
@@ -42,22 +40,10 @@ import java.util.List;
 public class ClasspathEditor extends BaseEditor {
 
 	private final DefaultAction addAction = new DefaultAction(
-			new ActionEventProcessor() {
-
-				@Override
-				public void processActionEvent(ActionEvent e) {
-					commandFolderAdd();
-				}
-			}, this, ERDesignerBundle.ADDFOLDER);
+            e -> commandFolderAdd(), this, ERDesignerBundle.ADDFOLDER);
 
 	private final DefaultAction removeAction = new DefaultAction(
-			new ActionEventProcessor() {
-
-				@Override
-				public void processActionEvent(ActionEvent e) {
-					commandFolderRemove();
-				}
-			}, this, ERDesignerBundle.REMOVEFOLDER);
+            e -> commandFolderRemove(), this, ERDesignerBundle.REMOVEFOLDER);
 
 	private final ClasspathEditorView view = new ClasspathEditorView();
 
@@ -74,9 +60,7 @@ public class ClasspathEditor extends BaseEditor {
 
 		List<File> theFiles = ApplicationPreferences.getInstance()
 				.getClasspathFiles();
-		for (File theFile : theFiles) {
-			theModel.add(theFile);
-		}
+        theFiles.forEach(theModel::add);
 	}
 
 	private void initialize() {
@@ -142,8 +126,7 @@ public class ClasspathEditor extends BaseEditor {
 		DefaultListModel theModel = (DefaultListModel) view.getClasspath()
 				.getModel();
 
-		Object[] theValues = view.getClasspath().getSelectedValues();
-		for (Object theValue : theValues) {
+		for (Object theValue : view.getClasspath().getSelectedValuesList()) {
 			theModel.remove(theValue);
 		}
 	}

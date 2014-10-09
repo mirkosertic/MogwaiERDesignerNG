@@ -41,9 +41,7 @@ public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 		Index theIndex = (Index) aModel;
 		DefaultListModel theModel = theComponent.getModel();
 		theModel.clear();
-		for (IndexExpression theExpression : theIndex.getExpressions()) {
-			theModel.add(theExpression);
-		}
+        theIndex.getExpressions().forEach(theModel::add);
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class IndexAttributesPropertyAdapter extends PropertyAdapter {
 
 	@Override
 	public List<ValidationError> validate() {
-		List<ValidationError> theResult = new ArrayList<ValidationError>();
+		List<ValidationError> theResult = new ArrayList<>();
 		markValid();
 		return theResult;
 	}

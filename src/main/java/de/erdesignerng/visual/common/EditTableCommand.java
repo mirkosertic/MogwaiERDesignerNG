@@ -24,7 +24,7 @@ import de.erdesignerng.visual.editor.table.TableEditor;
 
 public class EditTableCommand extends UICommand {
 
-    private Table table;
+    private final Table table;
 
     private Attribute<Table> attribute;
 

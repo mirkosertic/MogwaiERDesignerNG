@@ -35,7 +35,7 @@ public class ForeignKeyWithoutIndexCheck implements ModelCheck {
 
 	private static class CreateIndexForRelationQuickFix implements QuickFix {
 
-		private Relation relation;
+		private final Relation relation;
 
 		private CreateIndexForRelationQuickFix(Relation aRelation) {
 			relation = aRelation;

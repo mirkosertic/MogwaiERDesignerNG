@@ -27,8 +27,6 @@ import de.mogwai.common.client.looks.components.DefaultRadioButton;
 import de.mogwai.common.client.looks.components.DefaultTextField;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * View for the save to dictionary dialog.
@@ -91,13 +89,7 @@ public class SaveToRepositoryView extends JPanel {
 
         add(thePanel, cons.xywh(2, 13, 5, 1));
 
-        existingNameBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                commandChangeRepositoryEntry();
-            }
-        });
+        existingNameBox.addActionListener(e -> commandChangeRepositoryEntry());
     }
 
     /**

@@ -27,7 +27,7 @@ public class View extends OwnedModelItem<Model> {
 
     private String sql;
 
-    private ViewAttributeList attributes = new ViewAttributeList();
+    private final ViewAttributeList attributes = new ViewAttributeList();
 
     private String schema;
 

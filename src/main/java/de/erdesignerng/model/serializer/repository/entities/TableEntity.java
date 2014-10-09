@@ -27,9 +27,9 @@ import java.util.List;
  */
 public class TableEntity extends ModelEntity implements AttributeEntityProvider {
 
-    private List<AttributeEntity> attributes = new ArrayList<AttributeEntity>();
+    private List<AttributeEntity> attributes = new ArrayList<>();
 
-    private List<IndexEntity> indexes = new ArrayList<IndexEntity>();
+    private List<IndexEntity> indexes = new ArrayList<>();
 
     private String schema;
 

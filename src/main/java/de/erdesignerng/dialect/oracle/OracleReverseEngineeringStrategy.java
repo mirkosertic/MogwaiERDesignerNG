@@ -49,7 +49,7 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 	@Override
 	public List<SchemaEntry> getSchemaEntries(Connection aConnection) throws SQLException {
 
-		List<SchemaEntry> theList = new ArrayList<SchemaEntry>();
+		List<SchemaEntry> theList = new ArrayList<>();
 
 		DatabaseMetaData theMetadata = aConnection.getMetaData();
 		ResultSet theResult = theMetadata.getSchemas();
@@ -67,12 +67,12 @@ public class OracleReverseEngineeringStrategy extends JDBCReverseEngineeringStra
 	@Override
 	protected boolean isValidTable(String aTableName) {
 		// Check for recycle bin tables
-		return (!aTableName.startsWith("BIN$")) && (aTableName.indexOf("/") < 0);
+		return (!aTableName.startsWith("BIN$")) && (!aTableName.contains("/"));
 	}
 
 	@Override
 	protected boolean isValidView(String aViewName) {
-		return aViewName.indexOf("/") < 0 && aViewName.indexOf("==") < 0;
+		return !aViewName.contains("/") && !aViewName.contains("==");
 	}
 
 	@Override

@@ -22,8 +22,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.dialect.Dialect;
 import de.mogwai.common.client.looks.components.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.JPanel;
 
 public class RepositoryConnectionEditorView extends DefaultPanel {
@@ -90,14 +89,7 @@ public class RepositoryConnectionEditorView extends DefaultPanel {
         thePanel.add(cancelButton, cons.xy(5, 1));
         cancelButton.setText("Cancel");
 
-        dialect.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleDialectChange((Dialect) dialect.getSelectedItem());
-            }
-
-        });
+        dialect.addActionListener(e -> handleDialectChange((Dialect) dialect.getSelectedItem()));
 
         add(thePanel, cons.xywh(2, 12, 3, 1));
     }

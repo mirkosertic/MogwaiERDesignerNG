@@ -24,7 +24,7 @@ public class ReverseEngineerDataModel {
 
 	private NameValuePair tableGenerator;
 
-	private List<Object> tableOptions = new ArrayList<Object>();
+	private List<Object> tableOptions = new ArrayList<>();
 
 	/**
 	 * @return the tableGenerator

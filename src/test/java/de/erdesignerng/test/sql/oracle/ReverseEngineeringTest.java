@@ -53,7 +53,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 
 			List<SchemaEntry> theAllSchemas = theST.getSchemaEntries(theConnection);
 
-			List<SchemaEntry> theSchemas = new ArrayList<SchemaEntry>();
+			List<SchemaEntry> theSchemas = new ArrayList<>();
 			for (SchemaEntry theEntry : theAllSchemas) {
 				System.out.println(theEntry.getSchemaName());
 
@@ -75,7 +75,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 			assertTrue(theTable != null);
 			Attribute<Table> theAttribute = theTable.getAttributes().findByName("TB2_1");
 			assertTrue(theAttribute != null);
-			assertTrue(theAttribute.isNullable() == false);
+			assertTrue(!theAttribute.isNullable());
 			assertTrue(theAttribute.getDatatype().getName().equals("VARCHAR2"));
 			assertTrue(theAttribute.getSize() == 20);
 			theAttribute = theTable.getAttributes().findByName("TB2_2");

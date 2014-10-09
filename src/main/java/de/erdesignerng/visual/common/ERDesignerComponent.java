@@ -32,7 +32,6 @@ import de.erdesignerng.visual.java3d.Java3DEditor;
 import de.erdesignerng.visual.jgraph.JGraphEditor;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.*;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenu;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
@@ -43,7 +42,6 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -149,7 +147,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     private GenericModelEditor editor;
     private ModelItem selectedObject;
 
-    private JPanel editorPanel;
+    private final JPanel editorPanel;
 
     private static ERDesignerComponent DEFAULT;
 
@@ -246,7 +244,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                     DefaultPopupMenu theMenu = new DefaultPopupMenu(ResourceHelper
                             .getResourceHelper(ERDesignerBundle.BUNDLE_NAME));
 
-                    List<ModelItem> theItems = new ArrayList<ModelItem>();
+                    List<ModelItem> theItems = new ArrayList<>();
                     theItems.add((ModelItem) aComponent.userObject);
                     ContextMenuFactory.addActionsToMenu(this, theMenu, theItems);
 
@@ -356,41 +354,23 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 .getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 
         DefaultAction theSaveAsAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent aEvent) {
-                        new SaveToFileCommand()
-                                .executeSaveFileAs();
-                    }
-
-                }, this, ERDesignerBundle.SAVEMODELAS);
+                aEvent -> new SaveToFileCommand()
+                        .executeSaveFileAs(), this, ERDesignerBundle.SAVEMODELAS);
 
         DefaultAction theSaveToRepository = new DefaultAction(
                 new SaveToRepositoryCommand(), this,
                 ERDesignerBundle.SAVEMODELTODB);
 
         relationAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.RELATION);
-                        if (!relationButton.isSelected()) {
-                            relationButton.setSelected(true);
-                        }
+                e -> {
+                    commandSetTool(ToolEnum.RELATION);
+                    if (!relationButton.isSelected()) {
+                        relationButton.setSelected(true);
                     }
-
                 }, this, ERDesignerBundle.RELATION);
 
         DefaultAction theNewAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandNew();
-                    }
-                }, this, ERDesignerBundle.NEWMODEL);
+                e -> commandNew(), this, ERDesignerBundle.NEWMODEL);
 
         DefaultAction theLruAction = new DefaultAction(this,
                 ERDesignerBundle.RECENTLYUSEDFILES);
@@ -399,70 +379,43 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 new OpenFromFileCommand(), this, ERDesignerBundle.LOADMODEL);
 
         handAction = new DefaultAction(
-                new ActionEventProcessor() {
+                e -> {
+                    commandSetTool(ToolEnum.HAND);
 
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.HAND);
-
-                        if (!handButton.isSelected()) {
-                            handButton.setSelected(true);
-                        }
+                    if (!handButton.isSelected()) {
+                        handButton.setSelected(true);
                     }
-
                 }, this, ERDesignerBundle.HAND);
 
         commentAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.COMMENT);
-                        if (!commentButton.isSelected()) {
-                            commentButton.setSelected(true);
-                        }
+                e -> {
+                    commandSetTool(ToolEnum.COMMENT);
+                    if (!commentButton.isSelected()) {
+                        commentButton.setSelected(true);
                     }
-
                 }, this, ERDesignerBundle.COMMENT);
 
         entityAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.ENTITY);
-                        if (!entityButton.isSelected()) {
-                            entityButton.setSelected(true);
-                        }
+                e -> {
+                    commandSetTool(ToolEnum.ENTITY);
+                    if (!entityButton.isSelected()) {
+                        entityButton.setSelected(true);
                     }
-
                 }, this, ERDesignerBundle.ENTITY);
 
         viewAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandSetTool(ToolEnum.VIEW);
-                        if (!viewButton.isSelected()) {
-                            viewButton.setSelected(true);
-                        }
+                e -> {
+                    commandSetTool(ToolEnum.VIEW);
+                    if (!viewButton.isSelected()) {
+                        viewButton.setSelected(true);
                     }
-
                 }, this, ERDesignerBundle.VIEWTOOL);
 
         DefaultAction theExportAction = new DefaultAction(this,
                 ERDesignerBundle.EXPORT);
 
         DefaultAction theExitAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        worldConnector.exitApplication();
-                    }
-
-                }, this, ERDesignerBundle.EXITPROGRAM);
+                e -> worldConnector.exitApplication(), this, ERDesignerBundle.EXITPROGRAM);
 
         DefaultAction theClasspathAction = new DefaultAction(
                 new ClasspathCommand(), this, ERDesignerBundle.CLASSPATH);
@@ -480,34 +433,14 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 ERDesignerBundle.DOMAINEDITOR);
 
         DefaultAction theZoomAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent aEvent) {
-                        editor.commandSetZoom((ZoomInfo) ((JComboBox) aEvent
-                                .getSource()).getSelectedItem());
-                    }
-                }, this, ERDesignerBundle.ZOOM);
+                aEvent -> editor.commandSetZoom((ZoomInfo) ((JComboBox) aEvent
+                        .getSource()).getSelectedItem()), this, ERDesignerBundle.ZOOM);
 
         zoomInAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        zoomIn();
-                    }
-
-                }, this, ERDesignerBundle.ZOOMIN);
+                e -> zoomIn(), this, ERDesignerBundle.ZOOMIN);
 
         zoomOutAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        zoomOut();
-                    }
-
-                }, this, ERDesignerBundle.ZOOMOUT);
+                e -> zoomOut(), this, ERDesignerBundle.ZOOMOUT);
 
         DefaultAction theGenerateSQL = new DefaultAction(
                 new GenerateSQLCommand(), this,
@@ -538,14 +471,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 ERDesignerBundle.CHECKMODELFORERRORS);
 
         DefaultAction theHelpAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandShowHelp();
-                    }
-
-                }, this, ERDesignerBundle.HELP);
+                aEvent -> commandShowHelp(), this, ERDesignerBundle.HELP);
 
         exportOpenXavaAction = new DefaultAction(
                 new OpenXavaExportExportCommand(), this,
@@ -666,32 +592,11 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 ERDesignerBundle.VIEWMODE);
 
         DefaultAction theViewMode2DDiagramAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        setEditor2DDiagram();
-                    }
-
-                }, this, ERDesignerBundle.VIEWMODE2DDIAGRAM);
+                e -> setEditor2DDiagram(), this, ERDesignerBundle.VIEWMODE2DDIAGRAM);
         DefaultAction theViewMode2DInteractiveAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        setEditor2DInteractive();
-                    }
-
-                }, this, ERDesignerBundle.VIEWMODE2DINTERACTIVE);
+                e -> setEditor2DInteractive(), this, ERDesignerBundle.VIEWMODE2DINTERACTIVE);
         DefaultAction theViewMode3DInteractiveAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        setEditor3DInteractive();
-                    }
-
-                }, this, ERDesignerBundle.VIEWMODE3DINTERACTIVE);
+                e -> setEditor3DInteractive(), this, ERDesignerBundle.VIEWMODE3DINTERACTIVE);
 
 
         viewMode2DDiagramMenuItem = new DefaultCheckboxMenuItem(
@@ -716,15 +621,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         UIInitializer.getInstance().initialize(theViewModeMenu);
 
         displayCommentsAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
-                                .getSource();
-                        editor.commandSetDisplayCommentsState(theItem.isSelected());
-                    }
-
+                e -> {
+                    DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
+                            .getSource();
+                    editor.commandSetDisplayCommentsState(theItem.isSelected());
                 }, this, ERDesignerBundle.DISPLAYCOMMENTS);
 
         displayCommentsMenuItem = new DefaultCheckboxMenuItem(
@@ -733,15 +633,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(displayCommentsMenuItem);
 
         displayGridAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
-                                .getSource();
-                        editor.commandSetDisplayGridState(theItem.isSelected());
-                    }
-
+                e -> {
+                    DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
+                            .getSource();
+                    editor.commandSetDisplayGridState(theItem.isSelected());
                 }, this, ERDesignerBundle.DISPLAYGRID);
 
         displayGridMenuItem = new DefaultCheckboxMenuItem(displayGridAction);
@@ -752,34 +647,13 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(displayLevelMenu);
 
         DefaultAction theDisplayAllAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        editor.commandSetDisplayLevel(DisplayLevel.ALL);
-                    }
-
-                }, this, ERDesignerBundle.DISPLAYALL);
+                e -> editor.commandSetDisplayLevel(DisplayLevel.ALL), this, ERDesignerBundle.DISPLAYALL);
 
         DefaultAction theDisplayPKOnlyAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        editor.commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY);
-                    }
-
-                }, this, ERDesignerBundle.DISPLAYPRIMARYKEY);
+                e -> editor.commandSetDisplayLevel(DisplayLevel.PRIMARYKEYONLY), this, ERDesignerBundle.DISPLAYPRIMARYKEY);
 
         DefaultAction theDisplayPKAndFK = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        editor.commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS);
-                    }
-
-                }, this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
+                e -> editor.commandSetDisplayLevel(DisplayLevel.PRIMARYKEYSANDFOREIGNKEYS), this, ERDesignerBundle.DISPLAYPRIMARYKEYANDFOREIGNKEY);
 
         displayAllMenuItem = new DefaultRadioButtonMenuItem(theDisplayAllAction);
         DefaultRadioButtonMenuItem thePKOnlyItem = new DefaultRadioButtonMenuItem(
@@ -803,34 +677,13 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(displayOrderMenu);
 
         DefaultAction theDisplayNaturalOrderAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        editor.commandSetDisplayOrder(DisplayOrder.NATURAL);
-                    }
-
-                }, this, ERDesignerBundle.DISPLAYNATURALORDER);
+                e -> editor.commandSetDisplayOrder(DisplayOrder.NATURAL), this, ERDesignerBundle.DISPLAYNATURALORDER);
 
         DefaultAction theDisplayAscendingOrderAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        editor.commandSetDisplayOrder(DisplayOrder.ASCENDING);
-                    }
-
-                }, this, ERDesignerBundle.DISPLAYASCENDING);
+                e -> editor.commandSetDisplayOrder(DisplayOrder.ASCENDING), this, ERDesignerBundle.DISPLAYASCENDING);
 
         DefaultAction theDisplayDescendingOrderAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        editor.commandSetDisplayOrder(DisplayOrder.DESCENDING);
-                    }
-
-                }, this, ERDesignerBundle.DISPLAYDESCENDING);
+                e -> editor.commandSetDisplayOrder(DisplayOrder.DESCENDING), this, ERDesignerBundle.DISPLAYDESCENDING);
 
         displayNaturalOrderMenuItem = new DefaultRadioButtonMenuItem(
                 theDisplayNaturalOrderAction);
@@ -922,13 +775,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 ERDesignerBundle.INTELLIGENTLAYOUT);
         intelligentLayoutCheckbox.setSelected(ApplicationPreferences.getInstance()
                 .isIntelligentLayout());
-        intelligentLayoutCheckbox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editor.setIntelligentLayoutEnabled(intelligentLayoutCheckbox.isSelected());
-            }
-        });
+        intelligentLayoutCheckbox.addActionListener(e -> editor.setIntelligentLayoutEnabled(intelligentLayoutCheckbox.isSelected()));
 
         theToolBar.addSeparator();
         theToolBar.add(intelligentLayoutCheckbox);
@@ -977,18 +824,14 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
      * Show all subject areas.
      */
     protected void commandShowAllSubjectAreas() {
-        for (SubjectArea theArea : model.getSubjectAreas()) {
-            editor.commandShowSubjectArea(theArea);
-        }
+        model.getSubjectAreas().forEach(editor::commandShowSubjectArea);
     }
 
     /**
      * Hide all subject areas.
      */
     protected void commandHideAllSubjectAreas() {
-        for (SubjectArea theArea : model.getSubjectAreas()) {
-            editor.commandHideSubjectArea(theArea);
-        }
+        model.getSubjectAreas().forEach(editor::commandHideSubjectArea);
     }
 
     /**
@@ -1024,23 +867,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     public void updateSubjectAreasMenu() {
         subjectAreas.removeAll();
         subjectAreas.add(new DefaultMenuItem(new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandShowAllSubjectAreas();
-                    }
-
-                }, this, ERDesignerBundle.SHOWALL)));
+                aEvent -> commandShowAllSubjectAreas(), this, ERDesignerBundle.SHOWALL)));
         subjectAreas.add(new DefaultMenuItem(new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent aEvent) {
-                        commandHideAllSubjectAreas();
-                    }
-
-                }, this, ERDesignerBundle.HIDEALL)));
+                aEvent -> commandHideAllSubjectAreas(), this, ERDesignerBundle.HIDEALL)));
 
         if (model.getSubjectAreas().size() > 0) {
             subjectAreas.addSeparator();
@@ -1050,17 +879,12 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 theItem.setText(theArea.getName());
                 theItem.setState(theArea.isVisible());
                 final SubjectArea theFinalArea = theArea;
-                theItem.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (theItem.getState()) {
-                            editor.commandShowSubjectArea(theFinalArea);
-                        } else {
-                            editor.commandHideSubjectArea(theFinalArea);
-                        }
+                theItem.addActionListener(e -> {
+                    if (theItem.getState()) {
+                        editor.commandShowSubjectArea(theFinalArea);
+                    } else {
+                        editor.commandHideSubjectArea(theFinalArea);
                     }
-
                 });
 
                 subjectAreas.add(theItem);
@@ -1082,13 +906,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 .getRecentlyUsedFiles();
         for (final File theFile : theFiles) {
             JMenuItem theItem = new JMenuItem(theFile.toString());
-            theItem.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    commandOpenFile(theFile);
-                }
-            });
+            theItem.addActionListener(e -> commandOpenFile(theFile));
 
             lruMenu.add(theItem);
             UIInitializer.getInstance().initialize(theItem);
@@ -1097,14 +915,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         for (final ConnectionDescriptor theConnectionInfo : ApplicationPreferences
                 .getInstance().getRecentlyUsedConnections()) {
             JMenuItem theItem1 = new JMenuItem(theConnectionInfo.toString());
-            theItem1.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new DBConnectionCommand()
-                            .execute(theConnectionInfo);
-                }
-            });
+            theItem1.addActionListener(e -> new DBConnectionCommand()
+                    .execute(theConnectionInfo));
 
             storedConnections.add(theItem1);
             UIInitializer.getInstance().initialize(theItem1);

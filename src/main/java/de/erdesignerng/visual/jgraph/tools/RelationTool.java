@@ -36,8 +36,6 @@ import org.jgraph.graph.PortView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -157,26 +155,14 @@ public class RelationTool extends BaseTool {
         DefaultAction theAddChildTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
                 ERDesignerBundle.CREATECHILDTABLEHERE);
         DefaultMenuItem theAddChildTableMenu = new DefaultMenuItem(theAddChildTableAction);
-        theAddChildTableAction.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                graph.commandNewTableAndRelation(aLocation, aParentCell, true);
-            }
-        });
+        theAddChildTableAction.addActionListener(e -> graph.commandNewTableAndRelation(aLocation, aParentCell, true));
 
         theMenu.add(theAddChildTableMenu);
 
         DefaultAction theAddParentTableAction = new DefaultAction(ERDesignerBundle.BUNDLE_NAME,
                 ERDesignerBundle.CREATEPARENTTABLEHERE);
         DefaultMenuItem theAddParentTableMenu = new DefaultMenuItem(theAddParentTableAction);
-        theAddParentTableMenu.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                graph.commandNewTableAndRelation(aLocation, aParentCell, false);
-            }
-        });
+        theAddParentTableMenu.addActionListener(e -> graph.commandNewTableAndRelation(aLocation, aParentCell, false));
 
         theMenu.add(theAddParentTableMenu);
 

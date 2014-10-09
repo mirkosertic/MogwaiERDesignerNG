@@ -76,18 +76,12 @@ public class CompleteCompareWithDatabaseCommand extends UICommand {
                                 theStrategy.getTablesForSchemas(theConnection,
                                         theOptions.getSchemaEntries()));
 
-                        ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
-
-                            @Override
-                            public void notifyMessage(String aResourceKey,
-                                                      String... aValues) {
-                                String theMessage = MessageFormat.format(
-                                        component.getResourceHelper().getText(
-                                                aResourceKey),
-                                        (Object[]) aValues);
-                                aPublisher.publishMessage(theMessage);
-                            }
-
+                        ReverseEngineeringNotifier theNotifier = (aResourceKey, aValues) -> {
+                            String theMessage = MessageFormat.format(
+                                    component.getResourceHelper().getText(
+                                            aResourceKey),
+                                    (Object[]) aValues);
+                            aPublisher.publishMessage(theMessage);
                         };
 
                         theStrategy.updateModelFromConnection(theDatabaseModel,

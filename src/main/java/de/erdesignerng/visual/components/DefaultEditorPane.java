@@ -24,7 +24,7 @@ import javax.swing.*;
 
 public class DefaultEditorPane extends JEditorPane {
 
-	private DefaultScrollPane scrollPane;
+	private final DefaultScrollPane scrollPane;
 
 	public DefaultEditorPane() {
 

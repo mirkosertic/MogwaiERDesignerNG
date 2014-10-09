@@ -40,7 +40,7 @@ public class ConvertModelEditor extends BaseEditor {
 
 	private final Model model;
 
-	private final BindingInfo<ConversionInfos> bindingInfo = new BindingInfo<ConversionInfos>(new ConversionInfos());
+	private final BindingInfo<ConversionInfos> bindingInfo = new BindingInfo<>(new ConversionInfos());
 
 	private ConvertModelEditorView editingView;
 
@@ -60,11 +60,7 @@ public class ConvertModelEditor extends BaseEditor {
 		DefaultComboBoxModel theDialectModel = new DefaultComboBoxModel();
 		DialectFactory theFactory = DialectFactory.getInstance();
 
-		for (Dialect theDialect : theFactory.getSupportedDialects()) {
-			if (!theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())) {
-				theDialectModel.addElement(theDialect);
-			}
-		}
+        theFactory.getSupportedDialects().stream().filter(theDialect -> !theDialect.getUniqueName().equals(aModel.getDialect().getUniqueName())).forEach(theDialectModel::addElement);
 		editingView.getTargetDialect().setModel(theDialectModel);
 		bindingInfo.getDefaultModel().setTargetDialect((Dialect) theDialectModel.getElementAt(0));
 

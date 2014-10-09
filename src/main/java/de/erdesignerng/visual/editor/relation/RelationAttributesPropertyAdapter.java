@@ -66,7 +66,7 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 
 		DefaultComboBox theAttributes = new DefaultComboBox();
 		theAttributes.setBorder(BorderFactory.createEmptyBorder());
-		Vector<Attribute<Table>> theElements = new Vector<Attribute<Table>>(theRelation.getImportingTable().getAttributes());
+		Vector<Attribute<Table>> theElements = new Vector<>(theRelation.getImportingTable().getAttributes());
 		DefaultComboBoxModel theModel = new DefaultComboBoxModel(theElements);
 
 		// This is for for the foreign key suggestions
@@ -101,7 +101,7 @@ public class RelationAttributesPropertyAdapter extends PropertyAdapter {
 	@Override
 	public List<ValidationError> validate() {
 		DefaultTable theTable = (DefaultTable) getComponent()[0];
-		List<ValidationError> theErrors = new ArrayList<ValidationError>();
+		List<ValidationError> theErrors = new ArrayList<>();
 		AttributeTableModel theTableModel = (AttributeTableModel) theTable.getModel();
 		for (int i = 0; i < theTableModel.getRowCount(); i++) {
 			Attribute<Table> theAssignedAttribute = (Attribute<Table>) theTableModel.getValueAt(i, 1);

@@ -25,8 +25,6 @@ import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -34,7 +32,7 @@ import java.awt.event.ActionListener;
  */
 public class TablesSelectEditor extends BaseEditor {
 
-	private final BindingInfo<ReverseEngineeringOptions> bindingInfo = new BindingInfo<ReverseEngineeringOptions>(
+	private final BindingInfo<ReverseEngineeringOptions> bindingInfo = new BindingInfo<>(
 			new ReverseEngineeringOptions());
 
 	private TablesSelectEditorView editingView;
@@ -75,34 +73,25 @@ public class TablesSelectEditor extends BaseEditor {
 
 		DefaultAction theSelectAllAction = new DefaultAction(this,
 				ERDesignerBundle.SELECTALL);
-		theSelectAllAction.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SelectableTableModel theModel = (SelectableTableModel) editingView
-						.getTableList().getModel();
-				theModel.selectAll();
-			}
-		});
+		theSelectAllAction.addActionListener(e -> {
+            SelectableTableModel theModel = (SelectableTableModel) editingView
+                    .getTableList().getModel();
+            theModel.selectAll();
+        });
 		DefaultAction theDeselectAllAction = new DefaultAction(this,
 				ERDesignerBundle.DESELECTALL);
-		theDeselectAllAction.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SelectableTableModel theModel = (SelectableTableModel) editingView
-						.getTableList().getModel();
-				theModel.deselectAll();
-			}
-		});
+		theDeselectAllAction.addActionListener(e -> {
+            SelectableTableModel theModel = (SelectableTableModel) editingView
+                    .getTableList().getModel();
+            theModel.deselectAll();
+        });
 		DefaultAction theInvertSelectionAction = new DefaultAction(this,
 				ERDesignerBundle.INVERTSELECTION);
-		theInvertSelectionAction.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SelectableTableModel theModel = (SelectableTableModel) editingView
-						.getTableList().getModel();
-				theModel.invertSelection();
-			}
-		});
+		theInvertSelectionAction.addActionListener(e -> {
+            SelectableTableModel theModel = (SelectableTableModel) editingView
+                    .getTableList().getModel();
+            theModel.invertSelection();
+        });
 
 		editingView.getSelectAll().setAction(theSelectAllAction);
 		editingView.getDeselectAll().setAction(theDeselectAllAction);

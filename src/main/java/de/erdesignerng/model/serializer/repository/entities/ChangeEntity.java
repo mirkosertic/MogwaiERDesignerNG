@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class ChangeEntity extends ModelEntity {
 
-	private List<String> statements = new ArrayList<String>();
+	private List<String> statements = new ArrayList<>();
 
 	/**
 	 * @return the statements

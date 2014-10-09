@@ -19,9 +19,9 @@ package de.erdesignerng.dialect;
 
 public class SchemaEntry {
 
-	private String catalogName;
+	private final String catalogName;
 
-	private String schemaName;
+	private final String schemaName;
 
 	public SchemaEntry(String aCatalogName, String aSchemaName) {
 		catalogName = aCatalogName;

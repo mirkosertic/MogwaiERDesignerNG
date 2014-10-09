@@ -42,7 +42,7 @@ public final class JasperUtils {
 		if (aDirectory != null && aDirectory.exists() && aDirectory.canRead()) {
 			for (File theFile : aDirectory.listFiles()) {
 				String theName = theFile.getName();
-				if (theName.endsWith(".jrxml") && (theName.indexOf("_") < 0)) {
+				if (theName.endsWith(".jrxml") && (!theName.contains("_"))) {
 					try {
 						JasperDesign theDesign = JRXmlLoader.load(new FileInputStream(theFile));
 						String theReportName = theDesign.getName();
@@ -63,7 +63,7 @@ public final class JasperUtils {
 	}
 
 	public static Map<File, String> findReportsInDirectory(File aDirectory) throws JRException {
-		Map<File, String> theResult = new HashMap<File, String>();
+		Map<File, String> theResult = new HashMap<>();
 		findReports(theResult, aDirectory);
 		return theResult;
 	}
@@ -88,7 +88,7 @@ public final class JasperUtils {
 			throw new RuntimeException("Cannot extract query from Jasper template");
 		}
 
-		Map<String, Object> theParams = new HashMap<String, Object>();
+		Map<String, Object> theParams = new HashMap<>();
 		theParams.put(JRParameter.REPORT_LOCALE, Locale.getDefault());
 
 		String theSubreportDir = theTemplateFile.getParent();

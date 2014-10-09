@@ -36,7 +36,7 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 	 */
 	public void removeTable(Table aTable) {
 
-		List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
+		List<SubjectArea> theRemovedAreas = new ArrayList<>();
 
 		for (SubjectArea theArea : this) {
 			theArea.getTables().remove(aTable);
@@ -57,7 +57,7 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 	 *			the comment
 	 */
 	public void removeComment(Comment aComment) {
-		List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
+		List<SubjectArea> theRemovedAreas = new ArrayList<>();
 
 		for (SubjectArea theArea : this) {
 			theArea.getComments().remove(aComment);
@@ -78,7 +78,7 @@ public class SubjectAreaList extends ModelItemVector<SubjectArea> {
 	 *			the view
 	 */
 	public void removeView(View aView) {
-		List<SubjectArea> theRemovedAreas = new ArrayList<SubjectArea>();
+		List<SubjectArea> theRemovedAreas = new ArrayList<>();
 
 		for (SubjectArea theArea : this) {
 			theArea.getViews().remove(aView);

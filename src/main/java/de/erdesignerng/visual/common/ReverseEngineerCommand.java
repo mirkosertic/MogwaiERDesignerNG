@@ -126,21 +126,16 @@ public class ReverseEngineerCommand extends UICommand {
 
 				@Override
 				public Model doWork(final MessagePublisher aPublisher) throws Exception {
-					ReverseEngineeringNotifier theNotifier = new ReverseEngineeringNotifier() {
-
-						@Override
-						public void notifyMessage(String aResourceKey, String... aValues) {
-							String theMessage = MessageFormat.format(ERDesignerComponent.getDefault().getResourceHelper().getText(aResourceKey), (Object[]) aValues);
-							aPublisher.publishMessage(theMessage);
-						}
-
-					};
+					ReverseEngineeringNotifier theNotifier = (aResourceKey, aValues) -> {
+                        String theMessage = MessageFormat.format(ERDesignerComponent.getDefault().getResourceHelper().getText(aResourceKey), (Object[]) aValues);
+                        aPublisher.publishMessage(theMessage);
+                    };
 
 					aStrategy.updateModelFromConnection(aModel, getWorldConnector(), aConnection, theOptions, theNotifier);
 
 					// Iterate over the views and the tables and
 					// order them in a matrix like position
-					List<ModelItem> theItems = new ArrayList<ModelItem>();
+					List<ModelItem> theItems = new ArrayList<>();
 					theItems.addAll(aModel.getTables());
 					theItems.addAll(aModel.getViews());
 					int xoffset = 20;
@@ -186,13 +181,7 @@ public class ReverseEngineerCommand extends UICommand {
 				public void handleResult(final Model aResultModel) {
 					try {
 						// Make sure this is called in the EDT, as else JGraph might throw a NPE
-						SwingUtilities.invokeAndWait(new Runnable() {
-
-							@Override
-							public void run() {
-								ERDesignerComponent.getDefault().setModel(aResultModel);
-							}
-						});
+						SwingUtilities.invokeAndWait(() -> ERDesignerComponent.getDefault().setModel(aResultModel));
 					} catch (InterruptedException | InvocationTargetException e) {
 						throw new RuntimeException("Cannot set model in editor", e);
 					}

@@ -122,7 +122,7 @@ public class RelationEdge extends DefaultEdge implements ModelCell<Relation> {
         // PROPERTY_POINTS
         String thePoints = aRelation.getProperties().getProperty(Relation.PROPERTY_POINTS);
         if (thePoints != null) {
-            List<Point2D> thePointList = new ArrayList<Point2D>();
+            List<Point2D> thePointList = new ArrayList<>();
 
             for (StringTokenizer theSt = new StringTokenizer(thePoints, ","); theSt.hasMoreTokens(); ) {
                 thePoint = ModelProperties.toPoint2D(theSt.nextToken());

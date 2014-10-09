@@ -54,7 +54,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
 
         DataType[] theTargetTypes = new DataType[theInfos.getTypeMapping().keySet().size()];
 
-        List<DataType> theCurrentTypes = new ArrayList<DataType>();
+        List<DataType> theCurrentTypes = new ArrayList<>();
         theCurrentTypes.addAll(theInfos.getTypeMapping().keySet());
 
         Collections.sort(theCurrentTypes, new BeanComparator("name"));
@@ -93,7 +93,7 @@ public class ConvertPropertyAdapter extends PropertyAdapter {
     @Override
     public List<ValidationError> validate() {
         DefaultTable theTable = (DefaultTable) getComponent()[0];
-        List<ValidationError> theErrors = new ArrayList<ValidationError>();
+        List<ValidationError> theErrors = new ArrayList<>();
         ConversionTableModel theTableModel = (ConversionTableModel) theTable.getModel();
         for (int i = 0; i < theTableModel.getRowCount(); i++) {
             DataType theAssignedAttribute = (DataType) theTableModel.getValueAt(i, 1);

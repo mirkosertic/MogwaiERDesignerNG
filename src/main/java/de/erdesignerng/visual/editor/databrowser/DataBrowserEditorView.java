@@ -14,7 +14,6 @@ import org.apache.commons.lang.ArrayUtils;
 import javax.swing.*;
 import javax.swing.text.EditorKit;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -133,19 +132,15 @@ public class DataBrowserEditorView extends JPanel {
 		final JButton theButton = new JButton();
 		theButton.setText(aDescription);
 		theButton.addActionListener(aActionListener);
-		theButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int p = ArrayUtils.indexOf(breadCrumb.getComponents(),
-						theButton);
-				while (breadCrumb.getComponentCount() > p + 1) {
-					breadCrumb.remove(breadCrumb.getComponentCount() - 1);
-				}
-				breadCrumb.invalidate();
-				breadCrumb.repaint();
-			}
-		});
+		theButton.addActionListener(e -> {
+            int p = ArrayUtils.indexOf(breadCrumb.getComponents(),
+                    theButton);
+            while (breadCrumb.getComponentCount() > p + 1) {
+                breadCrumb.remove(breadCrumb.getComponentCount() - 1);
+            }
+            breadCrumb.invalidate();
+            breadCrumb.repaint();
+        });
 		breadCrumb.add(theButton);
 
 		UIInitializer.getInstance().initialize(theButton);

@@ -18,8 +18,6 @@
 package de.erdesignerng.visual;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
@@ -29,51 +27,43 @@ public abstract class FadeInFadeOutHelper {
     private int componentToHighlightPosition;
     private boolean componentToHighlightFadeOut;
     private Timer componentToHighlightTimer;
-    private Timer componentToHighlightWaitTimer;
+    private final Timer componentToHighlightWaitTimer;
     private JComponent componentToHighlightNext;
 
     public FadeInFadeOutHelper() {
-        componentToHighlightTimer = new Timer(50, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        componentToHighlightTimer = new Timer(50, e -> {
 
-                if (componentToHighlightFadeOut) {
-                    if (componentToHighlightPosition > 0) {
-                        componentToHighlightPosition -= 40;
-                    } else {
-                        componentToHighlightFadeOut = false;
-                        componentToHighlight = componentToHighlightNext;
-                    }
+            if (componentToHighlightFadeOut) {
+                if (componentToHighlightPosition > 0) {
+                    componentToHighlightPosition -= 40;
                 } else {
-                    if (componentToHighlightNext != null) {
-                        componentToHighlight = componentToHighlightNext;
-                        componentToHighlightNext = null;
-                    }
-                    if (componentToHighlight != null) {
-                        Dimension theSize = componentToHighlight.getSize();
-                        if (componentToHighlightPosition < theSize.width + 10) {
-                            int theStep = theSize.width + 10 - componentToHighlightPosition;
-                            if (theStep > 40) {
-                                theStep = 40;
-                            }
-                            componentToHighlightPosition += theStep;
-                        } else {
-                            componentToHighlightTimer.stop();
+                    componentToHighlightFadeOut = false;
+                    componentToHighlight = componentToHighlightNext;
+                }
+            } else {
+                if (componentToHighlightNext != null) {
+                    componentToHighlight = componentToHighlightNext;
+                    componentToHighlightNext = null;
+                }
+                if (componentToHighlight != null) {
+                    Dimension theSize = componentToHighlight.getSize();
+                    if (componentToHighlightPosition < theSize.width + 10) {
+                        int theStep = theSize.width + 10 - componentToHighlightPosition;
+                        if (theStep > 40) {
+                            theStep = 40;
                         }
+                        componentToHighlightPosition += theStep;
                     } else {
                         componentToHighlightTimer.stop();
                     }
+                } else {
+                    componentToHighlightTimer.stop();
                 }
+            }
 
-                doRepaint();
-            }
+            doRepaint();
         });
-        componentToHighlightWaitTimer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                componentToHighlightTimer.start();
-            }
-        });
+        componentToHighlightWaitTimer = new Timer(1000, e -> componentToHighlightTimer.start());
         componentToHighlightWaitTimer.setRepeats(false);
     }
 

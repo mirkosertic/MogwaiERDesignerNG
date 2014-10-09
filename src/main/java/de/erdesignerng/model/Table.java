@@ -27,9 +27,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Table extends OwnedModelItem<Model> implements AttributeProvider<Table> {
 
-    private AttributeList<Table> attributes = new AttributeList<Table>();
+    private final AttributeList<Table> attributes = new AttributeList<>();
 
-    private IndexList indexes = new IndexList();
+    private final IndexList indexes = new IndexList();
 
     private String schema;
 
@@ -177,7 +177,7 @@ public class Table extends OwnedModelItem<Model> implements AttributeProvider<Ta
 
     @Override
     public Attribute<Table> createNewAttribute() {
-        Attribute<Table> theNewAttribute = new Attribute<Table>();
+        Attribute<Table> theNewAttribute = new Attribute<>();
         theNewAttribute.setOwner(this);
         attributes.add(theNewAttribute);
         return theNewAttribute;

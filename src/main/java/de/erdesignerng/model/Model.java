@@ -626,7 +626,7 @@ public class Model extends ModelItem {
      * @return the list of schemas.
      */
     public List<String> getUsedSchemas() {
-        List<String> theResult = new ArrayList<String>();
+        List<String> theResult = new ArrayList<>();
         for (Table theTable : tables) {
             String theSchema = theTable.getSchema();
             if (!StringUtils.isEmpty(theSchema)) {

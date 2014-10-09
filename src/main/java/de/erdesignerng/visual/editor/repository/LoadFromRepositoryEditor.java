@@ -38,7 +38,7 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 
 	private final LoadFromRepositoryView view = new LoadFromRepositoryView();
 
-	private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<LoadFromRepositoryDataModel>(
+	private final BindingInfo<LoadFromRepositoryDataModel> bindingInfo = new BindingInfo<>(
 			new LoadFromRepositoryDataModel());
 
 	public LoadFromRepositoryEditor(Component aParent,
@@ -46,9 +46,7 @@ public class LoadFromRepositoryEditor extends BaseEditor {
 		super(aParent, ERDesignerBundle.LOADMODELFROMDB);
 
 		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-		for (RepositoryEntryDescriptor theEntry : aEntries) {
-			theModel.addElement(theEntry);
-		}
+        aEntries.forEach(theModel::addElement);
 		view.getExistingNameBox().setModel(theModel);
 
 		initialize();

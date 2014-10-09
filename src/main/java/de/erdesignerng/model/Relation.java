@@ -139,9 +139,9 @@ public class Relation extends OwnedModelItem<Model> implements
             return true;
         }
 
-        List<Attribute> theMyAttributes = new ArrayList<Attribute>(mapping
+        List<Attribute> theMyAttributes = new ArrayList<>(mapping
                 .values());
-        List<Attribute> theOtherAttributes = new ArrayList<Attribute>(aRelation
+        List<Attribute> theOtherAttributes = new ArrayList<>(aRelation
                 .getMapping().values());
         if (theMyAttributes.size() != theOtherAttributes.size()) {
             return true;

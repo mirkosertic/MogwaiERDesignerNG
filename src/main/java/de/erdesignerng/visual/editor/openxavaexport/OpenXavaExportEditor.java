@@ -27,13 +27,11 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Map;
 
@@ -53,17 +51,11 @@ public class OpenXavaExportEditor extends BaseEditor {
 
 	private final Model model;
 
-	private final BindingInfo<OpenXavaOptions> bindingInfo = new BindingInfo<OpenXavaOptions>(new OpenXavaOptions());
+	private final BindingInfo<OpenXavaOptions> bindingInfo = new BindingInfo<>(new OpenXavaOptions());
 
 	private OpenXavaExportEditorView editingView;
 
-	protected final DefaultAction chooseSrcDirectoryAction = new DefaultAction(new ActionEventProcessor() {
-
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandChooseSrcDirectory();
-		}
-	}, this, ERDesignerBundle.FILE);
+	protected final DefaultAction chooseSrcDirectoryAction = new DefaultAction(e -> commandChooseSrcDirectory(), this, ERDesignerBundle.FILE);
 
 	/**
 	 * Create a relation editor.

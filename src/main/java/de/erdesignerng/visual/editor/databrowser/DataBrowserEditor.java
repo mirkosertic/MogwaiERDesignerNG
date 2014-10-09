@@ -32,7 +32,6 @@ import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultPopupMenu;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.renderer.DefaultCellRenderer;
 
@@ -42,8 +41,6 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import java.awt.Component;
 import java.awt.FontMetrics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,12 +56,12 @@ import java.util.Map;
  */
 public class DataBrowserEditor extends BaseEditor {
 
-    private DataBrowserEditorView view = new DataBrowserEditorView();
+    private final DataBrowserEditorView view = new DataBrowserEditorView();
 
     private Model currentModel;
     private Dialect currentDialect;
 
-    private BindingInfo<DataBrowserModel> sqlBindingInfo = new BindingInfo<DataBrowserModel>();
+    private final BindingInfo<DataBrowserModel> sqlBindingInfo = new BindingInfo<>();
     private Connection connection;
     private Statement statement;
 
@@ -74,24 +71,12 @@ public class DataBrowserEditor extends BaseEditor {
         super(aParent, ERDesignerBundle.DATABROWSER);
 
         DefaultAction closeAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandClose();
-                    }
-                }, this, ERDesignerBundle.CLOSE);
+                e -> commandClose(), this, ERDesignerBundle.CLOSE);
 
         view.getCloseButton().setAction(closeAction);
 
         DefaultAction queryAction = new DefaultAction(
-                new ActionEventProcessor() {
-
-                    @Override
-                    public void processActionEvent(ActionEvent e) {
-                        commandQuery();
-                    }
-                }, this, ERDesignerBundle.QUERY);
+                e -> commandQuery(), this, ERDesignerBundle.QUERY);
         view.getQueryButton().setAction(queryAction);
         view.getData().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -107,7 +92,7 @@ public class DataBrowserEditor extends BaseEditor {
         currentModel = aTable.getOwner();
         currentDialect = aTable.getOwner().getDialect();
 
-        Map<Attribute<Table>, Object> theWhereValues = new HashMap<Attribute<Table>, Object>();
+        Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
 
         DataBrowserModel theModel = sqlBindingInfo.getDefaultModel();
         theModel.setSql(currentDialect.createSQLGenerator()
@@ -118,17 +103,13 @@ public class DataBrowserEditor extends BaseEditor {
 
         final String theSQL = theModel.getSql();
 
-        view.addBreadCrumb(aTable.getName(), new ActionListener() {
+        view.addBreadCrumb(aTable.getName(), e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            sqlBindingInfo.getDefaultModel().setSql(theSQL);
+            sqlBindingInfo.model2view();
+            commandQuery();
 
-                sqlBindingInfo.getDefaultModel().setSql(theSQL);
-                sqlBindingInfo.model2view();
-                commandQuery();
-
-                initializeContextMenu(aTable);
-            }
+            initializeContextMenu(aTable);
         });
 
         commandQuery();
@@ -137,7 +118,7 @@ public class DataBrowserEditor extends BaseEditor {
     private void initializeContextMenu(final Table aTable) {
         DefaultPopupMenu theMenu = new DefaultPopupMenu();
 
-        Map<Table, JMenu> theMap = new HashMap<Table, JMenu>();
+        Map<Table, JMenu> theMap = new HashMap<>();
 
         for (Relation theRelation : currentModel.getRelations()
                 .getForeignKeysFor(aTable)) {
@@ -151,13 +132,7 @@ public class DataBrowserEditor extends BaseEditor {
                     ERDesignerBundle.SHOWDATAOFUSING,
                     theNavigationTarget.getName(), theFinalRelation.getName()));
 
-            theItem.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    navigateToWithForeignKey(theFinalRelation);
-                }
-            });
+            theItem.addActionListener(e -> navigateToWithForeignKey(theFinalRelation));
 
             JMenu theMenuToAdd = theMap.get(theNavigationTarget);
             if (theMenuToAdd == null) {
@@ -178,13 +153,7 @@ public class DataBrowserEditor extends BaseEditor {
                     ERDesignerBundle.SHOWDATAOFUSING,
                     theNavigationTarget.getName(), theFinalRelation.getName()));
 
-            theItem.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    navigateToWithImportingKey(theFinalRelation);
-                }
-            });
+            theItem.addActionListener(e -> navigateToWithImportingKey(theFinalRelation));
 
             JMenu theMenuToAdd = theMap.get(theNavigationTarget);
             if (theMenuToAdd == null) {
@@ -201,15 +170,12 @@ public class DataBrowserEditor extends BaseEditor {
             }
         }
         final JMenuItem theItem = new JMenuItem(getResourceHelper().getText(ERDesignerBundle.EDITROW));
-        theItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
-                    theEditor.setVisible(true);
-                } catch (SQLException ex) {
-                    logFatalError(ex);
-                }
+        theItem.addActionListener(e -> {
+            try {
+                RowEditor theEditor = new RowEditor(theItem, dataModel, view.getData().getSelectedRow());
+                theEditor.setVisible(true);
+            } catch (SQLException ex) {
+                logFatalError(ex);
             }
         });
 
@@ -240,7 +206,7 @@ public class DataBrowserEditor extends BaseEditor {
         int theCurrentRow = view.getData().getSelectedRow();
         if (theCurrentRow >= 0) {
 
-            Map<Attribute<Table>, Object> theWhereValues = new HashMap<Attribute<Table>, Object>();
+            Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
             for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation
                     .getMapping().entrySet()) {
 
@@ -269,17 +235,13 @@ public class DataBrowserEditor extends BaseEditor {
             final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
 
             view.addBreadCrumb(aRelation.getExportingTable().getName(),
-                    new ActionListener() {
+                    e -> {
 
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                        sqlBindingInfo.getDefaultModel().setSql(theSQL);
+                        sqlBindingInfo.model2view();
+                        commandQuery();
 
-                            sqlBindingInfo.getDefaultModel().setSql(theSQL);
-                            sqlBindingInfo.model2view();
-                            commandQuery();
-
-                            initializeContextMenu(aRelation.getExportingTable());
-                        }
+                        initializeContextMenu(aRelation.getExportingTable());
                     });
 
         }
@@ -289,7 +251,7 @@ public class DataBrowserEditor extends BaseEditor {
         int theCurrentRow = view.getData().getSelectedRow();
         if (theCurrentRow >= 0) {
 
-            Map<Attribute<Table>, Object> theWhereValues = new HashMap<Attribute<Table>, Object>();
+            Map<Attribute<Table>, Object> theWhereValues = new HashMap<>();
             for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation.getMapping().entrySet()) {
                 Attribute<Table> theAttribute = theEntry.getKey().getAttributeRef();
                 if (theAttribute != null) {
@@ -313,17 +275,13 @@ public class DataBrowserEditor extends BaseEditor {
             final String theSQL = sqlBindingInfo.getDefaultModel().getSql();
 
             view.addBreadCrumb(aRelation.getImportingTable().getName(),
-                    new ActionListener() {
+                    e -> {
 
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                        sqlBindingInfo.getDefaultModel().setSql(theSQL);
+                        sqlBindingInfo.model2view();
+                        commandQuery();
 
-                            sqlBindingInfo.getDefaultModel().setSql(theSQL);
-                            sqlBindingInfo.model2view();
-                            commandQuery();
-
-                            initializeContextMenu(aRelation.getImportingTable());
-                        }
+                        initializeContextMenu(aRelation.getImportingTable());
                     });
         }
     }
@@ -374,13 +332,7 @@ public class DataBrowserEditor extends BaseEditor {
                 view.getData().getTableHeader().setReorderingAllowed(false);
 
                 dataModel
-                        .addSeekListener(new PaginationDataModel.SeekListener() {
-
-                            @Override
-                            public void seeked() {
-                                updateTableColumnWIdth();
-                            }
-                        });
+                        .addSeekListener(() -> updateTableColumnWIdth());
 
                 updateTableColumnWIdth();
 

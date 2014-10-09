@@ -33,7 +33,6 @@ import de.mogwai.common.i18n.ResourceHelperProvider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -49,11 +48,11 @@ public class Java2DEditor implements GenericModelEditor {
 
     private Model model;
     private ModelItem currentModelItem;
-    private JPanel mainPanel;
-    private JCheckBox includeIncoming;
-    private JCheckBox includeOutgoing;
-    private JLabel currentElement;
-    private EditorPanel editorPanel;
+    private final JPanel mainPanel;
+    private final JCheckBox includeIncoming;
+    private final JCheckBox includeOutgoing;
+    private final JLabel currentElement;
+    private final EditorPanel editorPanel;
 
     public Java2DEditor() {
 
@@ -88,12 +87,7 @@ public class Java2DEditor implements GenericModelEditor {
         includeOutgoing = new JCheckBox(theHelper.getText(ERDesignerBundle.INCLUDEOUTGOINGRELATIONS));
         currentElement = new JLabel();
 
-        ActionListener theUpdateActionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setSelectedObject(currentModelItem);
-            }
-        };
+        ActionListener theUpdateActionListener = e -> setSelectedObject(currentModelItem);
 
         includeIncoming.setSelected(true);
         includeIncoming.addActionListener(theUpdateActionListener);
@@ -319,7 +313,7 @@ public class Java2DEditor implements GenericModelEditor {
 
     private void generateGraphFor(Table aTable) {
 
-        Map<ModelItem, EditorPanel.EditorComponent> theComponentMap = new HashMap<ModelItem, EditorPanel.EditorComponent>();
+        Map<ModelItem, EditorPanel.EditorComponent> theComponentMap = new HashMap<>();
 
         TableComponent theButton = new TableComponent(aTable);
         EditorPanel.EditorComponent theRoot = new EditorPanel.EditorComponent(aTable, 0, 0, theButton, true);
@@ -329,18 +323,18 @@ public class Java2DEditor implements GenericModelEditor {
 
         int r1 = 250;
 
-        List<Table> theAlreadyKnown = new ArrayList<Table>();
+        List<Table> theAlreadyKnown = new ArrayList<>();
         theAlreadyKnown.add(aTable);
 
         // Level 1
-        List<Relation> theIncomingRelationsLevel1 = new ArrayList<Relation>();
+        List<Relation> theIncomingRelationsLevel1 = new ArrayList<>();
         if (includeIncoming.isSelected()) {
             theIncomingRelationsLevel1.addAll(model.getRelations().getForeignKeysFor(aTable));
         }
         if (includeOutgoing.isSelected()) {
             theIncomingRelationsLevel1.addAll(model.getRelations().getExportedKeysFor(aTable));
         }
-        List<Table> theTablesLevel1 = new ArrayList<Table>();
+        List<Table> theTablesLevel1 = new ArrayList<>();
         for (Relation theRelation : theIncomingRelationsLevel1) {
             if (!theTablesLevel1.contains(theRelation.getExportingTable()) && !theAlreadyKnown.contains(theRelation.getExportingTable())) {
                 theTablesLevel1.add(theRelation.getExportingTable());
