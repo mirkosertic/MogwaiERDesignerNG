@@ -56,13 +56,11 @@ public class SaveToRepositoryEditor extends BaseEditor {
 		initialize();
 
 		SaveToRepositoryDataModel theBindModel = new SaveToRepositoryDataModel();
-		bindingInfo1 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
-		bindingInfo2 = new BindingInfo<SaveToRepositoryDataModel>(theBindModel);
+		bindingInfo1 = new BindingInfo<>(theBindModel);
+		bindingInfo2 = new BindingInfo<>(theBindModel);
 
 		DefaultComboBoxModel theModel = new DefaultComboBoxModel();
-		for (RepositoryEntryDescriptor theEntry : aEntries) {
-			theModel.addElement(theEntry);
-		}
+        aEntries.forEach(theModel::addElement);
 		view.getExistingNameBox().setModel(theModel);
 		if (theModel.getSize() > 0) {
 			theBindModel.setExistingEntry((RepositoryEntryDescriptor) theModel.getElementAt(0));

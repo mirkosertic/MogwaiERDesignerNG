@@ -54,20 +54,18 @@ public class TableEntryPropertyAdapter extends PropertyAdapter {
 
 		DefaultMutableTreeNode theRootNode = new DefaultMutableTreeNode();
 		for (TableType theTableType : theModel.getAvailableTableTypes()) {
-			SelectableWrapper<String> theWrapper = new SelectableWrapper<String>(theTableType.toString());
+			SelectableWrapper<String> theWrapper = new SelectableWrapper<>(theTableType.toString());
 			DefaultMutableTreeNode theNode = new DefaultMutableTreeNode(theWrapper);
 
-			for (TableEntry theTableEntry : theModel.getTableEntries()) {
-				if (theTableType.equals(theTableEntry.getTableType())) {
+            theModel.getTableEntries().stream().filter(theTableEntry -> theTableType.equals(theTableEntry.getTableType())).forEach(theTableEntry -> {
 
-					SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<TableEntry>(
-							theTableEntry);
-					DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
-							theWrapper2);
+                SelectableWrapper<TableEntry> theWrapper2 = new SelectableWrapper<>(
+                        theTableEntry);
+                DefaultMutableTreeNode theNode2 = new DefaultMutableTreeNode(
+                        theWrapper2);
 
-					theNode.add(theNode2);
-				}
-			}
+                theNode.add(theNode2);
+            });
 
 			theRootNode.add(theNode);
 		}
@@ -90,7 +88,7 @@ public class TableEntryPropertyAdapter extends PropertyAdapter {
 
 	@Override
 	public List<ValidationError> validate() {
-		List<ValidationError> theResult = new ArrayList<ValidationError>();
+		List<ValidationError> theResult = new ArrayList<>();
 
 		SelectableTableModel theModel = (SelectableTableModel) ((DefaultTree) getComponent()[0])
 				.getModel();

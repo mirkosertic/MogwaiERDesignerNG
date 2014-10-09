@@ -31,7 +31,7 @@ public class RelationEntity extends ModelEntity {
 
 	private String exportingTable;
 
-	private List<StringKeyValuePair> mapping = new ArrayList<StringKeyValuePair>();
+	private List<StringKeyValuePair> mapping = new ArrayList<>();
 
 	private int onDelete;
 

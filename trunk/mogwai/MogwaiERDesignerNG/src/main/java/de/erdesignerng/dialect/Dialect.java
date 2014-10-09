@@ -70,7 +70,7 @@ public abstract class Dialect {
 
 	private String defaultSchemaName = null;
 
-	private final HashMap<String, String> dataTypeAliases = new HashMap<String, String>();
+	private final HashMap<String, String> dataTypeAliases = new HashMap<>();
 
 	protected void addDataTypeAlias(String aDataTypeAlias, String aBaseDataTypeName) {
 		dataTypeAliases.put(aDataTypeAlias, aBaseDataTypeName);
@@ -377,12 +377,12 @@ public abstract class Dialect {
 		if (supportsSchemaInformation) {
 			return systemSchemas;
 		}
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 	public void addSystemSchema(String aSystemSchemaName) {
 		if (systemSchemas == null) {
-			systemSchemas = new ArrayList<String>();
+			systemSchemas = new ArrayList<>();
 		}
 
 		systemSchemas.add(aSystemSchemaName);

@@ -49,7 +49,7 @@ public final class ModelIOUtilities {
 
 	private XMLUtils xmlUtils;
 
-	private final List<AbstractXMLModelSerializer> knownSerializers = new ArrayList<AbstractXMLModelSerializer>();
+	private final List<AbstractXMLModelSerializer> knownSerializers = new ArrayList<>();
 
 	private ModelIOUtilities() throws ParserConfigurationException {
 		xmlUtils = XMLUtils.getInstance();

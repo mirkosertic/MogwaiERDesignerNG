@@ -25,9 +25,9 @@ import javax.swing.table.TableCellRenderer;
 
 public final class CheckboxCellRenderer extends JCheckBox implements TableCellRenderer {
 
-    private static CheckboxCellRenderer me = new CheckboxCellRenderer();
+    private static final CheckboxCellRenderer me = new CheckboxCellRenderer();
 
-    private UIInitializer initializer;
+    private final UIInitializer initializer;
 
     public static CheckboxCellRenderer getInstance() {
         return me;

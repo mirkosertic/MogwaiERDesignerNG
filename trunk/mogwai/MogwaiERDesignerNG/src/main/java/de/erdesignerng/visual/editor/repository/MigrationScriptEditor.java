@@ -42,7 +42,7 @@ public class MigrationScriptEditor extends BaseEditor {
 
 	private final MigrationScriptView view = new MigrationScriptView();
 
-	private final BindingInfo<MigrationScriptDataModel> bindingInfo = new BindingInfo<MigrationScriptDataModel>(
+	private final BindingInfo<MigrationScriptDataModel> bindingInfo = new BindingInfo<>(
 			new MigrationScriptDataModel());
 
 	private final RepositoryEntity repositoryEntity;

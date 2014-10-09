@@ -154,7 +154,7 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
 
     @Override
     public Attribute<T> clone() {
-        Attribute<T> theAttribute = new Attribute<T>();
+        Attribute<T> theAttribute = new Attribute<>();
 
         theAttribute.setSystemId(getSystemId());
         theAttribute.setOwner(getOwner());

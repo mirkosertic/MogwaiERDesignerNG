@@ -19,7 +19,7 @@ package de.erdesignerng.model.check;
 
 public class ModelError {
 
-    private String message;
+    private final String message;
 
     private QuickFix quickFix;
 

@@ -36,7 +36,7 @@ public class ExportGraphicsCommand extends UICommand {
 
     private final ExportType exportType;
 
-    private JGraphEditor editor;
+    private final JGraphEditor editor;
 
     public ExportGraphicsCommand(JGraphEditor aEditor, Exporter aExporter, ExportType aExportType) {
         editor = aEditor;

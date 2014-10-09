@@ -102,7 +102,7 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
             throw new IOException("Unsupported model version");
         }
 
-        final List<SAXParseException> theExceptions = new ArrayList<SAXParseException>();
+        final List<SAXParseException> theExceptions = new ArrayList<>();
 
         // Validate the document
         SchemaFactory theSchemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

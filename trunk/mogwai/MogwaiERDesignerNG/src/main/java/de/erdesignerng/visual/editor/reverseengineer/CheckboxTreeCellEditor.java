@@ -28,7 +28,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreePath;
 import java.awt.Component;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
@@ -36,8 +35,8 @@ import java.util.EventObject;
 public class CheckboxTreeCellEditor extends AbstractCellEditor implements
         TreeCellEditor {
 
-    private JTree tree;
-    private UIInitializer initializer = UIInitializer.getInstance();
+    private final JTree tree;
+    private final UIInitializer initializer = UIInitializer.getInstance();
     private DefaultMutableTreeNode editingNode;
 
     public CheckboxTreeCellEditor(JTree tree) {
@@ -90,14 +89,11 @@ public class CheckboxTreeCellEditor extends AbstractCellEditor implements
                         .getDefaultListNonSelectionForeground());
             }
 
-            ItemListener theItemListener = new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent itemEvent) {
-                    if (stopCellEditing()) {
-                        SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
-                        theModel.setSelected(editingNode, theEditor.isSelected());
-                        fireEditingStopped();
-                    }
+            ItemListener theItemListener = itemEvent -> {
+                if (stopCellEditing()) {
+                    SelectableTableModel theModel = (SelectableTableModel) tree.getModel();
+                    theModel.setSelected(editingNode, theEditor.isSelected());
+                    fireEditingStopped();
                 }
             };
 

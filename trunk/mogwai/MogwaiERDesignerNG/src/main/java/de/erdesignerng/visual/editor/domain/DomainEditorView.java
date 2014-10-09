@@ -54,7 +54,7 @@ public class DomainEditorView extends DefaultPanel {
 
 	private final DefaultComboBoxModel dataTypesModel = new DefaultComboBoxModel();
 
-	private DefaultTable domainTable = new DefaultTable() {
+	private final DefaultTable domainTable = new DefaultTable() {
 		@Override
 		public void removeEditor() {
 			super.removeEditor();
@@ -69,7 +69,7 @@ public class DomainEditorView extends DefaultPanel {
 		}
 	};
 
-	private DomainTableModel domainTableModel = new DomainTableModel();
+	private final DomainTableModel domainTableModel = new DomainTableModel();
 
 	public DomainEditorView() {
 		initialize();

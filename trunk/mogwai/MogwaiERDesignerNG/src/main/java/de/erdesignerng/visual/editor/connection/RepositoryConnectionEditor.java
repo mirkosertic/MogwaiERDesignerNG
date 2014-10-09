@@ -10,12 +10,10 @@ import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.binding.BindingInfo;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.List;
@@ -29,13 +27,7 @@ import java.util.List;
 public class RepositoryConnectionEditor extends BaseEditor {
 
 	private final DefaultAction testAction = new DefaultAction(
-			new ActionEventProcessor() {
-
-				@Override
-				public void processActionEvent(ActionEvent e) {
-					commandTest();
-				}
-			}, this, ERDesignerBundle.TEST);
+            e -> commandTest(), this, ERDesignerBundle.TEST);
 
 	private final RepositoryConnectionEditorView view = new RepositoryConnectionEditorView() {
 
@@ -45,7 +37,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
 		}
 	};
 
-	private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<DatabaseConnectionDatamodel>();
+	private final BindingInfo<DatabaseConnectionDatamodel> bindingInfo = new BindingInfo<>();
 
 	public RepositoryConnectionEditor(Component aParent) {
 		super(aParent, ERDesignerBundle.REPOSITORYCONNECTION);
@@ -57,9 +49,7 @@ public class RepositoryConnectionEditor extends BaseEditor {
 
 		List<Dialect> theDialects = DialectFactory.getInstance()
 				.getSupportedDialects();
-		for (Dialect theDialect : theDialects) {
-			theModel.addElement(theDialect);
-		}
+        theDialects.forEach(theModel::addElement);
 
 		view.getDialect().setModel(theModel);
 

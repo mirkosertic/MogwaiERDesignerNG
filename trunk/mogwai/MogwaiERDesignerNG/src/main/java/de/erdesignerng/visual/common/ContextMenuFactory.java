@@ -22,8 +22,7 @@ import de.erdesignerng.model.*;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.menu.DefaultMenuItem;
 import de.mogwai.common.i18n.ResourceHelper;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +46,8 @@ public final class ContextMenuFactory {
         ResourceHelper theHelper = ResourceHelper
                 .getResourceHelper(ERDesignerBundle.BUNDLE_NAME);
 
-        final List<ModelItem> theNewSubjectAreaItems = new ArrayList<ModelItem>();
-        final List<ModelItem> theItemsToBeDeleted = new ArrayList<ModelItem>();
+        final List<ModelItem> theNewSubjectAreaItems = new ArrayList<>();
+        final List<ModelItem> theItemsToBeDeleted = new ArrayList<>();
 
         for (ModelItem theUserObject : aItemList) {
             if (theUserObject instanceof Table) {
@@ -207,13 +206,7 @@ public final class ContextMenuFactory {
                     DefaultAction theHideAction = new DefaultAction(
                             ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.HIDE);
                     DefaultMenuItem theHideMenuItem = new DefaultMenuItem(theHideAction);
-                    theHideAction.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea);
-                        }
-                    });
+                    theHideAction.addActionListener(e -> ERDesignerComponent.getDefault().commandHideSubjectArea(theSubjectArea));
 
                     aMenu.add(theHideMenuItem);
                 }
@@ -252,14 +245,8 @@ public final class ContextMenuFactory {
                     ERDesignerBundle.BUNDLE_NAME,
                     ERDesignerBundle.ADDTONEWSUBJECTAREA);
             DefaultMenuItem theAddItem = new DefaultMenuItem(theAddAction);
-            theAddAction.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ERDesignerComponent.getDefault()
-                            .commandAddToNewSubjectArea(theNewSubjectAreaItems);
-                }
-            });
+            theAddAction.addActionListener(e -> ERDesignerComponent.getDefault()
+                    .commandAddToNewSubjectArea(theNewSubjectAreaItems));
 
             aMenu.addSeparator();
             aMenu.add(theAddItem);
@@ -270,13 +257,7 @@ public final class ContextMenuFactory {
             DefaultAction theDeleteAction = new DefaultAction(
                     ERDesignerBundle.BUNDLE_NAME, ERDesignerBundle.DELETE);
             DefaultMenuItem theDeleteItem = new DefaultMenuItem(theDeleteAction);
-            theDeleteAction.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ERDesignerComponent.getDefault().commandDelete(theItemsToBeDeleted);
-                }
-            });
+            theDeleteAction.addActionListener(e -> ERDesignerComponent.getDefault().commandDelete(theItemsToBeDeleted));
             aMenu.addSeparator();
             aMenu.add(theDeleteItem);
         }

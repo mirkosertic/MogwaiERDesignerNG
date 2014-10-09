@@ -30,7 +30,6 @@ import de.erdesignerng.visual.common.ERDesignerWorldConnector;
 import de.erdesignerng.visual.editor.BaseEditor;
 import de.erdesignerng.visual.editor.DialogConstants;
 import de.mogwai.common.client.looks.UIInitializer;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
@@ -38,12 +37,12 @@ import javax.swing.JFileChooser;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Editor for sql statements.
@@ -54,40 +53,16 @@ import java.util.List;
 public class SQLEditor extends BaseEditor {
 
     private final DefaultAction closeAction = new DefaultAction(
-            new ActionEventProcessor() {
-
-                @Override
-                public void processActionEvent(ActionEvent e) {
-                    commandClose();
-                }
-            }, this, ERDesignerBundle.CLOSE);
+            e -> commandClose(), this, ERDesignerBundle.CLOSE);
 
     private final DefaultAction executeAction = new DefaultAction(
-            new ActionEventProcessor() {
-
-                @Override
-                public void processActionEvent(ActionEvent e) {
-                    commandExecute();
-                }
-            }, this, ERDesignerBundle.EXECUTESCRIPT);
+            e -> commandExecute(), this, ERDesignerBundle.EXECUTESCRIPT);
 
     private final DefaultAction saveToFileAction = new DefaultAction(
-            new ActionEventProcessor() {
-
-                @Override
-                public void processActionEvent(ActionEvent e) {
-                    commandSaveToFile();
-                }
-            }, this, ERDesignerBundle.SAVESCRIPTTOFILE);
+            e -> commandSaveToFile(), this, ERDesignerBundle.SAVESCRIPTTOFILE);
 
     private final DefaultAction deleteAction = new DefaultAction(
-            new ActionEventProcessor() {
-
-                @Override
-                public void processActionEvent(ActionEvent e) {
-                    commandDeleteSelectedEntry();
-                }
-            }, this, ERDesignerBundle.DELETE);
+            e -> commandDeleteSelectedEntry(), this, ERDesignerBundle.DELETE);
 
     private final File lastEditedFile;
 
@@ -131,9 +106,7 @@ public class SQLEditor extends BaseEditor {
         deleteAction.setEnabled(false);
 
         DefaultListModel theModel = view.getSqlList().getModel();
-        for (Statement theStatement : aStatements) {
-            theModel.add(theStatement);
-        }
+        aStatements.forEach(theModel::add);
     }
 
     private void initialize() {
@@ -155,12 +128,7 @@ public class SQLEditor extends BaseEditor {
 
         DefaultListModel theModel = view.getSqlList().getModel();
 
-        StatementList theDeleted = new StatementList();
-        for (Statement theStatement : statements) {
-            if (!theModel.contains(theStatement)) {
-                theDeleted.add(theStatement);
-            }
-        }
+        StatementList theDeleted = statements.stream().filter(theStatement -> !theModel.contains(theStatement)).collect(Collectors.toCollection(() -> new StatementList()));
 
         statements.removeAll(theDeleted);
 

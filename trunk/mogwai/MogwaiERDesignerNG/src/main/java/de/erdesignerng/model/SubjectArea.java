@@ -29,11 +29,11 @@ public final class SubjectArea extends OwnedModelItem<Model> {
 
 	private Color color;
 
-	private TableList tables = new TableList();
+	private final TableList tables = new TableList();
 
-	private ViewList views = new ViewList();
+	private final ViewList views = new ViewList();
 
-	private CommentList comments = new CommentList();
+	private final CommentList comments = new CommentList();
 
 	private boolean visible = true;
 

@@ -22,8 +22,8 @@ import de.erdesignerng.visual.editor.comment.CommentEditor;
 
 public class EditCommentCommand extends UICommand {
 
-    private Comment comment;
-    private GenericModelEditor editor;
+    private final Comment comment;
+    private final GenericModelEditor editor;
 
     public EditCommentCommand(GenericModelEditor aEditor, Comment aComment) {
         comment = aComment;

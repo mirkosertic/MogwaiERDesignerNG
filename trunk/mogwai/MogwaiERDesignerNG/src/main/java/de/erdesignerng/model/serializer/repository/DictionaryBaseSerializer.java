@@ -62,9 +62,9 @@ public abstract class DictionaryBaseSerializer {
 
     protected Map<String, ModelEntity> deletedRemovedInstances(ModelList aItems, List aModelEntities) {
 
-        Set<ModelEntity> theRemovedModelInstances = new HashSet<ModelEntity>();
+        Set<ModelEntity> theRemovedModelInstances = new HashSet<>();
 
-        Map<String, ModelEntity> theModelInstances = new HashMap<String, ModelEntity>();
+        Map<String, ModelEntity> theModelInstances = new HashMap<>();
         for (Object theObject : aModelEntities) {
             ModelEntity theCommentEntity = (ModelEntity) theObject;
             Object theExistingEntity = aItems.findBySystemId(theCommentEntity.getSystemId());

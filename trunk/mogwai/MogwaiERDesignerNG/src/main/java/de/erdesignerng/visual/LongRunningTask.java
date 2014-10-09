@@ -72,9 +72,7 @@ public abstract class LongRunningTask<T> extends Thread {
 	}
 
 	public void handleProcess(List<String> aChunks) {
-		for (String theChunk : aChunks) {
-			connector.setStatusText(theChunk);
-		}
+        aChunks.forEach(connector::setStatusText);
 	}
 
 	public abstract T doWork(MessagePublisher aMessagePublisher) throws Exception;

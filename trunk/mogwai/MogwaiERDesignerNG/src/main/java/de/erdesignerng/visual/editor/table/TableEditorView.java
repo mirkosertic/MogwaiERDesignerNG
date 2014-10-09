@@ -106,7 +106,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultButton cancelButton;
 
-    private DefaultComboBoxModel dataTypeModel = new DefaultComboBoxModel();
+    private final DefaultComboBoxModel dataTypeModel = new DefaultComboBoxModel();
 
     private final DefaultComboBox indexAttribute = new DefaultComboBox();
 
@@ -116,9 +116,9 @@ public class TableEditorView extends DefaultPanel {
 
     private final DefaultRadioButton addIndexExpression = new DefaultRadioButton(ERDesignerBundle.EXPRESSION);
 
-    private DefaultButton addExpressionToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
+    private final DefaultButton addExpressionToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
 
-    private DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
+    private final DefaultButton addAttributeToIndexButton = new DefaultButton(ERDesignerBundle.NEWONLYICON);
 
     private final DefaultButton removeFromIndexButton = new DefaultButton(ERDesignerBundle.DELETEONLYICON);
 
@@ -126,7 +126,7 @@ public class TableEditorView extends DefaultPanel {
 
     private DefaultTabbedPaneTab indexPropertiesTab;
 
-    private DefaultTable attributesTable = new DefaultTable() {
+    private final DefaultTable attributesTable = new DefaultTable() {
 
         @Override
         public void removeEditor() {
@@ -142,7 +142,7 @@ public class TableEditorView extends DefaultPanel {
         }
     };
 
-    private AttributeTableModel attributeTableModel = new AttributeTableModel();
+    private final AttributeTableModel attributeTableModel = new AttributeTableModel();
 
     public TableEditorView() {
         initialize();
@@ -450,7 +450,7 @@ public class TableEditorView extends DefaultPanel {
     public DefaultList<IndexExpression> getIndexFieldList() {
 
         if (indexAttributesList == null) {
-            indexAttributesList = new DefaultList<IndexExpression>();
+            indexAttributesList = new DefaultList<>();
             indexAttributesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
 

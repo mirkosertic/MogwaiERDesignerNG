@@ -18,7 +18,6 @@
 package de.erdesignerng.visual.editor.table;
 
 import de.erdesignerng.ERDesignerBundle;
-import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.IndexProperties;
 import de.erdesignerng.dialect.TableProperties;
@@ -36,16 +35,11 @@ import de.mogwai.common.client.binding.adapter.RadioButtonAdapter;
 import de.mogwai.common.client.binding.validator.ValidationError;
 import de.mogwai.common.client.looks.UIInitializer;
 import de.mogwai.common.client.looks.components.DefaultTabbedPaneTab;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 import de.mogwai.common.client.looks.components.list.DefaultListModel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,87 +55,39 @@ public class TableEditor extends BaseEditor {
 
 	private TableEditorView editingView;
 
-	private final BindingInfo<Table> tableBindingInfo = new BindingInfo<Table>();
+	private final BindingInfo<Table> tableBindingInfo = new BindingInfo<>();
 
-	private final BindingInfo<Index> indexBindingInfo = new BindingInfo<Index>();
+	private final BindingInfo<Index> indexBindingInfo = new BindingInfo<>();
 
-	private final BindingInfo<IndexValueModel> indexExpressionBindingInfo = new BindingInfo<IndexValueModel>();
+	private final BindingInfo<IndexValueModel> indexExpressionBindingInfo = new BindingInfo<>();
 
-	private final BindingInfo<IndexValueModel> indexExpressionBindingInfo2 = new BindingInfo<IndexValueModel>();
+	private final BindingInfo<IndexValueModel> indexExpressionBindingInfo2 = new BindingInfo<>();
 
 	private final DefaultListModel indexListModel;
 
-	private final Map<String, Attribute<Table>> knownAttributeValues = new HashMap<String, Attribute<Table>>();
+	private final Map<String, Attribute<Table>> knownAttributeValues = new HashMap<>();
 
-	private final Map<String, Index> knownIndexValues = new HashMap<String, Index>();
+	private final Map<String, Index> knownIndexValues = new HashMap<>();
 
-	private final List<Attribute<Table>> removedAttributes = new ArrayList<Attribute<Table>>();
+	private final List<Attribute<Table>> removedAttributes = new ArrayList<>();
 
-	private final List<Index> removedIndexes = new ArrayList<Index>();
+	private final List<Index> removedIndexes = new ArrayList<>();
 
-	private final DefaultAction newAttributeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction newAttributeAction = new DefaultAction(e -> commandNewAttribute(), this, ERDesignerBundle.NEW);
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandNewAttribute();
-		}
-	}, this, ERDesignerBundle.NEW);
+	private final DefaultAction deleteAttributeAction = new DefaultAction(e -> commandDeleteAttribute(e), this, ERDesignerBundle.DELETE);
 
-	private final DefaultAction deleteAttributeAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction newIndexAction = new DefaultAction(e -> commandNewIndex(), this, ERDesignerBundle.NEW);
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandDeleteAttribute(e);
-		}
-	}, this, ERDesignerBundle.DELETE);
+	private final DefaultAction deleteIndexAction = new DefaultAction(e -> commandDeleteIndex(), this, ERDesignerBundle.DELETE);
 
-	private final DefaultAction newIndexAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction updateIndex = new DefaultAction(e -> commandUpdateIndex(), this, ERDesignerBundle.UPDATE);
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandNewIndex();
-		}
-	}, this, ERDesignerBundle.NEW);
+	private final DefaultAction addIndexAttribute = new DefaultAction(e -> commandAddIndexAttribute(), this, ERDesignerBundle.NEWONLYICON);
 
-	private final DefaultAction deleteIndexAction = new DefaultAction(new ActionEventProcessor() {
+	private final DefaultAction addIndexExpression = new DefaultAction(e -> commandAddIndexExpression(), this, ERDesignerBundle.NEWONLYICON);
 
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandDeleteIndex();
-		}
-	}, this, ERDesignerBundle.DELETE);
-
-	private final DefaultAction updateIndex = new DefaultAction(new ActionEventProcessor() {
-
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandUpdateIndex();
-		}
-	}, this, ERDesignerBundle.UPDATE);
-
-	private final DefaultAction addIndexAttribute = new DefaultAction(new ActionEventProcessor() {
-
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandAddIndexAttribute();
-		}
-	}, this, ERDesignerBundle.NEWONLYICON);
-
-	private final DefaultAction addIndexExpression = new DefaultAction(new ActionEventProcessor() {
-
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandAddIndexExpression();
-		}
-	}, this, ERDesignerBundle.NEWONLYICON);
-
-	private final DefaultAction removeIndexElement = new DefaultAction(new ActionEventProcessor() {
-
-		@Override
-		public void processActionEvent(ActionEvent e) {
-			commandRemoveIndexElement();
-		}
-	}, this, ERDesignerBundle.DELETEONLYICON);
+	private final DefaultAction removeIndexElement = new DefaultAction(e -> commandRemoveIndexElement(), this, ERDesignerBundle.DELETEONLYICON);
 
 	private TableProperties tableProperties;
 
@@ -151,7 +97,7 @@ public class TableEditor extends BaseEditor {
 
 	private ScaffoldingWrapper indexPropertiesWrapper;
 
-	private ModelItemNameCellEditor<Attribute<Table>> attributeEditor;
+	private final ModelItemNameCellEditor<Attribute<Table>> attributeEditor;
 
 	public TableEditor(Model aModel, Component aParent) {
 		super(aParent, ERDesignerBundle.ENTITYEDITOR);
@@ -159,22 +105,15 @@ public class TableEditor extends BaseEditor {
 
 		DefaultComboBoxModel dataTypesModel = editingView.getDataTypeModel();
 
-		for (DataType theType : aModel.getAvailableDataTypes()) {
-			dataTypesModel.addElement(theType);
-		}
+        aModel.getAvailableDataTypes().forEach(dataTypesModel::addElement);
 
 		indexListModel = editingView.getIndexList().getModel();
 
 		model = aModel;
-		attributeEditor = new ModelItemNameCellEditor<Attribute<Table>>(model.getDialect());
+		attributeEditor = new ModelItemNameCellEditor<>(model.getDialect());
 		editingView.getAttributesTable().getColumnModel().getColumn(0).setCellRenderer(new AttributeListAttributeCellRenderer(this));
 		editingView.getAttributesTable().getColumnModel().getColumn(0).setCellEditor(attributeEditor);
-		editingView.getAttributesTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				updateAttributeEditFields();
-			}
-		});
+		editingView.getAttributesTable().getSelectionModel().addListSelectionListener(e -> updateAttributeEditFields());
 
 		tableBindingInfo.addBinding("name", editingView.getEntityName(), true);
 		tableBindingInfo.addBinding("comment", editingView.getEntityComment());
@@ -226,51 +165,19 @@ public class TableEditor extends BaseEditor {
 		};
 		editingView.getOkButton().setAction(okAction);
 		editingView.getCancelButton().setAction(cancelAction);
-		editingView.getMainTabbedPane().addChangeListener(new javax.swing.event.ChangeListener() {
-
-			@Override
-			public void stateChanged(javax.swing.event.ChangeEvent e) {
-				commandTabStateChange();
-			}
-		});
+		editingView.getMainTabbedPane().addChangeListener(e -> commandTabStateChange());
 		editingView.getNewButton().setAction(newAttributeAction);
 		editingView.getDeleteButton().setAction(deleteAttributeAction);
 		editingView.getUpdateIndexButton().setAction(updateIndex);
 		editingView.getNewIndexButton().setAction(newIndexAction);
 		editingView.getDeleteIndexButton().setAction(deleteIndexAction);
-		editingView.getIndexList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+		editingView.getIndexList().addListSelectionListener(e -> commandIndexListValueChanged(e));
 
-			@Override
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				commandIndexListValueChanged(e);
-			}
-		});
+		editingView.getIndexFieldList().addListSelectionListener(e -> commandIndexFieldListValueChanged(e));
 
-		editingView.getIndexFieldList().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+		editingView.getAddIndexAttribute().addActionListener(e -> updateIndexStatusFields());
 
-			@Override
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				commandIndexFieldListValueChanged(e);
-			}
-		});
-
-		editingView.getAddIndexAttribute().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateIndexStatusFields();
-			}
-
-		});
-
-		editingView.getAddIndexExpression().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateIndexStatusFields();
-			}
-
-		});
+		editingView.getAddIndexExpression().addActionListener(e -> updateIndexStatusFields());
 
 		editingView.getRemoveFromIndexButton().setAction(removeIndexElement);
 		editingView.getAddAttributeToIndexButton().setAction(addIndexAttribute);
@@ -517,7 +424,7 @@ public class TableEditor extends BaseEditor {
 	}
 
 	private void commandNewAttribute() {
-		Attribute<Table> theNewAttribute = new Attribute<Table>();
+		Attribute<Table> theNewAttribute = new Attribute<>();
 		editingView.getAttributeTableModel().add(theNewAttribute);
 		int theRow = editingView.getAttributeTableModel().getRowCount();
 		editingView.getAttributesTable().setRowSelectionInterval(theRow - 1, theRow - 1);
@@ -708,7 +615,7 @@ public class TableEditor extends BaseEditor {
 
 			// Check if the comment was changed and issue the required commands
 			if (theTable.isCommentChanged(theTempTable.getComment())) {
-				model.changeComment(theTable, theTempTable.getComment());
+				model.changeTableComment(theTable, theTempTable.getComment());
 			}
 
 			// Remove the removed attributes

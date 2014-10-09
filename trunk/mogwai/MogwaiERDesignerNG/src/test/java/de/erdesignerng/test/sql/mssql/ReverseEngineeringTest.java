@@ -54,7 +54,7 @@ public class ReverseEngineeringTest extends AbstractConnectionTest {
 
 			List<SchemaEntry> theAllSchemas = theST.getSchemaEntries(theConnection);
 
-			List<SchemaEntry> theSchemas = new ArrayList<SchemaEntry>();
+			List<SchemaEntry> theSchemas = new ArrayList<>();
 			for (SchemaEntry theEntry : theAllSchemas) {
 				System.out.println(theEntry.getSchemaName());
 

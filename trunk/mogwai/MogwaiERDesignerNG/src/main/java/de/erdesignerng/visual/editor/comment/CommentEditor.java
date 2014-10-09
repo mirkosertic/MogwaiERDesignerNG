@@ -34,7 +34,7 @@ import java.awt.*;
  */
 public class CommentEditor extends BaseEditor {
 
-	private final BindingInfo<Comment> bindingInfo = new BindingInfo<Comment>();
+	private final BindingInfo<Comment> bindingInfo = new BindingInfo<>();
 
 	private CommentEditorView editingView;
 

@@ -137,7 +137,7 @@ public abstract class GenericDataTypeImpl implements DataType {
 	}
 
 	protected String patternToType(Attribute aAttribute) {
-		Map<String, String> theMapping = new HashMap<String, String>();
+		Map<String, String> theMapping = new HashMap<>();
 		theMapping.put(SIZE_TOKEN, ((aAttribute.getSize() == null) ? null : "" + aAttribute.getSize()));
 		theMapping.put(FRACTION_TOKEN, ((aAttribute.getFraction() == null) ? null : "" + aAttribute.getFraction()));
 		theMapping.put(SCALE_TOKEN, "" + aAttribute.getScale());

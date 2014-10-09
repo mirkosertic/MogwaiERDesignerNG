@@ -38,7 +38,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 	// The type of the CustomType
 	private CustomTypeType type;
 
-	private AttributeList<CustomType> attributes = new AttributeList<CustomType>();
+	private AttributeList<CustomType> attributes = new AttributeList<>();
 
 	public CustomType() {
 	}
@@ -131,7 +131,7 @@ public class CustomType extends OwnedModelItem<Model> implements ModelItemClonea
 
 	@Override
 	public Attribute<CustomType> createNewAttribute() {
-		Attribute<CustomType> theNewAttribute = new Attribute<CustomType>();
+		Attribute<CustomType> theNewAttribute = new Attribute<>();
 		theNewAttribute.setOwner(this);
 		attributes.add(theNewAttribute);
 		return theNewAttribute;

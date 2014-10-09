@@ -18,7 +18,6 @@
 package de.erdesignerng.modificationtracker;
 
 import de.erdesignerng.dialect.SQLGenerator;
-import de.erdesignerng.dialect.Statement;
 import de.erdesignerng.dialect.StatementList;
 import de.erdesignerng.model.Attribute;
 import de.erdesignerng.model.CustomType;
@@ -28,6 +27,8 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.Relation;
 import de.erdesignerng.model.Table;
 import de.erdesignerng.model.View;
+
+import java.util.stream.Collectors;
 
 public class HistoryModificationTracker implements ModelModificationTracker {
 
@@ -132,13 +133,8 @@ public class HistoryModificationTracker implements ModelModificationTracker {
 	}
 
 	public StatementList getNotSavedStatements() {
-		StatementList theResult = new StatementList();
-		for (Statement theStatement : statements) {
-			if (!theStatement.isSaved()) {
-				theResult.add(theStatement);
-			}
-		}
-		return theResult;
+		StatementList theResult = statements.stream().filter(theStatement -> !theStatement.isSaved()).collect(Collectors.toCollection(() -> new StatementList()));
+        return theResult;
 	}
 
 	@Override

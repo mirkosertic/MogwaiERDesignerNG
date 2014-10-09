@@ -13,7 +13,7 @@ import java.util.TreeMap;
  */
 public class ModelProperties implements Serializable {
 
-	private Map<String, String> properties = new TreeMap<String, String>();
+	private Map<String, String> properties = new TreeMap<>();
 
 	public Map<String, String> getProperties() {
 		return properties;

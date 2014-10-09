@@ -19,7 +19,7 @@ package de.erdesignerng.dialect;
 
 public class Statement {
 
-	private String sql;
+	private final String sql;
 
 	private boolean executed;
 

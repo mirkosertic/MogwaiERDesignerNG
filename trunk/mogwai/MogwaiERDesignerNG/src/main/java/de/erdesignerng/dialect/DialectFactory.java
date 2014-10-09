@@ -43,7 +43,7 @@ public final class DialectFactory {
 
     private static DialectFactory me;
 
-    private final Map<String, Dialect> knownDialects = new HashMap<String, Dialect>();
+    private final Map<String, Dialect> knownDialects = new HashMap<>();
 
     private DialectFactory() {
     }
@@ -79,7 +79,7 @@ public final class DialectFactory {
     }
 
     public List<Dialect> getSupportedDialects() {
-        List<Dialect> theDialects = new ArrayList<Dialect>();
+        List<Dialect> theDialects = new ArrayList<>();
         theDialects.addAll(knownDialects.values());
         Collections.sort(theDialects, new BeanComparator("uniqueName", String.CASE_INSENSITIVE_ORDER));
         return theDialects;

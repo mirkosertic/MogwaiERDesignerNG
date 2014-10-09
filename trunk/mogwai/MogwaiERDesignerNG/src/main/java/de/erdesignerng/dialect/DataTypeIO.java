@@ -149,7 +149,7 @@ public final class DataTypeIO {
                     .getAttribute(IDENTITY));
             String theDefinition = theDataType.getAttribute(DEFINITION);
 
-            List<Integer> theJDBCTypes = new ArrayList<Integer>();
+            List<Integer> theJDBCTypes = new ArrayList<>();
             NodeList theTypesNode = theDataType.getElementsByTagName(JDBCTYPE);
             for (int j = 0; j < theTypesNode.getLength(); j++) {
                 Element theJdbcElement = (Element) theTypesNode.item(j);

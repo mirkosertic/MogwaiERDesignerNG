@@ -29,9 +29,9 @@ public class ReverseEngineeringOptions {
 
     private TableNamingEnum tableNaming;
 
-    private List<SchemaEntry> schemaEntries = new ArrayList<SchemaEntry>();
+    private List<SchemaEntry> schemaEntries = new ArrayList<>();
 
-    private List<TableEntry> tableEntries = new ArrayList<TableEntry>();
+    private List<TableEntry> tableEntries = new ArrayList<>();
 
     public TableNamingEnum getTableNaming() {
         return tableNaming;
@@ -63,12 +63,10 @@ public class ReverseEngineeringOptions {
     }
 
     public List<TableType> getAvailableTableTypes() {
-        List<TableType> theResult = new ArrayList<TableType>();
-        for (TableEntry theEntry : tableEntries) {
-            if (!theResult.contains(theEntry.getTableType())) {
-                theResult.add(theEntry.getTableType());
-			}
-        }
+        List<TableType> theResult = new ArrayList<>();
+        tableEntries.stream().filter(theEntry -> !theResult.contains(theEntry.getTableType())).forEach(theEntry -> {
+            theResult.add(theEntry.getTableType());
+        });
         return theResult;
     }
 }

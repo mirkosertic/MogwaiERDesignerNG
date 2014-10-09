@@ -27,7 +27,7 @@ import de.erdesignerng.model.Table;
 public class IndexTest extends TestCase {
 
 	public void testModified() throws ElementAlreadyExistsException {
-		Attribute<Table> theAttribute = new Attribute<Table>();
+		Attribute<Table> theAttribute = new Attribute<>();
 		theAttribute.setName("TEST");
 
 		Index theIndex = new Index();

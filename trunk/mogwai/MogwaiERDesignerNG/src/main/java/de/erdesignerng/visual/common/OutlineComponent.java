@@ -145,14 +145,8 @@ public class OutlineComponent extends DefaultPanel implements
 				@Override
 				public void run() {
 					try {
-						SwingUtilities.invokeAndWait(new Runnable() {
-
-							@Override
-							public void run() {
-								refresh(ERDesignerComponent.getDefault()
-										.getModel());
-							}
-						});
+						SwingUtilities.invokeAndWait(() -> refresh(ERDesignerComponent.getDefault()
+                                .getModel()));
 					} catch (InterruptedException | InvocationTargetException e) {
 						throw new RuntimeException(e);
 					}
@@ -366,9 +360,9 @@ public class OutlineComponent extends DefaultPanel implements
 
 	private DefaultTextField filterField;
 
-	private final Map<Object, DefaultMutableTreeNode> userObjectMap = new HashMap<Object, DefaultMutableTreeNode>();
+	private final Map<Object, DefaultMutableTreeNode> userObjectMap = new HashMap<>();
 
-	private final Set<Object> expandedUserObjects = new HashSet<Object>();
+	private final Set<Object> expandedUserObjects = new HashSet<>();
 
 	private static OutlineComponent DEFAULT;
 
@@ -517,39 +511,39 @@ public class OutlineComponent extends DefaultPanel implements
 		// Add the user-defined datatypes
 		if (aModel.getDialect() != null) {
 			if (aModel.getDialect().isSupportsCustomTypes()) {
-				List<CustomType> theCustomTypes = new ArrayList<CustomType>();
+				List<CustomType> theCustomTypes = new ArrayList<>();
 				theCustomTypes.addAll(aModel.getCustomTypes());
 				Collections.sort(theCustomTypes, theComparator);
 				buildCustomTypesChildren(aModel, theRoot, theCustomTypes);
 			}
 
 			// Add the domains
-			List<Domain> theDomains = new ArrayList<Domain>();
+			List<Domain> theDomains = new ArrayList<>();
 			theDomains.addAll(aModel.getDomains());
 			Collections.sort(theDomains, theComparator);
 			buildDomainsChildren(aModel, theRoot, theDomains);
 		}
 
 		// Add the Tables
-		List<Table> theTables = new ArrayList<Table>();
+		List<Table> theTables = new ArrayList<>();
 		theTables.addAll(aModel.getTables());
 		Collections.sort(theTables, theComparator);
 		buildTablesChildren(aModel, theRoot, theTables);
 
 		// Add the Views
-		List<View> theViews = new ArrayList<View>();
+		List<View> theViews = new ArrayList<>();
 		theViews.addAll(aModel.getViews());
 		Collections.sort(theTables, theComparator);
 		buildViewsChildren(aModel, theRoot, theViews);
 
 		// Add the Relations
-		List<Relation> theRelations = new ArrayList<Relation>();
+		List<Relation> theRelations = new ArrayList<>();
 		theRelations.addAll(aModel.getRelations());
 		Collections.sort(theRelations, theComparator);
 		buildRelationChildren(theRoot, theRelations);
 
 		// Add the Indexes
-		List<Index> theIndexes = new ArrayList<Index>();
+		List<Index> theIndexes = new ArrayList<>();
 		for (Table theTable : aModel.getTables()) {
 			theIndexes.addAll(theTable.getIndexes());
 		}
@@ -557,7 +551,7 @@ public class OutlineComponent extends DefaultPanel implements
 		buildIndexChildren(theRoot, theIndexes);
 
 		// Add the subject areas
-		List<SubjectArea> theSAList = new ArrayList<SubjectArea>();
+		List<SubjectArea> theSAList = new ArrayList<>();
 		theSAList.addAll(aModel.getSubjectAreas());
 		Collections.sort(theSAList, theComparator);
 		buildSubjectAreasChildren(aModel, theRoot, theSAList);
@@ -581,26 +575,24 @@ public class OutlineComponent extends DefaultPanel implements
 										   DefaultMutableTreeNode aParent, List<SubjectArea> aList) {
 		DefaultMutableTreeNode theSANode = new DefaultMutableTreeNode(
 				TreeGroupingElement.SUBJECTAREAS);
-		for (SubjectArea theArea : aList) {
-			if (isVisible(theArea)) {
-				DefaultMutableTreeNode theAreaNode = new DefaultMutableTreeNode(
-						theArea);
-				theSANode.add(theAreaNode);
+        aList.stream().filter(theArea -> isVisible(theArea)).forEach(theArea -> {
+            DefaultMutableTreeNode theAreaNode = new DefaultMutableTreeNode(
+                    theArea);
+            theSANode.add(theAreaNode);
 
-				registerUserObject(theArea, theAreaNode);
+            registerUserObject(theArea, theAreaNode);
 
-				List<Table> theSATables = new ArrayList<Table>();
-				theSATables.addAll(theArea.getTables());
-				Collections.sort(theSATables, new BeanComparator("name"));
-				buildTablesChildren(aModel, theAreaNode, theSATables);
+            List<Table> theSATables = new ArrayList<>();
+            theSATables.addAll(theArea.getTables());
+            Collections.sort(theSATables, new BeanComparator("name"));
+            buildTablesChildren(aModel, theAreaNode, theSATables);
 
-				List<View> theSAViews = new ArrayList<View>();
-				theSAViews.addAll(theArea.getViews());
-				Collections.sort(theSAViews, new BeanComparator("name"));
-				buildViewsChildren(aModel, theAreaNode, theSAViews);
+            List<View> theSAViews = new ArrayList<>();
+            theSAViews.addAll(theArea.getViews());
+            Collections.sort(theSAViews, new BeanComparator("name"));
+            buildViewsChildren(aModel, theAreaNode, theSAViews);
 
-			}
-		}
+        });
 		aParent.add(theSANode);
 	}
 
@@ -608,17 +600,15 @@ public class OutlineComponent extends DefaultPanel implements
 									DefaultMutableTreeNode aParent, List<View> aViews) {
 		DefaultMutableTreeNode theViewsNode = new DefaultMutableTreeNode(
 				TreeGroupingElement.VIEWS);
-		for (View theView : aViews) {
-			if (isVisible(theView)) {
-				DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(
-						theView);
-				theViewsNode.add(theViewNode);
+        aViews.stream().filter(theView -> isVisible(theView)).forEach(theView -> {
+            DefaultMutableTreeNode theViewNode = new DefaultMutableTreeNode(
+                    theView);
+            theViewsNode.add(theViewNode);
 
-				registerUserObject(theView, theViewNode);
+            registerUserObject(theView, theViewNode);
 
-				updateViewTreeNode(aModel, theView, theViewNode);
-			}
-		}
+            updateViewTreeNode(aModel, theView, theViewNode);
+        });
 		aParent.add(theViewsNode);
 	}
 
@@ -626,18 +616,16 @@ public class OutlineComponent extends DefaultPanel implements
 										  DefaultMutableTreeNode aParent, List<CustomType> aCustomTypesList) {
 		DefaultMutableTreeNode theCustomTypesNode = new DefaultMutableTreeNode(
 				TreeGroupingElement.CUSTOMTYPES);
-		for (CustomType theCustomType : aCustomTypesList) {
-			if (isVisible(theCustomType)) {
-				DefaultMutableTreeNode theCustomTypeNode = new DefaultMutableTreeNode(
-						theCustomType);
-				theCustomTypesNode.add(theCustomTypeNode);
+        aCustomTypesList.stream().filter(theCustomType -> isVisible(theCustomType)).forEach(theCustomType -> {
+            DefaultMutableTreeNode theCustomTypeNode = new DefaultMutableTreeNode(
+                    theCustomType);
+            theCustomTypesNode.add(theCustomTypeNode);
 
-				registerUserObject(theCustomType, theCustomTypeNode);
+            registerUserObject(theCustomType, theCustomTypeNode);
 
-				updateCustomTypeTreeNode(aModel, theCustomType,
-						theCustomTypeNode);
-			}
-		}
+            updateCustomTypeTreeNode(aModel, theCustomType,
+                    theCustomTypeNode);
+        });
 		aParent.add(theCustomTypesNode);
 	}
 
@@ -645,17 +633,15 @@ public class OutlineComponent extends DefaultPanel implements
 									  DefaultMutableTreeNode aParent, List<Domain> aDomainList) {
 		DefaultMutableTreeNode theDomainsNode = new DefaultMutableTreeNode(
 				TreeGroupingElement.DOMAINS);
-		for (Domain theDomain : aDomainList) {
-			if (isVisible(theDomain)) {
-				DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(
-						theDomain);
-				theDomainsNode.add(theDomainNode);
+        aDomainList.stream().filter(theDomain -> isVisible(theDomain)).forEach(theDomain -> {
+            DefaultMutableTreeNode theDomainNode = new DefaultMutableTreeNode(
+                    theDomain);
+            theDomainsNode.add(theDomainNode);
 
-				registerUserObject(theDomain, theDomainNode);
+            registerUserObject(theDomain, theDomainNode);
 
-				updateDomainTreeNode(aModel, theDomain, theDomainNode);
-			}
-		}
+            updateDomainTreeNode(aModel, theDomain, theDomainNode);
+        });
 		aParent.add(theDomainsNode);
 	}
 
@@ -663,17 +649,15 @@ public class OutlineComponent extends DefaultPanel implements
 									 DefaultMutableTreeNode aParentNode, List<Table> aTableList) {
 		DefaultMutableTreeNode theTablesNode = new DefaultMutableTreeNode(
 				TreeGroupingElement.TABLES);
-		for (Table theTable : aTableList) {
-			if (isVisible(theTable)) {
-				DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(
-						theTable);
-				theTablesNode.add(theTableNode);
+        aTableList.stream().filter(theTable -> isVisible(theTable)).forEach(theTable -> {
+            DefaultMutableTreeNode theTableNode = new DefaultMutableTreeNode(
+                    theTable);
+            theTablesNode.add(theTableNode);
 
-				registerUserObject(theTable, theTableNode);
+            registerUserObject(theTable, theTableNode);
 
-				updateTableTreeNode(aModel, theTable, theTableNode);
-			}
-		}
+            updateTableTreeNode(aModel, theTable, theTableNode);
+        });
 		aParentNode.add(theTablesNode);
 	}
 
@@ -681,11 +665,9 @@ public class OutlineComponent extends DefaultPanel implements
 									   List<Relation> aRelationList) {
 		DefaultMutableTreeNode theRelationsNode = new DefaultMutableTreeNode(
 				TreeGroupingElement.RELATIONS);
-		for (Relation theRelation : aRelationList) {
-			if (isVisible(theRelation)) {
-				createRelationTreeNode(theRelationsNode, theRelation);
-			}
-		}
+        aRelationList.stream().filter(theRelation -> isVisible(theRelation)).forEach(theRelation -> {
+            createRelationTreeNode(theRelationsNode, theRelation);
+        });
 		aParentNode.add(theRelationsNode);
 	}
 
@@ -693,11 +675,9 @@ public class OutlineComponent extends DefaultPanel implements
 									List<Index> aIndexList) {
 		DefaultMutableTreeNode theIndexesNode = new DefaultMutableTreeNode(
 				TreeGroupingElement.INDEXES);
-		for (Index theIndex : aIndexList) {
-			if (isVisible(theIndex)) {
-				createIndexTreeNode(theIndexesNode, theIndex);
-			}
-		}
+        aIndexList.stream().filter(theIndex -> isVisible(theIndex)).forEach(theIndex -> {
+            createIndexTreeNode(theIndexesNode, theIndex);
+        });
 		aParentNode.add(theIndexesNode);
 	}
 
@@ -707,15 +687,13 @@ public class OutlineComponent extends DefaultPanel implements
 		aParentNode.add(theIndexNode);
 		registerUserObject(aIndex, theIndexNode);
 
-		for (IndexExpression theExpression : aIndex.getExpressions()) {
-			if (isVisible(theExpression)) {
-				DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(
-						theExpression);
-				theIndexNode.add(theExpressionNode);
+        aIndex.getExpressions().stream().filter(theExpression -> isVisible(theExpression)).forEach(theExpression -> {
+            DefaultMutableTreeNode theExpressionNode = new DefaultMutableTreeNode(
+                    theExpression);
+            theIndexNode.add(theExpressionNode);
 
-				registerUserObject(theExpression, theExpressionNode);
-			}
-		}
+            registerUserObject(theExpression, theExpressionNode);
+        });
 	}
 
 	private void createRelationTreeNode(DefaultMutableTreeNode aParent, Relation aRelation) {
@@ -724,16 +702,14 @@ public class OutlineComponent extends DefaultPanel implements
 
 		registerUserObject(aRelation, theRelationNode);
 
-		for (Map.Entry<IndexExpression, Attribute<Table>> theEntry : aRelation
-				.getMapping().entrySet()) {
-			if (isVisible(theEntry.getValue())) {
-				DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(
-						theEntry.getValue());
-				theRelationNode.add(theAttributeNode);
+        aRelation
+                .getMapping().entrySet().stream().filter(theEntry -> isVisible(theEntry.getValue())).forEach(theEntry -> {
+            DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(
+                    theEntry.getValue());
+            theRelationNode.add(theAttributeNode);
 
-				registerUserObject(theEntry.getKey(), theAttributeNode);
-			}
-		}
+            registerUserObject(theEntry.getKey(), theAttributeNode);
+        });
 	}
 
 	private void updateCustomTypeTreeNode(Model aModel, CustomType aCustomType,
@@ -744,15 +720,13 @@ public class OutlineComponent extends DefaultPanel implements
 		//display only details of ENUMERATION and COMPOSITE CustomTypes
 		if ((aCustomType.getType() == CustomTypeType.ENUMERATION) ||
 				(aCustomType.getType() == CustomTypeType.COMPOSITE)) {
-			for (Attribute<CustomType> theAttribute : aCustomType.getAttributes()) {
-				if (isVisible(theAttribute)) {
-					DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theAttribute);
+            aCustomType.getAttributes().stream().filter(theAttribute -> isVisible(theAttribute)).forEach(theAttribute -> {
+                DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(theAttribute);
 
-					aCustomTypeNode.add(theAttributeNode);
+                aCustomTypeNode.add(theAttributeNode);
 
-					registerUserObject(theAttribute, theAttributeNode);
-				}
-			}
+                registerUserObject(theAttribute, theAttributeNode);
+            });
 		} else {
 			//TODO: handle EXTERNAL CustomTypes here
 		}
@@ -775,41 +749,32 @@ public class OutlineComponent extends DefaultPanel implements
 
 		aTableNode.removeAllChildren();
 
-		for (Attribute<Table> theAttribute : aTable.getAttributes()) {
-			if (isVisible(theAttribute)) {
-				DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(
-						theAttribute);
-				aTableNode.add(theAttributeNode);
+        aTable.getAttributes().stream().filter(theAttribute -> isVisible(theAttribute)).forEach(theAttribute -> {
+            DefaultMutableTreeNode theAttributeNode = new DefaultMutableTreeNode(
+                    theAttribute);
+            aTableNode.add(theAttributeNode);
 
-				registerUserObject(theAttribute, theAttributeNode);
-			}
-		}
+            registerUserObject(theAttribute, theAttributeNode);
+        });
 
-		for (Index theIndex : aTable.getIndexes()) {
+        aTable.getIndexes().stream().filter(theIndex -> isVisible(theIndex)).forEach(theIndex -> {
+            createIndexTreeNode(aTableNode, theIndex);
+        });
 
-			if (isVisible(theIndex)) {
-				createIndexTreeNode(aTableNode, theIndex);
-			}
-		}
+        aModel.getRelations().getForeignKeysFor(
+                aTable).stream().filter(theRelation -> isVisible(theRelation)).forEach(theRelation -> {
+            createRelationTreeNode(aTableNode, theRelation);
+        });
 
-		for (Relation theRelation : aModel.getRelations().getForeignKeysFor(
-				aTable)) {
-			if (isVisible(theRelation)) {
-				createRelationTreeNode(aTableNode, theRelation);
-			}
-		}
+		Set<Table> theAlreadyKnown = new HashSet<>();
+        aModel.getRelations().getExportedKeysFor(aTable).stream().filter(theRelation -> isVisible(theRelation) && !theAlreadyKnown.contains(theRelation.getImportingTable())).forEach(theRelation -> {
+            UsedBy theUsedBy = new UsedBy();
+            theUsedBy.ref = theRelation.getImportingTable();
+            DefaultMutableTreeNode theUsedByNode = new DefaultMutableTreeNode(theUsedBy);
+            aTableNode.add(theUsedByNode);
 
-		Set<Table> theAlreadyKnown = new HashSet<Table>();
-		for (Relation theRelation : aModel.getRelations().getExportedKeysFor(aTable)) {
-			if (isVisible(theRelation) && !theAlreadyKnown.contains(theRelation.getImportingTable())) {
-				UsedBy theUsedBy = new UsedBy();
-				theUsedBy.ref = theRelation.getImportingTable();
-				DefaultMutableTreeNode theUsedByNode = new DefaultMutableTreeNode(theUsedBy);
-				aTableNode.add(theUsedByNode);
-
-				theAlreadyKnown.add(theRelation.getImportingTable());
-			}
-		}
+            theAlreadyKnown.add(theRelation.getImportingTable());
+        });
 	}
 
 	@Override
@@ -840,7 +805,7 @@ public class OutlineComponent extends DefaultPanel implements
 
 			setModel(aModel);
 
-			List<TreePath> thePathsToExpand = new ArrayList<TreePath>();
+			List<TreePath> thePathsToExpand = new ArrayList<>();
 			TreePath theNewSelection = null;
 
 			for (int theRow = 0; theRow < tree.getRowCount(); theRow++) {
@@ -870,9 +835,7 @@ public class OutlineComponent extends DefaultPanel implements
 				}
 			}
 
-			for (TreePath thePath : thePathsToExpand) {
-				tree.expandPath(thePath);
-			}
+            thePathsToExpand.forEach(tree::expandPath);
 
 			if (theNewSelection != null) {
 				tree.setSelectionPath(theNewSelection);
@@ -915,31 +878,21 @@ public class OutlineComponent extends DefaultPanel implements
 			JMenuItem theExpandAllItem = new JMenuItem();
 			theExpandAllItem.setText(getResourceHelper().getFormattedText(
 					ERDesignerBundle.EXPANDALL));
-			theExpandAllItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					expandOrCollapseAllChildrenOfNode(new TreePath(aNode
-							.getPath()), true);
-				}
-			});
+			theExpandAllItem.addActionListener(e -> expandOrCollapseAllChildrenOfNode(new TreePath(aNode
+                    .getPath()), true));
 			aMenu.add(theExpandAllItem);
 
 			JMenuItem theCollapseAllItem = new JMenuItem();
 			theCollapseAllItem.setText(getResourceHelper().getFormattedText(
 					ERDesignerBundle.COLLAPSEALL));
-			theCollapseAllItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					expandOrCollapseAllChildrenOfNode(new TreePath(aNode
-							.getPath()), false);
-				}
-			});
+			theCollapseAllItem.addActionListener(e -> expandOrCollapseAllChildrenOfNode(new TreePath(aNode
+                    .getPath()), false));
 
 			aMenu.add(theCollapseAllItem);
 			aMenu.addSeparator();
 		}
 
-		List<ModelItem> theItemList = new ArrayList<ModelItem>();
+		List<ModelItem> theItemList = new ArrayList<>();
 		if (theUserObject instanceof ModelItem) {
 			theItemList.add((ModelItem) theUserObject);
 			ContextMenuFactory.addActionsToMenu(ERDesignerComponent.getDefault().getEditor(), aMenu, theItemList);

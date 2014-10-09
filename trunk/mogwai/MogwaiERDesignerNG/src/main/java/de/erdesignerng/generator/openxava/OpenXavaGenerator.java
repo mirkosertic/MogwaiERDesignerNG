@@ -57,7 +57,7 @@ public class OpenXavaGenerator {
         if (!StringUtils.isEmpty(aPackageName)) {
             theUnit.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(aPackageName)));
         }
-        List<ImportDeclaration> theImports = new ArrayList<ImportDeclaration>();
+        List<ImportDeclaration> theImports = new ArrayList<>();
         theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("java.util"), false, true));
         theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("javax.persistence"), false, true));
         theImports.add(new ImportDeclaration(ASTHelper.createNameExpr("org.openxava.annotations"), false, true));
@@ -149,7 +149,7 @@ public class OpenXavaGenerator {
             }
         }, theType);
 
-        List<FieldDeclaration> thePersistentFields = new ArrayList<FieldDeclaration>();
+        List<FieldDeclaration> thePersistentFields = new ArrayList<>();
 
         OpenXavaASTHelper.addMarkerAnnotationTo("Entity", theType);
 
@@ -194,7 +194,7 @@ public class OpenXavaGenerator {
                     OpenXavaASTHelper.removeAnnotationFrom("Stereotype", theDeclaration);
                 }
 
-                List<MemberValuePair> theValues = new ArrayList<MemberValuePair>();
+                List<MemberValuePair> theValues = new ArrayList<>();
                 theValues.add(new MemberValuePair("name", new StringLiteralExpr(theAttribute.getName())));
 
                 if (theDataType.supportsSize() && theAttribute.getSize() != null) {
@@ -231,14 +231,14 @@ public class OpenXavaGenerator {
                 FieldDeclaration theDeclaration = OpenXavaASTHelper.findFieldDeclaration(theImpFieldName, theType);
                 if (theDeclaration == null) {
                     ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
-                    List<Type> theTypeArgs = new ArrayList<Type>();
+                    List<Type> theTypeArgs = new ArrayList<>();
                     theTypeArgs.add(new ClassOrInterfaceType(theImpTableClassName));
                     theRelationType.setTypeArgs(theTypeArgs);
                     theDeclaration = ASTHelper.createFieldDeclaration(ModifierSet.PRIVATE, theRelationType, theImpFieldName);
                     ASTHelper.addMember(theType, theDeclaration);
                 } else {
                     ClassOrInterfaceType theRelationType = new ClassOrInterfaceType("Set");
-                    List<Type> theTypeArgs = new ArrayList<Type>();
+                    List<Type> theTypeArgs = new ArrayList<>();
                     theTypeArgs.add(new ClassOrInterfaceType(theImpTableClassName));
                     theRelationType.setTypeArgs(theTypeArgs);
                     theDeclaration.setType(theRelationType);
@@ -255,24 +255,24 @@ public class OpenXavaGenerator {
 
         if (theType.getMembers() != null) {
 
-            List<FieldDeclaration> theFieldsToRemove = new ArrayList<FieldDeclaration>();
+            List<FieldDeclaration> theFieldsToRemove = new ArrayList<>();
 
-            for (BodyDeclaration theDeclaration : theType.getMembers()) {
-                if (theDeclaration instanceof FieldDeclaration) {
+            // Test if the field is marked as persistent and is not a
+// persistent attribute
+            theType.getMembers().stream().filter(theDeclaration -> theDeclaration instanceof FieldDeclaration).forEach(theDeclaration -> {
 
-                    FieldDeclaration theField = (FieldDeclaration) theDeclaration;
+                FieldDeclaration theField = (FieldDeclaration) theDeclaration;
 
-                    // Test if the field is marked as persistent and is not a
-                    // persistent attribute
-                    if (OpenXavaASTHelper.hasAnnotation("Column", theDeclaration) && !thePersistentFields.contains(theField)) {
-                        theFieldsToRemove.add(theField);
-                    }
+                // Test if the field is marked as persistent and is not a
+                // persistent attribute
+                if (OpenXavaASTHelper.hasAnnotation("Column", theDeclaration) && !thePersistentFields.contains(theField)) {
+                    theFieldsToRemove.add(theField);
                 }
-            }
+            });
             theType.getMembers().removeAll(theFieldsToRemove);
 
             // Remove the getter and setter for the removed fields
-            List<MethodDeclaration> theMethodsToRemove = new ArrayList<MethodDeclaration>();
+            List<MethodDeclaration> theMethodsToRemove = new ArrayList<>();
             for (FieldDeclaration theField : theFieldsToRemove) {
 
                 String theName = theField.getVariables().get(0).getId().getName();
@@ -309,7 +309,7 @@ public class OpenXavaGenerator {
             MethodDeclaration theSetMethod = OpenXavaASTHelper.findMethodDeclaration(theMethodName, theType);
             if (theSetMethod == null) {
                 theSetMethod = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, theMethodName);
-                List<Parameter> theParams = new ArrayList<Parameter>();
+                List<Parameter> theParams = new ArrayList<>();
                 theParams.add(ASTHelper.createParameter(theField.getType(), "aValue"));
                 theSetMethod.setParameters(theParams);
 
@@ -320,7 +320,7 @@ public class OpenXavaGenerator {
 
                 ASTHelper.addMember(theType, theSetMethod);
             } else {
-                List<Parameter> theParams = new ArrayList<Parameter>();
+                List<Parameter> theParams = new ArrayList<>();
                 theParams.add(ASTHelper.createParameter(theField.getType(), "aValue"));
                 theSetMethod.setParameters(theParams);
             }

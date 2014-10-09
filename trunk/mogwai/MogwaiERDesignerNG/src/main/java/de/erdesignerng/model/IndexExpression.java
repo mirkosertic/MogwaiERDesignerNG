@@ -80,7 +80,7 @@ public class IndexExpression extends ModelItem implements ModelItemCloneable<Ind
 		setSystemId(aValue.getSystemId());
 		Attribute<Table> theAttributeRef = aValue.getAttributeRef();
 		if (theAttributeRef != null) {
-			Attribute<Table> theNewAttribute = new Attribute<Table>();
+			Attribute<Table> theNewAttribute = new Attribute<>();
 			theNewAttribute.restoreFrom(theAttributeRef);
 			attributeRef = theNewAttribute;
 		} else {

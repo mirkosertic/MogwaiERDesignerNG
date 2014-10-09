@@ -20,13 +20,11 @@ package de.erdesignerng.visual.editor;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.visual.editor.exception.ExceptionEditor;
 import de.mogwai.common.client.looks.components.DefaultDialog;
-import de.mogwai.common.client.looks.components.action.ActionEventProcessor;
 import de.mogwai.common.client.looks.components.action.DefaultAction;
 
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 /**
@@ -39,21 +37,9 @@ public abstract class BaseEditor extends DefaultDialog implements DialogConstant
 
     private JPanel jContentPane;
 
-    protected final DefaultAction okAction = new DefaultAction(new ActionEventProcessor() {
+    protected final DefaultAction okAction = new DefaultAction(e -> commandOk(), this, ERDesignerBundle.OK);
 
-        @Override
-        public void processActionEvent(ActionEvent e) {
-            commandOk();
-        }
-    }, this, ERDesignerBundle.OK);
-
-    protected final DefaultAction cancelAction = new DefaultAction(new ActionEventProcessor() {
-
-        @Override
-        public void processActionEvent(ActionEvent e) {
-            commandCancel();
-        }
-    }, this, ERDesignerBundle.CANCEL);
+    protected final DefaultAction cancelAction = new DefaultAction(e -> commandCancel(), this, ERDesignerBundle.CANCEL);
 
     /**
      * Initialize.

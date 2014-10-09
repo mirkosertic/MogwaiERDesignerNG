@@ -44,7 +44,7 @@ public class AttributeListAttributeCellRenderer implements TableCellRenderer {
 
 	private final JLabel keyLabel;
 
-	private TableEditor editor;
+	private final TableEditor editor;
 
 	public AttributeListAttributeCellRenderer(TableEditor aEditor) {
 

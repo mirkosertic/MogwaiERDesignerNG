@@ -25,7 +25,7 @@ import java.awt.geom.Rectangle2D;
 
 public class ViewComponent extends BaseRendererComponent {
 
-    private View view;
+    private final View view;
 
     public ViewComponent(View aView) {
         view = aView;

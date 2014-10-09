@@ -22,6 +22,7 @@ import de.erdesignerng.dialect.StatementList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author mirkosertic
@@ -30,21 +31,21 @@ public class RepositoryEntity extends ModelEntity {
 
     private String dialect;
 
-    private List<DomainEntity> domains = new ArrayList<DomainEntity>();
+    private List<DomainEntity> domains = new ArrayList<>();
 
-    private List<CustomTypeEntity> customTypes = new ArrayList<CustomTypeEntity>();
+    private List<CustomTypeEntity> customTypes = new ArrayList<>();
 
-    private List<TableEntity> tables = new ArrayList<TableEntity>();
+    private List<TableEntity> tables = new ArrayList<>();
 
-    private List<RelationEntity> relations = new ArrayList<RelationEntity>();
+    private List<RelationEntity> relations = new ArrayList<>();
 
-    private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+    private List<CommentEntity> comments = new ArrayList<>();
 
-    private List<ViewEntity> views = new ArrayList<ViewEntity>();
+    private List<ViewEntity> views = new ArrayList<>();
 
-    private List<SubjectAreaEntity> subjectAreas = new ArrayList<SubjectAreaEntity>();
+    private List<SubjectAreaEntity> subjectAreas = new ArrayList<>();
 
-    private List<ChangeEntity> changes = new ArrayList<ChangeEntity>();
+    private List<ChangeEntity> changes = new ArrayList<>();
 
     public List<DomainEntity> getDomains() {
         return domains;
@@ -132,9 +133,7 @@ public class RepositoryEntity extends ModelEntity {
         int b = changes.indexOf(aDestination);
         for (int i = a; i <= b; i++) {
             ChangeEntity theChange = changes.get(i);
-            for (String theStm : theChange.getStatements()) {
-                theStatements.add(new Statement(theStm));
-            }
+            theStatements.addAll(theChange.getStatements().stream().map(Statement::new).collect(Collectors.toList()));
         }
 
         return theStatements;

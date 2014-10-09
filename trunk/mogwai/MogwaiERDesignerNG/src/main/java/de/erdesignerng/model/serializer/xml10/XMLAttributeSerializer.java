@@ -63,10 +63,10 @@ public class XMLAttributeSerializer extends AbstractXMLAttributeSerializer {
 
 			if (isTable) {
 				theAttribute = new Attribute<Table>();
-				theAttribute.setOwner((Table)aTableOrCustomType);
+				theAttribute.setOwner(aTableOrCustomType);
 			} else if(isCustomType) {
 				theAttribute = new Attribute<CustomType>();
-				theAttribute.setOwner((CustomType)aTableOrCustomType);
+				theAttribute.setOwner(aTableOrCustomType);
 			}
 
 			deserializeProperties(theAttributeElement, theAttribute);

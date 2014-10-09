@@ -46,7 +46,7 @@ public abstract class ModelEntity {
 
 	private Timestamp lastModificationDate;
 
-	private List<StringKeyValuePair> properties = new ArrayList<StringKeyValuePair>();
+	private List<StringKeyValuePair> properties = new ArrayList<>();
 
 	/**
 	 * @return the systemId
