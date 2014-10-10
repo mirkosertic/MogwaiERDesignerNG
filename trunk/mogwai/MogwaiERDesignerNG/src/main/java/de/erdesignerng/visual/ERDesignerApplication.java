@@ -31,6 +31,9 @@ public class ERDesignerApplication extends Application {
         // Disable D3D rendering pipeline
         System.setProperty("sun.java2d.d3d", "false");
 
+        // Initialize Classpath for Java3D
+        Java3DUtils.initializeLibraryPath();
+
         DefaultSplashScreen theScreen = new DefaultSplashScreen(
                 "/de/erdesignerng/splashscreen.jpg");
         theScreen.setVisible(true);
