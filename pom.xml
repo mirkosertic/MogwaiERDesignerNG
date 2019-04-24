@@ -49,6 +49,12 @@
             <url>http://download.java.net/maven/2</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mogwai-plugins</id>
+            <url>http://mogwai.sourceforge.net/repository/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <defaultGoal>package</defaultGoal>
         <plugins>
