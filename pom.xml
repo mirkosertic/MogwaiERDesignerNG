@@ -408,13 +408,18 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.2</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
+            <version>1.7.26</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -426,18 +431,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.2.126</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>pgsql</groupId>
-            <artifactId>pgsqljdbc3</artifactId>
-            <version>8.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>connector</artifactId>
-            <version>5.1.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -514,6 +507,18 @@
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
             <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.11.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>1.11.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <properties>

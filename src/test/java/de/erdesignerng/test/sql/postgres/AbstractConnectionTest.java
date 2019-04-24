@@ -18,10 +18,17 @@
 package de.erdesignerng.test.sql.postgres;
 
 import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
+import org.junit.Rule;
+import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
+
+	@Rule
+	public PostgreSQLContainer container = new PostgreSQLContainer();
 
 	private Connection connection;
 
@@ -29,38 +36,6 @@ public abstract class AbstractConnectionTest extends AbstractReverseEngineeringT
 	protected void setUp() throws Exception {
 
 		connection = null;
-
-		Class.forName("org.postgresql.Driver").newInstance();
-
-		Connection theConnection = createConnection();
-
-		Statement theStatement = theConnection.createStatement();
-		try {
-			theStatement.execute("DROP SCHEMA schemaa CASCADE");
-		} catch (Exception e) {
-		}
-		try {
-			theStatement.execute("DROP SCHEMA schemab CASCADE");
-		} catch (Exception e) {
-		}
-
-		try {
-			theStatement.execute("DROP domain testdomain");
-		} catch (Exception e) {
-		}
-
-		DatabaseMetaData theMeta = theConnection.getMetaData();
-		ResultSet theResultSet = theMeta.getTables("mogwai", "%", "%", null);
-		while (theResultSet.next()) {
-			String theTablename = theResultSet.getString("TABLE_NAME");
-			if (theTablename.startsWith("mogrep")) {
-				try {
-					theStatement.execute("DROP TABLE " + theTablename + " CASCADE");
-				} catch (Exception e) {
-					// Ignore this
-				}
-			}
-		}
 
 		super.setUp();
 	}
@@ -76,8 +51,8 @@ public abstract class AbstractConnectionTest extends AbstractReverseEngineeringT
 
 	protected Connection createConnection() throws SQLException {
 		if (connection == null) {
-			connection = DriverManager.getConnection("jdbc:postgresql://" + getDBServerName() + ":5432/mogwai",
-					"mogwai", "mogwai");
+			connection = DriverManager.getConnection(container.getJdbcUrl(),
+					container.getUsername(), container.getPassword());
 		}
 		return connection;
 	}
