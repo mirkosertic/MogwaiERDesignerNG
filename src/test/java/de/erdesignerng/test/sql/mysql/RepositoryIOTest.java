@@ -23,7 +23,9 @@ import org.apache.commons.io.IOUtils;
 import org.hibernate.dialect.MySQLDialect;
 
 import de.erdesignerng.test.io.repository.RepositioryHelper;
+import org.junit.Ignore;
 
+@Ignore
 public class RepositoryIOTest extends AbstractConnectionTest {
 
 	public void testLoadSaveRepository() throws Exception {

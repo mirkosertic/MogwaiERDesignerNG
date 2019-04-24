@@ -19,6 +19,7 @@ package de.erdesignerng.test.sql.postgres;
 
 import de.erdesignerng.dialect.postgres.PostgresDialect;
 import de.erdesignerng.test.sql.AbstractDialectTestCase;
+import org.junit.Ignore;
 
 /**
  * Test for the PostgreSQL SQL Generator.
@@ -26,6 +27,7 @@ import de.erdesignerng.test.sql.AbstractDialectTestCase;
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-09 19:07:31 $
  */
+@Ignore
 public class PostgresDialectTest extends AbstractDialectTestCase {
 
 	@Override
