@@ -18,13 +18,17 @@
 package de.erdesignerng.test.sql.mysql;
 
 import de.erdesignerng.test.sql.AbstractReverseEngineeringTestImpl;
+import org.junit.Rule;
+import org.testcontainers.containers.MySQLContainer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public abstract class AbstractConnectionTest extends AbstractReverseEngineeringTestImpl {
+
+	@Rule
+	public MySQLContainer container = new MySQLContainer();
 
 	private Connection connection;
 
@@ -33,26 +37,6 @@ public abstract class AbstractConnectionTest extends AbstractReverseEngineeringT
 
 		connection = null;
 
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		Connection theConnection;
-		theConnection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mysql", "root", "root");
-
-		Statement theStatement = theConnection.createStatement();
-		try {
-			theStatement.execute("DROP USER mogwai");
-			theStatement.execute("DROP DATABASE mogwai");
-		} catch (Exception e) {
-		}
-
-		try {
-			theStatement.execute("CREATE DATABASE MOGWAI");
-			theStatement.execute("CREATE USER mogwai IDENTIFIED BY 'mogwai'");
-			theStatement.execute("GRANT ALL ON MOGWAI.* TO mogwai");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-		theConnection.close();
 		super.setUp();
 	}
 
@@ -67,8 +51,7 @@ public abstract class AbstractConnectionTest extends AbstractReverseEngineeringT
 
 	protected Connection createConnection() throws SQLException {
 		if (connection == null) {
-			connection = DriverManager.getConnection("jdbc:mysql://" + getDBServerName() + "/mogwai", "mogwai",
-					"mogwai");
+			connection = DriverManager.getConnection(container.getJdbcUrl(), container.getUsername(), container.getPassword());
 		}
 		return connection;
 	}
