@@ -21,6 +21,7 @@ import de.erdesignerng.dialect.*;
 import de.erdesignerng.dialect.mysql.MySQLDialect;
 import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
+import org.junit.Ignore;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
+@Ignore
 public class ReverseEngineeringTest extends AbstractConnectionTest {
 
 	public void testReverseEngineerMySQL() throws Exception {

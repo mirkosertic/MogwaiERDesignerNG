@@ -21,6 +21,8 @@ import de.erdesignerng.dialect.*;
 import de.erdesignerng.dialect.oracle.OracleDialect;
 import de.erdesignerng.model.*;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
+import org.junit.Ignore;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,6 +36,7 @@ import java.util.Map;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
+@Ignore
 public class ReverseEngineeringTest extends AbstractConnectionTest {
 
 	public void testReverseEngineerOracle() throws Exception {

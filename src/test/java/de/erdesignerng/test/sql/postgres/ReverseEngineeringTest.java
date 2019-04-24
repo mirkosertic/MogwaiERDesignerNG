@@ -17,10 +17,23 @@
  */
 package de.erdesignerng.test.sql.postgres;
 
-import de.erdesignerng.dialect.*;
+import de.erdesignerng.dialect.Dialect;
+import de.erdesignerng.dialect.JDBCReverseEngineeringStrategy;
+import de.erdesignerng.dialect.ReverseEngineeringOptions;
+import de.erdesignerng.dialect.SQLGenerator;
+import de.erdesignerng.dialect.SchemaEntry;
+import de.erdesignerng.dialect.TableNamingEnum;
 import de.erdesignerng.dialect.postgres.PostgresDialect;
-import de.erdesignerng.model.*;
+import de.erdesignerng.model.Attribute;
+import de.erdesignerng.model.Index;
+import de.erdesignerng.model.IndexExpression;
+import de.erdesignerng.model.Model;
+import de.erdesignerng.model.Relation;
+import de.erdesignerng.model.Table;
+import de.erdesignerng.model.View;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
+import org.junit.Ignore;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -32,6 +45,7 @@ import java.util.Map;
  * @author $Author: mirkosertic $
  * @version $Date: 2008-11-16 17:48:26 $
  */
+@Ignore
 public class ReverseEngineeringTest extends AbstractConnectionTest {
 
 	public void testReverseEngineerPostgreSQL() throws Exception {
