@@ -32,7 +32,7 @@
         <langpack iso3="eng"/>
     </locale>
     <resources>
-        <res id="LicencePanel.licence" src="LICENSE_MOGWAI.txt"/>
+        <res id="LicencePanel.licence" src="LICENSE"/>
         <res src="install_shortcutspec.xml" id="shortcutSpec.xml"/>
         <res src="install_unix_shortcutspec.xml" id="Unix_shortcutSpec.xml"/>
     </resources>

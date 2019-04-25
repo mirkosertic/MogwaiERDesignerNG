@@ -9,9 +9,6 @@
 		<fileSet>
 			<directory>${staging.dir}</directory>
 			<outputDirectory>.</outputDirectory>
-			<excludes>
-				<exclude>install*.xml</exclude>
-			</excludes>
 		</fileSet>
 	</fileSets>
 </assembly>
