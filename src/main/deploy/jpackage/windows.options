@@ -1,0 +1,1 @@
+--win-menu --win-shortcut --win-menu-group ERDesignerNG --java-options "-Xmx3000m -Djava.library.path=java3d\\win64"

@@ -848,7 +848,7 @@ public class OutlineComponent extends DefaultPanel implements
 												   boolean aExpand) {
 		TreeNode node = (TreeNode) aParentPath.getLastPathComponent();
 		if (node.getChildCount() > 0) {
-			for (Enumeration<TreeNode> en = node.children(); en
+			for (Enumeration<TreeNode> en = (Enumeration<TreeNode>) node.children(); en
 					.hasMoreElements(); ) {
 				TreeNode n = en.nextElement();
 				TreePath path = aParentPath.pathByAddingChild(n);
