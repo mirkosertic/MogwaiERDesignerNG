@@ -4,6 +4,11 @@ The Mogwai ERDesigner is an entity relationship modeling/design tool(ERD) such a
 
 [![Build Status](https://travis-ci.org/mirkosertic/MogwaiERDesignerNG.svg?branch=master)](https://travis-ci.org/mirkosertic/MogwaiERDesignerNG)
 
+
+Releases are available [at GitHub](https://github.com/mirkosertic/MogwaiERDesignerNG/releases) or
+
+[![](screenshots/MSStore.png)](https://www.microsoft.com/en-us/p/erdesigner-ng/9mz4zgjc5rj3)
+
 **ERDesigner NG**
 * is based on Java and can be run on Windows,Unix and Mac systems
 * is distributed as a zip/tar/installer file or can be launched by Microsoft Store
