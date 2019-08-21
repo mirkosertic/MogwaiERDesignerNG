@@ -20,6 +20,7 @@ package de.erdesignerng.model;
 import de.erdesignerng.dialect.ConversionInfos;
 import de.erdesignerng.dialect.DataType;
 import de.erdesignerng.dialect.DataTypeList;
+import de.erdesignerng.dialect.DataTypeListWithAlias;
 import de.erdesignerng.dialect.Dialect;
 import de.erdesignerng.dialect.DialectFactory;
 import de.erdesignerng.exception.ElementAlreadyExistsException;
@@ -83,7 +84,7 @@ public class Model extends ModelItem {
      * @throws ElementInvalidNameException   is thrown in case of an error
      * @throws VetoException                 if there is a veto for doing this
      */
-    public void addTable(Table aTable) throws ElementAlreadyExistsException,
+    public void addTable(final Table aTable) throws ElementAlreadyExistsException,
             ElementInvalidNameException, VetoException {
 
         modificationTracker.addTable(aTable);
@@ -92,7 +93,7 @@ public class Model extends ModelItem {
             ModelUtilities.checkNameAndExistence(tables, aTable, dialect);
             ModelUtilities.checkNameAndExistence(views, aTable, dialect);
 
-            for (Attribute<Table> theAttribute : aTable.getAttributes()) {
+            for (final Attribute<Table> theAttribute : aTable.getAttributes()) {
                 theAttribute.setName(dialect.checkName(theAttribute.getName()));
             }
         }
@@ -109,7 +110,7 @@ public class Model extends ModelItem {
      * @throws ElementInvalidNameException   is thrown in case of an error
      * @throws VetoException                 is thrown in case of an error
      */
-    public void addRelation(Relation aRelation)
+    public void addRelation(final Relation aRelation)
             throws ElementAlreadyExistsException, ElementInvalidNameException,
             VetoException {
 
@@ -125,11 +126,11 @@ public class Model extends ModelItem {
         return dialect;
     }
 
-    public void setDialect(Dialect aDialect) {
+    public void setDialect(final Dialect aDialect) {
         dialect = aDialect;
     }
 
-    public String checkName(String aName) throws ElementInvalidNameException {
+    public String checkName(final String aName) throws ElementInvalidNameException {
         return dialect.checkName(aName);
     }
 
@@ -153,7 +154,7 @@ public class Model extends ModelItem {
     public Connection createConnection() throws ClassNotFoundException,
             InstantiationException, IllegalAccessException, SQLException {
 
-        ModelProperties theProperties = getProperties();
+        final ModelProperties theProperties = getProperties();
 
         return getDialect().createConnection(
                 ApplicationPreferences.getInstance().createDriverClassLoader(),
@@ -165,8 +166,8 @@ public class Model extends ModelItem {
                 ));
     }
 
-    public boolean checkIfUsedAsForeignKey(Table aTable, Attribute<Table> aAttribute) {
-        Attribute<Table> theRealAttribute = aTable.getAttributes().findBySystemId(
+    public boolean checkIfUsedAsForeignKey(final Table aTable, final Attribute<Table> aAttribute) {
+        final Attribute<Table> theRealAttribute = aTable.getAttributes().findBySystemId(
                 aAttribute.getSystemId());
         return getRelations().isForeignKeyAttribute(theRealAttribute);
     }
@@ -178,7 +179,7 @@ public class Model extends ModelItem {
      * @throws VetoException will be thrown if the modification tracker has a veto for
      *                       completing this operation
      */
-    public void removeTable(Table aTable) throws VetoException {
+    public void removeTable(final Table aTable) throws VetoException {
 
         modificationTracker.removeTable(aTable);
 
@@ -195,17 +196,17 @@ public class Model extends ModelItem {
      * @throws VetoException will be thrown if the modification tracker has a veto for
      *                       completing this operation
      */
-    public void removeRelation(Relation aRelation) throws VetoException {
+    public void removeRelation(final Relation aRelation) throws VetoException {
 
         modificationTracker.removeRelation(aRelation);
         relations.remove(aRelation);
     }
 
-    public void removeAttributeFromTable(Table aTable, Attribute<Table> aAttribute)
+    public void removeAttributeFromTable(final Table aTable, final Attribute<Table> aAttribute)
             throws VetoException, ElementAlreadyExistsException,
             ElementInvalidNameException {
 
-        for (Index theIndex : aTable.getIndexes()) {
+        for (final Index theIndex : aTable.getIndexes()) {
             if (theIndex.getExpressions().findByAttribute(aAttribute) != null) {
                 if (theIndex.getExpressions().size() == 1) {
                     // The index shall be dropped
@@ -225,7 +226,7 @@ public class Model extends ModelItem {
         aTable.getAttributes().removeById(aAttribute.getSystemId());
     }
 
-    public void removeIndex(Table aTable, Index aIndex) throws VetoException {
+    public void removeIndex(final Table aTable, final Index aIndex) throws VetoException {
 
         if (IndexType.PRIMARYKEY == aIndex.getIndexType()) {
             modificationTracker.removePrimaryKeyFromTable(aTable, aIndex);
@@ -235,7 +236,7 @@ public class Model extends ModelItem {
         aTable.getIndexes().removeById(aIndex.getSystemId());
     }
 
-    public void addAttributeToTable(Table aTable, Attribute<Table> aAttribute)
+    public void addAttributeToTable(final Table aTable, final Attribute<Table> aAttribute)
             throws VetoException, ElementAlreadyExistsException,
             ElementInvalidNameException {
 
@@ -243,13 +244,13 @@ public class Model extends ModelItem {
         aTable.addAttribute(this, aAttribute);
     }
 
-    public void changeAttribute(Attribute<Table> anExistingAttribute, Attribute<Table> aNewAttribute) throws Exception {
+    public void changeAttribute(final Attribute<Table> anExistingAttribute, final Attribute<Table> aNewAttribute) throws Exception {
         modificationTracker.changeAttribute(anExistingAttribute, aNewAttribute);
 
         anExistingAttribute.restoreFrom(aNewAttribute);
     }
 
-    public void addIndexToTable(Table aTable, Index aIndex)
+    public void addIndexToTable(final Table aTable, final Index aIndex)
             throws VetoException, ElementAlreadyExistsException,
             ElementInvalidNameException {
 
@@ -262,7 +263,7 @@ public class Model extends ModelItem {
         aTable.addIndex(this, aIndex);
     }
 
-    public void changeIndex(Index anExistingIndex, Index aNewIndex)
+    public void changeIndex(final Index anExistingIndex, final Index aNewIndex)
             throws Exception {
 
         modificationTracker.changeIndex(anExistingIndex, aNewIndex);
@@ -270,14 +271,14 @@ public class Model extends ModelItem {
         anExistingIndex.restoreFrom(aNewIndex);
     }
 
-    public void renameTable(Table aTable, String aNewName) throws VetoException {
+    public void renameTable(final Table aTable, final String aNewName) throws VetoException {
 
         modificationTracker.renameTable(aTable, aNewName);
 
         aTable.setName(aNewName);
     }
 
-    public void changeTableComment(Table aTable, String aNewComment)
+    public void changeTableComment(final Table aTable, final String aNewComment)
             throws VetoException {
 
         modificationTracker.changeTableComment(aTable, aNewComment);
@@ -285,14 +286,14 @@ public class Model extends ModelItem {
         aTable.setComment(aNewComment);
     }
 
-    public void renameAttribute(Attribute anExistingAttribute, String aNewName)
+    public void renameAttribute(final Attribute anExistingAttribute, final String aNewName)
             throws VetoException {
         modificationTracker.renameAttribute(anExistingAttribute, aNewName);
 
         anExistingAttribute.setName(aNewName);
     }
 
-    public void changeRelation(Relation aRelation, Relation aTempRelation)
+    public void changeRelation(final Relation aRelation, final Relation aTempRelation)
             throws Exception {
 
         modificationTracker.changeRelation(aRelation, aTempRelation);
@@ -306,7 +307,7 @@ public class Model extends ModelItem {
     }
 
     public void setModificationTracker(
-            ModelModificationTracker modificationTracker) {
+            final ModelModificationTracker modificationTracker) {
         this.modificationTracker = modificationTracker;
     }
 
@@ -315,7 +316,7 @@ public class Model extends ModelItem {
      *
      * @param aArea the area
      */
-    public void addSubjectArea(SubjectArea aArea) {
+    public void addSubjectArea(final SubjectArea aArea) {
         subjectAreas.add(aArea);
     }
 
@@ -324,7 +325,7 @@ public class Model extends ModelItem {
      *
      * @param aArea the area
      */
-    public void removeSubjectArea(SubjectArea aArea) {
+    public void removeSubjectArea(final SubjectArea aArea) {
         subjectAreas.remove(aArea);
     }
 
@@ -341,7 +342,7 @@ public class Model extends ModelItem {
      * @return the history entry
      */
     public ConnectionDescriptor createConnectionHistoryEntry() {
-        String theDialectName = dialect != null ? dialect.getUniqueName()
+        final String theDialectName = dialect != null ? dialect.getUniqueName()
                 : null;
         return new ConnectionDescriptor(getProperties().getProperty(
                 PROPERTY_ALIAS), theDialectName, getProperties().getProperty(
@@ -356,7 +357,7 @@ public class Model extends ModelItem {
      *
      * @param aConnection the connection
      */
-    public void initializeWith(ConnectionDescriptor aConnection) {
+    public void initializeWith(final ConnectionDescriptor aConnection) {
         setDialect(DialectFactory.getInstance().getDialect(
                 aConnection.getDialect()));
         getProperties().setProperty(PROPERTY_ALIAS, aConnection.getAlias());
@@ -383,7 +384,7 @@ public class Model extends ModelItem {
      *
      * @param aComment the comment
      */
-    public void removeComment(Comment aComment) {
+    public void removeComment(final Comment aComment) {
         comments.remove(aComment);
         subjectAreas.removeComment(aComment);
     }
@@ -393,7 +394,7 @@ public class Model extends ModelItem {
      *
      * @param aComment the comment
      */
-    public void addComment(Comment aComment) {
+    public void addComment(final Comment aComment) {
         aComment.setOwner(this);
         comments.add(aComment);
     }
@@ -419,8 +420,8 @@ public class Model extends ModelItem {
      *
      * @return the available data types
      */
-    public DataTypeList getAvailableDataTypes() {
-        DataTypeList theResult = new DataTypeList();
+    public DataTypeListWithAlias getAvailableDataTypes() {
+        final DataTypeListWithAlias theResult = new DataTypeListWithAlias(dialect);
         if (dialect != null) {
             theResult.addAll(dialect.getDataTypes());
 
@@ -432,7 +433,7 @@ public class Model extends ModelItem {
             theResult.addAll(domains);
         }
 
-        Collections.sort(theResult, new BeanComparator("name"));
+        theResult.sort(new BeanComparator("name"));
 
         return theResult;
     }
@@ -443,7 +444,7 @@ public class Model extends ModelItem {
      * @param aDomain - domain
      * @throws VetoException - veto exception
      */
-    public void addDomain(Domain aDomain) throws VetoException {
+    public void addDomain(final Domain aDomain) throws VetoException {
 
         modificationTracker.addDomain(aDomain);
 
@@ -457,7 +458,7 @@ public class Model extends ModelItem {
      * @param aDomain - a domain
      * @throws VetoException - veto exception
      */
-    public void removeDomain(Domain aDomain) throws VetoException {
+    public void removeDomain(final Domain aDomain) throws VetoException {
 
         modificationTracker.removeDomain(aDomain);
 
@@ -470,7 +471,7 @@ public class Model extends ModelItem {
      * @param aCustomType - the custom datatype
      * @throws VetoException - veto exception
      */
-    public void addCustomType(CustomType aCustomType) throws VetoException {
+    public void addCustomType(final CustomType aCustomType) throws VetoException {
 
         modificationTracker.addCustomType(aCustomType);
 
@@ -484,7 +485,7 @@ public class Model extends ModelItem {
      * @param aCustomType - the custom datatype
      * @throws VetoException - veto exception
      */
-    public void removeCustomType(CustomType aCustomType) throws VetoException {
+    public void removeCustomType(final CustomType aCustomType) throws VetoException {
 
         modificationTracker.removeCustomType(aCustomType);
 
@@ -499,7 +500,7 @@ public class Model extends ModelItem {
      * @throws ElementAlreadyExistsException is thrown if there is already
      * @throws ElementInvalidNameException   is thrown if the name is invalid
      */
-    public void addView(View aView) throws VetoException,
+    public void addView(final View aView) throws VetoException,
             ElementInvalidNameException, ElementAlreadyExistsException {
 
         modificationTracker.addView(aView);
@@ -519,7 +520,7 @@ public class Model extends ModelItem {
      * @param aView a view
      * @throws VetoException is thrown is someone has a veto to remove the view
      */
-    public void removeView(View aView) throws VetoException {
+    public void removeView(final View aView) throws VetoException {
 
         modificationTracker.removeView(aView);
 
@@ -542,7 +543,7 @@ public class Model extends ModelItem {
      * @return the list of datatypes.
      */
     public DataTypeList getDomainDataTypes() {
-        DataTypeList theResult = new DataTypeList();
+        final DataTypeList theResult = new DataTypeList();
         if (dialect != null) {
             theResult.addAll(dialect.getDataTypes());
         }
@@ -555,7 +556,7 @@ public class Model extends ModelItem {
      * @param aView the view
      * @throws VetoException is thrown if someone has a veto to change the view
      */
-    public void changeView(View aView) throws VetoException {
+    public void changeView(final View aView) throws VetoException {
         modificationTracker.changeView(aView);
     }
 
@@ -565,12 +566,12 @@ public class Model extends ModelItem {
      * @return the list of datatypes.
      */
     public DataTypeList getUsedDataTypes() {
-        DataTypeList theResult = new DataTypeList();
+        final DataTypeList theResult = new DataTypeList();
         theResult.addAll(getDomains());
 
-        for (Table theTable : tables) {
-            for (Attribute<Table> theAttribute : theTable.getAttributes()) {
-                DataType theType = theAttribute.getDatatype();
+        for (final Table theTable : tables) {
+            for (final Attribute<Table> theAttribute : theTable.getAttributes()) {
+                final DataType theType = theAttribute.getDatatype();
                 if (!theResult.contains(theType)) {
                     theResult.add(theType);
                 }
@@ -585,8 +586,8 @@ public class Model extends ModelItem {
      *
      * @param aConversionInfo the conversion info.
      */
-    public void convert(ConversionInfos aConversionInfo) {
-        Dialect theNewDialect = aConversionInfo.getTargetDialect();
+    public void convert(final ConversionInfos aConversionInfo) {
+        final Dialect theNewDialect = aConversionInfo.getTargetDialect();
 
         // Update the dialect
         setDialect(theNewDialect);
@@ -601,15 +602,15 @@ public class Model extends ModelItem {
         getProperties().setProperty(PROPERTY_ALIAS, "");
 
         // Convert the domains
-        for (Domain theDomain : getDomains()) {
+        for (final Domain theDomain : getDomains()) {
             theDomain.setConcreteType(aConversionInfo.getTypeMapping().get(
                     theDomain));
         }
 
         // Convert the attributes
-        for (Table theTable : tables) {
-            for (Attribute<Table> theAttribute : theTable.getAttributes()) {
-                DataType theType = theAttribute.getDatatype();
+        for (final Table theTable : tables) {
+            for (final Attribute<Table> theAttribute : theTable.getAttributes()) {
+                final DataType theType = theAttribute.getDatatype();
 
                 // Never convert domains, only concrete types !
                 if (!theType.isDomain()) {
@@ -626,17 +627,17 @@ public class Model extends ModelItem {
      * @return the list of schemas.
      */
     public List<String> getUsedSchemas() {
-        List<String> theResult = new ArrayList<>();
-        for (Table theTable : tables) {
-            String theSchema = theTable.getSchema();
+        final List<String> theResult = new ArrayList<>();
+        for (final Table theTable : tables) {
+            final String theSchema = theTable.getSchema();
             if (!StringUtils.isEmpty(theSchema)) {
                 if (!theResult.contains(theSchema)) {
                     theResult.add(theSchema);
                 }
             }
         }
-        for (View theView : views) {
-            String theSchema = theView.getSchema();
+        for (final View theView : views) {
+            final String theSchema = theView.getSchema();
             if (!StringUtils.isEmpty(theSchema)) {
                 if (!theResult.contains(theSchema)) {
                     theResult.add(theSchema);
@@ -646,8 +647,8 @@ public class Model extends ModelItem {
         return theResult;
     }
 
-    public void addElementPropertiesTo(List<String> aValues,
-                                       ERDesignerElementType aElementType, String aPropertyName) {
+    public void addElementPropertiesTo(final List<String> aValues,
+                                       final ERDesignerElementType aElementType, final String aPropertyName) {
         switch (aElementType) {
             case TABLE:
             case VIEW:
