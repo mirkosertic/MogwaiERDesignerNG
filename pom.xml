@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>mogwai-erdesignerng</artifactId>
     <name>Mogwai ERDesignerNG</name>
-    <version>3.1.0-M1-SNAPSHOT</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
     <description>Mogwai ER-Designer is an entity relationship design tool.</description>
     <url>http://sourceforge.net/projects/mogwai/</url>
@@ -456,7 +456,7 @@
         <jpackage.dir>${project.build.directory}/jpackage</jpackage.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.javadoc.skip>true</maven.javadoc.skip>
-        <projectrelease.version>3.1.0</projectrelease.version>
+        <projectrelease.version>3.1.1</projectrelease.version>
     </properties>
 
     <profiles>

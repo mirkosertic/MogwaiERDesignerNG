@@ -302,6 +302,18 @@ Release 3.1.0
 
 * Bug Fixing #181 Unknown data type: Integer[]
 * Bug Fixing SQL-Syntaxhighlighting: RESTRICT, NO, ACTION added, colors changed
-* Implemented FR #166 [ERDesignerNG] support PgSQL datatype arrays (nestet sets) 
+* Implemented FR #166 [ERDesignerNG] support PgSQL datatype arrays (nested sets)
 * Implemented FR #212 [ERDesignerNG] Datatypes not reverse engineered correctly
 * Added support for reverse engineering into an existing model, preserving the in graph location of previous tables and relations
+
+Release 3.1.1
+
+* Fixed Type Alias NPE while Loading older Models
+* Bump maven-compiler-plugin from 3.8.0 to 3.8.1
+* Bump maven-surefire-plugin from 2.22.1 to 2.22.2
+* Bump jasperreports from 6.8.1 to 6.9.0 (#31)
+* Bump maven-javadoc-plugin from 3.1.0 to 3.1.1 (#32)
+* Bump mysql from 1.11.4 to 1.12.0 (#36)
+* Bump postgresql from 1.11.4 to 1.12.0 (#35)
+* Bump slf4j-log4j12 from 1.7.27 to 1.7.28 (#45)
+* Bump slf4j-api from 1.7.27 to 1.7.28 (#44)
