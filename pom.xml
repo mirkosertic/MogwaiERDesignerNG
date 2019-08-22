@@ -466,6 +466,10 @@
                 <os>
                     <family>linux</family>
                 </os>
+                <property>
+                    <name>RELEASE</name>
+                    <value>TRUE</value>
+                </property>
             </activation>
             <build>
                 <plugins>
@@ -535,6 +539,10 @@
                 <os>
                     <family>windows</family>
                 </os>
+                <property>
+                    <name>RELEASE</name>
+                    <value>TRUE</value>
+                </property>
             </activation>
             <build>
                 <plugins>
