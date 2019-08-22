@@ -2,6 +2,11 @@ dist: trusty
 language: java
 jdk:
   - openjdk12
+addons:
+  apt:
+    packages:
+      - fakeroot
+      - rpm
 cache:
   directories:
     - $HOME/.m2
@@ -10,5 +15,3 @@ before_install:
   - tar xzf openjdk-14-jpackage+1-33_linux-x64_bin.tar.gz
   - export JPACKAGE_HOME=./jdk-14
   - echo "MAVEN_OPTS='-Xmx3072m -XX:MaxPermSize=512m'" > ~/.mavenrc
-  - "env"
-  - sudo apt-get install -y fakeroot rpm
