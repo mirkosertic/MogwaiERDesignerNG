@@ -486,7 +486,7 @@
                                         <argument>--package-type</argument>
                                         <argument>rpm</argument>
 
-                                        <argument>-o</argument>
+                                        <argument>-d</argument>
                                         <argument>${project.build.directory}</argument>
 
                                         <argument>-n</argument>
@@ -510,7 +510,7 @@
                                         <argument>--license-file </argument>
                                         <argument>${project.basedir}/LICENSE</argument>
 
-                                        <argument>--temp-root</argument>
+                                        <argument>--temp</argument>
                                         <argument>${project.build.directory}/jpackage-temp-rpm</argument>
 
                                         <argument>--runtime-image</argument>
@@ -535,7 +535,7 @@
                                         <argument>--package-type</argument>
                                         <argument>deb</argument>
 
-                                        <argument>-o</argument>
+                                        <argument>-d</argument>
                                         <argument>${project.build.directory}</argument>
 
                                         <argument>-n</argument>
@@ -559,7 +559,7 @@
                                         <argument>--license-file </argument>
                                         <argument>${project.basedir}/LICENSE</argument>
 
-                                        <argument>--temp-root</argument>
+                                        <argument>--temp</argument>
                                         <argument>${project.build.directory}/jpackage-temp-deb</argument>
 
                                         <argument>--runtime-image</argument>
@@ -603,7 +603,7 @@
                                         <argument>--package-type</argument>
                                         <argument>msi</argument>
 
-                                        <argument>-o</argument>
+                                        <argument>-d</argument>
                                         <argument>${project.build.directory}</argument>
 
                                         <argument>-n</argument>
@@ -630,7 +630,7 @@
                                         <argument>--license-file </argument>
                                         <argument>${project.basedir}/LICENSE</argument>
 
-                                        <argument>--temp-root</argument>
+                                        <argument>--temp</argument>
                                         <argument>${project.build.directory}/jpackage-temp-msi</argument>
 
                                         <argument>--runtime-image</argument>
@@ -655,7 +655,7 @@
                                         <argument>--package-type</argument>
                                         <argument>exe</argument>
 
-                                        <argument>-o</argument>
+                                        <argument>-d</argument>
                                         <argument>${project.build.directory}</argument>
 
                                         <argument>-n</argument>
@@ -682,7 +682,7 @@
                                         <argument>--license-file </argument>
                                         <argument>${project.basedir}/LICENSE</argument>
 
-                                        <argument>--temp-root</argument>
+                                        <argument>--temp</argument>
                                         <argument>${project.build.directory}/jpackage-temp-exe</argument>
 
                                         <argument>--runtime-image</argument>
