@@ -1,0 +1,29 @@
+name: Build 
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest,windows-latest,macOS-latest]
+        include:
+          - os: windows-latest
+            releasename: 'Windows'
+          - os: ubuntu-latest
+            releasename: 'Unix'
+          - os: macOS-latest
+            releasename: 'Mac'
+    steps:
+     - uses: actions/checkout@v1
+     - uses: joschi/setup-jdk@v1
+       with:
+           java-version: '14'
+     - run: mvn verify
+     - uses: actions/upload-artifact@v1
+       with:
+           name: ${{ matrix.releasename }}
+           path: 'target/release'
