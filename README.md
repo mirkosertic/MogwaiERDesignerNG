@@ -2,8 +2,6 @@
 
 The Mogwai ERDesigner is an entity relationship modeling/design tool(ERD) such as ERWin and co. The only difference is that it is Open Source and does not cost anything. It was designed to make database modeling as easy as it can be and to support the developer in the whole development process, from database design to schema and code generation.
 
-[![Build Status](https://travis-ci.org/mirkosertic/MogwaiERDesignerNG.svg?branch=master)](https://travis-ci.org/mirkosertic/MogwaiERDesignerNG)
-
 
 Releases are available [at GitHub](https://github.com/mirkosertic/MogwaiERDesignerNG/releases) or
 
