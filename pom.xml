@@ -62,8 +62,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>12</source>
-                    <target>12</target>
+                    <source>14</source>
+                    <target>14</target>
                 </configuration>
             </plugin>
 
@@ -757,6 +757,7 @@
                                         <argument>${env.JAVA_HOME}</argument>
 
                                         <argument>@${project.basedir}/src/main/deploy/jpackage/common.options</argument>
+                                        <argument>@${project.basedir}/src/main/deploy/jpackage/macos.options</argument>
 
                                         <argument>--verbose</argument>
                                     </arguments>

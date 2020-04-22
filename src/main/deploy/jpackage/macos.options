@@ -1,0 +1,1 @@
+--java-options "-Xmx3000m -Djava.library.path=java3d/macos-universal"

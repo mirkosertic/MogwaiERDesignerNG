@@ -20,6 +20,12 @@ jobs:
      - uses: joschi/setup-jdk@v1
        with:
            java-version: '14'
+     - uses: actions/cache@v1
+       with:
+           path: ~/.m2/repository
+           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+           restore-keys: |
+               ${{ runner.os }}-maven-
      - run: mvn verify
      - uses: actions/upload-artifact@v1
        with:
@@ -27,5 +33,5 @@ jobs:
            path: 'target/release'
      - uses: AButler/upload-release-assets@v2.0
        with:
-         files: 'target/release/*'
-         repo-token: ${{ secrets.GITHUB_TOKEN }}
+           files: 'target/release/*'
+           repo-token: ${{ secrets.GITHUB_TOKEN }}

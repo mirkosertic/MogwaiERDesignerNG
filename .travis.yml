@@ -1,7 +1,6 @@
-dist: trusty
 language: java
 jdk:
-  - openjdk12
+  - openjdk14
 addons:
   apt:
     packages:
@@ -11,7 +10,4 @@ cache:
   directories:
     - $HOME/.m2
 before_install:
-  - wget https://download.java.net/java/early_access/jdk14/28/GPL/openjdk-14-ea+28_linux-x64_bin.tar.gz
-  - tar xzf openjdk-14-ea+28_linux-x64_bin.tar.gz
-  - export JPACKAGE_HOME=./jdk-14
   - echo "MAVEN_OPTS='-Xmx3072m -XX:MaxPermSize=512m'" > ~/.mavenrc
