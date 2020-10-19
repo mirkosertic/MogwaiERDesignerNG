@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sourceforge.mogwai</groupId>
+    <artifactId>mogwai-masterpom</artifactId>
+    <packaging>pom</packaging>
+    <version>1.1-SNAPSHOT</version>
+    <name>MogwaiMasterPom</name>
+    <description>MasterPom for Mogwai Projects</description>
+    <url>http://mogwai.sourceforge.net</url>
+    <developers>
+        <developer>
+            <id>mirkosertic</id>
+            <name>Mirko Sertic</name>
+            <roles>
+                <role>Project admin</role>
+            </roles>
+            <email>mail@mirkosertic.de</email>
+            <organization>Project Mogwai</organization>
+        </developer>
+    </developers>
+    <inceptionYear>2002</inceptionYear>
+    <licenses>
+        <license>
+            <name>GNU LESSER GENERAL PUBLIC LICENSE Version 2.1</name>
+        </license>
+    </licenses>
+    <mailingLists>
+        <mailingList>
+            <name>Mogwai users mailing list</name>
+            <post>mogwai-users@lists.sourceforge.net</post>
+        </mailingList>
+        <mailingList>
+            <name>Mogwai developer mailing list</name>
+            <post>mogwai-developer@lists.sourceforge.net</post>
+        </mailingList>
+    </mailingLists>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>ISO8859-1</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>ISO8859-1</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>ISO8859-1</encoding>
+                    <links>
+                        <link>
+                            http://java.sun.com/j2se/1.5.0/docs/api
+                        </link>
+                    </links>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <dependencies></dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>mogwai-repository</id>
+            <url>
+                sftp://web.sourceforge.net/home/groups/m/mo/mogwai/htdocs/repository/maven2
+            </url>
+        </repository>
+    </distributionManagement>
+
+</project>

@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sourceforge.mogwai</groupId>
+    <artifactId>mogwai-layout</artifactId>
+    <packaging>jar</packaging>
+    <version>1.3</version>
+    <name>MogwaiLayout</name>
+    <description>
+        MogwaiLayout is a GraphLayout API.
+    </description>
+    <parent>
+        <groupId>net.sourceforge.mogwai</groupId>
+        <artifactId>mogwai-masterpom</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+    <repositories>
+        <repository>
+            <id>mogwai-internal-site</id>
+            <url>http://mogwai.sourceforge.net/repository/maven2</url>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+    </dependencies>
+</project>

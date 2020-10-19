@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sourceforge.mogwai</groupId>
+    <artifactId>mogwai-looks</artifactId>
+    <packaging>jar</packaging>
+    <version>1.9.3</version>
+    <name>MogwaiLooks</name>
+    <description>
+        MogwaiLooks is a component set to make swing applications look fancier.
+    </description>
+    <parent>
+        <groupId>net.sourceforge.mogwai</groupId>
+        <artifactId>mogwai-masterpom</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+    <repositories>
+        <repository>
+            <id>mogwai-internal-site</id>
+            <url>http://mogwai.sourceforge.net/repository/maven2</url>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+
+                                <taskdef name="XMLResourceBundle"
+                                         classname="de.mogwai.common.i18n.XMLResourceBundleTask">
+                                </taskdef>
+
+                                <XMLResourceBundle
+                                        src="src/main/java"
+                                        dest="src/main/resources">
+                                    <fileset dir="src/main/resources">
+                                        <include name="*.xml"/>
+                                    </fileset>
+                                </XMLResourceBundle>
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.mogwai</groupId>
+                        <artifactId>mogwai-i18n</artifactId>
+                        <version>2.14.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>net.sourceforge.mogwai</groupId>
+            <artifactId>mogwai-databinding</artifactId>
+            <version>1.8.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>jgoodies</groupId>
+            <artifactId>forms</artifactId>
+            <version>1.2.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

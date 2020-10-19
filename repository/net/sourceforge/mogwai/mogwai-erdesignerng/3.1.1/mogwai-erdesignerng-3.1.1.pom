@@ -7,17 +7,16 @@
     <version>3.1.1</version>
     <packaging>jar</packaging>
     <description>Mogwai ER-Designer is an entity relationship design tool.</description>
-    <url>https://github.com/mirkosertic/MogwaiERDesignerNG</url>
+    <url>http://sourceforge.net/projects/mogwai/</url>
     <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/mirkosertic/MogwaiERDesignerNG/issues</url>
+        <system>SourceForge</system>
+        <url>http://sourceforge.net/tracker/?group_id=65384</url>
     </issueManagement>
     <inceptionYear>2003</inceptionYear>
     <parent>
         <groupId>net.sourceforge.mogwai</groupId>
         <artifactId>mogwai-masterpom</artifactId>
         <version>1.1-SNAPSHOT</version>
-        <relativePath>./repository/net/sourceforge/mogwai/mogwai-masterpom/1.1-SNAPSHOT/mogwai-masterpom-1.1-SNAPSHOT.pom</relativePath>
     </parent>
     <developers>
         <developer>
@@ -43,15 +42,17 @@
     <repositories>
         <repository>
             <id>mogwai-repository</id>
-            <name>Project-Local Repository</name>
-            <url>file:${project.basedir}/repository</url>
+            <url>http://mogwai.sourceforge.net/repository/maven2</url>
+        </repository>
+        <repository>
+            <id>java-net-repository</id>
+            <url>http://download.java.net/maven/2</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>mogwai-plugins</id>
-            <name>Project-Local Plugin Repository</name>
-            <url>file:${project.basedir}/repository</url>
+            <url>http://mogwai.sourceforge.net/repository/maven2</url>
         </pluginRepository>
     </pluginRepositories>
     <build>
@@ -302,7 +303,7 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>6.15.0</version>
+            <version>6.14.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.javaparser</groupId>
@@ -342,7 +343,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>4.13</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -358,7 +359,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.8.0</version>
+            <version>2.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
