@@ -81,7 +81,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <taskdef classname="de.mogwai.common.i18n.XMLResourceBundleTask"
                                          name="XMLResourceBundle"/>
                                 <XMLResourceBundle dest="src/main/resources" defaultLanguage="en" src="src/main/java"
@@ -90,7 +90,7 @@
                                         <include name="erdesigner.xml"/>
                                     </fileset>
                                 </XMLResourceBundle>
-                            </tasks>
+                            </target>
                         </configuration>
                     </execution>
                     <execution>
@@ -100,7 +100,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy todir="${staging.dir}">
                                     <fileset dir="${basedir}">
                                         <include name="*.sh"/>
@@ -144,7 +144,7 @@
                                         <include name="${project.artifactId}-${project.version}.jar"/>
                                     </fileset>
                                 </copy>
-                            </tasks>
+                            </target>
                         </configuration>
                     </execution>
                     <execution>
@@ -154,7 +154,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy todir="${jpackage.dir}">
                                     <fileset dir="${basedir}">
                                         <include name="*.txt"/>
@@ -177,7 +177,7 @@
                                         <include name="${project.artifactId}-${project.version}.jar"/>
                                     </fileset>
                                 </copy>
-                            </tasks>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
