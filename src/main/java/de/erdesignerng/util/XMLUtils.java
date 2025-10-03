@@ -73,6 +73,8 @@ public final class XMLUtils {
 	public void transform(Document aDocument, Writer aWriter)
 			throws TransformerException {
 
+        aDocument.setXmlStandalone(true);
+
 		ApplicationPreferences thePreferences = ApplicationPreferences
 				.getInstance();
 
