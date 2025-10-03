@@ -475,6 +475,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
+                                    <skip>${skipRpm}</skip>
                                     <executable>${env.JAVA_HOME}/bin/jpackage</executable>
                                     <arguments>
                                         <argument>--type</argument>
@@ -524,6 +525,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
+                                    <skip>${skipDeb}</skip>
                                     <executable>${env.JAVA_HOME}/bin/jpackage</executable>
                                     <arguments>
                                         <argument>--type</argument>
